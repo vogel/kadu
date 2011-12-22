@@ -66,8 +66,8 @@ public:
 
 	bool showInAllGroup() const;
 	bool isInGroup(Group group) const;
-	void addToGroup(Group group);
-	void removeFromGroup(Group group);
+	void addToGroup(Group group) const;
+	void removeFromGroup(Group group) const;
 
 	KaduSharedBase_PropertyRead(ContactSet, contacts, Contacts)
 	KaduSharedBase_PropertyRead(QString, name, Name)

@@ -39,6 +39,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
+#include "chat/chat-list-mime-data-helper.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
@@ -282,38 +283,47 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 	int tabIndex = tabAt(event->pos());
 
 	if (tabIndex != -1)
-		currentGroup= GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+		CurrentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	QMenu menu;
 
-	menu.addAction(tr("Add Buddy"), this, SLOT(addBuddy()))->setEnabled(tabIndex != -1 && currentGroup);
-	menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && currentGroup);
+	menu.addAction(tr("Add Buddy"), this, SLOT(addBuddy()))->setEnabled(tabIndex != -1 && CurrentGroup);
+	menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && CurrentGroup);
 	menu.addSeparator();
-	menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()))->setEnabled(tabIndex != -1 && currentGroup);
+	menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()))->setEnabled(tabIndex != -1 && CurrentGroup);
 	menu.addAction(tr("Add Group"), this, SLOT(createNewGroup()));
 	menu.addSeparator();
-	menu.addAction(tr("Properties"), this, SLOT(groupProperties()))->setEnabled(tabIndex != -1 && currentGroup);
+	menu.addAction(tr("Properties"), this, SLOT(groupProperties()))->setEnabled(tabIndex != -1 && CurrentGroup);
 
 	menu.exec(event->globalPos());
 }
 
 void GroupTabBar::dragEnterEvent(QDragEnterEvent *event)
 {
-	if (event->mimeData()->hasFormat("application/x-kadu-ules"))
+	if (event->mimeData()->hasFormat("application/x-kadu-buddy-list"))
+		event->acceptProposedAction();
+	if (event->mimeData()->hasFormat("application/x-kadu-chat-list"))
+		event->acceptProposedAction();
+}
+
+void GroupTabBar::dragMoveEvent(QDragMoveEvent *event)
+{
+	if (event->mimeData()->hasFormat("application/x-kadu-buddy-list"))
+		event->acceptProposedAction();
+	if (event->mimeData()->hasFormat("application/x-kadu-chat-list"))
 		event->acceptProposedAction();
 }
 
 void GroupTabBar::dropEvent(QDropEvent *event)
 {
-	kdebugf();
-
-	QStringList ules;
-	if (!event->mimeData()->hasFormat("application/x-kadu-ules"))
+	if (!event->mimeData()->hasFormat("application/x-kadu-buddy-list") &&
+	        !event->mimeData()->hasFormat("application/x-kadu-chat-list"))
 		return;
 
 	event->acceptProposedAction();
 
 	BuddyList buddies = BuddyListMimeDataHelper::fromMimeData(event->mimeData());
+	QList<Chat> chats = ChatListMimeDataHelper::fromMimeData(event->mimeData());
 
 	QApplication::setOverrideCursor(Qt::ArrowCursor);
 	int tabIndex = tabAt(event->pos());
@@ -340,24 +350,27 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 		Group group = GroupManager::instance()->byName(newGroupName);
 
-		foreach (Buddy buddy, buddies)
+		foreach (const Buddy &buddy, buddies)
 			buddy.addToGroup(group);
+		foreach (const Chat &chat, chats)
+			chat.addToGroup(group);
 
 		QApplication::restoreOverrideCursor();
 
 		return;
 	}
 	else
-		currentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+		CurrentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
-	currentBuddies = buddies;
+	DNDBuddies = buddies;
+	DNDChats = chats;
 
-	if (currentGroup)
+	if (CurrentGroup)
 	{
 		QMenu menu;
-		menu.addAction(tr("Move to group %1").arg(currentGroup.name()), this, SLOT(moveToGroup()))
+		menu.addAction(tr("Move to group %1").arg(CurrentGroup.name()), this, SLOT(moveToGroup()))
 				->setEnabled(tabData(currentIndex()).toString() != "AutoTab");
-		menu.addAction(tr("Add to group %1").arg(currentGroup.name()), this, SLOT(addToGroup()));
+		menu.addAction(tr("Add to group %1").arg(CurrentGroup.name()), this, SLOT(addToGroup()));
 		menu.exec(QCursor::pos());
 	}
 
@@ -368,32 +381,31 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 void GroupTabBar::addBuddy()
 {
-	if (!currentGroup)
+	if (!CurrentGroup)
 		return;
 
 	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
-	addBuddyWindow->setGroup(currentGroup);
+	addBuddyWindow->setGroup(CurrentGroup);
 	addBuddyWindow->show();
 }
 
-
 void GroupTabBar::renameGroup()
 {
-	if (!currentGroup)
+	if (!CurrentGroup)
 		return;
 	bool ok;
 	QString newGroupName = QInputDialog::getText(this, tr("Rename Group"),
 				tr("Please enter a new name for this group"), QLineEdit::Normal,
-				currentGroup.name(), &ok);
+				CurrentGroup.name(), &ok);
 
-	if (ok && newGroupName != currentGroup.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		currentGroup.setName(newGroupName);
+	if (ok && newGroupName != CurrentGroup.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		CurrentGroup.setName(newGroupName);
 }
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup.name()), Core::instance()->kaduWindow()))
-		GroupManager::instance()->removeItem(currentGroup);
+	if (CurrentGroup && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(CurrentGroup.name()), Core::instance()->kaduWindow()))
+		GroupManager::instance()->removeItem(CurrentGroup);
 }
 
 void GroupTabBar::createNewGroup()
@@ -409,30 +421,38 @@ void GroupTabBar::createNewGroup()
 
 void GroupTabBar::groupProperties()
 {
-	if (!currentGroup)
+	if (!CurrentGroup)
 		return;
 
-	(new GroupPropertiesWindow(currentGroup, Core::instance()->kaduWindow()))->show();
+	(new GroupPropertiesWindow(CurrentGroup, Core::instance()->kaduWindow()))->show();
 }
 
 void GroupTabBar::addToGroup()
 {
-	if (!currentGroup)
+	if (!CurrentGroup)
 		return;
 
-	foreach (Buddy buddy, currentBuddies)
-		buddy.addToGroup(currentGroup);
+	foreach (const Buddy &buddy, DNDBuddies)
+		buddy.addToGroup(CurrentGroup);
+	foreach (const Chat &chat, DNDChats)
+		chat.addToGroup(CurrentGroup);
 }
 
 void GroupTabBar::moveToGroup()
 {
-	if (!currentGroup)
+	if (!CurrentGroup)
 		return;
 
-	foreach (Buddy buddy, currentBuddies)
+	foreach (const Buddy &buddy, DNDBuddies)
 	{
 		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
-		buddy.addToGroup(currentGroup);
+		buddy.addToGroup(CurrentGroup);
+	}
+
+	foreach (const Chat &chat, DNDChats)
+	{
+		chat.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
+		chat.addToGroup(CurrentGroup);
 	}
 }
 

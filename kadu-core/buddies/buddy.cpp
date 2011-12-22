@@ -170,13 +170,13 @@ bool Buddy::showInAllGroup() const
 	return isNull() ? false : data()->showInAllGroup();
 }
 
-void Buddy::addToGroup(Group group)
+void Buddy::addToGroup(Group group) const
 {
 	if (!isNull() && !data()->isInGroup(group))
 		data()->addToGroup(group);
 
 }
-void Buddy::removeFromGroup(Group group)
+void Buddy::removeFromGroup(Group group) const
 {
 	if (!isNull() && data()->isInGroup(group))
 		data()->removeFromGroup(group);

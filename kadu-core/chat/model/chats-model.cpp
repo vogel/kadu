@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat-list-mime-data-helper.h"
 #include "chat/chat-manager.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
@@ -236,4 +237,24 @@ QModelIndexList ChatsModel::indexListForValue(const QVariant &value) const
 	}
 
 	return result;
+}
+
+// D&D
+
+QStringList ChatsModel::mimeTypes() const
+{
+	return ChatListMimeDataHelper::mimeTypes();
+}
+
+QMimeData * ChatsModel::mimeData(const QModelIndexList &indexes) const
+{
+	QList<Chat> list;
+	foreach (const QModelIndex &index, indexes)
+	{
+		Chat chat = index.data(ChatRole).value<Chat>();
+		if (chat)
+			list << chat;
+	}
+
+	return ChatListMimeDataHelper::toMimeData(list);
 }

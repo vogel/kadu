@@ -129,13 +129,13 @@ bool Chat::showInAllGroup() const
 	return isNull() ? false : data()->showInAllGroup();
 }
 
-void Chat::addToGroup(Group group)
+void Chat::addToGroup(Group group) const
 {
 	if (!isNull() && !data()->isInGroup(group))
 		data()->addToGroup(group);
 
 }
-void Chat::removeFromGroup(Group group)
+void Chat::removeFromGroup(Group group) const
 {
 	if (!isNull() && data()->isInGroup(group))
 		data()->removeFromGroup(group);

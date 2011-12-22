@@ -56,6 +56,10 @@ public:
 	virtual Chat chatAt(const QModelIndex &index) const;
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
+	// D&D
+	virtual QStringList mimeTypes() const;
+	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
+
 };
 
 #endif // CHATS_MODEL_H

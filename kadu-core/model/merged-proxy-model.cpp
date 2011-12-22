@@ -17,7 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QPair>
+#include <QtCore/QMimeData>
+#include <QtCore/QStringList>
 
 #include "merged-proxy-model.h"
 
@@ -388,7 +389,53 @@ int MergedProxyModel::columnCount(const QModelIndex &parent) const
 	return 1;
 }
 
+QFlags<Qt::ItemFlag> MergedProxyModel::flags(const QModelIndex &index) const
+{
+	return mapToSource(index).flags();
+}
+
 QVariant MergedProxyModel::data(const QModelIndex &index, int role) const
 {
 	return mapToSource(index).data(role);
+}
+
+QStringList MergedProxyModel::mimeTypes() const
+{
+	QStringList result;
+	foreach (const QAbstractItemModel *model, Models)
+		result += model->mimeTypes();
+	return result;
+}
+
+QMimeData * MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
+{
+	if (proxyIndexes.isEmpty())
+		return 0;
+
+	QMap<const QAbstractItemModel *, QModelIndexList> sourceIndexes;
+	foreach (const QModelIndex &proxyIndex, proxyIndexes)
+	{
+		const QModelIndex &sourceIndex = mapToSource(proxyIndex);
+		const QAbstractItemModel *sourceModel = sourceIndex.model();
+		if (!sourceIndexes.contains(sourceModel))
+			sourceIndexes.insert(sourceModel, QModelIndexList());
+		sourceIndexes.find(sourceModel)->append(sourceIndex);
+	}
+
+	QMimeData *mergedMimeData = new QMimeData();
+
+	QList<const QAbstractItemModel *> sourceModels = sourceIndexes.keys();
+	foreach (const QAbstractItemModel *sourceModel, sourceModels)
+	{
+		QMimeData *sourceMimeData = sourceModel->mimeData(sourceIndexes.value(sourceModel));
+		if (!sourceMimeData)
+			continue;
+
+		foreach (const QString &sourceMimeDataFormat, sourceMimeData->formats())
+			mergedMimeData->setData(sourceMimeDataFormat, sourceMimeData->data(sourceMimeDataFormat));
+
+		delete sourceMimeData;
+	}
+
+	return mergedMimeData;
 }

@@ -220,7 +220,11 @@ public:
 	virtual int rowCount(const QModelIndex &proxyParent = QModelIndex()) const;
 	virtual int columnCount(const QModelIndex &proxyParent = QModelIndex()) const;
 
+	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
 	virtual QVariant data(const QModelIndex &proxyIndex, int role = Qt::DisplayRole) const;
+
+	virtual QStringList mimeTypes() const;
+	virtual QMimeData * mimeData(const QModelIndexList &proxyIndexes) const;
 
 };
 

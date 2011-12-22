@@ -93,8 +93,8 @@ public:
 
 	bool showInAllGroup() const;
 	bool isInGroup(Group group) const;
-	void addToGroup(Group group);
-	void removeFromGroup(Group group);
+	void addToGroup(Group group) const;
+	void removeFromGroup(Group group) const;
 
 	bool isEmpty(bool checkOnlyForContacts = false) const;
 

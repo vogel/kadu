@@ -30,13 +30,17 @@
 #include "buddies/group.h"
 #include "configuration/configuration-aware-object.h"
 
+class Chat;
+
 class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	Group CurrentGroup;
+
 	// for dnd support
-	Group currentGroup;
-	BuddyList currentBuddies;
+	BuddyList DNDBuddies;
+	QList<Chat> DNDChats;
 
 	bool ShowAllGroup;
 	bool HadAnyUngrouppedBuddy;
@@ -71,6 +75,7 @@ protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 
 	virtual void dragEnterEvent(QDragEnterEvent *event);
+	virtual void dragMoveEvent(QDragMoveEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 
 	virtual void configurationUpdated();
