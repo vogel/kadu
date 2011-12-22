@@ -123,36 +123,6 @@ int MPRISMediaPlayer::getInt(QString obj, QString func)
 	return -1;
 }
 
-QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param, QString field)
-{
-	if (!service.isEmpty())
-	{
-		QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
-		if (reply.isValid())
-		{
-			QVariantMap map = reply.value();
-			return map.value(field).toString();
-		}
-	}
-	return QString();
-}
-
-int MPRISMediaPlayer::getIntMapValue(QString obj, QString func, int param, QString field)
-{
-	if (!service.isEmpty())
-	{
-		QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
-		if (reply.isValid())
-		{
-			QVariantMap map = reply.value();
-			return map.value(field).toInt();
-		}
-	}
-	return -1;
-}
-
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
