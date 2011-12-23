@@ -67,6 +67,8 @@
 #include "notify/window-notifier.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 
 #include "misc/misc.h"
 #include "activate.h"
@@ -382,7 +384,8 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "/To" + status.type();
+	const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(status.type());
+	QString changedTo = "/To" + typeData.name();
 
 	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contact);
 
@@ -437,6 +440,7 @@ void NotificationManager::unregisterNotifyEvent(NotifyEvent *notifyEvent)
 void NotificationManager::registerNotifier(Notifier *notifier)
 {
 	kdebugf();
+
 	if (Notifiers.contains(notifier))
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: '%s' already exists in notifiers! "
@@ -611,6 +615,8 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 
 		event = event.left(slashPosition);
 	}
+
+	Q_ASSERT(false);
 }
 
 ConfigurationUiHandler * NotificationManager::configurationUiHandler()
