@@ -29,7 +29,7 @@
 #include "jabber-contact-details.h"
 
 JabberContactDetails::JabberContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared)
+		ContactDetails(contactShared), IgnoreNextStatusChange(false)
 {
 	ContactSubscription = XMPP::Subscription();
 }

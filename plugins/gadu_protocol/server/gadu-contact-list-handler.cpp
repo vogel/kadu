@@ -170,6 +170,11 @@ void GaduContactListHandler::contactAttached(Contact contact, bool reattached)
 	if (contact.contactAccount() != Protocol->account())
 		return;
 
+	// see issue #2159 - we need a way to ignore first status of given contact
+	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
+	if (details)
+		details->setIgnoreNextStatusChange(true);
+
 	updateContactEntry(contact);
 }
 

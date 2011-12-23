@@ -328,13 +328,18 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
-	if (contact)
-	{
-		Status oldStatus = contact.currentStatus();
-		contact.setCurrentStatus(status);
+	if (!contact)
+		return;
 
+	Status oldStatus = contact.currentStatus();
+	contact.setCurrentStatus(status);
+
+	// see issue #2159 - we need a way to ignore first status of given contact
+	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
+	if (details && details->ignoreNextStatusChange())
+		details->setIgnoreNextStatusChange(false);
+	else
 		emit contactStatusChanged(contact, oldStatus);
-	}
 }
 
 void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
@@ -350,11 +355,19 @@ void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool 
 
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
+	if (contact.contactAccount() != account())
+		return;
+
 	if (reattached)
 	{
 		contactUpdated(contact);
 		return;
 	}
+
+	// see issue #2159 - we need a way to ignore first status of given contact
+	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
+	if (details)
+		details->setIgnoreNextStatusChange(true);
 
 	if (CurrentRosterService)
 		CurrentRosterService->addContact(contact);
