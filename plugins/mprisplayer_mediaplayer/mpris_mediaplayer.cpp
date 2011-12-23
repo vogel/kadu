@@ -37,8 +37,6 @@
 #include <QtDBus/QDBusMetaType>
 #include <QtDBus/QDBusReply>
 
-#include "debug.h"
-
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris_controller.h"
@@ -47,7 +45,6 @@
 MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
 		PlayerCommands(parent)
 {
-	kdebugf();
 	controller = new MPRISController(service, this);
 
 	if (name == "Audacious")
@@ -58,7 +55,6 @@ MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
 
 MPRISMediaPlayer::~MPRISMediaPlayer()
 {
-	kdebugf();
 }
 
 void MPRISMediaPlayer::setService(const QString &service)
@@ -190,47 +186,27 @@ int MPRISMediaPlayer::getCurrentPos()
 
 void MPRISMediaPlayer::nextTrack()
 {
-	kdebugf();
-
 	send("/org/mpris/MediaPlayer2", "Next");
-
-	kdebugf2();
 }
 
 void MPRISMediaPlayer::prevTrack()
 {
-	kdebugf();
-
 	send("/org/mpris/MediaPlayer2", "Previous");
-
-	kdebugf2();
 }
 
 void MPRISMediaPlayer::play()
 {
-	kdebugf();
-
 	send("/org/mpris/MediaPlayer2", "Play");
-
-	kdebugf2();
 }
 
 void MPRISMediaPlayer::stop()
 {
-	kdebugf();
-
 	send("/org/mpris/MediaPlayer2", "Stop");
-
-	kdebugf2();
 }
 
 void MPRISMediaPlayer::pause()
 {
-	kdebugf();
-
 	send("/org/mpris/MediaPlayer2", "Pause");
-
-	kdebugf2();
 }
 
 void MPRISMediaPlayer::setVolume(int vol)
