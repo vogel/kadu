@@ -113,6 +113,9 @@ QString MPRISMediaPlayer::getPlayerVersion()
 QStringList MPRISMediaPlayer::getPlayListTitles()
 {
 	QStringList result;
+	if (!isPlaying())
+		return result;
+
 	QList<TrackInfo> tracks = controller->getTrackList();
 
 	foreach (const TrackInfo &track, tracks)
@@ -124,6 +127,9 @@ QStringList MPRISMediaPlayer::getPlayListTitles()
 QStringList MPRISMediaPlayer::getPlayListFiles()
 {
 	QStringList result;
+	if (!isPlaying())
+		return result;
+
 	QList<TrackInfo> tracks = controller->getTrackList();
 
 	foreach (const TrackInfo &track, tracks)
@@ -265,10 +271,16 @@ void MPRISMediaPlayer::decrVolume()
 
 bool MPRISMediaPlayer::isPlaying()
 {
+	if (!controller)
+		return false;
+
 	return MPRISController::StatusPlaying == controller->status();
 }
 
 bool MPRISMediaPlayer::isActive()
 {
+	if (!controller)
+		return false;
+
 	return controller->active();
 }
