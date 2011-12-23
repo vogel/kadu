@@ -50,6 +50,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	setMovable(true);
 
 	setDocumentMode(true);
+	setElideMode(Qt::ElideRight);
 
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
