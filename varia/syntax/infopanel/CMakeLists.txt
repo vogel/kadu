@@ -1,6 +1,6 @@
 set (SYNTAX_FILES
 	Arvenil.syntax
-	default.syntax
+	"Old Default.syntax"
 	ultr.syntax
 )
 

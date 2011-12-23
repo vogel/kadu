@@ -128,7 +128,14 @@ void BuddyInfoPanel::update()
 		"</html>"
 		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	Syntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile", "ultr"),
+	QString syntaxFile = config_file.readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+	if (syntaxFile == "default")
+	{
+		syntaxFile = "Old Default";
+		config_file.writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+	}
+
+	Syntax = SyntaxList::readSyntax("infopanel", syntaxFile,
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{x-office-address-book:32x32}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	displayItem(Item);

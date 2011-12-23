@@ -7,6 +7,7 @@
 * mediaplayer: #2358 fixed: menu items for mediaplayer change positions after configuration save (Vogel)
 * gadu: #2159 fixed: do not notify about status change just after adding new buddy (Vogel)
 * tabs: #1701 fixed: sometimes it was not possible to scroll to tab with new message (Vogel)
+* syntax: #2236 fixed: changed "default" infopanel syntax name to "Old Default" (beevvy)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
