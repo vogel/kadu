@@ -27,6 +27,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -202,8 +203,6 @@ void ContactShared::detach(bool resetBuddy, bool reattaching, bool emitSignals)
 
 	Buddy oldBuddy = *OwnerBuddy;
 
-	emitSignals = emitSignals && !oldBuddy.isAnonymous();
-
 	if (emitSignals)
 		emit aboutToBeDetached();
 
@@ -225,8 +224,6 @@ void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignal
 		*OwnerBuddy = buddy;
 		return;
 	}
-
-	emitSignals = emitSignals && !buddy.isAnonymous();
 
 	if (emitSignals)
 		emit aboutToBeAttached(buddy);
