@@ -225,6 +225,11 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	}
 	else if (contacts.size() > 1)
 	{
+		// only gadu-gadu support conferences
+		// TODO: this should be done better
+		if (chat.chatAccount().protocolName() != "gadu")
+			return Chat::null;
+
 		chat.setType("Conference");
 
 		ChatDetailsConference *conference = dynamic_cast<ChatDetailsConference *>(chat.details());
