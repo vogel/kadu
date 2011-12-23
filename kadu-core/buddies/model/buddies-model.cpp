@@ -126,7 +126,7 @@ void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 {
 	Q_UNUSED(buddy)
 
-	int count = rowCount();
+	int count = rowCount() - (IncludeMyself ? 1 : 0);
 	beginInsertRows(QModelIndex(), count, count);
 }
 
