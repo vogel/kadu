@@ -3,6 +3,7 @@
 * gui: #1767 fixed: show know buddies in "Open Chat" window first (Vogel)
 * gui: #2232 fixed: update status of "Myself" buddy only after successfull connection (Vogel)
 * mprisplayer: #1954 fixed: update MPRIS support to version 2 (Vogel)
+* mediaplayer: #1558 fixed: inserting song file name instead of title in polish version (Vogel)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
