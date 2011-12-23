@@ -23,13 +23,15 @@
 #ifndef CHAT_DATA_EXTRACTOR_H
 #define CHAT_DATA_EXTRACTOR_H
 
+#include "exports.h"
+
 class QVariant;
 
 class Chat;
 
 namespace ChatDataExtractor
 {
-	QVariant data(const Chat &chat, int role);
+	KADUAPI QVariant data(const Chat &chat, int role);
 }
 
 #endif // CHAT_DATA_EXTRACTOR_H
