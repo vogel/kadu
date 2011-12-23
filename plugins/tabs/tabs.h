@@ -112,6 +112,8 @@ public:
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
 
+	void setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip);
+
 	void addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget);
 	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
 

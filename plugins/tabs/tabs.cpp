@@ -707,6 +707,14 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	*/
 }
 
+void TabsManager::setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip)
+{
+	if (TabDialog->tabText(index) != text)
+		TabDialog->setTabText(index, text);
+	if (TabDialog->tabToolTip(index) != tooltip)
+		TabDialog->setTabToolTip(index, tooltip);
+}
+
 // TODO: share with single_window
 void TabsManager::updateTabName(ChatWidget *chatWidget)
 {
@@ -728,15 +736,10 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 	}
 
 	if (chat.unreadMessagesCount() > 0)
-	{
-		TabDialog->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()));
-		TabDialog->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
-	}
+		setTabTextAndTooltipIfDiffer(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),
+		                             QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	else
-	{
-		TabDialog->setTabText(i, baseTabName);
-		TabDialog->setTabToolTip(i, chatWidget->title());
-	}
+		setTabTextAndTooltipIfDiffer(i, baseTabName, baseTabName);
 }
 
 void TabsManager::closeChat()
