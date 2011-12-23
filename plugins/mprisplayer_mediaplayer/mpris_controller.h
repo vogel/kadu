@@ -35,7 +35,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariantMap>
 #include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusVariant>
 
 #include "track-info.h"
 

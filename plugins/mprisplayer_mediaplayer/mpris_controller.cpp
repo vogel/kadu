@@ -29,7 +29,6 @@
  * See http://mpris.org/ for more details about the standard
  */
 
-#include <QtCore/QStringList>
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusConnectionInterface>

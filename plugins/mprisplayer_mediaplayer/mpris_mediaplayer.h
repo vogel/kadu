@@ -32,12 +32,10 @@
 #ifndef MPRIS_MEDIAPLAYER_H
 #define MPRIS_MEDIAPLAYER_H
 
-#include <QtCore/QObject>
-
 #include "plugins/mediaplayer/player_commands.h"
 #include "plugins/mediaplayer/player_info.h"
 
-#include "mpris_controller.h"
+class MPRISController;
 
 class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 {
