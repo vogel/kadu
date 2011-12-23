@@ -60,6 +60,15 @@ MPRISController::~MPRISController()
 	               QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 }
 
+void MPRISController::call(const QString &methodName)
+{
+	if (Service.isEmpty())
+		return;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.mpris.MediaPlayer2.Player");
+	mprisApp.call(methodName);
+}
+
 QString MPRISController::identity() const
 {
 	if (Service.isEmpty())

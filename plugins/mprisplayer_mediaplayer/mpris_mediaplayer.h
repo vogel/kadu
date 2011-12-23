@@ -47,8 +47,6 @@ class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 	QString service;
 	QString name;
 
-	void send(QString obj, QString func);
-
 public:
 	explicit MPRISMediaPlayer(QObject *parent = 0);
 	virtual ~MPRISMediaPlayer();

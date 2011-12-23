@@ -77,15 +77,6 @@ void MPRISMediaPlayer::setName(const QString &name)
 		MediaPlayer::instance()->setInterval(0);
 }
 
-void MPRISMediaPlayer::send(QString obj, QString func)
-{
-	if (!service.isEmpty())
-	{
-		QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-		mprisApp.call(func);
-	}
-}
-
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
@@ -183,27 +174,32 @@ int MPRISMediaPlayer::getCurrentPos()
 
 void MPRISMediaPlayer::nextTrack()
 {
-	send("/org/mpris/MediaPlayer2", "Next");
+	if (controller)
+		controller->call("Next");
 }
 
 void MPRISMediaPlayer::prevTrack()
 {
-	send("/org/mpris/MediaPlayer2", "Previous");
+	if (controller)
+		controller->call("Previous");
 }
 
 void MPRISMediaPlayer::play()
 {
-	send("/org/mpris/MediaPlayer2", "Play");
+	if (controller)
+		controller->call("Play");
 }
 
 void MPRISMediaPlayer::stop()
 {
-	send("/org/mpris/MediaPlayer2", "Stop");
+	if (controller)
+		controller->call("Stop");
 }
 
 void MPRISMediaPlayer::pause()
 {
-	send("/org/mpris/MediaPlayer2", "Pause");
+	if (controller)
+		controller->call("Pause");
 }
 
 void MPRISMediaPlayer::setVolume(int vol)

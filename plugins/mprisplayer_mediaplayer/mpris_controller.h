@@ -77,6 +77,8 @@ public:
 	explicit MPRISController(const QString &service, QObject *parent = 0);
 	virtual ~MPRISController();
 
+	void call(const QString &methodName);
+
 	QString identity() const;
 
 	PlayerStatus status() const;
