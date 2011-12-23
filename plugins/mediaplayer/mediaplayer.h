@@ -27,14 +27,15 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 
 	static MediaPlayer *Instance;
 
-	MediaPlayerStatusChanger *mediaPlayerStatusChanger;
+	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;
 	PlayerCommands *playerCommands;
 
 	ActionDescription *enableMediaPlayerStatuses;
 	ActionDescription *mediaPlayerMenu;
 	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
-	QAction *mediaplayerStatus;
+
+	QAction *DockedMediaplayerStatus;
 
 	NotifyEvent *mediaPlayerEvent;
 

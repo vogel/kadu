@@ -28,7 +28,7 @@ public:
 
 	void setTitle(const QString &newTitle);
 	void setDisable(bool disable);
-	bool isDisabled() { return disabled; };
+	bool isDisabled() { return disabled; }
 	void changePositionInStatus(ChangeDescriptionTo newPosition);
 
 };

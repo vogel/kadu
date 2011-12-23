@@ -5,3 +5,4 @@ Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
 Version=core
 Plugin=true
+Dependencies=docking

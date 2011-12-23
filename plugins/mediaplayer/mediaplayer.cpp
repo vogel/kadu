@@ -64,6 +64,8 @@
 #include "player_commands.h"
 #include "player_info.h"
 
+#include "plugins/docking/docking.h"
+
 #include "mediaplayer.h"
 
 #define MODULE_MEDIAPLAYER_VERSION 1.3
@@ -194,18 +196,17 @@ MediaPlayer::MediaPlayer()
 		KaduIcon("audio-volume-low"), tr("Volume Down"), false
 	);
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
-	mediaplayerStatus = NULL;
+	DockedMediaplayerStatus = 0;
 
 	// Initial values of some object variables
 	winKeyPressed = false;
 
-	mediaPlayerStatusChanger = new MediaPlayerStatusChanger(this);
-	StatusChangerManager::instance()->registerStatusChanger(mediaPlayerStatusChanger);
+	Changer = new MediaPlayerStatusChanger(this);
+	StatusChangerManager::instance()->registerStatusChanger(Changer);
 
 	createDefaultConfiguration();
 
-	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
 
 	setControlsEnabled(false);
 	isPaused = true;
@@ -213,6 +214,7 @@ MediaPlayer::MediaPlayer()
 	mediaPlayerEvent = new NotifyEvent(QString(mediaPlayerOsdHint), NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"));
 	NotificationManager::instance()->registerNotifyEvent(mediaPlayerEvent);
 
+	configurationUpdated();
 }
 
 MediaPlayer::~MediaPlayer()
@@ -223,7 +225,7 @@ MediaPlayer::~MediaPlayer()
 	delete mediaPlayerEvent;
 	mediaPlayerEvent = 0;
 
-	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(Changer);
 
 	// Stop timer for checking titles
 	timer->stop();
@@ -240,10 +242,10 @@ MediaPlayer::~MediaPlayer()
 	delete menu;
 
 	// Remove menu item (statuses)
-//	if (mediaplayerStatus == NULL)
 	Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
-//	else
-//		dockMenu->removeAction(mediaplayerStatus);
+
+	if (DockedMediaplayerStatus)
+		DockingManager::instance()->dockMenu()->removeAction(DockedMediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
@@ -674,6 +676,11 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 
 	kdebugf();
 
+	toggleStatuses(toggled);
+}
+
+void MediaPlayer::toggleStatuses(bool toggled)
+{
 	if (!isActive() && toggled)
 	{
 		foreach (Action *action, enableMediaPlayerStatuses->actions())
@@ -687,7 +694,7 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		return;
 	}
 
-	mediaPlayerStatusChanger->setDisable(!toggled);
+	Changer->setDisable(!toggled);
 	if (toggled)
 	{
 		checkTitle();
@@ -698,24 +705,9 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 		timer->stop();
 }
 
-void MediaPlayer::toggleStatuses(bool toggled)
-{
-	if (!isActive() && toggled)
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("%1 isn't running!").arg(getPlayerName()));
-		return;
-	}
-
-	mediaPlayerStatusChanger->setDisable(!toggled);
-	if (toggled && statusInterval > 0)
-		timer->start(statusInterval);
-	else
-		timer->stop();
-}
-
 void MediaPlayer::titleChanged()
 {
-	if (!mediaPlayerStatusChanger->isDisabled())
+	if (!Changer->isDisabled())
 		checkTitle();
 }
 
@@ -731,7 +723,7 @@ void MediaPlayer::setInterval(int seconds)
 
 void MediaPlayer::checkTitle()
 {
-	if (mediaPlayerStatusChanger->isDisabled())
+	if (Changer->isDisabled())
 		return;
 
 	int pos = getCurrentPos();
@@ -740,7 +732,7 @@ void MediaPlayer::checkTitle()
 	if (config_file.readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
 		putTitleHint(getTitle());
 
-	mediaPlayerStatusChanger->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
+	Changer->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
 }
 
 void MediaPlayer::putTitleHint(QString title)
@@ -757,35 +749,35 @@ void MediaPlayer::configurationUpdated()
 	kdebugf();
 
 	// Statuses switch
-	bool enabled = false;
-
-	if (mediaplayerStatus == NULL)
-	{
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext()))
-			enabled = enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext())->isChecked();
-		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
-	}
-	else
-	{
-		enabled = mediaplayerStatus->isChecked();
-		//dockMenu->removeAction(mediaplayerStatus);
-	}
+	bool enabled = !Changer->isDisabled();
 
 	if (config_file.readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
-		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
-		mediaplayerStatus->setCheckable(true);
-		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
-		//dockMenu->addAction(mediaplayerStatus);
+		Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
+
+		if (!DockedMediaplayerStatus)
+		{
+			DockedMediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+			DockedMediaplayerStatus->setCheckable(true);
+			DockedMediaplayerStatus->setChecked(enabled);
+			connect(DockedMediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+
+			DockingManager::instance()->registerModuleAction(DockedMediaplayerStatus);
+		}
 	}
 	else
 	{
 		Core::instance()->kaduWindow()->insertMenuActionDescription(enableMediaPlayerStatuses, KaduWindow::MenuKadu, 7);
-		if (enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext()))
-			enableMediaPlayerStatuses->action(Core::instance()->kaduWindow()->actionContext())->setChecked(enabled);
+
+		if (DockedMediaplayerStatus)
+		{
+			DockingManager::instance()->unregisterModuleAction(DockedMediaplayerStatus);
+			delete DockedMediaplayerStatus;
+			DockedMediaplayerStatus = 0;
+		}
 	}
 
-	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
+	Changer->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
 }
 
 bool MediaPlayer::playerInfoSupported()
