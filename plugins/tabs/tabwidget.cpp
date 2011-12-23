@@ -106,12 +106,7 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 		return;
 	}
 
-	if (!Manager->ChatsWithNewMessages.contains(chatWidget))
-	{
-		Manager->ChatsWithNewMessages.append(chatWidget);
-		if (!Manager->Timer.isActive())
-			QMetaObject::invokeMethod(Manager, "onTimer", Qt::QueuedConnection);
-	}
+	Manager->addChatWidgetToChatWidgetsWithMessage(chatWidget);
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chatWidget)

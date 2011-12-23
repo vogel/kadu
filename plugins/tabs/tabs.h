@@ -112,6 +112,9 @@ public:
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
 
+	void addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget);
+	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
+
 public slots:
 	void onNewChat(ChatWidget *chatWidget, bool &handled);
 	void onDestroyingChat(ChatWidget *chatWidget);

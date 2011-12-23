@@ -211,7 +211,9 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 
 	NewChats.removeAll(chatWidget);
 	DetachedChats.removeAll(chatWidget);
-	ChatsWithNewMessages.removeAll(chatWidget);
+
+	removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
+
 	disconnect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 	disconnect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
@@ -265,9 +267,9 @@ void TabsManager::onTabChange(int index)
 	if (chat.unreadMessagesCount() > 0)
 	{
 		MessageManager::instance()->markAllMessagesAsRead(chat);
-		TabDialog->setTabIcon(index, chatWidget->icon());
 		updateTabName(chatWidget);
-		ChatsWithNewMessages.removeAll(chatWidget);
+
+		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 	}
 
 	TabDialog->setWindowTitle(chatWidget->title());
@@ -359,6 +361,35 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
+void TabsManager::addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget)
+{
+	if (ChatsWithNewMessages.contains(chatWidget))
+		return;
+
+	ChatsWithNewMessages.append(chatWidget);
+	int i = TabDialog->indexOf(chatWidget);
+	if (i < 0)
+		return;
+
+	TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
+
+	if (!Timer.isActive())
+		QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
+}
+
+void TabsManager::removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget)
+{
+	if (!ChatsWithNewMessages.contains(chatWidget))
+		return;
+
+	ChatsWithNewMessages.removeAll(chatWidget);
+	int i = TabDialog->indexOf(chatWidget);
+	if (i < 0)
+		return;
+
+	TabDialog->setTabIcon(i, chatWidget->icon());
+}
+
 // uff, troche dziwne to ale dziala tak jak trzeba
 // TODO: review this!!!
 void TabsManager::onTimer()
@@ -377,18 +408,12 @@ void TabsManager::onTimer()
 		// czy trzeba cos robia ?
 		if (ChatsWithNewMessages.contains(chatWidget))
 		{
-			if (msg)
-				TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
-			else
-				TabDialog->setTabIcon(i, chatWidget->icon());
-
 			if (tabsActive)
 			{
 				if (currentChatWidget == chatWidget)
 				{
 					MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
-					TabDialog->setTabIcon(i, chatWidget->icon());
-					ChatsWithNewMessages.removeAll(chatWidget);
+					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 				}
 
 				TabDialog->setWindowTitle(currentChatWidget->title());
