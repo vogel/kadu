@@ -91,11 +91,6 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 	if (left.isBlocked() && !right.isBlocked())
 		return false;
 
-	if (!left.isAnonymous() && right.isAnonymous())
-		return true;
-	if (left.isAnonymous() && !right.isAnonymous())
-		return false;
-
 	if (SortByStatusAndUnreadMessages)
 	{
 		const bool leftHasUnreadMessages = left.unreadMessagesCount() > 0;
@@ -104,6 +99,11 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 		if (leftHasUnreadMessages && !rightHasUnreadMessages)
 			return true;
 		if (!leftHasUnreadMessages && rightHasUnreadMessages)
+			return false;
+
+		if (!left.isAnonymous() && right.isAnonymous())
+			return true;
+		if (left.isAnonymous() && !right.isAnonymous())
 			return false;
 
 		const Contact &leftContact = BuddyPreferredManager::instance()->preferredContact(left, false);
@@ -124,6 +124,13 @@ bool TalkableProxyModel::lessThan(const Buddy &left, const Buddy &right) const
 		if (!leftStatus.isDisconnected() && rightStatus.isDisconnected())
 			return true;
 		if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
+			return false;
+	}
+	else
+	{
+		if (!left.isAnonymous() && right.isAnonymous())
+			return true;
+		if (left.isAnonymous() && !right.isAnonymous())
 			return false;
 	}
 
