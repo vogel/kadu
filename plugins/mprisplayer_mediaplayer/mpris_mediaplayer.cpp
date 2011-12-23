@@ -77,15 +77,12 @@ void MPRISMediaPlayer::setName(const QString &name)
 		MediaPlayer::instance()->setInterval(0);
 }
 
-void MPRISMediaPlayer::send(QString obj, QString func, int val)
+void MPRISMediaPlayer::send(QString obj, QString func)
 {
 	if (!service.isEmpty())
 	{
 		QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-		if (val != -1)
-			mprisApp.call(func, val);
-		else
-			mprisApp.call(func);
+		mprisApp.call(func);
 	}
 }
 
