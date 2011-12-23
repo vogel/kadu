@@ -217,6 +217,9 @@ void AddBuddyWindow::createGui()
 	updateGui();
 
 	setFixedHeight(height());
+
+	if (AccountCombo->currentAccount())
+		UserNameEdit->setFocus();
 }
 
 void AddBuddyWindow::addFakeAccountsToComboBox()
