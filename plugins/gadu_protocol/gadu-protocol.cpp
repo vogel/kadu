@@ -120,7 +120,7 @@ void GaduProtocol::setStatusFlags()
 	GaduAccountDetails *details = static_cast<GaduAccountDetails *>(account().details());
 
 	int statusFlags = GG_STATUS_FLAG_UNKNOWN;
-	if (details->receiveSpam())
+	if (details && details->receiveSpam())
 		statusFlags = statusFlags | GG_STATUS_FLAG_SPAM;
 
 	gg_change_status_flags(GaduSession, GG_STATUS_FLAG_UNKNOWN | statusFlags);
