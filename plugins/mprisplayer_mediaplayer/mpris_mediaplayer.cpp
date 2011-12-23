@@ -232,14 +232,13 @@ void MPRISMediaPlayer::setVolume(int vol)
 	if (controller)
 		controller->setVolume(vol);
 }
-#include<stdio.h>
+
 void MPRISMediaPlayer::incrVolume()
 {
 	if (!controller)
 		return;
 
 	int vol = controller->getVolume();
-	printf("vol: %d\n", vol);
 	if (vol < 100)
 		vol += 2;
 
@@ -255,7 +254,6 @@ void MPRISMediaPlayer::decrVolume()
 		return;
 
 	int vol = controller->getVolume();
-	printf("vol: %d\n", vol);
 	if (vol > 0)
 		vol -= 2;
 
