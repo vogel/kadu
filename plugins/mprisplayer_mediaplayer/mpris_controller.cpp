@@ -214,6 +214,38 @@ int MPRISController::getCurrentPosition()
 	return qdbus_cast<int>(reply.value().variant()) / 1000;
 }
 
+int MPRISController::getVolume()
+{
+	if (Service.isEmpty())
+		return 0;
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("Get", "org.mpris.MediaPlayer2.Player", "Volume");
+
+	if (!reply.isValid())
+		return 0;
+
+	return 100 * reply.value().variant().toDouble();
+}
+
+void MPRISController::setVolume(int volume)
+{
+	if (Service.isEmpty())
+		return;
+
+	QDBusVariant volumeArg;
+	volumeArg.setVariant(QVariant::fromValue((double)volume / 100));
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+
+	// Set method has signature ssv, so we have to put QDBusVariant as last argument
+	// as call only accepts QVariant arguments, we must wrap QDBusVariant in QVariant
+	// and QDBusVariant is just a wrapper for normal QVariant, so in result we have
+	// 2 layers on variants wrapping real value
+	// but it works
+	mprisApp.call("Set", "org.mpris.MediaPlayer2.Player", "Volume", QVariant::fromValue(volumeArg));
+}
+
 QList<TrackInfo> MPRISController::getTrackList()
 {
 	QList<TrackInfo> result;

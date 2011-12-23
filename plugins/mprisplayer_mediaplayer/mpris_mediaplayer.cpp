@@ -108,21 +108,6 @@ QString MPRISMediaPlayer::getString(QString obj, QString func)
 	return QString();
 }
 
-int MPRISMediaPlayer::getInt(QString obj, QString func)
-{
-	if (!isActive() || service.isEmpty())
-		return 0;
-
-	QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-	QDBusReply<int> reply = mprisApp.call(func);
-
-	if (reply.isValid())
-	{
-		return reply.value();
-	}
-	return -1;
-}
-
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
@@ -258,43 +243,40 @@ void MPRISMediaPlayer::pause()
 
 void MPRISMediaPlayer::setVolume(int vol)
 {
-	kdebugf();
-
-	send("/org/mpris/MediaPlayer2", "VolumeSet", vol);
-
-	kdebugf2();
+	if (controller)
+		controller->setVolume(vol);
 }
-
+#include<stdio.h>
 void MPRISMediaPlayer::incrVolume()
 {
-	kdebugf();
+	if (!controller)
+		return;
 
-	int vol = getInt("/org/mpris/MediaPlayer2", "VolumeGet");
+	int vol = controller->getVolume();
+	printf("vol: %d\n", vol);
 	if (vol < 100)
 		vol += 2;
 
 	if (vol > 100)
 		vol = 100;
 
-	send("/org/mpris/MediaPlayer2", "VolumeSet", vol);
-
-	kdebugf2();
+	controller->setVolume(vol);
 }
 
 void MPRISMediaPlayer::decrVolume()
 {
-	kdebugf();
+	if (!controller)
+		return;
 
-	int vol = getInt("/org/mpris/MediaPlayer2", "VolumeGet");
+	int vol = controller->getVolume();
+	printf("vol: %d\n", vol);
 	if (vol > 0)
 		vol -= 2;
 
 	if (vol < 0)
 		vol = 0;
 
-	send("/org/mpris/MediaPlayer2", "VolumeSet", vol);
-
-	kdebugf2();
+	controller->setVolume(vol);
 }
 
 bool MPRISMediaPlayer::isPlaying()

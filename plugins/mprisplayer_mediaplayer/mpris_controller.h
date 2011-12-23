@@ -39,6 +39,8 @@
 
 #include "track-info.h"
 
+// TODO: separate class to support DBus properies must be extracted
+
 class MPRISController : public QObject
 {
 	Q_OBJECT
@@ -83,6 +85,9 @@ public:
 	void fetchMetadata();
 
 	int getCurrentPosition();
+
+	int getVolume();
+	void setVolume(int volume);
 
 	QList<TrackInfo> getTrackList();
 
