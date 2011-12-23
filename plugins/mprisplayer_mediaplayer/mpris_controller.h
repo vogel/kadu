@@ -66,7 +66,7 @@ private:
 	void updateStatus(const PlayerStatus newStatus);
 	void updateStatus(const QString &newStatus);
 
-	TrackInfo toTrackInfo(const QVariantMap &metadata);
+	TrackInfo toTrackInfo(const QVariantMap &metadata) const;
 	void updateMetadata(const QVariantMap &metadata);
 
 private slots:
@@ -77,6 +77,8 @@ public:
 	explicit MPRISController(const QString &service, QObject *parent = 0);
 	virtual ~MPRISController();
 
+	QString identity() const;
+
 	PlayerStatus status() const;
 	const TrackInfo & track() const;
 	bool active() const;
@@ -84,12 +86,12 @@ public:
 	void fetchStatus();
 	void fetchMetadata();
 
-	int getCurrentPosition();
+	int getCurrentPosition() const;
 
-	int getVolume();
-	void setVolume(int volume);
+	int getVolume() const;
+	void setVolume(int volume) const;
 
-	QList<TrackInfo> getTrackList();
+	QList<TrackInfo> getTrackList() const;
 
 public slots:
 	void trackChanged(const QVariantMap &map);

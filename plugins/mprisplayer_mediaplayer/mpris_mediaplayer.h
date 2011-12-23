@@ -47,7 +47,6 @@ class MPRISMediaPlayer : public PlayerCommands, public PlayerInfo
 	QString service;
 	QString name;
 
-	QString getString(QString obj, QString func);
 	void send(QString obj, QString func, int arg = -1);
 
 public:

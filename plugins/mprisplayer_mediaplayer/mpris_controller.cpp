@@ -60,6 +60,20 @@ MPRISController::~MPRISController()
 	               QLatin1String("NameOwnerChanged"), this, SLOT(nameOwnerChanged(QString, QString, QString)));
 }
 
+QString MPRISController::identity() const
+{
+	if (Service.isEmpty())
+		return QString();
+
+	QDBusInterface mprisApp(Service, "/org/mpris/MediaPlayer2", "org.freedesktop.DBus.Properties");
+	QDBusReply<QDBusVariant> reply = mprisApp.call("Get", "org.mpris.MediaPlayer2", "Identity");
+
+	if (!reply.isValid())
+		return QString();
+
+	return reply.value().variant().toString();
+}
+
 MPRISController::PlayerStatus MPRISController::status() const
 {
 	return CurrentStatus;
@@ -122,7 +136,7 @@ void MPRISController::updateStatus(const QString &newStatus)
 		updateStatus(StatusStopped);
 }
 
-TrackInfo MPRISController::toTrackInfo(const QVariantMap &metadata)
+TrackInfo MPRISController::toTrackInfo(const QVariantMap &metadata) const
 {
 	TrackInfo result;
 
@@ -200,7 +214,7 @@ void MPRISController::fetchMetadata()
 	updateMetadata(qdbus_cast<QVariantMap>(reply.value().variant()));
 }
 
-int MPRISController::getCurrentPosition()
+int MPRISController::getCurrentPosition() const
 {
 	if (Service.isEmpty())
 		return 0;
@@ -214,7 +228,7 @@ int MPRISController::getCurrentPosition()
 	return qdbus_cast<int>(reply.value().variant()) / 1000;
 }
 
-int MPRISController::getVolume()
+int MPRISController::getVolume() const
 {
 	if (Service.isEmpty())
 		return 0;
@@ -228,7 +242,7 @@ int MPRISController::getVolume()
 	return 100 * reply.value().variant().toDouble();
 }
 
-void MPRISController::setVolume(int volume)
+void MPRISController::setVolume(int volume) const
 {
 	if (Service.isEmpty())
 		return;
@@ -246,7 +260,7 @@ void MPRISController::setVolume(int volume)
 	mprisApp.call("Set", "org.mpris.MediaPlayer2.Player", "Volume", QVariant::fromValue(volumeArg));
 }
 
-QList<TrackInfo> MPRISController::getTrackList()
+QList<TrackInfo> MPRISController::getTrackList() const
 {
 	QList<TrackInfo> result;
 

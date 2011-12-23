@@ -93,21 +93,6 @@ void MPRISMediaPlayer::send(QString obj, QString func, int val)
 	}
 }
 
-QString MPRISMediaPlayer::getString(QString obj, QString func)
-{
-	if (!isActive() || service.isEmpty())
-		return QString();
-
-	QDBusInterface mprisApp(service, obj, "org.mpris.MediaPlayer2.Player");
-	QDBusReply<QString> reply = mprisApp.call(func);
-
-	if (reply.isValid())
-	{
-		return reply.value().simplified();
-	}
-	return QString();
-}
-
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
@@ -117,9 +102,10 @@ QString MPRISMediaPlayer::getPlayerName()
 
 QString MPRISMediaPlayer::getPlayerVersion()
 {
-	kdebugf();
-	return getString("/", "Identity");
-	kdebugf2();
+	if (controller)
+		return controller->identity();
+	else
+		return QString();
 }
 
 // TrackList
