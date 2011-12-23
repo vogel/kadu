@@ -19,7 +19,6 @@ class SingleWindow : public QMainWindow, public ChatWidgetContainer
 {
 	Q_OBJECT
 
-	QWidget *previousKaduParent;
 	QSplitter *split;
 	QTabWidget *tabs;
 	QList<int> splitSizes;

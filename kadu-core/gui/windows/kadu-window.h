@@ -94,6 +94,9 @@ private:
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
+#ifdef Q_WS_WIN
+	QWidget *HiddenParent;
+#endif
 	QWidget *WindowParent;
 
 	bool CompositingEnabled;
@@ -108,6 +111,10 @@ private:
 	void createToolsMenu();
 	void createHelpMenu();
 
+#ifdef Q_WS_WIN
+	void hideWindowFromTaskbar();
+#endif
+
 	void storeConfiguration();
 
 	virtual void compositingEnabled();
@@ -119,6 +126,10 @@ private slots:
 	void openRecentChats(QAction *action);
 
 	void iconThemeChanged();
+
+#ifdef Q_WS_WIN
+	void setHiddenParent();
+#endif
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
@@ -132,7 +143,7 @@ protected:
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);
 
-	explicit KaduWindow(QWidget *parent = 0);
+	KaduWindow();
 	virtual ~KaduWindow();
 
 	virtual TalkableTreeView * talkableTreeView();

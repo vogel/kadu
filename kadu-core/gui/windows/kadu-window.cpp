@@ -72,13 +72,16 @@
 extern void qt_mac_set_menubar_icons(bool enable);
 #endif
 
-KaduWindow::KaduWindow(QWidget *parent) :
-		MainWindow(new ProxyActionContext(), QString(), parent), Docked(false),
-		CompositingEnabled(false)
+KaduWindow::KaduWindow() :
+		MainWindow(new ProxyActionContext(), QString(), 0), Docked(false),
+		WindowParent(0), CompositingEnabled(false)
 {
 	setWindowRole("kadu-main");
 
-	WindowParent = (window() != this) ? window() : 0;
+#ifdef Q_WS_WIN
+	HiddenParent = new QWidget();
+	setHiddenParent();
+#endif
 
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
@@ -422,6 +425,43 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 	MainWindow::keyPressEvent(e);
 }
 
+#ifdef Q_WS_WIN
+/* On Windows the only way to not show a window in the taskbar without making it a toolwindow
+ * is to turn off the WS_EX_APPWINDOW style and provide it with a parent (which will be hidden
+ * in our case).
+ */
+void KaduWindow::setHiddenParent()
+{
+	QWidget *futureChild = window();
+	bool wasVisible = futureChild->isVisible();
+	Qt::WindowFlags previousFlags = futureChild->windowFlags();
+	futureChild->setParent(HiddenParent);
+	futureChild->setWindowFlags(previousFlags);
+	futureChild->setVisible(wasVisible);
+
+	hideWindowFromTaskbar();
+}
+
+void KaduWindow::hideWindowFromTaskbar()
+{
+	QWidget *w = window();
+	LONG_PTR newWindowLongPtr = GetWindowLongPtr(w->winId(), GWL_EXSTYLE);
+	bool hideFromTaskbar = config_file.readBoolEntry("General", "HideMainWindowFromTaskbar");
+	if (hideFromTaskbar == !(newWindowLongPtr & WS_EX_APPWINDOW))
+		return;
+
+	if (hideFromTaskbar)
+		newWindowLongPtr &= ~WS_EX_APPWINDOW;
+	else
+		newWindowLongPtr |= WS_EX_APPWINDOW;
+
+	bool wasVisible = w->isVisible();
+	w->setVisible(false);
+	SetWindowLongPtr(w->winId(), GWL_EXSTYLE, newWindowLongPtr);
+	w->setVisible(wasVisible);
+}
+#endif
+
 void KaduWindow::changeEvent(QEvent *event)
 {
 	MainWindow::changeEvent(event);
@@ -442,7 +482,16 @@ void KaduWindow::changeEvent(QEvent *event)
 		QWidget *previousWindowParent = WindowParent;
 		WindowParent = (window() != this) ? window() : 0;
 		if (previousWindowParent != WindowParent)
+		{
+			// On Windows we reparent WindowParent, so we want it to be parentless now.
+			// BTW, if WindowParent would be really needed in future, it's quite easy to support it.
+			Q_ASSERT(!WindowParent || 0 == WindowParent->parentWidget());
+#ifdef Q_WS_WIN
+			// Without QueuedConnection I hit infinite loop here.
+			QMetaObject::invokeMethod(this, "setHiddenParent", Qt::QueuedConnection);
+#endif
 			emit parentChanged(WindowParent);
+		}
 	}
 }
 
@@ -464,17 +513,7 @@ TalkableProxyModel * KaduWindow::talkableProxyModel()
 void KaduWindow::configurationUpdated()
 {
 #ifdef Q_WS_WIN
-	// This window already has parent, see Core::createGui().
-
-	bool wasVisible = isVisible();
-	setVisible(false);
-	LONG_PTR newWindowLongPtr = GetWindowLongPtr(winId(), GWL_EXSTYLE);
-	if (config_file.readBoolEntry("General", "HideMainWindowFromTaskbar"))
-		newWindowLongPtr &= ~WS_EX_APPWINDOW;
-	else
-		newWindowLongPtr |= WS_EX_APPWINDOW;
-	SetWindowLongPtr(winId(), GWL_EXSTYLE, newWindowLongPtr);
-	setVisible(wasVisible);
+	hideWindowFromTaskbar();
 #endif
 
 	setDocked(Docked);

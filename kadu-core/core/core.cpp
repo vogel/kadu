@@ -510,15 +510,7 @@ void Core::configurationUpdated()
 
 void Core::createGui()
 {
-	QWidget *hiddenParent = 0;
-#ifdef Q_WS_WIN
-	/* On Windows the only way to not show a window in the taskbar without making it a toolwindow
-	 * is to turn off the WS_EX_APPWINDOW style and provide it with a parent (which will be hidden
-	 * in our case).
-	 */
-	hiddenParent = new QWidget();
-#endif
-	Window = new KaduWindow(hiddenParent);
+	Window = new KaduWindow();
 	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 

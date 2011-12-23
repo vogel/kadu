@@ -54,7 +54,6 @@ SingleWindow::SingleWindow()
 	setWindowRole("kadu-single-window");
 
 	KaduWindow *kadu = Core::instance()->kaduWindow();
-	previousKaduParent = kadu->parentWidget();
 	split = new QSplitter(Qt::Horizontal, this);
 
 	tabs = new QTabWidget(this);
@@ -163,7 +162,7 @@ SingleWindow::~SingleWindow()
 		}
 	}
 
-	kadu->setParent(previousKaduParent);
+	kadu->setParent(0);
 	if (!Core::instance()->isClosing())
 	{
 		loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
