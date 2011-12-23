@@ -83,7 +83,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 #ifdef Q_OS_MAC
 	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
 	setUnifiedTitleAndToolBarOnMac(false);
-	MenuBar = new QMenuBar(0); // TODO: couldn't it have "this" as parent?
+	// Create global menu for OS X.
+	MenuBar = new QMenuBar(0);
 #endif
 
 	setAttribute(Qt::WA_DeleteOnClose, true);
