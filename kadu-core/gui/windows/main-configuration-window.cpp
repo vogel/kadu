@@ -197,7 +197,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->widgetById("useTransparency")->hide();
 	widget()->widgetById("userboxTransparency")->hide();
 	widget()->widgetById("userboxAlpha")->hide();
-	widget()->widgetById("useBlur")->hide();
+	widget()->widgetById("userboxBlur")->hide();
 #endif
 
 	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
