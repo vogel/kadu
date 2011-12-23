@@ -48,6 +48,7 @@ class WinampMediaPlayer : public PlayerCommands, public PlayerInfo
 		void decrVolume();
 	private:
 		HWND findWinamp();
+		QString getFileImpl(int position);
 		QString readWinampMemory(quint32 command, quint32 arg, bool unicode=false);
 		QString getFileTagW(int position, QString tag);
 		QString getFileTagA(int position, QString tag);

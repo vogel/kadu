@@ -227,7 +227,7 @@ QStringList WinampMediaPlayer::getPlayListFiles()
 	if(hWinamp){
 		int items=getPlayListLength();
 		for(int i=0;i<items;i++)
-			ret.append(getFile(i));
+			ret.append(getFileImpl(i));
 	}
 	return ret;
 }
@@ -296,12 +296,13 @@ QString WinampMediaPlayer::getArtist()
 	return "";
 }
 
-QString WinampMediaPlayer::getFile()
+QString WinampMediaPlayer::getFileImpl(int position)
 {
 	kdebugf();
 	HWND hWinamp=findWinamp();
 	if(hWinamp){
-		int position=SendMessage(hWinamp, WM_WA_IPC, 0, IPC_GETLISTPOS);
+		if (position < 0)
+			position=SendMessage(hWinamp, WM_WA_IPC, 0, IPC_GETLISTPOS);
 
 		QString file=readWinampMemory(IPC_GETPLAYLISTFILEW, position, true);
 		if(file.isEmpty()){
@@ -313,6 +314,11 @@ QString WinampMediaPlayer::getFile()
 	}
 
 	return QString();
+}
+
+QString WinampMediaPlayer::getFile()
+{
+	return getFileImpl(-1);
 }
 
 int WinampMediaPlayer::getLength()
