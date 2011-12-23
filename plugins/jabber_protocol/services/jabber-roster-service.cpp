@@ -112,7 +112,10 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	ContactsForDelete.removeAll(contact);
 
 	if (contact == Protocol->account().accountContact())
+	{
+		Protocol->connectContactManagerSignals();
 		return;
+	}
 
 	int subType = item.subscription().type();
 
@@ -121,7 +124,10 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
 	   ))
+	{
+		Protocol->connectContactManagerSignals();
 		return;
+	}
 
 	Buddy buddy = itemBuddy(item, contact);
 	BuddyManager::instance()->addItem(buddy);
