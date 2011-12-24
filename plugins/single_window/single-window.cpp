@@ -24,6 +24,7 @@
 #include "misc/misc.h"
 #include "activate.h"
 #include "debug.h"
+#include "kadu-application.h"
 
 #include "single-window.h"
 
@@ -256,6 +257,13 @@ void SingleWindow::closeTab(int index)
 
 void SingleWindow::closeEvent(QCloseEvent *event)
 {
+	// do not block window closing when session is about to close
+	if (Core::instance()->application()->sessionClosing())
+	{
+		QMainWindow::closeEvent(event);
+		return;
+	}
+
 	if (Core::instance()->kaduWindow()->docked())
 	{
 		event->ignore();
@@ -264,7 +272,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 	else
 	{
 		QMainWindow::closeEvent(event);
-		qApp->quit();
+		Core::instance()->application()->quit();
 	}
 }
 

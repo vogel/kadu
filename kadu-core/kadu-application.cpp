@@ -47,7 +47,7 @@
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
-		QApplication(argc, argv)
+		QApplication(argc, argv), SessionClosing(false)
 {
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
@@ -68,12 +68,11 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 }
 
-// TODO: this is a hack, see KaduWindow::closeEvent()
 void KaduApplication::commitData(QSessionManager &manager)
 {
-	Q_UNUSED(manager)
+	SessionClosing = true;
 
-	qApp->quit();
+	QApplication::commitData(manager);
 }
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
@@ -88,3 +87,8 @@ bool KaduApplication::x11EventFilter(XEvent *event)
 	return false;
 }
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
+
+bool KaduApplication::sessionClosing() const
+{
+	return SessionClosing;
+}

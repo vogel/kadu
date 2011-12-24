@@ -104,7 +104,8 @@ QString Core::nameWithVersion()
 }
 
 Core::Core() :
-		Myself(Buddy::create()), Window(0), IsClosing(false), ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
+		Application(0), Myself(Buddy::create()), Window(0), IsClosing(false),
+		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
@@ -159,6 +160,19 @@ Core::~Core()
 
 	xml_config_file = 0;
 	config_file_ptr = 0;
+}
+
+void Core::setApplication(KaduApplication *application)
+{
+	Q_ASSERT(!Application);
+	Q_ASSERT(application);
+
+	Application = application;
+}
+
+KaduApplication * Core::application() const
+{
+	return Application;
 }
 
 void Core::import_0_6_5_configuration()

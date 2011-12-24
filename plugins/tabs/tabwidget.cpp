@@ -26,6 +26,7 @@
 #include <QtGui/QDrag>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
@@ -34,6 +35,7 @@
 #include "message/message-manager.h"
 #include "misc/misc.h"
 #include "activate.h"
+#include "kadu-application.h"
 
 #include "tabs.h"
 
@@ -121,6 +123,13 @@ bool TabWidget::isChatWidgetActive(ChatWidget *chatWidget)
 
 void TabWidget::closeEvent(QCloseEvent *e)
 {
+	// do not block window closing when session is about to close
+	if (Core::instance()->application()->sessionClosing())
+	{
+		QTabWidget::closeEvent(e);
+		return;
+	}
+
 	//w zaleznosci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywna
 	if (config_oldStyleClosing)
 		delete currentWidget();

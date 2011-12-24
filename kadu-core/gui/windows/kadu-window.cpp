@@ -60,6 +60,7 @@
 #include "os/generic/url-opener.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
+#include "kadu-application.h"
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -393,6 +394,13 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 		return;
 	}
 
+	// do not block window closing when session is about to close
+	if (Core::instance()->application()->sessionClosing())
+	{
+		MainWindow::closeEvent(e);
+		return;
+	}
+
 	if (Docked)
 	{
 		e->ignore();
@@ -401,7 +409,7 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 	else
 	{
 		MainWindow::closeEvent(e);
-		qApp->quit();
+		Core::instance()->application()->quit();
 	}
 }
 

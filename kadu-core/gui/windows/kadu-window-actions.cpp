@@ -76,6 +76,7 @@
 #include "talkable/model/talkable-model.h"
 #include "talkable/model/talkable-proxy-model.h"
 #include "url-handlers/url-handler-manager.h"
+#include "kadu-application.h"
 
 #include "about.h"
 #include "debug.h"
@@ -535,7 +536,7 @@ void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)
 
 	kdebugf();
 
-	qApp->quit();
+	Core::instance()->application()->quit();
 }
 
 void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)

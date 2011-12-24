@@ -45,6 +45,7 @@ namespace QCA
 	class Initializer;
 }
 
+class KaduApplication;
 class KaduIcon;
 class KaduWindow;
 class Message;
@@ -55,6 +56,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Q_DISABLE_COPY(Core)
 
 	static Core *Instance;
+
+	KaduApplication *Application;
 
 	Buddy Myself;
 	KaduWindow *Window;
@@ -95,6 +98,9 @@ public:
 	static QString name();
 	static QString version();
 	static QString nameWithVersion();
+
+	void setApplication(KaduApplication *application);
+	KaduApplication * application() const;
 
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }

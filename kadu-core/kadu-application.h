@@ -57,6 +57,8 @@ class KADUAPI KaduApplication : public QApplication
 	AEEventHandlerUPP m_appleEventProcessorUPP;
 #endif // Q_OS_MAC
 
+	bool SessionClosing;
+
 public:
 	KaduApplication(int &argc, char *argv[]);
 
@@ -64,6 +66,8 @@ public:
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	virtual bool x11EventFilter(XEvent *event);
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
+
+	bool sessionClosing() const;
 
 };
 
