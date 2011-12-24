@@ -53,7 +53,7 @@ MultilogonWindow::MultilogonWindow(QWidget *parent) :
 
 	createGui();
 
-	loadWindowGeometry(this, "General", "MultilogonWindowGeometry", 0, 50, 700, 500);
+	loadWindowGeometry(this, "General", "MultilogonWindowGeometry", 0, 50, 450, 300);
 }
 
 MultilogonWindow::~MultilogonWindow()
