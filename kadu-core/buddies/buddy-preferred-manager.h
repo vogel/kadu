@@ -46,7 +46,7 @@ class KADUAPI BuddyPreferredManager : public QObject
 
 	static BuddyPreferredManager *Instance;
 
-	QMap<Buddy, Contact> Preferreds;
+	//QMap<Buddy, Contact> Preferreds;
 
 	BuddyPreferredManager();
 	~BuddyPreferredManager();
@@ -64,7 +64,7 @@ public:
 	Contact preferredContactByStatus(const Buddy &buddy, const Account &account = Account::null);
 	Contact morePreferredContactByStatus(const Contact & c1, const Contact & c2, const Account &account = Account::null);
 
-	void updatePreferred(Buddy buddy);
+	//void updatePreferred(Buddy buddy);
 
 signals:
 	void buddyUpdated(Buddy &buddy);

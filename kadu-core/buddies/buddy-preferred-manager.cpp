@@ -105,7 +105,7 @@ Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool include
 	return contact.contactAccount();
 }
 
-void BuddyPreferredManager::updatePreferred(Buddy buddy)
+/*void BuddyPreferredManager::updatePreferred(Buddy buddy)
 {
 	Contact contact;
 	contact = preferredContactByUnreadMessages(buddy);
@@ -118,7 +118,7 @@ void BuddyPreferredManager::updatePreferred(Buddy buddy)
 		Preferreds.remove(buddy);
 
 	emit buddyUpdated(buddy);
-}
+}*/
 
 Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &buddy, const Account &account)
 {
