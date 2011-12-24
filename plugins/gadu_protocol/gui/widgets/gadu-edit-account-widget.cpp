@@ -41,6 +41,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
+#include "contacts/contact-manager.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/identities-combo-box.h"
@@ -252,6 +253,7 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	ShowStatusToEveryone = new QCheckBox(tr("Show my status to everyone"), other);
 	ShowStatusToEveryone->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
+	connect(ShowStatusToEveryone, SIGNAL(clicked(bool)), this, SLOT(showStatusToEveryoneToggled(bool)));
 	connect(ShowStatusToEveryone, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
 	otherLayout->addRow(ShowStatusToEveryone);
@@ -547,4 +549,38 @@ void GaduEditAccountWidget::changePasssword()
 void GaduEditAccountWidget::passwordChanged(const QString &newPassword)
 {
 	AccountPassword->setText(newPassword);
+}
+
+void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
+{
+	if (!toggled)
+		return;
+
+	int count = 0;
+
+	const QVector<Contact> &contacts = ContactManager::instance()->contacts(account());
+	foreach (const Contact &contact, contacts)
+		if (!contact.isAnonymous() && contact.ownerBuddy().isOfflineTo())
+			count++;
+
+	if (!count)
+		return;
+
+	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
+	messageBox.data()->setWindowTitle(tr("Confirm checking \"Show my status to everyone\" option"));
+	messageBox.data()->setText(tr("Are you sure do you want to check \"Show my status to everyone\" option?\n"
+	                              "You have several buddies which are not allowed to see your status.\n"
+	                              "Enabling this option will allow them to know you are available."));
+	QAbstractButton* yesButton = messageBox.data()->addButton(QMessageBox::Yes);
+	messageBox.data()->addButton(QMessageBox::No);
+	messageBox.data()->setDefaultButton(QMessageBox::No);
+	messageBox.data()->exec();
+
+	if (messageBox.isNull())
+		return;
+
+	if (messageBox.data()->clickedButton() == yesButton)
+		return;
+
+	ShowStatusToEveryone->setChecked(false);
 }

@@ -100,6 +100,7 @@ private slots:
 	void remindPasssword();
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);
+	void showStatusToEveryoneToggled(bool toggled);
 
 public:
 	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
