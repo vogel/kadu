@@ -36,8 +36,6 @@ class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	Group CurrentGroup;
-
 	// for dnd support
 	BuddyList DNDBuddies;
 	QList<Chat> DNDChats;

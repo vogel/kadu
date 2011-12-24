@@ -282,18 +282,33 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 {
 	int tabIndex = tabAt(event->pos());
 
-	if (tabIndex != -1)
-		CurrentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+	const Group &group = tabIndex == -1
+	        ? Group::null
+	        : GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	QMenu menu;
 
-	menu.addAction(tr("Add Buddy"), this, SLOT(addBuddy()))->setEnabled(tabIndex != -1 && CurrentGroup);
-	menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && CurrentGroup);
+	QAction *addBuddyAction = menu.addAction(tr("Add Buddy"), this, SLOT(addBuddy()));
+	addBuddyAction->setEnabled(group);
+	addBuddyAction->setData(group);
+
+	QAction *renameGroupAction = menu.addAction(tr("Rename Group"), this, SLOT(renameGroup()));
+	renameGroupAction->setEnabled(group);
+	renameGroupAction->setData(group);
+
 	menu.addSeparator();
-	menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()))->setEnabled(tabIndex != -1 && CurrentGroup);
+
+	QAction *deleteGroupAction = menu.addAction(tr("Delete Group"), this, SLOT(deleteGroup()));
+	deleteGroupAction->setEnabled(group);
+	deleteGroupAction->setData(group);
+
 	menu.addAction(tr("Add Group"), this, SLOT(createNewGroup()));
+
 	menu.addSeparator();
-	menu.addAction(tr("Properties"), this, SLOT(groupProperties()))->setEnabled(tabIndex != -1 && CurrentGroup);
+
+	QAction *propertiesAction = menu.addAction(tr("Properties"), this, SLOT(groupProperties()));
+	propertiesAction->setEnabled(group);
+	propertiesAction->setData(group);
 
 	menu.exec(event->globalPos());
 }
@@ -382,18 +397,17 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 		return;
 	}
-	else
-		CurrentGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+
+	Group clickedGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
 
 	DNDBuddies = buddies;
 	DNDChats = chats;
 
-	if (CurrentGroup)
+	if (clickedGroup)
 	{
 		QMenu menu;
-		menu.addAction(tr("Move to group %1").arg(CurrentGroup.name()), this, SLOT(moveToGroup()))
-				->setEnabled(tabData(currentIndex()).toString() != "AutoTab");
-		menu.addAction(tr("Add to group %1").arg(CurrentGroup.name()), this, SLOT(addToGroup()));
+		menu.addAction(tr("Move to group %1").arg(clickedGroup.name()), this, SLOT(moveToGroup()))->setData(clickedGroup);
+		menu.addAction(tr("Add to group %1").arg(clickedGroup.name()), this, SLOT(addToGroup()))->setData(clickedGroup);
 		menu.exec(QCursor::pos());
 	}
 
@@ -404,31 +418,46 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 void GroupTabBar::addBuddy()
 {
-	if (!CurrentGroup)
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
 		return;
 
 	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(Core::instance()->kaduWindow());
-	addBuddyWindow->setGroup(CurrentGroup);
+	addBuddyWindow->setGroup(action->data().value<Group>());
 	addBuddyWindow->show();
 }
 
 void GroupTabBar::renameGroup()
 {
-	if (!CurrentGroup)
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
 		return;
+
+	const Group &group = action->data().value<Group>();
+	if (!group)
+		return;
+
 	bool ok;
 	QString newGroupName = QInputDialog::getText(this, tr("Rename Group"),
 				tr("Please enter a new name for this group"), QLineEdit::Normal,
-				CurrentGroup.name(), &ok);
+				group.name(), &ok);
 
-	if (ok && newGroupName != CurrentGroup.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		CurrentGroup.setName(newGroupName);
+	if (ok && newGroupName != group.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		group.setName(newGroupName);
 }
 
 void GroupTabBar::deleteGroup()
 {
-	if (CurrentGroup && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(CurrentGroup.name()), Core::instance()->kaduWindow()))
-		GroupManager::instance()->removeItem(CurrentGroup);
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
+		return;
+
+	const Group &group = action->data().value<Group>();
+	if (!group)
+		return;
+
+	if (group && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(group.name()), Core::instance()->kaduWindow()))
+		GroupManager::instance()->removeItem(group);
 }
 
 void GroupTabBar::createNewGroup()
@@ -444,38 +473,48 @@ void GroupTabBar::createNewGroup()
 
 void GroupTabBar::groupProperties()
 {
-	if (!CurrentGroup)
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
 		return;
 
-	(new GroupPropertiesWindow(CurrentGroup, Core::instance()->kaduWindow()))->show();
+	const Group &group = action->data().value<Group>();
+	if (group)
+		(new GroupPropertiesWindow(group, Core::instance()->kaduWindow()))->show();
 }
 
 void GroupTabBar::addToGroup()
 {
-	if (!CurrentGroup)
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
 		return;
 
+	const Group &group = action->data().value<Group>();
+
 	foreach (const Buddy &buddy, DNDBuddies)
-		buddy.addToGroup(CurrentGroup);
+		buddy.addToGroup(group);
 	foreach (const Chat &chat, DNDChats)
-		chat.addToGroup(CurrentGroup);
+		chat.addToGroup(group);
 }
 
 void GroupTabBar::moveToGroup()
 {
-	if (!CurrentGroup)
+	QAction *action = qobject_cast<QAction *>(sender());
+	if (!action)
 		return;
+
+	const Group &removeFromGroup = GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
+	const Group &group = action->data().value<Group>();
 
 	foreach (const Buddy &buddy, DNDBuddies)
 	{
-		buddy.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
-		buddy.addToGroup(CurrentGroup);
+		buddy.removeFromGroup(removeFromGroup);
+		buddy.addToGroup(group);
 	}
 
 	foreach (const Chat &chat, DNDChats)
 	{
-		chat.removeFromGroup(GroupManager::instance()->byUuid(tabData(currentIndex()).toString()));
-		chat.addToGroup(CurrentGroup);
+		chat.removeFromGroup(removeFromGroup);
+		chat.addToGroup(group);
 	}
 }
 
