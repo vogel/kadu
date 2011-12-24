@@ -73,6 +73,8 @@ void KaduApplication::commitData(QSessionManager &manager)
 	SessionClosing = true;
 
 	QApplication::commitData(manager);
+
+	SessionClosing = false;
 }
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
