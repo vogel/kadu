@@ -11,6 +11,7 @@
 * core: #2138 fixed: properly store Kadu in session manager (Vogel)
 * gadu: #2230 fixed: show warning when enabling "Show my status to everyone" if there is any "Offline to" buddy (Vogel)
 * protocols: #2231 fixed: send new status every time user wants it, not only when it changed (Vogel)
+* word_fix: #2235 fixed: only replace words inside body element (Vogel)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)

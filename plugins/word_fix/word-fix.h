@@ -31,6 +31,8 @@ class WordFix : public ConfigurationUiHandler, GenericPlugin
 	 */
 	QMap<QString,QString> wordsList;
 
+	QRegExp ExtractBody;
+
 	QPushButton *changeButton;
 	QPushButton *deleteButton;
 	QPushButton *addButton;
@@ -47,7 +49,7 @@ private slots:
 	 * the object to chat "<i>send message</i>" signal.
 	 * \param chat Pointer to the created chat window.
 	 */
-	void chatCreated(ChatWidget *chat, time_t time);
+	void chatCreated(ChatWidget *chat);
 
 	/*!
 	 * \fn void chatDestroying(ChatWidget *chat)

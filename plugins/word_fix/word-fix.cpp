@@ -53,8 +53,10 @@ WordFix::WordFix(QObject *parent) :
 {
 	kdebugf();
 
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
-		this, SLOT(chatCreated(ChatWidget *, time_t)));
+	ExtractBody.setPattern("<body[^>]*>.*</body>");
+
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
+		this, SLOT(chatCreated(ChatWidget *)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 		this, SLOT(chatDestroying(ChatWidget *)));
 
@@ -105,8 +107,8 @@ WordFix::WordFix(QObject *parent) :
 WordFix::~WordFix()
 {
 	kdebugf();
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *, time_t)),
-		this, SLOT(chatCreated(ChatWidget *, time_t)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
+		this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 		this, SLOT(chatDestroying(ChatWidget *)));
 
@@ -135,20 +137,14 @@ void WordFix::done()
 	kdebugf2();
 }
 
-void WordFix::chatCreated(ChatWidget *chat, time_t time)
+void WordFix::chatCreated(ChatWidget *chat)
 {
-	Q_UNUSED(time)
-
-	kdebugf();
 	connectToChat(chat);
-	kdebugf2();
 }
 
 void WordFix::chatDestroying(ChatWidget *chat)
 {
-	kdebugf();
 	disconnectFromChat(chat);
-	kdebugf2();
 }
 
 void WordFix::connectToChat(const ChatWidget *chat)
@@ -173,8 +169,17 @@ void WordFix::sendRequest(ChatWidget* chat)
 		return;
 
 	// Reading chat input to html document.
+	QString html = chat->edit()->toHtml();
+	QString body;
+
+	int pos = ExtractBody.indexIn(html);
+	if (pos >= 0)
+		body = ExtractBody.cap();
+	else
+		body = html;
+
 	HtmlDocument doc;
-	doc.parseHtml(chat->edit()->toHtml());
+	doc.parseHtml(body);
 
 	// Parsing and replacing.
 	for (int i = 0; i < doc.countElements(); i++)
@@ -184,7 +189,10 @@ void WordFix::sendRequest(ChatWidget* chat)
 	}
 
 	// Putting back corrected text.
-	chat->edit()->setText(doc.generateHtml());
+	if (pos >= 0)
+		chat->edit()->setText(html.replace(pos, body.length(), doc.generateHtml()));
+	else
+		chat->edit()->setText(doc.generateHtml());
 
 	kdebugf2();
 }
