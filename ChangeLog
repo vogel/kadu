@@ -32,7 +32,7 @@
 * tabs: #2381 fixed: update tab name when updating buddy's display name (Vogel)
 * gui: Add Buddy window improvements (Vogel)
 * buddies: #2373 fixed: merge does not remove mobile data anymore (Vogel)
-* gui: allow blur behing transparent roster (prody)
+* gui: allow blur behing transparent roster (prudy)
 * gadu: require at least libgadu 1.11.1 (Vogel)
 * gadu: #1737 fixed: added per-account "Receive URLs from anonymous" option (Vogel)
 * jabber: #2074 fixed: support socks5 proxy (Juzef)
