@@ -10,6 +10,7 @@
 * syntax: #2236 fixed: changed "default" infopanel syntax name to "Old Default" (beevvy)
 * core: #2138 fixed: properly store Kadu in session manager (Vogel)
 * gadu: #2230 fixed: show warning when enabling "Show my status to everyone" if there is any "Offline to" buddy (Vogel)
+* protocols: #2231 fixed: send new status every time user wants it, not only when it changed (Vogel)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)
