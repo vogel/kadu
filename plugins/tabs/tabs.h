@@ -76,6 +76,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QAction *CloseTabMenuAction;
 
 	void updateTabName(ChatWidget *chatWidget);
+	void updateTabIcon(ChatWidget *chatWidget);
 
 	/**
 	* Zmienne konfiguracyjne.

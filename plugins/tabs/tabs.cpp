@@ -223,21 +223,9 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 
 void TabsManager::onIconChanged()
 {
-	kdebugf();
-
 	ChatWidget *chatWidget = static_cast<ChatWidget *>(sender());
-
-	int chatIndex;
-	if (!chatWidget || (chatIndex = TabDialog->indexOf(chatWidget)) == -1)
-		return;
-
-	QIcon newIcon = chatWidget->icon();
-
-	TabDialog->setTabIcon(chatIndex, newIcon);
-	if (TabDialog->currentIndex() == chatIndex)
-		TabDialog->setWindowIcon(newIcon);
-
-	kdebugf2();
+	if (chatWidget)
+		updateTabIcon(chatWidget);
 }
 
 void TabsManager::onTitleChanged(ChatWidget *chatWidget, const QString &newTitle)
@@ -367,11 +355,7 @@ void TabsManager::addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget)
 		return;
 
 	ChatsWithNewMessages.append(chatWidget);
-	int i = TabDialog->indexOf(chatWidget);
-	if (i < 0)
-		return;
-
-	TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
+	updateTabIcon(chatWidget);
 
 	if (!Timer.isActive())
 		QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
@@ -383,11 +367,7 @@ void TabsManager::removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWid
 		return;
 
 	ChatsWithNewMessages.removeAll(chatWidget);
-	int i = TabDialog->indexOf(chatWidget);
-	if (i < 0)
-		return;
-
-	TabDialog->setTabIcon(i, chatWidget->icon());
+	updateTabIcon(chatWidget);
 }
 
 // uff, troche dziwne to ale dziala tak jak trzeba
@@ -740,6 +720,24 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 		                             QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	else
 		setTabTextAndTooltipIfDiffer(i, baseTabName, baseTabName);
+}
+
+void TabsManager::updateTabIcon(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	const int i = TabDialog->indexOf(chatWidget);
+	if (-1 == i)
+		return;
+
+	if (chatWidget->chat().unreadMessagesCount() > 0)
+		TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
+	else
+		TabDialog->setTabIcon(i, chatWidget->icon());
+
+	if (TabDialog->currentIndex() == i)
+		TabDialog->setWindowIcon(TabDialog->tabIcon(i));
 }
 
 void TabsManager::closeChat()
