@@ -55,6 +55,7 @@ protected:
 	virtual void configurationUpdated();
 
 	virtual void resizeEvent(QResizeEvent *event);
+	virtual void startDrag(Qt::DropActions supportedActions);
 
 public:
 	explicit KaduTreeView(QWidget *parent = 0);

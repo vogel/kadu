@@ -22,6 +22,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
+#include <QtGui/QDrag>
 
 #include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
@@ -155,4 +156,20 @@ void KaduTreeView::resizeEvent(QResizeEvent *event)
 		updateBackground();
 
 	scheduleDelayedItemsLayout();
+}
+
+void KaduTreeView::startDrag(Qt::DropActions supportedActions)
+{
+	const QModelIndexList &indexes = selectedIndexes();
+	if (indexes.isEmpty())
+		return;
+
+	QMimeData *data = model()->mimeData(indexes);
+	if (!data)
+		return;
+
+	QDrag *drag = new QDrag(this);
+	drag->setMimeData(data);
+
+	drag->exec(supportedActions, Qt::LinkAction);
 }
