@@ -47,20 +47,11 @@ NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* p
 
 void ChatNotifier::sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget)
 {
-	Message message = Message::create();
-	message.setMessageChat(chatWidget->chat());
 	QString content = notification->text();
 	if (!notification->details().isEmpty())
 		content += "<br/> <small>" + notification->details() + "</small>";
-	message.setContent(content);
-	message.setReceiveDate(QDateTime::currentDateTime());
-	message.setSendDate(QDateTime::currentDateTime());
-	message.setStatus(MessageStatusReceived);
-	message.setType(MessageTypeSystem);
 
-	MessageManager::instance()->addUnreadMessage(message);
-
-	chatWidget->appendMessage(message);
+	chatWidget->appendSystemMessage(content);
 }
 
 void ChatNotifier::notify(Notification *notification)

@@ -432,28 +432,26 @@ void ChatWidget::appendMessages(const QList<Message> &messages)
 void ChatWidget::appendMessage(const Message &message)
 {
 	MessagesView->appendMessage(new MessageRenderInfo(message));
-	if (message.status() == MessageStatusReceived)
-	{
-		LastReceivedMessageTime = QDateTime::currentDateTime();
-		if (Container)
-			Container->alertChatWidget(this);
-	}
+
+	if (message.type() != MessageTypeReceived)
+		return;
+
+	LastReceivedMessageTime = QDateTime::currentDateTime();
+	if (Container)
+		Container->alertChatWidget(this);
 }
 
-void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
+void ChatWidget::appendSystemMessage(const QString &content)
 {
 	Message message = Message::create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setContent(rawContent);
+	message.setContent(content);
+	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
-	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-	messageRenderInfo->setBackgroundColor(backgroundColor)
-		.setFontColor(fontColor)
-		.setNickColor(fontColor);
 
-	MessagesView->appendMessage(messageRenderInfo);
+	MessagesView->appendMessage(message);
 }
 
 void ChatWidget::resetEditBox()
