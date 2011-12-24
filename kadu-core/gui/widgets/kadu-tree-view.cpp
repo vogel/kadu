@@ -36,6 +36,7 @@ KaduTreeView::KaduTreeView(QWidget *parent) :
 #ifndef Q_WS_MAEMO_5
 	/* Disable as we use kinetic scrolling by default */
 	setDragEnabled(true);
+	setDragDropMode(DragOnly);
 #endif
 	setItemsExpandable(true);
 	setExpandsOnDoubleClick(false);

@@ -300,25 +300,48 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 
 void GroupTabBar::dragEnterEvent(QDragEnterEvent *event)
 {
+	QTabBar::dragEnterEvent(event);
+
 	if (event->mimeData()->hasFormat("application/x-kadu-buddy-list"))
-		event->acceptProposedAction();
+	{
+		event->setDropAction(Qt::LinkAction);
+		event->accept();
+	}
+
 	if (event->mimeData()->hasFormat("application/x-kadu-chat-list"))
-		event->acceptProposedAction();
+	{
+		event->setDropAction(Qt::LinkAction);
+		event->accept();
+	}
 }
 
 void GroupTabBar::dragMoveEvent(QDragMoveEvent *event)
 {
+	QTabBar::dragMoveEvent(event);
+
 	if (event->mimeData()->hasFormat("application/x-kadu-buddy-list"))
-		event->acceptProposedAction();
+	{
+		event->setDropAction(Qt::LinkAction);
+		event->accept();
+	}
+
 	if (event->mimeData()->hasFormat("application/x-kadu-chat-list"))
-		event->acceptProposedAction();
+	{
+		event->setDropAction(Qt::LinkAction);
+		event->accept();
+	}
 }
 
 void GroupTabBar::dropEvent(QDropEvent *event)
 {
+	QTabBar::dropEvent(event);
+
 	if (!event->mimeData()->hasFormat("application/x-kadu-buddy-list") &&
 	        !event->mimeData()->hasFormat("application/x-kadu-chat-list"))
+	{
+		event->ignore();
 		return;
+	}
 
 	event->acceptProposedAction();
 
