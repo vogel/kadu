@@ -48,6 +48,8 @@ BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *p
 	setModal(false);
 
 	createGui();
+
+	setMaximumHeight(250);
 }
 
 BuddyDeleteWindow::~BuddyDeleteWindow()
