@@ -68,9 +68,9 @@ void SearchWindow::createDefaultToolbars(const QDomElement &toolbarsConfig)
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "FirstSearch", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "NextResults", Qt::ToolButtonTextUnderIcon);
-	addToolButton(toolbarConfig, "StopSearch", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
 	addToolButton(toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
