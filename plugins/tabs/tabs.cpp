@@ -724,8 +724,7 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 
 void TabsManager::updateTabIcon(ChatWidget *chatWidget)
 {
-	if (!chatWidget)
-		return;
+	Q_ASSERT(chatWidget);
 
 	const int i = TabDialog->indexOf(chatWidget);
 	if (-1 == i)

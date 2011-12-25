@@ -24,6 +24,7 @@ class SingleWindow : public QMainWindow, public ChatWidgetContainer
 	QList<int> splitSizes;
 	int rosterPos;
 
+	void updateTabIcon(ChatWidget *chatWidget);
 	void updateTabName(ChatWidget *chatWidget);
 
 protected:

@@ -180,7 +180,7 @@ void SingleWindow::changeEvent(QEvent *event)
 		if (chatWidget && _isActiveWindow(this))
 		{
 			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
-			tabs->setTabIcon(tabs->currentIndex(), chatWidget->icon());
+			updateTabIcon(chatWidget);
 			updateTabName(chatWidget);
 		}
 	}
@@ -206,6 +206,20 @@ void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+}
+
+void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
+{
+	Q_ASSERT(chatWidget);
+
+	const int i = tabs->indexOf(chatWidget);
+	if (-1 == i)
+		return;
+
+	if (chatWidget->chat().unreadMessagesCount() > 0)
+		tabs->setTabIcon(i, KaduIcon("protocols/common/message").icon());
+	else
+		tabs->setTabIcon(i, chatWidget->icon());
 }
 
 // TODO: share with tabs
@@ -315,8 +329,7 @@ void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 		return;
 	}
 
-	int index = tabs->indexOf(chatWidget);
-	tabs->setTabIcon(index, KaduIcon("protocols/common/message").icon());
+	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
 }
 
@@ -342,7 +355,7 @@ void SingleWindow::onTabChange(int index)
 
 	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
 	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
-	tabs->setTabIcon(index, chatWidget->icon());
+	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
 }
 
@@ -415,10 +428,7 @@ void SingleWindow::onStatusPixmapChanged(const KaduIcon &icon)
 void SingleWindow::onIconChanged()
 {
 	ChatWidget *chatWidget = static_cast<ChatWidget *>(sender());
-
-	int index;
-	if (chatWidget && (index = tabs->indexOf(chatWidget)) != -1)
-		tabs->setTabIcon(index, chatWidget->icon());
+	updateTabIcon(chatWidget);
 }
 
 void SingleWindow::onTitleChanged(ChatWidget *chatWidget, const QString &newTitle)
