@@ -117,10 +117,14 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 	{
 		foreach (const Contact &contact, CurrentChat.contacts())
 		{
-			// actually we only need to send iconChanged() on CurrentStatus update
-			// but we don't have a signal for that in ContactShared
-			// TODO 0.10.0: consider adding currentStatusChanged() signal to ContactShared
-			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()));
+			// Actually we only need to send iconChanged() on CurrentStatus update,
+			// but we don't have a signal for that in ContactShared.
+			// TODO 0.12.0: Consider adding currentStatusChanged() signal to ContactShared.
+			// We need QueuedConnection for this scenario: 1. The user opens chat with unread
+			// messages in tabs. 2. Contact is updated to not have unread messages and we emit
+			// iconChanged(). 3. Tab catches it before Chat is updated and incorrectly sets
+			// tab icon to the envelope. This could be fixed correctly if we would fix the above TODO.
+			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()), Qt::QueuedConnection);
 			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
