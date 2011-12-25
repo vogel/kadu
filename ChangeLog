@@ -14,6 +14,7 @@
 * word_fix: #2235 fixed: only replace words inside body element (Vogel)
 * gui: #2278 fixed: smaller default window sizes (Vogel)
 * gui: #2279 fixed: smaller delete buddy window (Vogel)
+* jabber: #2096 fixed: reply with correct message type depend on type used in chat (Juzef)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)

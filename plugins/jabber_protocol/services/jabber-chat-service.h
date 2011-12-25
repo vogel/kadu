@@ -23,6 +23,8 @@
 #ifndef JABBER_CHAT_SERVICE_H
 #define JABBER_CHAT_SERVICE_H
 
+#include <QtCore/QMap>
+
 #include <im.h>
 #include <xmpp.h>
 
@@ -36,6 +38,7 @@ class JabberChatService : public ChatService
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
+        QMap<QString, QString> *ContactMessageTypes;
 
 private slots:
 	void clientMessageReceived(const XMPP::Message &msg);
