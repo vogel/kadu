@@ -67,7 +67,7 @@ ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
 		// a release we bundle in the Windows build.
 		setWizardStyle(QWizard::ModernStyle);
 	#endif
-	setMinimumSize(500, 350);
+	setMinimumSize(500, 400);
 #endif
 
 	setPage(ProfilePage, new ConfigWizardProfilePage(this));
