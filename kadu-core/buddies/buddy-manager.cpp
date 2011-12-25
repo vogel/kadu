@@ -153,10 +153,15 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	destination.setMobile(mergeValue(destination.mobile(), source.mobile()));
 	destination.setWebsite(mergeValue(destination.website(), source.website()));
 
-	removeItem(source);
+	// we need to move contacts before removing source buddy as this would cause
+	// these contacts to detach and remove from roster
+	// i think this is another reason why we should not automate too much
+	// we should just manually delete all contacts when buddy is removed
 
 	foreach (const Contact &contact, source.contacts())
 		contact.setOwnerBuddy(destination);
+
+	removeItem(source);
 
 	source.setAnonymous(true);
 	// each item that stores pointer to "source" will now use the same uuid as "destination"
