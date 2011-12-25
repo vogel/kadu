@@ -36,6 +36,7 @@
 #include "gui/widgets/avatar-painter.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "identities/identity.h"
+#include "identities/identity-manager.h"
 #include "model/roles.h"
 
 #include "talkable-painter.h"
@@ -136,7 +137,7 @@ bool TalkablePainter::showAccountName() const
 	if (Index.parent().isValid())
 		return true;
 
-	return Option.state & QStyle::State_MouseOver && Configuration.showAccountName();
+	return Option.state & QStyle::State_MouseOver && Configuration.showAccountName() && IdentityManager::instance()->count() > 1;
 }
 
 bool TalkablePainter::showDescription() const
