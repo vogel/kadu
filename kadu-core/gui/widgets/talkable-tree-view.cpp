@@ -91,6 +91,8 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 TalkableTreeView::~TalkableTreeView()
 {
+	disconnect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+
 	delete Context;
 	Context = 0;
 }
@@ -107,6 +109,10 @@ void TalkableTreeView::setChain(ModelChain *chain)
 
 	// for TalkableProxyModel
 	connect(model(), SIGNAL(invalidated()), this, SLOT(updateContext()));
+
+	// maybe contact priorities changed?
+	// fix for #2392
+	connect(model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateContext()));
 }
 
 ModelChain * TalkableTreeView::chain() const
