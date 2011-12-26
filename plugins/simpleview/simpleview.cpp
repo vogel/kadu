@@ -79,8 +79,7 @@ SimpleView::~SimpleView()
 
 	simpleViewToggle(false);
 
-	if (!Core::instance()->isClosing())
-		DockingManager::instance()->unregisterModuleAction(DockAction);
+	DockingManager::instance()->unregisterModuleAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
@@ -229,8 +228,7 @@ void SimpleView::simpleViewToggle(bool activate)
 			DiffRect = QRect(0,0,0,0);
 		}
 		MainWindowHandle->show();
-		if (!Core::instance()->isClosing())
-			DockAction->setChecked(SimpleViewActive);
+		DockAction->setChecked(SimpleViewActive);
 	}
 }
 

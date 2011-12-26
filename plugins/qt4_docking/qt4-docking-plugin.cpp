@@ -20,8 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
-
 #include "plugins/docking/docking.h"
 
 #include "qt4_docking.h"
@@ -42,8 +40,7 @@ int Qt4DockingPlugin::init(bool firstLoad)
 
 void Qt4DockingPlugin::done()
 {
-	if (!Core::instance()->isClosing())
-		DockingManager::instance()->setDocker(0);
+	DockingManager::instance()->setDocker(0);
 
 	Qt4TrayIcon::destroyInstance();
 }
