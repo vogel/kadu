@@ -46,6 +46,7 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	bool ShowDescription;
 	bool ShowMultiLineDescription;
 	bool ShowAvatars;
+	bool UseConfigurationColors;
 	bool AvatarBorder;
 	bool AvatarGreyOut;
 	QColor DescriptionColor;
@@ -58,6 +59,7 @@ public:
 	explicit TalkableDelegateConfiguration(TalkableTreeView *listView);
 
 	void setShowIdentityName(bool showIdentityName) { ShowIdentityName = showIdentityName; }
+	void setUseConfigurationColors(bool useConfigurationColors) { UseConfigurationColors = useConfigurationColors; }
 
 	const QFont & font() const { return Font; }
 	const QFont & boldFont() const { return BoldFont; }
@@ -69,6 +71,7 @@ public:
 	bool showDescription() const { return ShowDescription; }
 	bool showMultiLineDescription() const { return ShowMultiLineDescription; }
 	bool showAvatars() const { return ShowAvatars; }
+	bool useConfigurationColors() const { return UseConfigurationColors; }
 	bool avatarBorder() const { return AvatarBorder; }
 	bool avatarGreyOut() const { return AvatarGreyOut; }
 	const QColor & descriptionColor() const { return DescriptionColor; }

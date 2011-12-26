@@ -40,7 +40,6 @@ class KaduTreeViewDelegate : public QItemDelegate
 
 	TalkableDelegateConfiguration Configuration;
 
-	bool UseConfigurationColors;
 	bool ShowIdentityNameIfMany;
 
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
@@ -53,10 +52,9 @@ public:
 	virtual ~KaduTreeViewDelegate();
 
 	void setShowIdentityNameIfMany(bool showIdentityNameIfMany);
+	void setUseConfigurationColors(bool use);
 
 	TalkableDelegateConfiguration & configuration() { return Configuration; }
-
-	void useConfigurationColors(bool use) { UseConfigurationColors = use; }
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

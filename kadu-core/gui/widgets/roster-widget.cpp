@@ -192,7 +192,7 @@ void RosterWidget::createTalkableWidget(QWidget *parent)
 	TalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
 	TalkableTree = new TalkableTreeView(TalkableWidget);
-	TalkableTree->useConfigurationColors(true);
+	TalkableTree->setUseConfigurationColors(true);
 	TalkableTree->setContextMenuEnabled(true);
 	TalkableTree->setChain(createModelChain());
 

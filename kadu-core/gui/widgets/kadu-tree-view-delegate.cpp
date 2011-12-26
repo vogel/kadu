@@ -28,7 +28,7 @@
 #include "kadu-tree-view-delegate.h"
 
 KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
-		QItemDelegate(parent), Configuration(parent), UseConfigurationColors(false)
+		QItemDelegate(parent), Configuration(parent)
 {
 	// force initial signal/slot connection to happen
 	ShowIdentityNameIfMany = false;
@@ -73,6 +73,11 @@ void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany
 	}
 }
 
+void KaduTreeViewDelegate::setUseConfigurationColors(bool use)
+{
+	Configuration.setUseConfigurationColors(use);
+}
+
 QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const
 {
 	QStyleOptionViewItemV4 opt = setOptions(index, option);
@@ -90,7 +95,7 @@ QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index
 
 QSize KaduTreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	TalkablePainter talkablePainter(Configuration, getOptions(index, option), index, UseConfigurationColors);
+	TalkablePainter talkablePainter(Configuration, getOptions(index, option), index);
 	return QSize(0, talkablePainter.height());
 }
 
@@ -105,7 +110,7 @@ void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	QStyle *style = widget->style();
 	style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
 
-	TalkablePainter talkablePainter(Configuration, options, index, UseConfigurationColors);
+	TalkablePainter talkablePainter(Configuration, options, index);
 	talkablePainter.paint(painter);
 }
 

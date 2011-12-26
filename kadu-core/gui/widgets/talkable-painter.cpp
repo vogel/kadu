@@ -40,9 +40,8 @@
 
 #include "talkable-painter.h"
 
-TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors) :
+TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index) :
 		Configuration(configuration), Option(option), Index(index),
-		UseConfigurationColors(useConfigurationColors),
 		FontMetrics(Configuration.font()),
 		BoldFontMetrics(Configuration.boldFont()),
 		DescriptionFontMetrics(Configuration.descriptionFont()),
@@ -241,7 +240,7 @@ QTextDocument * TalkablePainter::getDescriptionDocument(int width)
 
 	fixColors();
 
-	const QColor &color = drawSelected() || drawDisabled() || !UseConfigurationColors
+	const QColor &color = drawSelected() || drawDisabled() || !Configuration.useConfigurationColors()
 			? textColor()
 			: Configuration.descriptionColor();
 	DescriptionDocument = createDescriptionDocument(Index.data(DescriptionRole).toString(), width, color);
@@ -445,7 +444,7 @@ void TalkablePainter::paint(QPainter *painter)
 	fixColors();
 
 	// some bit of broken logic
-	if (drawSelected() || drawDisabled() || !UseConfigurationColors)
+	if (drawSelected() || drawDisabled() || !Configuration.useConfigurationColors())
 		painter->setPen(textColor());
 	else
 	{

@@ -36,8 +36,6 @@ class TalkablePainter
 	const QModelIndex &Index;
 	const QTreeView *Widget;
 
-	bool UseConfigurationColors;
-
 	int HFrameMargin;
 	int VFrameMargin;
 
@@ -92,7 +90,7 @@ class TalkablePainter
 	void paintDescription(QPainter *painter);
 
 public:
-	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index, bool useConfigurationColors);
+	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
 	~TalkablePainter();
 
 	QPixmap avatar() const;

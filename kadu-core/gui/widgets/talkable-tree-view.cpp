@@ -125,9 +125,9 @@ void TalkableTreeView::setShowIdentityNameIfMany(bool show)
 	Delegate->setShowIdentityNameIfMany(show);
 }
 
-void TalkableTreeView::useConfigurationColors(bool use)
+void TalkableTreeView::setUseConfigurationColors(bool use)
 {
-	Delegate->useConfigurationColors(use);
+	Delegate->setUseConfigurationColors(use);
 }
 
 TalkableDelegateConfiguration & TalkableTreeView::delegateConfiguration()
