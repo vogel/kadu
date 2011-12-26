@@ -197,8 +197,6 @@ void GaduImporter::importAccounts()
 	AccountManager::instance()->addItem(defaultGaduGadu);
 	defaultGaduGadu.accountContact().setOwnerBuddy(Core::instance()->myself());
 
-	config_file.writeEntry("General", "SimpleMode", true);
-
 	markImported();
 }
 
