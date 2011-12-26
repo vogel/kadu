@@ -41,14 +41,18 @@ class KaduTreeViewDelegate : public QItemDelegate
 	TalkableDelegateConfiguration Configuration;
 
 	bool UseConfigurationColors;
+	bool ShowIdentityNameIfMany;
 
 	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
+
+private slots:
+	void updateShowIdentityName();
 
 public:
 	explicit KaduTreeViewDelegate(TalkableTreeView *parent = 0);
 	virtual ~KaduTreeViewDelegate();
 
-	virtual void setShowAccountName(bool show);
+	void setShowIdentityNameIfMany(bool showIdentityNameIfMany);
 
 	TalkableDelegateConfiguration & configuration() { return Configuration; }
 

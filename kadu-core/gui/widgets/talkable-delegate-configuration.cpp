@@ -26,7 +26,7 @@
 #include "talkable-delegate-configuration.h"
 
 TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView) :
-		ListView(listView), ShowAccountName(true)
+		ListView(listView), ShowIdentityName(true)
 {
 	Q_ASSERT(ListView);
 
@@ -41,8 +41,6 @@ void TalkableDelegateConfiguration::configurationUpdated()
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	BoldFont = Font;
 	BoldFont.setBold(true);
-
-	ShowAccountName = !config_file.readBoolEntry("General", "SimpleMode", true);
 
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);

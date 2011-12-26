@@ -120,9 +120,9 @@ ModelChain * TalkableTreeView::chain() const
 	return Chain;
 }
 
-void TalkableTreeView::setShowAccountName(bool show)
+void TalkableTreeView::setShowIdentityNameIfMany(bool show)
 {
-	Delegate->setShowAccountName(show);
+	Delegate->setShowIdentityNameIfMany(show);
 }
 
 void TalkableTreeView::useConfigurationColors(bool use)

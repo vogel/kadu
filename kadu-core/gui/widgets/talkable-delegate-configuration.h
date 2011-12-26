@@ -41,7 +41,7 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	QFont DescriptionFont;
 
 	bool AlignTop;
-	bool ShowAccountName;
+	bool ShowIdentityName;
 	bool ShowBold;
 	bool ShowDescription;
 	bool ShowMultiLineDescription;
@@ -57,14 +57,14 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 public:
 	explicit TalkableDelegateConfiguration(TalkableTreeView *listView);
 
-	void setShowAccountName(bool showAccountName) { ShowAccountName = showAccountName; }
+	void setShowIdentityName(bool showIdentityName) { ShowIdentityName = showIdentityName; }
 
 	const QFont & font() const { return Font; }
 	const QFont & boldFont() const { return BoldFont; }
 	const QFont & descriptionFont() const { return DescriptionFont; }
 
 	bool alignTop() const { return AlignTop; }
-	bool showAccountName() const { return ShowAccountName; }
+	bool showIdentityName() const { return ShowIdentityName; }
 	bool showBold() const { return ShowBold; }
 	bool showDescription() const { return ShowDescription; }
 	bool showMultiLineDescription() const { return ShowMultiLineDescription; }

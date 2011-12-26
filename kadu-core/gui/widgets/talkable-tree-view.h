@@ -109,7 +109,7 @@ public:
 	virtual void setChain(ModelChain *chain);
 	virtual ModelChain * chain() const;
 
-	void setShowAccountName(bool show);
+	void setShowIdentityNameIfMany(bool show);
 	void useConfigurationColors(bool use);
 
 	TalkableDelegateConfiguration & delegateConfiguration();

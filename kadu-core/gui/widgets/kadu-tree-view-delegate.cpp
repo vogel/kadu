@@ -19,23 +19,58 @@
 
 #include <QtGui/QAbstractItemView>
 
+#include "accounts/account-manager.h"
 #include "gui/widgets/talkable-painter.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "identities/identity-manager.h"
+#include "identities/identity.h"
 
 #include "kadu-tree-view-delegate.h"
 
 KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
 		QItemDelegate(parent), Configuration(parent), UseConfigurationColors(false)
 {
+	// force initial signal/slot connection to happen
+	ShowIdentityNameIfMany = false;
+	setShowIdentityNameIfMany(true);
 }
 
 KaduTreeViewDelegate::~KaduTreeViewDelegate()
 {
 }
 
-void KaduTreeViewDelegate::setShowAccountName(bool showAccountName)
+void KaduTreeViewDelegate::updateShowIdentityName()
 {
-	Configuration.setShowAccountName(showAccountName);
+	if (!ShowIdentityNameIfMany)
+		return;
+
+	int activeIdentitiesCount = 0;
+	foreach (const Identity &identity, IdentityManager::instance()->items())
+		if (identity.hasAnyAccountWithDetails())
+			if (++activeIdentitiesCount > 1)
+				break;
+
+	Configuration.setShowIdentityName(activeIdentitiesCount > 1);
+}
+
+void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany)
+{
+	if (showIdentityNameIfMany == ShowIdentityNameIfMany)
+		return;
+
+	ShowIdentityNameIfMany = showIdentityNameIfMany;
+	if (ShowIdentityNameIfMany)
+	{
+		connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)), this, SLOT(updateShowIdentityName()));
+		connect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
+		updateShowIdentityName();
+	}
+	else
+	{
+		disconnect(AccountManager::instance(), 0, this, 0);
+		Configuration.setShowIdentityName(false);
+	}
 }
 
 QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const

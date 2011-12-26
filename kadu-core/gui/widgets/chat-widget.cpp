@@ -232,7 +232,7 @@ void ChatWidget::createContactsList()
 
 	view->setChain(chain);
 	view->setRootIsDecorated(false);
-	view->setShowAccountName(false);
+	view->setShowIdentityNameIfMany(false);
 	view->setContextMenuEnabled(true);
 
 	connect(view, SIGNAL(talkableActivated(Talkable)),

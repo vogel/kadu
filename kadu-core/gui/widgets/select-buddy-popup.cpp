@@ -61,7 +61,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View->setItemsExpandable(false);
 	View->setChain(chain);
 	View->setRootIsDecorated(false);
-	View->setShowAccountName(false);
+	View->setShowIdentityNameIfMany(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 

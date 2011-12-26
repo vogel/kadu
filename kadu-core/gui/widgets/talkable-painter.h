@@ -51,11 +51,11 @@ class TalkablePainter
 
 	QRect IconRect;
 	QRect AvatarRect;
-	QRect AccountNameRect;
+	QRect IdentityNameRect;
 	QRect NameRect;
 	QRect DescriptionRect;
 
-	QString getAccountName();
+	QString getIdentityName();
 	QString getName();
 
 	bool drawSelected() const;
@@ -72,12 +72,12 @@ class TalkablePainter
 
 	bool useBold() const;
 	bool showMessagePixmap() const;
-	bool showAccountName() const;
+	bool showIdentityName() const;
 	bool showDescription() const;
 
 	void computeIconRect();
 	void computeAvatarRect();
-	void computeAccountNameRect();
+	void computeIdentityNameRect();
 	void computeNameRect();
 	void computeDescriptionRect();
 
@@ -87,7 +87,7 @@ class TalkablePainter
 
 	void paintIcon(QPainter *painter);
 	void paintAvatar(QPainter *painter);
-	void paintAccountName(QPainter *painter);
+	void paintIdentityName(QPainter *painter);
 	void paintName(QPainter *painter);
 	void paintDescription(QPainter *painter);
 

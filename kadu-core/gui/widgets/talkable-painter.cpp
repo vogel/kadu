@@ -36,7 +36,6 @@
 #include "gui/widgets/avatar-painter.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "identities/identity.h"
-#include "identities/identity-manager.h"
 #include "model/roles.h"
 
 #include "talkable-painter.h"
@@ -132,12 +131,15 @@ bool TalkablePainter::showMessagePixmap() const
 	return false;
 }
 
-bool TalkablePainter::showAccountName() const
+bool TalkablePainter::showIdentityName() const
 {
+	if (!Configuration.showIdentityName())
+		return false;
+
 	if (Index.parent().isValid())
 		return true;
 
-	return Option.state & QStyle::State_MouseOver && Configuration.showAccountName() && IdentityManager::instance()->count() > 1;
+	return Option.state & QStyle::State_MouseOver;
 }
 
 bool TalkablePainter::showDescription() const
@@ -185,7 +187,7 @@ void TalkablePainter::computeAvatarRect()
 	AvatarRect.moveTop(ItemRect.top());
 }
 
-QString TalkablePainter::getAccountName()
+QString TalkablePainter::getIdentityName()
 {
 	const Account &account = Index.data(AccountRole).value<Account>();
 	return account.accountIdentity().name();
@@ -246,21 +248,21 @@ QTextDocument * TalkablePainter::getDescriptionDocument(int width)
 	return DescriptionDocument;
 }
 
-void TalkablePainter::computeAccountNameRect()
+void TalkablePainter::computeIdentityNameRect()
 {
-	AccountNameRect = QRect(0, 0, 0, 0);
-	if (!showAccountName())
+	IdentityNameRect = QRect(0, 0, 0, 0);
+	if (!showIdentityName())
 		return;
 
-	const QString &accountDisplay = getAccountName();
+	const QString &accountDisplay = getIdentityName();
 
 	const int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
 
-	AccountNameRect.setWidth(accountDisplayWidth);
-	AccountNameRect.setHeight(DescriptionFontMetrics.height());
+	IdentityNameRect.setWidth(accountDisplayWidth);
+	IdentityNameRect.setHeight(DescriptionFontMetrics.height());
 
-	AccountNameRect.moveRight(ItemRect.right() - AvatarRect.width() - HFrameMargin);
-	AccountNameRect.moveTop(ItemRect.top());
+	IdentityNameRect.moveRight(ItemRect.right() - AvatarRect.width() - HFrameMargin);
+	IdentityNameRect.moveTop(ItemRect.top());
 }
 
 void TalkablePainter::computeNameRect()
@@ -274,8 +276,8 @@ void TalkablePainter::computeNameRect()
 		left = ItemRect.left();
 
 	int right;
-	if (!AccountNameRect.isEmpty())
-		right = AccountNameRect.left() - HFrameMargin;
+	if (!IdentityNameRect.isEmpty())
+		right = IdentityNameRect.left() - HFrameMargin;
 	else if (!AvatarRect.isEmpty())
 		right = AvatarRect.left() - HFrameMargin;
 	else
@@ -314,7 +316,7 @@ void TalkablePainter::computeLayout()
 {
 	computeIconRect();
 	computeAvatarRect();
-	computeAccountNameRect();
+	computeIdentityNameRect();
 	computeNameRect();
 	computeDescriptionRect();
 }
@@ -364,7 +366,7 @@ int TalkablePainter::height()
 
 	QRect wholeRect = IconRect;
 	wholeRect |= AvatarRect;
-	wholeRect |= AccountNameRect;
+	wholeRect |= IdentityNameRect;
 	wholeRect |= NameRect;
 	wholeRect |= DescriptionRect;
 
@@ -402,13 +404,13 @@ void TalkablePainter::paintAvatar(QPainter *painter)
 	avatarPainter.paint(painter);
 }
 
-void TalkablePainter::paintAccountName(QPainter *painter)
+void TalkablePainter::paintIdentityName(QPainter *painter)
 {
-	if (!showAccountName())
+	if (!showIdentityName())
 		return;
 
 	painter->setFont(Configuration.descriptionFont());
-	painter->drawText(AccountNameRect, getAccountName());
+	painter->drawText(IdentityNameRect, getIdentityName());
 }
 
 void TalkablePainter::paintName(QPainter *painter)
@@ -457,7 +459,7 @@ void TalkablePainter::paint(QPainter *painter)
 
 	paintIcon(painter);
 	paintAvatar(painter);
-	paintAccountName(painter);
+	paintIdentityName(painter);
 	paintName(painter);
 	paintDescription(painter);
 
