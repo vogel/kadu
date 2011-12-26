@@ -335,8 +335,7 @@ kadu_api_directories (kadu-core
 	buddies/filter
 	buddies/model
 	buddies
-	chat/filter
-	chat/message
+	chat/model
 	chat/style-engines/style-engine-adium
 	chat/style-engines/style-engine-kadu
 	chat/style-engines
@@ -349,6 +348,7 @@ kadu_api_directories (kadu-core
 	core
 	emoticons
 	file-transfer
+	gui/actions/chat
 	gui/actions
 	gui/widgets/configuration
 	gui/widgets
@@ -363,6 +363,8 @@ kadu_api_directories (kadu-core
 	model
 	multilogon/model
 	multilogon
+	network/proxy/model
+	network/proxy
 	network
 	notify
 	os/generic
@@ -377,6 +379,8 @@ kadu_api_directories (kadu-core
 	qt
 	status
 	storage
+	talkable/filter
+	talkable/model
 	talkable
 	themes
 	url-handlers
