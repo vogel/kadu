@@ -27,7 +27,6 @@
 namespace DateTimeParserTags
 {
 	void registerParserTags();
-	void unregisterParserTags();
 
 }
 
