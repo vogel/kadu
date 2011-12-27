@@ -65,8 +65,6 @@ class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObjec
 	bool UseDefaultProxy;
 	NetworkProxy Proxy;
 
-	short int MaximumImageSize;
-
 	bool PrivateStatus;
 	// TODO: hack, remove at some time
 	bool Removing;
