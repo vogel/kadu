@@ -422,8 +422,8 @@ void JabberEditAccountWidget::dataChanged()
 		return;
 	}
 
-	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), account().id())
-			&& AccountManager::instance()->byId(account().protocolName(), account().id()) != account();
+	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), AccountId->text())
+			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (/*AccountName->text().isEmpty()
 		|| sameNameExists
