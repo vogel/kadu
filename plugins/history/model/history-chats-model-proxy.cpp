@@ -90,7 +90,7 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 	Chat leftChat = left.data(ChatRole).value<Chat>();
 	Chat rightChat = right.data(ChatRole).value<Chat>();
 
-	if (!leftChat.isNull() && !rightChat.isNull())
+	if (leftChat && rightChat)
 	{
 		bool isLeftNamed = !leftChat.display().isEmpty();
 		bool isRightNamed = !rightChat.display().isEmpty();
@@ -109,6 +109,20 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 			return true;
 
 		return compareNames(left.data(Qt::DisplayRole).toString(), right.data(Qt::DisplayRole).toString()) < 0;
+	}
+
+	// buddies?
+	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
+	Buddy rightBuddy = right.data(BuddyRole).value<Buddy>();
+
+	if (leftBuddy && rightBuddy)
+	{
+		if (!leftBuddy.isAnonymous() && rightBuddy.isAnonymous())
+			return true;
+		if (leftBuddy.isAnonymous() && !rightBuddy.isAnonymous())
+			return false;
+
+		return compareNames(leftBuddy.display(), rightBuddy.display()) < 0;
 	}
 
 	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
