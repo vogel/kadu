@@ -122,7 +122,16 @@ void Qt4TrayIcon::changeTrayMovie(const QString &moviePath)
 
 void Qt4TrayIcon::changeTrayTooltip(const QString &tooltip)
 {
+#ifdef Q_WS_WIN
+	// checked on XP and 7
+	const int maxTooltipLength = 127;
+	const QString &truncatedTooltip = tooltip.length() > maxTooltipLength
+			? tooltip.left(maxTooltipLength - 3) + QLatin1String("...")
+			: tooltip;
+	setToolTip(truncatedTooltip);
+#else
 	setToolTip(tooltip);
+#endif
 }
 
 QPoint Qt4TrayIcon::trayPosition()
