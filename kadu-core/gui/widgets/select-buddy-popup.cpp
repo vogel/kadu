@@ -78,9 +78,6 @@ void SelectBuddyPopup::show(Buddy buddy)
 	if (buddy)
 	{
 		const QModelIndexList &indexes = View->chain()->indexListForValue(buddy);
-		if (indexes.isEmpty())
-			return;
-
 		Q_ASSERT(indexes.size() == 1);
 
 		const QModelIndex &index = indexes.at(0);
