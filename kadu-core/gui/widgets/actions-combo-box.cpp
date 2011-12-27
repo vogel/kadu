@@ -96,7 +96,10 @@ void ActionsComboBox::setCurrentValue(const QVariant &value)
 {
 	const QModelIndexList &indexes = Chain->indexListForValue(value);
 	if (indexes.isEmpty())
+	{
+		setCurrentIndex(0);
 		return;
+	}
 
 	Q_ASSERT(indexes.size() == 1);
 
