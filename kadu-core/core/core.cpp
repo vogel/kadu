@@ -137,13 +137,12 @@ Core::~Core()
 	setIcon(KaduIcon("kadu_icons/kadu"));
 #endif // Q_OS_MAC
 
-	MainConfigurationHolder::destroyInstance();
-
-	// see Core::createGui()
 	QWidget *hiddenParent = Window->parentWidget();
 	delete Window;
 	Window = 0;
 	delete hiddenParent;
+
+	MainConfigurationHolder::destroyInstance();
 
 	triggerAllAccountsUnregistered();
 
