@@ -55,7 +55,11 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
-	proxyModel->addFilter(new AccountTalkableFilter(CurrentAccount, proxyModel));
+
+	AccountTalkableFilter *accountTalkableFilter = new AccountTalkableFilter(proxyModel);
+	accountTalkableFilter->setAccount(CurrentAccount);
+	proxyModel->addFilter(accountTalkableFilter);
+
 	proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
 	chain->addProxyModel(proxyModel);
 

@@ -23,10 +23,9 @@
 
 #include "account-talkable-filter.h"
 
-AccountTalkableFilter::AccountTalkableFilter(const Account &filterAccount, QObject *parent) :
-		TalkableFilter(parent), FilterAccount(filterAccount)
+AccountTalkableFilter::AccountTalkableFilter(QObject *parent) :
+		TalkableFilter(parent)
 {
-	Q_ASSERT(FilterAccount);
 }
 
 AccountTalkableFilter::~AccountTalkableFilter()
@@ -35,7 +34,7 @@ AccountTalkableFilter::~AccountTalkableFilter()
 
 TalkableFilter::FilterResult AccountTalkableFilter::filterChat(const Chat &chat)
 {
-	if (chat.chatAccount() == FilterAccount)
+	if (FilterAccount && chat.chatAccount() == FilterAccount)
 		return Undecided;
 	else
 		return Rejected;
@@ -43,7 +42,7 @@ TalkableFilter::FilterResult AccountTalkableFilter::filterChat(const Chat &chat)
 
 TalkableFilter::FilterResult AccountTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (buddy.hasContact(FilterAccount))
+	if (FilterAccount && buddy.hasContact(FilterAccount))
 		return Undecided;
 	else
 		return Rejected;
@@ -51,8 +50,17 @@ TalkableFilter::FilterResult AccountTalkableFilter::filterBuddy(const Buddy &bud
 
 TalkableFilter::FilterResult AccountTalkableFilter::filterContact(const Contact &contact)
 {
-	if (contact.contactAccount() == FilterAccount)
+	if (FilterAccount && contact.contactAccount() == FilterAccount)
 		return Undecided;
 	else
 		return Rejected;
+}
+
+void AccountTalkableFilter::setAccount(const Account &filterAccount)
+{
+	if (FilterAccount == filterAccount)
+		return;
+
+	FilterAccount = filterAccount;
+	emit filterChanged();
 }

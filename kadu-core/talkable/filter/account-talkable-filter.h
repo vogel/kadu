@@ -48,18 +48,28 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of TalkableFilter with given parent.
-	 * @param filterAccount account parameter of filter
 	 * @param parent QObject parent of new object
 	 *
-	 * Create new instance of AccountTalkableFilter with given parent. Every item that does not belong
-	 * to this account will get Rejected result. Other items will get Undecided result.
+	 * Create new instance of AccountTalkableFilter with given parent.
 	 */
-	explicit AccountTalkableFilter(const Account &filterAccount, QObject *parent = 0);
+	explicit AccountTalkableFilter(QObject *parent = 0);
 	virtual ~AccountTalkableFilter();
 
 	virtual FilterResult filterChat(const Chat &chat);
 	virtual FilterResult filterBuddy(const Buddy &buddy);
 	virtual FilterResult filterContact(const Contact &contact);
+
+public slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets account to filter objects by.
+	 * @param filterAccount account to filter objects by
+	 *
+	 * Sets account to filter objects by. If filterAccount is null then every item will get Rejected result.
+	 * If filterAccount is not null then Contact and Chat items that belong to this Account will get Undecided
+	 * result.
+	 */
+	void setAccount(const Account &filterAccount);
 
 };
 
