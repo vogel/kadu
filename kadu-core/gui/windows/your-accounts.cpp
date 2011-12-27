@@ -168,9 +168,15 @@ void YourAccounts::switchToCreateMode()
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
 
-	QWidget *widget = getAccountCreateWidget(Protocols->currentProtocol());
-	CreateAddStack->setCurrentWidget(widget);
-	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
+	ModalConfigurationWidget *widget = getAccountCreateWidget(Protocols->currentProtocol());
+	if (widget)
+	{
+		CreateAddStack->setCurrentWidget(widget);
+		CurrentWidget = widget;
+		CreateAddStack->show();
+	}
+	else
+		CreateAddStack->hide();
 
 	Protocols->addFilter(CanRegisterFilter);
 }
@@ -182,9 +188,15 @@ void YourAccounts::switchToAddMode()
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
 
-	QWidget *widget = getAccountAddWidget(Protocols->currentProtocol());
-	CreateAddStack->setCurrentWidget(widget);
-	CurrentWidget = qobject_cast<ModalConfigurationWidget *>(widget);
+	ModalConfigurationWidget *widget = getAccountAddWidget(Protocols->currentProtocol());
+	if (widget)
+	{
+		CreateAddStack->setCurrentWidget(widget);
+		CurrentWidget = widget;
+		CreateAddStack->show();
+	}
+	else
+		CreateAddStack->hide();
 
 	Protocols->removeFilter(CanRegisterFilter);
 }
@@ -244,61 +256,59 @@ void YourAccounts::createEditAccountWidget()
 
 AccountCreateWidget * YourAccounts::getAccountCreateWidget(ProtocolFactory *protocol)
 {
-	AccountCreateWidget *widget = 0;
+	if (!protocol)
+		return 0;
 
 	if (!CreateWidgets.contains(protocol))
 	{
-		if (protocol)
-			widget = protocol->newCreateAccountWidget(true, CreateAddStack);
+		AccountCreateWidget *widget = protocol->newCreateAccountWidget(true, CreateAddStack);
+		Q_ASSERT(widget);
 
-		CreateWidgets[protocol] = widget;
-		if (widget)
-		{
-			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-			CreateAddStack->addWidget(widget);
-		}
+		CreateWidgets.insert(protocol, widget);
+		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		CreateAddStack->addWidget(widget);
+
+		return widget;
 	}
-	else
-		widget = CreateWidgets[protocol];
 
-	return widget;
+	return CreateWidgets.value(protocol);
 }
 
 AccountAddWidget * YourAccounts::getAccountAddWidget(ProtocolFactory *protocol)
 {
-	AccountAddWidget *widget = 0;
+	if (!protocol)
+		return 0;
 
 	if (!AddWidgets.contains(protocol))
 	{
-		if (protocol)
-			widget = protocol->newAddAccountWidget(true, CreateAddStack);
+		AccountAddWidget *widget = protocol->newAddAccountWidget(true, CreateAddStack);
+		Q_ASSERT(widget);
 
-		AddWidgets[protocol] = widget;
-		if (widget)
-		{
-			connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-			CreateAddStack->addWidget(widget);
-		}
+		AddWidgets.insert(protocol, widget);
+		connect(widget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		CreateAddStack->addWidget(widget);
+
+		return widget;
 	}
-	else
-		widget = AddWidgets[protocol];
 
-	return widget;
+	return AddWidgets.value(protocol);
 }
 
 AccountEditWidget * YourAccounts::getAccountEditWidget(Account account)
 {
-	AccountEditWidget *editWidget;
+	if (!account.protocolHandler() || !account.protocolHandler()->protocolFactory())
+		return 0;
+
 	if (!EditWidgets.contains(account))
 	{
-		editWidget = account.protocolHandler()->protocolFactory()->newEditAccountWidget(account, this);
-		EditWidgets[account] = editWidget;
+		AccountEditWidget *editWidget = account.protocolHandler()->protocolFactory()->newEditAccountWidget(account, this);
+		EditWidgets.insert(account, editWidget);
 		EditStack->addWidget(editWidget);
-	}
-	else
-		editWidget = EditWidgets[account];
 
-	return editWidget;
+		return editWidget;
+	}
+
+	return EditWidgets.value(account);
 }
 
 void YourAccounts::protocolChanged()
@@ -326,10 +336,11 @@ void YourAccounts::updateCurrentWidget()
 	{
 		MainStack->setCurrentWidget(EditStack);
 		Account account = selection.at(0).data(AccountRole).value<Account>();
-		if (account)
+		ModalConfigurationWidget *widget = getAccountEditWidget(account);
+		if (widget)
 		{
-			EditStack->setCurrentWidget(getAccountEditWidget(account));
-			CurrentWidget = getAccountEditWidget(account);
+			EditStack->setCurrentWidget(widget);
+			CurrentWidget = widget;
 			IsCurrentWidgetEditAccount = true;
 		}
 
