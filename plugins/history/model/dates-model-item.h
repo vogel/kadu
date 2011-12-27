@@ -33,12 +33,14 @@ struct DatesModelItem
 {
 	QDate Date;
 	QString Title;
+	int Count;
 
 	DatesModelItem() {}
-	DatesModelItem(const QDate &date, const QString &title)
-		: Date(date), Title(title)
+	DatesModelItem(const QDate &date, const QString &title, int count) :
+			Date(date), Title(title), Count(count)
 	{
 	}
+
 };
 
 #endif // DATES_MODEL_ITEM_H

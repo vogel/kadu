@@ -169,7 +169,6 @@ void HistoryWindow::createGui()
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QVector<DatesModelItem>(), this);
 
-	DetailsListView->header()->hide();
 	DetailsListView->setAlternatingRowColors(true);
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
