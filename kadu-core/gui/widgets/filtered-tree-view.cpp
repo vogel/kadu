@@ -36,7 +36,7 @@
 
 bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 {
-	return !event->text().isEmpty() && event->text().at(0).isPrint();
+	return !event->text().trimmed().isEmpty() && event->text().at(0).isPrint();
 }
 
 FilteredTreeView::FilteredTreeView(FilterPosition filterPosition, QWidget *parent) :
