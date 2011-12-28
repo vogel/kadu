@@ -183,7 +183,7 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(AllowToSeeMeCheck);
 
-	ErrorLabel = new QLabel();
+	ErrorLabel = new QLabel(this);
 	QFont labelFont = ErrorLabel->font();
 	labelFont.setBold(true);
 	ErrorLabel->setFont(labelFont);
