@@ -2,6 +2,7 @@ set (gui_SRCS
 	hot-key.cpp
 	status-icon.cpp
 
+	actions/chat/add-conference-action.cpp
 	actions/chat/leave-chat-action.cpp
 
 	actions/action.cpp
@@ -112,6 +113,7 @@ set (gui_SRCS
 
 	windows/about.cpp
 	windows/add-buddy-window.cpp
+	windows/add-conference-window.cpp
 	windows/buddy-data-window.cpp
 	windows/buddy-data-window-aware-object.cpp
 	windows/buddy-delete-window.cpp
@@ -152,6 +154,7 @@ set (gui_MOC_SRCS
 	hot-key.h
 	status-icon.h
 
+	actions/chat/add-conference-action.h
 	actions/chat/leave-chat-action.h
 
 	actions/action.h
@@ -261,6 +264,7 @@ set (gui_MOC_SRCS
 
 	windows/about.h
 	windows/add-buddy-window.h
+	windows/add-conference-window.h
 	windows/buddy-data-window.h
 	windows/buddy-delete-window.h
 	windows/chat-data-window.h

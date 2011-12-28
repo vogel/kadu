@@ -42,6 +42,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
+#include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/edit-talkable-action.h"
 #include "gui/actions/default-proxy-action.h"
 #include "gui/status-icon.h"
@@ -204,6 +205,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("contact-new"), tr("Add Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
+
+	AddConference = new AddConferenceAction(this);
 
 	AddGroup= new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
@@ -556,7 +559,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	else
 		(new AddBuddyWindow(action->parentWidget()))->show();
 
- 	kdebugf2();
+	kdebugf2();
 }
 
 void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)

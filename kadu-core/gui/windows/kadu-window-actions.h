@@ -33,6 +33,7 @@ class QAction;
 class Action;
 class ActionContext;
 class ActionDescription;
+class AddConferenceAction;
 class ChangeStatusAction;
 class DefaultProxyAction;
 class EditTalkableAction;
@@ -49,6 +50,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *ShowMultilogons;
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
+	AddConferenceAction *AddConference;
 	ActionDescription *MergeContact;
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
@@ -130,6 +132,7 @@ public:
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();
 
+	AddConferenceAction * addConference() { return AddConference; }
 	EditTalkableAction * editTalkable() { return EditTalkable; }
 
 };

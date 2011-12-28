@@ -46,6 +46,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/actions/chat/add-conference-action.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
@@ -211,6 +212,7 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu->setTitle(tr("&Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuBuddies);
+	insertMenuActionDescription(Actions->addConference(), MenuBuddies);
 	insertMenuActionDescription(Actions->AddGroup, MenuBuddies);
 	insertMenuActionDescription(Actions->OpenSearch, MenuBuddies);
 
