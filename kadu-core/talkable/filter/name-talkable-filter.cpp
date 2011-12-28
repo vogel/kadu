@@ -42,6 +42,10 @@ bool NameTalkableFilter::matches(const Chat &chat)
 		if (matches(buddy))
 			return true;
 
+	foreach (const Group &group, chat.groups())
+		if (group.name().contains(Name, Qt::CaseInsensitive))
+			return true;
+
 	return false;
 }
 
@@ -60,6 +64,10 @@ bool NameTalkableFilter::matches(const Buddy &buddy)
 
 	foreach (const Contact &contact, buddy.contacts())
 		if (matches(contact))
+			return true;
+
+	foreach (const Group &group, buddy.groups())
+		if (group.name().contains(Name, Qt::CaseInsensitive))
 			return true;
 
 	return false;
