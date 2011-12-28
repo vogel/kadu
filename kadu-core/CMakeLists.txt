@@ -34,6 +34,9 @@ if (NOT NETWORK_IMPLEMENTATION)
 		set (NETWORK_IMPLEMENTATION "Qt" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
 		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
 	endif (QNTRACK_FOUND)
+elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+	set (QNtrack_FIND_REQUIRED true)
+	include (FindQNtrack)
 endif (NOT NETWORK_IMPLEMENTATION)
 
 set (kadu_SRCS

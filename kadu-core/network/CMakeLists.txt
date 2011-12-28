@@ -37,9 +37,6 @@ elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-ntrack.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerNTrack)
 
-	set (QNtrack_FIND_REQUIRED true)
-
-	include ("../../cmake/FindQNtrack.cmake")
 	include_directories (${QNTRACK_INCLUDE_DIR})
 
 	set (network_SRCS ${network_SRCS}
