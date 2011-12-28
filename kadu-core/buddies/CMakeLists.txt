@@ -18,6 +18,7 @@ set (buddies_SRCS
 	model/buddy-list-model.cpp
 	model/buddies-model.cpp
 	model/buddies-model-base.cpp
+	model/checkable-buddies-proxy-model.cpp
 	model/groups-model.cpp
 )
 
@@ -33,6 +34,7 @@ set (buddies_MOC_SRCS
 	model/buddy-list-model.h
 	model/buddies-model.h
 	model/buddies-model-base.h
+	model/checkable-buddies-proxy-model.h
 	model/groups-model.h
 )
 
