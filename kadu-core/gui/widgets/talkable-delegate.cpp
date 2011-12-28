@@ -26,10 +26,12 @@
  */
 
 #include <QtGui/QAbstractItemView>
+#include <QtGui/QKeyEvent>
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/talkable-painter.h"
 #include "message/message-manager.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
@@ -93,4 +95,62 @@ void TalkableDelegate::messageStatusChanged(Message message)
 void TalkableDelegate::chainDestroyed()
 {
 	Chain = 0;
+}
+
+bool TalkableDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
+                                   const QModelIndex &index)
+{
+	Q_ASSERT(event);
+	Q_ASSERT(model);
+
+	Qt::ItemFlags flags = model->flags(index);
+	if (!(flags & Qt::ItemIsUserCheckable) || !(option.state & QStyle::State_Enabled) || !(flags & Qt::ItemIsEnabled))
+		return false;
+
+	QVariant value = index.data(Qt::CheckStateRole);
+	if (!value.isValid())
+		return false;
+
+	switch (event->type())
+	{
+		case QEvent::MouseButtonRelease:
+		{
+			TalkablePainter talkablePainter(configuration(), getOptions(index, option), index);
+
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+			if (Qt::LeftButton != mouseEvent->button())
+				return false;
+
+			const QRect &checkboxRect = talkablePainter.checkboxRect();
+			if (!checkboxRect.contains(mouseEvent->pos()))
+				return false;
+
+			break;
+		}
+		case QEvent::MouseButtonDblClick:
+		{
+			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+			if (Qt::LeftButton != mouseEvent->button())
+				return false;
+
+			break;
+		}
+
+		case QEvent::KeyPress:
+		{
+			QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+			if (Qt::Key_Space != keyEvent->key() && Qt::Key_Select != keyEvent->key())
+				return false;
+
+			break;
+		}
+
+		default:
+			return false;
+	}
+
+	Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+	state = state == Qt::Checked ? Qt::Unchecked : Qt::Checked;
+
+	return model->setData(index, state, Qt::CheckStateRole);
 }

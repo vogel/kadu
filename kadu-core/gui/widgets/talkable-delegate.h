@@ -58,6 +58,8 @@ public:
 
 	virtual void setChain(ModelChain *chain);
 
+	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+
 };
 
 // for MOC

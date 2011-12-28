@@ -50,10 +50,10 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 	Widget = static_cast<const QTreeView *>(option.widget);
 	Q_ASSERT(Widget);
 
-	const QStyle * const style = Widget->style();
+	Style = Widget->style();
 
-	HFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
-	VFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
+	HFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
+	VFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
 }
 
 TalkablePainter::~TalkablePainter()
@@ -106,6 +106,11 @@ bool TalkablePainter::useBold() const
 	return !status.isDisconnected();
 }
 
+bool TalkablePainter::showCheckbox() const
+{
+	return Index.flags() & Qt::ItemIsUserCheckable;
+}
+
 bool TalkablePainter::showMessagePixmap() const
 {
 	switch (Index.data(ItemTypeRole).toUInt())
@@ -150,6 +155,25 @@ bool TalkablePainter::showDescription() const
 	return !description.isEmpty();
 }
 
+void TalkablePainter::computeCheckboxRect()
+{
+	CheckboxRect = QRect(0, 0, 0, 0);
+
+	if (!showCheckbox())
+		return;
+
+	CheckboxRect.setTop(ItemRect.top());
+
+	QStyleOptionButton option;
+	option.rect = CheckboxRect;
+	option.state = QStyle::State_Enabled;
+
+	QSize size = Style->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
+
+	CheckboxRect.setWidth(size.width());
+	CheckboxRect.setHeight(size.height());
+}
+
 void TalkablePainter::computeIconRect()
 {
 	IconRect = QRect(0, 0, 0, 0);
@@ -158,13 +182,21 @@ void TalkablePainter::computeIconRect()
 	if (paintedIcon.isNull())
 		return;
 
-	QPoint topLeft = ItemRect.topLeft();
+	QPoint topLeft;
+
+	if (CheckboxRect.isEmpty())
+		topLeft.setX(ItemRect.left());
+	else
+		topLeft.setX(CheckboxRect.right());
+
 	IconRect = paintedIcon.rect();
 
 	if (!Configuration.alignTop())
-		topLeft.setY(topLeft.y() + (ItemRect.height() - paintedIcon.height()) / 2);
+		topLeft.setY(ItemRect.top() + (ItemRect.height() - paintedIcon.height()) / 2);
 	else if (fontMetrics().lineSpacing() > paintedIcon.height())
-		topLeft.setY(topLeft.y() + (fontMetrics().lineSpacing() - paintedIcon.height()) / 2);
+		topLeft.setY(ItemRect.top() + (fontMetrics().lineSpacing() - paintedIcon.height()) / 2);
+	else
+		topLeft.setY(ItemRect.top());
 
 	IconRect.moveTo(topLeft);
 }
@@ -313,6 +345,7 @@ void TalkablePainter::computeDescriptionRect()
 
 void TalkablePainter::computeLayout()
 {
+	computeCheckboxRect();
 	computeIconRect();
 	computeAvatarRect();
 	computeIdentityNameRect();
@@ -378,6 +411,24 @@ void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color
 	painter->setPen(color);
 	painter->drawRect(rect);
 	painter->restore();
+}
+
+void TalkablePainter::paintCheckbox(QPainter *painter)
+{
+	if (!showCheckbox())
+		return;
+
+	QStyleOptionButton option;
+	option.rect = CheckboxRect;
+	option.state = QStyle::State_Enabled;
+
+	QVariant checked = Index.data(Qt::CheckStateRole);
+	if (checked.isValid() && Qt::Checked == static_cast<Qt::CheckState>(checked.toInt()))
+		option.state = option.state | QStyle::State_On;
+	else
+		option.state = option.state | QStyle::State_Off;
+
+	Style->drawControl(QStyle::CE_CheckBox, &option, painter);
 }
 
 void TalkablePainter::paintIcon(QPainter *painter)
@@ -456,6 +507,7 @@ void TalkablePainter::paint(QPainter *painter)
 			painter->setPen(Configuration.fontColor());
 	}
 
+	paintCheckbox(painter);
 	paintIcon(painter);
 	paintAvatar(painter);
 	paintIdentityName(painter);
@@ -470,4 +522,13 @@ void TalkablePainter::paint(QPainter *painter)
 	paintDebugRect(painter, NameRect, QColor(0, 255, 255));
 	paintDebugRect(painter, DescriptionRect, QColor(0, 0, 0));
 	*/
+}
+
+QRect TalkablePainter::checkboxRect()
+{
+	ItemRect = Option.rect;
+	ItemRect.adjust(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
+
+	computeLayout();
+	return CheckboxRect;
 }

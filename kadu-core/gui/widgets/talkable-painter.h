@@ -35,6 +35,7 @@ class TalkablePainter
 	QStyleOptionViewItemV4 Option;
 	const QModelIndex &Index;
 	const QTreeView *Widget;
+	const QStyle *Style;
 
 	int HFrameMargin;
 	int VFrameMargin;
@@ -47,6 +48,7 @@ class TalkablePainter
 
 	QRect ItemRect;
 
+	QRect CheckboxRect;
 	QRect IconRect;
 	QRect AvatarRect;
 	QRect IdentityNameRect;
@@ -69,10 +71,12 @@ class TalkablePainter
 	QColor textColor() const;
 
 	bool useBold() const;
+	bool showCheckbox() const;
 	bool showMessagePixmap() const;
 	bool showIdentityName() const;
 	bool showDescription() const;
 
+	void computeCheckboxRect();
 	void computeIconRect();
 	void computeAvatarRect();
 	void computeIdentityNameRect();
@@ -83,6 +87,7 @@ class TalkablePainter
 
 	void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
 
+	void paintCheckbox(QPainter *painter);
 	void paintIcon(QPainter *painter);
 	void paintAvatar(QPainter *painter);
 	void paintIdentityName(QPainter *painter);
@@ -98,6 +103,7 @@ public:
 
 	int height();
 	void paint(QPainter *painter);
+	QRect checkboxRect();
 
 };
 

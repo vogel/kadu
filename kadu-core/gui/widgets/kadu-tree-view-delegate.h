@@ -42,10 +42,11 @@ class KaduTreeViewDelegate : public QItemDelegate
 
 	bool ShowIdentityNameIfMany;
 
-	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
-
 private slots:
 	void updateShowIdentityName();
+
+protected:
+	QStyleOptionViewItemV4 getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const;
 
 public:
 	explicit KaduTreeViewDelegate(TalkableTreeView *parent = 0);
