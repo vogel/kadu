@@ -20,8 +20,6 @@ set (network_MOC_SRCS
 	network-manager.h
 )
 
-message (STATUS "Using ${NETWORK_IMPLEMENTATION} network implementation")
-
 if (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-qt.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerQt)
@@ -47,6 +45,11 @@ elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 		network-manager-ntrack.h
 	)
 else (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
+	if (NOT ${NETWORK_IMPLEMENTATION} STREQUAL "dummy")
+		message (STATUS "Unknown ${NETWORK_IMPLEMENTATION} network implementation")
+		set (NETWORK_IMPLEMENTATION "dummy")
+	endif (NOT ${NETWORK_IMPLEMENTATION} STREQUAL "dummy")
+
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-dummy.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerDummy)
 
@@ -58,6 +61,8 @@ else (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
 		network-manager-dummy.h
 	)
 endif (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
+
+message (STATUS "Using ${NETWORK_IMPLEMENTATION} network implementation")
 
 include_directories (${CMAKE_CURRENT_BINARY_DIR})
 configure_file (kadu-network-config.h.cmake kadu-network-config.h)
