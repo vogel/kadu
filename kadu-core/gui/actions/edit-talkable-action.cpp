@@ -116,8 +116,12 @@ void EditTalkableAction::actionInstanceCreated(Action *action)
 {
 	switch (actionRole(action->context()))
 	{
-		case ChatRole: return setChatActionTitleAndIcon(action);
-		case BuddyRole: return setBuddyActionTitleAndIcon(action);
+		case ChatRole:
+			setChatActionTitleAndIcon(action);
+			break;
+		case BuddyRole:
+			setBuddyActionTitleAndIcon(action);
+			break;
 	}
 
 	updateActionState(action);
@@ -129,8 +133,12 @@ void EditTalkableAction::updateActionState(Action *action)
 
 	switch (actionRole(action->context()))
 	{
-		case ChatRole: return updateChatActionState(action);
-		case BuddyRole: return updateBuddyActionState(action);
+		case ChatRole:
+			updateChatActionState(action);
+			break;
+		case BuddyRole:
+			updateBuddyActionState(action);
+			break;
 	}
 }
 
@@ -166,7 +174,11 @@ void EditTalkableAction::trigger(ActionContext *context)
 {
 	switch (actionRole(context))
 	{
-		case ChatRole: return chatActionTriggered(context);
-		case BuddyRole: return buddyActionTriggered(context);
+		case ChatRole:
+			chatActionTriggered(context);
+			break;
+		case BuddyRole:
+			buddyActionTriggered(context);
+			break;
 	}
 }
