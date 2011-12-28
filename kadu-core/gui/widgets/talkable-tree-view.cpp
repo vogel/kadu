@@ -50,6 +50,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
+#include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/edit-talkable-action.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -180,7 +181,7 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
 	// TODO 0.10.0: add proper shortcuts handling
 	if (HotKey::shortCut(event, "ShortCuts", "kadu_deleteuser"))
-		KaduWindowActions::deleteUserActionActivated(Context);
+		Core::instance()->kaduWindow()->kaduWindowActions()->deleteTalkable()->trigger(Context);
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
 		Core::instance()->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
 	else

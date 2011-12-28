@@ -35,6 +35,7 @@ class ActionContext;
 class ActionDescription;
 class AddConferenceAction;
 class ChangeStatusAction;
+class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
 class MainWindow;
@@ -70,7 +71,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *OpenDescriptionLink;
 	ActionDescription *CopyPersonalInfo;
 	ActionDescription *LookupUserInfo;
-	ActionDescription *DeleteUsers;
+	DeleteTalkableAction *DeleteTalkable;
 
 	ActionDescription *InactiveUsers;
 	ActionDescription *DescriptionUsers;
@@ -116,7 +117,6 @@ private slots:
 	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
-	void deleteUsersActionActivated(QAction *sender, bool toggled);
 
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);
@@ -127,13 +127,12 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static void deleteUserActionActivated(ActionContext *source);
-
 	explicit KaduWindowActions(QObject *parent);
 	virtual ~KaduWindowActions();
 
 	AddConferenceAction * addConference() { return AddConference; }
 	EditTalkableAction * editTalkable() { return EditTalkable; }
+	DeleteTalkableAction * deleteTalkable() { return DeleteTalkable; }
 
 };
 

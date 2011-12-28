@@ -43,8 +43,9 @@
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/chat/add-conference-action.h"
-#include "gui/actions/edit-talkable-action.h"
 #include "gui/actions/default-proxy-action.h"
+#include "gui/actions/delete-talkable-action.h"
+#include "gui/actions/edit-talkable-action.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
@@ -359,14 +360,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	TalkableMenuManager::instance()->addActionDescription(ChatWidgetManager::instance()->actions()->blockUser(), TalkableMenuItem::CategoryManagement, 500);
 
-	DeleteUsers = new ActionDescription(this,
-		ActionDescription::TypeUser, "deleteUsersAction",
-		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
-		KaduIcon("edit-delete"), tr("Delete Buddy..."), false,
-		disableIfContactSelected
-	);
-	DeleteUsers->setShortcut("kadu_deleteuser");
-	TalkableMenuManager::instance()->addActionDescription(DeleteUsers, TalkableMenuItem::CategoryManagement, 1000);
+	DeleteTalkable = new DeleteTalkableAction(this);
+	TalkableMenuManager::instance()->addActionDescription(DeleteTalkable, TalkableMenuItem::CategoryManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
 	// TODO It will not reflect all action types (see MainWindow::actionLoadedOrUnloaded() method)
@@ -807,31 +802,6 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	sd->firstSearch();
 
 	kdebugf2();
-}
-
-void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	kdebugf();
-
-	Action *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
-
-	deleteUserActionActivated(action->context());
-}
-
-void KaduWindowActions::deleteUserActionActivated(ActionContext *source)
-{
-	kdebugf();
-
-	BuddySet buddySet = source->buddies();
-	if (buddySet.empty())
-		return;
-
-	BuddyDeleteWindow *deleteWindow = new BuddyDeleteWindow(buddySet);
-	deleteWindow->show();
 }
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)

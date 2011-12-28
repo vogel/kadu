@@ -11,6 +11,7 @@ set (gui_SRCS
 	actions/base-action-context.cpp
 	actions/change-status-action.cpp
 	actions/default-proxy-action.cpp
+	actions/delete-talkable-action.cpp
 	actions/edit-talkable-action.cpp
 
 	widgets/account-buddy-list-widget.cpp
@@ -163,6 +164,7 @@ set (gui_MOC_SRCS
 	actions/action-description.h
 	actions/base-action-context.h
 	actions/change-status-action.h
+	actions/delete-talkable-action.h
 	actions/default-proxy-action.h
 	actions/edit-talkable-action.h
 
