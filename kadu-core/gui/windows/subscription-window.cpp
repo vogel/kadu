@@ -115,15 +115,17 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(rejected()));
 
 	layout->addWidget(messageLabel, 0, 0, 1, 3);
-	layout->addWidget(groupLabel, 1, 0, 1, 1);
-	layout->addWidget(GroupCombo, 1, 1, 1, 1);
-	layout->addWidget(visibleNameLabel, 2, 0, 1, 1);
-	layout->addWidget(VisibleName, 2, 1, 1, 1);
-	layout->addWidget(hintLabel, 3, 1, 1, 1);
+	layout->addWidget(visibleNameLabel, 1, 0, 1, 1);
+	layout->addWidget(VisibleName, 1, 1, 1, 1);
+	layout->addWidget(hintLabel, 2, 1, 1, 1);
+	layout->addWidget(groupLabel, 3, 0, 1, 1);
+	layout->addWidget(GroupCombo, 3, 1, 1, 1);
 	layout->addWidget(MergeContact, 4, 1, 1, 3);
 	layout->addWidget(selectContactWidget, 5, 1, 1, 3);
 
 	layout->addWidget(buttons, 6, 1, 1, 3);
+
+	VisibleName->setFocus();
 }
 
 SubscriptionWindow::~SubscriptionWindow()
