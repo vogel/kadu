@@ -65,6 +65,9 @@ void NetworkProxyShared::load()
 	Shared::load();
 
 	Type = loadValue<QString>("Type");
+	if (Type.isEmpty())
+		Type = "http";
+
 	Address = loadValue<QString>("Address");
 	Port = loadValue<int>("Port", 0);
 	User = loadValue<QString>("User");
