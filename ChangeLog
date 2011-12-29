@@ -20,6 +20,7 @@
 * qt4_docking: #2260 fixed: end tray tooltip with ellipsis if truncated on Windows (beevvy)
 * chat styles: #2351 fixed: problems with displaying messages in Modern Bubbling (Compact) and SimpleStuff (Vogel)
 * gtalk: #2289 fixed: fixed connection with GTalk by proxy (Juzef)
+* jabber: #2283 fixed: do not crash when peer does not support file transfers (Vogel)
 
 +++ version 0.11.0-beta1
 * plugins: #2272 fixed: added possibility to tell Kadu to try to load plugin failing to load on next Kadu run (beevvy)

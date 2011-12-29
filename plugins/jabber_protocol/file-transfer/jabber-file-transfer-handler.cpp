@@ -78,7 +78,8 @@ void JabberFileTransferHandler::cleanup(FileTransferStatus status)
 	InProgress = false;
 
 	transfer().setTransferStatus(status);
-	delete JabberTransfer;
+
+	JabberTransfer->deleteLater();
 	JabberTransfer = 0;
 
 	if (LocalFile.isOpen())
