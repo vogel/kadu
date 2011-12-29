@@ -86,6 +86,8 @@ private:
 	QAction *RecentChatsMenuAction;
 	bool RecentChatsMenuNeedsUpdate;
 
+	QAction *AddConference;
+
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
 
@@ -123,6 +125,7 @@ private:
 private slots:
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
+	void updateAddConferenceMenuItem();
 	void openRecentChats(QAction *action);
 
 	void iconThemeChanged();
@@ -151,7 +154,7 @@ public:
 
 	KaduWindowActions * kaduWindowActions() const { return Actions; }
 
-	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
+	QAction * insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
 
 	void setDocked(bool);

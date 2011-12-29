@@ -37,6 +37,7 @@
 #include <windows.h>
 #endif
 
+#include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
@@ -212,7 +213,7 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu->setTitle(tr("&Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuBuddies);
-	insertMenuActionDescription(Actions->addConference(), MenuBuddies);
+	AddConference = insertMenuActionDescription(Actions->addConference(), MenuBuddies);
 	insertMenuActionDescription(Actions->AddGroup, MenuBuddies);
 	insertMenuActionDescription(Actions->OpenSearch, MenuBuddies);
 
@@ -226,6 +227,13 @@ void KaduWindow::createContactsMenu()
 	insertMenuActionDescription(Actions->ShowInfoPanel, MenuBuddies);
 
 	menuBar()->addMenu(ContactsMenu);
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	        this, SLOT(updateAddConferenceMenuItem()));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	        this, SLOT(updateAddConferenceMenuItem()));
+
+	updateAddConferenceMenuItem();
 }
 
 void KaduWindow::createToolsMenu()
@@ -353,6 +361,18 @@ void KaduWindow::updateRecentChatsMenu()
 	RecentChatsMenuNeedsUpdate = false;
 
 	kdebugf2();
+}
+
+void KaduWindow::updateAddConferenceMenuItem()
+{
+	AddConference->setVisible(false);
+
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (account.protocolName() == "gadu")
+		{
+			AddConference->setVisible(true);
+			return;
+		}
 }
 
 void KaduWindow::openRecentChats(QAction *action)
@@ -534,11 +554,9 @@ void KaduWindow::configurationUpdated()
 	setBlur(config_file.readBoolEntry("Look", "UserboxTransparency") && config_file.readBoolEntry("Look", "UserboxBlur"));
 }
 
-void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
+QAction * KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
 {
-	kdebugf();
-	if (!actionDescription)
-		return;
+	Q_ASSERT(actionDescription);
 
 	Action *action = actionDescription->createAction(actionContext(), this);
 	QMenu *menu = 0;
@@ -560,7 +578,10 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	}
 
 	if (!menu)
-		return;
+	{
+		delete action;
+		return 0;
+	}
 
 	QList<QAction *> menuActions = menu->actions();
 	if (pos < 0 || pos >= menuActions.count())
@@ -569,6 +590,8 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 		menu->insertAction(menuActions.at(pos), action);
 
 	MenuActions.insert(actionDescription, MenuAction(action, type));
+
+	return action;
 }
 
 void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescription)
