@@ -29,6 +29,7 @@ class QLineEdit;
 
 class AccountsComboBox;
 class AccountTalkableFilter;
+class BuddiesModel;
 class Chat;
 class CheckableBuddiesProxyModel;
 class ModelChain;
@@ -44,7 +45,8 @@ class AddConferenceWindow : public QDialog
 	QPushButton *StartButton;
 
 	AccountTalkableFilter *AccountFilter;
-	CheckableBuddiesProxyModel *CheckableProxy;
+	BuddiesModel *Model;
+	// CheckableBuddiesProxyModel *CheckableProxy;
 
 	void createGui();
 	void displayErrorMessage(const QString &message);

@@ -41,13 +41,23 @@
 #include "buddies-model-base.h"
 
 BuddiesModelBase::BuddiesModelBase(QObject *parent) :
-		QAbstractItemModel(parent)
+		QAbstractItemModel(parent), Checkable(false)
 {
 }
 
 BuddiesModelBase::~BuddiesModelBase()
 {
 	triggerAllAccountsUnregistered();
+}
+
+void BuddiesModelBase::setCheckable(bool checkable)
+{
+	if (Checkable == checkable)
+		return;
+
+	beginResetModel();
+	Checkable = checkable;
+	endResetModel();
 }
 
 void BuddiesModelBase::accountRegistered(Account account)
@@ -133,10 +143,27 @@ int BuddiesModelBase::rowCount(const QModelIndex &parentIndex) const
 	return buddy.contacts().count();
 }
 
+bool BuddiesModelBase::isCheckableIndex(const QModelIndex &index) const
+{
+	if (!Checkable)
+		return false;
+
+	if (BuddyRole != index.data(ItemTypeRole))
+		return false;
+
+	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+	return !buddy.isNull();
+}
+
 QFlags<Qt::ItemFlag> BuddiesModelBase::flags(const QModelIndex& index) const
 {
 	if (index.isValid())
-		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+	{
+		if (isCheckableIndex(index))
+			return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsUserCheckable;
+		else
+			return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+	}
 	else
 		return QAbstractItemModel::flags(index);
 }
@@ -170,6 +197,15 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 			return BuddyRole;
 
 		const Buddy &buddy = Buddy(buddyShared);
+
+		if (Qt::CheckStateRole == role)
+		{
+			if (Checkable)
+				return CheckedBuddies.contains(buddy) ? Qt::Checked : Qt::Unchecked;
+			else
+				return QVariant();
+		}
+
 		const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
 		return !contact.isNull()
@@ -181,6 +217,46 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 	Q_ASSERT(contactShared);
 
 	return ContactDataExtractor::data(Contact(contactShared), role, false);
+}
+
+bool BuddiesModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (Qt::CheckStateRole != role)
+		return false;
+
+	if (!Checkable)
+		return false;
+
+	if (index.parent().isValid())
+		return false;
+
+	if (BuddyRole != index.data(ItemTypeRole))
+		return false;
+
+	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+	if (!buddy)
+		return false;
+
+	Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+	if (Qt::Checked == checkState)
+	{
+		CheckedBuddies.insert(buddy);
+		emit checkedBuddiesChanged(CheckedBuddies);
+		return true;
+	}
+	else if (Qt::Unchecked == checkState)
+	{
+		CheckedBuddies.remove(buddy);
+		emit checkedBuddiesChanged(CheckedBuddies);
+		return true;
+	}
+
+	return false;
+}
+
+BuddySet BuddiesModelBase::checkedBuddies() const
+{
+	return CheckedBuddies;
 }
 
 QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const

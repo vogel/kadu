@@ -28,6 +28,7 @@
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "model/kadu-abstract-model.h"
 #include "status/status.h"
 
@@ -37,6 +38,10 @@ class BuddiesModelBase : public QAbstractItemModel, public KaduAbstractModel, pu
 {
 	Q_OBJECT
 
+	bool Checkable;
+	BuddySet CheckedBuddies;
+
+	bool isCheckableIndex(const QModelIndex &index) const;
 	Contact buddyContact(const QModelIndex &index, int accountIndex) const;
 
 private slots:
@@ -53,6 +58,8 @@ public:
 	explicit BuddiesModelBase(QObject *parent = 0);
 	virtual ~BuddiesModelBase();
 
+	void setCheckable(bool checkable);
+
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex parent(const QModelIndex &child) const;
 
@@ -62,12 +69,18 @@ public:
 	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	BuddySet checkedBuddies() const;
+
 	// AbstractContactsModel implementation
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	// D&D
 	virtual QStringList mimeTypes() const;
 	virtual QMimeData * mimeData(const QModelIndexList & indexes) const;
+
+signals:
+	void checkedBuddiesChanged(const BuddySet &checkedBuddies);
 
 };
 

@@ -25,7 +25,8 @@
 
 #include "accounts/filter/protocol-filter.h"
 #include "buddies/model/buddies-model.h"
-#include "buddies/model/checkable-buddies-proxy-model.h"
+// will be used when Qt 4.8 .is required
+// #include "buddies/model/checkable-buddies-proxy-model.h"
 #include "chat/chat-manager.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/account-buddy-list-widget.h"
@@ -98,10 +99,14 @@ void AddConferenceWindow::createGui()
 	hintLabel->setFont(hintLabelFont);
 	layout->addRow(0, hintLabel);
 
-	BuddiesModel *model = new BuddiesModel(this);
-	model->setIncludeMyself(false);
+	Model = new BuddiesModel(this);
+	Model->setIncludeMyself(false);
 
-	ModelChain *chain = new ModelChain(model, this);
+	// will be removed when Qt 4.8 .is required
+	Model->setCheckable(true);
+	connect(Model, SIGNAL(checkedBuddiesChanged(BuddySet)), this, SLOT(validateData()));
+
+	ModelChain *chain = new ModelChain(Model, this);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
@@ -111,10 +116,11 @@ void AddConferenceWindow::createGui()
 	proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
 	chain->addProxyModel(proxyModel);
 
-	CheckableProxy = new CheckableBuddiesProxyModel(chain);
-	connect(CheckableProxy, SIGNAL(checkedBuddiesChanged(BuddySet)), this, SLOT(validateData()));
+	// will be used when Qt 4.8 .is required
+	// CheckableProxy = new CheckableBuddiesProxyModel(chain);
+	// connect(CheckableProxy, SIGNAL(checkedBuddiesChanged(BuddySet)), this, SLOT(validateData()));
 
-	chain->addProxyModel(CheckableProxy);
+	// chain->addProxyModel(CheckableProxy);
 
 	FilteredTreeView *buddiesWidget = new FilteredTreeView(FilteredTreeView::FilterAtBottom, this);
 
@@ -175,7 +181,7 @@ void AddConferenceWindow::validateData()
 		return;
 	}
 
-	const BuddySet &conferenceBuddies = filterByAccount(account, CheckableProxy->checkedBuddies());
+	const BuddySet &conferenceBuddies = filterByAccount(account, Model->checkedBuddies());
 	if (conferenceBuddies.size() < 2)
 	{
 		displayErrorMessage(tr("Select at least two buddies"));
@@ -218,7 +224,7 @@ Chat AddConferenceWindow::computeChat() const
 	const Account &account = AccountCombo->currentAccount();
 	Q_ASSERT(account);
 
-	const BuddySet &conferenceBuddies = filterByAccount(account, CheckableProxy->checkedBuddies());
+	const BuddySet &conferenceBuddies = filterByAccount(account, Model->checkedBuddies());
 	ContactSet conferenceContacts;
 	foreach (const Buddy &buddy, conferenceBuddies)
 		conferenceContacts.insert(buddy.contacts(account).first());
