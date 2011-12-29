@@ -50,6 +50,70 @@
 
 #include "chat-engine-adium.h"
 
+RefreshViewHack::RefreshViewHack(AdiumChatStyleEngine *engine, HtmlMessagesRenderer *renderer, QObject *parent) :
+		QObject(parent), Engine(engine), Renderer(renderer)
+{
+}
+
+RefreshViewHack::~RefreshViewHack()
+{
+}
+
+void RefreshViewHack::loadFinished()
+{
+	Renderer->setLastMessage(0);
+
+	foreach (MessageRenderInfo *message, Renderer->messages())
+		Engine->appendChatMessage(Renderer, message);
+
+	deleteLater();
+}
+
+
+PreviewHack::PreviewHack(AdiumChatStyleEngine *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
+                         const QString &incomingHtml, QObject *parent) :
+		QObject(parent), Engine(engine), CurrentPreview(preview), BaseHref(baseHref), OutgoingHtml(outgoingHtml), IncomingHtml(incomingHtml)
+{
+}
+
+PreviewHack::~PreviewHack()
+{
+}
+
+void PreviewHack::loadFinished()
+{
+	MessageRenderInfo *message = CurrentPreview->messages().at(0);
+
+	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message), QLatin1String(" ")));
+	outgoingHtml.replace('\'', QLatin1String("\\'"));
+	if (!message->message().id().isEmpty())
+		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		outgoingHtml.prepend("<span>");
+	outgoingHtml.append("</span>");
+	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
+
+	message = CurrentPreview->messages().at(1);
+	QString incomingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, IncomingHtml, message), QLatin1String(" ")));
+	incomingHtml.replace('\'', QLatin1String("\\'"));
+	if (!message->message().id().isEmpty())
+		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+	else
+		incomingHtml.prepend("<span>");
+	incomingHtml.append("</span>");
+	CurrentPreview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
+
+	/* in Qt 4.6.3 / WebKit there is a bug making the following call not working */
+	/* according to: https://bugs.webkit.org/show_bug.cgi?id=35633 */
+	/* the proper refreshing behaviour should occur once the bug is fixed */
+	/* possible temporary solution: use QWebElements API to randomly change */
+	/* URLs in the HTML/CSS content. */
+	CurrentPreview->webView()->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
+
+	deleteLater();
+}
+
+
 AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
 		QObject(parent)
 {
@@ -226,15 +290,17 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), 18, "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
+	RefreshViewHack *refreshViewHack = new RefreshViewHack(this, renderer, this);
+
+	// lets wait a while for all javascript to resolve and execute
+	// we dont want to get to the party too early
+	connect(renderer->webPage()->mainFrame(), SIGNAL(loadFinished(bool)),
+	        refreshViewHack, SLOT(loadFinished()), Qt::QueuedConnection);
+
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	renderer->webPage()->mainFrame()->evaluateJavaScript("initStyle()");
-
-	renderer->setLastMessage(0);
-
-	foreach (MessageRenderInfo *message, renderer->messages())
-		appendChatMessage(renderer, message);
 }
 
 void AdiumChatStyleEngine::loadStyle(const QString &styleName, const QString &variantName)
@@ -305,36 +371,17 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3) ? "s" : QString("@import url( \"" + style.mainHref() + "\" );"));
 	}
 
+	PreviewHack *previewHack = new PreviewHack(this, preview, style.baseHref(), style.outgoingHtml(), style.incomingHtml(), this);
+
+	// lets wait a while for all javascript to resolve and execute
+	// we dont want to get to the party too early
+	connect(preview->webView()->page()->mainFrame(), SIGNAL(loadFinished(bool)),
+	        previewHack, SLOT(loadFinished()),  Qt::QueuedConnection);
+
 	preview->webView()->page()->mainFrame()->setHtml(styleBaseHtml);
 	preview->webView()->page()->mainFrame()->evaluateJavaScript(jsCode);
 	//I don't know why, sometimes 'initStyle' was performed after 'appendMessage'
 	preview->webView()->page()->mainFrame()->evaluateJavaScript("initStyle()");
-
-	QString outgoingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.outgoingHtml(), message), QLatin1String(" ")));
-	outgoingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		outgoingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
-	else
-		outgoingHtml.prepend("<span>");
-	outgoingHtml.append("</span>");
-	preview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + outgoingHtml + "\')");
-
-	message = preview->messages().at(1);
-	QString incomingHtml(replacedNewLine(replaceKeywords(style.baseHref(), style.incomingHtml(), message), QLatin1String(" ")));
-	incomingHtml.replace('\'', QLatin1String("\\'"));
-	if (!message->message().id().isEmpty())
-		incomingHtml.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
-	else
-		incomingHtml.prepend("<span>");
-	incomingHtml.append("</span>");
-	preview->webView()->page()->mainFrame()->evaluateJavaScript("appendMessage(\'" + incomingHtml + "\')");
-
-	/* in Qt 4.6.3 / WebKit there is a bug making the following call not working */
-	/* according to: https://bugs.webkit.org/show_bug.cgi?id=35633 */
-	/* the proper refreshing behaviour should occur once the bug is fixed */
-	/* possible temporary solution: use QWebElements API to randomly change */
-	/* URLs in the HTML/CSS content. */
-	preview->webView()->page()->triggerAction(QWebPage::ReloadAndBypassCache, false);
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
