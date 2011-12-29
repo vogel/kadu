@@ -98,7 +98,10 @@ void AddConferenceWindow::createGui()
 	hintLabel->setFont(hintLabelFont);
 	layout->addRow(0, hintLabel);
 
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	BuddiesModel *model = new BuddiesModel(this);
+	model->setIncludeMyself(false);
+
+	ModelChain *chain = new ModelChain(model, this);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
