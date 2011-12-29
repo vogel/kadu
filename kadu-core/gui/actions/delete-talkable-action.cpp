@@ -137,7 +137,7 @@ void DeleteTalkableAction::chatActionTriggered(ActionContext *context)
 		return;
 
 	if (MessageDialog::ask(KaduIcon("dialog-warning"), tr("Delete Chat"),
-	                        tr("'%1'' chat be deleted.<br/>Are you sure?").arg(chat.display())))
+	                        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display())))
 		chat.setDisplay(QString());
 }
 

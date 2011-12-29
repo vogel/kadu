@@ -50,7 +50,7 @@ AddConferenceWindow::AddConferenceWindow(QWidget *parent) :
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-add-conference");
-	setWindowTitle(tr("Add conference"));
+	setWindowTitle(tr("Add Conference"));
 
 	createGui();
 
@@ -146,11 +146,11 @@ void AddConferenceWindow::createGui()
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
 
-	AddButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add conference"), this);
+	AddButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add Conference"), this);
 	AddButton->setDefault(true);
 	connect(AddButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	StartButton = new QPushButton(KaduIcon("internet-group-chat").icon(), tr("Start conference"), this);
+	StartButton = new QPushButton(KaduIcon("internet-group-chat").icon(), tr("Start Conference"), this);
 	connect(StartButton, SIGNAL(clicked(bool)), this, SLOT(start()));
 
 	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
