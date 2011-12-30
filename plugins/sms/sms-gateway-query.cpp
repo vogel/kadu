@@ -63,4 +63,3 @@ void SmsGatewayQuery::process(const QString &number)
 
 	jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
-

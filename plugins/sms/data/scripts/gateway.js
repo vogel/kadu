@@ -54,7 +54,10 @@ GatewayQuery.prototype = {
 			return;
 		}
 
-		var gatewayCheckerUrl = "http://is.eranet.pl/updir/check.cgi?t=" + phoneNumber;
+		if (phoneNumber.indexOf("+") == 0)
+			phoneNumber = phoneNumber.substr(1);
+
+		var gatewayCheckerUrl = "http://download.t-mobile.pl/updir/updir.cgi?msisdn=" + phoneNumber;
 
 		this.reply = network.get(gatewayCheckerUrl);
 		this.reply.finished.connect(this, this.replyFinished);
