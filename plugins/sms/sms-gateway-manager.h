@@ -27,7 +27,7 @@
 #include <QtCore/QPair>
 #include <QtCore/QStringList>
 
-typedef QPair<QString, QString> SmsGateway;
+class SmsGateway;
 
 class SmsGatewayManager
 {

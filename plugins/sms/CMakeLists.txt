@@ -28,6 +28,7 @@ set (SOURCES
 	mobile-number-manager.cpp
 	sms-actions.cpp
 	sms-configuration-ui-handler.cpp
+	sms-gateway.cpp
 	sms-gateway-manager.cpp
 	sms-gateway-query.cpp
 	sms-external-sender.cpp

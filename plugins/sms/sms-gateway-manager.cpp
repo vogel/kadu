@@ -23,6 +23,7 @@
 #include <QtScript/QScriptValueIterator>
 
 #include "scripts/sms-script-manager.h"
+#include "sms-gateway.h"
 
 #include "sms-gateway-manager.h"
 
@@ -62,7 +63,9 @@ void SmsGatewayManager::load()
 	{
 		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
 		QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));
-		SmsGateway gateway = qMakePair(gatewayId.toString(), gatewayName.toString());
+		SmsGateway gateway;
+		gateway.setName(gatewayName.toString());
+		gateway.setId(gatewayId.toString());
 
 		Items.append(gateway);
 	}
