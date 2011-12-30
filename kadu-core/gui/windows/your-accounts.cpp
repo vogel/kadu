@@ -168,11 +168,10 @@ void YourAccounts::switchToCreateMode()
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
 
-	ModalConfigurationWidget *widget = getAccountCreateWidget(Protocols->currentProtocol());
-	if (widget)
+	CurrentWidget = getAccountCreateWidget(Protocols->currentProtocol());
+	if (CurrentWidget)
 	{
-		CreateAddStack->setCurrentWidget(widget);
-		CurrentWidget = widget;
+		CreateAddStack->setCurrentWidget(CurrentWidget);
 		CreateAddStack->show();
 	}
 	else
@@ -188,11 +187,10 @@ void YourAccounts::switchToAddMode()
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
 
-	ModalConfigurationWidget *widget = getAccountAddWidget(Protocols->currentProtocol());
-	if (widget)
+	CurrentWidget = getAccountAddWidget(Protocols->currentProtocol());
+	if (CurrentWidget)
 	{
-		CreateAddStack->setCurrentWidget(widget);
-		CurrentWidget = widget;
+		CreateAddStack->setCurrentWidget(CurrentWidget);
 		CreateAddStack->show();
 	}
 	else
@@ -336,11 +334,10 @@ void YourAccounts::updateCurrentWidget()
 	{
 		MainStack->setCurrentWidget(EditStack);
 		Account account = selection.at(0).data(AccountRole).value<Account>();
-		ModalConfigurationWidget *widget = getAccountEditWidget(account);
-		if (widget)
+		CurrentWidget = getAccountEditWidget(account);
+		if (CurrentWidget)
 		{
-			EditStack->setCurrentWidget(widget);
-			CurrentWidget = widget;
+			EditStack->setCurrentWidget(CurrentWidget);
 			IsCurrentWidgetEditAccount = true;
 		}
 
