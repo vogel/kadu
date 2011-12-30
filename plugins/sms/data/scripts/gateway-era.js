@@ -27,6 +27,10 @@ GatewayEra.prototype = {
 		return "02";
 	},
 
+	maxLength: function() {
+		return 0;
+	},
+
 	sendSms: function(recipient, signature, content, callbackObject) {
 		var sender = new EraGatewaySmsSender();
 		sender.sendSms(recipient, signature, content, callbackObject);

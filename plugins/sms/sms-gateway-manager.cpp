@@ -63,9 +63,12 @@ void SmsGatewayManager::load()
 	{
 		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
 		QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));
+		QScriptValue gatewayMaxLength = engine->evaluate(QString("gatewayManager.items[%1].maxLength()").arg(i));
+
 		SmsGateway gateway;
 		gateway.setName(gatewayName.toString());
 		gateway.setId(gatewayId.toString());
+		gateway.setMaxLength(gatewayMaxLength.toUInt16());
 
 		Items.append(gateway);
 	}

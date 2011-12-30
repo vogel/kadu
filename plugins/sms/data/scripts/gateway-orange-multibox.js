@@ -30,6 +30,10 @@ GatewayOrangeM.prototype = {
 		return "99";
 	},
 
+	maxLength: function() {
+		return 640;
+	},
+
 	sendSms: function(recipient, signature, content, callbackObject) {
 		var sender = new OMGatewaySmsSender();
 		sender.sendSms(recipient, signature, content, callbackObject);

@@ -26,6 +26,7 @@ class SmsGateway
 {
 	QString Name;
 	QString Id;
+	quint16 MaxLength;
 
 public:
 	SmsGateway();
@@ -38,6 +39,9 @@ public:
 
 	void setId(const QString &id);
 	QString id() const;
+
+	void setMaxLength(const quint16 maxLength);
+	quint16 maxLength() const;
 
 };
 

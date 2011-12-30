@@ -19,7 +19,8 @@
 
 #include "sms-gateway.h"
 
-SmsGateway::SmsGateway()
+SmsGateway::SmsGateway() :
+		MaxLength(0)
 {
 }
 
@@ -27,12 +28,14 @@ SmsGateway::SmsGateway(const SmsGateway &copyMe)
 {
 	Name = copyMe.Name;
 	Id = copyMe.Id;
+	MaxLength = copyMe.MaxLength;
 }
 
 SmsGateway & SmsGateway::operator = (const SmsGateway &copyMe)
 {
 	Name = copyMe.Name;
 	Id = copyMe.Id;
+	MaxLength = copyMe.MaxLength;
 
 	return *this;
 }
@@ -55,4 +58,14 @@ void SmsGateway::setId(const QString &id)
 QString SmsGateway::id() const
 {
 	return Id;
+}
+
+void SmsGateway::setMaxLength(const quint16 maxLength)
+{
+	MaxLength = maxLength;
+}
+
+quint16 SmsGateway::maxLength() const
+{
+	return MaxLength;
 }
