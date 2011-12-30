@@ -50,7 +50,7 @@
 #include "sms-dialog.h"
 
 SmsDialog::SmsDialog(QWidget* parent) :
-		QWidget(parent, Qt::Window)
+		QWidget(parent, Qt::Window), MaxLength(0)
 {
 	kdebugf();
 
@@ -110,6 +110,8 @@ void SmsDialog::createGui()
 	foreach (const SmsGateway &gateway, SmsGatewayManager::instance()->items())
 		ProviderComboBox->addItem(gateway.name(), gateway.id());
 
+	connect(ProviderComboBox, SIGNAL(activated(int)), this, SLOT(gatewayActivated(int)));
+
 	formLayout->addRow(tr("GSM provider") + ':', ProviderComboBox);
 
 	ContentEdit = new QTextEdit(this);
@@ -140,6 +142,7 @@ void SmsDialog::createGui()
 	SendButton->setIcon(KaduIcon("go-next").icon());
 	SendButton->setText(tr("&Send"));
 	SendButton->setDefault(true);
+	SendButton->setEnabled(false);
 	SendButton->setMaximumWidth(200);
 	connect(SendButton, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
 
@@ -211,6 +214,21 @@ void SmsDialog::editReturnPressed()
 	kdebugf2();
 }
 
+void SmsDialog::gatewayActivated(int index)
+{
+	QString id = ProviderComboBox->itemData(index).toString();
+	const SmsGateway &gateway = SmsGatewayManager::instance()->byId(id);
+
+	MaxLength = gateway.maxLength();
+
+	if (0 == MaxLength)
+		MaxLengthSuffixText.clear();
+	else
+		MaxLengthSuffixText = QString(" / %1").arg(gateway.maxLength());
+
+	updateCounter();
+}
+
 void SmsDialog::gatewayAssigned(const QString &number, const QString &gatewayId)
 {
 	MobileNumberManager::instance()->registerNumber(number, gatewayId);
@@ -253,7 +271,15 @@ void SmsDialog::sendSms()
 
 void SmsDialog::updateCounter()
 {
-	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()));
+	int currentLength = ContentEdit->toPlainText().length();
+	LengthLabel->setText(QString::number(currentLength) + MaxLengthSuffixText);
+
+	if (currentLength == 0)
+		SendButton->setEnabled(false);
+	else if (MaxLength == 0)
+		SendButton->setEnabled(true);
+	else
+		SendButton->setEnabled(currentLength <= MaxLength);
 }
 
 void SmsDialog::clear()

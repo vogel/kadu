@@ -50,15 +50,19 @@ class SmsDialog : public QWidget, ConfigurationAwareObject
 	QPushButton *SendButton;
 	QCheckBox *SaveInHistoryCheckBox;
 
+	QString MaxLengthSuffixText;
+	quint16 MaxLength;
+
 	void createGui();
 
 private slots:
-    void recipientBuddyChanged();
+	void recipientBuddyChanged();
 	void recipientNumberChanged(const QString &number);
 
 	void editReturnPressed();
 	void updateCounter();
 
+	void gatewayActivated(int index);
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
 	void sendSms();
 
