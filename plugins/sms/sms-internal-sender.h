@@ -24,6 +24,8 @@
 
 #include <QtScript/QScriptValue>
 
+#include "sms-gateway.h"
+
 #include "sms-sender.h"
 
 class QNetworkReply;
@@ -32,7 +34,7 @@ class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
 
-	QString GatewayId;
+	SmsGateway Gateway;
 
 	QNetworkReply *TokenReply;
 
@@ -48,7 +50,7 @@ private slots:
     void tokenImageDownloaded();
 
 public:
-	explicit SmsInternalSender(const QString &number, const QString &gatewayId = QString(), QObject *parent = 0);
+	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway = SmsGateway(), QObject *parent = 0);
 	virtual ~SmsInternalSender();
 
 	virtual void sendMessage(const QString& message);

@@ -31,12 +31,13 @@
 #include "debug.h"
 
 #include "scripts/sms-script-manager.h"
+#include "sms-gateway-manager.h"
 #include "sms-gateway-query.h"
 
 #include "sms-internal-sender.h"
 
-SmsInternalSender::SmsInternalSender(const QString &number, const QString &gatewayId, QObject *parent) :
-		SmsSender(number, parent), GatewayId(gatewayId)
+SmsInternalSender::SmsInternalSender(const QString &number, const SmsGateway &gateway, QObject *parent) :
+		SmsSender(number, parent), Gateway(gateway)
 {
 }
 
@@ -55,7 +56,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 		return;
 	}
 
-	if (GatewayId.isEmpty())
+	if (Gateway.id().isEmpty())
 		queryForGateway();
 	else
 		sendSms();
@@ -77,7 +78,7 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 		return;
 	}
 
-	GatewayId = gatewayId;
+	Gateway = SmsGatewayManager::instance()->byId(gatewayId);
 
 	sendSms();
 }
@@ -130,14 +131,14 @@ QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, cons
 
 void SmsInternalSender::sendSms()
 {
-	emit gatewayAssigned(number(), GatewayId);
+	emit gatewayAssigned(number(), Gateway.id());
 
 	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
 
 	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
 	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
 	QScriptValueList arguments;
-	arguments.append(GatewayId);
+	arguments.append(Gateway.id());
 	arguments.append(number());
 	arguments.append(signature());
 	arguments.append(Message);
