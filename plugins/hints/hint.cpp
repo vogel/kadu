@@ -153,6 +153,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	label->setWordWrap(true);
 	labels->addWidget(label);
 }
 
@@ -214,6 +215,7 @@ void Hint::updateText()
 		);
 
 	adjustSize();
+	updateGeometry();
 	emit updated(this);
 }
 
