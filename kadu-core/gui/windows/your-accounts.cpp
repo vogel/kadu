@@ -477,6 +477,9 @@ void YourAccounts::accountUnregistered(Account account)
 	QMap<Account, AccountEditWidget *>::iterator i = EditWidgets.find(account);
 	if (i != EditWidgets.end())
 	{
+		if (i.value() == CurrentWidget)
+			CurrentWidget = 0;
+
 		EditStack->removeWidget(i.value());
 		i.value()->deleteLater();
 		EditWidgets.erase(i);
