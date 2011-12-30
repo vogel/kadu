@@ -49,7 +49,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 
-	if (!validateSignature())
+	if (Gateway.signatureRequired() && !validateSignature())
 	{
 		emit failed(tr("Signature can't be empty"));
 		kdebugf2();

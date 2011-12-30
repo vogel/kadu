@@ -244,7 +244,7 @@ void SmsDialog::sendSms()
 	{
 		int gatewayIndex = ProviderComboBox->currentIndex();
 		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
-		sender = new SmsInternalSender(RecipientEdit->text(), SmsGatewayManager::byId(gatewayId), this);
+		sender = new SmsInternalSender(RecipientEdit->text(), SmsGatewayManager::instance()->byId(gatewayId), this);
 	}
 	else
 	{
