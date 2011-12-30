@@ -59,7 +59,7 @@ public:
 	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
 	KaduSharedBase_PropertyCRW(QString, protocolName, ProtocolName)
-	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_PropertyRead(AccountDetails *, details, Details)
 	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
 	KaduSharedBase_PropertyCRW(QString, id, Id)

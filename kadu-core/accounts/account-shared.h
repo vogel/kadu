@@ -122,7 +122,7 @@ public:
 	void setPrivateStatus(bool isPrivate);
 	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 
-	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduShared_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
