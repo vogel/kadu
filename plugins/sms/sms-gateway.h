@@ -27,6 +27,7 @@ class SmsGateway
 	QString Name;
 	QString Id;
 	quint16 MaxLength;
+	bool SignatureRequired;
 
 public:
 	SmsGateway();
@@ -42,6 +43,9 @@ public:
 
 	void setMaxLength(const quint16 maxLength);
 	quint16 maxLength() const;
+
+	void setSignatureRequired(const bool signatureRequired);
+	bool signatureRequired() const;
 
 };
 

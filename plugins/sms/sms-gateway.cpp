@@ -20,7 +20,7 @@
 #include "sms-gateway.h"
 
 SmsGateway::SmsGateway() :
-		MaxLength(0)
+		MaxLength(0), SignatureRequired(true)
 {
 }
 
@@ -29,6 +29,7 @@ SmsGateway::SmsGateway(const SmsGateway &copyMe)
 	Name = copyMe.Name;
 	Id = copyMe.Id;
 	MaxLength = copyMe.MaxLength;
+	SignatureRequired = copyMe.SignatureRequired;
 }
 
 SmsGateway & SmsGateway::operator = (const SmsGateway &copyMe)
@@ -36,6 +37,7 @@ SmsGateway & SmsGateway::operator = (const SmsGateway &copyMe)
 	Name = copyMe.Name;
 	Id = copyMe.Id;
 	MaxLength = copyMe.MaxLength;
+	SignatureRequired = copyMe.SignatureRequired;
 
 	return *this;
 }
@@ -68,4 +70,14 @@ void SmsGateway::setMaxLength(const quint16 maxLength)
 quint16 SmsGateway::maxLength() const
 {
 	return MaxLength;
+}
+
+void SmsGateway::setSignatureRequired(const bool signatureRequired)
+{
+	SignatureRequired = signatureRequired;
+}
+
+bool SmsGateway::signatureRequired() const
+{
+	return SignatureRequired;
 }

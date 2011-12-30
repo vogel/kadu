@@ -30,6 +30,10 @@ GatewayOrange.prototype = {
 		return 0;
 	},
 
+	signatureRequired: function() {
+		return true;
+	},
+
 	sendSms: function(recipient, signature, content, callbackObject) {
 		var sender = new GatewaySmsSender();
 		sender.sendSms(recipient, signature, content, callbackObject);
