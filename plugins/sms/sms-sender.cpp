@@ -39,11 +39,6 @@ void SmsSender::fixNumber()
 		Number = Number.right(9);
 }
 
-bool SmsSender::validateNumber()
-{
-	return 9 == Number.length();
-}
-
 bool SmsSender::validateSignature()
 {
 	return !Signature.isEmpty();

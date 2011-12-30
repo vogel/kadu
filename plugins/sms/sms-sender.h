@@ -45,7 +45,6 @@ class SmsSender : public QObject, public TokenAcceptor
 protected:
 	QString Message;
 
-	bool validateNumber();
 	bool validateSignature();
 
 public:

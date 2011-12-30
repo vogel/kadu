@@ -48,13 +48,6 @@ void SmsInternalSender::sendMessage(const QString &message)
 {
 	Message = message;
 
-	if (!validateNumber())
-	{
-		emit failed(tr("Mobile number is incorrect"));
-		kdebugf2();
-		return;
-	}
-
 	if (!validateSignature())
 	{
 		emit failed(tr("Signature can't be empty"));
