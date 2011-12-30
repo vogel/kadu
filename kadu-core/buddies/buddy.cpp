@@ -237,9 +237,8 @@ Buddy Buddy::dummy()
 		account = AccountManager::instance()->defaultAccount();
 	else if (!ProtocolsManager::instance()->protocolFactories().isEmpty())
 	{
-		account = Account::create();
-		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().at(0) ;
-		account.setProtocolName(firstProto->name());
+		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().at(0);
+		account = Account::create(firstProto->name());
 		account.details()->setState(StorableObject::StateNew);
 	}
 

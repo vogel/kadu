@@ -53,13 +53,18 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 	return result;
 }
 
-AccountShared::AccountShared(const QUuid &uuid) :
-		QObject(), Shared(uuid),
+AccountShared::AccountShared(const QString &protocolName) :
+		QObject(), Shared(QUuid()), ProtocolName(protocolName),
 		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),
 		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true), Removing(false)
 {
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
+
+	// ProtocolName is not empty here only if a new Account has just been created
+	// it that case load() method will not be called so we need to call triggerAllProtocolsRegistered here
+	if (!ProtocolName.isEmpty())
+		triggerAllProtocolsRegistered();
 }
 
 AccountShared::~AccountShared()
@@ -231,11 +236,14 @@ void AccountShared::setDisconnectStatus()
 	StatusSetter::instance()->setStatus(MyStatusContainer, disconnectStatus);
 }
 
-void AccountShared::protocolFactoryLoaded(ProtocolFactory *factory)
+void AccountShared::protocolRegistered(ProtocolFactory *factory)
 {
 	Q_ASSERT(factory);
-	Q_ASSERT(!ProtocolHandler);
-	Q_ASSERT(!Details);
+
+	ensureLoaded();
+
+	if (ProtocolHandler || (factory->name() != ProtocolName) || Details)
+		return;
 
 	ProtocolHandler = factory->createProtocolHandler(this);
 	Q_ASSERT(ProtocolHandler);
@@ -245,83 +253,42 @@ void AccountShared::protocolFactoryLoaded(ProtocolFactory *factory)
 
 	details()->ensureLoaded();
 
-	AccountManager::instance()->registerItem(this);
-	emit protocolLoaded();
-}
-
-void AccountShared::protocolFactoryUnloaded()
-{
-	if (Details)
-	{
-		Details->ensureStored();
-		delete Details;
-		Details = 0;
-	}
-
-	AccountManager::instance()->unregisterItem(this);
-	ProtocolHandler = 0;
-	emit protocolUnloaded();
-}
-
-void AccountShared::useProtocolFactory(ProtocolFactory *factory)
-{
-	Protocol *oldProtocolHandler = ProtocolHandler;
-
-	if (ProtocolHandler)
-	{
-		disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
-		disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-		           this, SIGNAL(buddyStatusChanged(Contact, Status)));
-		disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-		disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-
-		setDisconnectStatus();
-	}
-
-	if (factory)
-		protocolFactoryLoaded(factory);
-	else
-		protocolFactoryUnloaded();
-
-	delete oldProtocolHandler;
-	oldProtocolHandler = 0;
-
-	if (ProtocolHandler)
-	{
-		connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
-		connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-				this, SIGNAL(buddyStatusChanged(Contact, Status)));
-		connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-		connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-	}
+	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
+	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+			this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
 	MyStatusContainer->triggerStatusUpdated();
-}
 
-void AccountShared::protocolRegistered(ProtocolFactory *factory)
-{
-	ensureLoaded();
-
-	if (factory->name() != ProtocolName)
-		return;
-
-	if (ProtocolHandler && (ProtocolHandler->protocolFactory() == factory))
-		return;
-
-	useProtocolFactory(factory);
+	AccountManager::instance()->registerItem(this);
 }
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 {
+	Q_ASSERT(factory);
+
 	ensureLoaded();
 
-	if (!ProtocolHandler)
+	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
 		return;
 
-	if (factory != ProtocolHandler->protocolFactory())
-		return;
+	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
+	disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
+	           this, SIGNAL(buddyStatusChanged(Contact, Status)));
+	disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+	disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
-	useProtocolFactory(0);
+	setDisconnectStatus();
+
+	Details->ensureStored();
+	delete Details;
+	Details = 0;
+
+	delete ProtocolHandler;
+	ProtocolHandler = 0;
+
+	AccountManager::instance()->unregisterItem(this);
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
@@ -345,19 +312,6 @@ void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 		return;
 
 	doSetAccountIdentity(accountIdentity);
-
-	dataUpdated();
-}
-
-void AccountShared::setProtocolName(const QString &protocolName)
-{
-	ensureLoaded();
-
-	if (ProtocolName == protocolName)
-		return;
-
-	ProtocolName = protocolName;
-	useProtocolFactory(ProtocolsManager::instance()->byName(protocolName));
 
 	dataUpdated();
 }

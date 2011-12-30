@@ -69,9 +69,6 @@ class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObjec
 	// TODO: hack, remove at some time
 	bool Removing;
 
-	void protocolFactoryLoaded(ProtocolFactory *factory);
-	void protocolFactoryUnloaded();
-
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
 
@@ -97,7 +94,7 @@ public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 
-	explicit AccountShared(const QUuid &uuid = QUuid());
+	explicit AccountShared(const QString &protocolName = QString());
 	virtual ~AccountShared();
 
 	virtual StorableObject * storageParent();
@@ -113,7 +110,6 @@ public:
 
 	KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
 
-	void setProtocolName(const QString &protocolName);
 	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
 
 	void setId(const QString &id);
@@ -136,8 +132,6 @@ public:
 
 signals:
 	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
-	void protocolLoaded();
-	void protocolUnloaded();
 
 	void connected();
 	void disconnected();

@@ -169,10 +169,9 @@ void JabberAddAccountWidget::dataChanged()
 
 void JabberAddAccountWidget::apply()
 {
-	Account jabberAccount = Account::create();
+	Account jabberAccount = Account::create("jabber");
 
 	jabberAccount.setAccountIdentity(Identity->currentIdentity());
-	jabberAccount.setProtocolName("jabber");
 	jabberAccount.setId(Username->text() + '@' + Domain->currentText());
 	jabberAccount.setPassword(AccountPassword->text());
 	jabberAccount.setHasPassword(!AccountPassword->text().isEmpty());
@@ -189,7 +188,7 @@ void JabberAddAccountWidget::apply()
 			details->setEncryptionMode(JabberAccountDetails::Encryption_No);
 			details->setPlainAuthMode(JabberAccountDetails::NoAllowPlain);
 		}
-		
+
 		bool isGoogleAppsAccount = Factory->name() == "gmail/google talk" && !Domain->currentText().contains("gmail");
 
 		// Google Apps account sometimes needs custom host/port settings to work

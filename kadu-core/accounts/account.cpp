@@ -45,9 +45,9 @@ KaduSharedBaseClassImpl(Account)
 
 Account Account::null;
 
-Account Account::create()
+Account Account::create(const QString &protocolName)
 {
-	return new AccountShared();
+	return new AccountShared(protocolName);
 }
 
 Account Account::loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint)
@@ -95,7 +95,7 @@ StatusContainer * Account::statusContainer() const
 
 KaduSharedBase_PropertyDefCRW(Account, Identity, accountIdentity, AccountIdentity, Identity::null)
 KaduSharedBase_PropertyReadDef(Account, QSharedPointer<StoragePoint>, storage, Storage, QSharedPointer<StoragePoint>())
-KaduSharedBase_PropertyDefCRW(Account, QString, protocolName, ProtocolName, QString())
+KaduSharedBase_PropertyReadDef(Account, QString, protocolName, ProtocolName, QString())
 KaduSharedBase_PropertyReadDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
 KaduSharedBase_PropertyReadDef(Account, AccountDetails *, details, Details, 0)
 KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)

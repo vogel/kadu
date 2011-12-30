@@ -195,9 +195,8 @@ void GaduCreateAccountWidget::uinRegistered(UinType uin)
 		return;
 	}
 
-	Account gaduAccount = Account::create();
+	Account gaduAccount = Account::create("gadu");
 	gaduAccount.setAccountIdentity(IdentityCombo->currentIdentity());
-	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setId(QString::number(uin));
 	gaduAccount.setHasPassword(true);
 	gaduAccount.setPassword(NewPassword->text());

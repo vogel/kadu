@@ -90,8 +90,7 @@ QVariant GaduImporter::readEntry(QXmlQuery &xmlQuery, const QString &groupName, 
 
 Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 {
-	Account result = Account::create();
-	result.setProtocolName("gadu");
+	Account result = Account::create("gadu");
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(result.details());
 	accountDetails->setState(StorableObject::StateNew);
@@ -159,8 +158,7 @@ void GaduImporter::importAccounts()
 	if (AccountManager::instance()->byId("gadu", importUinString))
 		return;
 
-	Account defaultGaduGadu = Account::create();
-	defaultGaduGadu.setProtocolName("gadu");
+	Account defaultGaduGadu = Account::create("gadu");
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(defaultGaduGadu.details());
 	accountDetails->setState(StorableObject::StateNew);
