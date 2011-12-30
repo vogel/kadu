@@ -70,3 +70,12 @@ void SmsGatewayManager::load()
 		Items.append(gateway);
 	}
 }
+
+SmsGateway SmsGatewayManager::byId(const QString &id) const
+{
+	foreach (const SmsGateway &gateway, Items)
+		if (gateway.id() == id)
+			return gateway;
+
+	return SmsGateway();
+}

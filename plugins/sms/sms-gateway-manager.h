@@ -48,6 +48,8 @@ public:
 
 	const QList<SmsGateway> & items() const { return Items; }
 
+	SmsGateway byId(const QString &id) const;
+
 };
 
 #endif // SMS_GATEWAY_MANAGER_H
