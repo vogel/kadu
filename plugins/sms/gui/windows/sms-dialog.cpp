@@ -58,6 +58,8 @@ SmsDialog::SmsDialog(QWidget* parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	validate();
+
 	configurationUpdated();
 
 	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
@@ -93,6 +95,7 @@ void SmsDialog::createGui()
 
 	connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(recipientNumberChanged(QString)));
 	connect(RecipientEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+	connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(validate()));
 
 	recipientLayout->addWidget(RecipientEdit);
 
@@ -142,7 +145,6 @@ void SmsDialog::createGui()
 	SendButton->setIcon(KaduIcon("go-next").icon());
 	SendButton->setText(tr("&Send"));
 	SendButton->setDefault(true);
-	SendButton->setEnabled(false);
 	SendButton->setMaximumWidth(200);
 	connect(SendButton, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
 
@@ -157,6 +159,23 @@ void SmsDialog::createGui()
 	buttons->addButton(closeButton, QDialogButtonBox::DestructiveRole);
 
 	resize(400, 250);
+}
+
+void SmsDialog::validate()
+{
+	if (RecipientEdit->text().isEmpty())
+	{
+		SendButton->setEnabled(false);
+		return;
+	}
+
+	int currentLength = ContentEdit->toPlainText().length();
+	if (currentLength == 0)
+		SendButton->setEnabled(false);
+	else if (MaxLength == 0)
+		SendButton->setEnabled(true);
+	else
+		SendButton->setEnabled(currentLength <= MaxLength);
 }
 
 void SmsDialog::configurationUpdated()
@@ -271,15 +290,9 @@ void SmsDialog::sendSms()
 
 void SmsDialog::updateCounter()
 {
-	int currentLength = ContentEdit->toPlainText().length();
-	LengthLabel->setText(QString::number(currentLength) + MaxLengthSuffixText);
+	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()) + MaxLengthSuffixText);
 
-	if (currentLength == 0)
-		SendButton->setEnabled(false);
-	else if (MaxLength == 0)
-		SendButton->setEnabled(true);
-	else
-		SendButton->setEnabled(currentLength <= MaxLength);
+	validate();
 }
 
 void SmsDialog::clear()
