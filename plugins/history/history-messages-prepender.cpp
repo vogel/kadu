@@ -46,6 +46,7 @@ void HistoryMessagesPrepender::messagesAvailable()
 		return;
 
 	MessagesView->prependMessages(Messages.result());
+	MessagesView = 0;
 	deleteLater();
 }
 
