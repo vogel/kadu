@@ -187,9 +187,12 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		return 0;
 
 	ChatWidget *chatWidget = new ChatWidget(chat);
+	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
 	Chats.insert(chat, chatWidget);
 
-	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
+	// We need to append unread messages before chat widget container could mark them as read.
+	const QList<Message> &messages = loadUnreadMessages(chat);
+	chatWidget->appendMessages(messages);
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
@@ -205,9 +208,6 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 //		Contact contact = chatWidget->chat().contacts().toContact();
 //		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
 //	}
-
-	const QList<Message> &messages = loadUnreadMessages(chat);
-	chatWidget->appendMessages(messages);
 
 	emit chatWidgetCreated(chatWidget);
 
