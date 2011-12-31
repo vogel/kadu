@@ -107,8 +107,6 @@ void ContactShared::load()
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 
 	QString buddyUuid = loadValue<QString>("Buddy");
-	if (buddyUuid.isNull())
-		buddyUuid = loadValue<QString>("Contact");
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(buddyUuid), false);
 
 	if (storage()->point().isElement())
