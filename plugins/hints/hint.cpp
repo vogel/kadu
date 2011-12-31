@@ -94,7 +94,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 
-	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Ignored);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	configurationUpdated();
 	updateText();

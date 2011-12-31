@@ -177,6 +177,7 @@ void HintManager::setHint()
 	QPoint newPosition;
 	QPoint trayPosition;
 
+	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
 	if (preferredSize.width() < minimumWidth)
 		preferredSize.setWidth(minimumWidth);
@@ -239,10 +240,11 @@ void HintManager::setHint()
 			newPosition.setY(trayPosition.y() - preferredSize.height());
 	}
 
-	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
-	// Without this sometimes frames is bigger than hints inside it and it looks really bad.
-	frame->setFixedSize(preferredSize);
 	frame->setWindowOpacity(Opacity);
+	// Only setFixedSize() and move() (in this order) guarantees correct
+	// placement on all platforms (at least those I tested).
+	frame->setFixedSize(preferredSize);
+	frame->move(newPosition);
 
 	if (frame->isVisible())
 		frame->update();
