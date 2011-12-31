@@ -99,15 +99,10 @@ void ContactShared::load()
 	Shared::load();
 
 	Id = loadValue<QString>("Id");
-
 	Priority = loadValue<int>("Priority", -1);
-
 	Dirty = loadValue<bool>("Dirty", true);
-
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-
-	QString buddyUuid = loadValue<QString>("Buddy");
-	*OwnerBuddy = BuddyManager::instance()->byUuid(buddyUuid);
+	*OwnerBuddy = BuddyManager::instance()->byUuid(loadValue<QString>("Buddy"));
 
 	if (storage()->point().isElement())
 	{
