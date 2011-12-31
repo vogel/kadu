@@ -60,6 +60,7 @@ public:
 
 signals:
 	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
+
 };
 
 #endif // CHAT_STATE_SERVICE_H
