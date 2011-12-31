@@ -233,7 +233,7 @@ void ContactShared::attach(const Buddy &buddy, bool reattaching, bool emitSignal
 		emit attached(reattaching);
 }
 
-void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
+void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
 {
 	/* NOTE: This guard is needed to avoid deleting this object when removing
 	 * Contact from Buddy which may hold last reference to it and thus wants to
@@ -242,8 +242,8 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy, bool emitSignals)
 	Contact guard(this);
 
 	bool reattaching = !isAnonymous() && !buddy.isAnonymous();
-	detach(true, reattaching, emitSignals);
-	attach(buddy, reattaching, emitSignals);
+	detach(true, reattaching, true);
+	attach(buddy, reattaching, true);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
@@ -259,7 +259,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	doSetOwnerBuddy(buddy, true);
+	doSetOwnerBuddy(buddy);
 	setDirty(true);
 	dataUpdated();
 }
