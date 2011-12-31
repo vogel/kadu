@@ -177,7 +177,6 @@ void HintManager::setHint()
 	QPoint newPosition;
 	QPoint trayPosition;
 
-	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
 	if (preferredSize.width() < minimumWidth)
 		preferredSize.setWidth(minimumWidth);
@@ -241,7 +240,8 @@ void HintManager::setHint()
 	}
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
-	frame->setFixedWidth(preferredSize.width());
+	// Without this sometimes frames is bigger than hints inside it and it looks really bad.
+	frame->setFixedSize(preferredSize);
 	frame->setWindowOpacity(Opacity);
 
 	if (frame->isVisible())

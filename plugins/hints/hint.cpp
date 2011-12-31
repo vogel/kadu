@@ -66,7 +66,6 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
 	createLabels(notification->icon().icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
-	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
 	bool showButtons = !callbacks.isEmpty();
@@ -95,9 +94,10 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 
-	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Ignored);
 
 	configurationUpdated();
+	updateText();
 	show();
 
 	kdebugf2();
@@ -124,6 +124,7 @@ void Hint::configurationUpdated()
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
 	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
 	mouseOut();
+	updateText();
 }
 
 void Hint::createLabels(const QPixmap &pixmap)
@@ -150,7 +151,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	}
 
 	label = new QLabel(this);
-	label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+	label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Ignored);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	label->setWordWrap(true);

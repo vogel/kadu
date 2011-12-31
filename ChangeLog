@@ -1,5 +1,5 @@
 ﻿+++ version 0.11.0-beta3
-* hints: #2266 fixed: restored word wraping in hints (Vogel)
+* hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)
 * sms: #2394 fixed: Orange Multibox SMS length limit is not ignored in Send SMS window anymore (Vogel)
 * sms: #2371 fixed: allow foreign SMS numbers (Vogel)
 * sms: #1664 fixed: support automatic gateway selection when +48 prefix is used (Vogel)
