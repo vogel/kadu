@@ -261,9 +261,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	// don't allow empty buddy to be set, use at least anonymous one
-	Buddy targetBuddy = buddy.isNull() ? Buddy::create() : buddy;
-	doSetOwnerBuddy(targetBuddy, true);
+	doSetOwnerBuddy(buddy, true);
 	setDirty(true);
 	dataUpdated();
 }

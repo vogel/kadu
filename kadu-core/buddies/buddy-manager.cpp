@@ -216,7 +216,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 
 	ensureLoaded();
 
-	if (contact.isNull())
+	if (!contact)
 		return Buddy::null;
 
 	if (ActionReturnNull == action || !contact.isAnonymous())

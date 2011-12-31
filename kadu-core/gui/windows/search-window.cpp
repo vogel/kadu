@@ -38,6 +38,7 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
@@ -308,7 +309,7 @@ ContactSet SearchWindow::selectedContacts() const
 		altNick = uin;
 
 	Contact contact = ContactManager::instance()->byId(CurrentAccount, uin, ActionCreateAndAdd);
-	Buddy buddy = contact.ownerBuddy();
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	if (buddy.isAnonymous())
 	{

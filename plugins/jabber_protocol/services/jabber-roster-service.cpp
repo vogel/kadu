@@ -68,7 +68,11 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 			contact.setOwnerBuddy(buddy);
 		}
 		else
+		{
+			if (!buddy)
+				buddy = Buddy::create();
 			buddy.setDisplay(display);
+		}
 
 		buddy.setAnonymous(false);
 	}
@@ -209,7 +213,7 @@ void JabberRosterService::addContact(const Contact &contact)
 	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
-	Protocol->client()->addContact(contact.id(), buddy.display(), groupsList);
+	Protocol->client()->addContact(contact.id(), contact.display(true), groupsList);
 	contact.setDirty(false);
 }
 

@@ -342,7 +342,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 {
 	kdebugf();
 
-	if (!contact.contactAccount())
+	if (contact.isAnonymous() || !contact.contactAccount())
 		return;
 
 	Protocol *protocol = contact.contactAccount().protocolHandler();
@@ -368,9 +368,6 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
-
-	if (!contact.contactAccount())
-		return;
 
 	if (contact == contact.contactAccount().accountContact()) // myself
 		return;

@@ -122,8 +122,8 @@ void FileTransferWidget::createGui()
 	buttonsLayout->addWidget(deleteThis);
  	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
-	Buddy buddy = CurrentTransfer.peer().ownerBuddy();
-	Account account = CurrentTransfer.peer().contactAccount();
+	Contact contact = CurrentTransfer.peer();
+	Account account = contact.contactAccount();
 
 	QString fileName = QFileInfo(CurrentTransfer.localFileName()).fileName();
 	if (fileName.isEmpty())
@@ -133,13 +133,13 @@ void FileTransferWidget::createGui()
 	{
 		icon->setPixmap(KaduIcon("kadu_icons/transfer-send").icon().pixmap(64, 64));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> to <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
+				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
 	}
 	else
 	{
 		icon->setPixmap(KaduIcon("kadu_icons/transfer-receive").icon().pixmap(64, 64));
 		DescriptionLabel->setText(tr("File <b>%1</b><br /> from <b>%2</b><br />on account <b>%3</b>")
-				.arg(fileName).arg(buddy.display()).arg(account.accountIdentity().name()));
+				.arg(fileName).arg(contact.display(true)).arg(account.accountIdentity().name()));
 	}
 }
 

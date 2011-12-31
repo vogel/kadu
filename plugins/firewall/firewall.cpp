@@ -346,7 +346,8 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 	{
 		if (LastContact != sender && Search)
 		{
-			SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), sender.ownerBuddy());
+			SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(),
+			                                    BuddyManager::instance()->byContact(sender, ActionCreateAndAdd));
 			sd->show();
 			sd->firstSearch();
 
@@ -471,7 +472,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 		{
 			Buddy buddy = contact.ownerBuddy();
 
-			if (buddy.data())
+			if (buddy)
 			{
 				BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
 

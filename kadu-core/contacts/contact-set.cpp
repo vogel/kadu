@@ -50,7 +50,8 @@ BuddySet ContactSet::toBuddySet() const
 {
 	BuddySet buddies;
 	foreach (const Contact &contact, *this)
-		buddies.insert(contact.ownerBuddy());
+		if (contact.ownerBuddy())
+			buddies.insert(contact.ownerBuddy());
 
 	return buddies;
 }

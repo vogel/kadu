@@ -26,6 +26,7 @@
 #include <QtCore/QTextStream>
 
 #include "buddies/buddy-list.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "contacts/contact-manager.h"
@@ -56,7 +57,7 @@ void GaduListHelper::setSupportedBuddyInformation(const Buddy &destination, cons
 QString GaduListHelper::contactToLine70(Contact contact)
 {
 	QStringList list;
-	Buddy buddy = contact.ownerBuddy();
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 
 	list.append(buddy.firstName());
 	list.append(buddy.lastName());

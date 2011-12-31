@@ -19,6 +19,7 @@
  */
 
 #include "avatars/avatar.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
@@ -113,8 +114,8 @@ Buddy Talkable::toBuddy() const
 	switch (Type)
 	{
 		case ItemBuddy: return MyBuddy;
-		case ItemContact: return MyContact.ownerBuddy();
-		case ItemChat: return toContact().ownerBuddy();
+		case ItemContact: return BuddyManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+		case ItemChat: return BuddyManager::instance()->byContact(toContact(), ActionCreateAndAdd);
 		default:
 			return Buddy::null;
 	}

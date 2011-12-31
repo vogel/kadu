@@ -109,7 +109,9 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 	foreach (const Contact &contact, CurrentChat.contacts())
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(refreshTitle()));
-		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
+
+		if (contact.ownerBuddy())
+			connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
 	}
 
 	// icon for conference never changes
@@ -125,7 +127,9 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			// iconChanged(). 3. Tab catches it before Chat is updated and incorrectly sets
 			// tab icon to the envelope. This could be fixed correctly if we would fix the above TODO.
 			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()), Qt::QueuedConnection);
-			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
+
+			if (contact.ownerBuddy())
+				connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
 		if (currentProtocol() && currentProtocol()->chatStateService())

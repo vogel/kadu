@@ -403,7 +403,7 @@ void JabberProtocol::contactUpdated(Contact contact)
 	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
+	JabberClient->updateContact(contact.id(), contact.display(true), groupsList);
 }
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
