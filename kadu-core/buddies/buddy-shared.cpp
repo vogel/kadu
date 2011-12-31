@@ -98,7 +98,7 @@ void BuddyShared::collectGarbage()
 	}
 
 	foreach (const Contact &contact, Contacts)
-		contact.removeOwnerBuddy();
+		contact.setOwnerBuddy(Buddy::null);
 
 	CollectingGarbage = false;
 }

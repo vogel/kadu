@@ -94,12 +94,6 @@ Avatar Contact::avatar(bool useBuddyData) const
 	return Avatar::null;
 }
 
-void Contact::removeOwnerBuddy() const
-{
-	if (data())
-		data()->removeOwnerBuddy();
-}
-
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
 	if (!c1)

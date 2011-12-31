@@ -266,11 +266,6 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	dataUpdated();
 }
 
-void ContactShared::removeOwnerBuddy()
-{
-	doSetOwnerBuddy(Buddy::null, true);
-}
-
 void ContactShared::setContactAccount(const Account &account)
 {
 	ensureLoaded();

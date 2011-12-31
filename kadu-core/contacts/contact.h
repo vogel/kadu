@@ -63,8 +63,6 @@ public:
 	QString display(bool useBuddyData) const;
 	Avatar avatar(bool useBuddyData) const;
 
-	void removeOwnerBuddy() const;
-
 	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
