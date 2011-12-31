@@ -114,18 +114,24 @@ void JabberSubscriptionService::authorizeContact(Contact contact, bool authorize
 
 void JabberSubscriptionService::resendSubscription(const Contact &contact)
 {
-	if (Protocol && Protocol->client())
-		Protocol->client()->resendSubscription(contact.id());
+	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
+		return;
+
+	Protocol->client()->resendSubscription(contact.id());
 }
 
 void JabberSubscriptionService::removeSubscription(const Contact &contact)
 {
-	if (Protocol && Protocol->client())
-		Protocol->client()->rejectSubscription(contact.id());
+	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
+		return;
+
+	Protocol->client()->rejectSubscription(contact.id());
 }
 
 void JabberSubscriptionService::requestSubscription(const Contact &contact)
 {
-	if (Protocol && Protocol->client())
-		Protocol->client()->requestSubscription(contact.id());
+	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
+		return;
+
+	Protocol->client()->requestSubscription(contact.id());
 }
