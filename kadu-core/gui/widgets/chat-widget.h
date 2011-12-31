@@ -97,7 +97,7 @@ private slots:
 
 	void checkComposing();
 	void updateComposing();
-	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
+	void contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state);
 
 	void keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled);
 

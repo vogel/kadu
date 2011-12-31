@@ -39,7 +39,7 @@ GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
 void GaduChatStateService::messageReceived(const Message &message)
 {
 	// it seems it is what is also done and expected by GG10
-	emit contactActivityChanged(StatePaused, message.messageSender());
+	emit activityChanged(message.messageSender(), StatePaused);
 }
 
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
@@ -49,9 +49,9 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 		return;
 
 	if (e->event.typing_notification.length > 0x0000)
-		emit contactActivityChanged(StateComposing, contact);
+		emit activityChanged(contact, StateComposing);
 	else if (e->event.typing_notification.length == 0x0000)
-		emit contactActivityChanged(StatePaused, contact);
+		emit activityChanged(contact, StatePaused);
 }
 
 bool GaduChatStateService::shouldSendEvent()
@@ -66,7 +66,7 @@ bool GaduChatStateService::shouldSendEvent()
 	return true;
 }
 
-void GaduChatStateService::composingStarted(const Chat &chat)
+void GaduChatStateService::sendState(const Chat &chat, ContactActivity state)
 {
 	if (!shouldSendEvent())
 		return;
@@ -78,35 +78,16 @@ void GaduChatStateService::composingStarted(const Chat &chat)
 	if (!Protocol->gaduSession())
 		return;
 
-	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0001);
-}
-
-void GaduChatStateService::composingStopped(const Chat &chat)
-{
-	if (!shouldSendEvent())
-		return;
-
-	Contact contact = chat.contacts().toContact();
-	if (!contact)
-		return;
-
-	if (!Protocol->gaduSession())
-		return;
-
-	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0000);
-}
-
-void GaduChatStateService::chatWidgetClosed(const Chat &chat)
-{
-	composingStopped(chat);
-}
-
-void GaduChatStateService::chatWidgetActivated(const Chat &chat)
-{
-	Q_UNUSED(chat)
-}
-
-void GaduChatStateService::chatWidgetDeactivated(const Chat &chat)
-{
-	Q_UNUSED(chat)
+	switch (state)
+	{
+		case StateComposing:
+			gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0001);
+			break;
+		case StatePaused:
+		case StateGone:
+			gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0000);
+			break;
+		default:
+			break;
+	}
 }

@@ -51,15 +51,10 @@ public:
 	explicit ChatStateService(QObject *parent) : QObject(parent) {}
 
 public:
-	virtual void composingStarted(const Chat &chat) = 0;
-	virtual void composingStopped(const Chat &chat) = 0;
-
-	virtual void chatWidgetClosed(const Chat &chat) = 0;
-	virtual void chatWidgetActivated(const Chat &chat) = 0;
-	virtual void chatWidgetDeactivated(const Chat &chat) = 0;
+	virtual void sendState(const Chat &chat, ContactActivity state) = 0;
 
 signals:
-	void contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact);
+	void activityChanged(const Contact &contact, ChatStateService::ContactActivity state);
 
 };
 

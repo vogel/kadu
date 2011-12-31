@@ -336,9 +336,9 @@ void ChatMessagesView::messageStatusChanged(const Message &message, ChatService:
 	Renderer->messageStatusChanged(message, message.status());
 }
 
-void ChatMessagesView::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
+void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
 {
-	Renderer->contactActivityChanged(state, contact);
+	Renderer->contactActivityChanged(contact, state);
 }
 
 void ChatMessagesView::scrollToBottom()
