@@ -209,7 +209,7 @@ void Hint::updateText()
 		}
 	}
 
-	label->setText(QString("<div style='width:100%; height:100%; vartical-align:middle;'>")
+	label->setText(QString("<div style='width:100%; height:100%; vertical-align:middle;'>")
 		+ text.replace('\n', QLatin1String("<br />"))
 		+ "</div>"
 		);
