@@ -63,7 +63,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 	void attach(const Buddy &buddy, bool reattaching, bool emitSignals);
 
 	void doSetContactAvatar(const Avatar &contactAvatar);
-	void doSetOwnerBuddy(const Buddy &buddy);
 
 private slots:
 	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
