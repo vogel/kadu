@@ -4,6 +4,7 @@
 * sms: #2371 fixed: allow foreign SMS numbers (Vogel)
 * sms: #1664 fixed: support automatic gateway selection when +48 prefix is used (Vogel)
 * sms: #2342 fixed: do not require signature when using Orange Multibox (Vogel)
+* chat styles: #2400 fixed: message header should be shown after message with SystemType (WhE)
 
 +++ version 0.11.0-beta2
 * gui: #2192 fixed: added option to hide main window from taskbar on Windows (beevvy)
