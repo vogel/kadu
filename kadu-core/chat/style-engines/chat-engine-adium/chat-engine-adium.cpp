@@ -61,6 +61,8 @@ RefreshViewHack::~RefreshViewHack()
 
 void RefreshViewHack::loadFinished()
 {
+	// We need to clear messages in case something was rendered before this slot was called.
+	Engine->clearMessages(Renderer);
 	Renderer->setLastMessage(0);
 
 	foreach (MessageRenderInfo *message, Renderer->messages())
