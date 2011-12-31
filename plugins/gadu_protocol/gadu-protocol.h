@@ -155,7 +155,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
-    virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
+	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
 	virtual GaduChatStateService * chatStateService()  { return CurrentChatStateService; }
 
 	virtual bool contactsListReadOnly() { return false; }

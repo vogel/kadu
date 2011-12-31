@@ -75,7 +75,7 @@ GaduContactListHandler::~GaduContactListHandler()
 void GaduContactListHandler::setUpContactList(const QVector<Contact> &contacts)
 {
 	QVector<Contact> sendList = contacts;
-        sendList.remove(sendList.indexOf(Protocol->account().accountContact()));
+	sendList.remove(sendList.indexOf(Protocol->account().accountContact()));
 
 	if (sendList.isEmpty())
 	{
