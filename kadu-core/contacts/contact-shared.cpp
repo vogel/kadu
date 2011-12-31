@@ -103,15 +103,6 @@ void ContactShared::load()
 	Dirty = loadValue<bool>("Dirty", true);
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 	*OwnerBuddy = BuddyManager::instance()->byUuid(loadValue<QString>("Buddy"));
-
-	if (storage()->point().isElement())
-	{
-		QDomNodeList avatars = storage()->point().elementsByTagName("Avatar");
-		if (avatars.count() == 1)
-			if (!avatars.at(0).firstChildElement("LastUpdated").isNull())
-				storage()->point().removeChild(avatars.at(0));
-	}
-
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
 	protocolFactoryRegistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
