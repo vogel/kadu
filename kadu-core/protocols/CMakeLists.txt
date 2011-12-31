@@ -33,6 +33,7 @@ set (protocols_MOC_SRCS
 	services/personal-info-service.h
 	services/roster-service.h
 	services/search-service.h
+	services/subscription-service.h
 
 	connection-error-notification.h
 	protocol.h

@@ -232,25 +232,3 @@ void JabberRosterService::removeContact(const Contact &contact)
 	Protocol->client()->removeContact(contact.id());
 	contact.setDirty(false);
 }
-
-void JabberRosterService::askForAuthorization(const Contact &contact)
-{
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
-		return;
-
-	if (!Protocol->client())
-		return;
-
-	Protocol->client()->requestSubscription(contact.id());
-}
-
-void JabberRosterService::sendAuthorization(const Contact &contact)
-{
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
-		return;
-
-	if (!Protocol->client())
-		return;
-
-	Protocol->client()->resendSubscription(contact.id());
-}

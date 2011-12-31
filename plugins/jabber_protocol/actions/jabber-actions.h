@@ -33,8 +33,9 @@ class QMenu;
 class Action;
 class ActionDescription;
 class Contact;
-class JabberSubscriptionService;
+class SubscriptionService;
 
+// TODO: this class can be moved to core and just check for SubscriptionService
 class JabberActions : QObject
 {
 	Q_OBJECT
@@ -46,7 +47,7 @@ class JabberActions : QObject
 	ActionDescription *AskForSubscription;
 
 	Contact contactFromAction(QAction *action);
-	JabberSubscriptionService * subscriptionServiceFromContact(const Contact &contact);
+	SubscriptionService * subscriptionServiceFromContact(const Contact &contact);
 
 	explicit JabberActions();
 	virtual ~JabberActions();

@@ -27,7 +27,7 @@
 #include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
-#include "protocols/services/roster-service.h"
+#include "protocols/services/subscription-service.h"
 
 #include "buddy-contacts-table-model.h"
 
@@ -179,10 +179,10 @@ void BuddyContactsTableModel::sendAuthorization(const Contact &contact)
 
 	Account account = contact.contactAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->sendAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }
 
 void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *item)

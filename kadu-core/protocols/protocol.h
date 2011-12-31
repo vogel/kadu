@@ -57,6 +57,7 @@ class ProtocolStateMachine;
 class RosterService;
 class SearchService;
 class Status;
+class SubscriptionService;
 class KaduIcon;
 
 class KADUAPI Protocol : public QObject
@@ -126,6 +127,8 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual RosterService * rosterService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
+	virtual SubscriptionService * subscriptionService() { return 0; }
+
 	virtual bool contactsListReadOnly() = 0;
 	virtual bool supportsPrivateStatus() { return false; }
 

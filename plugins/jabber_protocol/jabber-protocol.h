@@ -35,6 +35,7 @@
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-roster-service.h"
+#include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
 class JabberContactDetails;
@@ -124,8 +125,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual RosterService * rosterService() { return CurrentRosterService; }
-
-	JabberSubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
+	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberResourcePool *resourcePool();
 

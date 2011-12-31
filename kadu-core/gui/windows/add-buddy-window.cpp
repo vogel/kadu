@@ -56,6 +56,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster-service.h"
+#include "protocols/services/subscription-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "add-buddy-window.h"
@@ -261,7 +262,7 @@ void AddBuddyWindow::accountChanged()
 		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
 	}
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 	{
 		AskForAuthorization->setEnabled(false);
 		AskForAuthorization->setChecked(false);
@@ -569,18 +570,18 @@ void AddBuddyWindow::askForAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->askForAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->requestSubscription(contact);
 }
 
 void AddBuddyWindow::sendAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->sendAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }

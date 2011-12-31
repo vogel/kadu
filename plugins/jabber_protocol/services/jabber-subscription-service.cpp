@@ -35,7 +35,7 @@
 #include "jabber-subscription-service.h"
 
 JabberSubscriptionService::JabberSubscriptionService(JabberProtocol *protocol) :
-		QObject(protocol), Protocol(protocol)
+		SubscriptionService(protocol), Protocol(protocol)
 {
 	connect(Protocol->client(), SIGNAL(subscription(const XMPP::Jid &, const QString &, const QString &)),
 		   this, SLOT(subscription(const XMPP::Jid &, const QString &, const QString &)));

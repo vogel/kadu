@@ -30,7 +30,6 @@
 #include "protocols/protocol.h"
 
 #include "actions/show-xml-console-action-description.h"
-#include "services/jabber-subscription-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-actions.h"
@@ -104,7 +103,7 @@ Contact JabberActions::contactFromAction(QAction *action)
 	return kaduAction->context()->contacts().toContact();
 }
 
-JabberSubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)
+SubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)
 {
 	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
 	if (!jabberProtocolHandler)
@@ -119,7 +118,7 @@ void JabberActions::resendSubscriptionActionActivated(QAction *sender)
 	if (!contact)
 		return;
 
-	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	SubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
 	if (!subscriptionService)
 		return;
 
@@ -132,7 +131,7 @@ void JabberActions::removeSubscriptionActionActivated(QAction *sender)
 	if (!contact)
 		return;
 
-	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	SubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
 	if (!subscriptionService)
 		return;
 
@@ -145,7 +144,7 @@ void JabberActions::askForSubscriptionActionActivated(QAction *sender)
 	if (!contact)
 		return;
 
-	JabberSubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
+	SubscriptionService *subscriptionService = subscriptionServiceFromContact(contact);
 	if (!subscriptionService)
 		return;
 
