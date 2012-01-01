@@ -63,7 +63,6 @@
 #include "misc/misc.h"
 #include "debug.h"
 
-#include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
@@ -91,7 +90,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 	CurrentChatStateService = new GaduChatStateService(this);
-	ContactListHandler = 0;
+	ContactRosterService = 0;
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
@@ -218,7 +217,7 @@ void GaduProtocol::login()
 		return;
 	}
 
-	ContactListHandler = new GaduContactListHandler(this);
+	ContactRosterService = new GaduRosterService(this);
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->watchFor(GaduSession);
@@ -270,8 +269,8 @@ void GaduProtocol::disconnectedCleanup()
 {
 	Protocol::disconnectedCleanup();
 
-	if (ContactListHandler)
-		ContactListHandler->reset();
+	if (ContactRosterService)
+		ContactRosterService->reset();
 
 	setUpFileTransferService(true);
 
@@ -294,8 +293,8 @@ void GaduProtocol::disconnectedCleanup()
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 
-		delete ContactListHandler;
-		ContactListHandler = 0;
+		delete ContactRosterService;
+		ContactRosterService = 0;
 	}
 
 	CurrentMultilogonService->removeAllSessions();
@@ -420,7 +419,7 @@ void GaduProtocol::sendUserList()
 		if (!contact.isAnonymous())
 			contactsToSend.append(contact);
 
-	ContactListHandler->setUpContactList(contactsToSend);
+	ContactRosterService->setUpContactList(contactsToSend);
 }
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
@@ -432,7 +431,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		if (contact.ownerBuddy())
 			emit userStatusChangeIgnored(contact.ownerBuddy());
-		ContactListHandler->updateContactEntry(contact);
+		ContactRosterService->updateContactEntry(contact);
 		return;
 	}
 

@@ -47,6 +47,7 @@
 #include "services/gadu-file-transfer-service.h"
 #include "services/gadu-multilogon-service.h"
 #include "services/gadu-personal-info-service.h"
+#include "services/gadu-roster-service.h"
 #include "services/gadu-search-service.h"
 
 #include "server/gadu-servers-manager.h"
@@ -97,8 +98,7 @@ private:
 	GaduSearchService *CurrentSearchService;
 	GaduMultilogonService *CurrentMultilogonService;
 	GaduChatStateService *CurrentChatStateService;
-
-	GaduContactListHandler *ContactListHandler;
+	GaduRosterService *ContactRosterService;
 
 	GaduServersManager::GaduServer ActiveServer;
 
@@ -156,7 +156,8 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
-	virtual GaduChatStateService * chatStateService()  { return CurrentChatStateService; }
+	virtual ChatStateService * chatStateService() { return CurrentChatStateService; }
+	virtual RosterService * rosterService() { return ContactRosterService; }
 
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }

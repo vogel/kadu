@@ -26,17 +26,16 @@
 
 #include <QtCore/QObject>
 
-#include <protocols/protocol.h>
+#include "protocols/services/roster-service.h"
 
 class Contact;
 class GaduContactDetails;
 class GaduProtocol;
 
-class GaduContactListHandler : public QObject
+class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
 	bool AlreadySent;
 
 private slots:
@@ -47,13 +46,18 @@ private slots:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduContactListHandler(GaduProtocol *protocol);
-	virtual ~GaduContactListHandler();
+	explicit GaduRosterService(GaduProtocol *protocol);
+	virtual ~GaduRosterService();
 
 	void setUpContactList(const QVector<Contact> &contacts);
 	void reset();
 
 	void updateContactEntry(Contact contact);
+
+public slots:
+	virtual void addContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
+	virtual void updateContact(const Contact &contact);
 
 };
 

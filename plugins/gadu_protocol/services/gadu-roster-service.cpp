@@ -32,9 +32,9 @@
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
-#include "gadu-contact-list-handler.h"
+#include "gadu-roster-service.h"
 
-int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
+int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 {
 	if (contact.isAnonymous())
 		return 0;
@@ -49,8 +49,8 @@ int GaduContactListHandler::notifyTypeFromContact(const Contact &contact)
 	return result;
 }
 
-GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
-		QObject(protocol), Protocol(protocol), AlreadySent(false)
+GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
+		RosterService(protocol), AlreadySent(false)
 {
 	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
 			this, SLOT(buddySubscriptionChanged(Buddy &)));
@@ -60,7 +60,7 @@ GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
 			this, SLOT(contactDetached(Contact, Buddy, bool)));
 }
 
-GaduContactListHandler::~GaduContactListHandler()
+GaduRosterService::~GaduRosterService()
 {
 	disconnect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
 			this, SLOT(buddySubscriptionChanged(Buddy &)));
@@ -70,14 +70,14 @@ GaduContactListHandler::~GaduContactListHandler()
 			this, SLOT(contactDetached(Contact, Buddy, bool)));
 }
 
-void GaduContactListHandler::setUpContactList(const QVector<Contact> &contacts)
+void GaduRosterService::setUpContactList(const QVector<Contact> &contacts)
 {
 	QVector<Contact> sendList = contacts;
-	sendList.remove(sendList.indexOf(Protocol->account().accountContact()));
+	sendList.remove(sendList.indexOf(protocol()->account().accountContact()));
 
 	if (sendList.isEmpty())
 	{
-		gg_notify_ex(Protocol->gaduSession(), 0, 0, 0);
+		gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		AlreadySent = true;
@@ -102,26 +102,26 @@ void GaduContactListHandler::setUpContactList(const QVector<Contact> &contacts)
 		++i;
 	}
 
-	gg_notify_ex(Protocol->gaduSession(), uins.data(), types.data(), count);
+	gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	AlreadySent = true;
 }
 
-void GaduContactListHandler::reset()
+void GaduRosterService::reset()
 {
 	AlreadySent = false;
 }
 
-void GaduContactListHandler::updateContactEntry(Contact contact)
+void GaduRosterService::updateContactEntry(Contact contact)
 {
 	if (!AlreadySent)
 		return;
 
-	if (!Protocol->isConnected())
+	if (!protocol()->isConnected())
 		return;
 
-	gg_session *session = Protocol->gaduSession();
+	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
 	if (!session)
 		return;
 
@@ -130,7 +130,7 @@ void GaduContactListHandler::updateContactEntry(Contact contact)
 		return;
 
 	int uin = details->uin();
-	if (!uin || Protocol->account().id() == QString::number(uin))
+	if (!uin || protocol()->account().id() == QString::number(uin))
 		return;
 
 	int newFlags = notifyTypeFromContact(contact);
@@ -154,18 +154,18 @@ void GaduContactListHandler::updateContactEntry(Contact contact)
 		gg_remove_notify_ex(session, uin, 0x04);
 }
 
-void GaduContactListHandler::buddySubscriptionChanged(Buddy &buddy)
+void GaduRosterService::buddySubscriptionChanged(Buddy &buddy)
 {
 	// update offline to and other data
-	foreach (const Contact &contact, buddy.contacts(Protocol->account()))
+	foreach (const Contact &contact, buddy.contacts(protocol()->account()))
 		updateContactEntry(contact);
 }
 
-void GaduContactListHandler::contactAttached(Contact contact, bool reattached)
+void GaduRosterService::contactAttached(Contact contact, bool reattached)
 {
 	Q_UNUSED(reattached)
 
-	if (contact.contactAccount() != Protocol->account())
+	if (contact.contactAccount() != protocol()->account())
 		return;
 
 	// see issue #2159 - we need a way to ignore first status of given contact
@@ -176,15 +176,30 @@ void GaduContactListHandler::contactAttached(Contact contact, bool reattached)
 	updateContactEntry(contact);
 }
 
-void GaduContactListHandler::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
+void GaduRosterService::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
 {
 	Q_UNUSED(previousBuddy)
 
 	if (reattaching)
 		return;
 
-	if (contact.contactAccount() != Protocol->account())
+	if (contact.contactAccount() != protocol()->account())
 		return;
 
 	updateContactEntry(contact);
+}
+
+void GaduRosterService::addContact(const Contact &contact)
+{
+	Q_UNUSED(contact);
+}
+
+void GaduRosterService::removeContact(const Contact &contact)
+{
+	Q_UNUSED(contact);
+}
+
+void GaduRosterService::updateContact(const Contact &contact)
+{
+	Q_UNUSED(contact);
 }
