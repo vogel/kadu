@@ -12,10 +12,6 @@
         <translation>Ogólne</translation>
     </message>
     <message>
-        <source>Nick</source>
-        <translation>Pseudonim</translation>
-    </message>
-    <message>
         <source>SMS Nick</source>
         <translation>Pseudonim SMS</translation>
     </message>
@@ -52,8 +48,8 @@
         <translation>Wyślij SMS</translation>
     </message>
     <message>
-		<source>SMS T-Mobile.pl Gateway</source>
-		<translation>Bramka SMS T-Mobile.pl</translation>
+        <source>SMS T-Mobile.pl Gateway</source>
+        <translation>Bramka SMS T-Mobile.pl</translation>
     </message>
     <message>
         <source>Sponsored</source>
@@ -80,6 +76,10 @@
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
         <translation>Zaznacz to pole, jeśli twoja aplikacja sms nie przyjmuje argumentów: numer &amp;wiadomość&amp;
 Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak numer, %m jako wiadomość</translation>
+    </message>
+    <message>
+        <source>SMS proxy for built-in application</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -176,10 +176,6 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
 </context>
 <context>
     <name>SmsInternalSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
-        <translation>Numer telefonu jest nieprawidłowy</translation>
-    </message>
     <message>
         <source>Signature can&apos;t be empty</source>
         <translation>Pole &quot;Podpis&quot; nie może być puste</translation>

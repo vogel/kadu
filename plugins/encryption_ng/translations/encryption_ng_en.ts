@@ -44,44 +44,6 @@
     </message>
 </context>
 <context>
-    <name>SendPublicKeyActionDescription</name>
-    <message>
-        <source>Send My Public Key</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No public key available</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>GenerateKeysActionDescription</name>
-    <message>
-        <source>Generate Encryption Keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encryption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keys have been generated</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EncryptionNgNotification</name>
     <message>
         <source>Encryption</source>
@@ -120,6 +82,44 @@ Do you want to save it?</source>
     </message>
     <message>
         <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GenerateKeysActionDescription</name>
+    <message>
+        <source>Generate Encryption Keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Keys have been generated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SendPublicKeyActionDescription</name>
+    <message>
+        <source>Send My Public Key</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No public key available</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

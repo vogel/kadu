@@ -46,6 +46,10 @@
         <source>Your interlocutor used obscene word and became admonished</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cenzor</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEditWidget</name>

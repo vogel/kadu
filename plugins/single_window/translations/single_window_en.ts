@@ -60,4 +60,11 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
+<context>
+    <name>SingleWindow</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

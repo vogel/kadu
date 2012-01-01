@@ -71,10 +71,6 @@
         <source>Chat</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Always Use Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TabsManager</name>

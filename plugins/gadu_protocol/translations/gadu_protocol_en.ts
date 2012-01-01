@@ -204,11 +204,6 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This dialog box allows you to change your current password.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>E-Mail Address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -445,10 +440,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Proxy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Allow file transfers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -457,19 +448,11 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show my status to everyone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>When disabled, you&apos;re visible only to buddies on your list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -552,6 +535,28 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive URLs from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
+You have several buddies which are not allowed to see your status.
+Enabling this option will allow them to know you are available.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -629,10 +634,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <name>GaduRemindPasswordWindow</name>
     <message>
         <source>Remind password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to ask server to remind your current password.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

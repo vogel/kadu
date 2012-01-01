@@ -108,6 +108,13 @@
     </message>
 </context>
 <context>
+    <name>CertificateErrorDialog</name>
+    <message>
+        <source>The %1 certificate failed the authenticity test.</source>
+        <translation type="unfinished">Das Zertifikat %1 bestand den Zulassungstest nicht.</translation>
+    </message>
+</context>
+<context>
     <name>FacebookProtocolFactory</name>
     <message>
         <source>Facebook ID:</source>
@@ -195,13 +202,6 @@
     </message>
 </context>
 <context>
-    <name>ShowXmlConsoleActionDescription</name>
-    <message>
-        <source>Show XML Console</source>
-        <translation>Zeige XML-Konsole</translation>
-    </message>
-</context>
-<context>
     <name>JabberActions</name>
     <message>
         <source>Resend Subscription</source>
@@ -256,11 +256,6 @@
     <message>
         <source>Change Password</source>
         <translation>Passwort ändern</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to change your current password.
-</source>
-        <translation>Dieses Fenster erlaubt Ihnen, das aktuelle Passwort zu ändern.</translation>
     </message>
     <message>
         <source>Old Password</source>
@@ -480,10 +475,6 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
         <translation>Verbindung</translation>
     </message>
     <message>
-        <source>Proxy</source>
-        <translation>Proxy</translation>
-    </message>
-    <message>
         <source>Manually specify server host/port</source>
         <translation>Den Rechnernamen und Port selber angeben</translation>
     </message>
@@ -582,6 +573,18 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     <message>
         <source>Remove account</source>
         <translation>Konto entfernen</translation>
+    </message>
+    <message>
+        <source>Proxy configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Privacy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publish system information</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -700,10 +703,6 @@ Genauer gesagt: %1</translation>
 <context>
     <name>QObject</name>
     <message>
-        <source>The %1 certificate failed the authenticity test.</source>
-        <translation>Das Zertifikat %1 bestand den Zulassungstest nicht.</translation>
-    </message>
-    <message>
         <source>&amp;Details...</source>
         <translation>&amp;Details...</translation>
     </message>
@@ -810,6 +809,13 @@ Genauer gesagt: %1</translation>
     <message>
         <source>Misc</source>
         <translation>Andere</translation>
+    </message>
+</context>
+<context>
+    <name>ShowXmlConsoleActionDescription</name>
+    <message>
+        <source>Show XML Console</source>
+        <translation>Zeige XML-Konsole</translation>
     </message>
 </context>
 <context>

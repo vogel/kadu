@@ -74,5 +74,13 @@
         <source>Checked</source>
         <translation>Überprüft</translation>
     </message>
+    <message>
+        <source>Could not find dictionary for %1 language.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

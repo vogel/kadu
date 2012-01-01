@@ -86,10 +86,6 @@
 <context>
     <name>ChatDatesModel</name>
     <message>
-        <source>Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title</source>
         <translation type="unfinished"></translation>
     </message>
@@ -105,31 +101,7 @@
 <context>
     <name>History</name>
     <message>
-        <source>View Chat History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show last %1 messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show messages since yesterday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show messages from last 7 days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show messages from last 30 days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show whole history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -191,7 +163,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There is no history storage module loaded!</source>
+        <source>There is no history storage plugin loaded!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -199,6 +171,33 @@
     <name>QApplication</name>
     <message>
         <source>Chat history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShowHistoryActionDescription</name>
+    <message>
+        <source>View Chat History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show last %1 messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages since yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages from last 7 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages from last 30 days</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show whole history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

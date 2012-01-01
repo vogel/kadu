@@ -52,10 +52,6 @@
         <translation>Náhled na umístění rady</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>Náhled na &lt;b&gt;text&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Timeout</source>
         <translation>Časové omezení</translation>
     </message>
@@ -231,6 +227,10 @@
         <source>Margin size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -272,12 +272,12 @@
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
-        <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
-        <translation>Text &lt;b&gt;náhledu&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Configure</source>
         <translation>Nastavit</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -289,6 +289,10 @@
     <message>
         <source>Don&apos;t hide</source>
         <translation>Neskrývat</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -19,16 +19,8 @@
         </translation>
     </message>
     <message>
-        <source>Show message content in hint</source>
-        <translation>Zeige Nachrichteninhalt in der Sprechblase</translation>
-    </message>
-    <message>
         <source>Number of quoted characters</source>
         <translation>Anzahl de zu zitierenden Zeichen</translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>System notifications</source>
@@ -40,6 +32,10 @@
     </message>
     <message>
         <source>Expiration timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

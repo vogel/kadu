@@ -52,10 +52,6 @@
         <translation>Vorschau der Hinweis-Position</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Text&lt;/b&gt; Vorschau</translation>
-    </message>
-    <message>
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
@@ -230,6 +226,10 @@
         <source>Delete All Hints</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -271,11 +271,11 @@
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
-        <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
-        <translation>&lt;b&gt;Vorschau&lt;/b&gt; Text</translation>
+        <source>Configure</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Configure</source>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -287,6 +287,10 @@
     </message>
     <message>
         <source>Don&apos;t hide</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

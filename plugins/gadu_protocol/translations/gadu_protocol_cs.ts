@@ -204,12 +204,6 @@ Do you want to accept this image anyway?</source>
         <translation>Změnit heslo</translation>
     </message>
     <message>
-        <source>This dialog box allows you to change your current password.
-</source>
-        <translation>Toto dialogové okénko vám umožní změnu vašeho současného hesla.
-</translation>
-    </message>
-    <message>
         <source>E-Mail Address</source>
         <translation>Adresa elektronické pošty</translation>
     </message>
@@ -446,10 +440,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation>Připojení</translation>
     </message>
     <message>
-        <source>Proxy</source>
-        <translation>Proxy</translation>
-    </message>
-    <message>
         <source>Allow file transfers</source>
         <translation>Povolit přenosy souborů</translation>
     </message>
@@ -458,20 +448,12 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation>Volby</translation>
     </message>
     <message>
-        <source>Status</source>
-        <translation>Stav</translation>
-    </message>
-    <message>
         <source>Show my status to everyone</source>
         <translation>Ukázat můj stav komukoli</translation>
     </message>
     <message>
         <source>When disabled, you&apos;re visible only to buddies on your list</source>
         <translation>Když je zakázáno, jste viditelný jen kamarádům ve svém seznamu</translation>
-    </message>
-    <message>
-        <source>Notifications</source>
-        <translation>Oznámení</translation>
     </message>
     <message>
         <source>Send composing events</source>
@@ -553,6 +535,28 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>External port</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive URLs from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
+You have several buddies which are not allowed to see your status.
+Enabling this option will allow them to know you are available.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GaduPersonalInfoWidget</name>
@@ -631,10 +635,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     <message>
         <source>Remind password</source>
         <translation>Připomenout heslo</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to ask server to remind your current password.</source>
-        <translation>Toto dialogové okénko vám umožní požádat server o připomenutí vašeho současného hesla.</translation>
     </message>
     <message>
         <source>E-Mail Address</source>

@@ -86,10 +86,6 @@
 <context>
     <name>ChatDatesModel</name>
     <message>
-        <source>Chat</source>
-        <translation>Rozmowa</translation>
-    </message>
-    <message>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
@@ -111,33 +107,6 @@
     <message>
         <source>%1 day(s) %2 hour(s)</source>
         <translation>%1 dzień(dni) %2 godzina(y)</translation>
-    </message>
-</context>
-<context>
-    <name>ShowHistoryActionDescription</name>
-    <message>
-        <source>View Chat History</source>
-        <translation>Pokaż historię rozmów</translation>
-    </message>
-    <message>
-        <source>Show last %1 messages</source>
-        <translation>Wyświetl ostatnie %1 wiadomości</translation>
-    </message>
-    <message>
-        <source>Show messages since yesterday</source>
-        <translation>Wyświetl wiadomości od wczoraj</translation>
-    </message>
-    <message>
-        <source>Show messages from last 7 days</source>
-        <translation>Wyświetl wiadomości z ostatniego tygodnia</translation>
-    </message>
-    <message>
-        <source>Show messages from last 30 days</source>
-        <translation>Wyświetl wiadomości z ostatnich 30 dni</translation>
-    </message>
-    <message>
-        <source>Show whole history</source>
-        <translation>Wyświetl całą historię</translation>
     </message>
 </context>
 <context>
@@ -194,8 +163,8 @@
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>There is no history storage module loaded!</source>
-        <translation>Nie jest załadowany moduł przechowujący historię!</translation>
+        <source>There is no history storage plugin loaded!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -203,6 +172,33 @@
     <message>
         <source>Chat history</source>
         <translation>Historia rozmów</translation>
+    </message>
+</context>
+<context>
+    <name>ShowHistoryActionDescription</name>
+    <message>
+        <source>View Chat History</source>
+        <translation>Pokaż historię rozmów</translation>
+    </message>
+    <message>
+        <source>Show last %1 messages</source>
+        <translation>Wyświetl ostatnie %1 wiadomości</translation>
+    </message>
+    <message>
+        <source>Show messages since yesterday</source>
+        <translation>Wyświetl wiadomości od wczoraj</translation>
+    </message>
+    <message>
+        <source>Show messages from last 7 days</source>
+        <translation>Wyświetl wiadomości z ostatniego tygodnia</translation>
+    </message>
+    <message>
+        <source>Show messages from last 30 days</source>
+        <translation>Wyświetl wiadomości z ostatnich 30 dni</translation>
+    </message>
+    <message>
+        <source>Show whole history</source>
+        <translation>Wyświetl całą historię</translation>
     </message>
 </context>
 <context>

@@ -52,10 +52,6 @@
         <translation>Podgląd pozycji dymków</translation>
     </message>
     <message>
-        <source>&lt;b&gt;Text&lt;/b&gt; preview</source>
-        <translation>&lt;b&gt;Text&lt;/b&gt; podgląd</translation>
-    </message>
-    <message>
         <source>Timeout</source>
         <translation>Czas zaniku</translation>
     </message>
@@ -231,6 +227,10 @@
         <source>Delete All Hints</source>
         <translation>Usuń wszystkie dymki</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HintManager</name>
@@ -272,12 +272,12 @@
 <context>
     <name>HintsConfigurationWidget</name>
     <message>
-        <source>&lt;b&gt;Preview&lt;/b&gt; text</source>
-        <translation>&lt;b&gt;Podgląd&lt;/b&gt; tekstu</translation>
-    </message>
-    <message>
         <source>Configure</source>
         <translation>Konfiguruj</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -289,6 +289,10 @@
     <message>
         <source>Don&apos;t hide</source>
         <translation>Nie ukrywaj</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -20,16 +20,8 @@
         </translation>
     </message>
     <message>
-        <source>Show message content in hint</source>
-        <translation>Ukázat obsah zprávy v bublině</translation>
-    </message>
-    <message>
         <source>Number of quoted characters</source>
         <translation>Počet citovaných znaků</translation>
-    </message>
-    <message>
-        <source>System</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>System notifications</source>
@@ -41,6 +33,10 @@
     </message>
     <message>
         <source>Expiration timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -68,10 +68,6 @@
         <translation>Přepnout na další kartu</translation>
     </message>
     <message>
-        <source>Always Use Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Chat Window</source>
         <translation type="unfinished"></translation>
     </message>

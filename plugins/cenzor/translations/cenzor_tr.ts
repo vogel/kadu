@@ -46,6 +46,10 @@
         <source>Your interlocutor used obscene word and became admonished</source>
         <translation>Konuştuğunuz kişi kötü söz söylediği için uyarıldı</translation>
     </message>
+    <message>
+        <source>Cenzor</source>
+        <translation type="unfinished">Sansü</translation>
+    </message>
 </context>
 <context>
     <name>ListEditWidget</name>

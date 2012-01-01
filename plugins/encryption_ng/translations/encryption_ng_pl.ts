@@ -44,44 +44,6 @@
     </message>
 </context>
 <context>
-    <name>SendPublicKeyActionDescription</name>
-    <message>
-        <source>Send My Public Key</source>
-        <translation>Wyślij mój klucz publiczny</translation>
-    </message>
-    <message>
-        <source>No public key available</source>
-        <translation>Brak klucza publicznego</translation>
-    </message>
-</context>
-<context>
-    <name>GenerateKeysActionDescription</name>
-    <message>
-        <source>Encryption</source>
-        <translation>Szyfrowanie</translation>
-    </message>
-    <message>
-        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation>Nie można wygenerować kluczy. Sprawdź czy moduł encryption_simlite jest załadowany</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
-    </message>
-    <message>
-        <source>Keys have been generated</source>
-        <translation>Klucze zostały wygenerowane</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation>Błąd generowania kluczy</translation>
-    </message>
-    <message>
-        <source>Generate Encryption Keys</source>
-        <translation>Wygeneruj klucze szyfrowania</translation>
-    </message>
-</context>
-<context>
     <name>EncryptionNgNotification</name>
     <message>
         <source>Encryption</source>
@@ -122,6 +84,44 @@ Chcesz go zapisać?</translation>
     <message>
         <source>Encryption</source>
         <translation>Szyfrowanie</translation>
+    </message>
+</context>
+<context>
+    <name>GenerateKeysActionDescription</name>
+    <message>
+        <source>Encryption</source>
+        <translation>Szyfrowanie</translation>
+    </message>
+    <message>
+        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
+        <translation>Nie można wygenerować kluczy. Sprawdź czy moduł encryption_simlite jest załadowany</translation>
+    </message>
+    <message>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation>Klucze istnieją. Czy chcesz je nadpisać?</translation>
+    </message>
+    <message>
+        <source>Keys have been generated</source>
+        <translation>Klucze zostały wygenerowane</translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation>Błąd generowania kluczy</translation>
+    </message>
+    <message>
+        <source>Generate Encryption Keys</source>
+        <translation>Wygeneruj klucze szyfrowania</translation>
+    </message>
+</context>
+<context>
+    <name>SendPublicKeyActionDescription</name>
+    <message>
+        <source>Send My Public Key</source>
+        <translation>Wyślij mój klucz publiczny</translation>
+    </message>
+    <message>
+        <source>No public key available</source>
+        <translation>Brak klucza publicznego</translation>
     </message>
 </context>
 </TS>

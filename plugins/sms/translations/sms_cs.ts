@@ -12,10 +12,6 @@
         <translation>Obecné</translation>
     </message>
     <message>
-        <source>Nick</source>
-        <translation>Přezdívka:</translation>
-    </message>
-    <message>
         <source>SMS Nick</source>
         <translation>Přezdívka SMS</translation>
     </message>
@@ -52,8 +48,8 @@
         <translation>Poslat SMS</translation>
     </message>
     <message>
-		<source>SMS T-Mobile.pl Gateway</source>
-		<translation>Server T-Mobile.pl SMS</translation>
+        <source>SMS T-Mobile.pl Gateway</source>
+        <translation>Server T-Mobile.pl SMS</translation>
     </message>
     <message>
         <source>Sponsored</source>
@@ -78,6 +74,10 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>Orange Multibox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS proxy for built-in application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -175,10 +175,6 @@ Arguments should be separated with spaces. %k argument is converted to number, %
 </context>
 <context>
     <name>SmsInternalSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
-        <translation>Číslo přenosného telefonu je nesprávné</translation>
-    </message>
     <message>
         <source>Signature can&apos;t be empty</source>
         <translation>Podpis nemůže být prázdný</translation>

@@ -60,4 +60,11 @@
         <translation>Przełącz focus pomiędzy listą kontaktów a zakładkami</translation>
     </message>
 </context>
+<context>
+    <name>SingleWindow</name>
+    <message>
+        <source>Conference [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

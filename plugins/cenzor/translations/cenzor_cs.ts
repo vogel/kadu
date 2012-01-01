@@ -46,6 +46,10 @@
         <source>Your interlocutor used obscene word and became admonished</source>
         <translation>Účastník vaší rozmluvy použil sprosté slovo a byl za to vykázán</translation>
     </message>
+    <message>
+        <source>Cenzor</source>
+        <translation type="unfinished">Cenzor</translation>
+    </message>
 </context>
 <context>
     <name>ListEditWidget</name>

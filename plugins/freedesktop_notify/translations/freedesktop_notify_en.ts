@@ -19,15 +19,7 @@
         </translation>
     </message>
     <message>
-        <source>Show message content in hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>System</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -40,6 +32,10 @@
     </message>
     <message>
         <source>Expiration timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show message content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

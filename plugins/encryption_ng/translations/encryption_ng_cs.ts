@@ -44,44 +44,6 @@
     </message>
 </context>
 <context>
-    <name>SendPublicKeyActionDescription</name>
-    <message>
-        <source>Send My Public Key</source>
-        <translation>Poslat můj veřejný klíč</translation>
-    </message>
-    <message>
-        <source>No public key available</source>
-        <translation>Žádný veřejný klíč není dostupný</translation>
-    </message>
-</context>
-<context>
-    <name>GenerateKeysActionDescription</name>
-    <message>
-        <source>Generate Encryption Keys</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encryption</source>
-        <translation type="unfinished">Šifrování</translation>
-    </message>
-    <message>
-        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation type="unfinished">Nelze vytvořit klíče. Prověřte, zda je nahrán modul encryption_simlite</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished">Klíč existuje. Chcete jej přepsat?</translation>
-    </message>
-    <message>
-        <source>Keys have been generated</source>
-        <translation type="unfinished">Klíče byly vytvořeny</translation>
-    </message>
-    <message>
-        <source>Error generating keys</source>
-        <translation type="unfinished">Chyba při vytváření klíčů</translation>
-    </message>
-</context>
-<context>
     <name>EncryptionNgNotification</name>
     <message>
         <source>Encryption</source>
@@ -122,6 +84,44 @@ Chcete jej uložit?</translation>
     <message>
         <source>Encryption</source>
         <translation>Šifrování</translation>
+    </message>
+</context>
+<context>
+    <name>GenerateKeysActionDescription</name>
+    <message>
+        <source>Generate Encryption Keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encryption</source>
+        <translation type="unfinished">Šifrování</translation>
+    </message>
+    <message>
+        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
+        <translation type="unfinished">Nelze vytvořit klíče. Prověřte, zda je nahrán modul encryption_simlite</translation>
+    </message>
+    <message>
+        <source>Keys exist. Do you want to overwrite them?</source>
+        <translation type="unfinished">Klíč existuje. Chcete jej přepsat?</translation>
+    </message>
+    <message>
+        <source>Keys have been generated</source>
+        <translation type="unfinished">Klíče byly vytvořeny</translation>
+    </message>
+    <message>
+        <source>Error generating keys</source>
+        <translation type="unfinished">Chyba při vytváření klíčů</translation>
+    </message>
+</context>
+<context>
+    <name>SendPublicKeyActionDescription</name>
+    <message>
+        <source>Send My Public Key</source>
+        <translation>Poslat můj veřejný klíč</translation>
+    </message>
+    <message>
+        <source>No public key available</source>
+        <translation>Žádný veřejný klíč není dostupný</translation>
     </message>
 </context>
 </TS>

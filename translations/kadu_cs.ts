@@ -130,28 +130,12 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <source>Parser</source>
-        <translation>Syntaktický analyzátor</translation>
-    </message>
-    <message>
         <source>Allow executing commands by parser</source>
         <translation>Povolit spouštění příkazů syntaktickým analyzátorem</translation>
     </message>
     <message>
-        <source>Select method</source>
-        <translation>Vybrat způsob</translation>
-    </message>
-    <message>
-        <source>Debugging</source>
-        <translation>Ladění</translation>
-    </message>
-    <message>
         <source>Debugging mask</source>
         <translation>Ladicí maska</translation>
-    </message>
-    <message>
-        <source>Account</source>
-        <translation>Účet</translation>
     </message>
     <message>
         <source>Filters</source>
@@ -678,136 +662,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Kamarádi</translation>
     </message>
     <message>
-        <source>Protocol</source>
-        <translation>Protokol</translation>
-    </message>
-    <message>
-        <source>Buddy</source>
-        <translation>Kamarád</translation>
-    </message>
-    <message>
         <source>Blocked</source>
         <translation>Znemožněný</translation>
-    </message>
-    <message>
-        <source>Offline to</source>
-        <translation>Nepřipojený pro</translation>
-    </message>
-    <message>
-        <source>Data</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <source>Port and IP address</source>
-        <translation>Přípojka a adresa IP</translation>
-    </message>
-    <message>
-        <source>DNS name</source>
-        <translation>Název DNS</translation>
-    </message>
-    <message>
-        <source>Protocol version</source>
-        <translation>Verze protokolu</translation>
-    </message>
-    <message>
-        <source>Display</source>
-        <translation>Zobrazit</translation>
-    </message>
-    <message>
-        <source>First name</source>
-        <translation>Křestní jméno</translation>
-    </message>
-    <message>
-        <source>Last name</source>
-        <translation>Příjmení</translation>
-    </message>
-    <message>
-        <source>Family name</source>
-        <translation>Příjmení</translation>
-    </message>
-    <message>
-        <source>City</source>
-        <translation>Město</translation>
-    </message>
-    <message>
-        <source>Family city</source>
-        <translation>Rodné město</translation>
-    </message>
-    <message>
-        <source>Nick name</source>
-        <translation>Přezdívka</translation>
-    </message>
-    <message>
-        <source>Home phone</source>
-        <translation>Domácí telefon</translation>
-    </message>
-    <message>
-        <source>Mobile phone</source>
-        <translation>Přenosný telefon</translation>
-    </message>
-    <message>
-        <source>Email</source>
-        <translation>E-mail</translation>
-    </message>
-    <message>
-        <source>Birth year</source>
-        <translation>Rok narození</translation>
-    </message>
-    <message>
-        <source>Gender</source>
-        <translation>Pohlaví</translation>
-    </message>
-    <message>
-        <source>File Transfers and Voice Chats</source>
-        <translation>Přenosy souborů a hlasové hovory</translation>
-    </message>
-    <message>
-        <source>Allow file transfers and voice chats</source>
-        <translation>Povolit přenosy souborů a hlasové hovory</translation>
-    </message>
-    <message>
-        <source>File Transfers</source>
-        <translation>Přenosy souborů</translation>
-    </message>
-    <message>
-        <source>Remove completed transfers from transfers list</source>
-        <translation>Odstranit dokončené přenosy ze seznamu přenosů</translation>
-    </message>
-    <message>
-        <source>IP</source>
-        <translation>IP</translation>
-    </message>
-    <message>
-        <source>DCC IP autodetection</source>
-        <translation>Automatické zjištění IP DCC</translation>
-    </message>
-    <message>
-        <source>IP address</source>
-        <translation>Adresa IP</translation>
-    </message>
-    <message>
-        <source>DCC forwarding enabled</source>
-        <translation>Přeposílání DCC povoleno</translation>
-    </message>
-    <message>
-        <source>External IP address</source>
-        <translation>Vnější adresa IP</translation>
-    </message>
-    <message>
-        <source>External TCP port</source>
-        <translation>Vnější přípojka TCP</translation>
-    </message>
-    <message>
-        <source>Local TCP port</source>
-        <translation>Místní přípojka TCP</translation>
-    </message>
-    <message>
-        <source>Sending Files and Voice Chats</source>
-        <translation>Posílání souborů a hlasových hovorů</translation>
-    </message>
-    <message>
-        <source>Send file</source>
-        <translation>Poslat soubor</translation>
     </message>
     <message>
         <source>Headers and Separators</source>
@@ -828,10 +684,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Enter a nickname for your account.</source>
         <translation>Zadejte přezdívku pro svůj účet.</translation>
-    </message>
-    <message>
-        <source>Default Language</source>
-        <translation>Výchozí jazyk</translation>
     </message>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
@@ -864,10 +716,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Automatically open Kadu at startup</source>
         <translation>Automaticky otevřít Kadu při spuštění</translation>
-    </message>
-    <message>
-        <source>Window Activation Method</source>
-        <translation>Způsob zapnutí okna</translation>
     </message>
     <message>
         <source>Show offline buddies</source>
@@ -1259,6 +1107,26 @@ ihned po zřízení spojení se serverem</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Personal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide main window icon from taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select window activation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Turn on blur</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -1321,6 +1189,10 @@ ihned po zřízení spojení se serverem</translation>
         <source>Select avatar file</source>
         <translation>Vybrat soubor pro zosobnění</translation>
     </message>
+    <message>
+        <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountBuddyListWidget</name>
@@ -1344,6 +1216,14 @@ ihned po zřízení spojení se serverem</translation>
         <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
         <translation>Seznam se spojeními se nepodařilo zavést. Soubor %0 neobsahuje správný seznam se spojeními.</translation>
     </message>
+    <message>
+        <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact List Files (*.txt)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AccountManager</name>
@@ -1361,18 +1241,6 @@ ihned po zřízení spojení se serverem</translation>
 </context>
 <context>
     <name>AddBuddyWindow</name>
-    <message>
-        <source>Adding contact with ID &lt;b&gt;%1&lt;/b&gt; in</source>
-        <translation>Přidává se spojení s ID &lt;b&gt;%1&lt;/b&gt; do</translation>
-    </message>
-    <message>
-        <source>%1 account &lt;b&gt;%2 (%3)&lt;/b&gt;</source>
-        <translation>%1 účtu &lt;b&gt;%2 (%3)&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>in</source>
-        <translation>v</translation>
-    </message>
     <message>
         <source>Add in group:</source>
         <translation>Přidat do skupiny:</translation>
@@ -1450,16 +1318,8 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Zadané číslo přenosného telefonu je neplatné</translation>
     </message>
     <message>
-        <source>Merging mobile number with buddy is not supported. Please use edit buddy window.</source>
-        <translation>Sloučení čísla přenosného telefonu s kamarádem není podporováno. oužijte, prosím, okno pro úpravu kamaráda.</translation>
-    </message>
-    <message>
         <source>Entered e-mail is invalid</source>
         <translation>Zadaná adresa elektronické pošty je neplatná</translation>
-    </message>
-    <message>
-        <source>Merging e-mail with buddy is not supported. Please use edit buddy window.</source>
-        <translation>Sloučení adresy elektronické pošty s kamarádem není podporováno. oužijte, prosím, okno pro úpravu kamaráda.</translation>
     </message>
     <message>
         <source>Entered user identification is invalid</source>
@@ -1475,6 +1335,76 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>No e-mail entered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished">Účet:</translation>
+    </message>
+    <message>
+        <source>Merge with:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge with buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConferenceAction</name>
+    <message>
+        <source>Add Conference...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddConferenceWindow</name>
+    <message>
+        <source>Add Conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished">Účet:</translation>
+    </message>
+    <message>
+        <source>Visible name:</source>
+        <translation type="unfinished">Viditelné jméno:</translation>
+    </message>
+    <message>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Account is not selected</source>
+        <translation type="unfinished">Účet není vybrán</translation>
+    </message>
+    <message>
+        <source>Select at least two buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This conference is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name to add this conference to roster</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1505,13 +1435,6 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
-    <name>BuddiesListViewMenuManager</name>
-    <message>
-        <source>More Actions...</source>
-        <translation>Více činností...</translation>
-    </message>
-</context>
-<context>
     <name>Buddy</name>
     <message>
         <source>Example description</source>
@@ -1531,6 +1454,10 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Select new photo</source>
         <translation>Vybrat novou fotografii</translation>
+    </message>
+    <message>
+        <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1714,14 +1641,44 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
+    <name>ChangeStatusAction</name>
+    <message>
+        <source>Change Status</source>
+        <translation type="unfinished">Změnit stav</translation>
+    </message>
+</context>
+<context>
+    <name>ChatDataWindow</name>
+    <message>
+        <source>Chat Properties - %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible Name</source>
+        <translation type="unfinished">Viditelné jméno</translation>
+    </message>
+    <message>
+        <source>Add this chat to the groups below by checking the box next to the appropriate groups.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">Použít</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+</context>
+<context>
     <name>ChatEditBox</name>
     <message>
         <source>Insert image</source>
         <translation>Vložit obrázek</translation>
-    </message>
-    <message>
-        <source>Images</source>
-        <translation>Obrázky</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1757,6 +1714,10 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1799,6 +1760,17 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
+    <name>ChatTypeAggregate</name>
+    <message>
+        <source>Aggregate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aggregates</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatTypeConference</name>
     <message>
         <source>Conference</source>
@@ -1823,12 +1795,6 @@ ihned po zřízení spojení se serverem</translation>
 <context>
     <name>ChatWidget</name>
     <message>
-        <source>Leave
-conference</source>
-        <translation>Opustit
-poradu</translation>
-    </message>
-    <message>
         <source>Conference with </source>
         <translation>Porada s </translation>
     </message>
@@ -1843,12 +1809,6 @@ poradu</translation>
     <message>
         <source>Cannot send message while being offline.</source>
         <translation>Zprávu, když jste nepřipojen, nelze poslat.</translation>
-    </message>
-    <message>
-        <source>All messages received in this conference will be ignored
-from now on. Are you sure you want to leave this conference?</source>
-        <translation>Všechny zprávy přijaté na této poradě se od teď budou přehlížet.
-Jste si jistý, že tuto poradu chcete opustit?</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -1906,10 +1866,6 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
         <translation>&amp;Poslat</translation>
     </message>
     <message>
-        <source>Search this User in Directory</source>
-        <translation>Hledat tohoto uživatele v adresáři</translation>
-    </message>
-    <message>
         <source>Block Buddy</source>
         <translation>Obstavit kamaráda</translation>
     </message>
@@ -1933,16 +1889,9 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
         <source>More</source>
         <translation>Více</translation>
     </message>
-</context>
-<context>
-    <name>ChatWidgetManager</name>
-    <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Vložit obličej - povolit v nastavení</translation>
-    </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Vložit obličej</translation>
+        <translation type="unfinished">Vložit obličej</translation>
     </message>
 </context>
 <context>
@@ -2011,23 +1960,27 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>The following contacts present on server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Moreover, the following contacts present on server were found on your local contact list under different buddy display names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you want to apply the above changes to your contact list?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts present on the server were not found on your local contact list:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;If you do not agree to add those contacts to your local list, they will be removed from the server.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moreover, the following contacts from your local list are present on the server under different names:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;&lt;br/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2067,6 +2020,43 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
     <message>
         <source>Select All</source>
         <translation>Vybrat vše</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultProxyAction</name>
+    <message>
+        <source>Select Default Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DeleteTalkableAction</name>
+    <message>
+        <source>Delete Buddy...</source>
+        <translation type="unfinished">Smazat kamaráda...</translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditTalkableAction</name>
+    <message>
+        <source>View Buddy Properties</source>
+        <translation type="unfinished">Zobrazit vlastnosti kamaráda</translation>
     </message>
 </context>
 <context>
@@ -2312,8 +2302,8 @@ Co se má udělat?</translation>
         <translation>Vybrat ikonu</translation>
     </message>
     <message>
-        <source>Icons (*.png *.xpm *.jpg)</source>
-        <translation>Ikony (*.png *.xpm *.jpg)</translation>
+        <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2392,8 +2382,8 @@ Co se má udělat?</translation>
         <translation>Zadejte, prosím, název pro novou skupinu:</translation>
     </message>
     <message>
-        <source> - Select group - </source>
-        <translation> - Vybrat skupinu - </translation>
+        <source> - Do not add - </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2573,10 +2563,6 @@ Co se má udělat?</translation>
         <translation>Nahlášení chyby...</translation>
     </message>
     <message>
-        <source>Support Us...</source>
-        <translation>Podpořte nás...</translation>
-    </message>
-    <message>
         <source>Get Involved...</source>
         <translation>Zapojte se...</translation>
     </message>
@@ -2642,10 +2628,6 @@ Sloučit kamarády...</translation>
         <translation>Smazat kamaráda...</translation>
     </message>
     <message>
-        <source>Change Status</source>
-        <translation>Změnit stav</translation>
-    </message>
-    <message>
         <source>New Group</source>
         <translation>Nová skupina</translation>
     </message>
@@ -2668,6 +2650,31 @@ Sloučit kamarády...</translation>
     <message>
         <source>Show Myself Buddy</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Chat Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LeaveChatAction</name>
+    <message>
+        <source>Leave</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>All messages received in this conference will be ignored
+from now on. Are you sure you want to leave this conference?</source>
+        <translation type="unfinished">Všechny zprávy přijaté na této poradě se od teď budou přehlížet.
+Jste si jistý, že tuto poradu chcete opustit?</translation>
     </message>
 </context>
 <context>
@@ -2727,6 +2734,14 @@ Sloučit kamarády...</translation>
     <message>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nová zpráva od &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>New chat</source>
+        <translation type="unfinished">Nový hovor</translation>
+    </message>
+    <message>
+        <source>New message</source>
+        <translation type="unfinished">Nová zpráva</translation>
     </message>
 </context>
 <context>
@@ -2982,10 +2997,6 @@ Můžete je nahrát (nebo odebrat) dvojitým poklepáním na jejich názvy.</tra
 <context>
     <name>Plugin</name>
     <message>
-        <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
-    </message>
-    <message>
         <source>Cannot load %1 plugin library.:
 %2</source>
         <translation type="unfinished"></translation>
@@ -2998,6 +3009,17 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>Module initialization routine for %1 failed.</source>
         <translation type="unfinished">Běžný postup pro zapnutí modulu pro %1 selhal.</translation>
+    </message>
+</context>
+<context>
+    <name>PluginErrorDialog</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3035,6 +3057,13 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
 </context>
 <context>
+    <name>ProgressWindow2</name>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zavřít</translation>
+    </message>
+</context>
+<context>
     <name>ProtocolsComboBox</name>
     <message>
         <source> - Select network - </source>
@@ -3042,30 +3071,109 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
 </context>
 <context>
-    <name>ProxyGroupBox</name>
+    <name>ProxyComboBox</name>
     <message>
-        <source>Use the following proxy</source>
-        <translation>Použít následující proxy</translation>
+        <source> - No proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit proxy configuration...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - Use Default Proxy - </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ProxyEditWindow</name>
+    <message>
+        <source>Proxy Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add new proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP CONNECT method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SOCKS Version 5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTTP Polling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type (for Jabber)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Polling URL</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Hostitel</translation>
+        <translation type="unfinished">Hostitel</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation>Přípojka</translation>
+        <translation type="unfinished">Přípojka</translation>
     </message>
     <message>
-        <source>Proxy requires authentication</source>
-        <translation>Proxy server požaduje ověření pravosti</translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation>Uživatelské jméno</translation>
+        <source>User</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Password</source>
-        <translation>Heslo</translation>
+        <translation type="unfinished">Heslo</translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Odstranit</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Zavřít</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished">Uložit</translation>
+    </message>
+    <message>
+        <source>Confirm proxy removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to remove this proxy?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;Do you want to save them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3251,6 +3359,14 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
         <source>Images</source>
         <translation>Obrázky</translation>
     </message>
+    <message>
+        <source>All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Files (*.wav *.au *.raw);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SelectFont</name>
@@ -3282,10 +3398,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>All</source>
         <translation>Vše</translation>
-    </message>
-    <message>
-        <source>Offline</source>
-        <translation>Nepřipojený</translation>
     </message>
 </context>
 <context>
@@ -3383,6 +3495,13 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>Refresh Preview</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TalkableMenuManager</name>
+    <message>
+        <source>More Actions...</source>
+        <translation type="unfinished">Více činností...</translation>
     </message>
 </context>
 <context>

@@ -12,10 +12,6 @@
         <translation>Generale</translation>
     </message>
     <message>
-        <source>Nick</source>
-        <translation>Nickname</translation>
-    </message>
-    <message>
         <source>SMS Nick</source>
         <translation>SMS Nickname</translation>
     </message>
@@ -52,7 +48,7 @@
         <translation>Manda SMS</translation>
     </message>
     <message>
-		<source>SMS T-Mobile.pl Gateway</source>
+        <source>SMS T-Mobile.pl Gateway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -78,6 +74,10 @@
     <message>
         <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS proxy for built-in application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -175,10 +175,6 @@ Arguments should be separated with spaces. %k argument is converted to number, %
 </context>
 <context>
     <name>SmsInternalSender</name>
-    <message>
-        <source>Mobile number is incorrect</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Signature can&apos;t be empty</source>
         <translation type="unfinished"></translation>

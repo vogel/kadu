@@ -75,10 +75,22 @@
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>It seems your Qt library does not provide support for selected database.
- Please select another driver in configuration window or install Qt with %1 plugin.</source>
-        <translation>Zdá se, že vaše knihovna Qt-Library neposkytuje podporu pro vybranou databázi.
-Zvolte, prosím, v okně s nastavením jiný ovladač nabo nainstalujte Qt s přídavným modulem %1.</translation>
+        <source>It seems your Qt library does not provide support for selected database. Please install Qt with %1 plugin.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Optimizing history database. This can take several minutes.
+Please do not close Kadu until optimalization is complete.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Optimalization complete. You can now close this window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Optimalization failed. Error message:
+%1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

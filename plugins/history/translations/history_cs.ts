@@ -86,10 +86,6 @@
 <context>
     <name>ChatDatesModel</name>
     <message>
-        <source>Chat</source>
-        <translation>Rozhovor</translation>
-    </message>
-    <message>
         <source>Title</source>
         <translation>Název</translation>
     </message>
@@ -111,33 +107,6 @@
     <message>
         <source>%1 day(s) %2 hour(s)</source>
         <translation>%1 den(y) %2 hodina(y)</translation>
-    </message>
-</context>
-<context>
-    <name>ShowHistoryActionDescription</name>
-    <message>
-        <source>View Chat History</source>
-        <translation>Zobrazit historii rozhovoru</translation>
-    </message>
-    <message>
-        <source>Show last %1 messages</source>
-        <translation>Ukázat poslední %1 zprávy</translation>
-    </message>
-    <message>
-        <source>Show messages since yesterday</source>
-        <translation>Ukázat zprávy od včerejška</translation>
-    </message>
-    <message>
-        <source>Show messages from last 7 days</source>
-        <translation>Ukázat zprávy z posledních sedmi dní</translation>
-    </message>
-    <message>
-        <source>Show messages from last 30 days</source>
-        <translation>Ukázat zprávy z posledních třiceti dní</translation>
-    </message>
-    <message>
-        <source>Show whole history</source>
-        <translation>Ukázat celou historii</translation>
     </message>
 </context>
 <context>
@@ -194,8 +163,8 @@
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>There is no history storage module loaded!</source>
-        <translation>Není nahrán žádný modul pro ukládání historie!</translation>
+        <source>There is no history storage plugin loaded!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -203,6 +172,33 @@
     <message>
         <source>Chat history</source>
         <translation>Historie rozhovoru</translation>
+    </message>
+</context>
+<context>
+    <name>ShowHistoryActionDescription</name>
+    <message>
+        <source>View Chat History</source>
+        <translation>Zobrazit historii rozhovoru</translation>
+    </message>
+    <message>
+        <source>Show last %1 messages</source>
+        <translation>Ukázat poslední %1 zprávy</translation>
+    </message>
+    <message>
+        <source>Show messages since yesterday</source>
+        <translation>Ukázat zprávy od včerejška</translation>
+    </message>
+    <message>
+        <source>Show messages from last 7 days</source>
+        <translation>Ukázat zprávy z posledních sedmi dní</translation>
+    </message>
+    <message>
+        <source>Show messages from last 30 days</source>
+        <translation>Ukázat zprávy z posledních třiceti dní</translation>
+    </message>
+    <message>
+        <source>Show whole history</source>
+        <translation>Ukázat celou historii</translation>
     </message>
 </context>
 <context>

@@ -71,10 +71,6 @@
         <source>Chat</source>
         <translation>Rozmowa</translation>
     </message>
-    <message>
-        <source>Always Use Tabs</source>
-        <translation>Zawsze używaj kart</translation>
-    </message>
 </context>
 <context>
     <name>TabsManager</name>
