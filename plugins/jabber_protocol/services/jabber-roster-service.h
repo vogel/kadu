@@ -56,11 +56,12 @@ public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
+	void downloadRoster();
+
+public slots:
 	virtual void addContact(const Contact &contact);
 	virtual void removeContact(const Contact &contact);
 	virtual void updateContact(const Contact &contact);
-
-	void downloadRoster();
 
 signals:
 	void rosterDownloaded(bool success);
