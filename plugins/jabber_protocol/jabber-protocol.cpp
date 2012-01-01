@@ -375,19 +375,12 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)
 {
-	if (!isConnected())
+	if (!isConnected() || buddy.isAnonymous())
 		return;
 
-	QVector<Contact> contacts = buddy.contacts(account());
-	if (contacts.isEmpty() || buddy.isAnonymous())
-		return;
-
-	QStringList groupsList;
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
-	foreach (const Contact &contact, contacts)
-		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
+	foreach (const Contact &contact, buddy.contacts(account()))
+		if (CurrentRosterService)
+			CurrentRosterService->updateContact(contact);
 }
 
 void JabberProtocol::contactUpdated(Contact contact)
@@ -398,12 +391,8 @@ void JabberProtocol::contactUpdated(Contact contact)
 	if (contact.isAnonymous())
 		return;
 
-	Buddy buddy = contact.ownerBuddy();
-	QStringList groupsList;
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
-	JabberClient->updateContact(contact.id(), contact.display(true), groupsList);
+	if (CurrentRosterService)
+		CurrentRosterService->updateContact(contact);
 }
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
