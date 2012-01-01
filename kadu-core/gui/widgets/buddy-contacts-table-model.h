@@ -40,7 +40,6 @@ class BuddyContactsTableModel : public QAbstractTableModel
 	void contactsFromBuddy();
 	void buddyFromContacts();
 	void performItemAction(BuddyContactsTableItem *);
-	void performItemActionEdit(BuddyContactsTableItem *item);
 	void performItemActionAdd(BuddyContactsTableItem *);
 	void performItemActionDetach(BuddyContactsTableItem *);
 	void performItemActionRemove(BuddyContactsTableItem *);

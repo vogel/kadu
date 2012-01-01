@@ -35,7 +35,7 @@ BuddyContactsTableItem::BuddyContactsTableItem(Contact contact, QObject *parent)
 	ItemContactPriority = contact.priority();
 	ItemAccount = contact.contactAccount();
 	Id = contact.id();
-	Action = ItemEdit;
+	Action = ItemView;
 }
 
 void BuddyContactsTableItem::setItemContactPriority(int itemContactPriority)
@@ -85,7 +85,7 @@ void BuddyContactsTableItem::setDetachedBuddyName(const QString &detachedBuddyNa
 
 bool BuddyContactsTableItem::isValid() const
 {
-	if (ItemRemove == Action)
+	if (ItemView == Action || ItemRemove == Action)
 		return true;
 
 	if (ItemDetach == Action)
@@ -94,7 +94,8 @@ bool BuddyContactsTableItem::isValid() const
 	if (ItemAdd == Action)
 		return isAddValid();
 
-	return isEditValid();
+	Q_ASSERT(false);
+	return false;
 }
 
 bool BuddyContactsTableItem::isAddValid() const
@@ -118,32 +119,4 @@ bool BuddyContactsTableItem::isAddValid() const
 	// allow contacts without buddy or new ones
 	Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
 	return contact.ownerBuddy().isAnonymous();
-}
-
-bool BuddyContactsTableItem::isEditValid() const
-{
-	if (!ItemContact)
-		return false;
-
-	if (!ItemAccount)
-		return false;
-
-	if (Id.isEmpty())
-		return false;
-
-	Protocol *handler = ItemAccount.protocolHandler();
-	if (!handler)
-		return false;
-
-	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
-		return false;
-
-	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
-	{
-		// allow contacts without buddy or new ones
-		Contact contact = ContactManager::instance()->byId(ItemAccount, Id, ActionReturnNull);
-		return contact.ownerBuddy().isAnonymous();
-	}
-
-	return true;
 }
