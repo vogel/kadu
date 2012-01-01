@@ -35,3 +35,9 @@ RosterService::RosterService(Protocol *protocol) :
 RosterService::~RosterService()
 {
 }
+
+void RosterService::updateBuddyContacts(const Buddy &buddy)
+{
+	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
+		updateContact(contact);
+}
