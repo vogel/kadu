@@ -195,16 +195,24 @@ void JabberRosterService::downloadRoster()
 	Protocol->client()->requestRoster();
 }
 
-void JabberRosterService::addContact(const Contact &contact)
+bool JabberRosterService::canProceed(const Contact &contact) const
 {
 	// disable roster actions when we are removing account from kadu
 	if (Protocol->account().removing())
-		return;
+		return false;
 
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account() || contact.isAnonymous())
-		return;
+	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
+		return false;
 
 	if (!Protocol->client())
+		return false;
+
+	return true;
+}
+
+void JabberRosterService::addContact(const Contact &contact)
+{
+	if (!canProceed(contact) || contact.isAnonymous())
 		return;
 
 	Buddy buddy = contact.ownerBuddy();
@@ -219,14 +227,7 @@ void JabberRosterService::addContact(const Contact &contact)
 
 void JabberRosterService::removeContact(const Contact &contact)
 {
-	// disable roster actions when we are removing account from kadu
-	if (Protocol->account().removing())
-		return;
-
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
-		return;
-
-	if (!Protocol->client())
+	if (!canProceed(contact))
 		return;
 
 	Protocol->client()->removeContact(contact.id());

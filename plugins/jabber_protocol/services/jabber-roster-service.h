@@ -47,6 +47,8 @@ class JabberRosterService : public RosterService
 	const QString & itemDisplay(const XMPP::RosterItem &item);
 	Buddy itemBuddy(const XMPP::RosterItem &item, const Contact &contact);
 
+	bool canProceed(const Contact &contact) const;
+
 private slots:
 	void contactUpdated(const XMPP::RosterItem &item);
 	void contactDeleted(const XMPP::RosterItem &item);
