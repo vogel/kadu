@@ -203,7 +203,10 @@ bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 	if (left.type() != right.type())
 		return false;
 
-	if (left.sendDate() != right.sendDate())
+	// In our SQL history we store datetime with accuracy to one second,
+	// while for received XMPP messages we have a millisecond accuracy.
+	// So to have proper results, we need to truncate those additional milliseconds.
+	if (left.sendDate().toTime_t() != right.sendDate().toTime_t())
 		return false;
 
 	if (left.messageChat() != right.messageChat())
