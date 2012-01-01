@@ -39,8 +39,6 @@ class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	JabberProtocol *Protocol;
-
 	QList<Contact> ContactsForDelete;
 	bool InRequest;
 

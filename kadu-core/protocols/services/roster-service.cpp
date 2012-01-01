@@ -23,34 +23,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_SERVICE_H
-#define ROSTER_SERVICE_H
+#include "protocols/protocol.h"
 
-#include <QtCore/QObject>
+#include "roster-service.h"
 
-#include "buddies/buddy.h"
-#include "contacts/contact.h"
-
-#include "exports.h"
-
-class Protocol;
-
-class KADUAPI RosterService : public QObject
+RosterService::RosterService(Protocol *protocol) :
+		QObject(protocol), CurrentProtocol(protocol)
 {
-	Q_OBJECT
+}
 
-	Protocol *CurrentProtocol;
-
-public:
-	explicit RosterService(Protocol *protocol);
-	virtual ~RosterService();
-
-	Protocol * protocol() const { return CurrentProtocol; }
-
-	virtual void addContact(const Contact &contact) = 0;
-	virtual void removeContact(const Contact &contact) = 0;
-	virtual void updateContact(const Contact &contact) = 0;
-
-};
-
-#endif // ROSTER_SERVICE_H
+RosterService::~RosterService()
+{
+}

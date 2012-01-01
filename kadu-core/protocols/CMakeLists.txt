@@ -7,6 +7,7 @@ set (protocols_SRCS
 	services/chat-service.cpp
 	services/chat-image-service.cpp
 	services/contact-list-service.cpp
+	services/roster-service.cpp
 
 	connection-error-notification.cpp
 	protocol.cpp
