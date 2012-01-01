@@ -372,9 +372,8 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)
 {
-	foreach (const Contact &contact, buddy.contacts(account()))
-		if (CurrentRosterService)
-			CurrentRosterService->updateContact(contact);
+	if (CurrentRosterService)
+		CurrentRosterService->updateBuddyContacts(buddy);
 }
 
 void JabberProtocol::contactUpdated(Contact contact)
