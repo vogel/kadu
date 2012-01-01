@@ -41,6 +41,7 @@ public:
 
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;
+	virtual void updateContact(const Contact &contact) = 0;
 
 };
 

@@ -233,3 +233,15 @@ void JabberRosterService::removeContact(const Contact &contact)
 	Protocol->client()->removeContact(contact.id());
 	contact.setDirty(false);
 }
+
+void JabberRosterService::updateContact(const Contact &contact)
+{
+	if (!canProceed(contact) || contact.isAnonymous())
+		return;
+
+	QStringList groupsList;
+	foreach (const Group &group, contact.ownerBuddy().groups())
+		groupsList.append(group.name());
+
+	Protocol->client()->updateContact(contact.id(), contact.display(true), groupsList);
+}

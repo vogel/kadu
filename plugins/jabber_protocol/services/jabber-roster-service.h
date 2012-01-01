@@ -60,6 +60,7 @@ public:
 
 	virtual void addContact(const Contact &contact);
 	virtual void removeContact(const Contact &contact);
+	virtual void updateContact(const Contact &contact);
 
 	void downloadRoster();
 
