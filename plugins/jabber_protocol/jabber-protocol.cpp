@@ -355,9 +355,6 @@ void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool 
 
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
-	if (contact.contactAccount() != account())
-		return;
-
 	if (reattached)
 	{
 		contactUpdated(contact);
@@ -375,9 +372,6 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 
 void JabberProtocol::buddyUpdated(Buddy &buddy)
 {
-	if (!isConnected() || buddy.isAnonymous())
-		return;
-
 	foreach (const Contact &contact, buddy.contacts(account()))
 		if (CurrentRosterService)
 			CurrentRosterService->updateContact(contact);
@@ -385,12 +379,6 @@ void JabberProtocol::buddyUpdated(Buddy &buddy)
 
 void JabberProtocol::contactUpdated(Contact contact)
 {
-	if (!isConnected() || contact.contactAccount() != account())
-		return;
-
-	if (contact.isAnonymous())
-		return;
-
 	if (CurrentRosterService)
 		CurrentRosterService->updateContact(contact);
 }
