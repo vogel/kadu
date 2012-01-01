@@ -308,7 +308,7 @@ void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const
 
 void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
-  	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
+	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
 
 	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
 
