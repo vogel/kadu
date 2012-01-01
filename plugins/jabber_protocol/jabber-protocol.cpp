@@ -93,11 +93,11 @@ JabberProtocol::~JabberProtocol()
 void JabberProtocol::connectContactManagerSignals()
 {
 	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
+	        this, SLOT(contactDetached(Contact, Buddy, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
+	        this, SLOT(contactAttached(Contact, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
+	        this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
 	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
@@ -106,11 +106,11 @@ void JabberProtocol::connectContactManagerSignals()
 void JabberProtocol::disconnectContactManagerSignals()
 {
 	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
+	           this, SLOT(contactDetached(Contact, Buddy, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
+	           this, SLOT(contactAttached(Contact, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
+	           this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
 	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
