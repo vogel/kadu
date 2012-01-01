@@ -206,7 +206,8 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 }
 
 /*
- * login procedute
+ * login procedure
+ *
  * After calling login method we set up JabberClient that must call connectedToServer in order to inform
  * us that connection was established. Then we can tell this to state machine in Protocol class
  */
