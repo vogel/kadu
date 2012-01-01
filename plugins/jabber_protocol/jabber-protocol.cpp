@@ -349,8 +349,7 @@ void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool 
 	if (reattaching)
 		return;
 
-	if (CurrentRosterService)
-		CurrentRosterService->removeContact(contact);
+	CurrentRosterService->removeContact(contact);
 }
 
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
@@ -366,14 +365,12 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 	if (details)
 		details->setIgnoreNextStatusChange(true);
 
-	if (CurrentRosterService)
-		CurrentRosterService->addContact(contact);
+	CurrentRosterService->addContact(contact);
 }
 
 void JabberProtocol::contactUpdated(Contact contact)
 {
-	if (CurrentRosterService)
-		CurrentRosterService->updateContact(contact);
+	CurrentRosterService->updateContact(contact);
 }
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
