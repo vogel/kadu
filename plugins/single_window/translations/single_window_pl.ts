@@ -64,7 +64,7 @@
     <name>SingleWindow</name>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Konferencja [%1]</translation>
     </message>
 </context>
 </TS>

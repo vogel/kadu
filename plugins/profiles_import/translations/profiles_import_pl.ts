@@ -86,7 +86,7 @@ Plik kadu.conf.xml nie został odnaleziony</translation>
     </message>
     <message>
         <source>Import profile...</source>
-        <translation>Importuj profil</translation>
+        <translation>Importuj profil...</translation>
     </message>
     <message>
         <source>Unable to import profile: %1: %2</source>

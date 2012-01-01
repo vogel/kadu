@@ -5,7 +5,7 @@
     <name>HistoryImportWindow</name>
     <message>
         <source>History is now being imported into new format. Please wait until this task is finished.</source>
-        <translation>Trwa import historii do nowego formatu. Proszę czekać...</translation>
+        <translation>Trwa import historii do nowego formatu. Proszę czekać.</translation>
     </message>
     <message>
         <source>Chats progress:</source>

@@ -48,7 +48,7 @@
     </message>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished">Cenzor</translation>
+        <translation>Cenzor</translation>
     </message>
 </context>
 <context>

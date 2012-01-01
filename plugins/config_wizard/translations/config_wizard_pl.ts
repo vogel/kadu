@@ -5,7 +5,7 @@
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation>Aby zastosować zmiany języka Kadu musi zostać uruchomione ponownie</translation>
+        <translation>Aby zastosować zmiany języka Kadu musi zostać uruchomione ponownie.</translation>
     </message>
 </context>
 <context>

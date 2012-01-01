@@ -1121,19 +1121,19 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Personal</source>
-        <translation type="unfinished"></translation>
+        <translation>Osobiste</translation>
     </message>
     <message>
         <source>Default proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Domyślne proxy</translation>
     </message>
     <message>
         <source>Hide main window icon from taskbar</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pokazuj głównego okna na pasku zadań</translation>
     </message>
     <message>
         <source>Select window activation method</source>
-        <translation type="unfinished"></translation>
+        <translation>Metoda aktywacji okna</translation>
     </message>
 </context>
 <context>
@@ -1199,7 +1199,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrazki (*.jpeg *.jpg *.png);;Wszystkie pliki(*) </translation>
     </message>
 </context>
 <context>
@@ -1226,11 +1226,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pliki list kontaktów (*.txt *.xml);;Wszystkie pliki (*)</translation>
     </message>
     <message>
         <source>Contact List Files (*.txt)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pliki list kontaktów (*.txt)</translation>
     </message>
 </context>
 <context>
@@ -1307,7 +1307,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>You must be connected to add contacts to this account</source>
-        <translation>Musisz być połączony, aby dodawać kontakty dla tego konta.</translation>
+        <translation>Musisz być połączony, aby dodawać kontakty dla tego konta</translation>
     </message>
     <message>
         <source>Entered user identification is invalid</source>
@@ -1347,73 +1347,73 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished">Konto:</translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>Merge with:</source>
-        <translation type="unfinished"></translation>
+        <translation>Połącz z:</translation>
     </message>
     <message>
         <source>Enter visible name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa wyświetlana</translation>
     </message>
     <message>
         <source>Merge with buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Połącz z</translation>
     </message>
 </context>
 <context>
     <name>AddConferenceAction</name>
     <message>
         <source>Add Conference...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj konferencję...</translation>
     </message>
 </context>
 <context>
     <name>AddConferenceWindow</name>
     <message>
         <source>Add Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj konferencję</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished">Konto:</translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>Visible name:</source>
-        <translation type="unfinished">Nazwa wyświetlana:</translation>
+        <translation>Nazwa wyświetlana:</translation>
     </message>
     <message>
         <source>Enter a name for this conference if you want to have it on roster</source>
-        <translation type="unfinished"></translation>
+        <translation>Podaj nazwę dla konferencji jeżeli chcesz, aby była wyświetlana na liście kontaktów</translation>
     </message>
     <message>
         <source>Start Conference</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpocznij konferencję</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Account is not selected</source>
-        <translation type="unfinished">Konto nie jest wybrane</translation>
+        <translation>Konto nie jest wybrane</translation>
     </message>
     <message>
         <source>Select at least two buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz co najmniej dwóch znajomych</translation>
     </message>
     <message>
         <source>Visible name is already used for another chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa wyświetlana jest już używana dla innej konferencji</translation>
     </message>
     <message>
         <source>This conference is already available as &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta konferencja jest już dostępna jako &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Enter visible name to add this conference to roster</source>
-        <translation type="unfinished"></translation>
+        <translation>Podaj nazwę dla konferencji jeżeli chcesz, aby była wyświetlana na liście kontaktów</translation>
     </message>
 </context>
 <context>
@@ -1465,7 +1465,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrazy (*.png *.jpg *.bmp);;Wszystkie pliki (*)</translation>
     </message>
 </context>
 <context>
@@ -1652,34 +1652,34 @@ znajomych po połączeniu się z serwerem</translation>
     <name>ChangeStatusAction</name>
     <message>
         <source>Change Status</source>
-        <translation type="unfinished">Zmień status</translation>
+        <translation>Zmień status</translation>
     </message>
 </context>
 <context>
     <name>ChatDataWindow</name>
     <message>
         <source>Chat Properties - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Właściwości rozmowy - %1</translation>
     </message>
     <message>
         <source>Visible Name</source>
-        <translation type="unfinished">Nazwa wyświetlana</translation>
+        <translation>Nazwa wyświetlana</translation>
     </message>
     <message>
         <source>Add this chat to the groups below by checking the box next to the appropriate groups.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zacznacz grupy, do których ma należeć ta rozmowa.</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1726,7 +1726,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrazy (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;Wszyskite pliki (*) </translation>
     </message>
 </context>
 <context>
@@ -1771,11 +1771,11 @@ znajomych po połączeniu się z serwerem</translation>
     <name>ChatTypeAggregate</name>
     <message>
         <source>Aggregate</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączona</translation>
     </message>
     <message>
         <source>Aggregates</source>
-        <translation type="unfinished"></translation>
+        <translation>Połączone</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1899,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation type="unfinished">Wstaw emotikonę</translation>
+        <translation>Wstaw emotikonę</translation>
     </message>
 </context>
 <context>
@@ -2034,37 +2034,37 @@ znajomych po połączeniu się z serwerem</translation>
     <name>DefaultProxyAction</name>
     <message>
         <source>Select Default Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz domyślne proxy</translation>
     </message>
     <message>
         <source> - No proxy - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Brak - </translation>
     </message>
     <message>
         <source>Edit proxy configuration...</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj konfigurację proxy...</translation>
     </message>
 </context>
 <context>
     <name>DeleteTalkableAction</name>
     <message>
         <source>Delete Buddy...</source>
-        <translation type="unfinished">Usuń znajomego...</translation>
+        <translation>Usuń znajomego...</translation>
     </message>
     <message>
         <source>Delete Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń rozmowę</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowa &lt;b&gt;%1&lt;/b&gt; zostanie usunięta z listy kontaktów.&lt;br/&gt;Jesteś pewny?</translation>
     </message>
 </context>
 <context>
     <name>EditTalkableAction</name>
     <message>
         <source>View Buddy Properties</source>
-        <translation type="unfinished">Dane znajomego</translation>
+        <translation>Dane znajomego</translation>
     </message>
 </context>
 <context>
@@ -2311,7 +2311,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Images (*.png *.xpm *.jpg);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrazy (*.png *.xpm *.jpg);;Wszystkie pliki (*)</translation>
     </message>
 </context>
 <context>
@@ -2660,27 +2660,27 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>View Chat Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>Dane rozmowy</translation>
     </message>
     <message>
         <source>Delete Chat...</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń rozmowę...</translation>
     </message>
 </context>
 <context>
     <name>LeaveChatAction</name>
     <message>
         <source>Leave</source>
-        <translation type="unfinished"></translation>
+        <translation>Opuść</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>All messages received in this conference will be ignored
 from now on. Are you sure you want to leave this conference?</source>
-        <translation type="unfinished">Wszystkie wiadomości w tej konferencji od tego momentu
+        <translation>Wszystkie wiadomości w tej konferencji od tego momentu
 zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
@@ -2744,11 +2744,11 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source>New chat</source>
-        <translation type="unfinished">Nowa rozmowa</translation>
+        <translation>Nowa rozmowa</translation>
     </message>
     <message>
         <source>New message</source>
-        <translation type="unfinished">Nowa wiadomość</translation>
+        <translation>Nowa wiadomość</translation>
     </message>
 </context>
 <context>
@@ -3030,11 +3030,11 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>PluginErrorDialog</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Try to load this plugin on next Kadu run</source>
-        <translation type="unfinished"></translation>
+        <translation>Próbuj załadować tę wtyczkę przy następnym uruchomieniu Kadu</translation>
     </message>
 </context>
 <context>
@@ -3075,7 +3075,7 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>ProgressWindow2</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -3089,106 +3089,106 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>ProxyComboBox</name>
     <message>
         <source> - No proxy - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Brak proxy - </translation>
     </message>
     <message>
         <source>Edit proxy configuration...</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytuj konfigurację proxy...</translation>
     </message>
     <message>
         <source> - Use Default Proxy - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Użyj domyślnego proxy - </translation>
     </message>
 </context>
 <context>
     <name>ProxyEditWindow</name>
     <message>
         <source>Proxy Configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja proxy</translation>
     </message>
     <message>
         <source>Add new proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj nowe proxy</translation>
     </message>
     <message>
         <source>HTTP CONNECT method</source>
-        <translation type="unfinished"></translation>
+        <translation>Metoda HTTP CONNECT</translation>
     </message>
     <message>
         <source>SOCKS Version 5</source>
-        <translation type="unfinished"></translation>
+        <translation>SOCKS Version 5</translation>
     </message>
     <message>
         <source>HTTP Polling</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP Polling</translation>
     </message>
     <message>
         <source>Type (for Jabber)</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ (dla XMPP/Jabber)</translation>
     </message>
     <message>
         <source>Polling URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpytywany URL</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished">Host</translation>
+        <translation>Host</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished">Port</translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>User</source>
-        <translation type="unfinished"></translation>
+        <translation>Użytkownik</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished">Hasło</translation>
+        <translation>Hasło</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Dodaj</translation>
+        <translation>Dodaj</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Remove</source>
-        <translation type="unfinished">Usuń</translation>
+        <translation>Usuń</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Zapisz</translation>
+        <translation>Zapisz</translation>
     </message>
     <message>
         <source>Confirm proxy removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź usunięcie proxy</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove this proxy?</source>
-        <translation type="unfinished"></translation>
+        <translation>Jesteś pewny, że chcesz usunąć to proxy?</translation>
     </message>
     <message>
         <source>Remove proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń proxy</translation>
     </message>
     <message>
         <source>Proxy</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy</translation>
     </message>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;Do you want to save them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualne proxy ma niezapisane zmiany.&lt;br/&gt;Zapisać?</translation>
     </message>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualne proxy ma niezapisane zmiany.&lt;br/&gt;Dane są nieprawidłowe, więc wszystkie zmiany zostaną utracone.&lt;br/&gt;Powrócić do edycji proxy?</translation>
     </message>
 </context>
 <context>
@@ -3376,11 +3376,11 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszyskie pliki (*)</translation>
     </message>
     <message>
         <source>Audio Files (*.wav *.au *.raw);;All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pliki dźwiękowe (*.wav *.au *.raw);;Wszystkie pliki (*)</translation>
     </message>
 </context>
 <context>
@@ -3516,7 +3516,7 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>TalkableMenuManager</name>
     <message>
         <source>More Actions...</source>
-        <translation type="unfinished">Więcej operacji...</translation>
+        <translation>Więcej operacji...</translation>
     </message>
 </context>
 <context>

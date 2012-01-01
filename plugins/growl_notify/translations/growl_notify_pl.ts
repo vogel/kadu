@@ -5,11 +5,11 @@
     <name>GrowlNotify</name>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd</translation>
     </message>
     <message>
         <source>Growl is not installed in your system</source>
-        <translation type="unfinished"></translation>
+        <translation>Growl nie jest zainstalowany</translation>
     </message>
 </context>
 <context>

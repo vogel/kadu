@@ -229,7 +229,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Tutaj&lt;/b&gt; możesz zobaczyć podgląd</translation>
     </message>
 </context>
 <context>
@@ -277,7 +277,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Tutaj&lt;/b&gt; możesz zobaczyć podgląd</translation>
     </message>
 </context>
 <context>
@@ -292,7 +292,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Tutaj&lt;/b&gt; możesz zobaczyć podgląd</translation>
     </message>
 </context>
 </TS>

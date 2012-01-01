@@ -111,7 +111,7 @@
     <name>CertificateErrorDialog</name>
     <message>
         <source>The %1 certificate failed the authenticity test.</source>
-        <translation type="unfinished">Certyfikat %1 nie przeszedł testu autentyczności.</translation>
+        <translation>Certyfikat %1 nie przeszedł testu autentyczności.</translation>
     </message>
 </context>
 <context>
@@ -580,15 +580,15 @@ Hasło w obu polach (&quot;Nowe Hasło&quot; oraz &quot;Powtórz hasło&quot;) m
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja proxy</translation>
     </message>
     <message>
         <source>Privacy</source>
-        <translation type="unfinished"></translation>
+        <translation>Prywatność</translation>
     </message>
     <message>
         <source>Publish system information</source>
-        <translation type="unfinished"></translation>
+        <translation>Udostępniaj informacje systemowe</translation>
     </message>
 </context>
 <context>
@@ -863,7 +863,7 @@ Copyright (C) 2003 Justin Karneges</translation>
     </message>
     <message>
         <source>Please enter the Full JID to connect with.</source>
-        <translation>Podaj pełny JabberID, z którym chcesz się połączyć</translation>
+        <translation>Podaj pełny JabberID, z którym chcesz się połączyć.</translation>
     </message>
     <message>
         <source>You must specify a host:port for the proxy.</source>

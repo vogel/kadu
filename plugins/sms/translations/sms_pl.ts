@@ -79,7 +79,7 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>SMS proxy for built-in application</source>
-        <translation type="unfinished"></translation>
+        <translation>Proxy dla wbudowanej aplikacji SMS</translation>
     </message>
 </context>
 <context>

@@ -164,7 +164,7 @@
     </message>
     <message>
         <source>There is no history storage plugin loaded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Żaden plugin przechowywania historii nie jest załadowany.</translation>
     </message>
 </context>
 <context>

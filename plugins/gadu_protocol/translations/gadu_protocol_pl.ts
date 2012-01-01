@@ -543,25 +543,27 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Inne</translation>
     </message>
     <message>
         <source>Receive URLs from anonymous buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbieraj linki od nieznajomych</translation>
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja proxy</translation>
     </message>
     <message>
         <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź włączenie opcji &quot;Pokaż wszystkim mój status&quot; </translation>
     </message>
     <message>
         <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
 You have several buddies which are not allowed to see your status.
 Enabling this option will allow them to know you are available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jesteś pewny, że chcesz włączyć opcję &quot;Pokaż wszystkim mój status&quot;?
+Dla kilku znajomych na liście jest włączona opcja nie udostępniania statusu.
+Po włączeniu &quot;Pokaż wszystkim mój status&quot; będą oni mogli zobaczyć twój status. </translation>
     </message>
 </context>
 <context>
