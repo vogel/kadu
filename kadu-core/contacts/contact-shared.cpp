@@ -318,7 +318,6 @@ void ContactShared::setId(const QString &id)
 
 	setDirty(true);
 	dataUpdated();
-	emit idChanged(oldId);
 }
 
 /**

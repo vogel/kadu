@@ -58,8 +58,6 @@ GaduContactListHandler::GaduContactListHandler(GaduProtocol *protocol) :
 			this, SLOT(contactAttached(Contact, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
 			this, SLOT(contactDetached(Contact, Buddy, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
 }
 
 GaduContactListHandler::~GaduContactListHandler()
@@ -187,34 +185,6 @@ void GaduContactListHandler::contactDetached(Contact contact, Buddy previousBudd
 
 	if (contact.contactAccount() != Protocol->account())
 		return;
-
-	updateContactEntry(contact);
-}
-
-void GaduContactListHandler::contactIdChanged(Contact contact, const QString &oldId)
-{
-	if (contact.contactAccount() != Protocol->account())
-		return;
-
-	if (!AlreadySent)
-		return;
-
-	if (!Protocol->isConnected())
-		return;
-
-	gg_session *session = Protocol->gaduSession();
-	if (!session)
-		return;
-
-	bool ok;
-	UinType oldUin = oldId.toUInt(&ok);
-	if (session && ok)
-	{
-		// remove all flags
-		gg_remove_notify_ex(session, oldUin, 0x04);
-		gg_remove_notify_ex(session, oldUin, 0x02);
-		gg_remove_notify_ex(session, oldUin, 0x01);
-	}
 
 	updateContactEntry(contact);
 }

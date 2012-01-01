@@ -82,15 +82,6 @@ void ContactManager::init()
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
-void ContactManager::idChanged(const QString &oldId)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactIdChanged(contact, oldId);
-}
-
 void ContactManager::dirtinessChanged()
 {
 	QMutexLocker locker(&mutex());
@@ -180,7 +171,6 @@ void ContactManager::itemRegistered(Contact item)
 		emit dirtyContactAdded(item);
 	}
 
-	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
 	connect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));
@@ -198,7 +188,6 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 
 void ContactManager::itemUnregistered(Contact item)
 {
-	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
 	disconnect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));

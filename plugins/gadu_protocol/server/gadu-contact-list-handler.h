@@ -43,7 +43,6 @@ private slots:
 	void buddySubscriptionChanged(Buddy &buddy);
 	void contactAttached(Contact contact, bool reattached);
 	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
-	void contactIdChanged(Contact contact, const QString &oldId);
 
 public:
 	static int notifyTypeFromContact(const Contact &contact);

@@ -125,7 +125,6 @@ signals:
 	void attached(bool reattached);
 
 	void updated();
-	void idChanged(const QString &oldId);
 	void dirtinessChanged();
 
 };

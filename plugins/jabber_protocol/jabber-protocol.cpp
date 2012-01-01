@@ -96,8 +96,6 @@ void JabberProtocol::connectContactManagerSignals()
 	        this, SLOT(contactDetached(Contact, Buddy, bool)));
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	        this, SLOT(contactAttached(Contact, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-	        this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
 	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
@@ -109,8 +107,6 @@ void JabberProtocol::disconnectContactManagerSignals()
 	           this, SLOT(contactDetached(Contact, Buddy, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	           this, SLOT(contactAttached(Contact, bool)));
-	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-	           this, SLOT(contactIdChanged(Contact, const QString &)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
 	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
@@ -367,15 +363,6 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 		details->setIgnoreNextStatusChange(true);
 
 	CurrentRosterService->addContact(contact);
-}
-
-void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
-{
-	if (!isConnected() || contact.contactAccount() != account())
-		return;
-
-	JabberClient->removeContact(oldId);
-	contactAttached(contact, false);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

@@ -91,8 +91,6 @@ private slots:
 	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAttached(Contact contact, bool reattached);
 
-	void contactIdChanged(Contact contact, const QString &oldId);
-
 	void connectionErrorSlot(const QString &message);
 
 protected:

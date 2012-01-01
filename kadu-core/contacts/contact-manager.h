@@ -53,7 +53,6 @@ private slots:
 	void removeDuplicateContacts();
 
 	void contactDataUpdated();
-	void idChanged(const QString &oldId);
 	void dirtinessChanged();
 
 	void unreadMessageAdded(const Message &message);
@@ -94,8 +93,6 @@ signals:
 	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
 	void contactAttached(Contact contact, bool reattached);
-
-	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void dirtyContactAdded(Contact contact);
 
