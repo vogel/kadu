@@ -356,7 +356,7 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
 	if (reattached)
 	{
-		contactUpdated(contact);
+		CurrentRosterService->updateContact(contact);
 		return;
 	}
 
@@ -366,11 +366,6 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 		details->setIgnoreNextStatusChange(true);
 
 	CurrentRosterService->addContact(contact);
-}
-
-void JabberProtocol::contactUpdated(Contact contact)
-{
-	CurrentRosterService->updateContact(contact);
 }
 
 void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)

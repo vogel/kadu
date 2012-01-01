@@ -90,7 +90,6 @@ private slots:
 
 	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAttached(Contact contact, bool reattached);
-	void contactUpdated(Contact contact);
 
 	void contactIdChanged(Contact contact, const QString &oldId);
 
