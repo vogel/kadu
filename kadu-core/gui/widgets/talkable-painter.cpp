@@ -55,8 +55,8 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
         int minHFrameMargin = 2;
         int minVFrameMargin = 2;
 
-        int qStyleHFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
-        int qStyleVFrameMargin = style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
+        int qStyleHFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
+        int qStyleVFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
         
 	HFrameMargin = qMax(minHFrameMargin, qStyleHFrameMargin);
 	VFrameMargin = qMax(minVFrameMargin, qStyleVFrameMargin);
