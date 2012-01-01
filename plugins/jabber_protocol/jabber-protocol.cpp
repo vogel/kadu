@@ -99,8 +99,8 @@ void JabberProtocol::connectContactManagerSignals()
 	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
+	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
 }
 
 void JabberProtocol::disconnectContactManagerSignals()
@@ -112,8 +112,8 @@ void JabberProtocol::disconnectContactManagerSignals()
 	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
 			this, SLOT(contactIdChanged(Contact, const QString &)));
 
-	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
+	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -368,12 +368,6 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 
 	if (CurrentRosterService)
 		CurrentRosterService->addContact(contact);
-}
-
-void JabberProtocol::buddyUpdated(Buddy &buddy)
-{
-	if (CurrentRosterService)
-		CurrentRosterService->updateBuddyContacts(buddy);
 }
 
 void JabberProtocol::contactUpdated(Contact contact)
