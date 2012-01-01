@@ -34,6 +34,9 @@ class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 
 	QVector<Contact> List;
 
+private slots:
+	void contactUpdated();
+
 public:
 	explicit ContactListModel(const QVector<Contact> &list, QObject *parent = 0);
 	virtual ~ContactListModel();

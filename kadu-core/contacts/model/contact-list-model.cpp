@@ -26,15 +26,35 @@
 ContactListModel::ContactListModel(const QVector<Contact> &list, QObject *parent) :
 		QAbstractItemModel(parent), List(list)
 {
+	foreach (const Contact &contact, List)
+		connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 ContactListModel::~ContactListModel()
 {
+	foreach (const Contact &contact, List)
+		connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+}
+
+void ContactListModel::contactUpdated()
+{
+	ContactShared *contactShared = qobject_cast<ContactShared *>(sender());
+	if (!contactShared)
+		return;
+
+	int row = List.indexOf(Contact(contactShared));
+	if (row < 0)
+		return;
+
+	const QModelIndex &contactIndex = index(row, 0);
+	emit dataChanged(contactIndex, contactIndex);
 }
 
 QModelIndex ContactListModel::index(int row, int column, const QModelIndex &parent) const
 {
-	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
+	return hasIndex(row, column, parent)
+	        ? createIndex(row, column, parent.isValid() ? parent.row() : -1)
+	        : QModelIndex();
 }
 
 int ContactListModel::columnCount(const QModelIndex &parent) const
