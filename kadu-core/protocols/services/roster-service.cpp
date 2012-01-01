@@ -30,6 +30,7 @@
 RosterService::RosterService(Protocol *protocol) :
 		QObject(protocol), CurrentProtocol(protocol)
 {
+	Q_ASSERT(protocol);
 }
 
 RosterService::~RosterService()
