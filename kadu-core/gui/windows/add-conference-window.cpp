@@ -162,6 +162,11 @@ void AddConferenceWindow::createGui()
 
 	mainLayout->addSpacing(32);
 	mainLayout->addWidget(buttons);
+
+	if (AccountCombo->currentAccount())
+		DisplayNameEdit->setFocus();
+	else
+		AccountCombo->setFocus();
 }
 
 void AddConferenceWindow::displayErrorMessage(const QString &message)

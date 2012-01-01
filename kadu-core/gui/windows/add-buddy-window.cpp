@@ -144,10 +144,7 @@ void AddBuddyWindow::createGui()
 	Layout->addRow(tr("Visible name:"), DisplayNameEdit);
 
 	if (MyBuddy)
-	{
 		DisplayNameEdit->setText(MyBuddy.display());
-		DisplayNameEdit->setFocus();
-	}
 
 	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 
@@ -218,8 +215,12 @@ void AddBuddyWindow::createGui()
 
 	setFixedHeight(height());
 
-	if (AccountCombo->currentAccount())
+	if (MyBuddy)
+		DisplayNameEdit->setFocus();
+	else if (AccountCombo->currentAccount())
 		UserNameEdit->setFocus();
+	else
+		AccountCombo->setFocus();
 }
 
 void AddBuddyWindow::addFakeAccountsToComboBox()
