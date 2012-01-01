@@ -227,8 +227,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	if (action == ActionReturnNull)
 		return Contact::null;
 
-	Contact contact = Contact::create();
-	contact.setId(id);
+	Contact contact = Contact::create(id);
 	contact.setContactAccount(account);
 
 	if (action == ActionCreateAndAdd)

@@ -38,9 +38,9 @@ KaduSharedBaseClassImpl(Contact)
 
 Contact Contact::null;
 
-Contact Contact::create()
+Contact Contact::create(const QString &id)
 {
-	return new ContactShared();
+	return new ContactShared(id);
 }
 
 Contact Contact::loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)

@@ -143,10 +143,9 @@ Buddy GaduProtocolHelper::searchResultToBuddy(Account account, gg_pubdir50_t res
 {
 	Buddy result = Buddy::create();
 
-	Contact contact = Contact::create();
+	Contact contact = Contact::create(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(result);
-	contact.setId(gg_pubdir50_get(res, number, GG_PUBDIR50_UIN));
 
 	const char *pubdirStatus = gg_pubdir50_get(res, number, GG_PUBDIR50_STATUS);
 	if (pubdirStatus)

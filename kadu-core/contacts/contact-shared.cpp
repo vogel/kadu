@@ -50,8 +50,8 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 	return result;
 }
 
-ContactShared::ContactShared(const QUuid &uuid) :
-		Shared(uuid), Details(0),
+ContactShared::ContactShared(const QString &id) :
+		Shared(QUuid()), Details(0), Id(id),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), Dirty(true), Port(0)
 {
@@ -307,6 +307,8 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 void ContactShared::setId(const QString &id)
 {
 	ensureLoaded();
+
+	Q_ASSERT(ContactAccount->accountContact() == Contact(this));
 
 	if (Id == id)
 		return;

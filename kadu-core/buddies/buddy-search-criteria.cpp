@@ -38,14 +38,12 @@ void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
 	// TODO ???
 	QVector<Contact> contactslist = SearchBuddy.contacts(account);
-	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
-	if (!contact)
-	{
-		contact = Contact::create();
-		contact.setContactAccount(account);
-		contact.setOwnerBuddy(SearchBuddy);
-	}
-	contact.setId(uin);
+	foreach (const Contact &contact, contactslist)
+		contact.setOwnerBuddy(Buddy::null);
+
+	Contact contact = Contact::create(uin);
+	contact.setContactAccount(account);
+	contact.setOwnerBuddy(SearchBuddy);
 }
 
 void BuddySearchCriteria::reqFirstName(const QString &firstName)
