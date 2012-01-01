@@ -119,7 +119,7 @@ void ProxyEditWindow::createGui()
 	PollingUrl = new QLineEdit(editPanel);
 	connect(PollingUrl, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Polling URL"), PollingUrl);
-	
+
 	Host = new QLineEdit(editPanel);
 	connect(Host, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 	editLayout->addRow(tr("Host"), Host);
@@ -193,7 +193,7 @@ void ProxyEditWindow::updateProxyView()
 		User->setText(proxy.user());
 		Password->setText(proxy.password());
 		PollingUrl->setText(proxy.pollingUrl());
-		
+
 		SaveButton->setText(tr("Save"));
 		RemoveButton->show();
 	}
@@ -270,7 +270,7 @@ ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
 {
 	bool valid = !Host->text().isEmpty()
 			&& !Port->text().isEmpty();
-	bool changed = proxy.type() == Type->itemData(Type->currentIndex()).toString()
+	bool changed = proxy.type() != Type->itemData(Type->currentIndex()).toString()
 			|| proxy.address() != Host->text()
 			|| ((QString::number(proxy.port()) != Port->text()) && (proxy.port() != 0 || !Port->text().isEmpty()))
 			|| proxy.user() != User->text()
