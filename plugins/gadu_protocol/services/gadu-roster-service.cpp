@@ -116,8 +116,7 @@ void GaduRosterService::reset()
 void GaduRosterService::buddySubscriptionChanged(Buddy &buddy)
 {
 	// update offline to and other data
-	foreach (const Contact &contact, buddy.contacts(protocol()->account()))
-		updateContact(contact);
+	updateBuddyContacts(buddy);
 }
 
 void GaduRosterService::contactAttached(Contact contact, bool reattached)
