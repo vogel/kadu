@@ -113,7 +113,52 @@ void GaduRosterService::reset()
 	AlreadySent = false;
 }
 
-void GaduRosterService::updateContactEntry(Contact contact)
+void GaduRosterService::buddySubscriptionChanged(Buddy &buddy)
+{
+	// update offline to and other data
+	foreach (const Contact &contact, buddy.contacts(protocol()->account()))
+		updateContact(contact);
+}
+
+void GaduRosterService::contactAttached(Contact contact, bool reattached)
+{
+	Q_UNUSED(reattached)
+
+	if (contact.contactAccount() != protocol()->account())
+		return;
+
+	// see issue #2159 - we need a way to ignore first status of given contact
+	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
+	if (details)
+		details->setIgnoreNextStatusChange(true);
+
+	updateContact(contact);
+}
+
+void GaduRosterService::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
+{
+	Q_UNUSED(previousBuddy)
+
+	if (reattaching)
+		return;
+
+	if (contact.contactAccount() != protocol()->account())
+		return;
+
+	updateContact(contact);
+}
+
+void GaduRosterService::addContact(const Contact &contact)
+{
+	Q_UNUSED(contact);
+}
+
+void GaduRosterService::removeContact(const Contact &contact)
+{
+	Q_UNUSED(contact);
+}
+
+void GaduRosterService::updateContact(const Contact &contact)
 {
 	if (!AlreadySent)
 		return;
@@ -152,54 +197,4 @@ void GaduRosterService::updateContactEntry(Contact contact)
 		gg_remove_notify_ex(session, uin, 0x02);
 	if ((oldFlags & 0x04) && !(newFlags & 0x04))
 		gg_remove_notify_ex(session, uin, 0x04);
-}
-
-void GaduRosterService::buddySubscriptionChanged(Buddy &buddy)
-{
-	// update offline to and other data
-	foreach (const Contact &contact, buddy.contacts(protocol()->account()))
-		updateContactEntry(contact);
-}
-
-void GaduRosterService::contactAttached(Contact contact, bool reattached)
-{
-	Q_UNUSED(reattached)
-
-	if (contact.contactAccount() != protocol()->account())
-		return;
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
-	if (details)
-		details->setIgnoreNextStatusChange(true);
-
-	updateContactEntry(contact);
-}
-
-void GaduRosterService::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
-{
-	Q_UNUSED(previousBuddy)
-
-	if (reattaching)
-		return;
-
-	if (contact.contactAccount() != protocol()->account())
-		return;
-
-	updateContactEntry(contact);
-}
-
-void GaduRosterService::addContact(const Contact &contact)
-{
-	Q_UNUSED(contact);
-}
-
-void GaduRosterService::removeContact(const Contact &contact)
-{
-	Q_UNUSED(contact);
-}
-
-void GaduRosterService::updateContact(const Contact &contact)
-{
-	Q_UNUSED(contact);
 }

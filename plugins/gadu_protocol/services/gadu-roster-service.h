@@ -52,8 +52,6 @@ public:
 	void setUpContactList(const QVector<Contact> &contacts);
 	void reset();
 
-	void updateContactEntry(Contact contact);
-
 public slots:
 	virtual void addContact(const Contact &contact);
 	virtual void removeContact(const Contact &contact);
