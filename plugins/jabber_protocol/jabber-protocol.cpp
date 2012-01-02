@@ -97,7 +97,7 @@ void JabberProtocol::connectContactManagerSignals()
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	        this, SLOT(contactAttached(Contact, bool)));
 
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
 	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
 }
 
@@ -108,7 +108,7 @@ void JabberProtocol::disconnectContactManagerSignals()
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	           this, SLOT(contactAttached(Contact, bool)));
 
-	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)),
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
 	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
 }
 
