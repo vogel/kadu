@@ -445,9 +445,8 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
-	if (details && details->ignoreNextStatusChange())
-		details->setIgnoreNextStatusChange(false);
+	if (contact.ignoreNextStatusChange())
+		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
 }

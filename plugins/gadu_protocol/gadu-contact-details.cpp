@@ -24,7 +24,7 @@
 #include "gadu-contact-details.h"
 
 GaduContactDetails::GaduContactDetails(ContactShared *contactShared) :
-		ContactDetails(contactShared), GaduFlags(0), IgnoreNextStatusChange(false)
+		ContactDetails(contactShared), GaduFlags(0)
 {
 }
 
@@ -45,14 +45,4 @@ void GaduContactDetails::setGaduFlags(int gaduFlags)
 int GaduContactDetails::gaduFlags() const
 {
 	return GaduFlags;
-}
-
-void GaduContactDetails::setIgnoreNextStatusChange(bool ignoreNextStatusChange)
-{
-	IgnoreNextStatusChange = ignoreNextStatusChange;
-}
-
-bool GaduContactDetails::ignoreNextStatusChange() const
-{
-	return IgnoreNextStatusChange;
 }

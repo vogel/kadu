@@ -33,7 +33,6 @@
 class GaduContactDetails : public ContactDetails
 {
 	int GaduFlags;
-	bool IgnoreNextStatusChange;
 
 public:
 	explicit GaduContactDetails(ContactShared *contactShared);
@@ -43,9 +42,6 @@ public:
 
 	void setGaduFlags(int gaduFlags);
 	int gaduFlags() const;
-
-	void setIgnoreNextStatusChange(bool ignoreNextStatusChange);
-	bool ignoreNextStatusChange() const;
 
 };
 

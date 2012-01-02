@@ -127,9 +127,7 @@ void GaduRosterService::contactAttached(Contact contact, bool reattached)
 		return;
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
-	if (details)
-		details->setIgnoreNextStatusChange(true);
+	contact.setIgnoreNextStatusChange(true);
 
 	updateContact(contact);
 }

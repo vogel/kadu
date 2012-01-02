@@ -332,9 +332,8 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 	contact.setCurrentStatus(status);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
-	if (details && details->ignoreNextStatusChange())
-		details->setIgnoreNextStatusChange(false);
+	if (contact.ignoreNextStatusChange())
+		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
 }
@@ -358,9 +357,7 @@ void JabberProtocol::contactAttached(Contact contact, bool reattached)
 	}
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
-	if (details)
-		details->setIgnoreNextStatusChange(true);
+	contact.setIgnoreNextStatusChange(true);
 
 	CurrentRosterService->addContact(contact);
 }

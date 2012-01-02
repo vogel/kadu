@@ -52,6 +52,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	Status CurrentStatus;
 	bool Blocking;
 	bool Dirty;
+	bool IgnoreNextStatusChange;
 
 	QString ProtocolVersion;
 
@@ -107,6 +108,7 @@ public:
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
+	KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
 	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
 	KaduShared_Property(const QHostAddress &, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
