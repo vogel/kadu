@@ -149,12 +149,12 @@ void GaduRosterService::contactDetached(Contact contact, Buddy previousBuddy, bo
 
 void GaduRosterService::addContact(const Contact &contact)
 {
-	Q_UNUSED(contact);
+	updateContact(contact);
 }
 
 void GaduRosterService::removeContact(const Contact &contact)
 {
-	Q_UNUSED(contact);
+	updateContact(contact);
 }
 
 void GaduRosterService::updateContact(const Contact &contact)
