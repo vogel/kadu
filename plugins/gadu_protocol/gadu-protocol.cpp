@@ -70,6 +70,7 @@
 #include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
+#include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 
@@ -90,7 +91,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 	CurrentChatStateService = new GaduChatStateService(this);
-	ContactRosterService = 0;
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
@@ -217,7 +217,7 @@ void GaduProtocol::login()
 		return;
 	}
 
-	ContactRosterService = new GaduRosterService(this);
+	setRosterService(new GaduRosterService(this));
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->watchFor(GaduSession);
@@ -269,8 +269,8 @@ void GaduProtocol::disconnectedCleanup()
 {
 	Protocol::disconnectedCleanup();
 
-	if (ContactRosterService)
-		ContactRosterService->reset();
+	if (rosterService())
+		static_cast<GaduRosterService *>(rosterService())->reset();
 
 	setUpFileTransferService(true);
 
@@ -293,8 +293,8 @@ void GaduProtocol::disconnectedCleanup()
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 
-		delete ContactRosterService;
-		ContactRosterService = 0;
+		delete rosterService();
+		setRosterService(0);
 	}
 
 	CurrentMultilogonService->removeAllSessions();
@@ -419,7 +419,7 @@ void GaduProtocol::sendUserList()
 		if (!contact.isAnonymous())
 			contactsToSend.append(contact);
 
-	ContactRosterService->setUpContactList(contactsToSend);
+	static_cast<GaduRosterService *>(rosterService())->setUpContactList(contactsToSend);
 }
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
@@ -431,7 +431,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		if (contact.ownerBuddy())
 			emit userStatusChangeIgnored(contact.ownerBuddy());
-		ContactRosterService->updateContact(contact);
+		rosterService()->updateContact(contact);
 		return;
 	}
 

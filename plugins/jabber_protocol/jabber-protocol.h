@@ -34,7 +34,6 @@
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
-#include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
@@ -53,7 +52,6 @@ class JabberProtocol : public Protocol
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
-	JabberRosterService *CurrentRosterService;
 	JabberSubscriptionService *CurrentSubscriptionService;
 
 	friend class XMPP::JabberClient;
@@ -119,7 +117,6 @@ public:
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-	virtual RosterService * rosterService() { return CurrentRosterService; }
 	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 
 	JabberResourcePool *resourcePool();

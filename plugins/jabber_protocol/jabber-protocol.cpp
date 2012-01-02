@@ -74,9 +74,12 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
-	CurrentRosterService = new JabberRosterService(this);
-	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
+
+	JabberRosterService *rosterService = new JabberRosterService(this);
+	connect(rosterService, SIGNAL(rosterDownloaded(bool)),
 			this, SLOT(rosterDownloaded(bool)));
+	setRosterService(rosterService);
+
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	connectContactManagerSignals();
@@ -98,7 +101,7 @@ void JabberProtocol::connectContactManagerSignals()
 	        this, SLOT(contactAttached(Contact, bool)));
 
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
+	        rosterService(), SLOT(updateBuddyContacts(Buddy)));
 }
 
 void JabberProtocol::disconnectContactManagerSignals()
@@ -109,7 +112,7 @@ void JabberProtocol::disconnectContactManagerSignals()
 	           this, SLOT(contactAttached(Contact, bool)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
+	           rosterService(), SLOT(updateBuddyContacts(Buddy)));
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -257,7 +260,7 @@ void JabberProtocol::connectedToServer()
 void JabberProtocol::afterLoggedIn()
 {
 	// ask for roster
-	CurrentRosterService->downloadRoster();
+	static_cast<JabberRosterService *>(rosterService())->downloadRoster();
 }
 
 void JabberProtocol::disconnectedFromServer()
@@ -345,21 +348,21 @@ void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool 
 	if (reattaching)
 		return;
 
-	CurrentRosterService->removeContact(contact);
+	rosterService()->removeContact(contact);
 }
 
 void JabberProtocol::contactAttached(Contact contact, bool reattached)
 {
 	if (reattached)
 	{
-		CurrentRosterService->updateContact(contact);
+		rosterService()->updateContact(contact);
 		return;
 	}
 
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
 
-	CurrentRosterService->addContact(contact);
+	rosterService()->addContact(contact);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

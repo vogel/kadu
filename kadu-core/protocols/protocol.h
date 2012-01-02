@@ -70,6 +70,9 @@ class KADUAPI Protocol : public QObject
 
 	Account CurrentAccount;
 
+	// services
+	RosterService *CurrentRosterService;
+
 	// real status, can be offline after connection error
 	Status CurrentStatus;
 	// status used by user to login, after connection error its value does not change
@@ -102,6 +105,9 @@ protected:
 
 	void doSetStatus(Status status);
 
+	// services
+	void setRosterService(const RosterService *rosterService);
+
 protected slots:
 	void loggedIn();
 	void loggedOut();
@@ -125,7 +131,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual MultilogonService * multilogonService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
-	virtual RosterService * rosterService() { return 0; }
+	virtual RosterService * rosterService() { return CurrentRosterService; }
 	virtual SearchService * searchService() { return 0; }
 	virtual SubscriptionService * subscriptionService() { return 0; }
 
