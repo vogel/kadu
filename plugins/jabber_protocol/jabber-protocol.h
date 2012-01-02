@@ -39,7 +39,6 @@
 
 class JabberContactDetails;
 class JabberResourcePool;
-class JabberRosterService;
 class JabberSubscriptionService;
 
 class JabberProtocol : public Protocol
@@ -68,9 +67,6 @@ class JabberProtocol : public Protocol
 
 	void initializeJabberClient();
 
-	friend class JabberRosterService;
-	void connectContactManagerSignals();
-	void disconnectContactManagerSignals();
 	XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
@@ -85,9 +81,6 @@ private slots:
 	void clientUnavailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 
 	void slotClientDebugMessage (const QString &msg);
-
-	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
-	void contactAttached(Contact contact, bool reattached);
 
 	void connectionErrorSlot(const QString &message);
 

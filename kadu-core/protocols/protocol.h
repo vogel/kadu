@@ -82,6 +82,9 @@ class KADUAPI Protocol : public QObject
 	void setAllOffline();
 
 private slots:
+	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
+	void contactAttached(Contact contact, bool reattached);
+
 	// state machine slots
 	void prepareStateMachine();
 
@@ -93,6 +96,9 @@ private slots:
 	void passwordRequiredStateEntered();
 
 protected:
+	void connectRosterService();
+	void disconnectRosterService();
+
 	Status loginStatus() const;
 
 	virtual void login() = 0;
@@ -106,7 +112,7 @@ protected:
 	void doSetStatus(Status status);
 
 	// services
-	void setRosterService(const RosterService *rosterService);
+	void setRosterService(RosterService * const rosterService);
 
 protected slots:
 	void loggedIn();
@@ -131,7 +137,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual MultilogonService * multilogonService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
-	virtual RosterService * rosterService() { return CurrentRosterService; }
+	virtual RosterService * rosterService() const { return CurrentRosterService; }
 	virtual SearchService * searchService() { return 0; }
 	virtual SubscriptionService * subscriptionService() { return 0; }
 

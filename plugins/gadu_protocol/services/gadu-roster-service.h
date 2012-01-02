@@ -38,11 +38,6 @@ class GaduRosterService : public RosterService
 
 	bool AlreadySent;
 
-private slots:
-	void buddySubscriptionChanged(Buddy &buddy);
-	void contactAttached(Contact contact, bool reattached);
-	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
-
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 

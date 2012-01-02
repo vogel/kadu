@@ -31,7 +31,7 @@
 #include "jabber-roster-service.h"
 
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		RosterService(protocol), InRequest(false)
+		RosterService(protocol), InRequest(false), IgnoreContactChanges(false)
 {
 	connect(protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
 			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
@@ -108,7 +108,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	JabberProtocol *jabberProtocol = static_cast<JabberProtocol *>(protocol());
 
-	jabberProtocol->disconnectContactManagerSignals();
+	IgnoreContactChanges = true;
 
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
@@ -119,7 +119,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	if (contact == jabberProtocol->account().accountContact())
 	{
-		jabberProtocol->connectContactManagerSignals();
+		IgnoreContactChanges = false;
 		return;
 	}
 
@@ -131,7 +131,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
 	   ))
 	{
-		jabberProtocol->connectContactManagerSignals();
+		IgnoreContactChanges = false;
 		return;
 	}
 
@@ -150,7 +150,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	contact.setDirty(false);
 
-	jabberProtocol->connectContactManagerSignals();
+	IgnoreContactChanges = false;
 
 	kdebugf2();
 }
@@ -199,6 +199,10 @@ void JabberRosterService::downloadRoster()
 
 bool JabberRosterService::canProceed(const Contact &contact) const
 {
+	// disable roster actions when we are receiving new update from roster itself
+	if (IgnoreContactChanges)
+		return false;
+
 	// disable roster actions when we are removing account from kadu
 	if (protocol()->account().removing())
 		return false;

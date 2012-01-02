@@ -23,8 +23,6 @@
 
 #include <libgadu.h>
 
-#include "buddies/buddy-manager.h"
-#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"
 
@@ -52,22 +50,10 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
 		RosterService(protocol), AlreadySent(false)
 {
-	connect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
-			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
 }
 
 GaduRosterService::~GaduRosterService()
 {
-	disconnect(BuddyManager::instance(), SIGNAL(buddySubscriptionChanged(Buddy &)),
-			this, SLOT(buddySubscriptionChanged(Buddy &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
 }
 
 void GaduRosterService::setUpContactList(const QVector<Contact> &contacts)
@@ -113,38 +99,6 @@ void GaduRosterService::reset()
 	AlreadySent = false;
 }
 
-void GaduRosterService::buddySubscriptionChanged(Buddy &buddy)
-{
-	// update offline to and other data
-	updateBuddyContacts(buddy);
-}
-
-void GaduRosterService::contactAttached(Contact contact, bool reattached)
-{
-	Q_UNUSED(reattached)
-
-	if (contact.contactAccount() != protocol()->account())
-		return;
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
-
-	updateContact(contact);
-}
-
-void GaduRosterService::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
-{
-	Q_UNUSED(previousBuddy)
-
-	if (reattaching)
-		return;
-
-	if (contact.contactAccount() != protocol()->account())
-		return;
-
-	updateContact(contact);
-}
-
 void GaduRosterService::addContact(const Contact &contact)
 {
 	updateContact(contact);
@@ -163,6 +117,9 @@ void GaduRosterService::updateContact(const Contact &contact)
 	if (!protocol()->isConnected())
 		return;
 
+	if (protocol()->account() != contact.contactAccount())
+		return;
+
 	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
 	if (!session)
 		return;
@@ -177,6 +134,10 @@ void GaduRosterService::updateContact(const Contact &contact)
 
 	int newFlags = notifyTypeFromContact(contact);
 	int oldFlags = details->gaduFlags();
+
+	if (newFlags == oldFlags)
+		return;
+
 	details->setGaduFlags(newFlags);
 
 	// add new flags

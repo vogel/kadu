@@ -82,37 +82,16 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
-	connectContactManagerSignals();
+	connectRosterService();
 
 	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
 {
-	disconnectContactManagerSignals();
+	disconnectRosterService();
+
 	logout();
-}
-
-void JabberProtocol::connectContactManagerSignals()
-{
-	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-	        this, SLOT(contactDetached(Contact, Buddy, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-	        this, SLOT(contactAttached(Contact, bool)));
-
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	        rosterService(), SLOT(updateBuddyContacts(Buddy)));
-}
-
-void JabberProtocol::disconnectContactManagerSignals()
-{
-	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-	           this, SLOT(contactDetached(Contact, Buddy, bool)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-	           this, SLOT(contactAttached(Contact, bool)));
-
-	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	           rosterService(), SLOT(updateBuddyContacts(Buddy)));
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -339,30 +318,6 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
-}
-
-void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
-{
-	Q_UNUSED(previousBuddy)
-
-	if (reattaching)
-		return;
-
-	rosterService()->removeContact(contact);
-}
-
-void JabberProtocol::contactAttached(Contact contact, bool reattached)
-{
-	if (reattached)
-	{
-		rosterService()->updateContact(contact);
-		return;
-	}
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
-
-	rosterService()->addContact(contact);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()
