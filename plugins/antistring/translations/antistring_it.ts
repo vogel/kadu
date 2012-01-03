@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -9,43 +9,43 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="7"/>
         <source>Antistring</source>
-        <translation>Anti-Schneeball-System</translation>
+        <translation>Antistring</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>General</source>
-        <translation>Allgemeines</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Enable Antistring</source>
-        <translation>Anti-Schneeball-System einschalten</translation>
+        <translation>Abilita Antistring</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="16"/>
         <source>Block message</source>
-        <translation>Blockieren Sie die Nachricht</translation>
+        <translation>Blocca messaggio</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="19"/>
         <source>Admonition</source>
-        <translation type="unfinished"/>
+        <translation>Ammonizione</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="24"/>
         <location filename="../.configuration-ui-translations.cpp" line="30"/>
         <source>Log</source>
-        <translation type="unfinished"/>
+        <translation>Log</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="27"/>
         <source>Write log to file</source>
-        <translation type="unfinished"/>
+        <translation>Scrivi il log nel file</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="35"/>
         <source>Conditions</source>
-        <translation>Bedingungen</translation>
+        <translation>Condizioni</translation>
     </message>
 </context>
 <context>
@@ -54,7 +54,7 @@
         <location filename="../antistring.cpp" line="118"/>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation type="unfinished"/>
+        <translation>DATA E TEMPO :: ID :: MESSAGGIO</translation>
     </message>
 </context>
 <context>
@@ -62,32 +62,32 @@
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="80"/>
         <source>Condition</source>
-        <translation type="unfinished"/>
+        <translation>Condizione</translation>
     </message>
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="86"/>
         <source>Don&apos;t use</source>
-        <translation type="unfinished"/>
+        <translation>Non usare</translation>
     </message>
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="87"/>
         <source>Factor</source>
-        <translation type="unfinished"/>
+        <translation>Fattore</translation>
     </message>
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="90"/>
         <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <translation>Aggiungi</translation>
     </message>
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="91"/>
         <source>Change</source>
-        <translation>Änderung</translation>
+        <translation>Cambia</translation>
     </message>
     <message>
         <location filename="../antistring-configuration-ui-handler.cpp" line="92"/>
         <source>Delete</source>
-        <translation>Löschen</translation>
+        <translation>Cancella</translation>
     </message>
 </context>
 <context>
@@ -95,12 +95,12 @@
     <message>
         <location filename="../antistring-notification.cpp" line="43"/>
         <source>Antistring</source>
-        <translation type="unfinished"/>
+        <translation>Antistring</translation>
     </message>
     <message>
         <location filename="../antistring-notification.cpp" line="44"/>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"/>
+        <translation>Il tuo interlocutore ti invia una lettera d&apos;amore</translation>
     </message>
 </context>
 </TS>
