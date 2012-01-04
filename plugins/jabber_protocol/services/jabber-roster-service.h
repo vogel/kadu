@@ -64,9 +64,6 @@ public slots:
 	virtual void removeContact(const Contact &contact);
 	virtual void updateContact(const Contact &contact);
 
-signals:
-	void rosterDownloaded(bool success);
-
 };
 
 #endif // JABBER_ROSTER_SERVICE_H

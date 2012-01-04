@@ -178,7 +178,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 		}
 
 	DownloadingRoster = false;
-	emit rosterDownloaded(success);
+	emit rosterReady(success);
 
 	kdebugf2();
 }

@@ -76,8 +76,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 
 	JabberRosterService *rosterService = new JabberRosterService(this);
-	connect(rosterService, SIGNAL(rosterDownloaded(bool)),
-			this, SLOT(rosterDownloaded(bool)));
+	connect(rosterService, SIGNAL(rosterReady(bool)),
+			this, SLOT(rosterReady(bool)));
 	setRosterService(rosterService);
 
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
@@ -144,7 +144,7 @@ XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccount
 		return XMPP::ClientStream::AllowPlainOverTLS;
 }
 
-void JabberProtocol::rosterDownloaded(bool success)
+void JabberProtocol::rosterReady(bool success)
 {
 	Q_UNUSED(success)
 

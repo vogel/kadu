@@ -55,6 +55,9 @@ public slots:
 	virtual void updateContact(const Contact &contact) = 0;
 	virtual void updateBuddyContacts(const Buddy &buddy);
 
+signals:
+	void rosterReady(bool ok);
+
 };
 
 #endif // ROSTER_SERVICE_H
