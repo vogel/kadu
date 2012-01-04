@@ -183,7 +183,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 	kdebugf2();
 }
 
-void JabberRosterService::downloadRoster()
+void JabberRosterService::prepareRoster()
 {
 	if (DownloadingRoster)
 		return;

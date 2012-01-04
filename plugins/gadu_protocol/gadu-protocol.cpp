@@ -250,7 +250,7 @@ void GaduProtocol::afterLoggedIn()
 	// set up DCC if needed
 	setUpFileTransferService();
 
-	static_cast<GaduRosterService *>(rosterService())->setUpContactList();
+	rosterService()->prepareRoster();
 }
 
 void GaduProtocol::logout()

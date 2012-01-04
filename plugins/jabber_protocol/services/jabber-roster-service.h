@@ -57,7 +57,7 @@ public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
-	void downloadRoster();
+	virtual void prepareRoster();
 
 public slots:
 	virtual void addContact(const Contact &contact);

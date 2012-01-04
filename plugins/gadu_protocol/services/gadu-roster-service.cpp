@@ -57,7 +57,7 @@ GaduRosterService::~GaduRosterService()
 {
 }
 
-void GaduRosterService::setUpContactList()
+void GaduRosterService::prepareRoster()
 {
 	QVector<Contact> allContacts = ContactManager::instance()->contacts(protocol()->account());
 	QVector<Contact> sendList;

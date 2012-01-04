@@ -44,7 +44,8 @@ public:
 	explicit GaduRosterService(GaduProtocol *protocol);
 	virtual ~GaduRosterService();
 
-	void setUpContactList();
+	virtual void prepareRoster();
+
 	void reset();
 
 public slots:

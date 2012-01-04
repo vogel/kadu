@@ -47,6 +47,8 @@ public:
 
 	Protocol * protocol() const { return CurrentProtocol; }
 
+	virtual void prepareRoster() = 0;
+
 public slots:
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;

@@ -238,8 +238,7 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	// ask for roster
-	static_cast<JabberRosterService *>(rosterService())->downloadRoster();
+	rosterService()->prepareRoster();
 }
 
 void JabberProtocol::disconnectedFromServer()
