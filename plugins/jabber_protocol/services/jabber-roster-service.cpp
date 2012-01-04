@@ -31,7 +31,7 @@
 #include "jabber-roster-service.h"
 
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		RosterService(protocol), InRequest(false), IgnoreContactChanges(false)
+		RosterService(protocol), DownloadingRoster(false), IgnoreContactChanges(false)
 {
 	connect(protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
 			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
@@ -177,7 +177,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 			contact.setDirty(false);
 		}
 
-	InRequest = false;
+	DownloadingRoster = false;
 	emit rosterDownloaded(success);
 
 	kdebugf2();
@@ -185,10 +185,10 @@ void JabberRosterService::rosterRequestFinished(bool success)
 
 void JabberRosterService::downloadRoster()
 {
-	if (InRequest)
+	if (DownloadingRoster)
 		return;
 
-	InRequest = true;
+	DownloadingRoster = true;
 
 	// flag roster for delete
 	ContactsForDelete = ContactManager::instance()->contacts(protocol()->account()).toList();

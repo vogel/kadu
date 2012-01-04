@@ -40,7 +40,7 @@ class JabberRosterService : public RosterService
 	Q_OBJECT
 
 	QList<Contact> ContactsForDelete;
-	bool InRequest;
+	bool DownloadingRoster;
 	bool IgnoreContactChanges;
 
 	const QString & itemDisplay(const XMPP::RosterItem &item);
