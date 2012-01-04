@@ -250,7 +250,7 @@ void GaduProtocol::afterLoggedIn()
 	// set up DCC if needed
 	setUpFileTransferService();
 
-	sendUserList();
+	static_cast<GaduRosterService *>(rosterService())->setUpContactList();
 }
 
 void GaduProtocol::logout()
@@ -410,18 +410,6 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 		stopFileTransferService();
 	else
 		startFileTransferService();
-}
-
-void GaduProtocol::sendUserList()
-{
-	QVector<Contact> contacts = ContactManager::instance()->contacts(account());
-	QVector<Contact> contactsToSend;
-
-	foreach (const Contact &contact, contacts)
-		if (!contact.isAnonymous())
-			contactsToSend.append(contact);
-
-	static_cast<GaduRosterService *>(rosterService())->setUpContactList(contactsToSend);
 }
 
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)

@@ -23,6 +23,7 @@
 
 #include <libgadu.h>
 
+#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"
 
@@ -56,10 +57,14 @@ GaduRosterService::~GaduRosterService()
 {
 }
 
-void GaduRosterService::setUpContactList(const QVector<Contact> &contacts)
+void GaduRosterService::setUpContactList()
 {
-	QVector<Contact> sendList = contacts;
-	sendList.remove(sendList.indexOf(protocol()->account().accountContact()));
+	QVector<Contact> allContacts = ContactManager::instance()->contacts(protocol()->account());
+	QVector<Contact> sendList;
+
+	foreach (const Contact &contact, allContacts)
+		if (!contact.isAnonymous() && contact != protocol()->account().accountContact())
+			sendList.append(contact);
 
 	if (sendList.isEmpty())
 	{

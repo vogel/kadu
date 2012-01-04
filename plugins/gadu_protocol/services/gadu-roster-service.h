@@ -44,7 +44,7 @@ public:
 	explicit GaduRosterService(GaduProtocol *protocol);
 	virtual ~GaduRosterService();
 
-	void setUpContactList(const QVector<Contact> &contacts);
+	void setUpContactList();
 	void reset();
 
 public slots:
