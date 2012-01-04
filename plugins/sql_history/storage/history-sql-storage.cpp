@@ -184,7 +184,7 @@ void HistorySqlStorage::initQueries()
 			"(:receipient, :send_time, :content)");
 }
 
-QString HistorySqlStorage::chatWhere(const Chat &chat)
+QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix)
 {
 	if (!chat)
 		return QLatin1String("false");
@@ -195,13 +195,13 @@ QString HistorySqlStorage::chatWhere(const Chat &chat)
 
 	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
 	if (!aggregate)
-		return QString("chat.uuid = '%1'").arg(chat.uuid().toString());
+		return QString("%1uuid = '%2'").arg(chatPrefix).arg(chat.uuid().toString());
 
 	QStringList uuids;
 	foreach (const Chat &aggregatedChat, aggregate->chats())
 		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
 
-	return QString("chat.uuid IN (%1)").arg(uuids.join(QLatin1String(", ")));
+	return QString("%1uuid IN (%2)").arg(chatPrefix).arg(uuids.join(QLatin1String(", ")));
 }
 
 QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
@@ -441,9 +441,9 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_messages LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) WHERE " + chatWhere(chat);
+	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN (SELECT id FROM kadu_chats chat WHERE " + chatWhere(chat) + ")";
 	if (!date.isNull())
-		queryString += " AND date = :date";
+		queryString += " AND date_id IN (SELECT id FROM kadu_dates WHERE date = :date)";
 
 	query.prepare(queryString);
 
@@ -451,6 +451,15 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 		query.bindValue(":date", date.toString("yyyyMMdd"));
 
 	executeQuery(query);
+
+	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE " + chatWhere(chat, "") +
+	        " AND 0 = (SELECT count(*) FROM kadu_messages WHERE chat_id = kadu_chats.id)";
+
+	QSqlQuery removeChatsQuery(Database);
+
+	removeChatsQuery.prepare(removeChatsQueryString);
+
+	executeQuery(removeChatsQuery);
 }
 
 void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
@@ -1019,13 +1028,13 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 	QDateTime after = QDateTime::currentDateTime();
 	kdebugm(KDEBUG_INFO, "db query: %s\n", qPrintable(query.executedQuery()));
 
-	/*
+/*
 	printf("[%s]\n[%d.%d]-[%d.%d]/%d.%d\n", qPrintable(query.executedQuery()),
 			before.toTime_t(), before.time().msec(),
 			after.toTime_t(), after.time().msec(),
 			after.toTime_t() - before.toTime_t(),
 			after.time().msec() - before.time().msec());
-	*/
+*/
 }
 
 QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
