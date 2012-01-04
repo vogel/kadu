@@ -293,8 +293,10 @@ void GaduProtocol::disconnectedCleanup()
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 
-		delete rosterService();
+		// this is ugly, we should be able to just delete it right now
+		RosterService * oldRosterService = rosterService();
 		setRosterService(0);
+		delete oldRosterService;
 	}
 
 	CurrentMultilogonService->removeAllSessions();
