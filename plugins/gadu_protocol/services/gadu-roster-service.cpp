@@ -72,6 +72,7 @@ void GaduRosterService::prepareRoster()
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		AlreadySent = true;
+		emit rosterReady(true);
 		return;
 	}
 
@@ -97,6 +98,7 @@ void GaduRosterService::prepareRoster()
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	AlreadySent = true;
+	emit rosterReady(true);
 }
 
 void GaduRosterService::reset()
