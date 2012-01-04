@@ -285,10 +285,10 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 	delete Details;
 	Details = 0;
 
+	AccountManager::instance()->unregisterItem(this);
+
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
-
-	AccountManager::instance()->unregisterItem(this);
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
