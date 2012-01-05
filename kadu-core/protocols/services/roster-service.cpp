@@ -28,17 +28,45 @@
 #include "roster-service.h"
 
 RosterService::RosterService(Protocol *protocol) :
-		QObject(protocol), CurrentProtocol(protocol)
+		QObject(protocol), CurrentProtocol(protocol), State(StateNonInitialized)
 {
 	Q_ASSERT(protocol);
+
+	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 }
 
 RosterService::~RosterService()
 {
 }
 
+void RosterService::disconnected()
+{
+	setState(StateNonInitialized);
+}
+
+bool RosterService::canPerformLocalUpdate() const
+{
+	if (StateInitialized != State)
+		return false;
+
+	// disable roster actions when we are removing account from kadu
+	if (protocol()->account().removing())
+		return false;
+
+	if (!protocol()->isConnected())
+		return false;
+
+	return true;
+}
+
+void RosterService::setState(RosterState state)
+{
+	State = state;
+}
+
 void RosterService::updateBuddyContacts(const Buddy &buddy)
 {
-	foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
-		updateContact(contact);
+	if (canPerformLocalUpdate())
+		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
+			updateContact(contact);
 }

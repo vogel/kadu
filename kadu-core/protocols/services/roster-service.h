@@ -39,13 +39,32 @@ class KADUAPI RosterService : public QObject
 {
 	Q_OBJECT
 
+public:
+	enum RosterState {
+		StateNonInitialized,
+		StateInitializing,
+		StateInitialized,
+		StateProcessingRemoteUpdate,
+		StateProcessingLocalUpdate
+	};
+
+private:
 	Protocol *CurrentProtocol;
+	RosterState State;
+
+private slots:
+	void disconnected();
+
+protected:
+	virtual bool canPerformLocalUpdate() const;
+	void setState(RosterState state);
 
 public:
 	explicit RosterService(Protocol *protocol);
 	virtual ~RosterService();
 
 	Protocol * protocol() const { return CurrentProtocol; }
+	RosterState state() const { return State; }
 
 	virtual void prepareRoster() = 0;
 
