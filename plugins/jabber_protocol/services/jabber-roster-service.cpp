@@ -231,6 +231,10 @@ void JabberRosterService::addContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account() || contact.isAnonymous())
 		return;
 
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+
 	Buddy buddy = contact.ownerBuddy();
 	QStringList groupsList;
 
@@ -239,6 +243,8 @@ void JabberRosterService::addContact(const Contact &contact)
 
 	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), groupsList);
 	contact.setDirty(false);
+
+	setState(StateInitialized);
 }
 
 void JabberRosterService::removeContact(const Contact &contact)
@@ -246,8 +252,14 @@ void JabberRosterService::removeContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account())
 		return;
 
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+
 	static_cast<JabberProtocol *>(protocol())->client()->removeContact(contact.id());
 	contact.setDirty(false);
+
+	setState(StateInitialized);
 }
 
 void JabberRosterService::updateContact(const Contact &contact)
@@ -255,9 +267,15 @@ void JabberRosterService::updateContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account() || contact.isAnonymous())
 		return;
 
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+
 	QStringList groupsList;
 	foreach (const Group &group, contact.ownerBuddy().groups())
 		groupsList.append(group.name());
 
 	static_cast<JabberProtocol *>(protocol())->client()->updateContact(contact.id(), contact.display(true), groupsList);
+
+	setState(StateInitialized);
 }
