@@ -84,7 +84,6 @@ QString ITunesMediaPlayer::getTitle()
 
 QString ITunesMediaPlayer::getAlbum()
 {
-	Q_UNUSED(position)
 	kdebugf();
 	Tune t = controller->currentTune();
 	return t.album();
