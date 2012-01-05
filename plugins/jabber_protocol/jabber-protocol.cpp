@@ -82,15 +82,11 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
-	connectRosterService();
-
 	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
 {
-	disconnectRosterService();
-
 	logout();
 }
 

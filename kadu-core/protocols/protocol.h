@@ -81,6 +81,9 @@ class KADUAPI Protocol : public QObject
 
 	void setAllOffline();
 
+	void connectRosterService();
+	void disconnectRosterService();
+
 private slots:
 	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAttached(Contact contact, bool reattached);
@@ -96,9 +99,6 @@ private slots:
 	void passwordRequiredStateEntered();
 
 protected:
-	void connectRosterService();
-	void disconnectRosterService();
-
 	Status loginStatus() const;
 
 	virtual void login() = 0;
