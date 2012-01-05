@@ -64,7 +64,7 @@ void RosterService::setState(RosterState state)
 	State = state;
 }
 
-void RosterService::updateBuddyContacts(const Buddy &buddy)
+void RosterService::updateBuddyContacts(Buddy &buddy)
 {
 	if (canPerformLocalUpdate())
 		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))

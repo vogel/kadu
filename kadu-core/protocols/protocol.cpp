@@ -277,7 +277,7 @@ void Protocol::connectRosterService()
 	        Qt::UniqueConnection);
 
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy)),
+	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)),
 	        Qt::UniqueConnection);
 }
 
@@ -292,7 +292,7 @@ void Protocol::disconnectRosterService()
 	           this, SLOT(contactAttached(Contact, bool)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy)));
+	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)));
 }
 
 void Protocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)

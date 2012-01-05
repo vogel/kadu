@@ -72,7 +72,7 @@ public slots:
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;
 	virtual void updateContact(const Contact &contact) = 0;
-	virtual void updateBuddyContacts(const Buddy &buddy);
+	virtual void updateBuddyContacts(Buddy &buddy);
 
 signals:
 	void rosterReady(bool ok);
