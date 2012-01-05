@@ -250,7 +250,9 @@ void GaduProtocol::afterLoggedIn()
 	// set up DCC if needed
 	setUpFileTransferService();
 
+	// we do not need to wait for "rosterReady" signal in GaduGadu
 	rosterService()->prepareRoster();
+	sendStatusToServer();
 }
 
 void GaduProtocol::logout()
