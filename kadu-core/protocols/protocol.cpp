@@ -222,7 +222,6 @@ void Protocol::loggedInStateEntered()
 	afterLoggedIn();
 
 	statusChanged(loginStatus());
-	sendStatusToServer();
 
 	emit connected(CurrentAccount);
 }

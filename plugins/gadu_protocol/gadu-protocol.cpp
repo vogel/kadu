@@ -252,6 +252,7 @@ void GaduProtocol::afterLoggedIn()
 	setUpFileTransferService();
 
 	sendUserList();
+	sendStatusToServer();
 }
 
 void GaduProtocol::logout()
