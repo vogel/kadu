@@ -92,6 +92,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 	CurrentChatStateService = new GaduChatStateService(this);
 
+	setRosterService(new GaduRosterService(this));
+
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	kdebugf2();
@@ -217,8 +219,6 @@ void GaduProtocol::login()
 		return;
 	}
 
-	setRosterService(new GaduRosterService(this));
-
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->watchFor(GaduSession);
 }
@@ -271,9 +271,6 @@ void GaduProtocol::disconnectedCleanup()
 {
 	Protocol::disconnectedCleanup();
 
-	if (rosterService())
-		static_cast<GaduRosterService *>(rosterService())->reset();
-
 	setUpFileTransferService(true);
 
 	if (PingTimer)
@@ -294,11 +291,6 @@ void GaduProtocol::disconnectedCleanup()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-
-		// this is ugly, we should be able to just delete it right now
-		RosterService * oldRosterService = rosterService();
-		setRosterService(0);
-		delete oldRosterService;
 	}
 
 	CurrentMultilogonService->removeAllSessions();

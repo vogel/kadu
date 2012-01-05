@@ -49,7 +49,7 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 }
 
 GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
-		RosterService(protocol), AlreadySent(false)
+		RosterService(protocol)
 {
 }
 
@@ -59,6 +59,10 @@ GaduRosterService::~GaduRosterService()
 
 void GaduRosterService::prepareRoster()
 {
+	Q_ASSERT(StateNonInitialized == state());
+
+	setState(StateInitializing);
+
 	QVector<Contact> allContacts = ContactManager::instance()->contacts(protocol()->account());
 	QVector<Contact> sendList;
 
@@ -71,7 +75,7 @@ void GaduRosterService::prepareRoster()
 		gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
-		AlreadySent = true;
+		setState(StateInitialized);
 		emit rosterReady(true);
 		return;
 	}
@@ -97,13 +101,8 @@ void GaduRosterService::prepareRoster()
 	gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
-	AlreadySent = true;
+	setState(StateInitialized);
 	emit rosterReady(true);
-}
-
-void GaduRosterService::reset()
-{
-	AlreadySent = false;
 }
 
 void GaduRosterService::addContact(const Contact &contact)
@@ -118,32 +117,34 @@ void GaduRosterService::removeContact(const Contact &contact)
 
 void GaduRosterService::updateContact(const Contact &contact)
 {
-	if (!AlreadySent)
+	if (!canPerformLocalUpdate() ||
+	        protocol()->account() != contact.contactAccount() ||
+	        protocol()->account().accountContact() == contact)
 		return;
 
-	if (!protocol()->isConnected())
-		return;
+	Q_ASSERT(StateInitialized == state());
 
-	if (protocol()->account() != contact.contactAccount())
-		return;
+	setState(StateProcessingLocalUpdate);
 
 	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
-	if (!session)
-		return;
+	Q_ASSERT(session);
 
 	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
 	if (!details)
+	{
+		setState(StateInitialized);
 		return;
+	}
 
 	int uin = details->uin();
-	if (!uin || protocol()->account().id() == QString::number(uin))
-		return;
-
 	int newFlags = notifyTypeFromContact(contact);
 	int oldFlags = details->gaduFlags();
 
 	if (newFlags == oldFlags)
+	{
+		setState(StateInitialized);
 		return;
+	}
 
 	details->setGaduFlags(newFlags);
 
@@ -162,4 +163,6 @@ void GaduRosterService::updateContact(const Contact &contact)
 		gg_remove_notify_ex(session, uin, 0x02);
 	if ((oldFlags & 0x04) && !(newFlags & 0x04))
 		gg_remove_notify_ex(session, uin, 0x04);
+
+	setState(StateInitialized);
 }

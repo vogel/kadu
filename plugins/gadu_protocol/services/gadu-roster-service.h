@@ -36,8 +36,6 @@ class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	bool AlreadySent;
-
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
@@ -45,8 +43,6 @@ public:
 	virtual ~GaduRosterService();
 
 	virtual void prepareRoster();
-
-	void reset();
 
 public slots:
 	virtual void addContact(const Contact &contact);
