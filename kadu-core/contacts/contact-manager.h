@@ -58,11 +58,6 @@ private slots:
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);
 
-	void aboutToBeAttached(Buddy nearFutureBuddy);
-	void attached();
-	void aboutToBeDetached();
-	void detached(Buddy previousBuddy);
-
 protected:
 	virtual void loaded();
 
@@ -88,11 +83,6 @@ signals:
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
-
-	void contactAboutToBeDetached(Contact contact);
-	void contactDetached(Contact contact, Buddy previousBuddy);
-	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
-	void contactAttached(Contact contact);
 
 	void dirtyContactAdded(Contact contact);
 

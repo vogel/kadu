@@ -121,11 +121,6 @@ public:
 	Avatar avatar(bool useBuddyData);
 
 signals:
-	void aboutToBeDetached();
-	void detached(const Buddy &previousBuddy);
-	void aboutToBeAttached(const Buddy &nearFutureBuddy);
-	void attached();
-
 	void updated();
 	void dirtinessChanged();
 

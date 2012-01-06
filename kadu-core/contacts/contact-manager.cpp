@@ -113,42 +113,6 @@ void ContactManager::unreadMessageRemoved(const Message &message)
 		contact.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
 
-void ContactManager::aboutToBeDetached()
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAboutToBeDetached(contact);
-}
-
-void ContactManager::detached(Buddy previousBuddy)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactDetached(contact, previousBuddy);
-}
-
-void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAboutToBeAttached(contact, nearFutureBuddy);
-}
-
-void ContactManager::attached()
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAttached(contact);
-}
-
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
 	QMutexLocker locker(&mutex());
@@ -172,10 +136,6 @@ void ContactManager::itemRegistered(Contact item)
 	}
 
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
-	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
-	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	connect(item, SIGNAL(attached()), this, SLOT(attached()));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -189,10 +149,6 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
-	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
-	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	disconnect(item, SIGNAL(attached()), this, SLOT(attached()));
 
 	if (item.isDirty())
 		DirtyContacts.removeAll(item);

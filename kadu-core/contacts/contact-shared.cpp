@@ -179,9 +179,7 @@ void ContactShared::detach()
 	 */
 	Contact guard(this);
 
-	emit aboutToBeDetached();
 	OwnerBuddy->removeContact(this);
-	emit detached(*OwnerBuddy);
 }
 
 void ContactShared::attach(const Buddy &buddy)
@@ -190,9 +188,7 @@ void ContactShared::attach(const Buddy &buddy)
 	if (!*OwnerBuddy)
 		return;
 
-	emit aboutToBeAttached(*OwnerBuddy);
 	OwnerBuddy->addContact(this);
-	emit attached();
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
