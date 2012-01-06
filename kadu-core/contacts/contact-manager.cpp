@@ -124,11 +124,13 @@ void ContactManager::aboutToBeDetached()
 
 void ContactManager::detached(Buddy previousBuddy, bool reattaching)
 {
+	Q_UNUSED(reattaching);
+
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactDetached(contact, previousBuddy, reattaching);
+		emit contactDetached(contact, previousBuddy);
 }
 
 void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)

@@ -63,7 +63,7 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 			this, SLOT(contactAttached(Contact)));
 	connect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
 			this, SLOT(contactAboutToBeDetached(Contact)));
-	connect(cm, SIGNAL(contactDetached(Contact, Buddy, bool)),
+	connect(cm, SIGNAL(contactDetached(Contact, Buddy)),
 			this, SLOT(contactDetached(Contact, Buddy)));
 	connect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
@@ -92,7 +92,7 @@ BuddiesModel::~BuddiesModel()
 			this, SLOT(contactAttached(Contact)));
 	disconnect(cm, SIGNAL(contactAboutToBeDetached(Contact)),
 			this, SLOT(contactAboutToBeDetached(Contact)));
-	disconnect(cm, SIGNAL(contactDetached(Contact, Buddy, bool)),
+	disconnect(cm, SIGNAL(contactDetached(Contact, Buddy)),
 			this, SLOT(contactDetached(Contact, Buddy)));
 	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
 			   this, SLOT(contactUpdated(Contact&)));
