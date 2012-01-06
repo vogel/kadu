@@ -105,6 +105,17 @@ void GaduRosterService::prepareRoster()
 	emit rosterReady(true);
 }
 
+void GaduRosterService::updateFlag(int uin, int newFlags, int oldFlags, int flag) const
+{
+	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
+	Q_ASSERT(session);
+
+	if (!(oldFlags & flag) && (newFlags & flag))
+		gg_add_notify_ex(session, uin, flag);
+	if ((oldFlags & flag) && !(newFlags & flag))
+		gg_remove_notify_ex(session, uin, flag);
+}
+
 void GaduRosterService::addContact(const Contact &contact)
 {
 	updateContact(contact);
@@ -126,9 +137,6 @@ void GaduRosterService::updateContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
-	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
-	Q_ASSERT(session);
-
 	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
 	if (!details)
 	{
@@ -148,21 +156,9 @@ void GaduRosterService::updateContact(const Contact &contact)
 
 	details->setGaduFlags(newFlags);
 
-	// add new flags
-	if (!(oldFlags & 0x01) && (newFlags & 0x01))
-		gg_add_notify_ex(session, uin, 0x01);
-	if (!(oldFlags & 0x02) && (newFlags & 0x02))
-		gg_add_notify_ex(session, uin, 0x02);
-	if (!(oldFlags & 0x04) && (newFlags & 0x04))
-		gg_add_notify_ex(session, uin, 0x04);
-
-	// remove old flags
-	if ((oldFlags & 0x01) && !(newFlags & 0x01))
-		gg_remove_notify_ex(session, uin, 0x01);
-	if ((oldFlags & 0x02) && !(newFlags & 0x02))
-		gg_remove_notify_ex(session, uin, 0x02);
-	if ((oldFlags & 0x04) && !(newFlags & 0x04))
-		gg_remove_notify_ex(session, uin, 0x04);
+	updateFlag(uin, newFlags, oldFlags, 0x01);
+	updateFlag(uin, newFlags, oldFlags, 0x02);
+	updateFlag(uin, newFlags, oldFlags, 0x04);
 
 	setState(StateInitialized);
 }
