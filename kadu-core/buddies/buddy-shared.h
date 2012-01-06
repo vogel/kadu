@@ -184,6 +184,10 @@ signals:
 	void contactAboutToBeAdded(const Contact &contact);
 	void contactAdded(const Contact &contact);
 	void contactAboutToBeRemoved(const Contact &contact);
+
+	/**
+	 * @note When this signal is emited contact.ownerBuddy value is still set to this buddy
+	 */
 	void contactRemoved(const Contact &contact);
 
 	void updated();

@@ -112,7 +112,8 @@ void ContactShared::aboutToBeRemoved()
 {
 	// clean up references
 	*ContactAccount = Account::null;
-	detach(true);
+	detach();
+	*OwnerBuddy = Buddy::null;
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
@@ -166,7 +167,7 @@ void ContactShared::emitUpdated()
 	emit updated();
 }
 
-void ContactShared::detach(bool resetBuddy)
+void ContactShared::detach()
 {
 	if (!*OwnerBuddy)
 		return;
@@ -178,18 +179,9 @@ void ContactShared::detach(bool resetBuddy)
 	 */
 	Contact guard(this);
 
-	Buddy oldBuddy = *OwnerBuddy;
-
 	emit aboutToBeDetached();
-
-	oldBuddy.removeContact(this);
-
-	// TODO This is far from ideal. In the moment OwnerBuddy emitted contactRemoved()
-	// this contact still had owner buddy set. Hopefully nothing depends on correct behavior here.
-	if (resetBuddy)
-		*OwnerBuddy = Buddy::null;
-
-	emit detached(oldBuddy);
+	OwnerBuddy->removeContact(this);
+	emit detached(*OwnerBuddy);
 }
 
 void ContactShared::attach(const Buddy &buddy)
@@ -216,7 +208,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	detach(true);
+	detach();
 	attach(buddy);
 
 	setDirty(true);
@@ -281,7 +273,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 		if (ContactManager::instance()->allItems().contains(uuid()))
 			Details->ensureStored();
 
-		detach(false);
+		detach();
 		delete Details;
 		Details = 0;
 	}
