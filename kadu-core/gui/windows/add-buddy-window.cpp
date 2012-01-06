@@ -46,6 +46,7 @@
 #include "buddies/model/groups-model.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
 #include "gui/widgets/select-buddy-combo-box.h"
@@ -56,6 +57,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster-service.h"
+#include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "add-buddy-window.h"
@@ -167,6 +169,7 @@ void AddBuddyWindow::createGui()
 	SelectBuddy = new SelectBuddyComboBox(this);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
+	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectBuddy));
 	Layout->addRow(tr("Merge with:"), SelectBuddy);
 
 	MergeWidgets.append(SelectBuddy);
