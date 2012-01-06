@@ -265,6 +265,9 @@ void AccountShared::protocolFactoryUnloaded()
 
 void AccountShared::useProtocolFactory(ProtocolFactory *factory)
 {
+	// Else we might get deleted when deleting oldProtocolHandler.
+	Account guard(this);
+
 	Protocol *oldProtocolHandler = ProtocolHandler;
 
 	if (ProtocolHandler)
