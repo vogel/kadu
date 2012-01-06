@@ -112,7 +112,7 @@ void ContactShared::aboutToBeRemoved()
 {
 	// clean up references
 	*ContactAccount = Account::null;
-	*OwnerBuddy = Buddy::null;
+	detach(true);
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
@@ -121,7 +121,6 @@ void ContactShared::aboutToBeRemoved()
 	if (ContactManager::instance()->allItems().contains(uuid()))
 		details()->ensureStored();
 
-	detach(false);
 	if (Details)
 	{
 		delete Details;
