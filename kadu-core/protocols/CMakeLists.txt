@@ -14,6 +14,7 @@ set (protocols_SRCS
 	protocols-aware-object.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
+	roster.cpp
 )
 
 set (protocols_MOC_SRCS
@@ -41,6 +42,7 @@ set (protocols_MOC_SRCS
 	protocol-factory.h
 	protocols-manager.h
 	protocol-state-machine.h
+	roster.h
 )
 
 kadu_subdirectory (protocols "${protocols_SRCS}" "${protocols_MOC_SRCS}" "")
