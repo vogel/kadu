@@ -199,10 +199,8 @@ void ContactShared::detach(bool resetBuddy)
 	emit detached(oldBuddy);
 }
 
-void ContactShared::attach(const Buddy &buddy, bool reattaching)
+void ContactShared::attach(const Buddy &buddy)
 {
-	Q_UNUSED(reattaching);
-
 	if (!Details || !buddy)
 	{
 		*OwnerBuddy = buddy;
@@ -230,9 +228,8 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	bool reattaching = !isAnonymous() && !buddy.isAnonymous();
 	detach(true);
-	attach(buddy, reattaching);
+	attach(buddy);
 
 	setDirty(true);
 	dataUpdated();
@@ -274,7 +271,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 	dataUpdated();
 
 	ContactManager::instance()->registerItem(this);
-	attach(*OwnerBuddy, false);
+	attach(*OwnerBuddy);
 }
 
 void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
