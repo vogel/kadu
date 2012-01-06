@@ -140,7 +140,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 
 	QList<Contact> contacts = buddy.contacts();
 
-	// this set owner buddy on all of the buddies
+	// this set owner buddy on all of the contacts
 	BuddyManager::instance()->removeItem(buddy);
 
 	foreach (const Contact &contact, contacts)
@@ -149,7 +149,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 
 void BuddyDeleteWindow::accept()
 {
-    QDialog::accept();
+	QDialog::accept();
 
 	foreach (const Buddy &buddy, BuddiesToDelete)
 		deleteBuddy(buddy);
