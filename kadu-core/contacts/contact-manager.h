@@ -92,7 +92,7 @@ signals:
 	void contactAboutToBeDetached(Contact contact);
 	void contactDetached(Contact contact, Buddy previousBuddy);
 	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
-	void contactAttached(Contact contact, bool reattached);
+	void contactAttached(Contact contact);
 
 	void dirtyContactAdded(Contact contact);
 

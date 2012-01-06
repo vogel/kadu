@@ -142,11 +142,13 @@ void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 
 void ContactManager::attached(bool reattached)
 {
+	Q_UNUSED(reattached);
+
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
 	if (!contact.isNull())
-		emit contactAttached(contact, reattached);
+		emit contactAttached(contact);
 }
 
 void ContactManager::itemAboutToBeRegistered(Contact item)
