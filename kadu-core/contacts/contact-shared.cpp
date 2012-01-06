@@ -121,7 +121,7 @@ void ContactShared::aboutToBeRemoved()
 	if (ContactManager::instance()->allItems().contains(uuid()))
 		details()->ensureStored();
 
-	detach(false, false);
+	detach(false);
 	if (Details)
 	{
 		delete Details;
@@ -167,10 +167,8 @@ void ContactShared::emitUpdated()
 	emit updated();
 }
 
-void ContactShared::detach(bool resetBuddy, bool reattaching)
+void ContactShared::detach(bool resetBuddy)
 {
-	Q_UNUSED(reattaching);
-
 	if (!*OwnerBuddy)
 		return;
 
@@ -231,7 +229,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	Contact guard(this);
 
 	bool reattaching = !isAnonymous() && !buddy.isAnonymous();
-	detach(true, reattaching);
+	detach(true);
 	attach(buddy, reattaching);
 
 	setDirty(true);
@@ -296,7 +294,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 		if (ContactManager::instance()->allItems().contains(uuid()))
 			Details->ensureStored();
 
-		detach(false, false);
+		detach(false);
 		delete Details;
 		Details = 0;
 	}

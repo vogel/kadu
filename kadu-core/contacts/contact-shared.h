@@ -60,7 +60,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	unsigned int Port;
 	QString DnsName;
 
-	void detach(bool resetBuddy, bool reattaching);
+	void detach(bool resetBuddy);
 	void attach(const Buddy &buddy, bool reattaching);
 
 	void doSetContactAvatar(const Avatar &contactAvatar);
