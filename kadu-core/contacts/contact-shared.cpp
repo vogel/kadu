@@ -133,17 +133,7 @@ void ContactShared::aboutToBeRemoved()
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
 
-	// do not store contacts that are not in contact manager
-	if (ContactManager::instance()->allItems().contains(uuid()))
-		details()->ensureStored();
-
-	detach(false, false, true);
-	if (Details)
-	{
-		delete Details;
-		Details = 0;
-	}
-	ContactManager::instance()->unregisterItem(this);
+	deleteDetails();
 
 	dataUpdated();
 }
@@ -325,6 +315,13 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 	 */
 	Contact guard(this);
 
+	deleteDetails();
+
+	dataUpdated();
+}
+
+void ContactShared::deleteDetails()
+{
 	if (Details)
 	{
 		// do not store contacts that are not in contact manager
@@ -337,8 +334,6 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 	}
 
 	ContactManager::instance()->unregisterItem(this);
-
-	dataUpdated();
 }
 
 void ContactShared::setId(const QString &id)
