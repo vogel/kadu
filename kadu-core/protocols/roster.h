@@ -41,7 +41,9 @@ public:
 	static RosterService * rosterService(const Contact &contact);
 
 public slots:
-	void removeContact(const Contact &contact);
+	void addContact(const Contact &contact) const;
+	void removeContact(const Contact &contact) const;
+	void updateContact(const Contact &contact) const;
 
 };
 
