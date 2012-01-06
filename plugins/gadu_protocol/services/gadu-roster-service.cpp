@@ -142,7 +142,16 @@ void GaduRosterService::addContact(const Contact &contact)
 
 void GaduRosterService::removeContact(const Contact &contact)
 {
-	updateContact(contact);
+	if (!canPerformLocalUpdate() ||
+	        protocol()->account() != contact.contactAccount() ||
+	        protocol()->account().accountContact() == contact)
+		return;
+
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+	sendNewFlags(contact, 0);
+	setState(StateInitialized);
 }
 
 void GaduRosterService::updateContact(const Contact &contact)
