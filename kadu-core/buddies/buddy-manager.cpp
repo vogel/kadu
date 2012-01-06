@@ -110,6 +110,16 @@ void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 
 	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	connect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
+
+	connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	        this, SLOT(buddyContactAboutToBeAdded(Contact)));
+	connect(buddy, SIGNAL(contactAdded(Contact)),
+	        this, SLOT(buddyContactAdded(Contact)));
+	connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	        this, SLOT(buddyContactAboutToBeRemoved(Contact)));
+	connect(buddy, SIGNAL(contactRemoved(Contact)),
+	        this, SLOT(buddyContactRemoved(Contact)));
+
 	emit buddyAboutToBeAdded(buddy);
 }
 
@@ -129,6 +139,16 @@ void BuddyManager::itemRemoved(Buddy buddy)
 
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	disconnect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
+
+	disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	           this, SLOT(buddyContactAboutToBeAdded(Contact)));
+	disconnect(buddy, SIGNAL(contactAdded(Contact)),
+	           this, SLOT(buddyContactAdded(Contact)));
+	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	           this, SLOT(buddyContactAboutToBeRemoved(Contact)));
+	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
+	           this, SLOT(buddyContactRemoved(Contact)));
+
 	emit buddyRemoved(buddy);
 }
 
@@ -301,4 +321,40 @@ void BuddyManager::buddySubscriptionChanged()
 	Buddy buddy(sender());
 	if (!buddy.isNull())
 		emit buddySubscriptionChanged(buddy);
+}
+
+void BuddyManager::buddyContactAboutToBeAdded(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAboutToBeAdded(buddy, contact);
+}
+
+void BuddyManager::buddyContactAdded(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAdded(buddy, contact);
+}
+
+void BuddyManager::buddyContactAboutToBeRemoved(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAboutToBeRemoved(buddy, contact);
+}
+
+void BuddyManager::buddyContactRemoved(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactRemoved(buddy, contact);
 }
