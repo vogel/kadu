@@ -37,6 +37,7 @@ class GaduRosterService : public RosterService
 	Q_OBJECT
 
 	void updateFlag(int uin, int newFlags, int oldFlags, int flag) const;
+	void sendNewFlags(const Contact &contact, int newFlags) const;
 
 public:
 	static int notifyTypeFromContact(const Contact &contact);

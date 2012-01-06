@@ -116,6 +116,25 @@ void GaduRosterService::updateFlag(int uin, int newFlags, int oldFlags, int flag
 		gg_remove_notify_ex(session, uin, flag);
 }
 
+void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
+{
+	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
+	if (!details)
+		return;
+
+	int uin = details->uin();
+	int oldFlags = details->gaduFlags();
+
+	if (newFlags == oldFlags)
+		return;
+
+	details->setGaduFlags(newFlags);
+
+	updateFlag(uin, newFlags, oldFlags, 0x01);
+	updateFlag(uin, newFlags, oldFlags, 0x02);
+	updateFlag(uin, newFlags, oldFlags, 0x04);
+}
+
 void GaduRosterService::addContact(const Contact &contact)
 {
 	updateContact(contact);
@@ -136,29 +155,6 @@ void GaduRosterService::updateContact(const Contact &contact)
 	Q_ASSERT(StateInitialized == state());
 
 	setState(StateProcessingLocalUpdate);
-
-	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
-	if (!details)
-	{
-		setState(StateInitialized);
-		return;
-	}
-
-	int uin = details->uin();
-	int newFlags = notifyTypeFromContact(contact);
-	int oldFlags = details->gaduFlags();
-
-	if (newFlags == oldFlags)
-	{
-		setState(StateInitialized);
-		return;
-	}
-
-	details->setGaduFlags(newFlags);
-
-	updateFlag(uin, newFlags, oldFlags, 0x01);
-	updateFlag(uin, newFlags, oldFlags, 0x02);
-	updateFlag(uin, newFlags, oldFlags, 0x04);
-
+	sendNewFlags(contact, notifyTypeFromContact(contact));
 	setState(StateInitialized);
 }
