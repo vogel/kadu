@@ -186,12 +186,12 @@ void ContactShared::detach()
 
 void ContactShared::attach(const Buddy &buddy)
 {
-	emit aboutToBeAttached(buddy);
-
 	*OwnerBuddy = buddy;
-	if (*OwnerBuddy)
-		OwnerBuddy->addContact(this);
+	if (!*OwnerBuddy)
+		return;
 
+	emit aboutToBeAttached(*OwnerBuddy);
+	OwnerBuddy->addContact(this);
 	emit attached();
 }
 
