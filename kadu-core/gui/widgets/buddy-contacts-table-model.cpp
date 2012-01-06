@@ -27,6 +27,7 @@
 #include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
+#include "protocols/roster.h"
 #include "protocols/services/subscription-service.h"
 
 #include "buddy-contacts-table-model.h"
@@ -169,6 +170,8 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 	// save in configuration, but do not use
 	Contact contact = item->itemContact();
 	contact.setOwnerBuddy(Buddy::null);
+
+	Roster::instance()->removeContact(contact);
 }
 
 void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item, bool emitRowsInserted)

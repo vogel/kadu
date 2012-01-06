@@ -36,6 +36,7 @@
 #include "buddies/buddy-additional-data-delete-handler.h"
 #include "buddies/buddy-manager.h"
 #include "icons/kadu-icon.h"
+#include "protocols/roster.h"
 
 #include "buddy-delete-window.h"
 
@@ -137,10 +138,13 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 		}
 	}
 
+	QList<Contact> contacts = buddy.contacts();
+
+	// this set owner buddy on all of the buddies
 	BuddyManager::instance()->removeItem(buddy);
 
-	foreach (Contact contact, buddy.contacts())
-		contact.setOwnerBuddy(Buddy::null);
+	foreach (const Contact &contact, contacts)
+		Roster::instance()->removeContact(contact);
 }
 
 void BuddyDeleteWindow::accept()

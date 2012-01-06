@@ -85,7 +85,6 @@ class KADUAPI Protocol : public QObject
 	void disconnectRosterService();
 
 private slots:
-	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
 	void contactAttached(Contact contact, bool reattached);
 
 	// state machine slots

@@ -269,9 +269,6 @@ void Protocol::connectRosterService()
 	if (!CurrentRosterService)
 		return;
 
-	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-	        this, SLOT(contactDetached(Contact, Buddy, bool)),
-	        Qt::UniqueConnection);
 	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	        this, SLOT(contactAttached(Contact, bool)),
 	        Qt::UniqueConnection);
@@ -286,24 +283,11 @@ void Protocol::disconnectRosterService()
 	if (!CurrentRosterService)
 		return;
 
-	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-	           this, SLOT(contactDetached(Contact, Buddy, bool)));
 	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
 	           this, SLOT(contactAttached(Contact, bool)));
 
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
 	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)));
-}
-
-void Protocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
-{
-	Q_UNUSED(previousBuddy)
-
-	if (reattaching)
-		return;
-
-	if (CurrentRosterService)
-		CurrentRosterService->removeContact(contact);
 }
 
 void Protocol::contactAttached(Contact contact, bool reattached)

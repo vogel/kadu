@@ -25,6 +25,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
+#include "protocols/roster.h"
 #include "debug.h"
 
 #include "gui/windows/subscription-window.h"
@@ -52,20 +53,13 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		 */
 		kdebug("%s revoked our presence authorization\n", jid.full().toUtf8().constData());
 
-		XMPP::JT_Roster *task;
 		if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("The user %1 removed subscription to you. "
 					   "You will no longer be able to view his/her online/offline status. "
 					   "Do you want to delete the contact?").arg(jid.full())))
 		{
-			/*
-			 * Delete this contact from our roster.
-			 */
-			task = new XMPP::JT_Roster(Protocol->client()->rootTask());
-			task->remove(jid);
-			task->go(true);
-
 			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+			Roster::instance()->removeContact(contact);
 		}
 		else
 		{
