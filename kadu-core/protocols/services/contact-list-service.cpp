@@ -89,6 +89,8 @@ QVector<Contact> ContactListService::performAdds(const QMap<Buddy, Contact> &con
 		i.value().setOwnerBuddy(i.key());
 		i.value().setDirty(false);
 		resultContacts.append(i.value());
+
+		Roster::instance()->addContact(i.value());
 	}
 
 	return resultContacts;

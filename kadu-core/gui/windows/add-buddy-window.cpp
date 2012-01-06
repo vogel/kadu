@@ -55,6 +55,7 @@
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/roster.h"
 #include "protocols/services/roster-service.h"
 #include "protocols/services/subscription-service.h"
 #include "url-handlers/url-handler-manager.h"
@@ -508,11 +509,9 @@ bool AddBuddyWindow::addContact()
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
-
-	// force reattach for gadu protocol, even if buddy == contact.ownerBuddy()
-	// TODO: this is probably unneeded, please review
-	contact.setOwnerBuddy(Buddy::null);
 	contact.setOwnerBuddy(buddy);
+
+	Roster::instance()->addContact(contact);
 
 	if (!buddy.isOfflineTo())
 		sendAuthorization(contact);

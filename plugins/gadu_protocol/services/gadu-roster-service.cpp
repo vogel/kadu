@@ -137,6 +137,9 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 void GaduRosterService::addContact(const Contact &contact)
 {
+	// see issue #2159 - we need a way to ignore first status of given contact
+	contact.setIgnoreNextStatusChange(true);
+
 	updateContact(contact);
 }
 

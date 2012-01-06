@@ -241,6 +241,9 @@ void JabberRosterService::addContact(const Contact &contact)
 	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
+	// see issue #2159 - we need a way to ignore first status of given contact
+	contact.setIgnoreNextStatusChange(true);
+
 	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), groupsList);
 	contact.setDirty(false);
 

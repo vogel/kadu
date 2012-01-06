@@ -37,6 +37,7 @@
 #include "misc/misc.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/roster.h"
 
 #include "helpers/gadu-imported-contact-xml-receiver.h"
 #include "gadu-account-details.h"
@@ -222,6 +223,8 @@ Contact GaduImporter::importGaduContact(Account account, Buddy buddy)
 	buddy.removeCustomData("offline_to");
 
 	contact.setOwnerBuddy(buddy);
+
+	Roster::instance()->addContact(contact);
 
 	return contact;
 }

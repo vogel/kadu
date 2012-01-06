@@ -269,10 +269,6 @@ void Protocol::connectRosterService()
 	if (!CurrentRosterService)
 		return;
 
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-	        this, SLOT(contactAttached(Contact, bool)),
-	        Qt::UniqueConnection);
-
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
 	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)),
 	        Qt::UniqueConnection);
@@ -283,27 +279,8 @@ void Protocol::disconnectRosterService()
 	if (!CurrentRosterService)
 		return;
 
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-	           this, SLOT(contactAttached(Contact, bool)));
-
 	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
 	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)));
-}
-
-void Protocol::contactAttached(Contact contact, bool reattached)
-{
-	if (reattached)
-	{
-		if (CurrentRosterService)
-			CurrentRosterService->updateContact(contact);
-		return;
-	}
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
-
-	if (CurrentRosterService)
-		CurrentRosterService->addContact(contact);
 }
 
 void Protocol::setRosterService(RosterService * const rosterService)

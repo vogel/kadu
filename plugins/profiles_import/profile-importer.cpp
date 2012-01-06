@@ -31,6 +31,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "identities/identity-manager.h"
+#include "protocols/roster.h"
 
 #include "plugins/gadu_protocol/helpers/gadu-importer.h"
 
@@ -88,12 +89,18 @@ bool ProfileImporter::import(const Identity &identity)
 		if (existingBuddy)
 		{
 			foreach (const Contact &contact, buddy.contacts())
+			{
 				contact.setOwnerBuddy(existingBuddy);
+				Roster::instance()->updateContact(contact);
+			}
 		}
 		else
 		{
 			buddy.setAnonymous(false);
 			BuddyManager::instance()->addItem(buddy);
+
+			foreach (const Contact &contact, buddy.contacts())
+				Roster::instance()->addContact(contact);
 		}
 	}
 

@@ -42,6 +42,7 @@
 #include "icons/icons-manager.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
+#include "protocols/roster.h"
 
 #include "subscription-window.h"
 
@@ -134,7 +135,7 @@ SubscriptionWindow::~SubscriptionWindow()
 
 void SubscriptionWindow::accepted()
 {
-	//Giving somebody a status subscription does not force us to add them to our contact list.
+	// Giving somebody a status subscription does not force us to add them to our contact list.
 	if (VisibleName->text().isEmpty() && !MergeContact->isChecked())
 	{
 		emit requestAccepted(CurrentContact, true);
@@ -160,6 +161,8 @@ void SubscriptionWindow::accepted()
 	Group group = GroupCombo->currentGroup();
 	if (group)
 		buddy.addToGroup(group);
+
+	Roster::instance()->addContact(CurrentContact);
 
 	emit requestAccepted(CurrentContact, true);
 	close();
