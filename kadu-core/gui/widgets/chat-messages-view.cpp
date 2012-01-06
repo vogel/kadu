@@ -116,7 +116,7 @@ void ChatMessagesView::connectChat()
 	{
 		if (contact.ownerBuddy())
 			connect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
-		connect(contact, SIGNAL(attached(bool)), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(attached()), this, SLOT(repaintMessages()));
 		connect(contact, SIGNAL(detached(Buddy)), this, SLOT(repaintMessages()));
 	}
 

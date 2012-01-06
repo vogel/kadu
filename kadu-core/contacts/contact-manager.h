@@ -59,7 +59,7 @@ private slots:
 	void unreadMessageRemoved(const Message &message);
 
 	void aboutToBeAttached(Buddy nearFutureBuddy);
-	void attached(bool reattached);
+	void attached();
 	void aboutToBeDetached();
 	void detached(Buddy previousBuddy);
 

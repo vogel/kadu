@@ -140,10 +140,8 @@ void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
 		emit contactAboutToBeAttached(contact, nearFutureBuddy);
 }
 
-void ContactManager::attached(bool reattached)
+void ContactManager::attached()
 {
-	Q_UNUSED(reattached);
-
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
@@ -177,7 +175,7 @@ void ContactManager::itemRegistered(Contact item)
 	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
 	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	connect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
+	connect(item, SIGNAL(attached()), this, SLOT(attached()));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -194,7 +192,7 @@ void ContactManager::itemUnregistered(Contact item)
 	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
 	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	disconnect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
+	disconnect(item, SIGNAL(attached()), this, SLOT(attached()));
 
 	if (item.isDirty())
 		DirtyContacts.removeAll(item);

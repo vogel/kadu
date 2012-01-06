@@ -124,7 +124,7 @@ signals:
 	void aboutToBeDetached();
 	void detached(const Buddy &previousBuddy);
 	void aboutToBeAttached(const Buddy &nearFutureBuddy);
-	void attached(bool reattached);
+	void attached();
 
 	void updated();
 	void dirtinessChanged();
