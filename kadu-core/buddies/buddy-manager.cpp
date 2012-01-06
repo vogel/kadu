@@ -130,6 +130,9 @@ void BuddyManager::itemAdded(Buddy buddy)
 
 void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 {
+	foreach (const Contact &contact, buddy.contacts())
+		contact.setOwnerBuddy(Buddy::null);
+
 	emit buddyAboutToBeRemoved(buddy);
 }
 
