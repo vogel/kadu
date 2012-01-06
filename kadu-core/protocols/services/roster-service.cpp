@@ -49,10 +49,6 @@ bool RosterService::canPerformLocalUpdate() const
 	if (StateInitialized != State)
 		return false;
 
-	// disable roster actions when we are removing account from kadu
-	if (protocol()->account().removing())
-		return false;
-
 	if (!protocol()->isConnected())
 		return false;
 

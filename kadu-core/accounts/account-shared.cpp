@@ -56,7 +56,7 @@ AccountShared * AccountShared::loadFromStorage(const QSharedPointer<StoragePoint
 AccountShared::AccountShared(const QString &protocolName) :
 		QObject(), Shared(QUuid()), ProtocolName(protocolName),
 		ProtocolHandler(0), MyStatusContainer(new AccountStatusContainer(this)), Details(0),
-		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true), Removing(false)
+		RememberPassword(false), HasPassword(false), UseDefaultProxy(true), PrivateStatus(true)
 {
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();

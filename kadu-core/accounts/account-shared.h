@@ -66,8 +66,6 @@ class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObjec
 	NetworkProxy Proxy;
 
 	bool PrivateStatus;
-	// TODO: hack, remove at some time
-	bool Removing;
 
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
@@ -124,7 +122,6 @@ public:
 	KaduShared_Property(const QString &, password, Password)
 	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
-	KaduShared_Property(bool, removing, Removing)
 
 	// TODO: 0.11, find better API
 	// this is only for GG now
