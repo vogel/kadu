@@ -104,6 +104,8 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool doAddToGroup(const Group &group);
 	bool doRemoveFromGroup(const Group &group);
 
+	int priorityForNewContact();
+
 private slots:
 	void avatarUpdated();
 	void groupAboutToBeRemoved();

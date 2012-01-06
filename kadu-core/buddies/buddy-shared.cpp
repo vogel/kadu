@@ -282,6 +282,17 @@ void BuddyShared::aboutToBeRemoved()
 	setBuddyAvatar(Avatar::null);
 }
 
+int BuddyShared::priorityForNewContact()
+{
+	// anonymous (default) buddies should have only contacts without priority
+	if (isAnonymous())
+		return -1;
+
+	return Contacts.isEmpty()
+	        ? 0
+	        : Contacts.at(Contacts.count() - 1).priority() + 1;
+}
+
 void BuddyShared::addContact(const Contact &contact)
 {
 	ensureLoaded();
@@ -289,19 +300,10 @@ void BuddyShared::addContact(const Contact &contact)
 	if (!contact || Contacts.contains(contact))
 		return;
 
-	emit contactAboutToBeAdded(contact);
+	if (-1 == contact.priority())
+		contact.setPriority(priorityForNewContact());
 
-	// anonymous (default) buddies should have only contacts without priority
-	if (isAnonymous())
-		contact.setPriority(-1);
-	// if no priority (i.e., adding new contact), append at the end
-	else if (contact.priority() == -1)
-	{
-		int newPriority = Contacts.isEmpty()
-				? 0
-				: Contacts.at(Contacts.count() - 1).priority() + 1;
-		contact.setPriority(newPriority);
-	}
+	emit contactAboutToBeAdded(contact);
 
 	Contacts.append(contact);
 	sortContacts();
