@@ -122,10 +122,8 @@ void ContactManager::aboutToBeDetached()
 		emit contactAboutToBeDetached(contact);
 }
 
-void ContactManager::detached(Buddy previousBuddy, bool reattaching)
+void ContactManager::detached(Buddy previousBuddy)
 {
-	Q_UNUSED(reattaching);
-
 	QMutexLocker locker(&mutex());
 
 	Contact contact(sender());
@@ -175,7 +173,7 @@ void ContactManager::itemRegistered(Contact item)
 
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	connect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));
+	connect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
 	connect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 }
@@ -192,7 +190,7 @@ void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	disconnect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));
+	disconnect(item, SIGNAL(detached(Buddy)), this, SLOT(detached(Buddy)));
 	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
 	disconnect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 

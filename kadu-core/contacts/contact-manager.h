@@ -61,7 +61,7 @@ private slots:
 	void aboutToBeAttached(Buddy nearFutureBuddy);
 	void attached(bool reattached);
 	void aboutToBeDetached();
-	void detached(Buddy previousBuddy, bool reattaching);
+	void detached(Buddy previousBuddy);
 
 protected:
 	virtual void loaded();

@@ -169,6 +169,8 @@ void ContactShared::emitUpdated()
 
 void ContactShared::detach(bool resetBuddy, bool reattaching)
 {
+	Q_UNUSED(reattaching);
+
 	if (!*OwnerBuddy)
 		return;
 
@@ -196,7 +198,7 @@ void ContactShared::detach(bool resetBuddy, bool reattaching)
 	if (resetBuddy)
 		*OwnerBuddy = Buddy::null;
 
-	emit detached(oldBuddy, reattaching);
+	emit detached(oldBuddy);
 }
 
 void ContactShared::attach(const Buddy &buddy, bool reattaching)

@@ -122,7 +122,7 @@ public:
 
 signals:
 	void aboutToBeDetached();
-	void detached(const Buddy &previousBuddy, bool reattaching);
+	void detached(const Buddy &previousBuddy);
 	void aboutToBeAttached(const Buddy &nearFutureBuddy);
 	void attached(bool reattached);
 
