@@ -112,7 +112,7 @@ void ContactShared::aboutToBeRemoved()
 {
 	// clean up references
 	*ContactAccount = Account::null;
-	detach();
+	removeFromBuddy();
 	*OwnerBuddy = Buddy::null;
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
@@ -167,28 +167,17 @@ void ContactShared::emitUpdated()
 	emit updated();
 }
 
-void ContactShared::detach()
+void ContactShared::addToBuddy()
 {
-	if (!*OwnerBuddy)
-		return;
-
-	/* NOTE: This guard is needed to delay deleting this object when removing
-	 * Contact from Buddy which holds last reference to it and thus wants to
-	 * delete it. But we don't want this to happen now because we have to emit
-	 * detached() signal first.
-	 */
-	Contact guard(this);
-
-	OwnerBuddy->removeContact(this);
+	// dont add to buddy if details are not available
+	if (Details && *OwnerBuddy)
+		OwnerBuddy->addContact(this);
 }
 
-void ContactShared::attach(const Buddy &buddy)
+void ContactShared::removeFromBuddy()
 {
-	*OwnerBuddy = buddy;
-	if (!*OwnerBuddy)
-		return;
-
-	OwnerBuddy->addContact(this);
+	if (*OwnerBuddy)
+		OwnerBuddy->removeContact(this);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
@@ -204,8 +193,9 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	 */
 	Contact guard(this);
 
-	detach();
-	attach(buddy);
+	removeFromBuddy();
+	*OwnerBuddy = buddy;
+	addToBuddy();
 
 	setDirty(true);
 	dataUpdated();
@@ -247,7 +237,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 	dataUpdated();
 
 	ContactManager::instance()->registerItem(this);
-	attach(*OwnerBuddy);
+	addToBuddy();
 }
 
 void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
@@ -269,7 +259,8 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 		if (ContactManager::instance()->allItems().contains(uuid()))
 			Details->ensureStored();
 
-		detach();
+		removeFromBuddy();
+
 		delete Details;
 		Details = 0;
 	}
