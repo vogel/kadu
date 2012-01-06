@@ -265,7 +265,16 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "AvatarGreyOut", true);
 	config_file.addVariable("Look", "ChatContents", QString());
 	config_file.addVariable("Look", "ForceCustomChatFont", false);
-	config_file.addVariable("Look", "ChatFont", qApp->font());
+	QFont chatFont = qApp->font();
+#ifdef Q_WS_WIN
+	// On Windows default app font is often "MS Shell Dlg 2", and the default sans
+	// family (Arial, at least in Qt 4.8) is better. Though, on X11 the default
+	// sans family is the same while most users will have some nice default app
+	// font, like DejaVu, Ubuntu (the font, not the distro) or alike.
+	chatFont.setStyleHint(QFont::SansSerif);
+	chatFont.setFamily(chatFont.defaultFamily());
+#endif
+	config_file.addVariable("Look", "ChatFont", chatFont);
 	config_file.addVariable("Look", "ChatBgFilled", // depends on configuration imported from older version
 		config_file.readColorEntry("Look", "ChatBgColor").isValid() &&
 		config_file.readColorEntry("Look", "ChatBgColor") != QColor("#ffffff"));
