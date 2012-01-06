@@ -172,12 +172,6 @@ void ContactShared::detach(bool resetBuddy)
 	if (!*OwnerBuddy)
 		return;
 
-	if (!Details)
-	{
-		*OwnerBuddy = Buddy::null;
-		return;
-	}
-
 	/* NOTE: This guard is needed to delay deleting this object when removing
 	 * Contact from Buddy which holds last reference to it and thus wants to
 	 * delete it. But we don't want this to happen now because we have to emit
@@ -201,16 +195,11 @@ void ContactShared::detach(bool resetBuddy)
 
 void ContactShared::attach(const Buddy &buddy)
 {
-	if (!Details || !buddy)
-	{
-		*OwnerBuddy = buddy;
-		return;
-	}
-
 	emit aboutToBeAttached(buddy);
 
 	*OwnerBuddy = buddy;
-	OwnerBuddy->addContact(this);
+	if (*OwnerBuddy)
+		OwnerBuddy->addContact(this);
 
 	emit attached();
 }
