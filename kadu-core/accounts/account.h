@@ -43,7 +43,7 @@ class KADUAPI Account : public SharedBase<AccountShared>
 	KaduSharedBaseClass(Account)
 
 public:
-	static Account create();
+	static Account create(const QString &protocolName);
 	static Account loadStubFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
 	static Account loadFromStorage(const QSharedPointer<StoragePoint> &accountStoragePoint);
 	static Account null;
@@ -58,8 +58,8 @@ public:
 
 	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
-	KaduSharedBase_PropertyCRW(QString, protocolName, ProtocolName)
-	KaduSharedBase_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
+	KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
 	KaduSharedBase_PropertyRead(AccountDetails *, details, Details)
 	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
 	KaduSharedBase_PropertyCRW(QString, id, Id)
@@ -69,7 +69,6 @@ public:
 	KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
 	KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
-	KaduSharedBase_Property(bool, removing, Removing)
 
 };
 

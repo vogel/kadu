@@ -56,8 +56,10 @@
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/roster.h"
 #include "protocols/services/roster-service.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
+#include "protocols/services/subscription-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "add-buddy-window.h"
@@ -265,7 +267,7 @@ void AddBuddyWindow::accountChanged()
 		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
 	}
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 	{
 		AskForAuthorization->setEnabled(false);
 		AskForAuthorization->setChecked(false);
@@ -511,11 +513,9 @@ bool AddBuddyWindow::addContact()
 	}
 
 	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
-
-	// force reattach for gadu protocol, even if buddy == contact.ownerBuddy()
-	// TODO: this is probably unneeded, please review
-	contact.setOwnerBuddy(Buddy::null);
 	contact.setOwnerBuddy(buddy);
+
+	Roster::instance()->addContact(contact);
 
 	if (!buddy.isOfflineTo())
 		sendAuthorization(contact);
@@ -573,18 +573,18 @@ void AddBuddyWindow::askForAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->askForAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->requestSubscription(contact);
 }
 
 void AddBuddyWindow::sendAuthorization(const Contact &contact)
 {
 	Account account = AccountCombo->currentAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->sendAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }

@@ -7,12 +7,14 @@ set (protocols_SRCS
 	services/chat-service.cpp
 	services/chat-image-service.cpp
 	services/contact-list-service.cpp
+	services/roster-service.cpp
 
 	connection-error-notification.cpp
 	protocol.cpp
 	protocols-aware-object.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
+	roster.cpp
 )
 
 set (protocols_MOC_SRCS
@@ -33,12 +35,14 @@ set (protocols_MOC_SRCS
 	services/personal-info-service.h
 	services/roster-service.h
 	services/search-service.h
+	services/subscription-service.h
 
 	connection-error-notification.h
 	protocol.h
 	protocol-factory.h
 	protocols-manager.h
 	protocol-state-machine.h
+	roster.h
 )
 
 kadu_subdirectory (protocols "${protocols_SRCS}" "${protocols_MOC_SRCS}" "")

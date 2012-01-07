@@ -38,7 +38,6 @@ class BuddiesModel : public BuddiesModelBase
 	Q_OBJECT
 
 	bool IncludeMyself;
-	bool DetachingOrAttaching;
 
 private slots:
 	void buddyAboutToBeAdded(Buddy &buddy);
@@ -46,13 +45,13 @@ private slots:
 	void buddyAboutToBeRemoved(Buddy &buddy);
 	void buddyRemoved(Buddy &buddy);
 
+	void buddyContactAboutToBeAdded(Buddy &buddy, const Contact &contact);
+	void buddyContactAdded(Buddy &buddy, const Contact &contact);
+	void buddyContactAboutToBeRemoved(Buddy &buddy, const Contact &contact);
+	void buddyContactRemoved(Buddy &buddy, const Contact &contact);
+
 	void myselfBuddyUpdated();
 	void buddyUpdated(Buddy &buddy);
-
-	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
-	void contactAttached(Contact contact);
-	void contactAboutToBeDetached(Contact contact);
-	void contactDetached(Contact contact, Buddy previousBuddy);
 
 	void contactUpdated(Contact &contact);
 

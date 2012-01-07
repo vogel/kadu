@@ -70,7 +70,6 @@ set (SOURCES
 	server/gadu-avatar-data-parser.cpp
 	server/gadu-avatar-fetcher.cpp
 	server/gadu-avatar-uploader.cpp
-	server/gadu-contact-list-handler.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
 	server/gadu-server-remind-password.cpp
@@ -88,6 +87,7 @@ set (SOURCES
 	services/gadu-file-transfer-service.cpp
 	services/gadu-multilogon-service.cpp
 	services/gadu-personal-info-service.cpp
+	services/gadu-roster-service.cpp
 	services/gadu-search-service.cpp
 
 	services/multilogon/gadu-multilogon-session.cpp
@@ -131,7 +131,6 @@ set (MOC_SOURCES
 
 	server/gadu-avatar-fetcher.h
 	server/gadu-avatar-uploader.h
-	server/gadu-contact-list-handler.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h
 	server/gadu-server-remind-password.h
@@ -148,6 +147,7 @@ set (MOC_SOURCES
 	services/gadu-file-transfer-service.h
 	services/gadu-multilogon-service.h
 	services/gadu-personal-info-service.h
+	services/gadu-roster-service.h
 	services/gadu-search-service.h
 
 	services/multilogon/gadu-multilogon-session.h

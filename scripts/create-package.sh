@@ -29,4 +29,4 @@ tar cjf $PACKAGE_FILE $PACKAGE_DIR
 md5sum $PACKAGE_FILE > $PACKAGE_FILE.md5
 sha1sum $PACKAGE_FILE > $PACKAGE_FILE.sha1
 
-echo "Package is available as $PACKAGE_NAME.tar.bz"
+echo "Package is available as $PACKAGE_NAME.tar.bz2"

@@ -26,35 +26,31 @@
 
 #include <QtCore/QObject>
 
-#include <protocols/protocol.h>
+#include "protocols/services/roster-service.h"
 
 class Contact;
 class GaduContactDetails;
 class GaduProtocol;
 
-class GaduContactListHandler : public QObject
+class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
-	bool AlreadySent;
-
-private slots:
-	void buddySubscriptionChanged(Buddy &buddy);
-	void contactAttached(Contact contact, bool reattached);
-	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
-	void contactIdChanged(Contact contact, const QString &oldId);
+	void updateFlag(int uin, int newFlags, int oldFlags, int flag) const;
+	void sendNewFlags(const Contact &contact, int newFlags) const;
 
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduContactListHandler(GaduProtocol *protocol);
-	virtual ~GaduContactListHandler();
+	explicit GaduRosterService(GaduProtocol *protocol);
+	virtual ~GaduRosterService();
 
-	void setUpContactList(const QVector<Contact> &contacts);
-	void reset();
+	virtual void prepareRoster();
 
-	void updateContactEntry(Contact contact);
+public slots:
+	virtual void addContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
+	virtual void updateContact(const Contact &contact);
 
 };
 

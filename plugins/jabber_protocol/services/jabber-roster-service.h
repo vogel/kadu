@@ -39,10 +39,7 @@ class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	JabberProtocol *Protocol;
-
 	QList<Contact> ContactsForDelete;
-	bool InRequest;
 
 	const QString & itemDisplay(const XMPP::RosterItem &item);
 	Buddy itemBuddy(const XMPP::RosterItem &item, const Contact &contact);
@@ -52,19 +49,19 @@ private slots:
 	void contactDeleted(const XMPP::RosterItem &item);
 	void rosterRequestFinished(bool success);
 
+protected:
+	virtual bool canPerformLocalUpdate() const;
+
 public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
+	virtual void prepareRoster();
+
+public slots:
 	virtual void addContact(const Contact &contact);
 	virtual void removeContact(const Contact &contact);
-	virtual void askForAuthorization(const Contact &contact);
-	virtual void sendAuthorization(const Contact &contact);
-
-	void downloadRoster();
-
-signals:
-	void rosterDownloaded(bool success);
+	virtual void updateContact(const Contact &contact);
 
 };
 

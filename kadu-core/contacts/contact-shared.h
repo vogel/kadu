@@ -52,6 +52,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	Status CurrentStatus;
 	bool Blocking;
 	bool Dirty;
+	bool IgnoreNextStatusChange;
 
 	QString ProtocolVersion;
 
@@ -61,11 +62,10 @@ class KADUAPI ContactShared : public QObject, public Shared
 
 	void deleteDetails();
 
-	void detach(bool resetBuddy, bool reattaching, bool emitSignals);
-	void attach(const Buddy &buddy, bool reattaching, bool emitSignals);
+	void addToBuddy();
+	void removeFromBuddy();
 
 	void doSetContactAvatar(const Avatar &contactAvatar);
-	void doSetOwnerBuddy(const Buddy &buddy, bool emitSignals);
 
 private slots:
 	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
@@ -84,7 +84,7 @@ public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 
-	explicit ContactShared(const QUuid &uuid = QUuid());
+	explicit ContactShared(const QString &id = QString());
 	virtual ~ContactShared();
 
 	virtual StorableObject * storageParent();
@@ -106,11 +106,11 @@ public:
 	void setContactAvatar(const Avatar &contactAvatar);
 
 	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
-	void removeOwnerBuddy();
 
 	KaduShared_Property(int, priority, Priority)
 	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
 	KaduShared_PropertyBool(Blocking)
+	KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
 	KaduShared_Property(const QString &, protocolVersion, ProtocolVersion)
 	KaduShared_Property(const QHostAddress &, address, Address)
 	KaduShared_Property(unsigned int, port, Port)
@@ -123,13 +123,7 @@ public:
 	Avatar avatar(bool useBuddyData);
 
 signals:
-	void aboutToBeDetached();
-	void detached(const Buddy &previousBuddy, bool reattaching);
-	void aboutToBeAttached(const Buddy &nearFutureBuddy);
-	void attached(bool reattached);
-
 	void updated();
-	void idChanged(const QString &oldId);
 	void dirtinessChanged();
 
 };

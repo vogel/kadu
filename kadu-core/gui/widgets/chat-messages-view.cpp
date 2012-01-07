@@ -116,8 +116,8 @@ void ChatMessagesView::connectChat()
 	{
 		if (contact.ownerBuddy())
 			connect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
-		connect(contact, SIGNAL(attached(bool)), this, SLOT(repaintMessages()));
-		connect(contact, SIGNAL(detached(Buddy,bool)), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(attached()), this, SLOT(repaintMessages()));
+		connect(contact, SIGNAL(detached(Buddy)), this, SLOT(repaintMessages()));
 	}
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
@@ -136,7 +136,7 @@ void ChatMessagesView::disconnectChat()
 		if (contact.ownerBuddy())
 			disconnect(contact.ownerBuddy(), SIGNAL(displayUpdated()), this, SLOT(repaintMessages()));
 		disconnect(contact, SIGNAL(attached(bool)), this, SLOT(repaintMessages()));
-		disconnect(contact, SIGNAL(detached(Buddy,bool)), this, SLOT(repaintMessages()));
+		disconnect(contact, SIGNAL(detached(Buddy)), this, SLOT(repaintMessages()));
 	}
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
@@ -339,9 +339,9 @@ void ChatMessagesView::messageStatusChanged(const Message &message, ChatService:
 	Renderer->messageStatusChanged(message, message.status());
 }
 
-void ChatMessagesView::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
+void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
 {
-	Renderer->contactActivityChanged(state, contact);
+	Renderer->contactActivityChanged(contact, state);
 }
 
 void ChatMessagesView::scrollToBottom()

@@ -66,11 +66,6 @@ class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObjec
 	NetworkProxy Proxy;
 
 	bool PrivateStatus;
-	// TODO: hack, remove at some time
-	bool Removing;
-
-	void protocolFactoryLoaded(ProtocolFactory *factory);
-	void protocolFactoryUnloaded();
 
 	void setDisconnectStatus();
 	void useProtocolFactory(ProtocolFactory *factory);
@@ -97,7 +92,7 @@ public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 	static AccountShared * loadFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
 
-	explicit AccountShared(const QUuid &uuid = QUuid());
+	explicit AccountShared(const QString &protocolName = QString());
 	virtual ~AccountShared();
 
 	virtual StorableObject * storageParent();
@@ -113,7 +108,6 @@ public:
 
 	KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
 
-	void setProtocolName(const QString &protocolName);
 	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
 
 	void setId(const QString &id);
@@ -122,13 +116,12 @@ public:
 	void setPrivateStatus(bool isPrivate);
 	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 
-	KaduShared_Property(Protocol *, protocolHandler, ProtocolHandler)
+	KaduShared_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
 	KaduShared_Property(bool, rememberPassword, RememberPassword)
 	KaduShared_Property(bool, hasPassword, HasPassword)
 	KaduShared_Property(const QString &, password, Password)
 	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
 	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
-	KaduShared_Property(bool, removing, Removing)
 
 	// TODO: 0.11, find better API
 	// this is only for GG now
@@ -136,8 +129,6 @@ public:
 
 signals:
 	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
-	void protocolLoaded();
-	void protocolUnloaded();
 
 	void connected();
 	void disconnected();

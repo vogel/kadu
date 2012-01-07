@@ -24,6 +24,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "debug.h"
@@ -49,7 +50,8 @@ BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 		return matchedContacts;
 
 	Contact contact = ContactManager::instance()->byId(ParentAccount, query, ActionCreate);
-	matchedContacts.append(contact.ownerBuddy());
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
+	matchedContacts.append(buddy);
 
 	return matchedContacts;
 }

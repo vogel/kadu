@@ -47,7 +47,7 @@ class KADUAPI Contact : public SharedBase<ContactShared>
 	KaduSharedBaseClass(Contact)
 
 public:
-	static Contact create();
+	static Contact create(const QString &id);
 	static Contact loadStubFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact loadFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact null;
@@ -63,8 +63,6 @@ public:
 	QString display(bool useBuddyData) const;
 	Avatar avatar(bool useBuddyData) const;
 
-	void removeOwnerBuddy() const;
-
 	KaduSharedBase_PropertyRead(ContactDetails *, details, Details)
 	KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
 	KaduSharedBase_PropertyRead(QSharedPointer<StoragePoint>, storage, Storage)
@@ -75,6 +73,7 @@ public:
 	KaduSharedBase_Property(int, priority, Priority)
 	KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus)
 	KaduSharedBase_PropertyBool(Blocking)
+	KaduSharedBase_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
 	KaduSharedBase_PropertyBool(Dirty)
 	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)

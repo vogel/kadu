@@ -39,6 +39,7 @@
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
+#include "services/roster-service.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
@@ -46,7 +47,7 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		Factory(factory), CurrentAccount(account)
+		Factory(factory), CurrentAccount(account), CurrentRosterService(0)
 {
 	Machine = new ProtocolStateMachine(this);
 	/*
@@ -261,4 +262,30 @@ bool Protocol::isConnected()
 bool Protocol::isConnecting()
 {
 	return Machine->isLoggingIn();
+}
+
+void Protocol::connectRosterService()
+{
+	if (!CurrentRosterService)
+		return;
+
+	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
+	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)),
+	        Qt::UniqueConnection);
+}
+
+void Protocol::disconnectRosterService()
+{
+	if (!CurrentRosterService)
+		return;
+
+	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
+	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)));
+}
+
+void Protocol::setRosterService(RosterService * const rosterService)
+{
+	disconnectRosterService();
+	CurrentRosterService = rosterService;
+	connectRosterService();
 }

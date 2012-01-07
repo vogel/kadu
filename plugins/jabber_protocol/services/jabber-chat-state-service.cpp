@@ -166,18 +166,18 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 		if (msg.containsEvent(XMPP::CancelEvent))
 		{
 			info.ContactChatState = XMPP::StatePaused;
-			emit contactActivityChanged(StatePaused, contact);
+			emit activityChanged(contact, StatePaused);
 		}
 		else if (msg.containsEvent(XMPP::ComposingEvent))
 		{
 			info.ContactChatState = XMPP::StateComposing;
-			emit contactActivityChanged(StateComposing, contact);
+			emit activityChanged(contact, StateComposing);
 		}
 
 		if (msg.chatState() != XMPP::StateNone)
 		{
 			info.ContactChatState = msg.chatState();
-			emit contactActivityChanged(xmppStateToContactState(msg.chatState()), contact);
+			emit activityChanged(contact, xmppStateToContactState(msg.chatState()));
 		}
 	}
 	else
@@ -192,12 +192,12 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 		if (msg.containsEvents() || msg.chatState() != XMPP::StateNone)
 		{
 			info.ContactChatState = XMPP::StateActive;
-			emit contactActivityChanged(StateActive, contact);
+			emit activityChanged(contact, StateActive);
 		}
 		else
 		{
 			info.ContactChatState = XMPP::StateNone;
-			emit contactActivityChanged(StateNone, contact);
+			emit activityChanged(contact, StateNone);
 		}
 	}
 }
@@ -214,29 +214,27 @@ void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 	ChatInfos[chat].LastChatState = XMPP::StateActive;
 }
 
-void JabberChatStateService::composingStarted(const Chat &chat)
+void JabberChatStateService::sendState(const Chat &chat, ContactActivity state)
 {
-	setChatState(chat, XMPP::StateComposing);
+	switch (state)
+	{
+		case StateActive:
+			setChatState(chat, XMPP::StateActive);
+			break;
+		case StateComposing:
+			setChatState(chat, XMPP::StateComposing);
+			break;
+		case StateGone:
+			setChatState(chat, XMPP::StateGone);
+			ChatInfos.remove(chat);
+			break;
+		case StateInactive:
+			setChatState(chat, XMPP::StateInactive);
+			break;
+		case StatePaused:
+			setChatState(chat, XMPP::StatePaused);
+			break;
+		default:
+			break;
+	}
 }
-
-void JabberChatStateService::composingStopped(const Chat &chat)
-{
-	setChatState(chat, XMPP::StatePaused);
-}
-
-void JabberChatStateService::chatWidgetClosed(const Chat &chat)
-{
-	setChatState(chat, XMPP::StateGone);
-	ChatInfos.remove(chat);
-}
-
-void JabberChatStateService::chatWidgetActivated(const Chat &chat)
-{
-	setChatState(chat, XMPP::StateActive);
-}
-
-void JabberChatStateService::chatWidgetDeactivated(const Chat &chat)
-{
-	setChatState(chat, XMPP::StateInactive);
-}
-

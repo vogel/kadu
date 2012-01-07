@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-manager.h"
+
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
@@ -32,7 +34,7 @@ JabberContactPersonalInfoService::JabberContactPersonalInfoService(JabberProtoco
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	CurrentBuddy = contact.ownerBuddy();
+	CurrentBuddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 	if (Protocol && Protocol->client() && Protocol->client()->rootTask())
 		VCardFactory::instance()->getVCard(contact.id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
 }
@@ -41,7 +43,7 @@ void JabberContactPersonalInfoService::fetchingVCardFinished()
 {
 	XMPP::VCard vcard;
 	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
-	
+
 	if (task && task->success())
 	{
 		vcard = task->vcard();

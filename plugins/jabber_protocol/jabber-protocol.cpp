@@ -74,46 +74,20 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
-	CurrentRosterService = new JabberRosterService(this);
-	connect(CurrentRosterService, SIGNAL(rosterDownloaded(bool)),
-			this, SLOT(rosterDownloaded(bool)));
-	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
-	connectContactManagerSignals();
+	JabberRosterService *rosterService = new JabberRosterService(this);
+	connect(rosterService, SIGNAL(rosterReady(bool)),
+			this, SLOT(rosterReady(bool)));
+	setRosterService(rosterService);
+
+	CurrentSubscriptionService = new JabberSubscriptionService(this);
 
 	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
 {
-	disconnectContactManagerSignals();
 	logout();
-}
-
-void JabberProtocol::connectContactManagerSignals()
-{
-	connect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	connect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
-
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
-}
-
-void JabberProtocol::disconnectContactManagerSignals()
-{
-	disconnect(ContactManager::instance(), SIGNAL(contactDetached(Contact, Buddy, bool)),
-			this, SLOT(contactDetached(Contact, Buddy, bool)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAttached(Contact, bool)),
-			this, SLOT(contactAttached(Contact, bool)));
-	disconnect(ContactManager::instance(), SIGNAL(contactIdChanged(Contact, const QString &)),
-			this, SLOT(contactIdChanged(Contact, const QString &)));
-
-	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
@@ -166,7 +140,7 @@ XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccount
 		return XMPP::ClientStream::AllowPlainOverTLS;
 }
 
-void JabberProtocol::rosterDownloaded(bool success)
+void JabberProtocol::rosterReady(bool success)
 {
 	Q_UNUSED(success)
 
@@ -206,7 +180,8 @@ void JabberProtocol::slotClientDebugMessage(const QString &msg)
 }
 
 /*
- * login procedute
+ * login procedure
+ *
  * After calling login method we set up JabberClient that must call connectedToServer in order to inform
  * us that connection was established. Then we can tell this to state machine in Protocol class
  */
@@ -259,8 +234,7 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	// ask for roster
-	CurrentRosterService->downloadRoster();
+	rosterService()->prepareRoster();
 }
 
 void JabberProtocol::disconnectedFromServer()
@@ -308,7 +282,7 @@ void JabberProtocol::clientAvailableResourceReceived(const XMPP::Jid &jid, const
 
 void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
-  	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
+	kdebug("New resource unavailable for %s\n", jid.full().toUtf8().constData());
 
 	XMPP::Resource bestResource = resourcePool()->bestResource(jid);
 
@@ -335,84 +309,10 @@ void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP
 	contact.setCurrentStatus(status);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
-	if (details && details->ignoreNextStatusChange())
-		details->setIgnoreNextStatusChange(false);
+	if (contact.ignoreNextStatusChange())
+		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
-}
-
-void JabberProtocol::contactDetached(Contact contact, Buddy previousBuddy, bool reattaching)
-{
-	Q_UNUSED(previousBuddy)
-
-	if (reattaching)
-		return;
-
-	if (CurrentRosterService)
-		CurrentRosterService->removeContact(contact);
-}
-
-void JabberProtocol::contactAttached(Contact contact, bool reattached)
-{
-	if (contact.contactAccount() != account())
-		return;
-
-	if (reattached)
-	{
-		contactUpdated(contact);
-		return;
-	}
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	JabberContactDetails *details = static_cast<JabberContactDetails *>(contact.details());
-	if (details)
-		details->setIgnoreNextStatusChange(true);
-
-	if (CurrentRosterService)
-		CurrentRosterService->addContact(contact);
-}
-
-void JabberProtocol::buddyUpdated(Buddy &buddy)
-{
-	if (!isConnected())
-		return;
-
-	QVector<Contact> contacts = buddy.contacts(account());
-	if (contacts.isEmpty() || buddy.isAnonymous())
-		return;
-
-	QStringList groupsList;
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
-	foreach (const Contact &contact, contacts)
-		JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
-}
-
-void JabberProtocol::contactUpdated(Contact contact)
-{
-	if (!isConnected() || contact.contactAccount() != account())
-		return;
-
-	if (contact.isAnonymous())
-		return;
-
-	Buddy buddy = contact.ownerBuddy();
-	QStringList groupsList;
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
-	JabberClient->updateContact(contact.id(), buddy.display(), groupsList);
-}
-
-void JabberProtocol::contactIdChanged(Contact contact, const QString &oldId)
-{
-	if (!isConnected() || contact.contactAccount() != account())
-		return;
-
-	JabberClient->removeContact(oldId);
-	contactAttached(contact, false);
 }
 
 JabberResourcePool *JabberProtocol::resourcePool()

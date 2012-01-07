@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocol.h"
+#include "protocols/roster.h"
 #include "debug.h"
 
 #include "contact-list-service.h"
@@ -88,6 +89,8 @@ QVector<Contact> ContactListService::performAdds(const QMap<Buddy, Contact> &con
 		i.value().setOwnerBuddy(i.key());
 		i.value().setDirty(false);
 		resultContacts.append(i.value());
+
+		Roster::instance()->addContact(i.value());
 	}
 
 	return resultContacts;
@@ -238,6 +241,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 				contact.setOwnerBuddy(Buddy::null);
 				// remove even if it still has some data, e.g. mobile number
 				BuddyManager::instance()->removeBuddyIfEmpty(ownerBuddy, true);
+				Roster::instance()->removeContact(contact);
 			}
 		}
 	}

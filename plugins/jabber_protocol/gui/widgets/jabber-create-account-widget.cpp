@@ -344,8 +344,7 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 		return;
 	}
 
-	Account jabberAccount = Account::create();
-	jabberAccount.setProtocolName("jabber");
+	Account jabberAccount = Account::create("jabber");
 	jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
 	jabberAccount.setId(jid);
 	jabberAccount.setHasPassword(true);

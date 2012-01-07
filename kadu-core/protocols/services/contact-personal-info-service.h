@@ -42,6 +42,7 @@ public:
 
 signals:
 	void personalInfoAvailable(Buddy buddy);
+
 };
 
 #endif // CONTACT_PERSONAL_INFO_SERVICE_H

@@ -217,8 +217,6 @@ void AccountManager::connectionError(Account account, const QString &server, con
 
 void AccountManager::removeAccountAndBuddies(Account account)
 {
-	account.setRemoving(true);
-
 	QVector<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);

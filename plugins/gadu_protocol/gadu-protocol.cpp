@@ -63,7 +63,6 @@
 #include "misc/misc.h"
 #include "debug.h"
 
-#include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
@@ -71,6 +70,7 @@
 #include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
+#include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 
@@ -91,7 +91,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 	CurrentChatStateService = new GaduChatStateService(this);
-	ContactListHandler = 0;
+
+	setRosterService(new GaduRosterService(this));
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
@@ -218,8 +219,6 @@ void GaduProtocol::login()
 		return;
 	}
 
-	ContactListHandler = new GaduContactListHandler(this);
-
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	SocketNotifiers->watchFor(GaduSession);
 }
@@ -251,7 +250,8 @@ void GaduProtocol::afterLoggedIn()
 	// set up DCC if needed
 	setUpFileTransferService();
 
-	sendUserList();
+	// we do not need to wait for "rosterReady" signal in GaduGadu
+	rosterService()->prepareRoster();
 	sendStatusToServer();
 }
 
@@ -270,9 +270,6 @@ void GaduProtocol::logout()
 void GaduProtocol::disconnectedCleanup()
 {
 	Protocol::disconnectedCleanup();
-
-	if (ContactListHandler)
-		ContactListHandler->reset();
 
 	setUpFileTransferService(true);
 
@@ -294,9 +291,6 @@ void GaduProtocol::disconnectedCleanup()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-
-		delete ContactListHandler;
-		ContactListHandler = 0;
 	}
 
 	CurrentMultilogonService->removeAllSessions();
@@ -412,18 +406,6 @@ void GaduProtocol::setUpFileTransferService(bool forceClose)
 		startFileTransferService();
 }
 
-void GaduProtocol::sendUserList()
-{
-	QVector<Contact> contacts = ContactManager::instance()->contacts(account());
-	QVector<Contact> contactsToSend;
-
-	foreach (const Contact &contact, contacts)
-		if (!contact.isAnonymous())
-			contactsToSend.append(contact);
-
-	ContactListHandler->setUpContactList(contactsToSend);
-}
-
 void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize)
 {
 	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin), ActionReturnNull);
@@ -433,7 +415,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		if (contact.ownerBuddy())
 			emit userStatusChangeIgnored(contact.ownerBuddy());
-		ContactListHandler->updateContactEntry(contact);
+		rosterService()->updateContact(contact);
 		return;
 	}
 
@@ -447,9 +429,8 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 	contact.setBlocking(GaduProtocolHelper::isBlockingStatus(status));
 
 	// see issue #2159 - we need a way to ignore first status of given contact
-	GaduContactDetails *details = static_cast<GaduContactDetails *>(contact.details());
-	if (details && details->ignoreNextStatusChange())
-		details->setIgnoreNextStatusChange(false);
+	if (contact.ignoreNextStatusChange())
+		contact.setIgnoreNextStatusChange(false);
 	else
 		emit contactStatusChanged(contact, oldStatus);
 }

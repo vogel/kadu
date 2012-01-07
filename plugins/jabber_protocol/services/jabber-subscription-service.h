@@ -27,11 +27,11 @@
 
 #include <iris/xmpp_jid.h>
 
-#include "contacts/contact.h"
+#include "protocols/services/subscription-service.h"
 
 class JabberProtocol;
 
-class JabberSubscriptionService : public QObject
+class JabberSubscriptionService : public SubscriptionService
 {
 	Q_OBJECT
 
@@ -43,12 +43,12 @@ private slots:
 public:
 	explicit JabberSubscriptionService(JabberProtocol *protocol);
 
-	void resendSubscription(const Contact &contact);
-	void removeSubscription(const Contact &contact);
-	void requestSubscription(const Contact &contact);
+	virtual void resendSubscription(const Contact &contact);
+	virtual void removeSubscription(const Contact &contact);
+	virtual void requestSubscription(const Contact &contact);
 
 public slots:
-	void authorizeContact(Contact contact, bool authorized);
+	virtual void authorizeContact(Contact contact, bool authorized);
 
 };
 

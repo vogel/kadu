@@ -38,9 +38,9 @@ KaduSharedBaseClassImpl(Contact)
 
 Contact Contact::null;
 
-Contact Contact::create()
+Contact Contact::create(const QString &id)
 {
-	return new ContactShared();
+	return new ContactShared(id);
 }
 
 Contact Contact::loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint)
@@ -94,12 +94,6 @@ Avatar Contact::avatar(bool useBuddyData) const
 	return Avatar::null;
 }
 
-void Contact::removeOwnerBuddy() const
-{
-	if (data())
-		data()->removeOwnerBuddy();
-}
-
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
 	if (!c1)
@@ -119,6 +113,7 @@ KaduSharedBase_PropertyDefCRW(Contact, QString, id, Id, QString())
 KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
 KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Status())
 KaduSharedBase_PropertyBoolDef(Contact, Blocking, false)
+KaduSharedBase_PropertyDef(Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
 KaduSharedBase_PropertyBoolDef(Contact, Dirty, false)
 KaduSharedBase_PropertyDefCRW(Contact, QString, protocolVersion, ProtocolVersion, QString())
 KaduSharedBase_PropertyDefCRW(Contact, QHostAddress, address, Address, QHostAddress())

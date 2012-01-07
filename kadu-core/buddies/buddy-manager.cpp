@@ -30,6 +30,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "protocols/roster.h"
 #include "storage/storage-point.h"
 
 #include "debug.h"
@@ -109,6 +110,16 @@ void BuddyManager::itemAboutToBeAdded(Buddy buddy)
 
 	connect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	connect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
+
+	connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	        this, SLOT(buddyContactAboutToBeAdded(Contact)));
+	connect(buddy, SIGNAL(contactAdded(Contact)),
+	        this, SLOT(buddyContactAdded(Contact)));
+	connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	        this, SLOT(buddyContactAboutToBeRemoved(Contact)));
+	connect(buddy, SIGNAL(contactRemoved(Contact)),
+	        this, SLOT(buddyContactRemoved(Contact)));
+
 	emit buddyAboutToBeAdded(buddy);
 }
 
@@ -119,6 +130,9 @@ void BuddyManager::itemAdded(Buddy buddy)
 
 void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 {
+	foreach (const Contact &contact, buddy.contacts())
+		contact.setOwnerBuddy(Buddy::null);
+
 	emit buddyAboutToBeRemoved(buddy);
 }
 
@@ -128,6 +142,16 @@ void BuddyManager::itemRemoved(Buddy buddy)
 
 	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
 	disconnect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
+
+	disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	           this, SLOT(buddyContactAboutToBeAdded(Contact)));
+	disconnect(buddy, SIGNAL(contactAdded(Contact)),
+	           this, SLOT(buddyContactAdded(Contact)));
+	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	           this, SLOT(buddyContactAboutToBeRemoved(Contact)));
+	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
+	           this, SLOT(buddyContactRemoved(Contact)));
+
 	emit buddyRemoved(buddy);
 }
 
@@ -159,7 +183,10 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	// we should just manually delete all contacts when buddy is removed
 
 	foreach (const Contact &contact, source.contacts())
+	{
 		contact.setOwnerBuddy(destination);
+		Roster::instance()->updateContact(contact);
+	}
 
 	removeItem(source);
 
@@ -216,7 +243,7 @@ Buddy BuddyManager::byContact(Contact contact, NotFoundAction action)
 
 	ensureLoaded();
 
-	if (contact.isNull())
+	if (!contact)
 		return Buddy::null;
 
 	if (ActionReturnNull == action || !contact.isAnonymous())
@@ -297,4 +324,40 @@ void BuddyManager::buddySubscriptionChanged()
 	Buddy buddy(sender());
 	if (!buddy.isNull())
 		emit buddySubscriptionChanged(buddy);
+}
+
+void BuddyManager::buddyContactAboutToBeAdded(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAboutToBeAdded(buddy, contact);
+}
+
+void BuddyManager::buddyContactAdded(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAdded(buddy, contact);
+}
+
+void BuddyManager::buddyContactAboutToBeRemoved(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactAboutToBeRemoved(buddy, contact);
+}
+
+void BuddyManager::buddyContactRemoved(const Contact &contact)
+{
+	QMutexLocker locker(&mutex());
+
+	Buddy buddy(sender());
+	if (!buddy.isNull())
+		emit buddyContactRemoved(buddy, contact);
 }

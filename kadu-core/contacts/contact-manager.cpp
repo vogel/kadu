@@ -82,15 +82,6 @@ void ContactManager::init()
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 
-void ContactManager::idChanged(const QString &oldId)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactIdChanged(contact, oldId);
-}
-
 void ContactManager::dirtinessChanged()
 {
 	QMutexLocker locker(&mutex());
@@ -122,42 +113,6 @@ void ContactManager::unreadMessageRemoved(const Message &message)
 		contact.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
 
-void ContactManager::aboutToBeDetached()
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAboutToBeDetached(contact);
-}
-
-void ContactManager::detached(Buddy previousBuddy, bool reattaching)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactDetached(contact, previousBuddy, reattaching);
-}
-
-void ContactManager::aboutToBeAttached(Buddy nearFutureBuddy)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAboutToBeAttached(contact, nearFutureBuddy);
-}
-
-void ContactManager::attached(bool reattached)
-{
-	QMutexLocker locker(&mutex());
-
-	Contact contact(sender());
-	if (!contact.isNull())
-		emit contactAttached(contact, reattached);
-}
-
 void ContactManager::itemAboutToBeRegistered(Contact item)
 {
 	QMutexLocker locker(&mutex());
@@ -180,12 +135,7 @@ void ContactManager::itemRegistered(Contact item)
 		emit dirtyContactAdded(item);
 	}
 
-	connect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	connect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
-	connect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	connect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));
-	connect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	connect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 }
 
 void ContactManager::itemAboutToBeUnregisterd(Contact item)
@@ -198,12 +148,7 @@ void ContactManager::itemAboutToBeUnregisterd(Contact item)
 
 void ContactManager::itemUnregistered(Contact item)
 {
-	disconnect(item, SIGNAL(idChanged(const QString &)), this, SLOT(idChanged(const QString &)));
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
-	disconnect(item, SIGNAL(aboutToBeDetached()), this, SLOT(aboutToBeDetached()));
-	disconnect(item, SIGNAL(detached(Buddy, bool)), this, SLOT(detached(Buddy, bool)));
-	disconnect(item, SIGNAL(aboutToBeAttached(Buddy)), this, SLOT(aboutToBeAttached(Buddy)));
-	disconnect(item, SIGNAL(attached(bool)), this, SLOT(attached(bool)));
 
 	if (item.isDirty())
 		DirtyContacts.removeAll(item);
@@ -227,8 +172,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	if (action == ActionReturnNull)
 		return Contact::null;
 
-	Contact contact = Contact::create();
-	contact.setId(id);
+	Contact contact = Contact::create(id);
 	contact.setContactAccount(account);
 
 	if (action == ActionCreateAndAdd)

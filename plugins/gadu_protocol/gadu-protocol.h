@@ -98,8 +98,6 @@ private:
 	GaduMultilogonService *CurrentMultilogonService;
 	GaduChatStateService *CurrentChatStateService;
 
-	GaduContactListHandler *ContactListHandler;
-
 	GaduServersManager::GaduServer ActiveServer;
 
 	struct gg_login_params GaduLoginParams;
@@ -117,8 +115,6 @@ private:
 	void stopFileTransferService();
 
 	void setUpFileTransferService(bool forceClose = false);
-
-	void sendUserList();
 
 	void socketContactStatusChanged(UinType uin, unsigned int status, const QString &description, unsigned int maxImageSize);
 	void socketConnFailed(GaduError error);
@@ -155,8 +151,8 @@ public:
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
-    virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
-	virtual GaduChatStateService * chatStateService()  { return CurrentChatStateService; }
+	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
+	virtual ChatStateService * chatStateService() { return CurrentChatStateService; }
 
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }

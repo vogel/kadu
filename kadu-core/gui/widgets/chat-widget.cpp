@@ -109,7 +109,9 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 	foreach (const Contact &contact, CurrentChat.contacts())
 	{
 		connect(contact, SIGNAL(updated()), this, SLOT(refreshTitle()));
-		connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
+
+		if (contact.ownerBuddy())
+			connect(contact.ownerBuddy(), SIGNAL(updated()), this, SLOT(refreshTitle()));
 	}
 
 	// icon for conference never changes
@@ -125,12 +127,14 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 			// iconChanged(). 3. Tab catches it before Chat is updated and incorrectly sets
 			// tab icon to the envelope. This could be fixed correctly if we would fix the above TODO.
 			connect(contact, SIGNAL(updated()), this, SIGNAL(iconChanged()), Qt::QueuedConnection);
-			connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
+
+			if (contact.ownerBuddy())
+				connect(contact.ownerBuddy(), SIGNAL(buddySubscriptionChanged()), this, SIGNAL(iconChanged()));
 		}
 
 		if (currentProtocol() && currentProtocol()->chatStateService())
-			connect(currentProtocol()->chatStateService(), SIGNAL(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)),
-					this, SLOT(contactActivityChanged(ChatStateService::ContactActivity, const Contact &)));
+			connect(currentProtocol()->chatStateService(), SIGNAL(activityChanged(const Contact &, ChatStateService::ContactActivity)),
+					this, SLOT(contactActivityChanged(const Contact &, ChatStateService::ContactActivity)));
 	}
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
@@ -146,7 +150,7 @@ ChatWidget::~ChatWidget()
 	emit widgetDestroyed();
 
 	if (currentProtocol() && currentProtocol()->chatStateService())
-		currentProtocol()->chatStateService()->chatWidgetClosed(chat());
+		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StateGone);
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
@@ -717,7 +721,7 @@ void ChatWidget::composingStopped()
 	IsComposing = false;
 
 	if (currentProtocol() && currentProtocol()->chatStateService())
-		currentProtocol()->chatStateService()->composingStopped(chat());
+		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StatePaused);
 }
 
 void ChatWidget::checkComposing()
@@ -742,14 +746,14 @@ void ChatWidget::updateComposing()
 		if (edit()->toPlainText().isEmpty())
 			return;
 
-		currentProtocol()->chatStateService()->composingStarted(chat());
+		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StateComposing);
 
 		ComposingTimer.start();
 	}
 	IsComposing = true;
 }
 
-void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state, const Contact &contact)
+void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
 {
 	if (CurrentContactActivity == state)
 		return;
@@ -760,7 +764,7 @@ void ChatWidget::contactActivityChanged(ChatStateService::ContactActivity state,
 	CurrentContactActivity = state;
 
 	if (ChatConfigurationHolder::instance()->contactStateChats())
-		MessagesView->contactActivityChanged(state, contact);
+		MessagesView->contactActivityChanged(contact, state);
 
 	if (ChatConfigurationHolder::instance()->contactStateWindowTitle())
 		refreshTitle();

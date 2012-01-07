@@ -98,7 +98,7 @@ void BuddyShared::collectGarbage()
 	}
 
 	foreach (const Contact &contact, Contacts)
-		contact.removeOwnerBuddy();
+		contact.setOwnerBuddy(Buddy::null);
 
 	CollectingGarbage = false;
 }
@@ -273,23 +273,24 @@ bool BuddyShared::shouldStore()
 
 void BuddyShared::aboutToBeRemoved()
 {
-	/* NOTE: This guard is needed to delay deleting this object when removing
-	 * Buddy from Contact which may hold last reference to it and thus wants to
-	 * delete it. But we don't want this to happen now because we have still
-	 * some things to do here.
-	 */
-	Buddy guard(this);
-
 	setAnonymous(true);
-
-	foreach (const Contact &contact, Contacts)
-		contact.setOwnerBuddy(Buddy::null);
 
 	Contacts.clear();
 	Groups.clear();
 
 	AvatarManager::instance()->removeItem(*BuddyAvatar);
 	setBuddyAvatar(Avatar::null);
+}
+
+int BuddyShared::priorityForNewContact()
+{
+	// anonymous (default) buddies should have only contacts without priority
+	if (isAnonymous())
+		return -1;
+
+	return Contacts.isEmpty()
+	        ? 0
+	        : Contacts.at(Contacts.count() - 1).priority() + 1;
 }
 
 void BuddyShared::addContact(const Contact &contact)
@@ -299,19 +300,10 @@ void BuddyShared::addContact(const Contact &contact)
 	if (!contact || Contacts.contains(contact))
 		return;
 
-	emit contactAboutToBeAdded(contact);
+	if (-1 == contact.priority())
+		contact.setPriority(priorityForNewContact());
 
-	// anonymous (default) buddies should have only contacts without priority
-	if (isAnonymous())
-		contact.setPriority(-1);
-	// if no priority (i.e., adding new contact), append at the end
-	else if (contact.priority() == -1)
-	{
-		int newPriority = Contacts.isEmpty()
-				? 0
-				: Contacts.at(Contacts.count() - 1).priority() + 1;
-		contact.setPriority(newPriority);
-	}
+	emit contactAboutToBeAdded(contact);
 
 	Contacts.append(contact);
 	sortContacts();

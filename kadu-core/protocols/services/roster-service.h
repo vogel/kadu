@@ -28,21 +28,55 @@
 
 #include <QtCore/QObject>
 
+#include "buddies/buddy.h"
 #include "contacts/contact.h"
 
 #include "exports.h"
+
+class Protocol;
 
 class KADUAPI RosterService : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit RosterService(QObject *parent) : QObject(parent) {}
+	enum RosterState {
+		StateNonInitialized,
+		StateInitializing,
+		StateInitialized,
+		StateProcessingRemoteUpdate,
+		StateProcessingLocalUpdate
+	};
 
+private:
+	Protocol *CurrentProtocol;
+	RosterState State;
+
+private slots:
+	void disconnected();
+
+protected:
+	virtual bool canPerformLocalUpdate() const;
+	void setState(RosterState state);
+
+public:
+	explicit RosterService(Protocol *protocol);
+	virtual ~RosterService();
+
+	Protocol * protocol() const { return CurrentProtocol; }
+	RosterState state() const { return State; }
+
+	virtual void prepareRoster() = 0;
+
+public slots:
 	virtual void addContact(const Contact &contact) = 0;
 	virtual void removeContact(const Contact &contact) = 0;
-	virtual void askForAuthorization(const Contact &contact) = 0;
-	virtual void sendAuthorization(const Contact &contact) = 0;
+	virtual void updateContact(const Contact &contact) = 0;
+	virtual void updateBuddyContacts(Buddy &buddy);
+
+signals:
+	void rosterReady(bool ok);
+
 };
 
 #endif // ROSTER_SERVICE_H

@@ -60,6 +60,11 @@ private slots:
 	void buddyDataUpdated();
 	void buddySubscriptionChanged();
 
+	void buddyContactAboutToBeAdded(const Contact &contact);
+	void buddyContactAdded(const Contact &contact);
+	void buddyContactAboutToBeRemoved(const Contact &contact);
+	void buddyContactRemoved(const Contact &contact);
+
 protected:
 	virtual void load();
 
@@ -91,8 +96,14 @@ signals:
 	void buddyAboutToBeRemoved(Buddy &buddy);
 	void buddyRemoved(Buddy &buddy);
 
+	void buddyContactAboutToBeAdded(Buddy &buddy, const Contact &contact);
+	void buddyContactAdded(Buddy &buddy, const Contact &contact);
+	void buddyContactAboutToBeRemoved(Buddy &buddy, const Contact &contact);
+	void buddyContactRemoved(Buddy &buddy, const Contact &contact);
+
 	void buddyUpdated(Buddy &buddy);
 	void buddySubscriptionChanged(Buddy &buddy);
+
 };
 
 #endif // BUDDY_MANAGER_H

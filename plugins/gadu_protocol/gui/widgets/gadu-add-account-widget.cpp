@@ -131,10 +131,9 @@ void GaduAddAccountWidget::resetGui()
 
 void GaduAddAccountWidget::apply()
 {
-	Account gaduAccount = Account::create();
+	Account gaduAccount = Account::create("gadu");
 
 	gaduAccount.setAccountIdentity(Identity->currentIdentity());
-	gaduAccount.setProtocolName("gadu");
 	gaduAccount.setId(AccountId->text());
 	gaduAccount.setPassword(AccountPassword->text());
 	gaduAccount.setHasPassword(!AccountPassword->text().isEmpty());

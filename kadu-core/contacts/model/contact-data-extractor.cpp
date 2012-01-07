@@ -60,9 +60,12 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
 		{
-			BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", 0, false);
-			if (bkd && bkd->hideDescription())
-				return QVariant();
+			if (contact.ownerBuddy())
+			{
+				BuddyKaduData *bkd = contact.ownerBuddy().data()->moduleStorableData<BuddyKaduData>("kadu", 0, false);
+				if (bkd && bkd->hideDescription())
+					return QVariant();
+			}
 			return contact.currentStatus().description();
 		}
 		case StatusRole:

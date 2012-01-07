@@ -232,10 +232,10 @@ Buddy Buddy::dummy()
 	Identity identity = Identity::create();
 	identity.setName(identity.data()->tr("Example identity"));
 
-	Account account = Account::create();
+	Account account = Account::create("");
 	account.setAccountIdentity(identity);
 
-	Contact contact = Contact::create();
+	Contact contact = Contact::create("999999");
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
 	contact.setId("999999");

@@ -53,16 +53,10 @@ private slots:
 	void removeDuplicateContacts();
 
 	void contactDataUpdated();
-	void idChanged(const QString &oldId);
 	void dirtinessChanged();
 
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);
-
-	void aboutToBeAttached(Buddy nearFutureBuddy);
-	void attached(bool reattached);
-	void aboutToBeDetached();
-	void detached(Buddy previousBuddy, bool reattaching);
 
 protected:
 	virtual void loaded();
@@ -89,13 +83,6 @@ signals:
 	void contactAdded(Contact contact);
 	void contactAboutToBeRemoved(Contact contact);
 	void contactRemoved(Contact contact);
-
-	void contactAboutToBeDetached(Contact contact);
-	void contactDetached(Contact contact, Buddy previousBuddy, bool reattaching);
-	void contactAboutToBeAttached(Contact contact, Buddy nearFutureBuddy);
-	void contactAttached(Contact contact, bool reattached);
-
-	void contactIdChanged(Contact contact, const QString &oldId);
 
 	void dirtyContactAdded(Contact contact);
 

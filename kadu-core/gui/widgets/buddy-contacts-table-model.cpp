@@ -27,7 +27,8 @@
 #include "identities/identity.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
-#include "protocols/services/roster-service.h"
+#include "protocols/roster.h"
+#include "protocols/services/subscription-service.h"
 
 #include "buddy-contacts-table-model.h"
 
@@ -111,8 +112,7 @@ void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 {
 	switch (item->action())
 	{
-		case BuddyContactsTableItem::ItemEdit:
-			performItemActionEdit(item);
+		case BuddyContactsTableItem::ItemView:
 			break;
 
 		case BuddyContactsTableItem::ItemAdd:
@@ -129,46 +129,13 @@ void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 	}
 }
 
-void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item)
-{
-	Contact contact = item->itemContact();
-	if (!contact)
-		return;
-
-	contact.setPriority(item->itemContactPriority());
-
-	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
-		return;
-
-	// First we need to remove existing contact from the manager to avoid duplicates.
-	Contact existingContact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionReturnNull);
-	if (existingContact)
-		ContactManager::instance()->removeItem(existingContact);
-
-	if (contact.contactAccount() != item->itemAccount())
-	{
-		// allow protocol handlers to handle that
-		contact.setOwnerBuddy(Buddy::null);
-		ContactManager::instance()->removeItem(contact);
-		contact.setContactAccount(item->itemAccount());
-		contact.setId(item->id());
-		ContactManager::instance()->addItem(contact);
-		contact.setOwnerBuddy(ModelBuddy);
-		sendAuthorization(contact);
-	}
-	// else means that contact.id() != item->id()
-	else
-	{
-		contact.setId(item->id());
-		sendAuthorization(contact);
-	}
-}
-
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 {
 	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
+
+	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);
 }
 
@@ -185,6 +152,8 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
+
+	Roster::instance()->updateContact(contact);
 }
 
 void BuddyContactsTableModel::sendAuthorization(const Contact &contact)
@@ -194,10 +163,10 @@ void BuddyContactsTableModel::sendAuthorization(const Contact &contact)
 
 	Account account = contact.contactAccount();
 
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 		return;
 
-	account.protocolHandler()->rosterService()->sendAuthorization(contact);
+	account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }
 
 void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *item)
@@ -205,6 +174,8 @@ void BuddyContactsTableModel::performItemActionRemove(BuddyContactsTableItem *it
 	// save in configuration, but do not use
 	Contact contact = item->itemContact();
 	contact.setOwnerBuddy(Buddy::null);
+
+	Roster::instance()->removeContact(contact);
 }
 
 void BuddyContactsTableModel::addItem(BuddyContactsTableItem *item, bool emitRowsInserted)
@@ -279,7 +250,13 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	// do not allow to edit existing contacts
+
+	BuddyContactsTableItem *item = Contacts.at(index.row());
+	if (BuddyContactsTableItem::ItemAdd == item->action())
+		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	else
+		return QAbstractItemModel::flags(index);
 }
 
 QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -353,15 +330,25 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 	switch (index.column())
 	{
 		case 0:
-			if (Qt::EditRole == role)
+		{
+			if (BuddyContactsTableItem::ItemAdd == item->action() && Qt::EditRole == role)
+			{
 				item->setId(value.toString());
+				return true;
+			}
 			break;
+		}
 
 		case 1:
-			if (AccountRole == role)
+		{
+			if (BuddyContactsTableItem::ItemAdd == item->action() && AccountRole == role)
+			{
 				item->setItemAccount(value.value<Account>());
+				return true;
+			}
 			break;
+		}
 	}
 
-	return true;
+	return false;
 }

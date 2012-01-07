@@ -69,14 +69,10 @@ private slots:
 	void messageAboutToSend(XMPP::Message &message);
 
 public:
-	JabberChatStateService(JabberProtocol *protocol);
+	explicit JabberChatStateService(JabberProtocol *protocol);
 
-	virtual void composingStarted(const Chat &chat);
-	virtual void composingStopped(const Chat &chat);
+	virtual void sendState(const Chat &chat, ContactActivity state);
 
-	virtual void chatWidgetClosed(const Chat &chat);
-	virtual void chatWidgetActivated(const Chat &chat);
-	virtual void chatWidgetDeactivated(const Chat &chat);
 };
 
 #endif // JABBER_CHAT_STATE_SERVICE_H

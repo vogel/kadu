@@ -35,6 +35,9 @@ NameTalkableFilter::~NameTalkableFilter()
 
 bool NameTalkableFilter::matches(const Chat &chat)
 {
+	if (!chat)
+		return false;
+
 	if (chat.display().contains(Name, Qt::CaseInsensitive))
 		return true;
 
@@ -51,6 +54,8 @@ bool NameTalkableFilter::matches(const Chat &chat)
 
 bool NameTalkableFilter::matches(const Buddy &buddy)
 {
+	if (!buddy)
+		return false;
 	if (buddy.display().contains(Name, Qt::CaseInsensitive))
 		return true;
 	if (buddy.firstName().contains(Name, Qt::CaseInsensitive))

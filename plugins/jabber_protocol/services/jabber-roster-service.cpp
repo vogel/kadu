@@ -31,15 +31,15 @@
 #include "jabber-roster-service.h"
 
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		RosterService(protocol), Protocol(protocol), InRequest(false)
+		RosterService(protocol)
 {
-	connect(Protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
+	connect(protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
 			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
-	connect(Protocol->client(), SIGNAL(contactUpdated(const XMPP::RosterItem &)),
+	connect(protocol->client(), SIGNAL(contactUpdated(const XMPP::RosterItem &)),
 			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
-	connect(Protocol->client(), SIGNAL(contactDeleted(const XMPP::RosterItem &)),
+	connect(protocol->client(), SIGNAL(contactDeleted(const XMPP::RosterItem &)),
 			this, SLOT(contactDeleted(const XMPP::RosterItem &)));
-	connect(Protocol->client(), SIGNAL(rosterRequestFinished(bool)),
+	connect(protocol->client(), SIGNAL(rosterRequestFinished(bool)),
 			this, SLOT(rosterRequestFinished(bool)));
 }
 
@@ -68,7 +68,11 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 			contact.setOwnerBuddy(buddy);
 		}
 		else
+		{
+			if (!buddy)
+				buddy = Buddy::create();
 			buddy.setDisplay(display);
+		}
 
 		buddy.setAnonymous(false);
 	}
@@ -76,7 +80,7 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 	{
 		// Prevent read-only rosters (e.g., Facebook Chat) from changing names of buddies with multiple contacts (#1570).
 		// Though, if given buddy has exactly one contact, let the name be changed (#2226).
-		if (!Protocol->contactsListReadOnly() || 1 == buddy.contacts().count())
+		if (!protocol()->contactsListReadOnly() || 1 == buddy.contacts().count())
 			buddy.setDisplay(display);
 	}
 
@@ -86,6 +90,14 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
+
+	// StateInitialized - this is new update from roster
+	// StateInitializing - this is initial data from roster
+	RosterState originalState = state();
+	if (StateInitialized != originalState && StateInitializing != originalState)
+		return;
+
+	setState(StateProcessingRemoteUpdate);
 
 	/**
 	 * Subscription types are: Both, From, To, Remove, None.
@@ -102,18 +114,18 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 
-	Protocol->disconnectContactManagerSignals();
+	JabberProtocol *jabberProtocol = static_cast<JabberProtocol *>(protocol());
 
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(protocol()->account(), item.jid().bare(), ActionCreateAndAdd);
 	// in case we return before next call of it
 	contact.setDirty(false);
 	ContactsForDelete.removeAll(contact);
 
-	if (contact == Protocol->account().accountContact())
+	if (contact == jabberProtocol->account().accountContact())
 	{
-		Protocol->connectContactManagerSignals();
+		setState(originalState);
 		return;
 	}
 
@@ -125,7 +137,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
 	   ))
 	{
-		Protocol->connectContactManagerSignals();
+		setState(originalState);
 		return;
 	}
 
@@ -134,7 +146,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	// Facebook Chat does not support groups. So make Facebook contacts not remove their
 	// owner buddies (which may own more contacts) from their groups. See bug #2320.
-	if (!Protocol->contactsListReadOnly())
+	if (!jabberProtocol->contactsListReadOnly())
 	{
 		QList<Group> groups;
 		foreach (const QString &group, item.groups())
@@ -144,23 +156,35 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	contact.setDirty(false);
 
-	Protocol->connectContactManagerSignals();
+	setState(originalState);
 
 	kdebugf2();
 }
 
 void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 {
+	// StateInitialized - this is new update from roster
+	// StateInitializing - this is initial data from roster
+	RosterState originalState = state();
+	if (StateInitialized != originalState && StateInitializing != originalState)
+		return;
+
+	setState(StateProcessingRemoteUpdate);
+
 	kdebug("Deleting contact %s\n", qPrintable(item.jid().bare()));
 
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), item.jid().bare(), ActionReturnNull);
+	Contact contact = ContactManager::instance()->byId(protocol()->account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 	contact.setDirty(false);
+
+	setState(originalState);
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
 {
 	kdebugf();
+
+	Q_ASSERT(StateInitializing == state());
 
 	// the roster was imported successfully, clear
 	// all "dirty" items from the contact list
@@ -171,37 +195,45 @@ void JabberRosterService::rosterRequestFinished(bool success)
 			contact.setDirty(false);
 		}
 
-	InRequest = false;
-	emit rosterDownloaded(success);
+	setState(StateInitialized);
+
+	emit rosterReady(success);
 
 	kdebugf2();
 }
 
-void JabberRosterService::downloadRoster()
+void JabberRosterService::prepareRoster()
 {
-	if (InRequest)
-		return;
+	Q_ASSERT(StateNonInitialized == state());
 
-	InRequest = true;
+	setState(StateInitializing);
 
 	// flag roster for delete
-	ContactsForDelete = ContactManager::instance()->contacts(Protocol->account()).toList();
-	ContactsForDelete.removeAll(Protocol->account().accountContact());
+	ContactsForDelete = ContactManager::instance()->contacts(protocol()->account()).toList();
+	ContactsForDelete.removeAll(protocol()->account().accountContact());
 
-	Protocol->client()->requestRoster();
+	static_cast<JabberProtocol *>(protocol())->client()->requestRoster();
+}
+
+bool JabberRosterService::canPerformLocalUpdate() const
+{
+	if (!RosterService::canPerformLocalUpdate())
+		return false;
+
+	if (!static_cast<JabberProtocol *>(protocol())->client())
+		return false;
+
+	return true;
 }
 
 void JabberRosterService::addContact(const Contact &contact)
 {
-	// disable roster actions when we are removing account from kadu
-	if (Protocol->account().removing())
+	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account() || contact.isAnonymous())
 		return;
 
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account() || contact.isAnonymous())
-		return;
+	Q_ASSERT(StateInitialized == state());
 
-	if (!Protocol->client())
-		return;
+	setState(StateProcessingLocalUpdate);
 
 	Buddy buddy = contact.ownerBuddy();
 	QStringList groupsList;
@@ -209,44 +241,44 @@ void JabberRosterService::addContact(const Contact &contact)
 	foreach (const Group &group, buddy.groups())
 		groupsList.append(group.name());
 
-	Protocol->client()->addContact(contact.id(), buddy.display(), groupsList);
+	// see issue #2159 - we need a way to ignore first status of given contact
+	contact.setIgnoreNextStatusChange(true);
+
+	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), groupsList);
 	contact.setDirty(false);
+
+	setState(StateInitialized);
 }
 
 void JabberRosterService::removeContact(const Contact &contact)
 {
-	// disable roster actions when we are removing account from kadu
-	if (Protocol->account().removing())
+	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account())
 		return;
 
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
-		return;
+	Q_ASSERT(StateInitialized == state());
 
-	if (!Protocol->client())
-		return;
+	setState(StateProcessingLocalUpdate);
 
-	Protocol->client()->removeContact(contact.id());
+	static_cast<JabberProtocol *>(protocol())->client()->removeContact(contact.id());
 	contact.setDirty(false);
+
+	setState(StateInitialized);
 }
 
-void JabberRosterService::askForAuthorization(const Contact &contact)
+void JabberRosterService::updateContact(const Contact &contact)
 {
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
+	if (!canPerformLocalUpdate() || contact.contactAccount() != protocol()->account() || contact.isAnonymous())
 		return;
 
-	if (!Protocol->client())
-		return;
+	Q_ASSERT(StateInitialized == state());
 
-	Protocol->client()->requestSubscription(contact.id());
-}
+	setState(StateProcessingLocalUpdate);
 
-void JabberRosterService::sendAuthorization(const Contact &contact)
-{
-	if (!Protocol->isConnected() || contact.contactAccount() != Protocol->account())
-		return;
+	QStringList groupsList;
+	foreach (const Group &group, contact.ownerBuddy().groups())
+		groupsList.append(group.name());
 
-	if (!Protocol->client())
-		return;
+	static_cast<JabberProtocol *>(protocol())->client()->updateContact(contact.id(), contact.display(true), groupsList);
 
-	Protocol->client()->resendSubscription(contact.id());
+	setState(StateInitialized);
 }

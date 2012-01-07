@@ -48,14 +48,10 @@ private slots:
 	void messageReceived(const Message & message);
 
 public:
-	GaduChatStateService(GaduProtocol *parent);
+	explicit GaduChatStateService(GaduProtocol *parent);
 
-	virtual void composingStarted(const Chat &chat);
-	virtual void composingStopped(const Chat &chat);
+	virtual void sendState(const Chat &chat, ContactActivity state);
 
-	virtual void chatWidgetClosed(const Chat &chat);
-	virtual void chatWidgetActivated(const Chat &chat);
-	virtual void chatWidgetDeactivated(const Chat &chat);
 };
 
 #endif // GADU_CHAT_STATE_SERVICE_H
