@@ -22,8 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-details.h"
-#include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
@@ -231,41 +229,30 @@ Buddy Buddy::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account account;
+	Identity identity = Identity::create();
+	identity.setName(identity.data()->tr("Example identity"));
 
-	if (!AccountManager::instance()->defaultAccount().isNull())
-		account = AccountManager::instance()->defaultAccount();
-	else if (!ProtocolsManager::instance()->protocolFactories().isEmpty())
-	{
-		account = Account::create();
-		ProtocolFactory *firstProto = ProtocolsManager::instance()->protocolFactories().at(0) ;
-		account.setProtocolName(firstProto->name());
-		account.details()->setState(StorableObject::StateNew);
-	}
+	Account account = Account::create();
+	account.setAccountIdentity(identity);
 
-	if (!account.isNull())
-	{
-		Contact contact = Contact::create();
-		contact.setContactAccount(account);
-		contact.setOwnerBuddy(example);
-		contact.setId("999999");
-		contact.setCurrentStatus(Status(StatusTypeAway, example.data()->tr("Example description")));
-		contact.setAddress(QHostAddress(2130706433));
-		contact.setPort(80);
+	Contact contact = Contact::create();
+	contact.setContactAccount(account);
+	contact.setOwnerBuddy(example);
+	contact.setId("999999");
+	contact.setCurrentStatus(Status(StatusTypeAway, example.data()->tr("Example description")));
+	contact.setAddress(QHostAddress(2130706433));
+	contact.setPort(80);
 
-		// this is just an example contact, do not add avatar to list
-		Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
+	// this is just an example contact, do not add avatar to list
+	Avatar avatar = AvatarManager::instance()->byContact(contact, ActionCreate);
 
-		avatar.setLastUpdated(QDateTime::currentDateTime());
-		avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());
+	avatar.setLastUpdated(QDateTime::currentDateTime());
+	avatar.setFilePath(KaduIcon("kadu_icons/buddy0", "96x96").fullPath());
 
-		example.addContact(contact);
-		example.setAnonymous(false);
+	example.addContact(contact);
+	example.setAnonymous(false);
 
-		return example;
-	}
-
-	return null;
+	return example;
 }
 
 KaduSharedBase_PropertyDefCRW(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null)

@@ -40,6 +40,7 @@
 #include "misc/misc.h"
 #include "parser/parser-token.h"
 #include "status/status-container.h"
+#include "status/status-container-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
@@ -222,6 +223,8 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 				StatusContainer *container = contact.contactAccount().statusContainer();
 				if (container)
 					pe.setContent(container->statusIcon(contact.currentStatus().type()).path());
+				else
+					pe.setContent(StatusContainerManager::instance()->statusIcon(contact.currentStatus().type()).path());
 			}
 
 			break;

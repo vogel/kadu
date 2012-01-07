@@ -467,7 +467,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 	}
 	else
 	{
-		result.remove("%service%");
+		result.replace(QString("%service%"), msg.messageChat().chatAccount().accountIdentity().name());
 		result.remove("%senderStatusIcon%");
 	}
 

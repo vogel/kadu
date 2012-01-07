@@ -26,6 +26,7 @@
 #include "misc/path-conversion.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
 
 #include "contact-parser-tags.h"
@@ -44,14 +45,13 @@ static QString getStatusIconPath(Talkable talkable)
 	if (talkable.isBlocking())
 		return KaduIcon("kadu_icons", "16x16", "blocking").webKitPath();
 
+	const Status &status = talkable.currentStatus();
+
 	Protocol *protocol = talkable.account().protocolHandler();
 	if (protocol)
-	{
-		const Status &status = talkable.currentStatus();
 		return StatusTypeManager::instance()->statusIcon(protocol->statusPixmapPath(), status).webKitPath();
-	}
-
-	return QString();
+	else
+		return StatusContainerManager::instance()->statusIcon(status.type()).webKitPath();
 }
 
 void ContactParserTags::registerParserTags()
