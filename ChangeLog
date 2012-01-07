@@ -1,4 +1,6 @@
-﻿+++ version 0.11.0-rc1
+﻿+++ version 0.12.0-git
+
++++ version 0.11.0-rc1
 * hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)
 * sms: #2394 fixed: Orange Multibox SMS length limit is not ignored in Send SMS window anymore (Vogel)
 * sms: #2371 fixed: allow foreign SMS numbers (Vogel)
