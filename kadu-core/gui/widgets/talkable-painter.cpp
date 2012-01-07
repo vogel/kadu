@@ -169,15 +169,17 @@ void TalkablePainter::computeCheckboxRect()
 		return;
 
 	CheckboxRect.setTop(ItemRect.top());
+	CheckboxRect.setLeft(ItemRect.left());
 
 	QStyleOptionButton option;
 	option.rect = CheckboxRect;
 	option.state = QStyle::State_Enabled;
 
 	QSize size = Style->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
-
-	CheckboxRect.setWidth(size.width());
-	CheckboxRect.setHeight(size.height());
+#ifdef Q_WS_WIN
+	size.setWidth(size.width() + Style->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
+#endif
+	CheckboxRect.setSize(size);
 }
 
 void TalkablePainter::computeIconRect()
