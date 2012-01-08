@@ -30,6 +30,24 @@
 
 #include "jabber-roster-service.h"
 
+QStringList JabberRosterService::buddyGroups(const Buddy &buddy)
+{
+	QStringList result;
+
+	foreach (const Group &group, buddy.groups())
+		result.append(group.name());
+
+	return result;
+}
+
+const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
+{
+	if (!item.name().isEmpty())
+		return item.name();
+	else
+		return item.jid().bare();
+}
+
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
 		RosterService(protocol)
 {
@@ -45,14 +63,6 @@ JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
 
 JabberRosterService::~JabberRosterService()
 {
-}
-
-const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
-{
-	if (!item.name().isEmpty())
-		return item.name();
-	else
-		return item.jid().bare();
 }
 
 Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact &contact)
@@ -241,16 +251,10 @@ bool JabberRosterService::addContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
-	Buddy buddy = contact.ownerBuddy();
-	QStringList groupsList;
-
-	foreach (const Group &group, buddy.groups())
-		groupsList.append(group.name());
-
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
 
-	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), groupsList);
+	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	contact.setDirty(false);
 
 	setState(StateInitialized);

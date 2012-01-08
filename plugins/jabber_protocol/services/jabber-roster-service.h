@@ -41,7 +41,9 @@ class JabberRosterService : public RosterService
 
 	QList<Contact> ContactsForDelete;
 
-	const QString & itemDisplay(const XMPP::RosterItem &item);
+	static QStringList buddyGroups(const Buddy &buddy);
+	static const QString & itemDisplay(const XMPP::RosterItem &item);
+
 	Buddy itemBuddy(const XMPP::RosterItem &item, const Contact &contact);
 
 private slots:
