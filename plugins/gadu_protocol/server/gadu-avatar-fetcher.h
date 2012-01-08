@@ -28,25 +28,29 @@
 
 #include "contacts/contact.h"
 
-class QHttp;
+class QNetworkAccessManager;
+class QNetworkReply;
 
 class GaduAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
 	Contact MyContact;
-	QBuffer MyBuffer, AvatarBuffer;
-	QHttp *MyHttp;
+	QNetworkAccessManager *NetworkAccessManager;
+	QNetworkReply *Reply;
+	int RedirectCount;
 
 	void done();
 	void failed();
 
+	void fetch(const QString &url);
+	void parseReply();
+
 private slots:
-	void requestFinished(int id, bool error);
-	void avatarDownloaded(int id, bool error);
+	void requestFinished();
 
 public:
-	GaduAvatarFetcher(Contact contact, QObject *parent);
+	explicit GaduAvatarFetcher(Contact contact, QObject *parent = 0);
 	void fetchAvatar();
 
 signals:

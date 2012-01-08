@@ -20,26 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDateTime>
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QLatin1String>
-#include <QtCore/QUrl>
-#include <QtNetwork/QHttp>
-#include <QtXml/QDomDocument>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
 
 #include "accounts/account.h"
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
-#include "misc/path-conversion.h"
 
 #include "server/gadu-avatar-data-parser.h"
 
 #include "gadu-avatar-fetcher.h"
 
 GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact)
+		QObject(parent), MyContact(contact), RedirectCount(0)
 {
+	NetworkAccessManager = new QNetworkAccessManager(this);
 }
 
 void GaduAvatarFetcher::done()
@@ -54,83 +50,50 @@ void GaduAvatarFetcher::failed()
 
 void GaduAvatarFetcher::fetchAvatar()
 {
-	MyHttp = new QHttp("api.gadu-gadu.pl", 80, this);
-	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
-			this, SLOT(requestFinished(int, bool)));
-	MyHttp->get("/avatars/" + MyContact.id() + "/0.xml", &MyBuffer);
+	fetch(QString("http://avatars.gg.pl/%1").arg(MyContact.id()));
 }
 
-void GaduAvatarFetcher::requestFinished(int id, bool error)
+void GaduAvatarFetcher::requestFinished()
 {
-	Q_UNUSED(id)
+	QVariant redirect = Reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+	Reply->deleteLater();
 
-	if (error)
+	if (redirect.isNull())
 	{
-		failed();
+		parseReply();
 		deleteLater();
 		return;
 	}
 
-	GaduAvatarDataParser parser(&MyBuffer, MyContact.id());
-
-	if (!parser.isValid())
+	if (RedirectCount > 5)
 	{
-		failed();
-		deleteLater();
-		return;
-	}
-
-	if (parser.isBlank())
-	{
-		// clear avatar data
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionReturnNull);
-		if (contactAvatar)
-			contactAvatar.setPixmap(QPixmap());
-		
 		done();
 		deleteLater();
 		return;
 	}
 
-	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+	RedirectCount++;
 
-	if (contactAvatar.lastUpdated() == parser.timestamp())
-	{
-		// only if we have file too
-		if (!MyContact.contactAvatar().pixmap().isNull())
-		{
-			// we already have this file, no need to update
-			deleteLater();
-			// failed - avatar not fetched, but no need to
-			failed();
-			return;
-		}
-	}
-
-	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + parser.delay()));
-	contactAvatar.setLastUpdated(parser.timestamp());
-
-	QUrl url = parser.avatarUrl();
-
-	QHttp *imageFetchHttp = new QHttp(url.host(), 80, this);
-
-	connect(imageFetchHttp, SIGNAL(requestFinished(int, bool)),
-			this, SLOT(avatarDownloaded(int, bool)));
-			imageFetchHttp->get(url.path(), &AvatarBuffer);
+	fetch(redirect.toString());
 }
 
-void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
+void GaduAvatarFetcher::fetch(const QString &url)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(error)
+	QNetworkRequest request;
+	request.setUrl(url);
 
+	Reply = NetworkAccessManager->get(request);
+	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+}
+
+void GaduAvatarFetcher::parseReply()
+{
+	QByteArray data = Reply->readAll();
 	QPixmap pixmap;
-	if (!AvatarBuffer.buffer().isEmpty())
-		pixmap.loadFromData(AvatarBuffer.buffer());
+	if (!data.isEmpty())
+		pixmap.loadFromData(data);
 
 	AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd).setPixmap(pixmap);
 
 	done();
-
-	deleteLater();
 }
