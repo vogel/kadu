@@ -102,7 +102,7 @@ void ContactShared::load()
 	Priority = loadValue<int>("Priority", -1);
 	Dirty = loadValue<bool>("Dirty", true);
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	*OwnerBuddy = BuddyManager::instance()->byUuid(loadValue<QString>("Buddy"));
+	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
 
 	protocolFactoryRegistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
@@ -113,7 +113,7 @@ void ContactShared::aboutToBeRemoved()
 	// clean up references
 	*ContactAccount = Account::null;
 	removeFromBuddy();
-	*OwnerBuddy = Buddy::null;
+	doSetOwnerBuddy(Buddy::null);
 
 	AvatarManager::instance()->removeItem(*ContactAvatar);
 	doSetContactAvatar(Avatar::null);
@@ -185,7 +185,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	Contact guard(this);
 
 	removeFromBuddy();
-	*OwnerBuddy = buddy;
+	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
 	setDirty(true);
@@ -310,6 +310,17 @@ void ContactShared::setDirty(bool dirty)
 void ContactShared::avatarUpdated()
 {
 	dataUpdated();
+}
+
+void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
+{
+	if (*OwnerBuddy)
+		disconnect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
+
+	*OwnerBuddy = buddy;
+
+	if (*OwnerBuddy)
+		connect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
 }
 
 void ContactShared::doSetContactAvatar(const Avatar &contactAvatar)

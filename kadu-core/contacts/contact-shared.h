@@ -65,6 +65,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	void addToBuddy();
 	void removeFromBuddy();
 
+	void doSetOwnerBuddy(const Buddy &buddy);
 	void doSetContactAvatar(const Avatar &contactAvatar);
 
 private slots:
@@ -124,6 +125,7 @@ public:
 
 signals:
 	void updated();
+	void buddyUpdated();
 	void dirtinessChanged();
 
 };
