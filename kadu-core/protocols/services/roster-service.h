@@ -33,9 +33,9 @@
 
 #include "exports.h"
 
-class Protocol;
+#include "protocols/services/protocol-service.h"
 
-class KADUAPI RosterService : public QObject
+class KADUAPI RosterService : public ProtocolService
 {
 	Q_OBJECT
 
@@ -49,7 +49,6 @@ public:
 	};
 
 private:
-	Protocol *CurrentProtocol;
 	RosterState State;
 	QList<Contact> Contacts;
 
@@ -68,7 +67,6 @@ public:
 	explicit RosterService(Protocol *protocol);
 	virtual ~RosterService();
 
-	Protocol * protocol() const { return CurrentProtocol; }
 	RosterState state() const { return State; }
 
 	virtual void prepareRoster() = 0;

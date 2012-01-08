@@ -28,7 +28,7 @@
 #include "roster-service.h"
 
 RosterService::RosterService(Protocol *protocol) :
-		QObject(protocol), CurrentProtocol(protocol), State(StateNonInitialized)
+		ProtocolService(protocol), State(StateNonInitialized)
 {
 	Q_ASSERT(protocol);
 

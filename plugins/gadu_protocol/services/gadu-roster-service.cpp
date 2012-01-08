@@ -51,6 +51,7 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
 		RosterService(protocol)
 {
+	Q_ASSERT(protocol);
 }
 
 GaduRosterService::~GaduRosterService()
@@ -63,11 +64,11 @@ void GaduRosterService::prepareRoster()
 
 	setState(StateInitializing);
 
-	QVector<Contact> allContacts = ContactManager::instance()->contacts(protocol()->account());
+	QVector<Contact> allContacts = ContactManager::instance()->contacts(account());
 	QVector<Contact> sendList;
 
 	foreach (const Contact &contact, allContacts)
-		if (!contact.isAnonymous() && contact != protocol()->account().accountContact())
+		if (!contact.isAnonymous() && contact != account().accountContact())
 			sendList.append(contact);
 
 	if (sendList.isEmpty())
@@ -140,8 +141,8 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 bool GaduRosterService::addContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
-	        protocol()->account() != contact.contactAccount() ||
-	        protocol()->account().accountContact() == contact)
+	        account() != contact.contactAccount() ||
+	        account().accountContact() == contact)
 		return false;
 
 	Q_ASSERT(StateInitialized == state());
@@ -159,8 +160,8 @@ bool GaduRosterService::addContact(const Contact &contact)
 bool GaduRosterService::removeContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
-	        protocol()->account() != contact.contactAccount() ||
-	        protocol()->account().accountContact() == contact)
+	        account() != contact.contactAccount() ||
+	        account().accountContact() == contact)
 		return false;
 
 	Q_ASSERT(StateInitialized == state());
@@ -178,8 +179,8 @@ bool GaduRosterService::removeContact(const Contact &contact)
 void GaduRosterService::updateContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
-	        protocol()->account() != contact.contactAccount() ||
-	        protocol()->account().accountContact() == contact)
+	        account() != contact.contactAccount() ||
+	        account().accountContact() == contact)
 		return;
 
 	Q_ASSERT(StateInitialized == state());
