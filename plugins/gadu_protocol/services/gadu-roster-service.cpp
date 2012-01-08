@@ -137,39 +137,42 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 	updateFlag(uin, newFlags, oldFlags, 0x04);
 }
 
-void GaduRosterService::addContact(const Contact &contact)
+bool GaduRosterService::addContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
 	        protocol()->account() != contact.contactAccount() ||
 	        protocol()->account().accountContact() == contact)
-		return;
+		return false;
 
 	Q_ASSERT(StateInitialized == state());
 
+	if (!RosterService::addContact(contact))
+		return false;
+
 	setState(StateProcessingLocalUpdate);
-
-	RosterService::addContact(contact);
 	sendNewFlags(contact, notifyTypeFromContact(contact));
-	updateContact(contact);
-
 	setState(StateInitialized);
+
+	return true;
 }
 
-void GaduRosterService::removeContact(const Contact &contact)
+bool GaduRosterService::removeContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
 	        protocol()->account() != contact.contactAccount() ||
 	        protocol()->account().accountContact() == contact)
-		return;
+		return false;
 
 	Q_ASSERT(StateInitialized == state());
 
+	if (!RosterService::removeContact(contact))
+		return false;
+
 	setState(StateProcessingLocalUpdate);
-
 	sendNewFlags(contact, 0);
-	RosterService::removeContact(contact);
-
 	setState(StateInitialized);
+
+	return true;
 }
 
 void GaduRosterService::updateContact(const Contact &contact)
@@ -182,8 +185,6 @@ void GaduRosterService::updateContact(const Contact &contact)
 	Q_ASSERT(StateInitialized == state());
 
 	setState(StateProcessingLocalUpdate);
-
 	sendNewFlags(contact, notifyTypeFromContact(contact));
-
 	setState(StateInitialized);
 }

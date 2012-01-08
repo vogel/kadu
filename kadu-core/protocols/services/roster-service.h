@@ -61,6 +61,9 @@ protected:
 	virtual bool canPerformLocalUpdate() const;
 	void setState(RosterState state);
 
+protected slots:
+	virtual void updateContact(const Contact &contact) = 0;
+
 public:
 	explicit RosterService(Protocol *protocol);
 	virtual ~RosterService();
@@ -71,9 +74,8 @@ public:
 	virtual void prepareRoster() = 0;
 
 public slots:
-	virtual void addContact(const Contact &contact);
-	virtual void removeContact(const Contact &contact);
-	virtual void updateContact(const Contact &contact) = 0;
+	virtual bool addContact(const Contact &contact);
+	virtual bool removeContact(const Contact &contact);
 
 signals:
 	void rosterReady(bool ok);

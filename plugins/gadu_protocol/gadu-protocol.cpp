@@ -415,7 +415,7 @@ void GaduProtocol::socketContactStatusChanged(UinType uin, unsigned int status, 
 		kdebugmf(KDEBUG_INFO, "buddy %u not in list. Damned server!\n", uin);
 		if (contact.ownerBuddy())
 			emit userStatusChangeIgnored(contact.ownerBuddy());
-		rosterService()->updateContact(contact);
+		rosterService()->removeContact(contact);
 		return;
 	}
 

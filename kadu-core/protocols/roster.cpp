@@ -68,10 +68,3 @@ void Roster::removeContact(const Contact &contact) const
 	if (service)
 		service->removeContact(contact);
 }
-
-void Roster::updateContact(const Contact &contact) const
-{
-	RosterService *service = rosterService(contact);
-	if (service)
-		service->updateContact(contact);
-}

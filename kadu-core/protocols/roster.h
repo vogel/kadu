@@ -43,7 +43,6 @@ public:
 public slots:
 	void addContact(const Contact &contact) const;
 	void removeContact(const Contact &contact) const;
-	void updateContact(const Contact &contact) const;
 
 };
 

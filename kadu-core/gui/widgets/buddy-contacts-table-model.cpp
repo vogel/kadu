@@ -152,8 +152,6 @@ void BuddyContactsTableModel::performItemActionDetach(BuddyContactsTableItem *it
 	Buddy newBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
 	newBuddy.setAnonymous(false);
 	contact.setOwnerBuddy(newBuddy);
-
-	Roster::instance()->updateContact(contact);
 }
 
 void BuddyContactsTableModel::sendAuthorization(const Contact &contact)

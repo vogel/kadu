@@ -183,10 +183,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
 	// we should just manually delete all contacts when buddy is removed
 
 	foreach (const Contact &contact, source.contacts())
-	{
 		contact.setOwnerBuddy(destination);
-		Roster::instance()->updateContact(contact);
-	}
 
 	removeItem(source);
 

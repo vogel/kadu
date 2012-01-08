@@ -89,10 +89,7 @@ bool ProfileImporter::import(const Identity &identity)
 		if (existingBuddy)
 		{
 			foreach (const Contact &contact, buddy.contacts())
-			{
 				contact.setOwnerBuddy(existingBuddy);
-				Roster::instance()->updateContact(contact);
-			}
 		}
 		else
 		{

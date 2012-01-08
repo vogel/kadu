@@ -39,6 +39,9 @@ class GaduRosterService : public RosterService
 	void updateFlag(int uin, int newFlags, int oldFlags, int flag) const;
 	void sendNewFlags(const Contact &contact, int newFlags) const;
 
+protected slots:
+	virtual void updateContact(const Contact &contact);
+
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
@@ -48,9 +51,8 @@ public:
 	virtual void prepareRoster();
 
 public slots:
-	virtual void addContact(const Contact &contact);
-	virtual void removeContact(const Contact &contact);
-	virtual void updateContact(const Contact &contact);
+	virtual bool addContact(const Contact &contact);
+	virtual bool removeContact(const Contact &contact);
 
 };
 
