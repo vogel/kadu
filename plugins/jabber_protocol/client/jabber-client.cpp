@@ -593,43 +593,6 @@ void JabberClient::slotCSError(int error)
 	}
 }
 
-void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
-{
-	if (AddedContacts.contains(j.bare()))
-		return;
-
-	JT_Roster *r = new JT_Roster(Client->rootTask());
-	r->set(j, name, groups);
-	r->go(true);
-
-	AddedContacts.append(j.bare());
-}
-
-void JabberClient::removeContact(const XMPP::Jid &j)
-{
-	AddedContacts.removeAll(j.bare());
-
-	JT_Roster *r = new JT_Roster(Client->rootTask());
-	r->remove(j);
-	r->go(true);
-
-	//TODO in the future...
-	// if it looks like a transport, unregister (but not if it is the server!!)
-	/*if(u->isTransport() && !Jid(d->client->host()).compare(u->jid())) {
-		JT_UnRegister *ju = new JT_UnRegister(d->client->rootTask());
-		ju->unreg(j);
-		ju->go(true);
-	}
-	*/
-}
-
-void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
-{
-	JT_Roster *r = new JT_Roster(Client->rootTask());
-	r->set(j, name, groups);
-	r->go(true);
-}
-
 void JabberClient::setPresence(const XMPP::Status &status)
 {
 	kdebug("Status: %s, Reason: %s\n", status.show().toUtf8().constData(), status.status().toUtf8().constData());

@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <xmpp_tasks.h>
+
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
@@ -233,7 +235,7 @@ bool JabberRosterService::canPerformLocalUpdate() const
 	if (!RosterService::canPerformLocalUpdate())
 		return false;
 
-	if (!static_cast<JabberProtocol *>(protocol())->client())
+	if (!static_cast<JabberProtocol *>(protocol())->client() || !static_cast<JabberProtocol *>(protocol())->xmppClient())
 		return false;
 
 	return true;
@@ -254,7 +256,13 @@ bool JabberRosterService::addContact(const Contact &contact)
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
 
-	static_cast<JabberProtocol *>(protocol())->client()->addContact(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+	XMPP::Client *client = static_cast<JabberProtocol *>(protocol())->xmppClient();
+	Q_ASSERT(client);
+
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(client->rootTask());
+	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+	rosterTask->go(true);
+
 	contact.setDirty(false);
 
 	setState(StateInitialized);
@@ -273,8 +281,16 @@ bool JabberRosterService::removeContact(const Contact &contact)
 		return false;
 
 	setState(StateProcessingLocalUpdate);
-	static_cast<JabberProtocol *>(protocol())->client()->removeContact(contact.id());
+
+	XMPP::Client *client = static_cast<JabberProtocol *>(protocol())->xmppClient();
+	Q_ASSERT(client);
+
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(client->rootTask());
+	rosterTask->remove(contact.id());
+	rosterTask->go(true);
+
 	contact.setDirty(false);
+
 	setState(StateInitialized);
 
 	return true;
@@ -289,11 +305,12 @@ void JabberRosterService::updateContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
-	QStringList groupsList;
-	foreach (const Group &group, contact.ownerBuddy().groups())
-		groupsList.append(group.name());
+	XMPP::Client *client = static_cast<JabberProtocol *>(protocol())->xmppClient();
+	Q_ASSERT(client);
 
-	static_cast<JabberProtocol *>(protocol())->client()->updateContact(contact.id(), contact.display(true), groupsList);
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(client->rootTask());
+	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+	rosterTask->go(true);
 
 	setState(StateInitialized);
 }
