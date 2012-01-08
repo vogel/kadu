@@ -81,9 +81,6 @@ class KADUAPI Protocol : public QObject
 
 	void setAllOffline();
 
-	void connectRosterService();
-	void disconnectRosterService();
-
 private slots:
 	// state machine slots
 	void prepareStateMachine();

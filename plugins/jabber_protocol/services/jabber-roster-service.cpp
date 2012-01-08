@@ -119,6 +119,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
 	Contact contact = ContactManager::instance()->byId(protocol()->account(), item.jid().bare(), ActionCreateAndAdd);
+
 	// in case we return before next call of it
 	contact.setDirty(false);
 	ContactsForDelete.removeAll(contact);
@@ -143,6 +144,8 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 
 	Buddy buddy = itemBuddy(item, contact);
 	BuddyManager::instance()->addItem(buddy);
+
+	RosterService::addContact(contact);
 
 	// Facebook Chat does not support groups. So make Facebook contacts not remove their
 	// owner buddies (which may own more contacts) from their groups. See bug #2320.
@@ -171,11 +174,11 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 
 	setState(StateProcessingRemoteUpdate);
 
-	kdebug("Deleting contact %s\n", qPrintable(item.jid().bare()));
-
 	Contact contact = ContactManager::instance()->byId(protocol()->account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 	contact.setDirty(false);
+
+	RosterService::removeContact(contact);
 
 	setState(originalState);
 }
@@ -235,6 +238,8 @@ void JabberRosterService::addContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
+	RosterService::addContact(contact);
+
 	Buddy buddy = contact.ownerBuddy();
 	QStringList groupsList;
 
@@ -261,6 +266,7 @@ void JabberRosterService::removeContact(const Contact &contact)
 
 	static_cast<JabberProtocol *>(protocol())->client()->removeContact(contact.id());
 	contact.setDirty(false);
+	RosterService::removeContact(contact);
 
 	setState(StateInitialized);
 }

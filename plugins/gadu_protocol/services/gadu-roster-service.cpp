@@ -88,6 +88,8 @@ void GaduRosterService::prepareRoster()
 
 	foreach (const Contact &contact, sendList)
 	{
+		RosterService::addContact(contact);
+
 		uins[i] = GaduProtocolHelper::uin(contact);
 		types[i] = notifyTypeFromContact(contact);
 
@@ -137,10 +139,20 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 void GaduRosterService::addContact(const Contact &contact)
 {
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
+	if (!canPerformLocalUpdate() ||
+	        protocol()->account() != contact.contactAccount() ||
+	        protocol()->account().accountContact() == contact)
+		return;
 
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+
+	RosterService::addContact(contact);
+	sendNewFlags(contact, notifyTypeFromContact(contact));
 	updateContact(contact);
+
+	setState(StateInitialized);
 }
 
 void GaduRosterService::removeContact(const Contact &contact)
@@ -153,7 +165,10 @@ void GaduRosterService::removeContact(const Contact &contact)
 	Q_ASSERT(StateInitialized == state());
 
 	setState(StateProcessingLocalUpdate);
+
 	sendNewFlags(contact, 0);
+	RosterService::removeContact(contact);
+
 	setState(StateInitialized);
 }
 
@@ -167,6 +182,8 @@ void GaduRosterService::updateContact(const Contact &contact)
 	Q_ASSERT(StateInitialized == state());
 
 	setState(StateProcessingLocalUpdate);
+
 	sendNewFlags(contact, notifyTypeFromContact(contact));
+
 	setState(StateInitialized);
 }

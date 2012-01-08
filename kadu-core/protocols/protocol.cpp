@@ -264,28 +264,7 @@ bool Protocol::isConnecting()
 	return Machine->isLoggingIn();
 }
 
-void Protocol::connectRosterService()
-{
-	if (!CurrentRosterService)
-		return;
-
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	        CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)),
-	        Qt::UniqueConnection);
-}
-
-void Protocol::disconnectRosterService()
-{
-	if (!CurrentRosterService)
-		return;
-
-	disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)),
-	           CurrentRosterService, SLOT(updateBuddyContacts(Buddy&)));
-}
-
 void Protocol::setRosterService(RosterService * const rosterService)
 {
-	disconnectRosterService();
 	CurrentRosterService = rosterService;
-	connectRosterService();
 }

@@ -44,6 +44,16 @@ void RosterService::disconnected()
 	setState(StateNonInitialized);
 }
 
+void RosterService::contactUpdated()
+{
+	Contact contact(sender());
+
+	Q_ASSERT(contact);
+	Q_ASSERT(Contacts.contains(contact));
+
+	updateContact(contact);
+}
+
 bool RosterService::canPerformLocalUpdate() const
 {
 	if (StateInitialized != State)
@@ -60,9 +70,22 @@ void RosterService::setState(RosterState state)
 	State = state;
 }
 
-void RosterService::updateBuddyContacts(Buddy &buddy)
+void RosterService::addContact(const Contact &contact)
 {
-	if (canPerformLocalUpdate())
-		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
-			updateContact(contact);
+	if (Contacts.contains(contact))
+		return;
+
+	Contacts.append(contact);
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	connect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
+}
+
+void RosterService::removeContact(const Contact &contact)
+{
+	if (!Contacts.contains(contact))
+		return;
+
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	connect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
+	Contacts.removeAll(contact);
 }

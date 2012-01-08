@@ -51,9 +51,11 @@ public:
 private:
 	Protocol *CurrentProtocol;
 	RosterState State;
+	QList<Contact> Contacts;
 
 private slots:
 	void disconnected();
+	void contactUpdated();
 
 protected:
 	virtual bool canPerformLocalUpdate() const;
@@ -69,10 +71,9 @@ public:
 	virtual void prepareRoster() = 0;
 
 public slots:
-	virtual void addContact(const Contact &contact) = 0;
-	virtual void removeContact(const Contact &contact) = 0;
+	virtual void addContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
 	virtual void updateContact(const Contact &contact) = 0;
-	virtual void updateBuddyContacts(Buddy &buddy);
 
 signals:
 	void rosterReady(bool ok);
