@@ -116,14 +116,14 @@ void Plugin::store()
 
 	switch (State)
 	{
-		case PluginStateNew:
-			storeValue("State", "New"); // should not happen, but who knows..
-			break;
 		case PluginStateEnabled:
 			storeValue("State", "Loaded");
 			break;
 		case PluginStateDisabled:
 			storeValue("State", "NotLoaded");
+			break;
+		default:
+			Q_ASSERT(false);
 			break;
 	}
 }
@@ -357,6 +357,7 @@ void Plugin::setStateEnabledIfInactive(bool enable)
 	if (isActive())
 		return;
 
+	// It is necessary to not break firstLoad.
 	if (PluginStateNew == state())
 		return;
 

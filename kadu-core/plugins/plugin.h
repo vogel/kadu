@@ -88,16 +88,17 @@ public:
 	enum PluginState
 	{
 		/**
-		 * Plugin is new to Kadu - was not know at previous run. May be activated automatically if
-		 * has PluginInfo::loadByDefault() set to true.
+		 * This plugin has been never successfully activated before. May be activated automatically
+		 * if has PluginInfo::loadByDefault() set to true.
 		 */
 		PluginStateNew,
 		/**
-		 * Plugin is disabled and will be activated only as dependency of other plugin.
+		 * This plugin is normally disabled and will be activated only as dependency of other plugin
+		 * or at user request.
 		 */
 		PluginStateDisabled,
 		/**
-		 * Plugin is enabled and will be activated at Kadu start automatically.
+		 * This plugin is enabled and will be activated at Kadu start automatically.
 		 */
 		PluginStateEnabled
 	};
