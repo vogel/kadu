@@ -87,8 +87,8 @@ bool RosterService::removeContact(const Contact &contact)
 	if (!Contacts.contains(contact))
 		return false;
 
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	connect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	disconnect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
 	Contacts.removeAll(contact);
 
 	return true;
