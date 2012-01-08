@@ -30,7 +30,6 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "oauth/oauth-manager.h"
-#include "oauth/oauth-parameters.h"
 #include "oauth/oauth-token-fetcher.h"
 
 #include "gadu-avatar-uploader.h"
@@ -74,20 +73,16 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	url += "http://avatars.nowe.gg/upload";
 
 	QByteArray payload;
-	payload += "uin=" + MyAccount.id();
+	payload += "uin=" + QUrl::toPercentEncoding(MyAccount.id());
 	payload += "&photo=";
-	payload += avatarBuffer.buffer();
+	payload += QUrl::toPercentEncoding(avatarBuffer.buffer().toBase64());
 
 	QNetworkRequest putAvatarRequest;
 	putAvatarRequest.setUrl(QString(url));
 	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
 
-	OAuthParameters parameters(token.consumer(), token);
-	parameters.setHttpMethod("PUT");
-	parameters.setUrl(url);
-	parameters.sign();
-
-	putAvatarRequest.setRawHeader("Authorization", parameters.toAuthorizationHeader());
+	putAvatarRequest.setRawHeader("Authorization", token.token());
+	putAvatarRequest.setRawHeader("From", "avatars to avatars");
 
 	Reply = NetworkAccessManager->post(putAvatarRequest, payload);
 	connect(Reply, SIGNAL(finished()), SLOT(transferFinished()));
