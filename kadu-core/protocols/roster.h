@@ -26,6 +26,22 @@
 
 class RosterService;
 
+/**
+ * @addtogroup Protocol
+ * @{
+ */
+
+/**
+ * @class Roster
+ * @author Rafał 'Vogel' Malinowski
+ * @short Generic interface to all RosterService objects
+ *
+ * This class allows adding, removing and updating contacts on remote roster. Adding contacts is done by addContact() method,
+ * removing - by removeContact() method. This class searchs for suitable RosterService and uses it to perform its job.
+ *
+ * Use this class to manipulate rosters. After adding a contact to any roster, its data is updated automatically, until
+ * it is removed.
+ */
 class Roster : public QObject
 {
 	Q_OBJECT
@@ -37,13 +53,40 @@ class Roster : public QObject
 	virtual ~Roster();
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return singleton instance of Roster calss.
+	 * @return singleton instance of Roster calss
+	 */
 	static Roster * instance();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return RosterService instance suitable to given contact.
+	 * @param contact contact to find RosterService for
+	 * @return RosterService instance suitable to given contact
+	 */
 	static RosterService * rosterService(const Contact &contact);
 
 public slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new contact to remote roster.
+	 * @param contact new contact to be added
+	 */
 	void addContact(const Contact &contact) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Remove contact from remote roster.
+	 * @param contact contact to be removed
+	 */
 	void removeContact(const Contact &contact) const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // ROSTER_H

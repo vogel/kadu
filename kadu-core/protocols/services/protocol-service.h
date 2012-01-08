@@ -30,6 +30,18 @@
 class Account;
 class Protocol;
 
+/**
+ * @addtogroup Protocol
+ * @{
+ */
+
+/**
+ * @class ProtocolService
+ * @author Rafał 'Vogel' Malinowski
+ * @short Generic protocol service.
+ *
+ * All protocol services should derive from this class.
+ */
 class KADUAPI ProtocolService : public QObject
 {
 	Q_OBJECT
@@ -37,11 +49,33 @@ class KADUAPI ProtocolService : public QObject
 	Protocol *CurrentProtocol;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of ProtocolService bound to given Protocol.
+	 * @param protocol protocol to bound this service to
+	 */
 	explicit ProtocolService(Protocol *protocol);
 	virtual ~ProtocolService();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns protocol bounded with this service.
+	 * @return protocol bounded with this service
+	 */
 	Protocol * protocol() const { return CurrentProtocol; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns account bounded with this service.
+	 * @return account bounded with this service
+	 *
+	 * This is shortcut to calling protocol().account().
+	 */
 	Account account() const;
 };
+
+/**
+ * @}
+ */
 
 #endif // PROTOCOL_SERVICE_H

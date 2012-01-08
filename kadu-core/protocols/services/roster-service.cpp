@@ -51,6 +51,9 @@ void RosterService::contactUpdated()
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
 
+	if (StateInitialized != State)
+		return false;
+
 	updateContact(contact);
 }
 
@@ -59,8 +62,8 @@ bool RosterService::canPerformLocalUpdate() const
 	if (StateInitialized != State)
 		return false;
 
-	if (!protocol()->isConnected())
-		return false;
+	// we reset State on disconnected signal
+	Q_ASSERT(protocol()->isConnected());
 
 	return true;
 }
