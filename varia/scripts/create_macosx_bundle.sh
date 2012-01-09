@@ -10,7 +10,6 @@ QCADIR=/Users/tomek/Desktop/kadu/qca2/
 
 # prefix of compiled libraries
 # prefiks skompilowanych bibliotek
-SNDFILEPATH=/Users/tomek/Desktop/kadu/libsndfile
 LIBGADU=/Users/tomek/Desktop/kadu/libgadu
 LIBIDN=/Users/tomek/Desktop/kadu/libidn
 
@@ -180,8 +179,6 @@ function update_bindings {
 	install_name_tool -change ${LIBIDN}/lib/libidn.11.dylib                                 @executable_path/../Frameworks/libidn.11.dylib           ${BIN}
 	install_name_tool -change ${QCADIR}/lib/libqca.2.dylib                                  @executable_path/../Frameworks/libqca.2.dylib            ${BIN}
 	install_name_tool -change ${QCADIR}/lib//libqca.2.dylib                                 @executable_path/../Frameworks/libqca.2.dylib            ${BIN}
-	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib                         @executable_path/../Frameworks/libsndfile.1.dylib        ${BIN}
-	install_name_tool -change ${SNDFILEPATH}//lib/libsndfile.1.dylib                        @executable_path/../Frameworks/libsndfile.1.dylib        ${BIN}
 	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib                     @executable_path/../Frameworks/libssl.${SSLVER}.dylib    ${BIN}
 	install_name_tool -change /Library/Frameworks/Growl.framework/Versions/A/Growl          @executable_path/../Frameworks/Growl                     ${BIN}
 	install_name_tool -change @executable_path/../Frameworks/Growl.framework/Versions/A/Growl @executable_path/../Frameworks/Growl                   ${BIN}
@@ -212,7 +209,6 @@ copy_lib libqca-ossl.dylib  ${QTDIR}/plugins/crypto       ${CNT_DIR}/plugins/cry
 copy_lib libidn.11.dylib    ${LIBIDN}/lib                 ${FM_DIR}
 copy_lib libgadu.3.dylib    ${LIBGADU}/lib                ${FM_DIR}
 copy_lib libqca.2.dylib     ${QCADIR}/lib                 ${FM_DIR}
-copy_lib libsndfile.1.dylib ${SNDFILEPATH}/lib            ${FM_DIR}
 
 if [ -f  /Library/Frameworks/Growl.framework/Versions/A/Growl ]; then
 	echo "log: copying Growl framework"

@@ -8,7 +8,6 @@ set QT_DEBUG_SUFFIX=""
 set ASPELL_DIR="C:\kadu\deps\aspell"
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.12.0-pre"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.23-win32"
-set LIBSNDFILE_DIR="C:\kadu\deps\libsndfile-1.0.25"
 set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8q"
 set QCA_DIR="C:\kadu\deps\qca-2.0.3\bin"
 set QCA_OSSL_DIR="C:\kadu\deps\qca-ossl-2.0.0_beta3"
@@ -160,9 +159,6 @@ ECHO Copying aspell
 xcopy %ASPELL_DIR%\data\*             %DESTINATION%\aspell\data\ /C /H /R /Y /Q
 xcopy %ASPELL_DIR%\dict\*             %DESTINATION%\aspell\dict\ /C /H /R /Y /Q
 xcopy %ASPELL_DIR%\bin\aspell-15.dll  %DESTINATION%\             /C /H /R /Y /Q
-
-ECHO Copying libsndfile
-xcopy %LIBSNDFILE_DIR%\bin\libsndfile-1.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying libgadu
 xcopy %LIBGADU_DIR%\libgadu.dll %DESTINATION%\ /C /H /R /Y /Q

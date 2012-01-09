@@ -9,7 +9,6 @@ KUB=~/Desktop/Kadu.app
 
 lipo $KINTEL/Contents/MacOS/kadu $KPPC/Contents/MacOS/kadu -create -output $KUB/Contents/MacOS/kadu
 lipo $KINTEL/Contents/MacOS/playsound $KPPC/Contents/MacOS/playsound -create -output $KUB/Contents/MacOS/playsound
-lipo $KINTEL/Contents/Frameworks/libsndfile.1.dylib $KPPC/Contents/Frameworks/libsndfile.1.dylib -create -output $KUB/Contents/Frameworks/libsndfile.1.dylib
 
 #na makintelu te biblioteki s± UB, wiêc nie trzeba nic lipowaæ
 cp $KINTEL/Contents/Frameworks/libssl.*.dylib $KUB/Contents/Frameworks/

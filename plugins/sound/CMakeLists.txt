@@ -24,7 +24,6 @@ set (SOURCES
 	gui/widgets/configuration/sound-configuration-widget.cpp
 	notify/sound-notifier.cpp
 	sound-actions.cpp
-	sound-file.cpp
 	sound-manager.cpp
 	sound-play-thread.cpp
 	sound-plugin.cpp
@@ -54,32 +53,10 @@ set (CONFIGURATION_FILES
 	configuration/sound.ui
 )
 
-if (WIN32)
-	if (NOT WIN_LIBSNDFILE_DIR)
-		message (SEND_ERROR "Pass path to libsndfile -DWIN_LIBSNDFILE_DIR=path")
-	else (NOT WIN_LIBSNDFILE_DIR)
-		set (SNDFILE_INCLUDE_DIRS ${WIN_LIBSNDFILE_DIR}/include)
-
-		if (MSVC)
-			set (SNDFILE_LIBRARY_DIRS ${WIN_LIBSNDFILE_DIR}/lib)
-			set (SNDFILE_LIBRARIES libsndfile-1)
-		else (MSVC)
-			set (SNDFILE_LIBRARY_DIRS ${WIN_LIBSNDFILE_DIR}/bin)
-			set (SNDFILE_LIBRARIES sndfile-1)
-		endif (MSVC)
-	endif (NOT WIN_LIBSNDFILE_DIR)
-else (WIN32)
-	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
-endif (WIN32)
-
-include_directories (${SNDFILE_INCLUDE_DIRS})
-link_directories (${SNDFILE_LIBRARY_DIRS})
-
 kadu_plugin (sound
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	PLUGIN_LIBRARIES ${SNDFILE_LIBRARIES}
 	PLUGIN_BUILDDEF SOUND_BUILD
 )

@@ -323,9 +323,6 @@ endif (UNIX AND NOT APPLE)
 install (FILES "chat/style-engines/chat-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
-	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
-	include_directories (${SNDFILE_INCLUDE_DIRS})
-	link_directories (${SNDFILE_LIBRARY_DIRS})
 	target_link_libraries (kadu "-framework carbon")
 endif (APPLE)
 
