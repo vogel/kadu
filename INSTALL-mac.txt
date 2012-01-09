@@ -18,32 +18,28 @@ Kompilacja i instalacja Kadu 0.6.5.x pod Mac OS X 10.5 Leopard
     -sdk /Developer/SDKs/MacOSX10.4u.sdk/
     a nastepnie wywolaj make w nastepujacy sposob:
     CFLAGS="-isysroot /Developer/SDKs/MacOSX10.4u.sdk/ -mmacosx-version-min=10.4" make
-    Postepuj analogicznie w przypadku konfiguracji i kompilacji libsndfile i libgadu oraz podczas
+    Postepuj analogicznie w przypadku konfiguracji i kompilacji libgadu oraz podczas
     kompilacji kadu.
-4.  Pobierz zrodla, skompiluj i zainstaluj biblioteke libsndfile:
-    $ ./configure --prefix=$ROOTPATH/libsndfile
-    $ make -j2
-    $ make install
-5.  Sciagnij, skompiluj i zainstaluj biblioteke libgadu:
+4.  Sciagnij, skompiluj i zainstaluj biblioteke libgadu:
     $ ./configure --prefix=$ROOTPATH/libgadu
     $ make
     $ make install
-6.  Sciagnij i rozpakuj zrodla kadu. Przeedytuj plik .config i wybierz ktore moduly maja zostac
+5.  Sciagnij i rozpakuj zrodla kadu. Przeedytuj plik .config i wybierz ktore moduly maja zostac
     skompilowane. Domyslna konfiguracja dla Mac OS X znajduje sie w pliku .config.mac.
-7.  Wyeksportuj zmienna PKG_CONFIG_PATH:
-    $ export PKG_CONFIG_PATH=$ROOTPATH/qt/lib/pkgconfig:$ROOTPATH/libgadu/lib/pkgconfig:$ROOTPATH/libsndfile/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig
-8.  Skonfiguruj kadu:
+6.  Wyeksportuj zmienna PKG_CONFIG_PATH:
+    $ export PKG_CONFIG_PATH=$ROOTPATH/qt/lib/pkgconfig:$ROOTPATH/libgadu/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig
+7.  Skonfiguruj kadu:
     $ cmake .
-9.  Skompiluj kadu:
+8.  Skompiluj kadu:
     $ make
     $ sudo make install
-10. Ustaw odpowiednie sciezki a nastepnie uruchom skrypt:
+9.  Ustaw odpowiednie sciezki a nastepnie uruchom skrypt:
     $ varia/scripts/create_macosx_bundle.sh
-11. W katalogu ~/Desktop/kadu znajdzie sie binarka kadu dla Mac OS X - Kadu.app.
+10. W katalogu ~/Desktop/kadu znajdzie sie binarka kadu dla Mac OS X - Kadu.app.
 
 
-Jesli chcesz skompilowac kadu korzystajac z XCode wykonaj kroki 1-6 (poza 3a) a nastepnie:
-7.  Skonfiguruj kadu pod XCode (zostanie wygenerowany plik projektu dla kadu):
+Jesli chcesz skompilowac kadu korzystajac z XCode wykonaj kroki 1-5 (poza 3a) a nastepnie:
+6.  Skonfiguruj kadu pod XCode (zostanie wygenerowany plik projektu dla kadu):
     $ cmake . -G Xcode
-8.  Uruchom XCode i otworz projekt kadu
-9.  Skompiluj kadu za pomoca XCode
+7.  Uruchom XCode i otworz projekt kadu
+8.  Skompiluj kadu za pomoca XCode

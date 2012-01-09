@@ -47,7 +47,7 @@ Version: 0.6.6-beta2
 Section: net
 Priority: extra
 Architecture: armel
-Depends: libqt4-core (>= 4.6), libqt4-dbus, libqt4-gui, libqt4-network, libqt4-sql, libqt4-webkit, libsndfile1
+Depends: libqt4-core (>= 4.6), libqt4-dbus, libqt4-gui, libqt4-network, libqt4-sql, libqt4-webkit
 Maintainer: Tomasz Rostanski <rozteck@interia.pl>
 Description: Kadu is a Gadu-Gadu client for online messaging written in Qt
 END
