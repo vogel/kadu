@@ -51,10 +51,8 @@ void RosterService::contactUpdated()
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
 
-	if (StateInitialized != State)
-		return false;
-
-	updateContact(contact);
+	if (StateInitialized == State)
+		updateContact(contact);
 }
 
 bool RosterService::canPerformLocalUpdate() const
