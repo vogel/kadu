@@ -38,13 +38,14 @@ class JabberChatService : public ChatService
 	Q_OBJECT
 
 	JabberProtocol *Protocol;
-        QMap<QString, QString> *ContactMessageTypes;
+	QMap<QString, QString> *ContactMessageTypes;
 
 private slots:
 	void clientMessageReceived(const XMPP::Message &msg);
 
 public:
-	JabberChatService(JabberProtocol *protocol);
+	explicit JabberChatService(JabberProtocol *protocol);
+	virtual ~JabberChatService();
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent = false);

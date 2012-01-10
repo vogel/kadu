@@ -25,8 +25,6 @@
 #ifndef CHAT_SERVICE_H
 #define CHAT_SERVICE_H
 
-#include <QtCore/QObject>
-
 #include "buddies/buddy-list.h"
 
 #include "chat/chat.h"
@@ -34,9 +32,11 @@
 
 #include "exports.h"
 
+#include "protocols/services/protocol-service.h"
+
 class Message;
 
-class KADUAPI ChatService : public QObject
+class KADUAPI ChatService : public ProtocolService
 {
 	Q_OBJECT
 
@@ -50,7 +50,8 @@ public:
 		StatusRejectedUnknown
 	};
 
-	explicit ChatService(QObject *parent) : QObject(parent) {}
+	explicit ChatService(Protocol *protocol);
+	virtual ~ChatService();
 
 public slots:
 	bool sendMessage(const Chat &chat, const QString &messageContent, bool silent = false);

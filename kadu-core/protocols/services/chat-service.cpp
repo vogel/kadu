@@ -25,6 +25,15 @@
 
 #include "chat-service.h"
 
+ChatService::ChatService(Protocol *protocol) :
+		ProtocolService(protocol)
+{
+}
+
+ChatService::~ChatService()
+{
+}
+
 bool ChatService::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
 {
 	QTextDocument document(messageContent);

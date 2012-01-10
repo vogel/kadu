@@ -66,7 +66,8 @@ private slots:
 	void removeTimeoutUndeliveredMessages();
 
 public:
-	GaduChatService(GaduProtocol *protocol);
+	explicit GaduChatService(GaduProtocol *protocol);
+	virtual ~GaduChatService();
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, FormattedMessage &message, bool silent = false);

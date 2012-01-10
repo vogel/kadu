@@ -52,8 +52,8 @@
 #define MAX_DELIVERY_TIME 60 /*seconds*/
 #define REMOVE_TIMER_INTERVAL 1000
 
-GaduChatService::GaduChatService(GaduProtocol *protocol)
-	: ChatService(protocol), Protocol(protocol)
+GaduChatService::GaduChatService(GaduProtocol *protocol) :
+		ChatService(protocol), Protocol(protocol)
 {
 	// TODO
 // 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
@@ -63,6 +63,10 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
 	connect(RemoveTimer, SIGNAL(timeout()), this, SLOT(removeTimeoutUndeliveredMessages()));
 	RemoveTimer->start();
+}
+
+GaduChatService::~GaduChatService()
+{
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, bool silent)

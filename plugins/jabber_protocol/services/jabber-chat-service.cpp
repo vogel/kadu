@@ -42,20 +42,24 @@
 
 #include "jabber-chat-service.h"
 
-JabberChatService::JabberChatService(JabberProtocol *protocol)
-	: ChatService(protocol), Protocol(protocol)
+JabberChatService::JabberChatService(JabberProtocol *protocol) :
+		ChatService(protocol), Protocol(protocol)
 {
 	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 
-        ContactMessageTypes = new QMap<QString, QString>();
+	ContactMessageTypes = new QMap<QString, QString>();
+}
+
+JabberChatService::~JabberChatService()
+{
 }
 
 bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent)
 {
 	kdebugf();
 	ContactSet contacts = chat.contacts();
-        // TODO send to more users
+	// TODO send to more users
 	if (contacts.count() > 1 || contacts.count() == 0)
 		return false;
 
@@ -75,14 +79,14 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 
 	if (stop)
 	{
-	    // TODO: implement formats
-	    kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-	    return false;
+		// TODO: implement formats
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
+		return false;
 	}
 
 	QString messageType = false == ContactMessageTypes->value(jus.bare()).isEmpty()
-                        ? ContactMessageTypes->value(jus.bare())
-                        : "chat";
+	        ? ContactMessageTypes->value(jus.bare())
+	        : "chat";
 
 	msg.setType(messageType);
 	msg.setBody(plain);
@@ -139,11 +143,11 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (ignore)
 		return;
 
-        QString messageType = msg.type().isEmpty()
-                        ? "message"
-                        : msg.type();
+	QString messageType = msg.type().isEmpty()
+	        ? "message"
+	        : msg.type();
 
-        ContactMessageTypes->insert(msg.from().bare(), messageType);
+	ContactMessageTypes->insert(msg.from().bare(), messageType);
 
 	HtmlDocument::escapeText(plain);
 
