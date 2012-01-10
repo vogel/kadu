@@ -76,6 +76,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
+	rosterService->setClient(JabberClient->client());
+
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
 	setRosterService(rosterService);

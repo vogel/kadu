@@ -33,11 +33,14 @@ class JabberProtocol;
 namespace XMPP
 {
 
+class Client;
 class RosterItem;
 
 class JabberRosterService : public RosterService
 {
 	Q_OBJECT
+
+	Client *XmppClient;
 
 	QList<Contact> ContactsForDelete;
 
@@ -46,7 +49,12 @@ class JabberRosterService : public RosterService
 
 	Buddy itemBuddy(const RosterItem &item, const Contact &contact);
 
+	void connectToClient();
+	void disconnectFromClient();
+
 private slots:
+	void clientDestroyed();
+
 	void contactUpdated(const RosterItem &item);
 	void contactDeleted(const RosterItem &item);
 	void rosterRequestFinished(bool success);
@@ -62,6 +70,8 @@ public:
 	virtual ~JabberRosterService();
 
 	virtual void prepareRoster();
+
+	void setClient(Client *xmppClient);
 
 public slots:
 	virtual bool addContact(const Contact &contact);
