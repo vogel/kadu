@@ -190,6 +190,8 @@ void GaduProtocol::login()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
+
+		CurrentChatStateService->setGaduSession(GaduSession);
 		// here was return... do not re-add it ;)
 	}
 
@@ -211,7 +213,10 @@ void GaduProtocol::login()
 			: account().proxy());
 
 	setupLoginParams();
+
 	GaduSession = gg_login(&GaduLoginParams);
+	CurrentChatStateService->setGaduSession(GaduSession);
+
 	cleanUpLoginParams();
 
 	if (!GaduSession)

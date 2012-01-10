@@ -30,7 +30,7 @@
 #include "gadu-chat-state-service.h"
 
 GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
-		ChatStateService(parent), CurrentChatService(0), Protocol(parent)
+		ChatStateService(parent), CurrentChatService(0), GaduSession(0)
 {
 }
 
@@ -47,6 +47,11 @@ void GaduChatStateService::setChatService(ChatService *chatService)
 
 	if (CurrentChatService)
 		connect(CurrentChatService, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+}
+
+void GaduChatStateService::setGaduSession(gg_session *gaduSession)
+{
+	GaduSession = gaduSession;
 }
 
 void GaduChatStateService::messageReceived(const Message &message)
@@ -84,17 +89,17 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!shouldSendEvent() || !contact)
 		return;
 
-	if (!Protocol->gaduSession())
+	if (!GaduSession)
 		return;
 
 	switch (state)
 	{
 		case StateComposing:
-			gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0001);
+			gg_typing_notification(GaduSession, GaduProtocolHelper::uin(contact), 0x0001);
 			break;
 		case StatePaused:
 		case StateGone:
-			gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0000);
+			gg_typing_notification(GaduSession, GaduProtocolHelper::uin(contact), 0x0000);
 			break;
 		default:
 			break;
