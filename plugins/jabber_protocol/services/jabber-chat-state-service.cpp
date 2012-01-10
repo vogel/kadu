@@ -214,25 +214,25 @@ void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 	ContactInfos[contact].LastChatState = XMPP::StateActive;
 }
 
-void JabberChatStateService::sendState(const Chat &chat, State state)
+void JabberChatStateService::sendState(const Contact &contact, State state)
 {
 	switch (state)
 	{
 		case StateActive:
-			setChatState(chat.contacts().toContact(), XMPP::StateActive);
+			setChatState(contact, XMPP::StateActive);
 			break;
 		case StateComposing:
-			setChatState(chat.contacts().toContact(), XMPP::StateComposing);
+			setChatState(contact, XMPP::StateComposing);
 			break;
 		case StateGone:
-			setChatState(chat.contacts().toContact(), XMPP::StateGone);
-			ContactInfos.remove(chat.contacts().toContact());
+			setChatState(contact, XMPP::StateGone);
+			ContactInfos.remove(contact);
 			break;
 		case StateInactive:
-			setChatState(chat.contacts().toContact(), XMPP::StateInactive);
+			setChatState(contact, XMPP::StateInactive);
 			break;
 		case StatePaused:
-			setChatState(chat.contacts().toContact(), XMPP::StatePaused);
+			setChatState(contact, XMPP::StatePaused);
 			break;
 		default:
 			break;

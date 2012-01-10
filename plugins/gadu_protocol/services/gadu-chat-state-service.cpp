@@ -30,7 +30,7 @@
 #include "gadu-chat-state-service.h"
 
 GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
-	ChatStateService(parent), Protocol(parent)
+		ChatStateService(parent), Protocol(parent)
 {
 	if (Protocol->chatService())
 		connect(Protocol->chatService(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
@@ -66,13 +66,9 @@ bool GaduChatStateService::shouldSendEvent()
 	return true;
 }
 
-void GaduChatStateService::sendState(const Chat &chat, State state)
+void GaduChatStateService::sendState(const Contact &contact, State state)
 {
-	if (!shouldSendEvent())
-		return;
-
-	Contact contact = chat.contacts().toContact();
-	if (!contact)
+	if (!shouldSendEvent() || !contact)
 		return;
 
 	if (!Protocol->gaduSession())

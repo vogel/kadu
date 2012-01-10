@@ -93,11 +93,11 @@ public:
 	virtual ~ChatStateService();
 
 	/**
-	 * @short Send our chat state to given chat.
-	 * @param chat state of this chat is changed
+	 * @short Send our state to given contact.
+	 * @param contact state of chat with this contact changed
 	 * @param state new state to send
 	 */
-	virtual void sendState(const Chat &chat, State state) = 0;
+	virtual void sendState(const Contact &contact, State state) = 0;
 
 signals:
 	/**

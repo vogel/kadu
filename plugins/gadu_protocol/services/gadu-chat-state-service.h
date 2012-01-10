@@ -30,7 +30,6 @@
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
-class Chat;
 class GaduProtocol;
 
 class GaduChatStateService : public ChatStateService
@@ -50,7 +49,7 @@ private slots:
 public:
 	explicit GaduChatStateService(GaduProtocol *parent);
 
-	virtual void sendState(const Chat &chat, State state);
+	virtual void sendState(const Contact &contact, State state);
 
 };
 

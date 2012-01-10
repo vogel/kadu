@@ -149,8 +149,8 @@ ChatWidget::~ChatWidget()
 
 	emit widgetDestroyed();
 
-	if (currentProtocol() && currentProtocol()->chatStateService())
-		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StateGone);
+	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
+		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StateGone);
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
@@ -720,8 +720,8 @@ void ChatWidget::composingStopped()
 	ComposingTimer.stop();
 	IsComposing = false;
 
-	if (currentProtocol() && currentProtocol()->chatStateService())
-		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StatePaused);
+	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
+		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StatePaused);
 }
 
 void ChatWidget::checkComposing()
@@ -746,7 +746,8 @@ void ChatWidget::updateComposing()
 		if (edit()->toPlainText().isEmpty())
 			return;
 
-		currentProtocol()->chatStateService()->sendState(chat(), ChatStateService::StateComposing);
+		if (chat().contacts().toContact())
+			currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StateComposing);
 
 		ComposingTimer.start();
 	}

@@ -31,7 +31,6 @@
 
 #include "protocols/services/chat-state-service.h"
 
-class Chat;
 class JabberProtocol;
 
 class JabberChatStateService : public ChatStateService
@@ -69,7 +68,7 @@ private slots:
 public:
 	explicit JabberChatStateService(JabberProtocol *protocol);
 
-	virtual void sendState(const Chat &chat, State state);
+	virtual void sendState(const Contact &contact, State state);
 
 };
 
