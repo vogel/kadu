@@ -112,14 +112,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		using namespace XMPP;
 		QObject::connect(Client, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
 				   this, SLOT(slotSubscription(const Jid &, const QString &, const QString &)));
-		QObject::connect(Client, SIGNAL(rosterRequestFinished(bool, int, const QString &)),
-				   this, SLOT(slotRosterRequestFinished(bool, int, const QString &)));
-		QObject::connect(Client, SIGNAL(rosterItemAdded(const RosterItem &)),
-				   this, SLOT(slotNewContact(const RosterItem &)));
-		QObject::connect(Client, SIGNAL(rosterItemUpdated(const RosterItem &)),
-				   this, SLOT(slotContactUpdated(const RosterItem &)));
-		QObject::connect(Client, SIGNAL(rosterItemRemoved(const RosterItem &)),
-				   this, SLOT(slotContactDeleted(const RosterItem &)));
 		QObject::connect(Client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
 		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
@@ -414,11 +406,6 @@ void JabberClient::send(const QString &packet)
 	Client->send(packet);
 }
 
-void JabberClient::requestRoster()
-{
-	Client->rosterRequest();
-}
-
 void JabberClient::slotPsiDebug(const QString &_msg)
 {
 	QString msg = _msg;
@@ -662,26 +649,6 @@ void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
 	XMPP::JT_Presence *task = new XMPP::JT_Presence(Client->rootTask());
 	task->sub(jid, type);
 	task->go(true);
-}
-
-void JabberClient::slotRosterRequestFinished(bool success, int /*statusCode*/, const QString &/*statusString*/)
-{
-	emit rosterRequestFinished(success);
-}
-
-void JabberClient::slotNewContact(const XMPP::RosterItem &item)
-{
-	emit newContact(item);
-}
-
-void JabberClient::slotContactDeleted(const RosterItem &item)
-{
-	emit contactDeleted(item);
-}
-
-void JabberClient::slotContactUpdated(const RosterItem &item)
-{
-	emit contactUpdated(item);
 }
 
 void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)

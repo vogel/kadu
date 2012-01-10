@@ -158,18 +158,6 @@ namespace XMPP
 		/* Called from Psi: report certificate status */
 		void slotTLSHandshaken();
 
-		/* Called from Psi: roster request finished */
-		void slotRosterRequestFinished(bool success, int statusCode, const QString &statusString);
-
-		/* A new item appeared in our roster */
-		void slotNewContact(const RosterItem &);
-
-		/* An item has been deleted from our roster. */
-		void slotContactDeleted(const RosterItem &);
-
-		/* Update a contact's details. */
-		void slotContactUpdated(const RosterItem &);
-
 		/* Someone on our contact list had(another) resource come online. */
 		void slotResourceAvailable(const Jid &, const Resource &);
 
@@ -494,11 +482,6 @@ namespace XMPP
 		 */
 		void send(const QString &packet);
 
-		/**
-		 * Request the roster from the Jabber server.
-		 */
-		void requestRoster();
-
 		PEPManager *pepManager() { return PepManager; }
 		bool isPEPAvailable() { return PepAvailable; }
 
@@ -543,26 +526,6 @@ namespace XMPP
 		 * further operations are not possible.
 		 */
 		void error(XMPP::JabberClient::ErrorCode code);
-
-		/**
-		 * Roster has been transmitted and processed.
-		 */
-		void rosterRequestFinished(bool success);
-
-		/**
-		 * A new contact appeared on the roster.
-		 */
-		void newContact(const XMPP::RosterItem &item);
-
-		/**
-		 * A contact has been removed from the roster.
-		 */
-		void contactDeleted(const XMPP::RosterItem &item);
-
-		/**
-		 * A roster item has changed.
-		 */
-		void contactUpdated(const XMPP::RosterItem &item);
 
 		/**
 		 * New resource is available for a contact.

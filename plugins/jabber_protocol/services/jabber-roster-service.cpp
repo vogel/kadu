@@ -32,6 +32,9 @@
 
 #include "jabber-roster-service.h"
 
+namespace XMPP
+{
+
 QStringList JabberRosterService::buddyGroups(const Buddy &buddy)
 {
 	QStringList result;
@@ -55,13 +58,14 @@ JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
 {
 	Q_ASSERT(protocol);
 
-	connect(protocol->client(), SIGNAL(newContact(const XMPP::RosterItem &)),
-			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
-	connect(protocol->client(), SIGNAL(contactUpdated(const XMPP::RosterItem &)),
-			this, SLOT(contactUpdated(const XMPP::RosterItem &)));
-	connect(protocol->client(), SIGNAL(contactDeleted(const XMPP::RosterItem &)),
-			this, SLOT(contactDeleted(const XMPP::RosterItem &)));
-	connect(protocol->client(), SIGNAL(rosterRequestFinished(bool)),
+	using namespace XMPP;
+	connect(protocol->xmppClient(), SIGNAL(rosterItemAdded(const RosterItem &)),
+			this, SLOT(contactUpdated(const RosterItem &)));
+	connect(protocol->xmppClient(), SIGNAL(rosterItemUpdated(const RosterItem &)),
+			this, SLOT(contactUpdated(const RosterItem &)));
+	connect(protocol->xmppClient(), SIGNAL(rosterItemRemoved(const RosterItem &)),
+			this, SLOT(contactDeleted(const RosterItem &)));
+	connect(protocol->xmppClient(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 			this, SLOT(rosterRequestFinished(bool)));
 }
 
@@ -229,7 +233,7 @@ void JabberRosterService::prepareRoster()
 	ContactsForDelete = ContactManager::instance()->contacts(account()).toList();
 	ContactsForDelete.removeAll(account().accountContact());
 
-	static_cast<JabberProtocol *>(protocol())->client()->requestRoster();
+	static_cast<JabberProtocol *>(protocol())->xmppClient()->rosterRequest();
 }
 
 bool JabberRosterService::canPerformLocalUpdate() const
@@ -237,7 +241,7 @@ bool JabberRosterService::canPerformLocalUpdate() const
 	if (!RosterService::canPerformLocalUpdate())
 		return false;
 
-	if (!static_cast<JabberProtocol *>(protocol())->client() || !static_cast<JabberProtocol *>(protocol())->xmppClient())
+	if (!static_cast<JabberProtocol *>(protocol())->xmppClient())
 		return false;
 
 	return true;
@@ -315,4 +319,6 @@ void JabberRosterService::updateContact(const Contact &contact)
 	rosterTask->go(true);
 
 	setState(StateInitialized);
+}
+
 }

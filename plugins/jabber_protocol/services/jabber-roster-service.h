@@ -26,14 +26,14 @@
 
 #include "protocols/services/roster-service.h"
 
-namespace XMPP
-{
-	class RosterItem;
-}
-
 class Buddy;
 class Contact;
 class JabberProtocol;
+
+namespace XMPP
+{
+
+class RosterItem;
 
 class JabberRosterService : public RosterService
 {
@@ -42,13 +42,13 @@ class JabberRosterService : public RosterService
 	QList<Contact> ContactsForDelete;
 
 	static QStringList buddyGroups(const Buddy &buddy);
-	static const QString & itemDisplay(const XMPP::RosterItem &item);
+	static const QString & itemDisplay(const RosterItem &item);
 
-	Buddy itemBuddy(const XMPP::RosterItem &item, const Contact &contact);
+	Buddy itemBuddy(const RosterItem &item, const Contact &contact);
 
 private slots:
-	void contactUpdated(const XMPP::RosterItem &item);
-	void contactDeleted(const XMPP::RosterItem &item);
+	void contactUpdated(const RosterItem &item);
+	void contactDeleted(const RosterItem &item);
 	void rosterRequestFinished(bool success);
 
 protected:
@@ -68,5 +68,7 @@ public slots:
 	virtual bool removeContact(const Contact &contact);
 
 };
+
+}
 
 #endif // JABBER_ROSTER_SERVICE_H
