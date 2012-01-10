@@ -38,7 +38,7 @@ class JabberChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
-	struct ChatInfo
+	struct ContactInfo
 	{
 		bool UserRequestedEvents;
 		QString EventId;
@@ -46,21 +46,19 @@ class JabberChatStateService : public ChatStateService
 		XMPP::ChatState ContactChatState;
 		XMPP::ChatState LastChatState;
 
-		ChatInfo()
+		ContactInfo() :
+				UserRequestedEvents(false), ContactChatState(XMPP::StateNone), LastChatState(XMPP::StateNone)
 		{
-			ContactChatState = XMPP::StateNone;
-			LastChatState = XMPP::StateNone;
-			UserRequestedEvents = false;
 		}
 	};
 
-	QHash<Chat, ChatInfo> ChatInfos;
+	QHash<Contact, ContactInfo> ContactInfos;
 
 	JabberProtocol *Protocol;
 
-	bool shouldSendEvent(const Chat &chat);
+	bool shouldSendEvent(const Contact &contact);
 
-	void setChatState(const Chat &chat, XMPP::ChatState state);
+	void setChatState(const Contact &contact, XMPP::ChatState state);
 
 	static State xmppStateToContactState(XMPP::ChatState state);
 
