@@ -28,6 +28,7 @@
 #include <libgadu.h>
 
 #include "message/message.h"
+
 #include "protocols/services/chat-state-service.h"
 
 class GaduProtocol;
@@ -40,9 +41,6 @@ class GaduChatStateService : public ChatStateService
 
 	bool shouldSendEvent();
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventTypingNotify(struct gg_event *e);
-
 private slots:
 	void messageReceived(const Message & message);
 
@@ -50,6 +48,9 @@ public:
 	explicit GaduChatStateService(GaduProtocol *parent);
 
 	virtual void sendState(const Contact &contact, State state);
+
+public slots:
+	void typingNotifyEventReceived(struct gg_event *e);
 
 };
 

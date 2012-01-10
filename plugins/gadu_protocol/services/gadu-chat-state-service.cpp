@@ -42,9 +42,9 @@ void GaduChatStateService::messageReceived(const Message &message)
 	emit peerStateChanged(message.messageSender(), StatePaused);
 }
 
-void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
+void GaduChatStateService::typingNotifyEventReceived(struct gg_event *e)
 {
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
+	Contact contact = ContactManager::instance()->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
 	if (!contact)
 		return;
 
@@ -56,7 +56,7 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 
 bool GaduChatStateService::shouldSendEvent()
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!gaduAccountDetails)
 		return false;
 

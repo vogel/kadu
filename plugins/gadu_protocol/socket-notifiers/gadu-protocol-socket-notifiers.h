@@ -54,7 +54,6 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 	void handleEventDisconnect(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
 	void handleEventMultilogonInfo(struct gg_event *e);
-	void handleEventTypingNotify(struct gg_event *e);
 
 protected:
 	virtual bool checkRead();
@@ -69,6 +68,9 @@ public:
 	void setAccount(Account account) { CurrentAccount = account; }
 
 	void watchFor(gg_session *sess);
+
+signals:
+	void typingNotifyEventReceived(struct gg_event *e);
 
 };
 
