@@ -334,33 +334,21 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
-			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedDelivered);
-			break;
 		case GG_ACK_QUEUED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %u, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
 			UndeliveredMessages[messageId].setStatus(MessageStatusDelivered);
-			emit messageStatusChanged(UndeliveredMessages[messageId], StatusAcceptedQueued);
+			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
 			break;
 		case GG_ACK_BLOCKED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
-			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBlocked);
-			break;
 		case GG_ACK_MBOXFULL:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %u, seq: %d)\n", uin, messageId);
-			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
-			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedBoxFull);
-			break;
 		case GG_ACK_NOT_DELIVERED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d)\n", uin, messageId);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %u, seq: %d, status: %d)\n", uin, messageId, e->event.ack.status);
 			UndeliveredMessages[messageId].setStatus(MessageStatusWontDeliver);
-			emit messageStatusChanged(UndeliveredMessages[messageId], StatusRejectedUnknown);
+			emit sentMessageStatusChanged(UndeliveredMessages[messageId]);
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %u, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
-			break;
+			return;
 	}
 	UndeliveredMessages.remove(messageId);
 
@@ -387,6 +375,6 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 	foreach (const Message &message, removedMessages)
 	{
 		message.setStatus(MessageStatusWontDeliver);
-		emit messageStatusChanged(message, StatusRejectedTimeout);
+		emit sentMessageStatusChanged(message);
 	}
 }

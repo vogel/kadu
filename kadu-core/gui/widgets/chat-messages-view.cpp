@@ -74,7 +74,8 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
 
 	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->chatService())
-		connect(chat.chatAccount().protocolHandler()->chatService(), SIGNAL(messageStatusChanged(const Message &, ChatService::MessageStatus)), this, SLOT(messageStatusChanged(const Message &, ChatService::MessageStatus)));
+		connect(chat.chatAccount().protocolHandler()->chatService(), SIGNAL(sentMessageStatusChanged(const Message &)),
+		        this, SLOT(sentMessageStatusChanged(const Message &)));
 
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
@@ -331,9 +332,8 @@ unsigned int ChatMessagesView::countMessages()
 	return Renderer->messages().count();
 }
 
-void ChatMessagesView::messageStatusChanged(const Message &message, ChatService::MessageStatus status)
+void ChatMessagesView::sentMessageStatusChanged(const Message &message)
 {
-	Q_UNUSED(status);
 	if (CurrentChat != message.messageChat())
 		return;
 	Renderer->messageStatusChanged(message, message.status());

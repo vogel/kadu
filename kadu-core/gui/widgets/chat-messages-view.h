@@ -71,7 +71,7 @@ private slots:
 
 	void imageReceived(const QString &imageId, const QString &imageFileName);
 
-	void messageStatusChanged(const Message &message, ChatService::MessageStatus status);
+	void sentMessageStatusChanged(const Message &message);
 
 	void scrollToBottom();
 
