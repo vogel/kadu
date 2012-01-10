@@ -118,6 +118,7 @@ void ChatDataWindow::createButtons(QLayout *layout)
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
+	OkButton->setDefault(true);
 	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
 	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
