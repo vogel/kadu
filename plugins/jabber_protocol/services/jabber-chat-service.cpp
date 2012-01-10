@@ -101,7 +101,7 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 		Message message = Message::create();
 		message.setMessageChat(chat);
 		message.setType(MessageTypeSent);
-		message.setMessageSender(Protocol->account().accountContact());
+		message.setMessageSender(account().accountContact());
 		message.setContent(Qt::escape(formattedMessage.toPlain()));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
@@ -125,7 +125,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (msg.type() == "error")
 		return;
 
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactSet contacts(contact);
 
 	Chat chat = ChatManager::instance()->findChat(contacts);

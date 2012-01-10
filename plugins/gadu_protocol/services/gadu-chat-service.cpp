@@ -78,7 +78,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(Protocol->account(), message, formatsSize));
+	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), message, formatsSize));
 	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
@@ -141,7 +141,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 		Message msg = Message::create();
 		msg.setMessageChat(chat);
 		msg.setType(MessageTypeSent);
-		msg.setMessageSender(Protocol->account().accountContact());
+		msg.setMessageSender(account().accountContact());
 		msg.setStatus(MessageStatusSent);
 		msg.setContent(message.toHtml());
 		msg.setSendDate(QDateTime::currentDateTime());
@@ -168,7 +168,7 @@ bool GaduChatService::isSystemMessage(gg_event *e)
 
 Contact GaduChatService::getSender(gg_event *e)
 {
-	return ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.sender), ActionCreateAndAdd);
+	return ContactManager::instance()->byId(account(), QString::number(e->event.msg.sender), ActionCreateAndAdd);
 }
 
 bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
@@ -183,7 +183,7 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 
 	if (ignore)
 	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %u is ignored\n", sender.id(Protocol->account()).toUInt());
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %u is ignored\n", sender.id(account()).toUInt());
 	}
 
 	return ignore;
@@ -193,7 +193,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 {
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
-		recipients.insert(ContactManager::instance()->byId(Protocol->account(), QString::number(e->event.msg.recipients[i]), ActionCreateAndAdd));
+		recipients.insert(ContactManager::instance()->byId(account(), QString::number(e->event.msg.recipients[i]), ActionCreateAndAdd));
 
 	return recipients;
 }
@@ -218,7 +218,7 @@ bool GaduChatService::ignoreRichText(Contact sender)
 
 bool GaduChatService::ignoreImages(Contact sender)
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
 	return sender.isAnonymous() ||
 		(
@@ -233,9 +233,9 @@ bool GaduChatService::ignoreImages(Contact sender)
 FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender)
 {
 	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(Protocol->account(), sender, QString::fromUtf8(content), 0, 0, false);
+		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content), 0, 0, false);
 	else
-		return GaduFormatter::createMessage(Protocol->account(), sender, QString::fromUtf8(content),
+		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content),
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
 }
 
@@ -245,7 +245,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	conference += sender;
 
 	ContactSet chatContacts = conference;
-	chatContacts.remove(Protocol->account().accountContact());
+	chatContacts.remove(account().accountContact());
 
 	Chat chat = ChatManager::instance()->findChat(chatContacts);
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
@@ -256,7 +256,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
-	if (Protocol->account().accountContact() != sender)
+	if (account().accountContact() != sender)
 		emit filterRawIncomingMessage(chat, sender, content, ignore);
 
 	FormattedMessage message = createFormattedMessage(e, content, sender);
@@ -266,7 +266,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
-	if (Protocol->account().accountContact() != sender)
+	if (account().accountContact() != sender)
 	{
 		QString messageString = message.toPlain();
 		emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
@@ -311,7 +311,7 @@ void GaduChatService::handleEventMultilogonMsg(gg_event *e)
 	// warning: this may be not intuitive code
 
 	// we are sender
-	Contact sender = Protocol->account().accountContact();
+	Contact sender = account().accountContact();
 
 	// e.sender + e.recipeints are real recipients
 	ContactSet recipients = getRecipients(e);
