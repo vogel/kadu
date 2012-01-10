@@ -4,8 +4,9 @@ set (protocols_SRCS
 	model/protocols-model.cpp
 	model/protocols-model-proxy.cpp
 
-	services/chat-service.cpp
 	services/chat-image-service.cpp
+	services/chat-service.cpp
+	services/chat-state-service.cpp
 	services/contact-list-service.cpp
 	services/protocol-service.cpp
 	services/roster-service.cpp
