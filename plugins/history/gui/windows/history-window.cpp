@@ -426,7 +426,7 @@ void HistoryWindow::chatActivated(const Chat &chat)
 	DetailsListView->setModel(MyChatDatesModel);
 
 	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
 	DetailsListView->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
@@ -459,7 +459,7 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 	DetailsListView->setModel(MyBuddyStatusDatesModel);
 
 	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
@@ -492,7 +492,7 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 	DetailsListView->setModel(MySmsDatesModel);
 
 	connect(DetailsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)));
+			this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
 	DetailsListView->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
