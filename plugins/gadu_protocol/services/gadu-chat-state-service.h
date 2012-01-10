@@ -31,12 +31,14 @@
 
 #include "protocols/services/chat-state-service.h"
 
+class ChatService;
 class GaduProtocol;
 
 class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
+	ChatService *CurrentChatService;
 	GaduProtocol *Protocol;
 
 	bool shouldSendEvent();
@@ -46,8 +48,11 @@ private slots:
 
 public:
 	explicit GaduChatStateService(GaduProtocol *parent);
+	virtual ~GaduChatStateService();
 
 	virtual void sendState(const Contact &contact, State state);
+
+	void setChatService(ChatService *chatService);
 
 public slots:
 	void typingNotifyEventReceived(struct gg_event *e);

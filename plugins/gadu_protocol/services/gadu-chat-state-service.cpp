@@ -30,10 +30,23 @@
 #include "gadu-chat-state-service.h"
 
 GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
-		ChatStateService(parent), Protocol(parent)
+		ChatStateService(parent), CurrentChatService(0), Protocol(parent)
 {
-	if (Protocol->chatService())
-		connect(Protocol->chatService(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+}
+
+GaduChatStateService::~GaduChatStateService()
+{
+}
+
+void GaduChatStateService::setChatService(ChatService *chatService)
+{
+	if (CurrentChatService)
+		disconnect(CurrentChatService, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+
+	CurrentChatService = chatService;
+
+	if (CurrentChatService)
+		connect(CurrentChatService, SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 }
 
 void GaduChatStateService::messageReceived(const Message &message)

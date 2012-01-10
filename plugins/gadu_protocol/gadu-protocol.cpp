@@ -90,7 +90,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
+
 	CurrentChatStateService = new GaduChatStateService(this);
+	CurrentChatStateService->setChatService(CurrentChatService);
 
 	setRosterService(new GaduRosterService(this));
 
