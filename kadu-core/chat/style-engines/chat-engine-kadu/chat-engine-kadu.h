@@ -70,7 +70,7 @@ public:
 	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
 	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
 	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status);
-	virtual void contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::ContactActivity state, const QString &message, const QString &name);
+	virtual void contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 

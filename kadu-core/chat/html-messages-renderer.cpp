@@ -174,7 +174,7 @@ void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus s
     	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
 }
 
-void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
+void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
 	QString display = contact.display(true);
 	QString message;

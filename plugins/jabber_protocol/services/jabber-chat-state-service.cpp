@@ -133,7 +133,7 @@ void JabberChatStateService::setChatState(const Chat &chat, XMPP::ChatState stat
 		info.LastChatState = state;
 }
 
-ChatStateService::ContactActivity JabberChatStateService::xmppStateToContactState(XMPP::ChatState state)
+ChatStateService::State JabberChatStateService::xmppStateToContactState(XMPP::ChatState state)
 {
 	switch (state)
 	{
@@ -166,18 +166,18 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 		if (msg.containsEvent(XMPP::CancelEvent))
 		{
 			info.ContactChatState = XMPP::StatePaused;
-			emit activityChanged(contact, StatePaused);
+			emit peerStateChanged(contact, StatePaused);
 		}
 		else if (msg.containsEvent(XMPP::ComposingEvent))
 		{
 			info.ContactChatState = XMPP::StateComposing;
-			emit activityChanged(contact, StateComposing);
+			emit peerStateChanged(contact, StateComposing);
 		}
 
 		if (msg.chatState() != XMPP::StateNone)
 		{
 			info.ContactChatState = msg.chatState();
-			emit activityChanged(contact, xmppStateToContactState(msg.chatState()));
+			emit peerStateChanged(contact, xmppStateToContactState(msg.chatState()));
 		}
 	}
 	else
@@ -192,12 +192,12 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 		if (msg.containsEvents() || msg.chatState() != XMPP::StateNone)
 		{
 			info.ContactChatState = XMPP::StateActive;
-			emit activityChanged(contact, StateActive);
+			emit peerStateChanged(contact, StateActive);
 		}
 		else
 		{
 			info.ContactChatState = XMPP::StateNone;
-			emit activityChanged(contact, StateNone);
+			emit peerStateChanged(contact, StateNone);
 		}
 	}
 }
@@ -214,7 +214,7 @@ void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 	ChatInfos[chat].LastChatState = XMPP::StateActive;
 }
 
-void JabberChatStateService::sendState(const Chat &chat, ContactActivity state)
+void JabberChatStateService::sendState(const Chat &chat, State state)
 {
 	switch (state)
 	{

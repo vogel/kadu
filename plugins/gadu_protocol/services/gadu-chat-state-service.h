@@ -50,7 +50,7 @@ private slots:
 public:
 	explicit GaduChatStateService(GaduProtocol *parent);
 
-	virtual void sendState(const Chat &chat, ContactActivity state);
+	virtual void sendState(const Chat &chat, State state);
 
 };
 

@@ -32,31 +32,85 @@
 class Chat;
 class Contact;
 
+/**
+ * @addtogroup Protocol
+ * @{
+ */
+
+/**
+ * @class ChatStateService
+ * @short ChatStateService protocol service allows sending and receiving information about composing state in chats.
+ *
+ * This service allows sending and receiving information about composing state in chats. It supports several states
+ * defined in ChatStateService::State enum.
+ *
+ * One method should be overrided by subclasses: sendState(). It sends our chat state to peer. When peer changes its
+ * chats state, peerStateChanged() signal is emited.
+ */
 class KADUAPI ChatStateService : public ProtocolService
 {
 	Q_OBJECT
 
 public:
-	// ContactActivity enum vaules identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
-	enum ContactActivity
+	/**
+	 * @enum State
+	 * @short This enum represent state of chat.
+	 * @note Values in this enum must be identical with those defined in kadu-core/chat/style-engines/chat-scripts.js
+	 */
+	enum State
 	{
+		/**
+		 * Chat is active - window is opened and active.
+		 */
 		StateActive = 0,
+		/**
+		 * Chat is in compising state - new message is being entered, but not send yet.
+		 */
 		StateComposing = 1,
+		/**
+		 * Chat is gone - window was closed.
+		 */
 		StateGone = 2,
+		/**
+		 * Chat is inactive - window is opened but not active.
+		 */
 		StateInactive = 3,
+		/**
+		 * Unknown state.
+		 */
 		StateNone = 4,
+		/**
+		 * Chat is in paused state - new message is written, but entering was paused.
+		 */
 		StatePaused = 5
 	};
 
+	/**
+	 * @short Create new instance of ChatStateService bound to given Protocol.
+	 * @param protocol protocol to bound this service to
+	 */
 	explicit ChatStateService(Protocol *protocol);
 	virtual ~ChatStateService();
 
-public:
-	virtual void sendState(const Chat &chat, ContactActivity state) = 0;
+	/**
+	 * @short Send our chat state to given chat.
+	 * @param chat state of this chat is changed
+	 * @param state new state to send
+	 */
+	virtual void sendState(const Chat &chat, State state) = 0;
 
 signals:
-	void activityChanged(const Contact &contact, ChatStateService::ContactActivity state);
+	/**
+	 * @short Signal emited when peer changed its chat state.
+	 * @param contact peer contact
+	 * @param state new state received from peer
+	 */
+	void peerStateChanged(const Contact &contact, ChatStateService::State state);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_STATE_SERVICE_H

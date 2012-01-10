@@ -39,7 +39,7 @@ GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
 void GaduChatStateService::messageReceived(const Message &message)
 {
 	// it seems it is what is also done and expected by GG10
-	emit activityChanged(message.messageSender(), StatePaused);
+	emit peerStateChanged(message.messageSender(), StatePaused);
 }
 
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
@@ -49,9 +49,9 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 		return;
 
 	if (e->event.typing_notification.length > 0x0000)
-		emit activityChanged(contact, StateComposing);
+		emit peerStateChanged(contact, StateComposing);
 	else if (e->event.typing_notification.length == 0x0000)
-		emit activityChanged(contact, StatePaused);
+		emit peerStateChanged(contact, StatePaused);
 }
 
 bool GaduChatStateService::shouldSendEvent()
@@ -66,7 +66,7 @@ bool GaduChatStateService::shouldSendEvent()
 	return true;
 }
 
-void GaduChatStateService::sendState(const Chat &chat, ContactActivity state)
+void GaduChatStateService::sendState(const Chat &chat, State state)
 {
 	if (!shouldSendEvent())
 		return;

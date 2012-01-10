@@ -62,7 +62,7 @@ class JabberChatStateService : public ChatStateService
 
 	void setChatState(const Chat &chat, XMPP::ChatState state);
 
-	static ContactActivity xmppStateToContactState(XMPP::ChatState state);
+	static State xmppStateToContactState(XMPP::ChatState state);
 
 private slots:
 	void incomingMessage(const XMPP::Message &m);
@@ -71,7 +71,7 @@ private slots:
 public:
 	explicit JabberChatStateService(JabberProtocol *protocol);
 
-	virtual void sendState(const Chat &chat, ContactActivity state);
+	virtual void sendState(const Chat &chat, State state);
 
 };
 

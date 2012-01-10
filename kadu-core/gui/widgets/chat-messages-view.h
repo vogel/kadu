@@ -110,7 +110,7 @@ public:
 
 public slots:
 	void clearMessages();
-	void contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state);
+	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
 signals:
 	void messagesUpdated();

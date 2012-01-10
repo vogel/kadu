@@ -76,7 +76,7 @@ public:
 	void replaceLoadingImages(const QString &imageId, const QString &imageFileName);
 	void updateBackgroundsAndColors();
 	void messageStatusChanged(Message message, MessageStatus status);
-	void contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state);
+	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 
 };
 

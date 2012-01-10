@@ -339,7 +339,7 @@ void ChatMessagesView::messageStatusChanged(const Message &message, ChatService:
 	Renderer->messageStatusChanged(message, message.status());
 }
 
-void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
+void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
 	Renderer->contactActivityChanged(contact, state);
 }

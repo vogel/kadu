@@ -133,8 +133,8 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		}
 
 		if (currentProtocol() && currentProtocol()->chatStateService())
-			connect(currentProtocol()->chatStateService(), SIGNAL(activityChanged(const Contact &, ChatStateService::ContactActivity)),
-					this, SLOT(contactActivityChanged(const Contact &, ChatStateService::ContactActivity)));
+			connect(currentProtocol()->chatStateService(), SIGNAL(peerStateChanged(const Contact &, ChatStateService::State)),
+					this, SLOT(contactActivityChanged(const Contact &, ChatStateService::State)));
 	}
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
@@ -753,7 +753,7 @@ void ChatWidget::updateComposing()
 	IsComposing = true;
 }
 
-void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::ContactActivity state)
+void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
 	if (CurrentContactActivity == state)
 		return;
