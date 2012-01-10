@@ -60,7 +60,7 @@ bool JabberChatStateService::shouldSendEvent(const Contact &contact)
 	if (info.ContactChatState == XMPP::StateGone)
 		return false;
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 		return false;
 
@@ -75,7 +75,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	if (!shouldSendEvent(contact))
 		return;
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails->sendGoneNotification() && (state == XMPP::StateGone || state == XMPP::StateInactive))
 		state = XMPP::StatePaused;
 
@@ -158,7 +158,7 @@ ChatStateService::State JabberChatStateService::xmppStateToContactState(XMPP::Ch
 
 void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 {
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), msg.from().bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactInfo &info = ContactInfos[contact];
 
 	if (msg.body().isEmpty())
@@ -205,7 +205,7 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 
 void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
 {
-	Contact contact = ContactManager::instance()->byId(Protocol->account(), message.to().bare(), ActionCreateAndAdd);
+	Contact contact = ContactManager::instance()->byId(account(), message.to().bare(), ActionCreateAndAdd);
 
 	if (ContactInfos[contact].UserRequestedEvents)
 		message.addEvent(XMPP::ComposingEvent);
