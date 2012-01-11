@@ -75,6 +75,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 
+	connect(client(), SIGNAL(messageReceived(const XMPP::Message &)),
+	        CurrentChatService, SLOT(handleReceivedMessage(XMPP::Message)));
+
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
 	rosterService->setClient(JabberClient->client());
 

@@ -45,8 +45,6 @@
 JabberChatService::JabberChatService(JabberProtocol *protocol) :
 		ChatService(protocol), Protocol(protocol)
 {
-	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
-		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
 JabberChatService::~JabberChatService()
@@ -114,7 +112,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	return true;
 }
 
-void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
+void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 {
 	kdebugf();
 
