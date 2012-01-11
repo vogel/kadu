@@ -302,6 +302,9 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (isSystemMessage(e))
 		return;
 
+	if (GG_CLASS_CTCP == e->event.msg.msgclass) // old DCC6, not supported now
+		return;
+
 	Contact sender = getSender(e);
 	if (ignoreSender(e, sender.ownerBuddy()))
 		return;

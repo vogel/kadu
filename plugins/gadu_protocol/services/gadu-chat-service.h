@@ -43,8 +43,6 @@ class GaduChatService : public ChatService
 
 	GaduProtocol *Protocol;
 
-	friend class GaduProtocolSocketNotifiers;
-
 	bool isSystemMessage(struct gg_event *e);
 	Contact getSender(struct gg_event *e);
 	bool ignoreSender(gg_event *e, Buddy sender);
@@ -55,10 +53,6 @@ class GaduChatService : public ChatService
 	FormattedMessage createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-
-	void handleEventMsg(struct gg_event *e);
-	void handleEventMultilogonMsg(struct gg_event *e);
-	void handleEventAck(struct gg_event *e);
 
 	QTimer *RemoveTimer;
 
@@ -71,6 +65,10 @@ public:
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
+
+	void handleEventMsg(struct gg_event *e);
+	void handleEventMultilogonMsg(struct gg_event *e);
+	void handleEventAck(struct gg_event *e);
 
 };
 

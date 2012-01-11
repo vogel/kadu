@@ -45,14 +45,12 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 
 	void dumpConnectionState();
 
-	void handleEventMsg(struct gg_event *e);
 	void handleEventNotify(struct gg_event *e);
 	void handleEventNotify60(struct gg_event *e);
 	void handleEventStatus(struct gg_event *e);
 	void handleEventConnFailed(struct gg_event *e);
 	void handleEventConnSuccess(struct gg_event *e);
 	void handleEventDisconnect(struct gg_event *e);
-	void handleEventMultilogonMsg(struct gg_event *e);
 	void handleEventMultilogonInfo(struct gg_event *e);
 
 protected:
@@ -70,6 +68,10 @@ public:
 	void watchFor(gg_session *sess);
 
 signals:
+	void msgEventReceived(struct gg_event *e);
+	void multilogonMsgEventReceived(struct gg_event *e);
+	void ackEventReceived(struct gg_event *e);
+
 	void typingNotifyEventReceived(struct gg_event *e);
 
 };
