@@ -92,7 +92,9 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 
 	CurrentChatStateService = new GaduChatStateService(this);
-	CurrentChatStateService->setChatService(CurrentChatService);
+
+	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
+	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
 	setRosterService(new GaduRosterService(this));
 
