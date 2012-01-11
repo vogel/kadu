@@ -50,7 +50,7 @@ public:
 	void setGaduSession(gg_session *gaduSession);
 
 public slots:
-	void typingNotifyEventReceived(struct gg_event *e);
+	void handleEventTypingNotify(struct gg_event *e);
 
 	void messageReceived(const Message & message);
 

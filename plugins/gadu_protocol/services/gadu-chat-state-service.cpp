@@ -49,7 +49,7 @@ void GaduChatStateService::messageReceived(const Message &message)
 	emit peerStateChanged(message.messageSender(), StatePaused);
 }
 
-void GaduChatStateService::typingNotifyEventReceived(struct gg_event *e)
+void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 {
 	Contact contact = ContactManager::instance()->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
 	if (!contact)

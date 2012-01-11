@@ -230,7 +230,7 @@ void GaduProtocol::login()
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
 	connect(SocketNotifiers, SIGNAL(typingNotifyEventReceived(gg_event*)),
-	        CurrentChatStateService, SLOT(typingNotifyEventReceived(gg_event*)));
+	        CurrentChatStateService, SLOT(handleEventTypingNotify(gg_event*)));
 
 	SocketNotifiers->watchFor(GaduSession);
 }
