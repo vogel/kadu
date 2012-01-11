@@ -132,7 +132,6 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	Chat chat = ChatManager::instance()->findChat(contacts);
 	bool ignore = false;
 
-	time_t msgtime = msg.timeStamp().toTime_t();
 	QByteArray body = msg.body().toUtf8();
 	emit filterRawIncomingMessage(chat, contact, body, ignore);
 
@@ -140,7 +139,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	QString plain = formattedMessage.toPlain();
 
-	emit filterIncomingMessage(chat, contact, plain, msgtime, ignore);
+	emit filterIncomingMessage(chat, contact, plain, ignore);
 	if (ignore)
 		return;
 

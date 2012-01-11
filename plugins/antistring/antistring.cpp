@@ -69,8 +69,8 @@ void Antistring::accountRegistered(Account account)
 	if (!accountChatService)
 		return;
 
-	connect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+	connect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 }
 
 void Antistring::accountUnregistered(Account account)
@@ -79,14 +79,12 @@ void Antistring::accountUnregistered(Account account)
 	if (!accountChatService)
 		return;
 
-	disconnect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+	disconnect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 }
 
-void Antistring::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
+void Antistring::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
-	Q_UNUSED(time)
-
 	if (!Configuration.enabled())
 		return;
 

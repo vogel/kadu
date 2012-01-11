@@ -70,8 +70,8 @@ void ImageLink::accountRegistered(Account account)
 	ChatService *chatService = protocol->chatService();
 
 	if (chatService)
-		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 }
 
 
@@ -89,9 +89,8 @@ void ImageLink::accountUnregistered(Account account)
 		           this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
 }
 
-void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
+void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
-	Q_UNUSED(time)
 	Q_UNUSED(ignore)
 	Q_UNUSED(sender)
 

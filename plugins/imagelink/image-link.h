@@ -54,7 +54,7 @@ class ImageLink : public QObject, AccountsAwareObject
 	void insertCodeIntoChatWindow(Chat chat, Contact sender, const QString& code);
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, time_t time, bool &ignore);
+	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);

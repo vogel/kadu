@@ -65,7 +65,7 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, A
 		virtual void done();
 
 	public slots:
-		void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+		void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 		void chatWidgetClosed(ChatWidget *chat);
 };

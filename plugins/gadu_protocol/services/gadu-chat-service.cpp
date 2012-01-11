@@ -259,7 +259,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		return;
 
 	QByteArray content = getContent(e);
-	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
 	if (account().accountContact() != sender)
@@ -275,7 +274,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (account().accountContact() != sender)
 	{
 		QString messageString = message.toPlain();
-		emit filterIncomingMessage(chat, sender, messageString, time.toTime_t(), ignore);
+		emit filterIncomingMessage(chat, sender, messageString, ignore);
 	}
 
 	if (ignore)
@@ -287,7 +286,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
 	msg.setContent(message.toHtml());
-	msg.setSendDate(time);
+	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
 	if (MessageTypeReceived == type)

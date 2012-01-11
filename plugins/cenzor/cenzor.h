@@ -47,7 +47,7 @@ class Cenzor : public QObject, AccountsAwareObject
 	bool isExclusion(const QString &word);
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);

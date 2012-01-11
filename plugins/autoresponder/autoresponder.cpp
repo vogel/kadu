@@ -101,8 +101,8 @@ void AutoResponder::accountRegistered(Account account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 	}
 }
 
@@ -115,14 +115,13 @@ void AutoResponder::accountUnregistered(Account account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 	}
 }
 
-void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
+void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
-	Q_UNUSED(time)
 	Q_UNUSED(ignore)
 
 	kdebugf();

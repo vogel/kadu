@@ -128,7 +128,6 @@ signals:
 	 * @param chat chat that sent this message
 	 * @param sender contact that sent this message
 	 * @param message message in UTF8 format
-	 * @param time time of receiving this message
 	 * @param ignore flag used to prevent messageReceived signal from being emitted
 	 *
 	 * This signal must be emitted by any implementation of ChatService after message is received from peer and after
@@ -138,7 +137,7 @@ signals:
 	 *
 	 * If ignore is set to true, no messageReceived() signal will be emitted.
 	 */
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore);
+	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 	/**
 	 * @short Signal emitted when sent message status has changed.

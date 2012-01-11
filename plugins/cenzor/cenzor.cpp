@@ -63,8 +63,8 @@ void Cenzor::accountRegistered(Account account)
 	if (!chatService)
 		return;
 
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,time_t,bool&)),
-			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,time_t,bool&)));
+	connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,bool&)),
+			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,bool&)));
 }
 
 void Cenzor::accountUnregistered(Account account)
@@ -77,14 +77,13 @@ void Cenzor::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,time_t,bool&)),
-			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,time_t,bool&)));
+	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,bool&)),
+			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,bool&)));
 }
 
-void Cenzor::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
+void Cenzor::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
 	Q_UNUSED(sender)
-	Q_UNUSED(time)
 
 	if (!Configuration.enabled())
 		return;

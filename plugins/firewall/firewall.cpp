@@ -124,8 +124,8 @@ void Firewall::accountRegistered(Account account)
 	if (!chatService)
 		return;
 
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 	connect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
 			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -141,17 +141,15 @@ void Firewall::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, time_t, bool &)));
+	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
+			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 	disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
 			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
 	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
-void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message, time_t time, bool &ignore)
+void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
-	Q_UNUSED(time)
-
 	Account account = chat.chatAccount();
 
 	Protocol *protocol = account.protocolHandler();
@@ -221,7 +219,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 				msg.setContent(message);
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
-				msg.setSendDate(QDateTime::fromTime_t(time));
+				msg.setSendDate(QDateTime::currentDateTime());
 				History::instance()->currentStorage()->appendMessage(msg);
 			}
 		}
