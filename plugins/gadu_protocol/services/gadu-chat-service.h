@@ -39,9 +39,9 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
-	QHash<int, Message> UndeliveredMessages;
+	gg_session *GaduSession;
 
-	GaduProtocol *Protocol;
+	QHash<int, Message> UndeliveredMessages;
 
 	bool isSystemMessage(struct gg_event *e);
 	Contact getSender(struct gg_event *e);
@@ -62,6 +62,8 @@ private slots:
 public:
 	explicit GaduChatService(GaduProtocol *protocol);
 	virtual ~GaduChatService();
+
+	void setGaduSession(gg_session *gaduSession);
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);

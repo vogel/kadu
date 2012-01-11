@@ -217,6 +217,7 @@ void GaduProtocol::login()
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
+	CurrentChatService->setGaduSession(GaduSession);
 	CurrentChatStateService->setGaduSession(GaduSession);
 
 	cleanUpLoginParams();

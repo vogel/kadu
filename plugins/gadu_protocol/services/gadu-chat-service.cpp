@@ -54,12 +54,8 @@
 #define REMOVE_TIMER_INTERVAL 1000
 
 GaduChatService::GaduChatService(GaduProtocol *protocol) :
-		ChatService(protocol), Protocol(protocol)
+		ChatService(protocol), GaduSession(0)
 {
-	// TODO
-// 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
-// 		this, SLOT(ackReceived(int, uin_t, int)));
-
 	RemoveTimer = new QTimer(this);
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
 	connect(RemoveTimer, SIGNAL(timeout()), this, SLOT(removeTimeoutUndeliveredMessages()));
@@ -70,9 +66,17 @@ GaduChatService::~GaduChatService()
 {
 }
 
+void GaduChatService::setGaduSession(gg_session *gaduSession)
+{
+	GaduSession = gaduSession;
+}
+
 bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
 	kdebugf();
+
+	if (!GaduSession)
+		return false;
 
 	QTextDocument document;
 	document.setHtml(message);
@@ -121,21 +125,21 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
+					GaduSession, GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message_confer(
-					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
+					GaduSession, GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
-					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
+					GaduSession, GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message(
-					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
+					GaduSession, GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
 	}
 
 	if (-1 == messageId)
@@ -228,9 +232,9 @@ bool GaduChatService::ignoreImages(Contact sender)
 
 	return sender.isAnonymous() ||
 		(
-			StatusTypeGroupOffline == Protocol->status().group() ||
+			StatusTypeGroupOffline == protocol()->status().group() ||
 			(
-				(StatusTypeGroupInvisible == Protocol->status().group()) &&
+				(StatusTypeGroupInvisible == protocol()->status().group()) &&
 				!gaduAccountDetails->receiveImagesDuringInvisibility()
 			)
 		);
