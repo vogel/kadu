@@ -145,7 +145,6 @@ public:
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
 	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
-	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }

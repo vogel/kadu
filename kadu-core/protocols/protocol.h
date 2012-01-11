@@ -71,6 +71,7 @@ class KADUAPI Protocol : public QObject
 	Account CurrentAccount;
 
 	// services
+	ChatService *CurrentChatService;
 	RosterService *CurrentRosterService;
 
 	// real status, can be offline after connection error
@@ -106,6 +107,7 @@ protected:
 	void doSetStatus(Status status);
 
 	// services
+	void setChatService(ChatService * const chatService);
 	void setRosterService(RosterService * const rosterService);
 
 protected slots:
@@ -124,7 +126,7 @@ public:
 
 	virtual AvatarService * avatarService() { return 0; }
 	virtual ChatImageService * chatImageService() { return 0; }
-	virtual ChatService * chatService() { return 0; }
+	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ChatStateService * chatStateService() { return 0; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }

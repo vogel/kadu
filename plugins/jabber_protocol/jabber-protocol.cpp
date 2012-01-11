@@ -44,6 +44,7 @@
 #include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "resource/jabber-resource-pool.h"
+#include "services/jabber-chat-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "utils/vcard-factory.h"
@@ -69,27 +70,29 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	initializeJabberClient();
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
-	CurrentChatService = new XMPP::JabberChatService(this);
+	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(this);
 	CurrentChatStateService = new XMPP::JabberChatStateService(this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 
 	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
-	        CurrentChatService, SLOT(handleReceivedMessage(Message)));
+	        chatService, SLOT(handleReceivedMessage(Message)));
 	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
 	        CurrentChatStateService, SLOT(handleReceivedMessage(const Message &)));
-	connect(CurrentChatService, SIGNAL(messageAboutToSend(Message&)),
+	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        CurrentChatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
 
-	CurrentChatService->setClient(JabberClient->client());
+	chatService->setClient(JabberClient->client());
 	CurrentChatStateService->setClient(JabberClient->client());
 	rosterService->setClient(JabberClient->client());
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
+
+	setChatService(chatService);
 	setRosterService(rosterService);
 
 	CurrentSubscriptionService = new JabberSubscriptionService(this);
