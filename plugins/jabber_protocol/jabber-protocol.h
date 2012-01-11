@@ -46,8 +46,8 @@ class JabberProtocol : public Protocol
 	Q_OBJECT
 
 	JabberAvatarService *CurrentAvatarService;
-	JabberChatService *CurrentChatService;
-	JabberChatStateService *CurrentChatStateService;
+	XMPP::JabberChatService *CurrentChatService;
+	XMPP::JabberChatStateService *CurrentChatStateService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;

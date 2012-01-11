@@ -473,11 +473,6 @@ namespace XMPP
 		void changeGroupChatNick(const QString &host, const QString &room, const QString &nick, const XMPP::Status &status =XMPP::Status());
 
 		/**
-		 * Send a message.
-		 */
-		void sendMessage(const XMPP::Message &message);
-
-		/**
 		 * Send raw packet to the server.
 		 */
 		void send(const QString &packet);
@@ -536,16 +531,6 @@ namespace XMPP
 		 * An existing resource has been removed.
 		 */
 		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-
-		/**
-		 * Some way to modify message before send it - i.e. for chat event handling
-		 */
-		void messageAboutToSend(XMPP::Message &message);
-
-		/**
-		 * A new message has been received.
-		 */
-		void messageReceived(const XMPP::Message &message);
 
 		/**
 		 * Groupchat has been joined.

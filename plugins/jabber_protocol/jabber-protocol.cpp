@@ -69,16 +69,23 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	initializeJabberClient();
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
-	CurrentChatService = new JabberChatService(this);
-	CurrentChatStateService = new JabberChatStateService(this);
+	CurrentChatService = new XMPP::JabberChatService(this);
+	CurrentChatStateService = new XMPP::JabberChatStateService(this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 
-	connect(client(), SIGNAL(messageReceived(const XMPP::Message &)),
-	        CurrentChatService, SLOT(handleReceivedMessage(XMPP::Message)));
+	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
+	        CurrentChatService, SLOT(handleReceivedMessage(Message)));
+	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
+	        CurrentChatStateService, SLOT(handleReceivedMessage(const Message &)));
+	connect(CurrentChatService, SIGNAL(messageAboutToSend(Message&)),
+	        CurrentChatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
+
+	CurrentChatService->setClient(JabberClient->client());
+	CurrentChatStateService->setClient(JabberClient->client());
 	rosterService->setClient(JabberClient->client());
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),

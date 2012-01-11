@@ -42,8 +42,11 @@
 
 #include "jabber-chat-service.h"
 
+namespace XMPP
+{
+
 JabberChatService::JabberChatService(JabberProtocol *protocol) :
-		ChatService(protocol), Protocol(protocol)
+		ChatService(protocol), XmppClient(0)
 {
 }
 
@@ -51,8 +54,27 @@ JabberChatService::~JabberChatService()
 {
 }
 
+void JabberChatService::clientDestroyed()
+{
+	XmppClient = 0;
+}
+
+void JabberChatService::setClient(Client *xmppClient)
+{
+	if (XmppClient)
+		disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+
+	XmppClient = xmppClient;
+
+	if (XmppClient)
+		connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+}
+
 bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
+	if (!XmppClient)
+		return false;
+
 	kdebugf();
 	ContactSet contacts = chat.contacts();
 	// TODO send to more users
@@ -91,13 +113,15 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	msg.setBody(plain);
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	//msg.setFrom(jabberID);
-	Protocol->client()->sendMessage(msg);
+
+	emit messageAboutToSend(msg);
+	XmppClient->sendMessage(msg);
 
 	if (!silent)
 	{
 		HtmlDocument::escapeText(plain);
 
-		Message message = Message::create();
+		::Message message = ::Message::create();
 		message.setMessageChat(chat);
 		message.setType(MessageTypeSent);
 		message.setMessageSender(account().accountContact());
@@ -149,7 +173,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	HtmlDocument::escapeText(plain);
 
-	Message message = Message::create();
+	::Message message = ::Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
@@ -160,4 +184,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	emit messageReceived(message);
 
 	kdebugf2();
+}
+
 }

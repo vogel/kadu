@@ -31,13 +31,32 @@
 
 #include "jabber-chat-state-service.h"
 
-JabberChatStateService::JabberChatStateService(JabberProtocol *protocol) :
-		ChatStateService(protocol), Protocol(protocol)
+namespace XMPP
 {
-	connect(Protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
-			this, SLOT(incomingMessage(const XMPP::Message &)));
-	connect(Protocol->client(), SIGNAL(messageAboutToSend(XMPP::Message &)),
-			this, SLOT(messageAboutToSend(XMPP::Message &)));
+
+JabberChatStateService::JabberChatStateService(JabberProtocol *protocol) :
+		ChatStateService(protocol), XmppClient(0)
+{
+}
+
+JabberChatStateService::~JabberChatStateService()
+{
+}
+
+void JabberChatStateService::clientDestroyed()
+{
+	XmppClient = 0;
+}
+
+void JabberChatStateService::setClient(Client *xmppClient)
+{
+	if (XmppClient)
+		disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+
+	XmppClient = xmppClient;
+
+	if (XmppClient)
+		connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
 }
 
 bool JabberChatStateService::shouldSendEvent(const Contact &contact)
@@ -72,6 +91,9 @@ bool JabberChatStateService::shouldSendEvent(const Contact &contact)
 
 void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatState state)
 {
+	if (!XmppClient)
+		return;
+
 	if (!shouldSendEvent(contact))
 		return;
 
@@ -115,8 +137,8 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 						? XMPP::StatePaused
 						: XMPP::StateActive);
 
-				if (Protocol->isConnected())
-					Protocol->client()->client()->sendMessage(tm);
+				if (protocol()->isConnected())
+					XmppClient->sendMessage(tm);
 			}
 			m.setChatState(state);
 		}
@@ -126,8 +148,8 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	if (m.containsEvents() || m.chatState() != XMPP::StateNone)
 	{
 		m.setType("chat");
-		if (Protocol->isConnected())
-			Protocol->client()->client()->sendMessage(m);
+		if (protocol()->isConnected())
+			XmppClient->sendMessage(m);
 	}
 
 	// Save last state
@@ -156,7 +178,7 @@ ChatStateService::State JabberChatStateService::xmppStateToContactState(XMPP::Ch
 	}
 }
 
-void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
+void JabberChatStateService::handleReceivedMessage(const XMPP::Message &msg)
 {
 	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactInfo &info = ContactInfos[contact];
@@ -203,7 +225,7 @@ void JabberChatStateService::incomingMessage(const XMPP::Message &msg)
 	}
 }
 
-void JabberChatStateService::messageAboutToSend(XMPP::Message &message)
+void JabberChatStateService::handleMessageAboutToSend(XMPP::Message &message)
 {
 	Contact contact = ContactManager::instance()->byId(account(), message.to().bare(), ActionCreateAndAdd);
 
@@ -237,4 +259,6 @@ void JabberChatStateService::sendState(const Contact &contact, State state)
 		default:
 			break;
 	}
+}
+
 }

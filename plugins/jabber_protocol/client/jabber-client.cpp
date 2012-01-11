@@ -116,8 +116,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
 		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
-		QObject::connect(Client, SIGNAL(messageReceived(const Message &)),
-				   this, SLOT(slotReceivedMessage(const Message &)));
 		QObject::connect(Client, SIGNAL(groupChatJoined(const Jid &)),
 				   this, SLOT(slotGroupChatJoined(const Jid &)));
 		QObject::connect(Client, SIGNAL(groupChatLeft(const Jid &)),
@@ -393,14 +391,6 @@ void JabberClient::changeGroupChatNick( const QString &host, const QString &room
 {
 	Client->groupChatChangeNick( host, room, nick, status);
 }
-
-void JabberClient::sendMessage(const XMPP::Message &message)
-{
-	XMPP::Message m = message;
-	emit messageAboutToSend(m);
-	Client->sendMessage(m);
-}
-
 void JabberClient::send(const QString &packet)
 {
 	Client->send(packet);
@@ -659,11 +649,6 @@ void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &r
 void JabberClient::slotResourceUnavailable(const XMPP::Jid &jid, const Resource &resource)
 {
 	emit resourceUnavailable(jid, resource);
-}
-
-void JabberClient::slotReceivedMessage(const Message &message)
-{
-	emit messageReceived(message);
 }
 
 void JabberClient::slotGroupChatJoined(const XMPP::Jid &jid)
