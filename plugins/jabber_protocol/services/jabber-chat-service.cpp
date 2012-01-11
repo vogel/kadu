@@ -47,8 +47,6 @@ JabberChatService::JabberChatService(JabberProtocol *protocol) :
 {
 	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
-
-	ContactMessageTypes = new QMap<QString, QString>();
 }
 
 JabberChatService::~JabberChatService()
@@ -84,8 +82,8 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 		return false;
 	}
 
-	QString messageType = false == ContactMessageTypes->value(jus.bare()).isEmpty()
-	        ? ContactMessageTypes->value(jus.bare())
+	QString messageType = false == ContactMessageTypes.value(jus.bare()).isEmpty()
+	        ? ContactMessageTypes.value(jus.bare())
 	        : "chat";
 
 	msg.setType(messageType);
@@ -147,7 +145,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	        ? "message"
 	        : msg.type();
 
-	ContactMessageTypes->insert(msg.from().bare(), messageType);
+	ContactMessageTypes.insert(msg.from().bare(), messageType);
 
 	HtmlDocument::escapeText(plain);
 
