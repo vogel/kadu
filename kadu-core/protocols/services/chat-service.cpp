@@ -33,10 +33,3 @@ ChatService::ChatService(Protocol *protocol) :
 ChatService::~ChatService()
 {
 }
-
-bool ChatService::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
-{
-	QTextDocument document(messageContent);
-	FormattedMessage message = FormattedMessage::parse(&document);
-	return sendMessage(chat, message, silent);
-}

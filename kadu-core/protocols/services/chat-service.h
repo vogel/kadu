@@ -69,25 +69,14 @@ public slots:
 	 * @param message message to be sent
 	 * @param silent if true, no messageSent signal will be emitted
 	 *
-	 * This methods sends a message to given chat. Message is passed as FormattedMessage and can contain
-	 * rich text and images. Protocols are free to ignore any formatting.
+	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
+	 * free to ignore any HTML formatting.
 	 *
 	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, FormattedMessage &message, bool silent = false) = 0;
-
-	/**
-	 * @short Send new message to given chat.
-	 * @param chat chat to send message to
-	 * @param message message to be sent
-	 * @param silent if true, no messageSent signal will be emitted
-	 *
-	 * This is convienant method for sending message. Message is passed as HTML string. Protocols are
-	 * free to ignore any HTML formatting.
-	 */
-	bool sendMessage(const Chat &chat, const QString &messageContent, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false) = 0;
 
 signals:
 	/**

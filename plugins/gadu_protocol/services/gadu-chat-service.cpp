@@ -26,6 +26,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QTimer>
+#include <QtGui/QTextDocument>
 
 #include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
@@ -69,16 +70,21 @@ GaduChatService::~GaduChatService()
 {
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, bool silent)
+bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
 	kdebugf();
 
-	QString plain = message.toPlain();
+	QTextDocument document;
+	document.setHtml(message);
+
+	FormattedMessage formattedMessage = FormattedMessage::parse(&document);
+
+	QString plain = formattedMessage.toPlain();
 	QVector<Contact> contacts = chat.contacts().toContactVector();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), message, formatsSize));
+	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize));
 	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
@@ -143,7 +149,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 		msg.setType(MessageTypeSent);
 		msg.setMessageSender(account().accountContact());
 		msg.setStatus(MessageStatusSent);
-		msg.setContent(message.toHtml());
+		msg.setContent(formattedMessage.toPlain());
 		msg.setSendDate(QDateTime::currentDateTime());
 		msg.setReceiveDate(QDateTime::currentDateTime());
 		msg.setId(QString::number(messageId));

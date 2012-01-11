@@ -514,9 +514,8 @@ void ChatWidget::sendMessage()
 		return;
 	}
 
-	FormattedMessage message = FormattedMessage::parse(InputBox->inputBox()->document());
 	ChatService *chatService = currentProtocol()->chatService();
-	if (!chatService || !chatService->sendMessage(CurrentChat, message))
+	if (!chatService || !chatService->sendMessage(CurrentChat, InputBox->inputBox()->document()->toHtml()))
 		return;
 
 	resetEditBox();

@@ -70,7 +70,7 @@ public:
 	virtual ~GaduChatService();
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, FormattedMessage &message, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
 
 };
 

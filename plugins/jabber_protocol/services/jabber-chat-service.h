@@ -48,7 +48,7 @@ public:
 	virtual ~JabberChatService();
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
 
 };
 

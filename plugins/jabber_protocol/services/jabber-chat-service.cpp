@@ -53,7 +53,7 @@ JabberChatService::~JabberChatService()
 {
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formattedMessage, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
 	kdebugf();
 	ContactSet contacts = chat.contacts();
@@ -61,8 +61,11 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 	if (contacts.count() > 1 || contacts.count() == 0)
 		return false;
 
+	QTextDocument document;
+	document.setHtml(message);
+
 	//QString cleanmsg = toPlainText(mesg);
-	QString plain = formattedMessage.toPlain();
+	QString plain = document.toPlainText();
 	QString jid = contacts.toContact().id();
 	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
 	const XMPP::Jid jus = jid;
@@ -100,7 +103,7 @@ bool JabberChatService::sendMessage(const Chat &chat, FormattedMessage &formatte
 		message.setMessageChat(chat);
 		message.setType(MessageTypeSent);
 		message.setMessageSender(account().accountContact());
-		message.setContent(Qt::escape(formattedMessage.toPlain()));
+		message.setContent(plain);
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
