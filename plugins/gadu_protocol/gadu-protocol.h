@@ -151,7 +151,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
-	virtual ChatStateService * chatStateService() { return CurrentChatStateService; }
 
 	virtual bool contactsListReadOnly() { return false; }
 	virtual bool supportsPrivateStatus() { return true; }

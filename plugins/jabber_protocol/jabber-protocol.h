@@ -29,7 +29,6 @@
 
 #include "client/jabber-client.h"
 #include "services/jabber-avatar-service.h"
-#include "services/jabber-chat-state-service.h"
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
@@ -45,7 +44,6 @@ class JabberProtocol : public Protocol
 	Q_OBJECT
 
 	JabberAvatarService *CurrentAvatarService;
-	XMPP::JabberChatStateService *CurrentChatStateService;
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
@@ -103,7 +101,6 @@ public:
 	virtual QString statusPixmapPath();
 
 	virtual AvatarService * avatarService() { return CurrentAvatarService; }
-	virtual ChatStateService *chatStateService() { return CurrentChatStateService; }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
 	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }

@@ -48,7 +48,7 @@
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account),
-		CurrentChatService(0), CurrentRosterService(0)
+		CurrentChatService(0), CurrentChatStateService(0), CurrentRosterService(0)
 {
 	Machine = new ProtocolStateMachine(this);
 	/*
@@ -265,9 +265,14 @@ bool Protocol::isConnecting()
 	return Machine->isLoggingIn();
 }
 
-void Protocol::setChatService(ChatService *const chatService)
+void Protocol::setChatService(ChatService * const chatService)
 {
 	CurrentChatService = chatService;
+}
+
+void Protocol::setChatStateService(ChatStateService * const chatStateService)
+{
+	CurrentChatStateService = chatStateService;
 }
 
 void Protocol::setRosterService(RosterService * const rosterService)
