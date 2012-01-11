@@ -1,5 +1,7 @@
 ﻿+++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
+* gadu: #2410 fixed: after waking up from suspend Gadu is not reconnecting (WhE)
+
 
 +++ version 0.11.0-rc1
 * hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)

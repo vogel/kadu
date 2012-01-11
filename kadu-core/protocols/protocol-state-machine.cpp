@@ -38,7 +38,7 @@
 ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 		QStateMachine(protocol), CurrentProtocol(protocol)
 {
-	DelayTimer.setInterval(500);
+	DelayTimer.setInterval(1000);
 	DelayTimer.setSingleShot(true);
 
 	LoggingOutState = new QState(this);
