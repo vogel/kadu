@@ -262,6 +262,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	MyStatusContainer->triggerStatusUpdated();
 
 	AccountManager::instance()->registerItem(this);
+
+	emit updated();
 }
 
 void AccountShared::protocolUnregistered(ProtocolFactory* factory)
@@ -291,6 +293,8 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	delete ProtocolHandler;
 	ProtocolHandler = 0;
+
+	emit updated();
 }
 
 void AccountShared::doSetAccountIdentity(const Identity &accountIdentity)
