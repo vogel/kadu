@@ -46,8 +46,10 @@ protected:
 	virtual Buddy buddyAt(int index) const;
 
 public:
-	explicit BuddyListModel(const BuddyList &list, QObject *parent = 0);
+	explicit BuddyListModel(QObject *parent = 0);
 	virtual ~BuddyListModel();
+
+	void setBuddyList(const BuddyList &list);
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 

@@ -30,14 +30,21 @@
 
 #include "buddy-list-model.h"
 
-BuddyListModel::BuddyListModel(const BuddyList &list, QObject *parent) :
-		BuddiesModelBase(parent), List(list)
+BuddyListModel::BuddyListModel(QObject *parent) :
+		BuddiesModelBase(parent)
 {
 	triggerAllAccountsRegistered();
 }
 
 BuddyListModel::~BuddyListModel()
 {
+}
+
+void BuddyListModel::setBuddyList(const BuddyList &list)
+{
+	beginResetModel();
+	List = list;
+	endResetModel();
 }
 
 int BuddyListModel::rowCount(const QModelIndex &parent) const
