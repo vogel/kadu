@@ -49,7 +49,7 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 }
 
 GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
-		RosterService(protocol)
+		RosterService(protocol), GaduSession(0)
 {
 	Q_ASSERT(protocol);
 }
@@ -58,9 +58,15 @@ GaduRosterService::~GaduRosterService()
 {
 }
 
+void GaduRosterService::setGaduSession(gg_session *gaduSession)
+{
+	GaduSession = gaduSession;
+}
+
 void GaduRosterService::prepareRoster()
 {
 	Q_ASSERT(StateNonInitialized == state());
+	Q_ASSERT(GaduSession);
 
 	setState(StateInitializing);
 
@@ -73,7 +79,7 @@ void GaduRosterService::prepareRoster()
 
 	if (sendList.isEmpty())
 	{
-		gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), 0, 0, 0);
+		gg_notify_ex(GaduSession, 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		setState(StateInitialized);
@@ -110,13 +116,13 @@ void GaduRosterService::prepareRoster()
 
 void GaduRosterService::updateFlag(int uin, int newFlags, int oldFlags, int flag) const
 {
-	gg_session *session = static_cast<GaduProtocol *>(protocol())->gaduSession();
-	Q_ASSERT(session);
+	if (!GaduSession)
+		return;
 
 	if (!(oldFlags & flag) && (newFlags & flag))
-		gg_add_notify_ex(session, uin, flag);
+		gg_add_notify_ex(GaduSession, uin, flag);
 	if ((oldFlags & flag) && !(newFlags & flag))
-		gg_remove_notify_ex(session, uin, flag);
+		gg_remove_notify_ex(GaduSession, uin, flag);
 }
 
 void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const

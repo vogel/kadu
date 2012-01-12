@@ -96,14 +96,18 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
+	GaduRosterService *rosterService = new GaduRosterService(this);
+
 	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
-	setRosterService(new GaduRosterService(this));
+	setRosterService(rosterService);
 
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        CurrentChatService, SLOT(setGaduSession(gg_session*)));
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        CurrentChatStateService, SLOT(setGaduSession(gg_session*)));
+	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
+	        rosterService, SLOT(setGaduSession(gg_session*)));
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
