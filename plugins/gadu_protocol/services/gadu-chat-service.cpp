@@ -37,7 +37,6 @@
 
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "gadu-account-details.h"
 
 #include "gadu-chat-service.h"
 
@@ -46,7 +45,7 @@
 #define REMOVE_TIMER_INTERVAL 1000
 
 GaduChatService::GaduChatService(Protocol *protocol) :
-		ChatService(protocol), GaduSession(0)
+		ChatService(protocol), GaduSession(0), ReceiveImagesDuringInvisibility(false)
 {
 	RemoveTimer = new QTimer(this);
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
@@ -61,6 +60,11 @@ GaduChatService::~GaduChatService()
 void GaduChatService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
+}
+
+void GaduChatService::setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility)
+{
+	ReceiveImagesDuringInvisibility = receiveImagesDuringInvisibility;
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
@@ -220,14 +224,12 @@ bool GaduChatService::ignoreRichText(Contact sender)
 
 bool GaduChatService::ignoreImages(Contact sender)
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-
 	return sender.isAnonymous() ||
 		(
 			StatusTypeGroupOffline == protocol()->status().group() ||
 			(
 				(StatusTypeGroupInvisible == protocol()->status().group()) &&
-				!gaduAccountDetails->receiveImagesDuringInvisibility()
+				!ReceiveImagesDuringInvisibility
 			)
 		);
 }

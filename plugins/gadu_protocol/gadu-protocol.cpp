@@ -102,6 +102,8 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
 
+	configureServices();
+
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        CurrentChatService, SLOT(setGaduSession(gg_session*)));
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
@@ -190,10 +192,19 @@ void GaduProtocol::everyMinuteActions()
 	CurrentChatImageService->resetSendImageRequests();
 }
 
+void GaduProtocol::configureServices()
+{
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
+	if (gaduAccountDetails)
+		CurrentChatService->setReceiveImagesDuringInvisibility(gaduAccountDetails->receiveImagesDuringInvisibility());
+}
+
 void GaduProtocol::accountUpdated()
 {
 	sendStatusToServer();
 	setUpFileTransferService();
+
+	configureServices();
 }
 
 void GaduProtocol::connectSocketNotifiersToServices()

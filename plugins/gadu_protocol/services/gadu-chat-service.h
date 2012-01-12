@@ -40,6 +40,7 @@ class GaduChatService : public ChatService
 	gg_session *GaduSession;
 
 	QHash<int, Message> UndeliveredMessages;
+	bool ReceiveImagesDuringInvisibility;
 
 	bool isSystemMessage(struct gg_event *e);
 	Contact getSender(struct gg_event *e);
@@ -60,6 +61,8 @@ private slots:
 public:
 	explicit GaduChatService(Protocol *protocol);
 	virtual ~GaduChatService();
+
+	void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility);
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
