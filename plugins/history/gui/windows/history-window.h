@@ -32,7 +32,6 @@
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/windows/main-window.h"
 
-#include "search/history-search-parameters.h"
 #include "history.h"
 #include "history_exports.h"
 
@@ -69,19 +68,12 @@ class HistoryWindow : public MainWindow
 	SmsDatesModel *MySmsDatesModel;
 
 	QMenu *DetailsPopupMenu;
-	QLabel *FromDateLabel;
-	QDateEdit *FromDate;
-	QLabel *ToDateLabel;
-	QDateEdit *ToDate;
 
 	ChatMessagesView *ContentBrowser;
-	QLineEdit *quickSearchPhraseEdit;
 
 	ActionDescription *historySearchActionDescription;
 	ActionDescription *historyNextResultsActionDescription;
 	ActionDescription *historyPrevResultsActionDescription;
-
-	HistorySearchParameters Search;
 
 	BaseActionContext *Context;
 
@@ -89,7 +81,6 @@ class HistoryWindow : public MainWindow
 
 	void createGui();
 	void createChatTree(QWidget *parent);
-	void createFilterBar(QWidget *parent);
 	void connectGui();
 
 	void updateData();
@@ -112,21 +103,14 @@ private slots:
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void searchTextChanged(const QString &searchText);
-	void fromDateChanged(const QDate &date);
-	void toDateChanged(const QDate &date);
-
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);
-	void dateFilteringEnabled(int state);
 
 	void openChat();
 	void clearChatHistory();
 	void clearStatusHistory();
 	void clearSmsHistory();
 	void removeHistoryEntriesPerDate();
-
-	void selectQueryText();
 
 	void updateContext();
 

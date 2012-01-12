@@ -70,6 +70,7 @@
 #include "model/history-chats-model-proxy.h"
 #include "model/history-chats-model.h"
 #include "model/sms-dates-model.h"
+#include "search/history-search-parameters.h"
 #include "storage/history-storage.h"
 #include "history-tree-item.h"
 #include "history.h"
@@ -158,11 +159,6 @@ void HistoryWindow::createGui()
 	rightLayout->setSpacing(0);
 	rightLayout->setMargin(0);
 
-	QWidget *filterWidget = new QWidget(rightWidget);
-	rightLayout->addWidget(filterWidget);
-
-	createFilterBar(filterWidget);
-
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
 
@@ -219,53 +215,6 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	tabWidget->addTab(new QWidget(), tr("Statuses"));
 }
 
-void HistoryWindow::createFilterBar(QWidget *parent)
-{
-	QGridLayout *layout = new QGridLayout(parent);
-	layout->setSpacing(0);
-	layout->setMargin(0);
-
-	QLabel *filterLabel = new QLabel(tr("Search") + ": ", parent);
-	layout->addWidget(filterLabel, 0, 0, 1, 1);
-
-	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
-	layout->addWidget(searchLineEdit, 0, 1, 1, 4);
-
-	QCheckBox *filterByDate = new QCheckBox(tr("by date"), parent);
-	filterByDate->setChecked(false);
-	layout->addWidget(filterByDate, 1, 0, 1, 1);
-
-	FromDateLabel = new QLabel(tr("From") + ": ", parent);
-	FromDateLabel->setEnabled(false);
-	layout->addWidget(FromDateLabel, 1, 1, 1, 1, Qt::AlignRight);
-
-	FromDate = new QDateEdit(parent);
-	FromDate->setEnabled(false);
-	FromDate->setCalendarPopup(true);
-	FromDate->setDate(QDateTime::currentDateTime().addDays(-7).date());
-	layout->addWidget(FromDate, 1, 2, 1, 1);
-
-	ToDateLabel = new QLabel(tr("To") + ": ", parent);
-	ToDateLabel->setEnabled(false);
-	layout->addWidget(ToDateLabel, 1, 3, 1, 1, Qt::AlignRight);
-
-	ToDate = new QDateEdit(parent);
-	ToDate->setEnabled(false);
-	ToDate->setCalendarPopup(true);
-	ToDate->setDate(QDateTime::currentDateTime().date());
-	layout->addWidget(ToDate, 1, 4, 1, 1);
-
-	connect(filterByDate, SIGNAL(stateChanged(int)),
-			this, SLOT(dateFilteringEnabled(int)));
-
-	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
-			this, SLOT(searchTextChanged(const QString &)));
-	connect(FromDate, SIGNAL(dateChanged(const QDate &)),
-			this, SLOT(fromDateChanged(const QDate &)));
-	connect(ToDate, SIGNAL(dateChanged(const QDate &)),
-			this, SLOT(toDateChanged(const QDate &)));
-}
-
 void HistoryWindow::connectGui()
 {
 	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
@@ -290,7 +239,7 @@ void HistoryWindow::updateData()
 	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
 
 	QSet<Chat> usedChats;
-	QVector<Chat> chatsList = History::instance()->chatsList(Search);
+	QVector<Chat> chatsList = History::instance()->chatsList(HistorySearchParameters());
 	QVector<Chat> result;
 
 	foreach (const Chat &chat, chatsList)
@@ -318,8 +267,8 @@ void HistoryWindow::updateData()
 
 	selectHistoryItem(treeItem);
 
-	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(Search));
-	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(Search));
+	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(HistorySearchParameters()));
+	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(HistorySearchParameters()));
 }
 
 void HistoryWindow::selectChat(const Chat &chat)
@@ -418,7 +367,7 @@ void HistoryWindow::chatActivated(const Chat &chat)
 			: QModelIndex();
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QVector<DatesModelItem> chatDates = History::instance()->datesForChat(chat, Search);
+	QVector<DatesModelItem> chatDates = History::instance()->datesForChat(chat, HistorySearchParameters());
 	MyChatDatesModel->setChat(chat);
 	MyChatDatesModel->setDates(chatDates);
 
@@ -450,7 +399,7 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QVector<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, Search);
+	QVector<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters());
 	MyBuddyStatusDatesModel->setBuddy(buddy);
 	MyBuddyStatusDatesModel->setDates(statusDates);
 
@@ -483,7 +432,7 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 
 	QDate date = selectedIndex.data(DateRole).toDate();
 
-	QVector<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, Search);
+	QVector<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters());
 	MySmsDatesModel->setRecipient(recipient);
 	MySmsDatesModel->setDates(smsDates);
 
@@ -599,10 +548,6 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 
 	ContentBrowser->setUpdatesEnabled(true);
 
-	if (!Search.query().isEmpty())
-		QTimer::singleShot(500, this, SLOT(selectQueryText()));
-
-
 	kdebugf2();
 }
 
@@ -632,30 +577,6 @@ QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &sta
 	}
 
 	return messages;
-}
-
-void HistoryWindow::searchTextChanged(const QString &searchText)
-{
-	Search.setQuery(searchText);
-	updateData();
-}
-
-void HistoryWindow::fromDateChanged(const QDate &date)
-{
-	Search.setFromDate(date);
-	if (ToDate->date() < date)
-		ToDate->setDate(date);
-	else
-		updateData();
-}
-
-void HistoryWindow::toDateChanged(const QDate &date)
-{
-	Search.setToDate(date);
-	if (FromDate->date() > date)
-		FromDate->setDate(date);
-	else
-		updateData();
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
@@ -793,12 +714,6 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
 }
 
-void HistoryWindow::selectQueryText()
-{
-	ContentBrowser->findText(QString()); // clear old selection
-	ContentBrowser->findText(Search.query(), QWebPage::HighlightAllOccurrences);
-}
-
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
 {
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeHistory);
@@ -859,26 +774,4 @@ Chat HistoryWindow::selectedChat() const
 
 	Account bestAccount = AccountManager::bestAccount(map.keys());
 	return map.value(bestAccount);
-}
-
-void HistoryWindow::dateFilteringEnabled(int state)
-{
-	bool enabled = state == 2;
-	FromDateLabel->setEnabled(enabled);
-	FromDate->setEnabled(enabled);
-	ToDateLabel->setEnabled(enabled);
-	ToDate->setEnabled(enabled);
-
-	if (enabled)
-	{
-		Search.setFromDate(FromDate->date());
-		Search.setToDate(ToDate->date());
-		updateData();
-	}
-	else
-	{
-		Search.setFromDate(QDate());
-		Search.setToDate(QDate());
-		updateData();
-	}
 }
