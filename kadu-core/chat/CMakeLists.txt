@@ -13,6 +13,7 @@ set (chat_SRCS
 	recent-chat-manager.cpp
 
 	model/chat-data-extractor.cpp
+	model/chats-list-model.cpp
 	model/chats-model.cpp
 
 	style-engines/chat-engine-adium/adium-style.cpp
@@ -43,6 +44,7 @@ set (chat_MOC_SRCS
 	html-messages-renderer.h
 	recent-chat-manager.h
 
+	model/chats-list-model.h
 	model/chats-model.h
 
 	style-engines/chat-engine-adium/chat-engine-adium.h
