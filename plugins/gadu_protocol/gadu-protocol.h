@@ -111,6 +111,8 @@ private:
 	void setupLoginParams();
 	void cleanUpLoginParams();
 
+	void connectSocketNotifiersToServices();
+
 	void startFileTransferService();
 	void stopFileTransferService();
 

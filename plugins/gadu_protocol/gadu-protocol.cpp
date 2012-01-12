@@ -192,6 +192,18 @@ void GaduProtocol::accountUpdated()
 	setUpFileTransferService();
 }
 
+void GaduProtocol::connectSocketNotifiersToServices()
+{
+	connect(SocketNotifiers, SIGNAL(msgEventReceived(gg_event*)),
+	        CurrentChatService, SLOT(handleEventMsg(gg_event*)));
+	connect(SocketNotifiers, SIGNAL(multilogonMsgEventReceived(gg_event*)),
+	        CurrentChatService, SLOT(handleEventMultilogonMsg(gg_event*)));
+	connect(SocketNotifiers, SIGNAL(ackEventReceived(gg_event*)),
+	        CurrentChatService, SLOT(handleEventAck(gg_event*)));
+	connect(SocketNotifiers, SIGNAL(typingNotifyEventReceived(gg_event*)),
+	        CurrentChatStateService, SLOT(handleEventTypingNotify(gg_event*)));
+}
+
 void GaduProtocol::login()
 {
 	// TODO: create some kind of cleanup method
@@ -236,15 +248,7 @@ void GaduProtocol::login()
 	}
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account(), this);
-	connect(SocketNotifiers, SIGNAL(msgEventReceived(gg_event*)),
-	        CurrentChatService, SLOT(handleEventMsg(gg_event*)));
-	connect(SocketNotifiers, SIGNAL(multilogonMsgEventReceived(gg_event*)),
-	        CurrentChatService, SLOT(handleEventMultilogonMsg(gg_event*)));
-	connect(SocketNotifiers, SIGNAL(ackEventReceived(gg_event*)),
-	        CurrentChatService, SLOT(handleEventAck(gg_event*)));
-	connect(SocketNotifiers, SIGNAL(typingNotifyEventReceived(gg_event*)),
-	        CurrentChatStateService, SLOT(handleEventTypingNotify(gg_event*)));
-
+	connectSocketNotifiersToServices();
 	SocketNotifiers->watchFor(GaduSession);
 }
 
