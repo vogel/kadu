@@ -38,10 +38,13 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model-base.h"
+#include "buddies/model/buddy-list-model.h"
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
+#include "chat/model/chats-list-model.h"
 #include "chat/type/chat-type-manager.h"
 #include "chat/type/chat-type.h"
 #include "gui/actions/actions.h"
@@ -50,17 +53,22 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-menu-manager.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "message/message.h"
 #include "misc/misc.h"
+#include "model/merged-proxy-model-factory.h"
+#include "model/model-chain.h"
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "talkable/filter/name-talkable-filter.h"
+#include "talkable/model/talkable-proxy-model.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -210,8 +218,39 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsTree->setModel(ChatsModelProxy);
 	ChatsTree->setRootIsDecorated(true);
 
-	tabWidget->addTab(chatsWidget, tr("Chats"));
-	tabWidget->addTab(new QWidget(), tr("SMS"));
+	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+
+	TalkableTreeView *chatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
+	chatsTalkableTree->setUseConfigurationColors(true);
+	chatsTalkableTree->setContextMenuEnabled(true);
+
+	ChatsModel2 = new ChatsListModel(chatsTalkableTree);
+	BuddiesModel = new BuddyListModel(chatsTalkableTree);
+
+	QList<QAbstractItemModel *> models;
+	models.append(ChatsModel2);
+	models.append(BuddiesModel);
+
+	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, chatsTalkableTree);
+
+	ModelChain *chain = new ModelChain(mergedModel, chatsTalkableTree);
+
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
+
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
+	connect(chatsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameTalkableFilter);
+
+	chain->addProxyModel(proxyModel);
+
+	chatsTalkableTree->setChain(chain);
+
+	connect(chatsTalkableTree, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
+
+	chatsTalkableWidget->setTreeView(chatsTalkableTree);
+
+	tabWidget->addTab(chatsTalkableWidget, tr("Chats"));
+	tabWidget->addTab(chatsWidget, tr("SMS"));
 	tabWidget->addTab(new QWidget(), tr("Statuses"));
 }
 
@@ -240,7 +279,10 @@ void HistoryWindow::updateData()
 
 	QSet<Chat> usedChats;
 	QVector<Chat> chatsList = History::instance()->chatsList(HistorySearchParameters());
+
 	QVector<Chat> result;
+	QVector<Chat> conferenceChats;
+	BuddyList buddies;
 
 	foreach (const Chat &chat, chatsList)
 	{
@@ -255,15 +297,25 @@ void HistoryWindow::updateData()
 				usedChats.insert(usedChat);
 
 			result.append(aggregate);
+			if (aggregate.contacts().size() > 1)
+				conferenceChats.append(aggregate);
+			else if (1 == aggregate.contacts().size())
+				buddies.append(BuddyManager::instance()->byContact(*aggregate.contacts().begin(), ActionCreateAndAdd));
 		}
 		else
 		{
 			result.append(chat);
 			usedChats.insert(chat);
+			if (chat.contacts().size() > 1)
+				conferenceChats.append(chat);
+			else if (1 == chat.contacts().size())
+				buddies.append(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
 		}
 	}
 
 	ChatsModel->setChats(result);
+	ChatsModel2->setChats(conferenceChats);
+	BuddiesModel->setBuddyList(buddies);
 
 	selectHistoryItem(treeItem);
 

@@ -36,8 +36,10 @@
 #include "history_exports.h"
 
 class BaseActionContext;
+class BuddyListModel;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
+class ChatsListModel;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
 class HistoryTreeItem;
@@ -57,6 +59,8 @@ class HistoryWindow : public MainWindow
 
 	static HistoryWindow *Instance;
 
+	BuddyListModel *BuddiesModel;
+	ChatsListModel *ChatsModel2;
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
