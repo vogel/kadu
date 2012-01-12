@@ -20,16 +20,13 @@
  */
 
 #include "contacts/contact-manager.h"
-#include "contacts/contact-set.h"
-#include "contacts/contact.h"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-account-details.h"
-#include "gadu-protocol.h"
 
 #include "gadu-chat-state-service.h"
 
-GaduChatStateService::GaduChatStateService(GaduProtocol *parent) :
+GaduChatStateService::GaduChatStateService(Protocol *parent) :
 		ChatStateService(parent), GaduSession(0)
 {
 }

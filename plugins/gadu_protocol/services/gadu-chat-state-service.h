@@ -31,8 +31,6 @@
 
 #include "protocols/services/chat-state-service.h"
 
-class GaduProtocol;
-
 class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
@@ -42,7 +40,7 @@ class GaduChatStateService : public ChatStateService
 	bool shouldSendEvent();
 
 public:
-	explicit GaduChatStateService(GaduProtocol *parent);
+	explicit GaduChatStateService(Protocol *parent);
 	virtual ~GaduChatStateService();
 
 	virtual void sendState(const Contact &contact, State state);
