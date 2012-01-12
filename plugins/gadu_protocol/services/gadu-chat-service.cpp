@@ -153,7 +153,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 		msg.setType(MessageTypeSent);
 		msg.setMessageSender(account().accountContact());
 		msg.setStatus(MessageStatusSent);
-		msg.setContent(formattedMessage.toPlain());
+		msg.setContent(formattedMessage.toHtml());
 		msg.setSendDate(QDateTime::currentDateTime());
 		msg.setReceiveDate(QDateTime::currentDateTime());
 		msg.setId(QString::number(messageId));
