@@ -27,13 +27,11 @@
 
 #include <libgadu.h>
 
-#include "chat/chat.h"
-#include "message/message.h"
+#include "message/message-common.h"
+
 #include "protocols/services/chat-service.h"
 
 class QTimer;
-
-class GaduProtocol;
 
 class GaduChatService : public ChatService
 {
@@ -60,7 +58,7 @@ private slots:
 	void removeTimeoutUndeliveredMessages();
 
 public:
-	explicit GaduChatService(GaduProtocol *protocol);
+	explicit GaduChatService(Protocol *protocol);
 	virtual ~GaduChatService();
 
 public slots:

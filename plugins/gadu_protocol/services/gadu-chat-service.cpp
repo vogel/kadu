@@ -23,29 +23,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QHash>
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QTimer>
 #include <QtGui/QTextDocument>
 
-#include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
 #include "status/status-type.h"
-
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-
 #include "gadu-account-details.h"
-#include "gadu-protocol.h"
 
 #include "gadu-chat-service.h"
 
@@ -53,7 +45,7 @@
 #define MAX_DELIVERY_TIME 60 /*seconds*/
 #define REMOVE_TIMER_INTERVAL 1000
 
-GaduChatService::GaduChatService(GaduProtocol *protocol) :
+GaduChatService::GaduChatService(Protocol *protocol) :
 		ChatService(protocol), GaduSession(0)
 {
 	RemoveTimer = new QTimer(this);
@@ -91,7 +83,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize));
 	bool stop = false;
 
-	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
+	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
 
 	QByteArray data = plain.toUtf8();
 
