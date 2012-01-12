@@ -188,7 +188,9 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::createChatTree(QWidget *parent)
 {
-	QWidget *chatsWidget = new QWidget(parent);
+	QTabWidget *tabWidget = new QTabWidget(parent);
+
+	QWidget *chatsWidget = new QWidget(tabWidget);
 	chatsWidget->setMinimumWidth(150);
 	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
 
@@ -211,6 +213,10 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsTree->setAlternatingRowColors(true);
 	ChatsTree->setModel(ChatsModelProxy);
 	ChatsTree->setRootIsDecorated(true);
+
+	tabWidget->addTab(chatsWidget, tr("Chats"));
+	tabWidget->addTab(new QWidget(), tr("SMS"));
+	tabWidget->addTab(new QWidget(), tr("Statuses"));
 }
 
 void HistoryWindow::createFilterBar(QWidget *parent)
