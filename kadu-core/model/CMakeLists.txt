@@ -1,5 +1,6 @@
 set (model_SRCS
 	actions-proxy-model.cpp
+	kadu-merged-proxy-model.cpp
 	merged-proxy-model.cpp
 	merged-proxy-model-factory.cpp
 	model-chain.cpp
@@ -8,6 +9,7 @@ set (model_SRCS
 
 set (model_MOC_SRCS
 	actions-proxy-model.h
+	kadu-merged-proxy-model.h
 	merged-proxy-model.h
 	model-chain.h
 )
