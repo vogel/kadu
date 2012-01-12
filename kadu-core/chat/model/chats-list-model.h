@@ -21,6 +21,7 @@
 #define CHATS_LIST_MODEL_H
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QVector>
 
 #include "chat/chat.h"
 #include "model/kadu-abstract-model.h"
@@ -29,7 +30,7 @@ class ChatsListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
-	QList<Chat> Chats;
+	QVector<Chat> Chats;
 
 private slots:
 	void chatUpdated();
@@ -38,7 +39,7 @@ public:
 	explicit ChatsListModel(QObject *parent = 0);
 	virtual ~ChatsListModel();
 
-	void setChats(const QList<Chat> &chats);
+	void setChats(const QVector<Chat> &chats);
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
 

@@ -34,7 +34,7 @@ ChatsListModel::~ChatsListModel()
 {
 }
 
-void ChatsListModel::setChats(const QList<Chat> &chats)
+void ChatsListModel::setChats(const QVector<Chat> &chats)
 {
 	beginResetModel();
 
