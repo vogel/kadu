@@ -20,8 +20,7 @@
 #ifndef TALKABLE_MODEL_H
 #define TALKABLE_MODEL_H
 
-#include "model/kadu-abstract-model.h"
-#include "model/merged-proxy-model.h"
+#include "model/kadu-merged-proxy-model.h"
 
 class BuddiesModel;
 class ChatsModel;
@@ -39,7 +38,7 @@ class ChatsModel;
  * This proxy model merges BuddiesModel and ChatsModel and displays registered instances of Buddy and Chat classes.
  * Chat instances are displayed before Buddy ones.
  */
-class TalkableModel : public MergedProxyModel, public KaduAbstractModel
+class TalkableModel : public KaduMergedProxyModel
 {
 	Q_OBJECT
 
@@ -54,21 +53,6 @@ public:
 	 */
 	explicit TalkableModel(QObject *parent = 0);
 	virtual ~TalkableModel();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of indexes that contains given value.
-	 * @param value value to search for
-	 * @return list of indexes thatn contains given value
-	 *
-	 * This method returns list of indexes that contains given value. BuddiesModel's and ChatsModel's
-	 * indexListForValue implementations are used to get list of indexes that are mapped, concatenated
-	 * and then returned as a result.
-	 *
-	 * Value can be instance of Buddy, Chat or Contact. Values of other types will always result in empty
-	 * list.
-	 */
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

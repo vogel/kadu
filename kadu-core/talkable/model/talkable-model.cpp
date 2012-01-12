@@ -22,8 +22,8 @@
 
 #include "talkable-model.h"
 
-TalkableModel::TalkableModel(QObject *parent)
-		: MergedProxyModel(parent)
+TalkableModel::TalkableModel(QObject *parent) :
+		KaduMergedProxyModel(parent)
 {
 	Chats = new ChatsModel(this);
 	Buddies = new BuddiesModel(this);
@@ -36,22 +36,6 @@ TalkableModel::TalkableModel(QObject *parent)
 
 TalkableModel::~TalkableModel()
 {
-}
-
-QModelIndexList TalkableModel::indexListForValue(const QVariant &value) const
-{
-	const QModelIndexList &chatsIndexes = Chats->indexListForValue(value);
-	const QModelIndexList &buddiesIndexes = Buddies->indexListForValue(value);
-
-	QModelIndexList result;
-
-	foreach (const QModelIndex &index, chatsIndexes)
-		result.append(mapFromSource(index));
-
-	foreach (const QModelIndex &index, buddiesIndexes)
-		result.append(mapFromSource(index));
-
-	return result;
 }
 
 void TalkableModel::setIncludeMyself(bool includeMyself)
