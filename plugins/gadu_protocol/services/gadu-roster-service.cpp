@@ -21,15 +21,11 @@
 
 #include <QtCore/QScopedArrayPointer>
 
-#include <libgadu.h>
-
 #include "contacts/contact-manager.h"
-#include "protocols/protocol.h"
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-contact-details.h"
-#include "gadu-protocol.h"
 
 #include "gadu-roster-service.h"
 
@@ -48,7 +44,7 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 	return result;
 }
 
-GaduRosterService::GaduRosterService(GaduProtocol *protocol) :
+GaduRosterService::GaduRosterService(Protocol *protocol) :
 		RosterService(protocol), GaduSession(0)
 {
 	Q_ASSERT(protocol);

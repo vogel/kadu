@@ -24,15 +24,9 @@
 #ifndef GADU_USERLIST_HANDLER_H
 #define GADU_USERLIST_HANDLER_H
 
-#include <QtCore/QObject>
-
 #include <libgadu.h>
 
 #include "protocols/services/roster-service.h"
-
-class Contact;
-class GaduContactDetails;
-class GaduProtocol;
 
 class GaduRosterService : public RosterService
 {
@@ -49,7 +43,7 @@ protected slots:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduRosterService(GaduProtocol *protocol);
+	explicit GaduRosterService(Protocol *protocol);
 	virtual ~GaduRosterService();
 
 	virtual void prepareRoster();
