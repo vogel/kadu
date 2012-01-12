@@ -63,10 +63,10 @@ public:
 	explicit GaduChatService(GaduProtocol *protocol);
 	virtual ~GaduChatService();
 
-	void setGaduSession(gg_session *gaduSession);
-
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
+
+	void setGaduSession(gg_session *gaduSession);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

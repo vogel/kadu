@@ -100,6 +100,11 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	setChatStateService(CurrentChatStateService);
 	setRosterService(new GaduRosterService(this));
 
+	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
+	        CurrentChatService, SLOT(setGaduSession(gg_session*)));
+	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
+	        CurrentChatStateService, SLOT(setGaduSession(gg_session*)));
+
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
 	kdebugf2();
@@ -195,7 +200,7 @@ void GaduProtocol::login()
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 
-		CurrentChatStateService->setGaduSession(GaduSession);
+		emit gaduSessionChanged(GaduSession);
 		// here was return... do not re-add it ;)
 	}
 
@@ -219,8 +224,7 @@ void GaduProtocol::login()
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
-	CurrentChatService->setGaduSession(GaduSession);
-	CurrentChatStateService->setGaduSession(GaduSession);
+	emit gaduSessionChanged(GaduSession);
 
 	cleanUpLoginParams();
 
@@ -312,6 +316,7 @@ void GaduProtocol::disconnectedCleanup()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
+		emit gaduSessionChanged(GaduSession);
 	}
 
 	CurrentMultilogonService->removeAllSessions();
