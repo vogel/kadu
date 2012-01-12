@@ -22,12 +22,11 @@
 #include "contacts/contact-manager.h"
 
 #include "helpers/gadu-protocol-helper.h"
-#include "gadu-account-details.h"
 
 #include "gadu-chat-state-service.h"
 
 GaduChatStateService::GaduChatStateService(Protocol *parent) :
-		ChatStateService(parent), GaduSession(0)
+		ChatStateService(parent), GaduSession(0), SendTypingNotifications(false)
 {
 }
 
@@ -38,6 +37,11 @@ GaduChatStateService::~GaduChatStateService()
 void GaduChatStateService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
+}
+
+void GaduChatStateService::setSendTypingNotifications(bool sendTypingNotifications)
+{
+	SendTypingNotifications = sendTypingNotifications;
 }
 
 void GaduChatStateService::messageReceived(const Message &message)
@@ -58,21 +62,9 @@ void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 		emit peerStateChanged(contact, StatePaused);
 }
 
-bool GaduChatStateService::shouldSendEvent()
-{
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!gaduAccountDetails)
-		return false;
-
-	if (!gaduAccountDetails->sendTypingNotification())
-		return false;
-
-	return true;
-}
-
 void GaduChatStateService::sendState(const Contact &contact, State state)
 {
-	if (!shouldSendEvent() || !contact)
+	if (!SendTypingNotifications || !contact)
 		return;
 
 	if (!GaduSession)

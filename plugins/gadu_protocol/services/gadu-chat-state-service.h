@@ -37,13 +37,15 @@ class GaduChatStateService : public ChatStateService
 
 	gg_session *GaduSession;
 
-	bool shouldSendEvent();
+	bool SendTypingNotifications;
 
 public:
 	explicit GaduChatStateService(Protocol *parent);
 	virtual ~GaduChatStateService();
 
 	virtual void sendState(const Contact &contact, State state);
+
+	void setSendTypingNotifications(bool sendTypingNotifications);
 
 public slots:
 	void setGaduSession(gg_session *gaduSession);

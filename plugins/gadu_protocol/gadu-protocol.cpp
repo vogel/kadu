@@ -195,8 +195,11 @@ void GaduProtocol::everyMinuteActions()
 void GaduProtocol::configureServices()
 {
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (gaduAccountDetails)
-		CurrentChatService->setReceiveImagesDuringInvisibility(gaduAccountDetails->receiveImagesDuringInvisibility());
+	if (!gaduAccountDetails)
+		return;
+
+	CurrentChatService->setReceiveImagesDuringInvisibility(gaduAccountDetails->receiveImagesDuringInvisibility());
+	CurrentChatStateService->setSendTypingNotifications(gaduAccountDetails->sendTypingNotification());
 }
 
 void GaduProtocol::accountUpdated()
