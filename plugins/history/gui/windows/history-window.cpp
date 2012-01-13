@@ -106,6 +106,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 {
 	kdebugf();
 
+	setProperty("ownWindowIcon", true);
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
 

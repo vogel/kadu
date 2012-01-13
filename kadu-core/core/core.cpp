@@ -533,7 +533,6 @@ void Core::configurationUpdated()
 void Core::createGui()
 {
 	Window = new KaduWindow();
-	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
 
 	// initialize file transfers
@@ -566,9 +565,13 @@ void Core::setIcon(const KaduIcon &icon)
 
 	if (!blocked)
 	{
-		if (Window)
-			Window->setWindowIcon(icon.icon());
 		QApplication::setWindowIcon(icon.icon());
+		foreach (QWidget *window, QApplication::topLevelWidgets())
+			if (window->property("ownWindowIcon").toBool() == false)
+				window->setWindowIcon(icon.icon());
+		if (Window && !Window->isWindow())
+			Window->setWindowIcon(icon.icon());
+
 		emit mainIconChanged(icon);
 	}
 }
