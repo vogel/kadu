@@ -93,6 +93,7 @@ TabsManager::TabsManager(QObject *parent) :
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
 	TabDialog = new TabWidget(this);
+	TabDialog->setProperty("ownWindowIcon", true);
 	TabDialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TabDialog, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),

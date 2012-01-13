@@ -13,8 +13,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 
-class KaduIcon;
-
 class SingleWindow : public QMainWindow, public ChatWidgetContainer
 {
 	Q_OBJECT
@@ -54,7 +52,6 @@ public slots:
 	void closeTab(int index);
 	void onIconChanged();
 	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
-	void onStatusPixmapChanged(const KaduIcon &icon);
 	void closeChat();
 
 };

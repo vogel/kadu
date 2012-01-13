@@ -111,8 +111,6 @@ SingleWindow::SingleWindow()
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	connect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
-		this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
@@ -143,8 +141,6 @@ SingleWindow::~SingleWindow()
 
 	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
-	disconnect(Core::instance(), SIGNAL(mainIconChanged(const KaduIcon &)),
-			this, SLOT(onStatusPixmapChanged(const KaduIcon &)));
 
 	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
@@ -418,11 +414,6 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 		//kadu->userBox()->setFocus();//TODO: fixme
 		handled = true;
 	}
-}
-
-void SingleWindow::onStatusPixmapChanged(const KaduIcon &icon)
-{
-	setWindowIcon(icon.icon());
 }
 
 void SingleWindow::onIconChanged()

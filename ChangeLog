@@ -2,6 +2,7 @@
 
 +++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
+* gui: #2417 fixed: properly update icons of Kadu windows (beevvy)
 
 +++ version 0.11.0-rc1
 * hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)
