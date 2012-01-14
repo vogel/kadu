@@ -37,7 +37,7 @@ class QPushButton;
 
 class AvatarService;
 
-class KADUAPI AccountAvatarWidget : public QWidget, ProtocolsAwareObject
+class KADUAPI AccountAvatarWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -67,9 +67,8 @@ private slots:
 	void avatarUploaded(bool ok, QImage image);
 	void serviceDestroyed();
 
-protected:
-	virtual void protocolRegistered(ProtocolFactory *protocolFactory);
-	virtual void protocolUnregistered(ProtocolFactory *protocolFactory);
+	void protocolRegistered(ProtocolFactory *protocolFactory);
+	void protocolUnregistered(ProtocolFactory *protocolFactory);
 
 public:
 	explicit AccountAvatarWidget(Account account, QWidget *parent = 0);

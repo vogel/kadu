@@ -60,13 +60,24 @@ AccountShared::AccountShared(const QUuid &uuid) :
 {
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
+
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	        this, SLOT(protocolRegistered(ProtocolFactory*)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
+
 }
 
 AccountShared::~AccountShared()
 {
 	ref.ref();
 
-	triggerAllProtocolsUnregistered();
+	if (!ProtocolName.isEmpty())
+	{
+		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		if (factory)
+			protocolUnregistered(factory);
+	}
 
 	delete MyStatusContainer;
 	MyStatusContainer = 0;
@@ -155,7 +166,12 @@ void AccountShared::load()
 
 	PrivateStatus = loadValue<bool>("PrivateStatus", true);
 
-	triggerAllProtocolsRegistered();
+	if (!ProtocolName.isEmpty())
+	{
+		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		if (factory)
+			protocolRegistered(factory);
+	}
 }
 
 void AccountShared::store()

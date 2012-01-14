@@ -27,7 +27,6 @@
 #include <QtNetwork/QHostAddress>
 
 #include "network/proxy/network-proxy.h"
-#include "protocols/protocols-aware-object.h"
 #include "status/status.h"
 #include "storage/shared.h"
 
@@ -40,7 +39,7 @@ class Protocol;
 class ProtocolFactory;
 class StatusContainer;
 
-class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObject
+class KADUAPI AccountShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountShared)
@@ -80,6 +79,10 @@ class KADUAPI AccountShared : public QObject, public Shared, ProtocolsAwareObjec
 
 	void importNetworkProxy();
 
+private slots:
+	void protocolRegistered(ProtocolFactory *protocolHandler);
+	void protocolUnregistered(ProtocolFactory *protocolHandler);
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -89,9 +92,6 @@ protected:
 	// hack, changing details does not trigger this
 	friend class GaduEditAccountWidget;
 	void emitUpdated();
-
-	virtual void protocolRegistered(ProtocolFactory *protocolHandler);
-	virtual void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);
