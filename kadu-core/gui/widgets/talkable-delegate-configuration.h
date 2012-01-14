@@ -46,6 +46,7 @@ class TalkableDelegateConfiguration : private ConfigurationAwareObject
 	bool ShowDescription;
 	bool ShowMultiLineDescription;
 	bool ShowAvatars;
+	bool ShowMessagePixmap;
 	bool UseConfigurationColors;
 	bool AvatarBorder;
 	bool AvatarGreyOut;
@@ -60,6 +61,7 @@ public:
 
 	void setShowIdentityName(bool showIdentityName) { ShowIdentityName = showIdentityName; }
 	void setUseConfigurationColors(bool useConfigurationColors) { UseConfigurationColors = useConfigurationColors; }
+	void setShowMessagePixmap(bool showMessagePixmap) { ShowMessagePixmap = showMessagePixmap; }
 
 	const QFont & font() const { return Font; }
 	const QFont & boldFont() const { return BoldFont; }
@@ -71,6 +73,7 @@ public:
 	bool showDescription() const { return ShowDescription; }
 	bool showMultiLineDescription() const { return ShowMultiLineDescription; }
 	bool showAvatars() const { return ShowAvatars; }
+	bool showMessagePixmap() const { return ShowMessagePixmap; }
 	bool useConfigurationColors() const { return UseConfigurationColors; }
 	bool avatarBorder() const { return AvatarBorder; }
 	bool avatarGreyOut() const { return AvatarGreyOut; }

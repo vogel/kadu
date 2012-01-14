@@ -26,7 +26,7 @@
 #include "talkable-delegate-configuration.h"
 
 TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView) :
-		ListView(listView), ShowIdentityName(true), UseConfigurationColors(false)
+		ListView(listView), ShowIdentityName(true), ShowMessagePixmap(true), UseConfigurationColors(false)
 {
 	Q_ASSERT(ListView);
 
