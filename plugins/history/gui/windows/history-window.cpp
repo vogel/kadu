@@ -411,20 +411,15 @@ void HistoryWindow::selectHistoryItem(const HistoryTreeItem &item)
 {
 	switch (item.type())
 	{
-		case HistoryTypeNone:
-			// do nothing
-			break;
-
-		case HistoryTypeChat:
-			selectChat(item.chat());
-			break;
-
 		case HistoryTypeStatus:
 			selectStatusBuddy(item.buddy());
 			break;
 
 		case HistoryTypeSms:
 			selectSmsRecipient(item.smsRecipient());
+			break;
+
+		default:
 			break;
 	}
 }
