@@ -808,7 +808,7 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
 	{
 		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
-		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+		chatActivated(treeItem.chat());
 	}
 	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 	{
