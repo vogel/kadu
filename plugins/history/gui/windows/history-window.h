@@ -116,10 +116,12 @@ private slots:
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
+	void showChatsPopupMenu(const QPoint &pos);
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);
 
 	void openChat();
+	void clearChatHistory2();
 	void clearChatHistory();
 	void clearStatusHistory();
 	void clearSmsHistory();

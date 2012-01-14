@@ -249,6 +249,8 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsTalkableTree->setChain(ChatsModelChain);
 
 	connect(ChatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
+	connect(ChatsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu(QPoint)));
+	ChatsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	chatsTalkableWidget->setTreeView(ChatsTalkableTree);
 
@@ -651,6 +653,20 @@ QVector<Message> HistoryWindow::statusesToMessages(const QList<TimedStatus> &sta
 	return messages;
 }
 
+void HistoryWindow::showChatsPopupMenu(const QPoint &pos)
+{
+	Q_UNUSED(pos)
+
+	QScopedPointer<QMenu> menu;
+
+	menu.reset(TalkableMenuManager::instance()->menu(this, ChatsTalkableTree->actionContext()));
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear Chat History"), this, SLOT(clearChatHistory2()));
+
+	menu->exec(QCursor::pos());
+}
+
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
 	QScopedPointer<QMenu> menu;
@@ -743,6 +759,19 @@ void HistoryWindow::clearChatHistory()
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
 	kdebugf2();
+}
+
+void HistoryWindow::clearChatHistory2()
+{
+	if (!ChatsTalkableTree->actionContext())
+		return;
+
+	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
+	if (!chat)
+		return;
+
+	History::instance()->currentStorage()->clearChatHistory(chat);
+	updateData();
 }
 
 void HistoryWindow::clearStatusHistory()
