@@ -279,9 +279,6 @@ void HistoryWindow::updateData()
 {
 	kdebugf();
 
-	QModelIndex index = ChatsTree->selectionModel()->currentIndex();
-	HistoryTreeItem treeItem = index.data(HistoryItemRole).value<HistoryTreeItem>();
-
 	QSet<Chat> usedChats;
 	QVector<Chat> chatsList = History::instance()->chatsList(HistorySearchParameters());
 
@@ -322,10 +319,10 @@ void HistoryWindow::updateData()
 	ChatsModel2->setChats(conferenceChats);
 	BuddiesModel->setBuddyList(buddies);
 
-	selectHistoryItem(treeItem);
-
 	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(HistorySearchParameters()));
 	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(HistorySearchParameters()));
+
+	chatActivated(Chat::null);
 }
 
 void HistoryWindow::selectChat(const Chat &chat)
