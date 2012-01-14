@@ -54,6 +54,7 @@
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
@@ -223,6 +224,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	TalkableTreeView *chatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
 	chatsTalkableTree->setUseConfigurationColors(true);
 	chatsTalkableTree->setContextMenuEnabled(true);
+	chatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
 	ChatsModel2 = new ChatsListModel(chatsTalkableTree);
 	BuddiesModel = new BuddyListModel(chatsTalkableTree);
