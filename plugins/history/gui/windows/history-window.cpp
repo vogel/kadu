@@ -326,37 +326,21 @@ void HistoryWindow::updateData()
 
 void HistoryWindow::selectChat(const Chat &chat)
 {
-	if (chat.contacts().size() == 0)
-	{
-		chatActivated(Chat::null);
-		return;
-	}
-
 	ChatsTalkableTree->selectionModel()->clearSelection();
+	QModelIndexList indexesToSelect;
+
 	if (chat.contacts().size() == 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
+	else if (chat.contacts().size() > 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(chat);
+
+	if (1 == indexesToSelect.size())
 	{
-		const QModelIndexList &buddyIndexes = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
-		if (1 == buddyIndexes.size())
-			ChatsTalkableTree->selectionModel()->select(buddyIndexes.at(0), QItemSelectionModel::Select);
-		else
-		{
-			chatActivated(Chat::null);
-			return;
-		}
+		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::Select);
+		chatActivated(chat);
 	}
 	else
-	{
-		const QModelIndexList &chatIndexes = ChatsModelChain->indexListForValue(chat);
-		if (1 == chatIndexes.size())
-			ChatsTalkableTree->selectionModel()->select(chatIndexes.at(0), QItemSelectionModel::Select);
-		else
-		{
-			chatActivated(Chat::null);
-			return;
-		}
-	}
-
-	chatActivated(chat);
+		chatActivated(Chat::null);
 }
 
 void HistoryWindow::selectStatusBuddy(const Buddy &buddy)
