@@ -96,8 +96,6 @@ class HistoryWindow : public MainWindow
 
 	void updateData();
 	void selectChat(const Chat &chat);
-	void selectStatusBuddy(const Buddy &buddy);
-	void selectSmsRecipient(const QString &recipient);
 
 	void chatActivated(const Chat &chat);
 	void statusBuddyActivated(const Buddy &buddy);

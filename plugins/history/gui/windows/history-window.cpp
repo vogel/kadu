@@ -343,42 +343,6 @@ void HistoryWindow::selectChat(const Chat &chat)
 		chatActivated(Chat::null);
 }
 
-void HistoryWindow::selectStatusBuddy(const Buddy &buddy)
-{
-	QModelIndex statusIndex = ChatsModelProxy->statusIndex();
-	if (!statusIndex.isValid())
-	{
-		treeItemActivated(HistoryTreeItem());
-		return;
-	}
-
-	ChatsTree->collapseAll();
-	ChatsTree->expand(statusIndex);
-
-	QModelIndex statusBuddyIndex = ChatsModelProxy->statusBuddyIndex(buddy);
-	ChatsTree->selectionModel()->select(statusBuddyIndex, QItemSelectionModel::ClearAndSelect);
-
-	statusBuddyActivated(buddy);
-}
-
-void HistoryWindow::selectSmsRecipient(const QString& recipient)
-{
-	QModelIndex smsIndex = ChatsModelProxy->smsIndex();
-	if (!smsIndex.isValid())
-	{
-		treeItemActivated(HistoryTreeItem());
-		return;
-	}
-
-	ChatsTree->collapseAll();
-	ChatsTree->expand(smsIndex);
-
-	QModelIndex smsRecipientIndex = ChatsModelProxy->smsRecipientIndex(recipient);
-	ChatsTree->selectionModel()->select(smsRecipientIndex, QItemSelectionModel::ClearAndSelect);
-
-	smsRecipientActivated(recipient);
-}
-
 void HistoryWindow::chatActivated(const Chat &chat)
 {
 	kdebugf();
@@ -760,12 +724,12 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 	{
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
-		selectStatusBuddy(treeItem.buddy());
+		statusBuddyActivated(treeItem.buddy());
 	}
 	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
-		selectSmsRecipient(treeItem.smsRecipient());
+		smsRecipientActivated(treeItem.smsRecipient());
 	}
 }
 
