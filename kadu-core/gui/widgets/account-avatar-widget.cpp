@@ -29,6 +29,7 @@
 #include "avatars/avatar.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 
@@ -41,7 +42,13 @@ AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
 
 	createGui();
 
-	triggerAllProtocolsRegistered();
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	        this, SLOT(protocolRegistered(ProtocolFactory*)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
+
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolRegistered(factory);
 }
 
 AccountAvatarWidget::~AccountAvatarWidget()

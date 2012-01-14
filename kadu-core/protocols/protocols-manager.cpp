@@ -25,7 +25,6 @@
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
-#include "protocols/protocols-aware-object.h"
 
 #include "debug.h"
 
@@ -65,7 +64,6 @@ void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)
 
 	emit protocolFactoryAboutToBeRegistered(factory);
 	Factories.append(factory);
-	ProtocolsAwareObject::notifyProtocolRegistered(factory);
 	emit protocolFactoryRegistered(factory);
 }
 
@@ -75,7 +73,6 @@ void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 		return;
 
 	emit protocolFactoryAboutToBeUnregistered(factory);
-	ProtocolsAwareObject::notifyProtocolUnregistered(factory);
 	Factories.removeAll(factory);
 	emit protocolFactoryUnregistered(factory);
 }

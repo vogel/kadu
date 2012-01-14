@@ -13,7 +13,6 @@ set (protocols_SRCS
 
 	connection-error-notification.cpp
 	protocol.cpp
-	protocols-aware-object.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
 	roster.cpp

@@ -61,17 +61,31 @@ AccountShared::AccountShared(const QString &protocolName) :
 	AccountIdentity = new Identity();
 	AccountContact = new Contact();
 
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
+	        this, SLOT(protocolRegistered(ProtocolFactory*)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
+	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
+
 	// ProtocolName is not empty here only if a new Account has just been created
 	// it that case load() method will not be called so we need to call triggerAllProtocolsRegistered here
 	if (!ProtocolName.isEmpty())
-		triggerAllProtocolsRegistered();
+	{
+		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		if (factory)
+			protocolRegistered(factory);
+	}
 }
 
 AccountShared::~AccountShared()
 {
 	ref.ref();
 
-	triggerAllProtocolsUnregistered();
+	if (!ProtocolName.isEmpty())
+	{
+		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		if (factory)
+			protocolUnregistered(factory);
+	}
 
 	delete MyStatusContainer;
 	MyStatusContainer = 0;
@@ -160,7 +174,12 @@ void AccountShared::load()
 
 	PrivateStatus = loadValue<bool>("PrivateStatus", true);
 
-	triggerAllProtocolsRegistered();
+	if (!ProtocolName.isEmpty())
+	{
+		ProtocolFactory *factory = ProtocolsManager::instance()->byName(ProtocolName);
+		if (factory)
+			protocolRegistered(factory);
+	}
 }
 
 void AccountShared::store()
