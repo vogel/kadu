@@ -217,7 +217,7 @@
     </message>
     <message>
         <source>Open Chat</source>
-        <translation>Otwórz rozmwę</translation>
+        <translation>Otwórz rozmowę</translation>
     </message>
     <message>
         <source>Delete Hint</source>
