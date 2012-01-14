@@ -379,23 +379,6 @@ void HistoryWindow::selectSmsRecipient(const QString& recipient)
 	smsRecipientActivated(recipient);
 }
 
-void HistoryWindow::selectHistoryItem(const HistoryTreeItem &item)
-{
-	switch (item.type())
-	{
-		case HistoryTypeStatus:
-			selectStatusBuddy(item.buddy());
-			break;
-
-		case HistoryTypeSms:
-			selectSmsRecipient(item.smsRecipient());
-			break;
-
-		default:
-			break;
-	}
-}
-
 void HistoryWindow::chatActivated(const Chat &chat)
 {
 	kdebugf();
@@ -777,12 +760,12 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 	{
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
-		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+		selectStatusBuddy(treeItem.buddy());
 	}
 	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
-		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+		selectSmsRecipient(treeItem.smsRecipient());
 	}
 }
 
