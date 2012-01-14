@@ -236,6 +236,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ModelChain *chain = new ModelChain(mergedModel, chatsTalkableTree);
 
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
+	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
 	connect(chatsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
