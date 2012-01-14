@@ -44,8 +44,10 @@ class ChatsListModel;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
 class HistoryTreeItem;
+class ModelChain;
 class NameTalkableFilter;
 class SmsDatesModel;
+class TalkableTreeView;
 class TimedStatus;
 
 /*!
@@ -62,6 +64,10 @@ class HistoryWindow : public MainWindow
 
 	BuddyListModel *BuddiesModel;
 	ChatsListModel *ChatsModel2;
+
+	TalkableTreeView *ChatsTalkableTree;
+	ModelChain *ChatsModelChain;
+
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;

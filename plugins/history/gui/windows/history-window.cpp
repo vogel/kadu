@@ -221,36 +221,36 @@ void HistoryWindow::createChatTree(QWidget *parent)
 
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
-	TalkableTreeView *chatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
-	chatsTalkableTree->setUseConfigurationColors(true);
-	chatsTalkableTree->setContextMenuEnabled(true);
-	chatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
+	ChatsTalkableTree->setUseConfigurationColors(true);
+	ChatsTalkableTree->setContextMenuEnabled(true);
+	ChatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
-	ChatsModel2 = new ChatsListModel(chatsTalkableTree);
-	BuddiesModel = new BuddyListModel(chatsTalkableTree);
+	ChatsModel2 = new ChatsListModel(ChatsTalkableTree);
+	BuddiesModel = new BuddyListModel(ChatsTalkableTree);
 
 	QList<QAbstractItemModel *> models;
 	models.append(ChatsModel2);
 	models.append(BuddiesModel);
 
-	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, chatsTalkableTree);
+	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, ChatsTalkableTree);
 
-	ModelChain *chain = new ModelChain(mergedModel, chatsTalkableTree);
+	ChatsModelChain = new ModelChain(mergedModel, ChatsTalkableTree);
 
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(ChatsModelChain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
 	connect(chatsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameTalkableFilter);
 
-	chain->addProxyModel(proxyModel);
+	ChatsModelChain->addProxyModel(proxyModel);
 
-	chatsTalkableTree->setChain(chain);
+	ChatsTalkableTree->setChain(ChatsModelChain);
 
-	connect(chatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
+	connect(ChatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
 
-	chatsTalkableWidget->setTreeView(chatsTalkableTree);
+	chatsTalkableWidget->setTreeView(ChatsTalkableTree);
 
 	tabWidget->addTab(chatsTalkableWidget, tr("Chats"));
 	tabWidget->addTab(chatsWidget, tr("SMS"));
@@ -332,6 +332,23 @@ void HistoryWindow::selectChat(const Chat &chat)
 	Q_ASSERT(!aggregateDetails || !aggregateDetails->chats().isEmpty());
 	QString typeName = aggregateDetails ? aggregateDetails->chats().at(0).type() : chat.type();
 	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
+
+	if (chat.contacts().size() == 0)
+		return;
+
+	ChatsTalkableTree->selectionModel()->clearSelection();
+	if (chat.contacts().size() == 1)
+	{
+		const QModelIndexList &buddyIndexes = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
+		if (1 == buddyIndexes.size())
+			ChatsTalkableTree->selectionModel()->select(buddyIndexes.at(0), QItemSelectionModel::Select);
+	}
+	else
+	{
+		const QModelIndexList &chatIndexes = ChatsModelChain->indexListForValue(chat);
+		if (1 == chatIndexes.size())
+			ChatsTalkableTree->selectionModel()->select(chatIndexes.at(0), QItemSelectionModel::Select);
+	}
 
 	if (!type)
 	{
