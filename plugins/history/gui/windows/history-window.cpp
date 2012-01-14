@@ -806,13 +806,20 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 
 	HistoryTreeItem treeItem = DetailsListView->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
 	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
+	{
 		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
+		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+	}
 	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
+	{
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
+		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+	}
 	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+	{
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
-
-	selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+		selectHistoryItem(ChatsTree->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>());
+	}
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
