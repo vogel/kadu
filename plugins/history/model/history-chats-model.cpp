@@ -22,10 +22,6 @@
  */
 
 #include "buddies/buddy.h"
-#include "chat/chat.h"
-#include "chat/chat-details-aggregate.h"
-#include "chat/model/chat-data-extractor.h"
-#include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 
@@ -36,38 +32,10 @@
 HistoryChatsModel::HistoryChatsModel(QObject *parent) :
 		QAbstractItemModel(parent)
 {
-	triggerAllChatTypesRegistered();
 }
 
 HistoryChatsModel::~HistoryChatsModel()
 {
-	triggerAllChatTypesUnregistered();
-}
-
-void HistoryChatsModel::chatTypeRegistered(ChatType *chatType)
-{
-	if (ChatKeys.contains(chatType))
-		return;
-
-	if (-1 == chatType->sortIndex())
-		return;
-
-	beginInsertRows(QModelIndex(), Chats.size(), Chats.size());
-	ChatKeys.append(chatType);
-	Chats.append(QVector<Chat>());
-	endInsertRows();
-}
-
-void HistoryChatsModel::chatTypeUnregistered(ChatType *chatType)
-{
-	if (!ChatKeys.contains(chatType))
-		return;
-
-	int index = ChatKeys.indexOf(chatType);
-	beginRemoveRows(QModelIndex(), index, index);
-	Chats.remove(index);
-	ChatKeys.removeAt(index);
-	endRemoveRows();
 }
 
 int HistoryChatsModel::columnCount(const QModelIndex &parent) const
@@ -80,7 +48,7 @@ int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 {
 	if (!parent.isValid())
-		return ChatKeys.size() + 2;
+		return 2;
 
 	if (parent.parent().isValid())
 		return 0;
@@ -88,19 +56,15 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 	if (parent.row() < 0)
 		return 0;
 
-	if (parent.row() >= Chats.size())
+	switch (parent.row())
 	{
-		switch (parent.row() - Chats.size())
-		{
-			case 0:
-				return StatusBuddies.size();
-			case 1:
-				return SmsRecipients.size();
-		}
-		return 0;
+		case 0:
+			return StatusBuddies.size();
+		case 1:
+			return SmsRecipients.size();
 	}
 
-	return Chats.at(parent.row()).size();
+	return 0;
 }
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
@@ -114,51 +78,6 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 		return QModelIndex();
 
 	return createIndex(child.internalId(), 0, -1);
-}
-
-QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) const
-{
-	if (index.row() < 0 || index.row() >= ChatKeys.size())
-		return QVariant();
-
-	ChatType *chatType = ChatKeys.at(index.row());
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return chatType->displayNamePlural();
-
-		case Qt::DecorationRole:
-			return chatType->icon().icon();
-
-		case ChatTypeRole:
-			return QVariant::fromValue<ChatType *>(chatType);
-	}
-
-	return QVariant();
-}
-
-QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
-{
-	if (index.internalId() < 0 || index.internalId() >= Chats.size())
-		return QVariant();
-
-	const QVector<Chat> &chats = Chats.at(index.internalId());
-	if (index.row() < 0 || index.row() >= chats.size())
-		return QVariant();
-
-	Chat chat = chats.at(index.row());
-
-	switch (role)
-	{
-		case Qt::DisplayRole:
-		case ChatRole:
-			return ChatDataExtractor::data(chat, role);
-
-		case HistoryItemRole:
-			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(chat));
-	}
-
-	return QVariant();
 }
 
 QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
@@ -223,83 +142,26 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 	if (index.parent().parent().isValid())
 		return QVariant();
 
-	qint64 chatTypeIndex = index.parent().isValid() ? index.internalId() : index.row();
-	if (chatTypeIndex < 0)
+	qint64 row = index.parent().isValid() ? index.internalId() : index.row();
+	if (row < 0)
 		return QVariant();
 
-	if (chatTypeIndex >= ChatKeys.size())
+	switch (row)
 	{
-		switch (chatTypeIndex - ChatKeys.size())
-		{
-			case 0: return statusData(index, role);
-			case 1: return smsRecipientData(index, role);
-		}
-
-		return QVariant();
+		case 0: return statusData(index, role);
+		case 1: return smsRecipientData(index, role);
 	}
 
-	if (index.parent().isValid())
-		return chatData(index, role);
-	else
-		return chatTypeData(index, role);
-}
-
-void HistoryChatsModel::clearChats()
-{
-	int count = Chats.size();
-	for (int i = 0; i < count; i++)
-		if (!Chats.at(i).isEmpty())
-		{
-			beginRemoveRows(index(i, 0), 0, Chats.at(i).size() - 1);
-			Chats[i].clear();
-			endRemoveRows();
-		}
-}
-
-void HistoryChatsModel::addChat(const Chat &chat)
-{
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
-		return;
-
-	if (chatType->name() == "Aggregate")
-	{
-		ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(chat.details());
-		Q_ASSERT(details);
-		Q_ASSERT(!details->chats().isEmpty());
-
-		chatType = ChatTypeManager::instance()->chatType(details->chats().at(0).type());
-		if (!chatType)
-			return;
-	}
-
-	int id = ChatKeys.indexOf(chatType);
-	if (-1 == id)
-		return;
-
-	QModelIndex idx = index(id, 0);
-	int count = Chats.at(id).count();
-
-	beginInsertRows(idx, count, count);
-	Chats[id].append(chat);
-	endInsertRows();
-}
-
-void HistoryChatsModel::setChats(const QVector<Chat> &chats)
-{
-	clearChats();
-
-	foreach (const Chat &chat, chats)
-		addChat(chat);
+	return QVariant();
 }
 
 void HistoryChatsModel::clearStatusBuddies()
 {
 	if (!StatusBuddies.isEmpty())
 	{
-		beginRemoveRows(index(Chats.size(), 0), 0, StatusBuddies.size() - 1);
+		beginResetModel();
 		StatusBuddies.clear();
-		endRemoveRows();
+		endResetModel();
 	}
 }
 
@@ -307,9 +169,9 @@ void HistoryChatsModel::clearSmsRecipients()
 {
 	if (!SmsRecipients.isEmpty())
 	{
-		beginRemoveRows(index(Chats.size() + 1, 0), 0, SmsRecipients.size() - 1);
+		beginResetModel();
 		SmsRecipients.clear();
-		endRemoveRows();
+		endResetModel();
 	}
 }
 
@@ -319,9 +181,9 @@ void HistoryChatsModel::setStatusBuddies(const QVector<Buddy> &buddies)
 
 	if (!buddies.isEmpty())
 	{
-		beginInsertRows(index(Chats.size(), 0), 0, buddies.size() - 1);
+		beginResetModel();
 		StatusBuddies = buddies;
-		endInsertRows();
+		endResetModel();
 	}
 }
 
@@ -331,41 +193,15 @@ void HistoryChatsModel::setSmsRecipients(const QList<QString> &smsRecipients)
 
 	if (!smsRecipients.isEmpty())
 	{
-		beginInsertRows(index(Chats.size() + 1, 0), 0, smsRecipients.size() - 1);
+		beginResetModel();
 		SmsRecipients = smsRecipients;
-		endInsertRows();
+		endResetModel();
 	}
-}
-
-QModelIndex HistoryChatsModel::chatTypeIndex(ChatType *type) const
-{
-	int row = ChatKeys.indexOf(type);
-	if (row < 0)
-		return QModelIndex();
-
-	return index(row, 0, QModelIndex());
-}
-
-QModelIndex HistoryChatsModel::chatIndex(const Chat &chat) const
-{
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
-		return QModelIndex();
-
-	if (!ChatKeys.contains(chatType))
-		return QModelIndex();
-
-	QModelIndex typeIndex = chatTypeIndex(chatType);
-	if (!typeIndex.isValid())
-		return QModelIndex();
-
-	int row = Chats.at(typeIndex.row()).indexOf(chat);
-	return index(row, 0, typeIndex);
 }
 
 QModelIndex HistoryChatsModel::statusIndex() const
 {
-	return index(ChatKeys.size(), 0, QModelIndex());
+	return index(0, 0, QModelIndex());
 }
 
 QModelIndex HistoryChatsModel::statusBuddyIndex(const Buddy &buddy) const
@@ -380,7 +216,7 @@ QModelIndex HistoryChatsModel::statusBuddyIndex(const Buddy &buddy) const
 
 QModelIndex HistoryChatsModel::smsIndex() const
 {
-	return index(ChatKeys.size() + 1, 0, QModelIndex());
+	return index(1, 0, QModelIndex());
 }
 
 QModelIndex HistoryChatsModel::smsRecipientIndex(const QString &recipient) const

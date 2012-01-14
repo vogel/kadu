@@ -23,8 +23,6 @@
 
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
-#include "chat/chat.h"
-#include "chat/type/chat-type.h"
 #include "contacts/contact-set.h"
 #include "model/history-chats-model.h"
 #include "model/roles.h"
@@ -53,19 +51,6 @@ int HistoryChatsModelProxy::compareNames(QString n1, QString n2) const
 bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
 	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
-	Chat chat = sourceChild.data(ChatRole).value<Chat>();
-	if (chat)
-	{
-		foreach (TalkableFilter *filter, TalkableFilters)
-			switch (filter->filterChat(chat))
-			{
-				case TalkableFilter::Accepted: return true;
-				case TalkableFilter::Undecided: break;
-				case TalkableFilter::Rejected: return false;
-			}
-
-		return true;
-	}
 
 	Buddy buddy = sourceChild.data(BuddyRole).value<Buddy>();
 	if (buddy)
@@ -86,31 +71,6 @@ bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &
 
 bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	// chats?
-	Chat leftChat = left.data(ChatRole).value<Chat>();
-	Chat rightChat = right.data(ChatRole).value<Chat>();
-
-	if (leftChat && rightChat)
-	{
-		bool isLeftNamed = !leftChat.display().isEmpty();
-		bool isRightNamed = !rightChat.display().isEmpty();
-
-		if (isLeftNamed && !isRightNamed)
-			return true;
-		if (isRightNamed && !isLeftNamed)
-			return false;
-
-		bool isLeftAllAnonymous = leftChat.contacts().toBuddySet().isAllAnonymous();
-		bool isRightAllAnonymous = rightChat.contacts().toBuddySet().isAllAnonymous();
-
-		if (isLeftAllAnonymous && !isRightAllAnonymous)
-			return false;
-		if (isRightAllAnonymous && !isLeftAllAnonymous)
-			return true;
-
-		return compareNames(left.data(Qt::DisplayRole).toString(), right.data(Qt::DisplayRole).toString()) < 0;
-	}
-
 	// buddies?
 	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
 	Buddy rightBuddy = right.data(BuddyRole).value<Buddy>();
@@ -125,18 +85,7 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 		return compareNames(leftBuddy.display(), rightBuddy.display()) < 0;
 	}
 
-	ChatType *leftType = left.data(ChatTypeRole).value<ChatType *>();
-	ChatType *rightType = right.data(ChatTypeRole).value<ChatType *>();
-
-	QString leftName = leftType ? leftType->displayName() : left.data(Qt::DisplayRole).toString();
-	QString rightName = rightType ? rightType->displayName() : right.data(Qt::DisplayRole).toString();
-
-	if (!leftType && rightType)
-		return false;
-	if (!rightType && leftType)
-		return true;
-
-	return compareNames(leftName, rightName) < 0;
+	return compareNames(left.data(Qt::DisplayRole).toString(), right.data(Qt::DisplayRole).toString()) < 0;
 }
 
 void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -165,24 +114,6 @@ void HistoryChatsModelProxy::removeTalkableFilter(TalkableFilter *filter)
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();
-}
-
-QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType *type) const
-{
-	if (!Model)
-		return QModelIndex();
-
-	QModelIndex index = Model->chatTypeIndex(type);
-	return mapFromSource(index);
-}
-
-QModelIndex HistoryChatsModelProxy::chatIndex(const Chat &chat) const
-{
-	if (!Model)
-		return QModelIndex();
-
-	QModelIndex index = Model->chatIndex(chat);
-	return mapFromSource(index);
 }
 
 QModelIndex HistoryChatsModelProxy::statusIndex() const

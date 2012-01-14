@@ -29,8 +29,6 @@
 #include <QtGui/QSortFilterProxyModel>
 
 class Buddy;
-class Chat;
-class ChatType;
 class HistoryChatsModel;
 class TalkableFilter;
 
@@ -55,9 +53,6 @@ public:
 
 	void addTalkableFilter(TalkableFilter *filter);
 	void removeTalkableFilter(TalkableFilter *filter);
-
-	QModelIndex chatTypeIndex(ChatType *type) const;
-	QModelIndex chatIndex(const Chat &chat) const;
 
 	QModelIndex statusIndex() const;
 	QModelIndex statusBuddyIndex(const Buddy &buddy) const;

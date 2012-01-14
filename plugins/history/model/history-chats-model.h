@@ -27,37 +27,20 @@
 #include <QtCore/QMap>
 #include <QtCore/QVector>
 
-#include "chat/type/chat-type-aware-object.h"
-
 class Buddy;
-class Chat;
-class ChatType;
 
-class HistoryChatsModel : public QAbstractItemModel, ChatTypeAwareObject
+class HistoryChatsModel : public QAbstractItemModel
 {
 	Q_OBJECT
-
-	QList<ChatType *> ChatKeys;
-	QVector<QVector<Chat> > Chats;
 
 	QVector<Buddy> StatusBuddies;
 	QList<QString> SmsRecipients;
 
-	void clearChats();
-	void addChat(const Chat &chat);
-
 	void clearStatusBuddies();
 	void clearSmsRecipients();
 
-	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
-
 	QVariant statusData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant smsRecipientData(const QModelIndex &index, int role = Qt::DisplayRole) const;
-
-protected:
-	virtual void chatTypeRegistered(ChatType *chatType);
-	virtual void chatTypeUnregistered(ChatType *chatType);
 
 public:
 	HistoryChatsModel(QObject *parent = 0);
@@ -71,12 +54,8 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setChats(const QVector<Chat> &chats);
 	void setStatusBuddies(const QVector<Buddy> &buddies);
 	void setSmsRecipients(const QList<QString> &smsRecipients);
-
-	QModelIndex chatTypeIndex(ChatType *type) const;
-	QModelIndex chatIndex(const Chat &chat) const;
 
 	QModelIndex statusIndex() const;
 	QModelIndex statusBuddyIndex(const Buddy &buddy) const;

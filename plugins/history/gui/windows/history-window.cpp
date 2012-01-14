@@ -315,7 +315,6 @@ void HistoryWindow::updateData()
 		}
 	}
 
-	ChatsModel->setChats(result);
 	ChatsModel2->setChats(conferenceChats);
 	BuddiesModel->setBuddyList(buddies);
 
@@ -327,13 +326,11 @@ void HistoryWindow::updateData()
 
 void HistoryWindow::selectChat(const Chat &chat)
 {
-	ChatDetailsAggregate *aggregateDetails = qobject_cast<ChatDetailsAggregate *>(chat.details());
-	Q_ASSERT(!aggregateDetails || !aggregateDetails->chats().isEmpty());
-	QString typeName = aggregateDetails ? aggregateDetails->chats().at(0).type() : chat.type();
-	ChatType *type = ChatTypeManager::instance()->chatType(typeName);
-
 	if (chat.contacts().size() == 0)
+	{
+		chatActivated(Chat::null);
 		return;
+	}
 
 	ChatsTalkableTree->selectionModel()->clearSelection();
 	if (chat.contacts().size() == 1)
@@ -341,32 +338,23 @@ void HistoryWindow::selectChat(const Chat &chat)
 		const QModelIndexList &buddyIndexes = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
 		if (1 == buddyIndexes.size())
 			ChatsTalkableTree->selectionModel()->select(buddyIndexes.at(0), QItemSelectionModel::Select);
+		else
+		{
+			chatActivated(Chat::null);
+			return;
+		}
 	}
 	else
 	{
 		const QModelIndexList &chatIndexes = ChatsModelChain->indexListForValue(chat);
 		if (1 == chatIndexes.size())
 			ChatsTalkableTree->selectionModel()->select(chatIndexes.at(0), QItemSelectionModel::Select);
+		else
+		{
+			chatActivated(Chat::null);
+			return;
+		}
 	}
-
-	if (!type)
-	{
-		treeItemActivated(HistoryTreeItem());
-		return;
-	}
-
-	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
-	if (!chatTypeIndex.isValid())
-	{
-		treeItemActivated(HistoryTreeItem());
-		return;
-	}
-
-	ChatsTree->collapseAll();
-	ChatsTree->expand(chatTypeIndex);
-
-	QModelIndex chatIndex = ChatsModelProxy->chatIndex(chat);
-	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
 	chatActivated(chat);
 }
