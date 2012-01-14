@@ -245,7 +245,7 @@ void HistoryWindow::createChatTree(QWidget *parent)
 
 	chatsTalkableTree->setChain(chain);
 
-	connect(chatsTalkableTree, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
+	connect(chatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
 
 	chatsTalkableWidget->setTreeView(chatsTalkableTree);
 
@@ -826,4 +826,25 @@ Chat HistoryWindow::selectedChat() const
 
 	Account bestAccount = AccountManager::bestAccount(map.keys());
 	return map.value(bestAccount);
+}
+
+void HistoryWindow::currentChatChanged(const Talkable &talkable)
+{
+	switch (talkable.type())
+	{
+		case Talkable::ItemChat:
+		{
+			chatActivated(talkable.toChat());
+			break;
+		}
+		case Talkable::ItemBuddy:
+		{
+			BuddySet buddies;
+			buddies.insert(talkable.toBuddy());
+			chatActivated(ChatManager::instance()->findChat(buddies, true));
+			break;
+		}
+		default:
+			break;
+	}
 }

@@ -31,6 +31,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/windows/main-window.h"
+#include "talkable/talkable.h"
 
 #include "history.h"
 #include "history_exports.h"
@@ -104,6 +105,8 @@ class HistoryWindow : public MainWindow
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
+	void currentChatChanged(const Talkable &talkable);
+
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
