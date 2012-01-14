@@ -195,6 +195,8 @@ KaduIcon Protocol::statusIcon(const Status &status)
 
 void Protocol::loggingInStateEntered()
 {
+	emit disconnected(CurrentAccount);
+
 	// this may be called from our connection error-handling code, when user wants to be logged in
 	// at any cost, so we should assume that we were just disconnected
 	// better do some cleanup then
@@ -230,16 +232,18 @@ void Protocol::loggedInStateEntered()
 
 void Protocol::loggingOutStateEntered()
 {
+	emit disconnected(CurrentAccount);
+
 	// call protocol implementation
 	logout();
 }
 
 void Protocol::loggedOutAnyStateEntered()
 {
+	emit disconnected(CurrentAccount);
+
 	disconnectedCleanup();
 	statusChanged(loginStatus());
-
-	emit disconnected(CurrentAccount);
 }
 
 void Protocol::wantToLogInStateEntered()
