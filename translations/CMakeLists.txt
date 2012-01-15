@@ -15,6 +15,7 @@ set (LANGAUGE_FILES
 	de.language
 	en.language
 	pl.language
+	ru.language
 )
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
