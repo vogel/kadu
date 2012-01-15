@@ -28,7 +28,6 @@
 #include <QtGui/QTreeWidget>
 
 #include "buddies/buddy-set.h"
-#include "gui/actions/action-description.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/windows/main-window.h"
 #include "talkable/talkable.h"
@@ -83,10 +82,6 @@ class HistoryWindow : public MainWindow
 	QMenu *DetailsPopupMenu;
 
 	ChatMessagesView *ContentBrowser;
-
-	ActionDescription *historySearchActionDescription;
-	ActionDescription *historyNextResultsActionDescription;
-	ActionDescription *historyPrevResultsActionDescription;
 
 	BaseActionContext *Context;
 
