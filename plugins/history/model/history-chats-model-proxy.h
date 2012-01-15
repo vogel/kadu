@@ -39,13 +39,6 @@ class HistoryChatsModelProxy : public QSortFilterProxyModel
 	HistoryChatsModel *Model;
 	QList<TalkableFilter *> TalkableFilters;
 
-	bool BrokenStringCompare;
-	int compareNames(QString n1, QString n2) const;
-
-protected:
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-
 public:
 	HistoryChatsModelProxy(QObject *parent = 0);
 
@@ -53,9 +46,6 @@ public:
 
 	void addTalkableFilter(TalkableFilter *filter);
 	void removeTalkableFilter(TalkableFilter *filter);
-
-	QModelIndex statusIndex() const;
-	QModelIndex statusBuddyIndex(const Buddy &buddy) const;
 
 	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &smsRecipient) const;

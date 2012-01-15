@@ -33,13 +33,10 @@ class HistoryChatsModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
-	QVector<Buddy> StatusBuddies;
 	QList<QString> SmsRecipients;
 
-	void clearStatusBuddies();
 	void clearSmsRecipients();
 
-	QVariant statusData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QVariant smsRecipientData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 public:
@@ -54,11 +51,7 @@ public:
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setStatusBuddies(const QVector<Buddy> &buddies);
 	void setSmsRecipients(const QList<QString> &smsRecipients);
-
-	QModelIndex statusIndex() const;
-	QModelIndex statusBuddyIndex(const Buddy &buddy) const;
 
 	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &recipient) const;

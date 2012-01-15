@@ -35,57 +35,6 @@ HistoryChatsModelProxy::HistoryChatsModelProxy(QObject *parent) :
 {
 	setDynamicSortFilter(true);
 	sort(0);
-
-	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
-	if (BrokenStringCompare)
-		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
-}
-
-int HistoryChatsModelProxy::compareNames(QString n1, QString n2) const
-{
-	return BrokenStringCompare
-			? n1.toLower().localeAwareCompare(n2.toLower())
-			: n1.localeAwareCompare(n2);
-}
-
-bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
-{
-	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
-
-	Buddy buddy = sourceChild.data(BuddyRole).value<Buddy>();
-	if (buddy)
-	{
-		foreach (TalkableFilter *filter, TalkableFilters)
-			switch (filter->filterBuddy(buddy))
-			{
-				case TalkableFilter::Accepted: return true;
-				case TalkableFilter::Undecided: break;
-				case TalkableFilter::Rejected: return false;
-			}
-
-		return true;
-	}
-
-	return true;
-}
-
-bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
-{
-	// buddies?
-	Buddy leftBuddy = left.data(BuddyRole).value<Buddy>();
-	Buddy rightBuddy = right.data(BuddyRole).value<Buddy>();
-
-	if (leftBuddy && rightBuddy)
-	{
-		if (!leftBuddy.isAnonymous() && rightBuddy.isAnonymous())
-			return true;
-		if (leftBuddy.isAnonymous() && !rightBuddy.isAnonymous())
-			return false;
-
-		return compareNames(leftBuddy.display(), rightBuddy.display()) < 0;
-	}
-
-	return compareNames(left.data(Qt::DisplayRole).toString(), right.data(Qt::DisplayRole).toString()) < 0;
 }
 
 void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -114,24 +63,6 @@ void HistoryChatsModelProxy::removeTalkableFilter(TalkableFilter *filter)
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 
 	invalidateFilter();
-}
-
-QModelIndex HistoryChatsModelProxy::statusIndex() const
-{
-	if (!Model)
-		return QModelIndex();
-
-	QModelIndex index = Model->statusIndex();
-	return mapFromSource(index);
-}
-
-QModelIndex HistoryChatsModelProxy::statusBuddyIndex(const Buddy &buddy) const
-{
-	if (!Model)
-		return QModelIndex();
-
-	QModelIndex index = Model->statusBuddyIndex(buddy);
-	return mapFromSource(index);
 }
 
 QModelIndex HistoryChatsModelProxy::smsIndex() const

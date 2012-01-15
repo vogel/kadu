@@ -48,21 +48,13 @@ int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 {
 	if (!parent.isValid())
-		return 2;
+		return 1;
 
 	if (parent.parent().isValid())
 		return 0;
 
-	if (parent.row() < 0)
-		return 0;
-
-	switch (parent.row())
-	{
-		case 0:
-			return StatusBuddies.size();
-		case 1:
-			return SmsRecipients.size();
-	}
+	if (parent.row() == 0)
+		return SmsRecipients.size();
 
 	return 0;
 }
@@ -78,36 +70,6 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 		return QModelIndex();
 
 	return createIndex(child.internalId(), 0, -1);
-}
-
-QVariant HistoryChatsModel::statusData(const QModelIndex &index, int role) const
-{
-	if (!index.parent().isValid())
-	{
-		switch (role)
-		{
-			case Qt::DisplayRole:
-				return tr("Statuses");
-			case Qt::DecorationRole:
-				return KaduIcon("protocols/common/online").icon();
-		}
-		return QVariant();
-	}
-
-	if (index.row() < 0 || index.row() >= StatusBuddies.size())
-		return QVariant();
-
-	Buddy buddy = StatusBuddies.at(index.row());
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return buddy.display();
-		case BuddyRole:
-			return QVariant::fromValue<Buddy>(buddy);
-		case HistoryItemRole:
-			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(buddy));
-	}
-	return QVariant();
 }
 
 QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role) const
@@ -143,26 +105,10 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	qint64 row = index.parent().isValid() ? index.internalId() : index.row();
-	if (row < 0)
-		return QVariant();
-
-	switch (row)
-	{
-		case 0: return statusData(index, role);
-		case 1: return smsRecipientData(index, role);
-	}
+	if (0 == row)
+		return smsRecipientData(index, role);
 
 	return QVariant();
-}
-
-void HistoryChatsModel::clearStatusBuddies()
-{
-	if (!StatusBuddies.isEmpty())
-	{
-		beginResetModel();
-		StatusBuddies.clear();
-		endResetModel();
-	}
 }
 
 void HistoryChatsModel::clearSmsRecipients()
@@ -171,18 +117,6 @@ void HistoryChatsModel::clearSmsRecipients()
 	{
 		beginResetModel();
 		SmsRecipients.clear();
-		endResetModel();
-	}
-}
-
-void HistoryChatsModel::setStatusBuddies(const QVector<Buddy> &buddies)
-{
-	clearStatusBuddies();
-
-	if (!buddies.isEmpty())
-	{
-		beginResetModel();
-		StatusBuddies = buddies;
 		endResetModel();
 	}
 }
@@ -199,24 +133,9 @@ void HistoryChatsModel::setSmsRecipients(const QList<QString> &smsRecipients)
 	}
 }
 
-QModelIndex HistoryChatsModel::statusIndex() const
-{
-	return index(0, 0, QModelIndex());
-}
-
-QModelIndex HistoryChatsModel::statusBuddyIndex(const Buddy &buddy) const
-{
-	QModelIndex parent = statusIndex();
-	if (!parent.isValid())
-		return QModelIndex();
-
-	int row = StatusBuddies.indexOf(buddy);
-	return index(row, 0, parent);
-}
-
 QModelIndex HistoryChatsModel::smsIndex() const
 {
-	return index(1, 0, QModelIndex());
+	return index(0, 0, QModelIndex());
 }
 
 QModelIndex HistoryChatsModel::smsRecipientIndex(const QString &recipient) const

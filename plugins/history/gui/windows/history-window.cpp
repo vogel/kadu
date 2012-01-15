@@ -364,7 +364,6 @@ void HistoryWindow::updateData()
 
 	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList(HistorySearchParameters());
 	BuddiesModel2->setBuddyList(statusBuddies.toList());
-	ChatsModel->setStatusBuddies(statusBuddies);
 	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(HistorySearchParameters()));
 
 	chatActivated(Chat::null);
