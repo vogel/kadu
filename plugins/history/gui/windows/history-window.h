@@ -25,11 +25,11 @@
 #define HISTORY_WINDOW_H
 
 #include <QtGui/QDateEdit>
+#include <QtGui/QMainWindow>
 #include <QtGui/QTreeWidget>
 
 #include "buddies/buddy-set.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/windows/main-window.h"
 #include "talkable/talkable.h"
 
 #include "history.h"
@@ -37,7 +37,6 @@
 
 class QStandardItemModel;
 
-class BaseActionContext;
 class BuddyListModel;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
@@ -53,7 +52,7 @@ class TimedStatus;
 \class HistoryWindow
 \author Juzef, Vogel
 */
-class HistoryWindow : public MainWindow
+class HistoryWindow : public QMainWindow
 {
 	Q_OBJECT
 
@@ -83,9 +82,8 @@ class HistoryWindow : public MainWindow
 
 	ChatMessagesView *ContentBrowser;
 
-	BaseActionContext *Context;
-
 	explicit HistoryWindow(QWidget *parent = 0);
+	virtual ~HistoryWindow();
 
 	void createGui();
 	void createTrees(QWidget *parent);
@@ -100,9 +98,6 @@ class HistoryWindow : public MainWindow
 	void chatActivated(const Chat &chat);
 	void statusBuddyActivated(const Buddy &buddy);
 	void smsRecipientActivated(const QString &recipient);
-
-	ContactSet selectedContacts() const;
-	Chat selectedChat() const;
 
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
@@ -124,23 +119,11 @@ private slots:
 	void clearSmsHistory();
 	void removeHistoryEntriesPerDate();
 
-	void updateContext();
-
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
 	static void show(const Chat &chat);
-
-	virtual ~HistoryWindow();
-
-	virtual QTreeView * detailsListView() { return DetailsListView; }
-
-	virtual ChatMessagesView * contentBrowser() { return ContentBrowser; }
-
-	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ChatWidget * chatWidget() { return 0; }
-	virtual TalkableProxyModel * talkableProxyModel() { return 0; }
 
 };
 

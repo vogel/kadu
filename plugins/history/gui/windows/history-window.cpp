@@ -112,7 +112,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		MainWindow(new BaseActionContext(), "history", parent)
+		QMainWindow(parent)
 {
 	kdebugf();
 
@@ -129,9 +129,6 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	DetailsPopupMenu = new QMenu(this);
 	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
-
-	Context = static_cast<BaseActionContext *>(actionContext());
-	updateContext();
 
 	kdebugf2();
 }
@@ -696,11 +693,6 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	}
 }
 
-bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
-{
-	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeHistory);
-}
-
 void HistoryWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
@@ -713,27 +705,6 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		ContentBrowser->pageAction(QWebPage::Copy)->trigger();
 	else
 		QWidget::keyPressEvent(e);
-}
-
-void HistoryWindow::updateContext()
-{
-	ContactSet contacts = selectedContacts();
-
-	Context->blockChangedSignal();
-	Context->setContacts(contacts);
-	Context->setBuddies(contacts.toBuddySet());
-	Context->setChat(selectedChat());
-	Context->unblockChangedSignal();
-}
-
-ContactSet HistoryWindow::selectedContacts() const
-{
-	return ContactSet();
-}
-
-Chat HistoryWindow::selectedChat() const
-{
-	return Chat::null;
 }
 
 void HistoryWindow::currentChatChanged(const Talkable &talkable)
