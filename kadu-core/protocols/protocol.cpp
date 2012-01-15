@@ -223,9 +223,8 @@ void Protocol::loggingInStateEntered()
 
 void Protocol::loggedInStateEntered()
 {
-	afterLoggedIn();
-
 	statusChanged(loginStatus());
+	afterLoggedIn();
 
 	emit connected(CurrentAccount);
 }
