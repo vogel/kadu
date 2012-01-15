@@ -24,6 +24,7 @@
 #include <QtCore/QTimer>
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
@@ -42,6 +43,12 @@ ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
 	{
+		// this must be called before ContactManager has its own pretty storage point
+		// if ContactManager is called first and import from 0.6.5 is done
+		// when ContactManager's storage() point will be modified from Contacts to OldContacts
+		// and everything will be fucked up
+		BuddyManager::instance();
+
 		Instance = new ContactManager();
 		Instance->init();
 	}
