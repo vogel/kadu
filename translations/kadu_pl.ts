@@ -949,7 +949,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>End of title</source>
-        <translation>Koniec tytuły</translation>
+        <translation>Koniec tytułu</translation>
     </message>
     <message>
         <source>Custom composing notification syntax</source>
