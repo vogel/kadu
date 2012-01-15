@@ -90,10 +90,10 @@ void FilteredTreeView::setPosition(FilterPosition filterPosition)
 	insertView();
 }
 
-void FilteredTreeView::setTreeView(QTreeView *treeView)
+void FilteredTreeView::setView(QAbstractItemView *view)
 {
 	removeView();
-	View = treeView;
+	View = view;
 	NameFilterWidget->setView(View);
 	insertView();
 }

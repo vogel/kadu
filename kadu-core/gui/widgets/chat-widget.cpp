@@ -242,7 +242,7 @@ void ChatWidget::createContactsList()
 	connect(view, SIGNAL(talkableActivated(Talkable)),
 			Core::instance()->kaduWindow(), SLOT(talkableActivatedSlot(Talkable)));
 
-	BuddiesWidget->setTreeView(view);
+	BuddiesWidget->setView(view);
 
 	QToolBar *toolBar = new QToolBar(contactsListContainer);
 	toolBar->addAction(Actions::instance()->createAction("editUserAction", InputBox->actionContext(), InputBox));

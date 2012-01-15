@@ -32,8 +32,8 @@
 #	include <Carbon/Carbon.h>
 #endif
 
+class QAbstractItemView;
 class QLineEdit;
-class QTreeView;
 
 class KADUAPI FilterWidget : public QWidget
 {
@@ -45,7 +45,7 @@ class KADUAPI FilterWidget : public QWidget
 #else
 	QLineEdit *NameFilterEdit;
 #endif
-	QTreeView *View;
+	QAbstractItemView *View;
 	bool sendKeyEventToView(QKeyEvent *);
 
 
@@ -60,7 +60,7 @@ public:
 	virtual ~FilterWidget();
 
 	void setFilter(const QString &filter);
-	void setView(QTreeView *view);
+	void setView(QAbstractItemView *view);
 
 signals:
 	void textChanged(const QString &text);

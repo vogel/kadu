@@ -199,7 +199,7 @@ void RosterWidget::createTalkableWidget(QWidget *parent)
 	connect(TalkableTree, SIGNAL(talkableActivated(Talkable)), this, SIGNAL(talkableActivated(Talkable)));
 	connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SIGNAL(currentChanged(Talkable)));
 
-	TalkableWidget->setTreeView(TalkableTree);
+	TalkableWidget->setView(TalkableTree);
 }
 
 TalkableTreeView * RosterWidget::talkableTreeView()

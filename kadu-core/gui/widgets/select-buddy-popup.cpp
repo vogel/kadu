@@ -40,7 +40,7 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	setWindowFlags(Qt::Popup);
 
 	View = new TalkableTreeView(this);
-	setTreeView(View);
+	setView(View);
 
 	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
 	ProxyModel = new TalkableProxyModel(chain);

@@ -219,7 +219,7 @@ void FilterWidget::setFilter(const QString &filter)
 #endif
 }
 
-void FilterWidget::setView(QTreeView *view)
+void FilterWidget::setView(QAbstractItemView *view)
 {
 	View = view;
 }

@@ -134,7 +134,7 @@ void AddConferenceWindow::createGui()
 	view->setShowIdentityNameIfMany(false);
 	view->setContextMenuEnabled(true);
 
-	buddiesWidget->setTreeView(view);
+	buddiesWidget->setView(view);
 
 	mainLayout->addWidget(buddiesWidget);
 

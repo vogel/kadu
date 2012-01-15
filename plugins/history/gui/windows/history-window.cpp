@@ -236,7 +236,7 @@ QWidget * HistoryWindow::createChatTree(QWidget *parent)
 	connect(ChatsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu(QPoint)));
 	ChatsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	chatsTalkableWidget->setTreeView(ChatsTalkableTree);
+	chatsTalkableWidget->setView(ChatsTalkableTree);
 
 	return chatsTalkableWidget;
 }
@@ -269,7 +269,7 @@ QWidget * HistoryWindow::createStatusTree(QWidget *parent)
 	connect(StatusesTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu(QPoint)));
 	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	statusesTalkableWidget->setTreeView(StatusesTalkableTree);
+	statusesTalkableWidget->setView(StatusesTalkableTree);
 
 	return statusesTalkableWidget;
 }

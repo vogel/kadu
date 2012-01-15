@@ -33,7 +33,7 @@
 
 #include "exports.h"
 
-class QTreeView;
+class QAbstractItemView;
 class QVBoxLayout;
 
 class FilterWidget;
@@ -54,7 +54,7 @@ private:
 
 	QVBoxLayout *Layout;
 	FilterWidget *NameFilterWidget;
-	QTreeView *View;
+	QAbstractItemView *View;
 
 	void removeView();
 	void insertView();
@@ -71,7 +71,7 @@ public:
 	FilterWidget * filterWidget() { return NameFilterWidget; }
 
 	void setPosition(FilterPosition filterPosition);
-	void setTreeView(QTreeView *treeView);
+	void setView(QAbstractItemView *view);
 
 signals:
 	void filterChanged(const QString &filterText);

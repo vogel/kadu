@@ -72,7 +72,7 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
 	view->setChain(chain);
 
-	BuddiesWidget->setTreeView(view);
+	BuddiesWidget->setView(view);
 	BuddiesWidget->setMinimumSize(QSize(30, 30));
 
 	QWidget *buttons = new QWidget(this);
