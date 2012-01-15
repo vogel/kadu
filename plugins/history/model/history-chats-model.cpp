@@ -47,45 +47,28 @@ int HistoryChatsModel::columnCount(const QModelIndex &parent) const
 
 int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 {
-	if (!parent.isValid())
-		return 1;
-
-	if (parent.parent().isValid())
+	if (parent.isValid())
 		return 0;
 
-	if (parent.row() == 0)
-		return SmsRecipients.size();
-
-	return 0;
+	return SmsRecipients.size();
 }
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
 {
-	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
+	if (parent.isValid())
+		return QModelIndex();
+	return createIndex(row, column, 0);
 }
 
 QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 {
-	if (-1 == child.internalId())
-		return QModelIndex();
+	Q_UNUSED(child);
 
-	return createIndex(child.internalId(), 0, -1);
+	return QModelIndex();
 }
 
-QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role) const
+QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.parent().isValid())
-	{
-		switch (role)
-		{
-			case Qt::DisplayRole:
-				return tr("SMSes");
-			case Qt::DecorationRole:
-				return KaduIcon("phone").icon();
-		}
-		return QVariant();
-	}
-
 	if (index.row() < 0 || index.row() >= SmsRecipients.size())
 		return QVariant();
 
@@ -93,20 +76,11 @@ QVariant HistoryChatsModel::smsRecipientData(const QModelIndex &index, int role)
 	{
 		case Qt::DisplayRole:
 			return SmsRecipients.at(index.row());
+		case Qt::DecorationRole:
+			return KaduIcon("phone").icon();
 		case HistoryItemRole:
 			return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(SmsRecipients.at(index.row())));
 	}
-	return QVariant();
-}
-
-QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
-{
-	if (index.parent().parent().isValid())
-		return QVariant();
-
-	qint64 row = index.parent().isValid() ? index.internalId() : index.row();
-	if (0 == row)
-		return smsRecipientData(index, role);
 
 	return QVariant();
 }
@@ -133,17 +107,7 @@ void HistoryChatsModel::setSmsRecipients(const QList<QString> &smsRecipients)
 	}
 }
 
-QModelIndex HistoryChatsModel::smsIndex() const
-{
-	return index(0, 0, QModelIndex());
-}
-
 QModelIndex HistoryChatsModel::smsRecipientIndex(const QString &recipient) const
 {
-	QModelIndex parent = smsIndex();
-	if (!parent.isValid())
-		return QModelIndex();
-
-	int row = SmsRecipients.indexOf(recipient);
-	return index(row, 0, parent);
+	return index(SmsRecipients.indexOf(recipient), 0, QModelIndex());
 }

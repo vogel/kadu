@@ -37,8 +37,6 @@ class HistoryChatsModel : public QAbstractItemModel
 
 	void clearSmsRecipients();
 
-	QVariant smsRecipientData(const QModelIndex &index, int role = Qt::DisplayRole) const;
-
 public:
 	HistoryChatsModel(QObject *parent = 0);
 	virtual ~HistoryChatsModel();
@@ -53,7 +51,6 @@ public:
 
 	void setSmsRecipients(const QList<QString> &smsRecipients);
 
-	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &recipient) const;
 
 };

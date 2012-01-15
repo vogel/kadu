@@ -65,15 +65,6 @@ void HistoryChatsModelProxy::removeTalkableFilter(TalkableFilter *filter)
 	invalidateFilter();
 }
 
-QModelIndex HistoryChatsModelProxy::smsIndex() const
-{
-	if (!Model)
-		return QModelIndex();
-
-	QModelIndex index = Model->smsIndex();
-	return mapFromSource(index);
-}
-
 QModelIndex HistoryChatsModelProxy::smsRecipientIndex(const QString& smsRecipient) const
 {
 	if (!Model)

@@ -47,7 +47,6 @@ public:
 	void addTalkableFilter(TalkableFilter *filter);
 	void removeTalkableFilter(TalkableFilter *filter);
 
-	QModelIndex smsIndex() const;
 	QModelIndex smsRecipientIndex(const QString &smsRecipient) const;
 
 };
