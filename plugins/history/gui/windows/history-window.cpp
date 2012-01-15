@@ -491,25 +491,13 @@ void HistoryWindow::chatDateCurrentChanged(const QModelIndex &current, const QMo
 
 	TimelineChatView->messagesView()->setUpdatesEnabled(false);
 
-	switch (treeItem.type())
-	{
-		case HistoryTypeChat:
-		{
-			Chat chat = treeItem.chat();
-			QVector<Message> messages;
-			if (chat && date.isValid())
-				messages = History::instance()->messages(chat, date);
-			TimelineChatView->messagesView()->setChat(chat);
-			TimelineChatView->messagesView()->clearMessages();
-			TimelineChatView->messagesView()->appendMessages(messages);
-			break;
-		}
-
-		default:
-			TimelineChatView->messagesView()->setChat(Chat::null);
-			TimelineChatView->messagesView()->clearMessages();
-			break;
-	}
+	Chat chat = treeItem.chat();
+	QVector<Message> messages;
+	if (chat && date.isValid())
+		messages = History::instance()->messages(chat, date);
+	TimelineChatView->messagesView()->setChat(chat);
+	TimelineChatView->messagesView()->clearMessages();
+	TimelineChatView->messagesView()->appendMessages(messages);
 
 	TimelineChatView->messagesView()->setUpdatesEnabled(true);
 
@@ -528,26 +516,14 @@ void HistoryWindow::statusDateCurrentChanged(const QModelIndex &current, const Q
 
 	TimelineStatusesView->messagesView()->setUpdatesEnabled(false);
 
-	switch (treeItem.type())
-	{
-		case HistoryTypeStatus:
-		{
-			Buddy buddy = treeItem.buddy();
-			QList<TimedStatus> statuses;
-			if (buddy && date.isValid())
-				statuses = History::instance()->statuses(buddy, date);
-			if (!buddy.contacts().isEmpty())
-				TimelineStatusesView->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
-			TimelineStatusesView->messagesView()->clearMessages();
-			TimelineStatusesView->messagesView()->appendMessages(statusesToMessages(statuses));
-			break;
-		}
-
-		default:
-			TimelineStatusesView->messagesView()->setChat(Chat::null);
-			TimelineStatusesView->messagesView()->clearMessages();
-			break;
-	}
+	Buddy buddy = treeItem.buddy();
+	QList<TimedStatus> statuses;
+	if (buddy && date.isValid())
+		statuses = History::instance()->statuses(buddy, date);
+	if (!buddy.contacts().isEmpty())
+		TimelineStatusesView->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
+	TimelineStatusesView->messagesView()->clearMessages();
+	TimelineStatusesView->messagesView()->appendMessages(statusesToMessages(statuses));
 
 	TimelineStatusesView->messagesView()->setUpdatesEnabled(true);
 
@@ -566,25 +542,13 @@ void HistoryWindow::smsDateCurrentChanged(const QModelIndex &current, const QMod
 
 	TimelineSmsesView->messagesView()->setUpdatesEnabled(false);
 
-	switch (treeItem.type())
-	{
-		case HistoryTypeSms:
-		{
-			QString recipient = treeItem.smsRecipient();
-			QVector<Message> sms;
-			if (!recipient.isEmpty() && date.isValid())
-				sms = History::instance()->sms(recipient, date);
-			TimelineSmsesView->messagesView()->setChat(Chat::null);
-			TimelineSmsesView->messagesView()->clearMessages();
-			TimelineSmsesView->messagesView()->appendMessages(sms);
-			break;
-		}
-
-		default:
-			TimelineSmsesView->messagesView()->setChat(Chat::null);
-			TimelineSmsesView->messagesView()->clearMessages();
-			break;
-	}
+	QString recipient = treeItem.smsRecipient();
+	QVector<Message> sms;
+	if (!recipient.isEmpty() && date.isValid())
+		sms = History::instance()->sms(recipient, date);
+	TimelineSmsesView->messagesView()->setChat(Chat::null);
+	TimelineSmsesView->messagesView()->clearMessages();
+	TimelineSmsesView->messagesView()->appendMessages(sms);
 
 	TimelineSmsesView->messagesView()->setUpdatesEnabled(true);
 
@@ -668,7 +632,7 @@ void HistoryWindow::showChatDetailsPopupMenu(const QPoint &pos)
 		return;
 
 	HistoryTreeItem treeItem = TimelineChatView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
+	if (treeItem.chat())
 		ChatDetailsPopupMenu->exec(QCursor::pos());
 }
 
@@ -679,7 +643,7 @@ void HistoryWindow::showStatusDetailsPopupMenu(const QPoint &pos)
 		return;
 
 	HistoryTreeItem treeItem = TimelineStatusesView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
+	if (treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 		StatusDetailsPopupMenu->exec(QCursor::pos());
 }
 
@@ -690,7 +654,7 @@ void HistoryWindow::showSmsDetailsPopupMenu(const QPoint &pos)
 		return;
 
 	HistoryTreeItem treeItem = TimelineSmsesView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+	if (!treeItem.smsRecipient().isEmpty())
 		SmsDetailsPopupMenu->exec(QCursor::pos());
 }
 
@@ -748,7 +712,7 @@ void HistoryWindow::removeChatEntriesPerDate()
 		return;
 
 	HistoryTreeItem treeItem = TimelineChatView->timeline()->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
+	if (treeItem.chat())
 	{
 		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
 		chatActivated(treeItem.chat());
@@ -762,7 +726,7 @@ void HistoryWindow::removeStatusEntriesPerDate()
 		return;
 
 	HistoryTreeItem treeItem = TimelineStatusesView->timeline()->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
+	if (treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 	{
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
 		statusBuddyActivated(treeItem.buddy());
@@ -776,7 +740,7 @@ void HistoryWindow::removeSmsEntriesPerDate()
 		return;
 
 	HistoryTreeItem treeItem = TimelineSmsesView->timeline()->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
-	if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+	if (!treeItem.smsRecipient().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
 		smsRecipientActivated(treeItem.smsRecipient());

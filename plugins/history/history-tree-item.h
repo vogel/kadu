@@ -29,11 +29,8 @@
 #include "buddies/buddy.h"
 #include "chat/chat.h"
 
-#include "model/history-type.h"
-
 class HistoryTreeItem
 {
-	HistoryType Type;
 	Chat ItemChat;
 	Buddy ItemBuddy;
 	QString ItemSmsRecipient;
@@ -48,7 +45,6 @@ public:
 
 	HistoryTreeItem operator = (HistoryTreeItem &copyMe);
 
-	HistoryType type() const;
 	Chat chat() const;
 	Buddy buddy() const;
 	QString smsRecipient() const;

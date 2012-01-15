@@ -21,45 +21,38 @@
 
 #include "history-tree-item.h"
 
-HistoryTreeItem::HistoryTreeItem() :
-		Type(HistoryTypeNone)
+HistoryTreeItem::HistoryTreeItem()
 {
 }
 
 HistoryTreeItem::HistoryTreeItem(const HistoryTreeItem &copyMe) :
-		Type(copyMe.Type), ItemChat(copyMe.ItemChat), ItemBuddy(copyMe.ItemBuddy), ItemSmsRecipient(copyMe.ItemSmsRecipient)
+		ItemChat(copyMe.ItemChat), ItemBuddy(copyMe.ItemBuddy), ItemSmsRecipient(copyMe.ItemSmsRecipient)
 {
 }
 
 HistoryTreeItem::HistoryTreeItem(const Chat &chat) :
-		Type(HistoryTypeChat), ItemChat(chat)
+		ItemChat(chat)
 {
 }
 
 HistoryTreeItem::HistoryTreeItem(const Buddy &buddy) :
-		Type(HistoryTypeStatus), ItemBuddy(buddy)
+		ItemBuddy(buddy)
 {
 }
 
 HistoryTreeItem::HistoryTreeItem(const QString &smsRecipient) :
-		Type(HistoryTypeSms), ItemSmsRecipient(smsRecipient)
+		ItemSmsRecipient(smsRecipient)
 {
 
 }
 
 HistoryTreeItem HistoryTreeItem::operator = (HistoryTreeItem &copyMe)
 {
-	Type = copyMe.Type;
 	ItemChat = copyMe.ItemChat;
 	ItemBuddy = copyMe.ItemBuddy;
 	ItemSmsRecipient = copyMe.ItemSmsRecipient;
 
 	return *this;
-}
-
-HistoryType HistoryTreeItem::type() const
-{
-	return Type;
 }
 
 Chat HistoryTreeItem::chat() const
