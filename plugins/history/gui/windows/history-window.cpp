@@ -242,7 +242,35 @@ QWidget * HistoryWindow::createChatTree(QWidget *parent)
 
 QWidget * HistoryWindow::createStatusTree(QWidget *parent)
 {
-	return new QWidget(parent);
+	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+
+	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
+	StatusesTalkableTree->setUseConfigurationColors(true);
+	StatusesTalkableTree->setContextMenuEnabled(true);
+	StatusesTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+
+	BuddiesModel2 = new BuddyListModel(StatusesTalkableTree);
+
+	StatusesModelChain = new ModelChain(BuddiesModel2, StatusesTalkableTree);
+
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(StatusesModelChain);
+	proxyModel->setSortByStatusAndUnreadMessages(false);
+
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
+	connect(statusesTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameTalkableFilter);
+
+	StatusesModelChain->addProxyModel(proxyModel);
+
+	StatusesTalkableTree->setChain(StatusesModelChain);
+
+	connect(StatusesTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
+	connect(StatusesTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu(QPoint)));
+	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	statusesTalkableWidget->setTreeView(StatusesTalkableTree);
+
+	return statusesTalkableWidget;
 }
 
 QWidget * HistoryWindow::createSMSTree(QWidget *parent)
@@ -333,7 +361,9 @@ void HistoryWindow::updateData()
 	ChatsModel2->setChats(conferenceChats);
 	BuddiesModel->setBuddyList(buddies);
 
-	ChatsModel->setStatusBuddies(History::instance()->statusBuddiesList(HistorySearchParameters()));
+	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList(HistorySearchParameters());
+	BuddiesModel2->setBuddyList(statusBuddies.toList());
+	ChatsModel->setStatusBuddies(statusBuddies);
 	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(HistorySearchParameters()));
 
 	chatActivated(Chat::null);
@@ -593,6 +623,20 @@ void HistoryWindow::showChatsPopupMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
+void HistoryWindow::showStatusesPopupMenu(const QPoint &pos)
+{
+	Q_UNUSED(pos)
+
+	QScopedPointer<QMenu> menu;
+
+	menu.reset(TalkableMenuManager::instance()->menu(this, StatusesTalkableTree->actionContext()));
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear Status History"), this, SLOT(clearStatusHistory2()));
+
+	menu->exec(QCursor::pos());
+}
+
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
 	QScopedPointer<QMenu> menu;
@@ -712,6 +756,21 @@ void HistoryWindow::clearStatusHistory()
 	kdebugf2();
 }
 
+void HistoryWindow::clearStatusHistory2()
+{
+	if (!StatusesTalkableTree->actionContext())
+		return;
+
+	const BuddySet &buddies = StatusesTalkableTree->actionContext()->buddies();
+	if (buddies.isEmpty())
+		return;
+
+	foreach (const Buddy &buddy, buddies)
+		History::instance()->currentStorage()->clearStatusHistory(buddy);
+
+	updateData();
+}
+
 void HistoryWindow::clearSmsHistory()
 {
 	kdebugf();
@@ -829,4 +888,9 @@ void HistoryWindow::currentChatChanged(const Talkable &talkable)
 		default:
 			break;
 	}
+}
+
+void HistoryWindow::currentStatusChanged(const Talkable &talkable)
+{
+	statusBuddyActivated(talkable.toBuddy());
 }
