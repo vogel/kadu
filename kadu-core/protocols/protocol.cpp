@@ -248,6 +248,8 @@ void Protocol::loggedOutAnyStateEntered()
 
 void Protocol::wantToLogInStateEntered()
 {
+	emit disconnected(CurrentAccount);
+
 	disconnectedCleanup();
 	statusChanged(Status());
 
