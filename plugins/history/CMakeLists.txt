@@ -22,6 +22,8 @@ kadu_api_directories (plugins/history
 set (SOURCES
 	actions/show-history-action-description.cpp
 
+	gui/widgets/timeline-chat-messages-view.cpp
+
 	gui/windows/history-window.cpp
 
 	model/buddy-status-dates-model.cpp
@@ -42,6 +44,8 @@ set (SOURCES
 
 set (MOC_SOURCES
 	actions/show-history-action-description.h
+
+	gui/widgets/timeline-chat-messages-view.h
 
 	gui/windows/history-window.h
 

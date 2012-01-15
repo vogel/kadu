@@ -47,6 +47,7 @@ class NameTalkableFilter;
 class SmsDatesModel;
 class TalkableTreeView;
 class TimedStatus;
+class TimelineChatMessagesView;
 
 /*!
 \class HistoryWindow
@@ -72,15 +73,13 @@ class HistoryWindow : public QMainWindow
 	QStandardItemModel *SmsModel;
 	QListView *SmsListView;
 
-	QTreeView *DetailsListView;
+	TimelineChatMessagesView *TimelineChatView;
 
 	ChatDatesModel *MyChatDatesModel;
 	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
 	SmsDatesModel *MySmsDatesModel;
 
 	QMenu *DetailsPopupMenu;
-
-	ChatMessagesView *ContentBrowser;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
