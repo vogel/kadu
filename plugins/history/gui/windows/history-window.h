@@ -43,8 +43,6 @@ class BuddyListModel;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
 class ChatsListModel;
-class HistoryChatsModel;
-class HistoryChatsModelProxy;
 class HistoryTreeItem;
 class ModelChain;
 class NameTalkableFilter;
@@ -152,7 +150,5 @@ public:
 	virtual TalkableProxyModel * talkableProxyModel() { return 0; }
 
 };
-
-class HistoryChatsModel;
 
 #endif // HISTORY_WINDOW_H

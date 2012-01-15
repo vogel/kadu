@@ -78,8 +78,6 @@
 #include "model/buddy-status-dates-model.h"
 #include "model/chat-dates-model.h"
 #include "model/dates-model-item.h"
-#include "model/history-chats-model-proxy.h"
-#include "model/history-chats-model.h"
 #include "model/sms-dates-model.h"
 #include "search/history-search-parameters.h"
 #include "storage/history-storage.h"
