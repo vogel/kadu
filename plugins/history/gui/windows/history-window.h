@@ -36,6 +36,8 @@
 #include "history.h"
 #include "history_exports.h"
 
+class QStandardItemModel;
+
 class BaseActionContext;
 class BuddyListModel;
 class BuddyStatusDatesModel;
@@ -71,11 +73,10 @@ class HistoryWindow : public MainWindow
 	TalkableTreeView *StatusesTalkableTree;
 	ModelChain *StatusesModelChain;
 
-	QTreeView *ChatsTree;
+	QStandardItemModel *SmsModel;
+	QListView *SmsListView;
+
 	QTreeView *DetailsListView;
-	HistoryChatsModel *ChatsModel;
-	HistoryChatsModelProxy *ChatsModelProxy;
-	NameTalkableFilter *StatusBuddyNameFilter;
 
 	ChatDatesModel *MyChatDatesModel;
 	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
@@ -116,22 +117,20 @@ class HistoryWindow : public MainWindow
 private slots:
 	void currentChatChanged(const Talkable &talkable);
 	void currentStatusChanged(const Talkable &talkable);
+	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void showChatsPopupMenu(const QPoint &pos);
 	void showStatusesPopupMenu(const QPoint &pos);
+	void showSmsPopupMenu(const QPoint &pos);
 
-	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);
 
-	void openChat();
 	void clearChatHistory2();
-	void clearChatHistory();
-	void clearStatusHistory();
 	void clearStatusHistory2();
-	void clearSmsHistory();
+	void clearSmsHistory2();
 	void removeHistoryEntriesPerDate();
 
 	void updateContext();

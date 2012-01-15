@@ -34,6 +34,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
+#include <QtGui/QStandardItem>
+#include <QtGui/QStandardItemModel>
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
@@ -276,44 +278,32 @@ QWidget * HistoryWindow::createStatusTree(QWidget *parent)
 
 QWidget * HistoryWindow::createSMSTree(QWidget *parent)
 {
-	QWidget *chatsWidget = new QWidget(parent);
-	chatsWidget->setMinimumWidth(150);
-	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
+	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
-	FilterWidget *filterWidget = new FilterWidget(chatsWidget);
-	layout->addWidget(filterWidget);
+	SmsListView = new QListView(smsListWidget);
+	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	SmsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	ChatsTree = new QTreeView(parent);
-	ChatsTree->header()->hide();
-	layout->addWidget(ChatsTree);
+	SmsModel = new QStandardItemModel(StatusesTalkableTree);
+	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(SmsModel);
+	proxyModel->setSourceModel(SmsModel);
 
-	ChatsModel = new HistoryChatsModel(this);
+	connect(smsListWidget, SIGNAL(filterChanged(QString)), proxyModel, SLOT(setFilterFixedString(QString)));
 
-	ChatsModelProxy = new HistoryChatsModelProxy(this);
-	ChatsModelProxy->setSourceModel(ChatsModel);
+	SmsListView->setModel(SmsModel);
 
-	StatusBuddyNameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, this);
-	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
-	ChatsModelProxy->addTalkableFilter(StatusBuddyNameFilter);
+	connect(SmsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	        this, SLOT(currentSmsChanged(QModelIndex,QModelIndex)));
+	connect(SmsListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu(QPoint)));
+	SmsListView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	ChatsTree->setAlternatingRowColors(true);
-	ChatsTree->setModel(ChatsModelProxy);
-	ChatsTree->setRootIsDecorated(true);
+	smsListWidget->setView(SmsListView);
 
-	return chatsWidget;
+	return smsListWidget;
 }
 
 void HistoryWindow::connectGui()
 {
-	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(treeCurrentChanged(QModelIndex,QModelIndex)));
-	connect(ChatsTree->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(updateContext()));
-
-	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
-			this, SLOT(showMainPopupMenu(QPoint)));
-
 	DetailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(DetailsListView, SIGNAL(customContextMenuRequested(QPoint)),
 			this, SLOT(showDetailsPopupMenu(QPoint)));
@@ -364,7 +354,12 @@ void HistoryWindow::updateData()
 
 	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList(HistorySearchParameters());
 	BuddiesModel2->setBuddyList(statusBuddies.toList());
-	ChatsModel->setSmsRecipients(History::instance()->smsRecipientsList(HistorySearchParameters()));
+
+	QList<QString> smsRecipients = History::instance()->smsRecipientsList(HistorySearchParameters());
+
+	SmsModel->clear();
+	foreach (const QString &smsRecipient, smsRecipients)
+		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
 
 	chatActivated(Chat::null);
 }
@@ -637,56 +632,16 @@ void HistoryWindow::showStatusesPopupMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void HistoryWindow::showMainPopupMenu(const QPoint &pos)
+void HistoryWindow::showSmsPopupMenu(const QPoint &pos)
 {
+	Q_UNUSED(pos)
+
 	QScopedPointer<QMenu> menu;
 
-	HistoryTreeItem treeItem = ChatsTree->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
-	switch (treeItem.type())
-	{
-		case HistoryTypeChat:
-		{
-			Chat chat = treeItem.chat();
-			if (!chat)
-				return;
-
-			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
-			menu->addSeparator();
-			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-					tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
-
-			break;
-		}
-
-		case HistoryTypeStatus:
-		{
-			Buddy buddy = treeItem.buddy();
-			if (!buddy || buddy.contacts().isEmpty())
-				return;
-
-			menu.reset(TalkableMenuManager::instance()->menu(this, actionContext()));
-			menu->addSeparator();
-			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-					tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
-
-			break;
-		}
-
-		case HistoryTypeSms:
-		{
-			QString recipient = treeItem.smsRecipient();
-			if (recipient.isEmpty())
-				return;
-
-			menu.reset(new QMenu(this));
-			menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-					tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
-			break;
-		}
-
-		default:
-			return;
-	}
+	menu.reset(new QMenu(this));
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear SMS History"), this, SLOT(clearSmsHistory2()));
 
 	menu->exec(QCursor::pos());
 }
@@ -711,26 +666,6 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 		DetailsPopupMenu->exec(QCursor::pos());
 }
 
-void HistoryWindow::openChat()
-{
-	const Chat &chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-	if (chatWidget)
-		chatWidget->activate();
-}
-
-void HistoryWindow::clearChatHistory()
-{
-	kdebugf();
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	if (!chat)
-		return;
-
-	History::instance()->currentStorage()->clearChatHistory(chat);
-	updateData();
-	kdebugf2();
-}
-
 void HistoryWindow::clearChatHistory2()
 {
 	if (!ChatsTalkableTree->actionContext())
@@ -742,18 +677,6 @@ void HistoryWindow::clearChatHistory2()
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
-}
-
-void HistoryWindow::clearStatusHistory()
-{
-	kdebugf();
-	Buddy buddy = ChatsTree->currentIndex().data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return;
-
-	History::instance()->currentStorage()->clearStatusHistory(buddy);
-	updateData();
-	kdebugf2();
 }
 
 void HistoryWindow::clearStatusHistory2()
@@ -771,16 +694,23 @@ void HistoryWindow::clearStatusHistory2()
 	updateData();
 }
 
-void HistoryWindow::clearSmsHistory()
+void HistoryWindow::clearSmsHistory2()
 {
-	kdebugf();
-	QString recipient = ChatsTree->currentIndex().data(Qt::DisplayRole).toString();
-	if (recipient.isEmpty())
-		return;
+	bool removed = false;
 
-	History::instance()->currentStorage()->clearSmsHistory(recipient);
-	updateData();
-	kdebugf2();
+	const QModelIndexList &indexes = SmsListView->selectionModel()->selectedIndexes();
+	foreach (const QModelIndex &index, indexes)
+	{
+		QString recipient = index.data(Qt::DisplayRole).toString();
+		if (recipient.isEmpty())
+			continue;
+
+		removed = true;
+		History::instance()->currentStorage()->clearSmsHistory(recipient);
+	}
+
+	if (removed)
+		updateData();
 }
 
 void HistoryWindow::removeHistoryEntriesPerDate()
@@ -839,34 +769,12 @@ void HistoryWindow::updateContext()
 
 ContactSet HistoryWindow::selectedContacts() const
 {
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	if (chat)
-		return chat.contacts();
-
-	ContactSet contacts = ContactSet();
-	Buddy buddy = ChatsTree->currentIndex().data(BuddyRole).value<Buddy>();
-	if (buddy)
-	{
-		foreach (const Contact &contact, buddy.contacts())
-			contacts += contact;
-	}
-	return contacts;
+	return ContactSet();
 }
 
 Chat HistoryWindow::selectedChat() const
 {
-	Chat chat = ChatsTree->currentIndex().data(ChatRole).value<Chat>();
-	ChatDetails *details = chat.details();
-	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
-	if (!aggregate)
-		return chat;
-
-	QMap<Account, Chat> map;
-	foreach (const Chat &chat, aggregate->chats())
-		map.insert(chat.chatAccount(), chat);
-
-	Account bestAccount = AccountManager::bestAccount(map.keys());
-	return map.value(bestAccount);
+	return Chat::null;
 }
 
 void HistoryWindow::currentChatChanged(const Talkable &talkable)
@@ -893,4 +801,11 @@ void HistoryWindow::currentChatChanged(const Talkable &talkable)
 void HistoryWindow::currentStatusChanged(const Talkable &talkable)
 {
 	statusBuddyActivated(talkable.toBuddy());
+}
+
+void HistoryWindow::currentSmsChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+	Q_UNUSED(previous);
+
+	smsRecipientActivated(current.data().toString());
 }
