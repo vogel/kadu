@@ -68,6 +68,9 @@ class HistoryWindow : public MainWindow
 	TalkableTreeView *ChatsTalkableTree;
 	ModelChain *ChatsModelChain;
 
+	TalkableTreeView *StatusesTalkableTree;
+	ModelChain *StatusesModelChain;
+
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
@@ -91,7 +94,10 @@ class HistoryWindow : public MainWindow
 	explicit HistoryWindow(QWidget *parent = 0);
 
 	void createGui();
-	void createChatTree(QWidget *parent);
+	void createTrees(QWidget *parent);
+	QWidget * createChatTree(QWidget *parent);
+	QWidget * createStatusTree(QWidget *parent);
+	QWidget * createSMSTree(QWidget *parent);
 	void connectGui();
 
 	void updateData();

@@ -160,7 +160,7 @@ void HistoryWindow::createGui()
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, mainWidget);
 	layout->addWidget(splitter);
 
-	createChatTree(splitter);
+	createTrees(splitter);
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
 	QWidget *rightWidget = new QWidget(rightSplitter);
@@ -191,34 +191,17 @@ void HistoryWindow::createGui()
 	setCentralWidget(mainWidget);
 }
 
-void HistoryWindow::createChatTree(QWidget *parent)
+void HistoryWindow::createTrees(QWidget *parent)
 {
 	QTabWidget *tabWidget = new QTabWidget(parent);
 
-	QWidget *chatsWidget = new QWidget(tabWidget);
-	chatsWidget->setMinimumWidth(150);
-	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
+	tabWidget->addTab(createChatTree(tabWidget), tr("Chats"));
+	tabWidget->addTab(createStatusTree(tabWidget), tr("Statuses"));
+	tabWidget->addTab(createSMSTree(tabWidget), tr("SMS"));
+}
 
-	FilterWidget *filterWidget = new FilterWidget(chatsWidget);
-	layout->addWidget(filterWidget);
-
-	ChatsTree = new QTreeView(parent);
-	ChatsTree->header()->hide();
-	layout->addWidget(ChatsTree);
-
-	ChatsModel = new HistoryChatsModel(this);
-
-	ChatsModelProxy = new HistoryChatsModelProxy(this);
-	ChatsModelProxy->setSourceModel(ChatsModel);
-
-	StatusBuddyNameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, this);
-	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
-	ChatsModelProxy->addTalkableFilter(StatusBuddyNameFilter);
-
-	ChatsTree->setAlternatingRowColors(true);
-	ChatsTree->setModel(ChatsModelProxy);
-	ChatsTree->setRootIsDecorated(true);
-
+QWidget * HistoryWindow::createChatTree(QWidget *parent)
+{
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
@@ -254,9 +237,41 @@ void HistoryWindow::createChatTree(QWidget *parent)
 
 	chatsTalkableWidget->setTreeView(ChatsTalkableTree);
 
-	tabWidget->addTab(chatsTalkableWidget, tr("Chats"));
-	tabWidget->addTab(chatsWidget, tr("SMS"));
-	tabWidget->addTab(new QWidget(), tr("Statuses"));
+	return chatsTalkableWidget;
+}
+
+QWidget * HistoryWindow::createStatusTree(QWidget *parent)
+{
+	return new QWidget(parent);
+}
+
+QWidget * HistoryWindow::createSMSTree(QWidget *parent)
+{
+	QWidget *chatsWidget = new QWidget(parent);
+	chatsWidget->setMinimumWidth(150);
+	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
+
+	FilterWidget *filterWidget = new FilterWidget(chatsWidget);
+	layout->addWidget(filterWidget);
+
+	ChatsTree = new QTreeView(parent);
+	ChatsTree->header()->hide();
+	layout->addWidget(ChatsTree);
+
+	ChatsModel = new HistoryChatsModel(this);
+
+	ChatsModelProxy = new HistoryChatsModelProxy(this);
+	ChatsModelProxy->setSourceModel(ChatsModel);
+
+	StatusBuddyNameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, this);
+	connect(filterWidget, SIGNAL(textChanged(const QString &)), StatusBuddyNameFilter, SLOT(setName(const QString &)));
+	ChatsModelProxy->addTalkableFilter(StatusBuddyNameFilter);
+
+	ChatsTree->setAlternatingRowColors(true);
+	ChatsTree->setModel(ChatsModelProxy);
+	ChatsTree->setRootIsDecorated(true);
+
+	return chatsWidget;
 }
 
 void HistoryWindow::connectGui()
