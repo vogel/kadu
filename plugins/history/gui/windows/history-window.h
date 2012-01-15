@@ -62,12 +62,12 @@ class HistoryWindow : public MainWindow
 
 	static HistoryWindow *Instance;
 
-	BuddyListModel *BuddiesModel;
-	ChatsListModel *ChatsModel2;
+	BuddyListModel *ChatsBuddiesModel;
+	ChatsListModel *ChatsModel;
 	TalkableTreeView *ChatsTalkableTree;
 	ModelChain *ChatsModelChain;
 
-	BuddyListModel *BuddiesModel2;
+	BuddyListModel *StatusBuddiesModel;
 	TalkableTreeView *StatusesTalkableTree;
 	ModelChain *StatusesModelChain;
 
@@ -105,7 +105,6 @@ class HistoryWindow : public MainWindow
 	void chatActivated(const Chat &chat);
 	void statusBuddyActivated(const Buddy &buddy);
 	void smsRecipientActivated(const QString &recipient);
-	void treeItemActivated(const HistoryTreeItem &item);
 
 	ContactSet selectedContacts() const;
 	Chat selectedChat() const;
@@ -117,7 +116,6 @@ private slots:
 	void currentStatusChanged(const Talkable &talkable);
 	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void showChatsPopupMenu(const QPoint &pos);
@@ -126,9 +124,9 @@ private slots:
 
 	void showDetailsPopupMenu(const QPoint &pos);
 
-	void clearChatHistory2();
-	void clearStatusHistory2();
-	void clearSmsHistory2();
+	void clearChatHistory();
+	void clearStatusHistory();
+	void clearSmsHistory();
 	void removeHistoryEntriesPerDate();
 
 	void updateContext();

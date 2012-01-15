@@ -124,7 +124,6 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	setWindowIcon(KaduIcon("kadu_icons/history").icon());
 
 	createGui();
-	connectGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
 
@@ -179,6 +178,10 @@ void HistoryWindow::createGui()
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
 
+	DetailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(DetailsListView, SIGNAL(customContextMenuRequested(QPoint)),
+			this, SLOT(showDetailsPopupMenu(QPoint)));
+
 	ContentBrowser = new ChatMessagesView(Chat::null, false, rightSplitter);
 	ContentBrowser->setFocusPolicy(Qt::StrongFocus);
 	ContentBrowser->setForcePruneDisabled(true);
@@ -210,12 +213,12 @@ QWidget * HistoryWindow::createChatTree(QWidget *parent)
 	ChatsTalkableTree->setContextMenuEnabled(true);
 	ChatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
-	ChatsModel2 = new ChatsListModel(ChatsTalkableTree);
-	BuddiesModel = new BuddyListModel(ChatsTalkableTree);
+	ChatsModel = new ChatsListModel(ChatsTalkableTree);
+	ChatsBuddiesModel = new BuddyListModel(ChatsTalkableTree);
 
 	QList<QAbstractItemModel *> models;
-	models.append(ChatsModel2);
-	models.append(BuddiesModel);
+	models.append(ChatsModel);
+	models.append(ChatsBuddiesModel);
 
 	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, ChatsTalkableTree);
 
@@ -250,9 +253,8 @@ QWidget * HistoryWindow::createStatusTree(QWidget *parent)
 	StatusesTalkableTree->setContextMenuEnabled(true);
 	StatusesTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
-	BuddiesModel2 = new BuddyListModel(StatusesTalkableTree);
-
-	StatusesModelChain = new ModelChain(BuddiesModel2, StatusesTalkableTree);
+	StatusBuddiesModel = new BuddyListModel(StatusesTalkableTree);
+	StatusesModelChain = new ModelChain(StatusBuddiesModel, StatusesTalkableTree);
 
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(StatusesModelChain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
@@ -300,13 +302,6 @@ QWidget * HistoryWindow::createSMSTree(QWidget *parent)
 	return smsListWidget;
 }
 
-void HistoryWindow::connectGui()
-{
-	DetailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(DetailsListView, SIGNAL(customContextMenuRequested(QPoint)),
-			this, SLOT(showDetailsPopupMenu(QPoint)));
-}
-
 void HistoryWindow::updateData()
 {
 	kdebugf();
@@ -347,11 +342,11 @@ void HistoryWindow::updateData()
 		}
 	}
 
-	ChatsModel2->setChats(conferenceChats);
-	BuddiesModel->setBuddyList(buddies);
+	ChatsModel->setChats(conferenceChats);
+	ChatsBuddiesModel->setBuddyList(buddies);
 
 	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList(HistorySearchParameters());
-	BuddiesModel2->setBuddyList(statusBuddies.toList());
+	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 
 	QList<QString> smsRecipients = History::instance()->smsRecipientsList(HistorySearchParameters());
 
@@ -478,40 +473,6 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 	kdebugf2();
 }
 
-void HistoryWindow::treeItemActivated(const HistoryTreeItem &item)
-{
-	switch (item.type())
-	{
-		case HistoryTypeNone:
-			// do nothing
-			break;
-
-		case HistoryTypeChat:
-			chatActivated(item.chat());
-			break;
-
-		case HistoryTypeStatus:
-			statusBuddyActivated(item.buddy());
-			break;
-
-		case HistoryTypeSms:
-			smsRecipientActivated(item.smsRecipient());
-			break;
-	}
-}
-
-void HistoryWindow::treeCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
-{
-	if (current == previous)
-		return;
-
-	kdebugf();
-
-	treeItemActivated(current.data(HistoryItemRole).value<HistoryTreeItem>());
-
-	kdebugf2();
-}
-
 void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
 	kdebugf();
@@ -611,7 +572,7 @@ void HistoryWindow::showChatsPopupMenu(const QPoint &pos)
 	menu.reset(TalkableMenuManager::instance()->menu(this, ChatsTalkableTree->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Chat History"), this, SLOT(clearChatHistory2()));
+			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
 
 	menu->exec(QCursor::pos());
 }
@@ -625,7 +586,7 @@ void HistoryWindow::showStatusesPopupMenu(const QPoint &pos)
 	menu.reset(TalkableMenuManager::instance()->menu(this, StatusesTalkableTree->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Status History"), this, SLOT(clearStatusHistory2()));
+			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 
 	menu->exec(QCursor::pos());
 }
@@ -639,7 +600,7 @@ void HistoryWindow::showSmsPopupMenu(const QPoint &pos)
 	menu.reset(new QMenu(this));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear SMS History"), this, SLOT(clearSmsHistory2()));
+			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 
 	menu->exec(QCursor::pos());
 }
@@ -664,7 +625,7 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 		DetailsPopupMenu->exec(QCursor::pos());
 }
 
-void HistoryWindow::clearChatHistory2()
+void HistoryWindow::clearChatHistory()
 {
 	if (!ChatsTalkableTree->actionContext())
 		return;
@@ -677,7 +638,7 @@ void HistoryWindow::clearChatHistory2()
 	updateData();
 }
 
-void HistoryWindow::clearStatusHistory2()
+void HistoryWindow::clearStatusHistory()
 {
 	if (!StatusesTalkableTree->actionContext())
 		return;
@@ -692,7 +653,7 @@ void HistoryWindow::clearStatusHistory2()
 	updateData();
 }
 
-void HistoryWindow::clearSmsHistory2()
+void HistoryWindow::clearSmsHistory()
 {
 	bool removed = false;
 
