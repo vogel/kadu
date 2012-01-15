@@ -128,8 +128,17 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
 
-	DetailsPopupMenu = new QMenu(this);
-	DetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+	ChatDetailsPopupMenu = new QMenu(this);
+	ChatDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
+	                                this, SLOT(removeChatEntriesPerDate()));
+
+	StatusDetailsPopupMenu = new QMenu(this);
+	StatusDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
+	                                  this, SLOT(removeStatusEntriesPerDate()));
+
+	SmsDetailsPopupMenu = new QMenu(this);
+	SmsDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
+	                               this, SLOT(removeSmstEntriesPerDate()));
 
 	kdebugf2();
 }
@@ -147,48 +156,25 @@ HistoryWindow::~HistoryWindow()
 
 void HistoryWindow::createGui()
 {
-	QWidget *mainWidget = new QWidget(this);
-	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	QTabWidget *tabWidget = new QTabWidget(this);
+	tabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
-	layout->setMargin(5);
-	layout->setSpacing(5);
-
-	QSplitter *splitter = new QSplitter(Qt::Horizontal, mainWidget);
-	layout->addWidget(splitter);
-
-	createTrees(splitter);
-
-	TimelineChatView = new TimelineChatMessagesView(splitter);
+	tabWidget->addTab(createChatTab(tabWidget), tr("Chats"));
+	tabWidget->addTab(createStatusTab(tabWidget), tr("Statuses"));
+	tabWidget->addTab(createSmsTab(tabWidget), tr("SMS"));
 
 	MyChatDatesModel = new ChatDatesModel(Chat::null, QVector<DatesModelItem>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QVector<DatesModelItem>(), this);
 
-	TimelineChatView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(TimelineChatView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
-	        this, SLOT(showDetailsPopupMenu(QPoint)));
-
-	QList<int> sizes;
-	sizes.append(150);
-	sizes.append(300);
-	splitter->setSizes(sizes);
-
-	setCentralWidget(mainWidget);
+	setCentralWidget(tabWidget);
 }
 
-void HistoryWindow::createTrees(QWidget *parent)
+QWidget * HistoryWindow::createChatTab(QWidget *parent)
 {
-	QTabWidget *tabWidget = new QTabWidget(parent);
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
 
-	tabWidget->addTab(createChatTree(tabWidget), tr("Chats"));
-	tabWidget->addTab(createStatusTree(tabWidget), tr("Statuses"));
-	tabWidget->addTab(createSMSTree(tabWidget), tr("SMS"));
-}
-
-QWidget * HistoryWindow::createChatTree(QWidget *parent)
-{
-	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
 	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -224,12 +210,25 @@ QWidget * HistoryWindow::createChatTree(QWidget *parent)
 
 	chatsTalkableWidget->setView(ChatsTalkableTree);
 
-	return chatsTalkableWidget;
+	TimelineChatView = new TimelineChatMessagesView(splitter);
+
+	TimelineChatView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(TimelineChatView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
+	        this, SLOT(showChatDetailsPopupMenu(QPoint)));
+
+	QList<int> sizes;
+	sizes.append(150);
+	sizes.append(300);
+	splitter->setSizes(sizes);
+
+	return splitter;
 }
 
-QWidget * HistoryWindow::createStatusTree(QWidget *parent)
+QWidget * HistoryWindow::createStatusTab(QWidget *parent)
 {
-	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
+
+	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
 
 	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
 	StatusesTalkableTree->setUseConfigurationColors(true);
@@ -256,12 +255,25 @@ QWidget * HistoryWindow::createStatusTree(QWidget *parent)
 
 	statusesTalkableWidget->setView(StatusesTalkableTree);
 
-	return statusesTalkableWidget;
+	TimelineStatusesView = new TimelineChatMessagesView(splitter);
+
+	TimelineStatusesView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(TimelineStatusesView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
+	        this, SLOT(showStatusDetailsPopupMenu(QPoint)));
+
+	QList<int> sizes;
+	sizes.append(150);
+	sizes.append(300);
+	splitter->setSizes(sizes);
+
+	return splitter;
 }
 
-QWidget * HistoryWindow::createSMSTree(QWidget *parent)
+QWidget * HistoryWindow::createSmsTab(QWidget *parent)
 {
-	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
+
+	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
 
 	SmsListView = new QListView(smsListWidget);
 	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -282,7 +294,18 @@ QWidget * HistoryWindow::createSMSTree(QWidget *parent)
 
 	smsListWidget->setView(SmsListView);
 
-	return smsListWidget;
+	TimelineSmsesView = new TimelineChatMessagesView(splitter);
+
+	TimelineSmsesView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(TimelineSmsesView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
+	        this, SLOT(showSmsDetailsPopupMenu(QPoint)));
+
+	QList<int> sizes;
+	sizes.append(150);
+	sizes.append(300);
+	splitter->setSizes(sizes);
+
+	return splitter;
 }
 
 void HistoryWindow::updateData()
@@ -383,7 +406,7 @@ void HistoryWindow::chatActivated(const Chat &chat)
 	TimelineChatView->timeline()->setModel(MyChatDatesModel);
 
 	connect(TimelineChatView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
+	        this, SLOT(chatDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
 	TimelineChatView->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
@@ -394,8 +417,8 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 {
 	kdebugf();
 
-	QModelIndex selectedIndex = TimelineChatView->timeline()->model()
-	        ? TimelineChatView->timeline()->selectionModel()->currentIndex()
+	QModelIndex selectedIndex = TimelineStatusesView->timeline()->model()
+	        ? TimelineStatusesView->timeline()->selectionModel()->currentIndex()
 	        : QModelIndex();
 
 	QDate date = selectedIndex.data(DateRole).toDate();
@@ -413,12 +436,12 @@ void HistoryWindow::statusBuddyActivated(const Buddy &buddy)
 			selectedIndex = MyBuddyStatusDatesModel->index(lastRow);
 	}
 
-	TimelineChatView->timeline()->setModel(MyBuddyStatusDatesModel);
+	TimelineStatusesView->timeline()->setModel(MyBuddyStatusDatesModel);
 
-	connect(TimelineChatView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
+	connect(TimelineStatusesView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	        this, SLOT(statusDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	TimelineChatView->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	TimelineStatusesView->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	kdebugf2();
 }
@@ -427,8 +450,8 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 {
 	kdebugf();
 
-	QModelIndex selectedIndex = TimelineChatView->timeline()->model()
-	        ? TimelineChatView->timeline()->selectionModel()->currentIndex()
+	QModelIndex selectedIndex = TimelineSmsesView->timeline()->model()
+	        ? TimelineSmsesView->timeline()->selectionModel()->currentIndex()
 	        : QModelIndex();
 
 	QDate date = selectedIndex.data(DateRole).toDate();
@@ -446,17 +469,17 @@ void HistoryWindow::smsRecipientActivated(const QString& recipient)
 			selectedIndex = MySmsDatesModel->index(lastRow);
 	}
 
-	TimelineChatView->timeline()->setModel(MySmsDatesModel);
+	TimelineSmsesView->timeline()->setModel(MySmsDatesModel);
 
-	connect(TimelineChatView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(dateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
+	connect(TimelineSmsesView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	        this, SLOT(smsDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	TimelineChatView->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	TimelineSmsesView->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	kdebugf2();
 }
 
-void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+void HistoryWindow::chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
 	kdebugf();
 
@@ -470,11 +493,6 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 
 	switch (treeItem.type())
 	{
-		case HistoryTypeNone:
-			TimelineChatView->messagesView()->setChat(Chat::null);
-			TimelineChatView->messagesView()->clearMessages();
-			break;
-
 		case HistoryTypeChat:
 		{
 			Chat chat = treeItem.chat();
@@ -487,6 +505,31 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			break;
 		}
 
+		default:
+			TimelineChatView->messagesView()->setChat(Chat::null);
+			TimelineChatView->messagesView()->clearMessages();
+			break;
+	}
+
+	TimelineChatView->messagesView()->setUpdatesEnabled(true);
+
+	kdebugf2();
+}
+
+void HistoryWindow::statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+	kdebugf();
+
+	if (current == previous)
+		return;
+
+	HistoryTreeItem treeItem = current.data(HistoryItemRole).value<HistoryTreeItem>();
+	QDate date = current.data(DateRole).value<QDate>();
+
+	TimelineStatusesView->messagesView()->setUpdatesEnabled(false);
+
+	switch (treeItem.type())
+	{
 		case HistoryTypeStatus:
 		{
 			Buddy buddy = treeItem.buddy();
@@ -494,26 +537,56 @@ void HistoryWindow::dateCurrentChanged(const QModelIndex &current, const QModelI
 			if (buddy && date.isValid())
 				statuses = History::instance()->statuses(buddy, date);
 			if (!buddy.contacts().isEmpty())
-				TimelineChatView->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
-			TimelineChatView->messagesView()->clearMessages();
-			TimelineChatView->messagesView()->appendMessages(statusesToMessages(statuses));
+				TimelineStatusesView->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
+			TimelineStatusesView->messagesView()->clearMessages();
+			TimelineStatusesView->messagesView()->appendMessages(statusesToMessages(statuses));
 			break;
 		}
 
+		default:
+			TimelineStatusesView->messagesView()->setChat(Chat::null);
+			TimelineStatusesView->messagesView()->clearMessages();
+			break;
+	}
+
+	TimelineStatusesView->messagesView()->setUpdatesEnabled(true);
+
+	kdebugf2();
+}
+
+void HistoryWindow::smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+	kdebugf();
+
+	if (current == previous)
+		return;
+
+	HistoryTreeItem treeItem = current.data(HistoryItemRole).value<HistoryTreeItem>();
+	QDate date = current.data(DateRole).value<QDate>();
+
+	TimelineSmsesView->messagesView()->setUpdatesEnabled(false);
+
+	switch (treeItem.type())
+	{
 		case HistoryTypeSms:
 		{
 			QString recipient = treeItem.smsRecipient();
 			QVector<Message> sms;
 			if (!recipient.isEmpty() && date.isValid())
 				sms = History::instance()->sms(recipient, date);
-			TimelineChatView->messagesView()->setChat(Chat::null);
-			TimelineChatView->messagesView()->clearMessages();
-			TimelineChatView->messagesView()->appendMessages(sms);
+			TimelineSmsesView->messagesView()->setChat(Chat::null);
+			TimelineSmsesView->messagesView()->clearMessages();
+			TimelineSmsesView->messagesView()->appendMessages(sms);
 			break;
 		}
+
+		default:
+			TimelineSmsesView->messagesView()->setChat(Chat::null);
+			TimelineSmsesView->messagesView()->clearMessages();
+			break;
 	}
 
-	TimelineChatView->messagesView()->setUpdatesEnabled(true);
+	TimelineSmsesView->messagesView()->setUpdatesEnabled(true);
 
 	kdebugf2();
 }
@@ -588,24 +661,37 @@ void HistoryWindow::showSmsPopupMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
+void HistoryWindow::showChatDetailsPopupMenu(const QPoint &pos)
 {
 	QDate date = TimelineChatView->timeline()->indexAt(pos).data(DateRole).value<QDate>();
 	if (!date.isValid())
 		return;
 
-	bool isValid = false;
-
 	HistoryTreeItem treeItem = TimelineChatView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
 	if (treeItem.type() == HistoryTypeChat && treeItem.chat())
-		isValid = true;
-	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
-		isValid = true;
-	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
-		isValid = true;
+		ChatDetailsPopupMenu->exec(QCursor::pos());
+}
 
-	if (isValid)
-		DetailsPopupMenu->exec(QCursor::pos());
+void HistoryWindow::showStatusDetailsPopupMenu(const QPoint &pos)
+{
+	QDate date = TimelineStatusesView->timeline()->indexAt(pos).data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	HistoryTreeItem treeItem = TimelineStatusesView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
+		StatusDetailsPopupMenu->exec(QCursor::pos());
+}
+
+void HistoryWindow::showSmsDetailsPopupMenu(const QPoint &pos)
+{
+	QDate date = TimelineSmsesView->timeline()->indexAt(pos).data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	HistoryTreeItem treeItem = TimelineSmsesView->timeline()->indexAt(pos).data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+		SmsDetailsPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::clearChatHistory()
@@ -655,7 +741,7 @@ void HistoryWindow::clearSmsHistory()
 		updateData();
 }
 
-void HistoryWindow::removeHistoryEntriesPerDate()
+void HistoryWindow::removeChatEntriesPerDate()
 {
 	QDate date = TimelineChatView->timeline()->currentIndex().data(DateRole).value<QDate>();
 	if (!date.isValid())
@@ -667,12 +753,30 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 		History::instance()->currentStorage()->clearChatHistory(treeItem.chat(), date);
 		chatActivated(treeItem.chat());
 	}
-	else if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
+}
+
+void HistoryWindow::removeStatusEntriesPerDate()
+{
+	QDate date = TimelineStatusesView->timeline()->currentIndex().data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	HistoryTreeItem treeItem = TimelineStatusesView->timeline()->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeStatus && treeItem.buddy() && !treeItem.buddy().contacts().isEmpty())
 	{
 		History::instance()->currentStorage()->clearStatusHistory(treeItem.buddy(), date);
 		statusBuddyActivated(treeItem.buddy());
 	}
-	else if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
+}
+
+void HistoryWindow::removeSmsEntriesPerDate()
+{
+	QDate date = TimelineSmsesView->timeline()->currentIndex().data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	HistoryTreeItem treeItem = TimelineSmsesView->timeline()->currentIndex().data(HistoryItemRole).value<HistoryTreeItem>();
+	if (treeItem.type() == HistoryTypeSms && !treeItem.smsRecipient().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(treeItem.smsRecipient(), date);
 		smsRecipientActivated(treeItem.smsRecipient());

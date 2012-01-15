@@ -74,21 +74,24 @@ class HistoryWindow : public QMainWindow
 	QListView *SmsListView;
 
 	TimelineChatMessagesView *TimelineChatView;
+	TimelineChatMessagesView *TimelineStatusesView;
+	TimelineChatMessagesView *TimelineSmsesView;
 
 	ChatDatesModel *MyChatDatesModel;
 	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
 	SmsDatesModel *MySmsDatesModel;
 
-	QMenu *DetailsPopupMenu;
+	QMenu *ChatDetailsPopupMenu;
+	QMenu *StatusDetailsPopupMenu;
+	QMenu *SmsDetailsPopupMenu;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
 
 	void createGui();
-	void createTrees(QWidget *parent);
-	QWidget * createChatTree(QWidget *parent);
-	QWidget * createStatusTree(QWidget *parent);
-	QWidget * createSMSTree(QWidget *parent);
+	QWidget * createChatTab(QWidget *parent);
+	QWidget * createStatusTab(QWidget *parent);
+	QWidget * createSmsTab(QWidget *parent);
 	void connectGui();
 
 	void updateData();
@@ -105,18 +108,25 @@ private slots:
 	void currentStatusChanged(const Talkable &talkable);
 	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void dateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+	void chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
+	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
 	void showChatsPopupMenu(const QPoint &pos);
 	void showStatusesPopupMenu(const QPoint &pos);
 	void showSmsPopupMenu(const QPoint &pos);
 
-	void showDetailsPopupMenu(const QPoint &pos);
+	void showChatDetailsPopupMenu(const QPoint &pos);
+	void showStatusDetailsPopupMenu(const QPoint &pos);
+	void showSmsDetailsPopupMenu(const QPoint &pos);
 
 	void clearChatHistory();
 	void clearStatusHistory();
 	void clearSmsHistory();
-	void removeHistoryEntriesPerDate();
+
+	void removeChatEntriesPerDate();
+	void removeStatusEntriesPerDate();
+	void removeSmsEntriesPerDate();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
