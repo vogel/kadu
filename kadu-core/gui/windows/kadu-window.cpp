@@ -251,7 +251,7 @@ void KaduWindow::createHelpMenu()
 	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
-	insertMenuActionDescription(Actions->Help, MenuHelp);
+	// insertMenuActionDescription(Actions->Help, MenuHelp);
 	insertMenuActionDescription(Actions->Bugs, MenuHelp);
 	HelpMenu->addSeparator();
 	insertMenuActionDescription(Actions->GetInvolved, MenuHelp);
