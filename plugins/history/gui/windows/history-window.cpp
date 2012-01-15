@@ -205,6 +205,7 @@ QWidget * HistoryWindow::createChatTree(QWidget *parent)
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
+	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);
 	ChatsTalkableTree->setUseConfigurationColors(true);
 	ChatsTalkableTree->setContextMenuEnabled(true);
 	ChatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
