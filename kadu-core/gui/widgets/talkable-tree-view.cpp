@@ -185,18 +185,7 @@ void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 	else if (HotKey::shortCut(event, "ShortCuts", "kadu_persinfo"))
 		Core::instance()->kaduWindow()->kaduWindowActions()->editTalkable()->trigger(Context);
 	else
-		switch (event->key())
-		{
-			case Qt::Key_Return:
-			case Qt::Key_Enter:
-				triggerActivate(currentIndex());
-				break;
-			default:
-				if (FilteredTreeView::shouldEventGoToFilter(event))
-					event->ignore();
-				else
-					QTreeView::keyPressEvent(event);
-		}
+		KaduTreeView::keyPressEvent(event);
 
 	toolTipHide(false);
 }

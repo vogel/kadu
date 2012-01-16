@@ -23,8 +23,10 @@
 #include <QtCore/QDir>
 #include <QtCore/QTemporaryFile>
 #include <QtGui/QDrag>
+#include <QtGui/QKeyEvent>
 
 #include "configuration/configuration-file.h"
+#include "gui/widgets/filtered-tree-view.h"
 #include "icons/kadu-icon.h"
 
 #include "kadu-tree-view.h"
@@ -145,6 +147,14 @@ void KaduTreeView::updateBackground()
 
 	setStyleSheet(style);
 	viewport()->setStyleSheet(viewportStyle);
+}
+
+void KaduTreeView::keyPressEvent(QKeyEvent *event)
+{
+	if (FilteredTreeView::shouldEventGoToFilter(event))
+		event->ignore();
+	else
+		QTreeView::keyPressEvent(event);
 }
 
 void KaduTreeView::resizeEvent(QResizeEvent *event)

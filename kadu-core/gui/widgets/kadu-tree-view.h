@@ -54,6 +54,7 @@ private:
 protected:
 	virtual void configurationUpdated();
 
+	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void resizeEvent(QResizeEvent *event);
 	virtual void startDrag(Qt::DropActions supportedActions);
 
