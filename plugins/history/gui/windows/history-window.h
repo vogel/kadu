@@ -38,12 +38,10 @@
 class QStandardItemModel;
 
 class BuddyListModel;
-class BuddyStatusDatesModel;
 class ChatsListModel;
 class HistoryDatesModel;
 class ModelChain;
 class NameTalkableFilter;
-class SmsDatesModel;
 class TalkableTreeView;
 class TimedStatus;
 class TimelineChatMessagesView;
@@ -77,8 +75,8 @@ class HistoryWindow : public QMainWindow
 	TimelineChatMessagesView *TimelineSmsesView;
 
 	HistoryDatesModel *MyChatDatesModel;
-	BuddyStatusDatesModel *MyBuddyStatusDatesModel;
-	SmsDatesModel *MySmsDatesModel;
+	HistoryDatesModel *MyBuddyStatusDatesModel;
+	HistoryDatesModel *MySmsDatesModel;
 
 	QMenu *ChatDetailsPopupMenu;
 	QMenu *StatusDetailsPopupMenu;

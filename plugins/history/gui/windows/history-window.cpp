@@ -76,10 +76,8 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "model/buddy-status-dates-model.h"
 #include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
-#include "model/sms-dates-model.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
 #include "storage/history-storage.h"
@@ -170,8 +168,8 @@ void HistoryWindow::createGui()
 	tabWidget->addTab(createSmsTab(tabWidget), tr("SMS"));
 
 	MyChatDatesModel = new HistoryDatesModel(true, this);
-	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(QVector<DatesModelItem>(), this);
-	MySmsDatesModel = new SmsDatesModel(QVector<DatesModelItem>(), this);
+	MyBuddyStatusDatesModel = new HistoryDatesModel(false, this);
+	MySmsDatesModel = new HistoryDatesModel(false, this);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
 	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
