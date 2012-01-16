@@ -26,9 +26,7 @@ set (SOURCES
 
 	gui/windows/history-window.cpp
 
-	model/buddy-status-dates-model.cpp
 	model/history-dates-model.cpp
-	model/sms-dates-model.cpp
 
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
@@ -48,9 +46,7 @@ set (MOC_SOURCES
 
 	gui/windows/history-window.h
 
-	model/buddy-status-dates-model.h
 	model/history-dates-model.h
-	model/sms-dates-model.h
 
 	storage/history-storage.h
 
