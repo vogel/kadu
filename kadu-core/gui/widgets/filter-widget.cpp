@@ -118,6 +118,22 @@ QSize FilterWidget::sizeHint (void) const
 }
 #endif
 
+void FilterWidget::updateVisibility()
+{
+#ifndef Q_OS_MAC
+	if (!AutoVisibility)
+	{
+		show();
+		return;
+	}
+
+	if (NameFilterEdit->text().isEmpty())
+		hide();
+	else
+		show();
+#endif // Q_OS_MAC
+}
+
 void FilterWidget::filterTextChanged(const QString &s)
 {
 	emit textChanged(s);
@@ -142,9 +158,7 @@ void FilterWidget::filterTextChanged(const QString &s)
 		clearFocus();
 		// from qdocs: "[It works] if this widget or one of its parents is the active window"
 		View->setFocus(Qt::OtherFocusReason);
-#ifndef Q_OS_MAC
-		hide();
-#endif
+		updateVisibility();
 	}
 	else
 	{
@@ -153,16 +167,13 @@ void FilterWidget::filterTextChanged(const QString &s)
 			View->setCurrentIndex(View->model()->index(0, 0));
 			View->selectionModel()->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
 		}
-#ifndef Q_OS_MAC
-		show();
-#endif
+		updateVisibility();
 	}
 }
 
-FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
+FilterWidget::FilterWidget(QWidget *parent) :
+		QWidget(parent), View(0), AutoVisibility(true)
 {
-	View = 0;
-
 #ifdef Q_OS_MAC
 
 	searchFieldText = CFStringCreateWithCString(0,
@@ -195,6 +206,8 @@ FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent)
 
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(filterTextChanged(const QString &)));
+
+	updateVisibility();
 #endif
 }
 
@@ -222,6 +235,12 @@ void FilterWidget::setFilter(const QString &filter)
 void FilterWidget::setView(QAbstractItemView *view)
 {
 	View = view;
+}
+
+void FilterWidget::setAutoVisibility(bool autoVisiblity)
+{
+	AutoVisibility = autoVisiblity;
+	updateVisibility();
 }
 
 bool FilterWidget::sendKeyEventToView(QKeyEvent *event)

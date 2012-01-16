@@ -45,9 +45,12 @@ class KADUAPI FilterWidget : public QWidget
 #else
 	QLineEdit *NameFilterEdit;
 #endif
-	QAbstractItemView *View;
-	bool sendKeyEventToView(QKeyEvent *);
 
+	QAbstractItemView *View;
+	bool AutoVisibility;
+
+	void updateVisibility();
+	bool sendKeyEventToView(QKeyEvent *);
 
 private slots:
 	void filterTextChanged(const QString &);
@@ -61,6 +64,7 @@ public:
 
 	void setFilter(const QString &filter);
 	void setView(QAbstractItemView *view);
+	void setAutoVisibility(bool autoVisibility);
 
 signals:
 	void textChanged(const QString &text);

@@ -50,10 +50,6 @@ FilteredTreeView::FilteredTreeView(FilterPosition filterPosition, QWidget *paren
 	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
 		this, SIGNAL(filterChanged(const QString &)));
 
-#ifndef Q_OS_MAC
-	NameFilterWidget->hide(); // hide by default
-#endif
-
 	Layout->addWidget(NameFilterWidget);
 }
 
