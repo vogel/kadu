@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DATES_MODEL_H
-#define CHAT_DATES_MODEL_H
+#ifndef HISTORY_DATES_MODEL_H
+#define HISTORY_DATES_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
@@ -31,15 +31,15 @@
 
 struct DatesModelItem;
 
-class ChatDatesModel : public QAbstractListModel
+class HistoryDatesModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 	QVector<DatesModelItem> Dates;
 
 public:
-	ChatDatesModel(const QVector<DatesModelItem> &dates, QObject *parent = 0);
-	virtual ~ChatDatesModel();
+	HistoryDatesModel(const QVector<DatesModelItem> &dates, QObject *parent = 0);
+	virtual ~HistoryDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -53,4 +53,4 @@ public:
 
 };
 
-#endif // CHAT_DATES_MODEL_H
+#endif // HISTORY_DATES_MODEL_H

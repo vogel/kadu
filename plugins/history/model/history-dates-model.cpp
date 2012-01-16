@@ -26,28 +26,28 @@
 #include "dates-model-item.h"
 #include "history.h"
 
-#include "chat-dates-model.h"
+#include "history-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
+HistoryDatesModel::HistoryDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
 		QAbstractListModel(parent), Dates(dates)
 {
 }
 
-ChatDatesModel::~ChatDatesModel()
+HistoryDatesModel::~HistoryDatesModel()
 {
 }
 
-int ChatDatesModel::columnCount(const QModelIndex &parent) const
+int HistoryDatesModel::columnCount(const QModelIndex &parent) const
 {
 	return parent.isValid() ? 0 : 3;
 }
 
-int ChatDatesModel::rowCount(const QModelIndex &parent) const
+int HistoryDatesModel::rowCount(const QModelIndex &parent) const
 {
 	return parent.isValid() ? 0 : Dates.size();
 }
 
-QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant HistoryDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
@@ -65,7 +65,7 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 	return QVariant();
 }
 
-QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
+QVariant HistoryDatesModel::data(const QModelIndex &index, int role) const
 {
 	int col = index.column();
 	int row = index.row();
@@ -93,7 +93,7 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-void ChatDatesModel::setDates(const QVector<DatesModelItem> &dates)
+void HistoryDatesModel::setDates(const QVector<DatesModelItem> &dates)
 {
 	if (!Dates.isEmpty())
 	{
@@ -110,7 +110,7 @@ void ChatDatesModel::setDates(const QVector<DatesModelItem> &dates)
 	}
 }
 
-QModelIndex ChatDatesModel::indexForDate(const QDate &date)
+QModelIndex HistoryDatesModel::indexForDate(const QDate &date)
 {
 	int i = 0;
 	foreach (const DatesModelItem &item, Dates)

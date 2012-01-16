@@ -77,8 +77,8 @@
 #include "debug.h"
 
 #include "model/buddy-status-dates-model.h"
-#include "model/chat-dates-model.h"
 #include "model/dates-model-item.h"
+#include "model/history-dates-model.h"
 #include "model/sms-dates-model.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
@@ -169,7 +169,7 @@ void HistoryWindow::createGui()
 	tabWidget->addTab(createStatusTab(tabWidget), tr("Statuses"));
 	tabWidget->addTab(createSmsTab(tabWidget), tr("SMS"));
 
-	MyChatDatesModel = new ChatDatesModel(QVector<DatesModelItem>(), this);
+	MyChatDatesModel = new HistoryDatesModel(QVector<DatesModelItem>(), this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QVector<DatesModelItem>(), this);
 
