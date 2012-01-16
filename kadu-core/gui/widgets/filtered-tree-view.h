@@ -72,6 +72,7 @@ public:
 
 	void setPosition(FilterPosition filterPosition);
 	void setView(QAbstractItemView *view);
+	void setFilterAutoVisibility(bool autoVisibility);
 
 signals:
 	void filterChanged(const QString &filterText);

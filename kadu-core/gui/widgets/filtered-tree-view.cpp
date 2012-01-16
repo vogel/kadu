@@ -94,6 +94,11 @@ void FilteredTreeView::setView(QAbstractItemView *view)
 	insertView();
 }
 
+void FilteredTreeView::setFilterAutoVisibility(bool autoVisibility)
+{
+	NameFilterWidget->setAutoVisibility(autoVisibility);
+}
+
 void FilteredTreeView::keyPressEvent(QKeyEvent *event)
 {
 	if (shouldEventGoToFilter(event))
