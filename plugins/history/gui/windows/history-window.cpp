@@ -189,6 +189,7 @@ QWidget * HistoryWindow::createChatTab(QWidget *parent)
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
 
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
+	chatsTalkableWidget->setFilterAutoVisibility(false);
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
 	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -243,6 +244,7 @@ QWidget * HistoryWindow::createStatusTab(QWidget *parent)
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
 
 	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
+	statusesTalkableWidget->setFilterAutoVisibility(false);
 
 	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
 	StatusesTalkableTree->setUseConfigurationColors(true);
@@ -288,6 +290,7 @@ QWidget * HistoryWindow::createSmsTab(QWidget *parent)
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, parent);
 
 	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
+	smsListWidget->setFilterAutoVisibility(false);
 
 	SmsListView = new QListView(smsListWidget);
 	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
