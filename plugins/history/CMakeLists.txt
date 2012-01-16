@@ -11,6 +11,7 @@ include (FindKadu)
 
 kadu_api_directories (plugins/history
 	actions
+	gui/widgets
 	gui/windows
 	gui
 	model
@@ -22,6 +23,8 @@ kadu_api_directories (plugins/history
 set (SOURCES
 	actions/show-history-action-description.cpp
 
+	gui/widgets/chat-history-tab.cpp
+	gui/widgets/history-tab.cpp
 	gui/widgets/timeline-chat-messages-view.cpp
 
 	gui/windows/history-window.cpp
@@ -42,6 +45,8 @@ set (SOURCES
 set (MOC_SOURCES
 	actions/show-history-action-description.h
 
+	gui/widgets/chat-history-tab.h
+	gui/widgets/history-tab.h
 	gui/widgets/timeline-chat-messages-view.h
 
 	gui/windows/history-window.h

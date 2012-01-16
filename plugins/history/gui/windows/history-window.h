@@ -38,6 +38,7 @@
 class QStandardItemModel;
 
 class BuddyListModel;
+class ChatHistoryTab;
 class ChatsListModel;
 class HistoryDatesModel;
 class KaduTreeView;
@@ -59,10 +60,7 @@ class HistoryWindow : public QMainWindow
 
 	static HistoryWindow *Instance;
 
-	BuddyListModel *ChatsBuddiesModel;
-	ChatsListModel *ChatsModel;
-	TalkableTreeView *ChatsTalkableTree;
-	ModelChain *ChatsModelChain;
+	QTabWidget *TabWidget;
 
 	BuddyListModel *StatusBuddiesModel;
 	TalkableTreeView *StatusesTalkableTree;
@@ -71,15 +69,13 @@ class HistoryWindow : public QMainWindow
 	QStandardItemModel *SmsModel;
 	KaduTreeView *SmsListView;
 
-	TimelineChatMessagesView *TimelineChatView;
+	ChatHistoryTab *ChatTab;
 	TimelineChatMessagesView *TimelineStatusesView;
 	TimelineChatMessagesView *TimelineSmsesView;
 
-	HistoryDatesModel *MyChatDatesModel;
 	HistoryDatesModel *MyBuddyStatusDatesModel;
 	HistoryDatesModel *MySmsDatesModel;
 
-	QMenu *ChatDetailsPopupMenu;
 	QMenu *StatusDetailsPopupMenu;
 	QMenu *SmsDetailsPopupMenu;
 
@@ -87,7 +83,6 @@ class HistoryWindow : public QMainWindow
 	virtual ~HistoryWindow();
 
 	void createGui();
-	QWidget * createChatTab(QWidget *parent);
 	QWidget * createStatusTab(QWidget *parent);
 	QWidget * createSmsTab(QWidget *parent);
 	void connectGui();
@@ -95,34 +90,27 @@ class HistoryWindow : public QMainWindow
 	void updateData();
 	void selectChat(const Chat &chat);
 
-	void chatActivated(const Chat &chat);
 	void statusBuddyActivated(const Buddy &buddy);
 	void smsRecipientActivated(const QString &recipient);
 
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
-	void currentChatChanged(const Talkable &talkable);
 	void currentStatusChanged(const Talkable &talkable);
 	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void showChatsPopupMenu(const QPoint &pos);
 	void showStatusesPopupMenu(const QPoint &pos);
 	void showSmsPopupMenu(const QPoint &pos);
 
-	void showChatDetailsPopupMenu(const QPoint &pos);
 	void showStatusDetailsPopupMenu(const QPoint &pos);
 	void showSmsDetailsPopupMenu(const QPoint &pos);
 
-	void clearChatHistory();
 	void clearStatusHistory();
 	void clearSmsHistory();
 
-	void removeChatEntriesPerDate();
 	void removeStatusEntriesPerDate();
 	void removeSmsEntriesPerDate();
 
