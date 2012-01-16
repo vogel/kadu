@@ -29,8 +29,8 @@
 
 #include "chat-dates-model.h"
 
-ChatDatesModel::ChatDatesModel(const Chat &chat, const QVector<DatesModelItem> &dates, QObject *parent) :
-		QAbstractListModel(parent), MyChat(chat), Dates(dates)
+ChatDatesModel::ChatDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
+		QAbstractListModel(parent), Dates(dates)
 {
 }
 
@@ -68,9 +68,6 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 
 QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 {
-	if (!MyChat)
-		return QVariant();
-
 	int col = index.column();
 	int row = index.row();
 
@@ -91,17 +88,10 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
-		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyChat));
-		case ChatRole: return QVariant::fromValue<Chat>(MyChat);
 		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
-}
-
-void ChatDatesModel::setChat(const Chat &chat)
-{
-	MyChat = chat;
 }
 
 void ChatDatesModel::setDates(const QVector<DatesModelItem> &dates)

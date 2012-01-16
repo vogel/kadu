@@ -30,8 +30,8 @@
 
 #include "buddy-status-dates-model.h"
 
-BuddyStatusDatesModel::BuddyStatusDatesModel(const Buddy &buddy, const QVector<DatesModelItem> &dates, QObject *parent) :
-		QAbstractListModel(parent), MyBuddy(buddy), Dates(dates)
+BuddyStatusDatesModel::BuddyStatusDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
+		QAbstractListModel(parent), Dates(dates)
 {
 }
 
@@ -68,9 +68,6 @@ QVariant BuddyStatusDatesModel::headerData(int section, Qt::Orientation orientat
 
 QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 {
-	if (!MyBuddy)
-		return QVariant();
-
 	int col = index.column();
 	int row = index.row();
 
@@ -90,17 +87,10 @@ QVariant BuddyStatusDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
-		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(MyBuddy));
-		case BuddyRole: return QVariant::fromValue<Buddy>(MyBuddy);
 		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
-}
-
-void BuddyStatusDatesModel::setBuddy(const Buddy &buddy)
-{
-	MyBuddy = buddy;
 }
 
 void BuddyStatusDatesModel::setDates(const QVector<DatesModelItem> &dates)

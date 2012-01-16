@@ -30,8 +30,8 @@
 
 #include "sms-dates-model.h"
 
-SmsDatesModel::SmsDatesModel(const QString &recipient, const QVector<DatesModelItem> &dates, QObject *parent) :
-		QAbstractListModel(parent), Recipient(recipient), Dates(dates)
+SmsDatesModel::SmsDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
+		QAbstractListModel(parent), Dates(dates)
 {
 }
 
@@ -68,9 +68,6 @@ QVariant SmsDatesModel::headerData(int section, Qt::Orientation orientation, int
 
 QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 {
-	if (Recipient.isEmpty())
-		return QVariant();
-
 	int col = index.column();
 	int row = index.row();
 
@@ -90,16 +87,10 @@ QVariant SmsDatesModel::data(const QModelIndex &index, int role) const
 			return QVariant();
 		}
 
-		case HistoryItemRole: return QVariant::fromValue<HistoryTreeItem>(HistoryTreeItem(Recipient));
 		case DateRole: return Dates.at(row).Date;
 	}
 
 	return QVariant();
-}
-
-void SmsDatesModel::setRecipient(const QString &recipient)
-{
-	Recipient = recipient;
 }
 
 void SmsDatesModel::setDates(const QVector<DatesModelItem> &dates)

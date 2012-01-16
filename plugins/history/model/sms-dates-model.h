@@ -34,11 +34,10 @@ class SmsDatesModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-	QString Recipient;
 	QVector<DatesModelItem> Dates;
 
 public:
-	SmsDatesModel(const QString &recipient, const QVector<DatesModelItem> &dates, QObject *parent = 0);
+	SmsDatesModel(const QVector<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~SmsDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -47,7 +46,6 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setRecipient(const QString &recipient);
 	void setDates(const QVector<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);

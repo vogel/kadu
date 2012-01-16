@@ -34,11 +34,10 @@ class BuddyStatusDatesModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-	Buddy MyBuddy;
 	QVector<DatesModelItem> Dates;
 
 public:
-	BuddyStatusDatesModel(const Buddy &buddy, const QVector<DatesModelItem> &dates, QObject *parent = 0);
+	BuddyStatusDatesModel(const QVector<DatesModelItem> &dates, QObject *parent = 0);
 	virtual ~BuddyStatusDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
@@ -47,7 +46,6 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setBuddy(const Buddy &buddy);
 	void setDates(const QVector<DatesModelItem> &dates);
 
 	QModelIndex indexForDate(const QDate &date);
