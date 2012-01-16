@@ -1,9 +1,11 @@
 ﻿+++ version 0.12.0-git
-* translations: enabled Russian language (Vogel)
 
 +++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
+* gadu: #2410 fixed: after waking up from suspend Gadu is not reconnecting (WhE)
 * gui: #2417 fixed: properly update icons of Kadu windows (beevvy)
+* translations: enabled Russian language (Vogel)
+* gadu: fixed importing from 0.6.5.x configurations (Vogel)
 
 +++ version 0.11.0-rc1
 * hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)
