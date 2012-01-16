@@ -24,7 +24,6 @@
 #include "model/roles.h"
 
 #include "dates-model-item.h"
-#include "history-tree-item.h"
 #include "history.h"
 
 #include "chat-dates-model.h"

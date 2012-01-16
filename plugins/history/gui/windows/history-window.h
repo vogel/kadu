@@ -41,7 +41,6 @@ class BuddyListModel;
 class BuddyStatusDatesModel;
 class ChatDatesModel;
 class ChatsListModel;
-class HistoryTreeItem;
 class ModelChain;
 class NameTalkableFilter;
 class SmsDatesModel;

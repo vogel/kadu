@@ -83,7 +83,6 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
 #include "storage/history-storage.h"
-#include "history-tree-item.h"
 #include "history.h"
 #include "timed-status.h"
 

@@ -37,7 +37,6 @@ set (SOURCES
 	history.cpp
 	history-messages-prepender.cpp
 	history-plugin.cpp
-	history-tree-item.cpp
 	history-save-thread.cpp
 	timed-status.cpp
 )

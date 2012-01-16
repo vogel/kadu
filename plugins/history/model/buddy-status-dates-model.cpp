@@ -25,7 +25,6 @@
 #include "model/roles.h"
 
 #include "model/dates-model-item.h"
-#include "history-tree-item.h"
 #include "history.h"
 
 #include "buddy-status-dates-model.h"
