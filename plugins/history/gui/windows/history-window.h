@@ -40,6 +40,7 @@ class QStandardItemModel;
 class BuddyListModel;
 class ChatsListModel;
 class HistoryDatesModel;
+class KaduTreeView;
 class ModelChain;
 class NameTalkableFilter;
 class TalkableTreeView;
@@ -68,7 +69,7 @@ class HistoryWindow : public QMainWindow
 	ModelChain *StatusesModelChain;
 
 	QStandardItemModel *SmsModel;
-	QListView *SmsListView;
+	KaduTreeView *SmsListView;
 
 	TimelineChatMessagesView *TimelineChatView;
 	TimelineChatMessagesView *TimelineStatusesView;

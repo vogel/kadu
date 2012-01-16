@@ -292,7 +292,7 @@ QWidget * HistoryWindow::createSmsTab(QWidget *parent)
 	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
 	smsListWidget->setFilterAutoVisibility(false);
 
-	SmsListView = new QListView(smsListWidget);
+	SmsListView = new KaduTreeView(smsListWidget);
 	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	SmsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
