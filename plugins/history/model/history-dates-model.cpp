@@ -28,8 +28,8 @@
 
 #include "history-dates-model.h"
 
-HistoryDatesModel::HistoryDatesModel(const QVector<DatesModelItem> &dates, QObject *parent) :
-		QAbstractListModel(parent), Dates(dates)
+HistoryDatesModel::HistoryDatesModel(bool includeTitle, QObject *parent) :
+		QAbstractListModel(parent), IncludeTitle(includeTitle)
 {
 }
 
@@ -39,7 +39,7 @@ HistoryDatesModel::~HistoryDatesModel()
 
 int HistoryDatesModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 3;
+	return parent.isValid() ? 0 : IncludeTitle ? 3 : 2;
 }
 
 int HistoryDatesModel::rowCount(const QModelIndex &parent) const
@@ -95,19 +95,9 @@ QVariant HistoryDatesModel::data(const QModelIndex &index, int role) const
 
 void HistoryDatesModel::setDates(const QVector<DatesModelItem> &dates)
 {
-	if (!Dates.isEmpty())
-	{
-		beginRemoveRows(QModelIndex(), 0, Dates.size() - 1);
-		Dates.clear();
-		endRemoveRows();
-	}
-
-	if (!dates.isEmpty())
-	{
-		beginInsertRows(QModelIndex(), 0, dates.size() - 1);
-		Dates = dates;
-		endInsertRows();
-	}
+	beginResetModel();
+	Dates = dates;
+	endResetModel();
 }
 
 QModelIndex HistoryDatesModel::indexForDate(const QDate &date)

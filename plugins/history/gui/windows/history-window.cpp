@@ -169,7 +169,7 @@ void HistoryWindow::createGui()
 	tabWidget->addTab(createStatusTab(tabWidget), tr("Statuses"));
 	tabWidget->addTab(createSmsTab(tabWidget), tr("SMS"));
 
-	MyChatDatesModel = new HistoryDatesModel(QVector<DatesModelItem>(), this);
+	MyChatDatesModel = new HistoryDatesModel(true, this);
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QVector<DatesModelItem>(), this);
 

@@ -36,9 +36,10 @@ class HistoryDatesModel : public QAbstractListModel
 	Q_OBJECT
 
 	QVector<DatesModelItem> Dates;
+	bool IncludeTitle;
 
 public:
-	HistoryDatesModel(const QVector<DatesModelItem> &dates, QObject *parent = 0);
+	explicit HistoryDatesModel(bool includeTitle, QObject *parent = 0);
 	virtual ~HistoryDatesModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
