@@ -302,7 +302,7 @@ QWidget * HistoryWindow::createSmsTab(QWidget *parent)
 
 	connect(smsListWidget, SIGNAL(filterChanged(QString)), proxyModel, SLOT(setFilterFixedString(QString)));
 
-	SmsListView->setModel(SmsModel);
+	SmsListView->setModel(proxyModel);
 
 	connect(SmsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(currentSmsChanged(QModelIndex,QModelIndex)));
