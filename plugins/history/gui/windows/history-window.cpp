@@ -157,7 +157,7 @@ void HistoryWindow::createGui()
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 	layout->setMargin(0);
-	layout->setSpacing(5);
+	layout->setSpacing(0);
 
 	QTabWidget *tabWidget = new QTabWidget(mainWidget);
 	tabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -175,6 +175,8 @@ void HistoryWindow::createGui()
 	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
 	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+	buttons->layout()->setMargin(5);
 
 	layout->addWidget(tabWidget);
 	layout->addWidget(buttons);
