@@ -329,7 +329,6 @@ void HistoryWindow::updateData()
 	QSet<Chat> usedChats;
 	QVector<Chat> chatsList = History::instance()->chatsList(HistorySearchParameters());
 
-	QVector<Chat> result;
 	QVector<Chat> conferenceChats;
 	BuddyList buddies;
 
@@ -345,7 +344,6 @@ void HistoryWindow::updateData()
 			foreach (const Chat &usedChat, details->chats())
 				usedChats.insert(usedChat);
 
-			result.append(aggregate);
 			if (aggregate.contacts().size() > 1)
 				conferenceChats.append(aggregate);
 			else if (1 == aggregate.contacts().size())
@@ -353,7 +351,6 @@ void HistoryWindow::updateData()
 		}
 		else
 		{
-			result.append(chat);
 			usedChats.insert(chat);
 			if (chat.contacts().size() > 1)
 				conferenceChats.append(chat);
