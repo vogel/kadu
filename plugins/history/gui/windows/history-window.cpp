@@ -26,6 +26,7 @@
 
 #include <QtCore/QScopedPointer>
 #include <QtGui/QDateEdit>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
@@ -156,7 +157,12 @@ HistoryWindow::~HistoryWindow()
 
 void HistoryWindow::createGui()
 {
-	QTabWidget *tabWidget = new QTabWidget(this);
+	QWidget *mainWidget = new QWidget(this);
+	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+	layout->setMargin(5);
+	layout->setSpacing(5);
+
+	QTabWidget *tabWidget = new QTabWidget(mainWidget);
 	tabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	tabWidget->addTab(createChatTab(tabWidget), tr("Chats"));
@@ -167,7 +173,15 @@ void HistoryWindow::createGui()
 	MyBuddyStatusDatesModel = new BuddyStatusDatesModel(Buddy::null, QVector<DatesModelItem>(), this);
 	MySmsDatesModel = new SmsDatesModel(QString(), QVector<DatesModelItem>(), this);
 
-	setCentralWidget(tabWidget);
+	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
+	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
+	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+
+	layout->addWidget(tabWidget);
+	layout->addWidget(buttons);
+
+	setCentralWidget(mainWidget);
 }
 
 QWidget * HistoryWindow::createChatTab(QWidget *parent)
