@@ -158,11 +158,12 @@ void HistoryWindow::createGui()
 {
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
-	layout->setMargin(5);
+	layout->setMargin(0);
 	layout->setSpacing(5);
 
 	QTabWidget *tabWidget = new QTabWidget(mainWidget);
 	tabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	tabWidget->setDocumentMode(true);
 
 	tabWidget->addTab(createChatTab(tabWidget), tr("Chats"));
 	tabWidget->addTab(createStatusTab(tabWidget), tr("Statuses"));
