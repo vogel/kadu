@@ -44,6 +44,7 @@ class HistoryDatesModel;
 class KaduTreeView;
 class ModelChain;
 class NameTalkableFilter;
+class SmsHistoryTab;
 class StatusHistoryTab;
 class TalkableTreeView;
 class TimedStatus;
@@ -63,39 +64,21 @@ class HistoryWindow : public QMainWindow
 
 	QTabWidget *TabWidget;
 
-	QStandardItemModel *SmsModel;
-	KaduTreeView *SmsListView;
-
 	ChatHistoryTab *ChatTab;
 	StatusHistoryTab *StatusTab;
-	TimelineChatMessagesView *TimelineSmsesView;
-
-	HistoryDatesModel *MySmsDatesModel;
-
-	QMenu *SmsDetailsPopupMenu;
+	SmsHistoryTab *SmsTab;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
 
 	void createGui();
-	QWidget * createSmsTab(QWidget *parent);
 	void connectGui();
 
 	void updateData();
 	void selectChat(const Chat &chat);
 
-	void smsRecipientActivated(const QString &recipient);
-
-private slots:
-	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
-	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void showSmsPopupMenu(const QPoint &pos);
-	void showSmsDetailsPopupMenu(const QPoint &pos);
-	void clearSmsHistory();
-	void removeSmsEntriesPerDate();
-
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+	void keyPressEvent(QKeyEvent *event);
 
 public:
 	static void show(const Chat &chat);
