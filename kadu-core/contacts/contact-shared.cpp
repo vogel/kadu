@@ -190,6 +190,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 
 	setDirty(true);
 	dataUpdated();
+	emit buddyUpdated();
 }
 
 void ContactShared::setContactAccount(const Account &account)
