@@ -42,21 +42,21 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	QMenu *SmsDetailsPopupMenu;
 	HistoryDatesModel *MySmsDatesModel;
-	TimelineChatMessagesView *TimelineSmsesView;
 
-	void createGui();
 	void smsRecipientActivated(const QString &recipient);
 
 private slots:
 	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
 	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void showSmsPopupMenu(const QPoint &pos);
-	void showSmsDetailsPopupMenu(const QPoint &pos);
 	void clearSmsHistory();
 	void removeSmsEntriesPerDate();
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	virtual void createTreeView(QWidget *parent);
+
+protected slots:
+	virtual void showTimelinePopupMenu(const QPoint &pos);
 
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);

@@ -60,14 +60,9 @@ ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::createGui()
+void ChatHistoryTab::createTreeView (QWidget *parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
-
-	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
-
-	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
+	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 	chatsTalkableWidget->setFilterAutoVisibility(false);
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
@@ -103,19 +98,6 @@ void ChatHistoryTab::createGui()
 	ChatsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	chatsTalkableWidget->setView(ChatsTalkableTree);
-
-	TimelineChatView = new TimelineChatMessagesView(splitter);
-
-	TimelineChatView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(TimelineChatView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
-	        this, SLOT(showChatDetailsPopupMenu(QPoint)));
-
-	QList<int> sizes;
-	sizes.append(150);
-	sizes.append(300);
-	splitter->setSizes(sizes);
-
-	layout->addWidget(splitter);
 }
 
 void ChatHistoryTab::updateData()
@@ -159,8 +141,8 @@ void ChatHistoryTab::updateData()
 
 void ChatHistoryTab::chatActivated(const Chat &chat)
 {
-	QModelIndex selectedIndex = TimelineChatView->timeline()->selectionModel()
-	        ? TimelineChatView->timeline()->selectionModel()->currentIndex()
+	QModelIndex selectedIndex = timelineView()->timeline()->selectionModel()
+	        ? timelineView()->timeline()->selectionModel()->currentIndex()
 	        : QModelIndex();
 	QDate date = selectedIndex.data(DateRole).toDate();
 
@@ -175,12 +157,12 @@ void ChatHistoryTab::chatActivated(const Chat &chat)
 			select = MyChatDatesModel->index(lastRow);
 	}
 
-	TimelineChatView->timeline()->setModel(MyChatDatesModel);
+	timelineView()->timeline()->setModel(MyChatDatesModel);
 
-	connect(TimelineChatView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(chatDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	TimelineChatView->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	timelineView()->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
@@ -225,7 +207,7 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 
 void ChatHistoryTab::removeChatEntriesPerDate()
 {
-	QDate date = TimelineChatView->timeline()->currentIndex().data(DateRole).value<QDate>();
+	QDate date = timelineView()->timeline()->currentIndex().data(DateRole).value<QDate>();
 	if (!date.isValid())
 		return;
 
@@ -244,17 +226,17 @@ void ChatHistoryTab::chatDateCurrentChanged(const QModelIndex &current, const QM
 
 	QDate date = current.data(DateRole).value<QDate>();
 
-	TimelineChatView->messagesView()->setUpdatesEnabled(false);
+	timelineView()->messagesView()->setUpdatesEnabled(false);
 
 	Chat chat = ChatsTalkableTree->actionContext()->chat();
 	QVector<Message> messages;
 	if (chat && date.isValid())
 		messages = History::instance()->messages(chat, date);
-	TimelineChatView->messagesView()->setChat(chat);
-	TimelineChatView->messagesView()->clearMessages();
-	TimelineChatView->messagesView()->appendMessages(messages);
+	timelineView()->messagesView()->setChat(chat);
+	timelineView()->messagesView()->clearMessages();
+	timelineView()->messagesView()->appendMessages(messages);
 
-	TimelineChatView->messagesView()->setUpdatesEnabled(true);
+	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 void ChatHistoryTab::showChatsPopupMenu(const QPoint &pos)
@@ -271,9 +253,9 @@ void ChatHistoryTab::showChatsPopupMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void ChatHistoryTab::showChatDetailsPopupMenu(const QPoint &pos)
+void ChatHistoryTab::showTimelinePopupMenu(const QPoint &pos)
 {
-	QDate date = TimelineChatView->timeline()->indexAt(pos).data(DateRole).value<QDate>();
+	QDate date = timelineView()->timeline()->indexAt(pos).data(DateRole).value<QDate>();
 	if (!date.isValid())
 		return;
 
@@ -293,13 +275,4 @@ void ChatHistoryTab::clearChatHistory()
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
-}
-
-void ChatHistoryTab::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == QKeySequence::Copy && !TimelineChatView->messagesView()->selectedText().isEmpty())
-		// Do not use triggerPageAction(), see bug #2345.
-		TimelineChatView->messagesView()->pageAction(QWebPage::Copy)->trigger();
-	else
-		HistoryTab::keyPressEvent(event);
 }

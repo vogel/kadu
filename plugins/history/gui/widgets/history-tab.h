@@ -24,9 +24,24 @@
 
 #include "exports.h"
 
+class TimelineChatMessagesView;
+
 class KADUAPI HistoryTab : public QWidget
 {
 	Q_OBJECT
+
+	TimelineChatMessagesView *TimelineView;
+
+protected:
+	void keyPressEvent(QKeyEvent *event);
+
+	TimelineChatMessagesView * timelineView() const;
+
+    void createGui();
+	virtual void createTreeView(QWidget *parent) = 0;
+
+protected slots:
+	virtual void showTimelinePopupMenu(const QPoint &pos) = 0;
 
 public:
 	explicit HistoryTab(QWidget *parent = 0);

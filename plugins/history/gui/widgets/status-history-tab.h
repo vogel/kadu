@@ -35,7 +35,6 @@ class Message;
 class ModelChain;
 class TalkableTreeView;
 class TimedStatus;
-class TimelineChatMessagesView;
 
 class KADUAPI StatusHistoryTab : public HistoryTab
 {
@@ -47,9 +46,7 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 
 	QMenu *StatusDetailsPopupMenu;
 	HistoryDatesModel *MyBuddyStatusDatesModel;
-	TimelineChatMessagesView *TimelineStatusesView;
 
-	void createGui();
 	void statusBuddyActivated(const Buddy &buddy);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
@@ -57,12 +54,14 @@ private slots:
 	void currentStatusChanged(const Talkable &talkable);
 	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void showStatusesPopupMenu(const QPoint &pos);
-	void showStatusDetailsPopupMenu(const QPoint &pos);
 	void clearStatusHistory();
 	void removeStatusEntriesPerDate();
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	virtual void createTreeView(QWidget *parent);
+
+protected slots:
+	virtual void showTimelinePopupMenu(const QPoint &pos);
 
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);

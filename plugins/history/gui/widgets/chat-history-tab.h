@@ -47,9 +47,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 
 	QMenu *ChatDetailsPopupMenu;
 	HistoryDatesModel *MyChatDatesModel;
-	TimelineChatMessagesView *TimelineChatView;
 
-	void createGui();
 	void chatActivated(const Chat &chat);
 
 private slots:
@@ -58,10 +56,12 @@ private slots:
 	void chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void removeChatEntriesPerDate();
 	void showChatsPopupMenu(const QPoint &pos);
-	void showChatDetailsPopupMenu(const QPoint &pos);
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	virtual void createTreeView(QWidget *parent);
+
+protected slots:
+	virtual  void showTimelinePopupMenu(const QPoint &pos);
 
 public:
 	explicit ChatHistoryTab(QWidget *parent = 0);

@@ -59,14 +59,9 @@ StatusHistoryTab::~StatusHistoryTab()
 {
 }
 
-void StatusHistoryTab::createGui()
+void StatusHistoryTab::createTreeView(QWidget *parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
-
-	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
-
-	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, splitter);
+	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 	statusesTalkableWidget->setFilterAutoVisibility(false);
 
 	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
@@ -93,19 +88,6 @@ void StatusHistoryTab::createGui()
 	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	statusesTalkableWidget->setView(StatusesTalkableTree);
-
-	TimelineStatusesView = new TimelineChatMessagesView(splitter);
-
-	TimelineStatusesView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(TimelineStatusesView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
-	        this, SLOT(showStatusDetailsPopupMenu(QPoint)));
-
-	QList<int> sizes;
-	sizes.append(150);
-	sizes.append(300);
-	splitter->setSizes(sizes);
-
-	layout->addWidget(splitter);
 }
 
 void StatusHistoryTab::updateData()
@@ -116,8 +98,8 @@ void StatusHistoryTab::updateData()
 
 void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
 {
-	QModelIndex selectedIndex = TimelineStatusesView->timeline()->model()
-	        ? TimelineStatusesView->timeline()->selectionModel()->currentIndex()
+	QModelIndex selectedIndex = timelineView()->timeline()->model()
+	        ? timelineView()->timeline()->selectionModel()->currentIndex()
 	        : QModelIndex();
 
 	QDate date = selectedIndex.data(DateRole).toDate();
@@ -134,12 +116,12 @@ void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
 			selectedIndex = MyBuddyStatusDatesModel->index(lastRow);
 	}
 
-	TimelineStatusesView->timeline()->setModel(MyBuddyStatusDatesModel);
+	timelineView()->timeline()->setModel(MyBuddyStatusDatesModel);
 
-	connect(TimelineStatusesView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(statusDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	TimelineStatusesView->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 }
 
 void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -149,9 +131,9 @@ void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, cons
 
 	QDate date = current.data(DateRole).value<QDate>();
 
-	TimelineStatusesView->messagesView()->setUpdatesEnabled(false);
+	timelineView()->messagesView()->setUpdatesEnabled(false);
 
-	TimelineStatusesView->messagesView()->clearMessages();
+	timelineView()->messagesView()->clearMessages();
 
 	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
 	{
@@ -160,11 +142,11 @@ void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, cons
 		if (buddy && date.isValid())
 			statuses = History::instance()->statuses(buddy, date);
 		if (!buddy.contacts().isEmpty())
-			TimelineStatusesView->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
-		TimelineStatusesView->messagesView()->appendMessages(statusesToMessages(statuses));
+			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
+		timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
 	}
 
-	TimelineStatusesView->messagesView()->setUpdatesEnabled(true);
+	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
@@ -195,9 +177,9 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 	return messages;
 }
 
-void StatusHistoryTab::showStatusDetailsPopupMenu(const QPoint &pos)
+void StatusHistoryTab::showTimelinePopupMenu(const QPoint &pos)
 {
-	QDate date = TimelineStatusesView->timeline()->indexAt(pos).data(DateRole).value<QDate>();
+	QDate date = timelineView()->timeline()->indexAt(pos).data(DateRole).value<QDate>();
 	if (!date.isValid())
 		return;
 
@@ -226,7 +208,7 @@ void StatusHistoryTab::clearStatusHistory()
 
 void StatusHistoryTab::removeStatusEntriesPerDate()
 {
-	QDate date = TimelineStatusesView->timeline()->currentIndex().data(DateRole).value<QDate>();
+	QDate date = timelineView()->timeline()->currentIndex().data(DateRole).value<QDate>();
 	if (!date.isValid())
 		return;
 
@@ -244,15 +226,6 @@ void StatusHistoryTab::removeStatusEntriesPerDate()
 void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 {
 	statusBuddyActivated(talkable.toBuddy());
-}
-
-void StatusHistoryTab::keyPressEvent(QKeyEvent *event)
-{
-	if (event->key() == QKeySequence::Copy && !TimelineStatusesView->messagesView()->selectedText().isEmpty())
-		// Do not use triggerPageAction(), see bug #2345.
-		TimelineStatusesView->messagesView()->pageAction(QWebPage::Copy)->trigger();
-	else
-		HistoryTab::keyPressEvent(event);
 }
 
 void StatusHistoryTab::showStatusesPopupMenu(const QPoint &pos)
