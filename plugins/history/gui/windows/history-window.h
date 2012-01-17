@@ -44,6 +44,7 @@ class HistoryDatesModel;
 class KaduTreeView;
 class ModelChain;
 class NameTalkableFilter;
+class StatusHistoryTab;
 class TalkableTreeView;
 class TimedStatus;
 class TimelineChatMessagesView;
@@ -62,56 +63,35 @@ class HistoryWindow : public QMainWindow
 
 	QTabWidget *TabWidget;
 
-	BuddyListModel *StatusBuddiesModel;
-	TalkableTreeView *StatusesTalkableTree;
-	ModelChain *StatusesModelChain;
-
 	QStandardItemModel *SmsModel;
 	KaduTreeView *SmsListView;
 
 	ChatHistoryTab *ChatTab;
-	TimelineChatMessagesView *TimelineStatusesView;
+	StatusHistoryTab *StatusTab;
 	TimelineChatMessagesView *TimelineSmsesView;
 
-	HistoryDatesModel *MyBuddyStatusDatesModel;
 	HistoryDatesModel *MySmsDatesModel;
 
-	QMenu *StatusDetailsPopupMenu;
 	QMenu *SmsDetailsPopupMenu;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
 
 	void createGui();
-	QWidget * createStatusTab(QWidget *parent);
 	QWidget * createSmsTab(QWidget *parent);
 	void connectGui();
 
 	void updateData();
 	void selectChat(const Chat &chat);
 
-	void statusBuddyActivated(const Buddy &buddy);
 	void smsRecipientActivated(const QString &recipient);
 
-	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
-
 private slots:
-	void currentStatusChanged(const Talkable &talkable);
 	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
-
-	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-
-	void showStatusesPopupMenu(const QPoint &pos);
 	void showSmsPopupMenu(const QPoint &pos);
-
-	void showStatusDetailsPopupMenu(const QPoint &pos);
 	void showSmsDetailsPopupMenu(const QPoint &pos);
-
-	void clearStatusHistory();
 	void clearSmsHistory();
-
-	void removeStatusEntriesPerDate();
 	void removeSmsEntriesPerDate();
 
 protected:
