@@ -63,6 +63,7 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "misc/path-conversion.h"
+#include "protocols/services/chat-service.h"
 
 #include "debug.h"
 

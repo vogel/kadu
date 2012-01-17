@@ -26,10 +26,12 @@
 #include "configuration/configuration-file.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 
 #include "gui/windows/history-window.h"
 #include "history-messages-prepender.h"
+#include "history.h"
 
 #include "show-history-action-description.h"
 

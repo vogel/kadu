@@ -24,68 +24,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QScopedPointer>
-#include <QtGui/QDateEdit>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QItemDelegate>
-#include <QtGui/QLineEdit>
-#include <QtGui/QMenu>
 #include <QtGui/QPushButton>
-#include <QtGui/QSplitter>
-#include <QtGui/QStandardItem>
-#include <QtGui/QStandardItemModel>
-#include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/model/buddies-model-base.h"
-#include "buddies/model/buddy-list-model.h"
 #include "chat/aggregate-chat-manager.h"
-#include "chat/chat-details-aggregate.h"
-#include "chat/chat-manager.h"
-#include "chat/model/chats-list-model.h"
-#include "chat/type/chat-type-manager.h"
-#include "chat/type/chat-type.h"
-#include "gui/actions/actions.h"
-#include "gui/actions/base-action-context.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/delayed-line-edit.h"
-#include "gui/widgets/filter-widget.h"
-#include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/talkable-delegate-configuration.h"
-#include "gui/widgets/talkable-menu-manager.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
-#include "icons/kadu-icon.h"
-#include "message/message.h"
 #include "misc/misc.h"
-#include "model/merged-proxy-model-factory.h"
-#include "model/model-chain.h"
-#include "model/roles.h"
-#include "protocols/protocol-factory.h"
-#include "protocols/protocol-menu-manager.h"
-#include "status/status-type-data.h"
-#include "status/status-type-manager.h"
-#include "talkable/filter/name-talkable-filter.h"
-#include "talkable/model/talkable-proxy-model.h"
 #include "activate.h"
-#include "debug.h"
 
-#include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
 #include "gui/widgets/chat-history-tab.h"
+#include "gui/widgets/history-tab.h"
 #include "gui/widgets/sms-history-tab.h"
 #include "gui/widgets/status-history-tab.h"
-#include "gui/widgets/timeline-chat-messages-view.h"
-#include "search/history-search-parameters.h"
-#include "storage/history-storage.h"
 #include "history.h"
-#include "timed-status.h"
 
 #include "history-window.h"
 
@@ -116,9 +68,8 @@ void HistoryWindow::show(const Chat &chat)
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		QMainWindow(parent)
 {
-	kdebugf();
-
 	setProperty("ownWindowIcon", true);
+
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -128,19 +79,13 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	createGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
-
-	kdebugf2();
 }
 
 HistoryWindow::~HistoryWindow()
 {
-	kdebugf();
-
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 
 	Instance = 0;
-
-	kdebugf2();
 }
 
 void HistoryWindow::createGui()
@@ -177,8 +122,6 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::updateData()
 {
-	kdebugf();
-
 	ChatTab->updateData();
 	StatusTab->updateData();
 	SmsTab->updateData();

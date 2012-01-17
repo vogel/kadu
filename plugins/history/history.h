@@ -51,6 +51,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/main-configuration-window.h"
+#include "message/message.h"
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"
 

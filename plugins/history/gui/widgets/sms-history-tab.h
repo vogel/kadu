@@ -62,7 +62,7 @@ public:
 	explicit SmsHistoryTab(QWidget *parent = 0);
 	virtual ~SmsHistoryTab();
 
-	void updateData();
+	virtual void updateData();
 
 };
 

@@ -32,6 +32,8 @@ public:
 	explicit HistoryTab(QWidget *parent = 0);
 	virtual ~HistoryTab();
 
+	virtual void updateData() = 0;
+
 };
 
 #endif // HISTORY_TAB_H

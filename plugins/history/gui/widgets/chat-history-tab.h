@@ -67,7 +67,8 @@ public:
 	explicit ChatHistoryTab(QWidget *parent = 0);
 	virtual ~ChatHistoryTab();
 
-	void updateData();
+	virtual void updateData();
+
 	void selectChat(const Chat &chat);
 
 };

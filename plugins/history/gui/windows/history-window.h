@@ -24,31 +24,11 @@
 #ifndef HISTORY_WINDOW_H
 #define HISTORY_WINDOW_H
 
-#include <QtGui/QDateEdit>
 #include <QtGui/QMainWindow>
-#include <QtGui/QTreeWidget>
 
-#include "buddies/buddy-set.h"
-#include "gui/widgets/chat-messages-view.h"
-#include "talkable/talkable.h"
-
-#include "history.h"
-#include "history_exports.h"
-
-class QStandardItemModel;
-
-class BuddyListModel;
+class Chat;
 class ChatHistoryTab;
-class ChatsListModel;
-class HistoryDatesModel;
-class KaduTreeView;
-class ModelChain;
-class NameTalkableFilter;
-class SmsHistoryTab;
-class StatusHistoryTab;
-class TalkableTreeView;
-class TimedStatus;
-class TimelineChatMessagesView;
+class HistoryTab;
 
 /*!
 \class HistoryWindow
@@ -65,14 +45,13 @@ class HistoryWindow : public QMainWindow
 	QTabWidget *TabWidget;
 
 	ChatHistoryTab *ChatTab;
-	StatusHistoryTab *StatusTab;
-	SmsHistoryTab *SmsTab;
+	HistoryTab *StatusTab;
+	HistoryTab *SmsTab;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
 
 	void createGui();
-	void connectGui();
 
 	void updateData();
 	void selectChat(const Chat &chat);
