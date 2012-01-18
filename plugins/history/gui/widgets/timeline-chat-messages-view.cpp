@@ -48,9 +48,17 @@ void TimelineChatMessagesView::createGui()
 	Timeline->setRootIsDecorated(false);
 	Timeline->setUniformRowHeights(true);
 
-	MessagesView = new ChatMessagesView(Chat::null, false, Splitter);
+	QFrame *frame = new QFrame(Splitter);
+	frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+
+	QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+	frameLayout->setMargin(0);
+
+	MessagesView = new ChatMessagesView(Chat::null, false, frame);
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);
+
+	frameLayout->addWidget(MessagesView);
 
 	layout()->addWidget(Splitter);
 }
