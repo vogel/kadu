@@ -20,6 +20,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
+#include <QtGui/QScrollBar>
 #include <QtGui/QSplitter>
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
@@ -81,7 +82,11 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 	DatesModel->setDates(dates);
 
 	if (!dates.isEmpty())
+	{
 		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(dates.size() - 1, 0));
+		QScrollBar *scrollBar = TimelineView->timeline()->verticalScrollBar();
+		scrollBar->setValue(scrollBar->maximum());
+	}
 	else
 		currentDateChanged();
 }
