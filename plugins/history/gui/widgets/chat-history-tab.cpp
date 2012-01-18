@@ -40,6 +40,7 @@
 #include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
 #include "search/history-search-parameters.h"
+#include "chats-buddies-splitter.h"
 #include "history.h"
 
 #include "chat-history-tab.h"
@@ -98,41 +99,10 @@ void ChatHistoryTab::createTreeView (QWidget *parent)
 
 void ChatHistoryTab::updateData()
 {
-	QSet<Chat> usedChats;
-	QVector<Chat> chatsList = History::instance()->chatsList(HistorySearchParameters());
+	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList(HistorySearchParameters()));
 
-	QVector<Chat> conferenceChats;
-	BuddyList buddies;
-
-	foreach (const Chat &chat, chatsList)
-	{
-		if (usedChats.contains(chat))
-			continue;
-		Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-		if (aggregate)
-		{
-			ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(aggregate.details());
-			Q_ASSERT(details);
-			foreach (const Chat &usedChat, details->chats())
-				usedChats.insert(usedChat);
-
-			if (aggregate.contacts().size() > 1)
-				conferenceChats.append(aggregate);
-			else if (1 == aggregate.contacts().size())
-				buddies.append(BuddyManager::instance()->byContact(*aggregate.contacts().begin(), ActionCreateAndAdd));
-		}
-		else
-		{
-			usedChats.insert(chat);
-			if (chat.contacts().size() > 1)
-				conferenceChats.append(chat);
-			else if (1 == chat.contacts().size())
-				buddies.append(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
-		}
-	}
-
-	ChatsModel->setChats(conferenceChats);
-	ChatsBuddiesModel->setBuddyList(buddies);
+	ChatsModel->setChats(chatsBuddies.chats());
+	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
 }
 
 void ChatHistoryTab::chatActivated(const Chat &chat)

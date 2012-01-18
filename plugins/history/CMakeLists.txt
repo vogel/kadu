@@ -37,6 +37,7 @@ set (SOURCES
 	storage/history-storage.cpp
 
 	buddy-history-delete-handler.cpp
+	chats-buddies-splitter.cpp
 	history.cpp
 	history-messages-prepender.cpp
 	history-plugin.cpp
