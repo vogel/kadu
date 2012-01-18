@@ -28,12 +28,14 @@
 #include "icons/kadu-icon.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "model/history-dates-model.h"
 
 #include "history-tab.h"
 
-HistoryTab::HistoryTab(QWidget *parent) :
+HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
 		QWidget(parent)
 {
+	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 }
 
 HistoryTab::~HistoryTab()
@@ -54,9 +56,12 @@ void HistoryTab::createGui()
 	createTreeView(splitter);
 
 	TimelineView = new TimelineChatMessagesView(splitter);
+	TimelineView->timeline()->setModel(DatesModel);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
 	        this, SLOT(showTimelinePopupMenu(QPoint)));
+	connect(TimelineView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+	        this, SLOT(currentDateChanged()));
 
 	QList<int> sizes;
 	sizes.append(150);
@@ -69,6 +74,30 @@ void HistoryTab::createGui()
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
+}
+
+void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
+{
+	DatesModel->setDates(dates);
+
+	const int rowCount = TimelineView->timeline()->model()->rowCount();
+	if (rowCount > 0)
+		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(rowCount - 1, 0));
+
+	currentDateChanged();
+}
+
+void HistoryTab::currentDateChanged()
+{
+	QDate date = timelineView()->currentDate();
+
+	if (!date.isValid())
+	{
+		timelineView()->messagesView()->clearMessages();
+		return;
+	}
+
+	displayForDate(date);
 }
 
 void HistoryTab::showTimelinePopupMenu(const QPoint &pos)

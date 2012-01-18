@@ -28,7 +28,6 @@
 #include "gui/widgets/history-tab.h"
 
 class BuddyListModel;
-class HistoryDatesModel;
 class Message;
 class ModelChain;
 class TalkableTreeView;
@@ -42,8 +41,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
 
-	HistoryDatesModel *MyBuddyStatusDatesModel;
-
 	void statusBuddyActivated(const Buddy &buddy);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
@@ -55,6 +52,7 @@ private slots:
 
 protected:
 	virtual void createTreeView(QWidget *parent);
+	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 
 public:

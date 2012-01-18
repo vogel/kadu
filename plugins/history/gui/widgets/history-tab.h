@@ -27,6 +27,8 @@
 class QDate;
 class QMenu;
 
+class DatesModelItem;
+class HistoryDatesModel;
 class TimelineChatMessagesView;
 
 class KADUAPI HistoryTab : public QWidget
@@ -35,8 +37,11 @@ class KADUAPI HistoryTab : public QWidget
 
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
+	HistoryDatesModel *DatesModel;
 
 private slots:
+	void currentDateChanged();
+
 	void showTimelinePopupMenu(const QPoint &pos);
 	void removeEntries();
 
@@ -44,13 +49,15 @@ protected:
 	void keyPressEvent(QKeyEvent *event);
 
 	TimelineChatMessagesView * timelineView() const;
+	void setDates(const QVector<DatesModelItem> &dates);
 
 	void createGui();
 	virtual void createTreeView(QWidget *parent) = 0;
+	virtual void displayForDate(const QDate &date) = 0;
 	virtual void removeEntriesPerDate(const QDate &date) = 0;
 
 public:
-	explicit HistoryTab(QWidget *parent = 0);
+	explicit HistoryTab(bool showTitleInTimeline, QWidget *parent = 0);
 	virtual ~HistoryTab();
 
 	virtual void updateData() = 0;

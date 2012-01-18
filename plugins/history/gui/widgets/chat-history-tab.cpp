@@ -38,7 +38,6 @@
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
 #include "search/history-search-parameters.h"
 #include "chats-buddies-splitter.h"
 #include "history.h"
@@ -48,8 +47,6 @@
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 		HistoryTab(parent)
 {
-	MyChatDatesModel = new HistoryDatesModel(true, this);
-
 	createGui();
 }
 
@@ -107,27 +104,7 @@ void ChatHistoryTab::updateData()
 
 void ChatHistoryTab::chatActivated(const Chat &chat)
 {
-	QVector<DatesModelItem> chatDates = History::instance()->datesForChat(chat, HistorySearchParameters());
-	MyChatDatesModel->setDates(chatDates);
-
-	QDate date = timelineView()->currentDate();
-	QModelIndex select = MyChatDatesModel->indexForDate(date);
-	if (!select.isValid())
-	{
-		int lastRow = MyChatDatesModel->rowCount(QModelIndex()) - 1;
-		if (lastRow >= 0)
-			select = MyChatDatesModel->index(lastRow);
-	}
-
-	timelineView()->timeline()->setModel(MyChatDatesModel);
-
-	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(chatDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
-
-	if (select.isValid())
-		timelineView()->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-	else
-		timelineView()->messagesView()->clearMessages();
+	setDates(History::instance()->datesForChat(chat, HistorySearchParameters()));
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
@@ -180,13 +157,8 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void ChatHistoryTab::chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+void ChatHistoryTab::displayForDate(const QDate &date)
 {
-	if (current == previous)
-		return;
-
-	QDate date = current.data(DateRole).value<QDate>();
-
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 
 	Chat chat = ChatsTalkableTree->actionContext()->chat();

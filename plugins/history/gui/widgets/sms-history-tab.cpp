@@ -30,7 +30,6 @@
 #include "gui/widgets/kadu-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
 
@@ -39,8 +38,6 @@
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 		HistoryTab(parent)
 {
-	MySmsDatesModel = new HistoryDatesModel(false, this);
-
 	createGui();
 }
 
@@ -84,36 +81,11 @@ void SmsHistoryTab::updateData()
 
 void SmsHistoryTab::smsRecipientActivated(const QString& recipient)
 {
-	QVector<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters());
-	MySmsDatesModel->setDates(smsDates);
-
-	QDate date = timelineView()->currentDate();
-	QModelIndex selectedIndex = MySmsDatesModel->indexForDate(date);
-	if (!selectedIndex.isValid())
-	{
-		int lastRow = MySmsDatesModel->rowCount(QModelIndex()) - 1;
-		if (lastRow >= 0)
-			selectedIndex = MySmsDatesModel->index(lastRow);
-	}
-
-	timelineView()->timeline()->setModel(MySmsDatesModel);
-
-	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(smsDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
-
-	if (selectedIndex.isValid())
-		timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-	else
-		timelineView()->messagesView()->clearMessages();
+	setDates(History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters()));
 }
 
-void SmsHistoryTab::smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	if (current == previous)
-		return;
-
-	QDate date = current.data(DateRole).value<QDate>();
-
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 
 	QString recipient = SmsListView->currentIndex().data().toString();

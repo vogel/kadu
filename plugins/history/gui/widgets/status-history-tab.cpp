@@ -34,7 +34,6 @@
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
@@ -45,8 +44,6 @@
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 		HistoryTab(parent)
 {
-	MyBuddyStatusDatesModel = new HistoryDatesModel(false, this);
-
 	createGui();
 }
 
@@ -93,36 +90,11 @@ void StatusHistoryTab::updateData()
 
 void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
 {
-	QVector<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters());
-	MyBuddyStatusDatesModel->setDates(statusDates);
-
-	QDate date = timelineView()->currentDate();
-	QModelIndex selectedIndex = MyBuddyStatusDatesModel->indexForDate(date);
-	if (!selectedIndex.isValid())
-	{
-		int lastRow = MyBuddyStatusDatesModel->rowCount(QModelIndex()) - 1;
-		if (lastRow >= 0)
-			selectedIndex = MyBuddyStatusDatesModel->index(lastRow);
-	}
-
-	timelineView()->timeline()->setModel(MyBuddyStatusDatesModel);
-
-	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(statusDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
-
-	if (selectedIndex.isValid())
-		timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
-	else
-		timelineView()->messagesView()->clearMessages();
+	setDates(History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters()));
 }
 
-void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
+void StatusHistoryTab::displayForDate(const QDate &date)
 {
-	if (current == previous)
-		return;
-
-	QDate date = current.data(DateRole).value<QDate>();
-
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 	timelineView()->messagesView()->clearMessages();
 

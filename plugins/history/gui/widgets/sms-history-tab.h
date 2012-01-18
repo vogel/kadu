@@ -28,7 +28,6 @@
 
 class QStandardItemModel;
 
-class HistoryDatesModel;
 class KaduTreeView;
 class TimelineChatMessagesView;
 
@@ -38,8 +37,6 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
-
-	HistoryDatesModel *MySmsDatesModel;
 
 	void smsRecipientActivated(const QString &recipient);
 
@@ -51,6 +48,7 @@ private slots:
 
 protected:
 	virtual void createTreeView(QWidget *parent);
+	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
