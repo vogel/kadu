@@ -43,7 +43,7 @@
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(parent)
+		HistoryTab(false, parent)
 {
 	createGui();
 }

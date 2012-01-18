@@ -46,7 +46,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(parent)
+		HistoryTab(true, parent)
 {
 	createGui();
 }

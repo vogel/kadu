@@ -37,7 +37,7 @@
 #include "sms-history-tab.h"
 
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
-		HistoryTab(parent)
+		HistoryTab(false, parent)
 {
 	createGui();
 }
