@@ -88,7 +88,7 @@ void ChatHistoryTab::createTreeView(QWidget *parent)
 	ChatsTalkableTree->setChain(ChatsModelChain);
 
 	connect(ChatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
-	connect(ChatsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu(QPoint)));
+	connect(ChatsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
 	ChatsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	chatsTalkableWidget->setView(ChatsTalkableTree);
@@ -103,10 +103,8 @@ void ChatHistoryTab::displayChat(const Chat &chat)
 	setDates(History::instance()->datesForChat(chat, HistorySearchParameters()));
 }
 
-void ChatHistoryTab::showChatsPopupMenu(const QPoint &pos)
+void ChatHistoryTab::showChatsPopupMenu()
 {
-	Q_UNUSED(pos)
-
 	QScopedPointer<QMenu> menu;
 
 	menu.reset(TalkableMenuManager::instance()->menu(this, ChatsTalkableTree->actionContext()));

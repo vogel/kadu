@@ -46,7 +46,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	void displayChat(const Chat &chat);
 
 private slots:
-	void showChatsPopupMenu(const QPoint &pos);
+	void showChatsPopupMenu();
 	void clearChatHistory();
 
 	void currentChatChanged(const Talkable &talkable);
