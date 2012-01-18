@@ -66,6 +66,7 @@ void Highlighter::setHighlightFormat(const QTextCharFormat &format)
 
 void Highlighter::removeAll()
 {
-	qDeleteAll(Highlighters);
-	Highlighters.clear();
+	foreach (Highlighter *highlighter, Highlighters)
+		delete highlighter;
+	Q_ASSERT(Highlighters.isEmpty());
 }
