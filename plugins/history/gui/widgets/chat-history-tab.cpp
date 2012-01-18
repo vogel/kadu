@@ -49,10 +49,6 @@ ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 {
 	MyChatDatesModel = new HistoryDatesModel(true, this);
 
-	ChatDetailsPopupMenu = new QMenu(this);
-	ChatDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
-	                                this, SLOT(removeChatEntriesPerDate()));
-
 	createGui();
 }
 
@@ -205,12 +201,8 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 	}
 }
 
-void ChatHistoryTab::removeChatEntriesPerDate()
+void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	QDate date = timelineView()->timeline()->currentIndex().data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
 	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
 	if (chat)
 	{
@@ -251,17 +243,6 @@ void ChatHistoryTab::showChatsPopupMenu(const QPoint &pos)
 			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
 
 	menu->exec(QCursor::pos());
-}
-
-void ChatHistoryTab::showTimelinePopupMenu(const QPoint &pos)
-{
-	QDate date = timelineView()->timeline()->indexAt(pos).data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
-	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
-	if (chat)
-		ChatDetailsPopupMenu->exec(QCursor::pos());
 }
 
 void ChatHistoryTab::clearChatHistory()

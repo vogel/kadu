@@ -27,8 +27,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class QMenu;
-
 class BuddyListModel;
 class HistoryDatesModel;
 class Message;
@@ -44,7 +42,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
 
-	QMenu *StatusDetailsPopupMenu;
 	HistoryDatesModel *MyBuddyStatusDatesModel;
 
 	void statusBuddyActivated(const Buddy &buddy);
@@ -55,13 +52,10 @@ private slots:
 	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void showStatusesPopupMenu(const QPoint &pos);
 	void clearStatusHistory();
-	void removeStatusEntriesPerDate();
 
 protected:
 	virtual void createTreeView(QWidget *parent);
-
-protected slots:
-	virtual void showTimelinePopupMenu(const QPoint &pos);
+	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);

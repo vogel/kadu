@@ -41,10 +41,6 @@ SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 {
 	MySmsDatesModel = new HistoryDatesModel(false, this);
 
-	SmsDetailsPopupMenu = new QMenu(this);
-	SmsDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
-	                               this, SLOT(removeSmsEntriesPerDate()));
-
 	createGui();
 }
 
@@ -52,7 +48,7 @@ SmsHistoryTab::~SmsHistoryTab()
 {
 }
 
-void SmsHistoryTab::createTreeView (QWidget *parent)
+void SmsHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 	smsListWidget->setFilterAutoVisibility(false);
@@ -148,16 +144,6 @@ void SmsHistoryTab::showSmsPopupMenu(const QPoint &pos)
 	menu->exec(QCursor::pos());
 }
 
-void SmsHistoryTab::showTimelinePopupMenu(const QPoint &pos)
-{
-	QDate date = timelineView()->timeline()->indexAt(pos).data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
-	if (!SmsListView->currentIndex().data().toString().isEmpty())
-		SmsDetailsPopupMenu->exec(QCursor::pos());
-}
-
 void SmsHistoryTab::clearSmsHistory()
 {
 	bool removed = false;
@@ -177,12 +163,8 @@ void SmsHistoryTab::clearSmsHistory()
 		updateData();
 }
 
-void SmsHistoryTab::removeSmsEntriesPerDate()
+void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	QDate date = timelineView()->timeline()->currentIndex().data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
 	if (!SmsListView->currentIndex().data().toString().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(SmsListView->currentIndex().data().toString(), date);

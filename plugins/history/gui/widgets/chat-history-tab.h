@@ -27,8 +27,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class QMenu;
-
 class BuddyListModel;
 class ChatsListModel;
 class HistoryDatesModel;
@@ -45,7 +43,6 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
 
-	QMenu *ChatDetailsPopupMenu;
 	HistoryDatesModel *MyChatDatesModel;
 
 	void chatActivated(const Chat &chat);
@@ -54,14 +51,11 @@ private slots:
 	void clearChatHistory();
 	void currentChatChanged(const Talkable &talkable);
 	void chatDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void removeChatEntriesPerDate();
 	void showChatsPopupMenu(const QPoint &pos);
 
 protected:
 	virtual void createTreeView(QWidget *parent);
-
-protected slots:
-	virtual  void showTimelinePopupMenu(const QPoint &pos);
+	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
 	explicit ChatHistoryTab(QWidget *parent = 0);

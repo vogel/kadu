@@ -47,11 +47,6 @@ StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 {
 	MyBuddyStatusDatesModel = new HistoryDatesModel(false, this);
 
-
-	StatusDetailsPopupMenu = new QMenu(this);
-	StatusDetailsPopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
-	                                  this, SLOT(removeStatusEntriesPerDate()));
-
 	createGui();
 }
 
@@ -177,20 +172,6 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 	return messages;
 }
 
-void StatusHistoryTab::showTimelinePopupMenu(const QPoint &pos)
-{
-	QDate date = timelineView()->timeline()->indexAt(pos).data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
-	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
-	{
-		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
-		if (buddy && !buddy.contacts().isEmpty())
-			StatusDetailsPopupMenu->exec(QCursor::pos());
-	}
-}
-
 void StatusHistoryTab::clearStatusHistory()
 {
 	if (!StatusesTalkableTree->actionContext())
@@ -206,12 +187,8 @@ void StatusHistoryTab::clearStatusHistory()
 	updateData();
 }
 
-void StatusHistoryTab::removeStatusEntriesPerDate()
+void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	QDate date = timelineView()->timeline()->currentIndex().data(DateRole).value<QDate>();
-	if (!date.isValid())
-		return;
-
 	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
 	{
 		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();

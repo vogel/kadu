@@ -19,11 +19,13 @@
 
 #include <QtGui/QAction>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QMenu>
 #include <QtGui/QSplitter>
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
 #include "gui/widgets/chat-messages-view.h"
+#include "icons/kadu-icon.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 
@@ -40,6 +42,10 @@ HistoryTab::~HistoryTab()
 
 void HistoryTab::createGui()
 {
+	TimelinePopupMenu = new QMenu(this);
+	TimelinePopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
+	                             this, SLOT(removeEntries()));
+
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 
@@ -63,6 +69,21 @@ void HistoryTab::createGui()
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
+}
+
+void HistoryTab::showTimelinePopupMenu(const QPoint &pos)
+{
+	Q_UNUSED(pos)
+
+	if (TimelineView->currentDate().isValid())
+		TimelinePopupMenu->exec(QCursor::pos());
+}
+
+void HistoryTab::removeEntries()
+{
+	QDate date = TimelineView->currentDate();
+	if (date.isValid())
+		removeEntriesPerDate(date);
 }
 
 void HistoryTab::keyPressEvent(QKeyEvent *event)

@@ -26,7 +26,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class QMenu;
 class QStandardItemModel;
 
 class HistoryDatesModel;
@@ -40,7 +39,6 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
 
-	QMenu *SmsDetailsPopupMenu;
 	HistoryDatesModel *MySmsDatesModel;
 
 	void smsRecipientActivated(const QString &recipient);
@@ -50,13 +48,10 @@ private slots:
 	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
 	void showSmsPopupMenu(const QPoint &pos);
 	void clearSmsHistory();
-	void removeSmsEntriesPerDate();
 
 protected:
 	virtual void createTreeView(QWidget *parent);
-
-protected slots:
-	virtual void showTimelinePopupMenu(const QPoint &pos);
+	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);
