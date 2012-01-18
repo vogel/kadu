@@ -34,10 +34,12 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
+	QString CurrentRecipient;
+
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
 
-	void displaySmsRecipient(const QString &recipient);
+	void displaySmsRecipient(const QString &recipient, bool force);
 
 private slots:
 	void showSmsPopupMenu();

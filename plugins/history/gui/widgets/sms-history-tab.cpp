@@ -70,9 +70,13 @@ void SmsHistoryTab::createTreeView(QWidget *parent)
 	smsListWidget->setView(SmsListView);
 }
 
-void SmsHistoryTab::displaySmsRecipient(const QString& recipient)
+void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 {
-	setDates(History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters()));
+	if (!force && CurrentRecipient == recipient)
+		return;
+
+	CurrentRecipient = recipient;
+	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient, HistorySearchParameters()));
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -105,23 +109,22 @@ void SmsHistoryTab::clearSmsHistory()
 	if (removed)
 	{
 		updateData();
-		displaySmsRecipient(QString());
+		displaySmsRecipient(QString(), false);
 	}
 }
 
 void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 {
-	displaySmsRecipient(current.data().toString());
+	displaySmsRecipient(current.data().toString(), false);
 }
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 
-	QString recipient = SmsListView->currentIndex().data().toString();
 	QVector<Message> sms;
-	if (!recipient.isEmpty() && date.isValid())
-		sms = History::instance()->sms(recipient, date);
+	if (!CurrentRecipient.isEmpty() && date.isValid())
+		sms = History::instance()->sms(CurrentRecipient, date);
 	timelineView()->messagesView()->setChat(Chat::null);
 	timelineView()->messagesView()->clearMessages();
 	timelineView()->messagesView()->appendMessages(sms);
@@ -131,10 +134,10 @@ void SmsHistoryTab::displayForDate(const QDate &date)
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!SmsListView->currentIndex().data().toString().isEmpty())
+	if (!CurrentRecipient.isEmpty())
 	{
-		History::instance()->currentStorage()->clearSmsHistory(SmsListView->currentIndex().data().toString(), date);
-		displaySmsRecipient(SmsListView->currentIndex().data().toString());
+		History::instance()->currentStorage()->clearSmsHistory(CurrentRecipient, date);
+		displaySmsRecipient(CurrentRecipient, true);
 	}
 }
 
