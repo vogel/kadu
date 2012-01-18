@@ -76,7 +76,7 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 	StatusesTalkableTree->setChain(StatusesModelChain);
 
 	connect(StatusesTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
-	connect(StatusesTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu(QPoint)));
+	connect(StatusesTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
 	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	statusesTalkableWidget->setView(StatusesTalkableTree);
@@ -88,28 +88,9 @@ void StatusHistoryTab::updateData()
 	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 }
 
-void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
+void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy)
 {
 	setDates(History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters()));
-}
-
-void StatusHistoryTab::displayForDate(const QDate &date)
-{
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-	timelineView()->messagesView()->clearMessages();
-
-	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
-	{
-		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
-		QList<TimedStatus> statuses;
-		if (buddy && date.isValid())
-			statuses = History::instance()->statuses(buddy, date);
-		if (!buddy.contacts().isEmpty())
-			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
-		timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
-	}
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
@@ -140,6 +121,18 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 	return messages;
 }
 
+void StatusHistoryTab::showStatusesPopupMenu()
+{
+	QScopedPointer<QMenu> menu;
+
+	menu.reset(TalkableMenuManager::instance()->menu(this, StatusesTalkableTree->actionContext()));
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
+
+	menu->exec(QCursor::pos());
+}
+
 void StatusHistoryTab::clearStatusHistory()
 {
 	if (!StatusesTalkableTree->actionContext())
@@ -153,37 +146,42 @@ void StatusHistoryTab::clearStatusHistory()
 		History::instance()->currentStorage()->clearStatusHistory(buddy);
 
 	updateData();
-	statusBuddyActivated(Buddy::null);
+	displayStatusBuddy(Buddy::null);
+}
+
+void StatusHistoryTab::displayForDate(const QDate &date)
+{
+	timelineView()->messagesView()->setUpdatesEnabled(false);
+	timelineView()->messagesView()->clearMessages();
+
+	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
+	{
+		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
+		QList<TimedStatus> statuses;
+		if (buddy && date.isValid())
+			statuses = History::instance()->statuses(buddy, date);
+		if (!buddy.contacts().isEmpty())
+			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
+		timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
+	}
+
+	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
+	if (StatusesTalkableTree->actionContext()->buddies().isEmpty())
+		return;
+
+	Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
+	if (buddy && !buddy.contacts().isEmpty())
 	{
-		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
-		if (buddy && !buddy.contacts().isEmpty())
-		{
-			History::instance()->currentStorage()->clearStatusHistory(buddy, date);
-			statusBuddyActivated(buddy);
-		}
+		History::instance()->currentStorage()->clearStatusHistory(buddy, date);
+		displayStatusBuddy(buddy);
 	}
 }
 
 void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 {
-	statusBuddyActivated(talkable.toBuddy());
-}
-
-void StatusHistoryTab::showStatusesPopupMenu(const QPoint &pos)
-{
-	Q_UNUSED(pos)
-
-	QScopedPointer<QMenu> menu;
-
-	menu.reset(TalkableMenuManager::instance()->menu(this, StatusesTalkableTree->actionContext()));
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
-
-	menu->exec(QCursor::pos());
+	displayStatusBuddy(talkable.toBuddy());
 }

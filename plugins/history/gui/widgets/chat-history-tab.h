@@ -31,7 +31,6 @@ class BuddyListModel;
 class ChatsListModel;
 class ModelChain;
 class TalkableTreeView;
-class TimelineChatMessagesView;
 
 class KADUAPI ChatHistoryTab : public HistoryTab
 {
@@ -42,12 +41,13 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
 
-	void chatActivated(const Chat &chat);
+	void displayChat(const Chat &chat);
 
 private slots:
-	void clearChatHistory();
-	void currentChatChanged(const Talkable &talkable);
 	void showChatsPopupMenu(const QPoint &pos);
+	void clearChatHistory();
+
+	void currentChatChanged(const Talkable &talkable);
 
 protected:
 	virtual void createTreeView(QWidget *parent);

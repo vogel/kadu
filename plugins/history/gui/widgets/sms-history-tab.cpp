@@ -63,46 +63,20 @@ void SmsHistoryTab::createTreeView(QWidget *parent)
 	SmsListView->setModel(proxyModel);
 
 	connect(SmsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(currentSmsChanged(QModelIndex,QModelIndex)));
-	connect(SmsListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu(QPoint)));
+	        this, SLOT(currentSmsChanged(QModelIndex)));
+	connect(SmsListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
 	SmsListView->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	smsListWidget->setView(SmsListView);
 }
 
-void SmsHistoryTab::updateData()
-{
-	QList<QString> smsRecipients = History::instance()->smsRecipientsList(HistorySearchParameters());
-
-	SmsModel->clear();
-	foreach (const QString &smsRecipient, smsRecipients)
-		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
-}
-
-void SmsHistoryTab::smsRecipientActivated(const QString& recipient)
+void SmsHistoryTab::displaySmsRecipient(const QString& recipient)
 {
 	setDates(History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters()));
 }
 
-void SmsHistoryTab::displayForDate(const QDate &date)
+void SmsHistoryTab::showSmsPopupMenu()
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	QString recipient = SmsListView->currentIndex().data().toString();
-	QVector<Message> sms;
-	if (!recipient.isEmpty() && date.isValid())
-		sms = History::instance()->sms(recipient, date);
-	timelineView()->messagesView()->setChat(Chat::null);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(sms);
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
-}
-
-void SmsHistoryTab::showSmsPopupMenu(const QPoint &pos)
-{
-	Q_UNUSED(pos)
-
 	QScopedPointer<QMenu> menu;
 
 	menu.reset(new QMenu(this));
@@ -131,8 +105,28 @@ void SmsHistoryTab::clearSmsHistory()
 	if (removed)
 	{
 		updateData();
-		smsRecipientActivated(QString());
+		displaySmsRecipient(QString());
 	}
+}
+
+void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
+{
+	displaySmsRecipient(current.data().toString());
+}
+
+void SmsHistoryTab::displayForDate(const QDate &date)
+{
+	timelineView()->messagesView()->setUpdatesEnabled(false);
+
+	QString recipient = SmsListView->currentIndex().data().toString();
+	QVector<Message> sms;
+	if (!recipient.isEmpty() && date.isValid())
+		sms = History::instance()->sms(recipient, date);
+	timelineView()->messagesView()->setChat(Chat::null);
+	timelineView()->messagesView()->clearMessages();
+	timelineView()->messagesView()->appendMessages(sms);
+
+	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
@@ -140,13 +134,15 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 	if (!SmsListView->currentIndex().data().toString().isEmpty())
 	{
 		History::instance()->currentStorage()->clearSmsHistory(SmsListView->currentIndex().data().toString(), date);
-		smsRecipientActivated(SmsListView->currentIndex().data().toString());
+		displaySmsRecipient(SmsListView->currentIndex().data().toString());
 	}
 }
 
-void SmsHistoryTab::currentSmsChanged(const QModelIndex &current, const QModelIndex &previous)
+void SmsHistoryTab::updateData()
 {
-	Q_UNUSED(previous);
+	QList<QString> smsRecipients = History::instance()->smsRecipientsList(HistorySearchParameters());
 
-	smsRecipientActivated(current.data().toString());
+	SmsModel->clear();
+	foreach (const QString &smsRecipient, smsRecipients)
+		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
 }

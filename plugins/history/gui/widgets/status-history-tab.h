@@ -41,14 +41,14 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
 
-	void statusBuddyActivated(const Buddy &buddy);
+	void displayStatusBuddy(const Buddy &buddy);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
-	void currentStatusChanged(const Talkable &talkable);
-	void statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void showStatusesPopupMenu(const QPoint &pos);
+	void showStatusesPopupMenu();
 	void clearStatusHistory();
+
+	void currentStatusChanged(const Talkable &talkable);
 
 protected:
 	virtual void createTreeView(QWidget *parent);

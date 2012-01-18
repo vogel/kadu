@@ -29,7 +29,6 @@
 class QStandardItemModel;
 
 class KaduTreeView;
-class TimelineChatMessagesView;
 
 class KADUAPI SmsHistoryTab : public HistoryTab
 {
@@ -38,13 +37,13 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
 
-	void smsRecipientActivated(const QString &recipient);
+	void displaySmsRecipient(const QString &recipient);
 
 private slots:
-	void currentSmsChanged(const QModelIndex &current, const QModelIndex &previous);
-	void smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void showSmsPopupMenu(const QPoint &pos);
+	void showSmsPopupMenu();
 	void clearSmsHistory();
+
+	void currentSmsChanged(const QModelIndex &current);
 
 protected:
 	virtual void createTreeView(QWidget *parent);

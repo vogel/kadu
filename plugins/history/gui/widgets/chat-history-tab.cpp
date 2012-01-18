@@ -54,7 +54,7 @@ ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::createTreeView (QWidget *parent)
+void ChatHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
 	chatsTalkableWidget->setFilterAutoVisibility(false);
@@ -94,82 +94,9 @@ void ChatHistoryTab::createTreeView (QWidget *parent)
 	chatsTalkableWidget->setView(ChatsTalkableTree);
 }
 
-void ChatHistoryTab::updateData()
-{
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList(HistorySearchParameters()));
-
-	ChatsModel->setChats(chatsBuddies.chats());
-	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
-}
-
-void ChatHistoryTab::chatActivated(const Chat &chat)
+void ChatHistoryTab::displayChat(const Chat &chat)
 {
 	setDates(History::instance()->datesForChat(chat, HistorySearchParameters()));
-}
-
-void ChatHistoryTab::selectChat(const Chat &chat)
-{
-	ChatsTalkableTree->selectionModel()->clearSelection();
-	QModelIndexList indexesToSelect;
-
-	if (chat.contacts().size() == 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
-	else if (chat.contacts().size() > 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat);
-
-	if (1 == indexesToSelect.size())
-	{
-		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::Select);
-		chatActivated(chat);
-	}
-	else
-		chatActivated(Chat::null);
-}
-
-void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
-{
-	switch (talkable.type())
-	{
-		case Talkable::ItemChat:
-		{
-			chatActivated(talkable.toChat());
-			break;
-		}
-		case Talkable::ItemBuddy:
-		{
-			BuddySet buddies;
-			buddies.insert(talkable.toBuddy());
-			chatActivated(ChatManager::instance()->findChat(buddies, true));
-			break;
-		}
-		default:
-			break;
-	}
-}
-
-void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
-{
-	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
-	if (chat)
-	{
-		History::instance()->currentStorage()->clearChatHistory(chat, date);
-		chatActivated(chat);
-	}
-}
-
-void ChatHistoryTab::displayForDate(const QDate &date)
-{
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	Chat chat = ChatsTalkableTree->actionContext()->chat();
-	QVector<Message> messages;
-	if (chat && date.isValid())
-		messages = History::instance()->messages(chat, date);
-	timelineView()->messagesView()->setChat(chat);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(messages);
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 void ChatHistoryTab::showChatsPopupMenu(const QPoint &pos)
@@ -197,5 +124,79 @@ void ChatHistoryTab::clearChatHistory()
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
-	chatActivated(Chat::null);
+	displayChat(Chat::null);
+}
+
+void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
+{
+	switch (talkable.type())
+	{
+		case Talkable::ItemChat:
+		{
+			displayChat(talkable.toChat());
+			break;
+		}
+		case Talkable::ItemBuddy:
+		{
+			BuddySet buddies;
+			buddies.insert(talkable.toBuddy());
+			displayChat(ChatManager::instance()->findChat(buddies, true));
+			break;
+		}
+		default:
+			displayChat(Chat::null);
+			break;
+	}
+}
+
+void ChatHistoryTab::displayForDate(const QDate &date)
+{
+	timelineView()->messagesView()->setUpdatesEnabled(false);
+
+	Chat chat = ChatsTalkableTree->actionContext()->chat();
+	QVector<Message> messages;
+	if (chat && date.isValid())
+		messages = History::instance()->messages(chat, date);
+	timelineView()->messagesView()->setChat(chat);
+	timelineView()->messagesView()->clearMessages();
+	timelineView()->messagesView()->appendMessages(messages);
+
+	timelineView()->messagesView()->setUpdatesEnabled(true);
+}
+
+void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
+{
+	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
+	if (chat)
+	{
+		History::instance()->currentStorage()->clearChatHistory(chat, date);
+		displayChat(chat);
+	}
+}
+
+void ChatHistoryTab::updateData()
+{
+	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList(HistorySearchParameters()));
+
+	ChatsModel->setChats(chatsBuddies.chats());
+	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
+}
+
+void ChatHistoryTab::selectChat(const Chat &chat)
+{
+	ChatsTalkableTree->selectionModel()->clearSelection();
+	QModelIndexList indexesToSelect;
+
+	if (chat.contacts().size() == 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
+	else if (chat.contacts().size() > 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(chat);
+
+	if (1 == indexesToSelect.size())
+	{
+		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::Select);
+		displayChat(chat);
+	}
+	else
+		displayChat(Chat::null);
 }
