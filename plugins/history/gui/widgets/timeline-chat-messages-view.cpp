@@ -69,3 +69,15 @@ QDate TimelineChatMessagesView::currentDate() const
 {
 	return Timeline->currentIndex().data(DateRole).value<QDate>();
 }
+
+QList<int> TimelineChatMessagesView::sizes() const
+{
+	return Splitter->sizes();
+}
+
+void TimelineChatMessagesView::setSizes(const QList<int> &newSizes)
+{
+	Q_ASSERT(newSizes.size() == 2);
+
+	Splitter->setSizes(newSizes);
+}

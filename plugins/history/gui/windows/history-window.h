@@ -43,6 +43,7 @@ class HistoryWindow : public QMainWindow
 	static HistoryWindow *Instance;
 
 	QTabWidget *TabWidget;
+	int CurrentTab;
 
 	ChatHistoryTab *ChatTab;
 	HistoryTab *StatusTab;
@@ -55,6 +56,9 @@ class HistoryWindow : public QMainWindow
 
 	void updateData();
 	void selectChat(const Chat &chat);
+
+private slots:
+	void currentTabChanged(int newTabIndex);
 
 protected:
 	void keyPressEvent(QKeyEvent *event);

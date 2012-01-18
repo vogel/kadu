@@ -52,11 +52,11 @@ void HistoryTab::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(2);
 
-	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
+	Splitter = new QSplitter(Qt::Horizontal, this);
 
-	createTreeView(splitter);
+	createTreeView(Splitter);
 
-	TimelineView = new TimelineChatMessagesView(splitter);
+	TimelineView = new TimelineChatMessagesView(Splitter);
 	TimelineView->timeline()->setModel(DatesModel);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
@@ -67,9 +67,9 @@ void HistoryTab::createGui()
 	QList<int> sizes;
 	sizes.append(150);
 	sizes.append(300);
-	splitter->setSizes(sizes);
+	Splitter->setSizes(sizes);
 
-	layout->addWidget(splitter);
+	layout->addWidget(Splitter);
 }
 
 TimelineChatMessagesView * HistoryTab::timelineView() const
@@ -117,4 +117,20 @@ void HistoryTab::keyPressEvent(QKeyEvent *event)
 		TimelineView->messagesView()->pageAction(QWebPage::Copy)->trigger();
 	else
 		QWidget::keyPressEvent(event);
+}
+
+QList<int> HistoryTab::sizes() const
+{
+	QList<int> result = Splitter->sizes();
+	result.append(TimelineView->sizes());
+
+	return result;
+}
+
+void HistoryTab::setSizes(const QList<int> &newSizes)
+{
+	Q_ASSERT(newSizes.size() == 4);
+
+	Splitter->setSizes(newSizes.mid(0, 2));
+	TimelineView->setSizes(newSizes.mid(2, 2));
 }

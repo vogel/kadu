@@ -49,6 +49,9 @@ public:
 
 	QDate currentDate() const;
 
+	QList<int> sizes() const;
+	void setSizes(const QList<int> &newSizes);
+
 };
 
 #endif // TIMELINE_CHAT_MESSAGES_VIEW_H

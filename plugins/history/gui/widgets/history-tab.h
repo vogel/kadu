@@ -26,6 +26,7 @@
 
 class QDate;
 class QMenu;
+class QSplitter;
 
 class DatesModelItem;
 class HistoryDatesModel;
@@ -34,6 +35,8 @@ class TimelineChatMessagesView;
 class KADUAPI HistoryTab : public QWidget
 {
 	Q_OBJECT
+
+	QSplitter *Splitter;
 
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
@@ -61,6 +64,9 @@ public:
 	virtual ~HistoryTab();
 
 	virtual void updateData() = 0;
+
+	QList<int> sizes() const;
+	void setSizes(const QList<int> &newSizes);
 
 };
 

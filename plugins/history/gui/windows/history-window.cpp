@@ -66,7 +66,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		QMainWindow(parent)
+		QMainWindow(parent), CurrentTab(-1)
 {
 	setProperty("ownWindowIcon", true);
 
@@ -99,6 +99,9 @@ void HistoryWindow::createGui()
 	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	TabWidget->setDocumentMode(true);
 
+	connect(TabWidget, SIGNAL(currentChanged(int)),
+			this, SLOT(currentTabChanged(int)));
+
 	ChatTab = new ChatHistoryTab(TabWidget);
 	StatusTab = new StatusHistoryTab(TabWidget);
 	SmsTab = new SmsHistoryTab(TabWidget);
@@ -106,6 +109,8 @@ void HistoryWindow::createGui()
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));
 	TabWidget->addTab(SmsTab, tr("SMS"));
+
+	CurrentTab = 0;
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
 	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
@@ -142,4 +147,21 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 	}
 	else
 		QWidget::keyPressEvent(e);
+}
+
+void HistoryWindow::currentTabChanged(int newTabIndex)
+{
+	if (CurrentTab < 0 || CurrentTab > TabWidget->count() ||
+	    newTabIndex < 0 || newTabIndex > TabWidget->count())
+	{
+		CurrentTab = newTabIndex;
+		return;
+	}
+
+	HistoryTab *previousTab = static_cast<HistoryTab *>(TabWidget->widget(CurrentTab));
+	HistoryTab *currentTab = static_cast<HistoryTab *>(TabWidget->widget(newTabIndex));
+
+	CurrentTab = newTabIndex;
+
+	currentTab->setSizes(previousTab->sizes());
 }
