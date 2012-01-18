@@ -107,14 +107,10 @@ void ChatHistoryTab::updateData()
 
 void ChatHistoryTab::chatActivated(const Chat &chat)
 {
-	QModelIndex selectedIndex = timelineView()->timeline()->selectionModel()
-	        ? timelineView()->timeline()->selectionModel()->currentIndex()
-	        : QModelIndex();
-	QDate date = selectedIndex.data(DateRole).toDate();
-
 	QVector<DatesModelItem> chatDates = History::instance()->datesForChat(chat, HistorySearchParameters());
 	MyChatDatesModel->setDates(chatDates);
 
+	QDate date = timelineView()->currentDate();
 	QModelIndex select = MyChatDatesModel->indexForDate(date);
 	if (!select.isValid())
 	{
@@ -128,7 +124,10 @@ void ChatHistoryTab::chatActivated(const Chat &chat)
 	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(chatDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	timelineView()->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	if (select.isValid())
+		timelineView()->timeline()->selectionModel()->setCurrentIndex(select, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	else
+		timelineView()->messagesView()->clearMessages();
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
@@ -226,4 +225,5 @@ void ChatHistoryTab::clearChatHistory()
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
+	chatActivated(Chat::null);
 }

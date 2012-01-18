@@ -93,17 +93,11 @@ void StatusHistoryTab::updateData()
 
 void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
 {
-	QModelIndex selectedIndex = timelineView()->timeline()->model()
-	        ? timelineView()->timeline()->selectionModel()->currentIndex()
-	        : QModelIndex();
-
-	QDate date = selectedIndex.data(DateRole).toDate();
-
 	QVector<DatesModelItem> statusDates = History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters());
 	MyBuddyStatusDatesModel->setDates(statusDates);
 
-	if (date.isValid())
-		selectedIndex = MyBuddyStatusDatesModel->indexForDate(date);
+	QDate date = timelineView()->currentDate();
+	QModelIndex selectedIndex = MyBuddyStatusDatesModel->indexForDate(date);
 	if (!selectedIndex.isValid())
 	{
 		int lastRow = MyBuddyStatusDatesModel->rowCount(QModelIndex()) - 1;
@@ -116,7 +110,10 @@ void StatusHistoryTab::statusBuddyActivated(const Buddy &buddy)
 	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(statusDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	if (selectedIndex.isValid())
+		timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	else
+		timelineView()->messagesView()->clearMessages();
 }
 
 void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -127,7 +124,6 @@ void StatusHistoryTab::statusDateCurrentChanged(const QModelIndex &current, cons
 	QDate date = current.data(DateRole).value<QDate>();
 
 	timelineView()->messagesView()->setUpdatesEnabled(false);
-
 	timelineView()->messagesView()->clearMessages();
 
 	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
@@ -185,6 +181,7 @@ void StatusHistoryTab::clearStatusHistory()
 		History::instance()->currentStorage()->clearStatusHistory(buddy);
 
 	updateData();
+	statusBuddyActivated(Buddy::null);
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)

@@ -84,17 +84,11 @@ void SmsHistoryTab::updateData()
 
 void SmsHistoryTab::smsRecipientActivated(const QString& recipient)
 {
-	QModelIndex selectedIndex = timelineView()->timeline()->model()
-	        ? timelineView()->timeline()->selectionModel()->currentIndex()
-	        : QModelIndex();
-
-	QDate date = selectedIndex.data(DateRole).toDate();
-
 	QVector<DatesModelItem> smsDates = History::instance()->datesForSmsRecipient(recipient, HistorySearchParameters());
 	MySmsDatesModel->setDates(smsDates);
 
-	if (date.isValid())
-		selectedIndex = MySmsDatesModel->indexForDate(date);
+	QDate date = timelineView()->currentDate();
+	QModelIndex selectedIndex = MySmsDatesModel->indexForDate(date);
 	if (!selectedIndex.isValid())
 	{
 		int lastRow = MySmsDatesModel->rowCount(QModelIndex()) - 1;
@@ -107,7 +101,10 @@ void SmsHistoryTab::smsRecipientActivated(const QString& recipient)
 	connect(timelineView()->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(smsDateCurrentChanged(QModelIndex,QModelIndex)), Qt::UniqueConnection);
 
-	timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	if (selectedIndex.isValid())
+		timelineView()->timeline()->selectionModel()->setCurrentIndex(selectedIndex, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
+	else
+		timelineView()->messagesView()->clearMessages();
 }
 
 void SmsHistoryTab::smsDateCurrentChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -160,7 +157,10 @@ void SmsHistoryTab::clearSmsHistory()
 	}
 
 	if (removed)
+	{
 		updateData();
+		smsRecipientActivated(QString());
+	}
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
