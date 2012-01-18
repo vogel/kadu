@@ -42,7 +42,7 @@ class KADUAPI HistoryTab : public QWidget
 private slots:
 	void currentDateChanged();
 
-	void showTimelinePopupMenu(const QPoint &pos);
+	void showTimelinePopupMenu();
 	void removeEntries();
 
 protected:

@@ -43,7 +43,7 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
 
-	void displayStatusBuddy(const Buddy &buddy);
+	void displayStatusBuddy(const Buddy &buddy, bool force);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:

@@ -94,9 +94,9 @@ void ChatHistoryTab::createTreeView(QWidget *parent)
 	chatsTalkableWidget->setView(ChatsTalkableTree);
 }
 
-void ChatHistoryTab::displayChat(const Chat &chat)
+void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 {
-	if (CurrentChat == chat)
+	if (!force && CurrentChat == chat)
 		return;
 
 	CurrentChat = chat;
@@ -126,7 +126,7 @@ void ChatHistoryTab::clearChatHistory()
 
 	History::instance()->currentStorage()->clearChatHistory(chat);
 	updateData();
-	displayChat(Chat::null);
+	displayChat(Chat::null, false);
 }
 
 void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
@@ -135,18 +135,18 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 	{
 		case Talkable::ItemChat:
 		{
-			displayChat(talkable.toChat());
+			displayChat(talkable.toChat(), false);
 			break;
 		}
 		case Talkable::ItemBuddy:
 		{
 			BuddySet buddies;
 			buddies.insert(talkable.toBuddy());
-			displayChat(ChatManager::instance()->findChat(buddies, true));
+			displayChat(ChatManager::instance()->findChat(buddies, true), false);
 			break;
 		}
 		default:
-			displayChat(Chat::null);
+			displayChat(Chat::null, false);
 			break;
 	}
 }
@@ -170,8 +170,7 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 	if (CurrentChat)
 	{
 		History::instance()->currentStorage()->clearChatHistory(CurrentChat, date);
-		displayChat(Chat::null); // to refresh
-		displayChat(CurrentChat);
+		displayChat(CurrentChat, true);
 	}
 }
 
@@ -195,7 +194,7 @@ void ChatHistoryTab::selectChat(const Chat &chat)
 	if (1 == indexesToSelect.size())
 	{
 		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
-		displayChat(chat);
+		displayChat(chat, false);
 	}
 	else
 		ChatsTalkableTree->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);

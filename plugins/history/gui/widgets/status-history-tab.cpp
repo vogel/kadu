@@ -88,9 +88,9 @@ void StatusHistoryTab::updateData()
 	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 }
 
-void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy)
+void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 {
-	if (CurrentBuddy == buddy)
+	if (!force && CurrentBuddy == buddy)
 		return;
 
 	CurrentBuddy = buddy;
@@ -150,7 +150,7 @@ void StatusHistoryTab::clearStatusHistory()
 		History::instance()->currentStorage()->clearStatusHistory(buddy);
 
 	updateData();
-	displayStatusBuddy(Buddy::null);
+	displayStatusBuddy(Buddy::null, false);
 }
 
 void StatusHistoryTab::displayForDate(const QDate &date)
@@ -173,12 +173,11 @@ void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 	if (CurrentBuddy)
 	{
 		History::instance()->currentStorage()->clearStatusHistory(CurrentBuddy, date);
-		displayStatusBuddy(Buddy::null);
-		displayStatusBuddy(CurrentBuddy);
+		displayStatusBuddy(CurrentBuddy, true);
 	}
 }
 
 void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 {
-	displayStatusBuddy(talkable.toBuddy());
+	displayStatusBuddy(talkable.toBuddy(), false);
 }

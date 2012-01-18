@@ -43,7 +43,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
 
-	void displayChat(const Chat &chat);
+	void displayChat(const Chat &chat, bool force);
 
 private slots:
 	void showChatsPopupMenu();

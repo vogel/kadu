@@ -59,7 +59,7 @@ void HistoryTab::createGui()
 	TimelineView->timeline()->setModel(DatesModel);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
-	        this, SLOT(showTimelinePopupMenu(QPoint)));
+	        this, SLOT(showTimelinePopupMenu()));
 	connect(TimelineView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 	        this, SLOT(currentDateChanged()));
 
@@ -80,9 +80,8 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 {
 	DatesModel->setDates(dates);
 
-	const int rowCount = TimelineView->timeline()->model()->rowCount();
-	if (rowCount > 0)
-		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(rowCount - 1, 0));
+	if (!dates.isEmpty())
+		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(dates.size() - 1, 0));
 	else
 		currentDateChanged();
 }
@@ -100,10 +99,8 @@ void HistoryTab::currentDateChanged()
 	displayForDate(date);
 }
 
-void HistoryTab::showTimelinePopupMenu(const QPoint &pos)
+void HistoryTab::showTimelinePopupMenu()
 {
-	Q_UNUSED(pos)
-
 	if (TimelineView->currentDate().isValid())
 		TimelinePopupMenu->exec(QCursor::pos());
 }
