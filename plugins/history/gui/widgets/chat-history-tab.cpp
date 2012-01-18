@@ -100,7 +100,7 @@ void ChatHistoryTab::displayChat(const Chat &chat)
 		return;
 
 	CurrentChat = chat;
-	setDates(History::instance()->datesForChat(chat, HistorySearchParameters()));
+	setDates(History::instance()->datesForChat(CurrentChat, HistorySearchParameters()));
 }
 
 void ChatHistoryTab::showChatsPopupMenu()

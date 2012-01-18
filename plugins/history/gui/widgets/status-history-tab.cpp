@@ -90,7 +90,11 @@ void StatusHistoryTab::updateData()
 
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy)
 {
-	setDates(History::instance()->datesForStatusBuddy(buddy, HistorySearchParameters()));
+	if (CurrentBuddy == buddy)
+		return;
+
+	CurrentBuddy = buddy;
+	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy, HistorySearchParameters()));
 }
 
 QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
@@ -154,30 +158,23 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 	timelineView()->messagesView()->clearMessages();
 
-	if (!StatusesTalkableTree->actionContext()->buddies().isEmpty())
-	{
-		Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
-		QList<TimedStatus> statuses;
-		if (buddy && date.isValid())
-			statuses = History::instance()->statuses(buddy, date);
-		if (!buddy.contacts().isEmpty())
-			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(buddy.contacts().at(0)), true));
-		timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
-	}
+	QList<TimedStatus> statuses;
+	if (CurrentBuddy && date.isValid())
+		statuses = History::instance()->statuses(CurrentBuddy, date);
+	if (!CurrentBuddy.contacts().isEmpty())
+		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
+	timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
 
 	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (StatusesTalkableTree->actionContext()->buddies().isEmpty())
-		return;
-
-	Buddy buddy = *StatusesTalkableTree->actionContext()->buddies().begin();
-	if (buddy && !buddy.contacts().isEmpty())
+	if (CurrentBuddy)
 	{
-		History::instance()->currentStorage()->clearStatusHistory(buddy, date);
-		displayStatusBuddy(buddy);
+		History::instance()->currentStorage()->clearStatusHistory(CurrentBuddy, date);
+		displayStatusBuddy(Buddy::null);
+		displayStatusBuddy(CurrentBuddy);
 	}
 }
 

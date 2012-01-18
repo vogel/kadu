@@ -37,6 +37,8 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
+	Buddy CurrentBuddy;
+
 	TalkableTreeView *StatusesTalkableTree;
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
