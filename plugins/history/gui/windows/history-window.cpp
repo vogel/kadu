@@ -125,8 +125,6 @@ void HistoryWindow::updateData()
 	ChatTab->updateData();
 	StatusTab->updateData();
 	SmsTab->updateData();
-
-	selectChat(Chat::null);
 }
 
 void HistoryWindow::selectChat(const Chat &chat)

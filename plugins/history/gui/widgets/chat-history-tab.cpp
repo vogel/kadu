@@ -96,6 +96,10 @@ void ChatHistoryTab::createTreeView(QWidget *parent)
 
 void ChatHistoryTab::displayChat(const Chat &chat)
 {
+	if (CurrentChat == chat)
+		return;
+
+	CurrentChat = chat;
 	setDates(History::instance()->datesForChat(chat, HistorySearchParameters()));
 }
 
@@ -180,11 +184,12 @@ void ChatHistoryTab::updateData()
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
+
+	displayChat(Chat::null);
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
 {
-	ChatsTalkableTree->selectionModel()->clearSelection();
 	QModelIndexList indexesToSelect;
 
 	if (chat.contacts().size() == 1)
@@ -194,9 +199,9 @@ void ChatHistoryTab::selectChat(const Chat &chat)
 
 	if (1 == indexesToSelect.size())
 	{
-		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::Select);
+		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
 		displayChat(chat);
 	}
 	else
-		displayChat(Chat::null);
+		ChatsTalkableTree->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
 }

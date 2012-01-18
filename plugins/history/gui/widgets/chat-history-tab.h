@@ -36,6 +36,8 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
+	Chat CurrentChat;
+
 	TalkableTreeView *ChatsTalkableTree;
 	ModelChain *ChatsModelChain;
 	ChatsListModel *ChatsModel;
