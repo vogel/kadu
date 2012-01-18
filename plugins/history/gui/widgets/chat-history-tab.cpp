@@ -99,6 +99,8 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	if (!force && CurrentChat == chat)
 		return;
 
+	timelineView()->messagesView()->setChat(chat);
+
 	CurrentChat = chat;
 	setDates(History::instance()->datesForChat(CurrentChat, HistorySearchParameters()));
 }
@@ -161,6 +163,7 @@ void ChatHistoryTab::displayForDate(const QDate &date)
 	timelineView()->messagesView()->setChat(CurrentChat);
 	timelineView()->messagesView()->clearMessages();
 	timelineView()->messagesView()->appendMessages(messages);
+	timelineView()->messagesView()->refresh();
 
 	timelineView()->messagesView()->setUpdatesEnabled(true);
 }

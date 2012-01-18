@@ -145,6 +145,11 @@ void ChatMessagesView::setChat(const Chat &chat)
 	Renderer->setChat(CurrentChat);
 }
 
+void ChatMessagesView::refresh()
+{
+	Renderer->refresh();
+}
+
 void ChatMessagesView::setForcePruneDisabled(bool disable)
 {
 	Renderer->setForcePruneDisabled(disable);

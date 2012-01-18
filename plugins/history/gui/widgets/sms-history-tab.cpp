@@ -75,6 +75,10 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 	if (!force && CurrentRecipient == recipient)
 		return;
 
+	Chat smsChat = Chat::create();
+	smsChat.setDisplay(recipient);
+	timelineView()->messagesView()->setChat(smsChat);
+
 	CurrentRecipient = recipient;
 	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient, HistorySearchParameters()));
 }
@@ -128,6 +132,7 @@ void SmsHistoryTab::displayForDate(const QDate &date)
 	timelineView()->messagesView()->setChat(Chat::null);
 	timelineView()->messagesView()->clearMessages();
 	timelineView()->messagesView()->appendMessages(sms);
+	timelineView()->messagesView()->refresh();
 
 	timelineView()->messagesView()->setUpdatesEnabled(true);
 }

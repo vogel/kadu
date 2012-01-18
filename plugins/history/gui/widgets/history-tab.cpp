@@ -89,13 +89,6 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 void HistoryTab::currentDateChanged()
 {
 	QDate date = timelineView()->currentDate();
-
-	if (!date.isValid())
-	{
-		timelineView()->messagesView()->clearMessages();
-		return;
-	}
-
 	displayForDate(date);
 }
 

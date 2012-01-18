@@ -105,6 +105,7 @@ public:
 
 	Chat chat() const { return CurrentChat; }
 	void setChat(const Chat &chat);
+	void refresh();
 
 	bool supportTransparency() { return SupportTransparency; }
 

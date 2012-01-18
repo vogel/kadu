@@ -93,6 +93,10 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 	if (!force && CurrentBuddy == buddy)
 		return;
 
+	BuddySet buddies;
+	buddies.insert(buddy);
+	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(buddies, true));
+
 	CurrentBuddy = buddy;
 	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy, HistorySearchParameters()));
 }
@@ -164,6 +168,7 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 	if (!CurrentBuddy.contacts().isEmpty())
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
 	timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
+	timelineView()->messagesView()->refresh();
 
 	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
