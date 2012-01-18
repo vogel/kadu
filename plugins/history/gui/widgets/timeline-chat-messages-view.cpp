@@ -22,6 +22,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "gui/widgets/chat-messages-view.h"
+#include "model/roles.h"
 
 #include "timeline-chat-messages-view.h"
 
@@ -52,4 +53,9 @@ void TimelineChatMessagesView::createGui()
 	MessagesView->setForcePruneDisabled(true);
 
 	layout()->addWidget(Splitter);
+}
+
+QDate TimelineChatMessagesView::currentDate() const
+{
+	return Timeline->currentIndex().data(DateRole).value<QDate>();
 }

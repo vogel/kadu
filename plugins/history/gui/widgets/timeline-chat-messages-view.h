@@ -24,6 +24,7 @@
 
 #include "exports.h"
 
+class QDate;
 class QSplitter;
 class QTreeView;
 
@@ -45,6 +46,8 @@ public:
 
 	QTreeView * timeline() const { return Timeline; }
 	ChatMessagesView * messagesView() const { return MessagesView; }
+
+	QDate currentDate() const;
 
 };
 
