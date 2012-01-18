@@ -50,7 +50,7 @@ void HistoryTab::createGui()
 	                             this, SLOT(removeEntries()));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
+	layout->setMargin(2);
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 

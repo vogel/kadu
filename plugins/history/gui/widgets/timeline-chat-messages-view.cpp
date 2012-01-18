@@ -30,6 +30,8 @@ TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 		QWidget(parent)
 {
 	setLayout(new QVBoxLayout(this));
+	layout()->setMargin(0);
+	layout()->setSpacing(0);
 
 	createGui();
 }
