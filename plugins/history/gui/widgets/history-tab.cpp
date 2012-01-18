@@ -83,8 +83,8 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 	const int rowCount = TimelineView->timeline()->model()->rowCount();
 	if (rowCount > 0)
 		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(rowCount - 1, 0));
-
-	currentDateChanged();
+	else
+		currentDateChanged();
 }
 
 void HistoryTab::currentDateChanged()

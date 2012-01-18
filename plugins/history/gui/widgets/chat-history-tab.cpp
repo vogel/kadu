@@ -155,11 +155,10 @@ void ChatHistoryTab::displayForDate(const QDate &date)
 {
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 
-	Chat chat = ChatsTalkableTree->actionContext()->chat();
 	QVector<Message> messages;
-	if (chat && date.isValid())
-		messages = History::instance()->messages(chat, date);
-	timelineView()->messagesView()->setChat(chat);
+	if (CurrentChat && date.isValid())
+		messages = History::instance()->messages(CurrentChat, date);
+	timelineView()->messagesView()->setChat(CurrentChat);
 	timelineView()->messagesView()->clearMessages();
 	timelineView()->messagesView()->appendMessages(messages);
 
@@ -168,11 +167,11 @@ void ChatHistoryTab::displayForDate(const QDate &date)
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
-	if (chat)
+	if (CurrentChat)
 	{
-		History::instance()->currentStorage()->clearChatHistory(chat, date);
-		displayChat(chat);
+		History::instance()->currentStorage()->clearChatHistory(CurrentChat, date);
+		displayChat(Chat::null); // to refresh
+		displayChat(CurrentChat);
 	}
 }
 
@@ -182,8 +181,6 @@ void ChatHistoryTab::updateData()
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
-
-	displayChat(Chat::null);
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
