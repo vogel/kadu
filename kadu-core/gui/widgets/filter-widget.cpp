@@ -198,10 +198,11 @@ FilterWidget::FilterWidget(QWidget *parent) :
 	layout->setMargin(3);
 
 	NameFilterEdit = new LineEditWithClearButton(this);
+	Label = new QLabel(tr("Search") + ":", this);
 
 	setFocusProxy(NameFilterEdit);
 
-	layout->addWidget(new QLabel(tr("Search") + ':', this));
+	layout->addWidget(Label);
 	layout->addWidget(NameFilterEdit);
 
 	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
@@ -216,6 +217,17 @@ FilterWidget::~FilterWidget()
 #ifdef Q_OS_MAC
 	CFRelease(searchField);
 	CFRelease(searchFieldText);
+#endif
+}
+
+void FilterWidget::setLabel(const QString &label)
+{
+#ifdef Q_OS_MAC
+	Q_UNUSED(filter);
+#elif !defined(Q_WS_MAEMO_5)
+	Label->setText(label);
+#else
+	Q_UNUSED(filter);
 #endif
 }
 

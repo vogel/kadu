@@ -28,6 +28,7 @@
 #include "chat/chat-manager.h"
 #include "chat/model/chats-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -57,7 +58,8 @@ ChatHistoryTab::~ChatHistoryTab()
 void ChatHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	chatsTalkableWidget->setFilterAutoVisibility(false);
+	chatsTalkableWidget->filterWidget()->setAutoVisibility(false);
+	chatsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
 	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);

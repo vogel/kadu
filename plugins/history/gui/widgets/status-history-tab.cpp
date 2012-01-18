@@ -24,6 +24,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -54,7 +55,8 @@ StatusHistoryTab::~StatusHistoryTab()
 void StatusHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	statusesTalkableWidget->setFilterAutoVisibility(false);
+	statusesTalkableWidget->filterWidget()->setAutoVisibility(false);
+	statusesTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
 	StatusesTalkableTree->setUseConfigurationColors(true);

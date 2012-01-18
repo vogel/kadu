@@ -33,6 +33,7 @@
 #endif
 
 class QAbstractItemView;
+class QLabel;
 class QLineEdit;
 
 class KADUAPI FilterWidget : public QWidget
@@ -43,6 +44,7 @@ class KADUAPI FilterWidget : public QWidget
 	CFStringRef searchFieldText;
 	HIViewRef searchField;
 #else
+	QLabel *Label;
 	QLineEdit *NameFilterEdit;
 #endif
 
@@ -62,6 +64,7 @@ public:
 	explicit FilterWidget(QWidget *parent = 0);
 	virtual ~FilterWidget();
 
+	void setLabel(const QString &label);
 	void setFilter(const QString &filter);
 	void setView(QAbstractItemView *view);
 	void setAutoVisibility(bool autoVisibility);

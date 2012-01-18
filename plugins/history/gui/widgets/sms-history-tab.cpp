@@ -26,6 +26,7 @@
 #include "model/roles.h"
 
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -48,7 +49,8 @@ SmsHistoryTab::~SmsHistoryTab()
 void SmsHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	smsListWidget->setFilterAutoVisibility(false);
+	smsListWidget->filterWidget()->setAutoVisibility(false);
+	smsListWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	SmsListView = new KaduTreeView(smsListWidget);
 	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
