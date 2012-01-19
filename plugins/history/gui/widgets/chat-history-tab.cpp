@@ -62,10 +62,18 @@ void ChatHistoryTab::createTreeView(QWidget *parent)
 	chatsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
+	ChatsTalkableTree->setAlternatingRowColors(true);
+	ChatsTalkableTree->setContextMenuEnabled(true);
 	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);
 	ChatsTalkableTree->setUseConfigurationColors(true);
-	ChatsTalkableTree->setContextMenuEnabled(true);
 	ChatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+
+	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
+	ChatsTalkableTree->setStyleSheet(style);
+	ChatsTalkableTree->viewport()->setStyleSheet(style);
 
 	ChatsModel = new ChatsListModel(ChatsTalkableTree);
 	ChatsBuddiesModel = new BuddyListModel(ChatsTalkableTree);

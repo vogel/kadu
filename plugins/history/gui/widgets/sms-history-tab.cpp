@@ -53,6 +53,7 @@ void SmsHistoryTab::createTreeView(QWidget *parent)
 	smsListWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	SmsListView = new KaduTreeView(smsListWidget);
+	SmsListView->setAlternatingRowColors(true);
 	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	SmsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 

@@ -59,9 +59,17 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 	statusesTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
 	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
-	StatusesTalkableTree->setUseConfigurationColors(true);
+	StatusesTalkableTree->setAlternatingRowColors(true);
 	StatusesTalkableTree->setContextMenuEnabled(true);
+	StatusesTalkableTree->setUseConfigurationColors(true);
 	StatusesTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+
+	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
+	StatusesTalkableTree->setStyleSheet(style);
+	StatusesTalkableTree->viewport()->setStyleSheet(style);
 
 	StatusBuddiesModel = new BuddyListModel(StatusesTalkableTree);
 	StatusesModelChain = new ModelChain(StatusBuddiesModel, StatusesTalkableTree);
