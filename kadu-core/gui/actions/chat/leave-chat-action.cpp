@@ -30,7 +30,7 @@ LeaveChatAction::LeaveChatAction(QObject *parent) :
 {
 	setType(ActionDescription::TypeChat);
 	setName("leaveChatAction");
-	setIcon(KaduIcon("application-exit"));
+	setIcon(KaduIcon("kadu_icons/block-buddy"));
 	setText(tr("Leave"));
 
 	registerAction();
