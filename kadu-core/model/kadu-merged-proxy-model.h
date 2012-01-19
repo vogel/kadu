@@ -23,6 +23,22 @@
 #include "model/kadu-abstract-model.h"
 #include "model/merged-proxy-model.h"
 
+/**
+ * @addtogroup Model
+ * @{
+ */
+
+/**
+ * @class KaduMergedProxyModel
+ * @author Rafał 'Vogel' Malinowski
+ * @short Model that merges other models into one and allows for calling indexListForValue method.
+ *
+ * This model merges other models into one. The only difference between this class and MergedProxyModel
+ * is that all submodels of KaduMergedProxyModel must implement KaduAbstractModel, and also KaduMergedProxyModel
+ * implements this interface.
+ *
+ * It is possible to retreive original indexes of any item using indexListForValue method.
+ */
 class KaduMergedProxyModel : public MergedProxyModel, public KaduAbstractModel
 {
 	Q_OBJECT
@@ -30,13 +46,41 @@ class KaduMergedProxyModel : public MergedProxyModel, public KaduAbstractModel
 	QList<KaduAbstractModel *> Models;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Creates new instance of KaduMergedProxyModel.
+	 * @param parent QObject parent of new KaduMergedProxyModel.
+	 *
+	 * Creates new instance of KaduMergedProxyModel.
+	 */
 	explicit KaduMergedProxyModel(QObject *parent = 0);
 	virtual ~KaduMergedProxyModel();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets list of models to merge.
+	 * @param models list of models to merge
+	 *
+	 * Sets list of models to merge. All models must implement KaduMergedProxyModel interface,
+	 * otherwise an assertion is thrown.
+	 */
 	virtual void setModels(QList<QAbstractItemModel *> models);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return list of indexes that holds given object.
+	 * @return list of indexes that holds given object
+	 * @param value object to find
+	 *
+	 * This method returns all indexes that holds given object. It does that by searching all
+	 * submodels and mapping its' indexes to own indexes.
+	 */
 	virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // KADU_MERGED_PROXY_MODEL_H

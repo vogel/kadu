@@ -32,9 +32,9 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Model that merges other models into one.
  *
- * Model that merges other models into one. All merged models must be provided in constructor.
- * This class merges models one after another, by rows. It does not support columns (number of columns is
- * forced into one).
+ * Model that merges other models into one. This class merges models one after another, by rows.
+ * It does not support columns (number of columns is forced to one). Models are set using setModels()
+ * method.
  *
  * The most tricky part of its implementation is computing of parents of mapped indexes. As QModelIndex
  * class does not really store anything we must keep mapping from proxy index to source parent index
