@@ -222,12 +222,10 @@ FilterWidget::~FilterWidget()
 
 void FilterWidget::setLabel(const QString &label)
 {
-#ifdef Q_OS_MAC
-	Q_UNUSED(filter);
-#elif !defined(Q_WS_MAEMO_5)
-	Label->setText(label);
+#if defined(Q_OS_MAC) || defined(Q_WS_MAEMO_5)
+	Q_UNUSED(label);
 #else
-	Q_UNUSED(filter);
+	Label->setText(label);
 #endif
 }
 
