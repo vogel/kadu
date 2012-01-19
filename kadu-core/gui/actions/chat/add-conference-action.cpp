@@ -25,7 +25,7 @@ AddConferenceAction::AddConferenceAction(QObject *parent) :
 		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeGlobal);
-	setName("leaveChatAction");
+	setName("addConferenceAction");
 	setText(tr("Add Conference..."));
 
 	registerAction();
