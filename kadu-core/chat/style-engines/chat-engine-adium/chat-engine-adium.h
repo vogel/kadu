@@ -76,6 +76,8 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	friend class PreviewHack;
 
 	AdiumStyle CurrentStyle;
+	RefreshViewHack *CurrentRefreshHack;
+	PreviewHack *CurrentPreviewHack;
 
 	QString jsCode;
 
@@ -85,6 +87,10 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	bool clearDirectory(const QString &directory);
 
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
+
+private slots:
+	void currentRefreshHackDestroyed();
+	void currentPreviewHackDestroyed();
 
 public:
 	explicit AdiumChatStyleEngine(QObject *parent = 0);
@@ -116,6 +122,7 @@ public:
 	virtual void styleEditionRequested(QString ) {} //do nothing. Adium styles don't support editing
 
 	virtual bool removeStyle(const QString &styleName);
+
 };
 
 #endif // CHAT_ENGINE_ADIUM_H
