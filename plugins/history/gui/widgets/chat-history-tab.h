@@ -44,6 +44,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	BuddyListModel *ChatsBuddiesModel;
 
 	void displayChat(const Chat &chat, bool force);
+	void displayAggregateChat(const Chat &chat, bool force);
 
 private slots:
 	void showChatsPopupMenu();

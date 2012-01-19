@@ -115,6 +115,14 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	setDates(History::instance()->datesForChat(CurrentChat, HistorySearchParameters()));
 }
 
+void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
+{
+	const Chat &agrregate = AggregateChatManager::instance()->aggregateChat(chat);
+
+	displayChat(agrregate ? agrregate : chat, force);
+}
+
+
 void ChatHistoryTab::showChatsPopupMenu()
 {
 	QScopedPointer<QMenu> menu;
@@ -147,14 +155,21 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 	{
 		case Talkable::ItemChat:
 		{
-			displayChat(talkable.toChat(), false);
+			displayAggregateChat(talkable.toChat(), false);
 			break;
 		}
 		case Talkable::ItemBuddy:
 		{
 			BuddySet buddies;
 			buddies.insert(talkable.toBuddy());
-			displayChat(ChatManager::instance()->findChat(buddies, true), false);
+			displayAggregateChat(ChatManager::instance()->findChat(buddies, true), false);
+			break;
+		}
+		case Talkable::ItemContact:
+		{
+			ContactSet contacts;
+			contacts.insert(talkable.toContact());
+			displayChat(ChatManager::instance()->findChat(contacts, true), false);
 			break;
 		}
 		default:
