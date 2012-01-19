@@ -38,12 +38,15 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	Q_OBJECT
 
 	Buddy CurrentBuddy;
+	Contact CurrentContact;
+	bool IsBuddy;
 
 	TalkableTreeView *StatusesTalkableTree;
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
 
 	void displayStatusBuddy(const Buddy &buddy, bool force);
+	void displayStatusContact(const Contact &contact, bool force);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:

@@ -1017,6 +1017,91 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	return statuses;
 }
 
+QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &contact, const HistorySearchParameters &search)
+{
+	kdebugf();
+
+	if (!contact)
+		return QVector<DatesModelItem>();
+
+	if (!isDatabaseReady(false))
+		return QVector<DatesModelItem>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
+	queryString += " (SELECT set_time FROM kadu_statuses WHERE contact = :contact";
+
+	if (!search.query().isEmpty())
+		queryString += " AND description LIKE :description";
+	if (search.fromDate().isValid())
+		queryString += " AND substr(set_time,0,11) >= :fromDate";
+	if (search.toDate().isValid())
+		queryString += " AND substr(set_time,0,11) <= :toDate";
+
+	queryString += " ORDER BY set_time DESC, rowid DESC)";
+	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
+
+	query.prepare(queryString);
+
+	query.bindValue(":contact", contact.uuid().toString());
+	if (!search.query().isEmpty())
+		query.bindValue(":description", QString('%' + search.query() + '%'));
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
+
+	QVector<DatesModelItem> dates;
+
+	executeQuery(query);
+
+	QDate date;
+	while (query.next())
+	{
+		date = query.value(1).toDate();
+		if (!date.isValid())
+			continue;
+
+		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
+	}
+
+	return dates;
+}
+
+QList<TimedStatus> HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
+{
+	kdebugf();
+
+	if (!isDatabaseReady(false))
+		return QList<TimedStatus>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE contact = :contact";
+	if (!date.isNull())
+		queryString += " AND substr(set_time,0,11) = :date";
+	queryString += " ORDER BY set_time ASC";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
+
+	QList<TimedStatus> statuses;
+	query.prepare(queryString);
+
+	query.bindValue(":contact", contact.uuid().toString());
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+
+	executeQuery(query);
+	statuses = statusesFromQuery(query);
+
+	return statuses;
+}
+
 void HistorySqlStorage::executeQuery(QSqlQuery &query)
 {
 	kdebugf();

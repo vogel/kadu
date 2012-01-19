@@ -441,6 +441,20 @@ QList<TimedStatus> History::statuses(const Buddy &buddy, const QDate &date, int 
 	return CurrentStorage->statuses(buddy, date, limit);
 }
 
+QVector<DatesModelItem> History::datesForStatusContact(const Contact &contact, const HistorySearchParameters &search)
+{
+	kdebugf();
+
+	return CurrentStorage->datesForStatusContact(contact, search);
+}
+
+QList<TimedStatus> History::statuses(const Contact &contact, const QDate &date, int limit)
+{
+	kdebugf();
+
+	return CurrentStorage->statuses(contact, date, limit);
+}
+
 QList<QString> History::smsRecipientsList(const HistorySearchParameters &search)
 {
 	kdebugf();

@@ -150,6 +150,8 @@ public:
 	QVector<Buddy> statusBuddiesList(const HistorySearchParameters &search);
 	QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
 	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
+	QVector<DatesModelItem> datesForStatusContact(const Contact &contact, const HistorySearchParameters &search);
+	QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
 	QList<QString> smsRecipientsList(const HistorySearchParameters &search);
 	QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);

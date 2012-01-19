@@ -43,7 +43,7 @@
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent)
+		HistoryTab(false, parent), IsBuddy(true)
 {
 	createGui();
 }
@@ -100,8 +100,10 @@ void StatusHistoryTab::updateData()
 
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 {
-	if (!force && CurrentBuddy == buddy)
+	if (!force && CurrentBuddy == buddy && IsBuddy)
 		return;
+
+	IsBuddy = true;
 
 	BuddySet buddies;
 	buddies.insert(buddy);
@@ -109,6 +111,21 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 
 	CurrentBuddy = buddy;
 	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy, HistorySearchParameters()));
+}
+
+void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
+{
+	if (!force && CurrentContact == contact && !IsBuddy)
+		return;
+
+	IsBuddy = false;
+
+	ContactSet contacts;
+	contacts.insert(contact);
+	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(contacts, true));
+
+	CurrentContact = contact;
+	setDates(History::instance()->datesForStatusContact(CurrentContact, HistorySearchParameters()));
 }
 
 QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
@@ -173,10 +190,19 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 	timelineView()->messagesView()->clearMessages();
 
 	QList<TimedStatus> statuses;
-	if (CurrentBuddy && date.isValid())
-		statuses = History::instance()->statuses(CurrentBuddy, date);
-	if (!CurrentBuddy.contacts().isEmpty())
-		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
+	if (IsBuddy)
+	{
+		if (CurrentBuddy && date.isValid())
+			statuses = History::instance()->statuses(CurrentBuddy, date);
+		if (!CurrentBuddy.contacts().isEmpty())
+			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
+	}
+	else
+	{
+		if (CurrentContact && date.isValid())
+			statuses = History::instance()->statuses(CurrentContact, date);
+		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
+	}
 	timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
 	timelineView()->messagesView()->refresh();
 
@@ -194,5 +220,16 @@ void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 {
-	displayStatusBuddy(talkable.toBuddy(), false);
+	switch (talkable.type())
+	{
+		case Talkable::ItemBuddy:
+			displayStatusBuddy(talkable.toBuddy(), false);
+			break;
+		case Talkable::ItemContact:
+			displayStatusContact(talkable.toContact(), false);
+			break;
+		default:
+			displayStatusBuddy(Buddy::null, false);
+			break;
+	}
 }
