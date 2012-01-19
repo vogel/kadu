@@ -222,6 +222,7 @@ void ChatHistoryTab::selectChat(const Chat &chat)
 	if (1 == indexesToSelect.size())
 	{
 		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
+		ChatsTalkableTree->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
 		displayChat(chat, false);
 	}
 	else
