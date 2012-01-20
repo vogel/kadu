@@ -90,7 +90,7 @@ void AutoAwayStatusChanger::changeStatus(StatusContainer *container, Status &sta
 	if (status.group() == StatusTypeGroupAway)
 		return;
 
-	if (changeStatusTo == ChangeStatusToBusy)
+	if (changeStatusTo == ChangeStatusToAway)
 	{
 		status.setType(StatusTypeAway);
 		status.setDescription(description);

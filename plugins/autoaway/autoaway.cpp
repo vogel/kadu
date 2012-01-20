@@ -103,7 +103,7 @@ AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()
 	else if (idleTime >= autoExtendedAwayTime && autoExtendedAwayEnabled)
 		return AutoAwayStatusChanger::ChangeStatusToExtendedAway;
 	else if (idleTime >= autoAwayTime && autoAwayEnabled)
-		return AutoAwayStatusChanger::ChangeStatusToBusy;
+		return AutoAwayStatusChanger::ChangeStatusToAway;
 	else
 		return AutoAwayStatusChanger::NoChangeStatus;
 }

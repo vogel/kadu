@@ -37,7 +37,7 @@ class AutoAwayStatusChanger : public StatusChanger
 public:
 	enum ChangeStatusTo {
 		NoChangeStatus,
-		ChangeStatusToBusy,
+		ChangeStatusToAway,
 		ChangeStatusToExtendedAway,
 		ChangeStatusToInvisible,
 		ChangeStatusToOffline
