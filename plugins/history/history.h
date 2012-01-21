@@ -57,14 +57,6 @@
 
 #include "history_exports.h"
 
-enum HistoryEntryType
-{
-	EntryTypeMessage = 0x00000001,
-	EntryTypeStatus = 0x00000010,
-	EntryTypeSms = 0x00000020,
-	EntryTypeAll = 0x0000003f
-};
-
 class Account;
 class ChatWidget;
 class HistorySaveThread;
