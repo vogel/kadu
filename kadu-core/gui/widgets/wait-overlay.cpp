@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
 #include <QtGui/QLabel>
 #include <QtGui/QMovie>
 #include <QtGui/QResizeEvent>
@@ -31,21 +32,30 @@ WaitOverlay::WaitOverlay(QWidget *parent) :
 	setAlignment(Qt::AlignCenter);
 	setMovie(new QMovie(KaduIcon("kadu_icons/64x64/please-wait.gif").fullPath(), QByteArray(), this));
 	setStyleSheet("background-color: rgba(127, 127, 127, 127)");
-	movie()->start();
+
+	hide();
 
 	if (parent)
-	{
-		move(0, 0);
-		resize(parent->size());
-		parent->installEventFilter(this);
-	}
-
-	show();
-	raise();
+		QTimer::singleShot(500, this, SLOT(timeoutPassed()));
 }
 
 WaitOverlay::~WaitOverlay()
 {
+}
+
+void WaitOverlay::timeoutPassed()
+{
+	if (!parentWidget()) // in case of reparenting
+		return;
+
+	movie()->start();
+
+	move(0, 0);
+	resize(parentWidget()->size());
+	parentWidget()->installEventFilter(this);
+
+	show();
+	raise();
 }
 
 bool WaitOverlay::eventFilter(QObject *object, QEvent *event)

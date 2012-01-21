@@ -39,10 +39,16 @@ class QLabel;
  * This widget is a gray overlay with wait animation over any other widget.
  * To show overlay just create new WaitOverlay with target widget as parent.
  * To remove overlay delete this new widget.
+ *
+ * This widget is hidden by default. It shows itself after 0.5 seconds of existence
+ * so it does not show for very short operations.
  */
 class KADUAPI WaitOverlay : public QLabel
 {
 	Q_OBJECT
+
+private slots:
+	void timeoutPassed();
 
 protected:
 	virtual bool eventFilter(QObject *object, QEvent *event);
