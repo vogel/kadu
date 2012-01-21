@@ -46,7 +46,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent)
+		HistoryTab(true, parent), ChatsFutureWatcher(0)
 {
 	createGui();
 }
@@ -203,12 +203,40 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void ChatHistoryTab::updateData()
+void ChatHistoryTab::futureChatsAvailable()
 {
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList().result());
+	if (!ChatsFutureWatcher)
+		return;
+
+	ChatsBuddiesSplitter chatsBuddies(ChatsFutureWatcher->result());
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
+
+	ChatsFutureWatcher->deleteLater();
+	ChatsFutureWatcher = 0;
+}
+
+void ChatHistoryTab::futureChatsCanceled()
+{
+	if (!ChatsFutureWatcher)
+		return;
+
+	ChatsFutureWatcher->deleteLater();
+	ChatsFutureWatcher = 0;
+}
+
+void ChatHistoryTab::updateData()
+{
+	if (ChatsFutureWatcher)
+		delete ChatsFutureWatcher;
+
+	QFuture<QVector<Chat> > futureChats = History::instance()->chatsList();
+	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >();
+	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
+	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
+
+	ChatsFutureWatcher->setFuture(futureChats);
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
