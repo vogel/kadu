@@ -154,7 +154,7 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 void StatusHistoryTab::showWaitOverlay()
 {
 	if (!StatusWaitOverlay)
-		StatusWaitOverlay = new WaitOverlay(StatusesTalkableTree);
+		StatusWaitOverlay = new WaitOverlay(this);
 	else
 		StatusWaitOverlay->show();
 }

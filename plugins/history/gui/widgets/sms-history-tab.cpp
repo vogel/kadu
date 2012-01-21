@@ -90,7 +90,7 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 void SmsHistoryTab::showWaitOverlay()
 {
 	if (!SmsWaitOverlay)
-		SmsWaitOverlay = new WaitOverlay(SmsListView);
+		SmsWaitOverlay = new WaitOverlay(this);
 	else
 		SmsWaitOverlay->show();
 }

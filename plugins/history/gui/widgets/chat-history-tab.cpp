@@ -127,7 +127,7 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 void ChatHistoryTab::showWaitOverlay()
 {
 	if (!ChatsWaitOverlay)
-		ChatsWaitOverlay = new WaitOverlay(ChatsTalkableTree);
+		ChatsWaitOverlay = new WaitOverlay(this);
 	else
 		ChatsWaitOverlay->show();
 }
