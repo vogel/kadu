@@ -32,22 +32,30 @@ class BuddyListModel;
 class ChatsListModel;
 class ModelChain;
 class TalkableTreeView;
+class WaitOverlay;
 
 class KADUAPI ChatHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
 	Chat CurrentChat;
+	Chat ChatToSelect;
 
 	QFutureWatcher<QVector<Chat> > *ChatsFutureWatcher;
+	WaitOverlay *ChatsWaitOverlay;
 
 	TalkableTreeView *ChatsTalkableTree;
 	ModelChain *ChatsModelChain;
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
 
+	void doSelectChat();
+
 	void displayChat(const Chat &chat, bool force);
 	void displayAggregateChat(const Chat &chat, bool force);
+
+	void showWaitOverlay();
+	void hideWaitOverlay();
 
 private slots:
 	void futureChatsAvailable();

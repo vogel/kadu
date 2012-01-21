@@ -32,6 +32,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/wait-overlay.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
 #include "talkable/filter/name-talkable-filter.h"
@@ -46,7 +47,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent), ChatsFutureWatcher(0)
+		HistoryTab(true, parent), ChatsFutureWatcher(0), ChatsWaitOverlay(0)
 {
 	createGui();
 }
@@ -123,6 +124,19 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 	displayChat(agrregate ? agrregate : chat, force);
 }
 
+void ChatHistoryTab::showWaitOverlay()
+{
+	if (!ChatsWaitOverlay)
+		ChatsWaitOverlay = new WaitOverlay(ChatsTalkableTree);
+	else
+		ChatsWaitOverlay->show();
+}
+
+void ChatHistoryTab::hideWaitOverlay()
+{
+	ChatsWaitOverlay->deleteLater();
+	ChatsWaitOverlay = 0;
+}
 
 void ChatHistoryTab::showChatsPopupMenu()
 {
@@ -205,6 +219,8 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void ChatHistoryTab::futureChatsAvailable()
 {
+	hideWaitOverlay();
+
 	if (!ChatsFutureWatcher)
 		return;
 
@@ -215,10 +231,14 @@ void ChatHistoryTab::futureChatsAvailable()
 
 	ChatsFutureWatcher->deleteLater();
 	ChatsFutureWatcher = 0;
+
+	doSelectChat();
 }
 
 void ChatHistoryTab::futureChatsCanceled()
 {
+	hideWaitOverlay();
+
 	if (!ChatsFutureWatcher)
 		return;
 
@@ -237,23 +257,38 @@ void ChatHistoryTab::updateData()
 	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
 
 	ChatsFutureWatcher->setFuture(futureChats);
+
+	showWaitOverlay();
 }
 
-void ChatHistoryTab::selectChat(const Chat &chat)
+void ChatHistoryTab::doSelectChat()
 {
+	if (!ChatToSelect)
+		return;
+
 	QModelIndexList indexesToSelect;
 
-	if (chat.contacts().size() == 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
-	else if (chat.contacts().size() > 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat);
+	if (ChatToSelect.contacts().size() == 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect.contacts().begin()->ownerBuddy());
+	else if (ChatToSelect.contacts().size() > 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect);
 
 	if (1 == indexesToSelect.size())
 	{
 		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
 		ChatsTalkableTree->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
-		displayChat(chat, false);
+		displayChat(ChatToSelect, false);
 	}
 	else
 		ChatsTalkableTree->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
+
+	ChatToSelect = Chat::null;
+}
+
+void ChatHistoryTab::selectChat(const Chat &chat)
+{
+	ChatToSelect = chat;
+
+	if (!ChatsFutureWatcher)
+		doSelectChat();
 }
