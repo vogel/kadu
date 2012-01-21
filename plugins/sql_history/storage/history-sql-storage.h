@@ -81,6 +81,7 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<DatesModelItem> syncChatDates(const Chat &chat);
 	QVector<DatesModelItem> syncDatesForStatusBuddy(const Buddy &buddy);
 	QVector<DatesModelItem> syncDatesForStatusContact(const Contact &contact);
+	QVector<DatesModelItem> syncDatesForSmsRecipient(const QString &recipient);
 
 	QVector<Message> getMessagesSince(const Chat &chat, const QDate &date);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
@@ -116,7 +117,7 @@ public:
 	virtual QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
 	virtual QFuture<QList<QString> > smsRecipientsList();
-	virtual QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient);
+	virtual QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient);
 	virtual QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
 
 	virtual void appendMessage(const Message &message);

@@ -763,14 +763,12 @@ QFuture<QList<QString> > HistorySqlStorage::smsRecipientsList()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientsList);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient)
+QVector<DatesModelItem> HistorySqlStorage::syncDatesForSmsRecipient(const QString &recipient)
 {
-	kdebugf();
-
 	if (recipient.isEmpty())
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -799,6 +797,11 @@ QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &r
 	}
 
 	return dates;
+}
+
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForSmsRecipient(const QString &recipient)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForSmsRecipient, recipient);
 }
 
 QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &date, int limit)
