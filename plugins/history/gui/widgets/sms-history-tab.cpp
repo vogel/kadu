@@ -171,10 +171,13 @@ void SmsHistoryTab::futureSmsCanceled()
 void SmsHistoryTab::updateData()
 {
 	if (SmsFutureWatcher)
-		delete SmsFutureWatcher;
+	{
+		SmsFutureWatcher->cancel();
+		SmsFutureWatcher->deleteLater();
+	}
 
 	QFuture<QList<QString> > futureSms = History::instance()->smsRecipientsList();
-	SmsFutureWatcher = new QFutureWatcher<QList<QString> >();
+	SmsFutureWatcher = new QFutureWatcher<QList<QString> >(this);
 	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
 	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));
 

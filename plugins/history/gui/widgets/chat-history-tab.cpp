@@ -224,10 +224,13 @@ void ChatHistoryTab::futureChatsCanceled()
 void ChatHistoryTab::updateData()
 {
 	if (ChatsFutureWatcher)
-		delete ChatsFutureWatcher;
+	{
+		ChatsFutureWatcher->cancel();
+		ChatsFutureWatcher->deleteLater();
+	}
 
 	QFuture<QVector<Chat> > futureChats = History::instance()->chatsList();
-	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >();
+	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >(this);
 	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
 	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
 

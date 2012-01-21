@@ -165,7 +165,10 @@ void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureD
 	setDates(QVector<DatesModelItem>());
 
 	if (DatesFutureWatcher)
+	{
+		DatesFutureWatcher->cancel();
 		DatesFutureWatcher->deleteLater();
+	}
 
 	DatesFutureWatcher = new QFutureWatcher<QVector<DatesModelItem> >(this);
 	connect(DatesFutureWatcher, SIGNAL(finished()), this, SLOT(futureDatesAvailable()));
@@ -218,7 +221,10 @@ void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessa
 	setMessages(QVector<Message>());
 
 	if (MessagesFutureWatcher)
+	{
+		MessagesFutureWatcher->cancel();
 		MessagesFutureWatcher->deleteLater();
+	}
 
 	MessagesFutureWatcher = new QFutureWatcher<QVector<Message> >(this);
 	connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));

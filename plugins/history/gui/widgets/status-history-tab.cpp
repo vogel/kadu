@@ -220,10 +220,13 @@ void StatusHistoryTab::futureStatusCanceled()
 void StatusHistoryTab::updateData()
 {
 	if (StatusFutureWatcher)
-		delete StatusFutureWatcher;
+	{
+		StatusFutureWatcher->cancel();
+		StatusFutureWatcher->deleteLater();
+	}
 
 	QFuture<QVector<Buddy> > futureStatus = History::instance()->statusBuddiesList();
-	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >();
+	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >(this);
 	connect(StatusFutureWatcher, SIGNAL(finished()), this, SLOT(futureStatusAvailable()));
 	connect(StatusFutureWatcher, SIGNAL(canceled()), this, SLOT(futureStatusCanceled()));
 
