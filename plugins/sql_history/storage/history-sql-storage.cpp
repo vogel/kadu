@@ -737,28 +737,27 @@ QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesBackTo(const Chat &ch
 	return QtConcurrent::run(this, &HistorySqlStorage::syncGetMessagesBackTo, chat, datetime, limit);
 }
 
-QList<QString> HistorySqlStorage::smsRecipientsList()
+QList<QString> HistorySqlStorage::syncSmsRecipientsList()
 {
-	kdebugf();
-
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QList<QString>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT receipient FROM kadu_sms WHERE 1";
-
-	query.prepare(queryString);
-
-	QList<QString> recipients;
-
+	query.prepare("SELECT DISTINCT receipient FROM kadu_sms");
 	executeQuery(query);
 
+	QList<QString> recipients;
 	while (query.next())
 		recipients.append(query.value(0).toString());
 
 	return recipients;
+}
+
+QFuture<QList<QString> > HistorySqlStorage::smsRecipientsList()
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientsList);
 }
 
 QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient)

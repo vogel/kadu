@@ -64,7 +64,7 @@ public:
 	virtual QVector<DatesModelItem> datesForStatusContact(const Contact &contact) = 0;
 	virtual QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0) = 0;
 
-	virtual QList<QString> smsRecipientsList() = 0;
+	virtual QFuture<QList<QString> > smsRecipientsList() = 0;
 	virtual QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient) = 0;
 	virtual QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
 

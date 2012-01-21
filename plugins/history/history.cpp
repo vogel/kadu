@@ -455,7 +455,7 @@ QList<TimedStatus> History::statuses(const Contact &contact, const QDate &date, 
 	return CurrentStorage->statuses(contact, date, limit);
 }
 
-QList<QString> History::smsRecipientsList()
+QFuture<QList<QString> > History::smsRecipientsList()
 {
 	kdebugf();
 

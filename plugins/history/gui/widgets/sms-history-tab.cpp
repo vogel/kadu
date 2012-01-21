@@ -151,7 +151,7 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void SmsHistoryTab::updateData()
 {
-	QList<QString> smsRecipients = History::instance()->smsRecipientsList();
+	QList<QString> smsRecipients = History::instance()->smsRecipientsList().result();
 
 	SmsModel->clear();
 	foreach (const QString &smsRecipient, smsRecipients)

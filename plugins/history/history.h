@@ -153,7 +153,7 @@ public:
 	QVector<DatesModelItem> datesForStatusContact(const Contact &contact);
 	QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
-	QList<QString> smsRecipientsList();
+	QFuture<QList<QString> > smsRecipientsList();
 	QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient);
 	QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
 
