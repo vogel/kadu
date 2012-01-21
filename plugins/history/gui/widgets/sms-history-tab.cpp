@@ -30,7 +30,6 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
-#include "gui/widgets/wait-overlay.h"
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
@@ -38,7 +37,7 @@
 #include "sms-history-tab.h"
 
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent), SmsFutureWatcher(0), SmsWaitOverlay(0)
+		HistoryTab(false, parent), SmsFutureWatcher(0)
 {
 	createGui();
 }
@@ -85,20 +84,6 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 
 	CurrentRecipient = recipient;
 	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
-}
-
-void SmsHistoryTab::showWaitOverlay()
-{
-	if (!SmsWaitOverlay)
-		SmsWaitOverlay = new WaitOverlay(this);
-	else
-		SmsWaitOverlay->show();
-}
-
-void SmsHistoryTab::hideWaitOverlay()
-{
-	SmsWaitOverlay->deleteLater();
-	SmsWaitOverlay = 0;
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -166,7 +151,7 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void SmsHistoryTab::futureSmsAvailable()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!SmsFutureWatcher)
 		return;
@@ -183,7 +168,7 @@ void SmsHistoryTab::futureSmsAvailable()
 
 void SmsHistoryTab::futureSmsCanceled()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!SmsFutureWatcher)
 		return;
@@ -204,5 +189,5 @@ void SmsHistoryTab::updateData()
 
 	SmsFutureWatcher->setFuture(futureSms);
 
-	showWaitOverlay();
+	showTabWaitOverlay();
 }

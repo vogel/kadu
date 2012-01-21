@@ -31,6 +31,7 @@ class QSplitter;
 class DatesModelItem;
 class HistoryDatesModel;
 class TimelineChatMessagesView;
+class WaitOverlay;
 
 /**
  * @addtogroup History
@@ -55,6 +56,7 @@ class KADUAPI HistoryTab : public QWidget
 	Q_OBJECT
 
 	QSplitter *Splitter;
+	WaitOverlay *TabWaitOverlay;
 
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
@@ -95,6 +97,18 @@ protected:
 	 * createTreeView() to fill left part of the widget.
 	 */
 	void createGui();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Show wait overlay over tab.
+	 */
+	void showTabWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Hide wait overlay over tab.
+	 */
+	void hideTabWaitOverlay();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

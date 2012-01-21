@@ -33,7 +33,6 @@ class Message;
 class ModelChain;
 class TalkableTreeView;
 class TimedStatus;
-class WaitOverlay;
 
 class KADUAPI StatusHistoryTab : public HistoryTab
 {
@@ -44,7 +43,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	bool IsBuddy;
 
 	QFutureWatcher<QVector<Buddy> > *StatusFutureWatcher;
-	WaitOverlay *StatusWaitOverlay;
 
 	TalkableTreeView *StatusesTalkableTree;
 	BuddyListModel *StatusBuddiesModel;
@@ -53,9 +51,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	void displayStatusBuddy(const Buddy &buddy, bool force);
 	void displayStatusContact(const Contact &contact, bool force);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
-
-	void showWaitOverlay();
-	void hideWaitOverlay();
 
 private slots:
 	void futureStatusAvailable();

@@ -29,12 +29,13 @@
 #include "icons/kadu-icon.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "gui/widgets/wait-overlay.h"
 #include "model/history-dates-model.h"
 
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), TabWaitOverlay(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 }
@@ -70,6 +71,20 @@ void HistoryTab::createGui()
 	Splitter->setSizes(sizes);
 
 	layout->addWidget(Splitter);
+}
+
+void HistoryTab::showTabWaitOverlay()
+{
+	if (!TabWaitOverlay)
+		TabWaitOverlay = new WaitOverlay(this);
+	else
+		TabWaitOverlay->show();
+}
+
+void HistoryTab::hideTabWaitOverlay()
+{
+	TabWaitOverlay->deleteLater();
+	TabWaitOverlay = 0;
 }
 
 TimelineChatMessagesView * HistoryTab::timelineView() const

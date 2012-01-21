@@ -39,15 +39,11 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 	QString CurrentRecipient;
 
 	QFutureWatcher<QList<QString> > *SmsFutureWatcher;
-	WaitOverlay *SmsWaitOverlay;
 
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
 
 	void displaySmsRecipient(const QString &recipient, bool force);
-
-	void showWaitOverlay();
-	void hideWaitOverlay();
 
 private slots:
 	void futureSmsAvailable();

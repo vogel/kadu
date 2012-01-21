@@ -32,7 +32,6 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/wait-overlay.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
 #include "talkable/filter/name-talkable-filter.h"
@@ -47,7 +46,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent), ChatsFutureWatcher(0), ChatsWaitOverlay(0)
+		HistoryTab(true, parent), ChatsFutureWatcher(0)
 {
 	createGui();
 }
@@ -122,20 +121,6 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 	const Chat &agrregate = AggregateChatManager::instance()->aggregateChat(chat);
 
 	displayChat(agrregate ? agrregate : chat, force);
-}
-
-void ChatHistoryTab::showWaitOverlay()
-{
-	if (!ChatsWaitOverlay)
-		ChatsWaitOverlay = new WaitOverlay(this);
-	else
-		ChatsWaitOverlay->show();
-}
-
-void ChatHistoryTab::hideWaitOverlay()
-{
-	ChatsWaitOverlay->deleteLater();
-	ChatsWaitOverlay = 0;
 }
 
 void ChatHistoryTab::showChatsPopupMenu()
@@ -219,7 +204,7 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void ChatHistoryTab::futureChatsAvailable()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!ChatsFutureWatcher)
 		return;
@@ -237,7 +222,7 @@ void ChatHistoryTab::futureChatsAvailable()
 
 void ChatHistoryTab::futureChatsCanceled()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!ChatsFutureWatcher)
 		return;
@@ -258,7 +243,7 @@ void ChatHistoryTab::updateData()
 
 	ChatsFutureWatcher->setFuture(futureChats);
 
-	showWaitOverlay();
+	showTabWaitOverlay();
 }
 
 void ChatHistoryTab::doSelectChat()

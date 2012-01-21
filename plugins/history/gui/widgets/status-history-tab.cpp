@@ -28,7 +28,6 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/wait-overlay.h"
 #include "model/model-chain.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -44,7 +43,7 @@
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0), StatusWaitOverlay(0)
+		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0)
 {
 	createGui();
 }
@@ -151,20 +150,6 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 	return messages;
 }
 
-void StatusHistoryTab::showWaitOverlay()
-{
-	if (!StatusWaitOverlay)
-		StatusWaitOverlay = new WaitOverlay(this);
-	else
-		StatusWaitOverlay->show();
-}
-
-void StatusHistoryTab::hideWaitOverlay()
-{
-	StatusWaitOverlay->deleteLater();
-	StatusWaitOverlay = 0;
-}
-
 void StatusHistoryTab::showStatusesPopupMenu()
 {
 	QScopedPointer<QMenu> menu;
@@ -245,7 +230,7 @@ void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 
 void StatusHistoryTab::futureStatusAvailable()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!StatusFutureWatcher)
 		return;
@@ -258,7 +243,7 @@ void StatusHistoryTab::futureStatusAvailable()
 
 void StatusHistoryTab::futureStatusCanceled()
 {
-	hideWaitOverlay();
+	hideTabWaitOverlay();
 
 	if (!StatusFutureWatcher)
 		return;
@@ -279,5 +264,5 @@ void StatusHistoryTab::updateData()
 
 	StatusFutureWatcher->setFuture(futureStatus);
 
-	showWaitOverlay();
+	showTabWaitOverlay();
 }
