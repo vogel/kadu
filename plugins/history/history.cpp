@@ -420,7 +420,7 @@ QVector<Message> History::messages(const Chat &chat, const QDate &date, int limi
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-QVector<Buddy> History::statusBuddiesList()
+QFuture<QVector<Buddy> > History::statusBuddiesList()
 {
 	kdebugf();
 

@@ -58,7 +58,7 @@ public:
 	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 
-	virtual QVector<Buddy> statusBuddiesList() = 0;
+	virtual QFuture<QVector<Buddy> > statusBuddiesList() = 0;
 	virtual QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy) = 0;
 	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
 	virtual QVector<DatesModelItem> datesForStatusContact(const Contact &contact) = 0;

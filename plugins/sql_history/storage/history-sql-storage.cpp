@@ -830,23 +830,18 @@ QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &d
 	return result;
 }
 
-QVector<Buddy> HistorySqlStorage::statusBuddiesList()
+QVector<Buddy> HistorySqlStorage::syncStatusBuddiesList()
 {
-	kdebugf();
-
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<Buddy>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT contact FROM kadu_statuses";
-
-	query.prepare(queryString);
+	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
+	executeQuery(query);
 
 	QVector<Buddy> buddies;
-
-	executeQuery(query);
 	while (query.next())
 	{
 		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
@@ -855,11 +850,17 @@ QVector<Buddy> HistorySqlStorage::statusBuddiesList()
 
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		Q_ASSERT(buddy);
+
 		if (!buddies.contains(buddy))
 			buddies.append(buddy);
 	}
 
 	return buddies;
+}
+
+QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddiesList()
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddiesList);
 }
 
 QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy)

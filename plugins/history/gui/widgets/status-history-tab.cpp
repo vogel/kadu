@@ -94,7 +94,7 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 
 void StatusHistoryTab::updateData()
 {
-	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList();
+	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList().result();
 	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 }
 
