@@ -144,7 +144,7 @@ public:
 	void unregisterStorage(HistoryStorage *storage);
 
 	QFuture<QVector<Chat> > chatsList();
-	QVector<DatesModelItem> datesForChat(const Chat &chat);
+	QFuture<QVector<DatesModelItem> > datesForChat(const Chat &chat);
 	QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 
 	QFuture<QVector<Buddy> > statusBuddiesList();

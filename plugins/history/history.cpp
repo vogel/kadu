@@ -406,7 +406,7 @@ QFuture<QVector<Chat> > History::chatsList()
 	return CurrentStorage->chats();
 }
 
-QVector<DatesModelItem> History::datesForChat(const Chat &chat)
+QFuture<QVector<DatesModelItem> > History::datesForChat(const Chat &chat)
 {
 	kdebugf();
 
