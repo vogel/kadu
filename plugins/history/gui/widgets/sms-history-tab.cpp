@@ -30,6 +30,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "gui/widgets/wait-overlay.h"
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
@@ -37,7 +38,7 @@
 #include "sms-history-tab.h"
 
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent)
+		HistoryTab(false, parent), SmsFutureWatcher(0), SmsWaitOverlay(0)
 {
 	createGui();
 }
@@ -84,6 +85,20 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 
 	CurrentRecipient = recipient;
 	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
+}
+
+void SmsHistoryTab::showWaitOverlay()
+{
+	if (!SmsWaitOverlay)
+		SmsWaitOverlay = new WaitOverlay(SmsListView);
+	else
+		SmsWaitOverlay->show();
+}
+
+void SmsHistoryTab::hideWaitOverlay()
+{
+	SmsWaitOverlay->deleteLater();
+	SmsWaitOverlay = 0;
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -149,11 +164,45 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void SmsHistoryTab::updateData()
+void SmsHistoryTab::futureSmsAvailable()
 {
-	QList<QString> smsRecipients = History::instance()->smsRecipientsList().result();
+	hideWaitOverlay();
+
+	if (!SmsFutureWatcher)
+		return;
+
+	QList<QString> smsRecipients = SmsFutureWatcher->result();
 
 	SmsModel->clear();
 	foreach (const QString &smsRecipient, smsRecipients)
 		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
+
+	SmsFutureWatcher->deleteLater();
+	SmsFutureWatcher = 0;
+}
+
+void SmsHistoryTab::futureSmsCanceled()
+{
+	hideWaitOverlay();
+
+	if (!SmsFutureWatcher)
+		return;
+
+	SmsFutureWatcher->deleteLater();
+	SmsFutureWatcher = 0;
+}
+
+void SmsHistoryTab::updateData()
+{
+	if (SmsFutureWatcher)
+		delete SmsFutureWatcher;
+
+	QFuture<QList<QString> > futureSms = History::instance()->smsRecipientsList();
+	SmsFutureWatcher = new QFutureWatcher<QList<QString> >();
+	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
+	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));
+
+	SmsFutureWatcher->setFuture(futureSms);
+
+	showWaitOverlay();
 }
