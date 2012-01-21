@@ -413,7 +413,7 @@ QFuture<QVector<DatesModelItem> > History::datesForChat(const Chat &chat)
 	return CurrentStorage->chatDates(chat);
 }
 
-QVector<Message> History::messages(const Chat &chat, const QDate &date, int limit)
+QFuture<QVector<Message> > History::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 

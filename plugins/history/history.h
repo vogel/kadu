@@ -145,7 +145,7 @@ public:
 
 	QFuture<QVector<Chat> > chatsList();
 	QFuture<QVector<DatesModelItem> > datesForChat(const Chat &chat);
-	QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
+	QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 
 	QFuture<QVector<Buddy> > statusBuddiesList();
 	QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy);

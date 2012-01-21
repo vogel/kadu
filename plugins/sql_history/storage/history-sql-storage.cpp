@@ -620,11 +620,9 @@ QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Chat &chat
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, chat);
 }
 
-QVector<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date, int limit)
 {
-	kdebugf();
-
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -652,6 +650,11 @@ QVector<Message> HistorySqlStorage::messages(const Chat &chat, const QDate &date
 	messages = messagesFromQuery(query);
 
 	return messages;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, chat, date, limit);
 }
 
 QVector<Message> HistorySqlStorage::getMessagesSince(const Chat &chat, const QDate &date)

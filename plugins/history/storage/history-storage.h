@@ -54,7 +54,7 @@ public:
 	virtual QFuture<QVector<Chat> > chats() = 0;
 
 	virtual QFuture<QVector<DatesModelItem> > chatDates(const Chat &chat) = 0;
-	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;
 	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 

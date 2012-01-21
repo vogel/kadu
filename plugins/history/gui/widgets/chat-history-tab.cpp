@@ -184,7 +184,7 @@ void ChatHistoryTab::displayForDate(const QDate &date)
 
 	QVector<Message> messages;
 	if (CurrentChat && date.isValid())
-		messages = History::instance()->messages(CurrentChat, date);
+		messages = History::instance()->messages(CurrentChat, date).result();
 	timelineView()->messagesView()->setChat(CurrentChat);
 	timelineView()->messagesView()->clearMessages();
 	timelineView()->messagesView()->appendMessages(messages);
