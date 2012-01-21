@@ -148,9 +148,9 @@ public:
 	QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 
 	QFuture<QVector<Buddy> > statusBuddiesList();
-	QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy);
+	QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy);
 	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
-	QVector<DatesModelItem> datesForStatusContact(const Contact &contact);
+	QFuture<QVector<DatesModelItem> > datesForStatusContact(const Contact &contact);
 	QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
 	QFuture<QList<QString> > smsRecipientsList();

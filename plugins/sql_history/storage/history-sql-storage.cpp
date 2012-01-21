@@ -865,14 +865,14 @@ QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddiesList()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddiesList);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy)
+QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusBuddy(const Buddy &buddy)
 {
 	kdebugf();
 
 	if (!buddy)
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -901,6 +901,11 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	}
 
 	return dates;
+}
+
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusBuddy, buddy);
 }
 
 QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
@@ -934,14 +939,14 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	return statuses;
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &contact)
+QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusContact(const Contact &contact)
 {
 	kdebugf();
 
 	if (!contact)
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -972,6 +977,11 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &
 	}
 
 	return dates;
+}
+
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusContact(const Contact &contact)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusContact, contact);
 }
 
 QList<TimedStatus> HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
