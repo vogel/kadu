@@ -468,7 +468,7 @@ QFuture<QVector<DatesModelItem> > History::datesForSmsRecipient(const QString &r
 	return CurrentStorage->datesForSmsRecipient(recipient);
 }
 
-QVector<Message> History::sms(const QString &recipient, const QDate &date, int limit)
+QFuture<QVector<Message> > History::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 

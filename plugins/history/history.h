@@ -155,7 +155,7 @@ public:
 
 	QFuture<QList<QString> > smsRecipientsList();
 	QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient);
-	QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
+	QFuture<QVector<Message> > sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
 
 	void deleteHistory(const Buddy &buddy);
 

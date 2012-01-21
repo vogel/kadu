@@ -66,7 +66,7 @@ public:
 
 	virtual QFuture<QList<QString> > smsRecipientsList() = 0;
 	virtual QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient) = 0;
-	virtual QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > sms(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime()) = 0;

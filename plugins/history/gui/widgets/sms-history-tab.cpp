@@ -127,17 +127,8 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	QVector<Message> sms;
 	if (!CurrentRecipient.isEmpty() && date.isValid())
-		sms = History::instance()->sms(CurrentRecipient, date);
-	timelineView()->messagesView()->setChat(Chat::null);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(sms);
-	timelineView()->messagesView()->refresh();
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+		setFutureMessages(History::instance()->sms(CurrentRecipient, date));
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
