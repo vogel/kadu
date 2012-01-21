@@ -81,6 +81,7 @@ set (gui_SRCS
 	widgets/talkable-tree-view.cpp
 	widgets/toolbar.cpp
 	widgets/tool-tip-class-manager.cpp
+	widgets/wait-overlay.cpp
 
 	widgets/configuration/buddy-list-background-colors-widget.cpp
 	widgets/configuration/config-action-button.cpp
@@ -232,6 +233,7 @@ set (gui_MOC_SRCS
 	widgets/talkable-menu-manager.h
 	widgets/talkable-tree-view.h
 	widgets/toolbar.h
+	widgets/wait-overlay.h
 
 	widgets/configuration/buddy-list-background-colors-widget.h
 	widgets/configuration/config-action-button.h
