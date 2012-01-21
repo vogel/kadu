@@ -223,6 +223,8 @@ void ChatHistoryTab::futureChatsCanceled()
 
 void ChatHistoryTab::updateData()
 {
+	setMessages(QVector<Message>());
+
 	if (ChatsFutureWatcher)
 	{
 		ChatsFutureWatcher->cancel();

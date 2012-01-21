@@ -219,6 +219,8 @@ void StatusHistoryTab::futureStatusCanceled()
 
 void StatusHistoryTab::updateData()
 {
+	setMessages(QVector<Message>());
+
 	if (StatusFutureWatcher)
 	{
 		StatusFutureWatcher->cancel();

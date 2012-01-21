@@ -170,6 +170,8 @@ void SmsHistoryTab::futureSmsCanceled()
 
 void SmsHistoryTab::updateData()
 {
+	setMessages(QVector<Message>());
+
 	if (SmsFutureWatcher)
 	{
 		SmsFutureWatcher->cancel();
