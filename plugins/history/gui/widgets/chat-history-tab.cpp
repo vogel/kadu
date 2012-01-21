@@ -112,7 +112,7 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	timelineView()->messagesView()->setChat(chat);
 
 	CurrentChat = chat;
-	setDates(History::instance()->datesForChat(CurrentChat, HistorySearchParameters()));
+	setDates(History::instance()->datesForChat(CurrentChat));
 }
 
 void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
@@ -204,7 +204,7 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void ChatHistoryTab::updateData()
 {
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList(HistorySearchParameters()));
+	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList());
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());

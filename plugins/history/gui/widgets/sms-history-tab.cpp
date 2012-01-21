@@ -83,7 +83,7 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 	timelineView()->messagesView()->setChat(smsChat);
 
 	CurrentRecipient = recipient;
-	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient, HistorySearchParameters()));
+	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -151,7 +151,7 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void SmsHistoryTab::updateData()
 {
-	QList<QString> smsRecipients = History::instance()->smsRecipientsList(HistorySearchParameters());
+	QList<QString> smsRecipients = History::instance()->smsRecipientsList();
 
 	SmsModel->clear();
 	foreach (const QString &smsRecipient, smsRecipients)

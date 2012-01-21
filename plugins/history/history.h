@@ -143,18 +143,18 @@ public:
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
 
-	QVector<Chat> chatsList(const HistorySearchParameters &search);
-	QVector<DatesModelItem> datesForChat(const Chat &chat, const HistorySearchParameters &search);
+	QVector<Chat> chatsList();
+	QVector<DatesModelItem> datesForChat(const Chat &chat);
 	QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 
-	QVector<Buddy> statusBuddiesList(const HistorySearchParameters &search);
-	QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search);
+	QVector<Buddy> statusBuddiesList();
+	QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy);
 	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
-	QVector<DatesModelItem> datesForStatusContact(const Contact &contact, const HistorySearchParameters &search);
+	QVector<DatesModelItem> datesForStatusContact(const Contact &contact);
 	QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
-	QList<QString> smsRecipientsList(const HistorySearchParameters &search);
-	QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search);
+	QList<QString> smsRecipientsList();
+	QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient);
 	QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
 
 	void deleteHistory(const Buddy &buddy);

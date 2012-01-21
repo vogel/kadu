@@ -35,7 +35,6 @@
 #include "../history_exports.h"
 
 struct DatesModelItem;
-class HistorySearchParameters;
 class Message;
 class Status;
 class TimedStatus;
@@ -52,21 +51,21 @@ public:
 	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
 	virtual ~HistoryStorage() {}
 
-	virtual QVector<Chat> chats(const HistorySearchParameters &search) = 0;
+	virtual QVector<Chat> chats() = 0;
 
-	virtual QVector<DatesModelItem> chatDates(const Chat &chat, const HistorySearchParameters &search) = 0;
+	virtual QVector<DatesModelItem> chatDates(const Chat &chat) = 0;
 	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;
 	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 
-	virtual QVector<Buddy> statusBuddiesList(const HistorySearchParameters &search) = 0;
-	virtual QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search) = 0;
+	virtual QVector<Buddy> statusBuddiesList() = 0;
+	virtual QVector<DatesModelItem> datesForStatusBuddy(const Buddy &buddy) = 0;
 	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
-	virtual QVector<DatesModelItem> datesForStatusContact(const Contact &contact, const HistorySearchParameters &search) = 0;
+	virtual QVector<DatesModelItem> datesForStatusContact(const Contact &contact) = 0;
 	virtual QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0) = 0;
 
-	virtual QList<QString> smsRecipientsList(const HistorySearchParameters &search) = 0;
-	virtual QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search) = 0;
+	virtual QList<QString> smsRecipientsList() = 0;
+	virtual QVector<DatesModelItem> datesForSmsRecipient(const QString &recipient) = 0;
 	virtual QVector<Message> sms(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;

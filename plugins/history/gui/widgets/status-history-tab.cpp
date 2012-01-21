@@ -94,7 +94,7 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 
 void StatusHistoryTab::updateData()
 {
-	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList(HistorySearchParameters());
+	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList();
 	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 }
 
@@ -110,7 +110,7 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(buddies, true));
 
 	CurrentBuddy = buddy;
-	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy, HistorySearchParameters()));
+	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy));
 }
 
 void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
@@ -125,7 +125,7 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(contacts, true));
 
 	CurrentContact = contact;
-	setDates(History::instance()->datesForStatusContact(CurrentContact, HistorySearchParameters()));
+	setDates(History::instance()->datesForStatusContact(CurrentContact));
 }
 
 QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)

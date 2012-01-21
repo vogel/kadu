@@ -528,7 +528,7 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 	executeQuery(query);
 }
 
-QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
+QVector<Chat> HistorySqlStorage::chats()
 {
 	kdebugf();
 
@@ -537,28 +537,10 @@ QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	QString joins = !search.query().isEmpty() || search.fromDate().isValid() || search.toDate().isValid()
-		? "LEFT JOIN kadu_messages km ON (kadu_chats.id=km.chat_id) LEFT JOIN kadu_dates kd ON (kd.id=km.date_id) LEFT JOIN kadu_message_contents kmc ON (kmc.id=km.content_id) "
-		: "";
-
 	QSqlQuery query(Database);
-	QString queryString = "SELECT uuid FROM kadu_chats " + joins + "WHERE 1";
-
-	if (!search.query().isEmpty())
-		queryString += " AND content LIKE :content";
-	if (search.fromDate().isValid())
-		queryString += " AND date >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND date <= :toDate";
+	QString queryString = "SELECT uuid FROM kadu_chats";
 
 	query.prepare(queryString);
-
-	if (!search.query().isEmpty())
-		query.bindValue(":content", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate().toString("yyyyMMdd"));
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate().toString("yyyyMMdd"));
 
 	QVector<Chat> chats;
 
@@ -574,7 +556,7 @@ QVector<Chat> HistorySqlStorage::chats(const HistorySearchParameters &search)
 	return chats;
 }
 
-QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat)
 {
 	kdebugf();
 
@@ -592,24 +574,11 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
 		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(chat);
-	if (!search.query().isEmpty())
-	  queryString += " AND kmc.content LIKE :content";
-	if (search.fromDate().isValid())
-	  queryString += " AND date >= :fromDate";
-	if (search.toDate().isValid())
-	  queryString += " AND date <= :toDate";
 	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
 	queryString += " GROUP BY date_id";
 	queryString += " ORDER BY date_id ASC, rowid ASC";
 
 	query.prepare(queryString);
-
-	if (!search.query().isEmpty())
-		query.bindValue(":content", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate().toString("yyyyMMdd"));
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate().toString("yyyyMMdd"));
 
 	QVector<DatesModelItem> dates;
 	executeQuery(query);
@@ -768,7 +737,7 @@ QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesBackTo(const Chat &ch
 	return QtConcurrent::run(this, &HistorySqlStorage::syncGetMessagesBackTo, chat, datetime, limit);
 }
 
-QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameters &search)
+QList<QString> HistorySqlStorage::smsRecipientsList()
 {
 	kdebugf();
 
@@ -780,21 +749,7 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	QSqlQuery query(Database);
 	QString queryString = "SELECT DISTINCT receipient FROM kadu_sms WHERE 1";
 
-	if (!search.query().isEmpty())
-		queryString += " AND content LIKE :content";
-	if (search.fromDate().isValid())
-		queryString += " AND substr(send_time,0,11)  >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND substr(send_time,0,11)  <= :toDate";
-
 	query.prepare(queryString);
-
-	if (!search.query().isEmpty())
-		query.bindValue(":content", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
 
 	QList<QString> recipients;
 
@@ -806,7 +761,7 @@ QList<QString> HistorySqlStorage::smsRecipientsList(const HistorySearchParameter
 	return recipients;
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &recipient)
 {
 	kdebugf();
 
@@ -822,25 +777,12 @@ QVector<DatesModelItem> HistorySqlStorage::datesForSmsRecipient(const QString &r
 	QString queryString = "SELECT count(1), substr(send_time,0,11)";
 	queryString += " FROM (SELECT send_time FROM kadu_sms WHERE receipient = :receipient";
 
-	if (!search.query().isEmpty())
-		queryString += " AND content LIKE :content";
-	if (search.fromDate().isValid())
-		queryString += " AND substr(send_time,0,11) >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND substr(send_time,0,11) <= :toDate";
-
 	queryString += " order by send_time DESC, rowid DESC)";
 	queryString += " group by substr(send_time,0,11) order by send_time ASC;";
 
 	query.prepare(queryString);
 
 	query.bindValue(":receipient", recipient);
-	if (!search.query().isEmpty())
-		query.bindValue(":content", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
 
 	QVector<DatesModelItem> dates;
 	executeQuery(query);
@@ -888,7 +830,7 @@ QVector<Message> HistorySqlStorage::sms(const QString &recipient, const QDate &d
 	return result;
 }
 
-QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameters &search)
+QVector<Buddy> HistorySqlStorage::statusBuddiesList()
 {
 	kdebugf();
 
@@ -898,23 +840,9 @@ QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameter
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT contact FROM kadu_statuses WHERE 1";
-
-	if (!search.query().isEmpty())
-		queryString += " AND description LIKE :description";
-	if (search.fromDate().isValid())
-		queryString += " AND substr(set_time,0,11) >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND substr(set_time,0,11) <= :toDate";
+	QString queryString = "SELECT DISTINCT contact FROM kadu_statuses";
 
 	query.prepare(queryString);
-
-	if (!search.query().isEmpty())
-		query.bindValue(":description", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
 
 	QVector<Buddy> buddies;
 
@@ -934,7 +862,7 @@ QVector<Buddy> HistorySqlStorage::statusBuddiesList(const HistorySearchParameter
 	return buddies;
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy)
 {
 	kdebugf();
 
@@ -950,24 +878,10 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusBuddy(const Buddy &budd
 	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
 	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
 
-	if (!search.query().isEmpty())
-		queryString += " AND description LIKE :description";
-	if (search.fromDate().isValid())
-		queryString += " AND substr(set_time,0,11) >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND substr(set_time,0,11) <= :toDate";
-
 	queryString += " ORDER BY set_time DESC, rowid DESC)";
 	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
 
 	query.prepare(queryString);
-
-	if (!search.query().isEmpty())
-		query.bindValue(":description", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
 
 	QVector<DatesModelItem> dates;
 
@@ -1017,7 +931,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	return statuses;
 }
 
-QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &contact, const HistorySearchParameters &search)
+QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &contact)
 {
 	kdebugf();
 
@@ -1033,25 +947,12 @@ QVector<DatesModelItem> HistorySqlStorage::datesForStatusContact(const Contact &
 	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
 	queryString += " (SELECT set_time FROM kadu_statuses WHERE contact = :contact";
 
-	if (!search.query().isEmpty())
-		queryString += " AND description LIKE :description";
-	if (search.fromDate().isValid())
-		queryString += " AND substr(set_time,0,11) >= :fromDate";
-	if (search.toDate().isValid())
-		queryString += " AND substr(set_time,0,11) <= :toDate";
-
 	queryString += " ORDER BY set_time DESC, rowid DESC)";
 	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
 
 	query.prepare(queryString);
 
 	query.bindValue(":contact", contact.uuid().toString());
-	if (!search.query().isEmpty())
-		query.bindValue(":description", QString('%' + search.query() + '%'));
-	if (search.fromDate().isValid())
-		query.bindValue(":fromDate", search.fromDate());
-	if (search.toDate().isValid())
-		query.bindValue(":toDate", search.toDate());
 
 	QVector<DatesModelItem> dates;
 
