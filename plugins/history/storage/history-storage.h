@@ -60,9 +60,9 @@ public:
 
 	virtual QFuture<QVector<Buddy> > statusBuddiesList() = 0;
 	virtual QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy) = 0;
-	virtual QVector<Message> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
 	virtual QFuture<QVector<DatesModelItem> > datesForStatusContact(const Contact &contact) = 0;
-	virtual QVector<Message> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0) = 0;
 
 	virtual QFuture<QList<QString> > smsRecipientsList() = 0;
 	virtual QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient) = 0;

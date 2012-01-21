@@ -160,7 +160,7 @@ void HistoryTab::futureDatesCanceled()
 	DatesFutureWatcher = 0;
 }
 
-void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > & futureDates)
+void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
 {
 	setDates(QVector<DatesModelItem>());
 
@@ -189,12 +189,14 @@ void HistoryTab::setMessages(const QVector<Message> &messages)
 
 void HistoryTab::futureMessagesAvailable()
 {
-	hideMessagesViewWaitOverlay();
-
 	if (!MessagesFutureWatcher)
+	{
+		hideMessagesViewWaitOverlay();
 		return;
+	}
 
 	setMessages(MessagesFutureWatcher->result());
+	hideMessagesViewWaitOverlay(); // wait for messages to display before hiding
 
 	MessagesFutureWatcher->deleteLater();
 	MessagesFutureWatcher = 0;

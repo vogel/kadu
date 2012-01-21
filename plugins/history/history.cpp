@@ -433,7 +433,7 @@ QFuture<QVector<DatesModelItem> > History::datesForStatusBuddy(const Buddy &budd
 	return CurrentStorage->datesForStatusBuddy(buddy);
 }
 
-QVector<Message> History::statuses(const Buddy &buddy, const QDate &date, int limit)
+QFuture<QVector<Message> > History::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -447,7 +447,7 @@ QFuture<QVector<DatesModelItem> > History::datesForStatusContact(const Contact &
 	return CurrentStorage->datesForStatusContact(contact);
 }
 
-QVector<Message> History::statuses(const Contact &contact, const QDate &date, int limit)
+QFuture<QVector<Message> > History::statuses(const Contact &contact, const QDate &date, int limit)
 {
 	kdebugf();
 

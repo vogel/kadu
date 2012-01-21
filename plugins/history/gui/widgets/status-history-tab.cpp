@@ -151,27 +151,21 @@ void StatusHistoryTab::clearStatusHistory()
 
 void StatusHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-	timelineView()->messagesView()->clearMessages();
-
-	QVector<Message> statuses;
 	if (IsBuddy)
 	{
-		if (CurrentBuddy && date.isValid())
-			statuses = History::instance()->statuses(CurrentBuddy, date);
 		if (!CurrentBuddy.contacts().isEmpty())
 			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
+
+		if (CurrentBuddy && date.isValid())
+			setFutureMessages(History::instance()->statuses(CurrentBuddy, date));
 	}
 	else
 	{
-		if (CurrentContact && date.isValid())
-			statuses = History::instance()->statuses(CurrentContact, date);
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
-	}
-	timelineView()->messagesView()->appendMessages(statuses);
-	timelineView()->messagesView()->refresh();
 
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+		if (CurrentContact && date.isValid())
+			setFutureMessages(History::instance()->statuses(CurrentContact, date));
+	}
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
