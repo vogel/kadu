@@ -28,6 +28,7 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/wait-overlay.h"
 #include "model/model-chain.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
@@ -43,7 +44,7 @@
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent), IsBuddy(true)
+		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0), StatusWaitOverlay(0)
 {
 	createGui();
 }
@@ -90,12 +91,6 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	statusesTalkableWidget->setView(StatusesTalkableTree);
-}
-
-void StatusHistoryTab::updateData()
-{
-	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList().result();
-	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
 }
 
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
@@ -154,6 +149,20 @@ QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &
 	}
 
 	return messages;
+}
+
+void StatusHistoryTab::showWaitOverlay()
+{
+	if (!StatusWaitOverlay)
+		StatusWaitOverlay = new WaitOverlay(StatusesTalkableTree);
+	else
+		StatusWaitOverlay->show();
+}
+
+void StatusHistoryTab::hideWaitOverlay()
+{
+	StatusWaitOverlay->deleteLater();
+	StatusWaitOverlay = 0;
 }
 
 void StatusHistoryTab::showStatusesPopupMenu()
@@ -232,4 +241,43 @@ void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 			displayStatusBuddy(Buddy::null, false);
 			break;
 	}
+}
+
+void StatusHistoryTab::futureStatusAvailable()
+{
+	hideWaitOverlay();
+
+	if (!StatusFutureWatcher)
+		return;
+
+	StatusBuddiesModel->setBuddyList(StatusFutureWatcher->result().toList());
+
+	StatusFutureWatcher->deleteLater();
+	StatusFutureWatcher = 0;
+}
+
+void StatusHistoryTab::futureStatusCanceled()
+{
+	hideWaitOverlay();
+
+	if (!StatusFutureWatcher)
+		return;
+
+	StatusFutureWatcher->deleteLater();
+	StatusFutureWatcher = 0;
+}
+
+void StatusHistoryTab::updateData()
+{
+	if (StatusFutureWatcher)
+		delete StatusFutureWatcher;
+
+	QFuture<QVector<Buddy> > futureStatus = History::instance()->statusBuddiesList();
+	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >();
+	connect(StatusFutureWatcher, SIGNAL(finished()), this, SLOT(futureStatusAvailable()));
+	connect(StatusFutureWatcher, SIGNAL(canceled()), this, SLOT(futureStatusCanceled()));
+
+	StatusFutureWatcher->setFuture(futureStatus);
+
+	showWaitOverlay();
 }

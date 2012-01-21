@@ -20,6 +20,7 @@
 #ifndef STATUS_HISTORY_TAB_H
 #define STATUS_HISTORY_TAB_H
 
+#include <QtCore/QFutureWatcher>
 #include <QtCore/QModelIndex>
 
 #include "talkable/talkable.h"
@@ -32,6 +33,7 @@ class Message;
 class ModelChain;
 class TalkableTreeView;
 class TimedStatus;
+class WaitOverlay;
 
 class KADUAPI StatusHistoryTab : public HistoryTab
 {
@@ -41,6 +43,9 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	Contact CurrentContact;
 	bool IsBuddy;
 
+	QFutureWatcher<QVector<Buddy> > *StatusFutureWatcher;
+	WaitOverlay *StatusWaitOverlay;
+
 	TalkableTreeView *StatusesTalkableTree;
 	BuddyListModel *StatusBuddiesModel;
 	ModelChain *StatusesModelChain;
@@ -49,7 +54,13 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	void displayStatusContact(const Contact &contact, bool force);
 	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
+	void showWaitOverlay();
+	void hideWaitOverlay();
+
 private slots:
+	void futureStatusAvailable();
+	void futureStatusCanceled();
+
 	void showStatusesPopupMenu();
 	void clearStatusHistory();
 
