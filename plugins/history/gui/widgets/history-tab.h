@@ -20,6 +20,8 @@
 #ifndef HISTORY_TAB_H
 #define HISTORY_TAB_H
 
+#include <QtCore/QFuture>
+#include <QtCore/QFutureWatcher>
 #include <QtGui/QWidget>
 
 #include "exports.h"
@@ -57,12 +59,18 @@ class KADUAPI HistoryTab : public QWidget
 
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
+	WaitOverlay *TimelineWaitOverlay;
+
+	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
 
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
 	HistoryDatesModel *DatesModel;
 
 private slots:
+	void futureDatesAvailable();
+	void futureDatesCanceled();
+
 	void currentDateChanged();
 
 	void showTimelinePopupMenu();
@@ -91,6 +99,19 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets future list of dates to display in timeline.
+	 * @param futureDates future dates to display in timeline
+	 *
+	 * This methods sets list of future dates to display in timeline. Timeline view will
+	 * be blocked by WaitOverlay until dates are available. If received list will be not empty
+	 * last date will be selected and displayForDate() will be called with that date.
+	 * If received list will be empty, displayForDate() will be called with invalid date to ensure
+	 * that view is cleared.
+	 */
+	void setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create gui for this tab.
 	 *
 	 * This methods must be called in implementations constructor, as it call abstract method
@@ -109,6 +130,18 @@ protected:
 	 * @short Hide wait overlay over tab.
 	 */
 	void hideTabWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Show wait overlay over timeline widget.
+	 */
+	void showTimelineWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Hide wait overlay over timeline widget.
+	 */
+	void hideTimelineWaitOverlay();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -30,12 +30,13 @@
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "gui/widgets/wait-overlay.h"
+#include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
 
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent), TabWaitOverlay(0)
+		QWidget(parent), TabWaitOverlay(0), TimelineWaitOverlay(0), DatesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 }
@@ -87,6 +88,20 @@ void HistoryTab::hideTabWaitOverlay()
 	TabWaitOverlay = 0;
 }
 
+void HistoryTab::showTimelineWaitOverlay()
+{
+	if (!TimelineWaitOverlay)
+		TimelineWaitOverlay = new WaitOverlay(TimelineView);
+	else
+		TimelineWaitOverlay->show();
+}
+
+void HistoryTab::hideTimelineWaitOverlay()
+{
+	TimelineWaitOverlay->deleteLater();
+	TimelineWaitOverlay = 0;
+}
+
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
@@ -104,6 +119,46 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 	}
 	else
 		currentDateChanged();
+}
+
+void HistoryTab::futureDatesAvailable()
+{
+	hideTimelineWaitOverlay();
+
+	if (!DatesFutureWatcher)
+		return;
+
+	setDates(DatesFutureWatcher->result());
+
+	DatesFutureWatcher->deleteLater();
+	DatesFutureWatcher = 0;
+}
+
+void HistoryTab::futureDatesCanceled()
+{
+	hideTimelineWaitOverlay();
+
+	if (!DatesFutureWatcher)
+		return;
+
+	DatesFutureWatcher->deleteLater();
+	DatesFutureWatcher = 0;
+}
+
+void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > & futureDates)
+{
+	setDates(QVector<DatesModelItem>());
+
+	if (DatesFutureWatcher)
+		DatesFutureWatcher->deleteLater();
+
+	DatesFutureWatcher = new QFutureWatcher<QVector<DatesModelItem> >(this);
+	connect(DatesFutureWatcher, SIGNAL(finished()), this, SLOT(futureDatesAvailable()));
+	connect(DatesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureDatesCanceled()));
+
+	DatesFutureWatcher->setFuture(futureDates);
+
+	showTimelineWaitOverlay();
 }
 
 void HistoryTab::currentDateChanged()

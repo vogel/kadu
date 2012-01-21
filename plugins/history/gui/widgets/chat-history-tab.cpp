@@ -113,7 +113,7 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	timelineView()->messagesView()->setChat(chat);
 
 	CurrentChat = chat;
-	setDates(History::instance()->datesForChat(CurrentChat).result());
+	setFutureDates(History::instance()->datesForChat(CurrentChat));
 }
 
 void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
