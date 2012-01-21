@@ -399,7 +399,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QVector<Chat> History::chatsList()
+QFuture<QVector<Chat> > History::chatsList()
 {
 	kdebugf();
 

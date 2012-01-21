@@ -528,24 +528,19 @@ void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 	executeQuery(query);
 }
 
-QVector<Chat> HistorySqlStorage::chats()
+QVector<Chat> HistorySqlStorage::syncChats()
 {
-	kdebugf();
-
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady(true))
 		return QVector<Chat>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT uuid FROM kadu_chats";
-
-	query.prepare(queryString);
-
-	QVector<Chat> chats;
+	query.prepare("SELECT uuid FROM kadu_chats");
 
 	executeQuery(query);
 
+	QVector<Chat> chats;
 	while (query.next())
 	{
 		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
@@ -554,6 +549,11 @@ QVector<Chat> HistorySqlStorage::chats()
 	}
 
 	return chats;
+}
+
+QFuture<QVector<Chat> > HistorySqlStorage::chats()
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncChats);
 }
 
 QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat)

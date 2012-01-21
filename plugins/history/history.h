@@ -143,7 +143,7 @@ public:
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
 
-	QVector<Chat> chatsList();
+	QFuture<QVector<Chat> > chatsList();
 	QVector<DatesModelItem> datesForChat(const Chat &chat);
 	QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
 

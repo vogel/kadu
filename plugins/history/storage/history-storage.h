@@ -51,7 +51,7 @@ public:
 	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
 	virtual ~HistoryStorage() {}
 
-	virtual QVector<Chat> chats() = 0;
+	virtual QFuture<QVector<Chat> > chats() = 0;
 
 	virtual QVector<DatesModelItem> chatDates(const Chat &chat) = 0;
 	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;

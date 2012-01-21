@@ -74,6 +74,8 @@ class HistorySqlStorage : public HistoryStorage
 
 	bool isDatabaseReady(bool wait);
 
+	QVector<Chat> syncChats();
+
 	QVector<Message> getMessagesSince(const Chat &chat, const QDate &date);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
 
@@ -94,7 +96,7 @@ public:
 	explicit HistorySqlStorage(QObject *parent = 0);
 	virtual ~HistorySqlStorage();
 
-	virtual QVector<Chat> chats();
+	virtual QFuture<QVector<Chat> > chats();
 
 	virtual QVector<DatesModelItem> chatDates(const Chat &chat);
 	virtual QVector<Message> messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);

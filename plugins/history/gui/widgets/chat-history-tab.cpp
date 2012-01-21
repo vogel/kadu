@@ -58,6 +58,7 @@ ChatHistoryTab::~ChatHistoryTab()
 void ChatHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+
 	chatsTalkableWidget->filterWidget()->setAutoVisibility(false);
 	chatsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
@@ -204,7 +205,7 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 
 void ChatHistoryTab::updateData()
 {
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList());
+	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList().result());
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
