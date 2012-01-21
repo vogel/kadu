@@ -180,17 +180,7 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	QVector<Message> messages;
-	if (CurrentChat && date.isValid())
-		messages = History::instance()->messages(CurrentChat, date).result();
-	timelineView()->messagesView()->setChat(CurrentChat);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(messages);
-	timelineView()->messagesView()->refresh();
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+	setFutureMessages(History::instance()->messages(CurrentChat, date));
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)

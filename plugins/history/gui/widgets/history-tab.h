@@ -32,6 +32,7 @@ class QSplitter;
 
 class DatesModelItem;
 class HistoryDatesModel;
+class Message;
 class TimelineChatMessagesView;
 class WaitOverlay;
 
@@ -63,6 +64,7 @@ class KADUAPI HistoryTab : public QWidget
 	WaitOverlay *MessagesViewWaitOverlay;
 
 	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
+	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
@@ -71,6 +73,9 @@ class KADUAPI HistoryTab : public QWidget
 private slots:
 	void futureDatesAvailable();
 	void futureDatesCanceled();
+
+	void futureMessagesAvailable();
+	void futureMessagesCanceled();
 
 	void currentDateChanged();
 
@@ -110,6 +115,25 @@ protected:
 	 * that view is cleared.
 	 */
 	void setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets messages to display in message view widget.
+	 * @param messages future messages of dates to display in message view widget
+	 *
+	 * This methods sets list of messages to display in message view widget.
+	 */
+	void setMessages(const QVector<Message> &messages);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets future messages to display in message view widget.
+	 * @param futureMessages future messages of dates to display in message view widget
+	 *
+	 * This methods sets list of future messages to display in message view widget. This widget will
+	 * be blocked by WaitOverlay until messages are available.
+	 */
+	void setFutureMessages(const QFuture<QVector<Message> > &futureMessages);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
