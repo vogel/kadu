@@ -107,6 +107,10 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	virtual void configurationUpdated();
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
+	friend class HistorySaveThread;
+	Message dequeueUnsavedMessage();
+	QPair<Contact, Status> dequeueUnsavedStatusChange();
+
 private slots:
 	void accountRegistered(Account);
 	void accountUnregistered(Account);
@@ -127,9 +131,6 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 	static History * instance();
-
-	Message dequeueUnsavedMessage();
-	QPair<Contact, Status> dequeueUnsavedStatusChange();
 
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);
