@@ -35,6 +35,8 @@
 IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
 		ActionsComboBox(parent)
 {
+	IdentityManager::instance()->removeUnused();
+
 	if (includeSelectIdentity)
 		addBeforeAction(new QAction(tr(" - Select identity - "), this));
 

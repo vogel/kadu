@@ -8,6 +8,7 @@
 * translations: enabled Russian language (Vogel)
 * gadu: fixed importing from 0.6.5.x configurations (Vogel)
 * spellchecker: #2422 fixed: crash on plugin unload or Kadu exit (beevvy)
+* gui: #2427 workaround: clear list of unused identities more ofter (Vogel)
 
 +++ version 0.11.0-rc1
 * hints: #2266 fixed: restored word wraping in hints (Vogel, beevvy)
