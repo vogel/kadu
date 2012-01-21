@@ -45,12 +45,6 @@ HistoryWindow * HistoryWindow::Instance = 0;
 
 void HistoryWindow::show(const Chat &chat)
 {
-	if (!History::instance()->currentStorage())
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("There is no history storage plugin loaded!"));
-		return;
-	}
-
 	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
 	if (!aggregate)
 		aggregate = chat;
@@ -79,10 +73,14 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	createGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
+
+	connect(History::instance(), SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
 }
 
 HistoryWindow::~HistoryWindow()
 {
+	disconnect(History::instance(), SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
+
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 
 	Instance = 0;
@@ -123,6 +121,13 @@ void HistoryWindow::createGui()
 	layout->addWidget(buttons);
 
 	setCentralWidget(mainWidget);
+}
+
+void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
+{
+	ChatTab->setHistoryStorage(historyStorage);
+	StatusTab->setHistoryStorage(historyStorage);
+	SmsTab->setHistoryStorage(historyStorage);
 }
 
 void HistoryWindow::updateData()

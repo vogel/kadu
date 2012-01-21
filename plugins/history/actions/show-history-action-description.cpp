@@ -125,9 +125,6 @@ void ShowHistoryActionDescription::showAllMessages()
 
 void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 {
-	if (!History::instance()->currentStorage())
-		return;
-
 	Action *act = qobject_cast<Action *>(action);
 	Chat actionChat = act ? act->context()->chat() : Chat::null;
 

@@ -148,6 +148,9 @@ public:
 	void forceSync();
 	void setSyncEnabled(bool syncEnabled);
 
+signals:
+	void storageChanged(HistoryStorage *newStorage);
+
 };
 
 void disableNonHistoryContacts(Action *action);

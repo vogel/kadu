@@ -382,6 +382,8 @@ void History::registerStorage(HistoryStorage *storage)
 
 	foreach (const Account &account, AccountManager::instance()->items())
 		accountRegistered(account);
+
+	emit storageChanged(CurrentStorage);
 }
 
 void History::unregisterStorage(HistoryStorage *storage)
@@ -396,6 +398,8 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 	delete CurrentStorage;
 	CurrentStorage = 0;
+
+	emit storageChanged(CurrentStorage);
 }
 
 void History::deleteHistory(const Buddy &buddy)

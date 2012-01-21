@@ -164,20 +164,22 @@ void StatusHistoryTab::clearStatusHistory()
 
 void StatusHistoryTab::displayForDate(const QDate &date)
 {
+	if (!historyStorage() || (IsBuddy && !CurrentBuddy) || (!IsBuddy && !CurrentContact) || !date.isValid())
+	{
+		setMessages(QVector<Message>());
+		return;
+	}
+
 	if (IsBuddy)
 	{
 		if (!CurrentBuddy.contacts().isEmpty())
 			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
-
-		if (CurrentBuddy && date.isValid() && historyStorage())
-			setFutureMessages(historyStorage()->statuses(CurrentBuddy, date));
+		setFutureMessages(historyStorage()->statuses(CurrentBuddy, date));
 	}
 	else
 	{
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
-
-		if (CurrentContact && date.isValid() && historyStorage())
-			setFutureMessages(historyStorage()->statuses(CurrentContact, date));
+		setFutureMessages(historyStorage()->statuses(CurrentContact, date));
 	}
 }
 
@@ -241,7 +243,11 @@ void StatusHistoryTab::updateData()
 	}
 
 	if (!historyStorage())
+	{
+		StatusBuddiesModel->setBuddyList(BuddyList());
+		displayStatusBuddy(Buddy::null, false);
 		return;
+	}
 
 	QFuture<QVector<Buddy> > futureStatus = historyStorage()->statusBuddiesList();
 	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >(this);

@@ -192,6 +192,8 @@ void ChatHistoryTab::displayForDate(const QDate &date)
 {
 	if (historyStorage())
 		setFutureMessages(historyStorage()->messages(CurrentChat, date));
+	else
+		setMessages(QVector<Message>());
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
@@ -243,7 +245,12 @@ void ChatHistoryTab::updateData()
 	}
 
 	if (!historyStorage())
+	{
+		ChatsModel->setChats(QVector<Chat>());
+		ChatsBuddiesModel->setBuddyList(BuddyList());
+		displayChat(Chat::null, false);
 		return;
+	}
 
 	QFuture<QVector<Chat> > futureChats = historyStorage()->chats();
 	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >(this);

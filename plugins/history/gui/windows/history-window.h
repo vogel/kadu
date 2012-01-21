@@ -28,6 +28,7 @@
 
 class Chat;
 class ChatHistoryTab;
+class HistoryStorage;
 class HistoryTab;
 
 /*!
@@ -59,6 +60,7 @@ class HistoryWindow : public QMainWindow
 
 private slots:
 	void currentTabChanged(int newTabIndex);
+	void storageChanged(HistoryStorage *historyStorage);
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
