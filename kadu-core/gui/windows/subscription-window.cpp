@@ -38,7 +38,7 @@
 void SubscriptionWindow::getSubscription(Contact contact, QObject *receiver, const char *slot)
 {
 	SubscriptionWindow *window = new SubscriptionWindow(contact);
-	connect(window, SIGNAL(requestAccepted(Contact, bool)), receiver, slot);
+	connect(window, SIGNAL(requestConsidered(Contact, bool)), receiver, slot);
 
 	window->exec();
 }
@@ -109,12 +109,12 @@ void SubscriptionWindow::accepted()
 
 void SubscriptionWindow::allowed()
 {
-	emit requestAccepted(CurrentContact, true);
+	emit requestConsidered(CurrentContact, true);
 	close();
 }
 
 void SubscriptionWindow::rejected()
 {
-  	emit requestAccepted(CurrentContact, false);
+	emit requestConsidered(CurrentContact, false);
 	close();
 }

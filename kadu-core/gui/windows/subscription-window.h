@@ -52,7 +52,7 @@ public:
 	virtual ~SubscriptionWindow();
 
 signals:
-	void requestAccepted(Contact contact, bool accepted);
+	void requestConsidered(Contact contact, bool accepted);
 
 };
 
