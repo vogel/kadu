@@ -60,6 +60,7 @@ class KADUAPI HistoryTab : public QWidget
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
 	WaitOverlay *TimelineWaitOverlay;
+	WaitOverlay *MessagesViewWaitOverlay;
 
 	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
 
@@ -142,6 +143,18 @@ protected:
 	 * @short Hide wait overlay over timeline widget.
 	 */
 	void hideTimelineWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Show wait overlay over messages view widget.
+	 */
+	void showMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Hide wait overlay over messages view widget.
+	 */
+	void hideMessagesViewWaitOverlay();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

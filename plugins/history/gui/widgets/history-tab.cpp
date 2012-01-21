@@ -36,7 +36,7 @@
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent), TabWaitOverlay(0), TimelineWaitOverlay(0), DatesFutureWatcher(0)
+		QWidget(parent), TabWaitOverlay(0), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0), DatesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 }
@@ -100,6 +100,20 @@ void HistoryTab::hideTimelineWaitOverlay()
 {
 	TimelineWaitOverlay->deleteLater();
 	TimelineWaitOverlay = 0;
+}
+
+void HistoryTab::showMessagesViewWaitOverlay()
+{
+	if (!MessagesViewWaitOverlay)
+		MessagesViewWaitOverlay = new WaitOverlay(TimelineView->messagesView());
+	else
+		MessagesViewWaitOverlay->show();
+}
+
+void HistoryTab::hideMessagesViewWaitOverlay()
+{
+	MessagesViewWaitOverlay->deleteLater();
+	MessagesViewWaitOverlay = 0;
 }
 
 TimelineChatMessagesView * HistoryTab::timelineView() const
