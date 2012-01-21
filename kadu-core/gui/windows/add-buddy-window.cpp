@@ -72,7 +72,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 		ForceBuddyAccount(forceBuddyAccount)
 {
 	setWindowRole("kadu-add-buddy");
-
+	setWindowTitle(tr("Add buddy"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	if (MyBuddy)
