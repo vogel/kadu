@@ -42,7 +42,6 @@ set (SOURCES
 	history-messages-prepender.cpp
 	history-plugin.cpp
 	history-save-thread.cpp
-	timed-status.cpp
 )
 
 set (MOC_SOURCES

@@ -149,9 +149,9 @@ public:
 
 	QFuture<QVector<Buddy> > statusBuddiesList();
 	QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy);
-	QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
+	QVector<Message> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
 	QFuture<QVector<DatesModelItem> > datesForStatusContact(const Contact &contact);
-	QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
+	QVector<Message> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
 	QFuture<QList<QString> > smsRecipientsList();
 	QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient);

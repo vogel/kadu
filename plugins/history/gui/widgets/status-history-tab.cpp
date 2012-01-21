@@ -38,7 +38,6 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
-#include "timed-status.h"
 
 #include "status-history-tab.h"
 
@@ -122,34 +121,6 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 	setFutureDates(History::instance()->datesForStatusContact(CurrentContact));
 }
 
-QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
-{
-	QVector<Message> messages;
-
-	foreach (const TimedStatus &timedStatus, statuses)
-	{
-		Message message = Message::create();
-		message.setStatus(MessageStatusReceived);
-		message.setType(MessageTypeReceived);
-
-		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(timedStatus.status().type());
-
-		if (timedStatus.status().description().isEmpty())
-			message.setContent(typeData.name());
-		else
-			message.setContent(QString("%1 with description: %2")
-					.arg(typeData.name())
-					.arg(timedStatus.status().description()));
-
-		message.setReceiveDate(timedStatus.dateTime());
-		message.setSendDate(timedStatus.dateTime());
-
-		messages.append(message);
-	}
-
-	return messages;
-}
-
 void StatusHistoryTab::showStatusesPopupMenu()
 {
 	QScopedPointer<QMenu> menu;
@@ -183,7 +154,7 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 	timelineView()->messagesView()->clearMessages();
 
-	QList<TimedStatus> statuses;
+	QVector<Message> statuses;
 	if (IsBuddy)
 	{
 		if (CurrentBuddy && date.isValid())
@@ -197,7 +168,7 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 			statuses = History::instance()->statuses(CurrentContact, date);
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
 	}
-	timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
+	timelineView()->messagesView()->appendMessages(statuses);
 	timelineView()->messagesView()->refresh();
 
 	timelineView()->messagesView()->setUpdatesEnabled(true);

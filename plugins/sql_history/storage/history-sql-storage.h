@@ -69,7 +69,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	void executeQuery(QSqlQuery &query);
 	QVector<Message> messagesFromQuery(QSqlQuery &query);
-	QList<TimedStatus> statusesFromQuery(QSqlQuery &query);
+	QVector<Message> statusesFromQuery(QSqlQuery &query);
 	QVector<Message> smsFromQuery(QSqlQuery &query);
 
 	bool isDatabaseReady(bool wait);
@@ -114,9 +114,9 @@ public:
 
 	virtual QFuture<QVector<Buddy> > statusBuddiesList();
 	virtual QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy);
-	virtual QList<TimedStatus> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
+	virtual QVector<Message> statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
 	virtual QFuture<QVector<DatesModelItem> > datesForStatusContact(const Contact &contact);
-	virtual QList<TimedStatus> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
+	virtual QVector<Message> statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
 
 	virtual QFuture<QList<QString> > smsRecipientsList();
 	virtual QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient);

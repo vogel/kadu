@@ -48,12 +48,12 @@
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "status/status-type-manager.h"
+#include <status/status-type-data.h>
 #include "debug.h"
 
 #include "plugins/history/history.h"
 #include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/search/history-search-parameters.h"
-#include "plugins/history/timed-status.h"
 
 #include "storage/sql-initializer.h"
 
@@ -914,12 +914,12 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusBuddy(const B
 	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusBuddy, buddy);
 }
 
-QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
 	if (!isDatabaseReady(false))
-		return QList<TimedStatus>();
+		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -931,7 +931,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Buddy &buddy, const QDate &
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
-	QList<TimedStatus> statuses;
+	QVector<Message> statuses;
 	query.prepare(queryString);
 
 	if (!date.isNull())
@@ -990,12 +990,12 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusContact(const
 	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusContact, contact);
 }
 
-QList<TimedStatus> HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
 {
 	kdebugf();
 
 	if (!isDatabaseReady(false))
-		return QList<TimedStatus>();
+		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -1007,7 +1007,7 @@ QList<TimedStatus> HistorySqlStorage::statuses(const Contact &contact, const QDa
 	if (0 != limit)
 		queryString += " LIMIT :limit";
 
-	QList<TimedStatus> statuses;
+	QVector<Message> statuses;
 	query.prepare(queryString);
 
 	query.bindValue(":contact", contact.uuid().toString());
@@ -1075,9 +1075,9 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 	return messages;
 }
 
-QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
+QVector<Message> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 {
-	QList<TimedStatus> statuses;
+	QVector<Message> statuses;
 
 	while (query.next())
 	{
@@ -1086,13 +1086,26 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 		if (sender.isNull())
 			continue;
 
-		Status status;
-		status.setType(StatusTypeManager::instance()->fromName(query.value(1).toString()));
-		status.setDescription(query.value(2).toString());
+		StatusType type = StatusTypeManager::instance()->fromName(query.value(1).toString());
+		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(type);
 
-		TimedStatus timedStatus(status, query.value(3).toDateTime());
+		Message message = Message::create();
 
-		statuses.append(timedStatus);
+		const QString description = query.value(2).toString();
+		if (description.isEmpty())
+			message.setContent(typeData.name());
+		else
+			message.setContent(QString("%1 with description: %2")
+					.arg(typeData.name())
+					.arg(description));
+
+		message.setStatus(MessageStatusReceived);
+		message.setType(MessageTypeSystem);
+		message.setMessageSender(sender);
+		message.setReceiveDate(query.value(3).toDateTime());
+		message.setSendDate(query.value(3).toDateTime());
+
+		statuses.append(message);
 	}
 
 	return statuses;

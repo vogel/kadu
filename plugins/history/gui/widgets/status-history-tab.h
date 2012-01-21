@@ -50,7 +50,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 
 	void displayStatusBuddy(const Buddy &buddy, bool force);
 	void displayStatusContact(const Contact &contact, bool force);
-	QVector<Message> statusesToMessages(const QList<TimedStatus> &statuses);
 
 private slots:
 	void futureStatusAvailable();

@@ -72,7 +72,6 @@
 #include "model/dates-model-item.h"
 #include "history-messages-prepender.h"
 #include "history-save-thread.h"
-#include "timed-status.h"
 
 #include "history.h"
 
@@ -434,7 +433,7 @@ QFuture<QVector<DatesModelItem> > History::datesForStatusBuddy(const Buddy &budd
 	return CurrentStorage->datesForStatusBuddy(buddy);
 }
 
-QList<TimedStatus> History::statuses(const Buddy &buddy, const QDate &date, int limit)
+QVector<Message> History::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
@@ -448,7 +447,7 @@ QFuture<QVector<DatesModelItem> > History::datesForStatusContact(const Contact &
 	return CurrentStorage->datesForStatusContact(contact);
 }
 
-QList<TimedStatus> History::statuses(const Contact &contact, const QDate &date, int limit)
+QVector<Message> History::statuses(const Contact &contact, const QDate &date, int limit)
 {
 	kdebugf();
 
