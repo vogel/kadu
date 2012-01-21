@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2008, 2010, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010, 2012 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
@@ -34,24 +34,15 @@
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
-class QCheckBox;
-class QLineEdit;
-
-class GroupsComboBox;
-class SelectBuddyComboBox;
-
 class KADUAPI SubscriptionWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
 	Contact CurrentContact;
-	QLineEdit *VisibleName;
-	GroupsComboBox *GroupCombo;
-	QCheckBox *MergeContact;
-	SelectBuddyComboBox *SelectContact;
 
 private slots:
 	void accepted();
+	void allowed();
 	void rejected();
 
 public:

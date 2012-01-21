@@ -1,5 +1,6 @@
 ﻿+++ version 0.12.0-git
 * history: new, polished history window (Vogel)
+* gui: #2277 fixed: status subscription window has proper meaning (Juzef)
 
 +++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
