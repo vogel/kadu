@@ -32,6 +32,7 @@ class QSplitter;
 
 class DatesModelItem;
 class HistoryDatesModel;
+class HistoryStorage;
 class Message;
 class TimelineChatMessagesView;
 class WaitOverlay;
@@ -57,6 +58,8 @@ class WaitOverlay;
 class KADUAPI HistoryTab : public QWidget
 {
 	Q_OBJECT
+
+	HistoryStorage *Storage;
 
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
@@ -261,6 +264,20 @@ public:
 	 * If it does not, assertion is thrown.
 	 */
 	void setSizes(const QList<int> &newSizes);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets HistoryStorage to use by this tab.
+	 * @param storage new storage to use
+	 */
+	void setHistoryStorage(HistoryStorage *storage);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns HistoryStorage used by this tab.
+	 * @return HistoryStorage used by this tab
+	 */
+	HistoryStorage * historyStorage() const;
 
 };
 

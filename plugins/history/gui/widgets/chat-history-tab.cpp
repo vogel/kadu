@@ -31,7 +31,9 @@
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
 #include "talkable/filter/name-talkable-filter.h"
@@ -40,8 +42,8 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
+#include "storage/history-storage.h"
 #include "chats-buddies-splitter.h"
-#include "history.h"
 
 #include "chat-history-tab.h"
 
@@ -113,7 +115,11 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	timelineView()->messagesView()->setChat(chat);
 
 	CurrentChat = chat;
-	setFutureDates(History::instance()->datesForChat(CurrentChat));
+
+	if (historyStorage())
+		setFutureDates(historyStorage()->chatDates(CurrentChat));
+	else
+		setDates(QVector<DatesModelItem>());
 }
 
 void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
@@ -144,8 +150,12 @@ void ChatHistoryTab::clearChatHistory()
 	if (!chat)
 		return;
 
-	History::instance()->currentStorage()->clearChatHistory(chat);
-	updateData();
+	if (historyStorage())
+	{
+		historyStorage()->clearChatHistory(chat);
+		updateData();
+	}
+
 	displayChat(Chat::null, false);
 }
 
@@ -180,14 +190,15 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
-	setFutureMessages(History::instance()->messages(CurrentChat, date));
+	if (historyStorage())
+		setFutureMessages(historyStorage()->messages(CurrentChat, date));
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentChat)
+	if (CurrentChat && historyStorage())
 	{
-		History::instance()->currentStorage()->clearChatHistory(CurrentChat, date);
+		historyStorage()->clearChatHistory(CurrentChat, date);
 		displayChat(CurrentChat, true);
 	}
 }
@@ -231,7 +242,10 @@ void ChatHistoryTab::updateData()
 		ChatsFutureWatcher->deleteLater();
 	}
 
-	QFuture<QVector<Chat> > futureChats = History::instance()->chatsList();
+	if (!historyStorage())
+		return;
+
+	QFuture<QVector<Chat> > futureChats = historyStorage()->chats();
 	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >(this);
 	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
 	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));

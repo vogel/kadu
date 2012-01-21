@@ -36,7 +36,7 @@
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent), TabWaitOverlay(0), TimelineWaitOverlay(0),
+		QWidget(parent), Storage(0), TabWaitOverlay(0), TimelineWaitOverlay(0),
 		MessagesViewWaitOverlay(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
@@ -277,4 +277,15 @@ void HistoryTab::setSizes(const QList<int> &newSizes)
 
 	Splitter->setSizes(newSizes.mid(0, 2));
 	TimelineView->setSizes(newSizes.mid(2, 2));
+}
+
+void HistoryTab::setHistoryStorage(HistoryStorage *storage)
+{
+	Storage = storage;
+	updateData();
+}
+
+HistoryStorage * HistoryTab::historyStorage() const
+{
+	return Storage;
 }

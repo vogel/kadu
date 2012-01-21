@@ -23,16 +23,17 @@
 #include <QtGui/QStandardItemModel>
 #include <QtGui/QVBoxLayout>
 
-#include "model/roles.h"
-
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/kadu-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "icons/kadu-icon.h"
+#include "model/roles.h"
+
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
-#include "history.h"
+#include "storage/history-storage.h"
 
 #include "sms-history-tab.h"
 
@@ -83,7 +84,11 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 	timelineView()->messagesView()->setChat(smsChat);
 
 	CurrentRecipient = recipient;
-	setFutureDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
+
+	if (historyStorage())
+		setFutureDates(historyStorage()->datesForSmsRecipient(CurrentRecipient));
+	else
+		setDates(QVector<DatesModelItem>());
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -102,6 +107,9 @@ void SmsHistoryTab::clearSmsHistory()
 {
 	bool removed = false;
 
+	if (!historyStorage())
+		return;
+
 	const QModelIndexList &indexes = SmsListView->selectionModel()->selectedIndexes();
 	foreach (const QModelIndex &index, indexes)
 	{
@@ -110,7 +118,7 @@ void SmsHistoryTab::clearSmsHistory()
 			continue;
 
 		removed = true;
-		History::instance()->currentStorage()->clearSmsHistory(recipient);
+		historyStorage()->clearSmsHistory(recipient);
 	}
 
 	if (removed)
@@ -127,15 +135,15 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	if (!CurrentRecipient.isEmpty() && date.isValid())
-		setFutureMessages(History::instance()->sms(CurrentRecipient, date));
+	if (!CurrentRecipient.isEmpty() && date.isValid() && historyStorage())
+		setFutureMessages(historyStorage()->sms(CurrentRecipient, date));
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!CurrentRecipient.isEmpty())
+	if (!CurrentRecipient.isEmpty() && historyStorage())
 	{
-		History::instance()->currentStorage()->clearSmsHistory(CurrentRecipient, date);
+		historyStorage()->clearSmsHistory(CurrentRecipient, date);
 		displaySmsRecipient(CurrentRecipient, true);
 	}
 }
@@ -178,7 +186,10 @@ void SmsHistoryTab::updateData()
 		SmsFutureWatcher->deleteLater();
 	}
 
-	QFuture<QList<QString> > futureSms = History::instance()->smsRecipientsList();
+	if (!historyStorage())
+		return;
+
+	QFuture<QList<QString> > futureSms = historyStorage()->smsRecipientsList();
 	SmsFutureWatcher = new QFutureWatcher<QList<QString> >(this);
 	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
 	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));

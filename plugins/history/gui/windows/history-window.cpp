@@ -127,9 +127,9 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::updateData()
 {
-	ChatTab->updateData();
-	StatusTab->updateData();
-	SmsTab->updateData();
+	ChatTab->setHistoryStorage(History::instance()->currentStorage());
+	StatusTab->setHistoryStorage(History::instance()->currentStorage());
+	SmsTab->setHistoryStorage(History::instance()->currentStorage());
 }
 
 void HistoryWindow::selectChat(const Chat &chat)
