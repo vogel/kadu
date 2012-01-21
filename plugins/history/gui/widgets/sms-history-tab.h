@@ -20,6 +20,7 @@
 #ifndef SMS_HISTORY_TAB_H
 #define SMS_HISTORY_TAB_H
 
+#include <QtCore/QFutureWatcher>
 #include <QtCore/QModelIndex>
 
 #include "exports.h"
@@ -29,6 +30,7 @@
 class QStandardItemModel;
 
 class KaduTreeView;
+class WaitOverlay;
 
 class KADUAPI SmsHistoryTab : public HistoryTab
 {
@@ -36,12 +38,17 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	QString CurrentRecipient;
 
+	QFutureWatcher<QList<QString> > *SmsFutureWatcher;
+
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;
 
 	void displaySmsRecipient(const QString &recipient, bool force);
 
 private slots:
+	void futureSmsAvailable();
+	void futureSmsCanceled();
+
 	void showSmsPopupMenu();
 	void clearSmsHistory();
 

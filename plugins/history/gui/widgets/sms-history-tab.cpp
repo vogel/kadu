@@ -37,7 +37,7 @@
 #include "sms-history-tab.h"
 
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent)
+		HistoryTab(false, parent), SmsFutureWatcher(0)
 {
 	createGui();
 }
@@ -83,7 +83,7 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 	timelineView()->messagesView()->setChat(smsChat);
 
 	CurrentRecipient = recipient;
-	setDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
+	setFutureDates(History::instance()->datesForSmsRecipient(CurrentRecipient));
 }
 
 void SmsHistoryTab::showSmsPopupMenu()
@@ -127,17 +127,8 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	QVector<Message> sms;
 	if (!CurrentRecipient.isEmpty() && date.isValid())
-		sms = History::instance()->sms(CurrentRecipient, date);
-	timelineView()->messagesView()->setChat(Chat::null);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(sms);
-	timelineView()->messagesView()->refresh();
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+		setFutureMessages(History::instance()->sms(CurrentRecipient, date));
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
@@ -149,11 +140,50 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void SmsHistoryTab::updateData()
+void SmsHistoryTab::futureSmsAvailable()
 {
-	QList<QString> smsRecipients = History::instance()->smsRecipientsList();
+	hideTabWaitOverlay();
+
+	if (!SmsFutureWatcher)
+		return;
+
+	QList<QString> smsRecipients = SmsFutureWatcher->result();
 
 	SmsModel->clear();
 	foreach (const QString &smsRecipient, smsRecipients)
 		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
+
+	SmsFutureWatcher->deleteLater();
+	SmsFutureWatcher = 0;
+}
+
+void SmsHistoryTab::futureSmsCanceled()
+{
+	hideTabWaitOverlay();
+
+	if (!SmsFutureWatcher)
+		return;
+
+	SmsFutureWatcher->deleteLater();
+	SmsFutureWatcher = 0;
+}
+
+void SmsHistoryTab::updateData()
+{
+	setMessages(QVector<Message>());
+
+	if (SmsFutureWatcher)
+	{
+		SmsFutureWatcher->cancel();
+		SmsFutureWatcher->deleteLater();
+	}
+
+	QFuture<QList<QString> > futureSms = History::instance()->smsRecipientsList();
+	SmsFutureWatcher = new QFutureWatcher<QList<QString> >(this);
+	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
+	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));
+
+	SmsFutureWatcher->setFuture(futureSms);
+
+	showTabWaitOverlay();
 }

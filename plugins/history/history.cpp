@@ -72,7 +72,6 @@
 #include "model/dates-model-item.h"
 #include "history-messages-prepender.h"
 #include "history-save-thread.h"
-#include "timed-status.h"
 
 #include "history.h"
 
@@ -399,77 +398,77 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QVector<Chat> History::chatsList()
+QFuture<QVector<Chat> > History::chatsList()
 {
 	kdebugf();
 
 	return CurrentStorage->chats();
 }
 
-QVector<DatesModelItem> History::datesForChat(const Chat &chat)
+QFuture<QVector<DatesModelItem> > History::datesForChat(const Chat &chat)
 {
 	kdebugf();
 
 	return CurrentStorage->chatDates(chat);
 }
 
-QVector<Message> History::messages(const Chat &chat, const QDate &date, int limit)
+QFuture<QVector<Message> > History::messages(const Chat &chat, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-QVector<Buddy> History::statusBuddiesList()
+QFuture<QVector<Buddy> > History::statusBuddiesList()
 {
 	kdebugf();
 
 	return CurrentStorage->statusBuddiesList();
 }
 
-QVector<DatesModelItem> History::datesForStatusBuddy(const Buddy &buddy)
+QFuture<QVector<DatesModelItem> > History::datesForStatusBuddy(const Buddy &buddy)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForStatusBuddy(buddy);
 }
 
-QList<TimedStatus> History::statuses(const Buddy &buddy, const QDate &date, int limit)
+QFuture<QVector<Message> > History::statuses(const Buddy &buddy, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->statuses(buddy, date, limit);
 }
 
-QVector<DatesModelItem> History::datesForStatusContact(const Contact &contact)
+QFuture<QVector<DatesModelItem> > History::datesForStatusContact(const Contact &contact)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForStatusContact(contact);
 }
 
-QList<TimedStatus> History::statuses(const Contact &contact, const QDate &date, int limit)
+QFuture<QVector<Message> > History::statuses(const Contact &contact, const QDate &date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->statuses(contact, date, limit);
 }
 
-QList<QString> History::smsRecipientsList()
+QFuture<QList<QString> > History::smsRecipientsList()
 {
 	kdebugf();
 
 	return CurrentStorage->smsRecipientsList();
 }
 
-QVector<DatesModelItem> History::datesForSmsRecipient(const QString &recipient)
+QFuture<QVector<DatesModelItem> > History::datesForSmsRecipient(const QString &recipient)
 {
 	kdebugf();
 
 	return CurrentStorage->datesForSmsRecipient(recipient);
 }
 
-QVector<Message> History::sms(const QString &recipient, const QDate &date, int limit)
+QFuture<QVector<Message> > History::sms(const QString &recipient, const QDate &date, int limit)
 {
 	kdebugf();
 

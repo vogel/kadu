@@ -38,12 +38,11 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
 #include "history.h"
-#include "timed-status.h"
 
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent), IsBuddy(true)
+		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0)
 {
 	createGui();
 }
@@ -92,12 +91,6 @@ void StatusHistoryTab::createTreeView(QWidget *parent)
 	statusesTalkableWidget->setView(StatusesTalkableTree);
 }
 
-void StatusHistoryTab::updateData()
-{
-	QVector<Buddy> statusBuddies = History::instance()->statusBuddiesList();
-	StatusBuddiesModel->setBuddyList(statusBuddies.toList());
-}
-
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 {
 	if (!force && CurrentBuddy == buddy && IsBuddy)
@@ -110,7 +103,7 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(buddies, true));
 
 	CurrentBuddy = buddy;
-	setDates(History::instance()->datesForStatusBuddy(CurrentBuddy));
+	setFutureDates(History::instance()->datesForStatusBuddy(CurrentBuddy));
 }
 
 void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
@@ -125,35 +118,7 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(contacts, true));
 
 	CurrentContact = contact;
-	setDates(History::instance()->datesForStatusContact(CurrentContact));
-}
-
-QVector<Message> StatusHistoryTab::statusesToMessages(const QList<TimedStatus> &statuses)
-{
-	QVector<Message> messages;
-
-	foreach (const TimedStatus &timedStatus, statuses)
-	{
-		Message message = Message::create();
-		message.setStatus(MessageStatusReceived);
-		message.setType(MessageTypeReceived);
-
-		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(timedStatus.status().type());
-
-		if (timedStatus.status().description().isEmpty())
-			message.setContent(typeData.name());
-		else
-			message.setContent(QString("%1 with description: %2")
-					.arg(typeData.name())
-					.arg(timedStatus.status().description()));
-
-		message.setReceiveDate(timedStatus.dateTime());
-		message.setSendDate(timedStatus.dateTime());
-
-		messages.append(message);
-	}
-
-	return messages;
+	setFutureDates(History::instance()->datesForStatusContact(CurrentContact));
 }
 
 void StatusHistoryTab::showStatusesPopupMenu()
@@ -186,27 +151,21 @@ void StatusHistoryTab::clearStatusHistory()
 
 void StatusHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-	timelineView()->messagesView()->clearMessages();
-
-	QList<TimedStatus> statuses;
 	if (IsBuddy)
 	{
-		if (CurrentBuddy && date.isValid())
-			statuses = History::instance()->statuses(CurrentBuddy, date);
 		if (!CurrentBuddy.contacts().isEmpty())
 			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
+
+		if (CurrentBuddy && date.isValid())
+			setFutureMessages(History::instance()->statuses(CurrentBuddy, date));
 	}
 	else
 	{
-		if (CurrentContact && date.isValid())
-			statuses = History::instance()->statuses(CurrentContact, date);
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
-	}
-	timelineView()->messagesView()->appendMessages(statusesToMessages(statuses));
-	timelineView()->messagesView()->refresh();
 
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+		if (CurrentContact && date.isValid())
+			setFutureMessages(History::instance()->statuses(CurrentContact, date));
+	}
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
@@ -232,4 +191,48 @@ void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 			displayStatusBuddy(Buddy::null, false);
 			break;
 	}
+}
+
+void StatusHistoryTab::futureStatusAvailable()
+{
+	hideTabWaitOverlay();
+
+	if (!StatusFutureWatcher)
+		return;
+
+	StatusBuddiesModel->setBuddyList(StatusFutureWatcher->result().toList());
+
+	StatusFutureWatcher->deleteLater();
+	StatusFutureWatcher = 0;
+}
+
+void StatusHistoryTab::futureStatusCanceled()
+{
+	hideTabWaitOverlay();
+
+	if (!StatusFutureWatcher)
+		return;
+
+	StatusFutureWatcher->deleteLater();
+	StatusFutureWatcher = 0;
+}
+
+void StatusHistoryTab::updateData()
+{
+	setMessages(QVector<Message>());
+
+	if (StatusFutureWatcher)
+	{
+		StatusFutureWatcher->cancel();
+		StatusFutureWatcher->deleteLater();
+	}
+
+	QFuture<QVector<Buddy> > futureStatus = History::instance()->statusBuddiesList();
+	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >(this);
+	connect(StatusFutureWatcher, SIGNAL(finished()), this, SLOT(futureStatusAvailable()));
+	connect(StatusFutureWatcher, SIGNAL(canceled()), this, SLOT(futureStatusCanceled()));
+
+	StatusFutureWatcher->setFuture(futureStatus);
+
+	showTabWaitOverlay();
 }

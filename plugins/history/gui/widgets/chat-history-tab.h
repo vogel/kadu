@@ -20,6 +20,7 @@
 #ifndef CHAT_HISTORY_TAB_H
 #define CHAT_HISTORY_TAB_H
 
+#include <QtCore/QFutureWatcher>
 #include <QtCore/QModelIndex>
 
 #include "talkable/talkable.h"
@@ -37,16 +38,24 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Q_OBJECT
 
 	Chat CurrentChat;
+	Chat ChatToSelect;
+
+	QFutureWatcher<QVector<Chat> > *ChatsFutureWatcher;
 
 	TalkableTreeView *ChatsTalkableTree;
 	ModelChain *ChatsModelChain;
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
 
+	void doSelectChat();
+
 	void displayChat(const Chat &chat, bool force);
 	void displayAggregateChat(const Chat &chat, bool force);
 
 private slots:
+	void futureChatsAvailable();
+	void futureChatsCanceled();
+
 	void showChatsPopupMenu();
 	void clearChatHistory();
 

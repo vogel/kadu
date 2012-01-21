@@ -29,12 +29,15 @@
 #include "icons/kadu-icon.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "gui/widgets/wait-overlay.h"
+#include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
 
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent)
+		QWidget(parent), TabWaitOverlay(0), TimelineWaitOverlay(0),
+		MessagesViewWaitOverlay(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 }
@@ -72,6 +75,48 @@ void HistoryTab::createGui()
 	layout->addWidget(Splitter);
 }
 
+void HistoryTab::showTabWaitOverlay()
+{
+	if (!TabWaitOverlay)
+		TabWaitOverlay = new WaitOverlay(this);
+	else
+		TabWaitOverlay->show();
+}
+
+void HistoryTab::hideTabWaitOverlay()
+{
+	TabWaitOverlay->deleteLater();
+	TabWaitOverlay = 0;
+}
+
+void HistoryTab::showTimelineWaitOverlay()
+{
+	if (!TimelineWaitOverlay)
+		TimelineWaitOverlay = new WaitOverlay(TimelineView);
+	else
+		TimelineWaitOverlay->show();
+}
+
+void HistoryTab::hideTimelineWaitOverlay()
+{
+	TimelineWaitOverlay->deleteLater();
+	TimelineWaitOverlay = 0;
+}
+
+void HistoryTab::showMessagesViewWaitOverlay()
+{
+	if (!MessagesViewWaitOverlay)
+		MessagesViewWaitOverlay = new WaitOverlay(TimelineView->messagesView());
+	else
+		MessagesViewWaitOverlay->show();
+}
+
+void HistoryTab::hideMessagesViewWaitOverlay()
+{
+	MessagesViewWaitOverlay->deleteLater();
+	MessagesViewWaitOverlay = 0;
+}
+
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
@@ -89,6 +134,105 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 	}
 	else
 		currentDateChanged();
+}
+
+void HistoryTab::futureDatesAvailable()
+{
+	hideTimelineWaitOverlay();
+
+	if (!DatesFutureWatcher)
+		return;
+
+	setDates(DatesFutureWatcher->result());
+
+	DatesFutureWatcher->deleteLater();
+	DatesFutureWatcher = 0;
+}
+
+void HistoryTab::futureDatesCanceled()
+{
+	hideTimelineWaitOverlay();
+
+	if (!DatesFutureWatcher)
+		return;
+
+	DatesFutureWatcher->deleteLater();
+	DatesFutureWatcher = 0;
+}
+
+void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
+{
+	setDates(QVector<DatesModelItem>());
+
+	if (DatesFutureWatcher)
+	{
+		DatesFutureWatcher->cancel();
+		DatesFutureWatcher->deleteLater();
+	}
+
+	DatesFutureWatcher = new QFutureWatcher<QVector<DatesModelItem> >(this);
+	connect(DatesFutureWatcher, SIGNAL(finished()), this, SLOT(futureDatesAvailable()));
+	connect(DatesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureDatesCanceled()));
+
+	DatesFutureWatcher->setFuture(futureDates);
+
+	showTimelineWaitOverlay();
+}
+
+void HistoryTab::setMessages(const QVector<Message> &messages)
+{
+	timelineView()->messagesView()->setUpdatesEnabled(false);
+
+	timelineView()->messagesView()->clearMessages();
+	timelineView()->messagesView()->appendMessages(messages);
+	timelineView()->messagesView()->refresh();
+
+	timelineView()->messagesView()->setUpdatesEnabled(true);
+}
+
+void HistoryTab::futureMessagesAvailable()
+{
+	if (!MessagesFutureWatcher)
+	{
+		hideMessagesViewWaitOverlay();
+		return;
+	}
+
+	setMessages(MessagesFutureWatcher->result());
+	hideMessagesViewWaitOverlay(); // wait for messages to display before hiding
+
+	MessagesFutureWatcher->deleteLater();
+	MessagesFutureWatcher = 0;
+}
+
+void HistoryTab::futureMessagesCanceled()
+{
+	hideMessagesViewWaitOverlay();
+
+	if (!MessagesFutureWatcher)
+		return;
+
+	MessagesFutureWatcher->deleteLater();
+	MessagesFutureWatcher = 0;
+}
+
+void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
+{
+	setMessages(QVector<Message>());
+
+	if (MessagesFutureWatcher)
+	{
+		MessagesFutureWatcher->cancel();
+		MessagesFutureWatcher->deleteLater();
+	}
+
+	MessagesFutureWatcher = new QFutureWatcher<QVector<Message> >(this);
+	connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));
+	connect(MessagesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureMessagesCanceled()));
+
+	MessagesFutureWatcher->setFuture(futureMessages);
+
+	showMessagesViewWaitOverlay();
 }
 
 void HistoryTab::currentDateChanged()

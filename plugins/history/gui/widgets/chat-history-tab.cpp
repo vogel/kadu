@@ -46,7 +46,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent)
+		HistoryTab(true, parent), ChatsFutureWatcher(0)
 {
 	createGui();
 }
@@ -58,6 +58,7 @@ ChatHistoryTab::~ChatHistoryTab()
 void ChatHistoryTab::createTreeView(QWidget *parent)
 {
 	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+
 	chatsTalkableWidget->filterWidget()->setAutoVisibility(false);
 	chatsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
@@ -112,7 +113,7 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 	timelineView()->messagesView()->setChat(chat);
 
 	CurrentChat = chat;
-	setDates(History::instance()->datesForChat(CurrentChat));
+	setFutureDates(History::instance()->datesForChat(CurrentChat));
 }
 
 void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
@@ -121,7 +122,6 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 
 	displayChat(agrregate ? agrregate : chat, force);
 }
-
 
 void ChatHistoryTab::showChatsPopupMenu()
 {
@@ -180,17 +180,7 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	QVector<Message> messages;
-	if (CurrentChat && date.isValid())
-		messages = History::instance()->messages(CurrentChat, date);
-	timelineView()->messagesView()->setChat(CurrentChat);
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(messages);
-	timelineView()->messagesView()->refresh();
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
+	setFutureMessages(History::instance()->messages(CurrentChat, date));
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
@@ -202,29 +192,83 @@ void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void ChatHistoryTab::updateData()
+void ChatHistoryTab::futureChatsAvailable()
 {
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->chatsList());
+	hideTabWaitOverlay();
+
+	if (!ChatsFutureWatcher)
+		return;
+
+	ChatsBuddiesSplitter chatsBuddies(ChatsFutureWatcher->result());
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
+
+	ChatsFutureWatcher->deleteLater();
+	ChatsFutureWatcher = 0;
+
+	doSelectChat();
 }
 
-void ChatHistoryTab::selectChat(const Chat &chat)
+void ChatHistoryTab::futureChatsCanceled()
 {
+	hideTabWaitOverlay();
+
+	if (!ChatsFutureWatcher)
+		return;
+
+	ChatsFutureWatcher->deleteLater();
+	ChatsFutureWatcher = 0;
+}
+
+void ChatHistoryTab::updateData()
+{
+	setMessages(QVector<Message>());
+
+	if (ChatsFutureWatcher)
+	{
+		ChatsFutureWatcher->cancel();
+		ChatsFutureWatcher->deleteLater();
+	}
+
+	QFuture<QVector<Chat> > futureChats = History::instance()->chatsList();
+	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >(this);
+	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
+	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
+
+	ChatsFutureWatcher->setFuture(futureChats);
+
+	showTabWaitOverlay();
+}
+
+void ChatHistoryTab::doSelectChat()
+{
+	if (!ChatToSelect)
+		return;
+
 	QModelIndexList indexesToSelect;
 
-	if (chat.contacts().size() == 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat.contacts().begin()->ownerBuddy());
-	else if (chat.contacts().size() > 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(chat);
+	if (ChatToSelect.contacts().size() == 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect.contacts().begin()->ownerBuddy());
+	else if (ChatToSelect.contacts().size() > 1)
+		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect);
 
 	if (1 == indexesToSelect.size())
 	{
 		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
 		ChatsTalkableTree->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
-		displayChat(chat, false);
+		displayChat(ChatToSelect, false);
 	}
 	else
 		ChatsTalkableTree->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
+
+	ChatToSelect = Chat::null;
+}
+
+void ChatHistoryTab::selectChat(const Chat &chat)
+{
+	ChatToSelect = chat;
+
+	if (!ChatsFutureWatcher)
+		doSelectChat();
 }
