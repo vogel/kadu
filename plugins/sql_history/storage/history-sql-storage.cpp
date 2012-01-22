@@ -797,7 +797,7 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const QSt
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, recipient);
 }
 
-QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date)
 {
 	if (!isDatabaseReady(true))
 		return QVector<Message>();
@@ -813,25 +813,21 @@ QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &
 	if (!date.isNull())
 		queryString += " AND date = :date";
 	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
 
 	QVector<Message> messages;
 	query.prepare(queryString);
 
 	if (!date.isNull())
 		query.bindValue(":date", date.toString("yyyyMMdd"));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
 	executeQuery(query);
 	messages = messagesFromQuery(query);
 
 	return messages;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
+QFuture<QVector<Message> > HistorySqlStorage::messages(const Chat &chat, const QDate &date)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, chat, date, limit);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, chat, date);
 }
 
 QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
@@ -908,7 +904,7 @@ QFuture<QVector<Message> > HistorySqlStorage::messagesBackTo(const Chat &chat, c
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesBackTo, chat, datetime, limit);
 }
 
-QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const QDate &date)
 {
 	if (!buddy)
 		return QVector<Message>();
@@ -923,16 +919,12 @@ QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const 
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 	queryString += " ORDER BY set_time ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
 
 	QVector<Message> statuses;
 	query.prepare(queryString);
 
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
 
 	executeQuery(query);
 	statuses = statusesFromQuery(query);
@@ -940,12 +932,12 @@ QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const 
 	return statuses;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
+QFuture<QVector<Message> > HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncBuddyStatuses, buddy, date, limit);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncBuddyStatuses, buddy, date);
 }
 
-QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, const QDate &date)
 {
 	kdebugf();
 
@@ -959,8 +951,6 @@ QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, 
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 	queryString += " ORDER BY set_time ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
 
 	QVector<Message> statuses;
 	query.prepare(queryString);
@@ -968,8 +958,6 @@ QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, 
 	query.bindValue(":contact", contact.uuid().toString());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
 
 	executeQuery(query);
 	statuses = statusesFromQuery(query);
@@ -977,12 +965,12 @@ QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, 
 	return statuses;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
+QFuture<QVector<Message> > HistorySqlStorage::statuses(const Contact &contact, const QDate &date)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncContactStatuses, contact, date, limit);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncContactStatuses, contact, date);
 }
 
-QVector<Message> HistorySqlStorage::syncSmses(const QString &recipient, const QDate &date, int limit)
+QVector<Message> HistorySqlStorage::syncSmses(const QString &recipient, const QDate &date)
 {
 	if (!isDatabaseReady(true))
 		return QVector<Message>();
@@ -994,16 +982,12 @@ QVector<Message> HistorySqlStorage::syncSmses(const QString &recipient, const QD
 	if (!date.isNull())
 		queryString += " AND substr(send_time,0,11) = :date";
 	queryString += " ORDER BY send_time ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
 
 	query.prepare(queryString);
 
 	query.bindValue(":receipient", recipient);
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
 	executeQuery(query);
 
 	QVector<Message> result = smsFromQuery(query);
@@ -1011,9 +995,9 @@ QVector<Message> HistorySqlStorage::syncSmses(const QString &recipient, const QD
 	return result;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::smses(const QString &recipient, const QDate &date, int limit)
+QFuture<QVector<Message> > HistorySqlStorage::smses(const QString &recipient, const QDate &date)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, recipient, date, limit);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, recipient, date);
 }
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)

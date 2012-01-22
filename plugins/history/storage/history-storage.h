@@ -60,14 +60,14 @@ public:
 	virtual QFuture<QVector<DatesModelItem> > statusContactDates(const Contact &contact) = 0;
 	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const QString &recipient) = 0;
 
-	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 
-	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0) = 0;
-	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date) = 0;
+	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date) = 0;
 
-	virtual QFuture<QVector<Message> > smses(const QString &recipient, const QDate &date = QDate(), int limit = 0) = 0;
+	virtual QFuture<QVector<Message> > smses(const QString &recipient, const QDate &date) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime()) = 0;
