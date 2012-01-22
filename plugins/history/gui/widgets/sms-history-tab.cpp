@@ -54,20 +54,6 @@ SmsHistoryTab::~SmsHistoryTab()
 
 void SmsHistoryTab::setUpGui()
 {
-	SmsBuddiesModel = new BuddyListModel(talkableTree());
-	ModelChain *chain = new ModelChain(SmsBuddiesModel, talkableTree());
-
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
-	proxyModel->setSortByStatusAndUnreadMessages(false);
-
-	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
-	proxyModel->addFilter(nameTalkableFilter);
-
-	chain->addProxyModel(proxyModel);
-
-	talkableTree()->setChain(chain);
-
 	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentSmsChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -158,15 +144,7 @@ void SmsHistoryTab::futureSmsAvailable()
 	if (!SmsFutureWatcher)
 		return;
 
-	QVector<Talkable> talkables = SmsFutureWatcher->result();
-
-	BuddyList buddies;
-
-	foreach (const Talkable &talkable, talkables)
-		if (talkable.isValidBuddy())
-			buddies.append(talkable.toBuddy());
-
-	SmsBuddiesModel->setBuddyList(buddies);
+	setTalkables(SmsFutureWatcher->result());
 
 	SmsFutureWatcher->deleteLater();
 	SmsFutureWatcher = 0;
@@ -195,7 +173,7 @@ void SmsHistoryTab::updateData()
 
 	if (!historyStorage())
 	{
-		SmsBuddiesModel->setBuddyList(BuddyList());
+		setTalkables(QVector<Talkable>());
 		displaySmsRecipient(QString(), false);
 		return;
 	}

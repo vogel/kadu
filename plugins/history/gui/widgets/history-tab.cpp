@@ -25,17 +25,24 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/model/chats-list-model.h"
+#include "buddies/model/buddy-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "icons/kadu-icon.h"
-
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/filter-widget.h"
-#include <gui/widgets/filtered-tree-view.h>
-#include <gui/widgets/talkable-tree-view.h>
-#include <gui/widgets/talkable-delegate-configuration.h>
+#include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
+#include "icons/kadu-icon.h"
+#include "model/merged-proxy-model-factory.h"
+#include "model/model-chain.h"
+#include "talkable/filter/name-talkable-filter.h"
+#include "talkable/model/talkable-proxy-model.h"
+
 #include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
+#include "chats-buddies-splitter.h"
 
 #include "history-tab.h"
 
@@ -46,6 +53,7 @@ HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 
 	createGui();
+	createModelChain();
 }
 
 HistoryTab::~HistoryTab()
@@ -98,6 +106,31 @@ void HistoryTab::createGui()
 	layout->addWidget(Splitter);
 }
 
+void HistoryTab::createModelChain()
+{
+	ChatsModel = new ChatsListModel(TalkableTree);
+	BuddiesModel = new BuddyListModel(TalkableTree);
+
+	QList<QAbstractItemModel *> models;
+	models.append(ChatsModel);
+	models.append(BuddiesModel);
+
+	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, TalkableTree);
+
+	Chain = new ModelChain(mergedModel, TalkableTree);
+
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
+	proxyModel->setSortByStatusAndUnreadMessages(false);
+
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
+	connect(FilteredView, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameTalkableFilter);
+
+	Chain->addProxyModel(proxyModel);
+
+	TalkableTree->setChain(Chain);
+}
+
 FilteredTreeView * HistoryTab::filteredView() const
 {
 	return FilteredView;
@@ -106,6 +139,11 @@ FilteredTreeView * HistoryTab::filteredView() const
 TalkableTreeView * HistoryTab::talkableTree() const
 {
 	return TalkableTree;
+}
+
+ModelChain * HistoryTab::modelChain() const
+{
+	return Chain;
 }
 
 void HistoryTab::showTabWaitOverlay()
@@ -153,6 +191,14 @@ void HistoryTab::hideMessagesViewWaitOverlay()
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
+}
+
+void HistoryTab::setTalkables(const QVector<Talkable> &talkables)
+{
+	ChatsBuddiesSplitter chatsBuddies(talkables);
+
+	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
+	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 }
 
 void HistoryTab::setDates(const QVector<DatesModelItem> &dates)

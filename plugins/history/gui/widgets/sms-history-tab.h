@@ -29,8 +29,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class BuddyListModel;
-
 class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
@@ -38,8 +36,6 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 	Buddy CurrentRecipient;
 
 	QFutureWatcher<QVector<Talkable> > *SmsFutureWatcher;
-
-	BuddyListModel *SmsBuddiesModel;
 
 	void setUpGui();
 	void displaySmsRecipient(const QString &recipient, bool force);

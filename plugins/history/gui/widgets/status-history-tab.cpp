@@ -54,20 +54,6 @@ StatusHistoryTab::~StatusHistoryTab()
 
 void StatusHistoryTab::setUpGui()
 {
-	StatusBuddiesModel = new BuddyListModel(talkableTree());
-	ModelChain *chain = new ModelChain(StatusBuddiesModel, talkableTree());
-
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
-	proxyModel->setSortByStatusAndUnreadMessages(false);
-
-	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
-	proxyModel->addFilter(nameTalkableFilter);
-
-	chain->addProxyModel(proxyModel);
-
-	talkableTree()->setChain(chain);
-
 	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -195,14 +181,7 @@ void StatusHistoryTab::futureStatusAvailable()
 	if (!StatusFutureWatcher)
 		return;
 
-	QVector<Talkable> talkables = StatusFutureWatcher->result();
-	BuddyList buddies;
-
-	foreach (const Talkable &talkable, talkables)
-		if (talkable.isValidBuddy())
-			buddies.append(talkable.toBuddy());
-
-	StatusBuddiesModel->setBuddyList(buddies);
+	setTalkables(StatusFutureWatcher->result());
 
 	StatusFutureWatcher->deleteLater();
 	StatusFutureWatcher = 0;
@@ -231,7 +210,7 @@ void StatusHistoryTab::updateData()
 
 	if (!historyStorage())
 	{
-		StatusBuddiesModel->setBuddyList(BuddyList());
+		setTalkables(QVector<Talkable>());
 		displayStatusBuddy(Buddy::null, false);
 		return;
 	}

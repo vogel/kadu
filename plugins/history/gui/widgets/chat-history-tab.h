@@ -28,10 +28,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class BuddyListModel;
-class ChatsListModel;
-class ModelChain;
-
 class KADUAPI ChatHistoryTab : public HistoryTab
 {
 	Q_OBJECT
@@ -40,10 +36,6 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Chat ChatToSelect;
 
 	QFutureWatcher<QVector<Talkable> > *ChatsFutureWatcher;
-
-	ChatsListModel *ChatsModel;
-	BuddyListModel *ChatsBuddiesModel;
-	ModelChain *ChatsModelChain;
 
 	void setUpGui();
 

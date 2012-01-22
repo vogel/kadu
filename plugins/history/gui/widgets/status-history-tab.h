@@ -28,10 +28,6 @@
 
 #include "gui/widgets/history-tab.h"
 
-class BuddyListModel;
-class Message;
-class TimedStatus;
-
 class KADUAPI StatusHistoryTab : public HistoryTab
 {
 	Q_OBJECT
@@ -41,8 +37,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	bool IsBuddy;
 
 	QFutureWatcher<QVector<Talkable> > *StatusFutureWatcher;
-
-	BuddyListModel *StatusBuddiesModel;
 
 	void setUpGui();
 	void displayStatusBuddy(const Buddy &buddy, bool force);

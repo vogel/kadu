@@ -30,11 +30,15 @@ class QDate;
 class QMenu;
 class QSplitter;
 
+class BuddyListModel;
+class ChatsListModel;
 class DatesModelItem;
 class FilteredTreeView;
 class HistoryDatesModel;
 class HistoryStorage;
 class Message;
+class ModelChain;
+class Talkable;
 class TalkableTreeView;
 class TimelineChatMessagesView;
 class WaitOverlay;
@@ -67,6 +71,10 @@ class KADUAPI HistoryTab : public QWidget
 	WaitOverlay *TimelineWaitOverlay;
 	WaitOverlay *MessagesViewWaitOverlay;
 
+	ChatsListModel *ChatsModel;
+	BuddyListModel *BuddiesModel;
+	ModelChain *Chain;
+
 	FilteredTreeView *FilteredView;
 	TalkableTreeView *TalkableTree;
 	QMenu *TimelinePopupMenu;
@@ -75,6 +83,9 @@ class KADUAPI HistoryTab : public QWidget
 
 	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
 	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
+
+	void createGui();
+	void createModelChain();
 
 private slots:
 	void futureDatesAvailable();
@@ -97,6 +108,15 @@ protected:
 	 * @return timeline view widget
 	 */
 	TimelineChatMessagesView * timelineView() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets list of talkables to display in tree view.
+	 * @param talkables talkables to display in tree view
+	 *
+	 * This methods sets list of talkable items to display in tree view.
+	 */
+	void setTalkables(const QVector<Talkable> &talkables);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -143,12 +163,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create gui for this tab.
-	 */
-	void createGui();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns FilteredTreeView widget used in this tab.
 	 * @return FilteredTreeView widget used in this tab
 	 */
@@ -160,6 +174,13 @@ protected:
 	 * @return TalkableTreeView widget used in this tab
 	 */
 	TalkableTreeView * talkableTree() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns ModelChain widget used in this tab's tree view.
+	 * @return ModelChain widget used in this tab's tree view
+	 */
+	ModelChain * modelChain() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

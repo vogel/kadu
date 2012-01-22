@@ -58,28 +58,6 @@ ChatHistoryTab::~ChatHistoryTab()
 
 void ChatHistoryTab::setUpGui()
 {
-	ChatsModel = new ChatsListModel(talkableTree());
-	ChatsBuddiesModel = new BuddyListModel(talkableTree());
-
-	QList<QAbstractItemModel *> models;
-	models.append(ChatsModel);
-	models.append(ChatsBuddiesModel);
-
-	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, talkableTree());
-
-	ChatsModelChain = new ModelChain(mergedModel, talkableTree());
-
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(ChatsModelChain);
-	proxyModel->setSortByStatusAndUnreadMessages(false);
-
-	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
-	proxyModel->addFilter(nameTalkableFilter);
-
-	ChatsModelChain->addProxyModel(proxyModel);
-
-	talkableTree()->setChain(ChatsModelChain);
-
 	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -190,10 +168,7 @@ void ChatHistoryTab::futureChatsAvailable()
 	if (!ChatsFutureWatcher)
 		return;
 
-	ChatsBuddiesSplitter chatsBuddies(ChatsFutureWatcher->result());
-
-	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
-	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+	setTalkables(ChatsFutureWatcher->result());
 
 	ChatsFutureWatcher->deleteLater();
 	ChatsFutureWatcher = 0;
@@ -224,8 +199,7 @@ void ChatHistoryTab::updateData()
 
 	if (!historyStorage())
 	{
-		ChatsModel->setChats(QVector<Chat>());
-		ChatsBuddiesModel->setBuddyList(BuddyList());
+		setTalkables(QVector<Talkable>());
 		displayChat(Chat::null, false);
 		return;
 	}
@@ -248,9 +222,9 @@ void ChatHistoryTab::doSelectChat()
 	QModelIndexList indexesToSelect;
 
 	if (ChatToSelect.contacts().size() == 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect.contacts().begin()->ownerBuddy());
+		indexesToSelect = modelChain()->indexListForValue(ChatToSelect.contacts().begin()->ownerBuddy());
 	else if (ChatToSelect.contacts().size() > 1)
-		indexesToSelect = ChatsModelChain->indexListForValue(ChatToSelect);
+		indexesToSelect = modelChain()->indexListForValue(ChatToSelect);
 
 	if (1 == indexesToSelect.size())
 	{
