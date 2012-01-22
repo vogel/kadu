@@ -31,7 +31,6 @@
 class BuddyListModel;
 class ChatsListModel;
 class ModelChain;
-class TalkableTreeView;
 
 class KADUAPI ChatHistoryTab : public HistoryTab
 {
@@ -42,10 +41,11 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 
 	QFutureWatcher<QVector<Chat> > *ChatsFutureWatcher;
 
-	TalkableTreeView *ChatsTalkableTree;
-	ModelChain *ChatsModelChain;
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;
+	ModelChain *ChatsModelChain;
+
+	void setUpGui();
 
 	void doSelectChat();
 
@@ -62,7 +62,6 @@ private slots:
 	void currentChatChanged(const Talkable &talkable);
 
 protected:
-	virtual void createTreeView(QWidget *parent);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 

@@ -30,6 +30,10 @@
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "gui/widgets/wait-overlay.h"
+#include "gui/widgets/filter-widget.h"
+#include <gui/widgets/filtered-tree-view.h>
+#include <gui/widgets/talkable-tree-view.h>
+#include <gui/widgets/talkable-delegate-configuration.h>
 #include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
 
@@ -40,6 +44,8 @@ HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
 		MessagesViewWaitOverlay(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
+
+	createGui();
 }
 
 HistoryTab::~HistoryTab()
@@ -57,7 +63,24 @@ void HistoryTab::createGui()
 
 	Splitter = new QSplitter(Qt::Horizontal, this);
 
-	createTreeView(Splitter);
+	FilteredView = new FilteredTreeView(FilteredTreeView::FilterAtTop, Splitter);
+	FilteredView->filterWidget()->setAutoVisibility(false);
+	FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
+
+	TalkableTree = new TalkableTreeView(FilteredView);
+	TalkableTree->setAlternatingRowColors(true);
+	TalkableTree->setContextMenuEnabled(true);
+	TalkableTree->setUseConfigurationColors(true);
+	TalkableTree->delegateConfiguration().setShowMessagePixmap(false);
+
+	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
+	TalkableTree->setStyleSheet(style);
+	TalkableTree->viewport()->setStyleSheet(style);
+
+	FilteredView->setView(TalkableTree);
 
 	TimelineView = new TimelineChatMessagesView(Splitter);
 	TimelineView->timeline()->setModel(DatesModel);
@@ -73,6 +96,16 @@ void HistoryTab::createGui()
 	Splitter->setSizes(sizes);
 
 	layout->addWidget(Splitter);
+}
+
+FilteredTreeView * HistoryTab::filteredView() const
+{
+	return FilteredView;
+}
+
+TalkableTreeView * HistoryTab::talkableTree() const
+{
+	return TalkableTree;
 }
 
 void HistoryTab::showTabWaitOverlay()

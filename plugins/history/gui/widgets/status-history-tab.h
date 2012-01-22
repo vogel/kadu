@@ -30,8 +30,6 @@
 
 class BuddyListModel;
 class Message;
-class ModelChain;
-class TalkableTreeView;
 class TimedStatus;
 
 class KADUAPI StatusHistoryTab : public HistoryTab
@@ -44,10 +42,9 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 
 	QFutureWatcher<QVector<Buddy> > *StatusFutureWatcher;
 
-	TalkableTreeView *StatusesTalkableTree;
 	BuddyListModel *StatusBuddiesModel;
-	ModelChain *StatusesModelChain;
 
+	void setUpGui();
 	void displayStatusBuddy(const Buddy &buddy, bool force);
 	void displayStatusContact(const Contact &contact, bool force);
 
@@ -61,7 +58,6 @@ private slots:
 	void currentStatusChanged(const Talkable &talkable);
 
 protected:
-	virtual void createTreeView(QWidget *parent);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 

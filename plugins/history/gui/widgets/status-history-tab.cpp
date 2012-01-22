@@ -24,7 +24,6 @@
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -46,51 +45,32 @@
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0)
 {
-	createGui();
+	setUpGui();
 }
 
 StatusHistoryTab::~StatusHistoryTab()
 {
 }
 
-void StatusHistoryTab::createTreeView(QWidget *parent)
+void StatusHistoryTab::setUpGui()
 {
-	FilteredTreeView *statusesTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	statusesTalkableWidget->filterWidget()->setAutoVisibility(false);
-	statusesTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
+	StatusBuddiesModel = new BuddyListModel(talkableTree());
+	ModelChain *chain = new ModelChain(StatusBuddiesModel, talkableTree());
 
-	StatusesTalkableTree = new TalkableTreeView(statusesTalkableWidget);
-	StatusesTalkableTree->setAlternatingRowColors(true);
-	StatusesTalkableTree->setContextMenuEnabled(true);
-	StatusesTalkableTree->setUseConfigurationColors(true);
-	StatusesTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
-
-	QString style;
-	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	StatusesTalkableTree->setStyleSheet(style);
-	StatusesTalkableTree->viewport()->setStyleSheet(style);
-
-	StatusBuddiesModel = new BuddyListModel(StatusesTalkableTree);
-	StatusesModelChain = new ModelChain(StatusBuddiesModel, StatusesTalkableTree);
-
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(StatusesModelChain);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(statusesTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameTalkableFilter);
 
-	StatusesModelChain->addProxyModel(proxyModel);
+	chain->addProxyModel(proxyModel);
 
-	StatusesTalkableTree->setChain(StatusesModelChain);
+	talkableTree()->setChain(chain);
 
-	connect(StatusesTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
-	connect(StatusesTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
-	StatusesTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
-
-	statusesTalkableWidget->setView(StatusesTalkableTree);
+	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
+	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
+	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
@@ -135,7 +115,7 @@ void StatusHistoryTab::showStatusesPopupMenu()
 {
 	QScopedPointer<QMenu> menu;
 
-	menu.reset(TalkableMenuManager::instance()->menu(this, StatusesTalkableTree->actionContext()));
+	menu.reset(TalkableMenuManager::instance()->menu(this, talkableTree()->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
@@ -145,13 +125,13 @@ void StatusHistoryTab::showStatusesPopupMenu()
 
 void StatusHistoryTab::clearStatusHistory()
 {
-	if (!StatusesTalkableTree->actionContext())
+	if (!talkableTree()->actionContext())
 		return;
 
 	if (!historyStorage())
 		return;
 
-	const BuddySet &buddies = StatusesTalkableTree->actionContext()->buddies();
+	const BuddySet &buddies = talkableTree()->actionContext()->buddies();
 	if (buddies.isEmpty())
 		return;
 

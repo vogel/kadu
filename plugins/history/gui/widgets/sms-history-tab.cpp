@@ -23,7 +23,6 @@
 
 #include "buddies/model/buddy-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -46,51 +45,32 @@ SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 {
 	CurrentRecipient = Buddy::create();
 
-	createGui();
+	setUpGui();
 }
 
 SmsHistoryTab::~SmsHistoryTab()
 {
 }
 
-void SmsHistoryTab::createTreeView(QWidget *parent)
+void SmsHistoryTab::setUpGui()
 {
-	FilteredTreeView *smsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	smsTalkableWidget->filterWidget()->setAutoVisibility(false);
-	smsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
+	SmsBuddiesModel = new BuddyListModel(talkableTree());
+	ModelChain *chain = new ModelChain(SmsBuddiesModel, talkableTree());
 
-	SmsTalkableTree = new TalkableTreeView(smsTalkableWidget);
-	SmsTalkableTree->setAlternatingRowColors(true);
-	SmsTalkableTree->setContextMenuEnabled(true);
-	SmsTalkableTree->setUseConfigurationColors(true);
-	SmsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
-
-	QString style;
-	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	SmsTalkableTree->setStyleSheet(style);
-	SmsTalkableTree->viewport()->setStyleSheet(style);
-
-	SmsBuddiesModel = new BuddyListModel(SmsTalkableTree);
-	SmsModelChain = new ModelChain(SmsBuddiesModel, SmsTalkableTree);
-
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(SmsModelChain);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(smsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameTalkableFilter);
 
-	SmsModelChain->addProxyModel(proxyModel);
+	chain->addProxyModel(proxyModel);
 
-	SmsTalkableTree->setChain(SmsModelChain);
+	talkableTree()->setChain(chain);
 
-	connect(SmsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentSmsChanged(Talkable)));
-	connect(SmsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
-	SmsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
-
-	smsTalkableWidget->setView(SmsTalkableTree);
+	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentSmsChanged(Talkable)));
+	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
+	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
@@ -129,7 +109,7 @@ void SmsHistoryTab::clearSmsHistory()
 	if (!historyStorage())
 		return;
 
-	BuddySet buddies = SmsTalkableTree->actionContext()->buddies();
+	BuddySet buddies = talkableTree()->actionContext()->buddies();
 	foreach (const Buddy &buddy, buddies)
 	{
 		if (buddy.mobile().isEmpty())

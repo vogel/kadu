@@ -31,9 +31,11 @@ class QMenu;
 class QSplitter;
 
 class DatesModelItem;
+class FilteredTreeView;
 class HistoryDatesModel;
 class HistoryStorage;
 class Message;
+class TalkableTreeView;
 class TimelineChatMessagesView;
 class WaitOverlay;
 
@@ -51,9 +53,8 @@ class WaitOverlay;
  * or any other item. This widgets adds menu with "Remove Entries" action for timeline widget.
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
- * Every implementation of HistoryTab must implement createTreeView() to create item view,
- * displayForDate() to update view for selected date and removeEntriesPerDate() to remove history entries
- * for given date.
+ * Every implementation of HistoryTab must set ModelChain on talkableTree(), implement displayForDate()
+ * to update view for selected date and removeEntriesPerDate() to remove history entries for given date.
  */
 class KADUAPI HistoryTab : public QWidget
 {
@@ -66,12 +67,14 @@ class KADUAPI HistoryTab : public QWidget
 	WaitOverlay *TimelineWaitOverlay;
 	WaitOverlay *MessagesViewWaitOverlay;
 
-	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
-	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
-
+	FilteredTreeView *FilteredView;
+	TalkableTreeView *TalkableTree;
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
 	HistoryDatesModel *DatesModel;
+
+	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
+	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
 private slots:
 	void futureDatesAvailable();
@@ -141,11 +144,22 @@ protected:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create gui for this tab.
-	 *
-	 * This methods must be called in implementations constructor, as it call abstract method
-	 * createTreeView() to fill left part of the widget.
 	 */
 	void createGui();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns FilteredTreeView widget used in this tab.
+	 * @return FilteredTreeView widget used in this tab
+	 */
+	FilteredTreeView * filteredView() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns TalkableTreeView widget used in this tab.
+	 * @return TalkableTreeView widget used in this tab
+	 */
+	TalkableTreeView * talkableTree() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -185,16 +199,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create item view for this tab.
-	 *
-	 * This method must create a new item view that will be put on left side of this window.
-	 * Implementations must ensure that changing selection in this view will update dates
-	 * using setDates() method to reflect dates available for given selection.
-	 */
-	virtual void createTreeView(QWidget *parent) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called to update chat messages view with date from given date.
 	 * @param date selected date
 	 *
@@ -224,11 +228,6 @@ public:
 	 *
 	 * This contructor cannot be called directly, as this class is abstract. Implementations must
 	 * call this method and choose whether to use 3 or 2 columns in timeline view.
-	 *
-	 * Implementations must call createGui() in their own constructors, as createGui() calls abstract
-	 * method createTreeView(), so it cannot be called by HistoryTab() construtor.
-	 *
-	 * This is not perfect, but it is good enough for Kadu 0.12.0 and later editions.
 	 */
 	explicit HistoryTab(bool showTitleInTimeline, QWidget *parent = 0);
 	virtual ~HistoryTab();

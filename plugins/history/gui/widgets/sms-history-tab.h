@@ -30,8 +30,6 @@
 #include "gui/widgets/history-tab.h"
 
 class BuddyListModel;
-class ModelChain;
-class TalkableTreeView;
 
 class KADUAPI SmsHistoryTab : public HistoryTab
 {
@@ -41,10 +39,9 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	QFutureWatcher<QVector<QString> > *SmsFutureWatcher;
 
-	TalkableTreeView *SmsTalkableTree;
 	BuddyListModel *SmsBuddiesModel;
-	ModelChain *SmsModelChain;
 
+	void setUpGui();
 	void displaySmsRecipient(const QString &recipient, bool force);
 
 private slots:
@@ -57,7 +54,6 @@ private slots:
 	void currentSmsChanged(const Talkable &talkable);
 
 protected:
-	virtual void createTreeView(QWidget *parent);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 

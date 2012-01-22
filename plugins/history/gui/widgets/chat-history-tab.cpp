@@ -28,7 +28,6 @@
 #include "chat/chat-manager.h"
 #include "chat/model/chats-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -50,61 +49,40 @@
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 		HistoryTab(true, parent), ChatsFutureWatcher(0)
 {
-	createGui();
+	setUpGui();
 }
 
 ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::createTreeView(QWidget *parent)
+void ChatHistoryTab::setUpGui()
 {
-	FilteredTreeView *chatsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-
-	chatsTalkableWidget->filterWidget()->setAutoVisibility(false);
-	chatsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
-
-	ChatsTalkableTree = new TalkableTreeView(chatsTalkableWidget);
-	ChatsTalkableTree->setAlternatingRowColors(true);
-	ChatsTalkableTree->setContextMenuEnabled(true);
-	ChatsTalkableTree->setSelectionMode(QAbstractItemView::SingleSelection);
-	ChatsTalkableTree->setUseConfigurationColors(true);
-	ChatsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
-
-	QString style;
-	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	ChatsTalkableTree->setStyleSheet(style);
-	ChatsTalkableTree->viewport()->setStyleSheet(style);
-
-	ChatsModel = new ChatsListModel(ChatsTalkableTree);
-	ChatsBuddiesModel = new BuddyListModel(ChatsTalkableTree);
+	ChatsModel = new ChatsListModel(talkableTree());
+	ChatsBuddiesModel = new BuddyListModel(talkableTree());
 
 	QList<QAbstractItemModel *> models;
 	models.append(ChatsModel);
 	models.append(ChatsBuddiesModel);
 
-	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, ChatsTalkableTree);
+	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, talkableTree());
 
-	ChatsModelChain = new ModelChain(mergedModel, ChatsTalkableTree);
+	ChatsModelChain = new ModelChain(mergedModel, talkableTree());
 
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(ChatsModelChain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(chatsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	connect(filteredView(), SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameTalkableFilter);
 
 	ChatsModelChain->addProxyModel(proxyModel);
 
-	ChatsTalkableTree->setChain(ChatsModelChain);
+	talkableTree()->setChain(ChatsModelChain);
 
-	connect(ChatsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
-	connect(ChatsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
-	ChatsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
-
-	chatsTalkableWidget->setView(ChatsTalkableTree);
+	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
+	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
+	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void ChatHistoryTab::displayChat(const Chat &chat, bool force)
@@ -133,7 +111,7 @@ void ChatHistoryTab::showChatsPopupMenu()
 {
 	QScopedPointer<QMenu> menu;
 
-	menu.reset(TalkableMenuManager::instance()->menu(this, ChatsTalkableTree->actionContext()));
+	menu.reset(TalkableMenuManager::instance()->menu(this, talkableTree()->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
@@ -143,10 +121,10 @@ void ChatHistoryTab::showChatsPopupMenu()
 
 void ChatHistoryTab::clearChatHistory()
 {
-	if (!ChatsTalkableTree->actionContext())
+	if (!talkableTree()->actionContext())
 		return;
 
-	const Chat &chat = ChatsTalkableTree->actionContext()->chat();
+	const Chat &chat = talkableTree()->actionContext()->chat();
 	if (!chat)
 		return;
 
@@ -276,12 +254,12 @@ void ChatHistoryTab::doSelectChat()
 
 	if (1 == indexesToSelect.size())
 	{
-		ChatsTalkableTree->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
-		ChatsTalkableTree->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
+		talkableTree()->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
+		talkableTree()->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
 		displayChat(ChatToSelect, false);
 	}
 	else
-		ChatsTalkableTree->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
+		talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
 
 	ChatToSelect = Chat::null;
 }
