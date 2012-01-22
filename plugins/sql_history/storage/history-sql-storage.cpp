@@ -435,6 +435,9 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 
 void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 {
+	if (!chat)
+		return;
+
 	if (!isDatabaseReady(true))
 		return;
 
@@ -464,6 +467,9 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 
 void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
 {
+	if (!buddy)
+		return;
+
 	if (!isDatabaseReady(true))
 		return;
 
@@ -505,27 +511,13 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 
 void HistorySqlStorage::deleteHistory(const Buddy &buddy)
 {
-	if (!isDatabaseReady(true))
-		return;
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-
 	foreach (const Contact &contact, buddy.contacts())
 	{
 		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
-		if (chat)
-		{
-			QString queryString = "DELETE FROM kadu_messages LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) WHERE " + chatWhere(chat);
-			query.prepare(queryString);
-			executeQuery(query);
-		}
+		clearChatHistory(chat, QDate());
 	}
 
-	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
-	query.prepare(queryString);
-	executeQuery(query);
+	clearStatusHistory(buddy, QDate());
 }
 
 QVector<Chat> HistorySqlStorage::syncChats()
