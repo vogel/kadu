@@ -207,16 +207,18 @@ QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix
 
 QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable, const QString &fieldName)
 {
-	if (Talkable::ItemBuddy == talkable.type())
+	if (talkable.isValidBuddy())
 		return buddyContactsWhere(talkable.toBuddy(), fieldName);
-	else
+	else if (talkable.isValidContact())
 		return QString("(%1) = '%2'").arg(fieldName).arg(talkable.toContact().uuid().toString());
+
+	return QLatin1String("false");
 }
 
 QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
 {
 	if (!buddy || buddy.contacts().isEmpty())
-		return  QLatin1String("false");
+		return QLatin1String("false");
 
 	QStringList uuids;
 	foreach (const Contact &contact, buddy.contacts())
@@ -444,7 +446,7 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 
 void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &date)
 {
-	if (!talkable.toChat())
+	if (!talkable.isValidChat())
 		return;
 
 	if (!isDatabaseReady(true))
@@ -476,21 +478,8 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 
 void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate &date)
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy:
-			if (!talkable.toBuddy())
-				return;
-			break;
-
-		case Talkable::ItemContact:
-			if (!talkable.toContact())
-				return;
-			break;
-
-		default:
-			return;
-	}
+	if (!talkable.isValidBuddy() && !talkable.isValidContact())
+		return;
 
 	if (!isDatabaseReady(true))
 		return;
@@ -512,7 +501,7 @@ void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate
 
 void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &date)
 {
-	if (Talkable::ItemBuddy != talkable.type() || talkable.toBuddy().mobile().isEmpty())
+	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return;
 
 	if (!isDatabaseReady(true))
@@ -631,7 +620,7 @@ QFuture<QVector<QString> > HistorySqlStorage::smsRecipients()
 
 QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkable)
 {
-	if (!talkable.toChat())
+	if (!talkable.isValidChat())
 		return QVector<DatesModelItem>();
 
 	if (!isDatabaseReady(true))
@@ -695,23 +684,8 @@ QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Talkable &
 
 QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const Talkable &talkable)
 {
-	kdebugf();
-
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy:
-			if (!talkable.toBuddy())
-				return QVector<DatesModelItem>();
-			break;
-
-		case Talkable::ItemContact:
-			if (!talkable.toContact())
-				return QVector<DatesModelItem>();
-			break;
-
-		default:
-			return QVector<DatesModelItem>();
-	}
+	if (!talkable.isValidBuddy() && !talkable.isValidContact())
+		return QVector<DatesModelItem>();
 
 	if (!isDatabaseReady(true))
 		return QVector<DatesModelItem>();
@@ -751,7 +725,7 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusDates(const Talkable 
 
 QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const Talkable &talkable)
 {
-	if (Talkable::ItemBuddy != talkable.type() || talkable.toBuddy().mobile().isEmpty())
+	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<DatesModelItem>();
 
 	if (!isDatabaseReady(true))
@@ -792,7 +766,7 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const Tal
 
 QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const QDate &date)
 {
-	if (!talkable.toChat())
+	if (!talkable.isValidChat())
 		return QVector<Message>();
 
 	if (!isDatabaseReady(true))
@@ -828,6 +802,9 @@ QFuture<QVector<Message> > HistorySqlStorage::messages(const Talkable &talkable,
 
 QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
 {
+	if (!chat)
+		return QVector<Message>();
+
 	if (!isDatabaseReady(true))
 		return QVector<Message>();
 
@@ -862,6 +839,9 @@ QFuture<QVector<Message> > HistorySqlStorage::messagesSince(const Chat &chat, co
 
 QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
+	if (!chat)
+		return QVector<Message>();
+
 	if (!isDatabaseReady(true))
 		return QVector<Message>();
 
@@ -902,21 +882,8 @@ QFuture<QVector<Message> > HistorySqlStorage::messagesBackTo(const Chat &chat, c
 
 QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const QDate &date)
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy:
-			if (!talkable.toBuddy())
-				return QVector<Message>();
-			break;
-
-		case Talkable::ItemContact:
-			if (!talkable.toContact())
-				return QVector<Message>();
-			break;
-
-		default:
-			return QVector<Message>();
-	}
+	if (!talkable.isValidBuddy() && !talkable.isValidContact())
+		return QVector<Message>();
 
 	if (!isDatabaseReady(true))
 		return QVector<Message>();
@@ -948,7 +915,7 @@ QFuture<QVector<Message> > HistorySqlStorage::statuses(const Talkable &talkable,
 
 QVector<Message> HistorySqlStorage::syncSmses(const Talkable &talkable, const QDate &date)
 {
-	if (Talkable::ItemBuddy != talkable.type() || talkable.toBuddy().mobile().isEmpty())
+	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<Message>();
 
 	if (!isDatabaseReady(true))
