@@ -442,9 +442,9 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 	kdebugf2();
 }
 
-void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
+void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &date)
 {
-	if (!chat)
+	if (!talkable.toChat())
 		return;
 
 	if (!isDatabaseReady(true))
@@ -453,7 +453,7 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN (SELECT id FROM kadu_chats chat WHERE " + chatWhere(chat) + ")";
+	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN (SELECT id FROM kadu_chats chat WHERE " + chatWhere(talkable.toChat()) + ")";
 	if (!date.isNull())
 		queryString += " AND date_id IN (SELECT id FROM kadu_dates WHERE date = :date)";
 
@@ -464,7 +464,7 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 
 	executeQuery(query);
 
-	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE " + chatWhere(chat, "") +
+	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE " + chatWhere(talkable.toChat(), "") +
 	        " AND 0 = (SELECT count(*) FROM kadu_messages WHERE chat_id = kadu_chats.id)";
 
 	QSqlQuery removeChatsQuery(Database);
@@ -474,10 +474,23 @@ void HistorySqlStorage::clearChatHistory(const Chat &chat, const QDate &date)
 	executeQuery(removeChatsQuery);
 }
 
-void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date)
+void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate &date)
 {
-	if (!buddy)
-		return;
+	switch (talkable.type())
+	{
+		case Talkable::ItemBuddy:
+			if (!talkable.toBuddy())
+				return;
+			break;
+
+		case Talkable::ItemContact:
+			if (!talkable.toContact())
+				return;
+			break;
+
+		default:
+			return;
+	}
 
 	if (!isDatabaseReady(true))
 		return;
@@ -485,7 +498,7 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 
@@ -497,8 +510,11 @@ void HistorySqlStorage::clearStatusHistory(const Buddy &buddy, const QDate &date
 	executeQuery(query);
 }
 
-void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &date)
+void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &date)
 {
+	if (Talkable::ItemBuddy != talkable.type() || talkable.toBuddy().mobile().isEmpty())
+		return;
+
 	if (!isDatabaseReady(true))
 		return;
 
@@ -511,22 +527,22 @@ void HistorySqlStorage::clearSmsHistory(const QString &recipient, const QDate &d
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", recipient);
+	query.bindValue(":receipient", talkable.toBuddy().mobile());
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
 }
 
-void HistorySqlStorage::deleteHistory(const Buddy &buddy)
+void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
-	foreach (const Contact &contact, buddy.contacts())
+	foreach (const Contact &contact, talkable.toBuddy().contacts())
 	{
 		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
 		clearChatHistory(chat, QDate());
 	}
 
-	clearStatusHistory(buddy, QDate());
+	clearStatusHistory(talkable.toBuddy(), QDate());
 }
 
 QVector<Chat> HistorySqlStorage::syncChats()

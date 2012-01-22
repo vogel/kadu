@@ -120,8 +120,11 @@ void SmsHistoryTab::clearSmsHistory()
 		if (recipient.isEmpty())
 			continue;
 
+		Buddy buddy = Buddy::create();
+		buddy.setMobile(recipient);
+
 		removed = true;
-		historyStorage()->clearSmsHistory(recipient);
+		historyStorage()->clearSmsHistory(buddy);
 	}
 
 	if (removed)
@@ -148,7 +151,7 @@ void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
 	if (!CurrentRecipient.mobile().isEmpty() && historyStorage())
 	{
-		historyStorage()->clearSmsHistory(CurrentRecipient.mobile(), date);
+		historyStorage()->clearSmsHistory(CurrentRecipient, date);
 		displaySmsRecipient(CurrentRecipient.mobile(), true);
 	}
 }

@@ -25,7 +25,7 @@
 
 #include <QtGui/QApplication>
 
-#include "buddies/buddy.h"
+#include "talkable/talkable.h"
 
 #include "history.h"
 
