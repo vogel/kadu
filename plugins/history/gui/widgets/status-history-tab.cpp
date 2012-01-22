@@ -43,7 +43,7 @@
 #include "status-history-tab.h"
 
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
-		HistoryTab(false, parent), IsBuddy(true), StatusFutureWatcher(0)
+		HistoryTab(false, parent), IsBuddy(true)
 {
 	setUpGui();
 }
@@ -174,39 +174,9 @@ void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
 	}
 }
 
-void StatusHistoryTab::futureStatusAvailable()
-{
-	hideTabWaitOverlay();
-
-	if (!StatusFutureWatcher)
-		return;
-
-	setTalkables(StatusFutureWatcher->result());
-
-	StatusFutureWatcher->deleteLater();
-	StatusFutureWatcher = 0;
-}
-
-void StatusHistoryTab::futureStatusCanceled()
-{
-	hideTabWaitOverlay();
-
-	if (!StatusFutureWatcher)
-		return;
-
-	StatusFutureWatcher->deleteLater();
-	StatusFutureWatcher = 0;
-}
-
 void StatusHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());
-
-	if (StatusFutureWatcher)
-	{
-		StatusFutureWatcher->cancel();
-		StatusFutureWatcher->deleteLater();
-	}
 
 	if (!historyStorage())
 	{
@@ -215,12 +185,5 @@ void StatusHistoryTab::updateData()
 		return;
 	}
 
-	QFuture<QVector<Talkable> > futureStatus = historyStorage()->statusBuddies();
-	StatusFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
-	connect(StatusFutureWatcher, SIGNAL(finished()), this, SLOT(futureStatusAvailable()));
-	connect(StatusFutureWatcher, SIGNAL(canceled()), this, SLOT(futureStatusCanceled()));
-
-	StatusFutureWatcher->setFuture(futureStatus);
-
-	showTabWaitOverlay();
+	setFutureTalkables(historyStorage()->statusBuddies());
 }

@@ -20,7 +20,6 @@
 #ifndef STATUS_HISTORY_TAB_H
 #define STATUS_HISTORY_TAB_H
 
-#include <QtCore/QFutureWatcher>
 #include <QtCore/QModelIndex>
 
 #include "talkable/talkable.h"
@@ -36,16 +35,11 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	Contact CurrentContact;
 	bool IsBuddy;
 
-	QFutureWatcher<QVector<Talkable> > *StatusFutureWatcher;
-
 	void setUpGui();
 	void displayStatusBuddy(const Buddy &buddy, bool force);
 	void displayStatusContact(const Contact &contact, bool force);
 
 private slots:
-	void futureStatusAvailable();
-	void futureStatusCanceled();
-
 	void showStatusesPopupMenu();
 	void clearStatusHistory();
 

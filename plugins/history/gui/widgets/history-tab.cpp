@@ -47,8 +47,9 @@
 #include "history-tab.h"
 
 HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent), Storage(0), TabWaitOverlay(0), TimelineWaitOverlay(0),
-		MessagesViewWaitOverlay(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
+		QWidget(parent), Storage(0),
+		TabWaitOverlay(0), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
+		TalkablesFutureWatcher(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
 {
 	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
 
@@ -188,6 +189,10 @@ void HistoryTab::hideMessagesViewWaitOverlay()
 	MessagesViewWaitOverlay = 0;
 }
 
+void HistoryTab::talkablesAvailable()
+{
+}
+
 TimelineChatMessagesView * HistoryTab::timelineView() const
 {
 	return TimelineView;
@@ -199,6 +204,51 @@ void HistoryTab::setTalkables(const QVector<Talkable> &talkables)
 
 	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+}
+
+void HistoryTab::futureTalkablesAvailable()
+{
+	hideTabWaitOverlay();
+
+	if (!TalkablesFutureWatcher)
+		return;
+
+	setTalkables(TalkablesFutureWatcher->result());
+
+	TalkablesFutureWatcher->deleteLater();
+	TalkablesFutureWatcher = 0;
+
+	talkablesAvailable();
+}
+
+void HistoryTab::futureTalkablesCanceled()
+{
+	hideTabWaitOverlay();
+
+	if (!TalkablesFutureWatcher)
+		return;
+
+	TalkablesFutureWatcher->deleteLater();
+	TalkablesFutureWatcher = 0;
+}
+
+void HistoryTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables)
+{
+	setTalkables(QVector<Talkable>());
+
+	if (TalkablesFutureWatcher)
+	{
+		TalkablesFutureWatcher->cancel();
+		TalkablesFutureWatcher->deleteLater();
+	}
+
+	TalkablesFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
+	connect(TalkablesFutureWatcher, SIGNAL(finished()), this, SLOT(futureTalkablesAvailable()));
+	connect(TalkablesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureTalkablesCanceled()));
+
+	TalkablesFutureWatcher->setFuture(futureTalkables);
+
+	showTabWaitOverlay();
 }
 
 void HistoryTab::setDates(const QVector<DatesModelItem> &dates)

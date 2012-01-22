@@ -47,7 +47,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent), ChatsFutureWatcher(0)
+		HistoryTab(true, parent)
 {
 	setUpGui();
 }
@@ -144,77 +144,7 @@ void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
 	}
 }
 
-void ChatHistoryTab::displayForDate(const QDate &date)
-{
-	if (historyStorage())
-		setFutureMessages(historyStorage()->messages(CurrentChat, date));
-	else
-		setMessages(QVector<Message>());
-}
-
-void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
-{
-	if (CurrentChat && historyStorage())
-	{
-		historyStorage()->clearChatHistory(CurrentChat, date);
-		displayChat(CurrentChat, true);
-	}
-}
-
-void ChatHistoryTab::futureChatsAvailable()
-{
-	hideTabWaitOverlay();
-
-	if (!ChatsFutureWatcher)
-		return;
-
-	setTalkables(ChatsFutureWatcher->result());
-
-	ChatsFutureWatcher->deleteLater();
-	ChatsFutureWatcher = 0;
-
-	doSelectChat();
-}
-
-void ChatHistoryTab::futureChatsCanceled()
-{
-	hideTabWaitOverlay();
-
-	if (!ChatsFutureWatcher)
-		return;
-
-	ChatsFutureWatcher->deleteLater();
-	ChatsFutureWatcher = 0;
-}
-
-void ChatHistoryTab::updateData()
-{
-	setMessages(QVector<Message>());
-
-	if (ChatsFutureWatcher)
-	{
-		ChatsFutureWatcher->cancel();
-		ChatsFutureWatcher->deleteLater();
-	}
-
-	if (!historyStorage())
-	{
-		setTalkables(QVector<Talkable>());
-		displayChat(Chat::null, false);
-		return;
-	}
-
-	QFuture<QVector<Talkable> > futureChats = historyStorage()->chats();
-	ChatsFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
-	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
-	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
-
-	ChatsFutureWatcher->setFuture(futureChats);
-
-	showTabWaitOverlay();
-}
-
-void ChatHistoryTab::doSelectChat()
+void ChatHistoryTab::talkablesAvailable()
 {
 	if (!ChatToSelect)
 		return;
@@ -238,10 +168,38 @@ void ChatHistoryTab::doSelectChat()
 	ChatToSelect = Chat::null;
 }
 
+void ChatHistoryTab::displayForDate(const QDate &date)
+{
+	if (historyStorage())
+		setFutureMessages(historyStorage()->messages(CurrentChat, date));
+	else
+		setMessages(QVector<Message>());
+}
+
+void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
+{
+	if (CurrentChat && historyStorage())
+	{
+		historyStorage()->clearChatHistory(CurrentChat, date);
+		displayChat(CurrentChat, true);
+	}
+}
+
+void ChatHistoryTab::updateData()
+{
+	setMessages(QVector<Message>());
+
+	if (!historyStorage())
+	{
+		setTalkables(QVector<Talkable>());
+		displayChat(Chat::null, false);
+		return;
+	}
+
+	setFutureTalkables(historyStorage()->chats());
+}
+
 void ChatHistoryTab::selectChat(const Chat &chat)
 {
 	ChatToSelect = chat;
-
-	if (!ChatsFutureWatcher)
-		doSelectChat();
 }

@@ -81,6 +81,7 @@ class KADUAPI HistoryTab : public QWidget
 	TimelineChatMessagesView *TimelineView;
 	HistoryDatesModel *DatesModel;
 
+	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
 	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
 	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
@@ -88,6 +89,9 @@ class KADUAPI HistoryTab : public QWidget
 	void createModelChain();
 
 private slots:
+	void futureTalkablesAvailable();
+	void futureTalkablesCanceled();
+
 	void futureDatesAvailable();
 	void futureDatesCanceled();
 
@@ -117,6 +121,16 @@ protected:
 	 * This methods sets list of talkable items to display in tree view.
 	 */
 	void setTalkables(const QVector<Talkable> &talkables);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets future list of talkables to display in tree view.
+	 * @param futureTalkables future talkables to display in tree view
+	 *
+	 * This methods sets list of future talkable items to display in tree view. Whole tab will
+	 * be blocked by WaitOverlay until talkables are available.
+	 */
+	void setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -217,6 +231,12 @@ protected:
 	 * @short Hide wait overlay over messages view widget.
 	 */
 	void hideMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Method called after talkables are received from future objects.
+	 */
+	virtual void talkablesAvailable();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
