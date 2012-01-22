@@ -83,14 +83,12 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<DatesModelItem> syncStatusDates(const Talkable &talkable);
 	QVector<DatesModelItem> syncSmsRecipientDates(const Talkable &talkable);
 
-	QVector<Message> syncMessages(const Chat &chat, const QDate &date);
+	QVector<Message> syncMessages(const Talkable &talkable, const QDate &date);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
 	QVector<Message> syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	QVector<Message> syncBuddyStatuses(const Buddy &buddy, const QDate &date);
-	QVector<Message> syncContactStatuses(const Contact &contact, const QDate &date);
-
-	QVector<Message> syncSmses(const QString &recipient, const QDate &date);
+	QVector<Message> syncStatuses(const Talkable &talkable, const QDate &date);
+	QVector<Message> syncSmses(const Talkable &talkable, const QDate &date);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -114,14 +112,13 @@ public:
 	virtual QFuture<QVector<DatesModelItem> > statusDates(const Talkable &talkable);
 	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const Talkable &talkable);
 
-	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date);
+	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date);
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date);
 	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date);
-	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date);
+	virtual QFuture<QVector<Message> > statuses(const Talkable &talkable, const QDate &date);
 
-	virtual QFuture<QVector<Message> > smses(const QString &recipient, const QDate &date);
+	virtual QFuture<QVector<Message> > smses(const Talkable &talkable, const QDate &date);
 
 	virtual void appendMessage(const Message &message);
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time);

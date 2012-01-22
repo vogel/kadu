@@ -139,7 +139,7 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
 	if (!CurrentRecipient.mobile().isEmpty() && date.isValid() && historyStorage())
-		setFutureMessages(historyStorage()->smses(CurrentRecipient.mobile(), date));
+		setFutureMessages(historyStorage()->smses(CurrentRecipient, date));
 	else
 		setMessages(QVector<Message>());
 }
