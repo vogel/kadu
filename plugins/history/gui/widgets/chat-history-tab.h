@@ -39,7 +39,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Chat CurrentChat;
 	Chat ChatToSelect;
 
-	QFutureWatcher<QVector<Chat> > *ChatsFutureWatcher;
+	QFutureWatcher<QVector<Talkable> > *ChatsFutureWatcher;
 
 	ChatsListModel *ChatsModel;
 	BuddyListModel *ChatsBuddiesModel;

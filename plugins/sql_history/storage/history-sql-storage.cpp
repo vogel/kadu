@@ -537,10 +537,10 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 	clearStatusHistory(talkable.toBuddy(), QDate());
 }
 
-QVector<Chat> HistorySqlStorage::syncChats()
+QVector<Talkable> HistorySqlStorage::syncChats()
 {
 	if (!waitForDatabase())
-		return QVector<Chat>();
+		return QVector<Talkable>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -549,18 +549,18 @@ QVector<Chat> HistorySqlStorage::syncChats()
 
 	executeQuery(query);
 
-	QVector<Chat> chats;
+	QVector<Talkable> result;
 	while (query.next())
 	{
 		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
 		if (chat)
-			chats.append(chat);
+			result.append(chat);
 	}
 
-	return chats;
+	return result;
 }
 
-QFuture<QVector<Chat> > HistorySqlStorage::chats()
+QFuture<QVector<Talkable> > HistorySqlStorage::chats()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChats);
 }

@@ -52,7 +52,7 @@ public:
 	explicit HistoryStorage(QObject *parent) : QObject(parent) {}
 	virtual ~HistoryStorage() {}
 
-	virtual QFuture<QVector<Chat> > chats() = 0;
+	virtual QFuture<QVector<Talkable> > chats() = 0;
 	virtual QFuture<QVector<Talkable> > statusBuddies() = 0;
 	virtual QFuture<QVector<QString> > smsRecipients() = 0;
 

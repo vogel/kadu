@@ -190,7 +190,12 @@ void ChatHistoryTab::futureChatsAvailable()
 	if (!ChatsFutureWatcher)
 		return;
 
-	ChatsBuddiesSplitter chatsBuddies(ChatsFutureWatcher->result());
+	QVector<Chat> chats;
+	foreach (const Talkable &talkable, ChatsFutureWatcher->result())
+		if (talkable.isValidChat())
+			chats.append(talkable.toChat());
+
+	ChatsBuddiesSplitter chatsBuddies(chats);
 
 	ChatsModel->setChats(chatsBuddies.chats());
 	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
@@ -230,8 +235,8 @@ void ChatHistoryTab::updateData()
 		return;
 	}
 
-	QFuture<QVector<Chat> > futureChats = historyStorage()->chats();
-	ChatsFutureWatcher = new QFutureWatcher<QVector<Chat> >(this);
+	QFuture<QVector<Talkable> > futureChats = historyStorage()->chats();
+	ChatsFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
 	connect(ChatsFutureWatcher, SIGNAL(finished()), this, SLOT(futureChatsAvailable()));
 	connect(ChatsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureChatsCanceled()));
 

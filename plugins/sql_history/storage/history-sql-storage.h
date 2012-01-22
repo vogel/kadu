@@ -76,7 +76,7 @@ class HistorySqlStorage : public HistoryStorage
 	bool isDatabaseReady();
 	bool waitForDatabase();
 
-	QVector<Chat> syncChats();
+	QVector<Talkable> syncChats();
 	QVector<Talkable> syncStatusBuddies();
 	QVector<QString> syncSmsRecipients();
 
@@ -105,7 +105,7 @@ public:
 	explicit HistorySqlStorage(QObject *parent = 0);
 	virtual ~HistorySqlStorage();
 
-	virtual QFuture<QVector<Chat> > chats();
+	virtual QFuture<QVector<Talkable> > chats();
 	virtual QFuture<QVector<Talkable> > statusBuddies();
 	virtual QFuture<QVector<QString> > smsRecipients();
 
