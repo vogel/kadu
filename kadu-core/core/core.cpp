@@ -306,7 +306,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "NoServerTime", true);
 	config_file.addVariable("Look", "NoServerTimeDiff", 60);
 	config_file.addVariable("Look", "PanelFont", qApp->font());
-	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
+	config_file.addVariable("Look", "PanelVerticalScrollbar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
 #ifdef Q_WS_MAEMO_5
 	config_file.addVariable("Look", "ShowAvatars", false);
