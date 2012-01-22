@@ -53,7 +53,7 @@ public:
 	virtual ~HistoryStorage() {}
 
 	virtual QFuture<QVector<Chat> > chats() = 0;
-	virtual QFuture<QVector<Buddy> > statusBuddies() = 0;
+	virtual QFuture<QVector<Talkable> > statusBuddies() = 0;
 	virtual QFuture<QVector<QString> > smsRecipients() = 0;
 
 	virtual QFuture<QVector<DatesModelItem> > chatDates(const Talkable &talkable) = 0;

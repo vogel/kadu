@@ -40,7 +40,7 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	Contact CurrentContact;
 	bool IsBuddy;
 
-	QFutureWatcher<QVector<Buddy> > *StatusFutureWatcher;
+	QFutureWatcher<QVector<Talkable> > *StatusFutureWatcher;
 
 	BuddyListModel *StatusBuddiesModel;
 

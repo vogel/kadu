@@ -565,10 +565,10 @@ QFuture<QVector<Chat> > HistorySqlStorage::chats()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChats);
 }
 
-QVector<Buddy> HistorySqlStorage::syncStatusBuddies()
+QVector<Talkable> HistorySqlStorage::syncStatusBuddies()
 {
 	if (!waitForDatabase())
-		return QVector<Buddy>();
+		return QVector<Talkable>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -576,7 +576,7 @@ QVector<Buddy> HistorySqlStorage::syncStatusBuddies()
 	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
 	executeQuery(query);
 
-	QVector<Buddy> buddies;
+	QVector<Talkable> result;
 	while (query.next())
 	{
 		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
@@ -586,14 +586,14 @@ QVector<Buddy> HistorySqlStorage::syncStatusBuddies()
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		Q_ASSERT(buddy);
 
-		if (!buddies.contains(buddy))
-			buddies.append(buddy);
+		if (!result.contains(buddy))
+			result.append(buddy);
 	}
 
-	return buddies;
+	return result;
 }
 
-QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddies()
+QFuture<QVector<Talkable> > HistorySqlStorage::statusBuddies()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddies);
 }

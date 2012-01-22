@@ -195,7 +195,14 @@ void StatusHistoryTab::futureStatusAvailable()
 	if (!StatusFutureWatcher)
 		return;
 
-	StatusBuddiesModel->setBuddyList(StatusFutureWatcher->result().toList());
+	QVector<Talkable> talkables = StatusFutureWatcher->result();
+	BuddyList buddies;
+
+	foreach (const Talkable &talkable, talkables)
+		if (talkable.isValidBuddy())
+			buddies.append(talkable.toBuddy());
+
+	StatusBuddiesModel->setBuddyList(buddies);
 
 	StatusFutureWatcher->deleteLater();
 	StatusFutureWatcher = 0;
@@ -229,8 +236,8 @@ void StatusHistoryTab::updateData()
 		return;
 	}
 
-	QFuture<QVector<Buddy> > futureStatus = historyStorage()->statusBuddies();
-	StatusFutureWatcher = new QFutureWatcher<QVector<Buddy> >(this);
+	QFuture<QVector<Talkable> > futureStatus = historyStorage()->statusBuddies();
+	StatusFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
 	connect(StatusFutureWatcher, SIGNAL(finished()), this, SLOT(futureStatusAvailable()));
 	connect(StatusFutureWatcher, SIGNAL(canceled()), this, SLOT(futureStatusCanceled()));
 
