@@ -195,3 +195,18 @@ Status Talkable::currentStatus() const
 {
 	return toContact().currentStatus();
 }
+
+bool Talkable::isValidChat() const
+{
+	return ItemChat == Type && MyChat;
+}
+
+bool Talkable::isValidBuddy() const
+{
+	return ItemBuddy == Type && MyBuddy;
+}
+
+bool Talkable::isValidContact() const
+{
+	return ItemContact == Type && MyContact;
+}

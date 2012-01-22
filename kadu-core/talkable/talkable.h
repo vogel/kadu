@@ -236,6 +236,27 @@ public:
 	 */
 	Status currentStatus() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if Talkable is not-null Chat.
+	 * @return true if current item is not-null Chat
+	 */
+	bool isValidChat() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if Talkable is not-null Buddy.
+	 * @return true if current item is not-null Buddy
+	 */
+	bool isValidBuddy() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns true if Talkable is not-null Contact.
+	 * @return true if current item is not-null Contact
+	 */
+	bool isValidContact() const;
+
 };
 
 /**
