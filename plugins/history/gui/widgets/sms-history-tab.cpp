@@ -158,17 +158,13 @@ void SmsHistoryTab::futureSmsAvailable()
 	if (!SmsFutureWatcher)
 		return;
 
-	QVector<QString> smsRecipients = SmsFutureWatcher->result();
+	QVector<Talkable> talkables = SmsFutureWatcher->result();
 
 	BuddyList buddies;
 
-	foreach (const QString &smsRecipient, smsRecipients)
-	{
-		Buddy buddy = Buddy::create();
-		buddy.setDisplay(smsRecipient);
-		buddy.setMobile(smsRecipient);
-		buddies.append(buddy);
-	}
+	foreach (const Talkable &talkable, talkables)
+		if (talkable.isValidBuddy())
+			buddies.append(talkable.toBuddy());
 
 	SmsBuddiesModel->setBuddyList(buddies);
 
@@ -204,8 +200,8 @@ void SmsHistoryTab::updateData()
 		return;
 	}
 
-	QFuture<QVector<QString> > futureSms = historyStorage()->smsRecipients();
-	SmsFutureWatcher = new QFutureWatcher<QVector<QString> >(this);
+	QFuture<QVector<Talkable> > futureSms = historyStorage()->smsRecipients();
+	SmsFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
 	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
 	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));
 

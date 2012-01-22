@@ -54,7 +54,7 @@ public:
 
 	virtual QFuture<QVector<Talkable> > chats() = 0;
 	virtual QFuture<QVector<Talkable> > statusBuddies() = 0;
-	virtual QFuture<QVector<QString> > smsRecipients() = 0;
+	virtual QFuture<QVector<Talkable> > smsRecipients() = 0;
 
 	virtual QFuture<QVector<DatesModelItem> > chatDates(const Talkable &talkable) = 0;
 	virtual QFuture<QVector<DatesModelItem> > statusDates(const Talkable &talkable) = 0;

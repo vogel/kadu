@@ -598,10 +598,10 @@ QFuture<QVector<Talkable> > HistorySqlStorage::statusBuddies()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddies);
 }
 
-QVector<QString> HistorySqlStorage::syncSmsRecipients()
+QVector<Talkable> HistorySqlStorage::syncSmsRecipients()
 {
 	if (!waitForDatabase())
-		return QVector<QString>();
+		return QVector<Talkable>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -609,14 +609,19 @@ QVector<QString> HistorySqlStorage::syncSmsRecipients()
 	query.prepare("SELECT DISTINCT receipient FROM kadu_sms");
 	executeQuery(query);
 
-	QVector<QString> recipients;
+	QVector<Talkable> result;
 	while (query.next())
-		recipients.append(query.value(0).toString());
+	{
+		Buddy buddy = Buddy::create();
+		buddy.setDisplay(query.value(0).toString());
+		buddy.setMobile(query.value(0).toString());
+		result.append(buddy);
+	}
 
-	return recipients;
+	return result;
 }
 
-QFuture<QVector<QString> > HistorySqlStorage::smsRecipients()
+QFuture<QVector<Talkable> > HistorySqlStorage::smsRecipients()
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
 }

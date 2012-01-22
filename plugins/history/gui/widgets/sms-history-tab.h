@@ -37,7 +37,7 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	Buddy CurrentRecipient;
 
-	QFutureWatcher<QVector<QString> > *SmsFutureWatcher;
+	QFutureWatcher<QVector<Talkable> > *SmsFutureWatcher;
 
 	BuddyListModel *SmsBuddiesModel;
 
