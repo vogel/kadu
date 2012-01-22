@@ -213,7 +213,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
 	QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
-	QFuture<QVector<Message> > futureMessages = CurrentStorage->asyncMessagesBackTo(chat ? chat : chatWidget->chat(), backTo,
+	QFuture<QVector<Message> > futureMessages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo,
 			config_file.readNumEntry("Chat", "ChatPruneLen", 20));
 	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
 }

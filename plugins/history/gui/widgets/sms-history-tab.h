@@ -38,7 +38,7 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	QString CurrentRecipient;
 
-	QFutureWatcher<QList<QString> > *SmsFutureWatcher;
+	QFutureWatcher<QVector<QString> > *SmsFutureWatcher;
 
 	KaduTreeView *SmsListView;
 	QStandardItemModel *SmsModel;

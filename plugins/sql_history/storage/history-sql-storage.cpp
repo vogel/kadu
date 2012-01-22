@@ -556,6 +556,62 @@ QFuture<QVector<Chat> > HistorySqlStorage::chats()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChats);
 }
 
+QVector<Buddy> HistorySqlStorage::syncStatusBuddies()
+{
+	if (!isDatabaseReady(true))
+		return QVector<Buddy>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
+	executeQuery(query);
+
+	QVector<Buddy> buddies;
+	while (query.next())
+	{
+		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		if (!contact)
+			continue;
+
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		Q_ASSERT(buddy);
+
+		if (!buddies.contains(buddy))
+			buddies.append(buddy);
+	}
+
+	return buddies;
+}
+
+QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddies()
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddies);
+}
+
+QVector<QString> HistorySqlStorage::syncSmsRecipients()
+{
+	if (!isDatabaseReady(true))
+		return QVector<QString>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	query.prepare("SELECT DISTINCT receipient FROM kadu_sms");
+	executeQuery(query);
+
+	QVector<QString> recipients;
+	while (query.next())
+		recipients.append(query.value(0).toString());
+
+	return recipients;
+}
+
+QFuture<QVector<QString> > HistorySqlStorage::smsRecipients()
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
+}
+
 QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Chat &chat)
 {
 	if (!chat)
@@ -620,261 +676,7 @@ QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Chat &chat
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, chat);
 }
 
-QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date, int limit)
-{
-	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat);
-	if (!date.isNull())
-		queryString += " AND date = :date";
-	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
-
-	QVector<Message> messages;
-	query.prepare(queryString);
-
-	if (!date.isNull())
-		query.bindValue(":date", date.toString("yyyyMMdd"));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
-	executeQuery(query);
-	messages = messagesFromQuery(query);
-
-	return messages;
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, chat, date, limit);
-}
-
-QVector<Message> HistorySqlStorage::getMessagesSince(const Chat &chat, const QDate &date)
-{
-	QMutexLocker locker(&DatabaseMutex);
-
-	QVector<Message> messages;
-	if (date.isNull())
-		return messages;
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND date >= :date ORDER BY date_id ASC, kadu_messages.rowid ASC";
-	query.prepare(queryString);
-
-	query.bindValue(":date", date.toString("yyyyMMdd"));
-
-	executeQuery(query);
-
-	messages = messagesFromQuery(query);
-
-	return messages;
-}
-
-QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
-{
-	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	return getMessagesSince(chat, date);
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesSince(const Chat &chat, const QDate &date)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesSince, chat, date);
-}
-
-QVector<Message> HistorySqlStorage::getMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	DatabaseMutex.lock();
-
-	QVector<Message> result;
-
-	QSqlQuery query(Database);
-	// we want last *limit* messages, so we have to invert sorting here
-	// it is reverted back manually below
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND receive_time >= :datetime ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
-	query.prepare(queryString);
-
-	query.bindValue(":datetime", datetime.toString(Qt::ISODate));
-	query.bindValue(":limit", limit);
-
-	executeQuery(query);
-
-	result = messagesFromQuery(query);
-
-	DatabaseMutex.unlock();
-
-	// see comment above
-	QVector<Message> inverted;
-	inverted.reserve(result.size());
-
-	for (int i = result.size() - 1; i >= 0; --i)
-		inverted.append(result.at(i));
-	return inverted;
-}
-
-QVector<Message> HistorySqlStorage::syncGetMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	return getMessagesBackTo(chat, datetime, limit);
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncGetMessagesBackTo, chat, datetime, limit);
-}
-
-QList<QString> HistorySqlStorage::syncSmsRecipientsList()
-{
-	if (!isDatabaseReady(true))
-		return QList<QString>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	query.prepare("SELECT DISTINCT receipient FROM kadu_sms");
-	executeQuery(query);
-
-	QList<QString> recipients;
-	while (query.next())
-		recipients.append(query.value(0).toString());
-
-	return recipients;
-}
-
-QFuture<QList<QString> > HistorySqlStorage::smsRecipientsList()
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientsList);
-}
-
-QVector<DatesModelItem> HistorySqlStorage::syncDatesForSmsRecipient(const QString &recipient)
-{
-	if (recipient.isEmpty())
-		return QVector<DatesModelItem>();
-
-	if (!isDatabaseReady(true))
-		return QVector<DatesModelItem>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(send_time,0,11)";
-	queryString += " FROM (SELECT send_time FROM kadu_sms WHERE receipient = :receipient";
-
-	queryString += " order by send_time DESC, rowid DESC)";
-	queryString += " group by substr(send_time,0,11) order by send_time ASC;";
-
-	query.prepare(queryString);
-
-	query.bindValue(":receipient", recipient);
-
-	QVector<DatesModelItem> dates;
-	executeQuery(query);
-
-	while (query.next())
-	{
-		QDate date = query.value(1).toDate();
-		if (!date.isValid())
-			continue;
-
-		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
-	}
-
-	return dates;
-}
-
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForSmsRecipient(const QString &recipient)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForSmsRecipient, recipient);
-}
-
-QVector<Message> HistorySqlStorage::syncSms(const QString &recipient, const QDate &date, int limit)
-{
-	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
-	if (!date.isNull())
-		queryString += " AND substr(send_time,0,11) = :date";
-	queryString += " ORDER BY send_time ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
-
-	query.prepare(queryString);
-
-	query.bindValue(":receipient", recipient);
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
-	executeQuery(query);
-
-	QVector<Message> result = smsFromQuery(query);
-
-	return result;
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::sms(const QString &recipient, const QDate &date, int limit)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSms, recipient, date, limit);
-}
-
-QVector<Buddy> HistorySqlStorage::syncStatusBuddiesList()
-{
-	if (!isDatabaseReady(true))
-		return QVector<Buddy>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
-	executeQuery(query);
-
-	QVector<Buddy> buddies;
-	while (query.next())
-	{
-		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
-		if (!contact)
-			continue;
-
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-		Q_ASSERT(buddy);
-
-		if (!buddies.contains(buddy))
-			buddies.append(buddy);
-	}
-
-	return buddies;
-}
-
-QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddiesList()
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddiesList);
-}
-
-QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusBuddy(const Buddy &buddy)
+QVector<DatesModelItem> HistorySqlStorage::syncStatusBuddyDates(const Buddy &buddy)
 {
 	kdebugf();
 
@@ -912,49 +714,12 @@ QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusBuddy(const Buddy &
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusBuddy(const Buddy &buddy)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusBuddyDates(const Buddy &buddy)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusBuddy, buddy);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddyDates, buddy);
 }
 
-QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const QDate &date, int limit)
-{
-	if (!buddy)
-		return QVector<Message>();
-
-	if (!isDatabaseReady(true))
-		return QVector<Message>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
-	if (!date.isNull())
-		queryString += " AND substr(set_time,0,11) = :date";
-	queryString += " ORDER BY set_time ASC";
-	if (0 != limit)
-		queryString += " LIMIT :limit";
-
-	QVector<Message> statuses;
-	query.prepare(queryString);
-
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
-	if (limit != 0)
-		query.bindValue(":limit", limit);
-
-	executeQuery(query);
-	statuses = statusesFromQuery(query);
-
-	return statuses;
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncBuddyStatuses, buddy, date, limit);
-}
-
-QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusContact(const Contact &contact)
+QVector<DatesModelItem> HistorySqlStorage::syncStatusContactDates(const Contact &contact)
 {
 	kdebugf();
 
@@ -994,9 +759,198 @@ QVector<DatesModelItem> HistorySqlStorage::syncDatesForStatusContact(const Conta
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::datesForStatusContact(const Contact &contact)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusContactDates(const Contact &contact)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncDatesForStatusContact, contact);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusContactDates, contact);
+}
+
+QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const QString &recipient)
+{
+	if (recipient.isEmpty())
+		return QVector<DatesModelItem>();
+
+	if (!isDatabaseReady(true))
+		return QVector<DatesModelItem>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT count(1), substr(send_time,0,11)";
+	queryString += " FROM (SELECT send_time FROM kadu_sms WHERE receipient = :receipient";
+
+	queryString += " order by send_time DESC, rowid DESC)";
+	queryString += " group by substr(send_time,0,11) order by send_time ASC;";
+
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", recipient);
+
+	QVector<DatesModelItem> dates;
+	executeQuery(query);
+
+	while (query.next())
+	{
+		QDate date = query.value(1).toDate();
+		if (!date.isValid())
+			continue;
+
+		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
+	}
+
+	return dates;
+}
+
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const QString &recipient)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, recipient);
+}
+
+QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date, int limit)
+{
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
+			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
+			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
+			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
+			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat);
+	if (!date.isNull())
+		queryString += " AND date = :date";
+	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
+
+	QVector<Message> messages;
+	query.prepare(queryString);
+
+	if (!date.isNull())
+		query.bindValue(":date", date.toString("yyyyMMdd"));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+	executeQuery(query);
+	messages = messagesFromQuery(query);
+
+	return messages;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::messages(const Chat &chat, const QDate &date, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, chat, date, limit);
+}
+
+QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
+{
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QVector<Message> messages;
+	if (date.isNull())
+		return messages;
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
+			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
+			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
+			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
+			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
+			" AND date >= :date ORDER BY date_id ASC, kadu_messages.rowid ASC";
+	query.prepare(queryString);
+
+	query.bindValue(":date", date.toString("yyyyMMdd"));
+
+	executeQuery(query);
+
+	messages = messagesFromQuery(query);
+
+	return messages;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesSince, chat, date);
+}
+
+QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+{
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QVector<Message> result;
+
+	QSqlQuery query(Database);
+	// we want last *limit* messages, so we have to invert sorting here
+	// it is reverted back manually below
+	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
+			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
+			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
+			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
+			" AND receive_time >= :datetime ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
+	query.prepare(queryString);
+
+	query.bindValue(":datetime", datetime.toString(Qt::ISODate));
+	query.bindValue(":limit", limit);
+
+	executeQuery(query);
+
+	result = messagesFromQuery(query);
+
+	// see comment above
+	QVector<Message> inverted;
+	inverted.reserve(result.size());
+
+	for (int i = result.size() - 1; i >= 0; --i)
+		inverted.append(result.at(i));
+	return inverted;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesBackTo, chat, datetime, limit);
+}
+
+QVector<Message> HistorySqlStorage::syncBuddyStatuses(const Buddy &buddy, const QDate &date, int limit)
+{
+	if (!buddy)
+		return QVector<Message>();
+
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
+	if (!date.isNull())
+		queryString += " AND substr(set_time,0,11) = :date";
+	queryString += " ORDER BY set_time ASC";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
+
+	QVector<Message> statuses;
+	query.prepare(queryString);
+
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+
+	executeQuery(query);
+	statuses = statusesFromQuery(query);
+
+	return statuses;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::statuses(const Buddy &buddy, const QDate &date, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncBuddyStatuses, buddy, date, limit);
 }
 
 QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, const QDate &date, int limit)
@@ -1034,6 +988,40 @@ QVector<Message> HistorySqlStorage::syncContactStatuses(const Contact &contact, 
 QFuture<QVector<Message> > HistorySqlStorage::statuses(const Contact &contact, const QDate &date, int limit)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncContactStatuses, contact, date, limit);
+}
+
+QVector<Message> HistorySqlStorage::syncSmses(const QString &recipient, const QDate &date, int limit)
+{
+	if (!isDatabaseReady(true))
+		return QVector<Message>();
+
+	QMutexLocker locker(&DatabaseMutex);
+
+	QSqlQuery query(Database);
+	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
+	if (!date.isNull())
+		queryString += " AND substr(send_time,0,11) = :date";
+	queryString += " ORDER BY send_time ASC";
+	if (0 != limit)
+		queryString += " LIMIT :limit";
+
+	query.prepare(queryString);
+
+	query.bindValue(":receipient", recipient);
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+	executeQuery(query);
+
+	QVector<Message> result = smsFromQuery(query);
+
+	return result;
+}
+
+QFuture<QVector<Message> > HistorySqlStorage::smses(const QString &recipient, const QDate &date, int limit)
+{
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, recipient, date, limit);
 }
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)

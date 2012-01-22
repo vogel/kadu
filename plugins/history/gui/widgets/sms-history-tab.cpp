@@ -86,7 +86,7 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 	CurrentRecipient = recipient;
 
 	if (historyStorage())
-		setFutureDates(historyStorage()->datesForSmsRecipient(CurrentRecipient));
+		setFutureDates(historyStorage()->smsRecipientDates(CurrentRecipient));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -136,7 +136,7 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
 	if (!CurrentRecipient.isEmpty() && date.isValid() && historyStorage())
-		setFutureMessages(historyStorage()->sms(CurrentRecipient, date));
+		setFutureMessages(historyStorage()->smses(CurrentRecipient, date));
 	else
 		setMessages(QVector<Message>());
 }
@@ -157,7 +157,7 @@ void SmsHistoryTab::futureSmsAvailable()
 	if (!SmsFutureWatcher)
 		return;
 
-	QList<QString> smsRecipients = SmsFutureWatcher->result();
+	QVector<QString> smsRecipients = SmsFutureWatcher->result();
 
 	SmsModel->clear();
 	foreach (const QString &smsRecipient, smsRecipients)
@@ -195,8 +195,8 @@ void SmsHistoryTab::updateData()
 		return;
 	}
 
-	QFuture<QList<QString> > futureSms = historyStorage()->smsRecipientsList();
-	SmsFutureWatcher = new QFutureWatcher<QList<QString> >(this);
+	QFuture<QVector<QString> > futureSms = historyStorage()->smsRecipients();
+	SmsFutureWatcher = new QFutureWatcher<QVector<QString> >(this);
 	connect(SmsFutureWatcher, SIGNAL(finished()), this, SLOT(futureSmsAvailable()));
 	connect(SmsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureSmsCanceled()));
 

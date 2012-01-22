@@ -158,13 +158,13 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
-		futureMessages = historyStorage->asyncMessagesSince(messagesChat, since);
+		futureMessages = historyStorage->messagesSince(messagesChat, since);
 	}
 	else
 	{
 		int pruneLen = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
 		QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
-		futureMessages = historyStorage->asyncMessagesBackTo(messagesChat, backTo, pruneLen);
+		futureMessages = historyStorage->messagesBackTo(messagesChat, backTo, pruneLen);
 	}
 
 	new HistoryMessagesPrepender(futureMessages, chatMessagesView);

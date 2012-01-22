@@ -75,24 +75,22 @@ class HistorySqlStorage : public HistoryStorage
 	bool isDatabaseReady(bool wait);
 
 	QVector<Chat> syncChats();
-	QVector<Buddy> syncStatusBuddiesList();
-	QList<QString> syncSmsRecipientsList();
+	QVector<Buddy> syncStatusBuddies();
+	QVector<QString> syncSmsRecipients();
 
 	QVector<DatesModelItem> syncChatDates(const Chat &chat);
-	QVector<DatesModelItem> syncDatesForStatusBuddy(const Buddy &buddy);
-	QVector<DatesModelItem> syncDatesForStatusContact(const Contact &contact);
-	QVector<DatesModelItem> syncDatesForSmsRecipient(const QString &recipient);
+	QVector<DatesModelItem> syncStatusBuddyDates(const Buddy &buddy);
+	QVector<DatesModelItem> syncStatusContactDates(const Contact &contact);
+	QVector<DatesModelItem> syncSmsRecipientDates(const QString &recipient);
 
-	QVector<Message> syncMessages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
-	QVector<Message> syncBuddyStatuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
-	QVector<Message> syncContactStatuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
-	QVector<Message> syncSms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
-
-	QVector<Message> getMessagesSince(const Chat &chat, const QDate &date);
+	QVector<Message> syncMessages(const Chat &chat, const QDate &date, int limit);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
+	QVector<Message> syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	QVector<Message> getMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
-	QVector<Message> syncGetMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
+	QVector<Message> syncBuddyStatuses(const Buddy &buddy, const QDate &date, int limit);
+	QVector<Message> syncContactStatuses(const Contact &contact, const QDate &date, int limit);
+
+	QVector<Message> syncSmses(const QString &recipient, const QDate &date, int limit);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -109,25 +107,26 @@ public:
 	virtual ~HistorySqlStorage();
 
 	virtual QFuture<QVector<Chat> > chats();
+	virtual QFuture<QVector<Buddy> > statusBuddies();
+	virtual QFuture<QVector<QString> > smsRecipients();
 
 	virtual QFuture<QVector<DatesModelItem> > chatDates(const Chat &chat);
-	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date = QDate(), int limit = 0);
-	virtual QFuture<QVector<Message> > asyncMessagesSince(const Chat &chat, const QDate &date);
-	virtual QFuture<QVector<Message> > asyncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
+	virtual QFuture<QVector<DatesModelItem> > statusBuddyDates(const Buddy &buddy);
+	virtual QFuture<QVector<DatesModelItem> > statusContactDates(const Contact &contact);
+	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const QString &recipient);
 
-	virtual QFuture<QVector<Buddy> > statusBuddiesList();
-	virtual QFuture<QVector<DatesModelItem> > datesForStatusBuddy(const Buddy &buddy);
-	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date = QDate(), int limit = 0);
-	virtual QFuture<QVector<DatesModelItem> > datesForStatusContact(const Contact &contact);
-	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date = QDate(), int limit = 0);
+	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date, int limit);
+	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date);
+	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	virtual QFuture<QList<QString> > smsRecipientsList();
-	virtual QFuture<QVector<DatesModelItem> > datesForSmsRecipient(const QString &recipient);
-	virtual QFuture<QVector<Message> > sms(const QString &recipient, const QDate &date = QDate(), int limit = 0);
+	virtual QFuture<QVector<Message> > statuses(const Buddy &buddy, const QDate &date, int limit);
+	virtual QFuture<QVector<Message> > statuses(const Contact &contact, const QDate &date, int limit);
+
+	virtual QFuture<QVector<Message> > smses(const QString &recipient, const QDate &date, int limit);
 
 	virtual void appendMessage(const Message &message);
-	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime());
-	virtual void appendSms(const QString &recipient, const QString &content, const QDateTime &time = QDateTime::currentDateTime());
+	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time);
+	virtual void appendSms(const QString &recipient, const QString &content, const QDateTime &time);
 
 	void sync();
 
