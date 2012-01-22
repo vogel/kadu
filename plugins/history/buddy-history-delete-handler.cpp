@@ -70,5 +70,6 @@ QString BuddyHistoryDeleteHandler::displayName()
 
 void BuddyHistoryDeleteHandler::deleteBuddyAdditionalData(Buddy buddy)
 {
-	History::instance()->deleteHistory(buddy);
+	if (History::instance()->currentStorage())
+		History::instance()->currentStorage()->deleteHistory(buddy);
 }

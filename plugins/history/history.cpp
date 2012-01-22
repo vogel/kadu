@@ -402,12 +402,6 @@ void History::unregisterStorage(HistoryStorage *storage)
 	emit storageChanged(CurrentStorage);
 }
 
-void History::deleteHistory(const Buddy &buddy)
-{
-	if (CurrentStorage)
-		CurrentStorage->deleteHistory(buddy);
-}
-
 void History::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "SaveChats", config_file.readBoolEntry("History", "Logging", true));

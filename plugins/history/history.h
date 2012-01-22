@@ -136,8 +136,6 @@ public:
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
 
-	void deleteHistory(const Buddy &buddy);
-
 	void forceSync();
 	void setSyncEnabled(bool syncEnabled);
 
