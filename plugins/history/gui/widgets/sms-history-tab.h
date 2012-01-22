@@ -24,14 +24,14 @@
 #include <QtCore/QModelIndex>
 
 #include "buddies/buddy.h"
+#include "talkable/talkable.h"
 #include "exports.h"
 
 #include "gui/widgets/history-tab.h"
 
-class QStandardItemModel;
-
-class KaduTreeView;
-class WaitOverlay;
+class BuddyListModel;
+class ModelChain;
+class TalkableTreeView;
 
 class KADUAPI SmsHistoryTab : public HistoryTab
 {
@@ -41,8 +41,9 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	QFutureWatcher<QVector<QString> > *SmsFutureWatcher;
 
-	KaduTreeView *SmsListView;
-	QStandardItemModel *SmsModel;
+	TalkableTreeView *SmsTalkableTree;
+	BuddyListModel *SmsBuddiesModel;
+	ModelChain *SmsModelChain;
 
 	void displaySmsRecipient(const QString &recipient, bool force);
 
@@ -53,7 +54,7 @@ private slots:
 	void showSmsPopupMenu();
 	void clearSmsHistory();
 
-	void currentSmsChanged(const QModelIndex &current);
+	void currentSmsChanged(const Talkable &talkable);
 
 protected:
 	virtual void createTreeView(QWidget *parent);

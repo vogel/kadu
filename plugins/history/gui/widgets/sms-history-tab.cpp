@@ -18,18 +18,21 @@
  */
 
 #include <QtGui/QMenu>
-#include <QtGui/QSortFilterProxyModel>
 #include <QtGui/QSplitter>
-#include <QtGui/QStandardItemModel>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/model/buddy-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/kadu-tree-view.h"
+#include "gui/widgets/talkable-delegate-configuration.h"
+#include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
+#include "model/model-chain.h"
+#include "talkable/filter/name-talkable-filter.h"
+#include "talkable/model/talkable-proxy-model.h"
 #include "talkable/talkable.h"
 
 #include "model/dates-model-item.h"
@@ -52,29 +55,42 @@ SmsHistoryTab::~SmsHistoryTab()
 
 void SmsHistoryTab::createTreeView(QWidget *parent)
 {
-	FilteredTreeView *smsListWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
-	smsListWidget->filterWidget()->setAutoVisibility(false);
-	smsListWidget->filterWidget()->setLabel(tr("Filter") + ":");
+	FilteredTreeView *smsTalkableWidget = new FilteredTreeView(FilteredTreeView::FilterAtTop, parent);
+	smsTalkableWidget->filterWidget()->setAutoVisibility(false);
+	smsTalkableWidget->filterWidget()->setLabel(tr("Filter") + ":");
 
-	SmsListView = new KaduTreeView(smsListWidget);
-	SmsListView->setAlternatingRowColors(true);
-	SmsListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	SmsListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	SmsTalkableTree = new TalkableTreeView(smsTalkableWidget);
+	SmsTalkableTree->setAlternatingRowColors(true);
+	SmsTalkableTree->setContextMenuEnabled(true);
+	SmsTalkableTree->setUseConfigurationColors(true);
+	SmsTalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
-	SmsModel = new QStandardItemModel(SmsListView);
-	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(SmsModel);
-	proxyModel->setSourceModel(SmsModel);
+	QString style;
+	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
+	SmsTalkableTree->setStyleSheet(style);
+	SmsTalkableTree->viewport()->setStyleSheet(style);
 
-	connect(smsListWidget, SIGNAL(filterChanged(QString)), proxyModel, SLOT(setFilterFixedString(QString)));
+	SmsBuddiesModel = new BuddyListModel(SmsTalkableTree);
+	SmsModelChain = new ModelChain(SmsBuddiesModel, SmsTalkableTree);
 
-	SmsListView->setModel(proxyModel);
+	TalkableProxyModel *proxyModel = new TalkableProxyModel(SmsModelChain);
+	proxyModel->setSortByStatusAndUnreadMessages(false);
 
-	connect(SmsListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(currentSmsChanged(QModelIndex)));
-	connect(SmsListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
-	SmsListView->setContextMenuPolicy(Qt::CustomContextMenu);
+	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
+	connect(smsTalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+	proxyModel->addFilter(nameTalkableFilter);
 
-	smsListWidget->setView(SmsListView);
+	SmsModelChain->addProxyModel(proxyModel);
+
+	SmsTalkableTree->setChain(SmsModelChain);
+
+	connect(SmsTalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentSmsChanged(Talkable)));
+	connect(SmsTalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
+	SmsTalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	smsTalkableWidget->setView(SmsTalkableTree);
 }
 
 void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
@@ -113,15 +129,11 @@ void SmsHistoryTab::clearSmsHistory()
 	if (!historyStorage())
 		return;
 
-	const QModelIndexList &indexes = SmsListView->selectionModel()->selectedIndexes();
-	foreach (const QModelIndex &index, indexes)
+	BuddySet buddies = SmsTalkableTree->actionContext()->buddies();
+	foreach (const Buddy &buddy, buddies)
 	{
-		QString recipient = index.data(Qt::DisplayRole).toString();
-		if (recipient.isEmpty())
+		if (buddy.mobile().isEmpty())
 			continue;
-
-		Buddy buddy = Buddy::create();
-		buddy.setMobile(recipient);
 
 		removed = true;
 		historyStorage()->clearSmsHistory(buddy);
@@ -134,9 +146,12 @@ void SmsHistoryTab::clearSmsHistory()
 	}
 }
 
-void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
+void SmsHistoryTab::currentSmsChanged(const Talkable &talkable)
 {
-	displaySmsRecipient(current.data().toString(), false);
+	if (talkable.isValidBuddy())
+		displaySmsRecipient(talkable.toBuddy().mobile(), false);
+	else
+		displaySmsRecipient(QString(), false);
 }
 
 void SmsHistoryTab::displayForDate(const QDate &date)
@@ -165,9 +180,17 @@ void SmsHistoryTab::futureSmsAvailable()
 
 	QVector<QString> smsRecipients = SmsFutureWatcher->result();
 
-	SmsModel->clear();
+	BuddyList buddies;
+
 	foreach (const QString &smsRecipient, smsRecipients)
-		SmsModel->appendRow(new QStandardItem(KaduIcon("phone").icon(), smsRecipient));
+	{
+		Buddy buddy = Buddy::create();
+		buddy.setDisplay(smsRecipient);
+		buddy.setMobile(smsRecipient);
+		buddies.append(buddy);
+	}
+
+	SmsBuddiesModel->setBuddyList(buddies);
 
 	SmsFutureWatcher->deleteLater();
 	SmsFutureWatcher = 0;
@@ -196,7 +219,7 @@ void SmsHistoryTab::updateData()
 
 	if (!historyStorage())
 	{
-		SmsModel->clear();
+		SmsBuddiesModel->setBuddyList(BuddyList());
 		displaySmsRecipient(QString(), false);
 		return;
 	}
