@@ -20,22 +20,28 @@
 #ifndef CHATS_BUDDIES_SPLITTER_H
 #define CHATS_BUDDIES_SPLITTER_H
 
+#include <QtCore/QSet>
 #include <QtCore/QVector>
 
-#include "buddies/buddy-list.h"
-
+class Buddy;
 class Chat;
+class Talkable;
 
 class ChatsBuddiesSplitter
 {
-	QVector<Chat> Chats;
-	BuddyList Buddies;
+	QSet<Chat> UsedChats;
+
+	QSet<Chat> Chats;
+	QSet<Buddy> Buddies;
+
+	void processChat(const Chat &chat);
+	void assignChat(const Chat &chat);
 
 public:
-	ChatsBuddiesSplitter(QVector<Chat> chats);
+	ChatsBuddiesSplitter(QVector<Talkable> talkables);
 
-	QVector<Chat> chats() const;
-	BuddyList buddies() const;
+	QSet<Chat> chats() const;
+	QSet<Buddy> buddies() const;
 
 };
 

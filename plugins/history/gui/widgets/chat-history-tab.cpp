@@ -190,15 +190,10 @@ void ChatHistoryTab::futureChatsAvailable()
 	if (!ChatsFutureWatcher)
 		return;
 
-	QVector<Chat> chats;
-	foreach (const Talkable &talkable, ChatsFutureWatcher->result())
-		if (talkable.isValidChat())
-			chats.append(talkable.toChat());
+	ChatsBuddiesSplitter chatsBuddies(ChatsFutureWatcher->result());
 
-	ChatsBuddiesSplitter chatsBuddies(chats);
-
-	ChatsModel->setChats(chatsBuddies.chats());
-	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies());
+	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
+	ChatsBuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 
 	ChatsFutureWatcher->deleteLater();
 	ChatsFutureWatcher = 0;

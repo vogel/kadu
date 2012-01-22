@@ -18,55 +18,62 @@
  */
 
 #include <QtCore/QSet>
+#include <qdbuspendingreply.h>
 
 #include "buddies/buddy-manager.h"
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-details-aggregate.h"
 #include "contacts/contact-set.h"
+#include "talkable/talkable.h"
 
 #include "chats-buddies-splitter.h"
 
-ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Chat> chats)
+ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Talkable> talkables)
 {
-	QSet<Chat> usedChats;
-
-	foreach (const Chat &chat, chats)
-	{
-		if (usedChats.contains(chat))
-			continue;
-
-		Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-		if (aggregate)
-		{
-			ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(aggregate.details());
-			Q_ASSERT(details);
-
-			foreach (const Chat &usedChat, details->chats())
-				usedChats.insert(usedChat);
-
-			if (aggregate.contacts().size() > 1)
-				Chats.append(aggregate);
-			else if (1 == aggregate.contacts().size())
-				Buddies.append(BuddyManager::instance()->byContact(*aggregate.contacts().begin(), ActionCreateAndAdd));
-		}
-		else
-		{
-			usedChats.insert(chat);
-			if (chat.contacts().size() > 1)
-				Chats.append(chat);
-			else if (1 == chat.contacts().size())
-				Buddies.append(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
-		}
-	}
+	// we ignore contacts
+	foreach (const Talkable &talkable, talkables)
+		if (talkable.isValidChat())
+			processChat(talkable.toChat());
+		else if (talkable.isValidBuddy())
+			Buddies.insert(talkable.toBuddy());
 }
 
-QVector<Chat> ChatsBuddiesSplitter::chats() const
+void ChatsBuddiesSplitter::processChat(const Chat &chat)
+{
+	if (UsedChats.contains(chat))
+		return;
+
+	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
+	if (!aggregate)
+	{
+		UsedChats.insert(chat);
+		assignChat(chat);
+		return;
+	}
+
+	ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(aggregate.details());
+	Q_ASSERT(details);
+
+	foreach (const Chat &usedChat, details->chats())
+		UsedChats.insert(usedChat);
+	assignChat(aggregate);
+}
+
+void ChatsBuddiesSplitter::assignChat(const Chat &chat)
+{
+	if (chat.contacts().size() > 1)
+		Chats.insert(chat);
+	else if (1 == chat.contacts().size())
+		Buddies.insert(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
+}
+
+QSet<Chat> ChatsBuddiesSplitter::chats() const
 {
 	return Chats;
 }
 
-BuddyList ChatsBuddiesSplitter::buddies() const
+QSet<Buddy> ChatsBuddiesSplitter::buddies() const
 {
 	return Buddies;
 }
