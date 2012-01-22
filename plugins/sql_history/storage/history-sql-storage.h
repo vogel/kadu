@@ -73,7 +73,8 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<Message> statusesFromQuery(QSqlQuery &query);
 	QVector<Message> smsFromQuery(QSqlQuery &query);
 
-	bool isDatabaseReady(bool wait);
+	bool isDatabaseReady();
+	bool waitForDatabase();
 
 	QVector<Chat> syncChats();
 	QVector<Buddy> syncStatusBuddies();

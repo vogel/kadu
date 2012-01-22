@@ -157,15 +157,18 @@ void HistorySqlStorage::databaseOpenFailed (const QSqlError &error)
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), error.text());
 }
 
-bool HistorySqlStorage::isDatabaseReady(bool wait)
+bool HistorySqlStorage::isDatabaseReady()
 {
 	if (InitializerThread && InitializerThread->isRunning())
-	{
-		if (wait)
-			InitializerThread->wait();
-		else
-			return false;
-	}
+		return false;
+
+	return Database.isOpen();
+}
+
+bool HistorySqlStorage::waitForDatabase()
+{
+	if (InitializerThread && InitializerThread->isRunning())
+		InitializerThread->wait();
 
 	return Database.isOpen();
 }
@@ -229,7 +232,7 @@ QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString 
 
 void HistorySqlStorage::sync()
 {
-	if (!isDatabaseReady(false))
+	if (!isDatabaseReady())
 		return; // nothing to sync yet
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -379,7 +382,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -407,7 +410,7 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 {
 	kdebugf();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -428,7 +431,7 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 {
 	kdebugf();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -449,7 +452,7 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 	if (!talkable.isValidChat())
 		return;
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -481,7 +484,7 @@ void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate
 	if (!talkable.isValidBuddy() && !talkable.isValidContact())
 		return;
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -504,7 +507,7 @@ void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &d
 	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return;
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return;
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -536,7 +539,7 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 
 QVector<Chat> HistorySqlStorage::syncChats()
 {
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Chat>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -564,7 +567,7 @@ QFuture<QVector<Chat> > HistorySqlStorage::chats()
 
 QVector<Buddy> HistorySqlStorage::syncStatusBuddies()
 {
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Buddy>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -597,7 +600,7 @@ QFuture<QVector<Buddy> > HistorySqlStorage::statusBuddies()
 
 QVector<QString> HistorySqlStorage::syncSmsRecipients()
 {
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<QString>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -623,7 +626,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkabl
 	if (!talkable.isValidChat())
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -687,7 +690,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const Talkable &talka
 	if (!talkable.isValidBuddy() && !talkable.isValidContact())
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -728,7 +731,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const Talkable 
 	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<DatesModelItem>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<DatesModelItem>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -769,7 +772,7 @@ QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const
 	if (!talkable.isValidChat())
 		return QVector<Message>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -805,7 +808,7 @@ QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QD
 	if (!chat)
 		return QVector<Message>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -842,7 +845,7 @@ QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const Q
 	if (!chat)
 		return QVector<Message>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -885,7 +888,7 @@ QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const
 	if (!talkable.isValidBuddy() && !talkable.isValidContact())
 		return QVector<Message>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
@@ -918,7 +921,7 @@ QVector<Message> HistorySqlStorage::syncSmses(const Talkable &talkable, const QD
 	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<Message>();
 
-	if (!isDatabaseReady(true))
+	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
