@@ -37,6 +37,7 @@
 struct DatesModelItem;
 class Message;
 class Status;
+class Talkable;
 class TimedStatus;
 
 class HISTORYAPI HistoryStorage : public QObject
@@ -55,10 +56,9 @@ public:
 	virtual QFuture<QVector<Buddy> > statusBuddies() = 0;
 	virtual QFuture<QVector<QString> > smsRecipients() = 0;
 
-	virtual QFuture<QVector<DatesModelItem> > chatDates(const Chat &chat) = 0;
-	virtual QFuture<QVector<DatesModelItem> > statusBuddyDates(const Buddy &buddy) = 0;
-	virtual QFuture<QVector<DatesModelItem> > statusContactDates(const Contact &contact) = 0;
-	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const QString &recipient) = 0;
+	virtual QFuture<QVector<DatesModelItem> > chatDates(const Talkable &talkable) = 0;
+	virtual QFuture<QVector<DatesModelItem> > statusDates(const Talkable &talkable) = 0;
+	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const Talkable &talkable) = 0;
 
 	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date) = 0;

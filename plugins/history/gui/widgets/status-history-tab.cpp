@@ -107,7 +107,7 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 	CurrentBuddy = buddy;
 
 	if (historyStorage())
-		setFutureDates(historyStorage()->statusBuddyDates(CurrentBuddy));
+		setFutureDates(historyStorage()->statusDates(CurrentBuddy));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -126,7 +126,7 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 	CurrentContact = contact;
 
 	if (historyStorage())
-		setFutureDates(historyStorage()->statusContactDates(CurrentContact));
+		setFutureDates(historyStorage()->statusDates(CurrentContact));
 	else
 		setDates(QVector<DatesModelItem>());
 }

@@ -50,6 +50,7 @@
 #include "status/status-type-manager.h"
 #include <status/status-type-data.h>
 #include "debug.h"
+#include <talkable/talkable.h>
 
 #include "plugins/history/history.h"
 #include "plugins/history/model/dates-model-item.h"
@@ -202,6 +203,14 @@ QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix
 		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
 
 	return QString("%1uuid IN (%2)").arg(chatPrefix).arg(uuids.join(QLatin1String(", ")));
+}
+
+QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable, const QString &fieldName)
+{
+	if (Talkable::ItemBuddy == talkable.type())
+		return buddyContactsWhere(talkable.toBuddy(), fieldName);
+	else
+		return QString("(%1) = '%2'").arg(fieldName).arg(talkable.toContact().uuid().toString());
 }
 
 QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
@@ -604,9 +613,9 @@ QFuture<QVector<QString> > HistorySqlStorage::smsRecipients()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Chat &chat)
+QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkable)
 {
-	if (!chat)
+	if (!talkable.toChat())
 		return QVector<DatesModelItem>();
 
 	if (!isDatabaseReady(true))
@@ -619,7 +628,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Chat &chat)
 	queryString += " (SELECT km.rowid, date, date_id, content FROM kadu_messages km "
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
-		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(chat);
+		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(talkable.toChat());
 	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
 	queryString += " GROUP BY date_id";
 	queryString += " ORDER BY date_id ASC, rowid ASC";
@@ -663,17 +672,30 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Chat &chat)
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Chat &chat)
+QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Talkable &talkable)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, chat);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, talkable);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncStatusBuddyDates(const Buddy &buddy)
+QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const Talkable &talkable)
 {
 	kdebugf();
 
-	if (!buddy)
-		return QVector<DatesModelItem>();
+	switch (talkable.type())
+	{
+		case Talkable::ItemBuddy:
+			if (!talkable.toBuddy())
+				return QVector<DatesModelItem>();
+			break;
+
+		case Talkable::ItemContact:
+			if (!talkable.toContact())
+				return QVector<DatesModelItem>();
+			break;
+
+		default:
+			return QVector<DatesModelItem>();
+	}
 
 	if (!isDatabaseReady(true))
 		return QVector<DatesModelItem>();
@@ -682,7 +704,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusBuddyDates(const Buddy &bud
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
-	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + buddyContactsWhere(buddy, "contact");
+	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
 
 	queryString += " ORDER BY set_time DESC, rowid DESC)";
 	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
@@ -706,59 +728,14 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusBuddyDates(const Buddy &bud
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusBuddyDates(const Buddy &buddy)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusDates(const Talkable &talkable)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusBuddyDates, buddy);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusDates, talkable);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncStatusContactDates(const Contact &contact)
+QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const Talkable &talkable)
 {
-	kdebugf();
-
-	if (!contact)
-		return QVector<DatesModelItem>();
-
-	if (!isDatabaseReady(true))
-		return QVector<DatesModelItem>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
-	queryString += " (SELECT set_time FROM kadu_statuses WHERE contact = :contact";
-
-	queryString += " ORDER BY set_time DESC, rowid DESC)";
-	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
-
-	query.prepare(queryString);
-
-	query.bindValue(":contact", contact.uuid().toString());
-
-	QVector<DatesModelItem> dates;
-
-	executeQuery(query);
-
-	QDate date;
-	while (query.next())
-	{
-		date = query.value(1).toDate();
-		if (!date.isValid())
-			continue;
-
-		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
-	}
-
-	return dates;
-}
-
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusContactDates(const Contact &contact)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusContactDates, contact);
-}
-
-QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const QString &recipient)
-{
-	if (recipient.isEmpty())
+	if (Talkable::ItemBuddy != talkable.type() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<DatesModelItem>();
 
 	if (!isDatabaseReady(true))
@@ -775,7 +752,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const QString &
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", recipient);
+	query.bindValue(":receipient", talkable.toBuddy().mobile());
 
 	QVector<DatesModelItem> dates;
 	executeQuery(query);
@@ -792,9 +769,9 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const QString &
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const QString &recipient)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const Talkable &talkable)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, recipient);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, talkable);
 }
 
 QVector<Message> HistorySqlStorage::syncMessages(const Chat &chat, const QDate &date)

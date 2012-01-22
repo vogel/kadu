@@ -65,6 +65,7 @@ class HistorySqlStorage : public HistoryStorage
 	int findOrCreateDate(const QDate &date);
 
 	QString chatWhere(const Chat &chat, const QString &chatPrefix = "chat.");
+	QString talkableContactsWhere(const Talkable &talkable, const QString &fieldName);
 	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
 
 	void executeQuery(QSqlQuery &query);
@@ -78,10 +79,9 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<Buddy> syncStatusBuddies();
 	QVector<QString> syncSmsRecipients();
 
-	QVector<DatesModelItem> syncChatDates(const Chat &chat);
-	QVector<DatesModelItem> syncStatusBuddyDates(const Buddy &buddy);
-	QVector<DatesModelItem> syncStatusContactDates(const Contact &contact);
-	QVector<DatesModelItem> syncSmsRecipientDates(const QString &recipient);
+	QVector<DatesModelItem> syncChatDates(const Talkable &talkable);
+	QVector<DatesModelItem> syncStatusDates(const Talkable &talkable);
+	QVector<DatesModelItem> syncSmsRecipientDates(const Talkable &talkable);
 
 	QVector<Message> syncMessages(const Chat &chat, const QDate &date);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
@@ -110,10 +110,9 @@ public:
 	virtual QFuture<QVector<Buddy> > statusBuddies();
 	virtual QFuture<QVector<QString> > smsRecipients();
 
-	virtual QFuture<QVector<DatesModelItem> > chatDates(const Chat &chat);
-	virtual QFuture<QVector<DatesModelItem> > statusBuddyDates(const Buddy &buddy);
-	virtual QFuture<QVector<DatesModelItem> > statusContactDates(const Contact &contact);
-	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const QString &recipient);
+	virtual QFuture<QVector<DatesModelItem> > chatDates(const Talkable &talkable);
+	virtual QFuture<QVector<DatesModelItem> > statusDates(const Talkable &talkable);
+	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const Talkable &talkable);
 
 	virtual QFuture<QVector<Message> > messages(const Chat &chat, const QDate &date);
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date);

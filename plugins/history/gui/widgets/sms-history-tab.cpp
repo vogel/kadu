@@ -30,6 +30,7 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
+#include "talkable/talkable.h"
 
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
@@ -40,6 +41,8 @@
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent), SmsFutureWatcher(0)
 {
+	CurrentRecipient = Buddy::create();
+
 	createGui();
 }
 
@@ -76,17 +79,17 @@ void SmsHistoryTab::createTreeView(QWidget *parent)
 
 void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 {
-	if (!force && CurrentRecipient == recipient)
+	if (!force && CurrentRecipient.mobile() == recipient)
 		return;
 
 	Chat smsChat = Chat::create();
 	smsChat.setDisplay(recipient);
 	timelineView()->messagesView()->setChat(smsChat);
 
-	CurrentRecipient = recipient;
+	CurrentRecipient.setMobile(recipient);
 
 	if (historyStorage())
-		setFutureDates(historyStorage()->smsRecipientDates(CurrentRecipient));
+		setFutureDates(historyStorage()->smsRecipientDates(Talkable(CurrentRecipient)));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -135,18 +138,18 @@ void SmsHistoryTab::currentSmsChanged(const QModelIndex &current)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	if (!CurrentRecipient.isEmpty() && date.isValid() && historyStorage())
-		setFutureMessages(historyStorage()->smses(CurrentRecipient, date));
+	if (!CurrentRecipient.mobile().isEmpty() && date.isValid() && historyStorage())
+		setFutureMessages(historyStorage()->smses(CurrentRecipient.mobile(), date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!CurrentRecipient.isEmpty() && historyStorage())
+	if (!CurrentRecipient.mobile().isEmpty() && historyStorage())
 	{
-		historyStorage()->clearSmsHistory(CurrentRecipient, date);
-		displaySmsRecipient(CurrentRecipient, true);
+		historyStorage()->clearSmsHistory(CurrentRecipient.mobile(), date);
+		displaySmsRecipient(CurrentRecipient.mobile(), true);
 	}
 }
 

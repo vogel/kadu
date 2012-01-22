@@ -23,6 +23,7 @@
 #include <QtCore/QFutureWatcher>
 #include <QtCore/QModelIndex>
 
+#include "buddies/buddy.h"
 #include "exports.h"
 
 #include "gui/widgets/history-tab.h"
@@ -36,7 +37,7 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	QString CurrentRecipient;
+	Buddy CurrentRecipient;
 
 	QFutureWatcher<QVector<QString> > *SmsFutureWatcher;
 
