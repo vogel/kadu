@@ -53,14 +53,27 @@
 RefreshViewHack::RefreshViewHack(AdiumChatStyleEngine *engine, HtmlMessagesRenderer *renderer, QObject *parent) :
 		QObject(parent), Engine(engine), Renderer(renderer)
 {
+	connect(Engine, SIGNAL(destroyed(QObject*)), this, SLOT(cancel()));
+	connect(Renderer, SIGNAL(destroyed(QObject*)), this, SLOT(cancel()));
 }
 
 RefreshViewHack::~RefreshViewHack()
 {
 }
 
+void RefreshViewHack::cancel()
+{
+	Engine = 0;
+	Renderer = 0;
+
+	deleteLater();
+}
+
 void RefreshViewHack::loadFinished()
 {
+	if (!Engine || !Renderer)
+		return;
+
 	// We need to clear messages in case something was rendered before this slot was called.
 	Engine->clearMessages(Renderer);
 	Renderer->setLastMessage(0);
@@ -71,19 +84,31 @@ void RefreshViewHack::loadFinished()
 	deleteLater();
 }
 
-
 PreviewHack::PreviewHack(AdiumChatStyleEngine *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
                          const QString &incomingHtml, QObject *parent) :
 		QObject(parent), Engine(engine), CurrentPreview(preview), BaseHref(baseHref), OutgoingHtml(outgoingHtml), IncomingHtml(incomingHtml)
 {
+	connect(Engine, SIGNAL(destroyed(QObject*)), this, SLOT(cancel()));
+	connect(CurrentPreview, SIGNAL(destroyed(QObject*)), this, SLOT(cancel()));
 }
 
 PreviewHack::~PreviewHack()
 {
 }
 
+void PreviewHack::cancel()
+{
+	Engine = 0;
+	CurrentPreview = 0;
+
+	deleteLater();
+}
+
 void PreviewHack::loadFinished()
 {
+	if (!Engine || !CurrentPreview)
+		return;
+
 	MessageRenderInfo *message = CurrentPreview->messages().at(0);
 
 	QString outgoingHtml(replacedNewLine(Engine->replaceKeywords(BaseHref, OutgoingHtml, message), QLatin1String(" ")));
