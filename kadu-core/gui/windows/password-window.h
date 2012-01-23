@@ -44,8 +44,8 @@ class KADUAPI PasswordWindow : public QDialog, DesktopAwareObject
 	QCheckBox *Store;
 
 private slots:
-	void accepted();
-	void canceled();
+	void dialogAccepted();
+	void dialogRejected();
 
 public:
 	static void getPassword(const QString &message, QVariant data, QObject *receiver, const char *slot);

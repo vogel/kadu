@@ -241,6 +241,9 @@ void Protocol::loggedOutAnyStateEntered()
 {
 	emit disconnected(CurrentAccount);
 
+	// this is different from all other methods because we want to preserve description
+	LoginStatus.setType(StatusTypeOffline);
+
 	disconnectedCleanup();
 	statusChanged(loginStatus());
 }
@@ -257,6 +260,11 @@ void Protocol::wantToLogInStateEntered()
 
 void Protocol::passwordRequiredStateEntered()
 {
+	emit disconnected(CurrentAccount);
+
+	disconnectedCleanup();
+	statusChanged(Status());
+
 	emit invalidPassword(CurrentAccount);
 }
 
