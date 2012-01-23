@@ -39,6 +39,9 @@ class RefreshViewHack : public QObject
 	AdiumChatStyleEngine *Engine;
 	HtmlMessagesRenderer *Renderer;
 
+private slots:
+	void cancel();
+
 public:
 	explicit RefreshViewHack(AdiumChatStyleEngine *engine, HtmlMessagesRenderer *renderer, QObject *parent = 0);
 	virtual ~RefreshViewHack();
@@ -57,6 +60,9 @@ class PreviewHack : public QObject
 	QString BaseHref;
 	QString OutgoingHtml;
 	QString IncomingHtml;
+
+private slots:
+	void cancel();
 
 public:
 	explicit PreviewHack(AdiumChatStyleEngine *engine, Preview *preview, const QString &baseHref, const QString &outgoingHtml,
