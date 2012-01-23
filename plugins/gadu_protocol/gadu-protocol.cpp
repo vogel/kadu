@@ -192,7 +192,7 @@ void GaduProtocol::login()
 
 	if (SocketNotifiers)
 	{
-		delete SocketNotifiers;
+		SocketNotifiers->deleteLater();
 		SocketNotifiers = 0;
 	}
 
@@ -285,7 +285,7 @@ void GaduProtocol::disconnectedCleanup()
 	if (SocketNotifiers)
 	{
 		SocketNotifiers->watchFor(0); // stop watching
-		delete SocketNotifiers;
+		SocketNotifiers->deleteLater();
 		SocketNotifiers = 0;
 	}
 
