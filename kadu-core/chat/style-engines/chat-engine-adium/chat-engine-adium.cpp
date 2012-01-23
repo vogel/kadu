@@ -417,6 +417,8 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		delete CurrentPreviewHack;
 
 	CurrentPreviewHack = new PreviewHack(this, preview, style.baseHref(), style.outgoingHtml(), style.incomingHtml(), this);
+	connect(CurrentPreviewHack, SIGNAL(destroyed(QObject*)),
+	        this, SLOT(currentPreviewHackDestroyed()));
 
 	// lets wait a while for all javascript to resolve and execute
 	// we dont want to get to the party too early
