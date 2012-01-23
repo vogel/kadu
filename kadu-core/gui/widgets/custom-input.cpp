@@ -246,7 +246,7 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 
 	QString path;
 
-	if (source->hasUrls())
+	if (source->hasUrls() && !source->urls().isEmpty())
 	{
 		QUrl url = source->urls().first();
 		if (!url.isEmpty() && url.scheme() == "kaduimg")
