@@ -66,8 +66,11 @@ PasswordWindow::PasswordWindow(const QString &message, QVariant data, QWidget *p
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(canceled()));
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+
+	connect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
+	connect(this, SIGNAL(rejected()), this, SLOT(dialogRejected()));
 
 	layout->addWidget(messageLabel);
 	layout->addWidget(Password);
@@ -79,13 +82,13 @@ PasswordWindow::~PasswordWindow()
 {
 }
 
-void PasswordWindow::accepted()
+void PasswordWindow::dialogAccepted()
 {
 	emit passwordEntered(Data, Password->text(), Store->isChecked());
 	close();
 }
 
-void PasswordWindow::canceled()
+void PasswordWindow::dialogRejected()
 {
 	emit passwordEntered(Data, QString(), false);
 	close();
