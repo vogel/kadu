@@ -57,6 +57,7 @@ set (MOC_SOURCES
 
 	model/history-dates-model.h
 
+	storage/history-messages-storage.h
 	storage/history-storage.h
 
 	history.h
