@@ -58,7 +58,6 @@ ChatHistoryTab::~ChatHistoryTab()
 
 void ChatHistoryTab::setUpGui()
 {
-	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentChatChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
@@ -115,7 +114,7 @@ void ChatHistoryTab::clearChatHistory()
 	displayChat(Chat::null, false);
 }
 
-void ChatHistoryTab::currentChatChanged(const Talkable &talkable)
+void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
 {
 	switch (talkable.type())
 	{

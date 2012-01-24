@@ -41,11 +41,12 @@ private slots:
 	void showSmsPopupMenu();
 	void clearSmsHistory();
 
-	void currentSmsChanged(const Talkable &talkable);
-
 protected:
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
+
+protected slots:
+	virtual void currentTalkableChanged(const Talkable &talkable);
 
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);

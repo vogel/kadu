@@ -89,6 +89,8 @@ void HistoryTab::createGui()
 	TalkableTree->setStyleSheet(style);
 	TalkableTree->viewport()->setStyleSheet(style);
 
+	connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentTalkableChanged(Talkable)));
+
 	FilteredView->setView(TalkableTree);
 
 	TimelineView = new TimelineChatMessagesView(Splitter);

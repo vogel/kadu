@@ -54,7 +54,6 @@ StatusHistoryTab::~StatusHistoryTab()
 
 void StatusHistoryTab::setUpGui()
 {
-	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentStatusChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
@@ -158,7 +157,7 @@ void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 	}
 }
 
-void StatusHistoryTab::currentStatusChanged(const Talkable &talkable)
+void StatusHistoryTab::currentTalkableChanged(const Talkable &talkable)
 {
 	switch (talkable.type())
 	{

@@ -58,7 +58,8 @@ class WaitOverlay;
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
  * Every implementation of HistoryTab must set ModelChain on talkableTree(), implement displayForDate()
- * to update view for selected date and removeEntriesPerDate() to remove history entries for given date.
+ * to update view for selected date, removeEntriesPerDate() to remove history entries for given date
+ * and currentTalkableChanged() to update list of available dates.
  */
 class KADUAPI HistoryTab : public QWidget
 {
@@ -259,6 +260,16 @@ protected:
 	 * After removal updateData() method should be called to ensure consistency.
 	 */
 	virtual void removeEntriesPerDate(const QDate &date) = 0;
+
+protected slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called when current talkable in item view changes.
+	 * @param talkable current talkable
+	 *
+	 * In this method list of available dates should be updated by calling setDates() or setFutureDates().
+	 */
+	virtual void currentTalkableChanged(const Talkable &talkable) = 0;
 
 public:
 	/**

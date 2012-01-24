@@ -43,11 +43,12 @@ private slots:
 	void showStatusesPopupMenu();
 	void clearStatusHistory();
 
-	void currentStatusChanged(const Talkable &talkable);
-
 protected:
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
+
+protected slots:
+	virtual void currentTalkableChanged(const Talkable &talkable);
 
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);

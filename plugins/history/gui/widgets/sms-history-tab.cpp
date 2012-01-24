@@ -54,7 +54,6 @@ SmsHistoryTab::~SmsHistoryTab()
 
 void SmsHistoryTab::setUpGui()
 {
-	connect(talkableTree(), SIGNAL(currentChanged(Talkable)), this, SLOT(currentSmsChanged(Talkable)));
 	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
 	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
@@ -112,7 +111,7 @@ void SmsHistoryTab::clearSmsHistory()
 	}
 }
 
-void SmsHistoryTab::currentSmsChanged(const Talkable &talkable)
+void SmsHistoryTab::currentTalkableChanged(const Talkable &talkable)
 {
 	if (talkable.isValidBuddy())
 		displaySmsRecipient(talkable.toBuddy().mobile(), false);

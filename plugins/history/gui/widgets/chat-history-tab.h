@@ -43,12 +43,13 @@ private slots:
 	void showChatsPopupMenu();
 	void clearChatHistory();
 
-	void currentChatChanged(const Talkable &talkable);
-
 protected:
 	virtual void talkablesAvailable();
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
+
+protected slots:
+	virtual void currentTalkableChanged(const Talkable &talkable);
 
 public:
 	explicit ChatHistoryTab(QWidget *parent = 0);
