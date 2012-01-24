@@ -45,17 +45,10 @@
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent), IsBuddy(true)
 {
-	setUpGui();
 }
 
 StatusHistoryTab::~StatusHistoryTab()
 {
-}
-
-void StatusHistoryTab::setUpGui()
-{
-	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showStatusesPopupMenu()));
-	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
@@ -96,18 +89,6 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 		setDates(QVector<DatesModelItem>());
 }
 
-void StatusHistoryTab::showStatusesPopupMenu()
-{
-	QScopedPointer<QMenu> menu;
-
-	menu.reset(TalkableMenuManager::instance()->menu(this, talkableTree()->actionContext()));
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
-
-	menu->exec(QCursor::pos());
-}
-
 void StatusHistoryTab::clearStatusHistory()
 {
 	if (!talkableTree()->actionContext())
@@ -125,6 +106,16 @@ void StatusHistoryTab::clearStatusHistory()
 
 	updateData();
 	displayStatusBuddy(Buddy::null, false);
+}
+
+void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
+{
+	if (!menu)
+		return;
+
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 }
 
 void StatusHistoryTab::displayForDate(const QDate &date)

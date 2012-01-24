@@ -34,16 +34,14 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Chat CurrentChat;
 	Chat ChatToSelect;
 
-	void setUpGui();
-
 	void displayChat(const Chat &chat, bool force);
 	void displayAggregateChat(const Chat &chat, bool force);
 
 private slots:
-	void showChatsPopupMenu();
 	void clearChatHistory();
 
 protected:
+	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
 	virtual void talkablesAvailable();
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);

@@ -49,17 +49,10 @@
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 		HistoryTab(true, parent)
 {
-	setUpGui();
 }
 
 ChatHistoryTab::~ChatHistoryTab()
 {
-}
-
-void ChatHistoryTab::setUpGui()
-{
-	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showChatsPopupMenu()));
-	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void ChatHistoryTab::displayChat(const Chat &chat, bool force)
@@ -82,18 +75,6 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 	const Chat &agrregate = AggregateChatManager::instance()->aggregateChat(chat);
 
 	displayChat(agrregate ? agrregate : chat, force);
-}
-
-void ChatHistoryTab::showChatsPopupMenu()
-{
-	QScopedPointer<QMenu> menu;
-
-	menu.reset(TalkableMenuManager::instance()->menu(this, talkableTree()->actionContext()));
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
-
-	menu->exec(QCursor::pos());
 }
 
 void ChatHistoryTab::clearChatHistory()
@@ -141,6 +122,16 @@ void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
 			displayChat(Chat::null, false);
 			break;
 	}
+}
+
+void ChatHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
+{
+	if (!menu)
+		return;
+
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
 }
 
 void ChatHistoryTab::talkablesAvailable()

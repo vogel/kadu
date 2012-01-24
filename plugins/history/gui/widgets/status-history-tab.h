@@ -35,15 +35,14 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 	Contact CurrentContact;
 	bool IsBuddy;
 
-	void setUpGui();
 	void displayStatusBuddy(const Buddy &buddy, bool force);
 	void displayStatusContact(const Contact &contact, bool force);
 
 private slots:
-	void showStatusesPopupMenu();
 	void clearStatusHistory();
 
 protected:
+	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 

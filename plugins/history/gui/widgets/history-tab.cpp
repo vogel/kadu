@@ -32,8 +32,9 @@
 #include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
+#include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
@@ -79,6 +80,7 @@ void HistoryTab::createGui()
 	TalkableTree = new TalkableTreeView(FilteredView);
 	TalkableTree->setAlternatingRowColors(true);
 	TalkableTree->setContextMenuEnabled(true);
+	TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	TalkableTree->setUseConfigurationColors(true);
 	TalkableTree->delegateConfiguration().setShowMessagePixmap(false);
 
@@ -90,6 +92,7 @@ void HistoryTab::createGui()
 	TalkableTree->viewport()->setStyleSheet(style);
 
 	connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentTalkableChanged(Talkable)));
+	connect(TalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTalkablePopupMenu()));
 
 	FilteredView->setView(TalkableTree);
 
@@ -370,6 +373,15 @@ void HistoryTab::currentDateChanged()
 {
 	QDate date = timelineView()->currentDate();
 	displayForDate(date);
+}
+
+void HistoryTab::showTalkablePopupMenu()
+{
+	QScopedPointer<QMenu> menu;
+	menu.reset(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
+	modifyTalkablePopupMenu(menu);
+
+	menu->exec(QCursor::pos());
 }
 
 void HistoryTab::showTimelinePopupMenu()

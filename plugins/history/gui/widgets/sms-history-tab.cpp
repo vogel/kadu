@@ -44,18 +44,10 @@ SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent)
 {
 	CurrentRecipient = Buddy::create();
-
-	setUpGui();
 }
 
 SmsHistoryTab::~SmsHistoryTab()
 {
-}
-
-void SmsHistoryTab::setUpGui()
-{
-	connect(talkableTree(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showSmsPopupMenu()));
-	talkableTree()->setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
@@ -73,18 +65,6 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 		setFutureDates(historyStorage()->smsRecipientDates(Talkable(CurrentRecipient)));
 	else
 		setDates(QVector<DatesModelItem>());
-}
-
-void SmsHistoryTab::showSmsPopupMenu()
-{
-	QScopedPointer<QMenu> menu;
-
-	menu.reset(new QMenu(this));
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
-
-	menu->exec(QCursor::pos());
 }
 
 void SmsHistoryTab::clearSmsHistory()
@@ -117,6 +97,16 @@ void SmsHistoryTab::currentTalkableChanged(const Talkable &talkable)
 		displaySmsRecipient(talkable.toBuddy().mobile(), false);
 	else
 		displaySmsRecipient(QString(), false);
+}
+
+void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
+{
+	if (!menu)
+		return;
+
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 }
 
 void SmsHistoryTab::displayForDate(const QDate &date)

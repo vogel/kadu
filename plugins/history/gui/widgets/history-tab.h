@@ -101,6 +101,7 @@ private slots:
 
 	void currentDateChanged();
 
+	void showTalkablePopupMenu();
 	void showTimelinePopupMenu();
 	void removeEntries();
 
@@ -232,6 +233,13 @@ protected:
 	 * @short Hide wait overlay over messages view widget.
 	 */
 	void hideMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Allows to change content of default popup menu displayed on items.
+	 * @param menu menu to change
+	 */
+	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

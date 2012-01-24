@@ -34,14 +34,13 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 
 	Buddy CurrentRecipient;
 
-	void setUpGui();
 	void displaySmsRecipient(const QString &recipient, bool force);
 
 private slots:
-	void showSmsPopupMenu();
 	void clearSmsHistory();
 
 protected:
+	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 
