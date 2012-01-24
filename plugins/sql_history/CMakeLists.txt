@@ -11,12 +11,20 @@ include (FindKadu)
 set (SOURCES
 	storage/history-sql-storage.cpp
 	storage/sql-initializer.cpp
+	storage/sql-messages-chat-storage.cpp
+	storage/sql-messages-sms-storage.cpp
+	storage/sql-messages-status-storage.cpp
+
 	sql-history-plugin.cpp
 )
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
 	storage/sql-initializer.h
+	storage/sql-messages-chat-storage.h
+	storage/sql-messages-sms-storage.h
+	storage/sql-messages-status-storage.h
+
 	sql-history-plugin.h
 )
 

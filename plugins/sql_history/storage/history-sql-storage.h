@@ -57,6 +57,10 @@ class HistorySqlStorage : public HistoryStorage
 	QMap<Contact, int> ContactMap;
 	QMap<QString, int> DateMap;
 
+	HistoryMessagesStorage *ChatStorage;
+	HistoryMessagesStorage *StatusStorage;
+	HistoryMessagesStorage *SmsStorage;
+
 	void initQueries();
 
 	int findOrCreateChat(const Chat &chat);
@@ -131,6 +135,10 @@ public:
 	virtual void clearSmsHistory(const Talkable &talkable, const QDate &date = QDate());
 	virtual void clearStatusHistory(const Talkable &talkable, const QDate &date = QDate());
 	virtual void deleteHistory(const Talkable &talkable);
+
+	virtual HistoryMessagesStorage * chatStorage();
+	virtual HistoryMessagesStorage * statusStorage();
+	virtual HistoryMessagesStorage * smsStorage();
 
 };
 

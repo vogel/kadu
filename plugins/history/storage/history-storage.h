@@ -35,6 +35,8 @@
 #include "../history_exports.h"
 
 struct DatesModelItem;
+
+class HistoryMessagesStorage;
 class Message;
 class Status;
 class Talkable;
@@ -77,6 +79,10 @@ public:
 	virtual void clearSmsHistory(const Talkable &talkable, const QDate &date = QDate()) = 0;
 	virtual void clearStatusHistory(const Talkable &talkable, const QDate &date = QDate()) = 0;
 	virtual void deleteHistory(const Talkable &talkable) = 0;
+
+	virtual HistoryMessagesStorage * chatStorage() = 0;
+	virtual HistoryMessagesStorage * statusStorage() = 0;
+	virtual HistoryMessagesStorage * smsStorage() = 0;
 
 };
 

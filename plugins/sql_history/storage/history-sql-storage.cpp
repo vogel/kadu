@@ -48,15 +48,18 @@
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "status/status-type-manager.h"
-#include <status/status-type-data.h>
+#include "status/status-type-data.h"
+#include "talkable/talkable.h"
 #include "debug.h"
-#include <talkable/talkable.h>
 
 #include "plugins/history/history.h"
 #include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/search/history-search-parameters.h"
 
 #include "storage/sql-initializer.h"
+#include "storage/sql-messages-chat-storage.h"
+#include "storage/sql-messages-sms-storage.h"
+#include "storage/sql-messages-status-storage.h"
 
 #include "history-sql-storage.h"
 
@@ -91,6 +94,10 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	connect(initializer, SIGNAL(databaseOpenFailed(QSqlError)), this, SLOT(databaseOpenFailed(QSqlError)));
 
 	InitializerThread->start();
+
+	ChatStorage = new SqlMessagesChatStorage(this);
+	StatusStorage = new SqlMessagesStatusStorage(this);
+	SmsStorage = new SqlMessagesSmsStorage(this);
 
 	History::instance()->registerStorage(this);
 }
@@ -1060,4 +1067,19 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 	}
 
 	return messages;
+}
+
+HistoryMessagesStorage * HistorySqlStorage::chatStorage()
+{
+	return ChatStorage;
+}
+
+HistoryMessagesStorage * HistorySqlStorage::smsStorage()
+{
+	return SmsStorage;
+}
+
+HistoryMessagesStorage * HistorySqlStorage::statusStorage()
+{
+	return StatusStorage;
 }
