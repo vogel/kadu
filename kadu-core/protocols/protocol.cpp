@@ -87,9 +87,13 @@ void Protocol::prepareStateMachine()
 void Protocol::passwordProvided()
 {
 	if (CurrentAccount.hasPassword())
+	{
 		emit stateMachinePasswordAvailable();
-	else
-		emit stateMachinePasswordNotAvailable();
+		return;
+	}
+
+	LoginStatus = Status();
+	emit stateMachinePasswordNotAvailable();
 }
 
 void Protocol::setAllOffline()
@@ -240,9 +244,6 @@ void Protocol::loggingOutStateEntered()
 void Protocol::loggedOutAnyStateEntered()
 {
 	emit disconnected(CurrentAccount);
-
-	// this is different from all other methods because we want to preserve description
-	LoginStatus.setType(StatusTypeOffline);
 
 	disconnectedCleanup();
 	statusChanged(loginStatus());

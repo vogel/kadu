@@ -126,7 +126,7 @@ ProtocolStateMachine::~ProtocolStateMachine()
 void ProtocolStateMachine::printConfiguration()
 {
 	QStringList states;
-	
+
 	if (configuration().contains(LoggingOutState))
 		states.append("logging-out");
 	if (configuration().contains(LoggedOutOnlineState))
