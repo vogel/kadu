@@ -35,7 +35,7 @@ class ChatsListModel;
 class DatesModelItem;
 class FilteredTreeView;
 class HistoryDatesModel;
-class HistoryStorage;
+class HistoryMessagesStorage;
 class Message;
 class ModelChain;
 class Talkable;
@@ -65,7 +65,7 @@ class KADUAPI HistoryTab : public QWidget
 {
 	Q_OBJECT
 
-	HistoryStorage *Storage;
+	HistoryMessagesStorage *Storage;
 
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
@@ -326,17 +326,17 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets HistoryStorage to use by this tab.
+	 * @short Sets HistoryMessagesStorage to use by this tab.
 	 * @param storage new storage to use
 	 */
-	void setHistoryStorage(HistoryStorage *storage);
+	void setHistoryMessagesStorage(HistoryMessagesStorage *storage);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns HistoryStorage used by this tab.
-	 * @return HistoryStorage used by this tab
+	 * @short Returns HistoryMessagesStorage used by this tab.
+	 * @return HistoryMessagesStorage used by this tab
 	 */
-	HistoryStorage * historyStorage() const;
+	HistoryMessagesStorage * historyMessagesStorage() const;
 
 };
 

@@ -36,7 +36,7 @@
 
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
-#include "storage/history-storage.h"
+#include "storage/history-messages-storage.h"
 
 #include "sms-history-tab.h"
 
@@ -61,8 +61,8 @@ void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
 
 	CurrentRecipient.setMobile(recipient);
 
-	if (historyStorage())
-		setFutureDates(historyStorage()->smsRecipientDates(Talkable(CurrentRecipient)));
+	if (historyMessagesStorage())
+		setFutureDates(historyMessagesStorage()->dates(Talkable(CurrentRecipient)));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -71,7 +71,7 @@ void SmsHistoryTab::clearSmsHistory()
 {
 	bool removed = false;
 
-	if (!historyStorage())
+	if (!historyMessagesStorage())
 		return;
 
 	BuddySet buddies = talkableTree()->actionContext()->buddies();
@@ -81,7 +81,7 @@ void SmsHistoryTab::clearSmsHistory()
 			continue;
 
 		removed = true;
-		historyStorage()->clearSmsHistory(buddy);
+		historyMessagesStorage()->deleteMessages(buddy);
 	}
 
 	if (removed)
@@ -111,17 +111,17 @@ void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	if (!CurrentRecipient.mobile().isEmpty() && date.isValid() && historyStorage())
-		setFutureMessages(historyStorage()->smses(CurrentRecipient, date));
+	if (!CurrentRecipient.mobile().isEmpty() && date.isValid() && historyMessagesStorage())
+		setFutureMessages(historyMessagesStorage()->messages(CurrentRecipient, date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!CurrentRecipient.mobile().isEmpty() && historyStorage())
+	if (!CurrentRecipient.mobile().isEmpty() && historyMessagesStorage())
 	{
-		historyStorage()->clearSmsHistory(CurrentRecipient, date);
+		historyMessagesStorage()->deleteMessages(CurrentRecipient, date);
 		displaySmsRecipient(CurrentRecipient.mobile(), true);
 	}
 }
@@ -130,12 +130,12 @@ void SmsHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());
 
-	if (!historyStorage())
+	if (!historyMessagesStorage())
 	{
 		setTalkables(QVector<Talkable>());
 		displaySmsRecipient(QString(), false);
 		return;
 	}
 
-	setFutureTalkables(historyStorage()->smsRecipients());
+	setFutureTalkables(historyMessagesStorage()->talkables());
 }

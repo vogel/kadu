@@ -125,16 +125,16 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
-	ChatTab->setHistoryStorage(historyStorage);
-	StatusTab->setHistoryStorage(historyStorage);
-	SmsTab->setHistoryStorage(historyStorage);
+	ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
+	StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
+	SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
 }
 
 void HistoryWindow::updateData()
 {
-	ChatTab->setHistoryStorage(History::instance()->currentStorage());
-	StatusTab->setHistoryStorage(History::instance()->currentStorage());
-	SmsTab->setHistoryStorage(History::instance()->currentStorage());
+	ChatTab->setHistoryMessagesStorage(History::instance()->currentStorage()->chatStorage());
+	StatusTab->setHistoryMessagesStorage(History::instance()->currentStorage()->statusStorage());
+	SmsTab->setHistoryMessagesStorage(History::instance()->currentStorage()->smsStorage());
 }
 
 void HistoryWindow::selectChat(const Chat &chat)

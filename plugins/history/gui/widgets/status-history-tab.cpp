@@ -38,7 +38,7 @@
 #include "model/dates-model-item.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "search/history-search-parameters.h"
-#include "storage/history-storage.h"
+#include "storage/history-messages-storage.h"
 
 #include "status-history-tab.h"
 
@@ -64,8 +64,8 @@ void StatusHistoryTab::displayStatusBuddy(const Buddy &buddy, bool force)
 
 	CurrentBuddy = buddy;
 
-	if (historyStorage())
-		setFutureDates(historyStorage()->statusDates(CurrentBuddy));
+	if (historyMessagesStorage())
+		setFutureDates(historyMessagesStorage()->dates(CurrentBuddy));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -83,8 +83,8 @@ void StatusHistoryTab::displayStatusContact(const Contact &contact, bool force)
 
 	CurrentContact = contact;
 
-	if (historyStorage())
-		setFutureDates(historyStorage()->statusDates(CurrentContact));
+	if (historyMessagesStorage())
+		setFutureDates(historyMessagesStorage()->dates(CurrentContact));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -94,7 +94,7 @@ void StatusHistoryTab::clearStatusHistory()
 	if (!talkableTree()->actionContext())
 		return;
 
-	if (!historyStorage())
+	if (!historyMessagesStorage())
 		return;
 
 	const BuddySet &buddies = talkableTree()->actionContext()->buddies();
@@ -102,7 +102,7 @@ void StatusHistoryTab::clearStatusHistory()
 		return;
 
 	foreach (const Buddy &buddy, buddies)
-		historyStorage()->clearStatusHistory(buddy);
+		historyMessagesStorage()->deleteMessages(buddy);
 
 	updateData();
 	displayStatusBuddy(Buddy::null, false);
@@ -120,7 +120,7 @@ void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu
 
 void StatusHistoryTab::displayForDate(const QDate &date)
 {
-	if (!historyStorage() || (IsBuddy && !CurrentBuddy) || (!IsBuddy && !CurrentContact) || !date.isValid())
+	if (!historyMessagesStorage() || (IsBuddy && !CurrentBuddy) || (!IsBuddy && !CurrentContact) || !date.isValid())
 	{
 		setMessages(QVector<Message>());
 		return;
@@ -130,20 +130,20 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 	{
 		if (!CurrentBuddy.contacts().isEmpty())
 			timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentBuddy.contacts().at(0)), true));
-		setFutureMessages(historyStorage()->statuses(CurrentBuddy, date));
+		setFutureMessages(historyMessagesStorage()->messages(CurrentBuddy, date));
 	}
 	else
 	{
 		timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentContact), true));
-		setFutureMessages(historyStorage()->statuses(CurrentContact, date));
+		setFutureMessages(historyMessagesStorage()->messages(CurrentContact, date));
 	}
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentBuddy && historyStorage())
+	if (CurrentBuddy && historyMessagesStorage())
 	{
-		historyStorage()->clearStatusHistory(CurrentBuddy, date);
+		historyMessagesStorage()->deleteMessages(CurrentBuddy, date);
 		displayStatusBuddy(CurrentBuddy, true);
 	}
 }
@@ -168,12 +168,12 @@ void StatusHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());
 
-	if (!historyStorage())
+	if (!historyMessagesStorage())
 	{
 		setTalkables(QVector<Talkable>());
 		displayStatusBuddy(Buddy::null, false);
 		return;
 	}
 
-	setFutureTalkables(historyStorage()->statusBuddies());
+	setFutureTalkables(historyMessagesStorage()->talkables());
 }

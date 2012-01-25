@@ -422,13 +422,13 @@ void HistoryTab::setSizes(const QList<int> &newSizes)
 	TimelineView->setSizes(newSizes.mid(2, 2));
 }
 
-void HistoryTab::setHistoryStorage(HistoryStorage *storage)
+void HistoryTab::setHistoryMessagesStorage(HistoryMessagesStorage *storage)
 {
 	Storage = storage;
 	updateData();
 }
 
-HistoryStorage * HistoryTab::historyStorage() const
+HistoryMessagesStorage * HistoryTab::historyMessagesStorage() const
 {
 	return Storage;
 }

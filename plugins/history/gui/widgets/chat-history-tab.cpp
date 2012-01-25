@@ -41,7 +41,7 @@
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "model/dates-model-item.h"
 #include "search/history-search-parameters.h"
-#include "storage/history-storage.h"
+#include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 
 #include "chat-history-tab.h"
@@ -64,8 +64,8 @@ void ChatHistoryTab::displayChat(const Chat &chat, bool force)
 
 	CurrentChat = chat;
 
-	if (historyStorage())
-		setFutureDates(historyStorage()->chatDates(CurrentChat));
+	if (historyMessagesStorage())
+		setFutureDates(historyMessagesStorage()->dates(CurrentChat));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -86,9 +86,9 @@ void ChatHistoryTab::clearChatHistory()
 	if (!chat)
 		return;
 
-	if (historyStorage())
+	if (historyMessagesStorage())
 	{
-		historyStorage()->clearChatHistory(chat);
+		historyMessagesStorage()->deleteMessages(chat);
 		updateData();
 	}
 
@@ -160,17 +160,17 @@ void ChatHistoryTab::talkablesAvailable()
 
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
-	if (historyStorage())
-		setFutureMessages(historyStorage()->messages(CurrentChat, date));
+	if (historyMessagesStorage())
+		setFutureMessages(historyMessagesStorage()->messages(CurrentChat, date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentChat && historyStorage())
+	if (CurrentChat && historyMessagesStorage())
 	{
-		historyStorage()->clearChatHistory(CurrentChat, date);
+		historyMessagesStorage()->deleteMessages(CurrentChat, date);
 		displayChat(CurrentChat, true);
 	}
 }
@@ -179,14 +179,14 @@ void ChatHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());
 
-	if (!historyStorage())
+	if (!historyMessagesStorage())
 	{
 		setTalkables(QVector<Talkable>());
 		displayChat(Chat::null, false);
 		return;
 	}
 
-	setFutureTalkables(historyStorage()->chats());
+	setFutureTalkables(historyMessagesStorage()->talkables());
 }
 
 void ChatHistoryTab::selectChat(const Chat &chat)
