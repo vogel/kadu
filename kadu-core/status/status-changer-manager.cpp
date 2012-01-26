@@ -82,7 +82,7 @@ void StatusChangerManager::setStatus(StatusContainer *statusContainer, Status st
 	if (statusContainer)
 	{
 		Statuses.insert(statusContainer, status);
-		statusChanged(statusContainer);
+		statusChanged(statusContainer, true);
 	}
 }
 
@@ -93,13 +93,13 @@ Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 	return Status();
 }
 
-void StatusChangerManager::statusChanged(StatusContainer *container)
+void StatusChangerManager::statusChanged(StatusContainer *container, bool forceStatusUpdate)
 {
 	if (!container)
 	{
 		foreach (StatusContainer *statusContainer, StatusContainerManager::instance()->statusContainers())
 			if (statusContainer)
-				statusChanged(statusContainer);
+				statusChanged(statusContainer, forceStatusUpdate);
 
 		return;
 	}
@@ -110,6 +110,7 @@ void StatusChangerManager::statusChanged(StatusContainer *container)
 		for (int i = 0; i < StatusChangers.count(); i++)
 			StatusChangers.at(i)->changeStatus(container, status);
 
-		container->setStatus(status);
+		if (forceStatusUpdate || container->status() != status)
+			container->setStatus(status);
 	}
 }
