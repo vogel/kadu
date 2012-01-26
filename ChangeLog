@@ -1,4 +1,14 @@
-﻿+++ version 0.11.0-rc2
+﻿+++ version 0.11.0
+* gui: #2421 fixed: warning when opening chat conference window (Vogel)
+* spellchecker: #2422 fixed: crash in the Highlighter::removeAll() method (beevvy)
+* protocol: #2433 fixed: incorrect status behaviour when no passwors is available (Vogel)
+* chat-styles: #2438 fixed: crash when window were closed before asynchronous history was loaded (Vogel)
+* gui: #2439 fixed: segfault after second opening of configuration window (Vogel)
+* gui: #2429 fixed: crash on Ctrl+V in chat window (Vogel)
+* gadu: #2423 fixed: do not crash Gadu randomly (Vogel)
+* status: #2444 fixed: prevent autoaway from spamming with XMPP away/xaway status changes (beevvy)
+
++++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
 * gadu: #2410 fixed: after waking up from suspend Gadu is not reconnecting (WhE)
 * gui: #2417 fixed: properly update icons of Kadu windows (beevvy)
