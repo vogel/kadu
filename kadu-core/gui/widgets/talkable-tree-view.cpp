@@ -250,10 +250,19 @@ StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) con
 		return StatusContainerManager::instance();
 }
 
+void TalkableTreeView::setCurrentTalkable(const Talkable &talkable)
+{
+	if (CurrentTalkable == talkable)
+		return;
+
+	CurrentTalkable = talkable;
+	emit currentChanged(CurrentTalkable);
+}
+
 void TalkableTreeView::updateContext()
 {
 	// cuurent index is part of context
-	emit currentChanged(talkableAt(currentIndex()));
+	setCurrentTalkable(talkableAt(currentIndex()));
 
 	ModelIndexListConverter converter(selectedIndexes());
 
@@ -331,5 +340,5 @@ void TalkableTreeView::currentChanged(const QModelIndex &current, const QModelIn
 {
 	QTreeView::currentChanged(current, previous);
 
-	emit currentChanged(talkableAt(current));
+	setCurrentTalkable(talkableAt(current));
 }

@@ -64,6 +64,7 @@ class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvid
 	ModelChain *Chain;
 
 	BaseActionContext *Context;
+	Talkable CurrentTalkable;
 
 	Talkable talkableAt(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
@@ -75,6 +76,8 @@ class KADUAPI TalkableTreeView : public KaduTreeView, public ActionContextProvid
 	bool ContextMenuEnabled;
 
 	StatusContainer * statusContainerForChat(const Chat &chat) const;
+
+	void setCurrentTalkable(const Talkable &talkable);
 
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
