@@ -181,7 +181,7 @@ public:
 	 * @return Contact instance from this Talkable instance
 	 *
 	 * If current Talkable instance is of type ItemChat, then Chat used to create this instance is returned.
-	 * In other case null Chat is returned.
+	 * In other case simple Chat from Contact or Buddy is created.
 	 */
 	Chat toChat() const;
 

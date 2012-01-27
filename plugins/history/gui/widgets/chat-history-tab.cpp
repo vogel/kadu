@@ -100,22 +100,14 @@ void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
 	switch (talkable.type())
 	{
 		case Talkable::ItemChat:
+		case Talkable::ItemBuddy:
 		{
 			displayAggregateChat(talkable.toChat(), false);
 			break;
 		}
-		case Talkable::ItemBuddy:
-		{
-			BuddySet buddies;
-			buddies.insert(talkable.toBuddy());
-			displayAggregateChat(ChatManager::instance()->findChat(buddies, true), false);
-			break;
-		}
 		case Talkable::ItemContact:
 		{
-			ContactSet contacts;
-			contacts.insert(talkable.toContact());
-			displayChat(ChatManager::instance()->findChat(contacts, true), false);
+			displayChat(talkable.toChat(), false);
 			break;
 		}
 		default:

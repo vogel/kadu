@@ -21,6 +21,8 @@
 #include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-set.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
 
@@ -141,6 +143,8 @@ Chat Talkable::toChat() const
 {
 	switch (Type)
 	{
+		case ItemBuddy: return ChatManager::instance()->findChat(BuddySet(MyBuddy), true);
+		case ItemContact: return ChatManager::instance()->findChat(ContactSet(MyContact), true);
 		case ItemChat: return MyChat;
 		default:
 			return Chat::null;
