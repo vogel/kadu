@@ -32,7 +32,6 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Talkable TalkableToSelect;
 
 protected:
-	virtual void clearTalkableHistory(ActionContext *actionContext);
 	virtual void talkablesAvailable();
 
 public:

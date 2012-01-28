@@ -21,7 +21,6 @@
 #include <QtGui/QAbstractItemView>
 
 #include "contacts/contact-set.h"
-#include "gui/actions/action-context.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 
@@ -37,18 +36,6 @@ ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 
 ChatHistoryTab::~ChatHistoryTab()
 {
-}
-
-void ChatHistoryTab::clearTalkableHistory(ActionContext *actionContext)
-{
-	Q_ASSERT(actionContext);
-	Q_ASSERT(historyMessagesStorage());
-
-	const Chat &chat = actionContext->chat();
-	if (!chat)
-		return;
-
-	historyMessagesStorage()->deleteMessages(chat);
 }
 
 void ChatHistoryTab::talkablesAvailable()

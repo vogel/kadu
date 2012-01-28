@@ -418,9 +418,18 @@ void HistoryTab::clearTalkableHistory()
 	if (!Storage)
 		return;
 
-	Q_ASSERT(TalkableTree->actionContext());
+	Q_ASSERT(TalkableTree->selectionModel());
 
-	clearTalkableHistory(TalkableTree->actionContext());
+	const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
+	QList<Talkable> talkables;
+
+	foreach (const QModelIndex &selectedIndex, selectedIndexes)
+	{
+		Talkable talkable = selectedIndex.data(TalkableRole).value<Talkable>();
+		if (!talkable.isEmpty())
+			Storage->deleteMessages(talkable);
+	}
+
 	updateData();
 	displayTalkable(Talkable(), true);
 }

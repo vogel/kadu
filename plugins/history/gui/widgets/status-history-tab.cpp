@@ -33,13 +33,3 @@ StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 StatusHistoryTab::~StatusHistoryTab()
 {
 }
-
-void StatusHistoryTab::clearTalkableHistory(ActionContext *actionContext)
-{
-	Q_ASSERT(actionContext);
-	Q_ASSERT(historyMessagesStorage());
-
-	const BuddySet &buddies = actionContext->buddies();
-	foreach (const Buddy &buddy, buddies)
-		historyMessagesStorage()->deleteMessages(buddy);
-}

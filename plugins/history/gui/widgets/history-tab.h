@@ -250,15 +250,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears history for all talkables in given actionContext.
-	 * @param actionContext context contains selected items on talkable tree view
-	 *
-	 * This method can be called only if storage is available (not-null).
-	 */
-	virtual void clearTalkableHistory(ActionContext *actionContext) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called after talkables are received from future objects.
 	 */
 	virtual void talkablesAvailable();

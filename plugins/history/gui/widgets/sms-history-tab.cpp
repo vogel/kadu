@@ -34,18 +34,3 @@ SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 SmsHistoryTab::~SmsHistoryTab()
 {
 }
-
-void SmsHistoryTab::clearTalkableHistory(ActionContext *actionContext)
-{
-	Q_ASSERT(actionContext);
-	Q_ASSERT(historyMessagesStorage());
-
-	BuddySet buddies = actionContext->buddies();
-	foreach (const Buddy &buddy, buddies)
-	{
-		if (buddy.mobile().isEmpty())
-			continue;
-
-		historyMessagesStorage()->deleteMessages(buddy);
-	}
-}

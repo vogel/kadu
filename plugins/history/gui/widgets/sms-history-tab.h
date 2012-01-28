@@ -28,9 +28,6 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-protected:
-	virtual void clearTalkableHistory(ActionContext *actionContext);
-
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);
 	virtual ~SmsHistoryTab();

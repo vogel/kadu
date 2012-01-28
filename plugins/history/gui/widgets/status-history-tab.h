@@ -28,9 +28,6 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-protected:
-	virtual void clearTalkableHistory(ActionContext *actionContext);
-
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);
 	virtual ~StatusHistoryTab();
