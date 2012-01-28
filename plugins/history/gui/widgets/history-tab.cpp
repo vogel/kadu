@@ -437,6 +437,18 @@ void HistoryTab::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
+void HistoryTab::updateData()
+{
+	if (!Storage)
+	{
+		setTalkables(QVector<Talkable>());
+		displayTalkable(Talkable(), false);
+		return;
+	}
+
+	setFutureTalkables(Storage->talkables());
+}
+
 QList<int> HistoryTab::sizes() const
 {
 	QList<int> result = Splitter->sizes();

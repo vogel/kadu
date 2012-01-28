@@ -44,8 +44,6 @@ public:
 	explicit ChatHistoryTab(QWidget *parent = 0);
 	virtual ~ChatHistoryTab();
 
-	virtual void updateData();
-
 	void selectTalkable(const Talkable &talkable);
 
 };

@@ -41,8 +41,6 @@ public:
 	explicit SmsHistoryTab(QWidget *parent = 0);
 	virtual ~SmsHistoryTab();
 
-	virtual void updateData();
-
 };
 
 #endif // SMS_HISTORY_TAB_H

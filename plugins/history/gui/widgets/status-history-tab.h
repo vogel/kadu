@@ -41,8 +41,6 @@ public:
 	explicit StatusHistoryTab(QWidget *parent = 0);
 	virtual ~StatusHistoryTab();
 
-	virtual void updateData();
-
 };
 
 #endif // STATUS_HISTORY_TAB_H

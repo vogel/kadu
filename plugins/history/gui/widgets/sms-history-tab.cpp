@@ -82,17 +82,3 @@ void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 }
-
-void SmsHistoryTab::updateData()
-{
-	setMessages(QVector<Message>());
-
-	if (!historyMessagesStorage())
-	{
-		setTalkables(QVector<Talkable>());
-		displayTalkable(Talkable(), false);
-		return;
-	}
-
-	setFutureTalkables(historyMessagesStorage()->talkables());
-}

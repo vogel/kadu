@@ -271,7 +271,7 @@ public:
 	 * newsest data from history storage. List of dates in timeline widget is cleared and nothing
 	 * is selected.
 	 */
-	virtual void updateData() = 0;
+	virtual void updateData();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -107,20 +107,6 @@ void ChatHistoryTab::talkablesAvailable()
 		talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
 }
 
-void ChatHistoryTab::updateData()
-{
-	setMessages(QVector<Message>());
-
-	if (!historyMessagesStorage())
-	{
-		setTalkables(QVector<Talkable>());
-		displayTalkable(Talkable(), false);
-		return;
-	}
-
-	setFutureTalkables(historyMessagesStorage()->talkables());
-}
-
 void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
 	TalkableToSelect = talkable;

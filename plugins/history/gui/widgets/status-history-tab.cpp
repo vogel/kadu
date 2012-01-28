@@ -79,17 +79,3 @@ void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 }
-
-void StatusHistoryTab::updateData()
-{
-	setMessages(QVector<Message>());
-
-	if (!historyMessagesStorage())
-	{
-		setTalkables(QVector<Talkable>());
-		displayTalkable(Talkable(), false);
-		return;
-	}
-
-	setFutureTalkables(historyMessagesStorage()->talkables());
-}
