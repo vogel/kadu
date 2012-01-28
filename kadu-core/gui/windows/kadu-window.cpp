@@ -93,7 +93,6 @@ KaduWindow::KaduWindow() :
 	MenuBar = new QMenuBar(0);
 #endif
 
-	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(QLatin1String("Kadu"));
 
 	// we need to create gui first, then actions, then menus
