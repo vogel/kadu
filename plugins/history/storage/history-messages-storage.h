@@ -30,20 +30,87 @@
 #include "plugins/history/history_exports.h"
 #include "plugins/history/model/dates-model-item.h"
 
+/**
+ * @addtogroup History
+ * @{
+ */
+
+/**
+ * @class HistoryMessagesStorage
+ * @author Rafał 'Vogel' Malinowski
+ * @short Interface that provides read and delete access to a message storage.
+ * @todo Think about adding writing here.
+ *
+ * This interface provides read and delete access to a message storage. A message storage
+ * contains list of messages. Each message has is connected with a data and belongs to given
+ * talkable. List of available talkables can be fetched using talkables() method. List of available
+ * dates for given talkables can be fetched using dates() method. List of messages for given
+ * talkable and date can be fetched using messages() method.
+ *
+ * All messages for given talkable can be deleted by deleteMessages() method. Is also allows deleting
+ * messages for given talkable and date.
+ */
 class HISTORYAPI HistoryMessagesStorage : public QObject
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new HistoryMessagesStorage instance.
+	 * @param parent QObject parent of new HistoryMessagesStorage instance
+	 */
 	explicit HistoryMessagesStorage(QObject *parent) : QObject(parent) {}
 	virtual ~HistoryMessagesStorage() {}
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns list of available talkables.
+	 * @return list of available talkables
+	 *
+	 * This methods returns list of available talkables in asynchronous way. Refer to QFuture
+	 * documentation for more information.
+	 */
 	virtual QFuture<QVector<Talkable> > talkables() = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns list of available dates for given talkable.
+	 * @param talkable talkable to get list of dates for
+	 * @return list of available dates for given talkable
+	 *
+	 * This methods returns list of available dates for given talkabel in asynchronous way. Refer to QFuture
+	 * documentation for more information.
+	 */
 	virtual QFuture<QVector<DatesModelItem> > dates(const Talkable &talkable) = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns list of messages for given talkable and data.
+	 * @param talkable talkable to get list of messages for
+	 * @param date date to get list of messages for
+	 * @return list of messages for given talkable and date
+	 *
+	 * This methods returns list of message in asynchronous way. Refer to QFuture
+	 * documentation for more information.
+	 */
 	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date) = 0;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Delete all messages for given talkable and data.
+	 * @param talkable talkable to delete list of messages for
+	 * @param date date to delete list of messages for
+	 *
+	 * This methods removes all messages for given talkable and date. If no date is provided
+	 * all messages for give talkable are removed.
+	 */
 	virtual void deleteMessages(const Talkable &talkable, const QDate &date = QDate()) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // HISTORY_MESSAGES_STORAGE_H
