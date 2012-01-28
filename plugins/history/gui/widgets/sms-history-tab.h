@@ -31,11 +31,8 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-private slots:
-	void clearSmsHistory();
-
 protected:
-	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
+	virtual void clearTalkableHistory(ActionContext *actionContext);
 
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);

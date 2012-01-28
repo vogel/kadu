@@ -403,13 +403,32 @@ void HistoryTab::currentDateChanged()
 	setFutureMessages(Storage->messages(CurrentTalkable, date));
 }
 
+void HistoryTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)
+{
+	ClearHistoryMenuItemTitle = clearHistoryMenuItemTitle;
+}
+
 void HistoryTab::showTalkablePopupMenu()
 {
 	QScopedPointer<QMenu> menu;
 	menu.reset(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
-	modifyTalkablePopupMenu(menu);
+	menu->addSeparator();
+	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
+	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));
 
 	menu->exec(QCursor::pos());
+}
+
+void HistoryTab::clearTalkableHistory()
+{
+	if (!Storage)
+		return;
+
+	Q_ASSERT(TalkableTree->actionContext());
+
+	clearTalkableHistory(TalkableTree->actionContext());
+	updateData();
+	displayTalkable(Talkable(), true);
 }
 
 void HistoryTab::showTimelinePopupMenu()

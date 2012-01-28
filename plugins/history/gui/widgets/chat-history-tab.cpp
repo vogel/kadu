@@ -48,38 +48,23 @@
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
 		HistoryTab(true, parent)
 {
+	setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
 }
 
 ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::clearChatHistory()
+void ChatHistoryTab::clearTalkableHistory(ActionContext *actionContext)
 {
-	if (!talkableTree()->actionContext())
-		return;
+	Q_ASSERT(actionContext);
+	Q_ASSERT(historyMessagesStorage());
 
-	const Chat &chat = talkableTree()->actionContext()->chat();
+	const Chat &chat = actionContext->chat();
 	if (!chat)
 		return;
 
-	if (historyMessagesStorage())
-	{
-		historyMessagesStorage()->deleteMessages(chat);
-		updateData();
-	}
-
-	displayTalkable(Talkable(), false);
-}
-
-void ChatHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
-{
-	if (!menu)
-		return;
-
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Chat History"), this, SLOT(clearChatHistory()));
+	historyMessagesStorage()->deleteMessages(chat);
 }
 
 void ChatHistoryTab::talkablesAvailable()

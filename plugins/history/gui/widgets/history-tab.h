@@ -31,6 +31,7 @@ class QDate;
 class QMenu;
 class QSplitter;
 
+class ActionContext;
 class BuddyListModel;
 class ChatsListModel;
 class DatesModelItem;
@@ -75,6 +76,7 @@ class KADUAPI HistoryTab : public QWidget
 
 	FilteredTreeView *FilteredView;
 	TalkableTreeView *TalkableTree;
+	QString ClearHistoryMenuItemTitle;
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
 	HistoryDatesModel *DatesModel;
@@ -102,8 +104,10 @@ private slots:
 	void currentDateChanged();
 
 	void showTalkablePopupMenu();
+	void clearTalkableHistory();
+
 	void showTimelinePopupMenu();
-	void removeEntries();;
+	void removeEntries();
 
 protected:
 	Talkable currentTalkable() const { return CurrentTalkable; }
@@ -239,10 +243,19 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Allows to change content of default popup menu displayed on items.
-	 * @param menu menu to change
+	 * @short Allows to change title of "Delete history" menu item.
+	 * @param clearHistoryMenuItemTitle new title of "Delete history" menu item.
 	 */
-	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu) = 0;
+	void setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Clears history for all talkables in given actionContext.
+	 * @param actionContext context contains selected items on talkable tree view
+	 *
+	 * This method can be called only if storage is available (not-null).
+	 */
+	virtual void clearTalkableHistory(ActionContext *actionContext) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

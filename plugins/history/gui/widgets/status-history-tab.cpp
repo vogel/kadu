@@ -45,37 +45,19 @@
 StatusHistoryTab::StatusHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent)
 {
+	setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 }
 
 StatusHistoryTab::~StatusHistoryTab()
 {
 }
 
-void StatusHistoryTab::clearStatusHistory()
+void StatusHistoryTab::clearTalkableHistory(ActionContext *actionContext)
 {
-	if (!talkableTree()->actionContext())
-		return;
+	Q_ASSERT(actionContext);
+	Q_ASSERT(historyMessagesStorage());
 
-	if (!historyMessagesStorage())
-		return;
-
-	const BuddySet &buddies = talkableTree()->actionContext()->buddies();
-	if (buddies.isEmpty())
-		return;
-
+	const BuddySet &buddies = actionContext->buddies();
 	foreach (const Buddy &buddy, buddies)
 		historyMessagesStorage()->deleteMessages(buddy);
-
-	updateData();
-	displayTalkable(Talkable(), false);
-}
-
-void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
-{
-	if (!menu)
-		return;
-
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 }

@@ -43,42 +43,24 @@
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent)
 {
+	setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 }
 
 SmsHistoryTab::~SmsHistoryTab()
 {
 }
 
-void SmsHistoryTab::clearSmsHistory()
+void SmsHistoryTab::clearTalkableHistory(ActionContext *actionContext)
 {
-	bool removed = false;
+	Q_ASSERT(actionContext);
+	Q_ASSERT(historyMessagesStorage());
 
-	if (!historyMessagesStorage())
-		return;
-
-	BuddySet buddies = talkableTree()->actionContext()->buddies();
+	BuddySet buddies = actionContext->buddies();
 	foreach (const Buddy &buddy, buddies)
 	{
 		if (buddy.mobile().isEmpty())
 			continue;
 
-		removed = true;
 		historyMessagesStorage()->deleteMessages(buddy);
 	}
-
-	if (removed)
-	{
-		updateData();
-		displayTalkable(Talkable(), false);
-	}
-}
-
-void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
-{
-	if (!menu)
-		return;
-
-	menu->addSeparator();
-	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
-			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 }

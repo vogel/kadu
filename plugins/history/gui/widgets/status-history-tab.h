@@ -31,11 +31,8 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-private slots:
-	void clearStatusHistory();
-
 protected:
-	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
+	virtual void clearTalkableHistory(ActionContext *actionContext);
 
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);

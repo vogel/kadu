@@ -33,11 +33,8 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 
 	Talkable TalkableToSelect;
 
-private slots:
-	void clearChatHistory();
-
 protected:
-	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
+	virtual void clearTalkableHistory(ActionContext *actionContext);
 	virtual void talkablesAvailable();
 
 public:
