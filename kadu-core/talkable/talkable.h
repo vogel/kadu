@@ -181,7 +181,8 @@ public:
 	 * @return Contact instance from this Talkable instance
 	 *
 	 * If current Talkable instance is of type ItemChat, then Chat used to create this instance is returned.
-	 * In other case simple Chat from Contact or Buddy is created.
+	 * When current Talkable is of type ItemBuddy then AggreagetChat is returned. In other case, Chat build
+	 * from one Contact is returned.
 	 */
 	Chat toChat() const;
 

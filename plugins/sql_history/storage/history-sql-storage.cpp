@@ -456,9 +456,6 @@ void HistorySqlStorage::appendSms(const QString &recipient, const QString &conte
 
 void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &date)
 {
-	if (!talkable.isValidChat())
-		return;
-
 	if (!waitForDatabase())
 		return;
 
@@ -635,9 +632,6 @@ QFuture<QVector<Talkable> > HistorySqlStorage::smsRecipients()
 
 QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkable)
 {
-	if (!talkable.isValidChat())
-		return QVector<DatesModelItem>();
-
 	if (!waitForDatabase())
 		return QVector<DatesModelItem>();
 
@@ -781,9 +775,6 @@ QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const Tal
 
 QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const QDate &date)
 {
-	if (!talkable.isValidChat())
-		return QVector<Message>();
-
 	if (!waitForDatabase())
 		return QVector<Message>();
 

@@ -35,7 +35,6 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 	Talkable TalkableToSelect;
 
 	void displayTalkable(const Talkable &talkable, bool force);
-	void displayAggregateChat(const Chat &chat, bool force);
 
 private slots:
 	void clearChatHistory();

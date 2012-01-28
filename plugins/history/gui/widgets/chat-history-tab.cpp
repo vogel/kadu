@@ -23,7 +23,6 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
-#include "chat/aggregate-chat-manager.h"
 #include "chat/chat-details-aggregate.h"
 #include "chat/chat-manager.h"
 #include "chat/model/chats-list-model.h"
@@ -60,24 +59,13 @@ void ChatHistoryTab::displayTalkable(const Talkable &talkable, bool force)
 	if (!force && CurrentTalkable == talkable)
 		return;
 
-	if (talkable.isValidChat())
-		timelineView()->messagesView()->setChat(talkable.toChat());
-	else
-		timelineView()->messagesView()->setChat(Chat::null);
-
 	CurrentTalkable = talkable;
+	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
 
 	if (historyMessagesStorage())
 		setFutureDates(historyMessagesStorage()->dates(CurrentTalkable));
 	else
 		setDates(QVector<DatesModelItem>());
-}
-
-void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
-{
-	const Chat &agrregate = AggregateChatManager::instance()->aggregateChat(chat);
-
-	displayTalkable(agrregate ? agrregate : chat, force);
 }
 
 void ChatHistoryTab::clearChatHistory()
@@ -100,23 +88,7 @@ void ChatHistoryTab::clearChatHistory()
 
 void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemChat:
-		case Talkable::ItemBuddy:
-		{
-			displayAggregateChat(talkable.toChat(), false);
-			break;
-		}
-		case Talkable::ItemContact:
-		{
-			displayTalkable(talkable.toChat(), false);
-			break;
-		}
-		default:
-			displayTalkable(Talkable(), false);
-			break;
-	}
+	displayTalkable(talkable, false);
 }
 
 void ChatHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
