@@ -254,17 +254,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called to update chat messages view with date from given date.
-	 * @param date selected date
-	 *
-	 * This method is called every time user changes selection of date in timeline widget (or
-	 * when list of dates is changed). If date is valid, messages view must be filled with data
-	 * for this date. If date is not valid, messages view must be cleared.
-	 */
-	virtual void displayForDate(const QDate &date) = 0;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called to remove entries for given date.
 	 * @param date selected date
 	 *

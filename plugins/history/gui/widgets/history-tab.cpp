@@ -392,7 +392,15 @@ void HistoryTab::currentTalkableChanged(const Talkable &talkable)
 void HistoryTab::currentDateChanged()
 {
 	QDate date = timelineView()->currentDate();
-	displayForDate(date);
+
+	if (!Storage || !date.isValid())
+	{
+		setMessages(QVector<Message>());
+		return;
+	}
+
+	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
+	setFutureMessages(Storage->messages(CurrentTalkable, date));
 }
 
 void HistoryTab::showTalkablePopupMenu()

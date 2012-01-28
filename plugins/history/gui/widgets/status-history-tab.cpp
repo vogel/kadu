@@ -80,18 +80,6 @@ void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu
 			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 }
 
-void StatusHistoryTab::displayForDate(const QDate &date)
-{
-	if (!historyMessagesStorage() || !date.isValid())
-	{
-		setMessages(QVector<Message>());
-		return;
-	}
-
-	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(currentTalkable().toContact()), true));
-	setFutureMessages(historyMessagesStorage()->messages(currentTalkable(), date));
-}
-
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
 	if (currentTalkable().isValidBuddy() && historyMessagesStorage())

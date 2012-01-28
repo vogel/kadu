@@ -39,7 +39,6 @@ private slots:
 protected:
 	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
 	virtual void talkablesAvailable();
-	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
