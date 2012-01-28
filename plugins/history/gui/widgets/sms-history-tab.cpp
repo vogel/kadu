@@ -83,15 +83,6 @@ void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
 			tr("&Clear SMS History"), this, SLOT(clearSmsHistory()));
 }
 
-void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
-{
-	if (!currentTalkable().toBuddy().mobile().isEmpty() && historyMessagesStorage())
-	{
-		historyMessagesStorage()->deleteMessages(currentTalkable(), date);
-		displayTalkable(currentTalkable(), true);
-	}
-}
-
 void SmsHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());

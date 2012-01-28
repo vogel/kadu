@@ -107,15 +107,6 @@ void ChatHistoryTab::talkablesAvailable()
 		talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
 }
 
-void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
-{
-	if (currentTalkable().isValidChat() && historyMessagesStorage())
-	{
-		historyMessagesStorage()->deleteMessages(currentTalkable(), date);
-		displayTalkable(currentTalkable(), true);
-	}
-}
-
 void ChatHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());

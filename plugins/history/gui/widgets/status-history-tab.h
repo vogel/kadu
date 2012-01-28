@@ -36,7 +36,6 @@ private slots:
 
 protected:
 	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
-	virtual void removeEntriesPerDate(const QDate &date);
 
 public:
 	explicit StatusHistoryTab(QWidget *parent = 0);

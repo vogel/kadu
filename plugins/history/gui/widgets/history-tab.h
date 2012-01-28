@@ -57,8 +57,6 @@ class WaitOverlay;
  * or any other item. This widgets adds menu with "Remove Entries" action for timeline widget.
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
- * Every implementation of HistoryTab must set ModelChain on talkableTree(), implement displayForDate()
- * to update view for selected date, removeEntriesPerDate() to remove history entries for given date.
  */
 class KADUAPI HistoryTab : public QWidget
 {
@@ -105,7 +103,7 @@ private slots:
 
 	void showTalkablePopupMenu();
 	void showTimelinePopupMenu();
-	void removeEntries();
+	void removeEntries();;
 
 protected:
 	Talkable currentTalkable() const { return CurrentTalkable; }
@@ -251,17 +249,6 @@ protected:
 	 * @short Method called after talkables are received from future objects.
 	 */
 	virtual void talkablesAvailable();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called to remove entries for given date.
-	 * @param date selected date
-	 *
-	 * This method is called when user selects "Remove Entries" action from timeline popup menu.
-	 * If date is valid, entries for given date must be removed from history storage.
-	 * After removal updateData() method should be called to ensure consistency.
-	 */
-	virtual void removeEntriesPerDate(const QDate &date) = 0;
 
 public:
 	/**

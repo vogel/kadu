@@ -421,8 +421,11 @@ void HistoryTab::showTimelinePopupMenu()
 void HistoryTab::removeEntries()
 {
 	QDate date = TimelineView->currentDate();
-	if (date.isValid())
-		removeEntriesPerDate(date);
+	if (!Storage || !date.isValid())
+		return;
+
+	Storage->deleteMessages(CurrentTalkable, date);
+	displayTalkable(CurrentTalkable, true);
 }
 
 void HistoryTab::keyPressEvent(QKeyEvent *event)

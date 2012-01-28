@@ -80,15 +80,6 @@ void StatusHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu
 			tr("&Clear Status History"), this, SLOT(clearStatusHistory()));
 }
 
-void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
-{
-	if (currentTalkable().isValidBuddy() && historyMessagesStorage())
-	{
-		historyMessagesStorage()->deleteMessages(currentTalkable(), date);
-		displayTalkable(currentTalkable(), true);
-	}
-}
-
 void StatusHistoryTab::updateData()
 {
 	setMessages(QVector<Message>());
