@@ -67,7 +67,7 @@ NetworkProxy::~NetworkProxy()
 {
 }
 
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, type, Type, QString())
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, type, Type, QString("http"))
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString())
 KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0)
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
