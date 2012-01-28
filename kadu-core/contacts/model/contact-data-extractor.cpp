@@ -29,6 +29,7 @@
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "status/status-container.h"
+#include "talkable/talkable.h"
 
 #include "contact-data-extractor.h"
 
@@ -76,6 +77,8 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 			return contact.avatar(useBuddyData).pixmap();
 		case ItemTypeRole:
 			return ContactRole;
+		case TalkableRole:
+			return QVariant::fromValue(Talkable(contact));
 		default:
 			return QVariant();
 	}

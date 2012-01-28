@@ -26,6 +26,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
+#include "talkable/talkable.h"
 
 #include "chat-data-extractor.h"
 
@@ -59,6 +60,8 @@ QVariant ChatDataExtractor::data(const Chat &chat, int role)
 			return QVariant::fromValue(chat);
 		case ItemTypeRole:
 			return ChatRole;
+		case TalkableRole:
+			return QVariant::fromValue(Talkable(chat));
 		default:
 			return QVariant();
 	}

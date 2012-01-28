@@ -47,6 +47,7 @@ const int IdentityRole = KaduRoles + 14;
 const int ItemTypeRole = KaduRoles + 15;
 const int MultilogonSessionRole = KaduRoles + 16;
 const int NetworkProxyRole = KaduRoles + 17;
+const int TalkableRole = KaduRoles + 18;
 
 typedef QSet<int> RoleSet;
 

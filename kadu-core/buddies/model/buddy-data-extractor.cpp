@@ -25,6 +25,7 @@
 #include "buddies/buddy.h"
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
+#include "talkable/talkable.h"
 
 #include "buddy-data-extractor.h"
 
@@ -52,6 +53,8 @@ QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
 			return QVariant::fromValue(BuddyPreferredManager::instance()->preferredContact(buddy, false).currentStatus());
 		case ItemTypeRole:
 			return BuddyRole;
+		case TalkableRole:
+			return QVariant::fromValue(Talkable(buddy));
 		default:
 			return QVariant();
 	}

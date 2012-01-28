@@ -260,6 +260,8 @@ public:
 
 };
 
+Q_DECLARE_METATYPE(Talkable)
+
 /**
  * @}
  */

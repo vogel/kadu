@@ -208,7 +208,7 @@ QVariant BuddiesModelBase::data(const QModelIndex &index, int role) const
 
 		const Contact &contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
-		return !contact.isNull()
+		return TalkableRole != role && !contact.isNull()
 				? ContactDataExtractor::data(contact, role, true)
 				: BuddyDataExtractor::data(buddy, role);
 	}
