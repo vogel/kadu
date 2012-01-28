@@ -20,9 +20,6 @@
 #ifndef SMS_HISTORY_TAB_H
 #define SMS_HISTORY_TAB_H
 
-#include <QtCore/QModelIndex>
-
-#include "talkable/talkable.h"
 #include "exports.h"
 
 #include "gui/widgets/history-tab.h"

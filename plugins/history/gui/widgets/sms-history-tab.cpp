@@ -17,25 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMenu>
-#include <QtGui/QSplitter>
-#include <QtGui/QVBoxLayout>
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
+#include "gui/actions/action-context.h"
 
-#include "buddies/model/buddy-list-model.h"
-#include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/talkable-delegate-configuration.h"
-#include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/timeline-chat-messages-view.h"
-#include "icons/kadu-icon.h"
-#include "model/roles.h"
-#include "model/model-chain.h"
-#include "talkable/filter/name-talkable-filter.h"
-#include "talkable/model/talkable-proxy-model.h"
-#include "talkable/talkable.h"
-
-#include "model/dates-model-item.h"
-#include "search/history-search-parameters.h"
 #include "storage/history-messages-storage.h"
 
 #include "sms-history-tab.h"

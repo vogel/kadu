@@ -20,8 +20,6 @@
 #ifndef CHAT_HISTORY_TAB_H
 #define CHAT_HISTORY_TAB_H
 
-#include <QtCore/QModelIndex>
-
 #include "talkable/talkable.h"
 #include "exports.h"
 
