@@ -31,10 +31,6 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	Talkable CurrentTalkable;
-
-	void displayTalkable(const Talkable &talkable, bool force);
-
 private slots:
 	void clearSmsHistory();
 
@@ -42,9 +38,6 @@ protected:
 	virtual void modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu);
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
-
-protected slots:
-	virtual void currentTalkableChanged(const Talkable &talkable);
 
 public:
 	explicit SmsHistoryTab(QWidget *parent = 0);

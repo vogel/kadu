@@ -51,23 +51,6 @@ StatusHistoryTab::~StatusHistoryTab()
 {
 }
 
-void StatusHistoryTab::displayTalkable(const Talkable &talkable, bool force)
-{
-	if (!force && CurrentTalkable == talkable)
-		return;
-
-	BuddySet buddies;
-	buddies.insert(talkable.toBuddy());
-	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(buddies, true));
-
-	CurrentTalkable = talkable;
-
-	if (historyMessagesStorage())
-		setFutureDates(historyMessagesStorage()->dates(CurrentTalkable));
-	else
-		setDates(QVector<DatesModelItem>());
-}
-
 void StatusHistoryTab::clearStatusHistory()
 {
 	if (!talkableTree()->actionContext())
@@ -105,22 +88,17 @@ void StatusHistoryTab::displayForDate(const QDate &date)
 		return;
 	}
 
-	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(CurrentTalkable.toContact()), true));
-	setFutureMessages(historyMessagesStorage()->messages(CurrentTalkable, date));
+	timelineView()->messagesView()->setChat(ChatManager::instance()->findChat(ContactSet(currentTalkable().toContact()), true));
+	setFutureMessages(historyMessagesStorage()->messages(currentTalkable(), date));
 }
 
 void StatusHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentTalkable.isValidBuddy() && historyMessagesStorage())
+	if (currentTalkable().isValidBuddy() && historyMessagesStorage())
 	{
-		historyMessagesStorage()->deleteMessages(CurrentTalkable, date);
-		displayTalkable(CurrentTalkable, true);
+		historyMessagesStorage()->deleteMessages(currentTalkable(), date);
+		displayTalkable(currentTalkable(), true);
 	}
-}
-
-void StatusHistoryTab::currentTalkableChanged(const Talkable &talkable)
-{
-	displayTalkable(talkable, false);
 }
 
 void StatusHistoryTab::updateData()

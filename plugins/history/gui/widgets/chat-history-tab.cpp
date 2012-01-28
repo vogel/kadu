@@ -54,20 +54,6 @@ ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::displayTalkable(const Talkable &talkable, bool force)
-{
-	if (!force && CurrentTalkable == talkable)
-		return;
-
-	CurrentTalkable = talkable;
-	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
-
-	if (historyMessagesStorage())
-		setFutureDates(historyMessagesStorage()->dates(CurrentTalkable));
-	else
-		setDates(QVector<DatesModelItem>());
-}
-
 void ChatHistoryTab::clearChatHistory()
 {
 	if (!talkableTree()->actionContext())
@@ -84,11 +70,6 @@ void ChatHistoryTab::clearChatHistory()
 	}
 
 	displayTalkable(Talkable(), false);
-}
-
-void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
-{
-	displayTalkable(talkable, false);
 }
 
 void ChatHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
@@ -129,17 +110,17 @@ void ChatHistoryTab::talkablesAvailable()
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
 	if (historyMessagesStorage())
-		setFutureMessages(historyMessagesStorage()->messages(CurrentTalkable, date));
+		setFutureMessages(historyMessagesStorage()->messages(currentTalkable(), date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentTalkable.isValidChat() && historyMessagesStorage())
+	if (currentTalkable().isValidChat() && historyMessagesStorage())
 	{
-		historyMessagesStorage()->deleteMessages(CurrentTalkable, date);
-		displayTalkable(CurrentTalkable, true);
+		historyMessagesStorage()->deleteMessages(currentTalkable(), date);
+		displayTalkable(currentTalkable(), true);
 	}
 }
 

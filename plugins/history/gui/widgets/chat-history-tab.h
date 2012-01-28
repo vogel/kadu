@@ -31,10 +31,7 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	Talkable CurrentTalkable;
 	Talkable TalkableToSelect;
-
-	void displayTalkable(const Talkable &talkable, bool force);
 
 private slots:
 	void clearChatHistory();
@@ -44,9 +41,6 @@ protected:
 	virtual void talkablesAvailable();
 	virtual void displayForDate(const QDate &date);
 	virtual void removeEntriesPerDate(const QDate &date);
-
-protected slots:
-	virtual void currentTalkableChanged(const Talkable &talkable);
 
 public:
 	explicit ChatHistoryTab(QWidget *parent = 0);

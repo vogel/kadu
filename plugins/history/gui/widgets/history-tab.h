@@ -24,6 +24,7 @@
 #include <QtCore/QFutureWatcher>
 #include <QtGui/QWidget>
 
+#include "talkable/talkable.h"
 #include "exports.h"
 
 class QDate;
@@ -38,7 +39,6 @@ class HistoryDatesModel;
 class HistoryMessagesStorage;
 class Message;
 class ModelChain;
-class Talkable;
 class TalkableTreeView;
 class TimelineChatMessagesView;
 class WaitOverlay;
@@ -58,8 +58,7 @@ class WaitOverlay;
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
  * Every implementation of HistoryTab must set ModelChain on talkableTree(), implement displayForDate()
- * to update view for selected date, removeEntriesPerDate() to remove history entries for given date
- * and currentTalkableChanged() to update list of available dates.
+ * to update view for selected date, removeEntriesPerDate() to remove history entries for given date.
  */
 class KADUAPI HistoryTab : public QWidget
 {
@@ -86,6 +85,8 @@ class KADUAPI HistoryTab : public QWidget
 	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
 	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
+	Talkable CurrentTalkable;
+
 	void createGui();
 	void createModelChain();
 
@@ -99,6 +100,7 @@ private slots:
 	void futureMessagesAvailable();
 	void futureMessagesCanceled();
 
+	void currentTalkableChanged(const Talkable &talkable);
 	void currentDateChanged();
 
 	void showTalkablePopupMenu();
@@ -106,7 +108,10 @@ private slots:
 	void removeEntries();
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	Talkable currentTalkable() const { return CurrentTalkable; }
+	void displayTalkable(const Talkable &talkable, bool force);
+
+	virtual void keyPressEvent(QKeyEvent *event);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -268,16 +273,6 @@ protected:
 	 * After removal updateData() method should be called to ensure consistency.
 	 */
 	virtual void removeEntriesPerDate(const QDate &date) = 0;
-
-protected slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called when current talkable in item view changes.
-	 * @param talkable current talkable
-	 *
-	 * In this method list of available dates should be updated by calling setDates() or setFutureDates().
-	 */
-	virtual void currentTalkableChanged(const Talkable &talkable) = 0;
 
 public:
 	/**

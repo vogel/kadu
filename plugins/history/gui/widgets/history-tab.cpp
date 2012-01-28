@@ -43,6 +43,7 @@
 
 #include "model/dates-model-item.h"
 #include "model/history-dates-model.h"
+#include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 
 #include "history-tab.h"
@@ -135,6 +136,20 @@ void HistoryTab::createModelChain()
 	Chain->addProxyModel(proxyModel);
 
 	TalkableTree->setChain(Chain);
+}
+
+void HistoryTab::displayTalkable(const Talkable &talkable, bool force)
+{
+	if (!force && CurrentTalkable == talkable)
+		return;
+
+	CurrentTalkable = talkable;
+	TimelineView->messagesView()->setChat(CurrentTalkable.toChat());
+
+	if (Storage)
+		setFutureDates(Storage->dates(CurrentTalkable));
+	else
+		setDates(QVector<DatesModelItem>());
 }
 
 FilteredTreeView * HistoryTab::filteredView() const
@@ -367,6 +382,11 @@ void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessa
 	MessagesFutureWatcher->setFuture(futureMessages);
 
 	showMessagesViewWaitOverlay();
+}
+
+void HistoryTab::currentTalkableChanged(const Talkable &talkable)
+{
+	displayTalkable(talkable, false);
 }
 
 void HistoryTab::currentDateChanged()
