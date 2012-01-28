@@ -243,13 +243,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Allows to change title of "Delete history" menu item.
-	 * @param clearHistoryMenuItemTitle new title of "Delete history" menu item.
-	 */
-	void setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called after talkables are received from future objects.
 	 */
 	virtual void talkablesAvailable();
@@ -266,6 +259,13 @@ public:
 	 */
 	explicit HistoryTab(bool showTitleInTimeline, QWidget *parent = 0);
 	virtual ~HistoryTab();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Allows to change title of "Delete history" menu item.
+	 * @param clearHistoryMenuItemTitle new title of "Delete history" menu item.
+	 */
+	void setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
