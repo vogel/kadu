@@ -43,26 +43,25 @@
 SmsHistoryTab::SmsHistoryTab(QWidget *parent) :
 		HistoryTab(false, parent)
 {
-	CurrentRecipient = Buddy::create();
 }
 
 SmsHistoryTab::~SmsHistoryTab()
 {
 }
 
-void SmsHistoryTab::displaySmsRecipient(const QString& recipient, bool force)
+void SmsHistoryTab::displayTalkable(const Talkable& talkable, bool force)
 {
-	if (!force && CurrentRecipient.mobile() == recipient)
+	if (!force && CurrentTalkable == talkable)
 		return;
 
+	CurrentTalkable = talkable;
+
 	Chat smsChat = Chat::create();
-	smsChat.setDisplay(recipient);
+	smsChat.setDisplay(CurrentTalkable.toBuddy().mobile());
 	timelineView()->messagesView()->setChat(smsChat);
 
-	CurrentRecipient.setMobile(recipient);
-
 	if (historyMessagesStorage())
-		setFutureDates(historyMessagesStorage()->dates(Talkable(CurrentRecipient)));
+		setFutureDates(historyMessagesStorage()->dates(CurrentTalkable));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -87,16 +86,13 @@ void SmsHistoryTab::clearSmsHistory()
 	if (removed)
 	{
 		updateData();
-		displaySmsRecipient(QString(), false);
+		displayTalkable(Talkable(), false);
 	}
 }
 
 void SmsHistoryTab::currentTalkableChanged(const Talkable &talkable)
 {
-	if (talkable.isValidBuddy())
-		displaySmsRecipient(talkable.toBuddy().mobile(), false);
-	else
-		displaySmsRecipient(QString(), false);
+	displayTalkable(talkable, false);
 }
 
 void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
@@ -111,18 +107,18 @@ void SmsHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
 
 void SmsHistoryTab::displayForDate(const QDate &date)
 {
-	if (!CurrentRecipient.mobile().isEmpty() && date.isValid() && historyMessagesStorage())
-		setFutureMessages(historyMessagesStorage()->messages(CurrentRecipient, date));
+	if (!CurrentTalkable.toBuddy().mobile().isEmpty() && date.isValid() && historyMessagesStorage())
+		setFutureMessages(historyMessagesStorage()->messages(CurrentTalkable, date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void SmsHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (!CurrentRecipient.mobile().isEmpty() && historyMessagesStorage())
+	if (!CurrentTalkable.toBuddy().mobile().isEmpty() && historyMessagesStorage())
 	{
-		historyMessagesStorage()->deleteMessages(CurrentRecipient, date);
-		displaySmsRecipient(CurrentRecipient.mobile(), true);
+		historyMessagesStorage()->deleteMessages(CurrentTalkable, date);
+		displayTalkable(CurrentTalkable, true);
 	}
 }
 
@@ -133,7 +129,7 @@ void SmsHistoryTab::updateData()
 	if (!historyMessagesStorage())
 	{
 		setTalkables(QVector<Talkable>());
-		displaySmsRecipient(QString(), false);
+		displayTalkable(Talkable(), false);
 		return;
 	}
 

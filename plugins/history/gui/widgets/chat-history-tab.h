@@ -31,10 +31,10 @@ class KADUAPI ChatHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	Chat CurrentChat;
-	Chat ChatToSelect;
+	Talkable CurrentTalkable;
+	Talkable TalkableToSelect;
 
-	void displayChat(const Chat &chat, bool force);
+	void displayTalkable(const Talkable &talkable, bool force);
 	void displayAggregateChat(const Chat &chat, bool force);
 
 private slots:
@@ -55,7 +55,7 @@ public:
 
 	virtual void updateData();
 
-	void selectChat(const Chat &chat);
+	void selectTalkable(const Talkable &talkable);
 
 };
 

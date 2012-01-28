@@ -140,7 +140,7 @@ void HistoryWindow::updateData()
 void HistoryWindow::selectChat(const Chat &chat)
 {
 	TabWidget->setCurrentIndex(0);
-	ChatTab->selectChat(chat);
+	ChatTab->selectTalkable(chat);
 }
 
 void HistoryWindow::keyPressEvent(QKeyEvent *e)

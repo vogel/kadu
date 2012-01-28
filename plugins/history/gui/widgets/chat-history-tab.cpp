@@ -55,17 +55,20 @@ ChatHistoryTab::~ChatHistoryTab()
 {
 }
 
-void ChatHistoryTab::displayChat(const Chat &chat, bool force)
+void ChatHistoryTab::displayTalkable(const Talkable &talkable, bool force)
 {
-	if (!force && CurrentChat == chat)
+	if (!force && CurrentTalkable == talkable)
 		return;
 
-	timelineView()->messagesView()->setChat(chat);
+	if (talkable.isValidChat())
+		timelineView()->messagesView()->setChat(talkable.toChat());
+	else
+		timelineView()->messagesView()->setChat(Chat::null);
 
-	CurrentChat = chat;
+	CurrentTalkable = talkable;
 
 	if (historyMessagesStorage())
-		setFutureDates(historyMessagesStorage()->dates(CurrentChat));
+		setFutureDates(historyMessagesStorage()->dates(CurrentTalkable));
 	else
 		setDates(QVector<DatesModelItem>());
 }
@@ -74,7 +77,7 @@ void ChatHistoryTab::displayAggregateChat(const Chat &chat, bool force)
 {
 	const Chat &agrregate = AggregateChatManager::instance()->aggregateChat(chat);
 
-	displayChat(agrregate ? agrregate : chat, force);
+	displayTalkable(agrregate ? agrregate : chat, force);
 }
 
 void ChatHistoryTab::clearChatHistory()
@@ -92,7 +95,7 @@ void ChatHistoryTab::clearChatHistory()
 		updateData();
 	}
 
-	displayChat(Chat::null, false);
+	displayTalkable(Talkable(), false);
 }
 
 void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
@@ -107,11 +110,11 @@ void ChatHistoryTab::currentTalkableChanged(const Talkable &talkable)
 		}
 		case Talkable::ItemContact:
 		{
-			displayChat(talkable.toChat(), false);
+			displayTalkable(talkable.toChat(), false);
 			break;
 		}
 		default:
-			displayChat(Chat::null, false);
+			displayTalkable(Talkable(), false);
 			break;
 	}
 }
@@ -128,42 +131,43 @@ void ChatHistoryTab::modifyTalkablePopupMenu(const QScopedPointer<QMenu> &menu)
 
 void ChatHistoryTab::talkablesAvailable()
 {
-	if (!ChatToSelect)
+	if (!TalkableToSelect.isValidChat())
 		return;
 
 	QModelIndexList indexesToSelect;
 
-	if (ChatToSelect.contacts().size() == 1)
-		indexesToSelect = modelChain()->indexListForValue(ChatToSelect.contacts().begin()->ownerBuddy());
-	else if (ChatToSelect.contacts().size() > 1)
-		indexesToSelect = modelChain()->indexListForValue(ChatToSelect);
+	Chat chat = TalkableToSelect.toChat();
+	TalkableToSelect = Talkable();
+
+	if (chat.contacts().size() == 1)
+		indexesToSelect = modelChain()->indexListForValue(chat.contacts().begin()->ownerBuddy());
+	else if (chat.contacts().size() > 1)
+		indexesToSelect = modelChain()->indexListForValue(chat);
 
 	if (1 == indexesToSelect.size())
 	{
 		talkableTree()->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
 		talkableTree()->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
-		displayChat(ChatToSelect, false);
+		displayTalkable(chat, false);
 	}
 	else
 		talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
-
-	ChatToSelect = Chat::null;
 }
 
 void ChatHistoryTab::displayForDate(const QDate &date)
 {
 	if (historyMessagesStorage())
-		setFutureMessages(historyMessagesStorage()->messages(CurrentChat, date));
+		setFutureMessages(historyMessagesStorage()->messages(CurrentTalkable, date));
 	else
 		setMessages(QVector<Message>());
 }
 
 void ChatHistoryTab::removeEntriesPerDate(const QDate &date)
 {
-	if (CurrentChat && historyMessagesStorage())
+	if (CurrentTalkable.isValidChat() && historyMessagesStorage())
 	{
-		historyMessagesStorage()->deleteMessages(CurrentChat, date);
-		displayChat(CurrentChat, true);
+		historyMessagesStorage()->deleteMessages(CurrentTalkable, date);
+		displayTalkable(CurrentTalkable, true);
 	}
 }
 
@@ -174,14 +178,14 @@ void ChatHistoryTab::updateData()
 	if (!historyMessagesStorage())
 	{
 		setTalkables(QVector<Talkable>());
-		displayChat(Chat::null, false);
+		displayTalkable(Talkable(), false);
 		return;
 	}
 
 	setFutureTalkables(historyMessagesStorage()->talkables());
 }
 
-void ChatHistoryTab::selectChat(const Chat &chat)
+void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
-	ChatToSelect = chat;
+	TalkableToSelect = talkable;
 }

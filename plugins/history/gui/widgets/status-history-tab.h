@@ -31,12 +31,9 @@ class KADUAPI StatusHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	Buddy CurrentBuddy;
-	Contact CurrentContact;
-	bool IsBuddy;
+	Talkable CurrentTalkable;
 
-	void displayStatusBuddy(const Buddy &buddy, bool force);
-	void displayStatusContact(const Contact &contact, bool force);
+	void displayTalkable(const Talkable &talkable, bool force);
 
 private slots:
 	void clearStatusHistory();

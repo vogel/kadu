@@ -22,7 +22,6 @@
 
 #include <QtCore/QModelIndex>
 
-#include "buddies/buddy.h"
 #include "talkable/talkable.h"
 #include "exports.h"
 
@@ -32,9 +31,9 @@ class KADUAPI SmsHistoryTab : public HistoryTab
 {
 	Q_OBJECT
 
-	Buddy CurrentRecipient;
+	Talkable CurrentTalkable;
 
-	void displaySmsRecipient(const QString &recipient, bool force);
+	void displayTalkable(const Talkable &talkable, bool force);
 
 private slots:
 	void clearSmsHistory();
