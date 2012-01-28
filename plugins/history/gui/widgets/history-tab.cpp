@@ -254,8 +254,6 @@ void HistoryTab::futureTalkablesCanceled()
 
 void HistoryTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables)
 {
-	setTalkables(QVector<Talkable>());
-
 	if (TalkablesFutureWatcher)
 	{
 		TalkablesFutureWatcher->cancel();
@@ -311,8 +309,6 @@ void HistoryTab::futureDatesCanceled()
 
 void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
 {
-	setDates(QVector<DatesModelItem>());
-
 	if (DatesFutureWatcher)
 	{
 		DatesFutureWatcher->cancel();
@@ -367,8 +363,6 @@ void HistoryTab::futureMessagesCanceled()
 
 void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
 {
-	setMessages(QVector<Message>());
-
 	if (MessagesFutureWatcher)
 	{
 		MessagesFutureWatcher->cancel();
