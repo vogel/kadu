@@ -33,7 +33,6 @@
 #include "misc/path-conversion.h"
 #include "debug.h"
 
-#include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-helpers.h"
 #include "client/jabber-client.h"
 #include "mini-client.h"

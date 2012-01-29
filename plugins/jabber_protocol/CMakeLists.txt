@@ -103,7 +103,6 @@ set (SOURCES
 	actions/show-xml-console-action-description.cpp
 
 	certificates/certificate-display-dialog.cpp
-	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp
 	certificates/trusted-certificates-manager.cpp
 
@@ -120,6 +119,7 @@ set (SOURCES
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
 
+	gui/windows/certificate-error-window.cpp
 	gui/windows/jabber-change-password-window.cpp
 	gui/windows/jabber-wait-for-account-register-window.cpp
 	gui/windows/xml-console.cpp
@@ -173,7 +173,6 @@ set (MOC_SOURCES
 	actions/show-xml-console-action-description.h
 
 	certificates/certificate-display-dialog.h
-	certificates/certificate-error-dialog.h
 	certificates/trusted-certificates-manager.h
 
 	client/jabber-client.h
@@ -189,6 +188,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
 
+	gui/windows/certificate-error-window.h
 	gui/windows/jabber-change-password-window.h
 	gui/windows/jabber-wait-for-account-register-window.h
 	gui/windows/xml-console.h

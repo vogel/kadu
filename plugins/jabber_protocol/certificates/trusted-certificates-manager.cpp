@@ -67,7 +67,7 @@ QString TrustedCertificatesManager::storageItemNodeName()
 	return QLatin1String("JabberTrustedCertificate");
 }
 
-void TrustedCertificatesManager::addTrustedCertificate(const QString &certificate)
+void TrustedCertificatesManager::addTrustedCertificate(const QString &certificate, bool persist)
 {
 	if (certificate.isEmpty())
 		return;
@@ -76,7 +76,12 @@ void TrustedCertificatesManager::addTrustedCertificate(const QString &certificat
 		removeTrustedCertificate(certificate);
 
 	emit certificateAboutToBeAdded(certificate);
-	StringList.prepend(certificate);
+
+	if (persist)
+		StringList.prepend(certificate);
+	else
+		TemporaryList.prepend(certificate);
+
 	emit certificateAdded(certificate);
 }
 
@@ -87,6 +92,7 @@ void TrustedCertificatesManager::removeTrustedCertificate(const QString& certifi
 
 	emit certificateAboutToBeRemoved(certificate);
 	StringList.removeAll(certificate);
+	TemporaryList.removeAll(certificate);
 	emit certificateRemoved(certificate);
 }
 
@@ -95,5 +101,12 @@ bool TrustedCertificatesManager::isTrusted(const QString &certificate)
 	foreach (const QString &cert, StringList)
 		if (cert == certificate)
 			return true;
+
+	foreach (const QString &cert, TemporaryList)
+		if (cert == certificate)
+		{
+			TemporaryList.removeAll(certificate);
+			return true;
+		}
 	return false;
 }

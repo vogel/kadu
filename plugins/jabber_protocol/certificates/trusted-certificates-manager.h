@@ -31,6 +31,7 @@ class TrustedCertificatesManager : public QObject, public StorableStringList
 	Q_DISABLE_COPY(TrustedCertificatesManager)
 
 	static TrustedCertificatesManager *Instance;
+	QStringList TemporaryList;
 
 	TrustedCertificatesManager();
 	virtual ~TrustedCertificatesManager();
@@ -43,7 +44,7 @@ public:
 	virtual QString storageNodeName();
 	virtual QString storageItemNodeName();
 
-	void addTrustedCertificate(const QString &certificate);
+	void addTrustedCertificate(const QString &certificate, bool persist = true);
 	void removeTrustedCertificate(const QString &certificate);
 	bool isTrusted(const QString &certificate);
 

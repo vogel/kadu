@@ -40,10 +40,10 @@
 
 #include "misc/path-conversion.h"
 
-#include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-helpers.h"
 #include "certificates/trusted-certificates-manager.h"
 #include "client/mini-client.h"
+#include "gui/windows/certificate-error-window.h"
 #include "jabber-protocol.h"
 
 using namespace QCA;
@@ -190,48 +190,38 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 
 bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, QObject *parent)
 {
-	if (!tlsHandler)
+	if (!tlsHandler || !tls || tls->peerCertificateChain().isEmpty())
 		return false;
 
-	if (!tls)
-		return false;
+	QCA::Certificate certificate = tls->peerCertificateChain().primary();
 
-	if (tls->peerCertificateChain().isEmpty())
-		return false;
+	if (TrustedCertificatesManager::instance()->isTrusted(certificate.toDER().toBase64()))
+		return true;
 
-	QCA::Certificate cert = tls->peerCertificateChain().primary();
 	int result = tls->peerIdentityResult();
-	QString hostnameOverrideable;
+	QString overridenHostname;
 
-	if (result == QCA::TLS::Valid && !tlsHandler->certMatchesHostname())
+	if (result == QCA::TLS::Valid)
+		return true;
+		
+	if (false == tlsHandler->certMatchesHostname())
 	{
-		QList<QString> lst = cert.subjectInfo().values(QCA::CommonName);
-		if (lst.size() == 1)
-			hostnameOverrideable = lst[0];
-		if (lst.size() != 1 || lst[0].isEmpty() || lst[0] != tlsOverrideDomain)
+		QList<QString> subjectInfo = certificate.subjectInfo().values(QCA::CommonName);
+		QString certificateDomain = subjectInfo[0];
+		if (subjectInfo.size() == 1)
+			overridenHostname = certificateDomain;
+		else if (certificateDomain.isEmpty() || certificateDomain != tlsOverrideDomain)
 			result = QCA::TLS::HostMismatch;
 	}
 
-	// if this cert equals the user trusted certificate, just trust the user's choice.
-	if (result != QCA::TLS::Valid && TrustedCertificatesManager::instance()->isTrusted(cert.toDER().toBase64()))
-		result = QCA::TLS::Valid;
+	CertificateErrorWindow *errorDialog = new CertificateErrorWindow(
+			title, host, certificate,
+			result, tls->peerCertificateValidity(),
+			overridenHostname, tlsOverrideDomain);
+	QObject::connect(errorDialog, SIGNAL(certificateAccepted()), parent, SLOT(reconnect()));
+	errorDialog->show();
 
-	if (result != QCA::TLS::Valid)
-	{
-		CertificateErrorDialog *errorDialog = new CertificateErrorDialog(
-				title, host, cert,
-				result, tls->peerCertificateValidity(),
-				hostnameOverrideable, tlsOverrideDomain);
-
-		QObject::connect(parent, SIGNAL(disconnected(Account)), errorDialog, SLOT(disconnected(Account)));
-		int res = errorDialog->exec();
-		
-		delete errorDialog;
-		
-		return res == QDialog::Accepted;
-	}
-	else
-		return true;
+	return false;
 }
 
 QStringList CertificateHelpers::getCertificateStoreDirs()

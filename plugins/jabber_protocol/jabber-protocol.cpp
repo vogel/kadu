@@ -240,6 +240,11 @@ void JabberProtocol::login()
 	kdebugf2();
 }
 
+void JabberProtocol::reconnect()
+{
+	login();
+}
+
 /*
  * We are now connected to server - login procedure has ended
  */
