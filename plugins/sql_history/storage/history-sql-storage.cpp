@@ -53,9 +53,9 @@
 #include "debug.h"
 
 #include "plugins/history/history.h"
-#include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/search/history-search-parameters.h"
 #include "plugins/history/history-query.h"
+#include "plugins/history/history-query-result.h"
 
 #include "storage/sql-initializer.h"
 #include "storage/sql-messages-chat-storage.h"
@@ -631,10 +631,10 @@ QFuture<QVector<Talkable> > HistorySqlStorage::smsRecipients()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const HistoryQuery &historyQuery)
+QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery &historyQuery)
 {
 	if (!waitForDatabase())
-		return QVector<DatesModelItem>();
+		return QVector<HistoryQueryResult>();
 
 	const Talkable &talkable = historyQuery.talkable();
 
@@ -661,7 +661,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const HistoryQuery &his
 	if (!historyQuery.string().isEmpty())
 		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
 
-	QVector<DatesModelItem> dates;
+	QVector<HistoryQueryResult> dates;
 	executeQuery(query);
 
 	int count;
@@ -692,26 +692,30 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const HistoryQuery &his
 			title += " ...";
 		}
 
-		dates.append(DatesModelItem(date, title, count));
+		HistoryQueryResult result;
+		result.setDate(date);
+		result.setTitle(title);
+		result.setCount(count);
+		dates.append(result);
 	}
 
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult > > HistorySqlStorage::chatDates(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, historyQuery);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const HistoryQuery &historyQuery)
+QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuery &historyQuery)
 {
 	const Talkable &talkable = historyQuery.talkable();
 
 	if (!talkable.isValidBuddy() && !talkable.isValidContact())
-		return QVector<DatesModelItem>();
+		return QVector<HistoryQueryResult>();
 
 	if (!waitForDatabase())
-		return QVector<DatesModelItem>();
+		return QVector<HistoryQueryResult>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -724,7 +728,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const HistoryQuery &h
 
 	query.prepare(queryString);
 
-	QVector<DatesModelItem> dates;
+	QVector<HistoryQueryResult> dates;
 
 	executeQuery(query);
 
@@ -735,26 +739,30 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const HistoryQuery &h
 		if (!date.isValid())
 			continue;
 
-		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
+		HistoryQueryResult result;
+		result.setDate(date);
+		result.setTitle(QString());
+		result.setCount(query.value(0).toInt());
+		dates.append(result);
 	}
 
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusDates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult> > HistorySqlStorage::statusDates(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusDates, historyQuery);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const HistoryQuery &historyQuery)
+QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const HistoryQuery &historyQuery)
 {
 	const Talkable &talkable = historyQuery.talkable();
 
 	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
-		return QVector<DatesModelItem>();
+		return QVector<HistoryQueryResult>();
 
 	if (!waitForDatabase())
-		return QVector<DatesModelItem>();
+		return QVector<HistoryQueryResult>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -769,7 +777,7 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const HistoryQu
 
 	query.bindValue(":receipient", talkable.toBuddy().mobile());
 
-	QVector<DatesModelItem> dates;
+	QVector<HistoryQueryResult> dates;
 	executeQuery(query);
 
 	while (query.next())
@@ -778,13 +786,17 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const HistoryQu
 		if (!date.isValid())
 			continue;
 
-		dates.append(DatesModelItem(date, QString(), query.value(0).toInt()));
+		HistoryQueryResult result;
+		result.setDate(date);
+		result.setTitle(QString());
+		result.setCount(query.value(0).toInt());
+		dates.append(result);
 	}
 
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult> > HistorySqlStorage::smsRecipientDates(const HistoryQuery &historyQuery)
 {
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, historyQuery);
 }

@@ -115,7 +115,7 @@ void SearchTab::performSearch()
 	HistoryQuery query;
 	query.setString(Query->text());
 
-	TimelineView->setFutureDates(History::instance()->currentStorage()->chatStorage()->dates(query));
+	TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
 }
 
 QList<int> SearchTab::sizes() const

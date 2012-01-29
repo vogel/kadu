@@ -34,7 +34,7 @@
 
 #include "../history_exports.h"
 
-struct DatesModelItem;
+struct HistoryQueryResult;
 
 class HistoryQuery;
 class HistoryMessagesStorage;
@@ -59,9 +59,9 @@ public:
 	virtual QFuture<QVector<Talkable> > statusBuddies() = 0;
 	virtual QFuture<QVector<Talkable> > smsRecipients() = 0;
 
-	virtual QFuture<QVector<DatesModelItem> > chatDates(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<DatesModelItem> > statusDates(const HistoryQuery &historyQuery) = 0;
-	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult> > chatDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult> > statusDates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery) = 0;
 
 	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date) = 0;

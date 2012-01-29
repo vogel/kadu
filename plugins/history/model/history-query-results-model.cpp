@@ -23,31 +23,31 @@
 #include "chat/chat.h"
 #include "model/roles.h"
 
-#include "dates-model-item.h"
+#include "history-query-result.h"
 #include "history.h"
 
-#include "history-dates-model.h"
+#include "history-query-results-model.h"
 
-HistoryDatesModel::HistoryDatesModel(bool includeTitle, QObject *parent) :
+HistoryQueryResultsModel::HistoryQueryResultsModel(bool includeTitle, QObject *parent) :
 		QAbstractListModel(parent), IncludeTitle(includeTitle)
 {
 }
 
-HistoryDatesModel::~HistoryDatesModel()
+HistoryQueryResultsModel::~HistoryQueryResultsModel()
 {
 }
 
-int HistoryDatesModel::columnCount(const QModelIndex &parent) const
+int HistoryQueryResultsModel::columnCount(const QModelIndex &parent) const
 {
 	return parent.isValid() ? 0 : IncludeTitle ? 3 : 2;
 }
 
-int HistoryDatesModel::rowCount(const QModelIndex &parent) const
+int HistoryQueryResultsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Dates.size();
+	return parent.isValid() ? 0 : Results.size();
 }
 
-QVariant HistoryDatesModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant HistoryQueryResultsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role != Qt::DisplayRole)
 		return QVariant();
@@ -65,12 +65,12 @@ QVariant HistoryDatesModel::headerData(int section, Qt::Orientation orientation,
 	return QVariant();
 }
 
-QVariant HistoryDatesModel::data(const QModelIndex &index, int role) const
+QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) const
 {
 	int col = index.column();
 	int row = index.row();
 
-	if (row < 0 || row >= Dates.size())
+	if (row < 0 || row >= Results.size())
 		return QVariant();
 
 	switch (role)
@@ -79,23 +79,23 @@ QVariant HistoryDatesModel::data(const QModelIndex &index, int role) const
 		{
 			switch (col)
 			{
-				case 0: return Dates.at(row).Date.toString("dd.MM.yyyy");
-				case 1: return Dates.at(row).Count;
-				case 2: return Dates.at(row).Title;
+				case 0: return Results.at(row).date().toString("dd.MM.yyyy");
+				case 1: return Results.at(row).count();
+				case 2: return Results.at(row).title();
 			}
 
 			return QVariant();
 		}
 
-		case DateRole: return Dates.at(row).Date;
+		case DateRole: return Results.at(row).date();
 	}
 
 	return QVariant();
 }
 
-void HistoryDatesModel::setDates(const QVector<DatesModelItem> &dates)
+void HistoryQueryResultsModel::setResults(const QVector<HistoryQueryResult> &results)
 {
 	beginResetModel();
-	Dates = dates;
+	Results = results;
 	endResetModel();
 }

@@ -36,7 +36,7 @@ QFuture<QVector<Talkable> > SqlMessagesChatStorage::talkables()
 	return SqlStorage->chats();
 }
 
-QFuture<QVector<DatesModelItem> > SqlMessagesChatStorage::dates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult> > SqlMessagesChatStorage::dates(const HistoryQuery &historyQuery)
 {
 	return SqlStorage->chatDates(historyQuery);
 }

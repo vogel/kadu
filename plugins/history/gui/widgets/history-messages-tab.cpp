@@ -40,10 +40,10 @@
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "model/dates-model-item.h"
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 #include "history-query.h"
+#include "history-query-result.h"
 
 #include "history-messages-tab.h"
 
@@ -144,9 +144,9 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	query.setTalkable(CurrentTalkable);
 
 	if (Storage)
-		TimelineView->setFutureDates(Storage->dates(query));
+		TimelineView->setFutureResults(Storage->dates(query));
 	else
-		TimelineView->setDates(QVector<DatesModelItem>());
+		TimelineView->setResults(QVector<HistoryQueryResult>());
 }
 
 FilteredTreeView * HistoryMessagesTab::filteredView() const

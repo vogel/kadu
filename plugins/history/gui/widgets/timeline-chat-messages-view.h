@@ -30,8 +30,8 @@ class QSplitter;
 class QTreeView;
 
 class ChatMessagesView;
-class DatesModelItem;
-class HistoryDatesModel;
+class HistoryQueryResult;
+class HistoryQueryResultsModel;
 class Message;
 class WaitOverlay;
 
@@ -57,17 +57,17 @@ class KADUAPI TimelineChatMessagesView : public QWidget
 
 	QSplitter *Splitter;
 	QTreeView *Timeline;
-	HistoryDatesModel *DatesModel;
+	HistoryQueryResultsModel *ResultsModel;
 	ChatMessagesView *MessagesView;
 
-	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
+	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
 	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
 	void createGui();
 
 private slots:
-	void futureDatesAvailable();
-	void futureDatesCanceled();
+	void futureResultsAvailable();
+	void futureResultsCanceled();
 
 	void futureMessagesAvailable();
 	void futureMessagesCanceled();
@@ -117,7 +117,7 @@ public:
 	 * last date is selected and displayForDate() is called with that date. IF not,
 	 * displayForDate() is called with invalid date to ensure that view is cleared.
 	 */
-	void setDates(const QVector<DatesModelItem> &dates);
+	void setResults(const QVector<HistoryQueryResult> &results);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -130,7 +130,7 @@ public:
 	 * If received list will be empty, displayForDate() will be called with invalid date to ensure
 	 * that view is cleared.
 	 */
-	void setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates);
+	void setFutureResults(const QFuture<QVector<HistoryQueryResult> > &futureResults);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

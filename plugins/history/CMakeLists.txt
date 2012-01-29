@@ -31,7 +31,7 @@ set (SOURCES
 
 	gui/windows/history-window.cpp
 
-	model/history-dates-model.cpp
+	model/history-query-results-model.cpp
 
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
@@ -57,7 +57,7 @@ set (MOC_SOURCES
 
 	gui/windows/history-window.h
 
-	model/history-dates-model.h
+	model/history-query-results-model.h
 
 	storage/history-messages-storage.h
 	storage/history-storage.h

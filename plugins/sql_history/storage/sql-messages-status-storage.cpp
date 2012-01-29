@@ -36,7 +36,7 @@ QFuture<QVector<Talkable> > SqlMessagesStatusStorage::talkables()
 	return SqlStorage->statusBuddies();
 }
 
-QFuture<QVector<DatesModelItem> > SqlMessagesStatusStorage::dates(const HistoryQuery &historyQuery)
+QFuture<QVector<HistoryQueryResult> > SqlMessagesStatusStorage::dates(const HistoryQuery &historyQuery)
 {
 	return SqlStorage->statusDates(historyQuery);
 }

@@ -26,17 +26,17 @@
 #include "gui/widgets/wait-overlay.h"
 #include "model/roles.h"
 
-#include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
+#include "model/history-query-results-model.h"
+#include "history-query-result.h"
 
 #include "timeline-chat-messages-view.h"
 
 TimelineChatMessagesView::TimelineChatMessagesView(bool showTitleInTimeline, QWidget *parent) :
 		QWidget(parent),
 		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
-		DatesFutureWatcher(0), MessagesFutureWatcher(0)
+		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
 {
-	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
+	ResultsModel = new HistoryQueryResultsModel(showTitleInTimeline, this);
 
 	setLayout(new QVBoxLayout(this));
 	layout()->setMargin(0);
@@ -56,7 +56,7 @@ void TimelineChatMessagesView::createGui()
 	Timeline = new QTreeView(Splitter);
 
 	Timeline->setAlternatingRowColors(true);
-	Timeline->setModel(DatesModel);
+	Timeline->setModel(ResultsModel);
 	Timeline->setRootIsDecorated(false);
 	Timeline->setUniformRowHeights(true);
 
@@ -83,58 +83,58 @@ QDate TimelineChatMessagesView::currentDate() const
 	return Timeline->currentIndex().data(DateRole).value<QDate>();
 }
 
-void TimelineChatMessagesView::setDates(const QVector<DatesModelItem> &dates)
+void TimelineChatMessagesView::setResults(const QVector<HistoryQueryResult> &results)
 {
-	DatesModel->setDates(dates);
+	ResultsModel->setResults(results);
 
-	if (dates.isEmpty())
+	if (results.isEmpty())
 	{
 		emit currentDateChanged();
 		return;
 	}
 
-	Timeline->setCurrentIndex(DatesModel->index(dates.size() - 1, 0));
+	Timeline->setCurrentIndex(ResultsModel->index(results.size() - 1, 0));
 	QScrollBar *scrollBar = Timeline->verticalScrollBar();
 	scrollBar->setValue(scrollBar->maximum());
 }
 
-void TimelineChatMessagesView::futureDatesAvailable()
+void TimelineChatMessagesView::futureResultsAvailable()
 {
 	hideTimelineWaitOverlay();
 
-	if (!DatesFutureWatcher)
+	if (!ResultsFutureWatcher)
 		return;
 
-	setDates(DatesFutureWatcher->result());
+	setResults(ResultsFutureWatcher->result());
 
-	DatesFutureWatcher->deleteLater();
-	DatesFutureWatcher = 0;
+	ResultsFutureWatcher->deleteLater();
+	ResultsFutureWatcher = 0;
 }
 
-void TimelineChatMessagesView::futureDatesCanceled()
+void TimelineChatMessagesView::futureResultsCanceled()
 {
 	hideTimelineWaitOverlay();
 
-	if (!DatesFutureWatcher)
+	if (!ResultsFutureWatcher)
 		return;
 
-	DatesFutureWatcher->deleteLater();
-	DatesFutureWatcher = 0;
+	ResultsFutureWatcher->deleteLater();
+	ResultsFutureWatcher = 0;
 }
 
-void TimelineChatMessagesView::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
+void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQueryResult> > &futureResults)
 {
-	if (DatesFutureWatcher)
+	if (ResultsFutureWatcher)
 	{
-		DatesFutureWatcher->cancel();
-		DatesFutureWatcher->deleteLater();
+		ResultsFutureWatcher->cancel();
+		ResultsFutureWatcher->deleteLater();
 	}
 
-	DatesFutureWatcher = new QFutureWatcher<QVector<DatesModelItem> >(this);
-	connect(DatesFutureWatcher, SIGNAL(finished()), this, SLOT(futureDatesAvailable()));
-	connect(DatesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureDatesCanceled()));
+	ResultsFutureWatcher = new QFutureWatcher<QVector<HistoryQueryResult> >(this);
+	connect(ResultsFutureWatcher, SIGNAL(finished()), this, SLOT(futureResultsAvailable()));
+	connect(ResultsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureResultsCanceled()));
 
-	DatesFutureWatcher->setFuture(futureDates);
+	ResultsFutureWatcher->setFuture(futureResults);
 
 	showTimelineWaitOverlay();
 }

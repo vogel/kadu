@@ -28,7 +28,7 @@
 #include "talkable/talkable.h"
 
 #include "plugins/history/history_exports.h"
-#include "plugins/history/model/dates-model-item.h"
+#include "plugins/history/history-query-result.h"
 
 class HistoryQuery;
 
@@ -84,7 +84,7 @@ public:
 	 * This methods returns list of available dates for given talkabel in asynchronous way. Refer to QFuture
 	 * documentation for more information.
 	 */
-	virtual QFuture<QVector<DatesModelItem> > dates(const HistoryQuery &historyQuery) = 0;
+	virtual QFuture<QVector<HistoryQueryResult> > dates(const HistoryQuery &historyQuery) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

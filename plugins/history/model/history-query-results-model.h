@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_DATES_MODEL_H
-#define HISTORY_DATES_MODEL_H
+#ifndef HISTORY_QUERY_RESULTS_MODEL_H
+#define HISTORY_QUERY_RESULTS_MODEL_H
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QDate>
@@ -29,18 +29,18 @@
 
 #include "chat/chat.h"
 
-struct DatesModelItem;
+struct HistoryQueryResult;
 
-class HistoryDatesModel : public QAbstractListModel
+class HistoryQueryResultsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-	QVector<DatesModelItem> Dates;
+	QVector<HistoryQueryResult> Results;
 	bool IncludeTitle;
 
 public:
-	explicit HistoryDatesModel(bool includeTitle, QObject *parent = 0);
-	virtual ~HistoryDatesModel();
+	explicit HistoryQueryResultsModel(bool includeTitle, QObject *parent = 0);
+	virtual ~HistoryQueryResultsModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -48,8 +48,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	void setDates(const QVector<DatesModelItem> &dates);
+	void setResults(const QVector<HistoryQueryResult> &results);
 
 };
 
-#endif // HISTORY_DATES_MODEL_H
+#endif // HISTORY_QUERY_RESULTS_MODEL_H
