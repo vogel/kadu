@@ -25,7 +25,6 @@
 class QLineEdit;
 class QSplitter;
 
-class HistoryDatesModel;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
@@ -35,7 +34,6 @@ class SearchTab : public HistoryTab
 	QSplitter *Splitter;
 	QLineEdit *Query;
 	TimelineChatMessagesView *TimelineView;
-	HistoryDatesModel *DatesModel;
 
 	void createGui();
 

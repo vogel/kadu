@@ -25,15 +25,14 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
+#include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
-#include <QTreeView>
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "activate.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
-#include "model/history-dates-model.h"
 #include "storage/history-messages-storage.h"
 #include "history.h"
 #include "history-query.h"
@@ -43,8 +42,6 @@
 SearchTab::SearchTab(QWidget *parent) :
 		HistoryTab(parent)
 {
-	DatesModel = new HistoryDatesModel(true, this);
-
 	createGui();
 }
 
@@ -111,7 +108,6 @@ void SearchTab::createGui()
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
 	TimelineView = new TimelineChatMessagesView(true, Splitter);
-	TimelineView->timeline()->setModel(DatesModel);
 }
 
 void SearchTab::performSearch()
@@ -119,7 +115,7 @@ void SearchTab::performSearch()
 	HistoryQuery query;
 	query.setString(Query->text());
 
-	DatesModel->setDates(History::instance()->currentStorage()->chatStorage()->dates(query).result());
+	TimelineView->setFutureDates(History::instance()->currentStorage()->chatStorage()->dates(query));
 }
 
 QList<int> SearchTab::sizes() const
