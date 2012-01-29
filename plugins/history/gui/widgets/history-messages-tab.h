@@ -37,7 +37,6 @@ class BuddyListModel;
 class ChatsListModel;
 class DatesModelItem;
 class FilteredTreeView;
-class HistoryDatesModel;
 class HistoryMessagesStorage;
 class Message;
 class ModelChain;
@@ -68,8 +67,6 @@ class KADUAPI HistoryMessagesTab : public HistoryTab
 
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
-	WaitOverlay *TimelineWaitOverlay;
-	WaitOverlay *MessagesViewWaitOverlay;
 
 	ChatsListModel *ChatsModel;
 	BuddyListModel *BuddiesModel;
@@ -80,26 +77,17 @@ class KADUAPI HistoryMessagesTab : public HistoryTab
 	QString ClearHistoryMenuItemTitle;
 	QMenu *TimelinePopupMenu;
 	TimelineChatMessagesView *TimelineView;
-	HistoryDatesModel *DatesModel;
 
 	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
-	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
-	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
 
 	Talkable CurrentTalkable;
 
-	void createGui();
+	void createGui(bool showTitleInTimeline);
 	void createModelChain();
 
 private slots:
 	void futureTalkablesAvailable();
 	void futureTalkablesCanceled();
-
-	void futureDatesAvailable();
-	void futureDatesCanceled();
-
-	void futureMessagesAvailable();
-	void futureMessagesCanceled();
 
 	void currentTalkableChanged(const Talkable &talkable);
 	void currentDateChanged();
@@ -144,49 +132,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets list of dates to display in timeline.
-	 * @param dates dates to display in timeline
-	 *
-	 * This methods sets list of dates to display in timeline. If list is not empty,
-	 * last date is selected and displayForDate() is called with that date. IF not,
-	 * displayForDate() is called with invalid date to ensure that view is cleared.
-	 */
-	void setDates(const QVector<DatesModelItem> &dates);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets future list of dates to display in timeline.
-	 * @param futureDates future dates to display in timeline
-	 *
-	 * This methods sets list of future dates to display in timeline. Timeline view will
-	 * be blocked by WaitOverlay until dates are available. If received list will be not empty
-	 * last date will be selected and displayForDate() will be called with that date.
-	 * If received list will be empty, displayForDate() will be called with invalid date to ensure
-	 * that view is cleared.
-	 */
-	void setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets messages to display in message view widget.
-	 * @param messages future messages of dates to display in message view widget
-	 *
-	 * This methods sets list of messages to display in message view widget.
-	 */
-	void setMessages(const QVector<Message> &messages);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets future messages to display in message view widget.
-	 * @param futureMessages future messages of dates to display in message view widget
-	 *
-	 * This methods sets list of future messages to display in message view widget. This widget will
-	 * be blocked by WaitOverlay until messages are available.
-	 */
-	void setFutureMessages(const QFuture<QVector<Message> > &futureMessages);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns FilteredTreeView widget used in this tab.
 	 * @return FilteredTreeView widget used in this tab
 	 */
@@ -217,30 +162,6 @@ protected:
 	 * @short Hide wait overlay over tab.
 	 */
 	void hideTabWaitOverlay();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Show wait overlay over timeline widget.
-	 */
-	void showTimelineWaitOverlay();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Hide wait overlay over timeline widget.
-	 */
-	void hideTimelineWaitOverlay();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Show wait overlay over messages view widget.
-	 */
-	void showMessagesViewWaitOverlay();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Hide wait overlay over messages view widget.
-	 */
-	void hideMessagesViewWaitOverlay();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

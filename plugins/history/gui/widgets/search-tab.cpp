@@ -110,7 +110,7 @@ void SearchTab::createGui()
 
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
-	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView = new TimelineChatMessagesView(true, Splitter);
 	TimelineView->timeline()->setModel(DatesModel);
 }
 

@@ -20,6 +20,7 @@
 #ifndef TIMELINE_CHAT_MESSAGES_VIEW_H
 #define TIMELINE_CHAT_MESSAGES_VIEW_H
 
+#include <QtCore/QFutureWatcher>
 #include <QtGui/QWidget>
 
 #include "exports.h"
@@ -29,6 +30,10 @@ class QSplitter;
 class QTreeView;
 
 class ChatMessagesView;
+class DatesModelItem;
+class HistoryDatesModel;
+class Message;
+class WaitOverlay;
 
 /**
  * @addtogroup History
@@ -47,19 +52,34 @@ class KADUAPI TimelineChatMessagesView : public QWidget
 {
 	Q_OBJECT
 
+	WaitOverlay *TimelineWaitOverlay;
+	WaitOverlay *MessagesViewWaitOverlay;
+
 	QSplitter *Splitter;
 	QTreeView *Timeline;
+	HistoryDatesModel *DatesModel;
 	ChatMessagesView *MessagesView;
 
+	QFutureWatcher<QVector<DatesModelItem> > *DatesFutureWatcher;
+	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
+
 	void createGui();
+
+private slots:
+	void futureDatesAvailable();
+	void futureDatesCanceled();
+
+	void futureMessagesAvailable();
+	void futureMessagesCanceled();
 
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new TimelineChatMessagesView.
+	 * @param showTitleInTimeline if true title of item will be shown in timeline view
 	 * @param parent parent widget
 	 */
-	explicit TimelineChatMessagesView(QWidget *parent = 0);
+	explicit TimelineChatMessagesView(bool showTitleInTimeline, QWidget *parent = 0);
 	virtual ~TimelineChatMessagesView();
 
 	/**
@@ -90,6 +110,73 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets list of dates to display in timeline.
+	 * @param dates dates to display in timeline
+	 *
+	 * This methods sets list of dates to display in timeline. If list is not empty,
+	 * last date is selected and displayForDate() is called with that date. IF not,
+	 * displayForDate() is called with invalid date to ensure that view is cleared.
+	 */
+	void setDates(const QVector<DatesModelItem> &dates);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets future list of dates to display in timeline.
+	 * @param futureDates future dates to display in timeline
+	 *
+	 * This methods sets list of future dates to display in timeline. Timeline view will
+	 * be blocked by WaitOverlay until dates are available. If received list will be not empty
+	 * last date will be selected and displayForDate() will be called with that date.
+	 * If received list will be empty, displayForDate() will be called with invalid date to ensure
+	 * that view is cleared.
+	 */
+	void setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets messages to display in message view widget.
+	 * @param messages future messages of dates to display in message view widget
+	 *
+	 * This methods sets list of messages to display in message view widget.
+	 */
+	void setMessages(const QVector<Message> &messages);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets future messages to display in message view widget.
+	 * @param futureMessages future messages of dates to display in message view widget
+	 *
+	 * This methods sets list of future messages to display in message view widget. This widget will
+	 * be blocked by WaitOverlay until messages are available.
+	 */
+	void setFutureMessages(const QFuture<QVector<Message> > &futureMessages);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Show wait overlay over timeline widget.
+	 */
+	void showTimelineWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Hide wait overlay over timeline widget.
+	 */
+	void hideTimelineWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Show wait overlay over messages view widget.
+	 */
+	void showMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Hide wait overlay over messages view widget.
+	 */
+	void hideMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns heights of timeline and message view widgets.
 	 * @return heights of timeline and message view widgets
 	 *
@@ -107,6 +194,13 @@ public:
 	 * of chat message view widget. If size of parameter is different that 2 assertion is thrown.
 	 */
 	void setSizes(const QList<int> &newSizes);
+
+signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited when selected date changes.
+	 */
+	void currentDateChanged();
 
 };
 

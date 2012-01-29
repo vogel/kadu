@@ -20,7 +20,6 @@
 #include <QtGui/QAction>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
-#include <QtGui/QScrollBar>
 #include <QtGui/QSplitter>
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
@@ -42,7 +41,6 @@
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "model/dates-model-item.h"
-#include "model/history-dates-model.h"
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 #include "history-query.h"
@@ -51,12 +49,9 @@
 
 HistoryMessagesTab::HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent) :
 		HistoryTab(parent), Storage(0),
-		TabWaitOverlay(0), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
-		TalkablesFutureWatcher(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
+		TabWaitOverlay(0), TalkablesFutureWatcher(0)
 {
-	DatesModel = new HistoryDatesModel(showTitleInTimeline, this);
-
-	createGui();
+	createGui(showTitleInTimeline);
 	createModelChain();
 }
 
@@ -64,7 +59,7 @@ HistoryMessagesTab::~HistoryMessagesTab()
 {
 }
 
-void HistoryMessagesTab::createGui()
+void HistoryMessagesTab::createGui(bool showTitleInTimeline)
 {
 	TimelinePopupMenu = new QMenu(this);
 	TimelinePopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
@@ -98,13 +93,11 @@ void HistoryMessagesTab::createGui()
 
 	FilteredView->setView(TalkableTree);
 
-	TimelineView = new TimelineChatMessagesView(Splitter);
-	TimelineView->timeline()->setModel(DatesModel);
+	TimelineView = new TimelineChatMessagesView(showTitleInTimeline, Splitter);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
 	        this, SLOT(showTimelinePopupMenu()));
-	connect(TimelineView->timeline()->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SLOT(currentDateChanged()));
+	connect(timelineView(), SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 
 	QList<int> sizes;
 	sizes.append(150);
@@ -151,9 +144,9 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	query.setTalkable(CurrentTalkable);
 
 	if (Storage)
-		setFutureDates(Storage->dates(query));
+		TimelineView->setFutureDates(Storage->dates(query));
 	else
-		setDates(QVector<DatesModelItem>());
+		TimelineView->setDates(QVector<DatesModelItem>());
 }
 
 FilteredTreeView * HistoryMessagesTab::filteredView() const
@@ -183,34 +176,6 @@ void HistoryMessagesTab::hideTabWaitOverlay()
 {
 	TabWaitOverlay->deleteLater();
 	TabWaitOverlay = 0;
-}
-
-void HistoryMessagesTab::showTimelineWaitOverlay()
-{
-	if (!TimelineWaitOverlay)
-		TimelineWaitOverlay = new WaitOverlay(TimelineView);
-	else
-		TimelineWaitOverlay->show();
-}
-
-void HistoryMessagesTab::hideTimelineWaitOverlay()
-{
-	TimelineWaitOverlay->deleteLater();
-	TimelineWaitOverlay = 0;
-}
-
-void HistoryMessagesTab::showMessagesViewWaitOverlay()
-{
-	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = new WaitOverlay(TimelineView->messagesView());
-	else
-		MessagesViewWaitOverlay->show();
-}
-
-void HistoryMessagesTab::hideMessagesViewWaitOverlay()
-{
-	MessagesViewWaitOverlay->deleteLater();
-	MessagesViewWaitOverlay = 0;
 }
 
 void HistoryMessagesTab::talkablesAvailable()
@@ -273,115 +238,6 @@ void HistoryMessagesTab::setFutureTalkables(const QFuture<QVector<Talkable> > &f
 	showTabWaitOverlay();
 }
 
-void HistoryMessagesTab::setDates(const QVector<DatesModelItem> &dates)
-{
-	DatesModel->setDates(dates);
-
-	if (!dates.isEmpty())
-	{
-		TimelineView->timeline()->setCurrentIndex(TimelineView->timeline()->model()->index(dates.size() - 1, 0));
-		QScrollBar *scrollBar = TimelineView->timeline()->verticalScrollBar();
-		scrollBar->setValue(scrollBar->maximum());
-	}
-	else
-		currentDateChanged();
-}
-
-void HistoryMessagesTab::futureDatesAvailable()
-{
-	hideTimelineWaitOverlay();
-
-	if (!DatesFutureWatcher)
-		return;
-
-	setDates(DatesFutureWatcher->result());
-
-	DatesFutureWatcher->deleteLater();
-	DatesFutureWatcher = 0;
-}
-
-void HistoryMessagesTab::futureDatesCanceled()
-{
-	hideTimelineWaitOverlay();
-
-	if (!DatesFutureWatcher)
-		return;
-
-	DatesFutureWatcher->deleteLater();
-	DatesFutureWatcher = 0;
-}
-
-void HistoryMessagesTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
-{
-	if (DatesFutureWatcher)
-	{
-		DatesFutureWatcher->cancel();
-		DatesFutureWatcher->deleteLater();
-	}
-
-	DatesFutureWatcher = new QFutureWatcher<QVector<DatesModelItem> >(this);
-	connect(DatesFutureWatcher, SIGNAL(finished()), this, SLOT(futureDatesAvailable()));
-	connect(DatesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureDatesCanceled()));
-
-	DatesFutureWatcher->setFuture(futureDates);
-
-	showTimelineWaitOverlay();
-}
-
-void HistoryMessagesTab::setMessages(const QVector<Message> &messages)
-{
-	timelineView()->messagesView()->setUpdatesEnabled(false);
-
-	timelineView()->messagesView()->clearMessages();
-	timelineView()->messagesView()->appendMessages(messages);
-	timelineView()->messagesView()->refresh();
-
-	timelineView()->messagesView()->setUpdatesEnabled(true);
-}
-
-void HistoryMessagesTab::futureMessagesAvailable()
-{
-	if (!MessagesFutureWatcher)
-	{
-		hideMessagesViewWaitOverlay();
-		return;
-	}
-
-	setMessages(MessagesFutureWatcher->result());
-	hideMessagesViewWaitOverlay(); // wait for messages to display before hiding
-
-	MessagesFutureWatcher->deleteLater();
-	MessagesFutureWatcher = 0;
-}
-
-void HistoryMessagesTab::futureMessagesCanceled()
-{
-	hideMessagesViewWaitOverlay();
-
-	if (!MessagesFutureWatcher)
-		return;
-
-	MessagesFutureWatcher->deleteLater();
-	MessagesFutureWatcher = 0;
-}
-
-void HistoryMessagesTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
-{
-	if (MessagesFutureWatcher)
-	{
-		MessagesFutureWatcher->cancel();
-		MessagesFutureWatcher->deleteLater();
-	}
-
-	MessagesFutureWatcher = new QFutureWatcher<QVector<Message> >(this);
-	connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));
-	connect(MessagesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureMessagesCanceled()));
-
-	MessagesFutureWatcher->setFuture(futureMessages);
-
-	showMessagesViewWaitOverlay();
-}
-
 void HistoryMessagesTab::currentTalkableChanged(const Talkable &talkable)
 {
 	displayTalkable(talkable, false);
@@ -393,12 +249,12 @@ void HistoryMessagesTab::currentDateChanged()
 
 	if (!Storage || !date.isValid())
 	{
-		setMessages(QVector<Message>());
+		TimelineView->setMessages(QVector<Message>());
 		return;
 	}
 
 	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
-	setFutureMessages(Storage->messages(CurrentTalkable, date));
+	TimelineView->setFutureMessages(Storage->messages(CurrentTalkable, date));
 }
 
 void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)
