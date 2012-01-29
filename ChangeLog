@@ -2,6 +2,10 @@
 * history: new, polished history window (Vogel)
 * gui: #2277 fixed: status subscription window has proper meaning (Juzef)
 
++++ version 0.11.0-rc3
+* core: #2426 fixed: regression that caused crashes and unsaved configuration changes when closing system with opened Kadu window (beevvy)
+* core: #2445 worked around: a long standing Windows issue that resulted in unsaved configuration changes and unsaved history with new contacts (beevvy)
+
 +++ version 0.11.0-rc2
 * sound: dropped libsndfile dependency (beevvy)
 * gadu: #2410 fixed: after waking up from suspend Gadu is not reconnecting (WhE)
