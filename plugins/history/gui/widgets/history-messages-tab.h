@@ -22,10 +22,11 @@
 
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
-#include <QtGui/QWidget>
 
 #include "talkable/talkable.h"
 #include "exports.h"
+
+#include "gui/widgets/history-tab.h"
 
 class QDate;
 class QMenu;
@@ -59,7 +60,7 @@ class WaitOverlay;
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
  */
-class KADUAPI HistoryMessagesTab : public QWidget
+class KADUAPI HistoryMessagesTab : public HistoryTab
 {
 	Q_OBJECT
 

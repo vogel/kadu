@@ -49,7 +49,7 @@
 #include "history-messages-tab.h"
 
 HistoryMessagesTab::HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent) :
-		QWidget(parent), Storage(0),
+		HistoryTab(parent), Storage(0),
 		TabWaitOverlay(0), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		TalkablesFutureWatcher(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
 {

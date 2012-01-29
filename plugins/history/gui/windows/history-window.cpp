@@ -162,8 +162,8 @@ void HistoryWindow::currentTabChanged(int newTabIndex)
 		return;
 	}
 
-	HistoryMessagesTab *previousTab = static_cast<HistoryMessagesTab *>(TabWidget->widget(CurrentTab));
-	HistoryMessagesTab *currentTab = static_cast<HistoryMessagesTab *>(TabWidget->widget(newTabIndex));
+	HistoryTab *previousTab = static_cast<HistoryTab *>(TabWidget->widget(CurrentTab));
+	HistoryTab *currentTab = static_cast<HistoryTab *>(TabWidget->widget(newTabIndex));
 
 	CurrentTab = newTabIndex;
 
