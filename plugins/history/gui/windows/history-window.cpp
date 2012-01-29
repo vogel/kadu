@@ -29,6 +29,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/aggregate-chat-manager.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "activate.h"
@@ -125,6 +126,10 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
+	// TODO: fix it right, this is workaround only for crash when closing kadu with this window open
+	if (Core::instance()->isClosing())
+		return;
+
 	ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
 	StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
 	SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
