@@ -46,9 +46,9 @@
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 
-#include "history-tab.h"
+#include "history-messages-tab.h"
 
-HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
+HistoryMessagesTab::HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent) :
 		QWidget(parent), Storage(0),
 		TabWaitOverlay(0), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		TalkablesFutureWatcher(0), DatesFutureWatcher(0), MessagesFutureWatcher(0)
@@ -59,11 +59,11 @@ HistoryTab::HistoryTab(bool showTitleInTimeline, QWidget *parent) :
 	createModelChain();
 }
 
-HistoryTab::~HistoryTab()
+HistoryMessagesTab::~HistoryMessagesTab()
 {
 }
 
-void HistoryTab::createGui()
+void HistoryMessagesTab::createGui()
 {
 	TimelinePopupMenu = new QMenu(this);
 	TimelinePopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
@@ -113,7 +113,7 @@ void HistoryTab::createGui()
 	layout->addWidget(Splitter);
 }
 
-void HistoryTab::createModelChain()
+void HistoryMessagesTab::createModelChain()
 {
 	ChatsModel = new ChatsListModel(TalkableTree);
 	BuddiesModel = new BuddyListModel(TalkableTree);
@@ -138,7 +138,7 @@ void HistoryTab::createModelChain()
 	TalkableTree->setChain(Chain);
 }
 
-void HistoryTab::displayTalkable(const Talkable &talkable, bool force)
+void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 {
 	if (!force && CurrentTalkable == talkable)
 		return;
@@ -152,22 +152,22 @@ void HistoryTab::displayTalkable(const Talkable &talkable, bool force)
 		setDates(QVector<DatesModelItem>());
 }
 
-FilteredTreeView * HistoryTab::filteredView() const
+FilteredTreeView * HistoryMessagesTab::filteredView() const
 {
 	return FilteredView;
 }
 
-TalkableTreeView * HistoryTab::talkableTree() const
+TalkableTreeView * HistoryMessagesTab::talkableTree() const
 {
 	return TalkableTree;
 }
 
-ModelChain * HistoryTab::modelChain() const
+ModelChain * HistoryMessagesTab::modelChain() const
 {
 	return Chain;
 }
 
-void HistoryTab::showTabWaitOverlay()
+void HistoryMessagesTab::showTabWaitOverlay()
 {
 	if (!TabWaitOverlay)
 		TabWaitOverlay = new WaitOverlay(this);
@@ -175,13 +175,13 @@ void HistoryTab::showTabWaitOverlay()
 		TabWaitOverlay->show();
 }
 
-void HistoryTab::hideTabWaitOverlay()
+void HistoryMessagesTab::hideTabWaitOverlay()
 {
 	TabWaitOverlay->deleteLater();
 	TabWaitOverlay = 0;
 }
 
-void HistoryTab::showTimelineWaitOverlay()
+void HistoryMessagesTab::showTimelineWaitOverlay()
 {
 	if (!TimelineWaitOverlay)
 		TimelineWaitOverlay = new WaitOverlay(TimelineView);
@@ -189,13 +189,13 @@ void HistoryTab::showTimelineWaitOverlay()
 		TimelineWaitOverlay->show();
 }
 
-void HistoryTab::hideTimelineWaitOverlay()
+void HistoryMessagesTab::hideTimelineWaitOverlay()
 {
 	TimelineWaitOverlay->deleteLater();
 	TimelineWaitOverlay = 0;
 }
 
-void HistoryTab::showMessagesViewWaitOverlay()
+void HistoryMessagesTab::showMessagesViewWaitOverlay()
 {
 	if (!MessagesViewWaitOverlay)
 		MessagesViewWaitOverlay = new WaitOverlay(TimelineView->messagesView());
@@ -203,22 +203,22 @@ void HistoryTab::showMessagesViewWaitOverlay()
 		MessagesViewWaitOverlay->show();
 }
 
-void HistoryTab::hideMessagesViewWaitOverlay()
+void HistoryMessagesTab::hideMessagesViewWaitOverlay()
 {
 	MessagesViewWaitOverlay->deleteLater();
 	MessagesViewWaitOverlay = 0;
 }
 
-void HistoryTab::talkablesAvailable()
+void HistoryMessagesTab::talkablesAvailable()
 {
 }
 
-TimelineChatMessagesView * HistoryTab::timelineView() const
+TimelineChatMessagesView * HistoryMessagesTab::timelineView() const
 {
 	return TimelineView;
 }
 
-void HistoryTab::setTalkables(const QVector<Talkable> &talkables)
+void HistoryMessagesTab::setTalkables(const QVector<Talkable> &talkables)
 {
 	ChatsBuddiesSplitter chatsBuddies(talkables);
 
@@ -226,7 +226,7 @@ void HistoryTab::setTalkables(const QVector<Talkable> &talkables)
 	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 }
 
-void HistoryTab::futureTalkablesAvailable()
+void HistoryMessagesTab::futureTalkablesAvailable()
 {
 	hideTabWaitOverlay();
 
@@ -241,7 +241,7 @@ void HistoryTab::futureTalkablesAvailable()
 	talkablesAvailable();
 }
 
-void HistoryTab::futureTalkablesCanceled()
+void HistoryMessagesTab::futureTalkablesCanceled()
 {
 	hideTabWaitOverlay();
 
@@ -252,7 +252,7 @@ void HistoryTab::futureTalkablesCanceled()
 	TalkablesFutureWatcher = 0;
 }
 
-void HistoryTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables)
+void HistoryMessagesTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTalkables)
 {
 	if (TalkablesFutureWatcher)
 	{
@@ -269,7 +269,7 @@ void HistoryTab::setFutureTalkables(const QFuture<QVector<Talkable> > &futureTal
 	showTabWaitOverlay();
 }
 
-void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
+void HistoryMessagesTab::setDates(const QVector<DatesModelItem> &dates)
 {
 	DatesModel->setDates(dates);
 
@@ -283,7 +283,7 @@ void HistoryTab::setDates(const QVector<DatesModelItem> &dates)
 		currentDateChanged();
 }
 
-void HistoryTab::futureDatesAvailable()
+void HistoryMessagesTab::futureDatesAvailable()
 {
 	hideTimelineWaitOverlay();
 
@@ -296,7 +296,7 @@ void HistoryTab::futureDatesAvailable()
 	DatesFutureWatcher = 0;
 }
 
-void HistoryTab::futureDatesCanceled()
+void HistoryMessagesTab::futureDatesCanceled()
 {
 	hideTimelineWaitOverlay();
 
@@ -307,7 +307,7 @@ void HistoryTab::futureDatesCanceled()
 	DatesFutureWatcher = 0;
 }
 
-void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
+void HistoryMessagesTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureDates)
 {
 	if (DatesFutureWatcher)
 	{
@@ -324,7 +324,7 @@ void HistoryTab::setFutureDates(const QFuture<QVector<DatesModelItem> > &futureD
 	showTimelineWaitOverlay();
 }
 
-void HistoryTab::setMessages(const QVector<Message> &messages)
+void HistoryMessagesTab::setMessages(const QVector<Message> &messages)
 {
 	timelineView()->messagesView()->setUpdatesEnabled(false);
 
@@ -335,7 +335,7 @@ void HistoryTab::setMessages(const QVector<Message> &messages)
 	timelineView()->messagesView()->setUpdatesEnabled(true);
 }
 
-void HistoryTab::futureMessagesAvailable()
+void HistoryMessagesTab::futureMessagesAvailable()
 {
 	if (!MessagesFutureWatcher)
 	{
@@ -350,7 +350,7 @@ void HistoryTab::futureMessagesAvailable()
 	MessagesFutureWatcher = 0;
 }
 
-void HistoryTab::futureMessagesCanceled()
+void HistoryMessagesTab::futureMessagesCanceled()
 {
 	hideMessagesViewWaitOverlay();
 
@@ -361,7 +361,7 @@ void HistoryTab::futureMessagesCanceled()
 	MessagesFutureWatcher = 0;
 }
 
-void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
+void HistoryMessagesTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessages)
 {
 	if (MessagesFutureWatcher)
 	{
@@ -378,12 +378,12 @@ void HistoryTab::setFutureMessages(const QFuture<QVector<Message> > &futureMessa
 	showMessagesViewWaitOverlay();
 }
 
-void HistoryTab::currentTalkableChanged(const Talkable &talkable)
+void HistoryMessagesTab::currentTalkableChanged(const Talkable &talkable)
 {
 	displayTalkable(talkable, false);
 }
 
-void HistoryTab::currentDateChanged()
+void HistoryMessagesTab::currentDateChanged()
 {
 	QDate date = timelineView()->currentDate();
 
@@ -397,12 +397,12 @@ void HistoryTab::currentDateChanged()
 	setFutureMessages(Storage->messages(CurrentTalkable, date));
 }
 
-void HistoryTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)
+void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)
 {
 	ClearHistoryMenuItemTitle = clearHistoryMenuItemTitle;
 }
 
-void HistoryTab::showTalkablePopupMenu()
+void HistoryMessagesTab::showTalkablePopupMenu()
 {
 	QScopedPointer<QMenu> menu;
 	menu.reset(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
@@ -413,7 +413,7 @@ void HistoryTab::showTalkablePopupMenu()
 	menu->exec(QCursor::pos());
 }
 
-void HistoryTab::clearTalkableHistory()
+void HistoryMessagesTab::clearTalkableHistory()
 {
 	if (!Storage)
 		return;
@@ -434,13 +434,13 @@ void HistoryTab::clearTalkableHistory()
 	displayTalkable(Talkable(), true);
 }
 
-void HistoryTab::showTimelinePopupMenu()
+void HistoryMessagesTab::showTimelinePopupMenu()
 {
 	if (TimelineView->currentDate().isValid())
 		TimelinePopupMenu->exec(QCursor::pos());
 }
 
-void HistoryTab::removeEntries()
+void HistoryMessagesTab::removeEntries()
 {
 	QDate date = TimelineView->currentDate();
 	if (!Storage || !date.isValid())
@@ -450,7 +450,7 @@ void HistoryTab::removeEntries()
 	displayTalkable(CurrentTalkable, true);
 }
 
-void HistoryTab::keyPressEvent(QKeyEvent *event)
+void HistoryMessagesTab::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == QKeySequence::Copy && !TimelineView->messagesView()->selectedText().isEmpty())
 		// Do not use triggerPageAction(), see bug #2345.
@@ -459,7 +459,7 @@ void HistoryTab::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-void HistoryTab::updateData()
+void HistoryMessagesTab::updateData()
 {
 	if (!Storage)
 	{
@@ -471,7 +471,7 @@ void HistoryTab::updateData()
 	setFutureTalkables(Storage->talkables());
 }
 
-QList<int> HistoryTab::sizes() const
+QList<int> HistoryMessagesTab::sizes() const
 {
 	QList<int> result = Splitter->sizes();
 	result.append(TimelineView->sizes());
@@ -479,7 +479,7 @@ QList<int> HistoryTab::sizes() const
 	return result;
 }
 
-void HistoryTab::setSizes(const QList<int> &newSizes)
+void HistoryMessagesTab::setSizes(const QList<int> &newSizes)
 {
 	Q_ASSERT(newSizes.size() == 4);
 
@@ -487,13 +487,13 @@ void HistoryTab::setSizes(const QList<int> &newSizes)
 	TimelineView->setSizes(newSizes.mid(2, 2));
 }
 
-void HistoryTab::setHistoryMessagesStorage(HistoryMessagesStorage *storage)
+void HistoryMessagesTab::setHistoryMessagesStorage(HistoryMessagesStorage *storage)
 {
 	Storage = storage;
 	updateData();
 }
 
-HistoryMessagesStorage * HistoryTab::historyMessagesStorage() const
+HistoryMessagesStorage * HistoryMessagesTab::historyMessagesStorage() const
 {
 	return Storage;
 }

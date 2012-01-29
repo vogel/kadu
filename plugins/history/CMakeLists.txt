@@ -24,7 +24,7 @@ set (SOURCES
 	actions/show-history-action-description.cpp
 
 	gui/widgets/chat-history-tab.cpp
-	gui/widgets/history-tab.cpp
+	gui/widgets/history-messages-tab.cpp
 	gui/widgets/timeline-chat-messages-view.cpp
 
 	gui/windows/history-window.cpp
@@ -46,7 +46,7 @@ set (MOC_SOURCES
 	actions/show-history-action-description.h
 
 	gui/widgets/chat-history-tab.h
-	gui/widgets/history-tab.h
+	gui/widgets/history-messages-tab.h
 	gui/widgets/timeline-chat-messages-view.h
 
 	gui/windows/history-window.h

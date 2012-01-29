@@ -29,7 +29,7 @@
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryTab(true, parent)
+		HistoryMessagesTab(true, parent)
 {
 	setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
 }

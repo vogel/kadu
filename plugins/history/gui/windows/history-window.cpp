@@ -34,7 +34,6 @@
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
-#include "gui/widgets/history-tab.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -99,9 +98,9 @@ void HistoryWindow::createGui()
 			this, SLOT(currentTabChanged(int)));
 
 	ChatTab = new ChatHistoryTab(TabWidget);
-	StatusTab = new HistoryTab(TabWidget);
+	StatusTab = new HistoryMessagesTab(TabWidget);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
-	SmsTab = new HistoryTab(TabWidget);
+	SmsTab = new HistoryMessagesTab(TabWidget);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
@@ -163,8 +162,8 @@ void HistoryWindow::currentTabChanged(int newTabIndex)
 		return;
 	}
 
-	HistoryTab *previousTab = static_cast<HistoryTab *>(TabWidget->widget(CurrentTab));
-	HistoryTab *currentTab = static_cast<HistoryTab *>(TabWidget->widget(newTabIndex));
+	HistoryMessagesTab *previousTab = static_cast<HistoryMessagesTab *>(TabWidget->widget(CurrentTab));
+	HistoryMessagesTab *currentTab = static_cast<HistoryMessagesTab *>(TabWidget->widget(newTabIndex));
 
 	CurrentTab = newTabIndex;
 

@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_TAB_H
-#define HISTORY_TAB_H
+#ifndef HISTORY_MESSAGES_TAB_H
+#define HISTORY_MESSAGES_TAB_H
 
 #include <QtCore/QFuture>
 #include <QtCore/QFutureWatcher>
@@ -50,7 +50,7 @@ class WaitOverlay;
  */
 
 /**
- * @class HistoryTab
+ * @class HistoryMessagesTab
  * @author Rafał 'Vogel' Malinowski
  * @short Widget that provides tab content for history window.
  *
@@ -59,7 +59,7 @@ class WaitOverlay;
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
  */
-class KADUAPI HistoryTab : public QWidget
+class KADUAPI HistoryMessagesTab : public QWidget
 {
 	Q_OBJECT
 
@@ -257,8 +257,8 @@ public:
 	 * This contructor cannot be called directly, as this class is abstract. Implementations must
 	 * call this method and choose whether to use 3 or 2 columns in timeline view.
 	 */
-	explicit HistoryTab(bool showTitleInTimeline, QWidget *parent = 0);
-	virtual ~HistoryTab();
+	explicit HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent = 0);
+	virtual ~HistoryMessagesTab();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -319,4 +319,4 @@ public:
  * @}
  */
 
-#endif // HISTORY_TAB_H
+#endif // HISTORY_MESSAGES_TAB_H

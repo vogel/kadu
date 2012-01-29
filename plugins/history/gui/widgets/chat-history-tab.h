@@ -23,9 +23,9 @@
 #include "talkable/talkable.h"
 #include "exports.h"
 
-#include "gui/widgets/history-tab.h"
+#include "gui/widgets/history-messages-tab.h"
 
-class KADUAPI ChatHistoryTab : public HistoryTab
+class KADUAPI ChatHistoryTab : public HistoryMessagesTab
 {
 	Q_OBJECT
 
