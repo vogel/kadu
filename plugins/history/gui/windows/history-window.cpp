@@ -34,6 +34,7 @@
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
+#include "gui/widgets/search-tab.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -106,6 +107,7 @@ void HistoryWindow::createGui()
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));
 	TabWidget->addTab(SmsTab, tr("SMS"));
+	TabWidget->addTab(new SearchTab(TabWidget), tr("Search"));
 
 	CurrentTab = 0;
 
