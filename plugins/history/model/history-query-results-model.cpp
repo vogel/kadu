@@ -88,6 +88,7 @@ QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) cons
 		}
 
 		case DateRole: return Results.at(row).date();
+		case TalkableRole: return QVariant::fromValue(Results.at(row).talkable());
 	}
 
 	return QVariant();

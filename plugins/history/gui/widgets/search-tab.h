@@ -39,6 +39,7 @@ class SearchTab : public HistoryTab
 
 private slots:
 	void performSearch();
+	void currentDateChanged();
 
 public:
 	explicit SearchTab(QWidget *parent = 0);

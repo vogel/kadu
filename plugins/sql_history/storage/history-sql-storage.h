@@ -65,6 +65,7 @@ class HistorySqlStorage : public HistoryStorage
 	void initQueries();
 
 	int findOrCreateChat(const Chat &chat);
+	Chat findChat(int id);
 	int findOrCreateContact(const Contact &contact);
 	int saveMessageContent(const Message &message);
 	int findOrCreateDate(const QDate &date);

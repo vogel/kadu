@@ -30,6 +30,7 @@
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "model/roles.h"
 #include "activate.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -108,6 +109,7 @@ void SearchTab::createGui()
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
 	TimelineView = new TimelineChatMessagesView(true, Splitter);
+	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 }
 
 void SearchTab::performSearch()
@@ -116,6 +118,15 @@ void SearchTab::performSearch()
 	query.setString(Query->text());
 
 	TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
+}
+
+void SearchTab::currentDateChanged()
+{
+	const QModelIndex &currentIndex = TimelineView->timeline()->currentIndex();
+	const Talkable talkable = currentIndex.data(TalkableRole).value<Talkable>();
+	const QDate date = currentIndex.data(DateRole).value<QDate>();
+
+	TimelineView->setFutureMessages(History::instance()->currentStorage()->messages(talkable, date));
 }
 
 QList<int> SearchTab::sizes() const
