@@ -55,6 +55,7 @@
 #include "plugins/history/history.h"
 #include "plugins/history/model/dates-model-item.h"
 #include "plugins/history/search/history-search-parameters.h"
+#include "plugins/history/history-query.h"
 
 #include "storage/sql-initializer.h"
 #include "storage/sql-messages-chat-storage.h"
@@ -630,10 +631,12 @@ QFuture<QVector<Talkable> > HistorySqlStorage::smsRecipients()
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipients);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkable)
+QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const HistoryQuery &historyQuery)
 {
 	if (!waitForDatabase())
 		return QVector<DatesModelItem>();
+
+	const Talkable &talkable = historyQuery.talkable();
 
 	QMutexLocker locker(&DatabaseMutex);
 
@@ -686,13 +689,15 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const Talkable &talkabl
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const Talkable &talkable)
+QFuture<QVector<DatesModelItem > > HistorySqlStorage::chatDates(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, talkable);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncChatDates, historyQuery);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const Talkable &talkable)
+QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const HistoryQuery &historyQuery)
 {
+	const Talkable &talkable = historyQuery.talkable();
+
 	if (!talkable.isValidBuddy() && !talkable.isValidContact())
 		return QVector<DatesModelItem>();
 
@@ -727,13 +732,15 @@ QVector<DatesModelItem> HistorySqlStorage::syncStatusDates(const Talkable &talka
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusDates(const Talkable &talkable)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::statusDates(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusDates, talkable);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatusDates, historyQuery);
 }
 
-QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const Talkable &talkable)
+QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const HistoryQuery &historyQuery)
 {
+	const Talkable &talkable = historyQuery.talkable();
+
 	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
 		return QVector<DatesModelItem>();
 
@@ -768,9 +775,9 @@ QVector<DatesModelItem> HistorySqlStorage::syncSmsRecipientDates(const Talkable 
 	return dates;
 }
 
-QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const Talkable &talkable)
+QFuture<QVector<DatesModelItem> > HistorySqlStorage::smsRecipientDates(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, talkable);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, historyQuery);
 }
 
 QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const QDate &date)

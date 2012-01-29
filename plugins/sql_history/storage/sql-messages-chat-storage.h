@@ -35,7 +35,7 @@ public:
 	virtual ~SqlMessagesChatStorage();
 
 	virtual QFuture<QVector<Talkable> > talkables();
-	virtual QFuture<QVector<DatesModelItem> > dates(const Talkable &talkable);
+	virtual QFuture<QVector<DatesModelItem> > dates(const HistoryQuery &historyQuery);
 	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date);
 
 	virtual void deleteMessages(const Talkable &talkable, const QDate &date = QDate());

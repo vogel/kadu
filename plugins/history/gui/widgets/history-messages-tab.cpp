@@ -45,6 +45,7 @@
 #include "model/history-dates-model.h"
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
+#include "history-query.h"
 
 #include "history-messages-tab.h"
 
@@ -146,8 +147,11 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	CurrentTalkable = talkable;
 	TimelineView->messagesView()->setChat(CurrentTalkable.toChat());
 
+	HistoryQuery query;
+	query.setTalkable(CurrentTalkable);
+
 	if (Storage)
-		setFutureDates(Storage->dates(CurrentTalkable));
+		setFutureDates(Storage->dates(query));
 	else
 		setDates(QVector<DatesModelItem>());
 }
