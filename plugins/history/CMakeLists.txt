@@ -41,6 +41,7 @@ set (SOURCES
 	history.cpp
 	history-messages-prepender.cpp
 	history-plugin.cpp
+	history-query.cpp
 	history-save-thread.cpp
 )
 
