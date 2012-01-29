@@ -642,15 +642,24 @@ QVector<DatesModelItem> HistorySqlStorage::syncChatDates(const HistoryQuery &his
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT count(1), date, content FROM";
-	queryString += " (SELECT km.rowid, date, date_id, content FROM kadu_messages km "
+	queryString += " (SELECT km.rowid, date, date_id, chat_id, content FROM kadu_messages km "
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
 		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
-		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE " + chatWhere(talkable.toChat());
+		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE 1";
+
+	if (!talkable.isEmpty())
+		queryString += QString(" AND %1").arg(chatWhere(talkable.toChat()));
+	if (!historyQuery.string().isEmpty())
+		queryString += " AND kmc.content LIKE :query";
+
 	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
-	queryString += " GROUP BY date_id";
+	queryString += " GROUP BY date_id, chat_id";
 	queryString += " ORDER BY date_id ASC, rowid ASC";
 
 	query.prepare(queryString);
+
+	if (!historyQuery.string().isEmpty())
+		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
 
 	QVector<DatesModelItem> dates;
 	executeQuery(query);

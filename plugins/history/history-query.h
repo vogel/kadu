@@ -25,6 +25,7 @@
 class HistoryQuery
 {
 	Talkable QueryTalkable;
+	QString QueryString;
 
 public:
 	HistoryQuery();
@@ -34,6 +35,9 @@ public:
 
 	void setTalkable(const Talkable &talkable);
 	Talkable talkable() const;
+
+	void setString(const QString &string);
+	QString string() const;
 
 };
 

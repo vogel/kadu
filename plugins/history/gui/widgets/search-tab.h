@@ -22,8 +22,10 @@
 
 #include "gui/widgets/history-tab.h"
 
+class QLineEdit;
 class QSplitter;
 
+class HistoryDatesModel;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
@@ -31,9 +33,14 @@ class SearchTab : public HistoryTab
 	Q_OBJECT
 
 	QSplitter *Splitter;
+	QLineEdit *Query;
 	TimelineChatMessagesView *TimelineView;
+	HistoryDatesModel *DatesModel;
 
 	void createGui();
+
+private slots:
+	void performSearch();
 
 public:
 	explicit SearchTab(QWidget *parent = 0);

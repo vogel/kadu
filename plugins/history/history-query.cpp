@@ -26,11 +26,13 @@ HistoryQuery::HistoryQuery()
 HistoryQuery::HistoryQuery (const HistoryQuery &copyMe)
 {
 	QueryTalkable = copyMe.QueryTalkable;
+	QueryString = copyMe.QueryString;
 }
 
 HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
 {
 	QueryTalkable = copyMe.QueryTalkable;
+	QueryString = copyMe.QueryString;
 
 	return *this;
 }
@@ -43,4 +45,14 @@ void HistoryQuery::setTalkable(const Talkable &talkable)
 Talkable HistoryQuery::talkable() const
 {
 	return QueryTalkable;
+}
+
+void HistoryQuery::setString(const QString &string)
+{
+	QueryString = string;
+}
+
+QString HistoryQuery::string() const
+{
+	return QueryString;
 }

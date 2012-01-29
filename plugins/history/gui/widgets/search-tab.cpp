@@ -26,18 +26,25 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
+#include <QTreeView>
 
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "activate.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
+#include "model/history-dates-model.h"
+#include "storage/history-messages-storage.h"
+#include "history.h"
+#include "history-query.h"
 
 #include "search-tab.h"
 
 SearchTab::SearchTab(QWidget *parent) :
 		HistoryTab(parent)
 {
+	DatesModel = new HistoryDatesModel(true, this);
+
 	createGui();
 }
 
@@ -64,9 +71,9 @@ void SearchTab::createGui()
 	QFormLayout *queryFormLayout = new QFormLayout(queryFormWidget);
 	queryFormLayout->setMargin(0);
 
-	QLineEdit *queryLineEdit = new QLineEdit(queryFormWidget);
-	queryLineEdit->setMinimumWidth(200);
-	queryFormLayout->addRow(tr("Search for:"), queryLineEdit);
+	Query = new QLineEdit(queryFormWidget);
+	Query->setMinimumWidth(200);
+	queryFormLayout->addRow(tr("Search for:"), Query);
 
 	QCheckBox *searchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
 	searchByDate->setCheckState(Qt::Unchecked);
@@ -101,7 +108,18 @@ void SearchTab::createGui()
 	searchButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(0, searchButton);
 
+	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
+
 	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView->timeline()->setModel(DatesModel);
+}
+
+void SearchTab::performSearch()
+{
+	HistoryQuery query;
+	query.setString(Query->text());
+
+	DatesModel->setDates(History::instance()->currentStorage()->chatStorage()->dates(query).result());
 }
 
 QList<int> SearchTab::sizes() const
