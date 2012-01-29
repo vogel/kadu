@@ -50,8 +50,6 @@ public:
 
 	void setDates(const QVector<DatesModelItem> &dates);
 
-	QModelIndex indexForDate(const QDate &date);
-
 };
 
 #endif // HISTORY_DATES_MODEL_H

@@ -99,16 +99,3 @@ void HistoryDatesModel::setDates(const QVector<DatesModelItem> &dates)
 	Dates = dates;
 	endResetModel();
 }
-
-QModelIndex HistoryDatesModel::indexForDate(const QDate &date)
-{
-	int i = 0;
-	foreach (const DatesModelItem &item, Dates)
-	{
-		if (item.Date == date)
-			return index(i);
-		++i;
-	}
-
-	return index(-1);
-}
