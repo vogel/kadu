@@ -1,16 +1,17 @@
 @ECHO OFF
 
 set DESTINATION="C:\kadu\git-install"
-set QT_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\bin"
-set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\plugins"
-set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.7.3\mingw\translations"
+set MINGW_DIR="C:\QtSDK\mingw\bin"
+set QT_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin"
+set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\plugins"
+set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\translations"
 set QT_DEBUG_SUFFIX=""
 set ASPELL_DIR="C:\kadu\deps\aspell"
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.12.0-pre"
-set LIBIDN_DIR="C:\kadu\deps\libidn-1.23-win32"
-set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8q"
-set QCA_DIR="C:\kadu\deps\qca-2.0.3\bin"
-set QCA_OSSL_DIR="C:\kadu\deps\qca-ossl-2.0.0_beta3"
+set LIBIDN_DIR="C:\kadu\deps\libidn-1.24-win32"
+set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8s"
+set QCA_DIR="C:\kadu\deps\qca\bin"
+set QCA_OSSL_DIR="C:\kadu\deps\qca\plugins\qca-ossl\lib"
 set ZLIB_DIR="C:\kadu\deps\zlib-1.2.5"
 
 ECHO ! Make sure to set proper paths !
@@ -27,6 +28,7 @@ xcopy ChangeLog                 %DESTINATION%\ /R /Y /Q
 xcopy ChangeLog.OLD-PL          %DESTINATION%\ /R /Y /Q
 xcopy COPYING                   %DESTINATION%\ /R /Y /Q
 xcopy HISTORY                   %DESTINATION%\ /R /Y /Q
+xcopy LICENSE.OpenSSL           %DESTINATION%\ /R /Y /Q
 xcopy README                    %DESTINATION%\ /R /Y /Q
 xcopy THANKS                    %DESTINATION%\ /R /Y /Q
 
@@ -49,10 +51,12 @@ xcopy translations\cs.language        %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy translations\de.language        %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy translations\en.language        %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy translations\pl.language        %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy translations\ru.language        %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy build\translations\kadu_cs.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy build\translations\kadu_de.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy build\translations\kadu_en.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
 xcopy build\translations\kadu_pl.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
+xcopy build\translations\kadu_ru.qm   %DESTINATION%\translations\ /C /H /R /Y /Q
 
 cd varia\themes\emoticons
 for /D %%D in (*) do (
@@ -102,6 +106,9 @@ for /D %%F in (*) do (
 		IF EXIST %%F\%%F_pl.qm (
 			xcopy %%F\%%F_pl.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
 		)
+		IF EXIST %%F\%%F_ru.qm (
+			xcopy %%F\%%F_ru.qm   %DESTINATION%\plugins\translations\ /C /H /R /Y /Q
+		)
 		IF EXIST ..\..\plugins\%%F\data\* (
 			xcopy ..\..\plugins\%%F\data\* %DESTINATION%\plugins\data\%%F\ /C /H /R /Y /E /Q
 		)
@@ -109,9 +116,11 @@ for /D %%F in (*) do (
 )
 cd ..\..
 
+ECHO Copying MinGW runtime
+xcopy %MINGW_DIR%\libgcc_s_dw2-1.dll               %DESTINATION%\ /C /H /R /Y /Q
+xcopy %MINGW_DIR%\mingwm10.dll                     %DESTINATION%\ /C /H /R /Y /Q
+
 ECHO Copying Qt
-xcopy %QT_DIR%\libgcc_s_dw2-1.dll                  %DESTINATION%\ /C /H /R /Y /Q
-xcopy %QT_DIR%\mingwm10.dll                        %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\phonon%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtCore%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\ /C /H /R /Y /Q
 xcopy %QT_DIR%\QtGui%QT_DEBUG_SUFFIX%4.dll         %DESTINATION%\ /C /H /R /Y /Q
@@ -136,10 +145,11 @@ xcopy %QT_PLUGINS_DIR%\imageformats\qtiff%QT_DEBUG_SUFFIX%4.dll        %DESTINAT
 xcopy %QT_PLUGINS_DIR%\phonon_backend\phonon_ds9%QT_DEBUG_SUFFIX%4.dll %DESTINATION%\qt-plugins\phonon_backend\ /C /H /R /Y /Q
 xcopy %QT_PLUGINS_DIR%\sqldrivers\qsqlite%QT_DEBUG_SUFFIX%4.dll        %DESTINATION%\qt-plugins\sqldrivers\     /C /H /R /Y /Q
 
-ECHO Copying Qt translations (cs, de, pl)
+ECHO Copying Qt translations (cs, de, pl, ru)
 xcopy %QT_TRANSLATIONS_DIR%\qt_cs.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_de.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 xcopy %QT_TRANSLATIONS_DIR%\qt_pl.qm %DESTINATION%\translations\  /C /H /R /Y /Q
+xcopy %QT_TRANSLATIONS_DIR%\qt_ru.qm %DESTINATION%\translations\  /C /H /R /Y /Q
 
 ECHO [Paths] > %DESTINATION%\qt.conf
 ECHO Plugins = qt-plugins >> %DESTINATION%\qt.conf

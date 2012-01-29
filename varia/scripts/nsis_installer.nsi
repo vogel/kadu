@@ -4,7 +4,7 @@
 SetCompressor /SOLID /FINAL lzma
 
 !define PRODUCT_NAME "Kadu"
-!define PRODUCT_VERSION "0.11.0-beta1a"
+!define PRODUCT_VERSION "0.11.0"
 !define PRODUCT_BINARY_FILE_NAME "kadu.exe"
 !define PRODUCT_UNINSTALLER_FILE_NAME "uninst.exe"
 !define PRODUCT_PUBLISHER "Kadu Team"
