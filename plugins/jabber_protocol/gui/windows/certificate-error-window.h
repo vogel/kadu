@@ -24,45 +24,46 @@
  * See COPYING file for the detailed license.
  */
 
-#ifndef CERTIFICATEERRORDIALOG_H
-#define CERTIFICATEERRORDIALOG_H
+#ifndef CERTIFICATE_ERROR_WINDOW_H
+#define CERTIFICATE_ERROR_WINDOW_H
 
-#include <QString>
-#include <QtCrypto>
+#include <QtCore/QString>
+#include <QtCrypto/QtCrypto>
+#include <QtGui/QDialog>
 
-#include "accounts/account.h"
-
-class QMessageBox;
+class QCheckBox;
 class QPushButton;
 
-class CertificateErrorDialog : public QObject
+class CertificateErrorWindow : public QDialog
 {
 	Q_OBJECT
 
-	QMessageBox* messageBox_;
-	QPushButton* detailsButton_;
-	QPushButton* continueButton_;
-	QPushButton* cancelButton_;
-	QPushButton* saveButton_;
-	QCA::Certificate certificate_;
-	int result_;
-	QCA::Validity validity_;
-	QString domainOverride_;
-	QString host_;
+	QPushButton *ShowButton;
+	QPushButton *ConnectButton;
+	QPushButton *CancelButton;
+	QCheckBox *RememberCheckbox;
+	QPushButton *ClickedButton;
+
+	QCA::Certificate CurrentCertificate;
+	int Result;
+	QCA::Validity Validity;
+	QString DomainOverride;
+	QString Host;
 	QObject *Parent;
-	QString &tlsOverrideDomain_;
+	QString &TlsOverrideDomain;
 
 public:
-	CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity, 
+	CertificateErrorWindow(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity,
 			       const QString &domainOverride, QString &tlsOverrideDomain_);
-	virtual ~CertificateErrorDialog();
-	QMessageBox * getMessageBox() { return messageBox_; }
+	virtual ~CertificateErrorWindow();
 
-	int exec();
-	
-public slots:
-	void disconnected(Account account);
+private slots:
+        void showCertificate();
+	void accepted();
+	void rejected();
 
+signals:
+	void certificateAccepted();
 };
 
 #endif
