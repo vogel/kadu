@@ -112,7 +112,6 @@ void HistoryWindow::createGui()
 	CurrentTab = 0;
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
-	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
 	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
