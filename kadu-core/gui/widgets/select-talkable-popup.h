@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_BUDDY_POPUP_H
-#define SELECT_BUDDY_POPUP_H
+#ifndef SELECT_TALKABLE_POPUP_H
+#define SELECT_TALKABLE_POPUP_H
 
 #include "talkable/talkable.h"
 
@@ -35,7 +35,7 @@ class TalkableFilter;
 class TalkableProxyModel;
 class TalkableTreeView;
 
-class SelectBuddyPopup : public FilteredTreeView
+class SelectTalkablePopup : public FilteredTreeView
 {
 	Q_OBJECT
 
@@ -48,8 +48,8 @@ private slots:
 	void talkableActivated(const Talkable &talkable);
 
 public:
-	explicit SelectBuddyPopup(QWidget *parent = 0);
-	virtual ~SelectBuddyPopup();
+	explicit SelectTalkablePopup(QWidget *parent = 0);
+	virtual ~SelectTalkablePopup();
 
 	void setBaseModel(QAbstractItemModel *model);
 
@@ -63,4 +63,4 @@ signals:
 
 };
 
-#endif // SELECT_BUDDY_POPUP_H
+#endif // SELECT_TALKABLE_POPUP_H

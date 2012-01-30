@@ -22,8 +22,6 @@
 
 #include <QtGui/QLineEdit>
 
-#include "buddies/buddy-manager.h"
-#include "buddies/model/buddies-model.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
@@ -32,9 +30,9 @@
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "select-buddy-popup.h"
+#include "select-talkable-popup.h"
 
-SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
+SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 		FilteredTreeView(FilterAtBottom, parent)
 {
 	setWindowFlags(Qt::Popup);
@@ -66,16 +64,16 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
-SelectBuddyPopup::~SelectBuddyPopup()
+SelectTalkablePopup::~SelectTalkablePopup()
 {
 }
 
-void SelectBuddyPopup::setBaseModel(QAbstractItemModel *model)
+void SelectTalkablePopup::setBaseModel(QAbstractItemModel *model)
 {
 	Chain->setBaseModel(model);
 }
 
-void SelectBuddyPopup::show(const Talkable &talkable)
+void SelectTalkablePopup::show(const Talkable &talkable)
 {
 #ifndef Q_WS_MAEMO_5
 	filterWidget()->setFocus();
@@ -95,33 +93,23 @@ void SelectBuddyPopup::show(const Talkable &talkable)
 	FilteredTreeView::show();
 }
 
-void SelectBuddyPopup::itemClicked(const QModelIndex &index)
+void SelectTalkablePopup::itemClicked(const QModelIndex &index)
 {
+	talkableActivated(index.data(TalkableRole).value<Talkable>());
+}
+
+void SelectTalkablePopup::talkableActivated(const Talkable &talkable)
+{
+	emit talkableSelected(talkable);
 	close();
-
-	Buddy buddy = index.data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return;
-
-	emit talkableSelected(buddy);
 }
 
-void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
-{
-	const Buddy &buddy = talkable.toBuddy();
-	if (buddy)
-	{
-		emit talkableSelected(buddy);
-		close();
-	}
-}
-
-void SelectBuddyPopup::addFilter(TalkableFilter *filter)
+void SelectTalkablePopup::addFilter(TalkableFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 }
 
-void SelectBuddyPopup::removeFilter(TalkableFilter *filter)
+void SelectTalkablePopup::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }

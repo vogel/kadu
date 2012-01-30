@@ -23,7 +23,7 @@
 
 #include <QtGui/QAction>
 
-#include "gui/widgets/select-buddy-popup.h"
+#include "gui/widgets/select-talkable-popup.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
@@ -44,7 +44,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	Chain->addProxyModel(ProxyModel);
 	setUpModel(BuddyRole, Chain);
 
-	Popup = new SelectBuddyPopup();
+	Popup = new SelectTalkablePopup();
 
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(hideAnonymousFilter);

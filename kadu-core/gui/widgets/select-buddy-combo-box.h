@@ -32,7 +32,7 @@
 #include "gui/widgets/actions-combo-box.h"
 
 class ModelChain;
-class SelectBuddyPopup;
+class SelectTalkablePopup;
 class TalkableFilter;
 class TalkableProxyModel;
 
@@ -41,7 +41,7 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 	Q_OBJECT
 
 	ModelChain *Chain;
-	SelectBuddyPopup *Popup;
+	SelectTalkablePopup *Popup;
 	TalkableProxyModel *ProxyModel;
 
 private slots:
