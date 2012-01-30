@@ -43,6 +43,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
+#include "buddies/model/buddies-model.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
@@ -169,6 +170,7 @@ void AddBuddyWindow::createGui()
 	NonMergeWidgets.append(GroupCombo);
 
 	SelectBuddy = new SelectBuddyComboBox(this);
+	SelectBuddy->setBaseModel(new BuddiesModel(SelectBuddy));
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
 	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectBuddy));

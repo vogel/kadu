@@ -30,6 +30,7 @@
 
 #include "gui/widgets/actions-combo-box.h"
 
+class ModelChain;
 class SelectBuddyPopup;
 class TalkableFilter;
 class TalkableProxyModel;
@@ -38,6 +39,7 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
+	ModelChain *Chain;
 	SelectBuddyPopup *Popup;
 	TalkableProxyModel *ProxyModel;
 
@@ -48,6 +50,8 @@ protected:
 public:
 	explicit SelectBuddyComboBox(QWidget *parent = 0);
 	virtual ~SelectBuddyComboBox();
+
+	void setBaseModel(QAbstractItemModel *model);
 
 	Buddy currentBuddy();
 

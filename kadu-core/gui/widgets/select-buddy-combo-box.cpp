@@ -23,7 +23,6 @@
 
 #include <QtGui/QAction>
 
-#include "buddies/model/buddies-model.h"
 #include "gui/widgets/select-buddy-popup.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
@@ -39,17 +38,13 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 {
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
-	BuddiesModel *buddiesModel = new BuddiesModel(this);
-
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(buddiesModel);
-	ProxyModel = new TalkableProxyModel(chain);
+	Chain = new ModelChain(this);
+	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
-	chain->addProxyModel(ProxyModel);
-	setUpModel(BuddyRole, chain);
+	Chain->addProxyModel(ProxyModel);
+	setUpModel(BuddyRole, Chain);
 
 	Popup = new SelectBuddyPopup();
-	Popup->setBaseModel(buddiesModel);
 
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(hideAnonymousFilter);
@@ -61,6 +56,14 @@ SelectBuddyComboBox::~SelectBuddyComboBox()
 {
 	delete Popup;
 	Popup = 0;
+}
+
+void SelectBuddyComboBox::setBaseModel(QAbstractItemModel *model)
+{
+	Chain->setBaseModel(model);
+	Popup->setBaseModel(model);
+
+	setCurrentIndex(0);
 }
 
 void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)
