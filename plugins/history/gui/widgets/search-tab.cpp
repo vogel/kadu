@@ -81,19 +81,26 @@ void SearchTab::createGui()
 	QWidget *dateWidget = new QWidget(queryFormWidget);
 	QHBoxLayout *dateLayout = new QHBoxLayout(dateWidget);
 
-	QDateEdit *fromDate = new QDateEdit(dateWidget);
-	fromDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	fromDate->setCalendarPopup(true);
-	fromDate->setEnabled(false);
-	dateLayout->addWidget(fromDate);
+	FromDate = new QDateEdit(dateWidget);
+	FromDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	FromDate->setCalendarPopup(true);
+	FromDate->setEnabled(false);
+	FromDate->setDate(QDate::currentDate().addDays(-7));
+	dateLayout->addWidget(FromDate);
 
 	dateLayout->addWidget(new QLabel(tr("to"), dateWidget));
 
-	QDateEdit *toDate = new QDateEdit(dateWidget);
-	toDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	toDate->setCalendarPopup(true);
-	toDate->setEnabled(false);
-	dateLayout->addWidget(toDate);
+	ToDate = new QDateEdit(dateWidget);
+	ToDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	ToDate->setCalendarPopup(true);
+	ToDate->setEnabled(false);
+	ToDate->setDate(QDate::currentDate());
+	dateLayout->addWidget(ToDate);
+
+	connect(FromDate, SIGNAL(dateChanged(QDate)), this, SLOT(fromDateChanged(QDate)));
+	connect(ToDate, SIGNAL(dateChanged(QDate)), this, SLOT(toDateChanged(QDate)));
+	connect(searchByDate, SIGNAL(toggled(bool)), FromDate, SLOT(setEnabled(bool)));
+	connect(searchByDate, SIGNAL(toggled(bool)), ToDate, SLOT(setEnabled(bool)));
 
 	queryFormLayout->addRow(dateWidget);
 
@@ -118,6 +125,18 @@ void SearchTab::createGui()
 
 	TimelineView = new TimelineChatMessagesView(true, Splitter);
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+}
+
+void SearchTab::fromDateChanged(const QDate &date)
+{
+	if (ToDate->date() < date)
+		ToDate->setDate(date);
+}
+
+void SearchTab::toDateChanged(const QDate &date)
+{
+	if (FromDate->date() > date)
+		FromDate->setDate(date);
 }
 
 void SearchTab::performSearch()

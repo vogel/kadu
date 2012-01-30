@@ -20,8 +20,11 @@
 #ifndef SEARCH_TAB
 #define SEARCH_TAB
 
+#include <QtCore/QDate>
+
 #include "gui/widgets/history-tab.h"
 
+class QDateEdit;
 class QLineEdit;
 class QSplitter;
 
@@ -33,12 +36,17 @@ class SearchTab : public HistoryTab
 
 	QSplitter *Splitter;
 	QLineEdit *Query;
+	QDateEdit *FromDate;
+	QDateEdit *ToDate;
 	TimelineChatMessagesView *TimelineView;
 
 	void createGui();
 
 private slots:
+	void fromDateChanged(const QDate &date);
+	void toDateChanged(const QDate &date);
 	void performSearch();
+
 	void currentDateChanged();
 
 public:
