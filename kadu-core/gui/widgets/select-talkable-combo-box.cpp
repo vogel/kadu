@@ -30,9 +30,9 @@
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "select-buddy-combo-box.h"
+#include "select-talkable-combo-box.h"
 
-SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
+SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	Chain = new ModelChain(this);
@@ -49,13 +49,13 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
 
-SelectBuddyComboBox::~SelectBuddyComboBox()
+SelectTalkableComboBox::~SelectTalkableComboBox()
 {
 	delete Popup;
 	Popup = 0;
 }
 
-void SelectBuddyComboBox::setBaseModel(QAbstractItemModel *model)
+void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)
 {
 	Chain->setBaseModel(model);
 	Popup->setBaseModel(model);
@@ -63,17 +63,17 @@ void SelectBuddyComboBox::setBaseModel(QAbstractItemModel *model)
 	setCurrentIndex(0);
 }
 
-void SelectBuddyComboBox::setCurrentTalkable(const Talkable &talkable)
+void SelectTalkableComboBox::setCurrentTalkable(const Talkable &talkable)
 {
 	setCurrentValue(QVariant::fromValue(talkable));
 }
 
-Talkable SelectBuddyComboBox::currentTalkable() const
+Talkable SelectTalkableComboBox::currentTalkable() const
 {
 	return currentValue().value<Talkable>();
 }
 
-void SelectBuddyComboBox::showPopup()
+void SelectTalkableComboBox::showPopup()
 {
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
 	setWindowGeometry(Popup, geom);
@@ -81,18 +81,18 @@ void SelectBuddyComboBox::showPopup()
 	Popup->show(currentTalkable());
 }
 
-void SelectBuddyComboBox::hidePopup()
+void SelectTalkableComboBox::hidePopup()
 {
 	Popup->hide();
 }
 
-void SelectBuddyComboBox::addFilter(TalkableFilter *filter)
+void SelectTalkableComboBox::addFilter(TalkableFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 	Popup->addFilter(filter);
 }
 
-void SelectBuddyComboBox::removeFilter(TalkableFilter *filter)
+void SelectTalkableComboBox::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 	Popup->removeFilter(filter);

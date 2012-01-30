@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_BUDDY_COMBO_BOX_H
-#define SELECT_BUDDY_COMBO_BOX_H
+#ifndef SELECT_TALKABLE_COMBO_BOX_H
+#define SELECT_TALKABLE_COMBO_BOX_H
 
 #include "talkable/talkable.h"
 #include "exports.h"
@@ -35,7 +35,7 @@ class SelectTalkablePopup;
 class TalkableFilter;
 class TalkableProxyModel;
 
-class KADUAPI SelectBuddyComboBox : public ActionsComboBox
+class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
@@ -48,8 +48,8 @@ protected:
 	virtual void hidePopup();
 
 public:
-	explicit SelectBuddyComboBox(QWidget *parent = 0);
-	virtual ~SelectBuddyComboBox();
+	explicit SelectTalkableComboBox(QWidget *parent = 0);
+	virtual ~SelectTalkableComboBox();
 
 	void setBaseModel(QAbstractItemModel *model);
 
@@ -63,4 +63,4 @@ public slots:
 
 };
 
-#endif // SELECT_BUDDY_COMBO_BOX_H
+#endif // SELECT_TALKABLE_COMBO_BOX_H

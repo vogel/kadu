@@ -34,7 +34,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -101,7 +101,7 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = new SelectBuddyComboBox(this);
+	RecipientComboBox = new SelectTalkableComboBox(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 	RecipientComboBox->setBaseModel(new BuddiesModel(RecipientComboBox));
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));

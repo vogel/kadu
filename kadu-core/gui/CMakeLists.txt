@@ -65,9 +65,9 @@ set (gui_SRCS
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
 	widgets/roster-widget.cpp
-	widgets/select-buddy-combo-box.cpp
 	widgets/select-file.cpp
 	widgets/select-font.cpp
+	widgets/select-talkable-combo-box.cpp
 	widgets/select-talkable-popup.cpp
 	widgets/status-button.cpp
 	widgets/status-buttons.cpp
@@ -221,9 +221,9 @@ set (gui_MOC_SRCS
 	widgets/progress-label.h
 	widgets/protocols-combo-box.h
 	widgets/roster-widget.h
-	widgets/select-buddy-combo-box.h
 	widgets/select-file.h
 	widgets/select-font.h
+	widgets/select-talkable-combo-box.h
 	widgets/select-talkable-popup.h
 	widgets/status-button.h
 	widgets/status-buttons.h

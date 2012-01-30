@@ -50,7 +50,7 @@
 #include "core/core.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
@@ -169,7 +169,7 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(GroupCombo);
 
-	SelectBuddy = new SelectBuddyComboBox(this);
+	SelectBuddy = new SelectTalkableComboBox(this);
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 	SelectBuddy->setBaseModel(new BuddiesModel(SelectBuddy));
 	SelectBuddy->setEnabled(false);

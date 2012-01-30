@@ -34,7 +34,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddies-model.h"
 #include "core/core.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/icons-manager.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 
@@ -66,7 +66,7 @@ void MergeBuddiesWindow::createGui()
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), chooseWidget));
-	SelectCombo = new SelectBuddyComboBox(chooseWidget);
+	SelectCombo = new SelectTalkableComboBox(chooseWidget);
 	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
 	SelectCombo->setBaseModel(new BuddiesModel(SelectCombo));
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));

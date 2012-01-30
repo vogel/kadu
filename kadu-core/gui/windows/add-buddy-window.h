@@ -39,7 +39,7 @@ class QRegExpValidator;
 
 class AccountsComboBox;
 class GroupsComboBox;
-class SelectBuddyComboBox;
+class SelectTalkableComboBox;
 
 class AddBuddyWindow : public QDialog, DesktopAwareObject
 {
@@ -56,7 +56,7 @@ class AddBuddyWindow : public QDialog, DesktopAwareObject
 	GroupsComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *MergeBuddy;
-	SelectBuddyComboBox *SelectBuddy;
+	SelectTalkableComboBox *SelectBuddy;
 	QCheckBox *AskForAuthorization;
 	QCheckBox *AllowToSeeMeCheck;
 	QLabel *ErrorLabel;
