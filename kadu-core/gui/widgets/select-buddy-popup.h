@@ -27,9 +27,11 @@
 
 #include "gui/widgets/filtered-tree-view.h"
 
+class QAbstractItemModel;
 class QModelIndex;
 
 class Buddy;
+class ModelChain;
 class TalkableFilter;
 class TalkableProxyModel;
 class TalkableTreeView;
@@ -38,6 +40,7 @@ class SelectBuddyPopup : public FilteredTreeView
 {
 	Q_OBJECT
 
+	ModelChain *Chain;
 	TalkableTreeView *View;
 	TalkableProxyModel *ProxyModel;
 
@@ -48,6 +51,8 @@ private slots:
 public:
 	explicit SelectBuddyPopup(QWidget *parent = 0);
 	virtual ~SelectBuddyPopup();
+
+	void setBaseModel(QAbstractItemModel *model);
 
 	void show(Buddy buddy);
 

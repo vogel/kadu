@@ -39,14 +39,17 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 {
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
+	BuddiesModel *buddiesModel = new BuddiesModel(this);
+
 	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new BuddiesModel(chain));
+	chain->setBaseModel(buddiesModel);
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	chain->addProxyModel(ProxyModel);
 	setUpModel(BuddyRole, chain);
 
 	Popup = new SelectBuddyPopup();
+	Popup->setBaseModel(buddiesModel);
 
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(hideAnonymousFilter);

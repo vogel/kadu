@@ -42,9 +42,9 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View = new TalkableTreeView(this);
 	setView(View);
 
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new BuddiesModel(chain));
-	ProxyModel = new TalkableProxyModel(chain);
+	Chain = new ModelChain(this);
+
+	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
@@ -54,13 +54,13 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
 	ProxyModel->addFilter(nameFilter);
-	chain->addProxyModel(ProxyModel);
+	Chain->addProxyModel(ProxyModel);
 
 	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 	connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
 
 	View->setItemsExpandable(false);
-	View->setChain(chain);
+	View->setChain(Chain);
 	View->setRootIsDecorated(false);
 	View->setShowIdentityNameIfMany(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -68,6 +68,11 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 
 SelectBuddyPopup::~SelectBuddyPopup()
 {
+}
+
+void SelectBuddyPopup::setBaseModel(QAbstractItemModel *model)
+{
+	Chain->setBaseModel(model);
 }
 
 void SelectBuddyPopup::show(Buddy buddy)
