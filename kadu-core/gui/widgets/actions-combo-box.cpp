@@ -107,7 +107,7 @@ void ActionsComboBox::setCurrentValue(const QVariant &value)
 	setCurrentIndex(index.row());
 }
 
-QVariant ActionsComboBox::currentValue()
+QVariant ActionsComboBox::currentValue() const
 {
 	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
 }

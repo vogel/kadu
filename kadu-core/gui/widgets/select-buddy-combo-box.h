@@ -25,7 +25,6 @@
 #ifndef SELECT_BUDDY_COMBO_BOX_H
 #define SELECT_BUDDY_COMBO_BOX_H
 
-#include "buddies/buddy.h"
 #include "talkable/talkable.h"
 #include "exports.h"
 
@@ -44,9 +43,6 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 	SelectTalkablePopup *Popup;
 	TalkableProxyModel *ProxyModel;
 
-private slots:
-	void setCurrentTalkable(const Talkable &talkable);
-
 protected:
 	virtual void showPopup();
 	virtual void hidePopup();
@@ -57,13 +53,13 @@ public:
 
 	void setBaseModel(QAbstractItemModel *model);
 
-	Buddy currentBuddy();
+	Talkable currentTalkable() const;
 
 	void addFilter(TalkableFilter *filter);
 	void removeFilter(TalkableFilter *filter);
 
 public slots:
-	void setCurrentBuddy(Buddy buddy);
+	void setCurrentTalkable(const Talkable &talkable);
 
 };
 

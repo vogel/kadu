@@ -24,7 +24,6 @@
 #include <QtGui/QAction>
 
 #include "gui/widgets/select-talkable-popup.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
@@ -36,13 +35,11 @@
 SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
-
 	Chain = new ModelChain(this);
 	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	Chain->addProxyModel(ProxyModel);
-	setUpModel(BuddyRole, Chain);
+	setUpModel(TalkableRole, Chain);
 
 	Popup = new SelectTalkablePopup();
 
@@ -68,17 +65,12 @@ void SelectBuddyComboBox::setBaseModel(QAbstractItemModel *model)
 
 void SelectBuddyComboBox::setCurrentTalkable(const Talkable &talkable)
 {
-	setCurrentBuddy(talkable.toBuddy());
+	setCurrentValue(QVariant::fromValue(talkable));
 }
 
-void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)
+Talkable SelectBuddyComboBox::currentTalkable() const
 {
-	setCurrentValue(buddy);
-}
-
-Buddy SelectBuddyComboBox::currentBuddy()
-{
-	return currentValue().value<Buddy>();
+	return currentValue().value<Talkable>();
 }
 
 void SelectBuddyComboBox::showPopup()
@@ -86,7 +78,7 @@ void SelectBuddyComboBox::showPopup()
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
 	setWindowGeometry(Popup, geom);
 
-	Popup->show(currentBuddy());
+	Popup->show(currentTalkable());
 }
 
 void SelectBuddyComboBox::hidePopup()

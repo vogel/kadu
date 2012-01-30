@@ -170,6 +170,7 @@ void AddBuddyWindow::createGui()
 	NonMergeWidgets.append(GroupCombo);
 
 	SelectBuddy = new SelectBuddyComboBox(this);
+	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
 	SelectBuddy->setBaseModel(new BuddiesModel(SelectBuddy));
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
@@ -362,7 +363,7 @@ void AddBuddyWindow::validateData()
 
 	if (MergeBuddy->isChecked())
 	{
-		if (!SelectBuddy->currentBuddy())
+		if (!SelectBuddy->currentTalkable().isValidBuddy())
 		{
 			displayErrorMessage(tr("Select buddy to merge with"));
 			return;
@@ -509,7 +510,7 @@ bool AddBuddyWindow::addContact()
 	}
 	else
 	{
-		buddy = SelectBuddy->currentBuddy();
+		buddy = SelectBuddy->currentTalkable().toBuddy();
 		if (buddy.isNull())
 			return false;
 	}

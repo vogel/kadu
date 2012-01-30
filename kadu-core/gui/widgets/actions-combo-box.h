@@ -117,7 +117,7 @@ protected:
 	 *
 	 * Returns current value.
 	 */
-	QVariant currentValue();
+	QVariant currentValue() const;
 
 public:
 	explicit ActionsComboBox(QWidget *parent = 0);
