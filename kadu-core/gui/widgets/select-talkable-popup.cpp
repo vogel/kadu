@@ -79,16 +79,19 @@ void SelectTalkablePopup::show(const Talkable &talkable)
 	filterWidget()->setFocus();
 #endif
 
+	QModelIndex currentIndex;
+
 	if (!talkable.isEmpty())
 	{
 		const QModelIndexList &indexes = View->chain()->indexListForValue(QVariant::fromValue(talkable));
-		Q_ASSERT(indexes.size() == 1);
-
-		const QModelIndex &index = indexes.at(0);
-		View->setCurrentIndex(index);
+		if (!indexes.isEmpty())
+		{
+			Q_ASSERT(indexes.size() == 1);
+			currentIndex = indexes.at(0);
+		}
 	}
-	else
-		View->setCurrentIndex(QModelIndex());
+
+	View->setCurrentIndex(currentIndex);
 
 	FilteredTreeView::show();
 }

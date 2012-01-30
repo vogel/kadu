@@ -30,13 +30,18 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/model/buddy-list-model.h"
+#include "chat/model/chats-list-model.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
+#include "model/merged-proxy-model-factory.h"
 #include "activate.h"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
+#include "chats-buddies-splitter.h"
 #include "history.h"
 #include "history-query.h"
 
@@ -79,13 +84,30 @@ void SearchTab::createGui()
 	QRadioButton *searchInChats = new QRadioButton(tr("Search in chats"), queryFormWidget);
 	searchInChats->setChecked(true);
 	searchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	queryFormLayout->addRow(0, searchInChats);
+	queryFormLayout->addRow(searchInChats);
+
+	SelectTalkableComboBox *selectChat = new SelectTalkableComboBox(queryFormWidget);
+
+	ChatsBuddiesSplitter chatsBuddies(History::instance()->currentStorage()->chatStorage()->talkables().result());
+
+	ChatsModel = new ChatsListModel(selectChat);
+	BuddiesModel = new BuddyListModel(selectChat);
+
+	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
+	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+
+	QList<QAbstractItemModel *> models;
+	models.append(ChatsModel);
+	models.append(BuddiesModel);
+
+	selectChat->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, selectChat));
+	queryFormLayout->addRow(selectChat);
 
 	QRadioButton *searchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
-	queryFormLayout->addRow(0, searchInStatuses);
+	queryFormLayout->addRow(searchInStatuses);
 
 	QRadioButton *searchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
-	queryFormLayout->addRow(0, searchInSmses);
+	queryFormLayout->addRow(searchInSmses);
 
 	QButtonGroup *kindRadioGroup = new QButtonGroup(queryFormWidget);
 	kindRadioGroup->addButton(searchInChats);

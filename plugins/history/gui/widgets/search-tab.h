@@ -29,11 +29,16 @@ class QDateEdit;
 class QLineEdit;
 class QSplitter;
 
+class BuddyListModel;
+class ChatsListModel;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
 {
 	Q_OBJECT
+
+	ChatsListModel *ChatsModel;
+	BuddyListModel *BuddiesModel;
 
 	QSplitter *Splitter;
 	QLineEdit *Query;
