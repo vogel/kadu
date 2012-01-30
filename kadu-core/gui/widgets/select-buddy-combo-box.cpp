@@ -49,7 +49,7 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(hideAnonymousFilter);
 
-	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));
+	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
 
 SelectBuddyComboBox::~SelectBuddyComboBox()
@@ -64,6 +64,11 @@ void SelectBuddyComboBox::setBaseModel(QAbstractItemModel *model)
 	Popup->setBaseModel(model);
 
 	setCurrentIndex(0);
+}
+
+void SelectBuddyComboBox::setCurrentTalkable(const Talkable &talkable)
+{
+	setCurrentBuddy(talkable.toBuddy());
 }
 
 void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)

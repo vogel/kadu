@@ -41,6 +41,9 @@ class BuddiesModelBase : public QAbstractItemModel, public KaduAbstractModel, pu
 	bool Checkable;
 	BuddySet CheckedBuddies;
 
+	Buddy buddyFromVariant(const QVariant &variant) const;
+	Contact contactFromVariant(const QVariant &variant) const;
+
 	bool isCheckableIndex(const QModelIndex &index) const;
 	Contact buddyContact(const QModelIndex &index, int accountIndex) const;
 

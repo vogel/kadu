@@ -37,6 +37,7 @@
 #include "icons/icons-manager.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
+#include "talkable/talkable.h"
 
 #include "buddies-model-base.h"
 
@@ -259,11 +260,35 @@ BuddySet BuddiesModelBase::checkedBuddies() const
 	return CheckedBuddies;
 }
 
+Buddy BuddiesModelBase::buddyFromVariant(const QVariant &variant) const
+{
+	Buddy buddy = variant.value<Buddy>();
+	if (buddy)
+		return buddy;
+	Talkable talkable = variant.value<Talkable>();
+	if (talkable.isValidBuddy())
+		return talkable.toBuddy();
+	else
+		return Buddy::null;
+}
+
+Contact BuddiesModelBase::contactFromVariant(const QVariant &variant) const
+{
+	Contact contact = variant.value<Contact>();
+	if (contact)
+		return contact;
+	Talkable talkable = variant.value<Talkable>();
+	if (talkable.isValidContact())
+		return talkable.toContact();
+	else
+		return Contact::null;
+}
+
 QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
 
-	const Buddy &buddy = value.value<Buddy>();
+	const Buddy &buddy = buddyFromVariant(value);
 	if (buddy)
 	{
 		const int i = buddyIndex(buddy);
@@ -272,7 +297,7 @@ QModelIndexList BuddiesModelBase::indexListForValue(const QVariant &value) const
 		return result;
 	}
 
-	const Contact &contact = value.value<Contact>();
+	const Contact &contact = contactFromVariant(value);
 	if (!contact)
 		return result;
 

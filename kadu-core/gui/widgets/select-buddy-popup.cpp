@@ -75,15 +75,15 @@ void SelectBuddyPopup::setBaseModel(QAbstractItemModel *model)
 	Chain->setBaseModel(model);
 }
 
-void SelectBuddyPopup::show(Buddy buddy)
+void SelectBuddyPopup::show(const Talkable &talkable)
 {
 #ifndef Q_WS_MAEMO_5
 	filterWidget()->setFocus();
 #endif
 
-	if (buddy)
+	if (!talkable.isEmpty())
 	{
-		const QModelIndexList &indexes = View->chain()->indexListForValue(buddy);
+		const QModelIndexList &indexes = View->chain()->indexListForValue(QVariant::fromValue(talkable));
 		Q_ASSERT(indexes.size() == 1);
 
 		const QModelIndex &index = indexes.at(0);
@@ -103,7 +103,7 @@ void SelectBuddyPopup::itemClicked(const QModelIndex &index)
 	if (!buddy)
 		return;
 
-	emit buddySelected(buddy);
+	emit talkableSelected(buddy);
 }
 
 void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
@@ -111,7 +111,7 @@ void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
 	const Buddy &buddy = talkable.toBuddy();
 	if (buddy)
 	{
-		emit buddySelected(buddy);
+		emit talkableSelected(buddy);
 		close();
 	}
 }

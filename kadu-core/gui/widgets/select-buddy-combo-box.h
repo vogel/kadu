@@ -26,6 +26,7 @@
 #define SELECT_BUDDY_COMBO_BOX_H
 
 #include "buddies/buddy.h"
+#include "talkable/talkable.h"
 #include "exports.h"
 
 #include "gui/widgets/actions-combo-box.h"
@@ -42,6 +43,9 @@ class KADUAPI SelectBuddyComboBox : public ActionsComboBox
 	ModelChain *Chain;
 	SelectBuddyPopup *Popup;
 	TalkableProxyModel *ProxyModel;
+
+private slots:
+	void setCurrentTalkable(const Talkable &talkable);
 
 protected:
 	virtual void showPopup();

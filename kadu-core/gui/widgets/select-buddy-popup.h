@@ -30,7 +30,6 @@
 class QAbstractItemModel;
 class QModelIndex;
 
-class Buddy;
 class ModelChain;
 class TalkableFilter;
 class TalkableProxyModel;
@@ -54,16 +53,14 @@ public:
 
 	void setBaseModel(QAbstractItemModel *model);
 
-	void show(Buddy buddy);
+	void show(const Talkable &talkable);
 
 	void addFilter(TalkableFilter *filter);
 	void removeFilter(TalkableFilter *filter);
 
 signals:
-	void buddySelected(Buddy buddy);
+	void talkableSelected(const Talkable &talkable);
 
 };
-
-#include "buddies/buddy.h" // for MOC
 
 #endif // SELECT_BUDDY_POPUP_H
