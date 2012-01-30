@@ -677,6 +677,10 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 		queryString += QString(" AND %1").arg(chatWhere(talkable.toChat()));
 	if (!historyQuery.string().isEmpty())
 		queryString += " AND kmc.content LIKE :query";
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND date >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND date <= :toDate";
 
 	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
 	queryString += " GROUP BY date_id, chat_id";
@@ -686,6 +690,10 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 
 	if (!historyQuery.string().isEmpty())
 		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
 
 	QVector<HistoryQueryResult> dates;
 	executeQuery(query);

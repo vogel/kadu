@@ -20,12 +20,16 @@
 #ifndef HISTORY_QUERY_H
 #define HISTORY_QUERY_H
 
+#include <QtCore/QDate>
+
 #include "talkable/talkable.h"
 
 class HistoryQuery
 {
 	Talkable QueryTalkable;
 	QString QueryString;
+	QDate FromDate;
+	QDate ToDate;
 
 public:
 	HistoryQuery();
@@ -38,6 +42,12 @@ public:
 
 	void setString(const QString &string);
 	QString string() const;
+
+	void setFromDate(const QDate &fromDate);
+	QDate fromDate() const;
+
+	void setToDate(const QDate &toDate);
+	QDate toDate() const;
 
 };
 

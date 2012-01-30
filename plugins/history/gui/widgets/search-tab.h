@@ -24,6 +24,7 @@
 
 #include "gui/widgets/history-tab.h"
 
+class QCheckBox;
 class QDateEdit;
 class QLineEdit;
 class QSplitter;
@@ -36,6 +37,7 @@ class SearchTab : public HistoryTab
 
 	QSplitter *Splitter;
 	QLineEdit *Query;
+	QCheckBox *SearchByDate;
 	QDateEdit *FromDate;
 	QDateEdit *ToDate;
 	TimelineChatMessagesView *TimelineView;

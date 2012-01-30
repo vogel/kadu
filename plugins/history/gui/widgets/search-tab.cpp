@@ -74,9 +74,9 @@ void SearchTab::createGui()
 	Query->setMinimumWidth(200);
 	queryFormLayout->addRow(tr("Search for:"), Query);
 
-	QCheckBox *searchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
-	searchByDate->setCheckState(Qt::Unchecked);
-	queryFormLayout->addRow(0, searchByDate);
+	SearchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
+	SearchByDate->setCheckState(Qt::Unchecked);
+	queryFormLayout->addRow(0, SearchByDate);
 
 	QWidget *dateWidget = new QWidget(queryFormWidget);
 	QHBoxLayout *dateLayout = new QHBoxLayout(dateWidget);
@@ -99,8 +99,8 @@ void SearchTab::createGui()
 
 	connect(FromDate, SIGNAL(dateChanged(QDate)), this, SLOT(fromDateChanged(QDate)));
 	connect(ToDate, SIGNAL(dateChanged(QDate)), this, SLOT(toDateChanged(QDate)));
-	connect(searchByDate, SIGNAL(toggled(bool)), FromDate, SLOT(setEnabled(bool)));
-	connect(searchByDate, SIGNAL(toggled(bool)), ToDate, SLOT(setEnabled(bool)));
+	connect(SearchByDate, SIGNAL(toggled(bool)), FromDate, SLOT(setEnabled(bool)));
+	connect(SearchByDate, SIGNAL(toggled(bool)), ToDate, SLOT(setEnabled(bool)));
 
 	queryFormLayout->addRow(dateWidget);
 
@@ -143,6 +143,12 @@ void SearchTab::performSearch()
 {
 	HistoryQuery query;
 	query.setString(Query->text());
+
+	if (SearchByDate->isChecked())
+	{
+		query.setFromDate(FromDate->date());
+		query.setToDate(ToDate->date());
+	}
 
 	TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
 }

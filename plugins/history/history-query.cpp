@@ -27,12 +27,16 @@ HistoryQuery::HistoryQuery (const HistoryQuery &copyMe)
 {
 	QueryTalkable = copyMe.QueryTalkable;
 	QueryString = copyMe.QueryString;
+	FromDate = copyMe.FromDate;
+	ToDate = copyMe.ToDate;
 }
 
 HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
 {
 	QueryTalkable = copyMe.QueryTalkable;
 	QueryString = copyMe.QueryString;
+	FromDate = copyMe.FromDate;
+	ToDate = copyMe.ToDate;
 
 	return *this;
 }
@@ -55,4 +59,24 @@ void HistoryQuery::setString(const QString &string)
 QString HistoryQuery::string() const
 {
 	return QueryString;
+}
+
+void HistoryQuery::setFromDate(const QDate &fromDate)
+{
+	FromDate = fromDate;
+}
+
+QDate HistoryQuery::fromDate() const
+{
+	return FromDate;
+}
+
+void HistoryQuery::setToDate(const QDate &toDate)
+{
+	ToDate = toDate;
+}
+
+QDate HistoryQuery::toDate() const
+{
+	return ToDate;
 }
