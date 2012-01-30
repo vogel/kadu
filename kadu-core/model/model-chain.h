@@ -61,14 +61,21 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new chain with given base model.
-	 * @param model base model
 	 * @param parent parent of chain
 	 *
-	 * This contructor creates new chain with given base model. This model must defire from
-	 * KaduAbstractModel.
+	 * This contructor creates new chain.
 	 */
-	explicit ModelChain(QAbstractItemModel *model, QObject *parent = 0);
+	explicit ModelChain(QObject *parent = 0);
 	virtual ~ModelChain();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets different base model for given chain.
+	 * @param model new base model
+	 *
+	 * Sets new default base model for chain. This model must be KaduAbstractModel.
+	 */
+	void setBaseModel(QAbstractItemModel *model);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

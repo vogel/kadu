@@ -42,7 +42,8 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View = new TalkableTreeView(this);
 	setView(View);
 
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new BuddiesModel(chain));
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 

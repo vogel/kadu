@@ -225,7 +225,8 @@ void ChatWidget::createContactsList()
 	TalkableTreeView *view = new TalkableTreeView(BuddiesWidget);
 	view->setItemsExpandable(false);
 
-	ModelChain *chain = new ModelChain(new ContactListModel(CurrentChat.contacts().toContactVector(), this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new ContactListModel(CurrentChat.contacts().toContactVector(), chain));
 	ProxyModel = new TalkableProxyModel(chain);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);

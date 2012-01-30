@@ -188,12 +188,12 @@ void OpenChatWith::inputChanged(const QString &text)
 			? BuddyList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
-	delete Chain;
-	delete ListModel;
+	delete Chain; // it deletes ListModel too
 
-	ListModel = new BuddyListModel(this);
+	Chain = new ModelChain(this);
+	ListModel = new BuddyListModel(Chain);
 	ListModel->setBuddyList(matchingContacts);
-	Chain = new ModelChain(ListModel, this);
+	Chain->setBaseModel(ListModel);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
 	Chain->addProxyModel(proxyModel);
 

@@ -39,7 +39,8 @@ SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
 {
 	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
 
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new BuddiesModel(chain));
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 	chain->addProxyModel(ProxyModel);

@@ -116,9 +116,8 @@ void HistoryMessagesTab::createModelChain()
 	models.append(ChatsModel);
 	models.append(BuddiesModel);
 
-	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, TalkableTree);
-
-	Chain = new ModelChain(mergedModel, TalkableTree);
+	Chain = new ModelChain(TalkableTree);
+	Chain->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, Chain));
 
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);

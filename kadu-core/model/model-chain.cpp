@@ -24,22 +24,33 @@
 
 #include "model-chain.h"
 
-ModelChain::ModelChain(QAbstractItemModel *model, QObject *parent) :
-		QObject(parent), Model(model)
+ModelChain::ModelChain(QObject *parent) :
+		QObject(parent), Model(0), KaduModel(0)
 {
-	Q_ASSERT(model);
-	Q_ASSERT(dynamic_cast<KaduAbstractModel *>(model));
-
-	KaduModel = dynamic_cast<KaduAbstractModel *>(model);
 }
 
 ModelChain::~ModelChain()
 {
 }
 
+void ModelChain::setBaseModel(QAbstractItemModel *model)
+{
+	Model = model;
+
+	if (Model)
+	{
+		KaduModel = dynamic_cast<KaduAbstractModel *>(model);
+		Q_ASSERT(KaduModel);
+	}
+	else
+		KaduModel = 0;
+
+	if (!ProxyModels.empty())
+		ProxyModels.at(0)->setSourceModel(Model);
+}
+
 void ModelChain::addProxyModel(QAbstractProxyModel *proxyModel)
 {
-	Q_ASSERT(Model);
 	Q_ASSERT(proxyModel);
 
 	if (ProxyModels.empty())
@@ -65,7 +76,9 @@ QAbstractItemModel * ModelChain::lastModel() const
 
 QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
 {
-	Q_ASSERT(Model);
+	if (!Model)
+		return QModelIndexList();
+
 	Q_ASSERT(KaduModel);
 
 	QModelIndexList indexes = KaduModel->indexListForValue(value);

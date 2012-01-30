@@ -36,7 +36,8 @@ ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 	addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
 
 	ProxyModel = new ProtocolsModelProxy(this);
-	ModelChain *chain = new ModelChain(new ProtocolsModel(this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new ProtocolsModel(chain));
 	chain->addProxyModel(ProxyModel);
 	setUpModel(ProtocolRole, chain);
 }
