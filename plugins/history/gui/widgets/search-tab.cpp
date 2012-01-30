@@ -67,6 +67,7 @@ void SearchTab::createGui()
 	queryLayout->addWidget(queryFormWidget);
 
 	QFormLayout *queryFormLayout = new QFormLayout(queryFormWidget);
+	queryFormLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
 	queryFormLayout->setMargin(0);
 
 	Query = new QLineEdit(queryFormWidget);
@@ -77,17 +78,24 @@ void SearchTab::createGui()
 	searchByDate->setCheckState(Qt::Unchecked);
 	queryFormLayout->addRow(0, searchByDate);
 
-	QDateEdit *fromDate = new QDateEdit(queryFormWidget);
+	QWidget *dateWidget = new QWidget(queryFormWidget);
+	QHBoxLayout *dateLayout = new QHBoxLayout(dateWidget);
+
+	QDateEdit *fromDate = new QDateEdit(dateWidget);
 	fromDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	fromDate->setCalendarPopup(true);
 	fromDate->setEnabled(false);
-	queryFormLayout->addRow(tr("From:"), fromDate);
+	dateLayout->addWidget(fromDate);
 
-	QDateEdit *toDate = new QDateEdit(queryFormWidget);
+	dateLayout->addWidget(new QLabel(tr("to"), dateWidget));
+
+	QDateEdit *toDate = new QDateEdit(dateWidget);
 	toDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	toDate->setCalendarPopup(true);
 	toDate->setEnabled(false);
-	queryFormLayout->addRow(tr("To:"), toDate);
+	dateLayout->addWidget(toDate);
+
+	queryFormLayout->addRow(dateWidget);
 
 	QCheckBox *searchInChats = new QCheckBox(tr("Search in chats"), queryFormWidget);
 	searchInChats->setCheckState(Qt::Checked);
