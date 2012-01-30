@@ -18,12 +18,14 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDateEdit>
 #include <QtGui/QFormLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
@@ -74,17 +76,34 @@ void SearchTab::createGui()
 	Query->setMinimumWidth(200);
 	queryFormLayout->addRow(tr("Search for:"), Query);
 
+	QRadioButton *searchInChats = new QRadioButton(tr("Search in chats"), queryFormWidget);
+	searchInChats->setChecked(true);
+	searchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	queryFormLayout->addRow(0, searchInChats);
+
+	QRadioButton *searchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
+	queryFormLayout->addRow(0, searchInStatuses);
+
+	QRadioButton *searchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
+	queryFormLayout->addRow(0, searchInSmses);
+
+	QButtonGroup *kindRadioGroup = new QButtonGroup(queryFormWidget);
+	kindRadioGroup->addButton(searchInChats);
+	kindRadioGroup->addButton(searchInStatuses);
+	kindRadioGroup->addButton(searchInSmses);
+
 	SearchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
 	SearchByDate->setCheckState(Qt::Unchecked);
 	queryFormLayout->addRow(0, SearchByDate);
 
 	QWidget *dateWidget = new QWidget(queryFormWidget);
+	dateWidget->hide();
+
 	QHBoxLayout *dateLayout = new QHBoxLayout(dateWidget);
 
 	FromDate = new QDateEdit(dateWidget);
 	FromDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	FromDate->setCalendarPopup(true);
-	FromDate->setEnabled(false);
 	FromDate->setDate(QDate::currentDate().addDays(-7));
 	dateLayout->addWidget(FromDate);
 
@@ -93,29 +112,14 @@ void SearchTab::createGui()
 	ToDate = new QDateEdit(dateWidget);
 	ToDate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	ToDate->setCalendarPopup(true);
-	ToDate->setEnabled(false);
 	ToDate->setDate(QDate::currentDate());
 	dateLayout->addWidget(ToDate);
 
 	connect(FromDate, SIGNAL(dateChanged(QDate)), this, SLOT(fromDateChanged(QDate)));
 	connect(ToDate, SIGNAL(dateChanged(QDate)), this, SLOT(toDateChanged(QDate)));
-	connect(SearchByDate, SIGNAL(toggled(bool)), FromDate, SLOT(setEnabled(bool)));
-	connect(SearchByDate, SIGNAL(toggled(bool)), ToDate, SLOT(setEnabled(bool)));
+	connect(SearchByDate, SIGNAL(toggled(bool)), dateWidget, SLOT(setVisible(bool)));
 
 	queryFormLayout->addRow(dateWidget);
-
-	QCheckBox *searchInChats = new QCheckBox(tr("Search in chats"), queryFormWidget);
-	searchInChats->setCheckState(Qt::Checked);
-	searchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	queryFormLayout->addRow(0, searchInChats);
-
-	QCheckBox *searchInStatuses = new QCheckBox(tr("Search in statuses"), queryFormWidget);
-	searchInStatuses->setCheckState(Qt::Unchecked);
-	queryFormLayout->addRow(0, searchInStatuses);
-
-	QCheckBox *searchInSmses = new QCheckBox(tr("Search in smses"), queryFormWidget);
-	searchInSmses->setCheckState(Qt::Unchecked);
-	queryFormLayout->addRow(0, searchInSmses);
 
 	QPushButton *searchButton = new QPushButton(tr("Search"), queryFormWidget);
 	searchButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
