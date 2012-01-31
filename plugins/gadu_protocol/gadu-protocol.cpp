@@ -535,7 +535,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 void GaduProtocol::disconnectedFromServer()
 {
-	connectionError();
+	connectionClosed();
 }
 
 QString GaduProtocol::statusPixmapPath()
