@@ -92,7 +92,7 @@ void MergeBuddiesWindow::createGui()
 
 void MergeBuddiesWindow::selectedBuddyChanged()
 {
-	MergeButton->setEnabled(!SelectCombo->currentTalkable().isValidBuddy());
+	MergeButton->setEnabled(SelectCombo->currentTalkable().isValidBuddy());
 }
 
 void MergeBuddiesWindow::accept()
