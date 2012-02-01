@@ -39,8 +39,7 @@ class AccountsComboBox : public ActionsComboBox
 	AccountsProxyModel *ProxyModel;
 
 public:
-	explicit AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility,
-	                          QWidget *parent = 0);
+	explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = 0);
 	virtual ~AccountsComboBox();
 
 	void setCurrentAccount(Account account);

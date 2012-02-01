@@ -87,7 +87,7 @@ void MultilogonWindow::createGui()
 
 	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
 
-	Accounts = new AccountsComboBox(true, ActionsProxyModel::NotVisibleWithOneRowSourceModel, selectAccountWidget);
+	Accounts = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
 	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
 	Accounts->setIncludeIdInDisplay(true);
 	selectAccountLayout->addWidget(Accounts);

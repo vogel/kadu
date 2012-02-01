@@ -65,6 +65,8 @@
 
 #include "your-accounts.h"
 
+Q_DECLARE_METATYPE(QAction *)
+
 YourAccounts *YourAccounts::Instance = 0;
 
 YourAccounts::YourAccounts(QWidget *parent) :

@@ -29,7 +29,7 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility, QWidget *parent) :
+AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	if (includeSelectAccount)

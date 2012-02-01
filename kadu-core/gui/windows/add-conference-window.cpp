@@ -74,7 +74,7 @@ void AddConferenceWindow::createGui()
 
 	QFormLayout *layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(true, ActionsProxyModel::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only gadu supports conferences for now

@@ -24,8 +24,9 @@
 
 #include <QtGui/QComboBox>
 
-#include "model/actions-proxy-model.h"
-
+class ActionFilterProxyModel;
+class ActionListModel;
+class KaduAbstractModel;
 class ModelChain;
 
 /**
@@ -54,13 +55,26 @@ class ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 
-	ModelChain *Chain;
-	ActionsProxyModel *ActionsModel;
+public:
+	enum ActionVisibility // flag
+	{
+		AlwaysVisible,
+		// TODO: think of better names
+		NotVisibleWithEmptySourceModel,
+		NotVisibleWithOneRowSourceModel
+	};
+
+private:
+	ActionListModel *BeforeActions;
+	ActionListModel *AfterActions;
+	ActionFilterProxyModel *ActionsFilterModel;
+	KaduAbstractModel *KaduModel;
 
 	int DataRole;
 	int LastIndex;
 
 	bool isActionSelectable(QAction *action);
+	void addActionToFilter(QAction *action, ActionVisibility visibility);
 
 private slots:
 	/**
@@ -127,25 +141,25 @@ public:
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Add new action before real values in combo box.
 	 * @param action action to add
-	 * @param actionVisibility action visibility of new action
+	 * @param visibility action visibility of new action
 	 *
 	 * Add new action before real values in combo box. Action will be triggered when selected by user.
 	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
 	 * creates connection between size of data model and this action visibility.
 	 */
-	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+	void addBeforeAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Add new action after real values in combo box.
 	 * @param action action to add
-	 * @param actionVisibility action visibility of new action
+	 * @param visibility action visibility of new action
 	 *
 	 * Add new action after real values in combo box. Action will be triggered when selected by user.
 	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
 	 * creates connection between size of data model and this action visibility.
 	 */
-	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+	void addAfterAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
