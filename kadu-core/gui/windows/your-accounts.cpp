@@ -168,6 +168,8 @@ void YourAccounts::switchToCreateMode()
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
 
+	Protocols->addFilter(CanRegisterFilter);
+
 	CurrentWidget = getAccountCreateWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
 	{
@@ -176,8 +178,6 @@ void YourAccounts::switchToCreateMode()
 	}
 	else
 		CreateAddStack->hide();
-
-	Protocols->addFilter(CanRegisterFilter);
 }
 
 void YourAccounts::switchToAddMode()
@@ -187,6 +187,8 @@ void YourAccounts::switchToAddMode()
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
 
+	Protocols->removeFilter(CanRegisterFilter);
+
 	CurrentWidget = getAccountAddWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
 	{
@@ -195,8 +197,6 @@ void YourAccounts::switchToAddMode()
 	}
 	else
 		CreateAddStack->hide();
-
-	Protocols->removeFilter(CanRegisterFilter);
 }
 
 void YourAccounts::createAccountWidget()
