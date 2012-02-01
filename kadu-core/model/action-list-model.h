@@ -39,6 +39,10 @@ public:
 
 	void setActionList(const QList<QAction *> &actionList);
 
+	void appendAction(QAction *action);
+	void insertAction(int index, QAction *action);
+	void removeAction(QAction *action);
+
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex parent(const QModelIndex &child) const;
 

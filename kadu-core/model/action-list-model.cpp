@@ -40,6 +40,38 @@ void ActionListModel::setActionList(const QList<QAction *> &actionList)
 	endResetModel();
 }
 
+void ActionListModel::appendAction(QAction *action)
+{
+	const int count = ActionList.count();
+
+	beginInsertRows(QModelIndex(), count, count);
+	ActionList.append(action);
+	endInsertRows();
+}
+
+void ActionListModel::insertAction(int index, QAction *action)
+{
+	if (index < 0)
+		index = 0;
+	if (index > ActionList.count())
+		index = ActionList.count();
+
+	beginInsertRows(QModelIndex(), index, index);
+	ActionList.insert(index, action);
+	endInsertRows();
+}
+
+void ActionListModel::removeAction(QAction *action)
+{
+	int index = ActionList.indexOf(action);
+	if (index < 0)
+		return;
+
+	beginRemoveRows(QModelIndex(), index, index);
+	ActionList.removeAt(index);
+	endRemoveRows();
+}
+
 QModelIndex ActionListModel::index(int row, int column, const QModelIndex &parent) const
 {
 	return hasIndex(row, column, parent)

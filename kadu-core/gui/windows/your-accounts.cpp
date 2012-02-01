@@ -125,11 +125,9 @@ void YourAccounts::createGui()
 	CreateNewAccountAction = new QAction(KaduIcon("system-users").icon(), tr("Create new account"), this);
 
 	ActionListModel *actionsModel = new ActionListModel(this);
-	QList<QAction *> actions;
-	actions.append(separator);
-	actions.append(AddExistingAccountAction);
-	actions.append(CreateNewAccountAction);
-	actionsModel->setActionList(actions);
+	actionsModel->appendAction(separator);
+	actionsModel->appendAction(AddExistingAccountAction);
+	actionsModel->appendAction(CreateNewAccountAction);
 
 	QList<QAbstractItemModel *> models;
 	models.append(MyAccountsModel);
