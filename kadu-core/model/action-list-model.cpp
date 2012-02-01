@@ -19,10 +19,11 @@
 
 #include <QtGui/QAction>
 
-#include "model/actions-proxy-model.h" // for Q_DECLARE_METATYPE
 #include "model/roles.h"
 
 #include "action-list-model.h"
+
+Q_DECLARE_METATYPE(QAction *)
 
 ActionListModel::ActionListModel(QObject *parent) :
 		QAbstractItemModel(parent)

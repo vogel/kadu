@@ -19,10 +19,11 @@
 
 #include <QtGui/QAction>
 
-#include "model/actions-proxy-model.h" // for Q_DECLARE_METATYPE
 #include "model/roles.h"
 
 #include "action-filter-proxy-model.h"
+
+Q_DECLARE_METATYPE(QAction *)
 
 ActionFilterProxyModel::ActionFilterProxyModel(QObject *parent) :
 		QSortFilterProxyModel(parent), Size(0), Model(0)

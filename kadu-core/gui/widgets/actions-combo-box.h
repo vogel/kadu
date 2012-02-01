@@ -39,13 +39,15 @@ class ModelChain;
  * @author Bartosz 'beevvy' Brachaczek
  * @author Rafał 'Vogel' Malinowski
  * @short QComboBox with support for actions and QVariant data.
- * @see ActionsProxyModel
  *
- * This class is an extension to QComboBox that uses ActionsProxyModel as data source. This allows this widget
- * to have actions like "select", "create new" or "edit". Actions can be marked as unselectable. Unselectable action
- * can only be triggered, selection is immediately restored to the previous value item or selectable action. Two methods
- * are available for adding actions: addBeforeAction() (to add action at the begining of list) and addAfterAction() (to add
- * action at the end of list). Method currentAction() is available for getting currently selected action.
+ * This class is an extension to QComboBox that uses MergedProxyModel to add two models with actions before and
+ * after main model of the combo box.
+ *
+ * This allows this widget  to have actions like "select", "create new" or "edit". Actions can be marked
+ * as unselectable. Unselectable action can only be triggered, selection is immediately restored to the previous
+ * value item or selectable action. Two methods  are available for adding actions: addBeforeAction() (to add action
+ * at the begining of list) and addAfterAction() (to add action at the end of list). Method currentAction() is
+ * available for getting currently selected action.
  *
  * Data is stored in model that derives from QAbstractItemModel and KaduAbstractModel classes. It is possible to
  * use proxy model derived from QAbstractProxyModel. Data is stored as QVariant object with role passed in
