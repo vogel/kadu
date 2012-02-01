@@ -82,8 +82,6 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
 	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
-
-	CanRegisterFilter->setEnabled(true);
 }
 
 YourAccounts::~YourAccounts()
@@ -180,7 +178,7 @@ void YourAccounts::switchToCreateMode()
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
 
-	Protocols->addFilter(CanRegisterFilter);
+	CanRegisterFilter->setEnabled(true);
 
 	CurrentWidget = getAccountCreateWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
@@ -199,7 +197,7 @@ void YourAccounts::switchToAddMode()
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
 
-	Protocols->removeFilter(CanRegisterFilter);
+	CanRegisterFilter->setEnabled(false);
 
 	CurrentWidget = getAccountAddWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
@@ -232,6 +230,7 @@ void YourAccounts::createAccountWidget()
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ':', CreateAddAccountContainer);
 	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
+	Protocols->addFilter(CanRegisterFilter);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
 
 //#ifndef Q_WS_MAEMO_5
