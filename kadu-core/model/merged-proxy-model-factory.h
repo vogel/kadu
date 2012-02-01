@@ -56,6 +56,8 @@ namespace MergedProxyModelFactory
 	 *
 	 * The only difference between this method and createInstance is that every model in list must implement
 	 * KaduAbstractModel interface and resulting merged model will also implement this interface.
+	 *
+	 * Accepted items must either be ModelChain or QAbstractItemModel objects.
 	 */
 	QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = 0);
 

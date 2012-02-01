@@ -47,6 +47,8 @@ class QAbstractProxyModel;
  * This class bundles model and list of proxy models into one object that allows to easily
  * get index of given element in last proxy model. First model of chain must be of type QAbstractProxyModel
  * and must derive from KaduAbstractModel interface to provide indexListForValue method.
+ *
+ * ModelChain can be used as part of KaduMergedProxyModel.
  */
 class ModelChain : public QObject, public KaduAbstractModel
 {

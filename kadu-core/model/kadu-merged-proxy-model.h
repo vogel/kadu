@@ -33,8 +33,8 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Model that merges other models into one and allows for calling indexListForValue method.
  *
- * This model merges other models into one. KaduMergedProxyModel accepts all QAbstractItemModel that
- * implements KaduAbstractModel interface and ModelChain objects.
+ * This model merges other models into one. KaduMergedProxyModel accepts all ModelChain  objects and
+ * QAbstractItemModel that implements KaduAbstractModel interface and.
  *
  * It is possible to retreive original indexes of any item using indexListForValue method.
  */
@@ -60,8 +60,8 @@ public:
 	 * @short Sets list of models to merge.
 	 * @param models list of models to merge
 	 *
-	 * Sets list of models to merge. All models must implement QAbstractItemModel or ModelChain interface,
-	 * otherwise an assertion is thrown.
+	 * Sets list of models to merge. All models must implement QAbstractItemModel interface or be
+	 * ModelChain interface, otherwise an assertion is thrown.
 	 */
 	void setKaduModels(QList<KaduAbstractModel *> models);
 
