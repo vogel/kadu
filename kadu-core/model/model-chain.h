@@ -29,10 +29,10 @@
 #include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
+#include "model/kadu-abstract-model.h"
+
 class QAbstractItemModel;
 class QAbstractProxyModel;
-
-class KaduAbstractModel;
 
 /**
  * @addtogroup Model
@@ -48,7 +48,7 @@ class KaduAbstractModel;
  * get index of given element in last proxy model. First model of chain must be of type QAbstractProxyModel
  * and must derive from KaduAbstractModel interface to provide indexListForValue method.
  */
-class ModelChain : public QObject
+class ModelChain : public QObject, public KaduAbstractModel
 {
 	Q_OBJECT
 

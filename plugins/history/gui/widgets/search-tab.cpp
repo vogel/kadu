@@ -96,7 +96,7 @@ void SearchTab::createGui()
 	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 
-	QList<QAbstractItemModel *> models;
+	QList<KaduAbstractModel *> models;
 	models.append(ChatsModel);
 	models.append(BuddiesModel);
 

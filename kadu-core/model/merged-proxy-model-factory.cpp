@@ -29,9 +29,9 @@ QAbstractItemModel * MergedProxyModelFactory::createInstance(QList<QAbstractItem
 	return mergedProxyModel;
 }
 
-QAbstractItemModel * MergedProxyModelFactory::createKaduModelInstance(QList<QAbstractItemModel *> models, QObject *parent)
+QAbstractItemModel * MergedProxyModelFactory::createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent)
 {
-	MergedProxyModel *mergedProxyModel = new KaduMergedProxyModel(parent);
-	mergedProxyModel->setModels(models);
+	KaduMergedProxyModel *mergedProxyModel = new KaduMergedProxyModel(parent);
+	mergedProxyModel->setKaduModels(models);
 	return mergedProxyModel;
 }

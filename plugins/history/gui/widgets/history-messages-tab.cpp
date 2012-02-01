@@ -112,7 +112,7 @@ void HistoryMessagesTab::createModelChain()
 	ChatsModel = new ChatsListModel(TalkableTree);
 	BuddiesModel = new BuddyListModel(TalkableTree);
 
-	QList<QAbstractItemModel *> models;
+	QList<KaduAbstractModel *> models;
 	models.append(ChatsModel);
 	models.append(BuddiesModel);
 

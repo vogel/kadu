@@ -212,7 +212,7 @@ public:
 	 *
 	 * Sets list of models to merge.
 	 */
-	virtual void setModels(QList<QAbstractItemModel *> models);
+	void setModels(QList<QAbstractItemModel *> models);
 
 	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	virtual QModelIndex parent(const QModelIndex &proxyChild) const;
