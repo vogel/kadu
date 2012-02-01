@@ -52,8 +52,10 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
+#include "model/action-filter-proxy-model.h"
+#include "model/action-list-model.h"
 #include "model/roles.h"
+#include "model/merged-proxy-model-factory.h"
 #include "protocols/filter/can-register-protocol-filter.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -122,13 +124,23 @@ void YourAccounts::createGui()
 	AddExistingAccountAction = new QAction(KaduIcon("contact-new").icon(), tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(KaduIcon("system-users").icon(), tr("Create new account"), this);
 
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(this);
-	actionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
-	actionsModel->addAfterAction(AddExistingAccountAction);
-	actionsModel->addAfterAction(CreateNewAccountAction);
-	actionsModel->setSourceModel(MyAccountsModel);
+	ActionListModel *actionsModel = new ActionListModel(this);
+	QList<QAction *> actions;
+	actions.append(separator);
+	actions.append(AddExistingAccountAction);
+	actions.append(CreateNewAccountAction);
+	actionsModel->setActionList(actions);
 
-	AccountsView->setModel(actionsModel);
+	QList<QAbstractItemModel *> models;
+	models.append(MyAccountsModel);
+	models.append(actionsModel);
+
+	ActionFilterProxyModel *proxyModel = new ActionFilterProxyModel(this);
+	proxyModel->setSourceModel(MergedProxyModelFactory::createInstance(models, this));
+	proxyModel->setModel(MyAccountsModel);
+	proxyModel->addHideWhenModelEmpty(separator);
+
+	AccountsView->setModel(proxyModel);
 	AccountsView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));
