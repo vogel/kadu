@@ -30,6 +30,7 @@
 class QAbstractItemModel;
 class QModelIndex;
 
+class HideAnonymousTalkableFilter;
 class ModelChain;
 class TalkableFilter;
 class TalkableProxyModel;
@@ -39,6 +40,7 @@ class SelectTalkablePopup : public FilteredTreeView
 {
 	Q_OBJECT
 
+	HideAnonymousTalkableFilter *HideAnonymousFilter;
 	ModelChain *Chain;
 	TalkableTreeView *View;
 	TalkableProxyModel *ProxyModel;
@@ -52,6 +54,7 @@ public:
 	virtual ~SelectTalkablePopup();
 
 	void setBaseModel(QAbstractItemModel *model);
+	void setShowAnonymous(bool showAnonymous);
 
 	void show(const Talkable &talkable);
 

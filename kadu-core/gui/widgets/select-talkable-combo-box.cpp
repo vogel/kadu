@@ -43,8 +43,8 @@ SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 
 	Popup = new SelectTalkablePopup();
 
-	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	addFilter(hideAnonymousFilter);
+	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+	addFilter(HideAnonymousFilter);
 
 	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
@@ -61,6 +61,12 @@ void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)
 	Popup->setBaseModel(model);
 
 	setCurrentIndex(0);
+}
+
+void SelectTalkableComboBox::setShowAnonymous(bool showAnonymous)
+{
+	HideAnonymousFilter->setEnabled(!showAnonymous);
+	Popup->setShowAnonymous(showAnonymous);
 }
 
 void SelectTalkableComboBox::setCurrentTalkable(const Talkable &talkable)

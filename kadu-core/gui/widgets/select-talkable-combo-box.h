@@ -30,6 +30,7 @@
 
 #include "gui/widgets/actions-combo-box.h"
 
+class HideAnonymousTalkableFilter;
 class ModelChain;
 class SelectTalkablePopup;
 class TalkableFilter;
@@ -39,6 +40,7 @@ class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
+	HideAnonymousTalkableFilter *HideAnonymousFilter;
 	ModelChain *Chain;
 	SelectTalkablePopup *Popup;
 	TalkableProxyModel *ProxyModel;
@@ -52,6 +54,7 @@ public:
 	virtual ~SelectTalkableComboBox();
 
 	void setBaseModel(QAbstractItemModel *model);
+	void setShowAnonymous(bool showAnonymous);
 
 	Talkable currentTalkable() const;
 

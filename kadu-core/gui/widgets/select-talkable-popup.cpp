@@ -45,8 +45,8 @@ SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
-	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	ProxyModel->addFilter(hideAnonymousFilter);
+	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+	ProxyModel->addFilter(HideAnonymousFilter);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
 	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
@@ -71,6 +71,11 @@ SelectTalkablePopup::~SelectTalkablePopup()
 void SelectTalkablePopup::setBaseModel(QAbstractItemModel *model)
 {
 	Chain->setBaseModel(model);
+}
+
+void SelectTalkablePopup::setShowAnonymous(bool showAnonymous)
+{
+	HideAnonymousFilter->setEnabled(!showAnonymous);
 }
 
 void SelectTalkablePopup::show(const Talkable &talkable)
