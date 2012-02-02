@@ -24,7 +24,9 @@
 #ifndef HISTORY_WINDOW_H
 #define HISTORY_WINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QtGui/QDialog>
+
+class QTabWidget;
 
 class Chat;
 class ChatHistoryTab;
@@ -35,7 +37,7 @@ class HistoryStorage;
 \class HistoryWindow
 \author Juzef, Vogel
 */
-class HistoryWindow : public QMainWindow
+class HistoryWindow : public QDialog
 {
 	Q_OBJECT
 
@@ -61,9 +63,6 @@ class HistoryWindow : public QMainWindow
 private slots:
 	void currentTabChanged(int newTabIndex);
 	void storageChanged(HistoryStorage *historyStorage);
-
-protected:
-	void keyPressEvent(QKeyEvent *event);
 
 public:
 	static void show(const Chat &chat);

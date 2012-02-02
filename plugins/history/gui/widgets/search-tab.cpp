@@ -156,6 +156,8 @@ void SearchTab::createGui()
 
 	TimelineView = new TimelineChatMessagesView(true, Splitter);
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+
+	setFocusProxy(Query);
 }
 
 void SearchTab::fromDateChanged(const QDate &date)

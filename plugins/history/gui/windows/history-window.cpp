@@ -59,7 +59,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		QMainWindow(parent), CurrentTab(-1)
+		QDialog(parent), CurrentTab(-1)
 {
 	setProperty("ownWindowIcon", true);
 
@@ -87,12 +87,11 @@ HistoryWindow::~HistoryWindow()
 
 void HistoryWindow::createGui()
 {
-	QWidget *mainWidget = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	TabWidget = new QTabWidget(mainWidget);
+	TabWidget = new QTabWidget(this);
 	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	TabWidget->setDocumentMode(true);
 
@@ -112,7 +111,7 @@ void HistoryWindow::createGui()
 
 	CurrentTab = 0;
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -121,7 +120,7 @@ void HistoryWindow::createGui()
 	layout->addWidget(TabWidget);
 	layout->addWidget(buttons);
 
-	setCentralWidget(mainWidget);
+	ChatTab->setFocus();
 }
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
@@ -146,17 +145,6 @@ void HistoryWindow::selectChat(const Chat &chat)
 {
 	TabWidget->setCurrentIndex(0);
 	ChatTab->selectTalkable(chat);
-}
-
-void HistoryWindow::keyPressEvent(QKeyEvent *e)
-{
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
 }
 
 void HistoryWindow::currentTabChanged(int newTabIndex)

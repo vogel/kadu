@@ -105,6 +105,8 @@ void HistoryMessagesTab::createGui(bool showTitleInTimeline)
 	Splitter->setSizes(sizes);
 
 	layout->addWidget(Splitter);
+
+	setFocusProxy(FilteredView->filterWidget());
 }
 
 void HistoryMessagesTab::createModelChain()
