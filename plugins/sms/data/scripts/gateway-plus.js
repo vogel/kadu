@@ -80,12 +80,12 @@ PlusGatewaySmsSender.prototype = {
 		var postData =
 			"7"+ separator + "0"+ separator + "12"+ separator +
 			"http://www1.plus.pl/bsm/"+ separator +
-			"A356AF1D38BD7E411FD470C57483AFEE"+ separator +
+			"39818686DE7694002AE060E228146942"+ separator +
 			"pl.plus.map.bsm.gwt.client.service.SendSmsService"+ separator + "send"+ separator +
-			"pl.plus.map.bsm.core.gwt.dto.MessageTO/3818266010"+ separator +
+			"pl.plus.map.bsm.core.gwt.dto.MessageTO/1868309509"+ separator +
 			tokenValue + separator +
 			this.tokenId + separator +
-			"b980ccf30e9531787046fda86d2b544b"+ separator +
+			"ab870668c10219d29f33018fe1d325bd"+ separator +
 			this.content + separator +
 			"" + separator +
 			this.recipient + separator +
@@ -112,7 +112,8 @@ PlusGatewaySmsSender.prototype = {
 			"0" + separator +
 			"0" + separator +
 			"1" + separator +
-			"1" + separator +
+			"0" + separator +
+			"0" + separator +
 			"0" + separator +
 			"0" + separator +
 			"0" + separator +
