@@ -512,16 +512,24 @@ bool AddBuddyWindow::addContact()
 			return false;
 	}
 
-	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), ActionCreateAndAdd);
-	contact.setOwnerBuddy(buddy);
+	NotFoundAction action = MyBuddy.isNull()
+			? ActionCreateAndAdd
+			: ActionReturnNull;
 
-	Roster::instance()->addContact(contact);
+	Contact contact = ContactManager::instance()->byId(account, UserNameEdit->text(), action);
 
-	if (!buddy.isOfflineTo())
-		sendAuthorization(contact);
+	if (contact)
+	{
+		contact.setOwnerBuddy(buddy);
 
-	if (AskForAuthorization->isChecked())
-		askForAuthorization(contact);
+		Roster::instance()->addContact(contact);
+
+		if (!buddy.isOfflineTo())
+			sendAuthorization(contact);
+
+		if (AskForAuthorization->isChecked())
+			askForAuthorization(contact);
+	}
 
 	return true;
 }

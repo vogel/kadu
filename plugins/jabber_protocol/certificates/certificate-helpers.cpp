@@ -207,18 +207,16 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 	if (false == tlsHandler->certMatchesHostname())
 	{
 		QList<QString> subjectInfo = certificate.subjectInfo().values(QCA::CommonName);
-		QString certificateDomain = subjectInfo[0];
 		if (subjectInfo.size() == 1)
-			overridenHostname = certificateDomain;
-		else if (certificateDomain.isEmpty() || certificateDomain != tlsOverrideDomain)
+			overridenHostname = subjectInfo[0];
+		if (subjectInfo.size() != 1 || subjectInfo[0].isEmpty() || subjectInfo[0] != tlsOverrideDomain)
 			result = QCA::TLS::HostMismatch;
 	}
 
 	CertificateErrorWindow *errorDialog = new CertificateErrorWindow(
 			title, host, certificate,
 			result, tls->peerCertificateValidity(),
-			overridenHostname, tlsOverrideDomain);
-	QObject::connect(errorDialog, SIGNAL(certificateAccepted()), parent, SLOT(reconnect()));
+			overridenHostname, tlsOverrideDomain, parent, SLOT(reconnect()));
 	errorDialog->show();
 
 	return false;

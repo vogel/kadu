@@ -60,7 +60,6 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	else
 	{
 		CurrentContact.setDirty(false);
-		ContactManager::instance()->addItem(CurrentContact);
 	}
 
 	QGridLayout *layout = new QGridLayout(this);
@@ -75,6 +74,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	QPushButton *shareAndAdd = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow and add buddy..."), this);
 	shareAndAdd->setDefault(true);
 	buttons->addButton(shareAndAdd, QDialogButtonBox::AcceptRole);
+	shareAndAdd->setVisible(CurrentContact.isAnonymous());
 
 	QPushButton *share = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow"), this);
 	share->setDefault(true);
@@ -100,9 +100,8 @@ SubscriptionWindow::~SubscriptionWindow()
 
 void SubscriptionWindow::accepted()
 {
-	Buddy buddy;
-	buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreateAndAdd);
-	buddy.setAnonymous(false);
+	Buddy buddy = BuddyManager::instance()->byContact(CurrentContact, ActionCreate);
+	buddy.setAnonymous(true);
 	(new AddBuddyWindow(0, buddy))->show();
 	allowed();
 }
