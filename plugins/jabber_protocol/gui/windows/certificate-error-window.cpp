@@ -42,7 +42,7 @@
 #include "certificate-error-window.h"
 
 CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QString& host, const QCA::Certificate& cert,
-	int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain)
+	int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain, QObject *receiver, const char *slot)
 	: QDialog(), CurrentCertificate(cert), Result(result), Validity(validity), DomainOverride(domainOverride), Host(host), TlsOverrideDomain(tlsOverrideDomain)
 {
 	setWindowRole("kadu-certificate-error");
@@ -58,7 +58,7 @@ CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QStri
 	QLabel *messageLabel = new QLabel(CertificateHelpers::resultToString(result, validity), this);
 	QPushButton *ShowButton = new QPushButton(tr("Show certificate..."), this);
 	QLabel *finalQuestionLabel = new QLabel(tr("If you do not trust <i>%1</i>, cancel the connection.").arg(host), this);
-	RememberCheckbox = new QCheckBox(tr("Remember my choice for this account"), this);
+	RememberCheckbox = new QCheckBox(tr("Remember my choice for this certificate"), this);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -81,6 +81,8 @@ CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QStri
 	layout->addWidget(buttons, 4, 2, 1, 2);
 
 	CancelButton->setFocus();
+
+	connect(this, SIGNAL(certificateAccepted()), receiver, slot);
 }
 
 CertificateErrorWindow::~CertificateErrorWindow()

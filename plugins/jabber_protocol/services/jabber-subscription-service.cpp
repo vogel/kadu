@@ -87,12 +87,7 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 	if (type == "subscribe")
 	{
 		Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionCreate);
-		if (contact.isAnonymous())
-			SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
-		else
-			authorizeContact(contact, MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu - authorize user?"), tr("The user %1 (%2) is asking for subscription from you. "
-						   "He will be able to view your online/offline status. "
-						   "Do you want to authorize the contact?").arg(contact.display(true), jid.full())));
+		SubscriptionWindow::getSubscription(contact, this, SLOT(authorizeContact(Contact, bool)));
 	}
 }
 

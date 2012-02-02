@@ -67,12 +67,10 @@ class JabberProtocol : public Protocol
 
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
-public slots:
-        void reconnect();
-
 private slots:
 	void connectedToServer();
 	void disconnectedFromServer();
+	void reconnect();
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status (QString(), QString(), 0, false));
 	void rosterReady(bool success);
 
