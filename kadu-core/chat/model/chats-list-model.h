@@ -32,6 +32,8 @@ class ChatsListModel : public QAbstractItemModel, public KaduAbstractModel
 
 	QVector<Chat> Chats;
 
+	Chat chatFromVariant(const QVariant &variant) const;
+
 private slots:
 	void chatUpdated();
 
