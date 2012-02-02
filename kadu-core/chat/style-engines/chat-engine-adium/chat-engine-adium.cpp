@@ -72,7 +72,10 @@ void RefreshViewHack::cancel()
 void RefreshViewHack::loadFinished()
 {
 	if (!Engine || !Renderer)
+	{
+		deleteLater();
 		return;
+	}
 
 	// We need to clear messages in case something was rendered before this slot was called.
 	Engine->clearMessages(Renderer);
@@ -80,6 +83,8 @@ void RefreshViewHack::loadFinished()
 
 	foreach (MessageRenderInfo *message, Renderer->messages())
 		Engine->appendChatMessage(Renderer, message);
+
+	emit finished(Renderer);
 
 	deleteLater();
 }
@@ -142,7 +147,7 @@ void PreviewHack::loadFinished()
 
 
 AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
-		QObject(parent), CurrentRefreshHack(0), CurrentPreviewHack(0)
+		QObject(parent), CurrentPreviewHack(0)
 {
 	// Load required javascript functions
 	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
@@ -298,9 +303,12 @@ void AdiumChatStyleEngine::currentPreviewHackDestroyed()
 	CurrentPreviewHack = 0;
 }
 
-void AdiumChatStyleEngine::currentRefreshHackDestroyed()
+void AdiumChatStyleEngine::refreshHackFinished(HtmlMessagesRenderer *renderer)
 {
-	CurrentRefreshHack = 0;
+	if (!CurrentRefreshHacks.contains(renderer))
+		return;
+
+	CurrentRefreshHacks.remove(renderer);
 }
 
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
@@ -327,17 +335,18 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
 		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), 18, "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
-	if (CurrentRefreshHack)
-		delete CurrentRefreshHack;
+	if (CurrentRefreshHacks.contains(renderer))
+		CurrentRefreshHacks.value(renderer)->cancel();
 
-	CurrentRefreshHack = new RefreshViewHack(this, renderer, this);
-	connect(CurrentRefreshHack, SIGNAL(destroyed(QObject*)),
-	        this, SLOT(currentRefreshHackDestroyed()));
+	RefreshViewHack *currentHack = new RefreshViewHack(this, renderer, this);
+	CurrentRefreshHacks.insert(renderer, currentHack);
+	connect(currentHack, SIGNAL(finished(HtmlMessagesRenderer*)),
+			this, SLOT(refreshHackFinished(HtmlMessagesRenderer *)));
 
 	// lets wait a while for all javascript to resolve and execute
 	// we dont want to get to the party too early
 	connect(renderer->webPage()->mainFrame(), SIGNAL(loadFinished(bool)),
-	        CurrentRefreshHack, SLOT(loadFinished()), Qt::QueuedConnection);
+			currentHack, SLOT(loadFinished()), Qt::QueuedConnection);
 
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);

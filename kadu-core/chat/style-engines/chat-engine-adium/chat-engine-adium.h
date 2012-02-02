@@ -39,16 +39,16 @@ class RefreshViewHack : public QObject
 	AdiumChatStyleEngine *Engine;
 	HtmlMessagesRenderer *Renderer;
 
-private slots:
-	void cancel();
-
 public:
 	explicit RefreshViewHack(AdiumChatStyleEngine *engine, HtmlMessagesRenderer *renderer, QObject *parent = 0);
 	virtual ~RefreshViewHack();
 
 public slots:
+	void cancel();
 	void loadFinished();
 
+signals:
+	void finished(HtmlMessagesRenderer *);
 };
 
 class PreviewHack : public QObject
@@ -82,7 +82,7 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	friend class PreviewHack;
 
 	AdiumStyle CurrentStyle;
-	RefreshViewHack *CurrentRefreshHack;
+	QMap<HtmlMessagesRenderer *, RefreshViewHack*> CurrentRefreshHacks;
 	PreviewHack *CurrentPreviewHack;
 
 	QString jsCode;
@@ -95,7 +95,7 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 
 private slots:
-	void currentRefreshHackDestroyed();
+	void refreshHackFinished(HtmlMessagesRenderer *);
 	void currentPreviewHackDestroyed();
 
 public:
