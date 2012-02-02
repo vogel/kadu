@@ -24,9 +24,11 @@
 
 #include "gui/widgets/history-tab.h"
 
+class QAbstractButton;
 class QCheckBox;
 class QDateEdit;
 class QLineEdit;
+class QRadioButton;
 class QSplitter;
 
 class BuddyListModel;
@@ -42,16 +44,24 @@ class SearchTab : public HistoryTab
 	BuddyListModel *BuddiesModel;
 
 	QSplitter *Splitter;
+	TimelineChatMessagesView *TimelineView;
+
 	QLineEdit *Query;
+
+	QRadioButton *SearchInChats;
 	SelectTalkableComboBox *SelectChat;
+
+	QRadioButton *SearchInStatuses;
+	QRadioButton *SearchInSmses;
+
 	QCheckBox *SearchByDate;
 	QDateEdit *FromDate;
 	QDateEdit *ToDate;
-	TimelineChatMessagesView *TimelineView;
 
 	void createGui();
 
 private slots:
+	void kindChanged(QAbstractButton *button);
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);
 	void performSearch();

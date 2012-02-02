@@ -82,10 +82,10 @@ void SearchTab::createGui()
 	Query->setMinimumWidth(200);
 	queryFormLayout->addRow(tr("Search for:"), Query);
 
-	QRadioButton *searchInChats = new QRadioButton(tr("Search in chats"), queryFormWidget);
-	searchInChats->setChecked(true);
-	searchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	queryFormLayout->addRow(searchInChats);
+	SearchInChats = new QRadioButton(tr("Search in chats"), queryFormWidget);
+	SearchInChats->setChecked(true);
+	SearchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	queryFormLayout->addRow(SearchInChats);
 
 	SelectChat = new SelectTalkableComboBox(queryFormWidget);
 
@@ -108,16 +108,18 @@ void SearchTab::createGui()
 	SelectChat->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, SelectChat));
 	queryFormLayout->addRow(SelectChat);
 
-	QRadioButton *searchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
-	queryFormLayout->addRow(searchInStatuses);
+	SearchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
+	queryFormLayout->addRow(SearchInStatuses);
 
-	QRadioButton *searchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
-	queryFormLayout->addRow(searchInSmses);
+	SearchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
+	queryFormLayout->addRow(SearchInSmses);
 
 	QButtonGroup *kindRadioGroup = new QButtonGroup(queryFormWidget);
-	kindRadioGroup->addButton(searchInChats);
-	kindRadioGroup->addButton(searchInStatuses);
-	kindRadioGroup->addButton(searchInSmses);
+	kindRadioGroup->addButton(SearchInChats);
+	kindRadioGroup->addButton(SearchInStatuses);
+	kindRadioGroup->addButton(SearchInSmses);
+	connect(kindRadioGroup, SIGNAL(buttonReleased(QAbstractButton*)),
+	        this, SLOT(kindChanged(QAbstractButton*)));
 
 	SearchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
 	SearchByDate->setCheckState(Qt::Unchecked);
@@ -158,6 +160,14 @@ void SearchTab::createGui()
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 
 	setFocusProxy(Query);
+}
+
+void SearchTab::kindChanged(QAbstractButton *button)
+{
+	SelectChat->hide();
+
+	if (SearchInChats == button)
+		SelectChat->show();
 }
 
 void SearchTab::fromDateChanged(const QDate &date)
