@@ -39,6 +39,8 @@ class HideAnonymousTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 
+	bool Enabled;
+
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -47,6 +49,8 @@ public:
 	 */
 	explicit HideAnonymousTalkableFilter(QObject *parent = 0);
 	virtual ~HideAnonymousTalkableFilter();
+
+	void setEnabled(bool enabled);
 
 	virtual FilterResult filterChat(const Chat &chat);
 	virtual FilterResult filterBuddy(const Buddy &buddy);

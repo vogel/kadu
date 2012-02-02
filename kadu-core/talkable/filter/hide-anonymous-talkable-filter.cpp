@@ -24,7 +24,7 @@
 #include "hide-anonymous-talkable-filter.h"
 
 HideAnonymousTalkableFilter::HideAnonymousTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+		TalkableFilter(parent), Enabled(true)
 {
 }
 
@@ -32,8 +32,20 @@ HideAnonymousTalkableFilter::~HideAnonymousTalkableFilter()
 {
 }
 
+void HideAnonymousTalkableFilter::setEnabled(bool enabled)
+{
+	if (Enabled == enabled)
+		return;
+
+	Enabled = enabled;
+	emit filterChanged();
+}
+
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterChat(const Chat &chat)
 {
+	if (!Enabled)
+		return Undecided;
+
 	if (chat.display().isEmpty())
 		return Rejected;
 	else
@@ -42,6 +54,9 @@ TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterChat(const Chat 
 
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterBuddy(const Buddy &buddy)
 {
+	if (!Enabled)
+		return Undecided;
+
 	if (buddy.isAnonymous())
 		return Rejected;
 	else
@@ -50,6 +65,9 @@ TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterBuddy(const Budd
 
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterContact(const Contact &contact)
 {
+	if (!Enabled)
+		return Undecided;
+
 	if (contact.isAnonymous())
 		return Rejected;
 	else
