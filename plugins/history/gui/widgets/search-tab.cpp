@@ -35,6 +35,7 @@
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
+#include "model/action-list-model.h"
 #include "model/roles.h"
 #include "model/merged-proxy-model-factory.h"
 #include "activate.h"
@@ -86,22 +87,26 @@ void SearchTab::createGui()
 	searchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(searchInChats);
 
-	SelectTalkableComboBox *selectChat = new SelectTalkableComboBox(queryFormWidget);
+	SelectChat = new SelectTalkableComboBox(queryFormWidget);
 
 	ChatsBuddiesSplitter chatsBuddies(History::instance()->currentStorage()->chatStorage()->talkables().result());
 
-	ChatsModel = new ChatsListModel(selectChat);
-	BuddiesModel = new BuddyListModel(selectChat);
+	ActionListModel *allChatsModel = new ActionListModel(SelectChat);
+	allChatsModel->appendAction(new QAction(tr(" - All chats - "), SelectChat));
+
+	ChatsModel = new ChatsListModel(SelectChat);
+	BuddiesModel = new BuddyListModel(SelectChat);
 
 	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
 	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
 
 	QList<KaduAbstractModel *> models;
+	models.append(allChatsModel);
 	models.append(ChatsModel);
 	models.append(BuddiesModel);
 
-	selectChat->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, selectChat));
-	queryFormLayout->addRow(selectChat);
+	SelectChat->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, SelectChat));
+	queryFormLayout->addRow(SelectChat);
 
 	QRadioButton *searchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
 	queryFormLayout->addRow(searchInStatuses);
@@ -169,6 +174,7 @@ void SearchTab::performSearch()
 {
 	HistoryQuery query;
 	query.setString(Query->text());
+	query.setTalkable(SelectChat->currentTalkable());
 
 	if (SearchByDate->isChecked())
 	{

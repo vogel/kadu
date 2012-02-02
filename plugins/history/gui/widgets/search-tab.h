@@ -31,6 +31,7 @@ class QSplitter;
 
 class BuddyListModel;
 class ChatsListModel;
+class SelectTalkableComboBox;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
@@ -42,6 +43,7 @@ class SearchTab : public HistoryTab
 
 	QSplitter *Splitter;
 	QLineEdit *Query;
+	SelectTalkableComboBox *SelectChat;
 	QCheckBox *SearchByDate;
 	QDateEdit *FromDate;
 	QDateEdit *ToDate;
