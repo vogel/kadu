@@ -31,6 +31,8 @@
 HistoryTalkableComboBox::HistoryTalkableComboBox(QWidget *parent) :
 		SelectTalkableComboBox(parent), TalkablesFutureWatcher(0)
 {
+	setShowAnonymous(true);
+
 	ActionListModel *actionModel = new ActionListModel(this);
 	AllAction = new QAction(this);
 	actionModel->appendAction(AllAction);

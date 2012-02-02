@@ -50,6 +50,7 @@ class SearchTab : public HistoryTab
 	HistoryTalkableComboBox *SelectStatusBuddy;
 
 	QRadioButton *SearchInSmses;
+	HistoryTalkableComboBox *SelectSmsRecipient;
 
 	QCheckBox *SearchByDate;
 	QDateEdit *FromDate;

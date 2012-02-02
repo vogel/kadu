@@ -769,8 +769,6 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 
 	query.prepare(queryString);
 
-	printf("%s\n", qPrintable(queryString));
-
 	if (!historyQuery.string().isEmpty())
 		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
 	if (historyQuery.fromDate().isValid())
@@ -816,24 +814,41 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 {
 	const Talkable &talkable = historyQuery.talkable();
 
-	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
-		return QVector<HistoryQueryResult>();
-
 	if (!waitForDatabase())
 		return QVector<HistoryQueryResult>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(send_time,0,11)";
-	queryString += " FROM (SELECT send_time FROM kadu_sms WHERE receipient = :receipient";
+	QString queryString = "SELECT count(1), substr(send_time,0,11), receipient";
+	queryString += " FROM (SELECT send_time, receipient FROM kadu_sms WHERE ";
+
+	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+		queryString += "receipient = :receipient";
+	else
+		queryString += "1";
+
+	if (!historyQuery.string().isEmpty())
+		queryString += " AND kadu_sms.content LIKE :query";
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND replace(substr(send_time,0,11), '-', '') >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND replace(substr(send_time,0,11), '-', '') <= :toDate";
 
 	queryString += " order by send_time DESC, rowid DESC)";
-	queryString += " group by substr(send_time,0,11) order by send_time ASC;";
+	queryString += " group by substr(send_time,0,11), receipient order by send_time ASC;";
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", talkable.toBuddy().mobile());
+	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+		query.bindValue(":receipient", talkable.toBuddy().mobile());
+
+	if (!historyQuery.string().isEmpty())
+		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
 
 	QVector<HistoryQueryResult> dates;
 	executeQuery(query);
@@ -845,6 +860,12 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 			continue;
 
 		HistoryQueryResult result;
+
+		Buddy buddy = Buddy::create();
+		buddy.setDisplay(query.value(2).toString());
+		buddy.setMobile(query.value(2).toString());
+
+		result.setTalkable(Talkable(buddy));
 		result.setDate(date);
 		result.setTitle(QString());
 		result.setCount(query.value(0).toInt());

@@ -94,11 +94,16 @@ void SearchTab::createGui()
 	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
 	SelectStatusBuddy->setFutureTalkables(History::instance()->currentStorage()->statusStorage()->talkables());
 	queryFormLayout->addRow(SelectStatusBuddy);
-
 	SelectStatusBuddy->hide();
 
 	SearchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
 	queryFormLayout->addRow(SearchInSmses);
+
+	SelectSmsRecipient = new HistoryTalkableComboBox(queryFormWidget);
+	SelectSmsRecipient->setAllLabel(tr(" - All recipients - "));
+	SelectSmsRecipient->setFutureTalkables(History::instance()->currentStorage()->smsStorage()->talkables());
+	queryFormLayout->addRow(SelectSmsRecipient);
+	SelectSmsRecipient->hide();
 
 	QButtonGroup *kindRadioGroup = new QButtonGroup(queryFormWidget);
 	kindRadioGroup->addButton(SearchInChats);
@@ -152,11 +157,14 @@ void SearchTab::kindChanged(QAbstractButton *button)
 {
 	SelectChat->hide();
 	SelectStatusBuddy->hide();
+	SelectSmsRecipient->hide();
 
 	if (SearchInChats == button)
 		SelectChat->show();
 	else if (SearchInStatuses == button)
 		SelectStatusBuddy->show();
+	else if (SearchInSmses == button)
+		SelectSmsRecipient->show();
 }
 
 void SearchTab::fromDateChanged(const QDate &date)
@@ -194,6 +202,7 @@ void SearchTab::performSearch()
 	}
 	else if (SearchInSmses->isChecked())
 	{
+		query.setTalkable(SelectSmsRecipient->currentTalkable());
 		TimelineView->setFutureResults(History::instance()->currentStorage()->smsStorage()->dates(query));
 	}
 }
