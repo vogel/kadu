@@ -30,19 +30,14 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/model/buddy-list-model.h"
-#include "chat/model/chats-list-model.h"
-#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "model/action-list-model.h"
 #include "model/roles.h"
-#include "model/merged-proxy-model-factory.h"
 #include "activate.h"
 
+#include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
-#include "chats-buddies-splitter.h"
 #include "history.h"
 #include "history-query.h"
 
@@ -87,45 +82,17 @@ void SearchTab::createGui()
 	SearchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(SearchInChats);
 
-	SelectChat = new SelectTalkableComboBox(queryFormWidget);
-
-	ChatsBuddiesSplitter chatsBuddies(History::instance()->currentStorage()->chatStorage()->talkables().result());
-
-	ActionListModel *allChatsModel = new ActionListModel(SelectChat);
-	allChatsModel->appendAction(new QAction(tr(" - All chats - "), SelectChat));
-
-	ChatsModel = new ChatsListModel(SelectChat);
-	BuddiesModel = new BuddyListModel(SelectChat);
-
-	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
-	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
-
-	QList<KaduAbstractModel *> models;
-	models.append(allChatsModel);
-	models.append(ChatsModel);
-	models.append(BuddiesModel);
-
-	SelectChat->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, SelectChat));
+	SelectChat = new HistoryTalkableComboBox(queryFormWidget);
+	SelectChat->setAllLabel(tr(" - All chats - "));
+	SelectChat->setFutureTalkables(History::instance()->currentStorage()->chatStorage()->talkables());
 	queryFormLayout->addRow(SelectChat);
 
 	SearchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
 	queryFormLayout->addRow(SearchInStatuses);
 
-	SelectStatusBuddy = new SelectTalkableComboBox(queryFormWidget);
-
-	ChatsBuddiesSplitter statusBuddies(History::instance()->currentStorage()->statusStorage()->talkables().result());
-
-	ActionListModel *allBuddiesModel = new ActionListModel(SelectStatusBuddy);
-	allBuddiesModel->appendAction(new QAction(tr(" - All buddies - "), SelectStatusBuddy));
-
-	StatusBuddiesModel = new BuddyListModel(SelectStatusBuddy);
-	StatusBuddiesModel->setBuddyList(statusBuddies.buddies().toList());
-
-	QList<KaduAbstractModel *> statusModels;
-	statusModels.append(allBuddiesModel);
-	statusModels.append(StatusBuddiesModel);
-
-	SelectStatusBuddy->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(statusModels, SelectStatusBuddy));
+	SelectStatusBuddy = new HistoryTalkableComboBox(queryFormWidget);
+	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
+	SelectStatusBuddy->setFutureTalkables(History::instance()->currentStorage()->statusStorage()->talkables());
 	queryFormLayout->addRow(SelectStatusBuddy);
 
 	SelectStatusBuddy->hide();
