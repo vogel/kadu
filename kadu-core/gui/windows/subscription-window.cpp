@@ -72,14 +72,14 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	QPushButton *shareAndAdd = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow and add buddy..."), this);
-	if (!knownContact)
+	if (knownContact && !knownContact.isAnonymous())
 	{
-		shareAndAdd->setDefault(true);
-		buttons->addButton(shareAndAdd, QDialogButtonBox::AcceptRole);
+		shareAndAdd->setVisible(false);
 	}
 	else
 	{
-		shareAndAdd->setVisible(false);
+		shareAndAdd->setDefault(true);
+		buttons->addButton(shareAndAdd, QDialogButtonBox::AcceptRole);
 	}
 
 	QPushButton *share = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Allow"), this);
