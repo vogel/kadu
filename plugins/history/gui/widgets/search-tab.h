@@ -40,18 +40,22 @@ class SearchTab : public HistoryTab
 {
 	Q_OBJECT
 
-	ChatsListModel *ChatsModel;
-	BuddyListModel *BuddiesModel;
-
 	QSplitter *Splitter;
 	TimelineChatMessagesView *TimelineView;
 
 	QLineEdit *Query;
 
+	ChatsListModel *ChatsModel;
+	BuddyListModel *BuddiesModel;
+
 	QRadioButton *SearchInChats;
 	SelectTalkableComboBox *SelectChat;
 
+	BuddyListModel *StatusBuddiesModel;
+
 	QRadioButton *SearchInStatuses;
+	SelectTalkableComboBox *SelectStatusBuddy;
+
 	QRadioButton *SearchInSmses;
 
 	QCheckBox *SearchByDate;

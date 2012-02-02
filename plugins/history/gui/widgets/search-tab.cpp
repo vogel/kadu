@@ -111,6 +111,25 @@ void SearchTab::createGui()
 	SearchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
 	queryFormLayout->addRow(SearchInStatuses);
 
+	SelectStatusBuddy = new SelectTalkableComboBox(queryFormWidget);
+
+	ChatsBuddiesSplitter statusBuddies(History::instance()->currentStorage()->statusStorage()->talkables().result());
+
+	ActionListModel *allBuddiesModel = new ActionListModel(SelectStatusBuddy);
+	allBuddiesModel->appendAction(new QAction(tr(" - All buddies - "), SelectStatusBuddy));
+
+	StatusBuddiesModel = new BuddyListModel(SelectStatusBuddy);
+	StatusBuddiesModel->setBuddyList(statusBuddies.buddies().toList());
+
+	QList<KaduAbstractModel *> statusModels;
+	statusModels.append(allBuddiesModel);
+	statusModels.append(StatusBuddiesModel);
+
+	SelectStatusBuddy->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(statusModels, SelectStatusBuddy));
+	queryFormLayout->addRow(SelectStatusBuddy);
+
+	SelectStatusBuddy->hide();
+
 	SearchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
 	queryFormLayout->addRow(SearchInSmses);
 
@@ -165,9 +184,12 @@ void SearchTab::createGui()
 void SearchTab::kindChanged(QAbstractButton *button)
 {
 	SelectChat->hide();
+	SelectStatusBuddy->hide();
 
 	if (SearchInChats == button)
 		SelectChat->show();
+	else if (SearchInStatuses == button)
+		SelectStatusBuddy->show();
 }
 
 void SearchTab::fromDateChanged(const QDate &date)
@@ -186,7 +208,6 @@ void SearchTab::performSearch()
 {
 	HistoryQuery query;
 	query.setString(Query->text());
-	query.setTalkable(SelectChat->currentTalkable());
 
 	if (SearchByDate->isChecked())
 	{
@@ -194,7 +215,20 @@ void SearchTab::performSearch()
 		query.setToDate(ToDate->date());
 	}
 
-	TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
+	if (SearchInChats->isChecked())
+	{
+		query.setTalkable(SelectChat->currentTalkable());
+		TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
+	}
+	else if (SearchInStatuses->isChecked())
+	{
+		query.setTalkable(SelectStatusBuddy->currentTalkable());
+		TimelineView->setFutureResults(History::instance()->currentStorage()->statusStorage()->dates(query));
+	}
+	else if (SearchInSmses->isChecked())
+	{
+		TimelineView->setFutureResults(History::instance()->currentStorage()->smsStorage()->dates(query));
+	}
 }
 
 void SearchTab::currentDateChanged()
@@ -203,7 +237,12 @@ void SearchTab::currentDateChanged()
 	const Talkable talkable = currentIndex.data(TalkableRole).value<Talkable>();
 	const QDate date = currentIndex.data(DateRole).value<QDate>();
 
-	TimelineView->setFutureMessages(History::instance()->currentStorage()->messages(talkable, date));
+	if (SearchInChats->isChecked())
+		TimelineView->setFutureMessages(History::instance()->currentStorage()->chatStorage()->messages(talkable, date));
+	if (SearchInStatuses->isChecked())
+		TimelineView->setFutureMessages(History::instance()->currentStorage()->statusStorage()->messages(talkable, date));
+	if (SearchInSmses->isChecked())
+		TimelineView->setFutureMessages(History::instance()->currentStorage()->smsStorage()->messages(talkable, date));
 }
 
 QList<int> SearchTab::sizes() const

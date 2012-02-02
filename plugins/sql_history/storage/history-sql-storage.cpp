@@ -199,11 +199,11 @@ void HistorySqlStorage::initQueries()
 QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix)
 {
 	if (!chat)
-		return QLatin1String("false");
+		return QLatin1String("0");
 
 	ChatDetails *details = chat.details();
 	if (!details)
-		return QLatin1String("false");
+		return QLatin1String("0");
 
 	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
 	if (!aggregate)
@@ -223,13 +223,13 @@ QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable, const
 	else if (talkable.isValidContact())
 		return QString("(%1) = '%2'").arg(fieldName).arg(talkable.toContact().uuid().toString());
 
-	return QLatin1String("false");
+	return QLatin1String("1");
 }
 
 QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
 {
 	if (!buddy || buddy.contacts().isEmpty())
-		return QLatin1String("false");
+		return QLatin1String("0");
 
 	QStringList uuids;
 	foreach (const Contact &contact, buddy.contacts())
@@ -748,22 +748,35 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 {
 	const Talkable &talkable = historyQuery.talkable();
 
-	if (!talkable.isValidBuddy() && !talkable.isValidContact())
-		return QVector<HistoryQueryResult>();
-
 	if (!waitForDatabase())
 		return QVector<HistoryQueryResult>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(set_time,0,11) FROM";
-	queryString += " (SELECT set_time FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+	QString queryString = "SELECT count(1), substr(set_time,0,11), contact FROM";
+	queryString += " (SELECT set_time, contact FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+
+	if (!historyQuery.string().isEmpty())
+		queryString += " AND kadu_statuses.description LIKE :query";
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND replace(substr(set_time,0,11), '-', '') >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND replace(substr(set_time,0,11), '-', '') <= :toDate";
 
 	queryString += " ORDER BY set_time DESC, rowid DESC)";
-	queryString += " GROUP BY substr(set_time,0,11) ORDER BY set_time ASC";
+	queryString += " GROUP BY substr(set_time,0,11), contact ORDER BY set_time ASC";
 
 	query.prepare(queryString);
+
+	printf("%s\n", qPrintable(queryString));
+
+	if (!historyQuery.string().isEmpty())
+		query.bindValue(":query", QString("%%%1%%").arg(historyQuery.string()));
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
 
 	QVector<HistoryQueryResult> dates;
 
@@ -777,6 +790,14 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 			continue;
 
 		HistoryQueryResult result;
+
+		const Contact &contact = ContactManager::instance()->byUuid(query.value(2).toString());
+		if (contact)
+		{
+			const Buddy &buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+			result.setTalkable(Talkable(buddy));
+		}
+
 		result.setDate(date);
 		result.setTitle(QString());
 		result.setCount(query.value(0).toInt());
