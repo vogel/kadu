@@ -267,6 +267,7 @@ void FileTransferManager::showFileTransferWindow()
 		connect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 	}
 	Window->show();
+	Window->activateWindow();
 }
 
 void FileTransferManager::hideFileTransferWindow()
