@@ -80,7 +80,8 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 		"}";
 	setStyleSheet(style);
 
-	QMovie *movie = new QMovie(parent->AnimPath);
+	QMovie *movie = new QMovie(this);
+	movie->setFileName(parent->AnimPath);
 	setMovie(movie);
 	if((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingAnimated)
 		movie->setScaledSize(parent->pixmap()->size());
