@@ -121,7 +121,7 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 		AvailableChars = new QLabel(this);
 		Description->lineEdit()->setMaxLength(maxDescriptionLength);
 		currentDescriptionChanged(Description->currentText());
-		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+		connect(Description, SIGNAL(editTextChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
 		grid->addWidget(AvailableChars, 1, 0);
 	}
 
