@@ -5,6 +5,7 @@
 * jabber: redesigned SSL certificate error dialog (Juzef)
 * jabber: do not ask user for removing contact which revoked status subscription (Juzef)
 * gui: #2454 fixed: fix memory leak in emoticons selector (Juzef)
+* gui: #2435 & #2437 fixed: View File Transfers action always shows & activates file transfer window (Juzef)
 
 +++ version 0.11.0-rc3
 * core: #2426 fixed: regression that caused crashes and unsaved configuration changes when closing system with opened Kadu window (beevvy)
