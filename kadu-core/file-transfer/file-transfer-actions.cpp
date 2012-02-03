@@ -124,10 +124,7 @@ void FileTransferActions::toggleFileTransferWindow(QAction *sender, bool toggled
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	if (FileTransferManager::instance()->isFileTransferWindowVisible())
-		FileTransferManager::instance()->hideFileTransferWindow();
-	else
-		FileTransferManager::instance()->showFileTransferWindow();
+	FileTransferManager::instance()->showFileTransferWindow();
 }
 
 QStringList FileTransferActions::selectFilesToSend()
