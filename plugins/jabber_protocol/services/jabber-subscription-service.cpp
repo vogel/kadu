@@ -48,40 +48,26 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 
 	if (type == "unsubscribed")
 	{
+		kdebug("%s revoked our presence authorization\n", jid.full().toUtf8().constData());
 		/*
 		 * Someone else removed our authorization to see them.
+		 * We want to leave the contact in our contact list.
+		 * In this case, we need to delete all the resources
+		 * we have for it, as the Jabber server won't signal us
+		 * that the contact is offline now.
 		 */
-		kdebug("%s revoked our presence authorization\n", jid.full().toUtf8().constData());
+		Status offlineStatus;
+		Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 
-		if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("The user %1 removed subscription to you. "
-					   "You will no longer be able to view his/her online/offline status. "
-					   "Do you want to delete the contact?").arg(jid.full())))
+		if (contact)
 		{
-			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
-			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-			Roster::instance()->removeContact(contact);
+			Status oldStatus = contact.currentStatus();
+			contact.setCurrentStatus(offlineStatus);
+
+			Protocol->emitContactStatusChanged(contact, oldStatus);
 		}
-		else
-		{
-			/*
-				 * We want to leave the contact in our contact list.
-				 * In this case, we need to delete all the resources
-				 * we have for it, as the Jabber server won't signal us
-				 * that the contact is offline now.
-			*/
-			Status offlineStatus;
-			Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 
-			if (contact)
-			{
-				Status oldStatus = contact.currentStatus();
-				contact.setCurrentStatus(offlineStatus);
-
-				Protocol->emitContactStatusChanged(contact, oldStatus);
-			}
-
-			Protocol->resourcePool()->removeAllResources(jid);
-		}
+		Protocol->resourcePool()->removeAllResources(jid);
 	}
 
 	if (type == "subscribe")
