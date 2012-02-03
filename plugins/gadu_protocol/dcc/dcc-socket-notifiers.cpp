@@ -31,7 +31,9 @@
 
 #include "dcc-socket-notifiers.h"
 
-#ifdef Q_OS_WIN
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#else
 #define dup(x) x
 #endif
 

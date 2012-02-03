@@ -28,6 +28,8 @@ class KADUAPI OpenChatWithRunner
 {
 
 public:
+	virtual ~OpenChatWithRunner() {}
+
 	virtual BuddyList matchingContacts(const QString &query) = 0;
 
 };
