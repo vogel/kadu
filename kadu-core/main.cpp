@@ -43,15 +43,14 @@
 #include <errno.h>
 #include <time.h>
 #ifndef Q_WS_WIN
+#include <unistd.h>
 #include <sys/file.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <pwd.h>
 #else // !Q_WS_WIN
 #include <winsock2.h>
 #endif // !Q_WS_WIN
-#if defined(Q_OS_BSD4) || defined(Q_OS_LINUX)
-#include <sys/types.h>
-#endif // Q_OS_BSD4 || Q_OS_LINUX
 
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
