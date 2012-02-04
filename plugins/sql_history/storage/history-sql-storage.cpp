@@ -757,8 +757,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(set_time,0,11), contact FROM";
-	queryString += " (SELECT set_time, contact FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+	QString queryString = "SELECT count(1), substr(set_time,0,11), contact, description FROM";
+	queryString += " (SELECT set_time, contact, description FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
 
 	if (!historyQuery.string().isEmpty())
 		queryString += " AND kadu_statuses.description LIKE :query";
@@ -811,7 +811,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		}
 
 		result.setDate(date);
-		result.setTitle(QString());
+		result.setTitle(query.value(3).toString());
 		result.setCount(query.value(0).toInt());
 		dates.append(result);
 	}

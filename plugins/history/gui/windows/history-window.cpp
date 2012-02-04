@@ -103,7 +103,6 @@ void HistoryWindow::createGui()
 
 	StatusTab = new HistoryMessagesTab(TabWidget);
 	StatusTab->timelineView()->setTalkableVisible(false);
-	StatusTab->timelineView()->setTitleVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 
 	SmsTab = new HistoryMessagesTab(TabWidget);
