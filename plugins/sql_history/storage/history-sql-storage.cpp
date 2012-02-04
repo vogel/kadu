@@ -807,7 +807,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 			contact.setUuid(query.value(2).toString());
 			contact.setOwnerBuddy(buddy);
 
-			result.setTalkable(Talkable(buddy));
+			result.setTalkable(Talkable(contact));
 		}
 
 		result.setDate(date);
@@ -1030,7 +1030,7 @@ QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
 	executeQuery(query);
-	statuses = statusesFromQuery(query);
+	statuses = statusesFromQuery(talkable.toContact(), query);
 
 	return statuses;
 }
@@ -1127,17 +1127,12 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(const Chat &chat, QSqlQuer
 	return messages;
 }
 
-QVector<Message> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
+QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QSqlQuery &query)
 {
 	QVector<Message> statuses;
 
 	while (query.next())
 	{
-		// ignore non-existing contacts
-		Contact sender = ContactManager::instance()->byUuid(query.value(0).toString());
-		if (sender.isNull())
-			continue;
-
 		StatusType type = StatusTypeManager::instance()->fromName(query.value(1).toString());
 		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(type);
 
@@ -1153,7 +1148,7 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
-		message.setMessageSender(sender);
+		message.setMessageSender(contact);
 		message.setReceiveDate(query.value(3).toDateTime());
 		message.setSendDate(query.value(3).toDateTime());
 

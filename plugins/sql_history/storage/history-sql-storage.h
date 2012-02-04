@@ -76,7 +76,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	void executeQuery(QSqlQuery &query);
 	QVector<Message> messagesFromQuery(const Chat &chat, QSqlQuery &query);
-	QVector<Message> statusesFromQuery(QSqlQuery &query);
+	QVector<Message> statusesFromQuery(const Contact &contact, QSqlQuery &query);
 	QVector<Message> smsFromQuery(QSqlQuery &query);
 
 	bool isDatabaseReady();
