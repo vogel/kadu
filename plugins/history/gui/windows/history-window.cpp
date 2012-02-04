@@ -107,7 +107,6 @@ void HistoryWindow::createGui()
 
 	SmsTab = new HistoryMessagesTab(TabWidget);
 	SmsTab->timelineView()->setTalkableVisible(false);
-	SmsTab->timelineView()->setTitleVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
 	TabWidget->addTab(ChatTab, tr("Chats"));

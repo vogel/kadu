@@ -834,8 +834,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(send_time,0,11), receipient";
-	queryString += " FROM (SELECT send_time, receipient FROM kadu_sms WHERE ";
+	QString queryString = "SELECT count(1), substr(send_time,0,11), receipient, content";
+	queryString += " FROM (SELECT send_time, receipient, content FROM kadu_sms WHERE ";
 
 	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
 		queryString += "receipient = :receipient";
@@ -881,7 +881,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 
 		result.setTalkable(Talkable(buddy));
 		result.setDate(date);
-		result.setTitle(QString());
+		result.setTitle(query.value(3).toString());
 		result.setCount(query.value(0).toInt());
 		dates.append(result);
 	}
