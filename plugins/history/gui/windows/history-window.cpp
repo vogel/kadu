@@ -134,9 +134,18 @@ void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 	if (Core::instance()->isClosing())
 		return;
 
-	ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
-	StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
-	SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
+	if (historyStorage)
+	{
+		ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
+		StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
+		SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
+	}
+	else
+	{
+		ChatTab->setHistoryMessagesStorage(0);
+		StatusTab->setHistoryMessagesStorage(0);
+		SmsTab->setHistoryMessagesStorage(0);
+	}
 }
 
 void HistoryWindow::updateData()
