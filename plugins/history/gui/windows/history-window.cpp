@@ -29,12 +29,14 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/aggregate-chat-manager.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
-#include "gui/widgets/history-tab.h"
+#include "gui/widgets/search-tab.h"
+#include "gui/widgets/timeline-chat-messages-view.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -58,7 +60,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		QMainWindow(parent), CurrentTab(-1)
+		QDialog(parent), CurrentTab(-1)
 {
 	setProperty("ownWindowIcon", true);
 
@@ -86,12 +88,11 @@ HistoryWindow::~HistoryWindow()
 
 void HistoryWindow::createGui()
 {
-	QWidget *mainWidget = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	TabWidget = new QTabWidget(mainWidget);
+	TabWidget = new QTabWidget(this);
 	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	TabWidget->setDocumentMode(true);
 
@@ -99,19 +100,25 @@ void HistoryWindow::createGui()
 			this, SLOT(currentTabChanged(int)));
 
 	ChatTab = new ChatHistoryTab(TabWidget);
-	StatusTab = new HistoryTab(TabWidget);
+
+	StatusTab = new HistoryMessagesTab(TabWidget);
+	StatusTab->timelineView()->setTalkableVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
-	SmsTab = new HistoryTab(TabWidget);
+
+	SmsTab = new HistoryMessagesTab(TabWidget);
+	SmsTab->timelineView()->setTalkableVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
+
+	MySearchTab = new SearchTab(TabWidget);
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
 	TabWidget->addTab(StatusTab, tr("Statuses"));
 	TabWidget->addTab(SmsTab, tr("SMS"));
+	TabWidget->addTab(MySearchTab, tr("Search"));
 
 	CurrentTab = 0;
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
-	buttons->addButton(tr("Search in History..."), QDialogButtonBox::ActionRole);
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
@@ -120,38 +127,44 @@ void HistoryWindow::createGui()
 	layout->addWidget(TabWidget);
 	layout->addWidget(buttons);
 
-	setCentralWidget(mainWidget);
+	ChatTab->setFocus();
 }
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
-	ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
-	StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
-	SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
+	// TODO: fix it right, this is workaround only for crash when closing kadu with this window open
+	if (Core::instance()->isClosing())
+		return;
+
+	if (historyStorage)
+	{
+		ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
+		StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
+		SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
+		MySearchTab->setChatStorage(historyStorage->chatStorage());
+		MySearchTab->setStatusStorage(historyStorage->statusStorage());
+		MySearchTab->setSmsStorage(historyStorage->smsStorage());
+	}
+	else
+	{
+		ChatTab->setHistoryMessagesStorage(0);
+		StatusTab->setHistoryMessagesStorage(0);
+		SmsTab->setHistoryMessagesStorage(0);
+		MySearchTab->setChatStorage(0);
+		MySearchTab->setStatusStorage(0);
+		MySearchTab->setSmsStorage(0);
+	}
 }
 
 void HistoryWindow::updateData()
 {
-	ChatTab->setHistoryMessagesStorage(History::instance()->currentStorage()->chatStorage());
-	StatusTab->setHistoryMessagesStorage(History::instance()->currentStorage()->statusStorage());
-	SmsTab->setHistoryMessagesStorage(History::instance()->currentStorage()->smsStorage());
+	storageChanged(History::instance()->currentStorage());
 }
 
 void HistoryWindow::selectChat(const Chat &chat)
 {
 	TabWidget->setCurrentIndex(0);
 	ChatTab->selectTalkable(chat);
-}
-
-void HistoryWindow::keyPressEvent(QKeyEvent *e)
-{
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
 }
 
 void HistoryWindow::currentTabChanged(int newTabIndex)

@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
@@ -31,8 +32,9 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/model/buddies-model.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
@@ -99,7 +101,9 @@ void SmsDialog::createGui()
 
 	recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = new SelectBuddyComboBox(this);
+	RecipientComboBox = new SelectTalkableComboBox(this);
+	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
+	RecipientComboBox->setBaseModel(new BuddiesModel(RecipientComboBox));
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
 
 	connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
@@ -196,7 +200,7 @@ void SmsDialog::setRecipient(const QString &phone)
 
 void SmsDialog::recipientBuddyChanged()
 {
-	RecipientEdit->setText(RecipientComboBox->currentBuddy().mobile());
+	RecipientEdit->setText(RecipientComboBox->currentTalkable().toBuddy().mobile());
 }
 
 void SmsDialog::recipientNumberChanged(const QString &number)
@@ -209,14 +213,14 @@ void SmsDialog::recipientNumberChanged(const QString &number)
 
 	if (number.isEmpty())
 	{
-		RecipientComboBox->setCurrentBuddy(Buddy::null);
+		RecipientComboBox->setCurrentTalkable(Talkable());
 		return;
 	}
 
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (buddy.mobile() == number)
 		{
-			RecipientComboBox->setCurrentBuddy(buddy);
+			RecipientComboBox->setCurrentTalkable(buddy);
 			return;
 		}
 }

@@ -23,72 +23,82 @@
 
 #include <QtGui/QAction>
 
-#include "buddies/model/buddies-model.h"
-#include "gui/widgets/select-buddy-popup.h"
-#include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/select-talkable-popup.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "select-buddy-combo-box.h"
+#include "select-talkable-combo-box.h"
 
-SelectBuddyComboBox::SelectBuddyComboBox(QWidget *parent) :
+SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	addBeforeAction(new QAction(tr(" - Select buddy - "), this));
-
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new TalkableProxyModel(chain);
+	Chain = new ModelChain(this);
+	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
-	chain->addProxyModel(ProxyModel);
-	setUpModel(BuddyRole, chain);
+	Chain->addProxyModel(ProxyModel);
+	setUpModel(TalkableRole, Chain);
 
-	Popup = new SelectBuddyPopup();
+	Popup = new SelectTalkablePopup();
 
-	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	addFilter(hideAnonymousFilter);
+	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+	addFilter(HideAnonymousFilter);
 
-	connect(Popup, SIGNAL(buddySelected(Buddy)), this, SLOT(setCurrentBuddy(Buddy)));
+	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
 
-SelectBuddyComboBox::~SelectBuddyComboBox()
+SelectTalkableComboBox::~SelectTalkableComboBox()
 {
 	delete Popup;
 	Popup = 0;
 }
 
-void SelectBuddyComboBox::setCurrentBuddy(Buddy buddy)
+void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)
 {
-	setCurrentValue(buddy);
+	Chain->setBaseModel(model);
+	Popup->setBaseModel(model);
+
+	setCurrentIndex(0);
 }
 
-Buddy SelectBuddyComboBox::currentBuddy()
+void SelectTalkableComboBox::setShowAnonymous(bool showAnonymous)
 {
-	return currentValue().value<Buddy>();
+	HideAnonymousFilter->setEnabled(!showAnonymous);
+	Popup->setShowAnonymous(showAnonymous);
 }
 
-void SelectBuddyComboBox::showPopup()
+void SelectTalkableComboBox::setCurrentTalkable(const Talkable &talkable)
+{
+	setCurrentValue(QVariant::fromValue(talkable));
+}
+
+Talkable SelectTalkableComboBox::currentTalkable() const
+{
+	return currentValue().value<Talkable>();
+}
+
+void SelectTalkableComboBox::showPopup()
 {
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
 	setWindowGeometry(Popup, geom);
 
-	Popup->show(currentBuddy());
+	Popup->show(currentTalkable());
 }
 
-void SelectBuddyComboBox::hidePopup()
+void SelectTalkableComboBox::hidePopup()
 {
 	Popup->hide();
 }
 
-void SelectBuddyComboBox::addFilter(TalkableFilter *filter)
+void SelectTalkableComboBox::addFilter(TalkableFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 	Popup->addFilter(filter);
 }
 
-void SelectBuddyComboBox::removeFilter(TalkableFilter *filter)
+void SelectTalkableComboBox::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 	Popup->removeFilter(filter);

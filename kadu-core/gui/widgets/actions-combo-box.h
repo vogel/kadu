@@ -24,8 +24,9 @@
 
 #include <QtGui/QComboBox>
 
-#include "model/actions-proxy-model.h"
-
+class ActionFilterProxyModel;
+class ActionListModel;
+class KaduAbstractModel;
 class ModelChain;
 
 /**
@@ -38,13 +39,15 @@ class ModelChain;
  * @author Bartosz 'beevvy' Brachaczek
  * @author Rafał 'Vogel' Malinowski
  * @short QComboBox with support for actions and QVariant data.
- * @see ActionsProxyModel
  *
- * This class is an extension to QComboBox that uses ActionsProxyModel as data source. This allows this widget
- * to have actions like "select", "create new" or "edit". Actions can be marked as unselectable. Unselectable action
- * can only be triggered, selection is immediately restored to the previous value item or selectable action. Two methods
- * are available for adding actions: addBeforeAction() (to add action at the begining of list) and addAfterAction() (to add
- * action at the end of list). Method currentAction() is available for getting currently selected action.
+ * This class is an extension to QComboBox that uses MergedProxyModel to add two models with actions before and
+ * after main model of the combo box.
+ *
+ * This allows this widget  to have actions like "select", "create new" or "edit". Actions can be marked
+ * as unselectable. Unselectable action can only be triggered, selection is immediately restored to the previous
+ * value item or selectable action. Two methods  are available for adding actions: addBeforeAction() (to add action
+ * at the begining of list) and addAfterAction() (to add action at the end of list). Method currentAction() is
+ * available for getting currently selected action.
  *
  * Data is stored in model that derives from QAbstractItemModel and KaduAbstractModel classes. It is possible to
  * use proxy model derived from QAbstractProxyModel. Data is stored as QVariant object with role passed in
@@ -54,13 +57,26 @@ class ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 
-	ModelChain *Chain;
-	ActionsProxyModel *ActionsModel;
+public:
+	enum ActionVisibility // flag
+	{
+		AlwaysVisible,
+		// TODO: think of better names
+		NotVisibleWithEmptySourceModel,
+		NotVisibleWithOneRowSourceModel
+	};
+
+private:
+	ActionListModel *BeforeActions;
+	ActionListModel *AfterActions;
+	ActionFilterProxyModel *ActionsFilterModel;
+	KaduAbstractModel *KaduModel;
 
 	int DataRole;
 	int LastIndex;
 
 	bool isActionSelectable(QAction *action);
+	void addActionToFilter(QAction *action, ActionVisibility visibility);
 
 private slots:
 	/**
@@ -117,7 +133,7 @@ protected:
 	 *
 	 * Returns current value.
 	 */
-	QVariant currentValue();
+	QVariant currentValue() const;
 
 public:
 	explicit ActionsComboBox(QWidget *parent = 0);
@@ -127,25 +143,25 @@ public:
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Add new action before real values in combo box.
 	 * @param action action to add
-	 * @param actionVisibility action visibility of new action
+	 * @param visibility action visibility of new action
 	 *
 	 * Add new action before real values in combo box. Action will be triggered when selected by user.
 	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
 	 * creates connection between size of data model and this action visibility.
 	 */
-	void addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+	void addBeforeAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Add new action after real values in combo box.
 	 * @param action action to add
-	 * @param actionVisibility action visibility of new action
+	 * @param visibility action visibility of new action
 	 *
 	 * Add new action after real values in combo box. Action will be triggered when selected by user.
 	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
 	 * creates connection between size of data model and this action visibility.
 	 */
-	void addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility = ActionsProxyModel::AlwaysVisible);
+	void addAfterAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

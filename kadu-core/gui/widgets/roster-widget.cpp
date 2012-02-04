@@ -167,7 +167,8 @@ void RosterWidget::compositingDisabled()
 
 ModelChain * RosterWidget::createModelChain()
 {
-	ModelChain *chain = new ModelChain(TalkableModelFactory::createInstance(TalkableTree), TalkableTree);
+	ModelChain *chain = new ModelChain(TalkableTree);
+	chain->setBaseModel(TalkableModelFactory::createInstance(chain));
 
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->addFilter(new HideSimpleChatsTalkableFilter(ProxyModel));

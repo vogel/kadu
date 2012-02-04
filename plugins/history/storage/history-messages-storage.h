@@ -28,7 +28,9 @@
 #include "talkable/talkable.h"
 
 #include "plugins/history/history_exports.h"
-#include "plugins/history/model/dates-model-item.h"
+#include "plugins/history/history-query-result.h"
+
+class HistoryQuery;
 
 /**
  * @addtogroup History
@@ -75,14 +77,14 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of available dates for given talkable.
-	 * @param talkable talkable to get list of dates for
-	 * @return list of available dates for given talkable
+	 * @short Returns list of available dates for given query.
+	 * @param historyQuery query to get list of dates for
+	 * @return list of available dates for given query
 	 *
 	 * This methods returns list of available dates for given talkabel in asynchronous way. Refer to QFuture
 	 * documentation for more information.
 	 */
-	virtual QFuture<QVector<DatesModelItem> > dates(const Talkable &talkable) = 0;
+	virtual QFuture<QVector<HistoryQueryResult> > dates(const HistoryQuery &historyQuery) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

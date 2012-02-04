@@ -22,6 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
@@ -31,8 +32,9 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
+#include "buddies/model/buddies-model.h"
 #include "core/core.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/icons-manager.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 
@@ -64,7 +66,9 @@ void MergeBuddiesWindow::createGui()
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), chooseWidget));
-	SelectCombo = new SelectBuddyComboBox(chooseWidget);
+	SelectCombo = new SelectTalkableComboBox(chooseWidget);
+	SelectCombo->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectCombo));
+	SelectCombo->setBaseModel(new BuddiesModel(SelectCombo));
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(MyBuddy, SelectCombo));
 	SelectCombo->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectCombo));
 	connect(SelectCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(selectedBuddyChanged()));
@@ -88,12 +92,12 @@ void MergeBuddiesWindow::createGui()
 
 void MergeBuddiesWindow::selectedBuddyChanged()
 {
-	MergeButton->setEnabled(!SelectCombo->currentBuddy().isNull());
+	MergeButton->setEnabled(SelectCombo->currentTalkable().isValidBuddy());
 }
 
 void MergeBuddiesWindow::accept()
 {
-	Buddy mergeWith = SelectCombo->currentBuddy();
+	Buddy mergeWith = SelectCombo->currentTalkable().toBuddy();
 	if (mergeWith.isNull())
 		return;
 

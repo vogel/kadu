@@ -22,6 +22,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
+#include "talkable/talkable.h"
 
 #include "chats-list-model.h"
 
@@ -150,11 +151,25 @@ Chat ChatsListModel::chatAt(const QModelIndex &index) const
 	return row >= 0 && row < Chats.size() ? Chats.at(row) : Chat::null;
 }
 
+Chat ChatsListModel::chatFromVariant(const QVariant &variant) const
+{
+	const Chat &chat = variant.value<Chat>();
+
+	if (chat)
+		return chat;
+
+	const Talkable &talkable = variant.value<Talkable>();
+	if (talkable.isValidChat())
+		return talkable.toChat();
+
+	return Chat::null;
+}
+
 QModelIndexList ChatsListModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
 
-	const Chat &chat = value.value<Chat>();
+	const Chat &chat = chatFromVariant(value);
 
 	if (chat)
 	{

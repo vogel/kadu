@@ -31,8 +31,10 @@
 #include <QtGui/QVBoxLayout>
 
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
+#include "model/action-list-model.h"
+#include "model/action-filter-proxy-model.h"
 #include "model/roles.h"
+#include "model/merged-proxy-model-factory.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -92,12 +94,20 @@ void ProxyEditWindow::createGui()
 
 	AddProxyAction = new QAction(tr("Add new proxy"), this);
 
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(this);
-	actionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
-	actionsModel->addAfterAction(AddProxyAction);
-	actionsModel->setSourceModel(ProxyProxyModel);
+	ActionListModel *actionsModel = new ActionListModel(this);
+	actionsModel->appendAction(separator);
+	actionsModel->appendAction(AddProxyAction);
 
-	ProxyView->setModel(actionsModel);
+	QList<QAbstractItemModel *> models;
+	models.append(ProxyProxyModel);
+	models.append(actionsModel);
+
+	ActionFilterProxyModel *actionProxyModel = new ActionFilterProxyModel(this);
+	actionProxyModel->setSourceModel(MergedProxyModelFactory::createInstance(models, this));
+	actionProxyModel->setModel(ProxyProxyModel);
+	actionProxyModel->addHideWhenModelEmpty(separator);
+
+	ProxyView->setModel(actionProxyModel);
 	ProxyView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	ProxyView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	ProxyView->setIconSize(QSize(32, 32));

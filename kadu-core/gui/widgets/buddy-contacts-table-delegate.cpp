@@ -46,7 +46,7 @@ QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyle
 		return QStyledItemDelegate::createEditor(parent, option, index);
 
 	AccountsComboBox *accountsComboBox = new AccountsComboBox(index.data(AccountRole).value<Account>().isNull(),
-	                                                          ActionsProxyModel::NotVisibleWithOneRowSourceModel,
+	                                                          AccountsComboBox::NotVisibleWithOneRowSourceModel,
 	                                                          parent);
 	// this connect does not work withour Account
 	connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));

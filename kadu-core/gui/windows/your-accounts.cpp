@@ -52,8 +52,10 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
+#include "model/action-filter-proxy-model.h"
+#include "model/action-list-model.h"
 #include "model/roles.h"
+#include "model/merged-proxy-model-factory.h"
 #include "protocols/filter/can-register-protocol-filter.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -62,6 +64,8 @@
 #include "activate.h"
 
 #include "your-accounts.h"
+
+Q_DECLARE_METATYPE(QAction *)
 
 YourAccounts *YourAccounts::Instance = 0;
 
@@ -78,8 +82,6 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
 	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
-
-	CanRegisterFilter->setEnabled(true);
 }
 
 YourAccounts::~YourAccounts()
@@ -122,13 +124,21 @@ void YourAccounts::createGui()
 	AddExistingAccountAction = new QAction(KaduIcon("contact-new").icon(), tr("Add existing account"), this);
 	CreateNewAccountAction = new QAction(KaduIcon("system-users").icon(), tr("Create new account"), this);
 
-	ActionsProxyModel *actionsModel = new ActionsProxyModel(this);
-	actionsModel->addAfterAction(separator, ActionsProxyModel::NotVisibleWithEmptySourceModel);
-	actionsModel->addAfterAction(AddExistingAccountAction);
-	actionsModel->addAfterAction(CreateNewAccountAction);
-	actionsModel->setSourceModel(MyAccountsModel);
+	ActionListModel *actionsModel = new ActionListModel(this);
+	actionsModel->appendAction(separator);
+	actionsModel->appendAction(AddExistingAccountAction);
+	actionsModel->appendAction(CreateNewAccountAction);
 
-	AccountsView->setModel(actionsModel);
+	QList<QAbstractItemModel *> models;
+	models.append(MyAccountsModel);
+	models.append(actionsModel);
+
+	ActionFilterProxyModel *proxyModel = new ActionFilterProxyModel(this);
+	proxyModel->setSourceModel(MergedProxyModelFactory::createInstance(models, this));
+	proxyModel->setModel(MyAccountsModel);
+	proxyModel->addHideWhenModelEmpty(separator);
+
+	AccountsView->setModel(proxyModel);
 	AccountsView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));
@@ -168,6 +178,8 @@ void YourAccounts::switchToCreateMode()
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
 #endif
 
+	CanRegisterFilter->setEnabled(true);
+
 	CurrentWidget = getAccountCreateWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
 	{
@@ -176,8 +188,6 @@ void YourAccounts::switchToCreateMode()
 	}
 	else
 		CreateAddStack->hide();
-
-	Protocols->addFilter(CanRegisterFilter);
 }
 
 void YourAccounts::switchToAddMode()
@@ -187,6 +197,8 @@ void YourAccounts::switchToAddMode()
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
 #endif
 
+	CanRegisterFilter->setEnabled(false);
+
 	CurrentWidget = getAccountAddWidget(Protocols->currentProtocol());
 	if (CurrentWidget)
 	{
@@ -195,8 +207,6 @@ void YourAccounts::switchToAddMode()
 	}
 	else
 		CreateAddStack->hide();
-
-	Protocols->removeFilter(CanRegisterFilter);
 }
 
 void YourAccounts::createAccountWidget()
@@ -220,6 +230,7 @@ void YourAccounts::createAccountWidget()
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ':', CreateAddAccountContainer);
 	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
+	Protocols->addFilter(CanRegisterFilter);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
 
 //#ifndef Q_WS_MAEMO_5

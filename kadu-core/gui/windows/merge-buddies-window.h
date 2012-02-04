@@ -31,7 +31,7 @@
 #include "buddies/buddy.h"
 #include "os/generic/desktop-aware-object.h"
 
-class SelectBuddyComboBox;
+class SelectTalkableComboBox;
 
 class MergeBuddiesWindow : public QDialog, DesktopAwareObject
 {
@@ -39,7 +39,7 @@ class MergeBuddiesWindow : public QDialog, DesktopAwareObject
 
 	Buddy MyBuddy;
 
-	SelectBuddyComboBox *SelectCombo;
+	SelectTalkableComboBox *SelectCombo;
 	QPushButton *MergeButton;
 
 	void createGui();

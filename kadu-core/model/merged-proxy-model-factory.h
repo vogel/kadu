@@ -20,7 +20,9 @@
 #ifndef MERGED_PROXY_MODEL_FACTORY_H
 #define MERGED_PROXY_MODEL_FACTORY_H
 
-#include <QtCore/QAbstractItemModel>
+class QAbstractItemModel;
+
+class KaduAbstractModel;
 
 /**
  * @addtogroup Model
@@ -54,8 +56,10 @@ namespace MergedProxyModelFactory
 	 *
 	 * The only difference between this method and createInstance is that every model in list must implement
 	 * KaduAbstractModel interface and resulting merged model will also implement this interface.
+	 *
+	 * Accepted items must either be ModelChain or QAbstractItemModel objects.
 	 */
-	QAbstractItemModel * createKaduModelInstance(QList<QAbstractItemModel *> models, QObject *parent = 0);
+	QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = 0);
 
 }
 

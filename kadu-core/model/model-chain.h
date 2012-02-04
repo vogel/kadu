@@ -29,10 +29,10 @@
 #include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
+#include "model/kadu-abstract-model.h"
+
 class QAbstractItemModel;
 class QAbstractProxyModel;
-
-class KaduAbstractModel;
 
 /**
  * @addtogroup Model
@@ -47,8 +47,10 @@ class KaduAbstractModel;
  * This class bundles model and list of proxy models into one object that allows to easily
  * get index of given element in last proxy model. First model of chain must be of type QAbstractProxyModel
  * and must derive from KaduAbstractModel interface to provide indexListForValue method.
+ *
+ * ModelChain can be used as part of KaduMergedProxyModel.
  */
-class ModelChain : public QObject
+class ModelChain : public QObject, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -61,14 +63,21 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new chain with given base model.
-	 * @param model base model
 	 * @param parent parent of chain
 	 *
-	 * This contructor creates new chain with given base model. This model must defire from
-	 * KaduAbstractModel.
+	 * This contructor creates new chain.
 	 */
-	explicit ModelChain(QAbstractItemModel *model, QObject *parent = 0);
+	explicit ModelChain(QObject *parent = 0);
 	virtual ~ModelChain();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets different base model for given chain.
+	 * @param model new base model
+	 *
+	 * Sets new default base model for chain. This model must be KaduAbstractModel.
+	 */
+	void setBaseModel(QAbstractItemModel *model);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

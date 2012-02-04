@@ -69,7 +69,6 @@
 
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
-#include "model/dates-model-item.h"
 #include "history-messages-prepender.h"
 #include "history-save-thread.h"
 

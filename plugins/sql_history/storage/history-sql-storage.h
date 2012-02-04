@@ -31,6 +31,7 @@
 
 class QSqlError;
 
+class HistoryQuery;
 class ProgressWindow2;
 
 /**
@@ -64,6 +65,7 @@ class HistorySqlStorage : public HistoryStorage
 	void initQueries();
 
 	int findOrCreateChat(const Chat &chat);
+	Chat findChat(int id);
 	int findOrCreateContact(const Contact &contact);
 	int saveMessageContent(const Message &message);
 	int findOrCreateDate(const QDate &date);
@@ -73,8 +75,8 @@ class HistorySqlStorage : public HistoryStorage
 	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
 
 	void executeQuery(QSqlQuery &query);
-	QVector<Message> messagesFromQuery(QSqlQuery &query);
-	QVector<Message> statusesFromQuery(QSqlQuery &query);
+	QVector<Message> messagesFromQuery(const Chat &chat, QSqlQuery &query);
+	QVector<Message> statusesFromQuery(const Contact &contact, QSqlQuery &query);
 	QVector<Message> smsFromQuery(QSqlQuery &query);
 
 	bool isDatabaseReady();
@@ -84,9 +86,9 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<Talkable> syncStatusBuddies();
 	QVector<Talkable> syncSmsRecipients();
 
-	QVector<DatesModelItem> syncChatDates(const Talkable &talkable);
-	QVector<DatesModelItem> syncStatusDates(const Talkable &talkable);
-	QVector<DatesModelItem> syncSmsRecipientDates(const Talkable &talkable);
+	QVector<HistoryQueryResult> syncChatDates(const HistoryQuery &historyQuery);
+	QVector<HistoryQueryResult> syncStatusDates(const HistoryQuery &historyQuery);
+	QVector<HistoryQueryResult> syncSmsRecipientDates(const HistoryQuery &historyQuery);
 
 	QVector<Message> syncMessages(const Talkable &talkable, const QDate &date);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
@@ -113,9 +115,9 @@ public:
 	virtual QFuture<QVector<Talkable> > statusBuddies();
 	virtual QFuture<QVector<Talkable> > smsRecipients();
 
-	virtual QFuture<QVector<DatesModelItem> > chatDates(const Talkable &talkable);
-	virtual QFuture<QVector<DatesModelItem> > statusDates(const Talkable &talkable);
-	virtual QFuture<QVector<DatesModelItem> > smsRecipientDates(const Talkable &talkable);
+	virtual QFuture<QVector<HistoryQueryResult> > chatDates(const HistoryQuery &historyQuery);
+	virtual QFuture<QVector<HistoryQueryResult> > statusDates(const HistoryQuery &historyQuery);
+	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery);
 
 	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date);
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date);

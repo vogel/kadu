@@ -43,13 +43,14 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
+#include "buddies/model/buddies-model.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/groups-combo-box.h"
-#include "gui/widgets/select-buddy-combo-box.h"
+#include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
@@ -104,7 +105,7 @@ void AddBuddyWindow::createGui()
 
 	Layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), ActionsProxyModel::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = new AccountsComboBox(MyBuddy.isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 	AccountCombo->addFilter(new WriteableContactsListFilter(AccountCombo));
 
@@ -168,7 +169,9 @@ void AddBuddyWindow::createGui()
 
 	NonMergeWidgets.append(GroupCombo);
 
-	SelectBuddy = new SelectBuddyComboBox(this);
+	SelectBuddy = new SelectTalkableComboBox(this);
+	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
+	SelectBuddy->setBaseModel(new BuddiesModel(SelectBuddy));
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
 	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectBuddy));
@@ -360,7 +363,7 @@ void AddBuddyWindow::validateData()
 
 	if (MergeBuddy->isChecked())
 	{
-		if (!SelectBuddy->currentBuddy())
+		if (!SelectBuddy->currentTalkable().isValidBuddy())
 		{
 			displayErrorMessage(tr("Select buddy to merge with"));
 			return;
@@ -507,7 +510,7 @@ bool AddBuddyWindow::addContact()
 	}
 	else
 	{
-		buddy = SelectBuddy->currentBuddy();
+		buddy = SelectBuddy->currentTalkable().toBuddy();
 		if (buddy.isNull())
 			return false;
 	}

@@ -23,12 +23,11 @@
  */
 
 #include "protocols/protocol-factory.h"
-#include "protocols/protocol.h"
 
 #include "can-register-protocol-filter.h"
 
-CanRegisterProtocolFilter::CanRegisterProtocolFilter(QObject *parent)
-	: AbstractProtocolFilter(parent), Enabled(false)
+CanRegisterProtocolFilter::CanRegisterProtocolFilter(QObject *parent) :
+		AbstractProtocolFilter(parent), Enabled(false)
 {
 }
 

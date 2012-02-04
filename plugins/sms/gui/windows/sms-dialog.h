@@ -35,14 +35,14 @@ class QLineEdit;
 class QPushButton;
 class QTextEdit;
 
-class SelectBuddyComboBox;
+class SelectTalkableComboBox;
 
 class SmsDialog : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	QLineEdit *RecipientEdit;
-	SelectBuddyComboBox *RecipientComboBox;
+	SelectTalkableComboBox *RecipientComboBox;
 	QComboBox *ProviderComboBox;
 	QTextEdit *ContentEdit;
 	QLabel *LengthLabel;

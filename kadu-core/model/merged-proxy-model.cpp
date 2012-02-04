@@ -38,6 +38,9 @@ void MergedProxyModel::connectModels()
 	{
 		Q_ASSERT(model);
 
+		connect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
+		connect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()));
+
 		connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)));
 
 		connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
@@ -65,6 +68,9 @@ void MergedProxyModel::disconnectModels()
 	foreach (const QAbstractItemModel *model, Models)
 	{
 		Q_ASSERT(model);
+
+		disconnect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
+		disconnect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()));
 
 		disconnect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)));
 

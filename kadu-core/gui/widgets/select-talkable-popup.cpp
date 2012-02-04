@@ -22,8 +22,6 @@
 
 #include <QtGui/QLineEdit>
 
-#include "buddies/buddy-manager.h"
-#include "buddies/model/buddies-model.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
@@ -32,9 +30,9 @@
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
-#include "select-buddy-popup.h"
+#include "select-talkable-popup.h"
 
-SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
+SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 		FilteredTreeView(FilterAtBottom, parent)
 {
 	setWindowFlags(Qt::Popup);
@@ -42,80 +40,84 @@ SelectBuddyPopup::SelectBuddyPopup(QWidget *parent) :
 	View = new TalkableTreeView(this);
 	setView(View);
 
-	ModelChain *chain = new ModelChain(new BuddiesModel(this), this);
-	ProxyModel = new TalkableProxyModel(chain);
+	Chain = new ModelChain(this);
+
+	ProxyModel = new TalkableProxyModel(Chain);
 	ProxyModel->setSortByStatusAndUnreadMessages(false);
 
-	HideAnonymousTalkableFilter *hideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	ProxyModel->addFilter(hideAnonymousFilter);
+	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+	ProxyModel->addFilter(HideAnonymousFilter);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
 	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
 	ProxyModel->addFilter(nameFilter);
-	chain->addProxyModel(ProxyModel);
+	Chain->addProxyModel(ProxyModel);
 
 	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
 	connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
 
 	View->setItemsExpandable(false);
-	View->setChain(chain);
+	View->setChain(Chain);
 	View->setRootIsDecorated(false);
 	View->setShowIdentityNameIfMany(false);
 	View->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
-SelectBuddyPopup::~SelectBuddyPopup()
+SelectTalkablePopup::~SelectTalkablePopup()
 {
 }
 
-void SelectBuddyPopup::show(Buddy buddy)
+void SelectTalkablePopup::setBaseModel(QAbstractItemModel *model)
+{
+	Chain->setBaseModel(model);
+}
+
+void SelectTalkablePopup::setShowAnonymous(bool showAnonymous)
+{
+	HideAnonymousFilter->setEnabled(!showAnonymous);
+}
+
+void SelectTalkablePopup::show(const Talkable &talkable)
 {
 #ifndef Q_WS_MAEMO_5
 	filterWidget()->setFocus();
 #endif
 
-	if (buddy)
-	{
-		const QModelIndexList &indexes = View->chain()->indexListForValue(buddy);
-		Q_ASSERT(indexes.size() == 1);
+	QModelIndex currentIndex;
 
-		const QModelIndex &index = indexes.at(0);
-		View->setCurrentIndex(index);
+	if (!talkable.isEmpty())
+	{
+		const QModelIndexList &indexes = View->chain()->indexListForValue(QVariant::fromValue(talkable));
+		if (!indexes.isEmpty())
+		{
+			Q_ASSERT(indexes.size() == 1);
+			currentIndex = indexes.at(0);
+		}
 	}
-	else
-		View->setCurrentIndex(QModelIndex());
+
+	View->setCurrentIndex(currentIndex);
 
 	FilteredTreeView::show();
 }
 
-void SelectBuddyPopup::itemClicked(const QModelIndex &index)
+void SelectTalkablePopup::itemClicked(const QModelIndex &index)
 {
+	talkableActivated(index.data(TalkableRole).value<Talkable>());
+}
+
+void SelectTalkablePopup::talkableActivated(const Talkable &talkable)
+{
+	emit talkableSelected(talkable);
 	close();
-
-	Buddy buddy = index.data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return;
-
-	emit buddySelected(buddy);
 }
 
-void SelectBuddyPopup::talkableActivated(const Talkable &talkable)
-{
-	const Buddy &buddy = talkable.toBuddy();
-	if (buddy)
-	{
-		emit buddySelected(buddy);
-		close();
-	}
-}
-
-void SelectBuddyPopup::addFilter(TalkableFilter *filter)
+void SelectTalkablePopup::addFilter(TalkableFilter *filter)
 {
 	ProxyModel->addFilter(filter);
 }
 
-void SelectBuddyPopup::removeFilter(TalkableFilter *filter)
+void SelectTalkablePopup::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }

@@ -35,8 +35,9 @@ ProxyComboBox::ProxyComboBox(QWidget *parent) :
 {
 	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 
-	Model = new NetworkProxyModel(this);
-	ModelChain *chain = new ModelChain(Model, this);
+	ModelChain *chain = new ModelChain(this);
+	Model = new NetworkProxyModel(chain);
+	chain->setBaseModel(Model);
 	chain->addProxyModel(new NetworkProxyProxyModel(this));
 	setUpModel(NetworkProxyRole, chain);
 

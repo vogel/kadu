@@ -470,9 +470,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 	QString photoOutgoing;
 
 	int contactsSize = chat.contacts().size();
-	if (contactsSize > 1)
-		photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
-	else if (contactsSize == 1)
+	if (contactsSize == 1)
 	{
 		const Avatar &avatar = chat.contacts().toContact().avatar(true);
 		if (!avatar.isEmpty())
@@ -480,6 +478,8 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 		else
 			photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
+	else
+		photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 
 	const Avatar &avatar = chat.chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())

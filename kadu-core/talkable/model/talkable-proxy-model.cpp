@@ -147,6 +147,12 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 	const int leftRole = left.data(ItemTypeRole).value<int>();
 	const int rightRole = right.data(ItemTypeRole).value<int>();
 
+	// preserve order for non-talkable items
+	if (ChatRole != leftRole && BuddyRole != leftRole && ContactRole != leftRole)
+		return left.row() < right.row();
+	if (ChatRole != rightRole && BuddyRole != rightRole && ContactRole != rightRole)
+		return left.row() < right.row();
+
 	// first - chats
 	if (ChatRole == leftRole && ChatRole != rightRole)
 		return true;
@@ -241,7 +247,7 @@ bool TalkableProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 		case ContactRole:
 			return accept(sourceIndex.data(ContactRole).value<Contact>());
 		default:
-			Q_ASSERT(false);
+			return true;
 	}
 
 	return true;

@@ -49,7 +49,6 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
-#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"

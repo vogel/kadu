@@ -30,8 +30,8 @@
 #include "protocols-model-proxy.h"
 #include "protocols-model.h"
 
-ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent), SourceProtocolModel(0)
+ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent) :
+		QSortFilterProxyModel(parent)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -43,19 +43,6 @@ ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent)
 
 ProtocolsModelProxy::~ProtocolsModelProxy()
 {
-
-}
-
-void ProtocolsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
-{
-	if (SourceProtocolModel)
-		disconnect(SourceProtocolModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
-
-	SourceProtocolModel = qobject_cast<ProtocolsModel *>(sourceModel);
-	QSortFilterProxyModel::setSourceModel(SourceProtocolModel);
-
-	if (SourceProtocolModel)
-		connect(SourceProtocolModel, SIGNAL(destroyed()), this, SLOT(modelDestroyed()));
 }
 
 int ProtocolsModelProxy::compareNames(QString n1, QString n2) const
@@ -65,19 +52,13 @@ int ProtocolsModelProxy::compareNames(QString n1, QString n2) const
 		: n1.localeAwareCompare(n2);
 }
 
-void ProtocolsModelProxy::modelDestroyed()
-{
-	SourceProtocolModel = 0;
-	QSortFilterProxyModel::setSourceModel(0);
-}
-
 bool ProtocolsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	if (!SourceProtocolModel)
+	if (!sourceModel())
 		return QSortFilterProxyModel::lessThan(left, right);
 
-	QVariant lVariant = SourceProtocolModel->data(left, ProtocolRole);
-	QVariant rVariant = SourceProtocolModel->data(right, ProtocolRole);
+	QVariant lVariant = sourceModel()->data(left, ProtocolRole);
+	QVariant rVariant = sourceModel()->data(right, ProtocolRole);
 
 	if (!lVariant.canConvert<ProtocolFactory *>() || !rVariant.canConvert<ProtocolFactory *>())
 		return QSortFilterProxyModel::lessThan(left, right);
@@ -96,6 +77,9 @@ bool ProtocolsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
 		return true;
 
 	ProtocolFactory *protocol = pVariant.value<ProtocolFactory *>();
+	if (!protocol)
+		return true;
+
 	foreach (AbstractProtocolFilter *filter, ProtocolFilters)
 		if (!filter->acceptProtocol(protocol))
 			return false;

@@ -20,16 +20,24 @@
 
 #include <QtGui/QAction>
 
-#include "model/model-chain.h"
+#include "model/action-filter-proxy-model.h"
+#include "model/action-list-model.h"
 #include "model/roles.h"
+#include "model/merged-proxy-model-factory.h"
+#include "model/model-chain.h"
 
 #include "actions-combo-box.h"
 
+Q_DECLARE_METATYPE(QAction *);
+
 ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		QComboBox(parent),
-		Chain(0), ActionsModel(new ActionsProxyModel(this)),
-		DataRole(0), LastIndex(-1)
+		KaduModel(0), DataRole(0), LastIndex(-1)
 {
+	BeforeActions = new ActionListModel(this);
+	AfterActions = new ActionListModel(this);
+	ActionsFilterModel = new ActionFilterProxyModel(this);
+
 	// Queued connection is needed here so that we do not depend on which signal is emitted first:
 	// activated() or currentIndexChanged() (we depend on correct LastIndex in activatedSlot()).
 	connect(this, SIGNAL(activated(int)), this, SLOT(activatedSlot(int)), Qt::QueuedConnection);
@@ -52,7 +60,7 @@ bool ActionsComboBox::isActionSelectable(QAction *action)
 
 void ActionsComboBox::activatedSlot(int index)
 {
-	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
+	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 
 	if (!action)
@@ -72,12 +80,12 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 		return;
 	}
 
-	QModelIndex modelIndex = ActionsModel->index(index, modelColumn(), rootModelIndex());
-	QModelIndex lastModelIndex = ActionsModel->index(LastIndex, modelColumn(), rootModelIndex());
+	QModelIndex modelIndex = model()->index(index, modelColumn(), rootModelIndex());
+	QModelIndex lastModelIndex = model()->index(LastIndex, modelColumn(), rootModelIndex());
 
 	QAction *action = modelIndex.data(ActionRole).value<QAction *>();
 	QVariant lastValue = lastModelIndex.data(DataRole);
-	QVariant currentValue = ActionsModel->index(index, modelColumn()).data(DataRole);
+	QVariant currentValue = model()->index(index, modelColumn()).data(DataRole);
 
 	if (isActionSelectable(action))
 		LastIndex = index;
@@ -86,15 +94,30 @@ void ActionsComboBox::currentIndexChangedSlot(int index)
 void ActionsComboBox::setUpModel(int dataRole, ModelChain *modelChain)
 {
 	DataRole = dataRole;
-	Chain = modelChain;
 
-	Chain->addProxyModel(ActionsModel);
-	setModel(ActionsModel);
+	QList<KaduAbstractModel *> models;
+	models.append(BeforeActions);
+	models.append(modelChain);
+	models.append(AfterActions);
+
+	QAbstractItemModel *mergedModel = MergedProxyModelFactory::createKaduModelInstance(models, this);
+	Q_ASSERT(mergedModel);
+
+	KaduModel = dynamic_cast<KaduAbstractModel *>(mergedModel);
+	Q_ASSERT(KaduModel);
+
+	ActionsFilterModel->setSourceModel(mergedModel);
+	ActionsFilterModel->setModel(modelChain->lastModel());
+
+	setModel(ActionsFilterModel);
 }
 
 void ActionsComboBox::setCurrentValue(const QVariant &value)
 {
-	const QModelIndexList &indexes = Chain->indexListForValue(value);
+	if (!KaduModel)
+		return;
+
+	const QModelIndexList &indexes = KaduModel->indexListForValue(value);
 	if (indexes.isEmpty())
 	{
 		setCurrentIndex(0);
@@ -107,22 +130,39 @@ void ActionsComboBox::setCurrentValue(const QVariant &value)
 	setCurrentIndex(index.row());
 }
 
-QVariant ActionsComboBox::currentValue()
+QVariant ActionsComboBox::currentValue() const
 {
-	return ActionsModel->index(currentIndex(), modelColumn()).data(DataRole);
+	return model()->index(currentIndex(), modelColumn()).data(DataRole);
 }
 
-void ActionsComboBox::addBeforeAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+void ActionsComboBox::addActionToFilter(QAction *action, ActionsComboBox::ActionVisibility visibility)
 {
-	ActionsModel->addBeforeAction(action, actionVisibility);
+	switch (visibility)
+	{
+		case NotVisibleWithEmptySourceModel:
+			ActionsFilterModel->addHideWhenModelEmpty(action);
+			break;
+		case NotVisibleWithOneRowSourceModel:
+			ActionsFilterModel->addHideWhenModelSingle(action);
+			break;
+		default:
+			break;
+	}
 }
 
-void ActionsComboBox::addAfterAction(QAction *action, ActionsProxyModel::ActionVisibility actionVisibility)
+void ActionsComboBox::addBeforeAction(QAction *action, ActionVisibility visibility)
 {
-	ActionsModel->addAfterAction(action, actionVisibility);
+	BeforeActions->appendAction(action);
+	addActionToFilter(action, visibility);
+}
+
+void ActionsComboBox::addAfterAction(QAction *action, ActionVisibility visibility)
+{
+	AfterActions->appendAction(action);
+	addActionToFilter(action, visibility);
 }
 
 QAction * ActionsComboBox::currentAction()
 {
-	return ActionsModel->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
+	return model()->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }

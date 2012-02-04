@@ -22,7 +22,6 @@
 
 #include <QtGui/QAction>
 
-#include "model/actions-proxy-model.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model-proxy.h"
@@ -33,10 +32,11 @@
 ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
-	addBeforeAction(new QAction(tr(" - Select network - "), this), ActionsProxyModel::NotVisibleWithOneRowSourceModel);
+	addBeforeAction(new QAction(tr(" - Select network - "), this), NotVisibleWithOneRowSourceModel);
 
 	ProxyModel = new ProtocolsModelProxy(this);
-	ModelChain *chain = new ModelChain(new ProtocolsModel(this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new ProtocolsModel(chain));
 	chain->addProxyModel(ProxyModel);
 	setUpModel(ProtocolRole, chain);
 }

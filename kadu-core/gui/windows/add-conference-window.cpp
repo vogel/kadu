@@ -74,7 +74,7 @@ void AddConferenceWindow::createGui()
 
 	QFormLayout *layout = new QFormLayout(mainWidget);
 
-	AccountCombo = new AccountsComboBox(true, ActionsProxyModel::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
 	AccountCombo->setIncludeIdInDisplay(true);
 
 	// only gadu supports conferences for now
@@ -99,14 +99,16 @@ void AddConferenceWindow::createGui()
 	hintLabel->setFont(hintLabelFont);
 	layout->addRow(0, hintLabel);
 
-	Model = new BuddiesModel(this);
+	ModelChain *chain = new ModelChain(this);
+
+	Model = new BuddiesModel(chain);
 	Model->setIncludeMyself(false);
 
 	// will be removed when Qt 4.8 .is required
 	Model->setCheckable(true);
 	connect(Model, SIGNAL(checkedBuddiesChanged(BuddySet)), this, SLOT(validateData()));
 
-	ModelChain *chain = new ModelChain(Model, this);
+	chain->setBaseModel(Model);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 

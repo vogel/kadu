@@ -30,20 +30,15 @@
 #include <QtGui/QSortFilterProxyModel>
 
 class AbstractProtocolFilter;
-class ProtocolsModel;
 
 class ProtocolsModelProxy : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
-	ProtocolsModel *SourceProtocolModel;
 	QList<AbstractProtocolFilter *> ProtocolFilters;
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
-
-private slots:
-	void modelDestroyed();
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
@@ -52,8 +47,6 @@ protected:
 public:
 	explicit ProtocolsModelProxy(QObject *parent = 0);
 	virtual ~ProtocolsModelProxy();
-
-	virtual void setSourceModel(QAbstractItemModel *sourceModel);
 
 	void addFilter(AbstractProtocolFilter *filter);
 	void removeFilter(AbstractProtocolFilter *filter);

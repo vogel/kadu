@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "model/model-chain.h"
+
 #include "kadu-merged-proxy-model.h"
 
 KaduMergedProxyModel::KaduMergedProxyModel(QObject *parent) :
@@ -28,24 +30,32 @@ KaduMergedProxyModel::~KaduMergedProxyModel()
 {
 }
 
-void KaduMergedProxyModel::setModels(QList<QAbstractItemModel *> models)
+void KaduMergedProxyModel::setKaduModels(QList<KaduAbstractModel *> models)
 {
-	Models.clear();
-	foreach (QAbstractItemModel *model, models)
-	{
-		KaduAbstractModel *kaduModel = dynamic_cast<KaduAbstractModel *>(model);
-		Q_ASSERT(kaduModel);
+	QList<QAbstractItemModel *> itemModels;
 
-		Models.append(kaduModel);
+	KaduModels.clear();
+	foreach (KaduAbstractModel *model, models)
+	{
+		KaduModels.append(model);
+
+		QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
+		ModelChain *modelChain = dynamic_cast<ModelChain *>(model);
+		if (itemModel)
+			itemModels.append(itemModel);
+		else if (modelChain)
+			itemModels.append(modelChain->lastModel());
+
+		Q_ASSERT(itemModel || modelChain);
 	}
 
-	MergedProxyModel::setModels(models);
+	MergedProxyModel::setModels(itemModels);
 }
 
 QModelIndexList KaduMergedProxyModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
-	foreach (KaduAbstractModel *kaduModel, Models)
+	foreach (KaduAbstractModel *kaduModel, KaduModels)
 	{
 		const QModelIndexList &kaduModelIndexes = kaduModel->indexListForValue(value);
 		foreach (const QModelIndex &index, kaduModelIndexes)

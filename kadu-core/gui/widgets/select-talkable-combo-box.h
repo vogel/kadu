@@ -1,8 +1,10 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
  * %kadu copyright end%
  *
@@ -20,45 +22,48 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SELECT_BUDDY_POPUP_H
-#define SELECT_BUDDY_POPUP_H
+#ifndef SELECT_TALKABLE_COMBO_BOX_H
+#define SELECT_TALKABLE_COMBO_BOX_H
 
 #include "talkable/talkable.h"
+#include "exports.h"
 
-#include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/actions-combo-box.h"
 
-class QModelIndex;
-
-class Buddy;
+class HideAnonymousTalkableFilter;
+class ModelChain;
+class SelectTalkablePopup;
 class TalkableFilter;
 class TalkableProxyModel;
-class TalkableTreeView;
 
-class SelectBuddyPopup : public FilteredTreeView
+class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 {
 	Q_OBJECT
 
-	TalkableTreeView *View;
+	HideAnonymousTalkableFilter *HideAnonymousFilter;
+	ModelChain *Chain;
+	SelectTalkablePopup *Popup;
 	TalkableProxyModel *ProxyModel;
 
-private slots:
-	void itemClicked(const QModelIndex &index);
-	void talkableActivated(const Talkable &talkable);
+protected:
+	virtual void showPopup();
+	virtual void hidePopup();
 
 public:
-	explicit SelectBuddyPopup(QWidget *parent = 0);
-	virtual ~SelectBuddyPopup();
+	explicit SelectTalkableComboBox(QWidget *parent = 0);
+	virtual ~SelectTalkableComboBox();
 
-	void show(Buddy buddy);
+	void setBaseModel(QAbstractItemModel *model);
+	void setShowAnonymous(bool showAnonymous);
+
+	Talkable currentTalkable() const;
 
 	void addFilter(TalkableFilter *filter);
 	void removeFilter(TalkableFilter *filter);
 
-signals:
-	void buddySelected(Buddy buddy);
+public slots:
+	void setCurrentTalkable(const Talkable &talkable);
 
 };
 
-#include "buddies/buddy.h" // for MOC
-
-#endif // SELECT_BUDDY_POPUP_H
+#endif // SELECT_TALKABLE_COMBO_BOX_H

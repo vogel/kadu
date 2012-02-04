@@ -29,15 +29,16 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionsProxyModel::ActionVisibility visibility, QWidget *parent) :
+AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	if (includeSelectAccount)
 		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
 
-	Model = new AccountsModel(this);
-	ProxyModel = new AccountsProxyModel(this);
-	ModelChain *chain = new ModelChain(Model, this);
+	ModelChain *chain = new ModelChain(this);
+	Model = new AccountsModel(chain);
+	ProxyModel = new AccountsProxyModel(chain);
+	chain->setBaseModel(Model);
 	chain->addProxyModel(ProxyModel);
 	setUpModel(AccountRole, chain);
 }

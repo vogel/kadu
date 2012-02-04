@@ -45,7 +45,8 @@ GroupsComboBox::GroupsComboBox(QWidget *parent) :
 	connect(CreateNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
 	addAfterAction(CreateNewGroupAction);
 
-	ModelChain *chain = new ModelChain(new GroupsModel(this), this);
+	ModelChain *chain = new ModelChain(this);
+	chain->setBaseModel(new GroupsModel(chain));
 	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
 	chain->addProxyModel(proxyModel);
 	setUpModel(GroupRole, chain);
