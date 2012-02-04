@@ -70,6 +70,7 @@ void SearchTab::createGui()
 	queryLayout->addWidget(queryFormWidget);
 
 	QFormLayout *queryFormLayout = new QFormLayout(queryFormWidget);
+	queryFormLayout->setLabelAlignment(Qt::AlignLeft | Qt::AlignHCenter);
 	queryFormLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
 	queryFormLayout->setMargin(0);
 
@@ -77,33 +78,29 @@ void SearchTab::createGui()
 	Query->setMinimumWidth(200);
 	queryFormLayout->addRow(tr("Search for:"), Query);
 
-	SearchInChats = new QRadioButton(tr("Search in chats"), queryFormWidget);
+	SearchInChats = new QRadioButton(tr("Chats"), queryFormWidget);
 	SearchInChats->setChecked(true);
-	SearchInChats->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	queryFormLayout->addRow(SearchInChats);
-
 	SelectChat = new HistoryTalkableComboBox(queryFormWidget);
 	SelectChat->setAllLabel(tr(" - All chats - "));
 	SelectChat->setFutureTalkables(History::instance()->currentStorage()->chatStorage()->talkables());
-	queryFormLayout->addRow(SelectChat);
+	SelectChat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	queryFormLayout->addRow(SearchInChats, SelectChat);
 
-	SearchInStatuses = new QRadioButton(tr("Search in statuses"), queryFormWidget);
-	queryFormLayout->addRow(SearchInStatuses);
-
+	SearchInStatuses = new QRadioButton(tr("Statuses"), queryFormWidget);
 	SelectStatusBuddy = new HistoryTalkableComboBox(queryFormWidget);
 	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
 	SelectStatusBuddy->setFutureTalkables(History::instance()->currentStorage()->statusStorage()->talkables());
-	queryFormLayout->addRow(SelectStatusBuddy);
-	SelectStatusBuddy->hide();
+	SelectStatusBuddy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	SelectStatusBuddy->setEnabled(false);
+	queryFormLayout->addRow(SearchInStatuses, SelectStatusBuddy);
 
-	SearchInSmses = new QRadioButton(tr("Search in smses"), queryFormWidget);
-	queryFormLayout->addRow(SearchInSmses);
-
+	SearchInSmses = new QRadioButton(tr("Smses"), queryFormWidget);
 	SelectSmsRecipient = new HistoryTalkableComboBox(queryFormWidget);
 	SelectSmsRecipient->setAllLabel(tr(" - All recipients - "));
 	SelectSmsRecipient->setFutureTalkables(History::instance()->currentStorage()->smsStorage()->talkables());
-	queryFormLayout->addRow(SelectSmsRecipient);
-	SelectSmsRecipient->hide();
+	SelectSmsRecipient->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	SelectSmsRecipient->setEnabled(false);
+	queryFormLayout->addRow(SearchInSmses, SelectSmsRecipient);
 
 	QButtonGroup *kindRadioGroup = new QButtonGroup(queryFormWidget);
 	kindRadioGroup->addButton(SearchInChats);
@@ -112,12 +109,10 @@ void SearchTab::createGui()
 	connect(kindRadioGroup, SIGNAL(buttonReleased(QAbstractButton*)),
 	        this, SLOT(kindChanged(QAbstractButton*)));
 
-	SearchByDate = new QCheckBox(tr("Search by date"), queryFormWidget);
+	SearchByDate = new QCheckBox(tr("By date"), queryFormWidget);
 	SearchByDate->setCheckState(Qt::Unchecked);
-	queryFormLayout->addRow(0, SearchByDate);
 
 	QWidget *dateWidget = new QWidget(queryFormWidget);
-	dateWidget->hide();
 
 	QHBoxLayout *dateLayout = new QHBoxLayout(dateWidget);
 
@@ -137,9 +132,10 @@ void SearchTab::createGui()
 
 	connect(FromDate, SIGNAL(dateChanged(QDate)), this, SLOT(fromDateChanged(QDate)));
 	connect(ToDate, SIGNAL(dateChanged(QDate)), this, SLOT(toDateChanged(QDate)));
-	connect(SearchByDate, SIGNAL(toggled(bool)), dateWidget, SLOT(setVisible(bool)));
+	connect(SearchByDate, SIGNAL(toggled(bool)), dateWidget, SLOT(setEnabled(bool)));
 
-	queryFormLayout->addRow(dateWidget);
+	dateWidget->setEnabled(false);
+	queryFormLayout->addRow(SearchByDate, dateWidget);
 
 	QPushButton *searchButton = new QPushButton(tr("Search"), queryFormWidget);
 	searchButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -158,16 +154,9 @@ void SearchTab::createGui()
 
 void SearchTab::kindChanged(QAbstractButton *button)
 {
-	SelectChat->hide();
-	SelectStatusBuddy->hide();
-	SelectSmsRecipient->hide();
-
-	if (SearchInChats == button)
-		SelectChat->show();
-	else if (SearchInStatuses == button)
-		SelectStatusBuddy->show();
-	else if (SearchInSmses == button)
-		SelectSmsRecipient->show();
+	SelectChat->setEnabled(SearchInChats == button);
+	SelectStatusBuddy->setEnabled(SearchInStatuses == button);
+	SelectSmsRecipient->setEnabled(SearchInSmses == button);
 }
 
 void SearchTab::fromDateChanged(const QDate &date)
