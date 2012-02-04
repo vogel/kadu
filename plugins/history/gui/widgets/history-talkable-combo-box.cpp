@@ -70,6 +70,7 @@ void HistoryTalkableComboBox::setFutureTalkables(QFuture<QVector<Talkable> > tal
 	connect(TalkablesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureTalkablesCanceled()));
 	TalkablesFutureWatcher->setFuture(talkables);
 }
+
 void HistoryTalkableComboBox::futureTalkablesAvailable()
 {
 	if (!TalkablesFutureWatcher)
