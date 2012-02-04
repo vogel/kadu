@@ -57,7 +57,17 @@ void HistoryTalkableComboBox::setAllLabel(const QString &allLabel)
 	AllAction->setText(allLabel);
 }
 
-void HistoryTalkableComboBox::setFutureTalkables(QFuture<QVector<Talkable> > talkables)
+void HistoryTalkableComboBox::setTalkables(const QVector<Talkable> &talkables)
+{
+	futureTalkablesCanceled();
+
+	ChatsBuddiesSplitter chatsBuddies(talkables);
+
+	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
+	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
+}
+
+void HistoryTalkableComboBox::setFutureTalkables(const QFuture<QVector<Talkable> > &talkables)
 {
 	if (TalkablesFutureWatcher)
 		delete TalkablesFutureWatcher;
@@ -73,16 +83,8 @@ void HistoryTalkableComboBox::setFutureTalkables(QFuture<QVector<Talkable> > tal
 
 void HistoryTalkableComboBox::futureTalkablesAvailable()
 {
-	if (!TalkablesFutureWatcher)
-		return;
-
-	ChatsBuddiesSplitter chatsBuddies(TalkablesFutureWatcher->result());
-
-	ChatsModel->setChats(chatsBuddies.chats().toList().toVector());
-	BuddiesModel->setBuddyList(chatsBuddies.buddies().toList());
-
-	TalkablesFutureWatcher->deleteLater();
-	TalkablesFutureWatcher = 0;
+	if (TalkablesFutureWatcher)
+		setTalkables(TalkablesFutureWatcher->result());
 }
 
 void HistoryTalkableComboBox::futureTalkablesCanceled()

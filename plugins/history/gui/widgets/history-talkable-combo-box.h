@@ -48,7 +48,8 @@ public:
 	virtual ~HistoryTalkableComboBox();
 
 	void setAllLabel(const QString &allLabel);
-	void setFutureTalkables(QFuture<QVector<Talkable> > talkables);
+	void setTalkables(const QVector<Talkable> &talkables);
+	void setFutureTalkables(const QFuture<QVector<Talkable> > &talkables);
 
 };
 
