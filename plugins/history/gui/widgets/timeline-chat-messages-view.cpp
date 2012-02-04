@@ -27,6 +27,7 @@
 #include "model/roles.h"
 
 #include "model/history-query-results-model.h"
+#include "model/history-query-results-proxy-model.h"
 #include "history-query-result.h"
 
 #include "timeline-chat-messages-view.h"
@@ -36,7 +37,10 @@ TimelineChatMessagesView::TimelineChatMessagesView(bool showTitleInTimeline, QWi
 		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
 {
-	ResultsModel = new HistoryQueryResultsModel(showTitleInTimeline, this);
+	ResultsModel = new HistoryQueryResultsModel(this);
+	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
+	ResultsProxyModel->setTitleVisible(showTitleInTimeline);
+	ResultsProxyModel->setSourceModel(ResultsModel);
 
 	setLayout(new QVBoxLayout(this));
 	layout()->setMargin(0);
@@ -56,7 +60,7 @@ void TimelineChatMessagesView::createGui()
 	Timeline = new QTreeView(Splitter);
 
 	Timeline->setAlternatingRowColors(true);
-	Timeline->setModel(ResultsModel);
+	Timeline->setModel(ResultsProxyModel);
 	Timeline->setRootIsDecorated(false);
 	Timeline->setUniformRowHeights(true);
 

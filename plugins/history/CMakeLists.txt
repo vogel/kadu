@@ -33,6 +33,7 @@ set (SOURCES
 	gui/windows/history-window.cpp
 
 	model/history-query-results-model.cpp
+	model/history-query-results-proxy-model.cpp
 
 	search/history-search-parameters.cpp
 	storage/history-storage.cpp
@@ -60,6 +61,7 @@ set (MOC_SOURCES
 	gui/windows/history-window.h
 
 	model/history-query-results-model.h
+	model/history-query-results-proxy-model.h
 
 	storage/history-messages-storage.h
 	storage/history-storage.h

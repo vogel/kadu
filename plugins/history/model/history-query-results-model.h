@@ -36,10 +36,9 @@ class HistoryQueryResultsModel : public QAbstractListModel
 	Q_OBJECT
 
 	QVector<HistoryQueryResult> Results;
-	bool IncludeTitle;
 
 public:
-	explicit HistoryQueryResultsModel(bool includeTitle, QObject *parent = 0);
+	explicit HistoryQueryResultsModel(QObject *parent = 0);
 	virtual ~HistoryQueryResultsModel();
 
 	virtual int columnCount(const QModelIndex &parent) const;

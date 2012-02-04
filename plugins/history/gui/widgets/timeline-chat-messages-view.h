@@ -32,6 +32,7 @@ class QTreeView;
 class ChatMessagesView;
 class HistoryQueryResult;
 class HistoryQueryResultsModel;
+class HistoryQueryResultsProxyModel;
 class Message;
 class WaitOverlay;
 
@@ -58,6 +59,7 @@ class KADUAPI TimelineChatMessagesView : public QWidget
 	QSplitter *Splitter;
 	QTreeView *Timeline;
 	HistoryQueryResultsModel *ResultsModel;
+	HistoryQueryResultsProxyModel *ResultsProxyModel;
 	ChatMessagesView *MessagesView;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;

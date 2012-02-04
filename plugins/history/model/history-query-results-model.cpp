@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "chat/chat.h"
 #include "model/roles.h"
 
@@ -28,8 +27,8 @@
 
 #include "history-query-results-model.h"
 
-HistoryQueryResultsModel::HistoryQueryResultsModel(bool includeTitle, QObject *parent) :
-		QAbstractListModel(parent), IncludeTitle(includeTitle)
+HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) :
+		QAbstractListModel(parent)
 {
 }
 
@@ -39,7 +38,7 @@ HistoryQueryResultsModel::~HistoryQueryResultsModel()
 
 int HistoryQueryResultsModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : IncludeTitle ? 3 : 2;
+	return parent.isValid() ? 0 : 3;
 }
 
 int HistoryQueryResultsModel::rowCount(const QModelIndex &parent) const
