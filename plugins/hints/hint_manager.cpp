@@ -171,8 +171,11 @@ void HintManager::setHint()
 		return;
 	}
 
-	int minimumWidth = config_file.readNumEntry("Hints", "MinimumWidth", 100);
+	int minimumWidth = config_file.readNumEntry("Hints", "MinimumWidth", 285);
 	int maximumWidth = config_file.readNumEntry("Hints", "MaximumWidth", 500);
+
+	minimumWidth = minimumWidth >= 285 ? minimumWidth : 285;
+	maximumWidth = maximumWidth >= 285 ? maximumWidth : 285;
 
 	QPoint newPosition;
 	QPoint trayPosition;
@@ -737,7 +740,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "RightButton", 2);
 	config_file.addVariable("Hints", "MaximumWidth", 500);
 	config_file.addVariable("Hints", "MiddleButton", 3);
-	config_file.addVariable("Hints", "MinimumWidth", 100);
+	config_file.addVariable("Hints", "MinimumWidth", 285);
 	config_file.addVariable("Hints", "MouseOverUserSyntax", QString());
 	config_file.addVariable("Hints", "NewHintUnder", 0);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
