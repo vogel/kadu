@@ -55,7 +55,7 @@
 
 #include "buddy-general-configuration-widget.h"
 
-BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent)
+BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent)
 		: QWidget(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

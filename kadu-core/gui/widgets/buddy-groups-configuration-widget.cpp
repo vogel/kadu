@@ -37,7 +37,7 @@
 
 #include "buddy-groups-configuration-widget.h"
 
-BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent) :
+BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

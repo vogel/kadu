@@ -103,7 +103,7 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 		setCurrentIndex(currentGroup);
 
 	if (!ShowAllGroup)
-		connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
+		connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 }
 
 GroupTabBar::~GroupTabBar()
@@ -535,7 +535,7 @@ void GroupTabBar::configurationUpdated()
 {
 	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
 	{
-		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
+		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 
 		for (int i = 0; i < count(); ++i)
 			if (!GroupManager::instance()->byUuid(tabData(i).toString()))
@@ -558,8 +558,8 @@ void GroupTabBar::configurationUpdated()
 		updateAutoGroupTab(oldShowAllGroup);
 
 		if (ShowAllGroup)
-			disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
+			disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 		else
-			connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(checkForUngroupedBuddies()));
+			connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 	}
 }

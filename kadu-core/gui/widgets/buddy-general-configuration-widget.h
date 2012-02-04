@@ -67,7 +67,7 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	void setBuddyAvatar(const QPixmap &avatar);
 
 public:
-	explicit BuddyGeneralConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyGeneralConfigurationWidget();
 
 	bool isValid();

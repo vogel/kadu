@@ -67,7 +67,7 @@ public:
 	//void updatePreferred(Buddy buddy);
 
 signals:
-	void buddyUpdated(Buddy &buddy);
+	void buddyUpdated(const Buddy &buddy);
 
 };
 

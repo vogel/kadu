@@ -47,7 +47,7 @@ class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 	void createGui();
 
 public:
-	explicit BuddyGroupsConfigurationWidget(Buddy &buddy, QWidget *parent = 0);
+	explicit BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyGroupsConfigurationWidget();
 
 	void save();

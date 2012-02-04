@@ -95,7 +95,7 @@ void Buddy::importConfiguration()
 		data()->importConfiguration();
 }
 
-QString Buddy::customData(const QString &key)
+QString Buddy::customData(const QString &key) const
 {
 	return isNull() ? QString() : data()->customData()[key];
 }

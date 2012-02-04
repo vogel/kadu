@@ -44,7 +44,7 @@
 
 #include "buddy-personal-info-configuration-widget.h"
 
-BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(Buddy &buddy, QWidget *parent) :
+BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy), InfoWidget(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

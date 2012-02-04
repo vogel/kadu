@@ -49,12 +49,12 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 	page()->setPalette(p);
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
 
-	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
+	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 }
 
 BuddyInfoPanel::~BuddyInfoPanel()
 {
-	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy&)), this, SLOT(buddyUpdated(Buddy&)));
+	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 }
 
 void BuddyInfoPanel::configurationUpdated()
@@ -66,7 +66,7 @@ void BuddyInfoPanel::configurationUpdated()
 	update();
 }
 
-void BuddyInfoPanel::buddyUpdated(Buddy &buddy)
+void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 {
 	if (buddy == Item.toBuddy())
 		update();

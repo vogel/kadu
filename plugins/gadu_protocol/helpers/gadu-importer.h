@@ -58,7 +58,7 @@ class GADUAPI GaduImporter : public QObject
 	static QVariant readEntry(QXmlQuery &xmlQuery, const QString &groupName, const QString &entryName, const QVariant &defaultValue = QVariant());
 
 private slots:
-	void buddyAdded(Buddy &buddy);
+	void buddyAdded(const Buddy &buddy);
 
 public:
 	static GaduImporter * instance() { return Instance; }

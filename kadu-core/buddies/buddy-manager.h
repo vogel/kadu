@@ -91,18 +91,18 @@ public:
 	void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
 
 signals:
-	void buddyAboutToBeAdded(Buddy &buddy);
-	void buddyAdded(Buddy &buddy);
-	void buddyAboutToBeRemoved(Buddy &buddy);
-	void buddyRemoved(Buddy &buddy);
+	void buddyAboutToBeAdded(const Buddy &buddy);
+	void buddyAdded(const Buddy &buddy);
+	void buddyAboutToBeRemoved(const Buddy &buddy);
+	void buddyRemoved(const Buddy &buddy);
 
-	void buddyContactAboutToBeAdded(Buddy &buddy, const Contact &contact);
-	void buddyContactAdded(Buddy &buddy, const Contact &contact);
-	void buddyContactAboutToBeRemoved(Buddy &buddy, const Contact &contact);
-	void buddyContactRemoved(Buddy &buddy, const Contact &contact);
+	void buddyContactAboutToBeAdded(const Buddy &buddy, const Contact &contact);
+	void buddyContactAdded(const Buddy &buddy, const Contact &contact);
+	void buddyContactAboutToBeRemoved(const Buddy &buddy, const Contact &contact);
+	void buddyContactRemoved(const Buddy &buddy, const Contact &contact);
 
-	void buddyUpdated(Buddy &buddy);
-	void buddySubscriptionChanged(Buddy &buddy);
+	void buddyUpdated(const Buddy &buddy);
+	void buddySubscriptionChanged(const Buddy &buddy);
 
 };
 

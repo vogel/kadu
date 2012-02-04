@@ -48,7 +48,7 @@ class TalkableDelegate : public KaduTreeViewDelegate
 
 private slots:
 	void contactUpdated(Contact &contact);
-	void buddyUpdated(Buddy &buddy);
+	void buddyUpdated(const Buddy &buddy);
 	void messageStatusChanged(Message message);
 	void chainDestroyed();
 

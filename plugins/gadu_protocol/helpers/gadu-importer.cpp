@@ -201,8 +201,8 @@ void GaduImporter::importAccounts()
 
 void GaduImporter::importContacts()
 {
-	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(buddyAdded(Buddy &)));
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy)),
+			this, SLOT(buddyAdded(Buddy)));
 
 	foreach (Buddy buddy, BuddyManager::instance()->items())
 		buddyAdded(buddy);
@@ -254,7 +254,7 @@ void GaduImporter::importIgnored()
 	xml_config_file->removeNode(xml_config_file->rootElement(), "Ignored");
 }
 
-void GaduImporter::buddyAdded(Buddy &buddy)
+void GaduImporter::buddyAdded(const Buddy &buddy)
 {
 	if (buddy.customData("uin").isEmpty())
 		return;

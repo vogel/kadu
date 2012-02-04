@@ -39,7 +39,7 @@
 
 #include "buddy-options-configuration-widget.h"
 
-BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(Buddy &buddy, QWidget *parent) :
+BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent) :
 		QWidget(parent), MyBuddy(buddy)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

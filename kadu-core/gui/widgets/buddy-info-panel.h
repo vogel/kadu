@@ -41,7 +41,7 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 	void disconnectItem();
 
 private slots:
-	void buddyUpdated(Buddy &buddy);
+	void buddyUpdated(const Buddy &buddy);
 
 protected:
 	virtual void configurationUpdated();

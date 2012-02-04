@@ -42,24 +42,24 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 	triggerAllAccountsRegistered();
 
 	BuddyManager *manager = BuddyManager::instance();
-	connect(manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
-			this, SLOT(buddyAboutToBeAdded(Buddy &)));
-	connect(manager, SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(buddyAdded(Buddy &)));
-	connect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
-			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	connect(manager, SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(buddyRemoved(Buddy &)));
-	connect(manager, SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
-	connect(manager, SIGNAL(buddyContactAboutToBeAdded(Buddy&,Contact)),
-	        this, SLOT(buddyContactAboutToBeAdded(Buddy&,Contact)));
-	connect(manager, SIGNAL(buddyContactAdded(Buddy&,Contact)),
-	        this, SLOT(buddyContactAdded(Buddy&,Contact)));
-	connect(manager, SIGNAL(buddyContactAboutToBeRemoved(Buddy&,Contact)),
-	        this, SLOT(buddyContactAboutToBeRemoved(Buddy&,Contact)));
-	connect(manager, SIGNAL(buddyContactRemoved(Buddy&,Contact)),
-	        this, SLOT(buddyContactRemoved(Buddy&,Contact)));
+	connect(manager, SIGNAL(buddyAboutToBeAdded(Buddy)),
+			this, SLOT(buddyAboutToBeAdded(Buddy)));
+	connect(manager, SIGNAL(buddyAdded(Buddy)),
+			this, SLOT(buddyAdded(Buddy)));
+	connect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy)),
+			this, SLOT(buddyAboutToBeRemoved(Buddy)));
+	connect(manager, SIGNAL(buddyRemoved(Buddy)),
+			this, SLOT(buddyRemoved(Buddy)));
+	connect(manager, SIGNAL(buddyUpdated(Buddy)),
+			this, SLOT(buddyUpdated(Buddy)));
+	connect(manager, SIGNAL(buddyContactAboutToBeAdded(Buddy,Contact)),
+	        this, SLOT(buddyContactAboutToBeAdded(Buddy,Contact)));
+	connect(manager, SIGNAL(buddyContactAdded(Buddy,Contact)),
+	        this, SLOT(buddyContactAdded(Buddy,Contact)));
+	connect(manager, SIGNAL(buddyContactAboutToBeRemoved(Buddy,Contact)),
+	        this, SLOT(buddyContactAboutToBeRemoved(Buddy,Contact)));
+	connect(manager, SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
 	connect(Core::instance()->myself(), SIGNAL(updated()),
 			this, SLOT(myselfBuddyUpdated()));
@@ -74,24 +74,24 @@ BuddiesModel::~BuddiesModel()
 	triggerAllAccountsUnregistered();
 
 	BuddyManager *manager = BuddyManager::instance();
-	disconnect(manager, SIGNAL(buddyAboutToBeAdded(Buddy &)),
-			this, SLOT(buddyAboutToBeAdded(Buddy &)));
-	disconnect(manager, SIGNAL(buddyAdded(Buddy &)),
-			this, SLOT(buddyAdded(Buddy &)));
-	disconnect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy &)),
-			this, SLOT(buddyAboutToBeRemoved(Buddy &)));
-	disconnect(manager, SIGNAL(buddyRemoved(Buddy &)),
-			this, SLOT(buddyRemoved(Buddy &)));
-	disconnect(manager, SIGNAL(buddyUpdated(Buddy &)),
-			this, SLOT(buddyUpdated(Buddy &)));
-	disconnect(manager, SIGNAL(buddyContactAboutToBeAdded(Buddy&,Contact)),
-	           this, SLOT(buddyContactAboutToBeAdded(Buddy&,Contact)));
-	disconnect(manager, SIGNAL(buddyContactAdded(Buddy&,Contact)),
-	           this, SLOT(buddyContactAdded(Buddy&,Contact)));
-	disconnect(manager, SIGNAL(buddyContactAboutToBeRemoved(Buddy&,Contact)),
-	           this, SLOT(buddyContactAboutToBeRemoved(Buddy&,Contact)));
-	disconnect(manager, SIGNAL(buddyContactRemoved(Buddy&,Contact)),
-	           this, SLOT(buddyContactRemoved(Buddy&,Contact)));
+	disconnect(manager, SIGNAL(buddyAboutToBeAdded(Buddy)),
+			this, SLOT(buddyAboutToBeAdded(Buddy)));
+	disconnect(manager, SIGNAL(buddyAdded(Buddy)),
+			this, SLOT(buddyAdded(Buddy)));
+	disconnect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy)),
+			this, SLOT(buddyAboutToBeRemoved(Buddy)));
+	disconnect(manager, SIGNAL(buddyRemoved(Buddy)),
+			this, SLOT(buddyRemoved(Buddy)));
+	disconnect(manager, SIGNAL(buddyUpdated(Buddy)),
+			this, SLOT(buddyUpdated(Buddy)));
+	disconnect(manager, SIGNAL(buddyContactAboutToBeAdded(Buddy,Contact)),
+	           this, SLOT(buddyContactAboutToBeAdded(Buddy,Contact)));
+	disconnect(manager, SIGNAL(buddyContactAdded(Buddy,Contact)),
+	           this, SLOT(buddyContactAdded(Buddy,Contact)));
+	disconnect(manager, SIGNAL(buddyContactAboutToBeRemoved(Buddy,Contact)),
+	           this, SLOT(buddyContactAboutToBeRemoved(Buddy,Contact)));
+	disconnect(manager, SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	           this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
 	ContactManager *cm = ContactManager::instance();
 	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
@@ -122,7 +122,7 @@ Buddy BuddiesModel::buddyAt(int index) const
 		return BuddyManager::instance()->byIndex(index);
 }
 
-void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
+void BuddiesModel::buddyAboutToBeAdded(const Buddy &buddy)
 {
 	Q_UNUSED(buddy)
 
@@ -130,7 +130,7 @@ void BuddiesModel::buddyAboutToBeAdded(Buddy &buddy)
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void BuddiesModel::buddyAdded(Buddy &buddy)
+void BuddiesModel::buddyAdded(const Buddy &buddy)
 {
 	endInsertRows();
 
@@ -149,7 +149,7 @@ void BuddiesModel::buddyAdded(Buddy &buddy)
 	emit dataChanged(index, index);
 }
 
-void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
+void BuddiesModel::buddyAboutToBeRemoved(const Buddy &buddy)
 {
 	const QModelIndexList &indexes = indexListForValue(buddy);
 	if (indexes.isEmpty())
@@ -161,14 +161,14 @@ void BuddiesModel::buddyAboutToBeRemoved(Buddy &buddy)
 	beginRemoveRows(QModelIndex(), index.row(), index.row());
 }
 
-void BuddiesModel::buddyRemoved(Buddy &buddy)
+void BuddiesModel::buddyRemoved(const Buddy &buddy)
 {
 	Q_UNUSED(buddy)
 
 	endRemoveRows();
 }
 
-void BuddiesModel::buddyContactAboutToBeAdded(Buddy &buddy, const Contact &contact)
+void BuddiesModel::buddyContactAboutToBeAdded(const Buddy &buddy, const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -186,7 +186,7 @@ void BuddiesModel::buddyContactAboutToBeAdded(Buddy &buddy, const Contact &conta
 	beginInsertRows(index, count, count);
 }
 
-void BuddiesModel::buddyContactAdded(Buddy &buddy, const Contact &contact)
+void BuddiesModel::buddyContactAdded(const Buddy &buddy, const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -203,7 +203,7 @@ void BuddiesModel::buddyContactAdded(Buddy &buddy, const Contact &contact)
 	endInsertRows();
 }
 
-void BuddiesModel::buddyContactAboutToBeRemoved(Buddy &buddy, const Contact &contact)
+void BuddiesModel::buddyContactAboutToBeRemoved(const Buddy &buddy, const Contact &contact)
 {
 	const QModelIndexList &indexes = indexListForValue(buddy);
 	if (indexes.isEmpty())
@@ -219,7 +219,7 @@ void BuddiesModel::buddyContactAboutToBeRemoved(Buddy &buddy, const Contact &con
 	beginRemoveRows(index, contactIndex, contactIndex);
 }
 
-void BuddiesModel::buddyContactRemoved(Buddy &buddy, const Contact &contact)
+void BuddiesModel::buddyContactRemoved(const Buddy &buddy, const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -245,7 +245,7 @@ void BuddiesModel::myselfBuddyUpdated()
 	}
 }
 
-void BuddiesModel::buddyUpdated(Buddy &buddy)
+void BuddiesModel::buddyUpdated(const Buddy &buddy)
 {
 	const QModelIndexList &indexes = indexListForValue(buddy);
 	if (indexes.isEmpty())

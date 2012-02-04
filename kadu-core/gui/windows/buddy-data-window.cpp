@@ -100,8 +100,8 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
 
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(this);
 
-	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy&)),
-			this, SLOT(buddyRemoved(Buddy&)));
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)),
+			this, SLOT(buddyRemoved(Buddy)));
 }
 
 BuddyDataWindow::~BuddyDataWindow()
@@ -208,7 +208,7 @@ void BuddyDataWindow::updateBuddyAndClose()
 	}
 }
 
-void BuddyDataWindow::buddyRemoved(Buddy &buddy)
+void BuddyDataWindow::buddyRemoved(const Buddy &buddy)
 {
 	if (buddy == MyBuddy)
 		close();
