@@ -201,11 +201,7 @@ QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix
 	if (!chat)
 		return QLatin1String("0");
 
-	ChatDetails *details = chat.details();
-	if (!details)
-		return QLatin1String("0");
-
-	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(details);
+	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(chat.details());
 	if (!aggregate)
 		return QString("%1uuid = '%2'").arg(chatPrefix).arg(chat.uuid().toString());
 
@@ -314,6 +310,13 @@ Chat HistorySqlStorage::findChat(int id)
 	if (query.next())
 	{
 		chat = ChatManager::instance()->byUuid(query.value(0).toString());
+		if (!chat)
+		{
+			chat = Chat::create();
+			chat.setUuid(query.value(0).toString());
+			chat.setDisplay("?");
+		}
+
 		Q_ASSERT(!query.next());
 	}
 
@@ -789,10 +792,21 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 
 		HistoryQueryResult result;
 
-		const Contact &contact = ContactManager::instance()->byUuid(query.value(2).toString());
+		Contact contact = ContactManager::instance()->byUuid(query.value(2).toString());
 		if (contact)
 		{
 			const Buddy &buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+			result.setTalkable(Talkable(buddy));
+		}
+		else
+		{
+			const Buddy &buddy = Buddy::create();
+			buddy.setDisplay("?");
+
+			contact = Contact::create("");
+			contact.setUuid(query.value(2).toString());
+			contact.setOwnerBuddy(buddy);
+
 			result.setTalkable(Talkable(buddy));
 		}
 
@@ -903,7 +917,7 @@ QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const
 	if (!date.isNull())
 		query.bindValue(":date", date.toString("yyyyMMdd"));
 	executeQuery(query);
-	messages = messagesFromQuery(query);
+	messages = messagesFromQuery(talkable.toChat(), query);
 
 	return messages;
 }
@@ -940,7 +954,7 @@ QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QD
 
 	executeQuery(query);
 
-	messages = messagesFromQuery(query);
+	messages = messagesFromQuery(chat, query);
 
 	return messages;
 }
@@ -977,7 +991,7 @@ QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const Q
 
 	executeQuery(query);
 
-	result = messagesFromQuery(query);
+	result = messagesFromQuery(chat, query);
 
 	// see comment above
 	QVector<Message> inverted;
@@ -1079,23 +1093,24 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 */
 }
 
-QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
+QVector<Message> HistorySqlStorage::messagesFromQuery(const Chat &chat, QSqlQuery &query)
 {
 	QVector<Message> messages;
 	while (query.next())
 	{
 		bool outgoing = query.value(5).toBool();
 
-		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
-		if (chat.isNull())
-			continue;
-
 		MessageType type = outgoing ? MessageTypeSent : MessageTypeReceived;
 
-		// ignore non-existing contacts
+		// allow displaying messages for non-existing contacts
 		Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
-		if (sender.isNull())
-			continue;
+		if (!sender)
+		{
+			Contact sender = Contact::create("");
+			Buddy senderBuddy = Buddy::create();
+			senderBuddy.setDisplay("?");
+			sender.setOwnerBuddy(senderBuddy);
+		}
 
 		Message message = Message::create();
 		message.setMessageChat(chat);
