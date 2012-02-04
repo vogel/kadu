@@ -147,7 +147,9 @@ void SearchTab::createGui()
 
 	connect(searchButton, SIGNAL(clicked()), this, SLOT(performSearch()));
 
-	TimelineView = new TimelineChatMessagesView(true, Splitter);
+	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView->setTalkableVisible(true);
+	TimelineView->setTitleVisible(true);
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 
 	setFocusProxy(Query);

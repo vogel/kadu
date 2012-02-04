@@ -24,13 +24,17 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "model/model-chain.h"
 
+#include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
 
 #include "chat-history-tab.h"
 
 ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryMessagesTab(true, parent)
+		HistoryMessagesTab(parent)
 {
+	timelineView()->setTalkableVisible(false);
+	timelineView()->setTitleVisible(true);
+
 	setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
 }
 

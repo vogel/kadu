@@ -78,10 +78,9 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new TimelineChatMessagesView.
-	 * @param showTitleInTimeline if true title of item will be shown in timeline view
 	 * @param parent parent widget
 	 */
-	explicit TimelineChatMessagesView(bool showTitleInTimeline, QWidget *parent = 0);
+	explicit TimelineChatMessagesView(QWidget *parent = 0);
 	virtual ~TimelineChatMessagesView();
 
 	/**
@@ -176,6 +175,20 @@ public:
 	 * @short Hide wait overlay over messages view widget.
 	 */
 	void hideMessagesViewWaitOverlay();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Decide if talkable name should be displayed in timeline widget.
+	 * @param talkableVisible set to true if talkable name should be displayed in timeline widget
+	 */
+	void setTalkableVisible(const bool talkableVisible);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Decide if title should be displayed in timeline widget.
+	 * @param titleVisible set to true if title should be displayed in timeline widget
+	 */
+	void setTitleVisible(const bool titleVisible);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

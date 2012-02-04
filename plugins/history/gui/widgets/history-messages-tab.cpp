@@ -47,11 +47,11 @@
 
 #include "history-messages-tab.h"
 
-HistoryMessagesTab::HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent) :
+HistoryMessagesTab::HistoryMessagesTab(QWidget *parent) :
 		HistoryTab(parent), Storage(0),
 		TabWaitOverlay(0), TalkablesFutureWatcher(0)
 {
-	createGui(showTitleInTimeline);
+	createGui();
 	createModelChain();
 }
 
@@ -59,7 +59,7 @@ HistoryMessagesTab::~HistoryMessagesTab()
 {
 }
 
-void HistoryMessagesTab::createGui(bool showTitleInTimeline)
+void HistoryMessagesTab::createGui()
 {
 	TimelinePopupMenu = new QMenu(this);
 	TimelinePopupMenu->addAction(KaduIcon("kadu_icons/clear-history").icon(), tr("&Remove entries"),
@@ -93,7 +93,7 @@ void HistoryMessagesTab::createGui(bool showTitleInTimeline)
 
 	FilteredView->setView(TalkableTree);
 
-	TimelineView = new TimelineChatMessagesView(showTitleInTimeline, Splitter);
+	TimelineView = new TimelineChatMessagesView(Splitter);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
 	        this, SLOT(showTimelinePopupMenu()));

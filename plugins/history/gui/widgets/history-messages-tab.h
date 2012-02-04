@@ -82,7 +82,7 @@ class KADUAPI HistoryMessagesTab : public HistoryTab
 
 	Talkable CurrentTalkable;
 
-	void createGui(bool showTitleInTimeline);
+	void createGui();
 	void createModelChain();
 
 private slots:
@@ -103,13 +103,6 @@ protected:
 	void displayTalkable(const Talkable &talkable, bool force);
 
 	virtual void keyPressEvent(QKeyEvent *event);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns timeline view widget.
-	 * @return timeline view widget
-	 */
-	TimelineChatMessagesView * timelineView() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -173,14 +166,19 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Creates new HistoryTab widget.
-	 * @param showTitleInTimeline if true, timeline view has 3 columns, not 2
 	 * @param parent parent widget
 	 *
-	 * This contructor cannot be called directly, as this class is abstract. Implementations must
-	 * call this method and choose whether to use 3 or 2 columns in timeline view.
+	 * This contructor cannot be called directly, as this class is abstract.
 	 */
-	explicit HistoryMessagesTab(bool showTitleInTimeline, QWidget *parent = 0);
+	explicit HistoryMessagesTab(QWidget *parent = 0);
 	virtual ~HistoryMessagesTab();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns timeline view widget.
+	 * @return timeline view widget
+	 */
+	TimelineChatMessagesView * timelineView() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

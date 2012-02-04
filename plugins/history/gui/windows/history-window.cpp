@@ -36,6 +36,7 @@
 
 #include "gui/widgets/chat-history-tab.h"
 #include "gui/widgets/search-tab.h"
+#include "gui/widgets/timeline-chat-messages-view.h"
 #include "history.h"
 
 #include "history-window.h"
@@ -99,9 +100,15 @@ void HistoryWindow::createGui()
 			this, SLOT(currentTabChanged(int)));
 
 	ChatTab = new ChatHistoryTab(TabWidget);
-	StatusTab = new HistoryMessagesTab(false, TabWidget);
+
+	StatusTab = new HistoryMessagesTab(TabWidget);
+	StatusTab->timelineView()->setTalkableVisible(false);
+	StatusTab->timelineView()->setTitleVisible(false);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
-	SmsTab = new HistoryMessagesTab(false, TabWidget);
+
+	SmsTab = new HistoryMessagesTab(TabWidget);
+	SmsTab->timelineView()->setTalkableVisible(false);
+	SmsTab->timelineView()->setTitleVisible(false);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
 	TabWidget->addTab(ChatTab, tr("Chats"));

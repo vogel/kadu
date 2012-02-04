@@ -32,14 +32,13 @@
 
 #include "timeline-chat-messages-view.h"
 
-TimelineChatMessagesView::TimelineChatMessagesView(bool showTitleInTimeline, QWidget *parent) :
+TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
 		QWidget(parent),
 		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
 		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
 {
 	ResultsModel = new HistoryQueryResultsModel(this);
 	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
-	ResultsProxyModel->setTitleVisible(showTitleInTimeline);
 	ResultsProxyModel->setSourceModel(ResultsModel);
 
 	setLayout(new QVBoxLayout(this));
@@ -223,6 +222,16 @@ void TimelineChatMessagesView::hideMessagesViewWaitOverlay()
 {
 	MessagesViewWaitOverlay->deleteLater();
 	MessagesViewWaitOverlay = 0;
+}
+
+void TimelineChatMessagesView::setTalkableVisible(const bool talkableVisible)
+{
+	ResultsProxyModel->setTalkableVisible(talkableVisible);
+}
+
+void TimelineChatMessagesView::setTitleVisible(const bool titleVisible)
+{
+	ResultsProxyModel->setTitleVisible(titleVisible);
 }
 
 QList<int> TimelineChatMessagesView::sizes() const
