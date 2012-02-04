@@ -721,7 +721,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 		QTextDocument document;
 		document.setHtml(message);
 		FormattedMessage formatted = FormattedMessage::parse(&document);
-		QString title = formatted.toPlain();
+		QString title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
 
 		if (title.length() > DATE_TITLE_LENGTH)
 		{
@@ -811,7 +811,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		}
 
 		result.setDate(date);
-		result.setTitle(query.value(3).toString());
+		result.setTitle(query.value(3).toString().replace('\n', ' ').replace('\r', ' '));
 		result.setCount(query.value(0).toInt());
 		dates.append(result);
 	}
@@ -881,7 +881,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncSmsRecipientDates(const Histo
 
 		result.setTalkable(Talkable(buddy));
 		result.setDate(date);
-		result.setTitle(query.value(3).toString());
+		result.setTitle(query.value(3).toString().replace('\n', ' ').replace('\r', ' '));
 		result.setCount(query.value(0).toInt());
 		dates.append(result);
 	}
