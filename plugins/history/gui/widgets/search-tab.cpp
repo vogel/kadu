@@ -31,11 +31,12 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/web-view-highlighter.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "activate.h"
-#include <gui/widgets/chat-messages-view.h>
 
 #include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -146,6 +147,8 @@ void SearchTab::createGui()
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+
+	Highlighter = new WebViewHighlighter(TimelineView->messagesView());
 
 	setFocusProxy(Query);
 }
@@ -266,6 +269,8 @@ void SearchTab::performSearch()
 		TimelineView->setFutureResults((*SearchedStorage)->dates(query));
 	else
 		TimelineView->setResults(QVector<HistoryQueryResult>());
+
+	Highlighter->setHighlight(Query->text());
 }
 
 void SearchTab::currentDateChanged()

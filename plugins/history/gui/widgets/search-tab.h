@@ -34,6 +34,7 @@ class QSplitter;
 class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
 class TimelineChatMessagesView;
+class WebViewHighlighter;
 
 class SearchTab : public HistoryTab
 {
@@ -45,6 +46,7 @@ class SearchTab : public HistoryTab
 	HistoryMessagesStorage **SearchedStorage;
 
 	QSplitter *Splitter;
+	WebViewHighlighter *Highlighter;
 	TimelineChatMessagesView *TimelineView;
 
 	QLineEdit *Query;
