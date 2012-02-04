@@ -20,7 +20,7 @@
 #include "history-query-results-proxy-model.h"
 
 HistoryQueryResultsProxyModel::HistoryQueryResultsProxyModel(QObject *parent) :
-		QSortFilterProxyModel(parent), TitleVisible(true)
+		QSortFilterProxyModel(parent), TalkableVisible(true), TitleVisible(true)
 {
 }
 
@@ -32,10 +32,21 @@ bool HistoryQueryResultsProxyModel::filterAcceptsColumn(int sourceColumn, const 
 {
 	Q_UNUSED(sourceParent);
 
-	if (!TitleVisible && 2 == sourceColumn)
+	if (!TalkableVisible && 0 == sourceColumn)
+		return false;
+	if (!TitleVisible && 3 == sourceColumn)
 		return false;
 
 	return true;
+}
+
+void HistoryQueryResultsProxyModel::setTalkableVisible(const bool talkableVisible)
+{
+	if (TalkableVisible == talkableVisible)
+		return;
+
+	TalkableVisible = talkableVisible;
+	invalidateFilter();
 }
 
 void HistoryQueryResultsProxyModel::setTitleVisible(const bool titleVisible)

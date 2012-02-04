@@ -38,7 +38,7 @@ HistoryQueryResultsModel::~HistoryQueryResultsModel()
 
 int HistoryQueryResultsModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 3;
+	return parent.isValid() ? 0 : 4;
 }
 
 int HistoryQueryResultsModel::rowCount(const QModelIndex &parent) const
@@ -56,9 +56,10 @@ QVariant HistoryQueryResultsModel::headerData(int section, Qt::Orientation orien
 
 	switch (section)
 	{
-		case 0: return tr("Date");
-		case 1: return tr("Length");
-		case 2: return tr("Title");
+		case 0: return tr("Chat");
+		case 1: return tr("Date");
+		case 2: return tr("Length");
+		case 3: return tr("Title");
 	}
 
 	return QVariant();
@@ -78,9 +79,10 @@ QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) cons
 		{
 			switch (col)
 			{
-				case 0: return Results.at(row).date().toString("dd.MM.yyyy");
-				case 1: return Results.at(row).count();
-				case 2: return Results.at(row).title();
+				case 0: return Results.at(row).talkable().display();
+				case 1: return Results.at(row).date().toString("dd.MM.yyyy");
+				case 2: return Results.at(row).count();
+				case 3: return Results.at(row).title();
 			}
 
 			return QVariant();

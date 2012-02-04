@@ -24,6 +24,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/aggregate-chat-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
 
@@ -198,6 +199,18 @@ Account Talkable::account() const
 		case ItemChat: return MyChat.chatAccount();
 		default:
 			return toContact().contactAccount();
+	}
+}
+
+QString Talkable::display() const
+{
+	switch (Type)
+	{
+		case ItemBuddy: return MyBuddy.display();
+		case ItemContact: return MyContact.display(true);
+		case ItemChat: return ChatDataExtractor::data(MyChat, Qt::DisplayRole).toString();
+		default:
+			return QString();
 	}
 }
 

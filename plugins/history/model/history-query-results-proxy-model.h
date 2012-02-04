@@ -26,6 +26,7 @@ class HistoryQueryResultsProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
+	bool TalkableVisible;
 	bool TitleVisible;
 
 protected:
@@ -35,6 +36,7 @@ public:
 	explicit HistoryQueryResultsProxyModel(QObject *parent = 0);
 	virtual ~HistoryQueryResultsProxyModel();
 
+	void setTalkableVisible(const bool talkableVisible);
 	void setTitleVisible(const bool titleVisible);
 
 };

@@ -232,6 +232,13 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns display value of this Talkable instance.
+	 * @return display value of this Talkable instance
+	 */
+	QString display() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns current status of Contact returnd by toContact().
 	 * @return current status of Contact returnd by toContact()
 	 */
