@@ -99,9 +99,9 @@ void HistoryWindow::createGui()
 			this, SLOT(currentTabChanged(int)));
 
 	ChatTab = new ChatHistoryTab(TabWidget);
-	StatusTab = new HistoryMessagesTab(TabWidget);
+	StatusTab = new HistoryMessagesTab(false, TabWidget);
 	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
-	SmsTab = new HistoryMessagesTab(TabWidget);
+	SmsTab = new HistoryMessagesTab(false, TabWidget);
 	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
 	TabWidget->addTab(ChatTab, tr("Chats"));
