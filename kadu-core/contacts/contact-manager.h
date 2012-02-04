@@ -86,7 +86,7 @@ signals:
 
 	void dirtyContactAdded(Contact contact);
 
-	void contactUpdated(Contact &contact);
+	void contactUpdated(const Contact &contact);
 
 };
 

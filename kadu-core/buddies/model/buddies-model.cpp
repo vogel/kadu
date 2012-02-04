@@ -65,8 +65,8 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 			this, SLOT(myselfBuddyUpdated()));
 
 	ContactManager *cm = ContactManager::instance();
-	connect(cm, SIGNAL(contactUpdated(Contact&)),
-			   this, SLOT(contactUpdated(Contact&)));
+	connect(cm, SIGNAL(contactUpdated(Contact)),
+			   this, SLOT(contactUpdated(Contact)));
 }
 
 BuddiesModel::~BuddiesModel()
@@ -94,8 +94,8 @@ BuddiesModel::~BuddiesModel()
 	           this, SLOT(buddyContactRemoved(Buddy,Contact)));
 
 	ContactManager *cm = ContactManager::instance();
-	disconnect(cm, SIGNAL(contactUpdated(Contact&)),
-			   this, SLOT(contactUpdated(Contact&)));
+	disconnect(cm, SIGNAL(contactUpdated(Contact)),
+			   this, SLOT(contactUpdated(Contact)));
 }
 
 int BuddiesModel::rowCount(const QModelIndex &parent) const
@@ -257,7 +257,7 @@ void BuddiesModel::buddyUpdated(const Buddy &buddy)
 	emit dataChanged(index, index);
 }
 
-void BuddiesModel::contactUpdated(Contact &contact)
+void BuddiesModel::contactUpdated(const Contact &contact)
 {
 	const Buddy &buddy = contact.ownerBuddy();
 	if (!buddy)

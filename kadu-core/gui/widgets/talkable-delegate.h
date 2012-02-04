@@ -47,7 +47,7 @@ class TalkableDelegate : public KaduTreeViewDelegate
 	ModelChain *Chain;
 
 private slots:
-	void contactUpdated(Contact &contact);
+	void contactUpdated(const Contact &contact);
 	void buddyUpdated(const Buddy &buddy);
 	void messageStatusChanged(Message message);
 	void chainDestroyed();

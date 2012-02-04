@@ -45,7 +45,7 @@
 
 #include "jabber-contact-personal-info-widget.h"
 
-JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(Contact &contact, QWidget *parent) :
+JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent) :
 		QWidget(parent), MyContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

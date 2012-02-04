@@ -59,7 +59,7 @@ private slots:
 	void urlClicked(const QString &link);
 
 public:
-	explicit JabberContactPersonalInfoWidget(Contact &contact, QWidget *parent = 0);
+	explicit JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~JabberContactPersonalInfoWidget();
 
 };

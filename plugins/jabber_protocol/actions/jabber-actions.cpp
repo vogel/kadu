@@ -103,7 +103,7 @@ Contact JabberActions::contactFromAction(QAction *action)
 	return kaduAction->context()->contacts().toContact();
 }
 
-SubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact& contact)
+SubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact &contact)
 {
 	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
 	if (!jabberProtocolHandler)

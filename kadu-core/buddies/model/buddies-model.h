@@ -53,7 +53,7 @@ private slots:
 	void myselfBuddyUpdated();
 	void buddyUpdated(const Buddy &buddy);
 
-	void contactUpdated(Contact &contact);
+	void contactUpdated(const Contact &contact);
 
 protected:
 	virtual int buddyIndex(const Buddy &buddy) const;
