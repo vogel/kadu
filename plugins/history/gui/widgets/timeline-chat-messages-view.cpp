@@ -96,9 +96,9 @@ void TimelineChatMessagesView::setResults(const QVector<HistoryQueryResult> &res
 		return;
 	}
 
-	Timeline->setCurrentIndex(ResultsModel->index(results.size() - 1, 0));
-	QScrollBar *scrollBar = Timeline->verticalScrollBar();
-	scrollBar->setValue(scrollBar->maximum());
+	const QModelIndex &selected = Timeline->model()->index(Timeline->model()->rowCount() - 1, 0);
+	Timeline->setCurrentIndex(selected);
+	Timeline->scrollTo(selected, QAbstractItemView::PositionAtBottom);
 }
 
 void TimelineChatMessagesView::futureResultsAvailable()
