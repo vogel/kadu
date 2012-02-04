@@ -144,7 +144,7 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 	HistoryQuery query;
 	query.setTalkable(CurrentTalkable);
 
-	if (Storage)
+	if (Storage && !CurrentTalkable.isEmpty())
 		TimelineView->setFutureResults(Storage->dates(query));
 	else
 		TimelineView->setResults(QVector<HistoryQueryResult>());
