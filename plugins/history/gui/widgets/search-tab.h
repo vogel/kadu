@@ -31,12 +31,17 @@ class QLineEdit;
 class QRadioButton;
 class QSplitter;
 
+class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
 class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
 {
 	Q_OBJECT
+
+	HistoryMessagesStorage *ChatStorage;
+	HistoryMessagesStorage *StatusStorage;
+	HistoryMessagesStorage *SmsStorage;
 
 	QSplitter *Splitter;
 	TimelineChatMessagesView *TimelineView;
@@ -69,6 +74,10 @@ private slots:
 public:
 	explicit SearchTab(QWidget *parent = 0);
 	virtual ~SearchTab();
+
+	void setChatStorage(HistoryMessagesStorage *storage);
+	void setStatusStorage(HistoryMessagesStorage *storage);
+	void setSmsStorage(HistoryMessagesStorage *storage);
 
 	virtual QList<int> sizes() const;
 	virtual void setSizes(const QList<int> &newSizes);

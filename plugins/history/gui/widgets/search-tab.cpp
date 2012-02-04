@@ -23,6 +23,7 @@
 #include <QtGui/QDateEdit>
 #include <QtGui/QFormLayout>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
@@ -39,13 +40,12 @@
 #include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
-#include "history.h"
 #include "history-query.h"
 
 #include "search-tab.h"
 
 SearchTab::SearchTab(QWidget *parent) :
-		HistoryTab(parent)
+		HistoryTab(parent), ChatStorage(0), StatusStorage(0), SmsStorage(0)
 {
 	createGui();
 }
@@ -83,14 +83,12 @@ void SearchTab::createGui()
 	SearchInChats->setChecked(true);
 	SelectChat = new HistoryTalkableComboBox(queryFormWidget);
 	SelectChat->setAllLabel(tr(" - All chats - "));
-	SelectChat->setFutureTalkables(History::instance()->currentStorage()->chatStorage()->talkables());
 	SelectChat->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	queryFormLayout->addRow(SearchInChats, SelectChat);
 
 	SearchInStatuses = new QRadioButton(tr("Statuses"), queryFormWidget);
 	SelectStatusBuddy = new HistoryTalkableComboBox(queryFormWidget);
 	SelectStatusBuddy->setAllLabel(tr(" - All buddies - "));
-	SelectStatusBuddy->setFutureTalkables(History::instance()->currentStorage()->statusStorage()->talkables());
 	SelectStatusBuddy->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectStatusBuddy->setEnabled(false);
 	queryFormLayout->addRow(SearchInStatuses, SelectStatusBuddy);
@@ -98,7 +96,6 @@ void SearchTab::createGui()
 	SearchInSmses = new QRadioButton(tr("Smses"), queryFormWidget);
 	SelectSmsRecipient = new HistoryTalkableComboBox(queryFormWidget);
 	SelectSmsRecipient->setAllLabel(tr(" - All recipients - "));
-	SelectSmsRecipient->setFutureTalkables(History::instance()->currentStorage()->smsStorage()->talkables());
 	SelectSmsRecipient->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	SelectSmsRecipient->setEnabled(false);
 	queryFormLayout->addRow(SearchInSmses, SelectSmsRecipient);
@@ -153,6 +150,36 @@ void SearchTab::createGui()
 	setFocusProxy(Query);
 }
 
+void SearchTab::setChatStorage(HistoryMessagesStorage *storage)
+{
+	ChatStorage = storage;
+
+	if (!ChatStorage)
+		SelectChat->setTalkables(QVector<Talkable>());
+	else
+		SelectChat->setFutureTalkables(ChatStorage->talkables());
+}
+
+void SearchTab::setStatusStorage(HistoryMessagesStorage *storage)
+{
+	StatusStorage = storage;
+
+	if (!StatusStorage)
+		SelectStatusBuddy->setTalkables(QVector<Talkable>());
+	else
+		SelectStatusBuddy->setFutureTalkables(StatusStorage->talkables());
+}
+
+void SearchTab::setSmsStorage(HistoryMessagesStorage *storage)
+{
+	SmsStorage = storage;
+
+	if (!SmsStorage)
+		SelectSmsRecipient->setTalkables(QVector<Talkable>());
+	else
+		SelectSmsRecipient->setFutureTalkables(SmsStorage->talkables());
+}
+
 void SearchTab::kindChanged(QAbstractButton *button)
 {
 	SelectChat->setEnabled(SearchInChats == button);
@@ -186,19 +213,28 @@ void SearchTab::performSearch()
 	if (SearchInChats->isChecked())
 	{
 		query.setTalkable(SelectChat->currentTalkable());
-		TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
+		if (ChatStorage)
+			TimelineView->setFutureResults(ChatStorage->dates(query));
+		else
+			TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->setTalkableHeader(tr("Chat"));
 	}
 	else if (SearchInStatuses->isChecked())
 	{
 		query.setTalkable(SelectStatusBuddy->currentTalkable());
-		TimelineView->setFutureResults(History::instance()->currentStorage()->statusStorage()->dates(query));
+		if (StatusStorage)
+			TimelineView->setFutureResults(StatusStorage->dates(query));
+		else
+			TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->setTalkableHeader(tr("Buddy"));
 	}
 	else if (SearchInSmses->isChecked())
 	{
 		query.setTalkable(SelectSmsRecipient->currentTalkable());
-		TimelineView->setFutureResults(History::instance()->currentStorage()->smsStorage()->dates(query));
+		if (SmsStorage)
+			TimelineView->setFutureResults(SmsStorage->dates(query));
+		else
+			TimelineView->setResults(QVector<HistoryQueryResult>());
 		TimelineView->setTalkableHeader(tr("Recipient"));
 	}
 }
@@ -206,6 +242,13 @@ void SearchTab::performSearch()
 void SearchTab::currentDateChanged()
 {
 	const QModelIndex &currentIndex = TimelineView->timeline()->currentIndex();
+	if (!currentIndex.isValid())
+	{
+		TimelineView->messagesView()->setChat(Chat::null);
+		TimelineView->messagesView()->clearMessages();
+		return;
+	}
+
 	const Talkable talkable = currentIndex.data(TalkableRole).value<Talkable>();
 	const QDate date = currentIndex.data(DateRole).value<QDate>();
 
@@ -218,11 +261,26 @@ void SearchTab::currentDateChanged()
 	TimelineView->messagesView()->setChat(chat);
 
 	if (SearchInChats->isChecked())
-		TimelineView->setFutureMessages(History::instance()->currentStorage()->chatStorage()->messages(talkable, date));
+	{
+		if (ChatStorage)
+			TimelineView->setFutureMessages(ChatStorage->messages(talkable, date));
+		else
+			TimelineView->setMessages(QVector<Message>());
+	}
 	if (SearchInStatuses->isChecked())
-		TimelineView->setFutureMessages(History::instance()->currentStorage()->statusStorage()->messages(talkable, date));
+	{
+		if (StatusStorage)
+			TimelineView->setFutureMessages(StatusStorage->messages(talkable, date));
+		else
+			TimelineView->setMessages(QVector<Message>());
+	}
 	if (SearchInSmses->isChecked())
-		TimelineView->setFutureMessages(History::instance()->currentStorage()->smsStorage()->messages(talkable, date));
+	{
+		if (SmsStorage)
+			TimelineView->setFutureMessages(SmsStorage->messages(talkable, date));
+		else
+			TimelineView->setMessages(QVector<Message>());
+	}
 }
 
 QList<int> SearchTab::sizes() const

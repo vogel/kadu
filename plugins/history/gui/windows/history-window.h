@@ -32,6 +32,7 @@ class Chat;
 class ChatHistoryTab;
 class HistoryMessagesTab;
 class HistoryStorage;
+class SearchTab;
 
 /*!
 \class HistoryWindow
@@ -51,6 +52,7 @@ class HistoryWindow : public QDialog
 	ChatHistoryTab *ChatTab;
 	HistoryMessagesTab *StatusTab;
 	HistoryMessagesTab *SmsTab;
+	SearchTab *MySearchTab;
 
 	explicit HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();
