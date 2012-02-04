@@ -1,7 +1,4 @@
 set (gui_SRCS
-	hot-key.cpp
-	status-icon.cpp
-
 	actions/chat/add-conference-action.cpp
 	actions/chat/leave-chat-action.cpp
 
@@ -150,12 +147,13 @@ set (gui_SRCS
 	windows/open-chat-with/open-chat-with.cpp
 	windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	windows/open-chat-with/open-chat-with-runner-manager.cpp
+
+	hot-key.cpp
+	status-icon.cpp
+	web-view-highlighter.cpp
 )
 
 set (gui_MOC_SRCS
-	hot-key.h
-	status-icon.h
-
 	actions/chat/add-conference-action.h
 	actions/chat/leave-chat-action.h
 
@@ -300,6 +298,10 @@ set (gui_MOC_SRCS
 
 	windows/open-chat-with/open-chat-with.h
 	windows/open-chat-with/open-chat-with-runner-manager.h
+
+	hot-key.h
+	status-icon.h
+	web-view-highlighter.h
 )
 
 if (MINGW)
