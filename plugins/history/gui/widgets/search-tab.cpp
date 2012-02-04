@@ -34,6 +34,7 @@
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "activate.h"
+#include <gui/widgets/chat-messages-view.h>
 
 #include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -207,6 +208,14 @@ void SearchTab::currentDateChanged()
 	const QModelIndex &currentIndex = TimelineView->timeline()->currentIndex();
 	const Talkable talkable = currentIndex.data(TalkableRole).value<Talkable>();
 	const QDate date = currentIndex.data(DateRole).value<QDate>();
+
+	Chat chat = talkable.toChat();
+	if (!chat)
+	{
+		chat = Chat::create();
+		chat.setDisplay("?");
+	}
+	TimelineView->messagesView()->setChat(chat);
 
 	if (SearchInChats->isChecked())
 		TimelineView->setFutureMessages(History::instance()->currentStorage()->chatStorage()->messages(talkable, date));
