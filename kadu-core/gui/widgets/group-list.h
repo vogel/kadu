@@ -38,8 +38,8 @@ public:
 	explicit GroupList(QWidget *parent = 0);
 	virtual ~GroupList();
 
-	void setCheckedGroups(const QList<Group> groups);
-	QList<Group> checkedGroups();
+	void setCheckedGroups(const QSet<Group> groups);
+	QSet<Group> checkedGroups();
 
 };
 

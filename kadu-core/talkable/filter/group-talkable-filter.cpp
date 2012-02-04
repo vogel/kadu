@@ -31,7 +31,7 @@ GroupTalkableFilter::~GroupTalkableFilter()
 {
 }
 
-bool GroupTalkableFilter::acceptGroupList(const QList<Group> &groups, bool showInAllGroup)
+bool GroupTalkableFilter::acceptGroupList(const QSet<Group> &groups, bool showInAllGroup)
 {
 	if (CurrentGroup)
 		return groups.contains(CurrentGroup);

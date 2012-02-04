@@ -35,7 +35,7 @@ GroupList::~GroupList()
 {
 }
 
-void GroupList::setCheckedGroups(const QList<Group> groups)
+void GroupList::setCheckedGroups(const QSet<Group> groups)
 {
 	QSet<QString> checkedNames;
 	foreach (const Group &group, groups)
@@ -52,16 +52,16 @@ void GroupList::setCheckedGroups(const QList<Group> groups)
 	}
 }
 
-QList<Group> GroupList::checkedGroups()
+QSet<Group> GroupList::checkedGroups()
 {
-	QList<Group> result;
+	QSet<Group> result;
 
 	const int itemCount = count();
 	for (int i = 0; i < itemCount; i++)
 	{
 		const QListWidgetItem * const groupItem = item(i);
 		if (Qt::Checked == groupItem->checkState())
-			result.append(GroupManager::instance()->byName(groupItem->text()));
+			result.insert(GroupManager::instance()->byName(groupItem->text()));
 	}
 
 	return result;

@@ -49,7 +49,7 @@ class GroupTalkableFilter : public TalkableFilter
 	Group CurrentGroup;
 	bool AllGroupShown;
 
-	bool acceptGroupList(const QList<Group> &groups, bool showInAllGroup);
+	bool acceptGroupList(const QSet<Group> &groups, bool showInAllGroup);
 
 public:
 	/**

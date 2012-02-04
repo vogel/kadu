@@ -346,17 +346,17 @@ void ChatShared::setType(const QString &type)
 		chatTypeRegistered(chatType); // this will add details
 }
 
-void ChatShared::setGroups(const QList<Group> &groups)
+void ChatShared::setGroups(const QSet<Group> &groups)
 {
 	ensureLoaded();
 
 	if (Groups == groups)
 		return;
 
-	QList<Group> groupsToRemove = Groups;
+	QSet<Group> groupsToRemove = Groups;
 
 	foreach (const Group &group, groups)
-		if (groupsToRemove.removeAll(group) <= 0)
+		if (!groupsToRemove.remove(group))
 			doAddToGroup(group);
 
 	foreach (const Group &group, groupsToRemove)
@@ -388,7 +388,7 @@ bool ChatShared::doAddToGroup(const Group &group)
 	if (!group || Groups.contains(group))
 		return false;
 
-	Groups.append(group);
+	Groups.insert(group);
 	connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
 
 	return true;
@@ -396,7 +396,7 @@ bool ChatShared::doAddToGroup(const Group &group)
 
 bool ChatShared::doRemoveFromGroup(const Group &group)
 {
-	if (Groups.removeAll(group) <= 0)
+	if (!Groups.remove(group))
 		return false;
 
 	disconnect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));

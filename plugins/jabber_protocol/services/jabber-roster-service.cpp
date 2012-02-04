@@ -201,7 +201,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	// owner buddies (which may own more contacts) from their groups. See bug #2320.
 	if (!protocol()->contactsListReadOnly())
 	{
-		QList<Group> groups;
+		QSet<Group> groups;
 		foreach (const QString &group, item.groups())
 			groups << GroupManager::instance()->byName(group);
 		buddy.setGroups(groups);

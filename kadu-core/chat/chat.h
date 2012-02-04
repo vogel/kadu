@@ -105,7 +105,7 @@ public:
 
 	KaduSharedBase_PropertyCRW(QString, display, Display)
 	KaduSharedBase_PropertyBool(IgnoreAllMessages)
-	KaduSharedBase_PropertyCRW(QList<Group>, groups, Groups)
+	KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
 	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 };

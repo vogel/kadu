@@ -148,5 +148,5 @@ KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::
 KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
 KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
 KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
-KaduSharedBase_PropertyDefCRW(Chat, QList<Group>, groups, Groups, QList<Group>())
+KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>())
 KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0)

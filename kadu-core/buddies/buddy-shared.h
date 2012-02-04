@@ -29,6 +29,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QSet>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -94,7 +95,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	QString Website;
 	unsigned short BirthYear;
 	BuddyGender Gender;
-	QList<Group> Groups;
+	QSet<Group> Groups;
 	bool PreferHigherStatuses;
 
 	bool Anonymous;
@@ -150,8 +151,8 @@ public:
 
 	bool isEmpty(bool checkOnlyForContacts);
 
-	KaduShared_PropertyRead(const QList<Group> &, groups, Groups)
-	void setGroups(const QList<Group> &groups);
+	KaduShared_PropertyRead(const QSet<Group> &, groups, Groups)
+	void setGroups(const QSet<Group> &groups);
 	bool showInAllGroup();
 	bool isInGroup(const Group &group);
 	void addToGroup(const Group &group);

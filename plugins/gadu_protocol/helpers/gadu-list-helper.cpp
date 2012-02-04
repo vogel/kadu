@@ -237,12 +237,12 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 			buddy.setWebsite(contactElement.firstChildElement("WwwAddress").text());
 			buddy.setGender((BuddyGender)contactElement.firstChildElement("Gender").text().toInt());
 
-			QList<Group> groups;
+			QSet<Group> groups;
 			QDomElement groupsElement = contactsNode.firstChildElement("Groups");
 			QDomElement groupElement = groupsElement.firstChildElement("GroupId");
 			for (; !groupElement.isNull(); groupElement = groupElement.nextSiblingElement("GroupId"))
 				if (importedGroups.contains(groupElement.text()))
-					groups.append(importedGroups.value(groupElement.text()));
+					groups.insert(importedGroups.value(groupElement.text()));
 
 			if (!groups.isEmpty())
 				buddy.setGroups(groups);
@@ -270,7 +270,7 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 
 Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 {
-	QList<Group> groups;
+	QSet<Group> groups;
 	unsigned int i, secCount;
 	bool ok = false;
 
@@ -289,7 +289,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 
 	groups.clear();
 	if (!sections[5].isEmpty())
-		groups.append(GroupManager::instance()->byName(sections[5]));
+		groups.insert(GroupManager::instance()->byName(sections[5]));
 
 	i = 6;
 	while (!ok && i < secCount)
@@ -297,7 +297,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 		sections[i].toULong(&ok);
 		ok = ok || sections[i].isEmpty();
 		if (!ok)
-			groups.append(GroupManager::instance()->byName(sections[i]));
+			groups.insert(GroupManager::instance()->byName(sections[i]));
 		++i;
 	}
 	buddy.setGroups(groups);
@@ -348,7 +348,7 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 
 Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 {
-	QList<Group> groups;
+	QSet<Group> groups;
 	unsigned int i, secCount;
 	bool ok = false;
 
@@ -368,7 +368,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 	if (!sections[5].isEmpty())
 	{
 		foreach (const QString &group, sections[5].split(',', QString::SkipEmptyParts))
-			groups.append(GroupManager::instance()->byName(group));
+			groups.insert(GroupManager::instance()->byName(group));
 
 		buddy.setGroups(groups);
 	}

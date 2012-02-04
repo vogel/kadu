@@ -25,6 +25,8 @@
 #ifndef CHAT_SHARED_H
 #define CHAT_SHARED_H
 
+#include <QtCore/QSet>
+
 #include "chat/type/chat-type-aware-object.h"
 #include "storage/shared.h"
 
@@ -59,7 +61,7 @@ class KADUAPI ChatShared : public QObject, public Shared, ChatTypeAwareObject
 	QString Display;
 	QString Type;
 	bool IgnoreAllMessages;
-	QList<Group> Groups;
+	QSet<Group> Groups;
 	quint16 UnreadMessagesCount;
 
 	bool doAddToGroup(const Group &group);
@@ -95,8 +97,8 @@ public:
 	ContactSet contacts();
 	QString name();
 
-	KaduShared_PropertyRead(const QList<Group> &, groups, Groups)
-	void setGroups(const QList<Group> &groups);
+	KaduShared_PropertyRead(const QSet<Group> &, groups, Groups)
+	void setGroups(const QSet<Group> &groups);
 	bool showInAllGroup();
 	bool isInGroup(const Group &group);
 	void addToGroup(const Group &group);
