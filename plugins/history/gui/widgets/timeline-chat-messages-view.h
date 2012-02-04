@@ -192,6 +192,20 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set header to talkable column.
+	 * @param talkableHeader header for talkable column
+	 */
+	void setTalkableHeader(const QString &talkableHeader);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set header to length column.
+	 * @param lengthHeader header for length column
+	 */
+	void setLengthHeader(const QString &lengthHeader);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns heights of timeline and message view widgets.
 	 * @return heights of timeline and message view widgets
 	 *

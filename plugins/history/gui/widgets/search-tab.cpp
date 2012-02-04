@@ -150,6 +150,7 @@ void SearchTab::createGui()
 	TimelineView = new TimelineChatMessagesView(Splitter);
 	TimelineView->setTalkableVisible(true);
 	TimelineView->setTitleVisible(true);
+	TimelineView->setLengthHeader(tr("Found"));
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 
 	setFocusProxy(Query);
@@ -196,16 +197,19 @@ void SearchTab::performSearch()
 	{
 		query.setTalkable(SelectChat->currentTalkable());
 		TimelineView->setFutureResults(History::instance()->currentStorage()->chatStorage()->dates(query));
+		TimelineView->setTalkableHeader(tr("Chat"));
 	}
 	else if (SearchInStatuses->isChecked())
 	{
 		query.setTalkable(SelectStatusBuddy->currentTalkable());
 		TimelineView->setFutureResults(History::instance()->currentStorage()->statusStorage()->dates(query));
+		TimelineView->setTalkableHeader(tr("Buddy"));
 	}
 	else if (SearchInSmses->isChecked())
 	{
 		query.setTalkable(SelectSmsRecipient->currentTalkable());
 		TimelineView->setFutureResults(History::instance()->currentStorage()->smsStorage()->dates(query));
+		TimelineView->setTalkableHeader(tr("Recipient"));
 	}
 }
 

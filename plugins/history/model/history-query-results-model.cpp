@@ -30,6 +30,8 @@
 HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
+	TalkableHeader = tr("Chat");
+	LengthHeader = tr("Length");
 }
 
 HistoryQueryResultsModel::~HistoryQueryResultsModel()
@@ -56,9 +58,9 @@ QVariant HistoryQueryResultsModel::headerData(int section, Qt::Orientation orien
 
 	switch (section)
 	{
-		case 0: return tr("Chat");
+		case 0: return TalkableHeader;
 		case 1: return tr("Date");
-		case 2: return tr("Length");
+		case 2: return LengthHeader;
 		case 3: return tr("Title");
 	}
 
@@ -93,6 +95,24 @@ QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) cons
 	}
 
 	return QVariant();
+}
+
+void HistoryQueryResultsModel::setTalkableHeader(const QString &talkableHeader)
+{
+	if (TalkableHeader == talkableHeader)
+		return;
+
+	TalkableHeader = talkableHeader;
+	emit headerDataChanged(Qt::Horizontal, 0, 0);
+}
+
+void HistoryQueryResultsModel::setLengthHeader (const QString &lengthHeader)
+{
+	if (LengthHeader == lengthHeader)
+		return;
+
+	LengthHeader = lengthHeader;
+	emit headerDataChanged(Qt::Horizontal, 3, 3);
 }
 
 void HistoryQueryResultsModel::setResults(const QVector<HistoryQueryResult> &results)

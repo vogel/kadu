@@ -35,6 +35,8 @@ class HistoryQueryResultsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
+	QString TalkableHeader;
+	QString LengthHeader;
 	QVector<HistoryQueryResult> Results;
 
 public:
@@ -47,6 +49,8 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
+	void setTalkableHeader(const QString &talkableHeader);
+	void setLengthHeader(const QString &lengthHeader);
 	void setResults(const QVector<HistoryQueryResult> &results);
 
 };

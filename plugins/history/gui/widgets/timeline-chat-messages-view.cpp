@@ -234,6 +234,16 @@ void TimelineChatMessagesView::setTitleVisible(const bool titleVisible)
 	ResultsProxyModel->setTitleVisible(titleVisible);
 }
 
+void TimelineChatMessagesView::setTalkableHeader(const QString &talkableHeader)
+{
+	ResultsModel->setTalkableHeader(talkableHeader);
+}
+
+void TimelineChatMessagesView::setLengthHeader(const QString &lengthHeader)
+{
+	ResultsModel->setLengthHeader(lengthHeader);
+}
+
 QList<int> TimelineChatMessagesView::sizes() const
 {
 	return Splitter->sizes();
