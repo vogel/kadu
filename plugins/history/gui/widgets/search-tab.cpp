@@ -45,7 +45,7 @@
 #include "search-tab.h"
 
 SearchTab::SearchTab(QWidget *parent) :
-		HistoryTab(parent), ChatStorage(0), StatusStorage(0), SmsStorage(0)
+		HistoryTab(parent), ChatStorage(0), StatusStorage(0), SmsStorage(0), SearchedStorage(&ChatStorage)
 {
 	createGui();
 }
@@ -152,32 +152,65 @@ void SearchTab::createGui()
 
 void SearchTab::setChatStorage(HistoryMessagesStorage *storage)
 {
+	if (ChatStorage == storage)
+		return;
+
 	ChatStorage = storage;
 
 	if (!ChatStorage)
 		SelectChat->setTalkables(QVector<Talkable>());
 	else
 		SelectChat->setFutureTalkables(ChatStorage->talkables());
+
+	if (*SearchedStorage == ChatStorage)
+	{
+		TimelineView->setResults(QVector<HistoryQueryResult>());
+		TimelineView->messagesView()->setChat(Chat::null);
+		TimelineView->messagesView()->clearMessages();
+		TimelineView->messagesView()->refresh();
+	}
 }
 
 void SearchTab::setStatusStorage(HistoryMessagesStorage *storage)
 {
+	if (StatusStorage == storage)
+		return;
+
 	StatusStorage = storage;
 
 	if (!StatusStorage)
 		SelectStatusBuddy->setTalkables(QVector<Talkable>());
 	else
 		SelectStatusBuddy->setFutureTalkables(StatusStorage->talkables());
+
+	if (*SearchedStorage == StatusStorage)
+	{
+		TimelineView->setResults(QVector<HistoryQueryResult>());
+		TimelineView->messagesView()->setChat(Chat::null);
+		TimelineView->messagesView()->clearMessages();
+		TimelineView->messagesView()->refresh();
+	}
 }
 
 void SearchTab::setSmsStorage(HistoryMessagesStorage *storage)
 {
+	if (SmsStorage == storage)
+		return;
+
 	SmsStorage = storage;
 
 	if (!SmsStorage)
 		SelectSmsRecipient->setTalkables(QVector<Talkable>());
 	else
 		SelectSmsRecipient->setFutureTalkables(SmsStorage->talkables());
+
+	if (*SearchedStorage == SmsStorage)
+	{
+		TimelineView->setResults(QVector<HistoryQueryResult>());
+		TimelineView->messagesView()->setChat(Chat::null);
+		TimelineView->messagesView()->clearMessages();
+		TimelineView->messagesView()->refresh();
+	}
 }
 
 void SearchTab::kindChanged(QAbstractButton *button)
@@ -213,30 +246,26 @@ void SearchTab::performSearch()
 	if (SearchInChats->isChecked())
 	{
 		query.setTalkable(SelectChat->currentTalkable());
-		if (ChatStorage)
-			TimelineView->setFutureResults(ChatStorage->dates(query));
-		else
-			TimelineView->setResults(QVector<HistoryQueryResult>());
+		SearchedStorage = &ChatStorage;
 		TimelineView->setTalkableHeader(tr("Chat"));
 	}
 	else if (SearchInStatuses->isChecked())
 	{
 		query.setTalkable(SelectStatusBuddy->currentTalkable());
-		if (StatusStorage)
-			TimelineView->setFutureResults(StatusStorage->dates(query));
-		else
-			TimelineView->setResults(QVector<HistoryQueryResult>());
+		SearchedStorage = &StatusStorage;
 		TimelineView->setTalkableHeader(tr("Buddy"));
 	}
 	else if (SearchInSmses->isChecked())
 	{
 		query.setTalkable(SelectSmsRecipient->currentTalkable());
-		if (SmsStorage)
-			TimelineView->setFutureResults(SmsStorage->dates(query));
-		else
-			TimelineView->setResults(QVector<HistoryQueryResult>());
+		SearchedStorage = &SmsStorage;
 		TimelineView->setTalkableHeader(tr("Recipient"));
 	}
+
+	if (SearchedStorage && *SearchedStorage)
+		TimelineView->setFutureResults((*SearchedStorage)->dates(query));
+	else
+		TimelineView->setResults(QVector<HistoryQueryResult>());
 }
 
 void SearchTab::currentDateChanged()
@@ -260,27 +289,10 @@ void SearchTab::currentDateChanged()
 	}
 	TimelineView->messagesView()->setChat(chat);
 
-	if (SearchInChats->isChecked())
-	{
-		if (ChatStorage)
-			TimelineView->setFutureMessages(ChatStorage->messages(talkable, date));
-		else
-			TimelineView->setMessages(QVector<Message>());
-	}
-	if (SearchInStatuses->isChecked())
-	{
-		if (StatusStorage)
-			TimelineView->setFutureMessages(StatusStorage->messages(talkable, date));
-		else
-			TimelineView->setMessages(QVector<Message>());
-	}
-	if (SearchInSmses->isChecked())
-	{
-		if (SmsStorage)
-			TimelineView->setFutureMessages(SmsStorage->messages(talkable, date));
-		else
-			TimelineView->setMessages(QVector<Message>());
-	}
+	if (SearchedStorage && *SearchedStorage)
+		TimelineView->setFutureMessages((*SearchedStorage)->messages(talkable, date));
+	else
+		TimelineView->setMessages(QVector<Message>());
 }
 
 QList<int> SearchTab::sizes() const

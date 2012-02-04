@@ -42,6 +42,7 @@ class SearchTab : public HistoryTab
 	HistoryMessagesStorage *ChatStorage;
 	HistoryMessagesStorage *StatusStorage;
 	HistoryMessagesStorage *SmsStorage;
+	HistoryMessagesStorage **SearchedStorage;
 
 	QSplitter *Splitter;
 	TimelineChatMessagesView *TimelineView;
