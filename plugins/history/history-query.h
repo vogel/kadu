@@ -24,6 +24,22 @@
 
 #include "talkable/talkable.h"
 
+/**
+ * @addtogroup History
+ * @{
+ */
+
+/**
+ * @class HistoryQuery
+ * @author Rafał 'Vogel' Malinowski
+ * @short This class represents query for messages in history.
+ *
+ * This class represents query for messages in history. Each query can contain a talkable,
+ * query string and range of dates. Any query element can be empty - it will be ignored during
+ * search.
+ *
+ * Results of query are stored in QVector of HistoryQueryResult.
+ */
 class HistoryQuery
 {
 	Talkable QueryTalkable;
@@ -32,23 +48,94 @@ class HistoryQuery
 	QDate ToDate;
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create empty query.
+	 */
 	HistoryQuery();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create copy of existing query.
+	 * @param copyMe existing query to copy
+	 */
 	HistoryQuery(const HistoryQuery &copyMe);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Copy existing query into this query.
+	 * @param copyMe existing query to copy
+	 */
 	HistoryQuery & operator = (const HistoryQuery &copyMe);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets talkable filter.
+	 * @param talkable talkable to filter
+	 *
+	 * Only items originating from this talkable will be returned.
+	 */
 	void setTalkable(const Talkable &talkable);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return talkable filter.
+	 * @return talkable filter
+	 */
 	Talkable talkable() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets query string filter.
+	 * @param string query string to filter
+	 *
+	 * Only items with content containing this string will be returned.
+	 */
 	void setString(const QString &string);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return query string filter.
+	 * @return query string filter
+	 */
 	QString string() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets from date filter.
+	 * @param fromDate from date filter
+	 *
+	 * Only items with content added after this date (inclusive) will be returned.
+	 */
 	void setFromDate(const QDate &fromDate);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return from date filter.
+	 * @return from date filter
+	 */
 	QDate fromDate() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets to date filter.
+	 * @param toDate to date filter
+	 *
+	 * Only items with content added before this date (inclusive) will be returned.
+	 */
 	void setToDate(const QDate &toDate);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return to date filter.
+	 * @return to date filter
+	 */
 	QDate toDate() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif //  HISTORY_QUERY_H
