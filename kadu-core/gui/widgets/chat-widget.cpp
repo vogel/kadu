@@ -184,14 +184,21 @@ void ChatWidget::createGui()
 	HorizontalSplitter->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 	HorizontalSplitter->setMinimumHeight(10);
 
-	MessagesView = new ChatMessagesView(CurrentChat);
+	QFrame *frame = new QFrame(HorizontalSplitter);
+	frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+
+	QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+	frameLayout->setMargin(0);
+
+	MessagesView = new ChatMessagesView(frame);
+	frameLayout->addWidget(MessagesView);
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
-	HorizontalSplitter->addWidget(MessagesView);
+	HorizontalSplitter->addWidget(frame);
 
 	InputBox = new ChatEditBox(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
