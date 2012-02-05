@@ -617,7 +617,7 @@ QVector<Talkable> HistorySqlStorage::syncStatusBuddies()
 		if (!contact)
 			continue;
 
-		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
 		Q_ASSERT(buddy);
 
 		if (!result.contains(buddy))
@@ -795,7 +795,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		Contact contact = ContactManager::instance()->byUuid(query.value(2).toString());
 		if (contact)
 		{
-			const Buddy &buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+			const Buddy &buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
 			result.setTalkable(Talkable(buddy));
 		}
 		else
