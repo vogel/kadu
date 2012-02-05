@@ -25,10 +25,13 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QCompleter>
 #include <QtGui/QDesktopWidget>
-#include <QtGui/QGridLayout>
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QTextEdit>
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
@@ -91,8 +94,56 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 
 	setWindowRole("kadu-choose-description");
 
-	setWindowTitle(tr("Select description"));
+	setWindowTitle(tr("Account status: %s (%s)"));
 	setAttribute(Qt::WA_DeleteOnClose);
+
+//
+
+
+	QFormLayout *layout = new QFormLayout(this);
+
+	QComboBox *statusCombo = new QComboBox(this);
+	layout->addRow(new QLabel(tr("Status") + ':'), statusCombo);
+
+	DescriptionEdit = new QTextEdit(this);
+	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
+	layout->addRow(new QLabel(tr("Description") + ':'), DescriptionEdit);
+
+	QWidget *spacer = new QWidget(this);
+	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	
+	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
+	if (maxDescriptionLength > 0)
+	{
+		AvailableChars = new QLabel(this);
+// 		Description->lineEdit()->setMaxLength(maxDescriptionLength);
+// 		currentDescriptionChanged(Description->currentText());
+// 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+		layout->addRow(spacer, AvailableChars);
+	}
+	
+
+	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
+	layout->addRow(spacer, chooseButton);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&OK"), this);
+	OkButton->setDefault(true);
+	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
+	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+
+	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	
+	layout->addWidget(buttons);
+
+
+	//
+/*	
 
 	Description = new QComboBox(this);
 	Description->setMaxVisibleItems(10);
@@ -131,6 +182,7 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 
 	grid->addWidget(OkButton, 1, 2, Qt::AlignRight);
 	grid->addWidget(cancelButton, 1, 3, Qt::AlignRight);
+*/
 
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
@@ -168,7 +220,7 @@ void ChooseDescription::setPosition(const QPoint &position)
 
 void ChooseDescription::setDescription()
 {
-	QString description = Description->currentText();
+	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
@@ -186,9 +238,9 @@ void ChooseDescription::setDescription()
 
 void ChooseDescription::activated(int index)
 {
-	// TODO: fix this workaround
-	QString text = Description->model()->data(Description->model()->index(index, 0), Qt::DisplayRole).toString();
-	Description->setEditText(text);
+// 	// TODO: fix this workaround
+// 	QString text = Description->model()->data(Description->model()->index(index, 0), Qt::DisplayRole).toString();
+// 	Description->setEditText(text);
 }
 
 void ChooseDescription::currentDescriptionChanged(const QString &text)
