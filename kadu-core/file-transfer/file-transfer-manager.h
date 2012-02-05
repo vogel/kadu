@@ -84,8 +84,6 @@ public:
 	void rejectFileTransfer(FileTransfer transfer);
 
 	void showFileTransferWindow();
-	void hideFileTransferWindow();
-	bool isFileTransferWindowVisible();
 
 	void cleanUp();
 

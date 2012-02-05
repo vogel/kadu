@@ -270,25 +270,6 @@ void FileTransferManager::showFileTransferWindow()
 	_activateWindow(Window);
 }
 
-void FileTransferManager::hideFileTransferWindow()
-{
-	QMutexLocker locker(&mutex());
-
-	if (Window)
-	{
-		disconnect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
-		delete Window;
-		Window = 0;
-	}
-}
-
-bool FileTransferManager::isFileTransferWindowVisible()
-{
-	QMutexLocker locker(&mutex());
-
-	return Window && Window->isVisible();
-}
-
 FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)
 {
 	QMutexLocker locker(&mutex());
