@@ -27,6 +27,7 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
+#include "activate.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
@@ -266,8 +267,7 @@ void FileTransferManager::showFileTransferWindow()
 		Window = new FileTransferWindow();
 		connect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
 	}
-	Window->show();
-	Window->activateWindow();
+	_activateWindow(Window);
 }
 
 void FileTransferManager::hideFileTransferWindow()
