@@ -51,6 +51,21 @@ void WebViewHighlighter::updateHighlighting()
 	if (HighlightString.isEmpty())
 		return;
 
+	// always mark first occurence and highlight all other occurences
 	QWebView *webView = (static_cast<QWebView *>(parent()));
+	webView->findText(QString(), QWebPage::FindWrapsAroundDocument);
+	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
 	webView->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+}
+
+void WebViewHighlighter::highlightNext()
+{
+	QWebView *webView = (static_cast<QWebView *>(parent()));
+	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
+}
+
+void WebViewHighlighter::highlightPrevious()
+{
+	QWebView *webView = (static_cast<QWebView *>(parent()));
+	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
 }

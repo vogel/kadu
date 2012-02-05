@@ -72,6 +72,18 @@ public slots:
 	 */
 	void updateHighlighting();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Highlight next found text in QWebView.
+	 */
+	void highlightNext();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Highlight previous found text in QWebView.
+	 */
+	void highlightPrevious();
+
 };
 
 /**
