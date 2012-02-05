@@ -33,13 +33,13 @@ GroupsModel::GroupsModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeAdded(Group)),
-			this, SLOT(groupAboutToBeAdded(Group)));
+			this, SLOT(groupAboutToBeAdded(Group)), Qt::DirectConnection);
 	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)),
-			this, SLOT(groupAdded(Group)));
+			this, SLOT(groupAdded(Group)), Qt::DirectConnection);
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
-			this, SLOT(groupAboutToBeRemoved(Group)));
+			this, SLOT(groupAboutToBeRemoved(Group)), Qt::DirectConnection);
 	connect(GroupManager::instance(), SIGNAL(groupRemoved(Group)),
-			this, SLOT(groupRemoved(Group)));
+			this, SLOT(groupRemoved(Group)), Qt::DirectConnection);
 }
 
 GroupsModel::~GroupsModel()

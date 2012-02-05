@@ -27,13 +27,13 @@ DescriptionModel::DescriptionModel(DescriptionManager *manager) :
 		Manager(manager)
 {
 	connect(Manager, SIGNAL(descriptionAboutToBeAdded(const QString &)),
-			this, SLOT(descriptionAboutToBeAdded(const QString &)));
+			this, SLOT(descriptionAboutToBeAdded(const QString &)), Qt::DirectConnection);
 	connect(Manager, SIGNAL(descriptionAdded(const QString &)),
-			this, SLOT(descriptionAdded(const QString &)));
+			this, SLOT(descriptionAdded(const QString &)), Qt::DirectConnection);
 	connect(Manager, SIGNAL(descriptionAboutToBeRemoved(const QString &)),
-			this, SLOT(descriptionAboutToBeRemoved(const QString &)));
+			this, SLOT(descriptionAboutToBeRemoved(const QString &)), Qt::DirectConnection);
 	connect(Manager, SIGNAL(descriptionRemoved(const QString &)),
-			this, SLOT(descriptionRemoved(const QString &)));
+			this, SLOT(descriptionRemoved(const QString &)), Qt::DirectConnection);
 }
 
 DescriptionModel::~DescriptionModel()

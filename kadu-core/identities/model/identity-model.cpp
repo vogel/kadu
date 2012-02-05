@@ -29,13 +29,13 @@ IdentityModel::IdentityModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
 	connect(IdentityManager::instance(), SIGNAL(identityAboutToBeAdded(Identity)),
-			this, SLOT(identityAboutToBeAdded(Identity)));
+			this, SLOT(identityAboutToBeAdded(Identity)), Qt::DirectConnection);
 	connect(IdentityManager::instance(), SIGNAL(identityAdded(Identity)),
-			this, SLOT(identityAdded(Identity)));
+			this, SLOT(identityAdded(Identity)), Qt::DirectConnection);
 	connect(IdentityManager::instance(), SIGNAL(identityAboutToBeRemoved(Identity)),
-			this, SLOT(identityAboutToBeRemoved(Identity)));
+			this, SLOT(identityAboutToBeRemoved(Identity)), Qt::DirectConnection);
 	connect(IdentityManager::instance(), SIGNAL(identityRemoved(Identity)),
-			this, SLOT(identityRemoved(Identity)));
+			this, SLOT(identityRemoved(Identity)), Qt::DirectConnection);
 }
 
 IdentityModel::~IdentityModel()

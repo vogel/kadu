@@ -38,28 +38,28 @@ void MergedProxyModel::connectModels()
 	{
 		Q_ASSERT(model);
 
-		connect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
-		connect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()));
+		connect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()), Qt::DirectConnection);
+		connect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()), Qt::DirectConnection);
 
-		connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)));
+		connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)), Qt::DirectConnection);
 
 		connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeInsertedSlot(QModelIndex,int,int)));
+		        this, SLOT(rowsAboutToBeInsertedSlot(QModelIndex,int,int)), Qt::DirectConnection);
 		connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsInsertedSlot(QModelIndex,int,int)));
+		        this, SLOT(rowsInsertedSlot(QModelIndex,int,int)), Qt::DirectConnection);
 
 		connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeRemovedSlot(QModelIndex,int,int)));
+		        this, SLOT(rowsAboutToBeRemovedSlot(QModelIndex,int,int)), Qt::DirectConnection);
 		connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsRemovedSlot(QModelIndex,int,int)));
+		        this, SLOT(rowsRemovedSlot(QModelIndex,int,int)), Qt::DirectConnection);
 
 		connect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsAboutToBeMovedSlot(QModelIndex,int,int,QModelIndex,int)));
+		        this, SLOT(rowsAboutToBeMovedSlot(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
 		connect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsMovedSlot(QModelIndex,int,int,QModelIndex,int)));
+		        this, SLOT(rowsMovedSlot(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
 
-		connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()));
-		connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()));
+		connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()), Qt::DirectConnection);
+		connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()), Qt::DirectConnection);
 	}
 }
 

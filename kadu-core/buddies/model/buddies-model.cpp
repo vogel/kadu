@@ -43,30 +43,30 @@ BuddiesModel::BuddiesModel(QObject *parent) :
 
 	BuddyManager *manager = BuddyManager::instance();
 	connect(manager, SIGNAL(buddyAboutToBeAdded(Buddy)),
-			this, SLOT(buddyAboutToBeAdded(Buddy)));
+			this, SLOT(buddyAboutToBeAdded(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyAdded(Buddy)),
-			this, SLOT(buddyAdded(Buddy)));
+			this, SLOT(buddyAdded(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy)),
-			this, SLOT(buddyAboutToBeRemoved(Buddy)));
+			this, SLOT(buddyAboutToBeRemoved(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyRemoved(Buddy)),
-			this, SLOT(buddyRemoved(Buddy)));
+			this, SLOT(buddyRemoved(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyUpdated(Buddy)),
-			this, SLOT(buddyUpdated(Buddy)));
+			this, SLOT(buddyUpdated(Buddy)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyContactAboutToBeAdded(Buddy,Contact)),
-	        this, SLOT(buddyContactAboutToBeAdded(Buddy,Contact)));
+	        this, SLOT(buddyContactAboutToBeAdded(Buddy,Contact)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyContactAdded(Buddy,Contact)),
-	        this, SLOT(buddyContactAdded(Buddy,Contact)));
+	        this, SLOT(buddyContactAdded(Buddy,Contact)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyContactAboutToBeRemoved(Buddy,Contact)),
-	        this, SLOT(buddyContactAboutToBeRemoved(Buddy,Contact)));
+	        this, SLOT(buddyContactAboutToBeRemoved(Buddy,Contact)), Qt::DirectConnection);
 	connect(manager, SIGNAL(buddyContactRemoved(Buddy,Contact)),
-	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
+	        this, SLOT(buddyContactRemoved(Buddy,Contact)), Qt::DirectConnection);
 
 	connect(Core::instance()->myself(), SIGNAL(updated()),
-			this, SLOT(myselfBuddyUpdated()));
+			this, SLOT(myselfBuddyUpdated()), Qt::DirectConnection);
 
 	ContactManager *cm = ContactManager::instance();
 	connect(cm, SIGNAL(contactUpdated(Contact)),
-			   this, SLOT(contactUpdated(Contact)));
+			   this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
 BuddiesModel::~BuddiesModel()

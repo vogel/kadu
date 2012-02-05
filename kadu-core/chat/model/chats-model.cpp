@@ -39,15 +39,15 @@ ChatsModel::ChatsModel(QObject *parent) :
 	}
 
 	connect(manager, SIGNAL(chatAboutToBeAdded(Chat)),
-			this, SLOT(chatAboutToBeAdded(Chat)));
+			this, SLOT(chatAboutToBeAdded(Chat)), Qt::DirectConnection);
 	connect(manager, SIGNAL(chatAdded(Chat)),
-			this, SLOT(chatAdded(Chat)));
+			this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
 	connect(manager, SIGNAL(chatAboutToBeRemoved(Chat)),
-			this, SLOT(chatAboutToBeRemoved(Chat)));
+			this, SLOT(chatAboutToBeRemoved(Chat)), Qt::DirectConnection);
 	connect(manager, SIGNAL(chatRemoved(Chat)),
-			this, SLOT(chatRemoved(Chat)));
+			this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);
 	connect(manager, SIGNAL(chatUpdated(const Chat &)),
-			this, SLOT(chatUpdated(const Chat &)));
+			this, SLOT(chatUpdated(const Chat &)), Qt::DirectConnection);
 }
 
 ChatsModel::~ChatsModel()

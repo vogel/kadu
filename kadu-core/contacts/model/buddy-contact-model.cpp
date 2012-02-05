@@ -34,13 +34,13 @@ BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
 		QAbstractListModel(parent), SourceBuddy(buddy), IncludeIdentityInDisplay(false)
 {
 	connect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
+			this, SLOT(contactAboutToBeAdded(Contact)), Qt::DirectConnection);
 	connect(SourceBuddy, SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
+			this, SLOT(contactAdded(Contact)), Qt::DirectConnection);
 	connect(SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
+			this, SLOT(contactAboutToBeRemoved(Contact)), Qt::DirectConnection);
 	connect(SourceBuddy, SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
+			this, SLOT(contactRemoved(Contact)), Qt::DirectConnection);
 }
 
 BuddyContactModel::~BuddyContactModel()

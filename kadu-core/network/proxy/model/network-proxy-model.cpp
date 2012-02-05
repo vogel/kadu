@@ -27,15 +27,15 @@ NetworkProxyModel::NetworkProxyModel(QObject *parent) :
 		QAbstractListModel(parent)
 {
 	connect(NetworkProxyManager::instance(), SIGNAL(networkProxyUpdated(NetworkProxy)),
-			this, SLOT(networkProxyUpdated(NetworkProxy)));
+			this, SLOT(networkProxyUpdated(NetworkProxy)), Qt::DirectConnection);
 	connect(NetworkProxyManager::instance(), SIGNAL(networkProxyAboutToBeAdded(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeAdded(NetworkProxy)));
+			this, SLOT(networkProxyAboutToBeAdded(NetworkProxy)), Qt::DirectConnection);
 	connect(NetworkProxyManager::instance(), SIGNAL(networkProxyAdded(NetworkProxy)),
-			this, SLOT(networkProxyAdded(NetworkProxy)));
+			this, SLOT(networkProxyAdded(NetworkProxy)), Qt::DirectConnection);
 	connect(NetworkProxyManager::instance(), SIGNAL(networkProxyAboutToBeRemoved(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeRemoved(NetworkProxy)));
+			this, SLOT(networkProxyAboutToBeRemoved(NetworkProxy)), Qt::DirectConnection);
 	connect(NetworkProxyManager::instance(), SIGNAL(networkProxyRemoved(NetworkProxy)),
-			this, SLOT(networkProxyRemoved(NetworkProxy)));
+			this, SLOT(networkProxyRemoved(NetworkProxy)), Qt::DirectConnection);
 }
 
 NetworkProxyModel::~NetworkProxyModel()

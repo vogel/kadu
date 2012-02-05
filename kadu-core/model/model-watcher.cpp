@@ -26,24 +26,24 @@ ModelWatcher::ModelWatcher(const QString &name, QAbstractItemModel *model) :
 {
 	Q_ASSERT(model);
 
-	connect(model, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(columnsAboutToBeInserted(QModelIndex,int,int)));
-	connect(model, SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-	connect(model, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(columnsAboutToBeRemoved(QModelIndex,int,int)));
-	connect(model, SIGNAL(columnsInserted(QModelIndex,int,int)), this, SLOT(columnsInserted(QModelIndex,int,int)));
-	connect(model, SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(columnsMoved(QModelIndex,int,int,QModelIndex,int)));
-	connect(model, SIGNAL(columnsRemoved(QModelIndex,int,int)), this, SLOT(columnsRemoved(QModelIndex,int,int)));
-	connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)));
-	connect(model, SIGNAL(headerDataChanged(Qt::Orientation,int, int)), this, SLOT(headerDataChanged(Qt::Orientation,int, int)));
-	connect(model, SIGNAL(layoutAboutToBeChanged()), this, SLOT(layoutAboutToBeChanged()));
-	connect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()));
-	connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeReset()));
-	connect(model, SIGNAL(modelReset()), this, SLOT(modelReset()));
-	connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(rowsAboutToBeInserted(QModelIndex,int,int)));
-	connect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)));
-	connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(rowsAboutToBeRemoved(QModelIndex,int,int)));
-	connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)));
-	connect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(rowsMoved(QModelIndex,int,int,QModelIndex,int)));
-	connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(rowsRemoved(QModelIndex,int,int)));
+	connect(model, SIGNAL(columnsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(columnsAboutToBeInserted(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(columnsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(columnsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(columnsAboutToBeRemoved(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(columnsInserted(QModelIndex,int,int)), this, SLOT(columnsInserted(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(columnsMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(columnsMoved(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(columnsRemoved(QModelIndex,int,int)), this, SLOT(columnsRemoved(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChanged(QModelIndex,QModelIndex)), Qt::DirectConnection);
+	connect(model, SIGNAL(headerDataChanged(Qt::Orientation,int, int)), this, SLOT(headerDataChanged(Qt::Orientation,int, int)), Qt::DirectConnection);
+	connect(model, SIGNAL(layoutAboutToBeChanged()), this, SLOT(layoutAboutToBeChanged()), Qt::DirectConnection);
+	connect(model, SIGNAL(layoutChanged()), this, SLOT(layoutChanged()), Qt::DirectConnection);
+	connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeReset()), Qt::DirectConnection);
+	connect(model, SIGNAL(modelReset()), this, SLOT(modelReset()), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)), this, SLOT(rowsAboutToBeInserted(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)), this, SLOT(rowsAboutToBeRemoved(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(rowsInserted(QModelIndex,int,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)), this, SLOT(rowsMoved(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
+	connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(rowsRemoved(QModelIndex,int,int)), Qt::DirectConnection);
 }
 
 ModelWatcher::~ModelWatcher()
