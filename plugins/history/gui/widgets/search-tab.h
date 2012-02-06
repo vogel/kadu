@@ -34,7 +34,6 @@ class QSplitter;
 class HistoryMessagesStorage;
 class HistoryTalkableComboBox;
 class TimelineChatMessagesView;
-class WebViewHighlighter;
 
 class SearchTab : public HistoryTab
 {
@@ -46,7 +45,6 @@ class SearchTab : public HistoryTab
 	HistoryMessagesStorage **SearchedStorage;
 
 	QSplitter *Splitter;
-	WebViewHighlighter *Highlighter;
 	TimelineChatMessagesView *TimelineView;
 
 	QLineEdit *Query;
@@ -71,8 +69,10 @@ private slots:
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);
 	void performSearch();
+	void clearSelect();
 
 	void currentDateChanged();
+	void messagesDisplayed();
 
 public:
 	explicit SearchTab(QWidget *parent = 0);

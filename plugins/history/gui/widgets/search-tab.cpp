@@ -33,6 +33,7 @@
 
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/search-bar.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
@@ -147,8 +148,10 @@ void SearchTab::createGui()
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+	connect(TimelineView, SIGNAL(messagesDisplayed()), this, SLOT(messagesDisplayed()));
 
-	Highlighter = new WebViewHighlighter(TimelineView->messagesView());
+	TimelineView->searchBar()->show();
+	connect(TimelineView->searchBar(), SIGNAL(clearSearch()), this, SLOT(clearSelect()));
 
 	setFocusProxy(Query);
 }
@@ -269,8 +272,12 @@ void SearchTab::performSearch()
 		TimelineView->setFutureResults((*SearchedStorage)->dates(query));
 	else
 		TimelineView->setResults(QVector<HistoryQueryResult>());
+}
 
-	Highlighter->setHighlight(Query->text());
+void SearchTab::clearSelect()
+{
+	TimelineView->highlighter()->setHighlight(Query->text());
+	TimelineView->highlighter()->selectNext(Query->text());
 }
 
 void SearchTab::currentDateChanged()
@@ -298,6 +305,14 @@ void SearchTab::currentDateChanged()
 		TimelineView->setFutureMessages((*SearchedStorage)->messages(talkable, date));
 	else
 		TimelineView->setMessages(QVector<Message>());
+}
+
+void SearchTab::messagesDisplayed()
+{
+	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setSearchText(Query->text());
+	TimelineView->highlighter()->setHighlight(Query->text());
+	TimelineView->highlighter()->selectNext(Query->text());
 }
 
 QList<int> SearchTab::sizes() const
