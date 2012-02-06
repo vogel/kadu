@@ -34,7 +34,9 @@ class HistoryQueryResult;
 class HistoryQueryResultsModel;
 class HistoryQueryResultsProxyModel;
 class Message;
+class SearchBar;
 class WaitOverlay;
+class WebViewHighlighter;
 
 /**
  * @addtogroup History
@@ -46,8 +48,8 @@ class WaitOverlay;
  * @author Rafał 'Vogel' Malinowski
  * @short Widget that provides chat message view with timeline.
  *
- * This widgets mixes list of dates with chat message view in vertical layout.
- * It is used in history window.
+ * This widgets mixes list of dates with chat message view in vertical layout. It is used in history window.
+ * Search bar is attached to message view and can be invoked by Ctrl+F shortcut.
  */
 class KADUAPI TimelineChatMessagesView : public QWidget
 {
@@ -60,7 +62,9 @@ class KADUAPI TimelineChatMessagesView : public QWidget
 	QTreeView *Timeline;
 	HistoryQueryResultsModel *ResultsModel;
 	HistoryQueryResultsProxyModel *ResultsProxyModel;
+	WebViewHighlighter *Highlighter;
 	ChatMessagesView *MessagesView;
+	SearchBar *MessagesSearchBar;
 
 	QFutureWatcher<QVector<HistoryQueryResult> > *ResultsFutureWatcher;
 	QFutureWatcher<QVector<Message> > *MessagesFutureWatcher;
@@ -99,6 +103,20 @@ public:
 	 * @return chat messages view widget
 	 */
 	ChatMessagesView * messagesView() const { return MessagesView; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns highlighter for chat messages view widget.
+	 * @return highlighter for chat messages view widget
+	 */
+	WebViewHighlighter * highlighter() const { return Highlighter; }
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns chat messages view search bar widget.
+	 * @return chat messages view search bar widget
+	 */
+	SearchBar * searchBar() const { return MessagesSearchBar; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -230,6 +248,12 @@ signals:
 	 * @short Signal emited when selected date changes.
 	 */
 	void currentDateChanged();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited when all messages are displayed.
+	 */
+	void messagesDisplayed();
 
 };
 
