@@ -18,11 +18,12 @@
  */
 
 #include <QtWebKit/QWebFrame>
-#include <QtWebKit/QWebView>
+
+#include "gui/widgets/chat-messages-view.h"
 
 #include "web-view-highlighter.h"
 
-WebViewHighlighter::WebViewHighlighter(QWebView *parent) :
+WebViewHighlighter::WebViewHighlighter(ChatMessagesView *parent) :
 		QObject(parent), AutoUpdate(false)
 {
 }
@@ -31,9 +32,9 @@ WebViewHighlighter::~WebViewHighlighter()
 {
 }
 
-QWebView * WebViewHighlighter::webView() const
+ChatMessagesView * WebViewHighlighter::chatMessagesView() const
 {
-	return static_cast<QWebView *>(parent());
+	return static_cast<ChatMessagesView *>(parent());
 }
 
 void WebViewHighlighter::setAutoUpdate(const bool autoUpdate)
@@ -46,13 +47,13 @@ void WebViewHighlighter::setAutoUpdate(const bool autoUpdate)
 	// inside webkit instance
 
 	if (AutoUpdate)
-		disconnect(webView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
+		disconnect(chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
 		           this, SLOT(updateHighlighting()));
 
 	AutoUpdate = autoUpdate;
 
 	if (AutoUpdate)
-		connect(webView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
+		connect(chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
 		        this, SLOT(updateHighlighting()));
 }
 
@@ -72,31 +73,34 @@ void WebViewHighlighter::updateHighlighting()
 		return;
 
 	// reset to first occurence
-	webView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
-	webView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
+	chatMessagesView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
+	chatMessagesView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
 
 	// highlight all other
-	webView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+	chatMessagesView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
 }
 
 void WebViewHighlighter::clearHighlighting()
 {
-	webView()->findText(QString(), QWebPage::HighlightAllOccurrences);
+	chatMessagesView()->findText(QString(), QWebPage::HighlightAllOccurrences);
 }
 
 void WebViewHighlighter::selectNext(const QString &select)
 {
-	webView()->findText(select, QWebPage::FindWrapsAroundDocument);
+	chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument);
+	chatMessagesView()->updateAtBottom();
 }
 
 void WebViewHighlighter::selectPrevious(const QString &select)
 {
-	webView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+	chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+	chatMessagesView()->updateAtBottom();
 }
 
 void WebViewHighlighter::clearSelect()
 {
-	webView()->findText(QString(), 0);
+	chatMessagesView()->findText(QString(), 0);
+	chatMessagesView()->updateAtBottom();
 
 	updateHighlighting();
 }

@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 
-class QWebView;
+class ChatMessagesView;
 
 /**
  * @addtogroup Gui
@@ -32,10 +32,10 @@ class QWebView;
 /**
  * @class WebViewHighlighter
  * @author Rafał 'Vogel' Malinowski
- * @short This class is a highlighter for given QWebView instance.
+ * @short This class is a highlighter for given ChatMessagesView instance.
  *
- * This class is a highlighter for given QWebView instance. It is able to highlight any instance
- * of given text in QWebView as well as select any other text and go throught web view content
+ * This class is a highlighter for given ChatMessagesView instance. It is able to highlight any instance
+ * of given text in ChatMessagesView as well as select any other text and go throught web view content
  * and selecting next/previous instance of it. Please note that highlighting is independend from
  * selection.
  */
@@ -46,18 +46,18 @@ class WebViewHighlighter : public QObject
 	bool AutoUpdate;
 	QString HighlightString;
 
-	QWebView * webView() const;
+	ChatMessagesView * chatMessagesView() const;
 
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new WebViewHighlighter on given QWebView.
-	 * @param parent QWebView parent of new highlighter
+	 * @short Creates new WebViewHighlighter on given ChatMessagesView.
+	 * @param parent ChatMessagesView parent of new highlighter
 	 *
-	 * Page in main frame of parent QWebView will have given string highlighted.
+	 * Page in main frame of parent ChatMessagesView will have given string highlighted.
 	 * Use setHighlight() to set text to highlight.
 	 */
-	explicit WebViewHighlighter(QWebView *parent);
+	explicit WebViewHighlighter(ChatMessagesView *parent);
 	virtual ~WebViewHighlighter();
 
 	/**
@@ -83,16 +83,16 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Updates highlighting on QWebView.
+	 * @short Updates highlighting on ChatMessagesView.
 	 *
 	 * When auto udpate is set to true this method is called automatically when content size of parent
-	 * QWebView changes or when highlight string changes.
+	 * ChatMessagesView changes or when highlight string changes.
 	 */
 	void updateHighlighting();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears highlighting on QWebView.
+	 * @short Clears highlighting on ChatMessagesView.
 	 *
 	 * Temporary removes highlighting from web view. If auto update is set to true then any change in
 	 * content of web view will redo highligting. Use setHighlight(QString()) to remove highlighting
@@ -102,7 +102,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select next found text in QWebView.
+	 * @short Select next found text in ChatMessagesView.
 	 * @param select text to select
 	 *
 	 * This method moves selection to next found instance of select string. If there is no selection,
@@ -112,7 +112,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select previous found text in QWebView.
+	 * @short Select previous found text in ChatMessagesView.
 	 * @param select text to select
 	 *
 	 * This method moves selection to previous found instance of select string. If there is no selection,
@@ -122,7 +122,7 @@ public slots:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears found text in QWebView.
+	 * @short Clears found text in ChatMessagesView.
 	 *
 	 * This method clears selection in web view.
 	 */

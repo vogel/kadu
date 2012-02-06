@@ -89,8 +89,7 @@ ChatMessagesView::~ChatMessagesView()
 
 void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
 {
-	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
-
+	updateAtBottom();
 	KaduWebView::mouseReleaseEvent(e);
 }
 
@@ -103,9 +102,13 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
 
 void ChatMessagesView::wheelEvent(QWheelEvent* e)
 {
-	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
-
+	updateAtBottom();
 	QWebView::wheelEvent(e);
+}
+
+void ChatMessagesView::updateAtBottom()
+{
+	AtBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
 }
 
 void ChatMessagesView::connectChat()

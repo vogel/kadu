@@ -112,6 +112,7 @@ public:
 public slots:
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
+	void updateAtBottom();
 
 signals:
 	void messagesUpdated();
