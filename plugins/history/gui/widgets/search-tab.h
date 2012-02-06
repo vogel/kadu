@@ -69,8 +69,10 @@ private slots:
 	void fromDateChanged(const QDate &date);
 	void toDateChanged(const QDate &date);
 	void performSearch();
+	void clearSelect();
 
 	void currentDateChanged();
+	void messagesDisplayed();
 
 public:
 	explicit SearchTab(QWidget *parent = 0);

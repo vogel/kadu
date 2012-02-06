@@ -31,11 +31,13 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/web-view-highlighter.h"
+#include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/search-bar.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "model/roles.h"
 #include "activate.h"
-#include <gui/widgets/chat-messages-view.h>
 
 #include "gui/widgets/history-talkable-combo-box.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -146,6 +148,10 @@ void SearchTab::createGui()
 	TimelineView->setTitleVisible(true);
 	TimelineView->setLengthHeader(tr("Found"));
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+	connect(TimelineView, SIGNAL(messagesDisplayed()), this, SLOT(messagesDisplayed()));
+
+	TimelineView->searchBar()->show();
+	connect(TimelineView->searchBar(), SIGNAL(clearSearch()), this, SLOT(clearSelect()));
 
 	setFocusProxy(Query);
 }
@@ -268,6 +274,12 @@ void SearchTab::performSearch()
 		TimelineView->setResults(QVector<HistoryQueryResult>());
 }
 
+void SearchTab::clearSelect()
+{
+	TimelineView->highlighter()->setHighlight(Query->text());
+	TimelineView->highlighter()->selectNext(Query->text());
+}
+
 void SearchTab::currentDateChanged()
 {
 	const QModelIndex &currentIndex = TimelineView->timeline()->currentIndex();
@@ -293,6 +305,14 @@ void SearchTab::currentDateChanged()
 		TimelineView->setFutureMessages((*SearchedStorage)->messages(talkable, date));
 	else
 		TimelineView->setMessages(QVector<Message>());
+}
+
+void SearchTab::messagesDisplayed()
+{
+	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setSearchText(Query->text());
+	TimelineView->highlighter()->setHighlight(Query->text());
+	TimelineView->highlighter()->selectNext(Query->text());
 }
 
 QList<int> SearchTab::sizes() const

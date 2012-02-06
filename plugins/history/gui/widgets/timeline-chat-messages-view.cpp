@@ -22,7 +22,9 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/search-bar.h"
 #include "gui/widgets/wait-overlay.h"
 #include "model/roles.h"
 
@@ -71,12 +73,25 @@ void TimelineChatMessagesView::createGui()
 
 	QVBoxLayout *frameLayout = new QVBoxLayout(frame);
 	frameLayout->setMargin(0);
+	frameLayout->setSpacing(0);
 
 	MessagesView = new ChatMessagesView(Chat::null, false, frame);
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);
 
 	frameLayout->addWidget(MessagesView);
+
+	MessagesSearchBar = new SearchBar(this);
+	MessagesSearchBar->setSearchWidget(MessagesView);
+
+	Highlighter = new WebViewHighlighter(MessagesView);
+	Highlighter->setAutoUpdate(true);
+
+	connect(MessagesSearchBar, SIGNAL(searchPrevious(QString)), Highlighter, SLOT(selectPrevious(QString)));
+	connect(MessagesSearchBar, SIGNAL(searchNext(QString)), Highlighter, SLOT(selectNext(QString)));
+	connect(MessagesSearchBar, SIGNAL(clearSearch()), Highlighter, SLOT(clearSelect()));
+
+	frameLayout->addWidget(MessagesSearchBar);
 
 	layout()->addWidget(Splitter);
 }
@@ -151,6 +166,8 @@ void TimelineChatMessagesView::setMessages(const QVector<Message> &messages)
 	MessagesView->refresh();
 
 	MessagesView->setUpdatesEnabled(true);
+
+	emit messagesDisplayed();
 }
 
 void TimelineChatMessagesView::futureMessagesAvailable()
