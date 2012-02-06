@@ -60,6 +60,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
+#include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-actions.h"
@@ -67,6 +68,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
@@ -189,9 +191,19 @@ void ChatWidget::createGui()
 
 	QVBoxLayout *frameLayout = new QVBoxLayout(frame);
 	frameLayout->setMargin(0);
+	frameLayout->setSpacing(0);
 
 	MessagesView = new ChatMessagesView(frame);
 	frameLayout->addWidget(MessagesView);
+
+	WebViewHighlighter *highligher = new WebViewHighlighter(MessagesView);
+
+	SearchBar *messagesSearchBar = new SearchBar(frame);
+	frameLayout->addWidget(messagesSearchBar);
+
+	connect(messagesSearchBar, SIGNAL(searchPrevious(QString)), highligher, SLOT(selectPrevious(QString)));
+	connect(messagesSearchBar, SIGNAL(searchNext(QString)), highligher, SLOT(selectNext(QString)));
+	connect(messagesSearchBar, SIGNAL(clearSearch()), highligher, SLOT(clearSelect()));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
@@ -203,6 +215,8 @@ void ChatWidget::createGui()
 	InputBox = new ChatEditBox(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 	InputBox->setMinimumHeight(10);
+
+	messagesSearchBar->setSearchWidget(InputBox->inputBox());
 
 	if (CurrentChat.contacts().count() > 1)
 		createContactsList();
