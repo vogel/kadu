@@ -23,18 +23,37 @@
 #include "web-view-highlighter.h"
 
 WebViewHighlighter::WebViewHighlighter(QWebView *parent) :
-		QObject(parent)
+		QObject(parent), AutoUpdate(false)
 {
-	// we might assume that when any message is added to web view its size changes
-	// unfortunately contentChanged() does not work when content is updated by javascript
-	// inside webkit instance
-	connect(parent->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)), this, SLOT(updateHighlighting()));
-
-	updateHighlighting();
 }
 
 WebViewHighlighter::~WebViewHighlighter()
 {
+}
+
+QWebView * WebViewHighlighter::webView() const
+{
+	return static_cast<QWebView *>(parent());
+}
+
+void WebViewHighlighter::setAutoUpdate(const bool autoUpdate)
+{
+	if (AutoUpdate == autoUpdate)
+		return;
+
+	// we might assume that when any message is added to web view its size changes
+	// unfortunately contentChanged() does not work when content is updated by javascript
+	// inside webkit instance
+
+	if (AutoUpdate)
+		disconnect(webView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
+		           this, SLOT(updateHighlighting()));
+
+	AutoUpdate = autoUpdate;
+
+	if (AutoUpdate)
+		connect(webView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
+		        this, SLOT(updateHighlighting()));
 }
 
 void WebViewHighlighter::setHighlight(const QString &highlightString)
@@ -42,6 +61,7 @@ void WebViewHighlighter::setHighlight(const QString &highlightString)
 	if (HighlightString == highlightString)
 		return;
 
+	clearHighlighting();
 	HighlightString = highlightString;
 	updateHighlighting();
 }
@@ -51,21 +71,32 @@ void WebViewHighlighter::updateHighlighting()
 	if (HighlightString.isEmpty())
 		return;
 
-	// always mark first occurence and highlight all other occurences
-	QWebView *webView = (static_cast<QWebView *>(parent()));
-	webView->findText(QString(), QWebPage::FindWrapsAroundDocument);
-	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
-	webView->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+	// reset to first occurence
+	webView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
+	webView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
+
+	// highlight all other
+	webView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
 }
 
-void WebViewHighlighter::highlightNext()
+void WebViewHighlighter::clearHighlighting()
 {
-	QWebView *webView = (static_cast<QWebView *>(parent()));
-	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
+	webView()->findText(QString(), QWebPage::HighlightAllOccurrences);
 }
 
-void WebViewHighlighter::highlightPrevious()
+void WebViewHighlighter::selectNext(const QString &select)
 {
-	QWebView *webView = (static_cast<QWebView *>(parent()));
-	webView->findText(HighlightString, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+	webView()->findText(select, QWebPage::FindWrapsAroundDocument);
+}
+
+void WebViewHighlighter::selectPrevious(const QString &select)
+{
+	webView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+}
+
+void WebViewHighlighter::clearSelect()
+{
+	webView()->findText(QString(), 0);
+
+	updateHighlighting();
 }

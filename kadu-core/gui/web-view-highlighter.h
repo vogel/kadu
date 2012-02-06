@@ -34,14 +34,19 @@ class QWebView;
  * @author Rafał 'Vogel' Malinowski
  * @short This class is a highlighter for given QWebView instance.
  *
- * This class is a highlighter for given QWebView instance. Any instance of provided text
- * in QWebView will be highlighted.
+ * This class is a highlighter for given QWebView instance. It is able to highlight any instance
+ * of given text in QWebView as well as select any other text and go throught web view content
+ * and selecting next/previous instance of it. Please note that highlighting is independend from
+ * selection.
  */
 class WebViewHighlighter : public QObject
 {
 	Q_OBJECT
 
+	bool AutoUpdate;
 	QString HighlightString;
+
+	QWebView * webView() const;
 
 public:
 	/**
@@ -57,32 +62,71 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets new text to highlight.
-	 * @param highlightString new text to highlight
+	 * @short Set auto update value for highlighting.
+	 * @param autoUpdate new auto update value for highlighting
+	 *
+	 * If this property is true then any change in content of web view will trigger update of
+	 * highlighting.
 	 */
-	void setHighlight(const QString &highlightString);
+	void setAutoUpdate(const bool autoUpdate);
 
 public slots:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets new text to highlight.
+	 * @param highlightString new text to highlight
+	 *
+	 * All instances of highlightString will be highlighted in web view. If auto update is set to true
+	 * after any change in content of web view highlighting will be updated to cover new content.
+	 */
+	void setHighlight(const QString &highlightString);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Updates highlighting on QWebView.
 	 *
-	 * This method is called automatically when content size of parent QWebView changes or
-	 * when highlight string changes.
+	 * When auto udpate is set to true this method is called automatically when content size of parent
+	 * QWebView changes or when highlight string changes.
 	 */
 	void updateHighlighting();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Highlight next found text in QWebView.
+	 * @short Clears highlighting on QWebView.
+	 *
+	 * Temporary removes highlighting from web view. If auto update is set to true then any change in
+	 * content of web view will redo highligting. Use setHighlight(QString()) to remove highlighting
+	 * for good.
 	 */
-	void highlightNext();
+	void clearHighlighting();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Highlight previous found text in QWebView.
+	 * @short Select next found text in QWebView.
+	 * @param select text to select
+	 *
+	 * This method moves selection to next found instance of select string. If there is no selection,
+	 * this method will move to first instance of select string.
 	 */
-	void highlightPrevious();
+	void selectNext(const QString &select);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Select previous found text in QWebView.
+	 * @param select text to select
+	 *
+	 * This method moves selection to previous found instance of select string. If there is no selection,
+	 * this method will move to last instance of select string.
+	 */
+	void selectPrevious(const QString &select);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Clears found text in QWebView.
+	 *
+	 * This method clears selection in web view.
+	 */
+	void clearSelect();
 
 };
 
