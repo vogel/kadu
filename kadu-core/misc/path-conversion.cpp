@@ -266,33 +266,8 @@ QString dataPath(const QString &p, const char *argv0)
 		data_path.resize(data_path.lastIndexOf('\\') + 1);
 		lib_path = data_path;
 #else
-		QString datadir(KADU_DATADIR);
-		QString bindir(KADU_BINDIR);
-		QString libdir(KADU_LIBDIR);
-
-		//jeżeli ścieżki nie kończą się na /share i /bin oraz gdy bez tych końcówek
-		//ścieżki się nie pokrywają, to znaczy, że ktoś ustawił ręcznie KADU_DATADIR lub KADU_BINDIR
-		if (!datadir.endsWith(QLatin1String("/share")) || !bindir.endsWith(QLatin1String("/bin")) || !libdir.endsWith(QLatin1String("/lib")) ||
-			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
-			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
-		{
-			data_path = datadir + '/';
-			lib_path = libdir + '/';
-		}
-		else
-		{
-			QString appPath = qApp->applicationDirPath();
-			if (appPath.isEmpty())
-			{
-				data_path = datadir + '/';
-				lib_path = libdir + '/';
-			}
-			else
-			{
-				data_path = appPath + "/../share/";
-				lib_path = appPath + "/../lib/";
-			}
-		}
+		data_path = KADU_DATADIR;
+		lib_path = KADU_LIBDIR;
 #endif
 		QDir dataDir(data_path);
 		QDir libDir(lib_path);
