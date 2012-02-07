@@ -264,6 +264,8 @@ void ChatMessagesView::prependMessages(const QVector<Message> &messages)
 	Renderer->appendMessages(newMessages);
 
 	setUpdatesEnabled(true);
+
+	emit messagesUpdated();
 }
 
 void ChatMessagesView::appendMessage(const Message &message)
