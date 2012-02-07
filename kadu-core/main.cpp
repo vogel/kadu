@@ -350,9 +350,6 @@ int main(int argc, char *argv[])
 	qApp->installTranslator(&qt_qm);
 	qApp->installTranslator(&kadu_qm);
 
-	// plugins path (win32)
-	qApp->addLibraryPath(libPath("qt"));
-
 	QtLocalPeer *peer = new QtLocalPeer(qApp, profilePath());
 	if (peer->isClient())
 	{
