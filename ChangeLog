@@ -10,6 +10,9 @@
 * jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * gui: #2458 done: added search bar to chat widgets and history window (Vogel)
 
+﻿+++ version 0.11.1
+* gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
+
 ﻿+++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)
 
