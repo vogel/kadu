@@ -194,6 +194,12 @@ void ChatWidget::createGui()
 	frameLayout->setSpacing(0);
 
 	MessagesView = new ChatMessagesView(frame);
+	if (CurrentChat)
+	{
+		MessagesView->setChat(CurrentChat);
+		MessagesView->refresh();
+	}
+
 	frameLayout->addWidget(MessagesView);
 
 	WebViewHighlighter *highligher = new WebViewHighlighter(MessagesView);
