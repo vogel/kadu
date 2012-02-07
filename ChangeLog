@@ -10,7 +10,18 @@
 * jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * gui: #2458 done: added search bar to chat widgets and history window (Vogel)
 
+﻿+++ version 0.11.0
+* gui: #2454 fixed: memory leak in emoticons selector (Juzef)
+
 +++ version 0.11.0-rc3
+* gui: #2421 fixed: warning when opening chat conference window (Vogel)
+* spellchecker: #2422 fixed: crash in the Highlighter::removeAll() method (beevvy)
+* protocol: #2433 fixed: incorrect status behaviour when no passwors is available (Vogel)
+* chat-styles: #2438 fixed: crash when window were closed before asynchronous history was loaded (Vogel)
+* gui: #2439 fixed: segfault after second opening of configuration window (Vogel)
+* gui: #2429 fixed: crash on Ctrl+V in chat window (Vogel)
+* gadu: #2423 fixed: do not crash Gadu randomly (Vogel)
+* status: #2444 fixed: prevent autoaway from spamming with XMPP away/xaway status changes (beevvy)
 * core: #2426 fixed: regression that caused crashes and unsaved configuration changes when closing system with opened Kadu window (beevvy)
 * core: #2445 worked around: a long standing Windows issue that resulted in unsaved configuration changes and unsaved history with new contacts (beevvy)
 
