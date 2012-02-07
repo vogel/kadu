@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 	// delayed running, useful in gnome
 	sleep(config_file.readNumEntry("General", "StartDelay"));
 #endif
-	QString data_dir = dataPath("kadu", argv[0]);
+	QString data_dir = dataPath("kadu");
 	if (!QDir(data_dir).isReadable())
 	{
 		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));

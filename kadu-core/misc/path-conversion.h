@@ -44,10 +44,8 @@ KADUAPI QString profilePath(const QString &subpath = QString());
 
 /**
 	zwraca ścieżkę do pliku f
-	jeżeli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustalić
-	ścieżkę na podstawie argv0, które ma być równe argv[0] oraz zmiennej PATH
 **/
-KADUAPI QString dataPath(const QString &f = QString(), const char *argv0 = 0);
+KADUAPI QString dataPath(const QString &p = QString());
 
 KADUAPI QString pluginsLibPath(const QString &f = QString());
 

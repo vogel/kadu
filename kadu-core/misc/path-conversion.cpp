@@ -88,10 +88,8 @@ QString homePath()
 	if (path.isNull())
 	{
 #ifdef Q_OS_WIN
-		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
-		// in such ugly way
 		// TODO review this usbinst thing
-		if (QFile::exists(dataPath("usbinst", "")))
+		if (QFile::exists(dataPath("usbinst")))
 			path = dataPath("config/");
 		else
 		{
@@ -129,9 +127,7 @@ QString profilePath(const QString &subpath)
 		QString home = homePath();
 
 #ifdef Q_OS_WIN
-		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
-		// in such ugly way
-		if (config_dir.isEmpty() && QFile::exists(dataPath("usbinst", "")))
+		if (config_dir.isEmpty() && QFile::exists(dataPath("usbinst")))
 		{
 			path = home;
 			Parser::GlobalVariables["KADU_CONFIG"] = path;
@@ -232,11 +228,11 @@ QString pluginsLibPath(const QString &f)
 	return pluginsLibDir + f;
 }
 
-QString dataPath(const QString &p, const char *argv0)
+QString dataPath(const QString &p)
 {
 	QString path = p;
 
-	if (argv0 != 0)
+	if (data_path.isNull())
 	{
 #ifdef Q_OS_MAC
 		QString appPath = qApp->applicationDirPath();
@@ -269,11 +265,6 @@ QString dataPath(const QString &p, const char *argv0)
 		pluginsLibDir = libDir.canonicalPath() + '/';
 
 		Parser::GlobalVariables["DATA_PATH"] = data_path;
-	}
-	if (data_path.isEmpty())
-	{
-		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
-		printBacktrace("dataPath(): constructor of static object uses dataPath");
 	}
 
 #ifdef Q_OS_WIN
