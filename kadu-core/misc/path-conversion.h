@@ -49,7 +49,7 @@ KADUAPI QString profilePath(const QString &subpath = QString());
 **/
 KADUAPI QString dataPath(const QString &f = QString(), const char *argv0 = 0);
 
-KADUAPI QString libPath(const QString &f = QString());
+KADUAPI QString pluginsLibPath(const QString &f = QString());
 
 KADUAPI QString webKitPath(const QString &path);
 

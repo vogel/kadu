@@ -224,19 +224,12 @@ QString profilePath(const QString &subpath)
 	return path + subpath;
 }
 
-static QString lib_path;
+static QString pluginsLibDir;
 static QString data_path;
 
-QString libPath(const QString &f)
+QString pluginsLibPath(const QString &f)
 {
-#ifdef Q_OS_WIN
-	QString fp=f;
-	if (fp.startsWith(QLatin1String("kadu")))
-		fp.remove(0, 4);
-	return lib_path + fp;
-#else
-	return lib_path + f;
-#endif
+	return pluginsLibDir + f;
 }
 
 QString dataPath(const QString &p, const char *argv0)
@@ -256,7 +249,7 @@ QString dataPath(const QString &p, const char *argv0)
 		else
 		{
 			data_path = appPath + "/../../";
-			lib_path = appPath + "/../../";
+			pluginsLibDir = appPath + "/../../kadu/plugins/";
 		}
 #elif defined(Q_OS_WIN)
 		WCHAR epath[MAX_PATH+1];
@@ -264,19 +257,18 @@ QString dataPath(const QString &p, const char *argv0)
 
 		data_path = QString::fromUtf16((const ushort*)epath);
 		data_path.resize(data_path.lastIndexOf('\\') + 1);
-		lib_path = data_path;
+		pluginsLibDir = data_path + "/plugins";
 #else
 		data_path = KADU_DATADIR;
-		lib_path = KADU_LIBDIR;
+		pluginsLibDir = KADU_PLUGINS_LIBDIR;
 #endif
 		QDir dataDir(data_path);
-		QDir libDir(lib_path);
+		QDir libDir(pluginsLibDir);
 
 		data_path = dataDir.canonicalPath() + '/';
-		lib_path = libDir.canonicalPath() + '/';
+		pluginsLibDir = libDir.canonicalPath() + '/';
 
 		Parser::GlobalVariables["DATA_PATH"] = data_path;
-		Parser::GlobalVariables["LIB_PATH"] = lib_path;
 	}
 	if (data_path.isEmpty())
 	{
