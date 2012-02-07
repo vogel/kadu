@@ -9,6 +9,7 @@
 * gui: #2435 & #2437 fixed: View File Transfers action always shows & activates file transfer window (Juzef)
 * jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * gui: #2458 done: added search bar to chat widgets and history window (Vogel)
+* gui: #2465 done: added Ctrl+Home/End shortcuts to chat windows - to scroll to top/bottom of chat (Vogel)
 
 ﻿+++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)

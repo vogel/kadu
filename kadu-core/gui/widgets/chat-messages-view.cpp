@@ -160,13 +160,13 @@ void ChatMessagesView::setForcePruneDisabled(bool disable)
 
 void ChatMessagesView::pageUp()
 {
-	QKeyEvent event(QEvent::KeyPress, 0x01000016, Qt::NoModifier);
+	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier);
 	keyPressEvent(&event);
 }
 
 void ChatMessagesView::pageDown()
 {
-	QKeyEvent event(QEvent::KeyPress, 0x01000017, Qt::NoModifier);
+	QKeyEvent event(QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier);
 	keyPressEvent(&event);
 }
 
@@ -344,10 +344,22 @@ void ChatMessagesView::contactActivityChanged(const Contact &contact, ChatStateS
 	Renderer->contactActivityChanged(contact, state);
 }
 
+void ChatMessagesView::scrollToTop()
+{
+	page()->mainFrame()->setScrollBarValue(Qt::Vertical, 0);
+	updateAtBottom();
+}
+
 void ChatMessagesView::scrollToBottom()
 {
 	if (AtBottom)
 		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+}
+
+void ChatMessagesView::forceScrollToBottom()
+{
+	page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+	updateAtBottom();
 }
 
 void ChatMessagesView::configurationUpdated()

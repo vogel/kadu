@@ -61,21 +61,13 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 	bool AtBottom;
 
+	bool sameMessage(const Message &left, const Message &right);
 	Message firstNonSystemMessage(const QList<MessageRenderInfo *> &messages);
 
 private slots:
 	void repaintMessages();
-
-	void pageUp();
-	void pageDown();
-
 	void imageReceived(const QString &imageId, const QString &imageFileName);
-
 	void sentMessageStatusChanged(const Message &message);
-
-	void scrollToBottom();
-
-	bool sameMessage(const Message &left, const Message &right);
 
 protected:
 	virtual void configurationUpdated();
@@ -113,6 +105,12 @@ public slots:
 	void clearMessages();
 	void contactActivityChanged(const Contact &contact, ChatStateService::State state);
 	void updateAtBottom();
+
+	void pageUp();
+	void pageDown();
+	void scrollToTop();
+	void scrollToBottom();
+	void forceScrollToBottom();
 
 signals:
 	void messagesUpdated();
