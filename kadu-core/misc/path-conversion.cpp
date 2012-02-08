@@ -27,11 +27,11 @@
 #include <cstdio>
 
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtCore/QtGlobal>
 #include <QtCore/QCoreApplication>
 
 #ifdef Q_OS_WIN
-#include <QFile>
 #include <shlobj.h>
 #include <windows.h>
 #endif
@@ -78,7 +78,14 @@ void printBacktrace(const QString &header)
 #ifdef Q_WS_X11
 QString desktopFilePath()
 {
-	return QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
+	static QString path;
+	if (path.isNull())
+	{
+		path = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
+		path = QFileInfo(path).canonicalFilePath();
+	}
+
+	return path;
 }
 #endif
 
@@ -89,7 +96,7 @@ QString homePath()
 	{
 #ifdef Q_OS_WIN
 		// TODO review this usbinst thing
-		if (QFile::exists(dataPath("usbinst")))
+		if (QFileInfo(dataPath("usbinst")).exists())
 			path = dataPath("config/");
 		else
 		{
@@ -127,7 +134,7 @@ QString profilePath(const QString &subpath)
 		QString home = homePath();
 
 #ifdef Q_OS_WIN
-		if (config_dir.isEmpty() && QFile::exists(dataPath("usbinst")))
+		if (config_dir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
 		{
 			path = home;
 			Parser::GlobalVariables["KADU_CONFIG"] = path;
@@ -220,53 +227,40 @@ QString profilePath(const QString &subpath)
 	return path + subpath;
 }
 
-static QString pluginsLibDir;
-static QString data_path;
-
 QString pluginsLibPath(const QString &f)
 {
+	static QString pluginsLibDir;
+	if (pluginsLibDir.isNull())
+	{
+#ifdef Q_OS_MAC
+		// TODO: Remove this OS X-specific code. Needs small changes to CMake and create_macosx_bundle.sh scripts.
+		pluginsLibDir = QCoreApplication::applicationDirPath() + QLatin1String("/../../kadu/plugins/");
+#else
+		pluginsLibDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
+#endif
+		pluginsLibDir = QDir(pluginsLibDir).canonicalPath() + '/';
+	}
+
 	return pluginsLibDir + f;
 }
 
 QString dataPath(const QString &p)
 {
-	if (data_path.isNull())
+	static QString dataDir;
+	if (dataDir.isNull())
 	{
 #ifdef Q_OS_MAC
-		QString appDir = QCoreApplication::applicationDirPath();
-		if (appDir.isEmpty())
-		{
-			fprintf(stderr, "we've got real problem here ;)\n");
-			fflush(stderr);
-			exit(10);
-		}
-		else
-		{
-			data_path = appDir + "/../../kadu";
-			pluginsLibDir = appDir + "/../../kadu/plugins/";
-		}
-#elif defined(Q_OS_WIN)
-		WCHAR epath[MAX_PATH+1];
-		GetModuleFileNameW(NULL, epath, MAX_PATH);
-
-		data_path = QString::fromUtf16((const ushort*)epath);
-		data_path.resize(data_path.lastIndexOf('\\') + 1);
-		pluginsLibDir = data_path + "/plugins";
+		// TODO: Remove this OS X-specific code. Needs small changes to CMake and create_macosx_bundle.sh scripts.
+		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/../../kadu");
 #else
-		QString appDir = QCoreApplication::applicationDirPath();
-		data_path = appDir + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
-		pluginsLibDir = appDir + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
+		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
 #endif
-		QDir dataDir(data_path);
-		QDir libDir(pluginsLibDir);
+		dataDir = QDir(dataDir).canonicalPath() + '/';
 
-		data_path = dataDir.canonicalPath() + '/';
-		pluginsLibDir = libDir.canonicalPath() + '/';
-
-		Parser::GlobalVariables["DATA_PATH"] = data_path;
+		Parser::GlobalVariables["DATA_PATH"] = dataDir;
 	}
 
-	return data_path + p;
+	return dataDir + p;
 }
 
 QString webKitPath(const QString &path)
