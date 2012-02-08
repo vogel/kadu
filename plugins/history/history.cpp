@@ -69,6 +69,7 @@
 
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
+#include "history-query.h"
 #include "history-messages-prepender.h"
 #include "history-save-thread.h"
 
@@ -211,10 +212,12 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
 
-	QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
-	QFuture<QVector<Message> > futureMessages = CurrentStorage->messagesBackTo(chat ? chat : chatWidget->chat(), backTo,
-			config_file.readNumEntry("Chat", "ChatPruneLen", 20));
-	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
+	HistoryQuery query;
+	query.setTalkable(chat ? chat : chatWidget->chat());
+	query.setFromDateTime(QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600));
+	query.setLimit(config_file.readNumEntry("History", "ChatHistoryCitation", 10));
+
+	new HistoryMessagesPrepender(CurrentStorage->messages(query), chatMessagesView);
 }
 
 void History::accountRegistered(Account account)

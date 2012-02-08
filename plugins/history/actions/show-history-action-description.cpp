@@ -77,9 +77,9 @@ void ShowHistoryActionDescription::actionInstanceCreated(Action *action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 
-	if (config_file.readBoolEntry("Chat", "ChatPrune", false))
+	if (config_file.readNumEntry("History", "ChatHistoryCitation", 10) > 0)
 	{
-		int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
+		int prune = config_file.readNumEntry("History", "ChatHistoryCitation", 10);
 		menu->addAction(tr("Show last %1 messages").arg(prune), this, SLOT(showPruneMessages()))->setData(chatWidgetData);
 		menu->addSeparator();
 	}
@@ -155,21 +155,13 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	const Chat &messagesChat = aggregateChat ? aggregateChat : chatWidget->chat();
 	HistoryStorage *historyStorage = History::instance()->currentStorage();
 
-	QFuture<QVector<Message> > futureMessages;
-	if (0 != days)
-	{
-		HistoryQuery query;
-		query.setTalkable(messagesChat);
+	HistoryQuery query;
+	query.setTalkable(messagesChat);
+
+	if (0 == days)
+		query.setLimit(config_file.readNumEntry("History", "ChatHistoryCitation", 10));
+	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 
-		futureMessages = historyStorage->messages(query);
-	}
-	else
-	{
-		int pruneLen = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
-		QDateTime backTo = QDateTime::currentDateTime().addSecs(ChatHistoryQuotationTime * 3600);
-		futureMessages = historyStorage->messagesBackTo(messagesChat, backTo, pruneLen);
-	}
-
-	new HistoryMessagesPrepender(futureMessages, chatMessagesView);
+	new HistoryMessagesPrepender(historyStorage->messages(query), chatMessagesView);
 }
