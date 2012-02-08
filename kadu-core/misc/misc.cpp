@@ -207,8 +207,3 @@ QString fixFileName(const QString &path, const QString &fn)
 	// we cannot fix it, return original
 	return fn;
 }
-
-bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
-{
-	return s1.toLower() < s2.toLower();
-}
