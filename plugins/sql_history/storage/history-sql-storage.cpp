@@ -939,43 +939,6 @@ QFuture<QVector<Message> > HistorySqlStorage::messages(const HistoryQuery &histo
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
-{
-	if (!chat)
-		return QVector<Message>();
-
-	if (!waitForDatabase())
-		return QVector<Message>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QVector<Message> messages;
-	if (date.isNull())
-		return messages;
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND date >= :date ORDER BY date_id ASC, kadu_messages.rowid ASC";
-	query.prepare(queryString);
-
-	query.bindValue(":date", date.toString("yyyyMMdd"));
-
-	executeQuery(query);
-
-	messages = messagesFromQuery(query);
-
-	return messages;
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::messagesSince(const Chat &chat, const QDate &date)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesSince, chat, date);
-}
-
 QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
 {
 	if (!chat)
