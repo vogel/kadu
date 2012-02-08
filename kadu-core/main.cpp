@@ -395,15 +395,6 @@ int main(int argc, char *argv[])
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
 			Core::instance(), SLOT(receivedSignal(const QString &)));
 
-	QString path_ = profilePath();
-#ifndef Q_WS_WIN
-	if (path_.endsWith(QLatin1String("/kadu/")) || path_.endsWith(QLatin1String("/Kadu/"))) // for profiles directory
-		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);
-	mkdir(qPrintable(path_), 0700);
-#else
-	QDir().mkdir(path_);
-#endif
-
 	PluginsManager::instance()->activatePlugins();
 
 #ifndef Q_WS_WIN

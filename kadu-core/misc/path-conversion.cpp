@@ -27,6 +27,7 @@
 #include <cstdio>
 
 #include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QtGlobal>
 #include <QtCore/QCoreApplication>
@@ -126,7 +127,15 @@ QString profilePath(const QString &subpath)
 				path += oldMidConfigDir;
 		}
 
-		path = QDir(path).canonicalPath() + '/';
+		QDir profileDir(path);
+		if (!profileDir.exists())
+		{
+			profileDir.mkpath(QLatin1String("."));
+			// This equals to 0700 on Unix-like.
+			QFile(path).setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::WriteUser | QFile::ExeUser);
+		}
+
+		path = profileDir.canonicalPath() + '/';
 	}
 
 	return path + subpath;
