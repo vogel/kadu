@@ -89,14 +89,15 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of messages for given talkable and data.
-	 * @param talkable talkable to get list of messages for
-	 * @param date date to get list of messages for
-	 * @return list of messages for given talkable and date
+	 * @param historyQuery query to get list of messages for
+	 * @return list of messages for given query
 	 *
 	 * This methods returns list of message in asynchronous way. Refer to QFuture
 	 * documentation for more information.
+	 *
+	 * Only talkable and date range query parameters are considered in this method.
 	 */
-	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date) = 0;
+	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

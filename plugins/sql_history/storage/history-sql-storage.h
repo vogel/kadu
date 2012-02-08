@@ -90,12 +90,12 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<HistoryQueryResult> syncStatusDates(const HistoryQuery &historyQuery);
 	QVector<HistoryQueryResult> syncSmsRecipientDates(const HistoryQuery &historyQuery);
 
-	QVector<Message> syncMessages(const Talkable &talkable, const QDate &date);
+	QVector<Message> syncMessages(const HistoryQuery &historyQuery);
 	QVector<Message> syncMessagesSince(const Chat &chat, const QDate &date);
 	QVector<Message> syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	QVector<Message> syncStatuses(const Talkable &talkable, const QDate &date);
-	QVector<Message> syncSmses(const Talkable &talkable, const QDate &date);
+	QVector<Message> syncStatuses(const HistoryQuery &historyQuery);
+	QVector<Message> syncSmses(const HistoryQuery &historyQuery);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -119,13 +119,13 @@ public:
 	virtual QFuture<QVector<HistoryQueryResult> > statusDates(const HistoryQuery &historyQuery);
 	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery);
 
-	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date);
+	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery);
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date);
 	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
 
-	virtual QFuture<QVector<Message> > statuses(const Talkable &talkable, const QDate &date);
+	virtual QFuture<QVector<Message> > statuses(const HistoryQuery &historyQuery);
 
-	virtual QFuture<QVector<Message> > smses(const Talkable &talkable, const QDate &date);
+	virtual QFuture<QVector<Message> > smses(const HistoryQuery &historyQuery);
 
 	virtual void appendMessage(const Message &message);
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time);

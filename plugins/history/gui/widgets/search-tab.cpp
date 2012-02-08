@@ -302,7 +302,14 @@ void SearchTab::currentDateChanged()
 	TimelineView->messagesView()->setChat(chat);
 
 	if (SearchedStorage && *SearchedStorage)
-		TimelineView->setFutureMessages((*SearchedStorage)->messages(talkable, date));
+	{
+		HistoryQuery query;
+		query.setTalkable(talkable);
+		query.setFromDate(date);
+		query.setToDate(date);
+
+		TimelineView->setFutureMessages((*SearchedStorage)->messages(query));
+	}
 	else
 		TimelineView->setMessages(QVector<Message>());
 }

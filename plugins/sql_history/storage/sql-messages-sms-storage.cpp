@@ -41,9 +41,9 @@ QFuture<QVector<HistoryQueryResult> > SqlMessagesSmsStorage::dates(const History
 	return SqlStorage->smsRecipientDates(historyQuery);
 }
 
-QFuture<QVector<Message> > SqlMessagesSmsStorage::messages(const Talkable &talkable, const QDate &date)
+QFuture<QVector<Message> > SqlMessagesSmsStorage::messages(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->smses(talkable, date);
+	return SqlStorage->smses(historyQuery);
 }
 
 void SqlMessagesSmsStorage::deleteMessages(const Talkable &talkable, const QDate &date)

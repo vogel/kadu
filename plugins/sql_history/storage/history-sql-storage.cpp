@@ -894,37 +894,49 @@ QFuture<QVector<HistoryQueryResult> > HistorySqlStorage::smsRecipientDates(const
 	return QtConcurrent::run(this, &HistorySqlStorage::syncSmsRecipientDates, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const QDate &date)
+QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuery)
 {
 	if (!waitForDatabase())
 		return QVector<Message>();
 
 	QMutexLocker locker(&DatabaseMutex);
 
+	const Talkable &talkable = historyQuery.talkable();
+
 	QSqlQuery query(Database);
 	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
 			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
 			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
 			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(talkable.toChat());
-	if (!date.isNull())
-		queryString += " AND date = :date";
+			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE 1";
+
+	if (!talkable.isEmpty())
+		queryString += QString(" AND %1").arg(chatWhere(talkable.toChat()));
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND date >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND date <= :toDate";
+
 	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
 
-	QVector<Message> messages;
 	query.prepare(queryString);
 
-	if (!date.isNull())
-		query.bindValue(":date", date.toString("yyyyMMdd"));
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
+
+	QVector<Message> messages;
+
 	executeQuery(query);
 	messages = messagesFromQuery(query);
 
 	return messages;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::messages(const Talkable &talkable, const QDate &date)
+QFuture<QVector<Message> > HistorySqlStorage::messages(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, talkable, date);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, historyQuery);
 }
 
 QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QDate &date)
@@ -1007,10 +1019,9 @@ QFuture<QVector<Message> > HistorySqlStorage::messagesBackTo(const Chat &chat, c
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesBackTo, chat, datetime, limit);
 }
 
-QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const QDate &date)
+QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuery)
 {
-	if (!talkable.isValidBuddy() && !talkable.isValidContact())
-		return QVector<Message>();
+	const Talkable &talkable = historyQuery.talkable();
 
 	if (!waitForDatabase())
 		return QVector<Message>();
@@ -1019,15 +1030,21 @@ QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const
 
 	QSqlQuery query(Database);
 	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
-	if (!date.isNull())
-		queryString += " AND substr(set_time,0,11) = :date";
+
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND replace(substr(set_time,0,11), '-', '') >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND replace(substr(set_time,0,11), '-', '') <= :toDate";
+
 	queryString += " ORDER BY set_time ASC";
 
 	QVector<Message> statuses;
 	query.prepare(queryString);
 
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
 
 	executeQuery(query);
 	statuses = statusesFromQuery(talkable.toContact(), query);
@@ -1035,15 +1052,14 @@ QVector<Message> HistorySqlStorage::syncStatuses(const Talkable &talkable, const
 	return statuses;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::statuses(const Talkable &talkable, const QDate &date)
+QFuture<QVector<Message> > HistorySqlStorage::statuses(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncStatuses, talkable, date);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncStatuses, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncSmses(const Talkable &talkable, const QDate &date)
+QVector<Message> HistorySqlStorage::syncSmses(const HistoryQuery &historyQuery)
 {
-	if (!talkable.isValidBuddy() || talkable.toBuddy().mobile().isEmpty())
-		return QVector<Message>();
+	const Talkable &talkable = historyQuery.talkable();
 
 	if (!waitForDatabase())
 		return QVector<Message>();
@@ -1051,16 +1067,27 @@ QVector<Message> HistorySqlStorage::syncSmses(const Talkable &talkable, const QD
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE receipient = :receipient";
-	if (!date.isNull())
-		queryString += " AND substr(send_time,0,11) = :date";
+	QString queryString = "SELECT content, send_time FROM kadu_sms WHERE 1";
+
+	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+		queryString += " AND receipient = :receipient";
+	if (historyQuery.fromDate().isValid())
+		queryString += " AND replace(substr(send_time,0,11), '-', '') >= :fromDate";
+	if (historyQuery.toDate().isValid())
+		queryString += " AND replace(substr(send_time,0,11), '-', '') <= :toDate";
+
 	queryString += " ORDER BY send_time ASC";
 
 	query.prepare(queryString);
 
-	query.bindValue(":receipient", talkable.toBuddy().mobile());
-	if (!date.isNull())
-		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (talkable.isValidBuddy() && !talkable.toBuddy().mobile().isEmpty())
+		query.bindValue(":receipient", talkable.toBuddy().mobile());
+
+	if (historyQuery.fromDate().isValid())
+		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
+	if (historyQuery.toDate().isValid())
+		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
+
 	executeQuery(query);
 
 	QVector<Message> result = smsFromQuery(query);
@@ -1068,9 +1095,9 @@ QVector<Message> HistorySqlStorage::syncSmses(const Talkable &talkable, const QD
 	return result;
 }
 
-QFuture<QVector<Message> > HistorySqlStorage::smses(const Talkable &talkable, const QDate &date)
+QFuture<QVector<Message> > HistorySqlStorage::smses(const HistoryQuery &historyQuery)
 {
-	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, talkable, date);
+	return QtConcurrent::run(this, &HistorySqlStorage::syncSmses, historyQuery);
 }
 
 void HistorySqlStorage::executeQuery(QSqlQuery &query)

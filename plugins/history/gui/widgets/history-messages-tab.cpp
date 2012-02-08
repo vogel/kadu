@@ -254,8 +254,13 @@ void HistoryMessagesTab::currentDateChanged()
 		return;
 	}
 
+	HistoryQuery query;
+	query.setTalkable(CurrentTalkable);
+	query.setFromDate(date);
+	query.setToDate(date);
+
 	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
-	TimelineView->setFutureMessages(Storage->messages(CurrentTalkable, date));
+	TimelineView->setFutureMessages(Storage->messages(query));
 }
 
 void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)

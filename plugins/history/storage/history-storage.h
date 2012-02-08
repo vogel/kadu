@@ -63,13 +63,13 @@ public:
 	virtual QFuture<QVector<HistoryQueryResult> > statusDates(const HistoryQuery &historyQuery) = 0;
 	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery) = 0;
 
-	virtual QFuture<QVector<Message> > messages(const Talkable &talkable, const QDate &date) = 0;
+	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery) = 0;
 	virtual QFuture<QVector<Message> > messagesSince(const Chat &chat, const QDate &date) = 0;
 	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit) = 0;
 
-	virtual QFuture<QVector<Message> > statuses(const Talkable &talkable, const QDate &date) = 0;
+	virtual QFuture<QVector<Message> > statuses(const HistoryQuery &historyQuery) = 0;
 
-	virtual QFuture<QVector<Message> > smses(const Talkable &talkable, const QDate &date) = 0;
+	virtual QFuture<QVector<Message> > smses(const HistoryQuery &historyQuery) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
 	virtual void appendStatus(const Contact &contact, const Status &status, const QDateTime &time = QDateTime::currentDateTime()) = 0;
