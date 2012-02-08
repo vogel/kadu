@@ -41,10 +41,6 @@
 class QRect;
 class QWidget;
 
-// private
-extern KADUAPI long int startTime, beforeExecTime, endingTime, exitingTime;
-extern KADUAPI bool measureTime;
-
 KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
 KADUAPI QString pwHash(const QString &text);

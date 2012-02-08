@@ -54,9 +54,6 @@
 QFont *defaultFont;
 QFontInfo *defaultFontInfo;
 
-long int startTime, beforeExecTime, endingTime, exitingTime;
-bool measureTime = false;
-
 QString replacedNewLine(const QString &text, const QString &newLineText)
 {
 	static const QRegExp newLineRegExp("(\r\n|\r|\n)");

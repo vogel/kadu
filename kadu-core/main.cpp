@@ -132,6 +132,9 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 #ifdef DEBUG_ENABLED
 extern KADUAPI bool showTimesInDebug;
 #endif
+
+static long int startTime, beforeExecTime, endingTime, exitingTime;
+static bool measureTime;
 extern KADUAPI char *SystemUserName;
 
 // defined in main_unix.cpp and main_win32.cpp
