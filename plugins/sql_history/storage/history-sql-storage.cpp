@@ -916,8 +916,20 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 		queryString += " AND date >= :fromDate";
 	if (historyQuery.toDate().isValid())
 		queryString += " AND date <= :toDate";
+	if (historyQuery.fromDateTime().isValid())
+		queryString += " AND receive_time >= :fromDateTime";
+	if (historyQuery.toDateTime().isValid())
+		queryString += " AND receive_time <= :toDateTime";
 
-	queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
+	// we want last *limit* messages, so we have to invert sorting here
+	// it is reverted back manually below
+	if (historyQuery.limit() > 0)
+	{
+		queryString += " ORDER BY kadu_messages.date_id DESC, kadu_messages.rowid DESC";
+		queryString += " LIMIT :limit";
+	}
+	else
+		queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
 
 	query.prepare(queryString);
 
@@ -925,11 +937,29 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 		query.bindValue(":fromDate", historyQuery.fromDate().toString("yyyyMMdd"));
 	if (historyQuery.toDate().isValid())
 		query.bindValue(":toDate", historyQuery.toDate().toString("yyyyMMdd"));
+	if (historyQuery.fromDateTime().isValid())
+		query.bindValue(":fromDateTime", historyQuery.fromDateTime().toString(Qt::ISODate));
+	if (historyQuery.toDateTime().isValid())
+		query.bindValue(":toDateTime", historyQuery.toDateTime().toString(Qt::ISODate));
+
+	if (historyQuery.limit() > 0)
+		query.bindValue(":limit", historyQuery.limit());
 
 	QVector<Message> messages;
 
 	executeQuery(query);
 	messages = messagesFromQuery(query);
+
+	if (historyQuery.limit() > 0)
+	{
+		// see comment above
+		QVector<Message> inverted;
+		inverted.reserve(messages.size());
+
+		for (int i = messages.size() - 1; i >= 0; --i)
+			inverted.append(messages.at(i));
+		return inverted;
+	}
 
 	return messages;
 }
