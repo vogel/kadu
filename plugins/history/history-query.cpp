@@ -19,7 +19,8 @@
 
 #include "history-query.h"
 
-HistoryQuery::HistoryQuery()
+HistoryQuery::HistoryQuery() :
+		Limit(0)
 {
 }
 
@@ -29,6 +30,9 @@ HistoryQuery::HistoryQuery (const HistoryQuery &copyMe)
 	QueryString = copyMe.QueryString;
 	FromDate = copyMe.FromDate;
 	ToDate = copyMe.ToDate;
+	FromDateTime = copyMe.FromDateTime;
+	ToDateTime = copyMe.ToDateTime;
+	Limit = copyMe.Limit;
 }
 
 HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
@@ -37,6 +41,9 @@ HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
 	QueryString = copyMe.QueryString;
 	FromDate = copyMe.FromDate;
 	ToDate = copyMe.ToDate;
+	FromDateTime = copyMe.FromDateTime;
+	ToDateTime = copyMe.ToDateTime;
+	Limit = copyMe.Limit;
 
 	return *this;
 }
@@ -79,4 +86,34 @@ void HistoryQuery::setToDate(const QDate &toDate)
 QDate HistoryQuery::toDate() const
 {
 	return ToDate;
+}
+
+void HistoryQuery::setFromDateTime(const QDateTime &fromDateTime)
+{
+	FromDateTime = fromDateTime;
+}
+
+QDateTime HistoryQuery::fromDateTime() const
+{
+	return FromDateTime;
+}
+
+void HistoryQuery::setToDateTime(const QDateTime &toDateTime)
+{
+	ToDateTime = toDateTime;
+}
+
+QDateTime HistoryQuery::toDateTime() const
+{
+	return ToDateTime;
+}
+
+void HistoryQuery::setLimit(quint16 limit)
+{
+	Limit = limit;
+}
+
+quint16 HistoryQuery::limit() const
+{
+	return Limit;
 }

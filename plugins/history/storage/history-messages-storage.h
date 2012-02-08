@@ -82,7 +82,7 @@ public:
 	 * @return list of available dates for given query
 	 *
 	 * This methods returns list of available dates for given talkabel in asynchronous way. Refer to QFuture
-	 * documentation for more information.
+	 * documentation for more information. Limit query parametr is ignored for this method.
 	 */
 	virtual QFuture<QVector<HistoryQueryResult> > dates(const HistoryQuery &historyQuery) = 0;
 
@@ -95,7 +95,8 @@ public:
 	 * This methods returns list of message in asynchronous way. Refer to QFuture
 	 * documentation for more information.
 	 *
-	 * Only talkable and date range query parameters are considered in this method.
+	 * Query string parameter is ignored for this method. Limit query parameter can be ignored in
+	 * implementations of this method.
 	 */
 	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery) = 0;
 

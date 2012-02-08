@@ -35,8 +35,9 @@
  * @short This class represents query for messages in history.
  *
  * This class represents query for messages in history. Each query can contain a talkable,
- * query string and range of dates. Any query element can be empty - it will be ignored during
- * search.
+ * query string, range of dates (or datetimes) and limit. Any query element can be empty - it will be ignored during
+ * search. Any query element can be ignored by given history method. This behaviour is documented
+ * for these methods.
  *
  * Results of query are stored in QVector of HistoryQueryResult.
  */
@@ -46,6 +47,9 @@ class HistoryQuery
 	QString QueryString;
 	QDate FromDate;
 	QDate ToDate;
+	QDateTime FromDateTime;
+	QDateTime ToDateTime;
+	quint16 Limit;
 
 public:
 	/**
@@ -131,6 +135,54 @@ public:
 	 * @return to date filter
 	 */
 	QDate toDate() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets from date filter.
+	 * @param fromDateTime from date filter
+	 *
+	 * Only items with content added after this date (inclusive) will be returned.
+	 */
+	void setFromDateTime(const QDateTime &fromDateTime);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return from date filter.
+	 * @return from date filter
+	 */
+	QDateTime fromDateTime() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets to date filter.
+	 * @param toDateTime to date filter
+	 *
+	 * Only items with content added before this date (inclusive) will be returned.
+	 */
+	void setToDateTime(const QDateTime &toDateTime);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return to date filter.
+	 * @return to date filter
+	 */
+	QDateTime toDateTime() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets limit.
+	 * @param limit limit
+	 *
+	 * Maximum limit items will be returned.
+	 */
+	void setLimit(quint16 limit);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return limit.
+	 * @return limit
+	 */
+	quint16 limit() const;
 
 };
 
