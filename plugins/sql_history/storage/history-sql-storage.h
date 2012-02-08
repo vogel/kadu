@@ -91,8 +91,6 @@ class HistorySqlStorage : public HistoryStorage
 	QVector<HistoryQueryResult> syncSmsRecipientDates(const HistoryQuery &historyQuery);
 
 	QVector<Message> syncMessages(const HistoryQuery &historyQuery);
-	QVector<Message> syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
-
 	QVector<Message> syncStatuses(const HistoryQuery &historyQuery);
 	QVector<Message> syncSmses(const HistoryQuery &historyQuery);
 
@@ -119,10 +117,7 @@ public:
 	virtual QFuture<QVector<HistoryQueryResult> > smsRecipientDates(const HistoryQuery &historyQuery);
 
 	virtual QFuture<QVector<Message> > messages(const HistoryQuery &historyQuery);
-	virtual QFuture<QVector<Message> > messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit);
-
 	virtual QFuture<QVector<Message> > statuses(const HistoryQuery &historyQuery);
-
 	virtual QFuture<QVector<Message> > smses(const HistoryQuery &historyQuery);
 
 	virtual void appendMessage(const Message &message);

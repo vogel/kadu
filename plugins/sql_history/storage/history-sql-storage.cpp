@@ -969,49 +969,6 @@ QFuture<QVector<Message> > HistorySqlStorage::messages(const HistoryQuery &histo
 	return QtConcurrent::run(this, &HistorySqlStorage::syncMessages, historyQuery);
 }
 
-QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	if (!chat)
-		return QVector<Message>();
-
-	if (!waitForDatabase())
-		return QVector<Message>();
-
-	QMutexLocker locker(&DatabaseMutex);
-
-	QVector<Message> result;
-
-	QSqlQuery query(Database);
-	// we want last *limit* messages, so we have to invert sorting here
-	// it is reverted back manually below
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
-			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE " + chatWhere(chat) +
-			" AND receive_time >= :datetime ORDER BY date_id DESC, kadu_messages.rowid DESC LIMIT :limit";
-	query.prepare(queryString);
-
-	query.bindValue(":datetime", datetime.toString(Qt::ISODate));
-	query.bindValue(":limit", limit);
-
-	executeQuery(query);
-
-	result = messagesFromQuery(query);
-
-	// see comment above
-	QVector<Message> inverted;
-	inverted.reserve(result.size());
-
-	for (int i = result.size() - 1; i >= 0; --i)
-		inverted.append(result.at(i));
-	return inverted;
-}
-
-QFuture<QVector<Message> > HistorySqlStorage::messagesBackTo(const Chat &chat, const QDateTime &datetime, int limit)
-{
-	return QtConcurrent::run(this, &HistorySqlStorage::syncMessagesBackTo, chat, datetime, limit);
-}
-
 QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuery)
 {
 	const Talkable &talkable = historyQuery.talkable();
