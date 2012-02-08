@@ -316,10 +316,8 @@ int main(int argc, char *argv[])
 			debug_mask = atol(d);
 	}
 
-	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
 	d = getenv("SAVE_STDERR");
-	if (d)
-		saveStdErr = strcmp(d, "1") == 0;
+	saveStdErr = d && strcmp(d, "1") == 0;
 	if (saveStdErr)
 	{
 		char path[1024];
