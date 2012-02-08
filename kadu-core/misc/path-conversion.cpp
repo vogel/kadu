@@ -66,10 +66,10 @@ QString homePath()
 			path = dataPath("config/");
 		else
 		{
-			WCHAR homepath[MAX_PATH + 1];
+			wchar_t homepath[MAX_PATH];
 			// there is unfortunately no way to get this path from Qt4 API
 			if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
-				path = QString::fromUtf16((const ushort *)homepath);
+				path = QString::fromWCharArray(homepath);
 			else
 				path = QDir::homePath();
 		}

@@ -67,7 +67,7 @@ QString WinampMediaPlayer::readWinampMemory(quint32 command, quint32 arg, bool u
 		}
 
 		if(unicode){
-			return QString::fromUtf16((const ushort*)lpBuffer);
+			return QString::fromWCharArray((wchar_t *)lpBuffer);
 		}
 		else{
 			kdebug("ret = %s\n", lpBuffer);
@@ -115,7 +115,6 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 		SendMessage(hWinamp, WM_WA_IPC, (WPARAM)pFileInfo, IPC_GET_EXTENDED_FILE_INFOW);
 
 		wchar_t lpReturn[128];
-
 		ReadProcessMemory(hWinampProcess, pForeightRet, lpReturn, 256, NULL);
 
 		VirtualFreeEx(hWinampProcess, pForeightRet, 0, MEM_RELEASE);
@@ -124,7 +123,7 @@ QString WinampMediaPlayer::getFileTagW(int position, QString tag)
 
 		CloseHandle(hWinampProcess);
 
-		return QString::fromUtf16((const ushort*)lpReturn);
+		return QString::fromWCharArray(lpReturn);
 	}
 	return QString();
 }
@@ -176,7 +175,7 @@ QString WinampMediaPlayer::getFileTagA(int position, QString tag)
 
 		CloseHandle(hWinampProcess);
 
-		return QString::fromLocal8Bit((const char*)lpReturn);
+		return QString::fromLocal8Bit(lpReturn);
 	}
 	return QString();
 }
