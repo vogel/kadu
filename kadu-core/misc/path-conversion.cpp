@@ -36,7 +36,6 @@
 #include <windows.h>
 #endif
 
-#include "parser/parser.h"
 #include "debug.h"
 #include "kadu-config.h"
 
@@ -110,8 +109,6 @@ QString homePath()
 #else
 		path = QDir::homePath();
 #endif
-
-		Parser::GlobalVariables["HOME"] = path;
 	}
 
 	return path;
@@ -137,7 +134,6 @@ QString profilePath(const QString &subpath)
 		if (config_dir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
 		{
 			path = home;
-			Parser::GlobalVariables["KADU_CONFIG"] = path;
 			return path + subpath;
 		}
 #endif
@@ -220,8 +216,6 @@ QString profilePath(const QString &subpath)
 				path = QString("%1/%2/").arg(home).arg(config_dir);
 		}
 #endif
-
-		Parser::GlobalVariables["KADU_CONFIG"] = path;
 	}
 
 	return path + subpath;
@@ -256,8 +250,6 @@ QString dataPath(const QString &p)
 		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
 #endif
 		dataDir = QDir(dataDir).canonicalPath() + '/';
-
-		Parser::GlobalVariables["DATA_PATH"] = dataDir;
 	}
 
 	return dataDir + p;
