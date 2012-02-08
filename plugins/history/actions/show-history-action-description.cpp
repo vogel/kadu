@@ -30,6 +30,7 @@
 #include "gui/widgets/chat-widget.h"
 
 #include "gui/windows/history-window.h"
+#include "history-query.h"
 #include "history-messages-prepender.h"
 #include "history.h"
 
@@ -157,8 +158,11 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	QFuture<QVector<Message> > futureMessages;
 	if (0 != days)
 	{
-		QDate since = QDate::currentDate().addDays(-days);
-		futureMessages = historyStorage->messagesSince(messagesChat, since);
+		HistoryQuery query;
+		query.setTalkable(messagesChat);
+		query.setFromDate(QDate::currentDate().addDays(-days));
+
+		futureMessages = historyStorage->messages(query);
 	}
 	else
 	{
