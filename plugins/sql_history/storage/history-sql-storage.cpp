@@ -917,7 +917,7 @@ QVector<Message> HistorySqlStorage::syncMessages(const Talkable &talkable, const
 	if (!date.isNull())
 		query.bindValue(":date", date.toString("yyyyMMdd"));
 	executeQuery(query);
-	messages = messagesFromQuery(talkable.toChat(), query);
+	messages = messagesFromQuery(query);
 
 	return messages;
 }
@@ -954,7 +954,7 @@ QVector<Message> HistorySqlStorage::syncMessagesSince(const Chat &chat, const QD
 
 	executeQuery(query);
 
-	messages = messagesFromQuery(chat, query);
+	messages = messagesFromQuery(query);
 
 	return messages;
 }
@@ -991,7 +991,7 @@ QVector<Message> HistorySqlStorage::syncMessagesBackTo(const Chat &chat, const Q
 
 	executeQuery(query);
 
-	result = messagesFromQuery(chat, query);
+	result = messagesFromQuery(query);
 
 	// see comment above
 	QVector<Message> inverted;
@@ -1093,7 +1093,7 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 */
 }
 
-QVector<Message> HistorySqlStorage::messagesFromQuery(const Chat &chat, QSqlQuery &query)
+QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
 	QVector<Message> messages;
 	while (query.next())
@@ -1113,7 +1113,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(const Chat &chat, QSqlQuer
 		}
 
 		Message message = Message::create();
-		message.setMessageChat(chat);
+		message.setMessageChat(ChatManager::instance()->byUuid(query.value(0).toString()));
 		message.setType(type);
 		message.setMessageSender(sender);
 		message.setContent(query.value(2).toString());
