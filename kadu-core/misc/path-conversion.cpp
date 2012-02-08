@@ -86,6 +86,17 @@ QString profilePath(const QString &subpath)
 	static QString path;
 	if (path.isNull())
 	{
+#if defined(Q_OS_MAC)
+		const QString defaultConfigDirRelativeToHome = QLatin1String("Library/Kadu");
+		const QString oldMidConfigDir = QLatin1String("Kadu");
+#elif defined(Q_OS_WIN)
+		const QString defaultConfigDirRelativeToHome = QLatin1String("Kadu");
+		const QString &oldMidConfigDir = defaultConfigDirRelativeToHome;
+#else
+		const QString defaultConfigDirRelativeToHome = QLatin1String(".kadu");
+		const QString oldMidConfigDir = QLatin1String("kadu");
+#endif
+
 #ifndef Q_OS_WIN
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
 #else
@@ -95,94 +106,34 @@ QString profilePath(const QString &subpath)
 			config_dir = buff;
 #endif
 
-		QString home = homePath();
-
 #ifdef Q_OS_WIN
 		if (config_dir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
-		{
-			path = home;
-			return path + subpath;
-		}
+			path = homePath();
+		else
 #endif
+		if (config_dir.isEmpty())
+			path = homePath() + defaultConfigDirRelativeToHome;
+		else
+		{
+			config_dir += '/';
 
-		QString pwd = QDir::currentPath();
-
-#ifdef Q_OS_MAC
-		if (config_dir.isEmpty())
-			path = QString("%1/Library/Kadu/").arg(home);
-		else if (config_dir.startsWith("./"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
-				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
-#elif defined(Q_OS_WIN)
-		if (config_dir.isEmpty())
-			path = QString("%1/Kadu/").arg(home);
-		else if (config_dir.startsWith("./") || config_dir.startsWith(".\\"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
-				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
-#else
-		if (config_dir.isEmpty())
-			path = QString("%1/.kadu/").arg(home);
-		else if (config_dir.startsWith("./"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/kadu").arg(config_dir)).exists())
-				path = QString("%1/kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
+			if (config_dir.startsWith(QLatin1String("./"))
+#ifdef Q_OS_WIN
+					|| config_dir.startsWith(QLatin1String(".\\"))
 #endif
+					)
+				path = QDir::currentPath() + '/' + config_dir;
+			else if (QDir(config_dir).isAbsolute())
+				path = config_dir;
+			else
+				path = homePath() + config_dir;
+
+			// compatibility with 0.6.5 and older versions
+			if (QDir(path + oldMidConfigDir).exists())
+				path += oldMidConfigDir;
+		}
+
+		path = QDir(path).canonicalPath() + '/';
 	}
 
 	return path + subpath;
