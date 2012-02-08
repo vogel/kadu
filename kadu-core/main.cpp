@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
 {
 	QT_REQUIRE_VERSION(argc, argv, "4.7.0")
 
-	char *d = 0;
+	bool ok;
 	int msec;
 	time_t sec;
 	time_t startTimeT = time(0);
@@ -226,17 +226,18 @@ int main(int argc, char *argv[])
 	startTime = (sec % 1000) * 1000 + msec;
 
 #ifndef Q_WS_WIN
-	char *env_lang = getenv("LANG");
-	if (env_lang)
-		setenv("LC_COLLATE", env_lang, true);
-	else
-		setenv("LC_COLLATE", "pl_PL", true);
+	QByteArray langEnv = qgetenv("LANG");
+	QByteArray lcAllEnv = qgetenv("LC_ALL");
+	if (langEnv.isEmpty() && lcAllEnv.isEmpty())
+		qputenv("LC_COLLATE", "pl_PL");
+	else if (lcAllEnv.isEmpty())
+		qputenv("LC_COLLATE", langEnv);
 #else // !Q_WS_WIN
 	WSADATA wsaData;
-
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 2;
 #endif // !Q_WS_WIN
+
 	debug_mask = -2;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
@@ -289,11 +290,7 @@ int main(int argc, char *argv[])
 		else if ((param == "--debug") && (argc > i + 1))
 			debug_mask = atol(argv[++i]);
 		else if ((param == "--config-dir") && (argc > i + 1))
-#ifndef Q_WS_WIN
-			setenv("CONFIG_DIR", argv[++i], 1);
-#else
-			SetEnvironmentVariable("CONFIG_DIR", argv[++i]);
-#endif
+			qputenv("CONFIG_DIR", argv[++i]);
 		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(param))
 			ids.append(param);
 		else
@@ -311,14 +308,13 @@ int main(int argc, char *argv[])
 	if (debug_mask == -2)
 	{
 		debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-		d = getenv("DEBUG_MASK");
-		if (d)
-			debug_mask = atol(d);
+
+		int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
+		if (ok)
+			debug_mask = newMask;
 	}
 
-	d = getenv("SAVE_STDERR");
-	saveStdErr = d && strcmp(d, "1") == 0;
-	if (saveStdErr)
+	if (0 != qgetenv("SAVE_STDERR").toInt())
 	{
 		char path[1024];
 		tm *t = localtime(&startTimeT);
@@ -327,8 +323,8 @@ int main(int argc, char *argv[])
 		if (t && p)
 		{
 			SystemUserName = strdup(p->pw_name);
-			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg",
-					SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+			sprintf(path, "%s/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", qPrintable(QDir::tempPath()), SystemUserName,
+					1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 			if (freopen(path, "w+", stderr) == 0)
 				fprintf(stdout, "freopen: %s\n", strerror(errno));
 			else if (fchmod(fileno(stderr), 0600) != 0)
@@ -338,20 +334,15 @@ int main(int argc, char *argv[])
 			}
 		}
 #else
-		const char *tmp = getenv("TEMP");
-		if (!tmp)
-			tmp = ".";
-		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt",
-				tmp, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt", qPrintable(QDir::tempPath()),
+				1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 		if (freopen(path, "w+", stderr) == 0)
 			fprintf(stdout, "freopen: %s\n", strerror(errno));
 #endif
 	}
 
 #ifdef DEBUG_ENABLED
-	d = getenv("SHOW_TIMES");
-	if (d)
-		showTimesInDebug = atoi(d);
+	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 
 	enableSignalHandling();
@@ -427,22 +418,14 @@ int main(int argc, char *argv[])
 				"It's a high security risk!"));
 #endif
 
-	if (ids.count() >= 0)
-		foreach (const QString &id, ids)
-			Core::instance()->receivedSignal(id);
+	foreach (const QString &id, ids)
+		Core::instance()->receivedSignal(id);
 
 	/* for testing of startup / close time */
-	char *close_after = getenv("CLOSE_AFTER");
-	if (close_after)
-	{
-		int tm = atoi(close_after);
-		if (tm >= 0)
-			QTimer::singleShot(tm, Core::instance(), SLOT(quit()));
-	}
-
-	/* for testing of startup / close time */
-	measureTime = (getenv("MEASURE_TIME") != 0);
-	if (measureTime)
+	int closeAfter = qgetenv("CLOSE_AFTER").toInt(&ok);
+	if (ok && closeAfter >= 0)
+		QTimer::singleShot(closeAfter, qApp, SLOT(quit()));
+	if (0 != qgetenv("MEASURE_TIME").toInt())
 	{
 		getTime(&sec, &msec);
 		beforeExecTime = (sec % 1000) * 1000 + msec;

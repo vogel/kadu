@@ -97,36 +97,29 @@ QString profilePath(const QString &subpath)
 		const QString oldMidConfigDir = QLatin1String("kadu");
 #endif
 
-#ifndef Q_OS_WIN
-		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
-#else
-		QString config_dir;
-		char buff[1024] = { 0 };
-		if (GetEnvironmentVariable("CONFIG_DIR", buff, sizeof(buff) - 1) > 0)
-			config_dir = buff;
-#endif
+		QString customConfigDir = qgetenv("CONFIG_DIR");
 
 #ifdef Q_OS_WIN
-		if (config_dir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
+		if (customConfigDir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
 			path = homePath();
 		else
 #endif
-		if (config_dir.isEmpty())
+		if (customConfigDir.isEmpty())
 			path = homePath() + defaultConfigDirRelativeToHome;
 		else
 		{
-			config_dir += '/';
+				customConfigDir += '/';
 
-			if (config_dir.startsWith(QLatin1String("./"))
+			if (customConfigDir.startsWith(QLatin1String("./"))
 #ifdef Q_OS_WIN
-					|| config_dir.startsWith(QLatin1String(".\\"))
+					|| customConfigDir.startsWith(QLatin1String(".\\"))
 #endif
 					)
-				path = QDir::currentPath() + '/' + config_dir;
-			else if (QDir(config_dir).isAbsolute())
-				path = config_dir;
+				path = QDir::currentPath() + '/' + customConfigDir;
+			else if (QDir(customConfigDir).isAbsolute())
+				path = customConfigDir;
 			else
-				path = homePath() + config_dir;
+				path = homePath() + customConfigDir;
 
 			// compatibility with 0.6.5 and older versions
 			if (QDir(path + oldMidConfigDir).exists())

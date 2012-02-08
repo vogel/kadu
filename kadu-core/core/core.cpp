@@ -207,7 +207,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", false);
 	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
@@ -461,17 +461,15 @@ void Core::deleteOldConfigurationFiles()
 			QFile::remove(profilePath(oldBacktraces[i]));
 
 #ifdef Q_OS_WIN
-	QString tmp(getenv("TEMP") ? getenv("TEMP") : ".");
-	QString mask("kadu-dbg-*.txt");
+	const QString mask = "kadu-dbg-*.txt";
 #else
-	QString tmp("/tmp");
-	QString mask=QString("kadu-%1-*.dbg").arg(SystemUserName);
+	const QString mask = QString("kadu-%1-*.dbg").arg(SystemUserName);
 #endif
 
-	QDir oldDebugs(tmp, mask, QDir::Name, QDir::Files);
+	QDir oldDebugs(QDir::tempPath(), mask, QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 5)
 		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
-			QFile::remove(tmp + '/' + oldDebugs[i]);
+			QFile::remove(QDir::tempPath() + '/' + oldDebugs[i]);
 
 	kdebugf2();
 }
