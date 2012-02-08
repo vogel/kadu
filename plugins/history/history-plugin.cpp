@@ -37,7 +37,7 @@ int HistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	History::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/history.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
 
 	BuddyHistoryDeleteHandler::createInstance();
@@ -52,7 +52,7 @@ void HistoryPlugin::done()
 	BuddyHistoryDeleteHandler::destroyInstance();
 
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/history.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/history.ui"));
 	History::destroyInstance();
 }
 

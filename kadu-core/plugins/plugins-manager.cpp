@@ -389,7 +389,7 @@ void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
  */
 QStringList PluginsManager::installedPlugins() const
 {
-	QDir dir(dataPath("kadu/plugins"), "*.desc");
+	QDir dir(dataPath("plugins"), "*.desc");
 	dir.setFilter(QDir::Files);
 
 	QStringList installed;

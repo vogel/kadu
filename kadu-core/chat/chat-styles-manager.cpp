@@ -295,7 +295,7 @@ void ChatStylesManager::loadStyles()
 		}
 	}
 
-	path = dataPath("kadu") + "/syntax/chat/";
+	path = dataPath() + "/syntax/chat/";
 	dir.setPath(path);
 
 	files = dir.entryList();

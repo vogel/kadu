@@ -42,7 +42,7 @@ void SpeechConfigurationUiHandler::registerUiHandler()
 	if (!Instance)
 	{
 		Instance = new SpeechConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/speech.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/speech.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -52,7 +52,7 @@ void SpeechConfigurationUiHandler::unregisterUiHandler()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/speech.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/speech.ui"));
 		delete Instance;
 		Instance = 0;
 	}

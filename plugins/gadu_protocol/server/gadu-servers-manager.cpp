@@ -148,7 +148,7 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(dataPath("kadu/plugins/data/gadu_protocol/servers.txt"));
+		loadServerListFromFile(dataPath("plugins/data/gadu_protocol/servers.txt"));
 	else
 		loadServerListFromString(config_file.readEntry("Network", "Server"));
 

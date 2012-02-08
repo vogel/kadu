@@ -41,7 +41,7 @@ int DesktopDockingPlugin::init(bool firstLoad)
 	DesktopDock::createInstance();
 	DockingManager::instance()->setDocker(DesktopDock::instance());
 	DesktopDockConfigurationUiHandler::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
 	return 0;
@@ -50,7 +50,7 @@ int DesktopDockingPlugin::init(bool firstLoad)
 void DesktopDockingPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(DesktopDockConfigurationUiHandler::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/desktop_docking.ui"));
 	DesktopDockConfigurationUiHandler::destroyInstance();
 	DockingManager::instance()->setDocker(0);
 	DesktopDock::destroyInstance();

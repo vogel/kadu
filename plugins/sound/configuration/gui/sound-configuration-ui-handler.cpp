@@ -43,7 +43,7 @@ void SoundConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new SoundConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/sound.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/sound.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -55,7 +55,7 @@ void SoundConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/sound.ui"));
 }
 
 SoundConfigurationUiHandler * SoundConfigurationUiHandler::instance()

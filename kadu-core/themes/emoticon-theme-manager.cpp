@@ -51,7 +51,7 @@ EmoticonThemeManager::~EmoticonThemeManager()
 
 QStringList EmoticonThemeManager::defaultThemePaths()
 {
-	QStringList result = getSubDirs(dataPath("kadu/themes/emoticons"));
+	QStringList result = getSubDirs(dataPath("themes/emoticons"));
 	result += getSubDirs(profilePath("icons"));
 
 	return result;

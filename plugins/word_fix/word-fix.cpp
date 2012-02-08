@@ -67,7 +67,7 @@ WordFix::WordFix(QObject *parent) :
 	QString data = config_file.readEntry("word_fix", "WordFix_list");
 	if (data.isEmpty())
 	{
-		QFile defList(dataPath("kadu/plugins/data/word_fix/wf_default_list.data"));
+		QFile defList(dataPath("plugins/data/word_fix/wf_default_list.data"));
 		if (defList.open(QIODevice::ReadOnly))
 		{
 			QTextStream s(&defList);
@@ -123,7 +123,7 @@ int WordFix::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	kdebugf();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 	kdebugf2();
 	return 0;
@@ -133,7 +133,7 @@ void WordFix::done()
 {
 	kdebugf();
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/word_fix.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/word_fix.ui"));
 	kdebugf2();
 }
 

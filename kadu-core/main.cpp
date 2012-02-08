@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 	// delayed running, useful in gnome
 	sleep(config_file.readNumEntry("General", "StartDelay"));
 #endif
-	QString data_dir = dataPath("kadu");
+	QString data_dir = dataPath();
 	if (!QDir(data_dir).isReadable())
 	{
 		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));
@@ -346,7 +346,7 @@ int main(int argc, char *argv[])
 	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	kadu_qm.load("kadu_" + lang, dataPath("kadu/translations"));
+	kadu_qm.load("kadu_" + lang, dataPath("translations"));
 	qApp->installTranslator(&qt_qm);
 	qApp->installTranslator(&kadu_qm);
 

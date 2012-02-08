@@ -100,7 +100,7 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 	QDir dir;
 	BaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
 	if (!dir.exists(BaseHref))
-		BaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
+		BaseHref = dataPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
 
 	readConfiugrationFile();
 	loadHtmlFiles();
@@ -136,7 +136,7 @@ void AdiumStyle::loadHtmlFiles()
 		TemplateHref = BaseHref + "template.html";
 	else
 	{
-		TemplateHref = dataPath("kadu") + "/syntax/chat/Default/Template.html";
+		TemplateHref = dataPath() + "/syntax/chat/Default/Template.html";
 		UsesCustomTemplateHtml = false;
 	}
 

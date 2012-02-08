@@ -39,7 +39,7 @@ QMap<QString, HintsConfigurationWindow *> HintsConfigurationWindow::Configuratio
 HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager) :
 	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager), EventName(eventName)
 {
-	widget()->appendUiFile(dataPath("kadu/plugins/configuration/hints-notifier.ui"));
+	widget()->appendUiFile(dataPath("plugins/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));

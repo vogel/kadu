@@ -41,7 +41,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 {
 	QString path;
 	QFile syntaxFile;
-	path = dataPath("kadu") + "/syntax/" + category + '/' + name + ".syntax";
+	path = dataPath() + "/syntax/" + category + '/' + name + ".syntax";
 
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -89,7 +89,7 @@ void SyntaxList::reload()
 	}
 
 	info.global = true;
-	path = dataPath("kadu") + "/syntax/" + category + '/';
+	path = dataPath() + "/syntax/" + category + '/';
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -151,7 +151,7 @@ QString SyntaxList::readSyntax(const QString &name)
 	SyntaxInfo info = *(find(name));
 	QString path;
 	if (info.global)
-		path = dataPath("kadu") + "/syntax/" + category + '/' + name + ".syntax";
+		path = dataPath() + "/syntax/" + category + '/' + name + ".syntax";
 	else
 		path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
 

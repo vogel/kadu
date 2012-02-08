@@ -33,7 +33,7 @@ void FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new FreedesktopNotifyConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/freedesktop_notify.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -45,7 +45,7 @@ void FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/freedesktop_notify.ui"));
 }
 
 FreedesktopNotifyConfigurationUiHandler * FreedesktopNotifyConfigurationUiHandler::instance()

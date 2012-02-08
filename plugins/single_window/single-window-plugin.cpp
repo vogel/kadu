@@ -36,14 +36,14 @@ int SingleWindowPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SingleWindowManagerInstance = new SingleWindowManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/single_window.ui"));
 
 	return 0;
 }
 
 void SingleWindowPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/single_window.ui"));
 	delete SingleWindowManagerInstance;
 	SingleWindowManagerInstance = 0;
 }

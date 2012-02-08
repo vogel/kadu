@@ -35,7 +35,7 @@ int MediaplayerPlugin::init(bool firstLoad)
 
 	MediaPlayer::createInstance();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/mediaplayer.ui"));
 	MainConfigurationWindow::registerUiHandler(MediaPlayer::instance());
 
 	return 0;
@@ -44,7 +44,7 @@ int MediaplayerPlugin::init(bool firstLoad)
 void MediaplayerPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(MediaPlayer::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/mediaplayer.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/mediaplayer.ui"));
 
 	MediaPlayer::destroyInstance();
 }

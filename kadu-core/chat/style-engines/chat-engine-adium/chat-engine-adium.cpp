@@ -150,7 +150,7 @@ AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
 		QObject(parent), CurrentPreviewHack(0)
 {
 	// Load required javascript functions
-	QFile file(dataPath("kadu") + "/scripts/chat-scripts.js");
+	QFile file(dataPath() + "/scripts/chat-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 }
@@ -197,7 +197,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	QDir dir;
 	QString styleBaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
+		styleBaseHref = dataPath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();

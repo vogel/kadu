@@ -28,7 +28,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QtGlobal>
-#include <QtGui/QApplication>
+#include <QtCore/QCoreApplication>
 
 #ifdef Q_OS_WIN
 #include <QFile>
@@ -78,7 +78,7 @@ void printBacktrace(const QString &header)
 #ifdef Q_WS_X11
 QString desktopFilePath()
 {
-	return QLatin1String(KADU_DESKTOP_FILE_PATH);
+	return QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
 }
 #endif
 
@@ -230,13 +230,11 @@ QString pluginsLibPath(const QString &f)
 
 QString dataPath(const QString &p)
 {
-	QString path = p;
-
 	if (data_path.isNull())
 	{
 #ifdef Q_OS_MAC
-		QString appPath = qApp->applicationDirPath();
-		if (appPath.isEmpty())
+		QString appDir = QCoreApplication::applicationDirPath();
+		if (appDir.isEmpty())
 		{
 			fprintf(stderr, "we've got real problem here ;)\n");
 			fflush(stderr);
@@ -244,8 +242,8 @@ QString dataPath(const QString &p)
 		}
 		else
 		{
-			data_path = appPath + "/../../";
-			pluginsLibDir = appPath + "/../../kadu/plugins/";
+			data_path = appDir + "/../../kadu";
+			pluginsLibDir = appDir + "/../../kadu/plugins/";
 		}
 #elif defined(Q_OS_WIN)
 		WCHAR epath[MAX_PATH+1];
@@ -255,8 +253,9 @@ QString dataPath(const QString &p)
 		data_path.resize(data_path.lastIndexOf('\\') + 1);
 		pluginsLibDir = data_path + "/plugins";
 #else
-		data_path = KADU_DATADIR;
-		pluginsLibDir = KADU_PLUGINS_LIBDIR;
+		QString appDir = QCoreApplication::applicationDirPath();
+		data_path = appDir + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
+		pluginsLibDir = appDir + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
 #endif
 		QDir dataDir(data_path);
 		QDir libDir(pluginsLibDir);
@@ -267,15 +266,7 @@ QString dataPath(const QString &p)
 		Parser::GlobalVariables["DATA_PATH"] = data_path;
 	}
 
-#ifdef Q_OS_WIN
-	// on windows remove kadu from path
-	if (path.startsWith(QLatin1String("kadu")))
-		path.remove(0, 4);
-#endif
-
-	//kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));
-
-	return data_path + path;
+	return data_path + p;
 }
 
 QString webKitPath(const QString &path)
