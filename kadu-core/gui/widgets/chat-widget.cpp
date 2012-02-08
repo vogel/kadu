@@ -218,6 +218,13 @@ void ChatWidget::createGui()
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
 	HorizontalSplitter->addWidget(frame);
 
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::ControlModifier), this);
+	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
+
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::ControlModifier), this);
+	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
+	HorizontalSplitter->addWidget(frame);
+
 	InputBox = new ChatEditBox(CurrentChat, this);
 	InputBox->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
 	InputBox->setMinimumHeight(10);
