@@ -67,6 +67,39 @@
 #include "kadu-config.h"
 
 #ifndef Q_WS_WIN
+#if HAVE_EXECINFO
+#include <execinfo.h>
+#endif
+
+static void printBacktrace(const QString &header)
+{
+	if (header.isEmpty())
+		fprintf(stderr, "\nbacktrace:\n");
+	else
+		fprintf(stderr, "\nbacktrace: ('%s')\n", qPrintable(header));
+#if HAVE_EXECINFO
+	void *bt_array[100];
+	char **bt_strings;
+	int num_entries;
+	if ((num_entries = backtrace(bt_array, 100)) < 0) {
+		fprintf(stderr, "could not generate backtrace\n");
+		return;
+	}
+	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+		fprintf(stderr, "could not get symbol names for backtrace\n");
+		return;
+	}
+	fprintf(stderr, "======= BEGIN OF BACKTRACE =====\n");
+	for (int i = 0; i < num_entries; ++i)
+		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
+	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+	free(bt_strings);
+#else
+	fprintf(stderr, "backtrace not available\n");
+#endif
+	fflush(stderr);
+}
+
 static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
 	switch (type)

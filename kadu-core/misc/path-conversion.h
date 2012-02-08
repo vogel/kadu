@@ -27,8 +27,6 @@
 
 #include "exports.h"
 
-KADUAPI void printBacktrace(const QString &header = QString());
-
 #ifdef Q_WS_X11
 KADUAPI QString desktopFilePath();
 #endif
