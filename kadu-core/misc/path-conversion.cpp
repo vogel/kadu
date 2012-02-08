@@ -63,18 +63,18 @@ QString homePath()
 #ifdef Q_OS_WIN
 		// TODO review this usbinst thing
 		if (QFileInfo(dataPath("usbinst")).exists())
-			path = dataPath("config/");
+			path = dataPath("config");
 		else
 		{
 			wchar_t homepath[MAX_PATH];
 			// there is unfortunately no way to get this path from Qt4 API
 			if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
-				path = QString::fromWCharArray(homepath);
+				path = QDir(QString::fromWCharArray(homepath)).canonicalPath() + '/';
 			else
-				path = QDir::homePath();
+				path = QDir::homePath() + '/';
 		}
 #else
-		path = QDir::homePath();
+		path = QDir::homePath() + '/';
 #endif
 	}
 

@@ -111,7 +111,7 @@ void ImportProfilesWindow::accept()
 
 		QString path = profile.Path.startsWith('/')
 				? profile.Path
-				: homePath() + "/" + profile.Path;
+				: homePath() + profile.Path;
 
 		ProfileImporter importer(path + "/kadu/kadu.conf.xml");
 		if (importer.import(IdentityManager::instance()->byName(profile.Name, true)))
