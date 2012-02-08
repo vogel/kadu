@@ -347,10 +347,6 @@ int main(int argc, char *argv[])
 
 	enableSignalHandling();
 
-#ifndef Q_WS_WIN
-	// delayed running, useful in gnome
-	sleep(config_file.readNumEntry("General", "StartDelay"));
-#endif
 	QString data_dir = dataPath();
 	if (!QDir(data_dir).isReadable())
 	{

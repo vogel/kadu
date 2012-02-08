@@ -238,7 +238,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowOffline", true);
 	config_file.addVariable("General", "ShowOnlineAndDescription", false);
 	config_file.addVariable("General", "ShowWithoutDescription", true);
-	config_file.addVariable("General", "StartDelay", 0);
 
 	if (config_file.readBoolEntry("General", "AdvancedMode", false))
 	{
