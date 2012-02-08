@@ -43,6 +43,8 @@
 #include "status/description-model.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 
 #include "icons/icons-manager.h"
 #include "activate.h"
@@ -94,16 +96,35 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 
 	setWindowRole("kadu-choose-description");
 
-	setWindowTitle(tr("Account status: %s (%s)"));
+	QString windowTitle = StatusContainers.count() > 1
+		? tr("Account status")
+		: tr("Account status: %1").arg(FirstStatusContainer->statusContainerName());
+	setWindowTitle(windowTitle);
 	setAttribute(Qt::WA_DeleteOnClose);
-
-//
-
 
 	QFormLayout *layout = new QFormLayout(this);
 
-	QComboBox *statusCombo = new QComboBox(this);
+	statusCombo = new QComboBox(this);
 	layout->addRow(new QLabel(tr("Status") + ':'), statusCombo);
+
+	QList<StatusType> statusTypes = FirstStatusContainer->supportedStatusTypes();
+	int selectedIndex, i = 0;
+
+	foreach (StatusType statusType, statusTypes)
+	{
+		if (StatusTypeNone == statusType)
+			continue;
+
+		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
+
+		KaduIcon icon = FirstStatusContainer->statusIcon(typeData.type());
+		statusCombo->addItem(icon.icon(), typeData.displayName(), QVariant::fromValue(typeData.type()));
+
+		if (typeData.type() == FirstStatusContainer->status().type())
+			selectedIndex = i;
+		i++;
+	}
+	statusCombo->setCurrentIndex(selectedIndex);
 
 	DescriptionEdit = new QTextEdit(this);
 	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
@@ -111,17 +132,15 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 
 	QWidget *spacer = new QWidget(this);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	
+
 	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
 	if (maxDescriptionLength > 0)
 	{
 		AvailableChars = new QLabel(this);
-// 		Description->lineEdit()->setMaxLength(maxDescriptionLength);
-// 		currentDescriptionChanged(Description->currentText());
-// 		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+		currentDescriptionChanged();
+		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(currentDescriptionChanged()));
 		layout->addRow(spacer, AvailableChars);
 	}
-	
 
 	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
 	layout->addRow(spacer, chooseButton);
@@ -141,53 +160,9 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 	
 	layout->addWidget(buttons);
 
-
-	//
-/*	
-
-	Description = new QComboBox(this);
-	Description->setMaxVisibleItems(10);
-	Description->setModel(DescriptionManager::instance()->model());
-	Description->setEditable(true);
-	Description->setInsertPolicy(QComboBox::NoInsert);
-	Description->completer()->setCaseSensitivity(Qt::CaseSensitive);
-	Description->setEditText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
-	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
-
-	OkButton = new QPushButton(tr("&OK"), this);
-	OkButton->setIcon(FirstStatusContainer->statusIcon().icon());
-	OkButton->setDefault(true);
-	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-
-	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
-	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
-
-	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(Description, 0, 0, 1, -1);
-
-	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
-	if (maxDescriptionLength > 0)
-	{
-		AvailableChars = new QLabel(this);
-		Description->lineEdit()->setMaxLength(maxDescriptionLength);
-		currentDescriptionChanged(Description->currentText());
-		connect(Description, SIGNAL(editTextChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
-		grid->addWidget(AvailableChars, 1, 0);
-	}
-
-	QWidget *spacer = new QWidget(this);
-	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
-	grid->addWidget(spacer, 1, 1);
-
-	grid->addWidget(OkButton, 1, 2, Qt::AlignRight);
-	grid->addWidget(cancelButton, 1, 3, Qt::AlignRight);
-*/
-
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
-	connect(FirstStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	kdebugf2();
 }
@@ -231,6 +206,9 @@ void ChooseDescription::setDescription()
 		Status status = StatusSetter::instance()->manuallySetStatus(container);
 		status.setDescription(description);
 
+		StatusType statusType = statusCombo->itemData(statusCombo->currentIndex()).value<StatusType>();
+		status.setType(statusType);
+
 		StatusSetter::instance()->setStatus(container, status);
 		container->storeStatus(status);
 	}
@@ -243,13 +221,11 @@ void ChooseDescription::activated(int index)
 // 	Description->setEditText(text);
 }
 
-void ChooseDescription::currentDescriptionChanged(const QString &text)
+void ChooseDescription::currentDescriptionChanged()
 {
-	int length = text.length();
-	AvailableChars->setText(' ' + QString::number(FirstStatusContainer->maxDescriptionLength() - length));
-}
-
-void ChooseDescription::statusUpdated()
-{
-	OkButton->setIcon(FirstStatusContainer->statusIcon().icon());
+	int length = DescriptionEdit->toPlainText().length();
+	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
+	if (OkButton)
+		OkButton->setEnabled(charactersLeft >= 0);
+	AvailableChars->setText(' ' + QString::number(charactersLeft));
 }

@@ -27,6 +27,7 @@
 
 #include "os/generic/desktop-aware-object.h"
 
+class QComboBox;
 class QTextEdit;
 class QLabel;
 
@@ -38,6 +39,7 @@ class ChooseDescription : public QDialog, DesktopAwareObject
 
 	static QMap<QWidget *, ChooseDescription *> Dialogs;
 
+	QComboBox *statusCombo;
 	QTextEdit *DescriptionEdit;
 	QLabel *AvailableChars;
 	QPushButton *OkButton;
@@ -51,10 +53,9 @@ class ChooseDescription : public QDialog, DesktopAwareObject
 	virtual ~ChooseDescription();
 
 private slots:
-	void statusUpdated();
 	void setDescription();
 	void activated(int);
-	void currentDescriptionChanged(const QString &);
+	void currentDescriptionChanged();
 
 public:
 	static QPoint ShowCentered;
