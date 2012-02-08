@@ -106,11 +106,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 void enableSignalHandling()
 {
 #ifdef _MSC_VER
-	char *t = getenv("DISABLE_DUMPS");
-	if(!t)
-	{
-		MiniDumpWriteDump_f = (MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
-//		SetUnhandledExceptionFilter(exception_handler);
-	}
+	MiniDumpWriteDump_f = (MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
+//	SetUnhandledExceptionFilter(exception_handler);
 #endif /* _MSC_VER */
 }
