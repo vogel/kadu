@@ -75,7 +75,9 @@ void ConfigWizardProfilePage::setLanguages()
 void ConfigWizardProfilePage::initializePage()
 {
 	int languageIndex = LanguagesCombo->findData(config_file.readEntry("General", "Language"));
-	if (languageIndex > -1)
+	if (-1 == languageIndex)
+		languageIndex = LanguagesCombo->findData("en");
+	if (-1 != languageIndex)
 		LanguagesCombo->setCurrentIndex(languageIndex);
 
 	NickNameEdit->setText(config_file.readEntry("General", "Nick", "Me"));
