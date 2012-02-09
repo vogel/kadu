@@ -54,8 +54,9 @@ class ChooseDescription : public QDialog, DesktopAwareObject
 
 private slots:
 	void setDescription();
-	void activated(int);
 	void currentDescriptionChanged();
+	void openDescriptionsList();
+  	void descriptionSelected(const QString &description);
 
 public:
 	static QPoint ShowCentered;
@@ -73,7 +74,6 @@ public:
 	static ChooseDescription * showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position = ChooseDescription::ShowCentered, QWidget *parent = 0);
 
 	virtual QSize sizeHint() const;
-
 };
 
 #endif // CHOOSE_DESCRIPTION_H

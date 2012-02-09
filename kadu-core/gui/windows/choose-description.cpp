@@ -30,6 +30,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QListView>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
@@ -37,6 +38,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/previous-descriptions-window.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
@@ -143,11 +145,12 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 	}
 
 	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
+	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
 	layout->addRow(spacer, chooseButton);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&OK"), this);
+	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), this);
 	OkButton->setDefault(true);
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
@@ -174,7 +177,7 @@ ChooseDescription::~ChooseDescription()
 
 QSize ChooseDescription::sizeHint() const
 {
-	return QDialog::sizeHint().expandedTo(QSize(350, 80));
+	return QDialog::sizeHint().expandedTo(QSize(400, 80));
 }
 
 void ChooseDescription::setPosition(const QPoint &position)
@@ -214,11 +217,15 @@ void ChooseDescription::setDescription()
 	}
 }
 
-void ChooseDescription::activated(int index)
+void ChooseDescription::descriptionSelected(const QString &description)
 {
-// 	// TODO: fix this workaround
-// 	QString text = Description->model()->data(Description->model()->index(index, 0), Qt::DisplayRole).toString();
-// 	Description->setEditText(text);
+	DescriptionEdit->setPlainText(description);
+}
+
+void ChooseDescription::openDescriptionsList()
+{
+	PreviousDescriptionsWindow *chooseDescDialog = PreviousDescriptionsWindow::showDialog(this);
+	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
 }
 
 void ChooseDescription::currentDescriptionChanged()
