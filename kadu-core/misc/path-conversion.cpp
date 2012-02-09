@@ -24,12 +24,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdio>
-
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QtGlobal>
 #include <QtCore/QCoreApplication>
 
 #ifdef Q_OS_WIN
@@ -37,7 +34,6 @@
 #include <windows.h>
 #endif
 
-#include "debug.h"
 #include "kadu-config.h"
 
 #include "path-conversion.h"
@@ -58,28 +54,23 @@ QString desktopFilePath()
 
 QString homePath()
 {
-	static QString path;
-	if (path.isNull())
-	{
 #ifdef Q_OS_WIN
-		// TODO review this usbinst thing
-		if (QFileInfo(dataPath("usbinst")).exists())
-			path = dataPath("config");
-		else
-		{
-			wchar_t homepath[MAX_PATH];
-			// there is unfortunately no way to get this path from Qt4 API
-			if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
-				path = QDir(QString::fromWCharArray(homepath)).canonicalPath() + '/';
-			else
-				path = QDir::homePath() + '/';
-		}
-#else
-		path = QDir::homePath() + '/';
-#endif
-	}
+	wchar_t homepath[MAX_PATH];
 
-	return path;
+	// There is unfortunately no way to get this path using Qt4 API.
+	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+		return QDir(QString::fromWCharArray(homepath)).canonicalPath();
+#endif
+
+	return QDir::homePath();
+}
+
+static QString configHomePath()
+{
+	if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
+		return dataPath();
+
+	return homePath() + '/';
 }
 
 QString profilePath(const QString &subpath)
@@ -100,16 +91,16 @@ QString profilePath(const QString &subpath)
 
 		QString customConfigDir = qgetenv("CONFIG_DIR");
 
-#ifdef Q_OS_WIN
-		if (customConfigDir.isEmpty() && QFileInfo(dataPath("usbinst")).exists())
-			path = homePath();
-		else
-#endif
 		if (customConfigDir.isEmpty())
-			path = homePath() + defaultConfigDirRelativeToHome;
+		{
+			if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
+				path = configHomePath() + QLatin1String("config");
+			else
+				path = configHomePath() + defaultConfigDirRelativeToHome;
+		}
 		else
 		{
-				customConfigDir += '/';
+			customConfigDir += '/';
 
 			if (customConfigDir.startsWith(QLatin1String("./"))
 #ifdef Q_OS_WIN
@@ -120,7 +111,7 @@ QString profilePath(const QString &subpath)
 			else if (QDir(customConfigDir).isAbsolute())
 				path = customConfigDir;
 			else
-				path = homePath() + customConfigDir;
+				path = configHomePath() + customConfigDir;
 
 			// compatibility with 0.6.5 and older versions
 			if (QDir(path + oldMidConfigDir).exists())
