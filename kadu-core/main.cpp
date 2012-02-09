@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
 	debug_mask = -2;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
-	KaduApplication *kaduApplication = new KaduApplication(argc, argv);
+	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
 	for (int i = 1; i < qApp->argc(); ++i)
@@ -390,7 +390,6 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	Core::instance()->setApplication(kaduApplication);
 	Core::instance()->createGui();
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
 			Core::instance(), SLOT(receivedSignal(const QString &)));

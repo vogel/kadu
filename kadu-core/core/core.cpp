@@ -52,6 +52,7 @@
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "kadu-application.h"
 #include "message/message-manager.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/misc.h"
@@ -103,8 +104,13 @@ QString Core::nameWithVersion()
 	return name() + QLatin1String(" ")  + version();
 }
 
+KaduApplication * Core::application()
+{
+	return static_cast<KaduApplication *>(qApp);
+}
+
 Core::Core() :
-		Application(0), Myself(Buddy::create()), Window(0), IsClosing(false),
+		Myself(Buddy::create()), Window(0), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -159,19 +165,6 @@ Core::~Core()
 
 	xml_config_file = 0;
 	config_file_ptr = 0;
-}
-
-void Core::setApplication(KaduApplication *application)
-{
-	Q_ASSERT(!Application);
-	Q_ASSERT(application);
-
-	Application = application;
-}
-
-KaduApplication * Core::application() const
-{
-	return Application;
 }
 
 void Core::import_0_6_5_configuration()
