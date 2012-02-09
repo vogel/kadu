@@ -514,7 +514,9 @@ void Core::configurationUpdated()
 		settings.remove("Kadu");
 #endif
 
-	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+	bool ok;
+	int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
+	debug_mask = ok ? newMask : config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 }

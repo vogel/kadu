@@ -240,15 +240,14 @@ int main(int argc, char *argv[])
 		return 2;
 #endif // !Q_WS_WIN
 
-	debug_mask = -2;
-
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
 	for (int i = 1; i < qApp->argc(); ++i)
 	{
-		QString param = qApp->argv()[i];
+		const QString param = qApp->argv()[i];
+
 		if (param == "--version")
 		{
 			printVersion();
@@ -289,10 +288,17 @@ int main(int argc, char *argv[])
 #endif
 			return 0;
 		}
-		else if ((param == "--debug") && (argc > i + 1))
-			debug_mask = atol(argv[++i]);
-		else if ((param == "--config-dir") && (argc > i + 1))
-			qputenv("CONFIG_DIR", argv[++i]);
+		else if (argc > i + 1 && param == "--debug")
+		{
+			const QByteArray mask(qApp->argv()[++i]);
+			mask.toInt(&ok);
+			if (ok)
+				qputenv("DEBUG_MASK", mask);
+			else
+				fprintf(stderr, "Ignoring invalid debug mask '%s'\n", mask.constData());
+		}
+		else if (argc > i + 1 && param == "--config-dir")
+			qputenv("CONFIG_DIR", qApp->argv()[++i]);
 		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(param))
 			ids.append(param);
 		else
@@ -306,15 +312,6 @@ int main(int argc, char *argv[])
 
 	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(profilePath(QString("kadu.conf")));
-
-	if (debug_mask == -2)
-	{
-		debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-
-		int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
-		if (ok)
-			debug_mask = newMask;
-	}
 
 	if (0 != qgetenv("SAVE_STDERR").toInt())
 	{
