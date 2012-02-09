@@ -67,6 +67,39 @@
 #include "kadu-config.h"
 
 #ifndef Q_WS_WIN
+#if HAVE_EXECINFO
+#include <execinfo.h>
+#endif
+
+static void printBacktrace(const QString &header)
+{
+	if (header.isEmpty())
+		fprintf(stderr, "\nbacktrace:\n");
+	else
+		fprintf(stderr, "\nbacktrace: ('%s')\n", qPrintable(header));
+#if HAVE_EXECINFO
+	void *bt_array[100];
+	char **bt_strings;
+	int num_entries;
+	if ((num_entries = backtrace(bt_array, 100)) < 0) {
+		fprintf(stderr, "could not generate backtrace\n");
+		return;
+	}
+	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
+		fprintf(stderr, "could not get symbol names for backtrace\n");
+		return;
+	}
+	fprintf(stderr, "======= BEGIN OF BACKTRACE =====\n");
+	for (int i = 0; i < num_entries; ++i)
+		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
+	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+	free(bt_strings);
+#else
+	fprintf(stderr, "backtrace not available\n");
+#endif
+	fflush(stderr);
+}
+
 static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
 	switch (type)
@@ -99,7 +132,9 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 #ifdef DEBUG_ENABLED
 extern KADUAPI bool showTimesInDebug;
 #endif
-extern KADUAPI char *SystemUserName;
+
+static long int startTime, beforeExecTime, endingTime, exitingTime;
+static bool measureTime;
 
 // defined in main_unix.cpp and main_win32.cpp
 void enableSignalHandling();
@@ -176,10 +211,10 @@ int main(int argc, char *argv[])
 {
 	QT_REQUIRE_VERSION(argc, argv, "4.7.0")
 
-	char *d = 0;
+	bool ok;
 	int msec;
 	time_t sec;
-	time_t startTimeT = time(0);
+	FILE *logFile = 0;
 	QStringList ids;
 
 	getTime(&sec, &msec);
@@ -190,26 +225,38 @@ int main(int argc, char *argv[])
 	startTime = (sec % 1000) * 1000 + msec;
 
 #ifndef Q_WS_WIN
-	char *env_lang = getenv("LANG");
-	if (env_lang)
-		setenv("LC_COLLATE", env_lang, true);
-	else
-		setenv("LC_COLLATE", "pl_PL", true);
+	// We want some sensible LC_COLLATE (i.e., not "C", if possible) to make
+	// QString::localeAwareCompare() work as expected.
+	QByteArray langEnv = qgetenv("LANG");
+	QByteArray lcAllEnv = qgetenv("LC_ALL");
+	if (langEnv.isEmpty() && lcAllEnv.isEmpty())
+		qputenv("LC_COLLATE", "en_US");
+	else if (lcAllEnv.isEmpty())
+		qputenv("LC_COLLATE", langEnv);
 #else // !Q_WS_WIN
 	WSADATA wsaData;
-
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
 		return 2;
 #endif // !Q_WS_WIN
-	debug_mask = -2;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
-	KaduApplication *kaduApplication = new KaduApplication(argc, argv);
+	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
+
+	if (0 != qgetenv("SAVE_STDERR").toInt())
+	{
+		const QByteArray logFilePath = profilePath(QLatin1String("kadu.log.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss")).toLocal8Bit();
+		logFile = freopen(logFilePath.constData(), "w", stderr);
+		if (!logFile)
+			printf("freopen failed: %s\nstderr is now broken\n", strerror(errno));
+		else
+			printf("logging all stderr output to file: %s\n", logFilePath.constData());
+	}
 
 	for (int i = 1; i < qApp->argc(); ++i)
 	{
-		QString param = qApp->argv()[i];
+		const QString param = qApp->argv()[i];
+
 		if (param == "--version")
 		{
 			printVersion();
@@ -250,14 +297,17 @@ int main(int argc, char *argv[])
 #endif
 			return 0;
 		}
-		else if ((param == "--debug") && (argc > i + 1))
-			debug_mask = atol(argv[++i]);
-		else if ((param == "--config-dir") && (argc > i + 1))
-#ifndef Q_WS_WIN
-			setenv("CONFIG_DIR", argv[++i], 1);
-#else
-			SetEnvironmentVariable("CONFIG_DIR", argv[++i]);
-#endif
+		else if (argc > i + 1 && param == "--debug")
+		{
+			const QByteArray mask(qApp->argv()[++i]);
+			mask.toInt(&ok);
+			if (ok)
+				qputenv("DEBUG_MASK", mask);
+			else
+				fprintf(stderr, "Ignoring invalid debug mask '%s'\n", mask.constData());
+		}
+		else if (argc > i + 1 && param == "--config-dir")
+			qputenv("CONFIG_DIR", qApp->argv()[++i]);
 		else if (QRegExp("^[a-zA-Z]*:(/){0,3}.*").exactMatch(param))
 			ids.append(param);
 		else
@@ -272,64 +322,15 @@ int main(int argc, char *argv[])
 	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(profilePath(QString("kadu.conf")));
 
-	if (debug_mask == -2)
-	{
-		debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-		d = getenv("DEBUG_MASK");
-		if (d)
-			debug_mask = atol(d);
-	}
-
-	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
-	d = getenv("SAVE_STDERR");
-	if (d)
-		saveStdErr = strcmp(d, "1") == 0;
-	if (saveStdErr)
-	{
-		char path[1024];
-		tm *t = localtime(&startTimeT);
-#ifndef Q_WS_WIN
-		passwd *p = getpwuid(getuid());
-		if (t && p)
-		{
-			SystemUserName = strdup(p->pw_name);
-			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg",
-					SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-			if (freopen(path, "w+", stderr) == 0)
-				fprintf(stdout, "freopen: %s\n", strerror(errno));
-			else if (fchmod(fileno(stderr), 0600) != 0)
-			{
-				fclose(stderr);
-				fprintf(stdout, "can't chmod output logfile (%s)!\n", path);
-			}
-		}
-#else
-		const char *tmp = getenv("TEMP");
-		if (!tmp)
-			tmp = ".";
-		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt",
-				tmp, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-		if (freopen(path, "w+", stderr) == 0)
-			fprintf(stdout, "freopen: %s\n", strerror(errno));
-#endif
-	}
-
 #ifdef DEBUG_ENABLED
-	d = getenv("SHOW_TIMES");
-	if (d)
-		showTimesInDebug = atoi(d);
+	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 
 	enableSignalHandling();
 
-#ifndef Q_WS_WIN
-	// delayed running, useful in gnome
-	sleep(config_file.readNumEntry("General", "StartDelay"));
-#endif
-	QString data_dir = dataPath("kadu", argv[0]);
-	if (!QDir(data_dir).isReadable())
+	if (!QDir(dataPath()).isReadable())
 	{
-		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));
+		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(dataPath()));
 		fprintf(stderr, "look at: http://www.kadu.im/w/Uprawnienia_do_katalogu_z_danymi\n");
 		fflush(stderr);
 
@@ -346,12 +347,9 @@ int main(int argc, char *argv[])
 	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	kadu_qm.load("kadu_" + lang, dataPath("kadu/translations"));
+	kadu_qm.load("kadu_" + lang, dataPath("translations"));
 	qApp->installTranslator(&qt_qm);
 	qApp->installTranslator(&kadu_qm);
-
-	// plugins path (win32)
-	qApp->addLibraryPath(libPath("qt"));
 
 	QtLocalPeer *peer = new QtLocalPeer(qApp, profilePath());
 	if (peer->isClient())
@@ -372,19 +370,9 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	Core::instance()->setApplication(kaduApplication);
 	Core::instance()->createGui();
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
 			Core::instance(), SLOT(receivedSignal(const QString &)));
-
-	QString path_ = profilePath();
-#ifndef Q_WS_WIN
-	if (path_.endsWith(QLatin1String("/kadu/")) || path_.endsWith(QLatin1String("/Kadu/"))) // for profiles directory
-		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);
-	mkdir(qPrintable(path_), 0700);
-#else
-	QDir().mkdir(path_);
-#endif
 
 	PluginsManager::instance()->activatePlugins();
 
@@ -396,22 +384,14 @@ int main(int argc, char *argv[])
 				"It's a high security risk!"));
 #endif
 
-	if (ids.count() >= 0)
-		foreach (const QString &id, ids)
-			Core::instance()->receivedSignal(id);
+	foreach (const QString &id, ids)
+		Core::instance()->receivedSignal(id);
 
 	/* for testing of startup / close time */
-	char *close_after = getenv("CLOSE_AFTER");
-	if (close_after)
-	{
-		int tm = atoi(close_after);
-		if (tm >= 0)
-			QTimer::singleShot(tm, Core::instance(), SLOT(quit()));
-	}
-
-	/* for testing of startup / close time */
-	measureTime = (getenv("MEASURE_TIME") != 0);
-	if (measureTime)
+	int closeAfter = qgetenv("CLOSE_AFTER").toInt(&ok);
+	if (ok && closeAfter >= 0)
+		QTimer::singleShot(closeAfter, qApp, SLOT(quit()));
+	if (0 != qgetenv("MEASURE_TIME").toInt())
 	{
 		getTime(&sec, &msec);
 		beforeExecTime = (sec % 1000) * 1000 + msec;
@@ -442,5 +422,9 @@ int main(int argc, char *argv[])
 	}
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
+
+	if (logFile)
+		fclose(logFile);
+
 	return ret;
 }

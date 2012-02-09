@@ -47,7 +47,7 @@ int HintsPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	HintManagerInstance = new HintManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/hints.ui"));
 	MainConfigurationWindow::registerUiHandler(HintManagerInstance->uiHandler());
 
 	return 0;
@@ -56,7 +56,7 @@ int HintsPlugin::init(bool firstLoad)
 void HintsPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(HintManagerInstance->uiHandler());
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/hints.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/hints.ui"));
 }
 
 Q_EXPORT_PLUGIN2(hints, HintsPlugin)

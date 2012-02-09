@@ -274,8 +274,8 @@ if (WIN32)
 		)
 	endif (INSTALL_SDK)
 
-	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BIN_DIR})
-	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
+	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BINDIR})
+	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
 else (WIN32)
 	if (NOT FAST_LINKING)
 		kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
@@ -302,7 +302,7 @@ else (WIN32)
 	endif (UNIX AND NOT APPLE)
 endif (WIN32)
 
-install (TARGETS kadu DESTINATION ${KADU_BIN_DIR})
+install (TARGETS kadu DESTINATION ${KADU_BINDIR})
 
 # install desktop file
 if (UNIX AND NOT APPLE)
@@ -320,7 +320,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif (UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/chat-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_DATADIR}/scripts")
 
 if (APPLE)
 	target_link_libraries (kadu "-framework carbon")

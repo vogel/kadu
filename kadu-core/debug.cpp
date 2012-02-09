@@ -28,7 +28,7 @@
 #include "misc/misc.h"
 #include "debug.h"
 
-int debug_mask;
+int debug_mask = -2;
 
 #ifdef DEBUG_ENABLED
 
@@ -41,22 +41,16 @@ int debug_mask;
 #include <windows.h>
 #endif
 
-/*
-	Poniewa� debug() mo�e by� u�ywany w r��nych w�tkach,
-	wi�c zastosowa�em semafor, aby unikn�� wy�wietlenia
-	na ekranie czego� przez inny w�tek pomi�dzy
-	poszczeg�lnymi wywo�aniami fprintf
-*/
-static QMutex debug_mutex;
-
-static int last;
 bool KADU_EXPORT showTimesInDebug = false;
 
 void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
 {
+	static int last;
+	static QMutex mutex;
+
 	if (debug_mask & mask)
 	{
-		QMutexLocker locker(&debug_mutex);
+		QMutexLocker locker(&mutex);
 
 		if (showTimesInDebug)
 		{

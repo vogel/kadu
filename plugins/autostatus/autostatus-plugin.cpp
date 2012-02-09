@@ -36,7 +36,7 @@ int AutostatusPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autostatus.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/autostatus.ui"));
 	Autostatus::createInstance();
 	AutostatusActions::createInstance();
 	AutostatusActions::instance()->registerActions();
@@ -49,7 +49,7 @@ void AutostatusPlugin::done()
 	AutostatusActions::instance()->unregisterActions();
 	AutostatusActions::destroyInstance();
 	Autostatus::destroyInstance();
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autostatus.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/autostatus.ui"));
 }
 
 Q_EXPORT_PLUGIN2(autostatus, AutostatusPlugin)

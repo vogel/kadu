@@ -46,8 +46,6 @@ typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE hProcess, DWORD ProcessId, HAN
 MiniDumpWriteDump_t MiniDumpWriteDump_f;
 #endif
 
-#define WM_OPEN_CHAT WM_USER+1
-
 LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 {
 	Q_UNUSED(e)
@@ -65,10 +63,10 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 		GetTempPathW(MAX_PATH, temp);
 		GetSystemTime(&time);
 		_snwprintf(filename, MAX_PATH, L"%s\\Kadu-%S-%04d-%02d-%02dT%02d%02d%02d.dmp",
-			temp, qPrintable(Core::version()), time.wYear, time.wMonth, time.wDay,
-			time.wHour, time.wMinute, time.wSecond);
+				temp, qPrintable(Core::version()), time.wYear, time.wMonth, time.wDay,
+				time.wHour, time.wMinute, time.wSecond);
 		HANDLE handle = CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL,
-			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (handle != NULL && handle != INVALID_HANDLE_VALUE)
 		{
 			MINIDUMP_EXCEPTION_INFORMATION mdei;
@@ -81,14 +79,13 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 
 			if (result)
 			{
-				_snwprintf(temp, MAX_PATH, L"Mini dump written to %s\nUse Ctrl+C to copy this message", filename);
-				MessageBoxW(NULL, temp, L"Kadu crash", MB_OK | MB_ICONINFORMATION);
+				WCHAR msg[MAX_PATH + 128];
+				_snwprintf(msg, MAX_PATH + 128, L"Mini dump written to file `%s'.\nUse Ctrl+C to copy this message.", filename);
+				MessageBoxW(NULL, msg, L"Kadu crashed", MB_OK | MB_ICONINFORMATION);
 				ret = EXCEPTION_EXECUTE_HANDLER;
 			}
 			else
-			{
-				MessageBoxW(NULL, L"Unable to write mini dump", L"Kadu", MB_OK | MB_ICONERROR);
-			}
+				MessageBoxW(NULL, L"Unable to write mini dump.", L"Kadu crashed", MB_OK | MB_ICONERROR);
 			CloseHandle(handle);
 		}
 	}
@@ -98,7 +95,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 	xml_config_file->saveTo(profilePath(f));
 	return ret;
 #else
-	MessageBoxW(NULL, L"Kadu crashed. Mini dump is not available in this build", L"Kadu", MB_OK | MB_ICONERROR);
+	MessageBoxW(NULL, L"Mini dumps are not available in this build.", L"Kadu crashed", MB_OK | MB_ICONERROR);
 	return EXCEPTION_EXECUTE_HANDLER;
 #endif /* _MSC_VER */
 }
@@ -106,11 +103,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 void enableSignalHandling()
 {
 #ifdef _MSC_VER
-	char *t = getenv("DISABLE_DUMPS");
-	if(!t)
-	{
-		MiniDumpWriteDump_f = (MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
-//		SetUnhandledExceptionFilter(exception_handler);
-	}
+	MiniDumpWriteDump_f = (MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
+//	SetUnhandledExceptionFilter(exception_handler);
 #endif /* _MSC_VER */
 }

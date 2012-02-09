@@ -69,7 +69,7 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(dataPath("kadu/plugins/configuration/qt4-docking-notify.ui"));
+	configWindow->widget()->appendUiFile(dataPath("plugins/configuration/qt4-docking-notify.ui"));
 
 	QString tooltip = qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");

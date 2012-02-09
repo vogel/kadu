@@ -51,7 +51,7 @@ SimpleView::SimpleView() :
 	
 	SimpleViewConfigUi::createInstance();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/simpleview.ui"));
 	MainConfigurationWindow::registerUiHandler(SimpleViewConfigUi::instance());
 
 	DockAction = new QAction(KaduIcon("view-refresh").icon(), tr("Simple view"), this);
@@ -82,7 +82,7 @@ SimpleView::~SimpleView()
 	DockingManager::instance()->unregisterModuleAction(DockAction);
 
 	MainConfigurationWindow::unregisterUiHandler(SimpleViewConfigUi::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/simpleview.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/simpleview.ui"));
 	SimpleViewConfigUi::destroyInstance();
 }
 

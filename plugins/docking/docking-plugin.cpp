@@ -35,14 +35,14 @@ int DockingPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	DockingManager::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/docking.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/docking.ui"));
 
 	return 0;
 }
 
 void DockingPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/docking.ui"));
 	DockingManager::destroyInstance();
 }
 

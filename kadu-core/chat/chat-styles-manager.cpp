@@ -52,6 +52,11 @@
 
 #include "chat-styles-manager.h"
 
+static bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
+{
+	return s1.toLower() < s2.toLower();
+}
+
 ChatStylesManager * ChatStylesManager::Instance = 0;
 
 ChatStylesManager * ChatStylesManager::instance()
@@ -295,7 +300,7 @@ void ChatStylesManager::loadStyles()
 		}
 	}
 
-	path = dataPath("kadu") + "/syntax/chat/";
+	path = dataPath() + "/syntax/chat/";
 	dir.setPath(path);
 
 	files = dir.entryList();

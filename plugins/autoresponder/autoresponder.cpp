@@ -80,7 +80,7 @@ int AutoResponder::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/autoresponder.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return 0;
@@ -89,7 +89,7 @@ int AutoResponder::init(bool firstLoad)
 void AutoResponder::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/autoresponder.ui"));
 }
 
 void AutoResponder::accountRegistered(Account account)

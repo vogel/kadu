@@ -48,7 +48,7 @@ int SpellCheckerPlugin::init(bool firstLoad)
 	SpellCheckerInstance = new SpellChecker(this);
 	SpellcheckerConfiguration::createInstance();
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/spellchecker.ui"));
 	MainConfigurationWindow::registerUiHandler(SpellCheckerInstance);
 
 	return 0;
@@ -60,7 +60,7 @@ void SpellCheckerPlugin::done()
 	SpellcheckerConfiguration::destroyInstance();
 
 	MainConfigurationWindow::unregisterUiHandler(SpellCheckerInstance);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/spellchecker.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/spellchecker.ui"));
 
 	delete SpellCheckerInstance;
 	SpellCheckerInstance = 0;

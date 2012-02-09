@@ -31,7 +31,7 @@ QMap<QString, QString> LanguagesManager::Languages;
 
 void LanguagesManager::loadLanguages()
 {
-	QDir tranlationsDir(dataPath("kadu/translations"));
+	QDir tranlationsDir(dataPath("translations"));
 
 	QStringList languagesFilter;
 	languagesFilter << "*.language";

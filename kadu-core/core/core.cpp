@@ -52,6 +52,7 @@
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "kadu-application.h"
 #include "message/message-manager.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/misc.h"
@@ -103,8 +104,13 @@ QString Core::nameWithVersion()
 	return name() + QLatin1String(" ")  + version();
 }
 
+KaduApplication * Core::application()
+{
+	return static_cast<KaduApplication *>(qApp);
+}
+
 Core::Core() :
-		Application(0), Myself(Buddy::create()), Window(0), IsClosing(false),
+		Myself(Buddy::create()), Window(0), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -161,19 +167,6 @@ Core::~Core()
 	config_file_ptr = 0;
 }
 
-void Core::setApplication(KaduApplication *application)
-{
-	Q_ASSERT(!Application);
-	Q_ASSERT(application);
-
-	Application = application;
-}
-
-KaduApplication * Core::application() const
-{
-	return Application;
-}
-
 void Core::import_0_6_5_configuration()
 {
 	config_file.addVariable("Look", "UserboxAlternateBgColor", config_file.readEntry("Look", "UserboxBgColor"));
@@ -207,7 +200,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
+	config_file.addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
 	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
 	config_file.addVariable("Chat", "OpenChatOnMessage", false);
 	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
@@ -231,7 +224,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);
-	config_file.addVariable("General", "SaveStdErr", false);
 	config_file.addVariable("General", "ShowBlocked", true);
 	config_file.addVariable("General", "ShowBlocking", true);
 	config_file.addVariable("General", "ShowMyself", false);
@@ -239,7 +231,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowOffline", true);
 	config_file.addVariable("General", "ShowOnlineAndDescription", false);
 	config_file.addVariable("General", "ShowWithoutDescription", true);
-	config_file.addVariable("General", "StartDelay", 0);
 
 	if (config_file.readBoolEntry("General", "AdvancedMode", false))
 	{
@@ -445,13 +436,11 @@ void Core::storeConfiguration()
 	xml_config_file->makeBackup();
 }
 
-char *SystemUserName;
 void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
 	QDir oldConfigs2(profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
 			QFile::remove(profilePath(oldConfigs2[i]));
@@ -461,18 +450,10 @@ void Core::deleteOldConfigurationFiles()
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
 			QFile::remove(profilePath(oldBacktraces[i]));
 
-#ifdef Q_OS_WIN
-	QString tmp(getenv("TEMP") ? getenv("TEMP") : ".");
-	QString mask("kadu-dbg-*.txt");
-#else
-	QString tmp("/tmp");
-	QString mask=QString("kadu-%1-*.dbg").arg(SystemUserName);
-#endif
-
-	QDir oldDebugs(tmp, mask, QDir::Name, QDir::Files);
-	if (oldDebugs.count() > 5)
-		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
-			QFile::remove(tmp + '/' + oldDebugs[i]);
+	QDir oldDebugs(profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	if (oldDebugs.count() > 20)
+		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
+			QFile::remove(profilePath(oldDebugs[i]));
 
 	kdebugf2();
 }
@@ -525,7 +506,9 @@ void Core::configurationUpdated()
 		settings.remove("Kadu");
 #endif
 
-	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+	bool ok;
+	int newMask = qgetenv("DEBUG_MASK").toInt(&ok);
+	debug_mask = ok ? newMask : config_file.readNumEntry("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 }

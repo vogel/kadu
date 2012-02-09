@@ -86,8 +86,8 @@ void CenzorConfiguration::configurationUpdated()
 {
 	Enabled = config_file.readBoolEntry("PowerKadu", "enable_cenzor");
 	Admonition = config_file.readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
-	SwearList = loadRegExpList("cenzor swearwords", dataPath() + "kadu/plugins/data/cenzor/cenzor_words.conf");
-	ExclusionList = loadRegExpList("cenzor exclusions", dataPath() + "kadu/plugins/data/cenzor/cenzor_words_ok.conf");
+	SwearList = loadRegExpList("cenzor swearwords", dataPath() + "plugins/data/cenzor/cenzor_words.conf");
+	ExclusionList = loadRegExpList("cenzor exclusions", dataPath() + "plugins/data/cenzor/cenzor_words_ok.conf");
 }
 
 void CenzorConfiguration::saveConfiguration()

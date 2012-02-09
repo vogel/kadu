@@ -35,14 +35,14 @@ int FiledescPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	FileDescriptionInstance = new FileDescription(this);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/filedesc.ui"));
 
 	return 0;
 }
 
 void FiledescPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/filedesc.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/filedesc.ui"));
 }
 
 Q_EXPORT_PLUGIN2(filedesc, FiledescPlugin)

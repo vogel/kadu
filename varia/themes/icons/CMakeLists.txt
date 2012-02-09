@@ -12,7 +12,7 @@ if (ICON_THEMES)
 	endforeach (ICON_THEME)
 
 	install (DIRECTORY ${ICON_THEMES}
-		DESTINATION ${KADU_DATA_DIR}/themes/icons
+		DESTINATION "${KADU_DATADIR}/themes/icons"
 		PATTERN "README"
 		PATTERN "*.png"
 		PATTERN "*.svg"

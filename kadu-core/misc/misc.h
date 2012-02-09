@@ -41,10 +41,6 @@
 class QRect;
 class QWidget;
 
-// private
-extern KADUAPI long int startTime, beforeExecTime, endingTime, exitingTime;
-extern KADUAPI bool measureTime;
-
 KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
 KADUAPI QString pwHash(const QString &text);
@@ -64,7 +60,5 @@ QList<int> stringToIntList(const QString &in);
 QString intListToString(const QList<int> &in);
 
 QString fixFileName(const QString &path, const QString &fn);
-
-bool caseInsensitiveLessThan(const QString &s1, const QString &s2);
 
 #endif // MISC_H

@@ -34,7 +34,7 @@ void CenzorConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new CenzorConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/cenzor.ui"));
+		MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/cenzor.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -44,7 +44,7 @@ void CenzorConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/cenzor.ui"));
+		MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/cenzor.ui"));
 		delete Instance;
 		Instance = 0;
 	}

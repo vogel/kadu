@@ -36,7 +36,7 @@ int TabsPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	TabsManagerInstance = new TabsManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/tabs.ui"));
 	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
 
 	return 0;
@@ -45,7 +45,7 @@ int TabsPlugin::init(bool firstLoad)
 void TabsPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/tabs.ui"));
 	delete TabsManagerInstance;
 	TabsManagerInstance = 0;
 }

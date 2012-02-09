@@ -42,7 +42,7 @@ IconThemeManager::~IconThemeManager()
 
 QStringList IconThemeManager::defaultThemePaths()
 {
-	QStringList result = getSubDirs(dataPath("kadu/themes/icons"));
+	QStringList result = getSubDirs(dataPath("themes/icons"));
 	result += getSubDirs(profilePath("icons"));
 
 	return result;

@@ -35,14 +35,14 @@ int ImageLinkPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ImageLink::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/image-link.ui"));
 
 	return 0;
 }
 
 void ImageLinkPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/image-link.ui"));
 	ImageLink::destroyInstance();
 }
 

@@ -89,7 +89,7 @@ void SmsScriptsManager::init()
 		loadScript(scriptPath);
 	else
 	{
-		scriptPath = dataPath("kadu/plugins/data/sms/scripts/gateway.js");
+		scriptPath = dataPath("plugins/data/sms/scripts/gateway.js");
 		if (QFile::exists(scriptPath))
 			loadScript(scriptPath);
 		// TODO: maybe we should return here if no gateway.js was found?
@@ -97,7 +97,7 @@ void SmsScriptsManager::init()
 
 	// scripts from profile path can replace the ones from data path if the file name is the same
 	loadScripts(QDir(profilePath("plugins/data/sms/scripts/")));
-	loadScripts(QDir(dataPath("kadu/plugins/data/sms/scripts/")));
+	loadScripts(QDir(dataPath("plugins/data/sms/scripts/")));
 }
 
 void SmsScriptsManager::loadScripts(const QDir &dir)

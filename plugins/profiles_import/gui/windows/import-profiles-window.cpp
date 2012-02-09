@@ -19,6 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
@@ -109,9 +110,9 @@ void ImportProfilesWindow::accept()
 		const ProfileData &profile = it.value();
 		bool importHistory = HistoryCheckBoxes.value(it.key())->isChecked();
 
-		QString path = profile.Path.startsWith('/')
+		QString path = QFileInfo(profile.Path).isAbsolute()
 				? profile.Path
-				: homePath() + "/" + profile.Path;
+				: homePath() + '/' + profile.Path;
 
 		ProfileImporter importer(path + "/kadu/kadu.conf.xml");
 		if (importer.import(IdentityManager::instance()->byName(profile.Name, true)))

@@ -24,7 +24,7 @@ set (ADIUM_STYLES
 )
 
 install (FILES ${SYNTAX_FILES}
-	DESTINATION ${KADU_DATA_DIR}/syntax/chat
+	DESTINATION "${KADU_DATADIR}/syntax/chat"
 )
 
-install (DIRECTORY ${ADIUM_STYLES} DESTINATION ${KADU_DATA_DIR}/syntax/chat)
+install (DIRECTORY ${ADIUM_STYLES} DESTINATION "${KADU_DATADIR}/syntax/chat")

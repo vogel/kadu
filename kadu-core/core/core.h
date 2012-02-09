@@ -57,8 +57,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	static Core *Instance;
 
-	KaduApplication *Application;
-
 	Buddy Myself;
 	KaduWindow *Window;
 	bool IsClosing;
@@ -98,9 +96,7 @@ public:
 	static QString name();
 	static QString version();
 	static QString nameWithVersion();
-
-	void setApplication(KaduApplication *application);
-	KaduApplication * application() const;
+	static KaduApplication * application();
 
 	bool isClosing() { return IsClosing; }
 	Buddy myself() { return Myself; }

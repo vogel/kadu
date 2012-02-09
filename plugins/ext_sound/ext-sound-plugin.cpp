@@ -38,14 +38,14 @@ int ExtSoundPlugin::init(bool firstLoad)
 
 	ExternalPlayer::createInstance();
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/ext_sound.ui"));
 
 	return 0;
 }
 
 void ExtSoundPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/ext_sound.ui"));
 	SoundManager::instance()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
 }

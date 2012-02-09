@@ -32,7 +32,7 @@
 #include "mpris-player.h"
 
 const QString MPRISPlayer::UserPlayersListFile = "mprisplayer-players.data";
-const QString MPRISPlayer::GlobalPlayersListFile = "kadu/plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
+const QString MPRISPlayer::GlobalPlayersListFile = "plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
 MPRISPlayer *MPRISPlayer::Instance = 0;
 
 void MPRISPlayer::createInstance()

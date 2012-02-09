@@ -24,92 +24,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdio>
-
 #include <QtCore/QDir>
-#include <QtCore/QtGlobal>
-#include <QtGui/QApplication>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
+#include <QtCore/QCoreApplication>
 
 #ifdef Q_OS_WIN
-#include <QFile>
 #include <shlobj.h>
 #include <windows.h>
 #endif
 
-#include "parser/parser.h"
-#include "debug.h"
 #include "kadu-config.h"
 
 #include "path-conversion.h"
 
-#if HAVE_EXECINFO
-#include <execinfo.h>
-#endif
-
-void printBacktrace(const QString &header)
-{
-	if (header.isEmpty())
-		fprintf(stderr, "\nbacktrace:\n");
-	else
-		fprintf(stderr, "\nbacktrace: ('%s')\n", qPrintable(header));
-#if HAVE_EXECINFO
-	void *bt_array[100];
-	char **bt_strings;
-	int num_entries;
-	if ((num_entries = backtrace(bt_array, 100)) < 0) {
-		fprintf(stderr, "could not generate backtrace\n");
-		return;
-	}
-	if ((bt_strings = backtrace_symbols(bt_array, num_entries)) == NULL) {
-		fprintf(stderr, "could not get symbol names for backtrace\n");
-		return;
-	}
-	fprintf(stderr, "======= BEGIN OF BACKTRACE =====\n");
-	for (int i = 0; i < num_entries; ++i)
-		fprintf(stderr, "[%d] %s\n", i, bt_strings[i]);
-	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
-	free(bt_strings);
-#else
-	fprintf(stderr, "backtrace not available\n");
-#endif
-	fflush(stderr);
-}
-
 #ifdef Q_WS_X11
 QString desktopFilePath()
 {
-	return QLatin1String(KADU_DESKTOP_FILE_PATH);
+	static QString path;
+	if (path.isNull())
+	{
+		path = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DESKTOP_FILE_PATH_RELATIVE_TO_BIN);
+		path = QFileInfo(path).canonicalFilePath();
+	}
+
+	return path;
 }
 #endif
 
 QString homePath()
 {
-	static QString path;
-	if (path.isNull())
-	{
 #ifdef Q_OS_WIN
-		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
-		// in such ugly way
-		// TODO review this usbinst thing
-		if (QFile::exists(dataPath("usbinst", "")))
-			path = dataPath("config/");
-		else
-		{
-			WCHAR homepath[MAX_PATH + 1];
-			// there is unfortunately no way to get this path from Qt4 API
-			if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
-				path = QString::fromUtf16((const ushort *)homepath);
-			else
-				path = QDir::homePath();
-		}
-#else
-		path = QDir::homePath();
+	wchar_t homepath[MAX_PATH];
+
+	// There is unfortunately no way to get this path using Qt4 API.
+	if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, homepath)))
+		return QDir(QString::fromWCharArray(homepath)).canonicalPath();
 #endif
 
-		Parser::GlobalVariables["HOME"] = path;
-	}
-
-	return path;
+	return QDir::homePath();
 }
 
 QString profilePath(const QString &subpath)
@@ -117,207 +70,102 @@ QString profilePath(const QString &subpath)
 	static QString path;
 	if (path.isNull())
 	{
-#ifndef Q_OS_WIN
-		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
-#else
-		QString config_dir;
-		char buff[1024] = { 0 };
-		if (GetEnvironmentVariable("CONFIG_DIR", buff, sizeof(buff) - 1) > 0)
-			config_dir = buff;
-#endif
-
-		QString home = homePath();
-
-#ifdef Q_OS_WIN
-		// on win32 dataPath doesn't need real argv[0] so it's safe to use this
-		// in such ugly way
-		if (config_dir.isEmpty() && QFile::exists(dataPath("usbinst", "")))
-		{
-			path = home;
-			Parser::GlobalVariables["KADU_CONFIG"] = path;
-			return path + subpath;
-		}
-#endif
-
-		QString pwd = QDir::currentPath();
-
-#ifdef Q_OS_MAC
-		if (config_dir.isEmpty())
-			path = QString("%1/Library/Kadu/").arg(home);
-		else if (config_dir.startsWith("./"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
-				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
+#if defined(Q_OS_MAC)
+		const QString defaultConfigDirRelativeToHome = QLatin1String("Library/Kadu");
+		const QString oldMidConfigDir = QLatin1String("Kadu");
 #elif defined(Q_OS_WIN)
-		if (config_dir.isEmpty())
-			path = QString("%1/Kadu/").arg(home);
-		else if (config_dir.startsWith("./") || config_dir.startsWith(".\\"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/Kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/Kadu").arg(config_dir)).exists())
-				path = QString("%1/Kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/Kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/Kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
+		const QString defaultConfigDirRelativeToHome = QLatin1String("Kadu");
+		const QString &oldMidConfigDir = defaultConfigDirRelativeToHome;
 #else
-		if (config_dir.isEmpty())
-			path = QString("%1/.kadu/").arg(home);
-		else if (config_dir.startsWith("./"))
-		{
-			config_dir = config_dir.right(config_dir.length() - 2);
-			if (QDir(QString("%1/%2/kadu").arg(pwd).arg(config_dir)).exists())
-				path = QString("%1/%2/kadu/").arg(pwd).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(pwd).arg(config_dir);
-		}
-		else if (QDir(config_dir).isAbsolute())
-		{
-			if (QDir(QString("%1/kadu").arg(config_dir)).exists())
-				path = QString("%1/kadu/").arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/").arg(config_dir);
-		}
-		else
-		{
-			if (QDir(QString("%1/%2/kadu").arg(home).arg(config_dir)).exists())
-				path = QString("%1/%2/kadu/").arg(home).arg(config_dir); // compatibility with earlier versions
-			else
-				path = QString("%1/%2/").arg(home).arg(config_dir);
-		}
+		const QString defaultConfigDirRelativeToHome = QLatin1String(".kadu");
+		const QString oldMidConfigDir = QLatin1String("kadu");
 #endif
 
-		Parser::GlobalVariables["KADU_CONFIG"] = path;
+		QString customConfigDir = qgetenv("CONFIG_DIR");
+
+		if (customConfigDir.isEmpty())
+		{
+			if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
+				path = dataPath(QLatin1String("config"));
+			else
+				path = homePath() + '/' + defaultConfigDirRelativeToHome;
+		}
+		else
+		{
+			customConfigDir += '/';
+
+			if (customConfigDir.startsWith(QLatin1String("./"))
+#ifdef Q_OS_WIN
+					|| customConfigDir.startsWith(QLatin1String(".\\"))
+#endif
+					)
+				path = QDir::currentPath() + '/' + customConfigDir;
+			else if (QDir(customConfigDir).isAbsolute())
+				path = customConfigDir;
+			else if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
+				path = dataPath(customConfigDir);
+			else
+				path = homePath() + '/' + customConfigDir;
+
+			// compatibility with 0.6.5 and older versions
+			if (QDir(path + oldMidConfigDir).exists())
+				path += oldMidConfigDir;
+		}
+
+		QDir profileDir(path);
+		if (!profileDir.exists())
+		{
+			profileDir.mkpath(QLatin1String("."));
+			// This equals to 0700 on Unix-like.
+			QFile(path).setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::WriteUser | QFile::ExeUser);
+		}
+
+		QString canonicalPath = profileDir.canonicalPath();
+		if (!canonicalPath.isEmpty())
+			path = canonicalPath + '/';
 	}
 
 	return path + subpath;
 }
 
-static QString lib_path;
-static QString data_path;
-
-QString libPath(const QString &f)
+QString pluginsLibPath(const QString &subpath)
 {
-#ifdef Q_OS_WIN
-	QString fp=f;
-	if (fp.startsWith(QLatin1String("kadu")))
-		fp.remove(0, 4);
-	return lib_path + fp;
-#else
-	return lib_path + f;
-#endif
-}
-
-QString dataPath(const QString &p, const char *argv0)
-{
-	QString path = p;
-
-	if (argv0 != 0)
+	static QString pluginsLibDir;
+	if (pluginsLibDir.isNull())
 	{
 #ifdef Q_OS_MAC
-		QString appPath = qApp->applicationDirPath();
-		if (appPath.isEmpty())
-		{
-			fprintf(stderr, "we've got real problem here ;)\n");
-			fflush(stderr);
-			exit(10);
-		}
-		else
-		{
-			data_path = appPath + "/../../";
-			lib_path = appPath + "/../../";
-		}
-#elif defined(Q_OS_WIN)
-		WCHAR epath[MAX_PATH+1];
-		GetModuleFileNameW(NULL, epath, MAX_PATH);
-
-		data_path = QString::fromUtf16((const ushort*)epath);
-		data_path.resize(data_path.lastIndexOf('\\') + 1);
-		lib_path = data_path;
+		// TODO: Remove this OS X-specific code. Needs small changes to CMake and create_macosx_bundle.sh scripts.
+		pluginsLibDir = QCoreApplication::applicationDirPath() + QLatin1String("/../../kadu/plugins/");
 #else
-		QString datadir(KADU_DATADIR);
-		QString bindir(KADU_BINDIR);
-		QString libdir(KADU_LIBDIR);
-
-		//jeżeli ścieżki nie kończą się na /share i /bin oraz gdy bez tych końcówek
-		//ścieżki się nie pokrywają, to znaczy, że ktoś ustawił ręcznie KADU_DATADIR lub KADU_BINDIR
-		if (!datadir.endsWith(QLatin1String("/share")) || !bindir.endsWith(QLatin1String("/bin")) || !libdir.endsWith(QLatin1String("/lib")) ||
-			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
-			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
-		{
-			data_path = datadir + '/';
-			lib_path = libdir + '/';
-		}
-		else
-		{
-			QString appPath = qApp->applicationDirPath();
-			if (appPath.isEmpty())
-			{
-				data_path = datadir + '/';
-				lib_path = libdir + '/';
-			}
-			else
-			{
-				data_path = appPath + "/../share/";
-				lib_path = appPath + "/../lib/";
-			}
-		}
+		pluginsLibDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
 #endif
-		QDir dataDir(data_path);
-		QDir libDir(lib_path);
 
-		data_path = dataDir.canonicalPath() + '/';
-		lib_path = libDir.canonicalPath() + '/';
-
-		Parser::GlobalVariables["DATA_PATH"] = data_path;
-		Parser::GlobalVariables["LIB_PATH"] = lib_path;
+		QString canonicalPath = QDir(pluginsLibDir).canonicalPath();
+		if (!canonicalPath.isEmpty())
+			pluginsLibDir = canonicalPath + '/';
 	}
-	if (data_path.isEmpty())
+
+	return pluginsLibDir + subpath;
+}
+
+QString dataPath(const QString &subpath)
+{
+	static QString dataDir;
+	if (dataDir.isNull())
 	{
-		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
-		printBacktrace("dataPath(): constructor of static object uses dataPath");
-	}
-
-#ifdef Q_OS_WIN
-	// on windows remove kadu from path
-	if (path.startsWith(QLatin1String("kadu")))
-		path.remove(0, 4);
+#ifdef Q_OS_MAC
+		// TODO: Remove this OS X-specific code. Needs small changes to CMake and create_macosx_bundle.sh scripts.
+		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/../../kadu");
+#else
+		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
 #endif
 
-	//kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));
+		QString canonicalPath = QDir(dataDir).canonicalPath();
+		if (!canonicalPath.isEmpty())
+			dataDir = canonicalPath + '/';
+	}
 
-	return data_path + path;
+	return dataDir + subpath;
 }
 
 QString webKitPath(const QString &path)

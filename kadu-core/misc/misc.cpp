@@ -54,9 +54,6 @@
 QFont *defaultFont;
 QFontInfo *defaultFontInfo;
 
-long int startTime, beforeExecTime, endingTime, exitingTime;
-bool measureTime = false;
-
 QString replacedNewLine(const QString &text, const QString &newLineText)
 {
 	static const QRegExp newLineRegExp("(\r\n|\r|\n)");
@@ -206,9 +203,4 @@ QString fixFileName(const QString &path, const QString &fn)
 		return name + '.' + ext.toUpper();
 	// we cannot fix it, return original
 	return fn;
-}
-
-bool caseInsensitiveLessThan(const QString &s1, const QString &s2)
-{
-	return s1.toLower() < s2.toLower();
 }

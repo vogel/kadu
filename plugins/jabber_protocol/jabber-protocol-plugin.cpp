@@ -70,14 +70,14 @@ int JabberProtocolPlugin::init(bool firstLoad)
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/jabber_protocol.ui"));
 
 	return 0;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 
