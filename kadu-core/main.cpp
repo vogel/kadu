@@ -347,10 +347,9 @@ int main(int argc, char *argv[])
 
 	enableSignalHandling();
 
-	QString data_dir = dataPath();
-	if (!QDir(data_dir).isReadable())
+	if (!QDir(dataPath()).isReadable())
 	{
-		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));
+		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(dataPath()));
 		fprintf(stderr, "look at: http://www.kadu.im/w/Uprawnienia_do_katalogu_z_danymi\n");
 		fflush(stderr);
 

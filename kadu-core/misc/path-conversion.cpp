@@ -135,7 +135,9 @@ QString profilePath(const QString &subpath)
 			QFile(path).setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::WriteUser | QFile::ExeUser);
 		}
 
-		path = profileDir.canonicalPath() + '/';
+		QString canonicalPath = profileDir.canonicalPath();
+		if (!canonicalPath.isEmpty())
+			path = canonicalPath + '/';
 	}
 
 	return path + subpath;
@@ -152,7 +154,10 @@ QString pluginsLibPath(const QString &f)
 #else
 		pluginsLibDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN);
 #endif
-		pluginsLibDir = QDir(pluginsLibDir).canonicalPath() + '/';
+
+		QString canonicalPath = QDir(pluginsLibDir).canonicalPath();
+		if (!canonicalPath.isEmpty())
+			pluginsLibDir = canonicalPath + '/';
 	}
 
 	return pluginsLibDir + f;
@@ -169,7 +174,10 @@ QString dataPath(const QString &p)
 #else
 		dataDir = QCoreApplication::applicationDirPath() + QLatin1String("/" KADU_DATADIR_RELATIVE_TO_BIN);
 #endif
-		dataDir = QDir(dataDir).canonicalPath() + '/';
+
+		QString canonicalPath = QDir(dataDir).canonicalPath();
+		if (!canonicalPath.isEmpty())
+			dataDir = canonicalPath + '/';
 	}
 
 	return dataDir + p;
