@@ -67,8 +67,8 @@ static void kadu_signal_handler(int signal)
 
 		CrashAwareObject::notifyCrash();
 
-		QString backupFileName = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
-		QString backtraceFileName = QString("kadu.backtrace.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+		QString backupFileName = QLatin1String("kadu.conf.xml.backup.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
+		QString backtraceFileName = QLatin1String("kadu.backtrace.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
 
 #if HAVE_EXECINFO
 		void *backtraceArray[100];

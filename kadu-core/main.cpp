@@ -135,7 +135,6 @@ extern KADUAPI bool showTimesInDebug;
 
 static long int startTime, beforeExecTime, endingTime, exitingTime;
 static bool measureTime;
-extern KADUAPI char *SystemUserName;
 
 // defined in main_unix.cpp and main_win32.cpp
 void enableSignalHandling();
@@ -215,7 +214,7 @@ int main(int argc, char *argv[])
 	bool ok;
 	int msec;
 	time_t sec;
-	time_t startTimeT = time(0);
+	FILE *logFile = 0;
 	QStringList ids;
 
 	getTime(&sec, &msec);
@@ -243,6 +242,16 @@ int main(int argc, char *argv[])
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
+
+	if (0 != qgetenv("SAVE_STDERR").toInt())
+	{
+		const QByteArray logFilePath = profilePath(QLatin1String("kadu.log.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss")).toLocal8Bit();
+		logFile = freopen(logFilePath.constData(), "w", stderr);
+		if (!logFile)
+			printf("freopen failed: %s\nstderr is now broken\n", strerror(errno));
+		else
+			printf("logging all stderr output to file: %s\n", logFilePath.constData());
+	}
 
 	for (int i = 1; i < qApp->argc(); ++i)
 	{
@@ -312,33 +321,6 @@ int main(int argc, char *argv[])
 
 	xml_config_file = new XmlConfigFile();
 	config_file_ptr = new ConfigFile(profilePath(QString("kadu.conf")));
-
-	if (0 != qgetenv("SAVE_STDERR").toInt())
-	{
-		char path[1024];
-		tm *t = localtime(&startTimeT);
-#ifndef Q_WS_WIN
-		passwd *p = getpwuid(getuid());
-		if (t && p)
-		{
-			SystemUserName = strdup(p->pw_name);
-			sprintf(path, "%s/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", qPrintable(QDir::tempPath()), SystemUserName,
-					1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-			if (freopen(path, "w+", stderr) == 0)
-				fprintf(stdout, "freopen: %s\n", strerror(errno));
-			else if (fchmod(fileno(stderr), 0600) != 0)
-			{
-				fclose(stderr);
-				fprintf(stdout, "can't chmod output logfile (%s)!\n", path);
-			}
-		}
-#else
-		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt", qPrintable(QDir::tempPath()),
-				1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-		if (freopen(path, "w+", stderr) == 0)
-			fprintf(stdout, "freopen: %s\n", strerror(errno));
-#endif
-	}
 
 #ifdef DEBUG_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
@@ -440,5 +422,9 @@ int main(int argc, char *argv[])
 	}
 
 	kdebugm(KDEBUG_INFO, "exiting main\n");
+
+	if (logFile)
+		fclose(logFile);
+
 	return ret;
 }

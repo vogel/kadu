@@ -436,13 +436,11 @@ void Core::storeConfiguration()
 	xml_config_file->makeBackup();
 }
 
-char *SystemUserName;
 void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
 	QDir oldConfigs2(profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
 			QFile::remove(profilePath(oldConfigs2[i]));
@@ -452,16 +450,10 @@ void Core::deleteOldConfigurationFiles()
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
 			QFile::remove(profilePath(oldBacktraces[i]));
 
-#ifdef Q_OS_WIN
-	const QString mask = "kadu-dbg-*.txt";
-#else
-	const QString mask = QString("kadu-%1-*.dbg").arg(SystemUserName);
-#endif
-
-	QDir oldDebugs(QDir::tempPath(), mask, QDir::Name, QDir::Files);
-	if (oldDebugs.count() > 5)
-		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
-			QFile::remove(QDir::tempPath() + '/' + oldDebugs[i]);
+	QDir oldDebugs(profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	if (oldDebugs.count() > 20)
+		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
+			QFile::remove(profilePath(oldDebugs[i]));
 
 	kdebugf2();
 }
