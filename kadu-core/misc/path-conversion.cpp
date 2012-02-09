@@ -65,14 +65,6 @@ QString homePath()
 	return QDir::homePath();
 }
 
-static QString configHomePath()
-{
-	if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
-		return dataPath();
-
-	return homePath() + '/';
-}
-
 QString profilePath(const QString &subpath)
 {
 	static QString path;
@@ -94,9 +86,9 @@ QString profilePath(const QString &subpath)
 		if (customConfigDir.isEmpty())
 		{
 			if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
-				path = configHomePath() + QLatin1String("config");
+				path = dataPath(QLatin1String("config"));
 			else
-				path = configHomePath() + defaultConfigDirRelativeToHome;
+				path = homePath() + '/' + defaultConfigDirRelativeToHome;
 		}
 		else
 		{
@@ -110,8 +102,10 @@ QString profilePath(const QString &subpath)
 				path = QDir::currentPath() + '/' + customConfigDir;
 			else if (QDir(customConfigDir).isAbsolute())
 				path = customConfigDir;
+			else if (QFileInfo(dataPath(QLatin1String("portable"))).exists())
+				path = dataPath(customConfigDir);
 			else
-				path = configHomePath() + customConfigDir;
+				path = homePath() + '/' + customConfigDir;
 
 			// compatibility with 0.6.5 and older versions
 			if (QDir(path + oldMidConfigDir).exists())
@@ -134,7 +128,7 @@ QString profilePath(const QString &subpath)
 	return path + subpath;
 }
 
-QString pluginsLibPath(const QString &f)
+QString pluginsLibPath(const QString &subpath)
 {
 	static QString pluginsLibDir;
 	if (pluginsLibDir.isNull())
@@ -151,10 +145,10 @@ QString pluginsLibPath(const QString &f)
 			pluginsLibDir = canonicalPath + '/';
 	}
 
-	return pluginsLibDir + f;
+	return pluginsLibDir + subpath;
 }
 
-QString dataPath(const QString &p)
+QString dataPath(const QString &subpath)
 {
 	static QString dataDir;
 	if (dataDir.isNull())
@@ -171,7 +165,7 @@ QString dataPath(const QString &p)
 			dataDir = canonicalPath + '/';
 	}
 
-	return dataDir + p;
+	return dataDir + subpath;
 }
 
 QString webKitPath(const QString &path)
