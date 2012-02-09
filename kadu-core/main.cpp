@@ -226,10 +226,12 @@ int main(int argc, char *argv[])
 	startTime = (sec % 1000) * 1000 + msec;
 
 #ifndef Q_WS_WIN
+	// We want some sensible LC_COLLATE (i.e., not "C", if possible) to make
+	// QString::localeAwareCompare() work as expected.
 	QByteArray langEnv = qgetenv("LANG");
 	QByteArray lcAllEnv = qgetenv("LC_ALL");
 	if (langEnv.isEmpty() && lcAllEnv.isEmpty())
-		qputenv("LC_COLLATE", "pl_PL");
+		qputenv("LC_COLLATE", "en_US");
 	else if (lcAllEnv.isEmpty())
 		qputenv("LC_COLLATE", langEnv);
 #else // !Q_WS_WIN
