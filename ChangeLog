@@ -1,4 +1,4 @@
-﻿+++ version 0.12.0-git
+﻿+++ version 0.12.0-alpha1
 * history: #2450 done, #2300 fixed: new, polished history window (Vogel)
 * history: #2415 done: per-contact history (Vogel)
 * gui: #2277 fixed: status subscription window has proper meaning (Juzef)
@@ -10,7 +10,7 @@
 * jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * gui: #2458 done: added search bar to chat widgets and history window (Vogel)
 * gui: #2465 done: added Ctrl+Home/End/PageUp/PageDown shortcuts to chat windows - to scroll to top/bottom/up/down of chat (Vogel)
-* core: #2457 fixed: actually respect custom KADU_BINDIR, KADU_DATADIR and KADU_PLUGINS_LIBDIR directories(beevvy)
+* core: #2457 fixed: actually respect custom KADU_BINDIR, KADU_DATADIR and KADU_PLUGINS_LIBDIR directories (beevvy)
 * core: semi-official portable installation support on all platforms by creating file named "portable" in Kadu data directory (beevvy)
 
 +++ version 0.11.1
