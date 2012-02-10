@@ -1,4 +1,6 @@
-﻿+++ version 0.12.0-alpha1
+﻿+++ version 0.12.0-alpha2
+
++++ version 0.12.0-alpha1
 * history: #2450 done, #2300 fixed: new, polished history window (Vogel)
 * history: #2415 done: per-contact history (Vogel)
 * gui: #2277 fixed: status subscription window has proper meaning (Juzef)
