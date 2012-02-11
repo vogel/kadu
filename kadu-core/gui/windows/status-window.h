@@ -55,7 +55,7 @@ class StatusWindow : public QDialog, DesktopAwareObject
 
 private slots:
 	void applyStatus();
-	void descriptionTextChanged();
+	void checkDescriptionLengthLimit();
 	void openDescriptionsList();
   	void descriptionSelected(const QString &description);
 

@@ -23,14 +23,11 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
-#include <QtGui/QCompleter>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QListView>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
@@ -134,11 +131,23 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 	DescriptionLimitCounter = new QLabel(this);
 	DescriptionLimitCounter->setVisible(false);
-	layout->addRow(spacer, DescriptionLimitCounter);
+	DescriptionLimitCounter->setAlignment(Qt::AlignRight);
+
+	QWidget *descriptionButtonsWidget = new QWidget;
+	QHBoxLayout *buttonsLayout = new QHBoxLayout(descriptionButtonsWidget);
+	buttonsLayout->setMargin(0);
+	buttonsLayout->setSpacing(0);
 
 	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
 	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
-	layout->addRow(spacer, chooseButton);
+	buttonsLayout->addWidget(chooseButton);
+
+	QPushButton *clearButton = new QPushButton(tr("Clear"), this);
+	connect(clearButton, SIGNAL(clicked(bool)), DescriptionEdit, SLOT(clear()));
+	buttonsLayout->addWidget(clearButton);
+
+	buttonsLayout->addWidget(DescriptionLimitCounter);
+	layout->addRow(spacer, descriptionButtonsWidget);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -163,8 +172,8 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	if (maxDescriptionLength > 0)
 	{
 		DescriptionLimitCounter->setVisible(true);
-		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(descriptionTextChanged()));
-		descriptionTextChanged();
+		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(checkDescriptionLengthLimit()));
+		checkDescriptionLengthLimit();
 	}
 
 	kdebugf2();
@@ -228,7 +237,7 @@ void StatusWindow::openDescriptionsList()
 	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
 }
 
-void StatusWindow::descriptionTextChanged()
+void StatusWindow::checkDescriptionLengthLimit()
 {
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
