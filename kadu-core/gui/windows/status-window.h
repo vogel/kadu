@@ -4,6 +4,7 @@
  * Copyright 2010, 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -39,9 +40,9 @@ class StatusWindow : public QDialog, DesktopAwareObject
 
 	static QMap<QWidget *, StatusWindow *> Dialogs;
 
-	QComboBox *statusCombo;
+	QComboBox *StatusList;
 	QTextEdit *DescriptionEdit;
-	QLabel *AvailableChars;
+	QLabel *DescriptionLimitCounter;
 	QPushButton *OkButton;
 
 	QList<StatusContainer *> StatusContainers;
@@ -53,21 +54,21 @@ class StatusWindow : public QDialog, DesktopAwareObject
 	virtual ~StatusWindow();
 
 private slots:
-	void setDescription();
-	void currentDescriptionChanged();
+	void applyStatus();
+	void descriptionTextChanged();
 	void openDescriptionsList();
   	void descriptionSelected(const QString &description);
 
 public:
 	static QPoint ShowCentered;
 	/**
-	 * @short Shows new choose description dialog window.
+	 * @short Shows new status window.
 	 * @return Pointer to the created StatusWindow dialog.
 	 * @param statusContainerList list of statusContainers
 	 * @param position position in which new dialog should be shown on the desktop, StatusWindow::ShowCentered by default
 	 * @param parent dialog's parent widget, null by default
 	 *
-	 * Creates and shows new choose description dialog window.
+	 * Creates and shows new status window.
 	 *
 	 * Use StatusWindow::ShowCentered value for position parameter to show the widget in the center of the desktop.
 	 */

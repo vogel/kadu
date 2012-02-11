@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2010, 2012 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2010, 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
@@ -34,7 +34,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
-#include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -42,13 +41,11 @@
 #include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
-#include "status/description-model.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
-#include "icons/icons-manager.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -106,8 +103,8 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 	QFormLayout *layout = new QFormLayout(this);
 
-	statusCombo = new QComboBox(this);
-	layout->addRow(new QLabel(tr("Status") + ':'), statusCombo);
+	StatusList = new QComboBox(this);
+	layout->addRow(new QLabel(tr("Status") + ':'), StatusList);
 
 	QList<StatusType> statusTypes = FirstStatusContainer->supportedStatusTypes();
 	int selectedIndex, i = 0;
@@ -120,13 +117,13 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
 
 		KaduIcon icon = FirstStatusContainer->statusIcon(typeData.type());
-		statusCombo->addItem(icon.icon(), typeData.displayName(), QVariant::fromValue(typeData.type()));
+		StatusList->addItem(icon.icon(), typeData.displayName(), QVariant::fromValue(typeData.type()));
 
 		if (typeData.type() == FirstStatusContainer->status().type())
 			selectedIndex = i;
 		i++;
 	}
-	statusCombo->setCurrentIndex(selectedIndex);
+	StatusList->setCurrentIndex(selectedIndex);
 
 	DescriptionEdit = new QTextEdit(this);
 	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
@@ -135,9 +132,9 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	QWidget *spacer = new QWidget(this);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-	AvailableChars = new QLabel(this);
-	AvailableChars->setVisible(false);
-	layout->addRow(spacer, AvailableChars);
+	DescriptionLimitCounter = new QLabel(this);
+	DescriptionLimitCounter->setVisible(false);
+	layout->addRow(spacer, DescriptionLimitCounter);
 
 	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
 	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
@@ -160,14 +157,14 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
-	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
 	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
 	if (maxDescriptionLength > 0)
 	{
-		AvailableChars->setVisible(true);
-		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(currentDescriptionChanged()));
-		currentDescriptionChanged();
+		DescriptionLimitCounter->setVisible(true);
+		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(descriptionTextChanged()));
+		descriptionTextChanged();
 	}
 
 	kdebugf2();
@@ -199,7 +196,7 @@ void StatusWindow::setPosition(const QPoint &position)
 	move(p);
 }
 
-void StatusWindow::setDescription()
+void StatusWindow::applyStatus()
 {
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
@@ -212,7 +209,7 @@ void StatusWindow::setDescription()
 		Status status = StatusSetter::instance()->manuallySetStatus(container);
 		status.setDescription(description);
 
-		StatusType statusType = statusCombo->itemData(statusCombo->currentIndex()).value<StatusType>();
+		StatusType statusType = StatusList->itemData(StatusList->currentIndex()).value<StatusType>();
 		status.setType(statusType);
 
 		StatusSetter::instance()->setStatus(container, status);
@@ -231,11 +228,11 @@ void StatusWindow::openDescriptionsList()
 	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
 }
 
-void StatusWindow::currentDescriptionChanged()
+void StatusWindow::descriptionTextChanged()
 {
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
 	bool limitExceeded = charactersLeft < 0;
 	OkButton->setEnabled(!limitExceeded);
-	AvailableChars->setText(' ' + QString::number(charactersLeft));
+	DescriptionLimitCounter->setText(' ' + QString::number(charactersLeft));
 }

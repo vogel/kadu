@@ -19,26 +19,14 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtGui/QGridLayout>
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
 
+#include "activate.h"
 #include "gui/windows/status-window.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/previous-descriptions-window.h"
-#include "icons/kadu-icon.h"
-#include "parser/parser.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
-#include "status/status-container.h"
-#include "status/status-setter.h"
-#include "status/status-type-data.h"
-#include "status/status-type-manager.h"
-
-#include "icons/icons-manager.h"
-#include "activate.h"
-#include "debug.h"
 
 #include "previous-descriptions-window.h"
 
@@ -68,20 +56,20 @@ PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 
 	QGridLayout *grid = new QGridLayout(this);
 
-	list = new QListView(this);
-	list->setModel(DescriptionManager::instance()->model());
-	list->setWordWrap(true);
-	list->setAlternatingRowColors(true);
-	list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	DescriptionsList = new QListView(this);
+	DescriptionsList->setModel(DescriptionManager::instance()->model());
+	DescriptionsList->setWordWrap(true);
+	DescriptionsList->setAlternatingRowColors(true);
+	DescriptionsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	grid->addWidget(list, 0, 0, 1, 1);
-	connect(list, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(selectListItem(const QModelIndex &)));
+	grid->addWidget(DescriptionsList, 0, 0, 1, 1);
+	connect(DescriptionsList, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(listItemDoubleClicked(const QModelIndex &)));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Select"), this);
 	okButton->setDefault(true);
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(chooseDescription()));
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(chooseButtonClicked()));
 
 	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
@@ -100,15 +88,15 @@ PreviousDescriptionsWindow::~PreviousDescriptionsWindow()
 	Dialogs.remove(parentWidget());
 }
 
-void PreviousDescriptionsWindow::chooseDescription()
+void PreviousDescriptionsWindow::chooseButtonClicked()
 {
-	selectListItem(list->currentIndex());
+	listItemDoubleClicked(DescriptionsList->currentIndex());
 }
 
-void PreviousDescriptionsWindow::selectListItem(const QModelIndex &index)
+void PreviousDescriptionsWindow::listItemDoubleClicked(const QModelIndex &index)
 {
 	// TODO: fix this workaround
-	QString text = list->model()->data(index, Qt::DisplayRole).toString();
+	QString text = DescriptionsList->model()->data(index, Qt::DisplayRole).toString();
 
 	emit descriptionSelected(text);
 	accept();
