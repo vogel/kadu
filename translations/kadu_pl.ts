@@ -1914,7 +1914,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
-    <name>ChooseDescription</name>
+    <name>StatusWindow</name>
     <message>
         <source>Select description</source>
         <translation>Wybierz opis</translation>

@@ -1903,7 +1903,7 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
 </context>
 <context>
-    <name>ChooseDescription</name>
+    <name>StatusWindow</name>
     <message>
         <source>Select description</source>
         <translation>Beschreibung auswählen</translation>

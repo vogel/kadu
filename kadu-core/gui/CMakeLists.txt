@@ -119,7 +119,6 @@ set (gui_SRCS
 	windows/buddy-delete-window.cpp
 	windows/chat-data-window.cpp
 	windows/chat-window.cpp
-	windows/choose-description.cpp
 	windows/configuration-window.cpp
 	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
@@ -133,12 +132,14 @@ set (gui_SRCS
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
+	windows/previous-descriptions-window.cpp
 	windows/progress-window.cpp
 	windows/progress-window2.cpp
 	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
 	windows/search-window-actions.cpp
+	windows/status-window.cpp
 	windows/subscription-window.cpp
 	windows/syntax-editor-window.cpp
 	windows/updates-dialog.cpp
@@ -273,7 +274,6 @@ set (gui_MOC_SRCS
 	windows/buddy-delete-window.h
 	windows/chat-data-window.h
 	windows/chat-window.h
-	windows/choose-description.h
 	windows/configuration-window.h
 	windows/file-transfer-window.h
 	windows/group-properties-window.h
@@ -286,12 +286,14 @@ set (gui_MOC_SRCS
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h
+	windows/previous-descriptions-window.h
 	windows/progress-window.h
 	windows/progress-window2.h
 	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
 	windows/search-window.h
 	windows/search-window-actions.h
+	windows/status-window.h
 	windows/subscription-window.h
 	windows/syntax-editor-window.h
 	windows/updates-dialog.h

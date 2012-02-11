@@ -1906,7 +1906,7 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
-    <name>ChooseDescription</name>
+    <name>StatusWindow</name>
     <message>
         <source>Select description</source>
         <translation>Vybrat popis</translation>
