@@ -1,4 +1,5 @@
 ﻿+++ version 0.12.0-alpha2
+* gui: new and improved window for changing account status and description (Juzef)
 
 +++ version 0.12.0-alpha1
 * history: #2450 done, #2300 fixed: new, polished history window (Vogel)
