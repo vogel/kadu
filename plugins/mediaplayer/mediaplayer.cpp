@@ -50,7 +50,6 @@
 #include "gui/windows/message-dialog.h"
 
 #include "icons/kadu-icon.h"
-#include "misc/path-conversion.h"
 
 #include "notify/notification-manager.h"
 #include "notify/notification.h"

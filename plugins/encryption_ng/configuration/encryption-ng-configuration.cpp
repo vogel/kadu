@@ -23,7 +23,6 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
 
 #include "encryption-ng-configuration.h"
 

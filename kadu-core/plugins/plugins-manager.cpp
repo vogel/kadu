@@ -56,7 +56,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/modules-window.h"
 #include "icons/icons-manager.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
@@ -389,7 +389,7 @@ void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
  */
 QStringList PluginsManager::installedPlugins() const
 {
-	QDir dir(dataPath("plugins"), "*.desc");
+	QDir dir(KaduPaths::instance()->dataPath() + QLatin1String("plugins"), "*.desc");
 	dir.setFilter(QDir::Files);
 
 	QStringList installed;

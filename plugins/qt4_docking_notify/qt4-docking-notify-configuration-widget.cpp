@@ -32,7 +32,7 @@
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "activate.h"
 #include "debug.h"
@@ -69,7 +69,7 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 
 	dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(dataPath("plugins/configuration/qt4-docking-notify.ui"));
+	configWindow->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/qt4-docking-notify.ui"));
 
 	QString tooltip = qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");

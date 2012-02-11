@@ -31,7 +31,7 @@
 
 #include "configuration/configuration-file.h"
 #include "icons/kadu-icon.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "notify/notify-event.h"
@@ -68,7 +68,7 @@ FreedesktopNotify::FreedesktopNotify() :
 	// this is meant to catch all HTML tags except <b>, <i>, <u>
 	StripUnsupportedHtml.setPattern(QLatin1String("<(/?[^/<>][^<>]+|//[^>]*|/?[^biu])>"));
 
-	DesktopEntry = QFileInfo(desktopFilePath()).baseName();
+	DesktopEntry = QFileInfo(KaduPaths::instance()->desktopFilePath()).baseName();
 
 	KNotify = new QDBusInterface("org.kde.VisualNotifications",
 			"/VisualNotifications", "org.kde.VisualNotifications");

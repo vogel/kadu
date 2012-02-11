@@ -22,13 +22,13 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "mpd-config.h"
 
 MPDConfig::MPDConfig()
 {
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/mpd_config.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 	createDefaultConfiguration();
 	Host = config_file.readEntry("MediaPlayer", "MPDHost");
 	Port = config_file.readEntry("MediaPlayer", "MPDPort");
@@ -37,7 +37,7 @@ MPDConfig::MPDConfig()
 
 MPDConfig::~MPDConfig()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/mpd_config.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/mpd_config.ui"));
 }
 
 void MPDConfig::createDefaultConfiguration()

@@ -50,7 +50,7 @@
 #include "icons/icons-manager.h"
 #include "debug.h"
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "gui/windows/sms-dialog.h"
 #include "gui/windows/sms-image-dialog.h"
@@ -66,7 +66,7 @@ void SmsConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new SmsConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -76,7 +76,7 @@ void SmsConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/sms.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/sms.ui"));
 		delete Instance;
 		Instance = 0;
 	}

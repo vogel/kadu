@@ -440,20 +440,20 @@ void Core::deleteOldConfigurationFiles()
 {
 	kdebugf();
 
-	QDir oldConfigs2(profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir oldConfigs2(KaduPaths::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(profilePath(oldConfigs2[i]));
+			QFile::remove(KaduPaths::instance()->profilePath() + oldConfigs2[i]);
 
-	QDir oldBacktraces(profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	QDir oldBacktraces(KaduPaths::instance()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(profilePath(oldBacktraces[i]));
+			QFile::remove(KaduPaths::instance()->profilePath() + oldBacktraces[i]);
 
-	QDir oldDebugs(profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+	QDir oldDebugs(KaduPaths::instance()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 20)
 		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
-			QFile::remove(profilePath(oldDebugs[i]));
+			QFile::remove(KaduPaths::instance()->profilePath() + oldDebugs[i]);
 
 	kdebugf2();
 }

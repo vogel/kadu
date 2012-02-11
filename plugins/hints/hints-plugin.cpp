@@ -22,7 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "hint_manager.h"
 #include "hints-configuration-ui-handler.h"
@@ -47,7 +47,7 @@ int HintsPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	HintManagerInstance = new HintManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/hints.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 	MainConfigurationWindow::registerUiHandler(HintManagerInstance->uiHandler());
 
 	return 0;
@@ -56,7 +56,7 @@ int HintsPlugin::init(bool firstLoad)
 void HintsPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(HintManagerInstance->uiHandler());
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/hints.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints.ui"));
 }
 
 Q_EXPORT_PLUGIN2(hints, HintsPlugin)

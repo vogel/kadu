@@ -42,7 +42,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "notify/new-message-notification.h"
 #include "notify/notification-manager.h"
 
@@ -74,7 +74,7 @@ IndicatorDocking::IndicatorDocking() :
 		EventForShowMainWindow(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::ControlModifier))
 {
 	Server = QIndicate::Server::defaultInstance();
-	Server->setDesktopFile(desktopFilePath());
+	Server->setDesktopFile(KaduPaths::instance()->desktopFilePath());
 	Server->setType("message.im");
 	Server->show();
 

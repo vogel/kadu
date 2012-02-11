@@ -41,12 +41,12 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 {
 	QString path;
 	QFile syntaxFile;
-	path = dataPath() + "/syntax/" + category + '/' + name + ".syntax";
+	path = KaduPaths::instance()->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 
 	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
-		path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
+		path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 
 		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
@@ -75,7 +75,7 @@ void SyntaxList::reload()
 	SyntaxInfo info;
 
 	info.global = false;
-	path = profilePath() + "/syntax/" + category + '/';
+	path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category + '/';
 	dir.setPath(path);
 
 	dir.setNameFilters(QStringList("*.syntax"));
@@ -89,7 +89,7 @@ void SyntaxList::reload()
 	}
 
 	info.global = true;
-	path = dataPath() + "/syntax/" + category + '/';
+	path = KaduPaths::instance()->dataPath() + QLatin1String("syntax/") + category + '/';
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -112,13 +112,13 @@ void SyntaxList::reload()
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 {
-	QString path = profilePath() + "/syntax/";
+	QString path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/");
 	QDir dir(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
 			return false;
 
-	path = profilePath() + "/syntax/" + category + '/';
+	path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category + '/';
 	dir.setPath(path);
 	if (!dir.exists())
 		if (!dir.mkdir(path))
@@ -151,9 +151,9 @@ QString SyntaxList::readSyntax(const QString &name)
 	SyntaxInfo info = *(find(name));
 	QString path;
 	if (info.global)
-		path = dataPath() + "/syntax/" + category + '/' + name + ".syntax";
+		path = KaduPaths::instance()->dataPath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 	else
-		path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
+		path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 
 	QFile syntaxFile;
 	syntaxFile.setFileName(path);
@@ -178,7 +178,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 	if (info.global)
 		return false;
 
-	QString path = profilePath() + "/syntax/" + category + '/' + name + ".syntax";
+	QString path = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category + '/' + name + QLatin1String(".syntax");
 	QFile file;
 	file.setFileName(path);
 

@@ -29,7 +29,7 @@
 #include "certificates/trusted-certificates-manager.h"
 #include "file-transfer/s5b-server-manager.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
@@ -70,14 +70,14 @@ int JabberProtocolPlugin::init(bool firstLoad)
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	return 0;
 }
 
 void JabberProtocolPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/jabber_protocol.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
 

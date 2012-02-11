@@ -24,7 +24,7 @@
 #include <QtCore/QThread>
 #include <QtSql/QSqlError>
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "storage/history-sql-storage.h"
 
@@ -58,21 +58,21 @@ void SqlInitializer::initialize()
 
 bool SqlInitializer::isCopyingNeeded()
 {
-	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
+	QFileInfo scheme1FileInfo(KaduPaths::instance()->profilePath() + QLatin1String(HISTORY_FILE));
 	if (scheme1FileInfo.exists())
 		return false;
 
-	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
+	QFileInfo scheme0FileInfo(KaduPaths::instance()->profilePath() + QLatin1String(OLD_HISTORY_FILE));
 	return scheme0FileInfo.exists();
 }
 
 void SqlInitializer::copyHistoryFile()
 {
-	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
+	QFileInfo scheme1FileInfo(KaduPaths::instance()->profilePath() + QLatin1String(HISTORY_FILE));
 	if (scheme1FileInfo.exists())
 		return;
 
-	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
+	QFileInfo scheme0FileInfo(KaduPaths::instance()->profilePath() + QLatin1String(OLD_HISTORY_FILE));
 	if (scheme0FileInfo.exists())
 		QFile::copy(scheme0FileInfo.absoluteFilePath(), scheme1FileInfo.absoluteFilePath());
 }
@@ -109,9 +109,9 @@ void SqlInitializer::initDatabase()
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 
-	QDir historyDir(profilePath("history"));
+	QDir historyDir(KaduPaths::instance()->profilePath() + QLatin1String("history"));
 	if (!historyDir.exists())
-		historyDir.mkpath(profilePath("history"));
+		historyDir.mkpath(KaduPaths::instance()->profilePath() + QLatin1String("history"));
 
 	bool importStartedEmitted = false;
 	if (isCopyingNeeded())
@@ -122,7 +122,7 @@ void SqlInitializer::initDatabase()
 	}
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
-	Database.setDatabaseName(profilePath(HISTORY_FILE));
+	Database.setDatabaseName(KaduPaths::instance()->profilePath() + QLatin1String(HISTORY_FILE));
 
 	if (!Database.open())
 	{

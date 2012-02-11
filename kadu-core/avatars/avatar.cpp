@@ -22,7 +22,7 @@
  */
 
 #include "contacts/contact.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "avatar.h"
 

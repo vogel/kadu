@@ -28,7 +28,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "emoticon-theme-manager.h"
 
@@ -51,8 +51,8 @@ EmoticonThemeManager::~EmoticonThemeManager()
 
 QStringList EmoticonThemeManager::defaultThemePaths()
 {
-	QStringList result = getSubDirs(dataPath("themes/emoticons"));
-	result += getSubDirs(profilePath("icons"));
+	QStringList result = getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/emoticons"));
+	result += getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
 
 	return result;
 }

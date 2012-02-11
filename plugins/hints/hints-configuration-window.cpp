@@ -30,7 +30,7 @@
 #include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "hints-configuration-window.h"
 
@@ -39,7 +39,7 @@ QMap<QString, HintsConfigurationWindow *> HintsConfigurationWindow::Configuratio
 HintsConfigurationWindow::HintsConfigurationWindow(const QString &eventName, NotifierConfigurationDataManager *dataManager) :
 	ConfigurationWindow("HintEventConfiguration", tr("Hints configuration"), "Hints", dataManager), EventName(eventName)
 {
-	widget()->appendUiFile(dataPath("plugins/configuration/hints-notifier.ui"));
+	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/hints-notifier.ui"));
 
 	widget()->widgetById("syntax")->setToolTip(tr(MainConfigurationWindow::SyntaxTextNotify));
 	static_cast<QSpinBox *>(widget()->widgetById("timeout"))->setSpecialValueText(tr("Don't hide"));

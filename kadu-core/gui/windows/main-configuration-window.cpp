@@ -177,7 +177,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 {
 	setWindowRole("kadu-configuration");
 
-	widget()->appendUiFile(dataPath("configuration/dialog.ui"));
+	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
 
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
 	widget()->widgetById("debug")->hide();
@@ -397,7 +397,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
-		lookChatAdvanced->widget()->appendUiFile(dataPath("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));

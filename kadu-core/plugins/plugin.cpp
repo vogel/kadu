@@ -29,7 +29,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/windows/modules-window.h"
 #include "gui/windows/plugin-error-dialog.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info.h"
 #include "debug.h"
@@ -62,7 +62,7 @@ Plugin::Plugin(const QString &name, QObject *parent) :
 		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
 		Translator(0), UsageCounter(0)
 {
-	QString descFilePath = dataPath("plugins/" + name + ".desc");
+	QString descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + name + QLatin1String(".desc");
 	QFileInfo descFileInfo(descFilePath);
 
 	if (descFileInfo.exists())
@@ -189,7 +189,7 @@ bool Plugin::activate(PluginActivationReason reason)
 
 	ensureLoaded();
 
-	PluginLoader = new QPluginLoader(pluginsLibPath(SO_PREFIX + Name + "." SO_EXT));
+	PluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + Name + QLatin1String("." SO_EXT));
 	PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
 	if (!PluginLoader->load())
@@ -299,7 +299,7 @@ void Plugin::loadTranslations()
 	Translator = new QTranslator(this);
 	const QString lang = config_file.readEntry("General", "Language");
 
-	if (Translator->load(Name + '_' + lang, dataPath("plugins/translations/")))
+	if (Translator->load(Name + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
 		qApp->installTranslator(Translator);
 	else
 	{

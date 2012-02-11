@@ -552,7 +552,7 @@ void Firewall::configurationUpdated()
 	CheckFloodingEmoticons = config_file.readBoolEntry("Firewall", "dos_emoticons", true);
 	EmoticonsAllowKnown = config_file.readBoolEntry("Firewall", "emoticons_allow_known", false);
 	WriteLog = config_file.readBoolEntry("Firewall", "write_log", true);
-	LogFilePath = config_file.readEntry("Firewall", "logFile", profilePath("firewall.log"));
+	LogFilePath = config_file.readEntry("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
 	CheckDos = config_file.readBoolEntry("Firewall", "dos", true);
 	CheckChats = config_file.readBoolEntry("Firewall", "chats", true);
 	IgnoreConferences = config_file.readBoolEntry("Firewall", "ignore_conferences", true);
@@ -593,5 +593,5 @@ void Firewall::createDefaultConfiguration()
 	config_file.addVariable("Firewall", "emoticons_allow_known", false);
 	config_file.addVariable("Firewall", "safe_sending", false);
 	config_file.addVariable("Firewall", "write_log", true);
-	config_file.addVariable("Firewall", "logFile", profilePath("firewall.log"));
+	config_file.addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
 }

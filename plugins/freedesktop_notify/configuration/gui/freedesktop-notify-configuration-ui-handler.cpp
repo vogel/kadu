@@ -20,7 +20,7 @@
  */
 
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "freedesktop-notify-configuration-ui-handler.h"
 
@@ -33,7 +33,7 @@ void FreedesktopNotifyConfigurationUiHandler::registerConfigurationUi()
 
 	Instance = new FreedesktopNotifyConfigurationUiHandler();
 
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 	MainConfigurationWindow::registerUiHandler(Instance);
 }
 
@@ -45,7 +45,7 @@ void FreedesktopNotifyConfigurationUiHandler::unregisterConfigurationUi()
 	delete Instance;
 	Instance = 0;
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/freedesktop_notify.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/freedesktop_notify.ui"));
 }
 
 FreedesktopNotifyConfigurationUiHandler * FreedesktopNotifyConfigurationUiHandler::instance()

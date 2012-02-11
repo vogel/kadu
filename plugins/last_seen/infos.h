@@ -55,7 +55,7 @@ protected:
 	void updateTimes();
 
 	/*!
-	 * It holds the data file name. It's set to <i>profilePath("last_seen.data")</i>
+	 * It holds the data file name. It's set to <i>KaduPaths::instance()->profilePath() + QLatin1String("last_seen.data")</i>
 	 * in the constructor.
 	 */
 	QString fileName;

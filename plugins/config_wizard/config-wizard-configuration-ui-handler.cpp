@@ -27,7 +27,7 @@
 #include "gui/actions/action-description.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "activate.h"
 #include "debug.h"
 

@@ -27,7 +27,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "icon-theme-manager.h"
 
@@ -42,8 +42,8 @@ IconThemeManager::~IconThemeManager()
 
 QStringList IconThemeManager::defaultThemePaths()
 {
-	QStringList result = getSubDirs(dataPath("themes/icons"));
-	result += getSubDirs(profilePath("icons"));
+	QStringList result = getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/icons"));
+	result += getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
 
 	return result;
 }

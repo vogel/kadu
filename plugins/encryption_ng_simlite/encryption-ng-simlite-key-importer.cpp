@@ -24,7 +24,7 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -90,7 +90,7 @@ void EncryptioNgSimliteKeyImporter::importKey(const Account &account, const QFil
 
 void EncryptioNgSimliteKeyImporter::importKeys(const Account &account)
 {
-	QString keysPath = profilePath("keys/");
+	QString keysPath = KaduPaths::instance()->profilePath() + QLatin1String("keys/");
 
 	QDir keysDir(keysPath);
 	if (!keysDir.exists())

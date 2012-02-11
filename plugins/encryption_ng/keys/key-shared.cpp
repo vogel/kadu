@@ -49,7 +49,7 @@ KeyShared * KeyShared::loadFromStorage(const QSharedPointer<StoragePoint> &stora
 KeyShared::KeyShared(const QUuid &uuid) :
 		Shared(uuid)
 {
-	KeysDir = profilePath("keys/");
+	KeysDir = KaduPaths::instance()->profilePath() + QLatin1String("keys/");
 	KeyContact = new Contact();
 }
 

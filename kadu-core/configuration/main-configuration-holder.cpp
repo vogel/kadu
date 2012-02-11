@@ -25,7 +25,7 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "main-configuration-holder.h"
 

@@ -20,7 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "debug.h"
 
@@ -28,7 +28,7 @@
 
 QString ChatImageService::imagesPath()
 {
-	return profilePath("images/");
+	return KaduPaths::instance()->profilePath() + QLatin1String("images/");
 }
 
 ChatImageService::ChatImageService(QObject *parent) :

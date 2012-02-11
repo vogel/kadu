@@ -123,7 +123,7 @@ void HistoryImporter::updateProgressWindow()
 
 void HistoryImporter::threadFinished()
 {
-	if (Thread && !Thread->wasCanceled() && SourceDirectory == profilePath("history/"))
+	if (Thread && !Thread->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
 		config_file.writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful

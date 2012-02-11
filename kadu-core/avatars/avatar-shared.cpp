@@ -50,7 +50,7 @@ AvatarShared * AvatarShared::loadFromStorage(const QSharedPointer<StoragePoint> 
 AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
-	AvatarsDir = profilePath("avatars/");
+	AvatarsDir = KaduPaths::instance()->profilePath() + QLatin1String("avatars/");
 }
 
 AvatarShared::~AvatarShared()
@@ -118,9 +118,9 @@ void AvatarShared::storeAvatar()
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("NextUpdate", NextUpdate);
 
-	QDir avatarsDir(profilePath("avatars"));
+	QDir avatarsDir(KaduPaths::instance()->profilePath() + QLatin1String("avatars"));
 	if (!avatarsDir.exists())
-		avatarsDir.mkpath(profilePath("avatars"));
+		avatarsDir.mkpath(QLatin1String("."));
 
 	if (Pixmap.isNull())
 		QFile::remove(filePath());

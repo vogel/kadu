@@ -23,7 +23,7 @@
 #include <QtCore/QTextStream>
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "debug.h"
 
 #include "antistring-configuration.h"
@@ -40,7 +40,7 @@ AntistringConfiguration::~AntistringConfiguration()
 
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	config_file.addVariable("PowerKadu", "log file", profilePath("antistring.log"));
+	config_file.addVariable("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
 	config_file.addVariable("PowerKadu", "admonish_tresc_config",
 			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
@@ -53,7 +53,7 @@ void AntistringConfiguration::configurationUpdated()
 	MessageStop = config_file.readBoolEntry("PowerKadu", "message stop");
 	LogMessage = config_file.readBoolEntry("PowerKadu", "log message");
 	ReturnMessage = config_file.readEntry("PowerKadu", "admonish_tresc_config");
-	LogFile = config_file.readEntry("PowerKadu", "log file", profilePath("antistring.log"));
+	LogFile = config_file.readEntry("PowerKadu", "log file", KaduPaths::instance()->profilePath() + QLatin1String("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
@@ -71,7 +71,7 @@ void AntistringConfiguration::addCondition(const QString &conditionString)
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(dataPath("plugins/data/antistring/ant_conditions.conf"));
+	QFile defaultListFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/antistring/ant_conditions.conf"));
 	if (!defaultListFile.open(QFile::ReadOnly))
 	{
 		kdebug("Can't open file: %s\n", qPrintable(defaultListFile.fileName()));

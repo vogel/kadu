@@ -30,7 +30,6 @@
 
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
-#include "misc/path-conversion.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"

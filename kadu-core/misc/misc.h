@@ -36,7 +36,7 @@
 
 #include "coding-conversion.h"
 #include "date-time.h"
-#include "path-conversion.h"
+#include "kadu-paths.h"
 
 class QRect;
 class QWidget;

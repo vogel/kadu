@@ -20,7 +20,7 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "autostatus-configuration.h"
 
@@ -33,5 +33,5 @@ void AutostatusConfiguration::configurationUpdated()
 {
 	AutoTime = config_file.readNumEntry("PowerKadu", "autostatus_time", 10);
 	AutoStatus = config_file.readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = config_file.readEntry("PowerKadu", "status_file_path", profilePath("autostatus.list"));
+	StatusFilePath = config_file.readEntry("PowerKadu", "status_file_path", KaduPaths::instance()->profilePath() + QLatin1String("autostatus.list"));
 }

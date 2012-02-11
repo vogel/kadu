@@ -21,7 +21,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "single-window.h"
 
@@ -36,14 +36,14 @@ int SingleWindowPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SingleWindowManagerInstance = new SingleWindowManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
 
 	return 0;
 }
 
 void SingleWindowPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/single_window.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
 	delete SingleWindowManagerInstance;
 	SingleWindowManagerInstance = 0;
 }

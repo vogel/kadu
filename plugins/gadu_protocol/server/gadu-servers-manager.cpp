@@ -30,7 +30,7 @@
 #include <libgadu.h>
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "gadu-servers-manager.h"
 
@@ -148,7 +148,7 @@ void GaduServersManager::buildServerList()
 		AllPorts << 443;
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
-		loadServerListFromFile(dataPath("plugins/data/gadu_protocol/servers.txt"));
+		loadServerListFromFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/gadu_protocol/servers.txt"));
 	else
 		loadServerListFromString(config_file.readEntry("Network", "Server"));
 

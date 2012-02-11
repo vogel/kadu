@@ -115,9 +115,9 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	SyntaxInfo info = (*syntaxList)[newSyntax];
 	if (info.global)
-		fileName = dataPath() + "/syntax/" + category.toLower() + '/' + newSyntax + ".syntax";
+		fileName = KaduPaths::instance()->dataPath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
 	else
-		fileName = profilePath() + "/syntax/" + category.toLower() + '/' + newSyntax + ".syntax";
+		fileName = KaduPaths::instance()->profilePath() + QLatin1String("syntax/") + category.toLower() + '/' + newSyntax + QLatin1String(".syntax");
 
 	file.setFileName(fileName);
 	if (!file.open(QIODevice::ReadOnly))

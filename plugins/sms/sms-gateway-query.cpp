@@ -29,8 +29,6 @@
 #include "icons/icons-manager.h"
 #include "debug.h"
 
-#include "misc/path-conversion.h"
-
 #include "scripts/sms-script-manager.h"
 
 #include "sms-gateway-query.h"

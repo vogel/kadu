@@ -18,7 +18,7 @@
  */
 
 #include "icons/icons-manager.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "kadu-icon.h"
 
@@ -222,11 +222,11 @@ const QString & KaduIcon::fullPath() const
  * @return WebKit-friendly representation of path
  * 
  * Return WebKit-friendly representation of full path to the icon file. Makes use
- * of webKitPath() global Kadu function.
+ * of KaduPaths::webKitPath() method.
  */
 QString KaduIcon::webKitPath() const
 {
-	return ::webKitPath(fullPath());
+	return KaduPaths::webKitPath(fullPath());
 }
 
 /**

@@ -32,7 +32,7 @@
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "debug.h"
 #include "exports.h"
 
@@ -46,7 +46,7 @@ Infos::Infos(QObject *parent) :
 
 	triggerAllAccountsRegistered();
 
-	fileName = profilePath("last_seen.data");
+	fileName = KaduPaths::instance()->profilePath() + QLatin1String("last_seen.data");
 
 	if (QFile::exists(fileName))
 	{

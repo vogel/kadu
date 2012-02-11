@@ -243,16 +243,6 @@ int main(int argc, char *argv[])
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
-	if (0 != qgetenv("SAVE_STDERR").toInt())
-	{
-		const QByteArray logFilePath = profilePath(QLatin1String("kadu.log.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss")).toLocal8Bit();
-		logFile = freopen(logFilePath.constData(), "w", stderr);
-		if (!logFile)
-			printf("freopen failed: %s\nstderr is now broken\n", strerror(errno));
-		else
-			printf("logging all stderr output to file: %s\n", logFilePath.constData());
-	}
-
 	for (int i = 1; i < qApp->argc(); ++i)
 	{
 		const QString param = qApp->argv()[i];
@@ -314,13 +304,26 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
 	}
 
+	// It has to be called after putting CONFIG_DIR environment variable.
+	KaduPaths::createInstance();
+
+	if (0 != qgetenv("SAVE_STDERR").toInt())
+	{
+		const QByteArray logFilePath = QString(KaduPaths::instance()->profilePath() + QLatin1String("kadu.log.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss")).toLocal8Bit();
+		logFile = freopen(logFilePath.constData(), "w", stderr);
+		if (!logFile)
+			printf("freopen failed: %s\nstderr is now broken\n", strerror(errno));
+		else
+			printf("logging all stderr output to file: %s\n", logFilePath.constData());
+	}
+
 #ifndef Q_WS_WIN
 	// Qt version is better on win32
 	qInstallMsgHandler(kaduQtMessageHandler);
 #endif
 
 	xml_config_file = new XmlConfigFile();
-	config_file_ptr = new ConfigFile(profilePath(QString("kadu.conf")));
+	config_file_ptr = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
 
 #ifdef DEBUG_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
@@ -328,9 +331,9 @@ int main(int argc, char *argv[])
 
 	enableSignalHandling();
 
-	if (!QDir(dataPath()).isReadable())
+	if (!QDir(KaduPaths::instance()->dataPath()).isReadable())
 	{
-		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(dataPath()));
+		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(KaduPaths::instance()->dataPath()));
 		fprintf(stderr, "look at: http://www.kadu.im/w/Uprawnienia_do_katalogu_z_danymi\n");
 		fflush(stderr);
 
@@ -347,11 +350,11 @@ int main(int argc, char *argv[])
 	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	kadu_qm.load("kadu_" + lang, dataPath("translations"));
+	kadu_qm.load("kadu_" + lang, KaduPaths::instance()->dataPath() + QLatin1String("translations"));
 	qApp->installTranslator(&qt_qm);
 	qApp->installTranslator(&kadu_qm);
 
-	QtLocalPeer *peer = new QtLocalPeer(qApp, profilePath());
+	QtLocalPeer *peer = new QtLocalPeer(qApp, KaduPaths::instance()->profilePath());
 	if (peer->isClient())
 	{
 		if (!ids.isEmpty())
@@ -425,6 +428,7 @@ int main(int argc, char *argv[])
 
 	if (logFile)
 		fclose(logFile);
+	KaduPaths::destroyInstance();
 
 	return ret;
 }

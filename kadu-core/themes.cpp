@@ -145,11 +145,11 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 {
 	QStringList result;
 
-	foreach(const QString &it, getSubDirs(dataPath("themes/" + Name)))
-		result << dataPath("themes/" + Name + '/' + it + '/');
+	foreach(const QString &it, getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/") + Name))
+		result << (KaduPaths::instance()->dataPath() + QLatin1String("themes/") + Name + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(profilePath(Name)))
-		result << profilePath(Name) + '/' + it + '/';
+	foreach(const QString &it, getSubDirs(KaduPaths::instance()->profilePath() + Name))
+		result << (KaduPaths::instance()->profilePath() + Name + '/' + it + '/');
 
 	return result;
 }

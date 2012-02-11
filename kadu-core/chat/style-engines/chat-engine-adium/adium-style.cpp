@@ -27,7 +27,7 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNode>
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "adium-style.h"
 
@@ -98,9 +98,9 @@ AdiumStyle::AdiumStyle(const QString &styleName) :
 		Name(styleName)
 {
 	QDir dir;
-	BaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
+	BaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
 	if (!dir.exists(BaseHref))
-		BaseHref = dataPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
+		BaseHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/");
 
 	readConfiugrationFile();
 	loadHtmlFiles();
@@ -136,7 +136,7 @@ void AdiumStyle::loadHtmlFiles()
 		TemplateHref = BaseHref + "template.html";
 	else
 	{
-		TemplateHref = dataPath() + "/syntax/chat/Default/Template.html";
+		TemplateHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/Default/Template.html");
 		UsesCustomTemplateHtml = false;
 	}
 

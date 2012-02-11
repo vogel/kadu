@@ -150,7 +150,7 @@ AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
 		QObject(parent), CurrentPreviewHack(0)
 {
 	// Load required javascript functions
-	QFile file(dataPath() + "/scripts/chat-scripts.js");
+	QFile file(KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js"));
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 }
@@ -195,9 +195,9 @@ QString AdiumChatStyleEngine::currentStyleVariant()
 QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 {
 	QDir dir;
-	QString styleBaseHref = profilePath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
+	QString styleBaseHref = KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	if (!dir.exists(styleBaseHref))
-		styleBaseHref = dataPath() + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
+		styleBaseHref = KaduPaths::instance()->dataPath() + QLatin1String("syntax/chat/") + styleName + QLatin1String("/Contents/Resources/Variants/");
 	dir.setPath(styleBaseHref);
 	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList();
@@ -314,7 +314,7 @@ void AdiumChatStyleEngine::refreshHackFinished(HtmlMessagesRenderer *renderer)
 void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
 {
 	QString styleBaseHtml = CurrentStyle.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, webKitPath(CurrentStyle.baseHref()));
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(CurrentStyle.baseHref()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
 
@@ -387,7 +387,7 @@ bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
 
 bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 {
-	QDir dir(QString(profilePath() + "/syntax/chat/" + styleName));
+	QDir dir(QString(KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName));
 	return clearDirectory(dir.absolutePath()) && dir.cdUp() && dir.rmdir(styleName);
 }
 
@@ -405,7 +405,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	Message msg = message->message();
 
 	QString styleBaseHtml = style.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, webKitPath(style.baseHref()));
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(style.baseHref()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.footerHtml()));
 	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.headerHtml()));
 
@@ -483,18 +483,18 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 	{
 		const Avatar &avatar = chat.contacts().toContact().avatar(true);
 		if (!avatar.isEmpty())
-			photoIncoming = webKitPath(avatar.filePath());
+			photoIncoming = KaduPaths::webKitPath(avatar.filePath());
 		else
-			photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
+			photoIncoming = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 	else
-		photoIncoming = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
+		photoIncoming = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 
 	const Avatar &avatar = chat.chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())
-		photoOutgoing = webKitPath(avatar.filePath());
+		photoOutgoing = KaduPaths::webKitPath(avatar.filePath());
 	else
-		photoOutgoing = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
+		photoOutgoing = KaduPaths::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 
 	result.replace(QString("%incomingIconPath%"), photoIncoming);
 	result.replace(QString("%outgoingIconPath%"), photoOutgoing);
@@ -551,18 +551,18 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 
 		const Avatar &avatar = msg.messageSender().avatar(true);
 		if (!avatar.isEmpty())
-			photoPath = webKitPath(avatar.filePath());
+			photoPath = KaduPaths::webKitPath(avatar.filePath());
 		else
-			photoPath = webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
+			photoPath = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
 	else if (msg.type() == MessageTypeSent)
 	{
 		result.replace(QString("%messageClasses%"), "message outgoing");
 		const Avatar &avatar = msg.messageChat().chatAccount().accountContact().avatar(true);
 		if (!avatar.isEmpty())
-			photoPath = webKitPath(avatar.filePath());
+			photoPath = KaduPaths::webKitPath(avatar.filePath());
 		else
-			photoPath = webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
+			photoPath = KaduPaths::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 	}
 	else
 		result.remove(QString("%messageClasses%"));

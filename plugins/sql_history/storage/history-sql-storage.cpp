@@ -46,7 +46,6 @@
 #include "message/formatted-message.h"
 #include "message/message.h"
 #include "misc/misc.h"
-#include "misc/path-conversion.h"
 #include "status/status-type-manager.h"
 #include "status/status-type-data.h"
 #include "talkable/talkable.h"

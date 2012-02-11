@@ -244,7 +244,7 @@ QString About::loadFile(const QString &name)
 {
 	kdebugf();
 
-	QFile file(dataPath("" + name));
+	QFile file(KaduPaths::instance()->dataPath() + name);
 	if (!file.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));

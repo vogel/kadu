@@ -26,7 +26,7 @@
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/windows/kadu-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "protocols/protocol.h"
 
 #include "history-importer-manager.h"
@@ -53,7 +53,7 @@ HistoryMigrationActions::HistoryMigrationActions() :
 {
 	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
 	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
-	if (!imported && gaduAccount && QFile::exists(profilePath("history")))
+	if (!imported && gaduAccount && QFile::exists(KaduPaths::instance()->profilePath() + QLatin1String("history")))
 	{
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
 				this, SLOT(importHistoryActionActivated(QAction*,bool)), KaduIcon(), tr("Import history..."));
@@ -80,14 +80,14 @@ void HistoryMigrationActions::runImportHistoryAction()
 	if (!ImportHistoryActionDescription)
 		return;
 
-	if (HistoryImporterManager::instance()->containsImporter(profilePath("history/")))
+	if (HistoryImporterManager::instance()->containsImporter(KaduPaths::instance()->profilePath() + QLatin1String("history/")))
 		return;
 
 	Account gaduAccount = AccountManager::instance()->byId("gadu", config_file.readEntry("General", "UIN"));
 	if (!gaduAccount)
 		return;
 
-	HistoryImporter *hi = new HistoryImporter(gaduAccount, profilePath("history/"));
+	HistoryImporter *hi = new HistoryImporter(gaduAccount, KaduPaths::instance()->profilePath() + QLatin1String("history/"));
 	HistoryImporterManager::instance()->addImporter(hi);
 
 	hi->run();

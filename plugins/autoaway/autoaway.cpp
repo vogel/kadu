@@ -42,7 +42,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "parser/parser.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
@@ -80,7 +80,7 @@ int AutoAway::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return 0;
@@ -89,7 +89,7 @@ int AutoAway::init(bool firstLoad)
 void AutoAway::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/autoaway.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoaway.ui"));
 }
 
 AutoAwayStatusChanger::ChangeStatusTo AutoAway::changeStatusTo()

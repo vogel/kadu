@@ -21,7 +21,7 @@
  */
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "buddy-history-delete-handler.h"
 #include "history.h"
@@ -37,7 +37,7 @@ int HistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	History::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/history.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	MainConfigurationWindow::registerUiHandler(History::instance());
 
 	BuddyHistoryDeleteHandler::createInstance();
@@ -52,7 +52,7 @@ void HistoryPlugin::done()
 	BuddyHistoryDeleteHandler::destroyInstance();
 
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/history.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	History::destroyInstance();
 }
 

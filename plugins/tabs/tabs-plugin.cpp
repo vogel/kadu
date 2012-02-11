@@ -21,7 +21,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "tabs.h"
 
@@ -36,7 +36,7 @@ int TabsPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	TabsManagerInstance = new TabsManager(this);
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
 
 	return 0;
@@ -45,7 +45,7 @@ int TabsPlugin::init(bool firstLoad)
 void TabsPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/tabs.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	delete TabsManagerInstance;
 	TabsManagerInstance = 0;
 }

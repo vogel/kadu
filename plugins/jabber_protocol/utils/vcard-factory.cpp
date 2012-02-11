@@ -33,7 +33,7 @@
 #include <QTextStream>
 #include <QtAlgorithms>
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "jid-util.h"
 #include "vcard-factory.h"
@@ -115,11 +115,11 @@ void VCardFactory::saveVCard(const Jid& j, const VCard& _vcard)
 	// save vCard to disk
 
 	// ensure that there's a vcard directory to save into
-	QDir vcardDir(profilePath("vcard"));
+	QDir vcardDir(KaduPaths::instance()->profilePath() + QLatin1String("vcard"));
 	if (!vcardDir.exists())
-		vcardDir.mkpath(profilePath("vcard"));
+		vcardDir.mkpath(KaduPaths::instance()->profilePath() + QLatin1String("vcard"));
 
-	QFile file ( profilePath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
+	QFile file ( KaduPaths::instance()->profilePath() + QLatin1String("vcard/") + JIDUtil::encode(j.bare()).toLower() + QLatin1String(".xml") );
 	file.open ( QIODevice::WriteOnly );
 	QTextStream out ( &file );
 	out.setCodec("UTF8");
@@ -142,7 +142,7 @@ const VCard* VCardFactory::vcard(const Jid &j)
 	}
 
 	// then try to load from cache on disk
-	QFile file ( profilePath("vcard") + '/' + JIDUtil::encode(j.bare()).toLower() + ".xml" );
+	QFile file ( KaduPaths::instance()->profilePath() + QLatin1String("vcard/") + JIDUtil::encode(j.bare()).toLower() + QLatin1String(".xml") );
 	file.open (QIODevice::ReadOnly);
 	QDomDocument doc;
 	VCard *vcard = new VCard;

@@ -43,7 +43,7 @@ KaduChatStyleEngine::KaduChatStyleEngine(QObject *parent) :
 {
 	EngineName = "Kadu";
 	syntaxList = QSharedPointer<SyntaxList>(new SyntaxList("chat"));
-	QFile file(dataPath() + "/scripts/chat-scripts.js");
+	QFile file(KaduPaths::instance()->dataPath() + QLatin1String("scripts/chat-scripts.js"));
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 }

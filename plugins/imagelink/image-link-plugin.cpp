@@ -20,7 +20,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "image-link.h"
 
@@ -35,14 +35,14 @@ int ImageLinkPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ImageLink::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 
 	return 0;
 }
 
 void ImageLinkPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/image-link.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 	ImageLink::destroyInstance();
 }
 

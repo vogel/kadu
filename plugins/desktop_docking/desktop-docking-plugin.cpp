@@ -20,7 +20,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "plugins/docking/docking.h"
 
@@ -41,7 +41,7 @@ int DesktopDockingPlugin::init(bool firstLoad)
 	DesktopDock::createInstance();
 	DockingManager::instance()->setDocker(DesktopDock::instance());
 	DesktopDockConfigurationUiHandler::createInstance();
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	MainConfigurationWindow::registerUiHandler(DesktopDockConfigurationUiHandler::instance());
 
 	return 0;
@@ -50,7 +50,7 @@ int DesktopDockingPlugin::init(bool firstLoad)
 void DesktopDockingPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(DesktopDockConfigurationUiHandler::instance());
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/desktop_docking.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/desktop_docking.ui"));
 	DesktopDockConfigurationUiHandler::destroyInstance();
 	DockingManager::instance()->setDocker(0);
 	DesktopDock::destroyInstance();

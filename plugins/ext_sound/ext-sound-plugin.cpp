@@ -20,7 +20,7 @@
  */
 
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "plugins/sound/sound-manager.h"
 
@@ -38,14 +38,14 @@ int ExtSoundPlugin::init(bool firstLoad)
 
 	ExternalPlayer::createInstance();
 	SoundManager::instance()->setPlayer(ExternalPlayer::instance());
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 
 	return 0;
 }
 
 void ExtSoundPlugin::done()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/ext_sound.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/ext_sound.ui"));
 	SoundManager::instance()->setPlayer(0);
 	ExternalPlayer::destroyInstance();
 }

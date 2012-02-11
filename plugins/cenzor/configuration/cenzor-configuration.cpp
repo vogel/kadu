@@ -23,7 +23,7 @@
 #include <QtCore/QTextStream>
 
 #include "configuration/configuration-file.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "cenzor-configuration.h"
 
@@ -86,8 +86,8 @@ void CenzorConfiguration::configurationUpdated()
 {
 	Enabled = config_file.readBoolEntry("PowerKadu", "enable_cenzor");
 	Admonition = config_file.readEntry("PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>");
-	SwearList = loadRegExpList("cenzor swearwords", dataPath() + "plugins/data/cenzor/cenzor_words.conf");
-	ExclusionList = loadRegExpList("cenzor exclusions", dataPath() + "plugins/data/cenzor/cenzor_words_ok.conf");
+	SwearList = loadRegExpList("cenzor swearwords", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words.conf"));
+	ExclusionList = loadRegExpList("cenzor exclusions", KaduPaths::instance()->dataPath() + QLatin1String("plugins/data/cenzor/cenzor_words_ok.conf"));
 }
 
 void CenzorConfiguration::saveConfiguration()

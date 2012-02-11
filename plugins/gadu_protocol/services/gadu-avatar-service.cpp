@@ -21,7 +21,6 @@
 
 #include <QtXml/QDomDocument>
 
-#include "misc/path-conversion.h"
 #include "server/gadu-avatar-fetcher.h"
 #include "server/gadu-avatar-uploader.h"
 #include "gadu-avatar-service.h"

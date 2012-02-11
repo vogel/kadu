@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/path-conversion.h"
-
 #include "configuration/gui/freedesktop-notify-configuration-ui-handler.h"
 
 #include "freedesktop-notify.h"

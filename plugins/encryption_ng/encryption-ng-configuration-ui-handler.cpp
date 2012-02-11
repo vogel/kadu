@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "encryption-ng-configuration-ui-handler.h"
 
@@ -30,7 +30,7 @@ void EncryptionNgConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new EncryptionNgConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/encryption-ng.ui"));
+		MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng.ui"));
 	}
 }
 
@@ -38,7 +38,7 @@ void EncryptionNgConfigurationUiHandler::unregisterConfigurationUi()
 {
 	if (Instance)
 	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/encryption-ng.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng.ui"));
 		delete Instance;
 		Instance = 0;
 	}

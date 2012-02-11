@@ -29,7 +29,7 @@
 #include <QtCrypto>
 
 #include "gui/windows/message-dialog.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "exports.h"
 
 #include "configuration/encryption-ng-configuration.h"

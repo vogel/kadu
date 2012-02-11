@@ -23,7 +23,7 @@
 #include "accounts/account.h"
 #include "avatars/avatar.h"
 #include "icons/kadu-icon.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
@@ -34,7 +34,7 @@
 static QString getAvatarPath(Talkable talkable)
 {
 	const Avatar &avatar = talkable.avatar();
-	return webKitPath(avatar.filePath());
+	return KaduPaths::webKitPath(avatar.filePath());
 }
 
 static QString getStatusIconPath(Talkable talkable)

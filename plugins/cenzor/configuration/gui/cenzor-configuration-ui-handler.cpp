@@ -19,7 +19,7 @@
 
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 
 #include "configuration/cenzor-configuration.h"
 #include "gui/widgets/list-edit-widget.h"
@@ -34,7 +34,7 @@ void CenzorConfigurationUiHandler::registerConfigurationUi()
 	if (!Instance)
 	{
 		Instance = new CenzorConfigurationUiHandler();
-		MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/cenzor.ui"));
+		MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
 		MainConfigurationWindow::registerUiHandler(Instance);
 	}
 }
@@ -44,7 +44,7 @@ void CenzorConfigurationUiHandler::unregisterConfigurationUi()
 	if (Instance)
 	{
 		MainConfigurationWindow::unregisterUiHandler(Instance);
-		MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/cenzor.ui"));
+		MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/cenzor.ui"));
 		delete Instance;
 		Instance = 0;
 	}

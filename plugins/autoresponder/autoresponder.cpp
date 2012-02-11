@@ -38,7 +38,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/path-conversion.h"
+#include "misc/kadu-paths.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-service.h"
 #include "status/status-type-group.h"
@@ -80,7 +80,7 @@ int AutoResponder::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(dataPath("plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
 
 	return 0;
@@ -89,7 +89,7 @@ int AutoResponder::init(bool firstLoad)
 void AutoResponder::done()
 {
 	MainConfigurationWindow::unregisterUiHandler(this);
-	MainConfigurationWindow::unregisterUiFile(dataPath("plugins/configuration/autoresponder.ui"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
 void AutoResponder::accountRegistered(Account account)
