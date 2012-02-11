@@ -135,14 +135,9 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 	QWidget *spacer = new QWidget(this);
 	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
-	if (maxDescriptionLength > 0)
-	{
-		AvailableChars = new QLabel(this);
-		currentDescriptionChanged();
-		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(currentDescriptionChanged()));
-		layout->addRow(spacer, AvailableChars);
-	}
+	AvailableChars = new QLabel(this);
+	AvailableChars->setVisible(false);
+	layout->addRow(spacer, AvailableChars);
 
 	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
 	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
@@ -166,6 +161,14 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+
+	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
+	if (maxDescriptionLength > 0)
+	{
+		AvailableChars->setVisible(true);
+		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(currentDescriptionChanged()));
+		currentDescriptionChanged();
+	}
 
 	kdebugf2();
 }
@@ -232,7 +235,7 @@ void ChooseDescription::currentDescriptionChanged()
 {
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
-	if (OkButton)
-		OkButton->setEnabled(charactersLeft >= 0);
+	bool limitExceeded = charactersLeft < 0;
+	OkButton->setEnabled(!limitExceeded);
 	AvailableChars->setText(' ' + QString::number(charactersLeft));
 }
