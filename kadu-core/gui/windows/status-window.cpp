@@ -93,8 +93,8 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	setWindowRole("kadu-status-window");
 
 	QString windowTitle = StatusContainers.count() > 1
-		? tr("Account status")
-		: tr("Account status: %1").arg(FirstStatusContainer->statusContainerName());
+		? tr("Change status")
+		: tr("Change account status: %1").arg(FirstStatusContainer->statusContainerName());
 	setWindowTitle(windowTitle);
 	setAttribute(Qt::WA_DeleteOnClose);
 
