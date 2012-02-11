@@ -26,7 +26,7 @@
 #include <QtGui/QMenu>
 
 #include "core/core.h"
-#include "gui/windows/choose-description.h"
+#include "gui/windows/status-window.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
 #include "status/status-container.h"
@@ -82,5 +82,5 @@ void StatusMenu::changeStatus(QAction *action)
 
 void StatusMenu::changeDescription()
 {
-	ChooseDescription::showDialog(StatusContainers, MousePositionBeforeMenuHide, Menu);
+	StatusWindow::showDialog(StatusContainers, MousePositionBeforeMenuHide, Menu);
 }

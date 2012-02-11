@@ -49,7 +49,7 @@ class AllAccountsStatusContainer;
  *   <li>one status container that contains all active accounts</li>
  * </ul>
  *
- * This class is used by status changing widgets and windows, like StatusMenu and ChooseDescription.
+ * This class is used by status changing widgets and windows, like StatusMenu and StatusWindow.
  *
  * StatusContainerManager is also a status container that delegates all of its getters to default status container (first
  * registered) and setters to all active status containers.

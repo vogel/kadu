@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHOOSE_DESCRIPTION_H
-#define CHOOSE_DESCRIPTION_H
+#ifndef STATUS_WINDOW_H
+#define STATUS_WINDOW_H
 
 #include <QtGui/QDialog>
 
@@ -33,11 +33,11 @@ class QLabel;
 
 class StatusContainer;
 
-class ChooseDescription : public QDialog, DesktopAwareObject
+class StatusWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static QMap<QWidget *, ChooseDescription *> Dialogs;
+	static QMap<QWidget *, StatusWindow *> Dialogs;
 
 	QComboBox *statusCombo;
 	QTextEdit *DescriptionEdit;
@@ -49,8 +49,8 @@ class ChooseDescription : public QDialog, DesktopAwareObject
 
 	void setPosition(const QPoint &position);
 
-	explicit ChooseDescription(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
-	virtual ~ChooseDescription();
+	explicit StatusWindow(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
+	virtual ~StatusWindow();
 
 private slots:
 	void setDescription();
@@ -62,18 +62,18 @@ public:
 	static QPoint ShowCentered;
 	/**
 	 * @short Shows new choose description dialog window.
-	 * @return Pointer to the created ChooseDescription dialog.
+	 * @return Pointer to the created StatusWindow dialog.
 	 * @param statusContainerList list of statusContainers
-	 * @param position position in which new dialog should be shown on the desktop, ChooseDescription::ShowCentered by default
+	 * @param position position in which new dialog should be shown on the desktop, StatusWindow::ShowCentered by default
 	 * @param parent dialog's parent widget, null by default
 	 *
 	 * Creates and shows new choose description dialog window.
 	 *
-	 * Use ChooseDescription::ShowCentered value for position parameter to show the widget in the center of the desktop.
+	 * Use StatusWindow::ShowCentered value for position parameter to show the widget in the center of the desktop.
 	 */
-	static ChooseDescription * showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position = ChooseDescription::ShowCentered, QWidget *parent = 0);
+	static StatusWindow * showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position = StatusWindow::ShowCentered, QWidget *parent = 0);
 
 	virtual QSize sizeHint() const;
 };
 
-#endif // CHOOSE_DESCRIPTION_H
+#endif // STATUS_WINDOW_H

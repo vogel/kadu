@@ -24,7 +24,7 @@
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
 
-#include "gui/windows/choose-description.h"
+#include "gui/windows/status-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/previous-descriptions-window.h"
 #include "icons/kadu-icon.h"
@@ -44,7 +44,7 @@
 
 QMap<QWidget *, PreviousDescriptionsWindow *> PreviousDescriptionsWindow::Dialogs;
 
-PreviousDescriptionsWindow * PreviousDescriptionsWindow::showDialog(ChooseDescription *parent)
+PreviousDescriptionsWindow * PreviousDescriptionsWindow::showDialog(StatusWindow *parent)
 {
 	PreviousDescriptionsWindow *dialog;
 	if (Dialogs.contains(parent))
@@ -61,7 +61,7 @@ PreviousDescriptionsWindow * PreviousDescriptionsWindow::showDialog(ChooseDescri
 	return dialog;
 }
 
-PreviousDescriptionsWindow::PreviousDescriptionsWindow(ChooseDescription *parent) :
+PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 		QDialog(parent)
 {
 	setWindowTitle(tr("Previous descriptions"));

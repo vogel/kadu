@@ -26,7 +26,7 @@
 class QListView;
 class QModelIndex;
 
-class ChooseDescription;
+class StatusWindow;
 
 class PreviousDescriptionsWindow : public QDialog
 {
@@ -36,7 +36,7 @@ class PreviousDescriptionsWindow : public QDialog
 
 	static QMap<QWidget *, PreviousDescriptionsWindow *> Dialogs;
 
-	explicit PreviousDescriptionsWindow(ChooseDescription *parent);
+	explicit PreviousDescriptionsWindow(StatusWindow *parent);
 	virtual ~PreviousDescriptionsWindow();
 
 private slots:
@@ -44,7 +44,7 @@ private slots:
 	void selectListItem(const QModelIndex &index);
 
 public:
-	static PreviousDescriptionsWindow * showDialog(ChooseDescription *parent);
+	static PreviousDescriptionsWindow * showDialog(StatusWindow *parent);
 
 signals:
     	void descriptionSelected(const QString &description);

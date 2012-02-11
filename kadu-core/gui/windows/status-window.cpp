@@ -52,30 +52,30 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "choose-description.h"
+#include "status-window.h"
 
-QMap<QWidget *, ChooseDescription *> ChooseDescription::Dialogs;
+QMap<QWidget *, StatusWindow *> StatusWindow::Dialogs;
 
 /**
- * Special value for position parameter of ChooseDescription::showDialog method. Causes the dialog to be positioned in the center of the desktop.
+ * Special value for position parameter of StatusWindow::showDialog method. Causes the dialog to be positioned in the center of the desktop.
  */
-QPoint ChooseDescription::ShowCentered = QPoint(-512000, -512000);
+QPoint StatusWindow::ShowCentered = QPoint(-512000, -512000);
 
-ChooseDescription * ChooseDescription::showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent)
+StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent)
 {
 	if (statusContainerList.isEmpty())
 		return 0;
 
-	ChooseDescription *dialog;
+	StatusWindow *dialog;
 	if (Dialogs.contains(parent))
 		dialog = Dialogs[parent];
 	else
 	{
-		dialog = new ChooseDescription(statusContainerList, parent);
+		dialog = new StatusWindow(statusContainerList, parent);
 		Dialogs[parent] = dialog;
 	}
 
-	if (position != ChooseDescription::ShowCentered)
+	if (position != StatusWindow::ShowCentered)
 		dialog->setPosition(position);
 	else
 		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->sizeHint().width()) / 2,
@@ -87,7 +87,7 @@ ChooseDescription * ChooseDescription::showDialog(const QList<StatusContainer *>
 	return dialog;
 }
 
-ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusContainerList, QWidget *parent) :
+StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, QWidget *parent) :
 		QDialog(parent), DesktopAwareObject(this), StatusContainers(statusContainerList)
 {
 	Q_ASSERT(!StatusContainers.isEmpty());
@@ -96,7 +96,7 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 
 	kdebugf();
 
-	setWindowRole("kadu-choose-description");
+	setWindowRole("kadu-status-window");
 
 	QString windowTitle = StatusContainers.count() > 1
 		? tr("Account status")
@@ -173,17 +173,17 @@ ChooseDescription::ChooseDescription(const QList<StatusContainer *> &statusConta
 	kdebugf2();
 }
 
-ChooseDescription::~ChooseDescription()
+StatusWindow::~StatusWindow()
 {
 	Dialogs.remove(parentWidget());
 }
 
-QSize ChooseDescription::sizeHint() const
+QSize StatusWindow::sizeHint() const
 {
 	return QDialog::sizeHint().expandedTo(QSize(400, 80));
 }
 
-void ChooseDescription::setPosition(const QPoint &position)
+void StatusWindow::setPosition(const QPoint &position)
 {
 	QSize sh = sizeHint();
 	int width = sh.width();
@@ -199,7 +199,7 @@ void ChooseDescription::setPosition(const QPoint &position)
 	move(p);
 }
 
-void ChooseDescription::setDescription()
+void StatusWindow::setDescription()
 {
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
@@ -220,18 +220,18 @@ void ChooseDescription::setDescription()
 	}
 }
 
-void ChooseDescription::descriptionSelected(const QString &description)
+void StatusWindow::descriptionSelected(const QString &description)
 {
 	DescriptionEdit->setPlainText(description);
 }
 
-void ChooseDescription::openDescriptionsList()
+void StatusWindow::openDescriptionsList()
 {
 	PreviousDescriptionsWindow *chooseDescDialog = PreviousDescriptionsWindow::showDialog(this);
 	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
 }
 
-void ChooseDescription::currentDescriptionChanged()
+void StatusWindow::currentDescriptionChanged()
 {
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
