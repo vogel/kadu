@@ -46,3 +46,7 @@ kadu_plugin (sql_history
 	PLUGIN_LIBRARIES ${QT_QTSQL_LIBRARIES}
 	PLUGIN_DEPENDENCIES history
 )
+
+install (PROGRAMS data/scripts/history-database-recovery.sh
+	DESTINATION ${KADU_PLUGINS_DIR}/data/sql_history/scripts
+)
