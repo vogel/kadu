@@ -41,12 +41,55 @@ class QSqlDatabase;
  * This class use simple heuristics to validate database - if list of available tables is
  * empty or an error occured during reading such list, database is marked as corrupted.
  * Do not use this class on newly created databases that do not have any tables yet.
+ *
+ * Restore process is performed synchronously. Do not call performRestore() in GUI thread.
  */
 class SqlRestore : public QObject
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Restore process error.
+	 */
+	enum RestoreError
+	{
+		/**
+		 * Restore process was performed without errors
+		 */
+		ErrorNoError = 0,
+		/**
+		 * No sqlite3 executable was found.
+		 */
+		ErrorSqlite3NotExecutable = 1,
+		/**
+		 * Number of parameters passed to restore script is invalid.
+		 */
+		ErrorInvalidParameters = 2,
+		/**
+		 * Corrupted database cannot be read. It is signal of some deeper error.
+		 */
+		ErrorUnreadableCorruptedDatabase = 3,
+		/**
+		 * Directory with corrupted database is invalid. It is signal of some deeper error.
+		 */
+		ErrorInvalidDirectory = 4,
+		/**
+		 * Directory with corrupted database is invalid. It is signal of some deeper error.
+		 * Possibly disk is full.
+		 */
+		ErrorUnableToCreateBackup = 5,
+		/**
+		 * Unkown error during recovery.
+		 */
+		ErrorRecovering = 6,
+		/**
+		 * Restore script was not found.
+		 */
+		ErrorNoRestoreScriptExecutable = 100
+	};
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Check if database is corrupted.
@@ -64,6 +107,17 @@ public:
 	 * returned.
 	 */
 	static bool isCorrupted(const QSqlDatabase &database);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Try to restore database file.
+	 * @param databaseFilePath path to database file
+	 * @return error value of recovery process
+	 *
+	 * This method executes recovery script with given database file path as parameter. This methods
+	 * returns after script is finished, so executing this method is main thread is not a good idea.
+	 */
+	RestoreError performRestore(const QString &databaseFilePath);
 
 };
 

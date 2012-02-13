@@ -18,11 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QProcess>
 #include <QtCore/QStringList>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 
+#include "misc/path-conversion.h"
+
 #include "sql-restore.h"
+
+#define RECOVERY_SCRIPT "plugins/data/sql_history/scripts/history-database-recovery.sh"
 
 bool SqlRestore::isCorrupted(const QSqlDatabase &database)
 {
@@ -37,4 +43,22 @@ bool SqlRestore::isCorrupted(const QSqlDatabase &database)
 		return true;
 
 	return tables.isEmpty();
+}
+
+SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
+{
+	QString recoveryScriptPath = dataPath(RECOVERY_SCRIPT);
+
+	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
+	if (!recoveryScriptFileInfo.exists())
+		return ErrorNoRestoreScriptExecutable;
+
+	QProcess restoreProcess;
+	restoreProcess.execute("/bin/bash", QStringList() << recoveryScriptPath << databaseFilePath);
+	restoreProcess.waitForFinished(-1);
+
+	if (restoreProcess.exitCode() < 0 || restoreProcess.exitCode() > ErrorRecovering)
+		return ErrorRecovering;
+
+	return static_cast<RestoreError>(restoreProcess.exitCode());
 }

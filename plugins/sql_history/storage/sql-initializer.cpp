@@ -121,8 +121,10 @@ void SqlInitializer::initDatabase()
 		history1FileExists = copyHistoryFile();
 	}
 
+	QString historyFilePath = profilePath(HISTORY_FILE);
+
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
-	Database.setDatabaseName(profilePath(HISTORY_FILE));
+	Database.setDatabaseName(historyFilePath);
 	bool open = Database.open();
 
 	if (!open)
@@ -131,9 +133,10 @@ void SqlInitializer::initDatabase()
 		return;
 	}
 
-	if (history1FileExists) // this is not new database
+	if (history1FileExists && SqlRestore::isCorrupted(Database)) // this is not new database
 	{
-		printf("database is corrupted: %d\n", SqlRestore::isCorrupted(Database));
+		SqlRestore sqlRestore;
+		printf("restore error: %d\n", sqlRestore.performRestore(historyFilePath));
 	}
 
 	quint16 storedSchemaVersion = loadSchemaVersion();
