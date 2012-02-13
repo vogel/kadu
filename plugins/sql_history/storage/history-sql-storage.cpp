@@ -154,7 +154,7 @@ void HistorySqlStorage::importFinished()
 	}
 }
 
-void HistorySqlStorage::databaseOpenFailed (const QSqlError &error)
+void HistorySqlStorage::databaseOpenFailed(const QSqlError &error)
 {
 	if (ImportProgressWindow)
 	{

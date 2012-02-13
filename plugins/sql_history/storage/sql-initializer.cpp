@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  * Copyright 2011 Wojciech Treter (juzefwt@gmail.com)
  *
@@ -27,6 +27,7 @@
 #include "misc/path-conversion.h"
 
 #include "storage/history-sql-storage.h"
+#include "storage/sql-restore.h"
 
 #include "sql-initializer.h"
 
@@ -66,15 +67,17 @@ bool SqlInitializer::isCopyingNeeded()
 	return scheme0FileInfo.exists();
 }
 
-void SqlInitializer::copyHistoryFile()
+bool SqlInitializer::copyHistoryFile()
 {
 	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
 	if (scheme1FileInfo.exists())
-		return;
+		return true;
 
 	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
 	if (scheme0FileInfo.exists())
-		QFile::copy(scheme0FileInfo.absoluteFilePath(), scheme1FileInfo.absoluteFilePath());
+		return QFile::copy(scheme0FileInfo.absoluteFilePath(), scheme1FileInfo.absoluteFilePath());
+
+	return false;
 }
 
 quint16 SqlInitializer::loadSchemaVersion()
@@ -109,28 +112,32 @@ void SqlInitializer::initDatabase()
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 
-	QDir historyDir(profilePath("history"));
-	if (!historyDir.exists())
-		historyDir.mkpath(profilePath("history"));
-
+	bool history1FileExists = !isCopyingNeeded();
 	bool importStartedEmitted = false;
-	if (isCopyingNeeded())
+	if (!history1FileExists)
 	{
 		emit importStarted();
 		importStartedEmitted = true;
-		copyHistoryFile();
+		history1FileExists = copyHistoryFile();
 	}
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(profilePath(HISTORY_FILE));
+	bool open = Database.open();
 
-	if (!Database.open())
+	if (!open)
 	{
 		emit databaseOpenFailed(Database.lastError());
 		return;
 	}
 
+	if (history1FileExists) // this is not new database
+	{
+		printf("database is corrupted: %d\n", SqlRestore::isCorrupted(Database));
+	}
+
 	quint16 storedSchemaVersion = loadSchemaVersion();
+
 	switch (storedSchemaVersion)
 	{
 		case 0:

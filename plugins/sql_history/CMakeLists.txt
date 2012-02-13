@@ -14,6 +14,7 @@ set (SOURCES
 	storage/sql-messages-chat-storage.cpp
 	storage/sql-messages-sms-storage.cpp
 	storage/sql-messages-status-storage.cpp
+	storage/sql-restore.cpp
 
 	sql-history-plugin.cpp
 )
@@ -24,6 +25,7 @@ set (MOC_SOURCES
 	storage/sql-messages-chat-storage.h
 	storage/sql-messages-sms-storage.h
 	storage/sql-messages-status-storage.h
+	storage/sql-restore.h
 
 	sql-history-plugin.h
 )

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  * Copyright 2011 Wojciech Treter (juzefwt@gmail.com)
  *
@@ -33,10 +33,11 @@ class SqlInitializer : public QObject
 	QSqlDatabase Database;
 
 	bool isCopyingNeeded();
-	void copyHistoryFile();
+	bool copyHistoryFile();
 
 	quint16 loadSchemaVersion();
 
+	void initDatabaseFile();
 	void initDatabase();
 	void initTables();
 	void initKaduSchemaTable();
