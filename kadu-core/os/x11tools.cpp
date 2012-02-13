@@ -1,7 +1,7 @@
 /****************************************************************************
 *                                                                           *
 *   X11tools                                                                *
-*   Copyright (C) 2008-2011  Piotr Dąbrowski ultr@ultr.pl                   *
+*   Copyright (C) 2008-2012  Piotr Dąbrowski ultr@ultr.pl                   *
 *   Copyright (C) 2011       Przemysław Rudy prudy1@o2.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
@@ -40,17 +40,19 @@ bool X11_getCardinalProperty( Display *display, Window window, const char *prope
 		return false;
 	unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
 	int result = XGetWindowProperty( display, window, property, offset, 1L, False, XA_CARDINAL, &realtype, &realformat, &nitems, &left, &data );
-	if( result != Success )
-		return false;
-	if( realtype != XA_CARDINAL )
-		return false;
-	if( nitems > 0 )
+	if( result == Success )
 	{
-		*value = ((uint32_t*)data)[0];
+		if( realtype == XA_CARDINAL )
+		{
+			if( nitems > 0 )
+			{
+				*value = ((uint32_t*)data)[0];
+				XFree( data );
+				return true;
+			}
+		}
 		XFree( data );
-		return true;
 	}
-	XFree( data );
 	return false;
 }
 
@@ -62,17 +64,19 @@ bool X11_getFirstPropertyAtom( Display *display, Window window, const char *prop
 		return false;
 	unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
 	int result = XGetWindowProperty( display, window, property, 0L, 1L, False, XA_ATOM, &realtype, &realformat, &nitems, &left, &data );
-	if( result != Success )
-		return false;
-	if( realtype != XA_ATOM )
-		return false;
-	if( nitems > 0 )
+	if( result == Success )
 	{
-		*value = ((Atom*)data)[0L];
+		if( realtype == XA_ATOM )
+		{
+			if( nitems > 0 )
+			{
+				*value = ((Atom*)data)[0L];
+				XFree( data );
+				return true;
+			}
+		}
 		XFree( data );
-		return true;
 	}
-	XFree( data );
 	return false;
 }
 
@@ -435,7 +439,7 @@ bool X11_isWindowCovered( Display *display, Window window )
 	Window root;
 	Window *children = NULL;
 	unsigned int nchildren;
-	while( ( parent != 0x0 ) && ( parent != DefaultRootWindow( display ) ) )
+	while( ( parent != None ) && ( parent != DefaultRootWindow( display ) ) )
 	{
 		window = parent;
 		XQueryTree( display, window, &root, &parent, &children, &nchildren );
@@ -651,11 +655,46 @@ void X11_resizeWindow( Display *display, Window window, int width, int height )
 }
 
 
+void X11_setSizeHintsOfWindow( Display *display, Window window, int minwidth, int minheight, int maxwidth, int maxheight )
+{
+	XSizeHints sizehints;
+	long supplied_return;
+	XGetWMNormalHints( display, window, &sizehints, &supplied_return );
+	sizehints.min_width  = minwidth;
+	sizehints.min_height = minheight;
+	sizehints.max_width  = maxwidth;
+	sizehints.max_height = maxheight;
+	sizehints.flags |= PMinSize | PMaxSize;
+	XSetWMNormalHints( display, window, &sizehints );
+}
+
+
 
 
 Window X11_getActiveWindow( Display *display )
 {
 	Window window;
+	// _NET_ACTIVE_WINDOW
+	Atom net_active_window = XInternAtom( display, "_NET_ACTIVE_WINDOW", False );
+	if( net_active_window != None )
+	{
+		unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
+		int result = XGetWindowProperty( display, XDefaultRootWindow( display ), net_active_window, 0L, sizeof(Window), False, XA_WINDOW, &realtype, &realformat, &nitems, &left, &data);
+		if( result == Success )
+		{
+			if( realtype == XA_WINDOW )
+			{
+				if( nitems > 0 )
+				{
+					window = *(Window*)data;
+					XFree( data );
+					return window;
+				}
+			}
+			XFree( data );
+		}
+	}
+	// XGetInputFocus
 	int revertto;
 	XGetInputFocus( display, &window, &revertto );
 	return window;
@@ -1007,15 +1046,16 @@ bool X11_isCompositingManagerRunning( Display *display )
 	return XGetSelectionOwner( display, netwmcms0 );
 }
 
+
+
+
 void X11_setBlur( Display *display, Window window, bool enable )
 {
 	Atom atom = XInternAtom( display, "_KDE_NET_WM_BLUR_BEHIND_REGION", False );
-	
-	if ( atom != None )
-	{
-		if  ( enable )
-			XChangeProperty( display, window, atom, XA_CARDINAL, 32, PropModeReplace, NULL, 0 );
-		else
-			XDeleteProperty( display, window, atom );
-	}
+	if( atom == None )
+		return;
+	if( enable )
+		XChangeProperty( display, window, atom, XA_CARDINAL, 32, PropModeReplace, NULL, 0 );
+	else
+		XDeleteProperty( display, window, atom );
 }
