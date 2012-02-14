@@ -14,6 +14,9 @@ set (gui_SRCS
 
 	model/checkbox-styled-item-delegate.cpp
 
+	shortcuts/shortcut.cpp
+	shortcuts/shortcut-dispatcher.cpp
+	
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
@@ -186,7 +189,7 @@ set (gui_MOC_SRCS
 	actions/edit-talkable-action.h
 
 	model/checkbox-styled-item-delegate.h
-
+	
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
 	widgets/account-buddy-list-widget.h
