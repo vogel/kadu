@@ -35,20 +35,8 @@ class SqlInitializer : public QObject
 	bool isCopyingNeeded();
 	bool copyHistoryFile();
 
-	quint16 loadSchemaVersion();
-
 	void initDatabaseFile();
 	void initDatabase();
-	void initTables();
-	void initKaduSchemaTable();
-	void initKaduMessagesTable();
-	void initKaduStatusesTable();
-	void initKaduSmsTable();
-	void initIndexes();
-
-	void importVersion1Schema();
-	void importVersion2Schema();
-	void removeDuplicatesFromVersion2Schema(const QString &idTableName, const QString &valueFieldName, const QString &idFieldName);
 
 public:
 	explicit SqlInitializer(QObject *parent = 0);

@@ -10,6 +10,7 @@ include (FindKadu)
 
 set (SOURCES
 	storage/history-sql-storage.cpp
+	storage/sql-import.cpp
 	storage/sql-initializer.cpp
 	storage/sql-messages-chat-storage.cpp
 	storage/sql-messages-sms-storage.cpp
@@ -21,6 +22,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
+	storage/sql-import.h
 	storage/sql-initializer.h
 	storage/sql-messages-chat-storage.h
 	storage/sql-messages-sms-storage.h
