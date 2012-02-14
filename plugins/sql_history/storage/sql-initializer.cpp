@@ -125,9 +125,8 @@ void SqlInitializer::initDatabase()
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(historyFilePath);
-	bool open = Database.open();
 
-	if (!open)
+	if (!Database.open())
 	{
 		emit databaseOpenFailed(Database.lastError());
 		return;
@@ -135,8 +134,16 @@ void SqlInitializer::initDatabase()
 
 	if (history1FileExists && SqlRestore::isCorrupted(Database)) // this is not new database
 	{
+		Database.close();
+
 		SqlRestore sqlRestore;
 		printf("restore error: %d\n", sqlRestore.performRestore(historyFilePath));
+
+		if (!Database.open())
+		{
+			emit databaseOpenFailed(Database.lastError());
+			return;
+		}
 	}
 
 	quint16 storedSchemaVersion = loadSchemaVersion();
