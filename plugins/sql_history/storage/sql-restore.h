@@ -110,6 +110,14 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Translate error enum to human-readable string.
+	 * @param error error number
+	 * @return human-readable string describing given error
+	 */
+	static QString errorMessage(RestoreError error);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Try to restore database file.
 	 * @param databaseFilePath path to database file
 	 * @return error value of recovery process

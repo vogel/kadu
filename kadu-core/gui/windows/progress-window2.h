@@ -25,30 +25,98 @@
 #include "exports.h"
 
 class QLabel;
+class QListWidget;
 class QProgressBar;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ProgressWindow2
+ * @author Rafał 'Vogel' Malinowski
+ * @short Window used to show progress of an action to user.
+ *
+ * This window can be used to show progres of any action to user. Window consists of label, progress
+ * bar and list displaying progress entries, similar to some installers.
+ *
+ * Value of label is set in constructor and cannot be changed. By default progress bar is showing busy
+ * incidator. After action is finished progress bar shows 100% or 0% progress, depending if action
+ * failed or not. Also alert is set on window.
+ *
+ * If action failed additional message box is displayed if message text is provided.
+ *
+ * Window can only be closed after action is finished.
+ */
 class KADUAPI ProgressWindow2 : public QDialog
 {
 	Q_OBJECT
 
-	QLabel *TextLabel;
 	QProgressBar *ProgressBar;
+	QListWidget *TextListWidget;
+	QPushButton *ShowDetailsButton;
 	QPushButton *CloseButton;
 
+	QString Label;
 	bool CanClose;
 
 	void createGui();
 
+private slots:
+	void showDetailsClicked();
+
 protected:
-	virtual void closeEvent(QCloseEvent *);
+	virtual void closeEvent(QCloseEvent *closeEvent);
+	virtual void keyPressEvent(QKeyEvent *keyEvent);
 
 public:
-	explicit ProgressWindow2(const QString &initText, QWidget *parent = 0);
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new progress window with given label.
+	 * @param label label of progress window
+	 * @param parent parent QWidget of progress window
+	 */
+	explicit ProgressWindow2(const QString &label, QWidget *parent = 0);
 	virtual ~ProgressWindow2();
 
-	void setText(const QString &text);
-	void enableClosing();
+public slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new progress entry to progress list widget.
+	 * @param entryIcon name of KaduIcon that will be displayed next to progress message
+	 * @param entryMessage message to add at bottom of progress list
+	 */
+	void addProgressEntry(const QString &entryIcon, const QString &entryMessage);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set value of progress bar.
+	 * @param value new value of progress bar
+	 * @param maximum new maximum value of progress bar
+	 *
+	 * Set both values to 0 to make progress bar show busy indicator.
+	 */
+	void setProgressValue(int value, int maximum);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new progress entry to progress list widget and enable closing of this window.
+	 * @param ok true if action was successfull
+	 * @param entryIcon
+	 * @param entryIcon name of KaduIcon that will be displayed next to progress message
+	 * @param entryMessage message to add at bottom of progress list
+	 *
+	 * This method works like addProgressEntry() and additionally enables closing of this progress
+	 * window. Also alert is set on this window and if ok is false a message dialog with given
+	 * icon and message is displayed.
+	 */
+	void progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // PROGRESS_WINDOW_H

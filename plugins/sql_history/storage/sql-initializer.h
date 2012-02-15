@@ -32,7 +32,8 @@ class SqlInitializer : public QObject
 
 	QSqlDatabase Database;
 
-	bool isCopyingNeeded();
+	bool oldHistoryFileExists();
+	bool currentHistoryFileExists();
 	bool copyHistoryFile();
 
 	void initDatabaseFile();
@@ -46,12 +47,10 @@ public slots:
 	void initialize();
 
 signals:
-	void initialized();
 	void databaseReady(bool ok);
 
-	void importStarted();
-	void importFinished();
-	void databaseOpenFailed(const QSqlError &error);
+	void progressMessage(const QString &iconName, const QString &message);
+	void progressFinished(bool ok, const QString &iconName, const QString &message);
 
 };
 

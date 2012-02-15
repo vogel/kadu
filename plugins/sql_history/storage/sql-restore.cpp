@@ -45,6 +45,28 @@ bool SqlRestore::isCorrupted(const QSqlDatabase &database)
 	return tables.isEmpty();
 }
 
+QString SqlRestore::errorMessage(SqlRestore::RestoreError error)
+{
+	switch (error)
+	{
+		case ErrorNoError:
+			return tr("No error.");
+		case ErrorSqlite3NotExecutable:
+			return tr("sqlite3 executable not found.");
+		case ErrorInvalidParameters:
+			return tr("Invalid invocation of recovery script.");
+		case ErrorUnreadableCorruptedDatabase:
+		case ErrorInvalidDirectory:
+			return tr("Unable to read corrupted database.");
+		case ErrorUnableToCreateBackup:
+			return tr("Unable to create backup file. Disc may be full.");
+		case ErrorNoRestoreScriptExecutable:
+			return tr("Recovery script not found or not executable.");
+		default:
+			return tr("Unknown error during database recovery.");
+	}
+}
+
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
 	QString recoveryScriptPath = dataPath(RECOVERY_SCRIPT);

@@ -70,6 +70,8 @@ class HistorySqlStorage : public HistoryStorage
 	int saveMessageContent(const Message &message);
 	int findOrCreateDate(const QDate &date);
 
+	void ensureProgressWindowReady();
+
 	QString chatWhere(const Chat &chat, const QString &chatPrefix = "chat.");
 	QString talkableContactsWhere(const Talkable &talkable, const QString &fieldName);
 	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
@@ -98,11 +100,10 @@ private slots:
 	virtual void messageReceived(const Message &message);
 	virtual void messageSent(const Message &message);
 
-	void databaseReady(bool ok);
+	void initializerProgressMessage(const QString &iconName, const QString &message);
+	void initializerProgressFinished(bool ok, const QString &iconName, const QString &message);
 
-	void importStarted();
-	void importFinished();
-	void databaseOpenFailed(const QSqlError &error);
+	void databaseReady(bool ok);
 
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);

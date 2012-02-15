@@ -24,21 +24,23 @@
 #include <QtGui/QCloseEvent>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QLabel>
+#include <QtGui/QListWidget>
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/windows/message-dialog.h"
+#include "icons/kadu-icon.h"
+
 #include "progress-window2.h"
 
-ProgressWindow2::ProgressWindow2(const QString &initText, QWidget *parent) :
-		QDialog(parent)
+ProgressWindow2::ProgressWindow2(const QString &label, QWidget *parent) :
+		QDialog(parent), Label(label)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-progress");
 	createGui();
-
-	TextLabel->setText(initText);
 
 	setFixedWidth(width());
 }
@@ -50,46 +52,98 @@ ProgressWindow2::~ProgressWindow2()
 void ProgressWindow2::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	mainLayout->setMargin(12);
+	mainLayout->setSpacing(16);
 
-	TextLabel = new QLabel(this);
-	TextLabel->setWordWrap(true);
+	QLabel *label = new QLabel(this);
+	label->setText(QString("<b>%1</b>").arg(Label));
+	label->setWordWrap(true);
+
+	QWidget *progressWidget = new QWidget(this);
+	QHBoxLayout *progressLayout = new QHBoxLayout(progressWidget);
+	progressLayout->setMargin(0);
 
 	ProgressBar = new QProgressBar(this);
 	ProgressBar->setMinimum(0);
 	ProgressBar->setMaximum(0);
+
+	progressLayout->addWidget(new QLabel(tr("Progress:"), progressWidget));
+	progressLayout->addWidget(ProgressBar);
+
+	TextListWidget = new QListWidget(this);
+	TextListWidget->setMinimumHeight(200);
+	TextListWidget->hide();
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
 	CloseButton->setEnabled(false);
 	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
+	ShowDetailsButton = new QPushButton(tr("Show details >>>"));
+	connect(ShowDetailsButton, SIGNAL(clicked(bool)), this, SLOT(showDetailsClicked()));
 
-	mainLayout->addWidget(TextLabel);
-	mainLayout->addWidget(ProgressBar);
+	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
+	buttons->addButton(ShowDetailsButton, QDialogButtonBox::ActionRole);
+
+	mainLayout->addWidget(label);
+	mainLayout->addWidget(progressWidget);
+	mainLayout->addWidget(TextListWidget);
+	mainLayout->addStretch(1);
 	mainLayout->addWidget(buttons);
 }
 
-void ProgressWindow2::enableClosing()
+void ProgressWindow2::closeEvent(QCloseEvent *closeEvent)
 {
-	ProgressBar->setMaximum(10);
-	ProgressBar->setValue(10);
+	if (!CanClose)
+		closeEvent->ignore();
+	else
+		QDialog::closeEvent(closeEvent);
+}
 
+void ProgressWindow2::keyPressEvent(QKeyEvent *keyEvent)
+{
+	if (!CanClose && Qt::Key_Escape == keyEvent->key())
+		keyEvent->ignore();
+	else
+		QDialog::keyPressEvent(keyEvent);
+}
+
+void ProgressWindow2::showDetailsClicked()
+{
+	ShowDetailsButton->setEnabled(false);
+	TextListWidget->show();
+}
+
+void ProgressWindow2::addProgressEntry(const QString &entryIcon, const QString &entryMessage)
+{
+	QListWidgetItem *item = new QListWidgetItem(KaduIcon(entryIcon).icon(), entryMessage, TextListWidget);
+	TextListWidget->addItem(item);
+}
+
+void ProgressWindow2::setProgressValue(int value, int maximum)
+{
+	ProgressBar->setMaximum(maximum);
+	ProgressBar->setValue(value);
+}
+
+void ProgressWindow2::progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
+{
 	CanClose = true;
 	CloseButton->setEnabled(true);
 	CloseButton->setDefault(true);
 	CloseButton->setFocus();
-}
 
-void ProgressWindow2::closeEvent(QCloseEvent *e)
-{
-	if (!CanClose)
-		e->ignore();
+	ProgressBar->setMaximum(10);
+
+	if (ok)
+		ProgressBar->setValue(10);
 	else
-		QDialog::closeEvent(e);
-}
+		ProgressBar->setValue(0);
 
-void ProgressWindow2::setText(const QString &text)
-{
-	TextLabel->setText(text);
+	addProgressEntry(entryIcon, entryMessage);
+
+	qApp->alert(this);
+
+	if (!ok)
+		MessageDialog::exec(KaduIcon(entryIcon), Label, entryMessage);
 }

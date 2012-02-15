@@ -48,23 +48,24 @@ void SqlInitializer::initialize()
 {
 	initDatabase();
 
-	bool ok = Database.isOpen();
+	bool ok = Database.isOpen() && !Database.isOpenError();
 	Database.close();
 
 	emit databaseReady(ok);
-	emit initialized();
 
 	deleteLater();
 }
 
-bool SqlInitializer::isCopyingNeeded()
+bool SqlInitializer::oldHistoryFileExists()
 {
-	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
-	if (scheme1FileInfo.exists())
-		return false;
-
 	QFileInfo scheme0FileInfo(profilePath(OLD_HISTORY_FILE));
 	return scheme0FileInfo.exists();
+}
+
+bool SqlInitializer::currentHistoryFileExists()
+{
+	QFileInfo scheme1FileInfo(profilePath(HISTORY_FILE));
+	return scheme1FileInfo.exists();
 }
 
 bool SqlInitializer::copyHistoryFile()
@@ -89,13 +90,17 @@ void SqlInitializer::initDatabase()
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 
-	bool history1FileExists = !isCopyingNeeded();
-	bool importStartedEmitted = false;
-	if (!history1FileExists)
+	bool history1FileExists = currentHistoryFileExists();
+	bool anyHistoryFileExists = history1FileExists || oldHistoryFileExists();
+
+	if (!history1FileExists && oldHistoryFileExists())
 	{
-		emit importStarted();
-		importStartedEmitted = true;
-		history1FileExists = copyHistoryFile();
+		emit progressMessage("dialog-information", tr("Copying history file to new location: %1 ...").arg(profilePath(HISTORY_FILE)));
+		if (!copyHistoryFile())
+		{
+			emit progressFinished(false, "dialog-error", tr("Unable to copy history file to new location. Check if disk is full."));
+			return;
+		}
 	}
 
 	QString historyFilePath = profilePath(HISTORY_FILE);
@@ -105,30 +110,39 @@ void SqlInitializer::initDatabase()
 
 	if (!Database.open())
 	{
-		emit databaseOpenFailed(Database.lastError());
+		emit progressFinished(false, "dialog-error", tr("Unable to open database: %1").arg(Database.lastError().text()));
 		return;
 	}
 
-	if (history1FileExists && SqlRestore::isCorrupted(Database)) // this is not new database
+	if (anyHistoryFileExists && SqlRestore::isCorrupted(Database)) // this is not new database
 	{
 		Database.close();
 
+		emit progressMessage("dialog-warning", tr("History file is corrupted, performing recovery..."));
+
 		SqlRestore sqlRestore;
-		printf("restore error: %d\n", sqlRestore.performRestore(historyFilePath));
+		SqlRestore::RestoreError error = sqlRestore.performRestore(historyFilePath);
+		if (SqlRestore::ErrorNoError == error)
+			emit progressMessage("dialog-information", tr("Recovery completed."));
+		else
+			emit progressMessage("dialog-error", tr("Recovery failed: %s").arg(SqlRestore::errorMessage(error)));
 
 		if (!Database.open())
 		{
-			emit databaseOpenFailed(Database.lastError());
+			emit progressFinished(false, "dialog-error", tr("Unable to open database: %1").arg(Database.lastError().text()));
 			return;
 		}
 	}
 
 	if (SqlImport::importNeeded(Database))
 	{
+		if (anyHistoryFileExists)
+			emit progressMessage("dialog-warning", tr("History file is outdated, performing import..."));
+
 		SqlImport sqlImport;
 		sqlImport.performImport(Database);
-	}
 
-	if (importStartedEmitted)
-		emit importFinished();
+		if (anyHistoryFileExists)
+			emit progressFinished(true, "dialog-information", tr("Import completed."));
+	}
 }
