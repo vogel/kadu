@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  * Copyright 2011 Wojciech Treter (juzefwt@gmail.com)
  *
@@ -32,22 +32,12 @@ class SqlInitializer : public QObject
 
 	QSqlDatabase Database;
 
-	bool isCopyingNeeded();
-	void copyHistoryFile();
+	bool oldHistoryFileExists();
+	bool currentHistoryFileExists();
+	bool copyHistoryFile();
 
-	quint16 loadSchemaVersion();
-
+	void initDatabaseFile();
 	void initDatabase();
-	void initTables();
-	void initKaduSchemaTable();
-	void initKaduMessagesTable();
-	void initKaduStatusesTable();
-	void initKaduSmsTable();
-	void initIndexes();
-
-	void importVersion1Schema();
-	void importVersion2Schema();
-	void removeDuplicatesFromVersion2Schema(const QString &idTableName, const QString &valueFieldName, const QString &idFieldName);
 
 public:
 	explicit SqlInitializer(QObject *parent = 0);
@@ -57,12 +47,10 @@ public slots:
 	void initialize();
 
 signals:
-	void initialized();
 	void databaseReady(bool ok);
 
-	void importStarted();
-	void importFinished();
-	void databaseOpenFailed(const QSqlError &error);
+	void progressMessage(const QString &iconName, const QString &message);
+	void progressFinished(bool ok, const QString &iconName, const QString &message);
 
 };
 

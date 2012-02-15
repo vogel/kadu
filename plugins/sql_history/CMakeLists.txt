@@ -10,20 +10,24 @@ include (FindKadu)
 
 set (SOURCES
 	storage/history-sql-storage.cpp
+	storage/sql-import.cpp
 	storage/sql-initializer.cpp
 	storage/sql-messages-chat-storage.cpp
 	storage/sql-messages-sms-storage.cpp
 	storage/sql-messages-status-storage.cpp
+	storage/sql-restore.cpp
 
 	sql-history-plugin.cpp
 )
 
 set (MOC_SOURCES
 	storage/history-sql-storage.h
+	storage/sql-import.h
 	storage/sql-initializer.h
 	storage/sql-messages-chat-storage.h
 	storage/sql-messages-sms-storage.h
 	storage/sql-messages-status-storage.h
+	storage/sql-restore.h
 
 	sql-history-plugin.h
 )
@@ -45,4 +49,8 @@ kadu_plugin (sql_history
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QT_QTSQL_LIBRARIES}
 	PLUGIN_DEPENDENCIES history
+)
+
+install (PROGRAMS data/scripts/history-database-recovery.sh
+	DESTINATION ${KADU_PLUGINS_DIR}/data/sql_history/scripts
 )

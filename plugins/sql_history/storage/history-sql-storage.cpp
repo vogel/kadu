@@ -87,11 +87,11 @@ HistorySqlStorage::HistorySqlStorage(QObject *parent) :
 	initializer->moveToThread(InitializerThread);
 
 	connect(InitializerThread, SIGNAL(started()), initializer, SLOT(initialize()));
-	connect(initializer, SIGNAL(initialized()), InitializerThread, SLOT(quit()));
+	connect(initializer, SIGNAL(progressMessage(QString,QString)),
+	        this, SLOT(initializerProgressMessage(QString,QString)));
+	connect(initializer, SIGNAL(progressFinished(bool,QString,QString)),
+	        this, SLOT(initializerProgressFinished(bool,QString,QString)));
 	connect(initializer, SIGNAL(databaseReady(bool)), this, SLOT(databaseReady(bool)));
-	connect(initializer, SIGNAL(importStarted()), this, SLOT(importStarted()));
-	connect(initializer, SIGNAL(importFinished()), this, SLOT(importFinished()));
-	connect(initializer, SIGNAL(databaseOpenFailed(QSqlError)), this, SLOT(databaseOpenFailed(QSqlError)));
 
 	InitializerThread->start();
 
@@ -119,49 +119,49 @@ HistorySqlStorage::~HistorySqlStorage()
 		Database.commit();
 }
 
+void HistorySqlStorage::ensureProgressWindowReady()
+{
+	if (ImportProgressWindow)
+		return;
+
+	ImportProgressWindow = new ProgressWindow2(tr("Preparing history database..."));
+	ImportProgressWindow->setWindowTitle(tr("History"));
+	ImportProgressWindow->show();
+}
+
+void HistorySqlStorage::initializerProgressMessage(const QString &iconName, const QString &message)
+{
+	ensureProgressWindowReady();
+	ImportProgressWindow->addProgressEntry(iconName, message);
+}
+
+void HistorySqlStorage::initializerProgressFinished(bool ok, const QString &iconName, const QString &message)
+{
+	if (!ok)
+		ensureProgressWindowReady();
+
+	if (ImportProgressWindow)
+		ImportProgressWindow->progressFinished(ok, iconName, message);
+}
+
 void HistorySqlStorage::databaseReady(bool ok)
 {
+	if (InitializerThread)
+		InitializerThread->quit();
+
 	if (ok)
 		Database = QSqlDatabase::database("kadu-history", true);
 
 	if (!Database.isOpen())
 	{
-		databaseOpenFailed(Database.lastError());
+		initializerProgressFinished(false, "dialog-error",
+				tr("Opening database failed. Error message:\n%1").arg(Database.lastError().text()));
 		History::instance()->unregisterStorage(this);
 		return;
 	}
 
 	Database.transaction();
 	initQueries();
-}
-
-void HistorySqlStorage::importStarted()
-{
-	ImportProgressWindow = new ProgressWindow2(
-	            tr("Optimizing history database. This can take several minutes.\n"
-	               "Please do not close Kadu until optimalization is complete.")
-	);
-	ImportProgressWindow->show();
-}
-
-void HistorySqlStorage::importFinished()
-{
-	if (ImportProgressWindow)
-	{
-		ImportProgressWindow->setText(tr("Optimalization complete. You can now close this window."));
-		ImportProgressWindow->enableClosing();
-	}
-}
-
-void HistorySqlStorage::databaseOpenFailed (const QSqlError &error)
-{
-	if (ImportProgressWindow)
-	{
-		ImportProgressWindow->setText(tr("Optimalization failed. Error message:\n%1").arg(error.text()));
-		ImportProgressWindow->enableClosing();
-	}
-	else
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), error.text());
 }
 
 bool HistorySqlStorage::isDatabaseReady()
