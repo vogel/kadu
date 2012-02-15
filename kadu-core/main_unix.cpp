@@ -92,7 +92,7 @@ static void kadu_signal_handler(int signal)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		FILE *backtraceFile = fopen(qPrintable(KaduPaths::instance()->profilePath() + backtraceFileName), "w");
+		FILE *backtraceFile = fopen(qPrintable(QString(KaduPaths::instance()->profilePath() + backtraceFileName)), "w");
 		if (backtraceFile)
 		{
 			fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
