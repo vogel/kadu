@@ -155,12 +155,12 @@ void SmsDialog::createGui()
 	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
 	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogDiscardButton), tr("Clear"));
+	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"));
 	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
 
 	buttons->addButton(SendButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(clearButton, QDialogButtonBox::ResetRole);
-	buttons->addButton(closeButton, QDialogButtonBox::DestructiveRole);
+	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
 
 	resize(400, 250);
 }
