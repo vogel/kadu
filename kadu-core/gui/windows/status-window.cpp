@@ -33,6 +33,7 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/previous-descriptions-window.h"
 #include "icons/kadu-icon.h"
@@ -98,9 +99,13 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	setWindowTitle(windowTitle);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QFormLayout *layout = new QFormLayout(this);
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	StatusList = new QComboBox(this);
+	QWidget *formWidget = new QWidget(this);
+	QFormLayout *layout = new QFormLayout(formWidget);
+	layout->setMargin(0);
+
+	StatusList = new QComboBox(formWidget);
 	layout->addRow(new QLabel(tr("Status") + ':'), StatusList);
 
 	QList<StatusType> statusTypes = FirstStatusContainer->supportedStatusTypes();
@@ -122,49 +127,56 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	}
 	StatusList->setCurrentIndex(selectedIndex);
 
-	DescriptionEdit = new QTextEdit(this);
+	DescriptionEdit = new KaduTextEdit(formWidget);
 	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
-	layout->addRow(new QLabel(tr("Description") + ':'), DescriptionEdit);
+	DescriptionEdit->setFocus();
+	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	DescriptionEdit->setTabChangesFocus(true);
 
-	QWidget *spacer = new QWidget(this);
-	spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	QWidget *descriptionLabelWidget = new QWidget(formWidget);
+	QVBoxLayout *descriptionLabelLayout = new QVBoxLayout(descriptionLabelWidget);
+	descriptionLabelLayout->setMargin(0);
+	descriptionLabelLayout->setSpacing(5);
 
-	DescriptionLimitCounter = new QLabel(this);
+	QLabel *descriptionLabel = new QLabel(tr("Description") + ':', descriptionLabelWidget);
+	descriptionLabel->setAlignment(layout->labelAlignment());
+
+	DescriptionLimitCounter = new QLabel(formWidget);
 	DescriptionLimitCounter->setVisible(false);
-	DescriptionLimitCounter->setAlignment(Qt::AlignRight);
+	DescriptionLimitCounter->setAlignment(layout->labelAlignment());
 
-	QWidget *descriptionButtonsWidget = new QWidget;
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(descriptionButtonsWidget);
-	buttonsLayout->setMargin(0);
-	buttonsLayout->setSpacing(0);
+	descriptionLabelLayout->addWidget(descriptionLabel);
+	descriptionLabelLayout->addWidget(DescriptionLimitCounter);
+	descriptionLabelLayout->addStretch(1);
 
-	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), this);
+	layout->addRow(descriptionLabelWidget, DescriptionEdit);
+
+	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), formWidget);
 	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
-	buttonsLayout->addWidget(chooseButton);
+	layout->addRow(0, chooseButton);
 
-	QPushButton *clearButton = new QPushButton(tr("Clear"), this);
-	connect(clearButton, SIGNAL(clicked(bool)), DescriptionEdit, SLOT(clear()));
-	buttonsLayout->addWidget(clearButton);
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, formWidget);
 
-	buttonsLayout->addWidget(DescriptionLimitCounter);
-	layout->addRow(spacer, descriptionButtonsWidget);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-
-	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), this);
+	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), buttons);
 	OkButton->setDefault(true);
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), buttons);
 	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
+	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"), buttons);
+	connect(clearButton, SIGNAL(clicked(bool)), DescriptionEdit, SLOT(clear()));
+
 	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	
-	layout->addWidget(buttons);
+	buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
 
-	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(250, 80)));
+	mainLayout->addWidget(formWidget);
+	mainLayout->addSpacing(16);
+	mainLayout->addWidget(buttons);
+
+	setFixedSize(sizeHint().expandedTo(QSize(250, 80)));
 
 	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
@@ -242,6 +254,7 @@ void StatusWindow::checkDescriptionLengthLimit()
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
 	bool limitExceeded = charactersLeft < 0;
+
 	OkButton->setEnabled(!limitExceeded);
-	DescriptionLimitCounter->setText(' ' + QString::number(charactersLeft));
+	DescriptionLimitCounter->setText(QString("(%1)").arg(charactersLeft));
 }
