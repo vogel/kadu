@@ -34,9 +34,8 @@
 
 #include "../history_exports.h"
 
-struct HistoryQueryResult;
-
 class HistoryQuery;
+class HistoryQueryResult;
 class HistoryMessagesStorage;
 class Message;
 class Status;

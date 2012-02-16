@@ -29,7 +29,7 @@
 
 #include "chat/chat.h"
 
-struct HistoryQueryResult;
+class HistoryQueryResult;
 
 /**
  * @addtogroup History
