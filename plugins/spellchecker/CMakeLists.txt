@@ -53,7 +53,7 @@ else (APPLE)
 				set (ASPELL_LIBRARY_DIR ${WIN_ASPELL_DIR}/bin)
 			endif (MSVC)
 	
-			set (ASPELL_LIBRARIES aspell-15)
+			set (ASPELL_LIBRARIES aspell)
 		endif (NOT WIN_ASPELL_DIR)
 	else (WIN32)
 		if (WITH_ENCHANT AND NOT WITH_ASPELL)
