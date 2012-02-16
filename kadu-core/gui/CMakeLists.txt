@@ -48,6 +48,7 @@ set (gui_SRCS
 	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
+	widgets/kadu-text-edit.cpp
 	widgets/kadu-tree-view.cpp
 	widgets/kadu-tree-view-delegate.cpp
 	widgets/kadu-web-view.cpp
@@ -207,6 +208,7 @@ set (gui_MOC_SRCS
 	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
+	widgets/kadu-text-edit.h
 	widgets/kadu-tree-view.h
 	widgets/kadu-tree-view-delegate.h
 	widgets/kadu-web-view.h
