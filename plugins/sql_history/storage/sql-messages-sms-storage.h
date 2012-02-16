@@ -24,7 +24,7 @@
 
 class HistorySqlStorage;
 
-class HISTORYAPI SqlMessagesSmsStorage : public HistoryMessagesStorage
+class SqlMessagesSmsStorage : public HistoryMessagesStorage
 {
 	Q_OBJECT
 

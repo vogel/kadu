@@ -22,6 +22,8 @@
 
 #include <QtGui/QToolBar>
 
+#include "exports.h"
+
 class QEvent;
 class QLineEdit;
 
@@ -42,7 +44,7 @@ class QLineEdit;
  * Text in line edit can be set by setSearchText() method. If search widget is set by setSearchWidget() method then this search
  * bar will intercept any Ctrl+F keypesses from it and show itself.
  */
-class SearchBar : public QToolBar
+class KADUAPI SearchBar : public QToolBar
 {
 	Q_OBJECT
 

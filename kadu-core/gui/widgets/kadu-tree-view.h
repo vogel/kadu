@@ -26,11 +26,12 @@
 
 #include <QtGui/QTreeView>
 
+#include "exports.h"
 #include "configuration/configuration-aware-object.h"
 
 class QTemporaryFile;
 
-class KaduTreeView : public QTreeView, ConfigurationAwareObject
+class KADUAPI KaduTreeView : public QTreeView, ConfigurationAwareObject
 {
 	Q_OBJECT
 

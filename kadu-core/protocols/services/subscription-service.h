@@ -24,7 +24,9 @@
 
 #include "contacts/contact.h"
 
-class SubscriptionService : public QObject
+#include "exports.h"
+
+class KADUAPI SubscriptionService : public QObject
 {
 	Q_OBJECT
 

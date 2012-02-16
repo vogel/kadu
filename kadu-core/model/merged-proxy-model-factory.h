@@ -20,6 +20,8 @@
 #ifndef MERGED_PROXY_MODEL_FACTORY_H
 #define MERGED_PROXY_MODEL_FACTORY_H
 
+#include "exports.h"
+
 class QAbstractItemModel;
 
 class KaduAbstractModel;
@@ -45,7 +47,7 @@ namespace MergedProxyModelFactory
 	 * @param parent qobject parent of new model
 	 * @return new instance of model that merges other models into one
 	 */
-	QAbstractItemModel * createInstance(QList<QAbstractItemModel *> models, QObject *parent = 0);
+	KADUAPI QAbstractItemModel * createInstance(QList<QAbstractItemModel *> models, QObject *parent = 0);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -59,7 +61,7 @@ namespace MergedProxyModelFactory
 	 *
 	 * Accepted items must either be ModelChain or QAbstractItemModel objects.
 	 */
-	QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = 0);
+	KADUAPI QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = 0);
 
 }
 

@@ -25,7 +25,7 @@
 #include "exports.h"
 
 #ifdef KADULIB
-#define DOCKINGAPI KADUAPI
+#define DOCKINGAPI KADU_EXPORT
 #else
 #ifdef DOCKING_BUILD
 #define DOCKINGAPI KADU_EXPORT

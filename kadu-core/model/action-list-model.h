@@ -22,6 +22,7 @@
 
 #include <QtCore/QAbstractItemModel>
 
+#include "exports.h"
 #include "model/kadu-abstract-model.h"
 
 class QAction;
@@ -40,7 +41,7 @@ class QModelIndex;
  * This model can contain list of QAction * items. It implements KaduAbstractModel so it is possible
  * to get back index of given QAction *.
  */
-class ActionListModel : public QAbstractItemModel, public KaduAbstractModel
+class KADUAPI ActionListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 

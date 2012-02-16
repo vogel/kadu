@@ -22,8 +22,6 @@
 
 #include <QtGui/QWidget>
 
-#include "exports.h"
-
 /**
  * @addtogroup History
  * @{
@@ -40,7 +38,7 @@
  * implement two methods to setting and getting sizez of these splitters - size() and setSize()
  * methods.
  */
-class KADUAPI HistoryTab : public QWidget
+class HistoryTab : public QWidget
 {
 	Q_OBJECT
 

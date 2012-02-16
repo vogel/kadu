@@ -23,8 +23,6 @@
 #include <QtCore/QFutureWatcher>
 #include <QtGui/QWidget>
 
-#include "exports.h"
-
 class QDate;
 class QSplitter;
 class QTreeView;
@@ -51,7 +49,7 @@ class WebViewHighlighter;
  * This widgets mixes list of dates with chat message view in vertical layout. It is used in history window.
  * Search bar is attached to message view and can be invoked by Ctrl+F shortcut.
  */
-class KADUAPI TimelineChatMessagesView : public QWidget
+class TimelineChatMessagesView : public QWidget
 {
 	Q_OBJECT
 

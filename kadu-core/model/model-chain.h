@@ -29,6 +29,7 @@
 #include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "model/kadu-abstract-model.h"
 
 class QAbstractItemModel;
@@ -50,7 +51,7 @@ class QAbstractProxyModel;
  *
  * ModelChain can be used as part of KaduMergedProxyModel.
  */
-class ModelChain : public QObject, public KaduAbstractModel
+class KADUAPI ModelChain : public QObject, public KaduAbstractModel
 {
 	Q_OBJECT
 

@@ -24,6 +24,8 @@
 
 #include "talkable/talkable.h"
 
+#include "history_exports.h"
+
 /**
  * @addtogroup History
  * @{
@@ -41,7 +43,7 @@
  *
  * Results of query are stored in QVector of HistoryQueryResult.
  */
-class HistoryQuery
+class HISTORYAPI HistoryQuery
 {
 	Talkable QueryTalkable;
 	QString QueryString;

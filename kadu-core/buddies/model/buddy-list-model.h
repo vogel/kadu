@@ -28,14 +28,14 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
-
+#include "exports.h"
 #include "status/status.h"
 
 #include "buddies-model-base.h"
 
 class Buddy;
 
-class BuddyListModel : public BuddiesModelBase
+class KADUAPI BuddyListModel : public BuddiesModelBase
 {
 	Q_OBJECT
 

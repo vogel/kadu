@@ -25,6 +25,8 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
+#include "exports.h"
+
 class Buddy;
 class Chat;
 class Contact;
@@ -54,7 +56,7 @@ class TalkableFilter;
  * In current implementation chats are displayed on top, then buddies, then contacts. In each group different sorting
  * methods are used. Refer to documentation of lessThan() methods for details.
  */
-class TalkableProxyModel : public QSortFilterProxyModel
+class KADUAPI TalkableProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 

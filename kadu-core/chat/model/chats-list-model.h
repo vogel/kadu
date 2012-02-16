@@ -24,9 +24,10 @@
 #include <QtCore/QVector>
 
 #include "chat/chat.h"
+#include "exports.h"
 #include "model/kadu-abstract-model.h"
 
-class ChatsListModel : public QAbstractItemModel, public KaduAbstractModel
+class KADUAPI ChatsListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 

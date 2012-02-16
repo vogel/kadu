@@ -24,6 +24,8 @@
 
 #include "contacts/contact.h"
 
+#include "exports.h"
+
 class RosterService;
 
 /**
@@ -42,7 +44,7 @@ class RosterService;
  * Use this class to manipulate rosters. After adding a contact to any roster, its data is updated automatically, until
  * it is removed.
  */
-class Roster : public QObject
+class KADUAPI Roster : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Roster)

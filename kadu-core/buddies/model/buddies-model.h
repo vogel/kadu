@@ -27,13 +27,14 @@
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy.h"
+#include "exports.h"
 #include "status/status.h"
 
 #include "buddies-model-base.h"
 
 class BuddyManager;
 
-class BuddiesModel : public BuddiesModelBase
+class KADUAPI BuddiesModel : public BuddiesModelBase
 {
 	Q_OBJECT
 

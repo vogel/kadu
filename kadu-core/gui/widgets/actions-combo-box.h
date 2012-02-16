@@ -24,6 +24,8 @@
 
 #include <QtGui/QComboBox>
 
+#include "exports.h"
+
 class ActionFilterProxyModel;
 class ActionListModel;
 class KaduAbstractModel;
@@ -53,7 +55,7 @@ class ModelChain;
  * use proxy model derived from QAbstractProxyModel. Data is stored as QVariant object with role passed in
  * protected setUpModel method.
  */
-class ActionsComboBox : public QComboBox
+class KADUAPI ActionsComboBox : public QComboBox
 {
 	Q_OBJECT
 

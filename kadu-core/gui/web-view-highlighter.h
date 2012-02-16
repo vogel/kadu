@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class ChatMessagesView;
 
 /**
@@ -39,7 +41,7 @@ class ChatMessagesView;
  * and selecting next/previous instance of it. Please note that highlighting is independend from
  * selection.
  */
-class WebViewHighlighter : public QObject
+class KADUAPI WebViewHighlighter : public QObject
 {
 	Q_OBJECT
 

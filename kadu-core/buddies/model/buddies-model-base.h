@@ -29,12 +29,13 @@
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "exports.h"
 #include "model/kadu-abstract-model.h"
 #include "status/status.h"
 
 class QModelIndex;
 
-class BuddiesModelBase : public QAbstractItemModel, public KaduAbstractModel, public AccountsAwareObject
+class KADUAPI BuddiesModelBase : public QAbstractItemModel, public KaduAbstractModel, public AccountsAwareObject
 {
 	Q_OBJECT
 

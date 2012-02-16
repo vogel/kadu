@@ -21,11 +21,10 @@
 #define CHAT_HISTORY_TAB_H
 
 #include "talkable/talkable.h"
-#include "exports.h"
 
 #include "gui/widgets/history-messages-tab.h"
 
-class KADUAPI ChatHistoryTab : public HistoryMessagesTab
+class ChatHistoryTab : public HistoryMessagesTab
 {
 	Q_OBJECT
 

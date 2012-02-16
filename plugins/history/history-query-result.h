@@ -24,6 +24,8 @@
 
 #include "talkable/talkable.h"
 
+#include "history_exports.h"
+
 /**
  * @addtogroup History
  * @{
@@ -38,7 +40,7 @@
  * of originating talkable item, date of this item, title (that is in general content value of first
  * item in given day) and count of found items for given date.
  */
-class HistoryQueryResult
+class HISTORYAPI HistoryQueryResult
 {
 	Talkable ResultTalkable;
 	QDate Date;

@@ -24,7 +24,6 @@
 #include <QtCore/QFutureWatcher>
 
 #include "talkable/talkable.h"
-#include "exports.h"
 
 #include "gui/widgets/history-tab.h"
 
@@ -59,7 +58,7 @@ class WaitOverlay;
  *
  * Each tab is build from one item view on the left and TimelineChatMessagesView on the right side.
  */
-class KADUAPI HistoryMessagesTab : public HistoryTab
+class HistoryMessagesTab : public HistoryTab
 {
 	Q_OBJECT
 
