@@ -164,9 +164,6 @@ namespace XMPP
 		/* Someone on our contact list had a resource go offline. */
 		void slotResourceUnavailable(const Jid &, const Resource &);
 
-		/* Incoming message. */
-		void slotReceivedMessage(const Message &);
-
 		/* Called from Psi: debug messages from the backend. */
 		void slotPsiDebug(const QString &msg);
 		void slotIncomingXML(const QString &msg);
