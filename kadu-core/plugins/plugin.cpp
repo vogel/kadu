@@ -196,8 +196,10 @@ bool Plugin::activate(PluginActivationReason reason)
 	{
 		QString err = PluginLoader->errorString();
 		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
+		activationError(tr("Cannot load %1 plugin library:\n%2").arg(Name, err), reason);
 
-		activationError(tr("Cannot load %1 plugin library.:\n%2").arg(Name, err), reason);
+		delete PluginLoader;
+		PluginLoader = 0;
 
 		kdebugf2();
 		return false;
@@ -211,6 +213,7 @@ bool Plugin::activate(PluginActivationReason reason)
 	{
 		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(Name), reason);
 
+		PluginLoader->unload();
 		delete PluginLoader;
 		PluginLoader = 0;
 
