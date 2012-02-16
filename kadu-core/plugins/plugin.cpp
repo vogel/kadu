@@ -213,6 +213,8 @@ bool Plugin::activate(PluginActivationReason reason)
 	{
 		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(Name), reason);
 
+		// Refer to deactivate() method for reasons to this.
+		QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
 		PluginLoader->unload();
 		delete PluginLoader;
 		PluginLoader = 0;
@@ -229,6 +231,8 @@ bool Plugin::activate(PluginActivationReason reason)
 	{
 		activationError(tr("Module initialization routine for %1 failed.").arg(Name), reason);
 
+		// Refer to deactivate() method for reasons to this.
+		QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
 		PluginLoader->unload();
 		delete PluginLoader;
 		PluginLoader = 0;
@@ -262,8 +266,9 @@ bool Plugin::activate(PluginActivationReason reason)
  * @author Rafał 'Vogel' Malinowski
  * @short Deactivates plugin.
  *
- * If plugin is active, its GenericPlugin::done() method is called and then all data is removed from
- * memory - plugin library file and plugin translations.
+ * If plugin is active, its GenericPlugin::done() method is called. Then all deferred delete
+ * events are sent so that we will not end up trying to delete objects belonging to unloaded
+ * plugins. Finally all data is removed from memory - plugin library file and plugin translations.
  */
 void Plugin::deactivate(PluginDeactivationReason reason)
 {
@@ -272,6 +277,12 @@ void Plugin::deactivate(PluginDeactivationReason reason)
 
 	if (PluginObject)
 		PluginObject->done();
+
+	// We need this because plugins can call deleteLater() just before being
+	// unloaded. In this case control would not return to the event loop before
+	// unloading the plugin and the event loop would try to delete objects
+	// belonging to already unloaded plugins, which can result in segfaults.
+	QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
 
 	if (PluginLoader)
 	{
