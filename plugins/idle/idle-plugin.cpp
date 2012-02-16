@@ -40,6 +40,8 @@ int IdlePlugin::init(bool firstLoad)
 
 void IdlePlugin::done()
 {
+	delete IdleInstance;
+	IdleInstance = 0;
 }
 
 Q_EXPORT_PLUGIN2(idle, IdlePlugin)

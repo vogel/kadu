@@ -40,6 +40,8 @@ int LastSeenPlugin::init(bool firstLoad)
 
 void LastSeenPlugin::done()
 {
+	delete InfosInstance;
+	InfosInstance = 0;
 }
 
 Q_EXPORT_PLUGIN2(last_seen, LastSeenPlugin)

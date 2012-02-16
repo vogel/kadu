@@ -44,7 +44,6 @@ AutoHide::AutoHide(QObject *parent) :
 
 AutoHide::~AutoHide()
 {
-	Timer.stop();
 }
 
 int AutoHide::init(bool firstLoad)
@@ -59,6 +58,8 @@ int AutoHide::init(bool firstLoad)
 
 void AutoHide::done()
 {
+	Timer.stop();
+
 	MainConfigurationWindow::unregisterUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/auto_hide.ui"));
 }
