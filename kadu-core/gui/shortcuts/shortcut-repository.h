@@ -21,9 +21,12 @@
 #ifndef SHORTCUT_REPOSITORY_H
 #define SHORTCUT_REPOSITORY_H
 
+class Shortcut;
+
 class ShortcutRepository
 {
-
+public:
+	virtual Shortcut getShortcut(const QString &name) = 0;
 };
 
 #endif // SHORTCUT_REPOSITORY_H

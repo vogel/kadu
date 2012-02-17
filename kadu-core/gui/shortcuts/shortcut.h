@@ -26,6 +26,7 @@
 
 class Shortcut
 {
+	bool Initialized;
 	ActionDescription::ActionType Type;
 	QString KeySequence; // or QKeySequence
 	QString Name;
@@ -43,8 +44,10 @@ public:
 	const QString & name() const { return Name; }
 	void setName(const QString &name);
 
-	const QString & providerName() { return ProviderName; }
+	const QString & providerName() const { return ProviderName; }
 	void setProviderName(const QString &providerName);
+
+	bool isInitialized() const { return Initialized; }
 };
 
 #endif // SHORTCUT_H

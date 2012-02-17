@@ -39,6 +39,11 @@ elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 	include (FindQNtrack)
 endif (NOT NETWORK_IMPLEMENTATION)
 
+find_package(Boost REQUIRED)
+include_directories(${Boost_INCLUDE_DIR})
+link_directories(${Boost_LIBRARY_DIR})
+list (APPEND ADDITIONAL_LIBRARIES ${Boost_LIBRARIES})
+
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp

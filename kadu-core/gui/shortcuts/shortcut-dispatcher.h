@@ -41,10 +41,10 @@ public:
 	static ShortcutDispatcher * instance();
 
 	virtual bool registerShortcut(const Shortcut &shortcut) = 0;
-	virtual void unregisterShortcut(const QString &name) = 0;
+	virtual void unregisterShortcut(const QString &name, ShortcutProvider *provider) = 0;
 
 	virtual bool registerShortcutProvider(ShortcutProvider *provider) = 0;
-	virtual void unregisterShortcutProvider() = 0;
+	virtual void unregisterShortcutProvider(ShortcutProvider *provider) = 0;
 
 	virtual bool handleKeyEvent(ActionContext *actionSource, QKeyEvent *e) = 0;
 };
