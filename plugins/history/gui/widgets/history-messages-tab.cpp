@@ -31,6 +31,7 @@
 #include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -94,6 +95,7 @@ void HistoryMessagesTab::createGui()
 	FilteredView->setView(TalkableTree);
 
 	TimelineView = new TimelineChatMessagesView(Splitter);
+	TimelineView->searchBar()->show();
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
 	        this, SLOT(showTimelinePopupMenu()));
