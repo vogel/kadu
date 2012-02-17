@@ -23,7 +23,6 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
-#include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
@@ -51,12 +50,7 @@
 
 QMap<QWidget *, StatusWindow *> StatusWindow::Dialogs;
 
-/**
- * Special value for position parameter of StatusWindow::showDialog method. Causes the dialog to be positioned in the center of the desktop.
- */
-QPoint StatusWindow::ShowCentered = QPoint(-512000, -512000);
-
-StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position, QWidget *parent)
+StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusContainerList, QWidget *parent)
 {
 	if (statusContainerList.isEmpty())
 		return 0;
@@ -69,12 +63,6 @@ StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusCo
 		dialog = new StatusWindow(statusContainerList, parent);
 		Dialogs[parent] = dialog;
 	}
-
-	if (position != StatusWindow::ShowCentered)
-		dialog->setPosition(position);
-	else
-		dialog->setPosition(QPoint((qApp->desktop()->screenGeometry().width() - dialog->sizeHint().width()) / 2,
-				(qApp->desktop()->screenGeometry().height() - dialog->sizeHint().height()) / 2));
 
 	dialog->show();
 	_activateWindow(dialog);
@@ -199,22 +187,6 @@ StatusWindow::~StatusWindow()
 QSize StatusWindow::sizeHint() const
 {
 	return QDialog::sizeHint().expandedTo(QSize(400, 80));
-}
-
-void StatusWindow::setPosition(const QPoint &position)
-{
-	QSize sh = sizeHint();
-	int width = sh.width();
-	int height = sh.height();
-
-	QDesktopWidget *d = QApplication::desktop();
-
-	QPoint p = position;
-	if (p.x() + width + 20 >= d->width())
-		p.setX(d->width() - width - 20);
-	if (p.y() + height + 20 >= d->height())
-		p.setY(d->height() - height - 20);
-	move(p);
 }
 
 void StatusWindow::applyStatus()

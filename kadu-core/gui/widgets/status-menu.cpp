@@ -27,6 +27,7 @@
 
 #include "core/core.h"
 #include "gui/windows/status-window.h"
+#include "gui/window-manager.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
 #include "status/status-container.h"
@@ -82,5 +83,6 @@ void StatusMenu::changeStatus(QAction *action)
 
 void StatusMenu::changeDescription()
 {
-	StatusWindow::showDialog(StatusContainers, MousePositionBeforeMenuHide, Menu);
+	QWidget *statusWindow = StatusWindow::showDialog(StatusContainers, Menu);
+	WindowManager::instance()->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }

@@ -48,8 +48,6 @@ class StatusWindow : public QDialog, DesktopAwareObject
 	QList<StatusContainer *> StatusContainers;
 	StatusContainer *FirstStatusContainer;
 
-	void setPosition(const QPoint &position);
-
 	explicit StatusWindow(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
 	virtual ~StatusWindow();
 
@@ -60,19 +58,15 @@ private slots:
   	void descriptionSelected(const QString &description);
 
 public:
-	static QPoint ShowCentered;
 	/**
 	 * @short Shows new status window.
-	 * @return Pointer to the created StatusWindow dialog.
 	 * @param statusContainerList list of statusContainers
-	 * @param position position in which new dialog should be shown on the desktop, StatusWindow::ShowCentered by default
 	 * @param parent dialog's parent widget, null by default
+	 * @return Pointer to the created StatusWindow dialog.
 	 *
 	 * Creates and shows new status window.
-	 *
-	 * Use StatusWindow::ShowCentered value for position parameter to show the widget in the center of the desktop.
 	 */
-	static StatusWindow * showDialog(const QList<StatusContainer *> &statusContainerList, const QPoint &position = StatusWindow::ShowCentered, QWidget *parent = 0);
+	static StatusWindow * showDialog(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
 
 	virtual QSize sizeHint() const;
 };
