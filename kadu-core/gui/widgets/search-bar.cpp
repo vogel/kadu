@@ -28,7 +28,7 @@
 #include "search-bar.h"
 
 SearchBar::SearchBar(QWidget *parent) :
-		QToolBar(parent), SearchWidget(0)
+		QToolBar(parent), SearchWidget(0), AutoVisibility(true)
 {
 	createGui();
 
@@ -121,6 +121,16 @@ void SearchBar::setSearchWidget(QWidget * const widget)
 	}
 }
 
+void SearchBar::setAutoVisibility(bool autoVisibility)
+{
+	if (AutoVisibility == autoVisibility)
+		return;
+
+	AutoVisibility = autoVisibility;
+	if (!AutoVisibility)
+		show();
+}
+
 void SearchBar::searchWidgetDestroyed()
 {
 	SearchWidget = 0;
@@ -164,8 +174,12 @@ void SearchBar::next()
 
 void SearchBar::close()
 {
+	FindEdit->setText(QString());
 	emit clearSearch();
-	hide();
+
+	if (AutoVisibility)
+		hide();
+
 	if (SearchWidget)
 		SearchWidget->setFocus();
 }

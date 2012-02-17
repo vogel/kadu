@@ -150,7 +150,7 @@ void SearchTab::createGui()
 	connect(TimelineView, SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 	connect(TimelineView, SIGNAL(messagesDisplayed()), this, SLOT(messagesDisplayed()));
 
-	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setAutoVisibility(false);
 	TimelineView->searchBar()->setSearchWidget(this);
 	connect(TimelineView->searchBar(), SIGNAL(clearSearch()), this, SLOT(clearSelect()));
 

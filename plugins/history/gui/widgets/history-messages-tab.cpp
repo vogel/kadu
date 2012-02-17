@@ -95,7 +95,7 @@ void HistoryMessagesTab::createGui()
 	FilteredView->setView(TalkableTree);
 
 	TimelineView = new TimelineChatMessagesView(Splitter);
-	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setAutoVisibility(false);
 	TimelineView->searchBar()->setSearchWidget(this);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),

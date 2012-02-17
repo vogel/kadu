@@ -49,6 +49,7 @@ class KADUAPI SearchBar : public QToolBar
 	Q_OBJECT
 
 	QWidget *SearchWidget;
+	bool AutoVisibility;
 
 	QLineEdit *FindEdit;
 
@@ -76,6 +77,18 @@ public:
 	 */
 	explicit SearchBar(QWidget *parent = 0);
 	virtual ~SearchBar();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set auto visibility property.
+	 * @param autoVisibility new value of auto visibility property
+	 *
+	 * If autoVisibility is on, widget will auto hide on Esp and auto show on Ctrl+F, F3 or Shift+F3 shortcuts.
+	 * If autoVisibility is set to false, widget will be visible until hide() is manually called.
+	 *
+	 * Default value of this property is true.
+	 */
+	void setAutoVisibility(bool autoVisibility);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
