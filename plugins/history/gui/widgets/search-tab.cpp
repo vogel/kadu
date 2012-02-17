@@ -151,6 +151,7 @@ void SearchTab::createGui()
 	connect(TimelineView, SIGNAL(messagesDisplayed()), this, SLOT(messagesDisplayed()));
 
 	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setSearchWidget(this);
 	connect(TimelineView->searchBar(), SIGNAL(clearSearch()), this, SLOT(clearSelect()));
 
 	setFocusProxy(Query);

@@ -96,6 +96,7 @@ void HistoryMessagesTab::createGui()
 
 	TimelineView = new TimelineChatMessagesView(Splitter);
 	TimelineView->searchBar()->show();
+	TimelineView->searchBar()->setSearchWidget(this);
 	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
 	        this, SLOT(showTimelinePopupMenu()));
