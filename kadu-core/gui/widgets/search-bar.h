@@ -59,6 +59,7 @@ private slots:
 
 	void previous();
 	void next();
+	void close();
 
 protected:
 	virtual bool eventFilter(QObject *object, QEvent *event);

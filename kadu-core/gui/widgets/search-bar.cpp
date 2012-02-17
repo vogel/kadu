@@ -66,20 +66,25 @@ void SearchBar::createGui()
 
 void SearchBar::keyPressEvent(QKeyEvent *event)
 {
+	if (Qt::Key_F == event->key() && Qt::ControlModifier == event->modifiers())
+	{
+		event->accept();
+		close();
+		return;
+	}
+
 	switch (event->key())
 	{
 		case Qt::Key_Escape:
 		{
 			event->accept();
-			emit clearSearch();
-			hide();
-			if (SearchWidget)
-				SearchWidget->setFocus();
+			close();
 			break;
 		}
 
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
+		case Qt::Key_F3:
 		{
 			if (Qt::ShiftModifier == event->modifiers())
 				previous();
@@ -129,7 +134,8 @@ bool SearchBar::eventFilter(QObject *object, QEvent *event)
 		return false;
 
 	QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-	if (Qt::Key_F == keyEvent->key() && Qt::ControlModifier == keyEvent->modifiers())
+	if ((Qt::Key_F == keyEvent->key() && Qt::ControlModifier == keyEvent->modifiers()) ||
+	    (Qt::Key_F3 == keyEvent->key()))
 	{
 		show();
 		FindEdit->setFocus();
@@ -154,4 +160,12 @@ void SearchBar::next()
 {
 	if (!FindEdit->text().isEmpty())
 		emit searchNext(FindEdit->text());
+}
+
+void SearchBar::close()
+{
+	emit clearSearch();
+	hide();
+	if (SearchWidget)
+		SearchWidget->setFocus();
 }
