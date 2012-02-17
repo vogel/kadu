@@ -32,22 +32,19 @@ class PreviousDescriptionsWindow : public QDialog
 {
 	Q_OBJECT
 
-	static QMap<QWidget *, PreviousDescriptionsWindow *> Dialogs;
-
 	QListView *DescriptionsList;
-
-	explicit PreviousDescriptionsWindow(StatusWindow *parent);
-	virtual ~PreviousDescriptionsWindow();
 
 private slots:
 	void chooseButtonClicked();
 	void listItemDoubleClicked(const QModelIndex &index);
 
 public:
-	static PreviousDescriptionsWindow * showDialog(StatusWindow *parent);
+	explicit PreviousDescriptionsWindow(StatusWindow *parent);
+	virtual ~PreviousDescriptionsWindow();
 
 signals:
     	void descriptionSelected(const QString &description);
+
 };
 
 #endif // PREVIOUS_DESCRIPTIONS_WINDOW_H

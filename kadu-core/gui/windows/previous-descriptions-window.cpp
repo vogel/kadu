@@ -30,25 +30,6 @@
 
 #include "previous-descriptions-window.h"
 
-QMap<QWidget *, PreviousDescriptionsWindow *> PreviousDescriptionsWindow::Dialogs;
-
-PreviousDescriptionsWindow * PreviousDescriptionsWindow::showDialog(StatusWindow *parent)
-{
-	PreviousDescriptionsWindow *dialog;
-	if (Dialogs.contains(parent))
-		dialog = Dialogs[parent];
-	else
-	{
-		dialog = new PreviousDescriptionsWindow(parent);
-		Dialogs[parent] = dialog;
-	}
-
-	dialog->show();
-	_activateWindow(dialog);
-
-	return dialog;
-}
-
 PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 		QDialog(parent)
 {
@@ -85,7 +66,6 @@ PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 
 PreviousDescriptionsWindow::~PreviousDescriptionsWindow()
 {
-	Dialogs.remove(parentWidget());
 }
 
 void PreviousDescriptionsWindow::chooseButtonClicked()

@@ -245,8 +245,9 @@ void StatusWindow::descriptionSelected(const QString &description)
 
 void StatusWindow::openDescriptionsList()
 {
-	PreviousDescriptionsWindow *chooseDescDialog = PreviousDescriptionsWindow::showDialog(this);
-	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
+	QScopedPointer<PreviousDescriptionsWindow> chooseDescDialog(new PreviousDescriptionsWindow(this));
+	connect(chooseDescDialog.data(), SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
+	chooseDescDialog->exec();
 }
 
 void StatusWindow::checkDescriptionLengthLimit()
