@@ -20,13 +20,10 @@
 #ifndef PREVIOUS_DESCRIPTIONS_WINDOW_H
 #define PREVIOUS_DESCRIPTIONS_WINDOW_H
 
-#include <QtCore/QMap>
 #include <QtGui/QDialog>
 
 class QListView;
 class QModelIndex;
-
-class StatusWindow;
 
 class PreviousDescriptionsWindow : public QDialog
 {
@@ -39,11 +36,11 @@ private slots:
 	void listItemDoubleClicked(const QModelIndex &index);
 
 public:
-	explicit PreviousDescriptionsWindow(StatusWindow *parent);
+	explicit PreviousDescriptionsWindow(QWidget *parent = 0);
 	virtual ~PreviousDescriptionsWindow();
 
 signals:
-    	void descriptionSelected(const QString &description);
+	void descriptionSelected(const QString &description);
 
 };
 

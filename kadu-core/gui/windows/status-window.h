@@ -29,8 +29,8 @@
 #include "os/generic/desktop-aware-object.h"
 
 class QComboBox;
-class QTextEdit;
 class QLabel;
+class QTextEdit;
 
 class StatusContainer;
 

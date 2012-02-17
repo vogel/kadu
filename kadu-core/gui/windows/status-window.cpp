@@ -245,8 +245,8 @@ void StatusWindow::descriptionSelected(const QString &description)
 
 void StatusWindow::openDescriptionsList()
 {
-	QScopedPointer<PreviousDescriptionsWindow> chooseDescDialog(new PreviousDescriptionsWindow(this));
-	connect(chooseDescDialog.data(), SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
+	PreviousDescriptionsWindow *chooseDescDialog = new PreviousDescriptionsWindow(this);
+	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
 	chooseDescDialog->exec();
 }
 

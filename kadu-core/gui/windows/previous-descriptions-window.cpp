@@ -19,23 +19,24 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
 
-#include "activate.h"
-#include "gui/windows/status-window.h"
+#include "model/roles.h"
 #include "status/description-manager.h"
 #include "status/description-model.h"
+#include "activate.h"
 
 #include "previous-descriptions-window.h"
 
-PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
+PreviousDescriptionsWindow::PreviousDescriptionsWindow(QWidget *parent) :
 		QDialog(parent)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Previous descriptions"));
 
-	QGridLayout *grid = new QGridLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	DescriptionsList = new QListView(this);
 	DescriptionsList->setModel(DescriptionManager::instance()->model());
@@ -43,8 +44,8 @@ PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 	DescriptionsList->setAlternatingRowColors(true);
 	DescriptionsList->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-	grid->addWidget(DescriptionsList, 0, 0, 1, 1);
-	connect(DescriptionsList, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(listItemDoubleClicked(const QModelIndex &)));
+	connect(DescriptionsList, SIGNAL(doubleClicked(const QModelIndex &)),
+	        this, SLOT(listItemDoubleClicked(const QModelIndex &)));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -58,10 +59,12 @@ PreviousDescriptionsWindow::PreviousDescriptionsWindow(StatusWindow *parent) :
 
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	grid->addWidget(buttons, 1, 0, 1, 1);
+
+	layout->addWidget(DescriptionsList);
+	layout->addSpacing(16);
+	layout->addWidget(buttons);
 
 	setMinimumSize(QDialog::sizeHint().expandedTo(QSize(400, 200)));
-	setLayout(grid);
 }
 
 PreviousDescriptionsWindow::~PreviousDescriptionsWindow()
@@ -75,10 +78,6 @@ void PreviousDescriptionsWindow::chooseButtonClicked()
 
 void PreviousDescriptionsWindow::listItemDoubleClicked(const QModelIndex &index)
 {
-	// TODO: fix this workaround
-	QString text = DescriptionsList->model()->data(index, Qt::DisplayRole).toString();
-
-	emit descriptionSelected(text);
+	emit descriptionSelected(index.data(DescriptionRole).toString());
 	accept();
 }
-
