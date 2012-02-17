@@ -154,6 +154,7 @@ set (gui_SRCS
 	hot-key.cpp
 	status-icon.cpp
 	web-view-highlighter.cpp
+	window-manager.cpp
 )
 
 set (gui_MOC_SRCS
@@ -308,6 +309,7 @@ set (gui_MOC_SRCS
 	hot-key.h
 	status-icon.h
 	web-view-highlighter.h
+	window-manager.h
 )
 
 if (MINGW)
