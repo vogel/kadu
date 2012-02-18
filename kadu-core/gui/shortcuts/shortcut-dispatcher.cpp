@@ -28,6 +28,7 @@
 #include "gui/actions/action-context.h"
 
 #include "shortcut.h"
+#include "shortcut-handler.h"
 #include "shortcut-provider.h"
 #include "shortcut-repository.h"
 
@@ -82,6 +83,8 @@ class ShortcutDispatcherImpl : public ShortcutDispatcher
 	ShortcutContainer Shortcuts;
 
 	QMap<QString, ShortcutProvider *> ShortcutsProviders;
+
+	QString keyEventToString(QKeyEvent *e);
 	
 public:
 	void init();
@@ -95,6 +98,32 @@ public:
 
 	bool handleKeyEvent(ActionContext *actionSource, QKeyEvent *e);
 };
+
+QString ShortcutDispatcherImpl::keyEventToString(QKeyEvent *e)
+{
+	QString result;
+	if ((e->modifiers() & Qt::ControlModifier) || (e->key() == Qt::Key_Control))
+		result = "Ctrl+";
+	
+	if ((e->modifiers() & Qt::MetaModifier) || (e->key() == Qt::Key_Meta))
+		result += "Shift+Alt+";
+	else
+	{
+		if ((e->modifiers() & Qt::ShiftModifier) || (e->key() == Qt::Key_Shift))
+			result+= "Shift+";
+		if ((e->modifiers() & Qt::AltModifier) || (e->key() == Qt::Key_Alt))
+			result += "Alt+";
+	}
+	
+	if (!((e->key() == Qt::Key_Control) ||
+		(e->key() == Qt::Key_Shift) ||
+		(e->key() == Qt::Key_Alt) ||
+		(e->key() == Qt::Key_Meta)))
+		result += QKeySequence(e->key()).toString();
+	
+	return result;
+}
+
 
 void ShortcutDispatcherImpl::init()
 {
@@ -115,12 +144,12 @@ bool ShortcutDispatcherImpl::registerShortcut(const Shortcut &shortcut)
 
 	Q_ASSERT(found != byName.end());
 
-	Shortcut exhistShortcut = Repository->getShortcut(shortcut.name());
-	if (exhistShortcut.isInitialized())
+	Shortcut currentShortcut = Repository->getShortcut(shortcut.name());
+	if (currentShortcut.isInitialized())
 	{
-		Q_ASSERT(exhistShortcut.providerName() == shortcut.providerName());
+		Q_ASSERT(currentShortcut.providerName() == shortcut.providerName());
 
-		Shortcuts.push_back(exhistShortcut);
+		Shortcuts.push_back(currentShortcut);
 		return true;
 	}
 
@@ -181,6 +210,29 @@ void ShortcutDispatcherImpl::unregisterShortcutProvider(ShortcutProvider *provid
 
 bool ShortcutDispatcherImpl::handleKeyEvent(ActionContext *actionSource, QKeyEvent *e)
 {
+	QString keyEventString = keyEventToString(e);
+
+	by_key_sequence_index &byKeySequence = Shortcuts.get<key_sequence_t>();
+	
+	std::pair<by_key_sequence_index::const_iterator, by_key_sequence_index::const_iterator> pit =
+	byKeySequence.equal_range(keyEventString);
+	
+	by_key_sequence_index::iterator first = pit.first;
+	by_key_sequence_index::iterator end = pit.second;
+	
+	while (first != end)
+	{
+		if (actionSource->supportsActionType((*first).type()))
+		{
+			ShortcutProvider *provider = ShortcutsProviders.value((*first).providerName());
+			ShortcutHandler *handler = provider->getShortcutHandler((*first).name());
+			if (!handler)
+				continue;
+		
+			return handler->handle(actionSource);
+		}
+	}
+	return false;
 	
 }
 

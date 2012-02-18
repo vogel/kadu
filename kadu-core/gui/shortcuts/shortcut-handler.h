@@ -26,7 +26,7 @@ class ShortcutHandler
 {
 
 public:
-	bool handle(ActionContext *datasource) = 0;
+	virtual bool handle(ActionContext *datasource) = 0;
 
 };
 

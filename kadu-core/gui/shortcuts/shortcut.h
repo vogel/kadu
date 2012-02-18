@@ -35,7 +35,7 @@ class Shortcut
 public:
 	Shortcut();
 
-	bool type() const {return Type; }
+	ActionDescription::ActionType type() const { return Type; }
 	void setType(ActionDescription::ActionType type);
 
 	const QString & keySequence() const { return KeySequence; }
