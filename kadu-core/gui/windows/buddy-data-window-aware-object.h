@@ -43,26 +43,26 @@ protected:
 	/**
 	* @author Piotr 'ultr' Dąbrowski
 	* @short Method is called after new BuddyDataWindow window is created
-	* @param buddydatawindow created window
+	* @param buddyDataWindow created window
 	*
 	* Method is called after a new BuddyDataWindow is created.
 	* This method must be overridden.
 	*/
-	virtual void buddyDataWindowCreated(BuddyDataWindow *buddydatawindow) = 0;
+	virtual void buddyDataWindowCreated(BuddyDataWindow *buddyDataWindow) = 0;
 
 	/**
 	* @author Piotr 'ultr' Dąbrowski
 	* @short Method is called when a BuddyDataWindow window is destroyed.
-	* @param buddydatawindow destroyed window
+	* @param buddyDataWindow destroyed window
 	*
 	* Method is called after a BuddyDataWindow is destroyed.
 	* This method must be overridden.
 	*/
-	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow) = 0;
+	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddyDataWindow) = 0;
 
 public:
-	static void notifyBuddyDataWindowCreated(BuddyDataWindow *buddydatawindow);
-	static void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddydatawindow);
+	static void notifyBuddyDataWindowCreated(BuddyDataWindow *buddyDataWindow);
+	static void notifyBuddyDataWindowDestroyed(BuddyDataWindow *buddyDataWindow);
 
 	void triggerAllBuddyDataWindowsCreated();
 	void triggerAllBuddyDataWindowsDestroyed();
