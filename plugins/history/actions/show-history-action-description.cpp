@@ -155,6 +155,9 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	const Chat &messagesChat = aggregateChat ? aggregateChat : chatWidget->chat();
 	HistoryStorage *historyStorage = History::instance()->currentStorage();
 
+	if (!historyStorage)
+		return;
+
 	HistoryQuery query;
 	query.setTalkable(messagesChat);
 
