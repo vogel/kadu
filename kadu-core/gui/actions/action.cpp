@@ -63,7 +63,8 @@ Action::~Action()
 	emit aboutToBeDestroyed(this);
 
 	// we are real owner of this menu
-	if (menu()) {
+	if (menu())
+	{
 		delete menu();
 		setMenu(0);
 	}
