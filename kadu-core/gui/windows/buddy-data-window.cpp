@@ -193,7 +193,7 @@ void BuddyDataWindow::updateBuddy()
 		ContactTab->save();
 		GroupsTab->save();
 		OptionsTab->save();
-		emit updatingBuddy();
+		emit save();
 
 		MyBuddy.unblockUpdatedSignal();
 	}

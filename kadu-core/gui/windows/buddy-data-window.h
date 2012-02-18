@@ -109,7 +109,7 @@ public:
 	QWidget * optionsTab() const { return OptionsTab; }
 
 signals:
-	void updatingBuddy();
+	void save();
 
 };
 
