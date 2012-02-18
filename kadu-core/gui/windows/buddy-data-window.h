@@ -37,6 +37,7 @@
 #include <QtGui/QWidget>
 
 #include "buddies/buddy.h"
+#include "gui/widgets/buddy-options-configuration-widget.h"
 
 #include "exports.h"
 
@@ -54,7 +55,6 @@ class Buddy;
 class BuddyGeneralConfigurationWidget;
 class BuddyGroupsConfigurationWidget;
 class BuddyPersonalInfoConfigurationWidget;
-class BuddyOptionsConfigurationWidget;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
@@ -106,6 +106,7 @@ public:
 
 	Buddy buddy() const { return MyBuddy; }
 	QTabWidget * tabWidget() const { return TabWidget; }
+	QWidget * optionsTab() const { return OptionsTab; }
 
 signals:
 	void updatingBuddy();
