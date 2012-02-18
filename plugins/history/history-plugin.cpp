@@ -21,12 +21,18 @@
  */
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
+#include "gui/history-buddy-data-window-addons.h"
 #include "misc/kadu-paths.h"
 
 #include "buddy-history-delete-handler.h"
 #include "history.h"
 
 #include "history-plugin.h"
+
+HistoryPlugin::HistoryPlugin() :
+		BuddyDataWindowAddons(0)
+{
+}
 
 HistoryPlugin::~HistoryPlugin()
 {
@@ -42,6 +48,8 @@ int HistoryPlugin::init(bool firstLoad)
 
 	BuddyHistoryDeleteHandler::createInstance();
 	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
+
+	BuddyDataWindowAddons = new HistoryBuddyDataWindowAddons(this);
 
 	return 0;
 }

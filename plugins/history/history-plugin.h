@@ -30,12 +30,17 @@
 
 #include "plugins/generic-plugin.h"
 
+class HistoryBuddyDataWindowAddons;
+
 class HistoryPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
+	HistoryBuddyDataWindowAddons *BuddyDataWindowAddons;
+
 public:
+	HistoryPlugin();
 	virtual ~HistoryPlugin();
 
 	virtual int init(bool firstLoad);
