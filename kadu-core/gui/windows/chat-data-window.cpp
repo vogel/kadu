@@ -146,6 +146,8 @@ void ChatDataWindow::updateChat()
 	MyChat.setDisplay(DisplayEdit->text());
 	MyChat.setGroups(ChatGroupList->checkedGroups());
 
+	emit save();
+
 	MyChat.unblockUpdatedSignal();
 }
 

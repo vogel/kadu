@@ -33,6 +33,7 @@ set (SOURCES
 	gui/windows/history-window.cpp
 
 	gui/history-buddy-data-window-addons.cpp
+	gui/history-chat-data-window-addons.cpp
 
 	model/history-query-results-model.cpp
 	model/history-query-results-proxy-model.cpp
@@ -64,6 +65,7 @@ set (MOC_SOURCES
 	gui/windows/history-window.h
 
 	gui/history-buddy-data-window-addons.h
+	gui/history-chat-data-window-addons.h
 
 	model/history-query-results-model.h
 	model/history-query-results-proxy-model.h

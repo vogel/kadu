@@ -79,6 +79,9 @@ public:
 
 	Chat chat() const { return MyChat; }
 
+signals:
+	void save();
+
 };
 
 #endif // CHAT_DATA_WINDOW_H
