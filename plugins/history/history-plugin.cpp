@@ -23,6 +23,7 @@
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "gui/history-buddy-data-window-addons.h"
 #include "gui/history-chat-data-window-addons.h"
+#include "gui/windows/history-window.h"
 #include "misc/kadu-paths.h"
 
 #include "buddy-history-delete-handler.h"
@@ -59,6 +60,9 @@ void HistoryPlugin::done()
 {
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
+
+	if (HistoryWindow::instance())
+		delete HistoryWindow::instance();
 
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/history.ui"));

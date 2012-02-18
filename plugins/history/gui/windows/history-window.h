@@ -55,7 +55,6 @@ class HistoryWindow : public QDialog
 	SearchTab *MySearchTab;
 
 	explicit HistoryWindow(QWidget *parent = 0);
-	virtual ~HistoryWindow();
 
 	void createGui();
 
@@ -67,7 +66,10 @@ private slots:
 	void storageChanged(HistoryStorage *historyStorage);
 
 public:
+	static HistoryWindow * instance();
 	static void show(const Chat &chat);
+
+	virtual ~HistoryWindow();
 
 };
 

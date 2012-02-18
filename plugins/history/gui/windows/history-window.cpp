@@ -43,6 +43,11 @@
 
 HistoryWindow * HistoryWindow::Instance = 0;
 
+HistoryWindow * HistoryWindow::instance()
+{
+	return Instance;
+}
+
 void HistoryWindow::show(const Chat &chat)
 {
 	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
