@@ -1,5 +1,6 @@
 ﻿+++ version 0.12.0-alpha2
 * gui: new and improved window for changing account status and description (Juzef)
+* history: #2365 done: history can be disabled per chat and per buddy (Vogel)
 
 +++ version 0.12.0-alpha1
 * history: #2450 done, #2300 fixed: new, polished history window (Vogel)
