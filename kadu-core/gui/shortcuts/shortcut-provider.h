@@ -30,7 +30,7 @@ protected:
 	QString Name;
 	
 public:
-	const QString & shortcurProviderName() const { return Name; }
+	const QString & name() const { return Name; }
 	void setName(const QString &name) { Name = name; }
 
 	virtual ShortcutHandler * getShortcutHandler(const QString &shortcutName) = 0;

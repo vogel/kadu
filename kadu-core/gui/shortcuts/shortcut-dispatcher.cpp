@@ -176,36 +176,36 @@ bool ShortcutDispatcherImpl::registerShortcut(const Shortcut &shortcut)
 
 void ShortcutDispatcherImpl::unregisterShortcut(const QString &name, ShortcutProvider *provider)
 {
-	Q_ASSERT(ShortcutsProviders.contains(provider->shortcurProviderName()));
+	Q_ASSERT(ShortcutsProviders.contains(provider->name()));
 	
 	by_name_index &byName = Shortcuts.get<name_t>();
 	by_name_index::const_iterator found = byName.find(name);
 	
 	Q_ASSERT(found == byName.end());
 
-	Q_ASSERT((*found).providerName() == provider->shortcurProviderName());
+	Q_ASSERT((*found).providerName() == provider->name());
 
 	byName.erase(found);
 }
 
 bool ShortcutDispatcherImpl::registerShortcutProvider(ShortcutProvider *provider)
 {
-	if (ShortcutsProviders.contains(provider->shortcurProviderName()))
+	if (ShortcutsProviders.contains(provider->name()))
 		return false;
 
-	ShortcutsProviders.insert(provider->shortcurProviderName(), provider);
+	ShortcutsProviders.insert(provider->name(), provider);
 	return true;
 }
 
 void ShortcutDispatcherImpl::unregisterShortcutProvider(ShortcutProvider *provider)
 {
-	Q_ASSERT(ShortcutsProviders.contains(provider->shortcurProviderName()));
+	Q_ASSERT(ShortcutsProviders.contains(provider->name()));
 
-	ShortcutProvider *p = ShortcutsProviders.value(provider->shortcurProviderName());
+	ShortcutProvider *p = ShortcutsProviders.value(provider->name());
 
 	Q_ASSERT(p == provider);
 
-	ShortcutsProviders.remove(provider->shortcurProviderName());
+	ShortcutsProviders.remove(provider->name());
 }
 
 bool ShortcutDispatcherImpl::handleKeyEvent(ActionContext *actionSource, QKeyEvent *e)
