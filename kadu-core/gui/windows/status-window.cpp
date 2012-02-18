@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009, 2010, 2012 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2010, 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
@@ -28,6 +28,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
+#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
 
@@ -35,10 +36,12 @@
 #include "core/core.h"
 #include "gui/widgets/kadu-text-edit.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/previous-descriptions-window.h"
+#include "gui/windows/message-dialog.h"
+#include "gui/windows/status-window-description-proxy-model.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
+#include "status/description-model.h"
 #include "status/status-container.h"
 #include "status/status-setter.h"
 #include "status/status-type-data.h"
@@ -72,7 +75,7 @@ StatusWindow * StatusWindow::showDialog(StatusContainer *statusContainer, QWidge
 }
 
 StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), Container(statusContainer)
+		QDialog(parent), DesktopAwareObject(this), Container(statusContainer), IgnoreNextTextChange(false)
 {
 	Q_ASSERT(Container);
 
@@ -86,96 +89,36 @@ StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 	setWindowTitle(windowTitle);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	createLayout();
 
-	QWidget *formWidget = new QWidget(this);
-	QFormLayout *layout = new QFormLayout(formWidget);
-	layout->setMargin(0);
+	DescriptionCounter->setVisible(Container->maxDescriptionLength() > 0);
 
-	StatusList = new QComboBox(formWidget);
-	layout->addRow(new QLabel(tr("Status") + ':'), StatusList);
+	setupStatusSelect();
 
-	QList<StatusType> statusTypes = Container->supportedStatusTypes();
-	int selectedIndex = -1, i = 0;
+	QString description = StatusSetter::instance()->manuallySetStatus(Container->subStatusContainers().first()).description();
 
-	foreach (StatusType statusType, statusTypes)
-	{
-		if (StatusTypeNone == statusType)
-			continue;
+	setupDescriptionSelect(description);
 
-		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
+	IgnoreNextTextChange = true;
+	DescriptionEdit->setPlainText(description);
+	descriptionEditTextChanged(); // not connected yet
+	IgnoreNextTextChange = false;
 
-		KaduIcon icon = Container->statusIcon(typeData.type());
-		StatusList->addItem(icon.icon(), typeData.displayName(), QVariant::fromValue(typeData.type()));
+	QTextCursor cursor = DescriptionEdit->textCursor();
+	cursor.movePosition(QTextCursor::End);
+	DescriptionEdit->setTextCursor(cursor);
 
-		if (typeData.type() == Container->status().type())
-			selectedIndex = i;
-		i++;
-	}
-	Q_ASSERT(selectedIndex != -1);
-	StatusList->setCurrentIndex(selectedIndex);
-
-	DescriptionEdit = new KaduTextEdit(formWidget);
-	DescriptionEdit->installEventFilter(this);
-	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(Container).description());
 	DescriptionEdit->setFocus();
-	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	DescriptionEdit->setTabChangesFocus(true);
 
-	QWidget *descriptionLabelWidget = new QWidget(formWidget);
-	QVBoxLayout *descriptionLabelLayout = new QVBoxLayout(descriptionLabelWidget);
-	descriptionLabelLayout->setMargin(0);
-	descriptionLabelLayout->setSpacing(5);
-
-	QLabel *descriptionLabel = new QLabel(tr("Description") + ':', descriptionLabelWidget);
-	descriptionLabel->setAlignment(layout->labelAlignment());
-
-	DescriptionLimitCounter = new QLabel(formWidget);
-	DescriptionLimitCounter->setVisible(false);
-	DescriptionLimitCounter->setAlignment(layout->labelAlignment());
-
-	descriptionLabelLayout->addWidget(descriptionLabel);
-	descriptionLabelLayout->addWidget(DescriptionLimitCounter);
-	descriptionLabelLayout->addStretch(1);
-
-	layout->addRow(descriptionLabelWidget, DescriptionEdit);
-
-	QPushButton *chooseButton = new QPushButton(tr("Choose description..."), formWidget);
-	connect(chooseButton, SIGNAL(clicked(bool)), this, SLOT(openDescriptionsList()));
-	layout->addRow(0, chooseButton);
-
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, formWidget);
-
-	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), buttons);
-	OkButton->setDefault(true);
-	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-
-	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), buttons);
-	cancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
-
-	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"), buttons);
-	connect(clearButton, SIGNAL(clicked(bool)), DescriptionEdit, SLOT(clear()));
-
-	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
-
-	mainLayout->addWidget(formWidget);
-	mainLayout->addSpacing(16);
-	mainLayout->addWidget(buttons);
-
-	setFixedSize(sizeHint().expandedTo(QSize(250, 80)));
-
+	connect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
+	connect(ClearDescriptionsHistoryButton, SIGNAL(clicked(bool)), this, SLOT(clearDescriptionsHistory()));
+	connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(descriptionEditTextChanged()));
+	connect(EraseButton, SIGNAL(clicked(bool)), this, SLOT(eraseDescription()));
+	connect(SetStatusButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
-	int maxDescriptionLength = Container->maxDescriptionLength();
-	if (maxDescriptionLength > 0)
-	{
-		DescriptionLimitCounter->setVisible(true);
-		connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(checkDescriptionLengthLimit()));
-		checkDescriptionLengthLimit();
-	}
+	setFixedSize(sizeHint().expandedTo(QSize(460, 1)));
 
 	kdebugf2();
 }
@@ -185,13 +128,169 @@ StatusWindow::~StatusWindow()
 	Dialogs.remove(Container);
 }
 
+void StatusWindow::createLayout()
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QFormLayout *formLayout = new QFormLayout();
+	mainLayout->addLayout(formLayout);
+	formLayout->setMargin(0);
+	formLayout->setVerticalSpacing(0);
+
+	// status combo box
+
+	StatusSelect = new QComboBox(this);
+	formLayout->addRow(new QLabel(tr("Status") + ':'), StatusSelect);
+
+	// spacing
+
+	formLayout->addItem(new QSpacerItem(0, 4));
+
+	// description combo box
+
+	QHBoxLayout *descriptionSelectLayout = new QHBoxLayout();
+	descriptionSelectLayout->setMargin(0);
+	descriptionSelectLayout->setSpacing(0);
+
+	DescriptionSelect = new QComboBox(this);
+	DescriptionSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	DescriptionSelect->setToolTip(tr("Select Previously Used Description"));
+	descriptionSelectLayout->addWidget(DescriptionSelect);
+
+	ClearDescriptionsHistoryButton = new QPushButton(KaduIcon("edit-clear").icon(), "", this);
+	ClearDescriptionsHistoryButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	ClearDescriptionsHistoryButton->setToolTip(tr("Clear Descriptions History"));
+	descriptionSelectLayout->addWidget(ClearDescriptionsHistoryButton);
+
+	formLayout->addRow(new QLabel(tr("Description") + ':'), descriptionSelectLayout);
+
+	// description edit field
+
+	QWidget *descriptionCounterLayoutWidget = new QWidget(this);
+	QVBoxLayout *descriptionCounterLayout = new QVBoxLayout(descriptionCounterLayoutWidget);
+	descriptionCounterLayout->setMargin(0);
+	descriptionCounterLayout->setSpacing(5);
+
+	descriptionCounterLayout->addStretch();
+
+	DescriptionCounter = new QLabel(this);
+	DescriptionCounter->setAlignment(formLayout->labelAlignment());
+	descriptionCounterLayout->addWidget(DescriptionCounter);
+
+	descriptionCounterLayout->addSpacing(2); // 2 px bottom margin
+
+	QWidget *descriptionEditLayoutWidget = new QWidget(this);
+	QHBoxLayout *descriptionEditLayout = new QHBoxLayout(descriptionEditLayoutWidget);
+	descriptionEditLayout->setMargin(0);
+	descriptionEditLayout->setSpacing(0);
+
+	DescriptionEdit = new KaduTextEdit(this);
+	DescriptionEdit->installEventFilter(this);
+	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	DescriptionEdit->setTabChangesFocus(true);
+	descriptionEditLayout->addWidget(DescriptionEdit);
+
+	QVBoxLayout *descriptionEraseLayout = new QVBoxLayout();
+	descriptionEraseLayout->setMargin(0);
+	descriptionEraseLayout->setSpacing(0);
+	descriptionEraseLayout->addStretch();
+	EraseButton = new QPushButton(KaduIcon("edit-clear-locationbar-rtl").icon(), "", this);
+	EraseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+	EraseButton->setToolTip(tr("Erase Description"));
+	descriptionEraseLayout->addWidget(EraseButton);
+	descriptionEditLayout->addLayout(descriptionEraseLayout);
+
+	formLayout->addRow(descriptionCounterLayoutWidget, descriptionEditLayoutWidget);
+
+	mainLayout->addSpacing(16);
+
+	// dialog buttons
+
+	QDialogButtonBox *buttonsBox = new QDialogButtonBox(Qt::Horizontal, this);
+
+	SetStatusButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), this);
+	SetStatusButton->setDefault(true);
+	buttonsBox->addButton(SetStatusButton, QDialogButtonBox::AcceptRole);
+
+	CancelButton = new QPushButton(tr("&Cancel"), this);
+	CancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
+	buttonsBox->addButton(CancelButton, QDialogButtonBox::RejectRole);
+
+	mainLayout->addWidget(buttonsBox);
+}
+
+void StatusWindow::setupStatusSelect()
+{
+	StatusType commonStatusType = findCommonStatusType(Container->subStatusContainers());
+	if (commonStatusType == StatusTypeNone)
+		StatusSelect->addItem(tr("do not change"), QVariant(StatusTypeNone));
+
+	foreach (StatusType statusType, Container->supportedStatusTypes())
+	{
+		if (StatusTypeNone == statusType)
+			continue;
+		const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(statusType);
+		StatusSelect->addItem(Container->statusIcon(typeData.type()).icon(), typeData.displayName(), QVariant(typeData.type()));
+	}
+
+	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(commonStatusType)));
+}
+
+void StatusWindow::setupDescriptionSelect(const QString &description)
+{
+	StatusWindowDescriptionProxyModel *proxyModel = new StatusWindowDescriptionProxyModel(this);
+	proxyModel->setSourceModel(DescriptionManager::instance()->model());
+
+	DescriptionSelect->setModel(proxyModel);
+	DescriptionSelect->setEnabled(false);
+	ClearDescriptionsHistoryButton->setEnabled(false);
+
+	Q_ASSERT(Container->subStatusContainers().count() > 0);
+
+	if (DescriptionManager::instance()->model()->rowCount() > 0)
+	{
+		DescriptionSelect->setEnabled(true);
+		ClearDescriptionsHistoryButton->setEnabled(true);
+
+		QModelIndexList matching = DescriptionManager::instance()->model()->match(
+			DescriptionManager::instance()->model()->index(0, 0),
+			DescriptionRole, QVariant(description),
+			1,
+			Qt::MatchFixedString | Qt::MatchCaseSensitive
+		);
+		if (matching.count() > 0)
+			DescriptionSelect->setCurrentIndex(matching.first().row());
+		else
+			DescriptionSelect->setCurrentIndex(-1);
+	}
+}
+
 QSize StatusWindow::sizeHint() const
 {
 	return QDialog::sizeHint().expandedTo(QSize(400, 80));
 }
 
+StatusType StatusWindow::findCommonStatusType(const QList<StatusContainer *> &containers)
+{
+	StatusType commonStatusType = StatusTypeNone;
+	foreach (StatusContainer *container, containers)
+	{
+		StatusType statusType = container->status().type();
+		if (commonStatusType == StatusTypeNone)
+			commonStatusType = statusType;
+		else if (commonStatusType != statusType)
+		{
+			commonStatusType = StatusTypeNone;
+			break;
+		}
+	}
+	return commonStatusType;
+}
+
 void StatusWindow::applyStatus()
 {
+	disconnect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
+
 	QString description = DescriptionEdit->toPlainText();
 	DescriptionManager::instance()->addDescription(description);
 
@@ -203,17 +302,31 @@ void StatusWindow::applyStatus()
 		Status status = StatusSetter::instance()->manuallySetStatus(container);
 		status.setDescription(description);
 
-		StatusType statusType = StatusList->itemData(StatusList->currentIndex()).value<StatusType>();
-		status.setType(statusType);
+		StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
+		if (statusType != StatusTypeNone)
+			status.setType(statusType);
 
 		StatusSetter::instance()->setStatus(container, status);
 		container->storeStatus(status);
 	}
 }
 
-void StatusWindow::descriptionSelected(const QString &description)
+void StatusWindow::descriptionSelected(int index)
 {
+	if (index < 0)
+		return;
+
+	QString description = DescriptionManager::instance()->model()->data(DescriptionManager::instance()->model()->index(index, 0), DescriptionRole).toString();
+
+	IgnoreNextTextChange = true;
 	DescriptionEdit->setPlainText(description);
+	IgnoreNextTextChange = false;
+
+	QTextCursor cursor = DescriptionEdit->textCursor();
+	cursor.movePosition(QTextCursor::End);
+	DescriptionEdit->setTextCursor(cursor);
+
+	DescriptionEdit->setFocus();
 }
 
 bool StatusWindow::eventFilter(QObject *source, QEvent *event)
@@ -238,19 +351,58 @@ bool StatusWindow::eventFilter(QObject *source, QEvent *event)
 	return false;
 }
 
-void StatusWindow::openDescriptionsList()
-{
-	PreviousDescriptionsWindow *chooseDescDialog = new PreviousDescriptionsWindow(this);
-	connect(chooseDescDialog, SIGNAL(descriptionSelected(const QString &)), this, SLOT(descriptionSelected(const QString &)));
-	chooseDescDialog->exec();
-}
-
 void StatusWindow::checkDescriptionLengthLimit()
 {
 	int length = DescriptionEdit->toPlainText().length();
 	int charactersLeft = Container->maxDescriptionLength() - length;
 	bool limitExceeded = charactersLeft < 0;
 
-	OkButton->setEnabled(!limitExceeded);
-	DescriptionLimitCounter->setText(QString("(%1)").arg(charactersLeft));
+	SetStatusButton->setEnabled(!limitExceeded);
+
+	QString counterText = QString("%1").arg(charactersLeft);
+	QColor color;
+	if (charactersLeft >= 0)
+	{
+		color = palette().windowText().color();
+		color.setAlpha(128);
+	}
+	else
+		color = Qt::red;
+	QString counterStyle = QString("color:rgba(%1,%2,%3,%4);").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+	DescriptionCounter->setText(QString("<span style='%1'>%2</span>").arg(counterStyle, counterText));
+}
+
+void StatusWindow::descriptionEditTextChanged()
+{
+	if (!IgnoreNextTextChange)
+		DescriptionSelect->setCurrentIndex(-1);
+
+	EraseButton->setEnabled(!DescriptionEdit->toPlainText().isEmpty());
+
+	if (Container->maxDescriptionLength() > 0)
+		checkDescriptionLengthLimit();
+}
+
+void StatusWindow::eraseDescription()
+{
+	DescriptionEdit->clear();
+	DescriptionEdit->setFocus();
+}
+
+void StatusWindow::clearDescriptionsHistory()
+{
+	bool confirmed = MessageDialog::ask(
+		KaduIcon("dialog-warning"),
+		tr("Clear Descriptions History"),
+		tr("Do you really want to clear the descriptions history?"),
+		this);
+
+	if (!confirmed)
+		return;
+
+	DescriptionManager::instance()->clearDescriptions();
+	DescriptionSelect->setModel(DescriptionManager::instance()->model());
+	DescriptionSelect->setCurrentIndex(-1);
+	DescriptionSelect->setEnabled(false);
+	ClearDescriptionsHistoryButton->setEnabled(false);
 }

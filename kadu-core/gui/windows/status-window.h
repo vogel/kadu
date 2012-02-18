@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010, 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
@@ -41,21 +41,39 @@ class StatusWindow : public QDialog, DesktopAwareObject
 
 	static QMap<StatusContainer *, StatusWindow *> Dialogs;
 
-	QComboBox *StatusList;
-	QTextEdit *DescriptionEdit;
-	QLabel *DescriptionLimitCounter;
-	QPushButton *OkButton;
-
 	StatusContainer *Container;
+
+	QComboBox *StatusSelect;
+	QComboBox *DescriptionSelect;
+	QPushButton *ClearDescriptionsHistoryButton;
+	QLabel *DescriptionCounter;
+	QTextEdit *DescriptionEdit;
+	QPushButton *EraseButton;
+	QPushButton *SetStatusButton;
+	QPushButton *CancelButton;
+
+	/**
+	 * Don't allow descriptionEditTextChanged() to modify DescriptionSelect after changing text (programically) in DescriptionEdit.
+	 */
+	bool IgnoreNextTextChange;
 
 	explicit StatusWindow(StatusContainer *Container, QWidget *parent = 0);
 	virtual ~StatusWindow();
 
+	void createLayout();
+	void setupStatusSelect();
+	void setupDescriptionSelect(const QString &description);
+
+	void checkDescriptionLengthLimit();
+
+	StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
+
 private slots:
 	void applyStatus();
-	void checkDescriptionLengthLimit();
-	void openDescriptionsList();
-  	void descriptionSelected(const QString &description);
+	void descriptionSelected(int index);
+	void clearDescriptionsHistory();
+	void eraseDescription();
+	void descriptionEditTextChanged();
 
 protected:
 	virtual bool eventFilter(QObject *source, QEvent *event);
