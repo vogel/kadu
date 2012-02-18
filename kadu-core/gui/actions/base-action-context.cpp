@@ -103,3 +103,12 @@ void BaseActionContext::setRoles(const RoleSet &roles)
 		MyChangeNotifier->notify();
 	}
 }
+
+void BaseActionContext::setSupportedActionTypes(int supportedActionTypes)
+{
+	if (SupportedActionTypes != supportedActionTypes)
+	{
+		SupportedActionTypes = supportedActionTypes;
+		dataUpdated();
+	}
+}

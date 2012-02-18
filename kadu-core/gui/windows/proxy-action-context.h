@@ -27,7 +27,7 @@ class ProxyActionContext : public ActionContext
 	Q_OBJECT
 
 	ActionContext *ForwardActionContext;
-
+	
 public:
 	ProxyActionContext();
 	virtual ~ProxyActionContext();
@@ -39,6 +39,9 @@ public:
 	virtual Chat chat();
 	virtual StatusContainer * statusContainer();
 	virtual RoleSet roles();
+
+	virtual bool supportsActionType(ActionDescription::ActionType type) const;
+	virtual void setSupportedActionTypes(int supportedActionTypes);
 
 };
 

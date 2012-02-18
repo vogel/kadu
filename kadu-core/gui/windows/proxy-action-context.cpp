@@ -78,3 +78,16 @@ RoleSet ProxyActionContext::roles()
 			? ForwardActionContext->roles()
 			: RoleSet();
 }
+
+bool ProxyActionContext::supportsActionType(ActionDescription::ActionType type) const
+{
+	return ForwardActionContext
+			? ForwardActionContext->supportsActionType(type)
+			: false;
+}
+
+void ProxyActionContext::setSupportedActionTypes(int supportedActionTypes)
+{
+	if (ForwardActionContext)
+		ForwardActionContext->setSupportedActionTypes(supportedActionTypes);
+}

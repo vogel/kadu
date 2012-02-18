@@ -26,6 +26,7 @@
 #include "model/roles.h"
 
 #include "gui/actions/action-context.h"
+#include "gui/actions/action-description.h"
 
 #include "exports.h"
 
@@ -41,6 +42,8 @@ class KADUAPI BaseActionContext : public ActionContext
 	StatusContainer *CurrentStatusContainer;
 	RoleSet Roles;
 
+	int SupportedActionTypes;
+	
 public:
 	BaseActionContext();
 	virtual ~BaseActionContext();
@@ -62,6 +65,8 @@ public:
 	virtual RoleSet roles();
 	void setRoles(const RoleSet &roles);
 
+	virtual bool supportsActionType(ActionDescription::ActionType type) const { return (type & SupportedActionTypes); }
+	void setSupportedActionTypes(int supportedActionTypes);
 };
 
 #endif // BASE_ACTION_CONTEXT_H

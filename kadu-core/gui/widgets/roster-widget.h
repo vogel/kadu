@@ -25,6 +25,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "exports.h"
 #include "gui/actions/action-context-provider.h"
+#include "gui/actions/action-description.h"
 #include "os/generic/compositing-aware-object.h"
 #include "talkable/talkable.h"
 
@@ -69,7 +70,7 @@ public:
 
 	void clearFilter();
 
-	// TODO 0.11.0: rething
+	// TODO 0.11.0: rethink
 	TalkableTreeView * talkableTreeView();
 	TalkableProxyModel * talkableProxyModel();
 

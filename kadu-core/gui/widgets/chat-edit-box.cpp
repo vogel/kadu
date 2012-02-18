@@ -61,12 +61,13 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
-		MainWindow(new BaseActionContext(), "chat", parent), CurrentChat(chat)
+	MainWindow(new BaseActionContext(),
+		   "chat", parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 
 	Context = static_cast<BaseActionContext *>(actionContext());
-
+	Context->setSupportedActionTypes(ActionDescription::TypeGlobal | ActionDescription::TypeChat | ActionDescription::TypeUser);
 	Context->changeNotifier()->block();;
 
 	RoleSet roles;
@@ -157,11 +158,6 @@ void ChatEditBox::setAutoSend(bool autoSend)
 CustomInput * ChatEditBox::inputBox()
 {
 	return InputBox;
-}
-
-bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
-{
-	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
 TalkableProxyModel * ChatEditBox::talkableProxyModel()

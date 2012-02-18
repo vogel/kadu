@@ -27,6 +27,7 @@
 
 #include <QtCore/QObject>
 
+#include "gui/actions/action-description.h"
 #include "model/roles.h"
 
 class BuddySet;
@@ -91,6 +92,9 @@ public:
 
 	virtual RoleSet roles() = 0;
 
+	virtual bool supportsActionType(ActionDescription::ActionType type) const = 0;
+	virtual void setSupportedActionTypes(int supportedActionTypes) = 0;
+	
 signals:
 	void changed();
 

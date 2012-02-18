@@ -67,7 +67,6 @@ public:
 	// TODO: remove?
 	CustomInput * inputBox();
 
-	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual TalkableProxyModel * talkableProxyModel();
 
 	ChatWidget * chatWidget();

@@ -323,7 +323,7 @@ void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
 
 void MainWindow::actionLoadedOrUnloaded(ActionDescription *action)
 {
-	if (supportsActionType(action->type()))
+	if (actionContext()->supportsActionType(action->type()))
 		refreshToolBars();
 }
 

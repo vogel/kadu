@@ -155,7 +155,7 @@ QToolButton * ToolBar::createPushButton(QAction *before, ToolBarAction &action)
 	if (!kaduMainWindow)
 		return 0;
 
-	if (!kaduMainWindow->supportsActionType(Actions::instance()->value(action.actionName)->type()))
+	if (!kaduMainWindow->actionContext()->supportsActionType(Actions::instance()->value(action.actionName)->type()))
 		return 0;
 
 	action.action = Actions::instance()->createAction(action.actionName, kaduMainWindow->actionContext(), kaduMainWindow);
@@ -312,7 +312,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent *event)
 				(event->source() == this ||
 				(Actions::instance()->contains(actionName) &&
 					(mainWindow = qobject_cast<MainWindow *>(parentWidget())) &&
-					mainWindow->supportsActionType(Actions::instance()->value(actionName)->type())) ||
+					mainWindow->actionContext()->supportsActionType(Actions::instance()->value(actionName)->type())) ||
 				actionName.startsWith(QLatin1String("__separator")) ||
 				actionName.startsWith(QLatin1String("__spacer"))))
 		{
@@ -744,7 +744,7 @@ QMenu * ToolBar::createContextMenu(QWidget *widget)
 			MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
 
 			if (kaduMainWindow)
-				supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());
+				supportsAction = kaduMainWindow->actionContext()->supportsActionType(actionDescription->type());
 			else // TODO is it possible?
 				supportsAction = actionDescription->type() == ActionDescription::TypeGlobal;
 

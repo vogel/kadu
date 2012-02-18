@@ -95,7 +95,6 @@ public:
 	explicit SearchWindow(QWidget *parent = 0, Buddy buddy = Buddy::null);
 	virtual ~SearchWindow();
 
-	virtual bool supportsActionType(ActionDescription::ActionType type) { return (type & ActionDescription::TypeSearch); }
 	virtual TalkableProxyModel * talkableProxyModel() { return 0; }
 
 	void nextSearch();

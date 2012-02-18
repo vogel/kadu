@@ -32,7 +32,6 @@
 
 #include "gui/actions/action-context-provider.h"
 #include "gui/actions/action-context.h"
-#include "gui/actions/action-description.h"
 #include "os/generic/desktop-aware-object.h"
 
 #include "exports.h"
@@ -103,7 +102,6 @@ public:
 
 	virtual QMenu * createPopupMenu() { return 0; }
 
-	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual TalkableProxyModel * talkableProxyModel() = 0;
 
 	Contact contact();

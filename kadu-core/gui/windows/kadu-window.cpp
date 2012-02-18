@@ -102,6 +102,8 @@ KaduWindow::KaduWindow() :
 
 	Context = static_cast<ProxyActionContext *>(actionContext());
 	Context->setForwardActionContext(Roster->actionContext());
+	Context->setSupportedActionTypes(ActionDescription::TypeGlobal
+				| ActionDescription::TypeUserList | ActionDescription::TypeUser);
 
 	Actions = new KaduWindowActions(this);
 	loadToolBarsFromConfig();
