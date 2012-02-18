@@ -73,6 +73,7 @@
 #include "history-save-thread.h"
 
 #include "history.h"
+#include "history-talkable-data.h"
 
 void disableNonHistoryContacts(Action *action)
 {
@@ -242,13 +243,32 @@ void History::accountUnregistered(Account account)
 				this, SLOT(enqueueMessage(const Message &)));
 }
 
+bool History::shouldEnqueueMessage(const Message &message)
+{
+	if (!SaveChats)
+		return false;
+
+	const int contactCount = message.messageChat().contacts().count();
+	const Contact &contact = message.messageChat().contacts().toContact();
+
+	if (!SaveChatsWithAnonymous && 1 == contactCount && contact.isAnonymous())
+		return false;
+
+	HistoryTalkableData *htd = 0;
+	if (1 == contactCount)
+		htd = contact.ownerBuddy().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+	else
+		htd = message.messageChat().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+
+	if (htd)
+		return htd->storeHistory();
+
+	return true;
+}
+
 void History::enqueueMessage(const Message &message)
 {
-	if (!CurrentStorage || !SaveChats)
-		return;
-
-	if (!SaveChatsWithAnonymous && message.messageChat().contacts().count() == 1
-		&& (*message.messageChat().contacts().constBegin()).isAnonymous())
+	if (!CurrentStorage || !shouldEnqueueMessage(message))
 		return;
 
 	UnsavedDataMutex.lock();
