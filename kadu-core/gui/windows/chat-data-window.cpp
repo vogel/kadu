@@ -33,6 +33,7 @@
 #include "buddies/group.h"
 #include "chat/chat-manager.h"
 #include "gui/widgets/group-list.h"
+#include "gui/windows/chat-data-window-aware-object.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "activate.h"
@@ -66,10 +67,14 @@ ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
 
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
+
+	ChatDataWindowAwareObject::notifyChatDataWindowCreated(this);
 }
 
 ChatDataWindow::~ChatDataWindow()
 {
+	ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(this);
+
 	Instances.remove(MyChat);
 
 	saveWindowGeometry(this, "General", "ChatDataWindowGeometry");
@@ -113,7 +118,7 @@ void ChatDataWindow::createGui()
 	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(updateButtons()));
 }
 
-void ChatDataWindow::createButtons(QLayout *layout)
+void ChatDataWindow::createButtons(QVBoxLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -130,6 +135,7 @@ void ChatDataWindow::createButtons(QLayout *layout)
 	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(updateChat()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
+	layout->addSpacing(16);
 	layout->addWidget(buttons);
 }
 

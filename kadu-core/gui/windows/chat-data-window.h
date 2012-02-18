@@ -34,6 +34,7 @@
 
 class QLineEdit;
 class QPushButton;
+class QVBoxLayout;
 
 class GroupList;
 
@@ -41,7 +42,10 @@ class KADUAPI ChatDataWindow : public QWidget
 {
 	Q_OBJECT
 
+	friend class ChatDataWindowAwareObject;
+
 	static QMap<Chat, ChatDataWindow *> Instances;
+	static const QMap<Chat, ChatDataWindow *> & instances() { return Instances; }
 
 	Chat MyChat;
 
@@ -55,7 +59,7 @@ class KADUAPI ChatDataWindow : public QWidget
 	virtual ~ChatDataWindow();
 
 	void createGui();
-	void createButtons(QLayout *layout);
+	void createButtons(QVBoxLayout *layout);
 
 	bool isValid();
 
