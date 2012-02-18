@@ -243,6 +243,24 @@ void History::accountUnregistered(Account account)
 				this, SLOT(enqueueMessage(const Message &)));
 }
 
+bool History::shouldSaveForBuddy(const Buddy &buddy)
+{
+	if (!buddy)
+		return false;
+
+	HistoryTalkableData *htd = buddy.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+	return !htd || htd->storeHistory();
+}
+
+bool History::shouldSaveForChat(const Chat &chat)
+{
+	if (!chat)
+		return false;
+
+	HistoryTalkableData *htd = chat.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+	return !htd || htd->storeHistory();
+}
+
 bool History::shouldEnqueueMessage(const Message &message)
 {
 	if (!SaveChats)
@@ -254,16 +272,10 @@ bool History::shouldEnqueueMessage(const Message &message)
 	if (!SaveChatsWithAnonymous && 1 == contactCount && contact.isAnonymous())
 		return false;
 
-	HistoryTalkableData *htd = 0;
 	if (1 == contactCount)
-		htd = contact.ownerBuddy().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+		return shouldSaveForBuddy(contact.ownerBuddy());
 	else
-		htd = message.messageChat().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
-
-	if (htd)
-		return htd->storeHistory();
-
-	return true;
+		return shouldSaveForChat(message.messageChat());
 }
 
 void History::enqueueMessage(const Message &message)
@@ -287,6 +299,9 @@ void History::contactStatusChanged(Contact contact, Status oldStatus)
 		return;
 
 	if (SaveOnlyStatusesWithDescription && status.description().isEmpty())
+		return;
+
+	if (!shouldSaveForBuddy(contact.ownerBuddy()))
 		return;
 
 	UnsavedDataMutex.lock();

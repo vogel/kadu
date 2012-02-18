@@ -111,6 +111,8 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	Message dequeueUnsavedMessage();
 	QPair<Contact, Status> dequeueUnsavedStatusChange();
 
+	bool shouldSaveForBuddy(const Buddy &buddy);
+	bool shouldSaveForChat(const Chat &chat);
 	bool shouldEnqueueMessage(const Message &message);
 
 private slots:
