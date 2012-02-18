@@ -23,20 +23,24 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "configuration/configuration-aware-object.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 
 class QCheckBox;
 
-class HistoryBuddyDataWindowAddons : public QObject, BuddyDataWindowAwareObject
+class HistoryBuddyDataWindowAddons : public QObject, ConfigurationAwareObject, BuddyDataWindowAwareObject
 {
 	Q_OBJECT
 
+	bool StoreHistory;
 	QMap<BuddyDataWindow *, QCheckBox *> StoreHistoryCheckBoxes;
 
 private slots:
 	void save();
 
 protected:
+	virtual void configurationUpdated();
+
 	virtual void buddyDataWindowCreated(BuddyDataWindow *buddyDataWindow);
 	virtual void buddyDataWindowDestroyed(BuddyDataWindow *buddyDataWindow);
 

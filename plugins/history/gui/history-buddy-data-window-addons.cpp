@@ -20,14 +20,16 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/configuration-file.h"
 #include "gui/windows/buddy-data-window.h"
 #include "history-talkable-data.h"
 
 #include "history-buddy-data-window-addons.h"
 
 HistoryBuddyDataWindowAddons::HistoryBuddyDataWindowAddons(QObject *parent) :
-		QObject (parent)
+		QObject(parent)
 {
+	configurationUpdated();
 	triggerAllBuddyDataWindowsCreated();
 }
 
@@ -46,6 +48,15 @@ void HistoryBuddyDataWindowAddons::save()
 	htd->setStoreHistory(StoreHistoryCheckBoxes.value(buddyDataWindow)->isChecked());
 }
 
+void HistoryBuddyDataWindowAddons::configurationUpdated()
+{
+	StoreHistory = config_file.readBoolEntry("History", "SaveChats", true);
+
+	QList<QCheckBox *> checkBoxes = StoreHistoryCheckBoxes.values();
+	foreach (QCheckBox *checkBox, checkBoxes)
+		checkBox->setEnabled(StoreHistory);
+}
+
 void HistoryBuddyDataWindowAddons::buddyDataWindowCreated(BuddyDataWindow *buddyDataWindow)
 {
 	Q_ASSERT(!StoreHistoryCheckBoxes.contains(buddyDataWindow));
@@ -59,6 +70,7 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowCreated(BuddyDataWindow *buddy
 
 	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
 	historyCheckBox->setChecked(!htd || htd->storeHistory());
+	historyCheckBox->setEnabled(StoreHistory);
 
 	StoreHistoryCheckBoxes.insert(buddyDataWindow, historyCheckBox);
 
