@@ -1,5 +1,6 @@
 ﻿+++ version 0.12.0-alpha2
-* gui: new and improved window for changing account status and description (Juzef)
+* gui: #2153 done: new and improved window for changing account status and description (Juzef)
+* history: #2440 done: auto-recovery for corrupted history databases (Vogel)
 * history: #2365 done: history can be disabled per chat and per buddy (Vogel)
 
 +++ version 0.12.0-alpha1
