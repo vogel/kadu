@@ -33,7 +33,7 @@ ActionDescription::ActionDescription(QObject *parent, ActionType type, const QSt
 		QObject(parent), Type(type), Name(name), Object(object), Slot(slot), Icon(icon), Text(text),
 		Checkable(checkable), EnableCallback(enableCallback), ShortcutContext(Qt::WidgetShortcut)
 {
-	deleted = 0;
+	Deleting = false;
 
 	registerAction();
 }
@@ -42,12 +42,13 @@ ActionDescription::ActionDescription(QObject *parent) :
 		QObject(parent), Type(TypeAll), Object(0), Slot(0),
 		Checkable(false), EnableCallback(0), ShortcutContext(Qt::WidgetShortcut)
 {
-	deleted = 0;
+	Deleting = false;
 }
 
 ActionDescription::~ActionDescription()
 {
-	deleted = 1;
+	Deleting = true;
+
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
 
@@ -66,7 +67,7 @@ void ActionDescription::unregisterAction()
 
 void ActionDescription::actionAboutToBeDestroyed(Action *action)
 {
-	if (deleted)
+	if (Deleting)
 		return;
 
 	if (action && MappedActions.contains(action->context()))

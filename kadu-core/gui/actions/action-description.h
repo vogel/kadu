@@ -95,7 +95,7 @@ private:
 	friend class Action;
 
 	QMap<ActionContext *, Action *> MappedActions;
-	int deleted;
+	bool Deleting;
 
 	ActionType Type;
 	QString Name;
