@@ -25,6 +25,8 @@
 ChatTypeAggregate::ChatTypeAggregate(QObject *parent) :
 		ChatType(parent)
 {
+	Aliases.append("Buddy");
+	Aliases.append("Aggregate");
 }
 
 ChatTypeAggregate::~ChatTypeAggregate()
@@ -59,6 +61,20 @@ int ChatTypeAggregate::sortIndex() const
 QString ChatTypeAggregate::name() const
 {
 	return "Aggregate";
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Internal aliases of chat type.
+ * @return internal aliases of chat type
+ *
+ * Chat type internal aliases, used to imporitng old configurations.
+ *
+ * Internal aliases for ChatTypeAggregate are 'Buddy' and 'Aggregate'.
+ */
+QStringList ChatTypeAggregate::aliases() const
+{
+	return Aliases;
 }
 
 /**

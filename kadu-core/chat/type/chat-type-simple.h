@@ -28,6 +28,7 @@
 #define CHAT_TYPE_SIMPLE_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -51,12 +52,15 @@ class KADUAPI ChatTypeSimple : public ChatType
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatTypeSimple)
 
+	QStringList Aliases;
+
 public:
 	explicit ChatTypeSimple(QObject *parent = 0);
 	virtual ~ChatTypeSimple();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
+	virtual QStringList aliases() const;
 	virtual QString displayName() const;
 	virtual QString displayNamePlural() const;
 	virtual KaduIcon icon() const;

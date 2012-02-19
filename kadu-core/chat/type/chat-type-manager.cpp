@@ -76,7 +76,10 @@ void ChatTypeManager::registerChatType(ChatType *chatType)
 
 	emit chatTypeAboutToBeAdded(chatType);
 	ChatTypes.append(chatType);
-	ChatTypesMap.insert(chatType->name(), chatType);
+
+	foreach (const QString &alias, chatType->aliases())
+		ChatTypesMap.insert(alias, chatType);
+
 	emit chatTypeAdded(chatType);
 
 	ChatTypeAwareObject::notifyChatTypeRegistered(chatType);
@@ -97,7 +100,10 @@ void ChatTypeManager::unregisterChatType(ChatType *chatType)
 
 	emit chatTypeAboutToBeRemoved(chatType);
 	ChatTypes.removeAll(chatType);
-	ChatTypesMap.remove(chatType->name());
+
+	foreach (const QString &alias, chatType->aliases())
+		ChatTypesMap.remove(alias);
+
 	emit chatTypeRemoved(chatType);
 
 	ChatTypeAwareObject::notifyChatTypeUnregistered(chatType);
@@ -117,13 +123,13 @@ const QList<ChatType *> & ChatTypeManager::chatTypes() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns chat type with given internal name.
- * @param name internal name of chat type to return.
- * @return chat type with given internal name
+ * @short Returns chat type with given internal alias.
+ * @param name internal alias of chat type to return.
+ * @return chat type with given internal alias
  *
- * Returns chat type with given internal name or null, if not found.
+ * Returns chat type with given internal alias or null, if not found.
  */
-ChatType * ChatTypeManager::chatType(const QString &name)
+ChatType * ChatTypeManager::chatType(const QString &alias)
 {
-	return ChatTypesMap.value(name);
+	return ChatTypesMap.value(alias);
 }

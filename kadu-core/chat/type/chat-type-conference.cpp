@@ -32,6 +32,8 @@
 ChatTypeConference::ChatTypeConference(QObject *parent) :
 		ChatType(parent)
 {
+	Aliases.append("ContactList");
+	Aliases.append("Conference");
 }
 
 ChatTypeConference::~ChatTypeConference()
@@ -66,6 +68,20 @@ int ChatTypeConference::sortIndex() const
 QString ChatTypeConference::name() const
 {
 	return "Conference";
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Internal aliases of chat type.
+ * @return internal aliases of chat type
+ *
+ * Chat type internal aliases, used to imporitng old configurations.
+ *
+ * Internal aliases for ChatTypeSimple are 'ContactList' and 'Conference'.
+ */
+QStringList ChatTypeConference::aliases() const
+{
+	return Aliases;
 }
 
 /**

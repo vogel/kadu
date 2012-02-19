@@ -28,6 +28,7 @@
 #define CHAT_TYPE_CONFERENCE_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -51,12 +52,15 @@ class KADUAPI ChatTypeConference : public ChatType
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatTypeConference)
 
+	QStringList Aliases;
+
 public:
 	explicit ChatTypeConference(QObject *parent = 0);
 	virtual ~ChatTypeConference();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
+	virtual QStringList aliases() const;
 	virtual QString displayName() const;
 	virtual QString displayNamePlural() const;
 	virtual KaduIcon icon() const;

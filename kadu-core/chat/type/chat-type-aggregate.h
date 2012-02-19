@@ -21,6 +21,7 @@
 #define CHAT_TYPE_AGGREGATE_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -44,12 +45,15 @@ class KADUAPI ChatTypeAggregate : public ChatType
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatTypeAggregate)
 
+	QStringList Aliases;
+
 public:
 	explicit ChatTypeAggregate(QObject *parent = 0);
 	virtual ~ChatTypeAggregate();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
+	virtual QStringList aliases() const;
 	virtual QString displayName() const;
 	virtual QString displayNamePlural() const;
 	virtual KaduIcon icon() const;

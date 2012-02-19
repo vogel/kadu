@@ -64,7 +64,7 @@ public:
 	void unregisterChatType(ChatType *chatType);
 
 	const QList<ChatType *> & chatTypes() const;
-	ChatType * chatType(const QString &name);
+	ChatType * chatType(const QString &alias);
 
 signals:
 	/**

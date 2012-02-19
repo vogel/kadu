@@ -32,6 +32,8 @@
 ChatTypeSimple::ChatTypeSimple(QObject *parent) :
 		ChatType(parent)
 {
+	Aliases.append("Contact");
+	Aliases.append("Simple");
 }
 
 ChatTypeSimple::~ChatTypeSimple()
@@ -66,6 +68,20 @@ int ChatTypeSimple::sortIndex() const
 QString ChatTypeSimple::name() const
 {
 	return "Simple";
+}
+
+/**
+ * @author Rafal 'Vogel' Malinowski
+ * @short Internal aliases of chat type.
+ * @return internal aliases of chat type
+ *
+ * Chat type internal aliases, used to imporitng old configurations.
+ *
+ * Internal aliases for ChatTypeSimple are 'Contact' and 'Simple'.
+ */
+QStringList ChatTypeSimple::aliases() const
+{
+	return Aliases;
 }
 
 /**

@@ -79,6 +79,16 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Internal aliases of chat type.
+	 * @return internal aliases of chat type
+	 *
+	 * Chat type internal aliases. Used to import from old confirations where Simple was used
+	 * instead of Contact and Conference instead of ContactList.
+	 */
+	virtual QStringList aliases() const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Display name of chat type.
 	 * @return display name of chat type
 	 *
