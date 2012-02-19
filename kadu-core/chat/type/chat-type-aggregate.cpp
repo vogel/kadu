@@ -127,7 +127,7 @@ KaduIcon ChatTypeAggregate::icon() const
  * @return window role for this chat type.
  *
  * Kadu window role for this chat type.
- * For conference the role is "kadu-chat-conference".
+ * For aggregate the role is "kadu-chat-aggregate".
  */
 QString ChatTypeAggregate::windowRole() const
 {
@@ -136,8 +136,8 @@ QString ChatTypeAggregate::windowRole() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsConference object for given chat type.
- * @return new ChatDetailsConference object for given chat type
+ * @short Creates new ChatDetailsAggregate object for given chat type.
+ * @return new ChatDetailsAggregate object for given chat type
  *
  * Creates new @link ChatDetailsAggregate @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).

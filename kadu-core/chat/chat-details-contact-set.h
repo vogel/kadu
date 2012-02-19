@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_CONFERENCE_H
-#define CHAT_DETAILS_CONFERENCE_H
+#ifndef CHAT_DETAILS_CONTACT_SET_H
+#define CHAT_DETAILS_CONTACT_SET_H
 
 #include "buddies/buddy-set.h"
 #include "contacts/contact-set.h"
@@ -36,15 +36,15 @@
  */
 
 /**
- * @class ChatDetailsConference
+ * @class ChatDetailsContactSet
  * @author Rafal 'Vogel' Malinowski
- * @short Chat data specyfic to 'conference' chat type.
+ * @short Chat data specyfic to 'ContactSet' chat type.
  *
  * Class contains set of Contact objects. Chat name is set to this Contacts'
  * Buddys' display names joined by commas, chat title is list of that names
  * with current descriptions.
  */
-class ChatDetailsConference : public ChatDetails
+class ChatDetailsContactSet : public ChatDetails
 {
 	Q_OBJECT
 
@@ -56,8 +56,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	explicit ChatDetailsConference(ChatShared *chatData);
-	virtual ~ChatDetailsConference();
+	explicit ChatDetailsContactSet(ChatShared *chatData);
+	virtual ~ChatDetailsContactSet();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const { return Contacts; }
@@ -71,4 +71,4 @@ public:
  * @}
  */
 
-#endif // CHAT_DETAILS_CONFERENCE_H
+#endif // CHAT_DETAILS_CONTACT_SET_H

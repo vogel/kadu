@@ -24,8 +24,8 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/chat-details-conference.h"
 #include "chat/chat-details-contact.h"
+#include "chat/chat-details-contact-set.h"
 #include "chat/type/chat-type-manager.h"
 #include "message/message-manager.h"
 
@@ -161,13 +161,13 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
  * will be returned.
  *
  * This method search list of all registered chats to find one with type "Contact"
- * or "Conference" that has exactly the same set of contacts like in the parameter.
+ * or "ContactSet" that has exactly the same set of contacts like in the parameter.
  * When one is found - it is returned. Else, if create parameter is false, Chat::null
- * is returned. When it is true - new chat with type "Contact" or "Conference" (when
+ * is returned. When it is true - new chat with type "Contact" or "ContactSet" (when
  * constacts set contains more than one contact) is created, added to manager,
  * fully loaded and returned.
  *
- * Do not manually create chats of type "Contact" and "Conference" - use this
+ * Do not manually create chats of type "Contact" and "ContactSet" - use this
  * method instead.
  */
 Chat ChatManager::findChat(const ContactSet &contacts, bool create)
@@ -201,7 +201,8 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	}
 
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
-		if ((c.type() == QLatin1String("Contact") || c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
+		if ((c.type() == QLatin1String("Contact") || c.type() == QLatin1String("Simple") ||
+		     c.type() == QLatin1String("ContactSet") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
 		{
 			// when contacts changed their accounts we need to change account of chat too
 			c.setChatAccount(account);
@@ -225,16 +226,16 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	}
 	else if (contacts.size() > 1)
 	{
-		// only gadu-gadu support conferences
+		// only gadu-gadu support contact-sets
 		// TODO: this should be done better
 		if (chat.chatAccount().protocolName() != "gadu")
 			return Chat::null;
 
-		chat.setType("Conference");
+		chat.setType("ContactSet");
 
-		ChatDetailsConference *conference = dynamic_cast<ChatDetailsConference *>(chat.details());
-		conference->setState(StateNew);
-		conference->setContacts(contacts);
+		ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
+		chatDetailsContactSet->setState(StateNew);
+		chatDetailsContactSet->setContacts(contacts);
 	}
 	else
 		return Chat::null;

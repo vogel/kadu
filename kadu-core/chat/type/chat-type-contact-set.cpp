@@ -24,19 +24,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-conference.h"
+#include "chat/chat-details-contact-set.h"
 #include "icons/kadu-icon.h"
 
-#include "chat-type-conference.h"
+#include "chat-type-contact-set.h"
 
-ChatTypeConference::ChatTypeConference(QObject *parent) :
+ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
 		ChatType(parent)
 {
-	Aliases.append("ContactList");
+	Aliases.append("ContactSet");
 	Aliases.append("Conference");
 }
 
-ChatTypeConference::~ChatTypeConference()
+ChatTypeContactSet::~ChatTypeContactSet()
 {
 }
 
@@ -48,9 +48,9 @@ ChatTypeConference::~ChatTypeConference()
  * Sort index is used for sorting chat types in history window.
  * Chats with smaller sort indexes are displayed first.
  *
- * Sort index for ChatTypeConference is 1.
+ * Sort index for ChatTypeContactSet is 1.
  */
-int ChatTypeConference::sortIndex() const
+int ChatTypeContactSet::sortIndex() const
 {
 	return 1;
 }
@@ -63,11 +63,11 @@ int ChatTypeConference::sortIndex() const
  * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
  * and also it is stored with @link Chat @endlink data.
  *
- * Internal name for ChatTypeConference is 'Conference'.
+ * Internal name for ChatTypeContactSet is 'Conference'.
  */
-QString ChatTypeConference::name() const
+QString ChatTypeContactSet::name() const
 {
-	return "Conference";
+	return "ContactSet";
 }
 
 /**
@@ -77,9 +77,9 @@ QString ChatTypeConference::name() const
  *
  * Chat type internal aliases, used to imporitng old configurations.
  *
- * Internal aliases for ChatTypeConference are 'ContactList' and 'Conference'.
+ * Internal aliases for ChatTypeContactSet are 'ContactSet' and 'Conference'.
  */
-QStringList ChatTypeConference::aliases() const
+QStringList ChatTypeContactSet::aliases() const
 {
 	return Aliases;
 }
@@ -92,9 +92,9 @@ QStringList ChatTypeConference::aliases() const
  * Chat type display name. Display name is used in history window. This name
  * is translated into national languaes.
  *
- * Display name for ChatTypeConference is 'Conference'.
+ * Display name for ChatTypeContactSet is 'Conference'.
  */
-QString ChatTypeConference::displayName() const
+QString ChatTypeContactSet::displayName() const
 {
 	return tr("Conference");
 }
@@ -107,9 +107,9 @@ QString ChatTypeConference::displayName() const
  * Chat type display name in plural form. Display name is used in history window.
  * This name is translated into national languaes.
  *
- * Plural display name for ChatTypeConference is 'Conferences'.
+ * Plural display name for ChatTypeContactSet is 'Conferences'.
  */
-QString ChatTypeConference::displayNamePlural() const
+QString ChatTypeContactSet::displayNamePlural() const
 {
 	return tr("Conferences");
 }
@@ -121,9 +121,9 @@ QString ChatTypeConference::displayNamePlural() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeConference is 'kadu_icons/conference'.
+ * Icon for ChatTypeContactSet is 'kadu_icons/conference'.
  */
-KaduIcon ChatTypeConference::icon() const
+KaduIcon ChatTypeContactSet::icon() const
 {
 	return KaduIcon("kadu_icons/conference");
 }
@@ -134,22 +134,22 @@ KaduIcon ChatTypeConference::icon() const
  * @return window role for this chat type.
  *
  * Kadu window role for this chat type.
- * For conference the role is "kadu-chat-conference".
+ * For ContactSet the role is "kadu-chat-contact-set".
  */
-QString ChatTypeConference::windowRole() const
+QString ChatTypeContactSet::windowRole() const
 {
-	return "kadu-chat-conference";
+	return "kadu-chat-contact-set";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsConference object for given chat type.
- * @return new ChatDetailsConference object for given chat type
+ * @short Creates new ChatDetailsContactSet object for given chat type.
+ * @return new ChatDetailsContactSet object for given chat type
  *
- * Creates new @link ChatDetailsConference @endlink object for
+ * Creates new @link ChatDetailsContactSet @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeConference::createChatDetails(ChatShared *chatData) const
+ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsConference(chatData);
+	return new ChatDetailsContactSet(chatData);
 }

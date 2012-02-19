@@ -2,8 +2,8 @@ set (chat_SRCS
 	aggregate-chat-manager.cpp
 	chat.cpp
 	chat-details-aggregate.cpp
-	chat-details-conference.cpp
 	chat-details-contact.cpp
+	chat-details-contact-set.cpp
 	chat-geometry-data.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
@@ -25,16 +25,16 @@ set (chat_SRCS
 	type/chat-type.cpp
 	type/chat-type-aggregate.cpp
 	type/chat-type-aware-object.cpp
-	type/chat-type-conference.cpp
 	type/chat-type-contact.cpp
+	type/chat-type-contact-set.cpp
 	type/chat-type-manager.cpp
 )
 
 set (chat_MOC_SRCS
 	chat-details.h
 	chat-details-aggregate.h
-	chat-details-conference.h
 	chat-details-contact.h
+	chat-details-contact-set.h
 	chat-geometry-data.h
 
 	aggregate-chat-manager.h
@@ -52,8 +52,8 @@ set (chat_MOC_SRCS
 
 	type/chat-type.h
 	type/chat-type-aggregate.h
-	type/chat-type-conference.h
 	type/chat-type-contact.h
+	type/chat-type-contact-set.h
 	type/chat-type-manager.h
 )
 

@@ -83,7 +83,7 @@ public:
 	 * @return internal aliases of chat type
 	 *
 	 * Chat type internal aliases. Used to import from old confirations where Simple was used
-	 * instead of Contact and Conference instead of ContactList.
+	 * instead of Contact and Conference instead of ContactSet.
 	 */
 	virtual QStringList aliases() const = 0;
 

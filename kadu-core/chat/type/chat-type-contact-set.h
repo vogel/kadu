@@ -24,8 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_CONFERENCE_H
-#define CHAT_TYPE_CONFERENCE_H
+#ifndef CHAT_TYPE_CONTACT_SET_H
+#define CHAT_TYPE_CONTACT_SET_H
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -41,22 +41,22 @@
  */
 
 /**
- * @class ChatTypeConference
+ * @class ChatTypeContactSet
  * @author Rafal 'Vogel' Malinowski
  * @short Representation of chat type with many buddies.
  *
  * Representation of chat type with many buddies.
  */
-class KADUAPI ChatTypeConference : public ChatType
+class KADUAPI ChatTypeContactSet : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeConference)
+	Q_DISABLE_COPY(ChatTypeContactSet)
 
 	QStringList Aliases;
 
 public:
-	explicit ChatTypeConference(QObject *parent = 0);
-	virtual ~ChatTypeConference();
+	explicit ChatTypeContactSet(QObject *parent = 0);
+	virtual ~ChatTypeContactSet();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
@@ -70,10 +70,10 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatTypeConference *)
+Q_DECLARE_METATYPE(ChatTypeContactSet *)
 
 /**
  * @}
  */
 
-#endif // CHAT_TYPE_CONFERENCE_H
+#endif // CHAT_TYPE_CONTACT_SET_H

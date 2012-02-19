@@ -98,7 +98,7 @@ public:
 	 * Name of chat type. @link ChatType @endlink object with the same name must be loaded
 	 * and registered in @link ChatTypeManager @endlink to allow this chat object to
 	 * be fully functional and used. Example chat types are: 'contact' (for one-to-one chats)
-	 * and 'conference' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
+	 * and 'contact-set' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
 	 * chats).
 	 */
 	KaduSharedBase_PropertyCRW(QString, type, Type)
