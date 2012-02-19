@@ -60,8 +60,8 @@ class KADUAPI ChatTypeManager : public QObject
 public:
 	static ChatTypeManager * instance();
 
-	void addChatType(ChatType *chatType);
-	void removeChatType(ChatType *chatType);
+	void registerChatType(ChatType *chatType);
+	void unregisterChatType(ChatType *chatType);
 
 	const QList<ChatType *> & chatTypes() const;
 	ChatType * chatType(const QString &name);

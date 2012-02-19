@@ -55,9 +55,9 @@ ChatTypeManager::~ChatTypeManager()
 
 void ChatTypeManager::init()
 {
-	addChatType(new ChatTypeSimple());
-	addChatType(new ChatTypeConference());
-	addChatType(new ChatTypeAggregate());
+	registerChatType(new ChatTypeSimple());
+	registerChatType(new ChatTypeConference());
+	registerChatType(new ChatTypeAggregate());
 }
 
 
@@ -69,7 +69,7 @@ void ChatTypeManager::init()
  * Adds new chat type to manager. After that all @link ChatTypeAwareObject @endlink
  * gets their chatTypeRegistered methods called.
  */
-void ChatTypeManager::addChatType(ChatType *chatType)
+void ChatTypeManager::registerChatType(ChatType *chatType)
 {
 	if (ChatTypes.contains(chatType))
 		return;
@@ -90,7 +90,7 @@ void ChatTypeManager::addChatType(ChatType *chatType)
  * Removes chat type from manager. After that all @link ChatTypeAwareObject @endlink
  * gets their chatTypeUnregistered methods called.
  */
-void ChatTypeManager::removeChatType(ChatType *chatType)
+void ChatTypeManager::unregisterChatType(ChatType *chatType)
 {
 	if (!ChatTypes.contains(chatType))
 		return;
