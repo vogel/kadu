@@ -61,8 +61,6 @@ public:
 	virtual int sortIndex() const;
 	virtual QString name() const;
 	virtual QStringList aliases() const;
-	virtual QString displayName() const;
-	virtual QString displayNamePlural() const;
 	virtual KaduIcon icon() const;
 	virtual QString windowRole() const;
 

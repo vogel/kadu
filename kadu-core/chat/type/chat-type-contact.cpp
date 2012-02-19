@@ -86,36 +86,6 @@ QStringList ChatTypeContact::aliases() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Display name of chat type.
- * @return display name of chat type
- *
- * Chat type display name. Display name is used in history window. This name
- * is translated into national languaes.
- *
- * Display name for ChatTypeContact is 'Chat'.
- */
-QString ChatTypeContact::displayName() const
-{
-	return tr("Chat");
-}
-
-/**
- * @author Piotr 'ultr' Dąbrowski
- * @short Display name of chat type in plural form.
- * @return display name of chat typein plural form
- *
- * Chat type display name in plural form. Display name is used in history window.
- * This name is translated into national languaes.
- *
- * Plural display name for ChatTypeContact is 'Chats'.
- */
-QString ChatTypeContact::displayNamePlural() const
-{
-	return tr("Chats");
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Icon of chat type.
  * @return icon of chat type
  *
