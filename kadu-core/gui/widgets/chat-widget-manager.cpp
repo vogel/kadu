@@ -25,7 +25,7 @@
 
 #include <QtGui/QApplication>
 
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
@@ -238,8 +238,8 @@ void ChatWidgetManager::chatWidgetDestroyed()
 
 QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 {
-	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	const Chat &unreadChat = aggregateChat ? aggregateChat : chat;
+	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	const Chat &unreadChat = buddyChat ? buddyChat : chat;
 	const QList<Message> &unreadMessages = MessageManager::instance()->chatUnreadMessages(unreadChat);
 
 	foreach (const Message &message, unreadMessages)

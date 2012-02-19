@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/type/chat-type-aggregate.h"
 #include "chat/type/chat-type-aware-object.h"
+#include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "icons/icons-manager.h"
@@ -55,9 +55,9 @@ ChatTypeManager::~ChatTypeManager()
 
 void ChatTypeManager::init()
 {
+	registerChatType(new ChatTypeBuddy());
 	registerChatType(new ChatTypeContact());
 	registerChatType(new ChatTypeContactSet());
-	registerChatType(new ChatTypeAggregate());
 }
 
 

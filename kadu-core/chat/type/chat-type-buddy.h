@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_AGGREGATE_H
-#define CHAT_TYPE_AGGREGATE_H
+#ifndef CHAT_TYPE_BUDDY_H
+#define CHAT_TYPE_BUDDY_H
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -34,22 +34,22 @@
  */
 
 /**
- * @class ChatTypeAggregate
+ * @class ChatTypeBuddy
  * @author Rafal 'Vogel' Malinowski
  * @short Representation of chat type that contains other chats.
  *
  * Representation of chat type that contains other chats.
  */
-class KADUAPI ChatTypeAggregate : public ChatType
+class KADUAPI ChatTypeBuddy : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeAggregate)
+	Q_DISABLE_COPY(ChatTypeBuddy)
 
 	QStringList Aliases;
 
 public:
-	explicit ChatTypeAggregate(QObject *parent = 0);
-	virtual ~ChatTypeAggregate();
+	explicit ChatTypeBuddy(QObject *parent = 0);
+	virtual ~ChatTypeBuddy();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
@@ -63,10 +63,10 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatTypeAggregate *)
+Q_DECLARE_METATYPE(ChatTypeBuddy *)
 
 /**
  * @}
  */
 
-#endif // CHAT_TYPE_AGGREGATE_H
+#endif // CHAT_TYPE_BUDDY_H

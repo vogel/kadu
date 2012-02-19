@@ -28,7 +28,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
@@ -50,15 +50,15 @@ HistoryWindow * HistoryWindow::instance()
 
 void HistoryWindow::show(const Chat &chat)
 {
-	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-	if (!aggregate)
-		aggregate = chat;
+	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	if (!buddyChat)
+		buddyChat = chat;
 
 	if (!Instance)
 		Instance = new HistoryWindow();
 
 	Instance->updateData();
-	Instance->selectChat(aggregate);
+	Instance->selectChat(buddyChat);
 
 	Instance->setVisible(true);
 	_activateWindow(Instance);

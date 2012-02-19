@@ -24,28 +24,28 @@
 #include "buddies/buddy-set.h"
 #include "protocols/protocol.h"
 
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
-#include "chat-details-aggregate.h"
+#include "chat-details-buddy.h"
 
-AggregateChatManager * AggregateChatManager::Instance = 0;
+BuddyChatManager * BuddyChatManager::Instance = 0;
 
-AggregateChatManager * AggregateChatManager::instance()
+BuddyChatManager * BuddyChatManager::instance()
 {
 	if (!Instance)
 	{
-		Instance = new AggregateChatManager();
+		Instance = new BuddyChatManager();
 		Instance->init();
 	}
 
 	return Instance;
 }
 
-AggregateChatManager::AggregateChatManager()
+BuddyChatManager::BuddyChatManager()
 {
 }
 
-AggregateChatManager::~AggregateChatManager()
+BuddyChatManager::~BuddyChatManager()
 {
 	disconnect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	disconnect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
@@ -54,7 +54,7 @@ AggregateChatManager::~AggregateChatManager()
 		chatRemoved(chat);
 }
 
-void AggregateChatManager::init()
+void BuddyChatManager::init()
 {
 	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
@@ -63,35 +63,35 @@ void AggregateChatManager::init()
 		chatAdded(chat);
 }
 
-void AggregateChatManager::chatAdded(const Chat &chat)
+void BuddyChatManager::chatAdded(const Chat &chat)
 {
 	BuddySet buddies = chat.contacts().toBuddySet();
 
-	if (!AggregateChats.contains(buddies))
+	if (!BuddyChats.contains(buddies))
 	{
 		QVector<Chat> chats;
 		chats.append(chat);
-		AggregateChats.insert(buddies, chats);
+		BuddyChats.insert(buddies, chats);
 	}
 	else
-		AggregateChats[buddies].append(chat);
+		BuddyChats[buddies].append(chat);
 }
 
-void AggregateChatManager::chatRemoved(const Chat &chat)
+void BuddyChatManager::chatRemoved(const Chat &chat)
 {
 	BuddySet buddies = chat.contacts().toBuddySet();
 
-	if (!AggregateChats.contains(buddies))
+	if (!BuddyChats.contains(buddies))
 		return;
 
-	AggregateChats[buddies].remove(AggregateChats[buddies].indexOf(chat));
-	if (AggregateChats.value(buddies).isEmpty())
-		AggregateChats.remove(buddies);
+	BuddyChats[buddies].remove(BuddyChats[buddies].indexOf(chat));
+	if (BuddyChats.value(buddies).isEmpty())
+		BuddyChats.remove(buddies);
 }
 
-Chat AggregateChatManager::aggregateChat(const Chat &chat)
+Chat BuddyChatManager::buddyChat(const Chat &chat)
 {
-	return aggregateChat(chat.contacts().toBuddySet());
+	return buddyChat(chat.contacts().toBuddySet());
 }
 
 /**
@@ -99,22 +99,22 @@ Chat AggregateChatManager::aggregateChat(const Chat &chat)
  * @short Makes chat object that aggregates all chats for given buddy set.
  * @return chat object that aggregates all chats for given buddy set
  *
- * This method will create and return new chat of 'Aggregate' type that
+ * This method will create and return new chat of 'Buddy' type that
  * contains all chats (for different accounts) for given set of buddies.
  */
-Chat AggregateChatManager::aggregateChat(const BuddySet &buddies)
+Chat BuddyChatManager::buddyChat(const BuddySet &buddies)
 {
-	if (!AggregateChats.contains(buddies))
+	if (!BuddyChats.contains(buddies))
 		return Chat::null;
 
-	QVector<Chat> chats = AggregateChats.value(buddies);
+	QVector<Chat> chats = BuddyChats.value(buddies);
 	if (chats.count() <= 1)
 		return Chat::null;
 
 	Chat result = Chat::create();
-	result.setType("Aggregate");
+	result.setType("Buddy");
 
-	ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(result.details());
+	ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(result.details());
 	details->setChats(chats);
 
 	return result;

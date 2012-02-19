@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_AGGREGATE_H
-#define CHAT_DETAILS_AGGREGATE_H
+#ifndef CHAT_DETAILS_BUDDY_H
+#define CHAT_DETAILS_BUDDY_H
 
 #include "chat/chat-details.h"
 #include "contacts/contact.h"
@@ -34,21 +34,21 @@
  */
 
 /**
- * @class ChatDetailsAggregate
+ * @class ChatDetailsBuddy
  * @short Chat data that aggregates some chats into one.
  *
  * Class contains list of chat objects. It joins these chats into one chat.
  * This is usable to join all chats for contacts of one buddy into one chat.
  */
-class KADUAPI ChatDetailsAggregate : public ChatDetails
+class KADUAPI ChatDetailsBuddy : public ChatDetails
 {
 	Q_OBJECT
 
 	QVector<Chat> Chats;
 
 public:
-	explicit ChatDetailsAggregate(ChatShared *chatData);
-	virtual ~ChatDetailsAggregate();
+	explicit ChatDetailsBuddy(ChatShared *chatData);
+	virtual ~ChatDetailsBuddy();
 
 	virtual bool shouldStore();
 
@@ -65,4 +65,4 @@ public:
  * @}
  */
 
-#endif // CHAT_DETAILS_AGGREGATE_H
+#endif // CHAT_DETAILS_BUDDY_H

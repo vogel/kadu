@@ -46,7 +46,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
@@ -210,7 +210,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 	if (!chatMessagesView)
 		return;
 
-	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
+	Chat chat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
 
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());

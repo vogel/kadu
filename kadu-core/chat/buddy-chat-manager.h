@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AGGREGATE_CHAT_MANAGER_H
-#define AGGREGATE_CHAT_MANAGER_H
+#ifndef BUDDY_CHAT_MANAGER_H
+#define BUDDY_CHAT_MANAGER_H
 
 #include <QtCore/QHash>
 #include <QtCore/QObject>
@@ -38,23 +38,23 @@ class BuddySet;
  */
 
 /**
- * @class AggregateChatManager
- * @short Makes chat object that aggregates all chats for given buddy set.
+ * @class BuddyChatManager
+ * @short Makes chat object that buddys all chats for given buddy set.
  *
  * Class contains one static method that makes chat object that
- * aggregates all chats for given buddy set.
+ * buddys all chats for given buddy set.
  */
-class KADUAPI AggregateChatManager : public QObject
+class KADUAPI BuddyChatManager : public QObject
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(AggregateChatManager)
+	Q_DISABLE_COPY(BuddyChatManager)
 
-	static AggregateChatManager *Instance;
+	static BuddyChatManager *Instance;
 
-	QHash<BuddySet, QVector<Chat> > AggregateChats;
+	QHash<BuddySet, QVector<Chat> > BuddyChats;
 
-	AggregateChatManager();
-	virtual ~AggregateChatManager();
+	BuddyChatManager();
+	virtual ~BuddyChatManager();
 
 	void init();
 
@@ -63,10 +63,10 @@ private slots:
 	void chatRemoved(const Chat &chat);
 
 public:
-	static AggregateChatManager * instance();
+	static BuddyChatManager * instance();
 
-	Chat aggregateChat(const Chat &chat);
-	Chat aggregateChat(const BuddySet &buddies);
+	Chat buddyChat(const Chat &chat);
+	Chat buddyChat(const BuddySet &buddies);
 
 };
 
@@ -74,4 +74,4 @@ public:
  * @}
  */
 
-#endif // AGGREGATE_CHAT_MANAGER_H
+#endif // BUDDY_CHAT_MANAGER_H

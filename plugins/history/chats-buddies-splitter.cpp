@@ -21,9 +21,9 @@
 #include <qdbuspendingreply.h>
 
 #include "buddies/buddy-manager.h"
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"
-#include "chat/chat-details-aggregate.h"
+#include "chat/chat-details-buddy.h"
 #include "contacts/contact-set.h"
 #include "talkable/talkable.h"
 
@@ -44,20 +44,20 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 	if (UsedChats.contains(chat))
 		return;
 
-	Chat aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-	if (!aggregate)
+	Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	if (!buddyChat)
 	{
 		UsedChats.insert(chat);
 		assignChat(chat);
 		return;
 	}
 
-	ChatDetailsAggregate *details = qobject_cast<ChatDetailsAggregate *>(aggregate.details());
+	ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(buddyChat.details());
 	Q_ASSERT(details);
 
 	foreach (const Chat &usedChat, details->chats())
 		UsedChats.insert(usedChat);
-	assignChat(aggregate);
+	assignChat(buddyChat);
 }
 
 void ChatsBuddiesSplitter::assignChat(const Chat &chat)

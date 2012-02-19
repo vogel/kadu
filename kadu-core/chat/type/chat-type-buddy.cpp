@@ -17,19 +17,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-aggregate.h"
+#include "chat/chat-details-buddy.h"
 #include "icons/kadu-icon.h"
 
-#include "chat-type-aggregate.h"
+#include "chat-type-buddy.h"
 
-ChatTypeAggregate::ChatTypeAggregate(QObject *parent) :
+ChatTypeBuddy::ChatTypeBuddy(QObject *parent) :
 		ChatType(parent)
 {
 	Aliases.append("Buddy");
 	Aliases.append("Aggregate");
 }
 
-ChatTypeAggregate::~ChatTypeAggregate()
+ChatTypeBuddy::~ChatTypeBuddy()
 {
 }
 
@@ -41,9 +41,9 @@ ChatTypeAggregate::~ChatTypeAggregate()
  * Sort index is used for sorting chat types in history window.
  * Chats with smaller sort indexes are displayed first.
  *
- * Sort index for ChatTypeAggregate is -1. That means, that this chat type wont be displayed in history window.
+ * Sort index for ChatTypeBuddy is -1. That means, that this chat type wont be displayed in history window.
  */
-int ChatTypeAggregate::sortIndex() const
+int ChatTypeBuddy::sortIndex() const
 {
 	return -1;
 }
@@ -56,11 +56,11 @@ int ChatTypeAggregate::sortIndex() const
  * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
  * and also it is stored with @link Chat @endlink data.
  *
- * Internal name for ChatTypeAggregate is 'Aggregate'.
+ * Internal name for ChatTypeBuddy is 'Buddy'.
  */
-QString ChatTypeAggregate::name() const
+QString ChatTypeBuddy::name() const
 {
-	return "Aggregate";
+	return "Buddy";
 }
 
 /**
@@ -70,9 +70,9 @@ QString ChatTypeAggregate::name() const
  *
  * Chat type internal aliases, used to imporitng old configurations.
  *
- * Internal aliases for ChatTypeAggregate are 'Buddy' and 'Aggregate'.
+ * Internal aliases for ChatTypeBuddy are 'Buddy' and 'Aggregate'.
  */
-QStringList ChatTypeAggregate::aliases() const
+QStringList ChatTypeBuddy::aliases() const
 {
 	return Aliases;
 }
@@ -85,9 +85,9 @@ QStringList ChatTypeAggregate::aliases() const
  * Chat type display name. Display name is used in history window. This name
  * is translated into national languaes.
  *
- * Display name for ChatTypeAggregate is 'Aggregate'.
+ * Display name for ChatTypeBuddy is 'Aggregate'.
  */
-QString ChatTypeAggregate::displayName() const
+QString ChatTypeBuddy::displayName() const
 {
 	return tr("Aggregate");
 }
@@ -100,9 +100,9 @@ QString ChatTypeAggregate::displayName() const
  * Chat type display name in plural form. Display name is used in history window.
  * This name is translated into national languaes.
  *
- * Plural display name for ChatTypeAggregate is 'Aggregate'.
+ * Plural display name for ChatTypeBuddy is 'Aggregate'.
  */
-QString ChatTypeAggregate::displayNamePlural() const
+QString ChatTypeBuddy::displayNamePlural() const
 {
 	return tr("Aggregates");
 }
@@ -114,9 +114,9 @@ QString ChatTypeAggregate::displayNamePlural() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeAggregate is 'kadu_icons/conference'.
+ * Icon for ChatTypeBuddy is 'kadu_icons/conference'.
  */
-KaduIcon ChatTypeAggregate::icon() const
+KaduIcon ChatTypeBuddy::icon() const
 {
 	return KaduIcon("kadu_icons/conference");
 }
@@ -129,20 +129,20 @@ KaduIcon ChatTypeAggregate::icon() const
  * Kadu window role for this chat type.
  * For aggregate the role is "kadu-chat-aggregate".
  */
-QString ChatTypeAggregate::windowRole() const
+QString ChatTypeBuddy::windowRole() const
 {
 	return "kadu-chat-aggregate";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsAggregate object for given chat type.
- * @return new ChatDetailsAggregate object for given chat type
+ * @short Creates new ChatDetailsBuddy object for given chat type.
+ * @return new ChatDetailsBuddy object for given chat type
  *
- * Creates new @link ChatDetailsAggregate @endlink object for
+ * Creates new @link ChatDetailsBuddy @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeAggregate::createChatDetails(ChatShared *chatData) const
+ChatDetails * ChatTypeBuddy::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsAggregate(chatData);
+	return new ChatDetailsBuddy(chatData);
 }

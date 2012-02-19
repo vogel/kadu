@@ -21,7 +21,7 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "gui/actions/action.h"
@@ -151,8 +151,8 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 		return;
 	}
 
-	const Chat &aggregateChat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
-	const Chat &messagesChat = aggregateChat ? aggregateChat : chatWidget->chat();
+	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
+	const Chat &messagesChat = buddyChat ? buddyChat : chatWidget->chat();
 	HistoryStorage *historyStorage = History::instance()->currentStorage();
 
 	if (!historyStorage)
