@@ -59,6 +59,9 @@ public:
 	void setChats(const QVector<Chat> &chats);
 	const QVector<Chat> & chats() const;
 
+	void addChat(const Chat &chat);
+	void removeChat(const Chat &chat);
+
 };
 
 /**

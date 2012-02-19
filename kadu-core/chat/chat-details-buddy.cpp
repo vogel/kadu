@@ -108,3 +108,16 @@ const QVector<Chat> & ChatDetailsBuddy::chats() const
 {
 	return Chats;
 }
+
+void ChatDetailsBuddy::addChat(const Chat &chat)
+{
+	if (!Chats.contains(chat))
+		Chats.append(chat);
+}
+
+void ChatDetailsBuddy::removeChat(const Chat &chat)
+{
+	int indexOf = Chats.indexOf(chat);
+	if (indexOf >= 0)
+		Chats.remove(indexOf);
+}

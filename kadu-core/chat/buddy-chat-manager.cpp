@@ -21,12 +21,15 @@
  */
 
 #include "accounts/account-manager.h"
-#include "buddies/buddy-set.h"
 #include "protocols/protocol.h"
 
-#include "chat/buddy-chat-manager.h"
+#include "buddies/buddy-manager.h"
+#include "chat/chat-details-buddy.h"
+#include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
-#include "chat-details-buddy.h"
+#include "contacts/contact-set.h"
+
+#include "buddy-chat-manager.h"
 
 BuddyChatManager * BuddyChatManager::Instance = 0;
 
@@ -47,6 +50,11 @@ BuddyChatManager::BuddyChatManager()
 
 BuddyChatManager::~BuddyChatManager()
 {
+	disconnect(BuddyManager::instance(), SIGNAL(buddyContactAdded(Buddy,Contact)),
+	           this, SLOT(buddyContactAdded(Buddy,Contact)));
+	disconnect(BuddyManager::instance(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	           this, SLOT(buddyContactRemoved(Buddy,Contact)));
+
 	disconnect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	disconnect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
@@ -56,6 +64,11 @@ BuddyChatManager::~BuddyChatManager()
 
 void BuddyChatManager::init()
 {
+	connect(BuddyManager::instance(), SIGNAL(buddyContactAdded(Buddy,Contact)),
+	        this, SLOT(buddyContactAdded(Buddy,Contact)));
+	connect(BuddyManager::instance(), SIGNAL(buddyContactRemoved(Buddy,Contact)),
+	        this, SLOT(buddyContactRemoved(Buddy,Contact)));
+
 	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
@@ -63,59 +76,99 @@ void BuddyChatManager::init()
 		chatAdded(chat);
 }
 
-void BuddyChatManager::chatAdded(const Chat &chat)
+Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 {
-	BuddySet buddies = chat.contacts().toBuddySet();
+	Chat result = Chat::create();
+	result.setType("Buddy");
 
-	if (!BuddyChats.contains(buddies))
+	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(result.details());
+	Q_ASSERT(buddyDetails);
+
+	QVector<Chat> chats;
+	foreach (const Contact &contact, buddy.contacts())
 	{
-		QVector<Chat> chats;
-		chats.append(chat);
-		BuddyChats.insert(buddies, chats);
+		const Chat &contactChat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		if (contactChat)
+			chats.append(contactChat);
 	}
-	else
-		BuddyChats[buddies].append(chat);
+
+	buddyDetails->setChats(chats);
+
+	BuddyChats.insert(buddy, result);
+
+	return result;
 }
 
-void BuddyChatManager::chatRemoved(const Chat &chat)
+void BuddyChatManager::buddyContactAdded(const Buddy &buddy, const Contact &contact)
 {
-	BuddySet buddies = chat.contacts().toBuddySet();
+	Chat chat = buddyChat(buddy);
+	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	Q_ASSERT(buddyDetails);
 
-	if (!BuddyChats.contains(buddies))
+	buddyDetails->addChat(ChatManager::instance()->findChat(ContactSet(contact), false));
+}
+
+void BuddyChatManager::buddyContactRemoved(const Buddy &buddy, const Contact &contact)
+{
+	Chat chat = BuddyChats.value(buddy);
+	if (!chat)
 		return;
 
-	BuddyChats[buddies].remove(BuddyChats[buddies].indexOf(chat));
-	if (BuddyChats.value(buddies).isEmpty())
-		BuddyChats.remove(buddies);
+	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	Q_ASSERT(buddyDetails);
+
+	buddyDetails->removeChat(ChatManager::instance()->findChat(ContactSet(contact), false));
+}
+
+void BuddyChatManager::chatAdded(const Chat &addedChat)
+{
+	ChatDetailsContact *contactDetails = qobject_cast<ChatDetailsContact *>(addedChat.details());
+	if (!contactDetails || !contactDetails->contact().ownerBuddy())
+		return;
+
+	Chat chat = buddyChat(contactDetails->contact().ownerBuddy());
+	ChatDetailsBuddy *chatDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	Q_ASSERT(chatDetails);
+
+	chatDetails->addChat(addedChat);
+}
+
+void BuddyChatManager::chatRemoved(const Chat &removedChat)
+{
+	ChatDetailsContact *contactDetails = qobject_cast<ChatDetailsContact *>(removedChat.details());
+	if (!contactDetails || !contactDetails->contact().ownerBuddy())
+		return;
+
+	Chat chat = BuddyChats.value(contactDetails->contact().ownerBuddy());
+	if (!chat)
+		return;
+
+	ChatDetailsBuddy *chatDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	Q_ASSERT(chatDetails);
+
+	chatDetails->removeChat(removedChat);
 }
 
 Chat BuddyChatManager::buddyChat(const Chat &chat)
 {
-	return buddyChat(chat.contacts().toBuddySet());
+	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	if (buddyDetails)
+		return chat;
+
+	ChatDetailsContact *contactDetails = qobject_cast<ChatDetailsContact *>(chat.details());
+	if (!contactDetails)
+		return Chat::null;
+
+	return buddyChat(contactDetails->contact().ownerBuddy());
 }
 
-/**
- * @param buddies set of buddies
- * @short Makes chat object that aggregates all chats for given buddy set.
- * @return chat object that aggregates all chats for given buddy set
- *
- * This method will create and return new chat of 'Buddy' type that
- * contains all chats (for different accounts) for given set of buddies.
- */
-Chat BuddyChatManager::buddyChat(const BuddySet &buddies)
+Chat BuddyChatManager::buddyChat(const Buddy &buddy)
 {
-	if (!BuddyChats.contains(buddies))
+	if (!buddy)
 		return Chat::null;
 
-	QVector<Chat> chats = BuddyChats.value(buddies);
-	if (chats.count() <= 1)
-		return Chat::null;
-
-	Chat result = Chat::create();
-	result.setType("Buddy");
-
-	ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(result.details());
-	details->setChats(chats);
-
-	return result;
+	if (BuddyChats.contains(buddy))
+		return BuddyChats.value(buddy);
+	else
+		return createAndInsertBuddyChat(buddy);
 }
