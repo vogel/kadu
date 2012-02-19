@@ -77,7 +77,7 @@ QString ChatTypeConference::name() const
  *
  * Chat type internal aliases, used to imporitng old configurations.
  *
- * Internal aliases for ChatTypeSimple are 'ContactList' and 'Conference'.
+ * Internal aliases for ChatTypeConference are 'ContactList' and 'Conference'.
  */
 QStringList ChatTypeConference::aliases() const
 {

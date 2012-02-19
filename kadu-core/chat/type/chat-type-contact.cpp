@@ -24,19 +24,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-simple.h"
+#include "chat/chat-details-contact.h"
 #include "icons/kadu-icon.h"
 
-#include "chat-type-simple.h"
+#include "chat-type-contact.h"
 
-ChatTypeSimple::ChatTypeSimple(QObject *parent) :
+ChatTypeContact::ChatTypeContact(QObject *parent) :
 		ChatType(parent)
 {
 	Aliases.append("Contact");
 	Aliases.append("Simple");
 }
 
-ChatTypeSimple::~ChatTypeSimple()
+ChatTypeContact::~ChatTypeContact()
 {
 }
 
@@ -48,9 +48,9 @@ ChatTypeSimple::~ChatTypeSimple()
  * Sort index is used for sorting chat types in history window.
  * Chats with smaller sort indexes are displayed first.
  *
- * Sort index for ChatTypeSimple is 0.
+ * Sort index for ChatTypeContact is 0.
  */
-int ChatTypeSimple::sortIndex() const
+int ChatTypeContact::sortIndex() const
 {
 	return 0;
 }
@@ -63,11 +63,11 @@ int ChatTypeSimple::sortIndex() const
  * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
  * and also it is stored with @link Chat @endlink data.
  *
- * Internal name for ChatTypeSimple is 'Simple'.
+ * Internal name for ChatTypeContact is 'Contact'.
  */
-QString ChatTypeSimple::name() const
+QString ChatTypeContact::name() const
 {
-	return "Simple";
+	return "Contact";
 }
 
 /**
@@ -77,9 +77,9 @@ QString ChatTypeSimple::name() const
  *
  * Chat type internal aliases, used to imporitng old configurations.
  *
- * Internal aliases for ChatTypeSimple are 'Contact' and 'Simple'.
+ * Internal aliases for ChatTypeContact are 'Contact' and 'Simple'.
  */
-QStringList ChatTypeSimple::aliases() const
+QStringList ChatTypeContact::aliases() const
 {
 	return Aliases;
 }
@@ -92,9 +92,9 @@ QStringList ChatTypeSimple::aliases() const
  * Chat type display name. Display name is used in history window. This name
  * is translated into national languaes.
  *
- * Display name for ChatTypeSimple is 'Chat'.
+ * Display name for ChatTypeContact is 'Chat'.
  */
-QString ChatTypeSimple::displayName() const
+QString ChatTypeContact::displayName() const
 {
 	return tr("Chat");
 }
@@ -107,9 +107,9 @@ QString ChatTypeSimple::displayName() const
  * Chat type display name in plural form. Display name is used in history window.
  * This name is translated into national languaes.
  *
- * Plural display name for ChatTypeSimple is 'Chats'.
+ * Plural display name for ChatTypeContact is 'Chats'.
  */
-QString ChatTypeSimple::displayNamePlural() const
+QString ChatTypeContact::displayNamePlural() const
 {
 	return tr("Chats");
 }
@@ -121,9 +121,9 @@ QString ChatTypeSimple::displayNamePlural() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeSimple is 'internet-group-chat'.
+ * Icon for ChatTypeContact is 'internet-group-chat'.
  */
-KaduIcon ChatTypeSimple::icon() const
+KaduIcon ChatTypeContact::icon() const
 {
 	return KaduIcon("internet-group-chat");
 }
@@ -134,22 +134,22 @@ KaduIcon ChatTypeSimple::icon() const
  * @return window role for this chat type.
  *
  * Kadu window role for this chat type.
- * For the simple chat the role is "kadu-chat-simple".
+ * For the contact chat the role is "kadu-chat-contact".
  */
-QString ChatTypeSimple::windowRole() const
+QString ChatTypeContact::windowRole() const
 {
-	return "kadu-chat-simple";
+	return "kadu-chat-contact";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsSimple object for given chat type.
- * @return new ChatDetailsSimple object for given chat type
+ * @short Creates new ChatDetailsContact object for given chat type.
+ * @return new ChatDetailsContact object for given chat type
  *
- * Creates new @link ChatDetailsSimple @endlink object for
+ * Creates new @link ChatDetailsContact @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeSimple::createChatDetails(ChatShared *chatData) const
+ChatDetails * ChatTypeContact::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsSimple(chatData);
+	return new ChatDetailsContact(chatData);
 }

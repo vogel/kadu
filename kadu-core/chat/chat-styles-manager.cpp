@@ -33,7 +33,7 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "chat/chat-details-simple.h"
+#include "chat/chat-details-contact.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-engine-adium/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
@@ -400,9 +400,9 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	Chat chat = Chat::create();
 	chat.setChatAccount(BuddyPreferredManager::instance()->preferredAccount(example));
-	chat.setType("Simple");
+	chat.setType("Contact");
 
-	ChatDetailsSimple *details = dynamic_cast<ChatDetailsSimple *>(chat.details());
+	ChatDetailsContact *details = dynamic_cast<ChatDetailsContact *>(chat.details());
 	details->setState(StorableObject::StateNew);
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 

@@ -19,20 +19,20 @@
 
 #include "chat/chat.h"
 
-#include "hide-simple-chats-talkable-filter.h"
+#include "hide-contact-chats-talkable-filter.h"
 
-HideSimpleChatsTalkableFilter::HideSimpleChatsTalkableFilter(QObject *parent) :
+HideContactChatsTalkableFilter::HideContactChatsTalkableFilter(QObject *parent) :
 		TalkableFilter(parent)
 {
 }
 
-HideSimpleChatsTalkableFilter::~HideSimpleChatsTalkableFilter()
+HideContactChatsTalkableFilter::~HideContactChatsTalkableFilter()
 {
 }
 
-TalkableFilter::FilterResult HideSimpleChatsTalkableFilter::filterChat(const Chat &chat)
+TalkableFilter::FilterResult HideContactChatsTalkableFilter::filterChat(const Chat &chat)
 {
-	if (chat.type() == "Simple")
+	if (chat.type() == "Contact" || chat.type() == "Simple")
 		return Rejected;
 	else
 		return Undecided;

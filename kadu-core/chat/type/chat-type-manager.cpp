@@ -22,7 +22,7 @@
 #include "chat/type/chat-type-aggregate.h"
 #include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-conference.h"
-#include "chat/type/chat-type-simple.h"
+#include "chat/type/chat-type-contact.h"
 #include "icons/icons-manager.h"
 
 #include "chat-type-manager.h"
@@ -55,7 +55,7 @@ ChatTypeManager::~ChatTypeManager()
 
 void ChatTypeManager::init()
 {
-	registerChatType(new ChatTypeSimple());
+	registerChatType(new ChatTypeContact());
 	registerChatType(new ChatTypeConference());
 	registerChatType(new ChatTypeAggregate());
 }

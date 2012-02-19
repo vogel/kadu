@@ -25,7 +25,7 @@
 #include "accounts/account-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-conference.h"
-#include "chat/chat-details-simple.h"
+#include "chat/chat-details-contact.h"
 #include "chat/type/chat-type-manager.h"
 #include "message/message-manager.h"
 
@@ -160,14 +160,14 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
  * is no contact in set or one of them is assigned to different account, Chat::null
  * will be returned.
  *
- * This method search list of all registered chats to find one with type "Simple"
+ * This method search list of all registered chats to find one with type "Contact"
  * or "Conference" that has exactly the same set of contacts like in the parameter.
  * When one is found - it is returned. Else, if create parameter is false, Chat::null
- * is returned. When it is true - new chat with type "Simple" or "Conference" (when
+ * is returned. When it is true - new chat with type "Contact" or "Conference" (when
  * constacts set contains more than one contact) is created, added to manager,
  * fully loaded and returned.
  *
- * Do not manually create chats of type "Simple" and "Conference" - use this
+ * Do not manually create chats of type "Contact" and "Conference" - use this
  * method instead.
  */
 Chat ChatManager::findChat(const ContactSet &contacts, bool create)
@@ -201,7 +201,7 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	}
 
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
-		if ((c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
+		if ((c.type() == QLatin1String("Contact") || c.type() == QLatin1String("Simple") || c.type() == QLatin1String("Conference")) && c.contacts() == contacts)
 		{
 			// when contacts changed their accounts we need to change account of chat too
 			c.setChatAccount(account);
@@ -217,11 +217,11 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	Contact contact = contacts.toContact();
 	if (!contact.isNull())
 	{
-		chat.setType("Simple");
+		chat.setType("Contact");
 
-		ChatDetailsSimple *simple = dynamic_cast<ChatDetailsSimple *>(chat.details());
-		simple->setState(StateNew);
-		simple->setContact(contact);
+		ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
+		chatDetailsContact->setState(StateNew);
+		chatDetailsContact->setContact(contact);
 	}
 	else if (contacts.size() > 1)
 	{

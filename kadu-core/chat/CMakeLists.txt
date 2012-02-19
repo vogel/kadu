@@ -3,7 +3,7 @@ set (chat_SRCS
 	chat.cpp
 	chat-details-aggregate.cpp
 	chat-details-conference.cpp
-	chat-details-simple.cpp
+	chat-details-contact.cpp
 	chat-geometry-data.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
@@ -26,15 +26,15 @@ set (chat_SRCS
 	type/chat-type-aggregate.cpp
 	type/chat-type-aware-object.cpp
 	type/chat-type-conference.cpp
+	type/chat-type-contact.cpp
 	type/chat-type-manager.cpp
-	type/chat-type-simple.cpp
 )
 
 set (chat_MOC_SRCS
 	chat-details.h
 	chat-details-aggregate.h
 	chat-details-conference.h
-	chat-details-simple.h
+	chat-details-contact.h
 	chat-geometry-data.h
 
 	aggregate-chat-manager.h
@@ -53,8 +53,8 @@ set (chat_MOC_SRCS
 	type/chat-type.h
 	type/chat-type-aggregate.h
 	type/chat-type-conference.h
+	type/chat-type-contact.h
 	type/chat-type-manager.h
-	type/chat-type-simple.h
 )
 
 kadu_subdirectory (chat "${chat_SRCS}" "${chat_MOC_SRCS}" "")

@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_SIMPLE_H
-#define CHAT_DETAILS_SIMPLE_H
+#ifndef CHAT_DETAILS_CONTACT_H
+#define CHAT_DETAILS_CONTACT_H
 
 #include "contacts/contact.h"
 
@@ -34,14 +34,14 @@
  */
 
 /**
- * @class ChatDetailsSimple
+ * @class ChatDetailsContact
  * @author Rafal 'Vogel' Malinowski
- * @short Chat data specyfic to 'simple' chat type.
+ * @short Chat data specyfic to 'contact' chat type.
  *
  * Class contains one Contact object. Chat name is set to this Contact's
  * Buddy's display name, chat title is that name with current description.
  */
-class ChatDetailsSimple : public ChatDetails
+class ChatDetailsContact : public ChatDetails
 {
 	Q_OBJECT
 
@@ -53,8 +53,8 @@ protected:
 	virtual bool shouldStore();
 
 public:
-	explicit ChatDetailsSimple(ChatShared *chatData);
-	virtual ~ChatDetailsSimple();
+	explicit ChatDetailsContact(ChatShared *chatData);
+	virtual ~ChatDetailsContact();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const;
@@ -69,4 +69,4 @@ public:
  * @}
  */
 
-#endif // CHAT_DETAILS_SIMPLE_H
+#endif // CHAT_DETAILS_CONTACT_H

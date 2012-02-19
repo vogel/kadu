@@ -28,8 +28,6 @@
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
-#include "chat/chat-details-conference.h"
-#include "chat/chat-details-simple.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
