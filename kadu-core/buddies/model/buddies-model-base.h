@@ -58,6 +58,12 @@ protected:
 	virtual int buddyIndex(const Buddy &buddy) const = 0;
 	virtual Buddy buddyAt(int index) const = 0;
 
+protected slots:
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
+
 public:
 	explicit BuddiesModelBase(QObject *parent = 0);
 	virtual ~BuddiesModelBase();
