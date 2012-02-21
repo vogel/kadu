@@ -45,8 +45,8 @@ class Updates : public QObject, AccountsAwareObject
 
 	void buildQuery();
 
-	bool isNewerVersion(const QString &newestversion);
-	QString stripVersion(const QString stripversion);
+	static bool isNewerVersionThan(const QString &version);
+	static QString stripVersion(const QString &version);
 
 private slots:
 	void gotUpdatesInfo(const QHttpResponseHeader &responseHeader);

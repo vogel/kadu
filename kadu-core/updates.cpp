@@ -169,44 +169,38 @@ void Updates::run()
 	HttpClient->get(Query);
 }
 
-bool Updates::isNewerVersion(const QString &newestversion)
+bool Updates::isNewerVersionThan(const QString &version)
 {
-	QStringList actual = stripVersion(Core::version()).split('.', QString::SkipEmptyParts);
-	QStringList newest = stripVersion(newestversion).split('.', QString::SkipEmptyParts);
+	QStringList thisVersion = stripVersion(Core::version()).split('.');
+	QStringList queryVersion = stripVersion(version).split('.');
 
-	if (newest.at(0).toInt() != actual.at(0).toInt())
-		return newest.at(0).toInt() > actual.at(0).toInt();
-	if (newest.at(1).toInt() != actual.at(1).toInt())
-		return newest.at(1).toInt() > actual.at(1).toInt();
-	if (newest.at(2).toInt() != actual.at(2).toInt())
-		return newest.at(2).toInt() > actual.at(2).toInt();
-	if (newest.length() > actual.length())
-		return true;
-	if (newest.length() == 4)
-		return newest.at(3).toInt() > actual.at(3).toInt();
+	for (int i = 0, end = qMin(thisVersion.size(), queryVersion.size()); i < end; ++i)
+		if (queryVersion.at(i).toInt() != thisVersion.at(i).toInt())
+			return queryVersion.at(i).toInt() > thisVersion.at(i).toInt();
 
-	return false;
+	return (queryVersion.size() > thisVersion.size());
 }
 
-QString Updates::stripVersion(const QString stripversion)
+QString Updates::stripVersion(const QString &version)
 {
-	Qt::CaseSensitivity cs = Qt::CaseInsensitive; // find and replace are NOT case sensitive
- 	QString version = stripversion;
+	Qt::CaseSensitivity cs = Qt::CaseInsensitive;
 
-	if (version.contains("-svn", cs))
-		version.replace("-svn", "01", cs);
-	else if (version.contains("-git", cs))
-		version.replace("-git", "01", cs);
-	else if (version.contains("-alpha", cs))
-		version.replace("-alpha", "02", cs);
-	else if (version.contains("-beta", cs))
-		version.replace("-beta", "03", cs);
-	else if (version.contains("-rc", cs))
-		version.replace("-rc", "04", cs);
+	// We don't want to compare git versions at all.
+	if (version.contains("-g", cs))
+		return "9999";
+
+	QString strippedVersion = version;
+	// Use negative numbers so that 0.1.0 is considered newer than 0.1-alpha10.
+	if (strippedVersion.contains("-alpha", cs))
+		strippedVersion.replace("-alpha", ".-3.", cs);
+	else if (strippedVersion.contains("-beta", cs))
+		strippedVersion.replace("-beta", ".-2.", cs);
+	else if (strippedVersion.contains("-rc", cs))
+		strippedVersion.replace("-rc", ".-1.", cs);
 	else
-		version.append("05");
+		strippedVersion.append(".0");
 
-	return version;
+	return strippedVersion;
 }
 
 void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
@@ -215,20 +209,17 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 	kdebugf();
 
-	QByteArray data = HttpClient->readAll();
-
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
-		unsigned int size = data.size();
-		if (size > 31)
+		QString newestVersion = HttpClient->readAll();
+		if (newestVersion.size() > 31)
 		{
 			kdebugmf(KDEBUG_WARNING, "cannot obtain update info\n");
 			deleteLater();
 			return;
 		}
 
-		QString newestVersion(data);
-		if (isNewerVersion(newestVersion))
+		if (isNewerVersionThan(newestVersion))
 		{
 			UpdatesDialog *dialog = new UpdatesDialog(newestVersion, Core::instance()->kaduWindow());
 			dialog->show();
