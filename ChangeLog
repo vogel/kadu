@@ -24,6 +24,7 @@
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
 * core: #2477 fixed: remove expired recent chats at Kadu startup (ultr)
+* chat: fixed a bug in Adium chat styles engine causing messages to be often doubled when opening a chat widget (beevvy)
 
 +++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)

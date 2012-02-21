@@ -77,14 +77,10 @@ void RefreshViewHack::loadFinished()
 		return;
 	}
 
-	// We need to clear messages in case something was rendered before this slot was called.
-	Engine->clearMessages(Renderer);
-	Renderer->setLastMessage(0);
+	emit finished(Renderer);
 
 	foreach (MessageRenderInfo *message, Renderer->messages())
 		Engine->appendChatMessage(Renderer, message);
-
-	emit finished(Renderer);
 
 	deleteLater();
 }
@@ -205,6 +201,9 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 
 void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const QList<MessageRenderInfo *> &messages)
 {
+	if (CurrentRefreshHacks.contains(renderer))
+		return;
+
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{
 		clearMessages(renderer);
@@ -220,6 +219,9 @@ void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, const 
 
 void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
+	if (CurrentRefreshHacks.contains(renderer))
+		return;
+
 	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && renderer->pruneEnabled())
 	{
 		clearMessages(renderer);
@@ -234,6 +236,9 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 
 void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
+	if (CurrentRefreshHacks.contains(renderer))
+		return;
+
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
@@ -305,9 +310,6 @@ void AdiumChatStyleEngine::currentPreviewHackDestroyed()
 
 void AdiumChatStyleEngine::refreshHackFinished(HtmlMessagesRenderer *renderer)
 {
-	if (!CurrentRefreshHacks.contains(renderer))
-		return;
-
 	CurrentRefreshHacks.remove(renderer);
 }
 

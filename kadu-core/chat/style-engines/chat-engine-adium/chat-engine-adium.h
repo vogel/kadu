@@ -82,7 +82,7 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	friend class PreviewHack;
 
 	AdiumStyle CurrentStyle;
-	QMap<HtmlMessagesRenderer *, RefreshViewHack*> CurrentRefreshHacks;
+	QMap<HtmlMessagesRenderer *, RefreshViewHack *> CurrentRefreshHacks;
 	PreviewHack *CurrentPreviewHack;
 
 	QString jsCode;
