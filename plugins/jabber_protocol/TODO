@@ -1,9 +1,0 @@
-- utrzymywac kompatybilnosc z aktualnym API kadu 0.6.6 (wciaz sie cos zmienia)
-- dodac obsluge eventow w wiadomosciach przychodzacych
-- dodac potwierdzanie subskrypcji/wysylanie prosby o subskrypcje
-
-na wszelki wypadek dane :
-    svn:externals
-    libiris/iris svn://anonsvn.kde.org/home/kde/trunk/KDE/kdenetwork/kopete/protocols/jabber/libiris/iris
-    libiris/cutestuff svn://anonsvn.kde.org/home/kde/trunk/KDE/kdenetwork/kopete/protocols/jabber/libiris/cutestuff
-+ na dzień 16.02.2009 rewizja 922099
