@@ -3,6 +3,7 @@
 * gui: #2477 fixed: remove expired recent chats at Kadu startup (ultr)
 * gui: #2435 & #2437 fixed: View File Transfers action always shows & activates file transfer window (Juzef)
 * jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
+* chat: fixed a bug in Adium chat styles engine causing messages to be often doubled when opening a chat widget (beevvy)
 
 ﻿+++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)
