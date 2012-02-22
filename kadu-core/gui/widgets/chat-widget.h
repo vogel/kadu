@@ -184,4 +184,6 @@ signals:
 
 };
 
+Q_DECLARE_METATYPE(ChatWidget *);
+
 #endif // CHAT_WIDGET_H
