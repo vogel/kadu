@@ -76,6 +76,8 @@ class HistorySqlStorage : public HistoryStorage
 	QString talkableContactsWhere(const Talkable &talkable, const QString &fieldName);
 	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
 
+	static QString stripAllScriptTags(const QString &string);
+
 	void executeQuery(QSqlQuery &query);
 	QVector<Message> messagesFromQuery(QSqlQuery &query);
 	QVector<Message> statusesFromQuery(const Contact &contact, QSqlQuery &query);
