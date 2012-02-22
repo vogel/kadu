@@ -1116,11 +1116,11 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 
 		const QString description = query.value(2).toString();
 		if (description.isEmpty())
-			message.setContent(typeData.name());
+			message.setContent(Qt::escape(typeData.name()));
 		else
-			message.setContent(QString("%1 with description: %2")
+			message.setContent(Qt::escape(QString("%1 with description: %2")
 					.arg(typeData.name())
-					.arg(description));
+					.arg(description)));
 
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
@@ -1145,7 +1145,7 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(query.value(0).toString());
+		message.setContent(Qt::escape(query.value(0).toString()));
 
 		messages.append(message);
 	}
