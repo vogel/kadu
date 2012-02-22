@@ -1083,7 +1083,7 @@ QList<TimedStatus> HistorySqlStorage::statusesFromQuery(QSqlQuery &query)
 
 		Status status;
 		status.setType(StatusTypeManager::instance()->fromName(query.value(1).toString()));
-		status.setDescription(query.value(2).toString());
+		status.setDescription(Qt::escape(query.value(2).toString()));
 
 		TimedStatus timedStatus(status, query.value(3).toDateTime());
 
@@ -1104,7 +1104,7 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(query.value(0).toString());
+		message.setContent(Qt::escape(query.value(0).toString()));
 
 		messages.append(message);
 	}
