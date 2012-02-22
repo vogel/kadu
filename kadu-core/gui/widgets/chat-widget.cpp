@@ -216,7 +216,6 @@ void ChatWidget::createGui()
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
-	HorizontalSplitter->addWidget(frame);
 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::ControlModifier), this);
 	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
