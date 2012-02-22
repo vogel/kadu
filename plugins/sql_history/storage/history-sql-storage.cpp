@@ -1037,6 +1037,21 @@ void HistorySqlStorage::executeQuery(QSqlQuery &query)
 */
 }
 
+QString HistorySqlStorage::stripAllScriptTags(const QString &string)
+{
+	QString beforeReplace = string;
+	QString afterReplace = beforeReplace;
+
+	afterReplace.replace("<script", "", Qt::CaseInsensitive);
+	while (beforeReplace != afterReplace)
+	{
+		beforeReplace = afterReplace;
+		afterReplace.replace("<script", "", Qt::CaseInsensitive);
+	}
+
+	return afterReplace;
+}
+
 QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
 	QVector<Message> messages;
@@ -1059,7 +1074,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(chat);
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(query.value(2).toString());
+		message.setContent(stripAllScriptTags(query.value(2).toString()));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
