@@ -828,9 +828,9 @@ void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 {
 	Q_UNUSED(input)
 
-	if (e->key() == Qt::Key_Home && e->modifiers() == Qt::ControlModifier)
+	if (e->key() == Qt::Key_Home && e->modifiers() == Qt::AltModifier)
 		MessagesView->scrollToTop();
-	else if (e->key() == Qt::Key_End && e->modifiers() == Qt::ControlModifier)
+	else if (e->key() == Qt::Key_End && e->modifiers() == Qt::AltModifier)
 		MessagesView->forceScrollToBottom();
 
 	if (handled)
