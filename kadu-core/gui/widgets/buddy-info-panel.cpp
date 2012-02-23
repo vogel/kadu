@@ -49,6 +49,11 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 	page()->setPalette(p);
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
 
+	page()->currentFrame()->evaluateJavaScript(
+		"XMLHttpRequest.prototype.open = function() { return false; };"
+		"XMLHttpRequest.prototype.send = function() { return false; };"
+	);
+
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 }
 
