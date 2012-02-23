@@ -38,6 +38,7 @@ public:
 
 protected:
 	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);
+
 };
 
 #endif // CHAT_VIEW_NETWORK_ACCESS_MANAGER
