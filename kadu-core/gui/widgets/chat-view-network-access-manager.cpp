@@ -37,6 +37,9 @@ ChatViewNetworkAccessManager::ChatViewNetworkAccessManager(QNetworkAccessManager
 
 QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *device)
 {
+	if (QNetworkAccessManager::GetOperation != operation && QNetworkAccessManager::HeadOperation != operation)
+		operation = QNetworkAccessManager::GetOperation;
+
 	if (request.url().scheme() != "kaduimg")
 		return QNetworkAccessManager::createRequest(operation, request, device);
 
