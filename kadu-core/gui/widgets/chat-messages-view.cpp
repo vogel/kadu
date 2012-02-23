@@ -67,6 +67,11 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	page()->setPalette(p);
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
 
+	page()->currentFrame()->evaluateJavaScript(
+		"XMLHttpRequest.prototype.open = function() { return false; };"
+		"XMLHttpRequest.prototype.send = function() { return false; };"
+	);
+
 	configurationUpdated();
 
 	connectChat();
