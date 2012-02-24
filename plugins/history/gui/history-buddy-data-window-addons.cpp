@@ -22,7 +22,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/buddy-data-window.h"
-#include "history-talkable-data.h"
+#include "storage/custom-properties.h"
 
 #include "history-buddy-data-window-addons.h"
 
@@ -44,8 +44,13 @@ void HistoryBuddyDataWindowAddons::save()
 	Q_ASSERT(buddyDataWindow);
 	Q_ASSERT(StoreHistoryCheckBoxes.contains(buddyDataWindow));
 
-	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", 0, true);
-	htd->setStoreHistory(StoreHistoryCheckBoxes.value(buddyDataWindow)->isChecked());
+	if (!buddyDataWindow->buddy())
+		return;
+
+	if (StoreHistoryCheckBoxes.value(buddyDataWindow)->isChecked())
+		buddyDataWindow->buddy().data()->customProperties()->removeProperty("history:StoreHistory");
+	else
+		buddyDataWindow->buddy().data()->customProperties()->addProperty("history:StoreHistory", false, CustomProperties::Storable);
 }
 
 void HistoryBuddyDataWindowAddons::configurationUpdated()
@@ -68,8 +73,7 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowCreated(BuddyDataWindow *buddy
 	// insert before final stretch
 	optionsLayout->insertWidget(optionsLayout->count() - 1, historyCheckBox);
 
-	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", 0, false);
-	historyCheckBox->setChecked(!htd || htd->storeHistory());
+	historyCheckBox->setChecked(buddyDataWindow->buddy().data()->customProperties()->property("history:StoreHistory", true).toBool());
 	historyCheckBox->setEnabled(StoreHistory);
 
 	StoreHistoryCheckBoxes.insert(buddyDataWindow, historyCheckBox);

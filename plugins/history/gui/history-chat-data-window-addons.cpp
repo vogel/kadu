@@ -22,7 +22,7 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/chat-data-window.h"
-#include "history-talkable-data.h"
+#include "storage/custom-properties.h"
 
 #include "history-chat-data-window-addons.h"
 
@@ -44,8 +44,10 @@ void HistoryChatDataWindowAddons::save()
 	Q_ASSERT(chatDataWindow);
 	Q_ASSERT(StoreHistoryCheckBoxes.contains(chatDataWindow));
 
-	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", 0, true);
-	htd->setStoreHistory(StoreHistoryCheckBoxes.value(chatDataWindow)->isChecked());
+	if (StoreHistoryCheckBoxes.value(chatDataWindow)->isChecked())
+		chatDataWindow->chat().data()->customProperties()->removeProperty("history:StoreHistory");
+	else
+		chatDataWindow->chat().data()->customProperties()->addProperty("history:StoreHistory", false, CustomProperties::Storable);
 }
 
 void HistoryChatDataWindowAddons::configurationUpdated()
@@ -66,8 +68,7 @@ void HistoryChatDataWindowAddons::chatDataWindowCreated(ChatDataWindow *chatData
 	QCheckBox *historyCheckBox = new QCheckBox(tr("Store history"), chatDataWindow);
 	layout->insertWidget(3, historyCheckBox);
 
-	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", 0, false);
-	historyCheckBox->setChecked(!htd || htd->storeHistory());
+	historyCheckBox->setChecked(chatDataWindow->chat().data()->customProperties()->property("history:StoreHistory", true).toBool());
 	historyCheckBox->setEnabled(StoreHistory);
 
 	StoreHistoryCheckBoxes.insert(chatDataWindow, historyCheckBox);

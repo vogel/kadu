@@ -63,7 +63,7 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "protocols/services/chat-service.h"
-
+#include "storage/custom-properties.h"
 #include "debug.h"
 
 #include "actions/show-history-action-description.h"
@@ -73,7 +73,6 @@
 #include "history-save-thread.h"
 
 #include "history.h"
-#include "history-talkable-data.h"
 
 void disableNonHistoryContacts(Action *action)
 {
@@ -248,8 +247,7 @@ bool History::shouldSaveForBuddy(const Buddy &buddy)
 	if (!buddy)
 		return false;
 
-	HistoryTalkableData *htd = buddy.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
-	return !htd || htd->storeHistory();
+	return buddy.data()->customProperties()->property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldSaveForChat(const Chat &chat)
@@ -257,8 +255,7 @@ bool History::shouldSaveForChat(const Chat &chat)
 	if (!chat)
 		return false;
 
-	HistoryTalkableData *htd = chat.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
-	return !htd || htd->storeHistory();
+	return chat.data()->customProperties()->property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldEnqueueMessage(const Message &message)
