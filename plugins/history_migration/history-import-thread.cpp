@@ -32,14 +32,14 @@
 #include "message/message.h"
 #include "plugins/history/history.h"
 #include "status/status.h"
+#include "storage/custom-properties.h"
 
 #include "history-import-thread.h"
-#include "history-importer-chat-data.h"
 #include "history-importer-manager.h"
 #include "history-migration-helper.h"
 
 HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
-		QThread(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists),
+		QObject(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists),
 		TotalEntries(totalEntries), ImportedEntries(0), ImportedChats(0), TotalMessages(0),
 		ImportedMessages(0), Canceled(false), CancelForced(false)
 {
@@ -49,14 +49,14 @@ HistoryImportThread::~HistoryImportThread()
 {
 }
 
+void HistoryImportThread::prepareChats()
+{
+	foreach (const UinsList &uinsList, UinsLists)
+		chatFromUinsList(uinsList);
+}
+
 void HistoryImportThread::run()
 {
-	// we have to use this guard as a parent for HistoryImporterChatData
-	// without this there is a backtrace:
-	// "Warning: QObject: Cannot create children for a parent that is in a different thread."
-	// and Kadu is crashing as in bug #1938
-	QScopedPointer<QObject> guard(new QObject());
-
 	History::instance()->setSyncEnabled(false);
 
 	ImportedEntries = 0;
@@ -76,9 +76,7 @@ void HistoryImportThread::run()
 
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
-		// guard as a parent. See above
-		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", guard.data(), true);
-		if (historyImporterChatData->imported())
+		if (chat.data()->customProperties()->property("history-importer:Imported", false).toBool())
 		{
 			ImportedEntries += entries.count();
 			continue;
@@ -101,13 +99,14 @@ void HistoryImportThread::run()
 		if (Canceled && CancelForced)
 			break;
 
-		historyImporterChatData->setImported(true);
-		historyImporterChatData->ensureStored();
+		chat.data()->customProperties()->addProperty("history-importer:Imported", true, CustomProperties::Storable);
 		// force sync for every chat
 		History::instance()->forceSync();
 	}
 
 	History::instance()->setSyncEnabled(true);
+
+	emit finished();
 }
 
 void HistoryImportThread::cancel(bool force)

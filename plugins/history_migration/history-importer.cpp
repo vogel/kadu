@@ -23,6 +23,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QList>
+#include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtGui/QProgressDialog>
 
@@ -55,8 +56,8 @@ HistoryImporter::~HistoryImporter()
 
 	if (Thread)
 	{
-		disconnect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
-		Thread->cancel(true);
+		disconnect(HistoryImport, SIGNAL(finished()), this, SLOT(threadFinished()));
+		HistoryImport->cancel(true);
 		Thread->wait(2000);
 		if (Thread->isRunning())
 		{
@@ -94,12 +95,18 @@ void HistoryImporter::run()
 		return;
 	}
 
-	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries, this);
-	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+	HistoryImport = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
+	HistoryImport->prepareChats();
+
+	Thread = new QThread();
+	HistoryImport->moveToThread(Thread);
+
+	connect(Thread, SIGNAL(started()), HistoryImport, SLOT(run()));
+	connect(HistoryImport, SIGNAL(finished()), this, SLOT(threadFinished()));
 
 	ProgressWindow = new HistoryImportWindow();
 	ProgressWindow->setChatsCount(uinsLists.size());
-	connect(ProgressWindow, SIGNAL(rejected()), Thread, SLOT(cancel()));
+	connect(ProgressWindow, SIGNAL(rejected()), HistoryImport, SLOT(cancel()));
 
 	QTimer *updateProgressBar = new QTimer(this);
 	updateProgressBar->setSingleShot(false);
@@ -113,17 +120,17 @@ void HistoryImporter::run()
 
 void HistoryImporter::updateProgressWindow()
 {
-	if (ProgressWindow && Thread)
+	if (ProgressWindow && HistoryImport)
 	{
-		ProgressWindow->setChatsProgress(Thread->importedChats());
-		ProgressWindow->setMessagesCount(Thread->totalMessages());
-		ProgressWindow->setMessagesProgress(Thread->importedMessages());
+		ProgressWindow->setChatsProgress(HistoryImport->importedChats());
+		ProgressWindow->setMessagesCount(HistoryImport->totalMessages());
+		ProgressWindow->setMessagesProgress(HistoryImport->importedMessages());
 	}
 }
 
 void HistoryImporter::threadFinished()
 {
-	if (Thread && !Thread->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
+	if (HistoryImport && !HistoryImport->wasCanceled() && SourceDirectory == KaduPaths::instance()->profilePath() + QLatin1String("history/"))
 	{
 		config_file.writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
