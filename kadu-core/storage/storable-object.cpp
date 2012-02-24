@@ -24,6 +24,7 @@
 
 #include <QtCore/QtAlgorithms>
 
+#include "storage/custom-properties.h"
 #include "storage/module-data.h"
 
 #include "storable-object.h"
@@ -38,6 +39,7 @@
 StorableObject::StorableObject() :
 		Destroying(false), State(StateNew)
 {
+	Properties = new CustomProperties();
 }
 
 StorableObject::~StorableObject()
@@ -48,6 +50,8 @@ StorableObject::~StorableObject()
 	// TODO: 0.11, memory leak
 // 	foreach (void *moduleData, ModulesData)
 // 		delete moduleData;
+
+	delete Properties;
 }
 
 /**
@@ -142,6 +146,8 @@ void StorableObject::store()
 
 	foreach (ModuleData *moduleData, ModulesStorableData)
 		moduleData->ensureStored();
+
+	Properties->storeTo(storage());
 }
 
 /**
@@ -172,6 +178,8 @@ bool StorableObject::shouldStore()
 void StorableObject::load()
 {
 	State = StateLoaded;
+
+	Properties->loadFrom(storage());
 }
 
 /**
@@ -337,4 +345,9 @@ QSharedPointer<StoragePoint> StorableObject::storagePointForModuleData(const QSt
 	return moduleDataNode.isNull()
 			? QSharedPointer<StoragePoint>()
 			: QSharedPointer<StoragePoint>(new StoragePoint(parent->storage(), moduleDataNode));
+}
+
+CustomProperties * StorableObject::customProperties() const
+{
+	return Properties;
 }

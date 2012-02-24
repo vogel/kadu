@@ -40,6 +40,7 @@
 	type getMethodName() { ensureLoaded(); return fieldName; } \
 	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
 
+class CustomProperties;
 class ModuleData;
 
 /**
@@ -139,6 +140,7 @@ private:
 	StorableObjectState State;
 	QMap<QString, ModuleData *> ModulesStorableData;
 	QMap<QString, void *> ModulesData;
+	CustomProperties *Properties;
 
 	friend class ModuleData;
 	void moduleDataAboutToBeDestroyed(const QString &moduleName, ModuleData *moduleData);
@@ -364,6 +366,8 @@ template<class T>
 
 	void removeValue(const QString &name);
 	void removeAttribute(const QString &name);
+
+	CustomProperties * customProperties() const;
 
 };
 

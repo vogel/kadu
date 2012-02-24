@@ -1,4 +1,5 @@
 set (storage_SRCS
+	custom-properties.cpp
 	named-storable-object.cpp
 	module-data.cpp
 	shared.cpp
@@ -9,6 +10,7 @@ set (storage_SRCS
 )
 
 set (storage_MOC_SRCS
+	custom-properties.h
 	module-data.h
 )
 
