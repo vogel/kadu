@@ -59,7 +59,6 @@
 #include "message/message.h"
 #include "multilogon/multilogon-session.h"
 #include "notify/account-notification.h"
-#include "notify/buddy-notify-data.h"
 #include "notify/multilogon-notification.h"
 #include "notify/notification.h"
 #include "notify/notifier.h"
@@ -79,6 +78,7 @@
 
 #ifdef Q_WS_X11
 #include "os/x11tools.h" // this should be included as last one,
+#include <storage/custom-properties.h>
 #undef Status            // and Status defined by Xlib.h must be undefined
 #endif
 
@@ -219,9 +219,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	foreach (const Buddy &buddy, buddies)
 		if (buddy.data())
 		{
-			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
-
-			if (!bnd || !bnd->notify())
+			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
 			{
 				on = false;
 				break;
@@ -239,12 +237,10 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
-		if (bnd->notify() == on)
-		{
-			bnd->setNotify(!on);
-			bnd->ensureStored();
-		}
+		if (on)
+			buddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+		else
+			buddy.data()->customProperties()->removeProperty("notify:Notify");
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
@@ -357,10 +353,7 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 	}
 
 	bool notify_contact = true;
-	BuddyNotifyData *bnd = 0;
-	bnd = contact.ownerBuddy().data()->moduleStorableData<BuddyNotifyData>("notify", this, false);
-
-	if (!bnd || !bnd->notify())
+	if (!contact.ownerBuddy().data()->customProperties()->property("notify:Notify", false).toBool())
 		notify_contact = false;
 
 	if (!notify_contact && !NotifyAboutAll)
@@ -563,9 +556,10 @@ void NotificationManager::groupUpdated()
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
-		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", this, true);
-		bnd->setNotify(notify);
-		bnd->ensureStored();
+		if (notify)
+			buddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+		else
+			buddy.data()->customProperties()->removeProperty("notify:Notify");
 	}
 }
 
@@ -679,8 +673,7 @@ void checkNotify(Action *action)
 	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
 		if (buddy.data())
 		{
-			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
-			if (!bnd || !bnd->notify())
+			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
 			{
 				on = false;
 				break;

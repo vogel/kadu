@@ -1,6 +1,5 @@
 set (notify_SRCS
 	account-notification.cpp
-	buddy-notify-data.cpp
 	chat-notification.cpp
 	new-message-notification.cpp
 	multilogon-notification.cpp
@@ -15,7 +14,6 @@ set (notify_SRCS
 
 set (notify_MOC_SRCS
 	account-notification.h
-	buddy-notify-data.h
 	chat-notification.h
 	new-message-notification.h
 	multilogon-notification.h

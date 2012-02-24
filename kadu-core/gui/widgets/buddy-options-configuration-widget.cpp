@@ -32,7 +32,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration/configuration-file.h"
-#include "notify/buddy-notify-data.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 #include "storage/custom-properties.h"
@@ -70,21 +69,18 @@ void BuddyOptionsConfigurationWidget::createGui()
 	layout->addWidget(BlockCheckBox);
 
 	NotifyCheckBox = new QCheckBox(tr("Notify when buddy's status changes"), this);
-	BuddyNotifyData *bnd = 0;
-	if (MyBuddy.data())
-		bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
-	if (bnd)
-		NotifyCheckBox->setChecked(bnd->notify());
-
 	layout->addWidget(NotifyCheckBox);
 
 	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), this);
-	if (MyBuddy)
-		HideDescriptionCheckBox->setChecked(MyBuddy.data()->customProperties()->property("kadu:HideDescription", false).toBool());
-
 	layout->addWidget(HideDescriptionCheckBox);
 
 	layout->addStretch(100);
+
+	if (MyBuddy)
+	{
+		HideDescriptionCheckBox->setChecked(MyBuddy.data()->customProperties()->property("kadu:HideDescription", false).toBool());
+		NotifyCheckBox->setChecked(MyBuddy.data()->customProperties()->property("notify:Notify", false).toBool());
+	}
 }
 
 void BuddyOptionsConfigurationWidget::save()
@@ -92,16 +88,17 @@ void BuddyOptionsConfigurationWidget::save()
 	MyBuddy.setBlocked(BlockCheckBox->isChecked());
 	MyBuddy.setOfflineTo(!OfflineToCheckBox->isChecked());
 
-	if (MyBuddy.data())
+	if (MyBuddy)
 	{
-		BuddyNotifyData *bnd = MyBuddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		bnd->setNotify(NotifyCheckBox->isChecked());
-		bnd->ensureStored();
-
 		if (!HideDescriptionCheckBox->isChecked())
 			MyBuddy.data()->customProperties()->removeProperty("kadu:HideDescription");
 		else
 			MyBuddy.data()->customProperties()->addProperty("kadu:HideDescription", true, CustomProperties::Storable);
+
+		if (!NotifyCheckBox->isChecked())
+			MyBuddy.data()->customProperties()->removeProperty("notify:Notify");
+		else
+			MyBuddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
 	}
 }
 
