@@ -44,7 +44,7 @@ void HistoryBuddyDataWindowAddons::save()
 	Q_ASSERT(buddyDataWindow);
 	Q_ASSERT(StoreHistoryCheckBoxes.contains(buddyDataWindow));
 
-	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", this, true);
+	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", 0, true);
 	htd->setStoreHistory(StoreHistoryCheckBoxes.value(buddyDataWindow)->isChecked());
 }
 
@@ -68,7 +68,7 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowCreated(BuddyDataWindow *buddy
 	// insert before final stretch
 	optionsLayout->insertWidget(optionsLayout->count() - 1, historyCheckBox);
 
-	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+	HistoryTalkableData *htd = buddyDataWindow->buddy().data()->moduleStorableData<HistoryTalkableData>("history", 0, false);
 	historyCheckBox->setChecked(!htd || htd->storeHistory());
 	historyCheckBox->setEnabled(StoreHistory);
 

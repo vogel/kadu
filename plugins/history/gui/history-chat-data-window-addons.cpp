@@ -44,7 +44,7 @@ void HistoryChatDataWindowAddons::save()
 	Q_ASSERT(chatDataWindow);
 	Q_ASSERT(StoreHistoryCheckBoxes.contains(chatDataWindow));
 
-	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", this, true);
+	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", 0, true);
 	htd->setStoreHistory(StoreHistoryCheckBoxes.value(chatDataWindow)->isChecked());
 }
 
@@ -66,7 +66,7 @@ void HistoryChatDataWindowAddons::chatDataWindowCreated(ChatDataWindow *chatData
 	QCheckBox *historyCheckBox = new QCheckBox(tr("Store history"), chatDataWindow);
 	layout->insertWidget(3, historyCheckBox);
 
-	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", this, false);
+	HistoryTalkableData *htd = chatDataWindow->chat().data()->moduleStorableData<HistoryTalkableData>("history", 0, false);
 	historyCheckBox->setChecked(!htd || htd->storeHistory());
 	historyCheckBox->setEnabled(StoreHistory);
 
