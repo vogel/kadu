@@ -33,7 +33,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"

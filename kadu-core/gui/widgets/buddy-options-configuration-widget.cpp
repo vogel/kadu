@@ -31,11 +31,11 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QVBoxLayout>
 
-#include "buddies/buddy-kadu-data.h"
 #include "configuration/configuration-file.h"
 #include "notify/buddy-notify-data.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
+#include "storage/custom-properties.h"
 
 #include "buddy-options-configuration-widget.h"
 
@@ -79,11 +79,8 @@ void BuddyOptionsConfigurationWidget::createGui()
 	layout->addWidget(NotifyCheckBox);
 
 	HideDescriptionCheckBox = new QCheckBox(tr("Hide description"), this);
-	BuddyKaduData *ckd = 0;
-	if (MyBuddy.data())
-		ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, false);
-	if (ckd)
-		HideDescriptionCheckBox->setChecked(ckd->hideDescription());
+	if (MyBuddy)
+		HideDescriptionCheckBox->setChecked(MyBuddy.data()->customProperties()->property("kadu:HideDescription", false).toBool());
 
 	layout->addWidget(HideDescriptionCheckBox);
 
@@ -101,9 +98,10 @@ void BuddyOptionsConfigurationWidget::save()
 		bnd->setNotify(NotifyCheckBox->isChecked());
 		bnd->ensureStored();
 
-		BuddyKaduData *ckd = MyBuddy.data()->moduleStorableData<BuddyKaduData>("kadu", 0, true);
-		ckd->setHideDescription(HideDescriptionCheckBox->isChecked());
-		ckd->ensureStored();
+		if (!HideDescriptionCheckBox->isChecked())
+			MyBuddy.data()->customProperties()->removeProperty("kadu:HideDescription");
+		else
+			MyBuddy.data()->customProperties()->addProperty("kadu:HideDescription", true, CustomProperties::Storable);
 	}
 }
 
