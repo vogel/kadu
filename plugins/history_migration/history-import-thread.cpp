@@ -39,7 +39,7 @@
 #include "history-migration-helper.h"
 
 HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
-		QThread(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists),
+		QObject(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists),
 		TotalEntries(totalEntries), ImportedEntries(0), ImportedChats(0), TotalMessages(0),
 		ImportedMessages(0), Canceled(false), CancelForced(false)
 {
@@ -47,6 +47,12 @@ HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &pat
 
 HistoryImportThread::~HistoryImportThread()
 {
+}
+
+void HistoryImportThread::prepareChats()
+{
+	foreach (const UinsList &uinsList, UinsLists)
+		chatFromUinsList(uinsList);
 }
 
 void HistoryImportThread::run()
@@ -108,6 +114,8 @@ void HistoryImportThread::run()
 	}
 
 	History::instance()->setSyncEnabled(true);
+
+	emit finished();
 }
 
 void HistoryImportThread::cancel(bool force)

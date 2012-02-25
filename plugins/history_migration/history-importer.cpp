@@ -23,6 +23,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QList>
+#include <QtCore/QThread>
 #include <QtCore/QTimer>
 #include <QtGui/QProgressDialog>
 
@@ -56,7 +57,7 @@ HistoryImporter::~HistoryImporter()
 	if (Thread)
 	{
 		disconnect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
-		Thread->cancel(true);
+		ImportThread->cancel(true);
 		Thread->wait(2000);
 		if (Thread->isRunning())
 		{
@@ -94,8 +95,14 @@ void HistoryImporter::run()
 		return;
 	}
 
-	Thread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries, this);
-	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
+	ImportThread = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
+	ImportThread->prepareChats();
+
+	Thread = new QThread();
+	ImportThread->moveToThread(Thread);
+
+	connect(Thread, SIGNAL(started()), ImportThread, SLOT(run()));
+	connect(ImportThread, SIGNAL(finished()), this, SLOT(threadFinished()));
 
 	ProgressWindow = new HistoryImportWindow();
 	ProgressWindow->setChatsCount(uinsLists.size());
@@ -113,17 +120,17 @@ void HistoryImporter::run()
 
 void HistoryImporter::updateProgressWindow()
 {
-	if (ProgressWindow && Thread)
+	if (ProgressWindow && ImportThread)
 	{
-		ProgressWindow->setChatsProgress(Thread->importedChats());
-		ProgressWindow->setMessagesCount(Thread->totalMessages());
-		ProgressWindow->setMessagesProgress(Thread->importedMessages());
+		ProgressWindow->setChatsProgress(ImportThread->importedChats());
+		ProgressWindow->setMessagesCount(ImportThread->totalMessages());
+		ProgressWindow->setMessagesProgress(ImportThread->importedMessages());
 	}
 }
 
 void HistoryImporter::threadFinished()
 {
-	if (Thread && !Thread->wasCanceled() && SourceDirectory == profilePath("history/"))
+	if (ImportThread && !ImportThread->wasCanceled() && SourceDirectory == profilePath("history/"))
 	{
 		config_file.writeEntry("History", "Imported_from_0.6.5", true);
 		// this is no longer useful
