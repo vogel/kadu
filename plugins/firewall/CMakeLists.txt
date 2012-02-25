@@ -9,7 +9,6 @@ set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
 set (SOURCES
-	buddy-firewall-data.cpp
 	firewall-configuration-ui-handler.cpp
 	firewall-notification.cpp
 	firewall-plugin.cpp
@@ -17,7 +16,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	buddy-firewall-data.h
 	firewall-configuration-ui-handler.h
 	firewall-notification.h
 	firewall-plugin.h

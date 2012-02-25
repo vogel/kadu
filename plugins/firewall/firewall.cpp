@@ -60,9 +60,9 @@ Nowa funkcjonalnosc - Dorregaray
 #include "notify/notification.h"
 #include "protocols/services/chat-service.h"
 #include "status/status-container.h"
+#include "storage/custom-properties.h"
 #include "debug.h"
 
-#include "buddy-firewall-data.h"
 #include "firewall-notification.h"
 
 #include "firewall.h"
@@ -472,9 +472,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 			if (buddy)
 			{
-				BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
-
-				if (!bfd || !bfd->securedSending())
+				if (!buddy.data()->customProperties()->property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
 					return;
 			}
 
@@ -537,9 +535,7 @@ void Firewall::import_0_6_5_configuration()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		bfd->setSecuredSending(true);
-		bfd->ensureStored();
+		buddy.data()->customProperties()->addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
 	config_file.removeVariable("Firewall", "Secured_list");
