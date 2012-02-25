@@ -51,9 +51,9 @@ if (NOT KADU_DO_NOT_FIND)
     endif (KADU_INCLUDE_DIR)
 endif (NOT KADU_DO_NOT_FIND)
 
-if (NOT CMAKE_BUILD_TYPE)
+if (NOT MSVC AND NOT XCODE_VERSION AND NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
-endif (NOT CMAKE_BUILD_TYPE)
+endif (NOT MSVC AND NOT XCODE_VERSION AND NOT CMAKE_BUILD_TYPE)
 
 # never use -O3 on GCC unless explicitly set by the user
 if (CMAKE_COMPILER_IS_GNUCXX)

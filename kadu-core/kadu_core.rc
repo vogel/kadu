@@ -18,7 +18,7 @@ BEGIN
 		BLOCK "040904E4"
 		BEGIN
 		VALUE "CompanyName",	"Kadu Team\0"
-		VALUE "FileDescription",  "Kadu Core library\0"
+		VALUE "FileDescription",  "Kadu Core Library\0"
 		VALUE "LegalCopyright", "Kadu Team\0"
 		VALUE "FileVersion", VERSION
 		VALUE "OriginalFilename", "kadu_core.dll\0"
