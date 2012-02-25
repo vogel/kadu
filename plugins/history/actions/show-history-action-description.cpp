@@ -155,6 +155,9 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	const Chat &messagesChat = aggregateChat ? aggregateChat : chatWidget->chat();
 	HistoryStorage *historyStorage = History::instance()->currentStorage();
 
+	if (!historyStorage)
+		return;
+
 	QFuture<QVector<Message> > futureMessages;
 	if (0 != days)
 	{
