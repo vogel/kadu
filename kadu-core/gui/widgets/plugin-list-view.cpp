@@ -541,7 +541,7 @@ void PluginListView::Private::PluginDelegate::slotAboutClicked()
                 info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
         }
 
-        MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
+        MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin Information"), info, QMessageBox::Ok, itemView());
 }
 
 void PluginListView::Private::PluginDelegate::slotConfigureClicked()

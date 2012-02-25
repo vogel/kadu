@@ -76,7 +76,7 @@ PluginsWindow::PluginsWindow()
 
 	setWindowRole("kadu-modules");
 
-	setWindowTitle(tr("Manage plugins"));
+	setWindowTitle(tr("Configure Plugins"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
