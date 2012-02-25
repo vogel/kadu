@@ -138,7 +138,6 @@ private:
 	bool Destroying;
 	QSharedPointer<StoragePoint> Storage;
 	StorableObjectState State;
-	QMap<QString, ModuleData *> ModulesStorableData;
 	QMap<QString, void *> ModulesData;
 	CustomProperties *Properties;
 
@@ -301,36 +300,6 @@ template<class T>
 		}
 
 		return def;
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads storable ModuleData data from XML node (as subnode).
-	 * @param T type of returned value (must be class that inherits from @link ModuleData @endlink)
-	 * @param module name of module to be loaded
-	 * @param qobjectParent QObject parent of new object, it will be responsible for deleting data on plugin unloading
-	 * @param create when true this method will create new ModuleData node (if not present)
-	 * @return value of XML subnode, as an object
-	 *
-	 * Loads object from XML subnode 'modules' with type T. If node is not present
-	 * and create is false this method will return NULL value, else it will at least
-	 * create new object with default values.
-	 */
-template<class T>
-	T * moduleStorableData(const QString &module, QObject *qobjectParent, bool create)
-	{
-		if (ModulesStorableData.contains(module))
-			return qobject_cast<T *>(ModulesStorableData[module]);
-
-		QSharedPointer<StoragePoint> storagePoint(storagePointForModuleData(module, create));
-		if (!storagePoint)
-			return 0;
-
-		T *result = new T(module, this, qobjectParent);
-		result->setState(StateNew);
-		result->setStorage(storagePoint);
-		ModulesStorableData.insert(module, result);
-		return result;
 	}
 
 	/**

@@ -45,12 +45,6 @@ StorableObject::StorableObject() :
 StorableObject::~StorableObject()
 {
 	Destroying = true;
-
-	qDeleteAll(ModulesStorableData);
-	// TODO: 0.11, memory leak
-// 	foreach (void *moduleData, ModulesData)
-// 		delete moduleData;
-
 	delete Properties;
 }
 
@@ -143,10 +137,6 @@ const QSharedPointer<StoragePoint> & StorableObject::storage()
 void StorableObject::store()
 {
 	ensureLoaded();
-
-	foreach (ModuleData *moduleData, ModulesStorableData)
-		moduleData->ensureStored();
-
 	Properties->storeTo(storage());
 }
 
@@ -260,12 +250,6 @@ void StorableObject::moduleDataAboutToBeDestroyed(const QString &moduleName, Mod
 
 	if (ModulesData.contains(moduleName) && ModulesData.value(moduleName) == moduleData)
 		ModulesData.remove(moduleName);
-
-	if (ModulesStorableData.value(moduleName) == moduleData)
-	{
-		moduleData->ensureStored();
-		ModulesStorableData.remove(moduleName);
-	}
 }
 
 /**
