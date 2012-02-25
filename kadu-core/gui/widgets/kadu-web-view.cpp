@@ -119,7 +119,7 @@ void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
 	QAction *copy = pageAction(QWebPage::Copy);
 	copy->setText(tr("Copy"));
 	QAction *copyLink = pageAction(QWebPage::CopyLinkToClipboard);
-	copyLink->setText(tr("Copy Link"));
+	copyLink->setText(tr("Copy Link Address"));
 	copyLink->setEnabled(isLink);
 	QAction *copyImage = pageAction(QWebPage::CopyImageToClipboard);
 	copyImage->setText(tr("Copy Image"));

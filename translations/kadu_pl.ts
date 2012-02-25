@@ -2477,8 +2477,8 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
         <translation>Kopiuj</translation>
     </message>
     <message>
-        <source>Copy Link</source>
-        <translation>Kopiuj link</translation>
+        <source>Copy Link Address</source>
+        <translation>Kopiuj adres linku</translation>
     </message>
     <message>
         <source>Copy Image</source>
