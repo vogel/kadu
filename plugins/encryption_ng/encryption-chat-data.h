@@ -28,17 +28,11 @@
 #include <QtGui/QAction>
 
 #include "chat/chat.h"
-#include "storage/module-data.h"
-
-#undef Property
-#define Property(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; }
 
 class Decryptor;
 class Encryptor;
 
-class EncryptionChatData : public ModuleData
+class EncryptionChatData : public QObject
 {
 	Q_OBJECT
 
@@ -50,6 +44,7 @@ public:
 	};
 
 private:
+	Chat MyChat;
 	Encryptor *ChatEncryptor;
 	Decryptor *ChatDecryptor;
 
@@ -61,18 +56,12 @@ private slots:
 	void encryptorDestroyed();
 	void decryptorDestroyed();
 
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
-
 public:
-	explicit EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
+	explicit EncryptionChatData(const Chat &chat, QObject *parent);
 	virtual ~EncryptionChatData();
 
-	virtual QString name() const;
-
-	Property(EncryptState, encrypt, Encrypt)
+	void setEncrypt(EncryptState encrypt);
+	EncryptState encrypt();
 
 	void setEncryptor(Encryptor *encryptor);
 	Encryptor * encryptor();
@@ -81,7 +70,5 @@ public:
 	Decryptor * decryptor();
 
 };
-
-#undef Property
 
 #endif // ENCRYPTION_CHAT_DATA_H

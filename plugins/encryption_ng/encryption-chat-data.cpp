@@ -24,13 +24,15 @@
  */
 
 #include "contacts/contact-set.h"
+#include "storage/custom-properties.h"
+
 #include "decryptor.h"
 #include "encryptor.h"
 
 #include "encryption-chat-data.h"
 
-EncryptionChatData::EncryptionChatData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent) :
-		ModuleData(moduleName, parent, qobjectParent), ChatEncryptor(0), ChatDecryptor(0), Encrypt(EncryptStateDefault)
+EncryptionChatData::EncryptionChatData(const Chat &chat, QObject *parent) :
+		QObject(parent), MyChat(chat), ChatEncryptor(0), ChatDecryptor(0), Encrypt(EncryptStateDefault)
 {
 }
 
@@ -41,13 +43,8 @@ EncryptionChatData::~EncryptionChatData()
 EncryptionChatData::EncryptState EncryptionChatData::importEncrypt()
 {
 	EncryptState result = EncryptStateDefault;
-	StorableObject *chatStorage = storageParent();
-	ChatShared *chat = dynamic_cast<ChatShared *>(chatStorage);
 
-	if (!chat)
-		return result;
-
-	ContactSet contacts = chat->contacts();
+	ContactSet contacts = MyChat.contacts();
 	if (1 != contacts.size())
 		return result;
 
@@ -63,42 +60,6 @@ EncryptionChatData::EncryptState EncryptionChatData::importEncrypt()
 	return result;
 }
 
-void EncryptionChatData::load()
-{
-	if (!isValidStorage())
-		return;
-
-	StorableObject::load();
-
-	Encrypt = hasValue("Encrypt")
-			? (loadValue<bool>("Encrypt")
-				? EncryptStateEnabled
-				: EncryptStateDisabled)
-			: importEncrypt();
-}
-
-void EncryptionChatData::store()
-{
-	if (!isValidStorage())
-		return;
-
-	Q_ASSERT(Encrypt != EncryptStateDefault);
-
-	storeValue("Encrypt", (Encrypt == EncryptStateEnabled) ? true : false);
-}
-
-bool EncryptionChatData::shouldStore()
-{
-	ensureLoaded();
-
-	return ModuleData::shouldStore() && (Encrypt != EncryptStateDefault);
-}
-
-QString EncryptionChatData::name() const
-{
-	return QLatin1String("encryption-ng");
-}
-
 void EncryptionChatData::encryptorDestroyed()
 {
 	ChatEncryptor = 0;
@@ -107,6 +68,31 @@ void EncryptionChatData::encryptorDestroyed()
 void EncryptionChatData::decryptorDestroyed()
 {
 	ChatDecryptor = 0;
+}
+
+void EncryptionChatData::setEncrypt(EncryptionChatData::EncryptState encrypt)
+{
+	if (!MyChat || Encrypt == encrypt)
+		return;
+
+	Encrypt = encrypt;
+
+	if (Encrypt != EncryptStateDefault)
+		MyChat.data()->customProperties()->addProperty("encryption-ng:Encrypt", Encrypt == EncryptStateEnabled, CustomProperties::Storable);
+	else
+		MyChat.data()->customProperties()->removeProperty("encryption-ng:Encrypt");
+}
+
+EncryptionChatData::EncryptState EncryptionChatData::encrypt()
+{
+	if (!MyChat.data()->customProperties()->hasProperty("encryption-ng:Encrypt"))
+		Encrypt = importEncrypt();
+	else if (MyChat.data()->customProperties()->property("encryption-ng:Encrypt", true).toBool())
+		Encrypt = EncryptStateEnabled;
+	else
+		Encrypt = EncryptStateDisabled;
+
+	return Encrypt;
 }
 
 void EncryptionChatData::setEncryptor(Encryptor *encryptor)

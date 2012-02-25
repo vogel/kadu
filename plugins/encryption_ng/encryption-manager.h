@@ -35,6 +35,7 @@ class ActionDescription;
 class Chat;
 class ChatWidget;
 class Contact;
+class EncryptionChatData;
 class KeyGenerator;
 
 class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
@@ -44,10 +45,13 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 
 	static EncryptionManager *Instance;
 
+	QMap<Chat, EncryptionChatData *> ChatEnryptions;
 	KeyGenerator *Generator;
 
 	EncryptionManager();
 	virtual ~EncryptionManager();
+
+	EncryptionChatData * chatEncryption(const Chat &chat);
 
 private slots:
 	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
