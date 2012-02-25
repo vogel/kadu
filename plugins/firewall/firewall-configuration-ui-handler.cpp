@@ -32,7 +32,6 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/kadu-paths.h"
-#include "storage/custom-properties.h"
 #include "debug.h"
 
 #include "firewall.h"
@@ -99,7 +98,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			if (!buddy.data()->customProperties()->property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
+			if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
 				AllList->addItem(buddy.display());
 			else
 				SecureList->addItem(buddy.display());
@@ -233,7 +232,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		buddy.data()->customProperties()->addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
+		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
 	count = AllList->count();
@@ -243,7 +242,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		buddy.data()->customProperties()->removeProperty("firewall-secured-sending:FirewallSecuredSending");
+		buddy.removeProperty("firewall-secured-sending:FirewallSecuredSending");
 	}
 
 	config_file.writeEntry("Firewall", "question", QuestionEdit->toPlainText());

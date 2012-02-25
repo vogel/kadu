@@ -46,7 +46,6 @@
 #include "notify-configuration-ui-handler.h"
 
 #include "debug.h"
-#include <storage/custom-properties.h>
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 		ConfigurationUiHandler(parent), notificationsGroupBox(0)
@@ -160,7 +159,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
+			if (!buddy.property("notify:Notify", false).toBool())
 				allUsers->addItem(buddy.display());
 			else
 				notifiedUsers->addItem(buddy.display());
@@ -251,7 +250,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		buddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+		buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
 	}
 
 	count = allUsers->count();
@@ -261,7 +260,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		buddy.data()->customProperties()->removeProperty("notify:Notify");
+		buddy.removeProperty("notify:Notify");
 	}
 
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())

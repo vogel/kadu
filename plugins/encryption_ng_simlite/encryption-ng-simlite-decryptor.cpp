@@ -22,7 +22,6 @@
 
 #include "chat/chat.h"
 #include "misc/coding-conversion.h"
-#include "storage/custom-properties.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -182,9 +181,9 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 		bool supportUtf = (head.flags & SIM_FLAG_SUPPORT_UTF8);
 
 		if (!supportUtf)
-			chat.data()->customProperties()->removeProperty("encryption-ng-simlite:SupportUtf");
+			chat.removeProperty("encryption-ng-simlite:SupportUtf");
 		else
-			chat.data()->customProperties()->addProperty("encryption-ng-simlite:SupportUtf", true, CustomProperties::Storable);
+			chat.addProperty("encryption-ng-simlite:SupportUtf", true, CustomProperties::Storable);
 	}
 
 	return result;

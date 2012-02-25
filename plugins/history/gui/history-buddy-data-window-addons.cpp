@@ -22,7 +22,6 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/buddy-data-window.h"
-#include "storage/custom-properties.h"
 
 #include "history-buddy-data-window-addons.h"
 
@@ -48,9 +47,9 @@ void HistoryBuddyDataWindowAddons::save()
 		return;
 
 	if (StoreHistoryCheckBoxes.value(buddyDataWindow)->isChecked())
-		buddyDataWindow->buddy().data()->customProperties()->removeProperty("history:StoreHistory");
+		buddyDataWindow->buddy().removeProperty("history:StoreHistory");
 	else
-		buddyDataWindow->buddy().data()->customProperties()->addProperty("history:StoreHistory", false, CustomProperties::Storable);
+		buddyDataWindow->buddy().addProperty("history:StoreHistory", false, CustomProperties::Storable);
 }
 
 void HistoryBuddyDataWindowAddons::configurationUpdated()
@@ -73,7 +72,7 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowCreated(BuddyDataWindow *buddy
 	// insert before final stretch
 	optionsLayout->insertWidget(optionsLayout->count() - 1, historyCheckBox);
 
-	historyCheckBox->setChecked(buddyDataWindow->buddy().data()->customProperties()->property("history:StoreHistory", true).toBool());
+	historyCheckBox->setChecked(buddyDataWindow->buddy().property("history:StoreHistory", true).toBool());
 	historyCheckBox->setEnabled(StoreHistory);
 
 	StoreHistoryCheckBoxes.insert(buddyDataWindow, historyCheckBox);

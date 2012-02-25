@@ -34,7 +34,6 @@
 #include "configuration/configuration-file.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
-#include "storage/custom-properties.h"
 
 #include "buddy-options-configuration-widget.h"
 
@@ -78,8 +77,8 @@ void BuddyOptionsConfigurationWidget::createGui()
 
 	if (MyBuddy)
 	{
-		HideDescriptionCheckBox->setChecked(MyBuddy.data()->customProperties()->property("kadu:HideDescription", false).toBool());
-		NotifyCheckBox->setChecked(MyBuddy.data()->customProperties()->property("notify:Notify", false).toBool());
+		HideDescriptionCheckBox->setChecked(MyBuddy.property("kadu:HideDescription", false).toBool());
+		NotifyCheckBox->setChecked(MyBuddy.property("notify:Notify", false).toBool());
 	}
 }
 
@@ -91,14 +90,14 @@ void BuddyOptionsConfigurationWidget::save()
 	if (MyBuddy)
 	{
 		if (!HideDescriptionCheckBox->isChecked())
-			MyBuddy.data()->customProperties()->removeProperty("kadu:HideDescription");
+			MyBuddy.removeProperty("kadu:HideDescription");
 		else
-			MyBuddy.data()->customProperties()->addProperty("kadu:HideDescription", true, CustomProperties::Storable);
+			MyBuddy.addProperty("kadu:HideDescription", true, CustomProperties::Storable);
 
 		if (!NotifyCheckBox->isChecked())
-			MyBuddy.data()->customProperties()->removeProperty("notify:Notify");
+			MyBuddy.removeProperty("notify:Notify");
 		else
-			MyBuddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+			MyBuddy.addProperty("notify:Notify", true, CustomProperties::Storable);
 	}
 }
 

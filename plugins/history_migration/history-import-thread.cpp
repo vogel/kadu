@@ -32,7 +32,6 @@
 #include "message/message.h"
 #include "plugins/history/history.h"
 #include "status/status.h"
-#include "storage/custom-properties.h"
 
 #include "history-import-thread.h"
 #include "history-importer-manager.h"
@@ -76,7 +75,7 @@ void HistoryImportThread::run()
 
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
-		if (chat.data()->customProperties()->property("history-importer:Imported", false).toBool())
+		if (chat.property("history-importer:Imported", false).toBool())
 		{
 			ImportedEntries += entries.count();
 			continue;
@@ -99,7 +98,7 @@ void HistoryImportThread::run()
 		if (Canceled && CancelForced)
 			break;
 
-		chat.data()->customProperties()->addProperty("history-importer:Imported", true, CustomProperties::Storable);
+		chat.addProperty("history-importer:Imported", true, CustomProperties::Storable);
 		// force sync for every chat
 		History::instance()->forceSync();
 	}

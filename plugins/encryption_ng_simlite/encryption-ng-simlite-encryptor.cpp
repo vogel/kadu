@@ -23,7 +23,6 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "misc/coding-conversion.h"
-#include "storage/custom-properties.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -143,7 +142,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	bool supportUtf8 = false;
 	Chat chat = ChatManager::instance()->findChat(ContactSet(MyContact), false);
 	if (chat)
-		supportUtf8 = chat.data()->customProperties()->property("encryption-ng-simlite:SupportUtf", false).toBool();
+		supportUtf8 = chat.property("encryption-ng-simlite:SupportUtf", false).toBool();
 
 	//create an initialisation vector (8 zeros)
 	QCA::InitializationVector iv(QByteArray(8, '\x00'));

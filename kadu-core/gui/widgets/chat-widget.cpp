@@ -76,7 +76,6 @@
 #include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "storage/custom-properties.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
@@ -674,7 +673,7 @@ void ChatWidget::kaduRestoreGeometry()
 	if (!chat())
 		return;
 
-	QList<int> horizSizes = stringToIntList(chat().data()->customProperties()->property("chat-geometry:WidgetHorizontalSizes", QString()).toString());
+	QList<int> horizSizes = stringToIntList(chat().property("chat-geometry:WidgetHorizontalSizes", QString()).toString());
 	if (!horizSizes.isEmpty())
 		HorizontalSplitter->setSizes(horizSizes);
 }
@@ -687,7 +686,7 @@ void ChatWidget::kaduStoreGeometry()
 	if (!chat())
 		return;
 
-	chat().data()->customProperties()->addProperty("chat-geometry:WidgetHorizontalSizes", intListToString(HorizontalSplitter->sizes()),
+	chat().addProperty("chat-geometry:WidgetHorizontalSizes", intListToString(HorizontalSplitter->sizes()),
 			CustomProperties::Storable);
 }
 

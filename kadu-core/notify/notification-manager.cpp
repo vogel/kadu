@@ -219,7 +219,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	foreach (const Buddy &buddy, buddies)
 		if (buddy.data())
 		{
-			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
+			if (!buddy.property("notify:Notify", false).toBool())
 			{
 				on = false;
 				break;
@@ -238,9 +238,9 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 			continue;
 
 		if (on)
-			buddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
 		else
-			buddy.data()->customProperties()->removeProperty("notify:Notify");
+			buddy.removeProperty("notify:Notify");
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
@@ -328,7 +328,7 @@ void NotificationManager::accountConnected()
 		return;
 
 	if (NotifyIgnoreOnConnection)
-		account.data()->customProperties()->addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
+		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
 }
 
 void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus)
@@ -344,13 +344,13 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 
 	if (NotifyIgnoreOnConnection)
 	{
-		QDateTime dateTime = contact.contactAccount().data()->customProperties()->property("notify:notify-account-connected", QDateTime()).toDateTime();
+		QDateTime dateTime = contact.contactAccount().property("notify:notify-account-connected", QDateTime()).toDateTime();
 		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
 			return;
 	}
 
 	bool notify_contact = true;
-	if (!contact.ownerBuddy().data()->customProperties()->property("notify:Notify", false).toBool())
+	if (!contact.ownerBuddy().property("notify:Notify", false).toBool())
 		notify_contact = false;
 
 	if (!notify_contact && !NotifyAboutAll)
@@ -554,9 +554,9 @@ void NotificationManager::groupUpdated()
 			continue;
 
 		if (notify)
-			buddy.data()->customProperties()->addProperty("notify:Notify", true, CustomProperties::Storable);
+			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
 		else
-			buddy.data()->customProperties()->removeProperty("notify:Notify");
+			buddy.removeProperty("notify:Notify");
 	}
 }
 

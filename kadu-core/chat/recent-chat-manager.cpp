@@ -26,7 +26,6 @@
 #include "configuration/configuration-file.h"
 #include "message/message-manager.h"
 #include "message/message.h"
-#include "storage/custom-properties.h"
 
 #include "recent-chat-manager.h"
 
@@ -146,10 +145,10 @@ void RecentChatManager::store()
 
 	if (!config_file.readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
-			if (!chat.isNull() && !chat.uuid().isNull())
+			if (chat && !chat.uuid().isNull())
 			{
 				QDomElement chatelement = point->point().ownerDocument().createElement("Chat");
-				chatelement.setAttribute("time", chat.data()->customProperties()->property("recent-chat:dateTime", QDateTime()).toDateTime().toTime_t());
+				chatelement.setAttribute("time", chat.property("recent-chat:dateTime", QDateTime()).toDateTime().toTime_t());
 				chatelement.setAttribute("uuid", chat.uuid().toString());
 				mainElement.appendChild(chatelement);
 			}
@@ -187,7 +186,7 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 
 	ensureLoaded();
 
-	chat.data()->customProperties()->addProperty("recent-chat:dateTime", datetime, CustomProperties::NonStorable);
+	chat.addProperty("recent-chat:dateTime", datetime, CustomProperties::NonStorable);
 
 	if (!RecentChats.isEmpty() && RecentChats.at(0) == chat)
 		return;
@@ -261,8 +260,8 @@ void RecentChatManager::cleanUp()
 
 	foreach (const Chat &chat, RecentChats)
 	{
-		if (chat.data()->customProperties()->hasProperty("recent-chat:dateTime") &&
-		    chat.data()->customProperties()->property("recent-chat:dateTime", QDateTime()).toDateTime().addSecs(RecentChatsTimeout) < now)
+		if (chat.hasProperty("recent-chat:dateTime") &&
+		    chat.property("recent-chat:dateTime", QDateTime()).toDateTime().addSecs(RecentChatsTimeout) < now)
 			removeRecentChat(chat);
 	}
 }

@@ -28,7 +28,6 @@
 #include "icons/kadu-icon.h"
 #include "model/roles.h"
 #include "status/status-container.h"
-#include "storage/custom-properties.h"
 #include "talkable/talkable.h"
 
 #include "contact-data-extractor.h"
@@ -60,7 +59,7 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case ContactRole:
 			return QVariant::fromValue(contact);
 		case DescriptionRole:
-			if (contact.ownerBuddy() && contact.ownerBuddy().data()->customProperties()->property("kadu:HideDescription", false).toBool())
+			if (contact.ownerBuddy() && contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
 				return QVariant();
 			else
 				return contact.currentStatus().description();

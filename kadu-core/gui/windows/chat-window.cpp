@@ -47,7 +47,6 @@
 #include "debug.h"
 
 #include "chat-window.h"
-#include <storage/custom-properties.h>
 
 ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), currentChatWidget(chatWidget),
@@ -147,7 +146,7 @@ void ChatWindow::setDefaultGeometry()
 
 void ChatWindow::kaduRestoreGeometry()
 {
-	QRect windowGeometry = stringToRect(currentChatWidget->chat().data()->customProperties()->property("chat-geometry:WindowGeometry", QString()).toString());
+	QRect windowGeometry = stringToRect(currentChatWidget->chat().property("chat-geometry:WindowGeometry", QString()).toString());
 
 	if (windowGeometry.isValid())
 	{
@@ -163,7 +162,7 @@ void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	currentChatWidget->chat().data()->customProperties()->addProperty("chat-geometry:WindowGeometry", rectToString(geometry()), CustomProperties::Storable);
+	currentChatWidget->chat().addProperty("chat-geometry:WindowGeometry", rectToString(geometry()), CustomProperties::Storable);
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

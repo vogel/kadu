@@ -24,7 +24,6 @@
  */
 
 #include "contacts/contact-set.h"
-#include "storage/custom-properties.h"
 
 #include "decryptor.h"
 #include "encryptor.h"
@@ -78,16 +77,16 @@ void EncryptionChatData::setEncrypt(EncryptionChatData::EncryptState encrypt)
 	Encrypt = encrypt;
 
 	if (Encrypt != EncryptStateDefault)
-		MyChat.data()->customProperties()->addProperty("encryption-ng:Encrypt", Encrypt == EncryptStateEnabled, CustomProperties::Storable);
+		MyChat.addProperty("encryption-ng:Encrypt", Encrypt == EncryptStateEnabled, CustomProperties::Storable);
 	else
-		MyChat.data()->customProperties()->removeProperty("encryption-ng:Encrypt");
+		MyChat.removeProperty("encryption-ng:Encrypt");
 }
 
 EncryptionChatData::EncryptState EncryptionChatData::encrypt()
 {
-	if (!MyChat.data()->customProperties()->hasProperty("encryption-ng:Encrypt"))
+	if (!MyChat.hasProperty("encryption-ng:Encrypt"))
 		Encrypt = importEncrypt();
-	else if (MyChat.data()->customProperties()->property("encryption-ng:Encrypt", true).toBool())
+	else if (MyChat.property("encryption-ng:Encrypt", true).toBool())
 		Encrypt = EncryptStateEnabled;
 	else
 		Encrypt = EncryptStateDisabled;

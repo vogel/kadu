@@ -63,7 +63,6 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "protocols/services/chat-service.h"
-#include "storage/custom-properties.h"
 #include "debug.h"
 
 #include "actions/show-history-action-description.h"
@@ -247,7 +246,7 @@ bool History::shouldSaveForBuddy(const Buddy &buddy)
 	if (!buddy)
 		return false;
 
-	return buddy.data()->customProperties()->property("history:StoreHistory", true).toBool();
+	return buddy.property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldSaveForChat(const Chat &chat)
@@ -255,7 +254,7 @@ bool History::shouldSaveForChat(const Chat &chat)
 	if (!chat)
 		return false;
 
-	return chat.data()->customProperties()->property("history:StoreHistory", true).toBool();
+	return chat.property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldEnqueueMessage(const Message &message)
