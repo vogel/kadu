@@ -27,59 +27,67 @@
 #include <QtCore/QList>
 
 class QWidget;
+
 class QStyleOptionViewItem;
+
 class PluginListViewDelegate;
+
 class PluginListViewDelegateWidgetsPrivate;
 
 
 /**
   * @internal
   */
+
 class PluginListViewDelegateWidgets
 {
+
 public:
-    enum UpdateWidgetsEnum {
-        UpdateWidgets = 0,
-        NotUpdateWidgets
-    };
+        enum UpdateWidgetsEnum
+        {
+                UpdateWidgets = 0,
+                NotUpdateWidgets
+        };
 
-    /**
-      * Creates a new ItemDelegateWidgets.
-      *
-      * @param delegate the ItemDelegate for this pool.
-      */
+        /**
+          * Creates a new ItemDelegateWidgets.
+          *
+          * @param delegate the ItemDelegate for this pool.
+          */
 
-    PluginListViewDelegateWidgets(PluginListViewDelegate *delegate);
+        PluginListViewDelegateWidgets(PluginListViewDelegate *delegate);
 
-    /**
-      * Destroys an ItemDelegateWidgets.
-      */
-    ~PluginListViewDelegateWidgets();
+        /**
+          * Destroys an ItemDelegateWidgets.
+          */
+        ~PluginListViewDelegateWidgets();
 
-    /**
-      * @brief Returns the widget associated to @p index and @p widget
-      * @param index The index to search into.
-      * @param option a QStyleOptionViewItem.
-      * @return A QList of the pointers to the widgets found.
-      * @internal
-      */
-    QList<QWidget*> findWidgets(const QPersistentModelIndex &index, const QStyleOptionViewItem &option,
-                                UpdateWidgetsEnum updateWidgets = UpdateWidgets) const;
+        /**
+          * @brief Returns the widget associated to @p index and @p widget
+          * @param index The index to search into.
+          * @param option a QStyleOptionViewItem.
+          * @return A QList of the pointers to the widgets found.
+          * @internal
+          */
+        QList<QWidget*> findWidgets(const QPersistentModelIndex &index, const QStyleOptionViewItem &option,
+                                    UpdateWidgetsEnum updateWidgets = UpdateWidgets) const;
 
-    /**
-      * @internal
-      */
-    QList<QWidget*> invalidIndexesWidgets() const;
+        /**
+          * @internal
+          */
+        QList<QWidget*> invalidIndexesWidgets() const;
 
-    /**
-      * @internal
-      */
-    void fullClear();
+        /**
+          * @internal
+          */
+        void fullClear();
 
 private:
-    friend class PluginListViewDelegate;
-    friend class PluginListViewDelegatePrivate;
-    PluginListViewDelegateWidgetsPrivate *const d;
+
+        friend class PluginListViewDelegate;
+
+        friend class PluginListViewDelegatePrivate;
+        PluginListViewDelegateWidgetsPrivate *const d;
 };
 
 class PluginListViewDelegateEventListener;
@@ -87,20 +95,22 @@ class PluginListViewDelegateEventListener;
 /**
   * @internal
   */
+
 class PluginListViewDelegateWidgetsPrivate
 {
+
 public:
 
-    PluginListViewDelegateWidgetsPrivate(PluginListViewDelegate *d);
+        PluginListViewDelegateWidgetsPrivate(PluginListViewDelegate *d);
 
-    PluginListViewDelegate *delegate;
-    PluginListViewDelegateEventListener *eventListener;
+        PluginListViewDelegate *delegate;
+        PluginListViewDelegateEventListener *eventListener;
 
-    QList<QList<QWidget*> > allocatedWidgets;
-    QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;
-    QHash<QWidget*, QPersistentModelIndex> widgetInIndex;
+        QList<QList<QWidget*> > allocatedWidgets;
+        QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;
+        QHash<QWidget*, QPersistentModelIndex> widgetInIndex;
 
-    bool clearing;
+        bool clearing;
 };
 
 #endif

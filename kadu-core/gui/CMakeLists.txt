@@ -228,7 +228,6 @@ set (gui_MOC_SRCS
 	widgets/path-list-edit.h
 	widgets/plugin-list-view.h
 	widgets/plugin-list-view-delegate.h
-	widgets/plugin-list-view-delegate-widgets.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h
 	widgets/progress-icon.h

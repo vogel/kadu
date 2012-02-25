@@ -46,19 +46,14 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "debug.h"
+#include "gui/widgets/plugin-list-view.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "activate.h"
-#include "debug.h"
-// #include "plugins/plugin-delegate.h"
-// #include "plugins/plugins-model.h"
-
-// #include "plugins/crap/kcategorizedview.h"
-// #include "plugins/crap/kpluginselector.h"
-#include "gui/widgets/plugin-list-view.h"
-// #include "plugins/crap/kcategorydrawer.h"
 
 #include "plugins-window.h"
+
 
 PluginsWindow * PluginsWindow::Instance = 0;
 
@@ -91,60 +86,12 @@ PluginsWindow::PluginsWindow()
 	layout->setSpacing(10);
 
 	PluginListView *PluginsList = new PluginListView(this);
-
 	layout->addWidget(PluginsList);
 
 	setLayout(layout);
-	// end our QListView
-/*
-#ifndef Q_WS_MAEMO_5
-	//our QVGroupBox
-	QGroupBox *vgb_info = new QGroupBox(center);
-	QVBoxLayout *infoLayout = new QVBoxLayout(vgb_info);
-	vgb_info->setTitle(tr("Info"));
-	//end our QGroupBox
-
-	ModuleInfo = new QLabel(vgb_info);
-	ModuleInfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
-#ifndef	Q_OS_MAC
-	ModuleInfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-#endif
-	ModuleInfo->setWordWrap(true);
-
-	infoLayout->addWidget(ModuleInfo);
-#endif*/
-
-// // 	// buttons
-// // 	QWidget *bottom = new QWidget(center);
-// // 	QHBoxLayout *bottomLayout = new QHBoxLayout(bottom);
-// // 	bottomLayout->setSpacing(5);
-// // 
-// // 	QPushButton *pb_close = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Close"), bottom);
-// // 
-// // 	bottomLayout->addStretch();
-// // 	bottomLayout->addWidget(pb_close);
-// // #ifdef Q_OS_MAC
-// // 	bottom->setMaximumHeight(pb_close->height() + 5);
-// // #endif
-	// end buttons
-
-// 	centerLayout->addWidget(ModulesList);
-// 	centerLayout->setStretchFactor(ModulesList, 1);
-// #ifndef Q_WS_MAEMO_5
-// 	centerLayout->addWidget(vgb_info);
-// #endif
-// 	centerLayout->addWidget(bottom);
-// 
-// 	QHBoxLayout *layout = new QHBoxLayout(this);
-// 	layout->addWidget(center);
-// 
-// 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-//	connect(ModulesList, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
-//	connect(ModulesList, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
 	loadWindowGeometry(this, "General", "PluginsWindowGeometry", 0, 50, 600, 620);
-//	refreshList();
-//	ModulesList->sortByColumn(0, Qt::AscendingOrder);
+
 	kdebugf2();
 }
 
@@ -155,38 +102,6 @@ PluginsWindow::~PluginsWindow()
  	saveWindowGeometry(this, "General", "PluginsWindowGeometry");
 	kdebugf2();
 }
-
-// QTreeWidgetItem * PluginsWindow::getSelected()
-// {
-// 	return PluginsList->currentItem();
-// }
-// 
-// // void PluginsWindow::itemsChanging()
-// {
-// 	if (PluginsList->currentItem())
-// 		getInfo();
-// }
-
-// void PluginsWindow::moduleAction(QTreeWidgetItem *)
-// {
-// 	kdebugf();
-// 
-// 	QTreeWidgetItem *selectedItem = getSelected();
-// 	if ((!selectedItem) || (selectedItem->text(0).isEmpty()))
-// 		return;
-// 
-// 	if (!PluginsManager::instance()->plugins().contains(selectedItem->text(0)))
-// 		return;
-// 
-// 	Plugin *plugin = PluginsManager::instance()->plugins().value(selectedItem->text(0));
-// 
-// 	if (plugin->isActive())
-// 		unloadItemPlugin(plugin);
-// 	else
-// 		loadItemPlugin(plugin);
-// 
-// 	kdebugf2();
-// }
 
 void PluginsWindow::loadItemPlugin(Plugin *itemPlugin)
 {
@@ -207,80 +122,6 @@ void PluginsWindow::unloadItemPlugin(Plugin *itemPlugin)
 		ConfigurationManager::instance()->flush();
 	}
 }
-
-// void PluginsWindow::refreshList()
-// {
-// 	kdebugf();
-// 
-// 	int vScrollValue = ModulesList->verticalScrollBar()->value();
-// 
-// 	QString s_selected;
-// 
-// 	QTreeWidgetItem *selectedItem = getSelected();
-// 	if (selectedItem)
-// 		s_selected = selectedItem->text(0);
-// 
-// 	ModulesList->clear();
-// 
-// 	foreach (Plugin *plugin, PluginsManager::instance()->plugins())
-// 		if (plugin->isValid())
-// 		{
-// 			QStringList strings;
-// 
-// 			PluginInfo *pluginInfo = plugin->info();
-// 			if (plugin->isActive())
-// 				strings << plugin->name() << pluginInfo->version() << tr("Loaded");
-// 			else
-// 				strings << plugin->name() << pluginInfo->version() << tr("Not loaded");
-// 			new QTreeWidgetItem(ModulesList, strings);
-// 		}
-// 
-// 	ModulesList->resizeColumnToContents(0);
-// // 	ModulesList->setSelected(ModulesList->findItem(s_selected, 0), true);
-// 
-// 	ModulesList->verticalScrollBar()->setValue(vScrollValue);
-// 	kdebugf2();
-// }
-
-// void PluginsWindow::getInfo()
-// {
-// 	kdebugf();
-// 
-// 	QTreeWidgetItem *selected = getSelected();
-// 	if (!selected)
-// 		return;
-// 
-// 	if (!PluginsManager::instance()->plugins().contains(selected->text(0)))
-// 		return;
-// 
-// 	PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(selected->text(0))->info();
-// 
-// 	if (!pluginInfo)
-// 	{
-// 		kdebugf2();
-// 		return;
-// 	}
-// 
-// #ifndef Q_WS_MAEMO_5
-// 	ModuleInfo->setText(
-// 		tr("<b>Module: </b>%1"
-// 			"<br/><b>Depends on: </b>%2"
-// 			"<br/><b>Conflicts with: </b>%3"
-// 			"<br/><b>Provides: </b>%4"
-// 			"<br/><b>Author: </b>%5"
-// 			"<br/><b>Version: </b>%6"
-// 			"<br/><b>Description: </b>%7")
-// 			.arg(selected->text(0))
-// 			.arg(pluginInfo->dependencies().join(", "))
-// 			.arg(pluginInfo->conflicts().join(", "))
-// 			.arg(pluginInfo->provides().join(", "))
-// 			.arg(pluginInfo->author())
-// 			.arg(pluginInfo->version())
-// 			.arg(pluginInfo->description()));
-// #endif
-// 
-// 	kdebugf2();
-// }
 
 void PluginsWindow::keyPressEvent(QKeyEvent *event)
 {
