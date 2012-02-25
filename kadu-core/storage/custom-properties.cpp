@@ -65,11 +65,13 @@ void CustomProperties::loadFrom(const QSharedPointer<StoragePoint> &storagePoint
 	if (!storagePoint)
 		return;
 
-	const QDomElement &element = storagePoint->point();
+	QDomElement element = storagePoint->point();
 	const QDomNodeList &moduleDataNodes = element.elementsByTagName("ModuleData");
 	const int moduleDataNodesCount = moduleDataNodes.length();
 	for (int i = 0; i < moduleDataNodesCount; i++)
 		loadFromModuleData(moduleDataNodes.at(i));
+	for (int i = 0; i < moduleDataNodesCount; i++)
+		element.removeChild(moduleDataNodes.at(i));
 
 	const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
 	const int customPropertiesCount = customProperties.length();
