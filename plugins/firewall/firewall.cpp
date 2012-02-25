@@ -283,8 +283,8 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 	{
 		if (sender.currentStatus().isDisconnected())
 		{
-			QDateTime *dateTime = chat.chatAccount().data()->moduleData<QDateTime>("firewall-account-connected");
-			if (dateTime && (*dateTime < QDateTime::currentDateTime()))
+			QDateTime dateTime = chat.chatAccount().data()->customProperties()->property("firewall:firewall-account-connected", QDateTime()).toDateTime();
+			if (dateTime.isValid() && dateTime < QDateTime::currentDateTime())
 			{
 				Protocol *protocol = chat.chatAccount().protocolHandler();
 				if (!protocol)
@@ -354,9 +354,8 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 
 		kdebugm(KDEBUG_INFO, "%s\n", qPrintable(message));
 
-		QDateTime *dateTime = chat.chatAccount().data()->moduleData<QDateTime>("firewall-account-connected");
-
-		if (dateTime && (*dateTime < QDateTime::currentDateTime()))
+		QDateTime dateTime = chat.chatAccount().data()->customProperties()->property("firewall:firewall-account-connected", QDateTime()).toDateTime();
+		if (dateTime.isValid() && dateTime < QDateTime::currentDateTime())
 		{
 			Protocol *protocol = chat.chatAccount().protocolHandler();
 			if (!protocol)
@@ -430,8 +429,7 @@ void Firewall::accountConnected()
 	if (!account)
 		return;
 
-	QDateTime *dateTime = account.data()->moduleData<QDateTime>("firewall-account-connected", true);
-	*dateTime = QDateTime::currentDateTime().addMSecs(4000);
+	account.data()->customProperties()->addProperty("firewall:firewall-account-connected", QDateTime::currentDateTime().addMSecs(4000), CustomProperties::NonStorable);
 
 	kdebugf2();
 }
