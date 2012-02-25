@@ -47,7 +47,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
-#include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
@@ -77,6 +76,7 @@
 #include "model/model-chain.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
+#include "storage/custom-properties.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
 
@@ -674,11 +674,7 @@ void ChatWidget::kaduRestoreGeometry()
 	if (!chat())
 		return;
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
-	if (!cgd)
-		return;
-
-	QList<int> horizSizes = cgd->widgetHorizontalSizes();
+	QList<int> horizSizes = stringToIntList(chat().data()->customProperties()->property("chat-geometry:WidgetHorizontalSizes", QString()).toString());
 	if (!horizSizes.isEmpty())
 		HorizontalSplitter->setSizes(horizSizes);
 }
@@ -691,9 +687,8 @@ void ChatWidget::kaduStoreGeometry()
 	if (!chat())
 		return;
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
-	cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
-	cgd->ensureStored();
+	chat().data()->customProperties()->addProperty("chat-geometry:WidgetHorizontalSizes", intListToString(HorizontalSplitter->sizes()),
+			CustomProperties::Storable);
 }
 
 void ChatWidget::showEvent(QShowEvent *e)

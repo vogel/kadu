@@ -4,7 +4,6 @@ set (chat_SRCS
 	chat-details-buddy.cpp
 	chat-details-contact.cpp
 	chat-details-contact-set.cpp
-	chat-geometry-data.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
 	chat-shared.cpp
@@ -35,7 +34,6 @@ set (chat_MOC_SRCS
 	chat-details-buddy.h
 	chat-details-contact.h
 	chat-details-contact-set.h
-	chat-geometry-data.h
 
 	buddy-chat-manager.h
 	chat-manager.h
