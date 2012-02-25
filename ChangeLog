@@ -14,8 +14,6 @@
 * jabber: redesigned SSL certificate error dialog (Juzef)
 * jabber: do not ask user for removing contact which revoked status subscription (Juzef)
 * gui: #2454 fixed: fix memory leak in emoticons selector (Juzef)
-* gui: #2435 & #2437 fixed: View File Transfers action always shows & activates file transfer window (Juzef)
-* jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * gui: #2458 done: added search bar to chat widgets and history window (Vogel)
 * gui: #2465 done: added Ctrl+Home/End/PageUp/PageDown shortcuts to chat windows - to scroll to top/bottom/up/down of chat (Vogel)
 * core: #2457 fixed: actually respect custom KADU_BINDIR, KADU_DATADIR and KADU_PLUGINS_LIBDIR directories (beevvy)
@@ -23,7 +21,9 @@
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
-* core: #2477 fixed: remove expired recent chats at Kadu startup (ultr)
+* gui: #2477 fixed: remove expired recent chats at Kadu startup (ultr)
+* gui: #2435 & #2437 fixed: View File Transfers action always shows & activates file transfer window (Juzef)
+* jabber: #2176 fixed: do not try to fetch personal info when account is disconnected (Juzef)
 * chat: fixed a bug in Adium chat styles engine causing messages to be often doubled when opening a chat widget (beevvy)
 * history: #2480 probably fixed: crash when loading last day/week/month history into chat widget on 32bit systems (Vogel)
 * history: various security improvements pointed by Mateusz Goik from http://www.aliantsoft.pl (Vogel)
