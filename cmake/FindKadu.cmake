@@ -71,8 +71,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
 	add_definitions (-DDEBUG_ENABLED)
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
 
+# Qt 4.7
 add_definitions (-DQT_USE_FAST_CONCATENATION)
 add_definitions (-DQT_USE_FAST_OPERATOR_PLUS)
+# Qt 4.8
+add_definitions (-DQT_USE_QSTRINGBUILDER)
 
 if (MINGW)
 	# override cmake bug/feature?
