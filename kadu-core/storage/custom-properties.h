@@ -53,6 +53,8 @@ public:
 	void loadFrom(const QSharedPointer<StoragePoint> &storagePoint);
 	void storeTo(const QSharedPointer<StoragePoint> &storagePoint) const;
 
+	bool hasProperty(const QString &name);
+
 	void addProperty(const QString &name, const QVariant &value, Storability storability);
 	void removeProperty(const QString &name);
 	QVariant property(const QString &name, const QVariant &defaultValue);

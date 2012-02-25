@@ -103,6 +103,13 @@ void CustomProperties::storeTo(const QSharedPointer<StoragePoint> &storagePoint)
 				propertyName, Properties.value(propertyName).toString());
 }
 
+bool CustomProperties::hasProperty(const QString &name)
+{
+	Q_ASSERT(!name.isEmpty());
+
+	return Properties.contains(name);
+}
+
 void CustomProperties::addProperty(const QString &name, const QVariant &value, Storability storability)
 {
 	Q_ASSERT(!name.isEmpty());
