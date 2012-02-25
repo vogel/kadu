@@ -328,10 +328,7 @@ void NotificationManager::accountConnected()
 		return;
 
 	if (NotifyIgnoreOnConnection)
-	{
-		QDateTime *dateTime = account.data()->moduleData<QDateTime>("notify-account-connected", true);
-		*dateTime = QDateTime::currentDateTime().addSecs(10);
-	}
+		account.data()->customProperties()->addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
 }
 
 void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus)
@@ -347,8 +344,8 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 
 	if (NotifyIgnoreOnConnection)
 	{
-		QDateTime *dateTime = contact.contactAccount().data()->moduleData<QDateTime>("notify-account-connected");
-		if (dateTime && (*dateTime >= QDateTime::currentDateTime()))
+		QDateTime dateTime = contact.contactAccount().data()->customProperties()->property("notify:notify-account-connected", QDateTime()).toDateTime();
+		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
 			return;
 	}
 
