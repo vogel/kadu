@@ -23,7 +23,7 @@
 #define HISTORY_IMPORT_THREAD_H
 
 #include <QtCore/QList>
-#include <QtCore/QThread>
+#include <QtCore/QObject>
 
 #include "accounts/account.h"
 
@@ -32,7 +32,7 @@
 class Chat;
 struct HistoryEntry;
 
-class HistoryImportThread : public QThread
+class HistoryImportThread : public QObject
 {
 	Q_OBJECT
 
@@ -56,7 +56,7 @@ public:
 	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
 
-	virtual void run();
+	void prepareChats();
 
 	int importedEntries() { return ImportedEntries; }
 	int importedChats() { return ImportedChats; }
@@ -66,7 +66,11 @@ public:
 	bool wasCanceled() { return Canceled; }
 
 public slots:
+	void run();
 	void cancel(bool force = false);
+
+signals:
+	void finished();
 
 };
 
