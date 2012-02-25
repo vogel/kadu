@@ -1,6 +1,7 @@
 set (model_SRCS
 	action-filter-proxy-model.cpp
 	action-list-model.cpp
+	categorized-sort-filter-proxy-model.cpp
 	kadu-merged-proxy-model.cpp
 	merged-proxy-model.cpp
 	merged-proxy-model-factory.cpp
@@ -12,6 +13,7 @@ set (model_SRCS
 set (model_MOC_SRCS
 	action-filter-proxy-model.h
 	action-list-model.h
+	categorized-sort-filter-proxy-model.h
 	kadu-merged-proxy-model.h
 	merged-proxy-model.h
 	model-chain.h

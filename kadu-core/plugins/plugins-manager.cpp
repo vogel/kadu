@@ -54,7 +54,7 @@
 #include "configuration/configuration-manager.h"
 #include "gui/hot-key.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/modules-window.h"
+#include "gui/windows/plugins-window.h"
 #include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
@@ -533,7 +533,10 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		result = activateDependencies(plugin) && plugin->activate(reason);
 
 	if (result)
+	{
+		emit pluginAdded(plugin);
 		incDependenciesUsageCount(plugin);
+	}
 
 	return result;
 }
@@ -558,7 +561,7 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 	if (plugin->usageCounter() > 0 && PluginDeactivationReasonExitingForce != reason)
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
-				QMessageBox::Ok, ModulesWindow::instance());
+				QMessageBox::Ok, PluginsWindow::instance());
 		kdebugf2();
 		return false;
 	}
@@ -567,6 +570,7 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 		releasePlugin(i);
 
 	plugin->deactivate(reason);
+	emit pluginRemoved(plugin);
 	return true;
 }
 

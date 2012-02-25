@@ -2743,7 +2743,7 @@ from now on. Are you sure you want to leave this conference?</source>
     </message>
 </context>
 <context>
-    <name>ModulesWindow</name>
+    <name>PluginsWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Менеджер модулей</translation>

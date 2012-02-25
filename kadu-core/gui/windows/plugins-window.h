@@ -45,45 +45,47 @@
 class QCheckBox;
 class QKeyEvent;
 class QLabel;
-class QTreeWidget;
+class QListView;
 class QTreeWidgetItem;
 
-/**
-	Klasa reprezentuj�ca okno dialogowe, s�u��ce do �adowanie i wy�adowywania modu��w.
-	�adowanie/wy�adowywanie, oraz inne operacje na modu�ach z poziomu C++ dokonywane
-	s� za pomoc� klasy ModulesManager. Ta klasa tworzy jedynie okno dialogowe, b�d�ce
-	interfejsem do ww. klasy dla u�ytkownika Kadu.
-	\class ModulesWindow
-	\brief "Zarz�dca modu��w"
-**/
-class ModulesWindow : public QWidget, DesktopAwareObject
+class PluginsModel;
+class PluginProxyModel;
+class QLineEdit;
+class KCategorizedView;
+
+
+class PluginsWindow : public QWidget, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static ModulesWindow *Instance;
+	static PluginsWindow *Instance;
 
-	QTreeWidget *ModulesList;
+	KCategorizedView *PluginsList;
 	QLabel *ModuleInfo;
 
-	ModulesWindow();
-	virtual ~ModulesWindow();
+	PluginsModel *PluginModel;
+	PluginProxyModel *ProxyModel;
+	QLineEdit *FilterLineEdit;
 
-	QTreeWidgetItem * getSelected();
+	PluginsWindow();
+	virtual ~PluginsWindow();
+
+// 	QTreeWidgetItem * getSelected();
 
 	void loadItemPlugin(Plugin *itemPlugin);
 	void unloadItemPlugin(Plugin *itemPlugin);
 
 private slots:
-	void moduleAction(QTreeWidgetItem *);
-	void itemsChanging();
-	void getInfo();
-	void refreshList();
+// 	void moduleAction(QTreeWidgetItem *);
+// 	void itemsChanging();
+// 	void getInfo();
+// 	void refreshList();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	static ModulesWindow * instance();
+	static PluginsWindow * instance();
 	static void show();
 
 };

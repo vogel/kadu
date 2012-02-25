@@ -60,7 +60,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/modules-window.h"
+#include "gui/windows/plugins-window.h"
 #include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
@@ -524,7 +524,7 @@ void KaduWindowActions::manageModulesActionActivated(QAction *sender, bool toggl
 	Q_UNUSED(sender)
 	Q_UNUSED(toggled)
 
-	ModulesWindow::show();
+	PluginsWindow::show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

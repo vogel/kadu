@@ -47,7 +47,7 @@ class QTreeWidget;
 class QTreeWidgetItem;
 
 class GenericPlugin;
-class ModulesWindow;
+class PluginsWindow;
 class Plugin;
 
 /**
@@ -125,6 +125,10 @@ public:
 
 	void usePlugin(const QString &pluginName);
 	void releasePlugin(const QString &pluginName);
+
+signals:
+	void pluginAdded(const Plugin *plugin);
+	void pluginRemoved(const Plugin *plugin);
 
 };
 

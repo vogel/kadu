@@ -2745,7 +2745,7 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
     </message>
 </context>
 <context>
-    <name>ModulesWindow</name>
+    <name>PluginsWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Spravovat moduly</translation>

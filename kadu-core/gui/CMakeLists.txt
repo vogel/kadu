@@ -27,6 +27,8 @@ set (gui_SRCS
 	widgets/buddy-personal-info-configuration-widget.cpp
 	widgets/buddy-options-configuration-widget.cpp
 	widgets/buddy-info-panel.cpp
+	widgets/categorized-list-view.cpp
+	widgets/categorized-list-view-painter.cpp
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-messages-view.cpp
@@ -57,6 +59,9 @@ set (gui_SRCS
 	widgets/modal-configuration-widget.cpp
 	widgets/path-edit.cpp
 	widgets/path-list-edit.cpp
+	widgets/plugin-list-view.cpp
+	widgets/plugin-list-view-delegate.cpp
+	widgets/plugin-list-view-delegate-widgets.cpp
 	widgets/progress-icon.cpp
 	widgets/progress-label.cpp
 	widgets/protocols-combo-box.cpp
@@ -130,7 +135,7 @@ set (gui_SRCS
 	windows/main-window.cpp
 	windows/merge-buddies-window.cpp
 	windows/message-dialog.cpp
-	windows/modules-window.cpp
+	windows/plugins-window.cpp
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
@@ -190,6 +195,8 @@ set (gui_MOC_SRCS
 	widgets/buddy-personal-info-configuration-widget.h
 	widgets/buddy-options-configuration-widget.h
 	widgets/buddy-info-panel.h
+	widgets/categorized-list-view.h
+	widgets/categorized-list-view-painter.h
 	widgets/chat-edit-box.h
 	widgets/chat-edit-box-size-manager.h
 	widgets/chat-messages-view.h
@@ -219,6 +226,9 @@ set (gui_MOC_SRCS
 	widgets/modal-configuration-widget.h
 	widgets/path-edit.h
 	widgets/path-list-edit.h
+	widgets/plugin-list-view.h
+	widgets/plugin-list-view-delegate.h
+	widgets/plugin-list-view-delegate-widgets.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h
 	widgets/progress-icon.h
@@ -286,7 +296,7 @@ set (gui_MOC_SRCS
 	windows/main-configuration-window.h
 	windows/main-window.h
 	windows/merge-buddies-window.h
-	windows/modules-window.h
+	windows/plugins-window.h
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h

@@ -2741,7 +2741,7 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     </message>
 </context>
 <context>
-    <name>ModulesWindow</name>
+    <name>PluginsWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Verwalte Module</translation>

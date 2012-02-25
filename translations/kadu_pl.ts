@@ -2752,7 +2752,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>ModulesWindow</name>
+    <name>PluginsWindow</name>
     <message>
         <source>Manage Modules</source>
         <translation>Zarządca wtyczek</translation>
