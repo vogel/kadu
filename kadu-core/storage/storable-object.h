@@ -41,7 +41,6 @@
 	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
 
 class CustomProperties;
-class ModuleData;
 
 /**
  * @addtogroup Storage
@@ -98,11 +97,6 @@ class ModuleData;
  * Name = loadValue&lt;QString&gt;("ApplicationName");
  * Version = loadValue&lt;QString&gt;("ApplicationVersion");
  * </pre>
- *
- * Every plugin can attach any data to any StorableObject by using @link moduleData @endlink
- * system. It allows to create named subnodes of arbitrary types under main XML node
- * of StorableObject. All module data objects are stored as ModuleData subnodes and are
- * identified by 'name' attribute, that has to be unique per ModuleData subtype.
  */
 class KADUAPI StorableObject
 {
@@ -135,14 +129,9 @@ public:
 	};
 
 private:
-	bool Destroying;
 	QSharedPointer<StoragePoint> Storage;
 	StorableObjectState State;
-	QMap<QString, void *> ModulesData;
 	CustomProperties *Properties;
-
-	friend class ModuleData;
-	void moduleDataAboutToBeDestroyed(const QString &moduleName, ModuleData *moduleData);
 
 protected:
 	virtual QSharedPointer<StoragePoint> createStoragePoint();
@@ -205,7 +194,6 @@ public:
 
 	void setStorage(const QSharedPointer<StoragePoint> &storage);
 	bool isValidStorage();
-	QSharedPointer<StoragePoint> storagePointForModuleData(const QString &module, bool create = false);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -301,34 +289,6 @@ template<class T>
 
 		return def;
 	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns non-storable module data for object.
-	 * @param T type of returned value (any class)
-	 * @param module name of module to be loaded
-	 * @param create when true this method can create new ModuleData (if non present)
-	 * @return object of type T assigned with this storable object
-	 *
-	 * Returns object of type T with name module assigned with this obejct. If no
-	 * gived object is present and create is set to true, new object is created,
-	 * assigned and returned.
-	 */
-template<class T>
-	T * moduleData(const QString &module, bool create = false)
-	{
-		if (ModulesData.contains(module))
-			return static_cast<T *>(ModulesData[module]);
-
-		if (!create)
-			return 0;
-
-		T *result = new T();
-		ModulesData.insert(module, result);
-		return result;
-	}
-
-	void removeModuleData(const QString &module);
 
 	void storeValue(const QString &name, const QVariant value);
 	void storeAttribute(const QString &name, const QVariant value);

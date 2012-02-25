@@ -25,7 +25,6 @@
 #include <QtCore/QtAlgorithms>
 
 #include "storage/custom-properties.h"
-#include "storage/module-data.h"
 
 #include "storable-object.h"
 
@@ -37,14 +36,13 @@
  * (invalid) @link<StorableObject::storage storage point @endlink.
  */
 StorableObject::StorableObject() :
-		Destroying(false), State(StateNew)
+		State(StateNew)
 {
 	Properties = new CustomProperties();
 }
 
 StorableObject::~StorableObject()
 {
-	Destroying = true;
 	delete Properties;
 }
 
@@ -128,11 +126,6 @@ const QSharedPointer<StoragePoint> & StorableObject::storage()
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Stores object data in XML node.
- *
- * Stores all module data object by calling ensureStored() method on these objects.
- * Reimplementations of this method should store all needed object data
- * using storeValue and storeAttribute methods and should call super class
- * method.
  */
 void StorableObject::store()
 {
@@ -222,38 +215,6 @@ void StorableObject::removeFromStorage()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Removes non-storable module data from object.
- * @param module name of module data to be removed
- *
- * Removed module data for given key. Caller is responsible for freeing
- * memory used by this module data.
- */
-void StorableObject::removeModuleData(const QString& module)
-{
-	if (ModulesData.contains(module))
-		ModulesData.remove(module);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Called when ModuleData is about to be destroyed, to remove it from this object.
- * @param moduleName name of ModuleData
- * @param moduleData object about to be destroyed
- *
- * Method is called by a ModuleData object in its destructor, so it can be removed
- * from this object. Before it is removed, StorableObject::ensureStored() is called on it.
- */
-void StorableObject::moduleDataAboutToBeDestroyed(const QString &moduleName, ModuleData *moduleData)
-{
-	if (Destroying)
-		return;
-
-	if (ModulesData.contains(moduleName) && ModulesData.value(moduleName) == moduleData)
-		ModulesData.remove(moduleName);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Stores value into XML node (as a subnode).
  * @param name name of subnode that will store this value
  * @param value value to be stored
@@ -302,33 +263,6 @@ void StorableObject::removeValue(const QString& name)
 void StorableObject::removeAttribute(const QString& name)
 {
 	Storage->point().removeAttribute(name);
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Creates storage point object for given module data.
- * @param module name of module data
- * @param create if true this method can create new nodes
- * @return storage point object for given module data
- *
- * Creates storage point for given module data. If XML node is not present
- * and create parameter is false this method will return NULL. Else it will
- * return storage point that points for right XML node (even if creating new
- * XML node is needed).
- *
- * Node is named ModuleData with attribute name with value from module parameter.
- */
-QSharedPointer<StoragePoint> StorableObject::storagePointForModuleData(const QString &module, bool create)
-{
-	QSharedPointer<StoragePoint> parent(storage());
-	if (!parent || !parent->storage())
-		return QSharedPointer<StoragePoint>();
-
-	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ModuleData",
-			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
-	return moduleDataNode.isNull()
-			? QSharedPointer<StoragePoint>()
-			: QSharedPointer<StoragePoint>(new StoragePoint(parent->storage(), moduleDataNode));
 }
 
 CustomProperties * StorableObject::customProperties() const

@@ -1,7 +1,6 @@
 set (storage_SRCS
 	custom-properties.cpp
 	named-storable-object.cpp
-	module-data.cpp
 	shared.cpp
 	storable-object.cpp
 	storable-string-list.cpp
@@ -11,7 +10,6 @@ set (storage_SRCS
 
 set (storage_MOC_SRCS
 	custom-properties.h
-	module-data.h
 )
 
 kadu_subdirectory (storage "${storage_SRCS}" "${storage_MOC_SRCS}" "")
