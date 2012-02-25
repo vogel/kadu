@@ -10,6 +10,7 @@
 * history: #2480 probably fixed: crash when loading last day/week/month history into chat widget on 32bit systems (Vogel)
 * history: various security improvements pointed by Mateusz Goik from http://www.aliantsoft.pl (Vogel)
 * history_migration: #2503 fixed: crashes during history import from Kadu 0.6.5 (Vogel)
+* spellchecker: #2319 done: better and smaller aspell Polish dictionary on Windows (beevvy)
 
 ﻿+++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)

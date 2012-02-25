@@ -40,20 +40,19 @@ if (APPLE)
 else (APPLE)
 	if (WIN32)
 		set (USE_ASPELL TRUE)
-	
+
 		if (NOT WIN_ASPELL_DIR)
 			message (SEND_ERROR "Pass path to aspell -DWIN_ASPELL_DIR=path")
 		else (NOT WIN_ASPELL_DIR)
 			set (ASPELL_FOUND TRUE)
+			set (ASPELL_LIBRARIES aspell)
+			set (ASPELL_INCLUDE_DIR ${WIN_ASPELL_DIR}/include)
+
 			if (MSVC)
-				set (ASPELL_INCLUDE_DIR ${WIN_ASPELL_DIR}/include)
 				set (ASPELL_LIBRARY_DIR ${WIN_ASPELL_DIR}/lib)
 			else (MSVC)
-				set (ASPELL_INCLUDE_DIR ${WIN_ASPELL_DIR}/aspell-dev-0-50-3-3/include)
 				set (ASPELL_LIBRARY_DIR ${WIN_ASPELL_DIR}/bin)
 			endif (MSVC)
-	
-			set (ASPELL_LIBRARIES aspell-15)
 		endif (NOT WIN_ASPELL_DIR)
 	else (WIN32)
 		if (WITH_ENCHANT AND NOT WITH_ASPELL)
@@ -64,15 +63,15 @@ else (APPLE)
 			if (WITH_ASPELL)
 				set (FORCE_ENGINE TRUE)
 			endif (WITH_ASPELL)
-		
+
 			if (WITH_ENCHANT)
 				message (STATUS "Cannot use both enchant and aspell. Using aspell")
 			endif (WITH_ENCHANT)
 		endif (WITH_ENCHANT AND NOT WITH_ASPELL)
-		
+
 		if (USE_ASPELL)
 			include (FindASPELL)
-		
+
 			if (NOT ASPELL_FOUND)
 				if (FORCE_ENGINE)
 					message (FATAL_ERROR "aspell not found!")
@@ -83,28 +82,28 @@ else (APPLE)
 				endif (FORCE_ENGINE)
 			endif (NOT ASPELL_FOUND)
 		endif (USE_ASPELL)
-		
+
 		if (USE_ENCHANT)
 			include (FindPkgConfig)
 			pkg_search_module (ENCHANT enchant)
-		
+
 			if (NOT ENCHANT_FOUND)
 				message (FATAL_ERROR "enchant not found!")
 			endif (NOT ENCHANT_FOUND)
 		endif (USE_ENCHANT)
 	endif (WIN32)
-	
+
 	if (USE_ASPELL)
 		message (STATUS "Using aspell as backend. To force enchant use -DWITH_ENCHANT=ON")
 		add_definitions (-DHAVE_ASPELL)
-	
+
 		set (LIBRARIES ${ASPELL_LIBRARIES})
 		link_directories (${ASPELL_LIBRARY_DIR})
 		include_directories (${ASPELL_INCLUDE_DIR})
 	else (USE_ASPELL)
 		message (STATUS "Using enchant as backend")
 		add_definitions (-DHAVE_ENCHANT)
-	
+
 		set (LIBRARIES ${ENCHANT_LIBRARIES})
 		link_directories (${ENCHANT_LIBRARY_DIRS})
 		include_directories (${ENCHANT_INCLUDE_DIRS})

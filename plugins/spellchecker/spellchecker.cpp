@@ -89,9 +89,15 @@ SpellChecker::SpellChecker(QObject *parent) :
 	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
 #if defined(Q_OS_WIN32)
+<<<<<<< HEAD
 	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
 	aspell_config_replace(SpellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
 	aspell_config_replace(SpellConfig, "prefix", qPrintable(profilePath("dicts")));
+=======
+	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(KaduPaths::instance()->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "data-dir", qPrintable(KaduPaths::instance()->dataPath() + QLatin1String("aspell")));
+	aspell_config_replace(SpellConfig, "prefix", qPrintable(KaduPaths::instance()->profilePath() + QLatin1String("dicts")));
+>>>>>>> 96aa415... spellchecker: Update aspell on Windows
 #endif // Q_OS_WIN32
 #endif // HAVE_ASPELL
 }
