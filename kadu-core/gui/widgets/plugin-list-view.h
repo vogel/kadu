@@ -69,7 +69,10 @@ class PluginListView : public QWidget
 {
         Q_OBJECT
 
+
 public:
+	void applyChanges();
+
         enum PluginLoadMethod
         {
                 ReadConfigFile = 0,

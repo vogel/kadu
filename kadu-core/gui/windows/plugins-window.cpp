@@ -32,6 +32,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "QtGui/QDialogButtonBox"
 #include "QtGui/QGroupBox"
 #include "QtGui/QHBoxLayout"
 #include "QtGui/QLabel"
@@ -44,8 +45,6 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QScrollBar>
 
-#include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
 #include "debug.h"
 #include "gui/widgets/plugin-list-view.h"
 #include "icons/kadu-icon.h"
@@ -71,8 +70,7 @@ void PluginsWindow::show()
 }
 
 PluginsWindow::PluginsWindow()
-	: QWidget(0, Qt::Window), DesktopAwareObject(this),
-	PluginsList(0), ModuleInfo(0)
+	: QWidget(0, Qt::Window), DesktopAwareObject(this)
 {
 	kdebugf();
 
@@ -85,11 +83,23 @@ PluginsWindow::PluginsWindow()
 	layout->setMargin(10);
 	layout->setSpacing(10);
 
-	PluginListView *PluginsList = new PluginListView(this);
+	PluginsList = new PluginListView(this);
 	layout->addWidget(PluginsList);
 
-	setLayout(layout);
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
+	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
+	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+
+	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Close"), this);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+	layout->addWidget(buttons);
+
+	setLayout(layout);
 	loadWindowGeometry(this, "General", "PluginsWindowGeometry", 0, 50, 600, 620);
 
 	kdebugf2();
@@ -103,26 +113,6 @@ PluginsWindow::~PluginsWindow()
 	kdebugf2();
 }
 
-void PluginsWindow::loadItemPlugin(Plugin *itemPlugin)
-{
-	PluginsManager::instance()->activatePlugin(itemPlugin, PluginActivationReasonUserRequest);
-
-	// do it unconditionally as dependent plugins might have been loaded even if the requested one failed to do so
-	//refreshList();
-
-	ConfigurationManager::instance()->flush();
-}
-
-void PluginsWindow::unloadItemPlugin(Plugin *itemPlugin)
-{
-	if (PluginsManager::instance()->deactivatePlugin(itemPlugin, PluginDeactivationReasonUserRequest))
-	{
-	//	refreshList();
-
-		ConfigurationManager::instance()->flush();
-	}
-}
-
 void PluginsWindow::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
@@ -133,3 +123,10 @@ void PluginsWindow::keyPressEvent(QKeyEvent *event)
 	else
 		QWidget::keyPressEvent(event);
 }
+
+void PluginsWindow::apply()
+{
+	PluginsList->applyChanges();
+	close();
+}
+

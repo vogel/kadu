@@ -29,6 +29,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QStyleOptionViewItemV4>
 
+// #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 // #include "gui/widgets/filter-widget.h"
@@ -109,6 +111,33 @@ PluginListView::~PluginListView()
         delete d;
 }
 
+void PluginListView::applyChanges()
+{
+        bool changeOccured = false;
+
+        for (int i = 0; i < d->pluginModel->rowCount(); i++)
+        {
+                const QModelIndex index = d->pluginModel->index(i, 0);
+                PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+
+                Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->name);
+
+
+                if (plugin && plugin->isActive() != pluginEntry->checked)
+                {
+                        if (pluginEntry->checked)
+                                PluginsManager::instance()->activatePlugin(PluginsManager::instance()->plugins().value(pluginEntry->name), PluginActivationReasonUserRequest);
+                        else
+                                PluginsManager::instance()->deactivatePlugin(PluginsManager::instance()->plugins().value(pluginEntry->name), PluginDeactivationReasonUserRequest);
+
+                        changeOccured = true;
+                }
+        }
+
+        if (changeOccured)
+                ConfigurationManager::instance()->flush();
+}
+
 void PluginListView::Private::PluginModel::loadPluginData()
 {
         QList<PluginEntry> listToAdd;
@@ -131,9 +160,9 @@ void PluginListView::Private::PluginModel::loadPluginData()
         pluginSelector_d->proxyModel->sort(0);
 
         connect(Manager, SIGNAL(pluginAdded(const Plugin *)),
-			this, SLOT(pluginAdded(const Plugin *)), Qt::DirectConnection);
-	connect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
-			this, SLOT(pluginRemoved(const Plugin *)), Qt::DirectConnection);
+                this, SLOT(pluginAdded(const Plugin *)), Qt::DirectConnection);
+        connect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
+                this, SLOT(pluginRemoved(const Plugin *)), Qt::DirectConnection);
 }
 
 PluginListView::Private::PluginModel::PluginModel(PluginListView::Private *pluginSelector_d, QObject *parent)
@@ -145,44 +174,45 @@ PluginListView::Private::PluginModel::PluginModel(PluginListView::Private *plugi
 
 PluginListView::Private::PluginModel::~PluginModel()
 {
-  	disconnect(Manager, SIGNAL(pluginAdded(const Plugin *)),
-			this, SLOT(pluginAdded(const Plugin *)));
-	disconnect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
-			this, SLOT(pluginRemoved(const Plugin *)));
+        disconnect(Manager, SIGNAL(pluginAdded(const Plugin *)),
+                   this, SLOT(pluginAdded(const Plugin *)));
+        disconnect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
+                   this, SLOT(pluginRemoved(const Plugin *)));
 }
 
 void PluginListView::Private::PluginModel::pluginAdded(const Plugin *plugin)
 {
-	Q_UNUSED(plugin)
+        Q_UNUSED(plugin)
 
-	beginInsertRows(QModelIndex(), Plugins.size(), Plugins.size());
+        beginInsertRows(QModelIndex(), Plugins.size(), Plugins.size());
 
-	PluginEntry pe;
-	pe.category = plugin->info() && !plugin->info()->type().isEmpty() ? plugin->info()->type() : "other";
-	pe.name = plugin->name();
-	pe.description = plugin->info() ? plugin->info()->description() : "";
-	pe.checked = plugin->isActive();
-	pe.isCheckable = true;
+        PluginEntry pe;
+        pe.category = plugin->info() && !plugin->info()->type().isEmpty() ? plugin->info()->type() : "other";
+        pe.name = plugin->name();
+        pe.description = plugin->info() ? plugin->info()->description() : "";
+        pe.checked = plugin->isActive();
+        pe.isCheckable = true;
 
-	Plugins.append(pe);
+        Plugins.append(pe);
 
-	endInsertRows();
+        endInsertRows();
 }
 
 void PluginListView::Private::PluginModel::pluginRemoved(const Plugin *plugin)
 {
-	int index = 0;
-	foreach (PluginEntry pe, Plugins)
-	{
-		if (pe.name == plugin->name())
-		{
-			index = Plugins.indexOf(pe);
-			break;
-		}
-	}
-	beginRemoveRows(QModelIndex(), index, index);
-	Plugins.removeAt(index);
-	endRemoveRows();
+        int index = 0;
+        foreach (PluginEntry pe, Plugins)
+        {
+                if (pe.name == plugin->name())
+                {
+                        index = Plugins.indexOf(pe);
+                        break;
+                }
+        }
+
+        beginRemoveRows(QModelIndex(), index, index);
+        Plugins.removeAt(index);
+        endRemoveRows();
 }
 
 
@@ -208,6 +238,7 @@ QVariant PluginListView::Private::PluginModel::data(const QModelIndex &index, in
 
         switch (role)
         {
+
                 case Qt::DisplayRole:
                         return pluginEntry->name;
 
@@ -220,7 +251,8 @@ QVariant PluginListView::Private::PluginModel::data(const QModelIndex &index, in
                 case CommentRole:
                         return pluginEntry->description;
 
-		case ServicesCountRole:
+                case ServicesCountRole:
+
                 case IsCheckableRole:
                         return true;
 
@@ -228,6 +260,7 @@ QVariant PluginListView::Private::PluginModel::data(const QModelIndex &index, in
                         return pluginEntry->checked;
 
                 case CategorizedSortFilterProxyModel::CategoryDisplayRole: // fall through
+
                 case CategorizedSortFilterProxyModel::CategorySortRole:
                         return pluginEntry->category;
 
@@ -490,24 +523,25 @@ void PluginListView::Private::PluginDelegate::emitChanged()
 
 void PluginListView::Private::PluginDelegate::slotAboutClicked()
 {
-	  const QModelIndex index = focusedIndex();
-          const QAbstractItemModel *model = index.model();
+        const QModelIndex index = focusedIndex();
+        const QAbstractItemModel *model = index.model();
 
-	  QString info;
-	  info += tr("Plugin name: %1\n").arg(model->data(index, NameRole).toString());
+        QString info;
+        info += tr("Plugin name: %1\n").arg(model->data(index, NameRole).toString());
 
-	  PluginEntry *pluginEntry = model->data(index, PluginEntryRole).value<PluginEntry*>();
-	  PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(pluginEntry->name)->info();
-	  if (pluginInfo)
-	  {
-		  info += tr("Author: %1\n").arg(pluginInfo->author());
-		  info += tr("Version: %1\n").arg(pluginInfo->version());
-		  info += tr("Description: %1\n").arg(pluginInfo->description());
-		  info += tr("Dependencies: %1\n").arg(pluginInfo->dependencies().join(", "));
-		  info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
-	  }
+        PluginEntry *pluginEntry = model->data(index, PluginEntryRole).value<PluginEntry*>();
+        PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(pluginEntry->name)->info();
 
-	  MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
+        if (pluginInfo)
+        {
+                info += tr("Author: %1\n").arg(pluginInfo->author());
+                info += tr("Version: %1\n").arg(pluginInfo->version());
+                info += tr("Description: %1\n").arg(pluginInfo->description());
+                info += tr("Dependencies: %1\n").arg(pluginInfo->dependencies().join(", "));
+                info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
+        }
+
+        MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
 }
 
 void PluginListView::Private::PluginDelegate::slotConfigureClicked()

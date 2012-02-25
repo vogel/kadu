@@ -48,8 +48,7 @@ class QLabel;
 class QListView;
 class QTreeWidgetItem;
 
-class PluginsModel;
-class PluginProxyModel;
+class PluginListView;
 class QLineEdit;
 class KCategorizedView;
 
@@ -60,26 +59,13 @@ class PluginsWindow : public QWidget, DesktopAwareObject
 
 	static PluginsWindow *Instance;
 
-	KCategorizedView *PluginsList;
-	QLabel *ModuleInfo;
-
-	PluginsModel *PluginModel;
-	PluginProxyModel *ProxyModel;
-	QLineEdit *FilterLineEdit;
+	PluginListView *PluginsList;
 
 	PluginsWindow();
 	virtual ~PluginsWindow();
 
-// 	QTreeWidgetItem * getSelected();
-
-	void loadItemPlugin(Plugin *itemPlugin);
-	void unloadItemPlugin(Plugin *itemPlugin);
-
 private slots:
-// 	void moduleAction(QTreeWidgetItem *);
-// 	void itemsChanging();
-// 	void getInfo();
-// 	void refreshList();
+	void apply();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);
