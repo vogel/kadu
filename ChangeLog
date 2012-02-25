@@ -26,6 +26,7 @@
 * core: #2477 fixed: remove expired recent chats at Kadu startup (ultr)
 * chat: fixed a bug in Adium chat styles engine causing messages to be often doubled when opening a chat widget (beevvy)
 * history: #2480 probably fixed: crash when loading last day/week/month history into chat widget on 32bit systems (Vogel)
+* history: various security improvements pointed by Mateusz Goik from http://www.aliantsoft.pl (Vogel)
 
 +++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)
