@@ -4,7 +4,6 @@
 * gui: #2153 done: new and improved window for changing account status and description (Juzef)
 * history: #2440 done: auto-recovery for corrupted history databases (Vogel)
 * history: #2365 done: history can be disabled per chat and per buddy (Vogel)
-* spellchecker: #2319 done: better and smaller aspell Polish dictionary on Windows (beevvy)
 
 +++ version 0.12.0-alpha1
 * history: #2450 done, #2300 fixed: new, polished history window (Vogel)
@@ -31,6 +30,7 @@
 * history: #2480 probably fixed: crash when loading last day/week/month history into chat widget on 32bit systems (Vogel)
 * history: various security improvements pointed by Mateusz Goik from http://www.aliantsoft.pl (Vogel)
 * history_migration: #2503 fixed: crashes during history import from Kadu 0.6.5 (Vogel)
+* spellchecker: #2319 done: better and smaller aspell Polish dictionary on Windows (beevvy)
 
 +++ version 0.11.0
 * gui: #2454 fixed: memory leak in emoticons selector (Juzef)

@@ -6,7 +6,8 @@ set QT_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\bin"
 set QT_PLUGINS_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\plugins"
 set QT_TRANSLATIONS_DIR="C:\QtSDK\Desktop\Qt\4.8.0\mingw\translations"
 set QT_DEBUG_SUFFIX=""
-set ASPELL_DIR="C:\kadu\deps\aspell"
+set ASPELL_DIR="C:\kadu\deps\aspell-0.60.6-3kde"
+set ASPELL_DICT_DIR="C:\kadu\deps\aspell-0.60.6-3kde\lib\aspell-0.60"
 set LIBGADU_DIR="C:\kadu\deps\libgadu-1.12.0-pre"
 set LIBIDN_DIR="C:\kadu\deps\libidn-1.24-win32"
 set OPENSSL_DIR="C:\kadu\deps\openssl-0.9.8s"
@@ -166,9 +167,10 @@ xcopy %OPENSSL_DIR%\libeay32.dll %DESTINATION%\ /C /H /R /Y /Q
 xcopy %OPENSSL_DIR%\libssl32.dll %DESTINATION%\ /C /H /R /Y /Q
 
 ECHO Copying aspell
-xcopy %ASPELL_DIR%\data\*             %DESTINATION%\aspell\data\ /C /H /R /Y /Q
-xcopy %ASPELL_DIR%\dict\*             %DESTINATION%\aspell\dict\ /C /H /R /Y /Q
-xcopy %ASPELL_DIR%\bin\aspell-15.dll  %DESTINATION%\             /C /H /R /Y /Q
+xcopy %ASPELL_DIR%\bin\libaspell.dll        %DESTINATION%\             /C /H /R /Y /Q
+xcopy %ASPELL_DIR%\bin\libgcc_s_sjlj-1.dll  %DESTINATION%\             /C /H /R /Y /Q
+xcopy %ASPELL_DIR%\bin\libiconv.dll         %DESTINATION%\             /C /H /R /Y /Q
+xcopy %ASPELL_DICT_DIR%\*                   %DESTINATION%\aspell\      /C /H /R /Y /Q
 
 ECHO Copying libgadu
 xcopy %LIBGADU_DIR%\libgadu.dll %DESTINATION%\ /C /H /R /Y /Q
