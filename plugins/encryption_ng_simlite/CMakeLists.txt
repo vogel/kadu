@@ -11,7 +11,6 @@ include (FindKadu)
 include (FindPkgConfig)
 
 set (SOURCES
-	encryption-ng-simlite-chat-data.cpp
 	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-generator.cpp
@@ -23,7 +22,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	encryption-ng-simlite-chat-data.h
 	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
