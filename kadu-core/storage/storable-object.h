@@ -97,6 +97,10 @@ class CustomProperties;
  * Name = loadValue&lt;QString&gt;("ApplicationName");
  * Version = loadValue&lt;QString&gt;("ApplicationVersion");
  * </pre>
+ *
+ * Custom properties can be stored in @link CustomProperties @endlink class that is accessible by
+ * @link customProperties() @endlink getter. Storage mechanism for these values is described in
+ * @link CustomProperties @endlink documentation.
  */
 class KADUAPI StorableObject
 {
@@ -134,16 +138,66 @@ private:
 	CustomProperties *Properties;
 
 protected:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Creates default storage point for object.
+	 *
+	 * Constructs storage point: XML node that is child of storage point of object
+	 * returned by @link<StorableObject::storageParent storageParent @endlink method.
+	 * Node name is given by @link<StorableObject::storageNodeName @endlink method.
+	 *
+	 * If @link<StorableObject::storageNodeName @endlink returns invalid node name
+	 * (empty string) or @link<StorableObject::storageParent storageParent @endlink
+	 * returns object that has invalid storage point, this method returns invalid
+	 * storage point.
+	 *
+	 * If parent is NULL this method will return storage point that is child of
+	 * root node of XML configuration file.
+	 */
 	virtual QSharedPointer<StoragePoint> createStoragePoint();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Loads data from storage point. Sets state to StateLoaded.
+	 *
+	 * This is base implementation of load method, that is called by ensureLoaded method.
+	 * This version only sets state to StateLoaded and loads all custom properties. This
+	 * method must be overridden in every derivered class that has real data to read. This
+	 * method must be called by every reimplementation, if possible at beginning.
+	 */
 	virtual void load();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Stores object data in XML node.
+	 *
+	 * Stores object data in XML node. Also all storable custom properties are stored.
+	 */
 	virtual void store();
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Determines if object is worth to be stored.
+	 * @return true if object should be stored, defaults to true
+	 *
+	 * If object is incomplete, invalid or unneeded in storage, this method should return false
+	 * so it will not be stored in persistent storage. It is a good practice to reimplement this
+	 * method. Value returned by super class should be always considered.
+	 *
+	 * Default implementation returns true.
+	 */
 	virtual bool shouldStore();
 
 	virtual void loaded() { };
 
 public:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Contructs object with StateNew state and null storage point.
+	 *
+	 * Constructs object with @link<StorableObject::StateNew state @endlink and null
+	 * (invalid) @link<StorableObject::storage storage point @endlink.
+	 */
 	StorableObject();
 	virtual ~StorableObject();
 
@@ -168,6 +222,14 @@ public:
 	 */
 	virtual QString storageNodeName() = 0;
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns storage point for this object.
+	 * @return storage point for this object
+	 *
+	 * Returns storage point for this object. If the storage point has not been specified
+	 * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
+	 */
 	const QSharedPointer<StoragePoint> & storage();
 
 	/**
@@ -188,11 +250,54 @@ public:
 	 */
 	void setState(StorableObjectState state) { State = state; }
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Ensures that this object data has been loaded.
+	 *
+	 * This method loads data (by calling load method) only when current state of object
+	 * is StateNotLoaded. New object and already loaded object are not loaded twice.
+	 * Load method is responsible for changing the state to StateLoaded.
+	 */
 	void ensureLoaded();
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Stores or removes data from storage, depends on shouldStore result.
+	 *
+	 * If shouldStore method returns true this method stores object in storage file.
+	 * Else, object is removed from storage.
+	 */
 	void ensureStored();
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removed object from storage.
+	 *
+	 * Removes current object from storage (it will not be possible to load it anymore).
+	 * It is still possible to store this object in other place by using setStorage
+	 * method.
+	 */
 	void removeFromStorage();
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Sets arbitrary storage for this object. Sets state to StateNotLoaded.
+	 * @param storage new storage point
+	 *
+	 * This method allows you to set arbitrary storage point. Use that method when place
+	 * of data storage is known and the data needs to be loaded. This method changes
+	 * state of object to StateNotLoaded, so it will be loaded after executing ensureLoaded
+	 * method.
+	 */
 	void setStorage(const QSharedPointer<StoragePoint> &storage);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Returns true if storage point is valid.
+	 * @return true if storage point is valid
+	 *
+	 * Storage is valid when it is not NULL and points to a real XML storage file.
+	 */
 	bool isValidStorage();
 
 	/**
@@ -290,12 +395,53 @@ template<class T>
 		return def;
 	}
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Stores value into XML node (as a subnode).
+	 * @param name name of subnode that will store this value
+	 * @param value value to be stored
+	 *
+	 * Stores value into XML node as a subnode 'name' with value 'value'
+	 * (value is converted to QString before storing).
+	 */
 	void storeValue(const QString &name, const QVariant value);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Stores value into XML node (as an attribute).
+	 * @param name name of attribute that will store this value
+	 * @param value value to be stored
+	 *
+	 * Stores value into XML node as a attribute 'name' with value 'value'
+	 * (value is converted to QString before storing).
+	 */
 	void storeAttribute(const QString &name, const QVariant value);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removes value (a subnode) from XML node.
+	 * @param name name of subnode that will be removed
+	 *
+	 * Removes subnode 'name' from XML storage file.
+	 */
 	void removeValue(const QString &name);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Removes value (an attribute) from XML node.
+	 * @param name name of attribute that will be removed
+	 *
+	 * Removes attribute 'name' from XML storage file.
+	 */
 	void removeAttribute(const QString &name);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Return CustomProperties instance for this object.
+	 * @return CustomProperties instance for this objects
+	 *
+	 * Returned object must not be deleted. This object has full ownership over it.
+	 */
 	CustomProperties * customProperties() const;
 
 };
