@@ -62,6 +62,7 @@ set (gui_SRCS
 	widgets/plugin-list-widget.cpp
 	widgets/plugin-list-view-delegate.cpp
 	widgets/plugin-list-view-delegate-widgets.cpp
+	widgets/plugin-list-widget-item-delegate.cpp
 	widgets/progress-icon.cpp
 	widgets/progress-label.cpp
 	widgets/protocols-combo-box.cpp
@@ -228,6 +229,7 @@ set (gui_MOC_SRCS
 	widgets/path-list-edit.h
 	widgets/plugin-list-widget.h
 	widgets/plugin-list-view-delegate.h
+	widgets/plugin-list-widget-item-delegate.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h
 	widgets/progress-icon.h

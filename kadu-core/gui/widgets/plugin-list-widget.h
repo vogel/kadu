@@ -1,65 +1,44 @@
-/**
-  * This file is part of the KDE project
-  * Copyright (C) 2007, 2006 Rafael Fernández López <ereslibre@kde.org>
-  * Copyright (C) 2002-2003 Matthias Kretz <kretz@kde.org>
-  *
-  * This library is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU Library General Public
-  * License version 2 as published by the Free Software Foundation.
-  *
-  * This library is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  * Library General Public License for more details.
-  *
-  * You should have received a copy of the GNU Library General Public License
-  * along with this library; see the file COPYING.LIB.  If not, write to
-  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-  * Boston, MA 02110-1301, USA.
-  */
+/*
+ * %kadu copyright begin%
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * %kadu copyright end%
+ *
+ * This file is derived from part of the KDE project
+ * Copyright (C) 2007, 2006 Rafael Fernández López <ereslibre@kde.org>
+ * Copyright (C) 2002-2003 Matthias Kretz <kretz@kde.org>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#ifndef PLUGIN_LIST_VIEW_H
-#define PLUGIN_LIST_VIEW_H
+#ifndef PLUGIN_LIST_WIDGET_H
+#define PLUGIN_LIST_WIDGET_H
 
-#include <QtCore/QAbstractListModel>
-#include <QtCore/QList>
-#include <QtGui/QAbstractItemDelegate>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/plugin-list-view-delegate.h"
-#include "model/categorized-sort-filter-proxy-model.h"
-
-class QCheckBox;
-class QPushButton;
-class QAbstractItemView;
+class QLineEdit;
 
 class CategorizedListView;
 class CategorizedListViewPainter;
-// class FilterWidget;
-class PluginsManager;
-class PluginListWidgetDelegate;
-class Plugin;
+class PluginModel;
+class PluginListWidgetItemDelegate;
+class ProxyModel;
 
 
 /**
   * @short A widget to select what plugins to load and configure the plugins.
   *
   * It shows the list of available plugins
-  *
-  * Since the user needs a way to know what a specific plugin does every plugin
-  * sould install a desktop file containing a name, comment and category field.
-  * The category is useful for applications that can use different kinds of
-  * plugins like a playlist, skin or visualization
-  *
-  * The location of these desktop files is the
-  * share/apps/&lt;instancename&gt;/&lt;plugindir&gt; directory. But if you need
-  * you may use a different directory
-  *
-  * You can add plugins from different KConfig[group], by just calling all times
-  * you want addPlugins method with the correct parameters
-  *
-  * Additionally, calls to constructor with same @p categoryName, will add new
-  * items to the same category, even if plugins are from different categories
   *
   * @author Matthias Kretz <kretz@kde.org>
   * @author Rafael Fernández López <ereslibre@kde.org>
@@ -69,25 +48,22 @@ class PluginListWidget : public QWidget
 {
         Q_OBJECT
 
-
 public:
+        PluginListWidget(QWidget *parent = 0);
+        ~PluginListWidget();
+
 	void applyChanges();
 
-        enum PluginLoadMethod
-        {
-                ReadConfigFile = 0,
-                IgnoreConfigFile
-        };
+        int dependantLayoutValue(int value, int width, int totalWidth) const;
 
-        /**
-          * Create a new PluginListWidget
-          */
-        PluginListWidget(QWidget *parent = 0);
-
-        /**
-          * Destructor
-          */
-        ~PluginListWidget();
+	QWidget *parent;
+        QLineEdit *lineEdit;
+        CategorizedListView *listView;
+        CategorizedListViewPainter *categoryDrawer;
+        PluginModel *pluginModel;
+        ProxyModel *proxyModel;
+        PluginListWidgetItemDelegate *pluginDelegate;
+        bool showIcons;
 
 Q_SIGNALS:
         /**
@@ -101,152 +77,6 @@ Q_SIGNALS:
           * its config
           */
         void configCommitted(const QByteArray &componentName);
-
-private:
-
-        class Private;
-        Private * const d;
 };
-
-class PluginListWidget::Private
-                        : public QObject
-{
-        Q_OBJECT
-
-public:
-        enum ExtraRoles
-        {
-                PluginEntryRole   = 0x09386561,
-                ServicesCountRole = 0x1422E2AA,
-                NameRole          = 0x0CBBBB00,
-                CommentRole       = 0x19FC6DE2,
-                AuthorRole        = 0x30861E10,
-                EmailRole         = 0x02BE3775,
-                WebsiteRole       = 0x13095A34,
-                VersionRole       = 0x0A0CB450,
-                LicenseRole       = 0x001F308A,
-                DependenciesRole  = 0x04CAB650,
-                IsCheckableRole   = 0x0AC2AFF8
-        };
-
-        Private(PluginListWidget *parent);
-        ~Private();
-
-        int dependantLayoutValue(int value, int width, int totalWidth) const;
-
-public:
-
-        class PluginModel;
-        class ProxyModel;
-        class PluginDelegate;
-        QObject *parent;
-        QLineEdit *lineEdit;
-        CategorizedListView *listView;
-        CategorizedListViewPainter *categoryDrawer;
-        PluginModel *pluginModel;
-        ProxyModel *proxyModel;
-        PluginDelegate *pluginDelegate;
-        bool showIcons;
-};
-
-class PluginEntry
-{
-
-public:
-        QString category;
-        QString name;
-        QString description;
-        bool checked;
-        bool isCheckable;
-
-        bool operator==(const PluginEntry &pe) const
-        {
-                return name == pe.name;
-        }
-};
-
-Q_DECLARE_METATYPE(PluginEntry*)
-
-class PluginListWidget::Private::PluginModel
-                        : public QAbstractListModel
-{
-	Q_OBJECT
-
-public:
-        PluginModel(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
-        ~PluginModel();
-
-        virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
-        virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-        virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-        virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-
-        void loadPluginData();
-
-private:
-        PluginListWidget::Private *pluginSelector_d;
-        PluginsManager *Manager;
-        QList<PluginEntry> Plugins;
-
-private slots:
-	void pluginAdded(const Plugin *plugin);
-	void pluginRemoved(const Plugin *plugin);
-};
-
-class PluginListWidget::Private::ProxyModel
-                        : public CategorizedSortFilterProxyModel
-{
-
-public:
-        ProxyModel(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
-        ~ProxyModel();
-
-protected:
-        virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-        virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const;
-
-private:
-        PluginListWidget::Private *pluginSelector_d;
-};
-
-
-class PluginListWidget::Private::PluginDelegate
-                        : public PluginListWidgetDelegate
-{
-        Q_OBJECT
-
-public:
-        PluginDelegate(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
-        ~PluginDelegate();
-
-        void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-        QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
-
-Q_SIGNALS:
-        void changed(bool hasChanged);
-        void configCommitted(const QByteArray &componentName);
-
-protected:
-        virtual QList<QWidget*> createItemWidgets() const;
-        virtual void updateItemWidgets(const QList<QWidget*> widgets,
-                                       const QStyleOptionViewItem &option,
-                                       const QPersistentModelIndex &index) const;
-
-private Q_SLOTS:
-        void slotStateChanged(bool state);
-        void emitChanged();
-        void slotAboutClicked();
-        void slotConfigureClicked();
-
-private:
-        QFont titleFont(const QFont &baseFont) const;
-
-        QCheckBox *checkBox;
-        QPushButton *pushButton;
-
-        PluginListWidget::Private *pluginSelector_d;
-};
-
-
 
 #endif
