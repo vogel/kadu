@@ -4,8 +4,8 @@
  * %kadu copyright end%
  *
  * This file is derived from part of the KDE project
-  * Copyright (C) 2007-2008 Rafael Fernández López <ereslibre@kde.org>
-  * Copyright (C) 2008 Kevin Ottens <ervin@kde.org>
+ * Copyright (C) 2007-2008 Rafael Fernández López <ereslibre@kde.org>
+ * Copyright (C) 2008 Kevin Ottens <ervin@kde.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -33,33 +33,32 @@
 #include <QtGui/QItemSelectionModel>
 
 class PluginListWidgetDelegate;
-
 class PluginListWidgetDelegateWidgets;
 
-class PluginListWidgetDelegatePrivate
-                        : public QObject
-{
-        Q_OBJECT
+// class PluginListWidgetDelegatePrivate
+//                         : public QObject
+// {
+//         Q_OBJECT
+// 
+// public:
+//         explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = 0);
+//         ~PluginListWidgetDelegatePrivate();
 
-public:
-        explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = 0);
-        ~PluginListWidgetDelegatePrivate();
+//         void _k_slotRowsInserted(const QModelIndex &parent, int start, int end);
+//         void _k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+//         void _k_slotRowsRemoved(const QModelIndex &parent, int start, int end);
+//         void _k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+//         void _k_slotLayoutChanged();
+//         void _k_slotModelReset();
+// 
+//         void updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving);
 
-        void _k_slotRowsInserted(const QModelIndex &parent, int start, int end);
-        void _k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-        void _k_slotRowsRemoved(const QModelIndex &parent, int start, int end);
-        void _k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-        void _k_slotLayoutChanged();
-        void _k_slotModelReset();
+// public Q_SLOTS:
+//         void initializeModel(const QModelIndex &parent = QModelIndex());
 
-        void updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving);
-
-public Q_SLOTS:
-        void initializeModel(const QModelIndex &parent = QModelIndex());
-
-protected:
-        virtual bool eventFilter(QObject *watched, QEvent *event);
-
+// protected:
+//         virtual bool eventFilter(QObject *watched, QEvent *event);
+/*
 public:
         QAbstractItemView *itemView;
         PluginListWidgetDelegateWidgets *widgetPool;
@@ -67,28 +66,34 @@ public:
         bool viewDestroyed;
 
         PluginListWidgetDelegate *q;
-};
+};*/
 
 class QObject;
 class QPainter;
 class QStyleOption;
 class QStyleOptionViewItem;
 class QAbstractItemView;
-class PluginListWidgetDelegatePrivate;
 class PluginListWidgetDelegateWidgets;
 
 /**
  * This class allows to create item delegates embedding simple widgets to interact
  * with items. For instance you can add push buttons, line edits, etc. to your delegate
  * and use them to modify the state of your model.
- *
- * @since 4.1
  */
 
 class PluginListWidgetDelegate : public QAbstractItemDelegate
 {
         Q_OBJECT
 
+	friend class PluginListWidgetDelegateWidgets;
+        friend class PluginListWidgetDelegateEventListener;
+
+        QAbstractItemView *ItemView;
+        PluginListWidgetDelegateWidgets *widgetPool;
+        QAbstractItemModel *model;
+        bool viewDestroyed;
+
+        void updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving);
 public:
         /**
          * Creates a new ItemDelegate to be used with a given itemview.
@@ -116,6 +121,17 @@ public:
          * @return the current focused index, or QPersistentModelIndex() if none is focused.
          */
         QPersistentModelIndex focusedIndex() const;
+
+public slots:
+	void initializeModel(const QModelIndex &parent = QModelIndex());
+
+private slots:
+  	void _k_slotRowsInserted(const QModelIndex &parent, int start, int end);
+        void _k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+        void _k_slotRowsRemoved(const QModelIndex &parent, int start, int end);
+        void _k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+        void _k_slotLayoutChanged();
+        void _k_slotModelReset();
 
 protected:
         /**
@@ -189,20 +205,7 @@ protected:
          */
         QList<QEvent::Type> blockedEventTypes(QWidget *widget) const;
 
-private:
-        //@cond PRIVATE
-
-        friend class PluginListWidgetDelegateWidgets;
-
-        friend class PluginListWidgetDelegateEventListener;
-        PluginListWidgetDelegatePrivate *const d;
-        Q_PRIVATE_SLOT(d, void _k_slotRowsInserted(const QModelIndex&, int, int))
-        Q_PRIVATE_SLOT(d, void _k_slotRowsAboutToBeRemoved(const QModelIndex&, int, int))
-        Q_PRIVATE_SLOT(d, void _k_slotRowsRemoved(const QModelIndex&, int, int))
-        Q_PRIVATE_SLOT(d, void _k_slotDataChanged(const QModelIndex&, const QModelIndex&))
-        Q_PRIVATE_SLOT(d, void _k_slotLayoutChanged())
-        Q_PRIVATE_SLOT(d, void _k_slotModelReset())
-        //@endcond
+        virtual bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif

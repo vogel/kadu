@@ -1,26 +1,25 @@
 /*
- * This file is part of the KDE project
+ * %kadu copyright begin%
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * %kadu copyright end%
+ *
+ * This file is derived from part of the KDE project
  * Copyright (C) 2007-2008 Rafael Fernández López <ereslibre@kde.org>
  * Copyright (C) 2008 Kevin Ottens <ervin@kde.org>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Library General Public License
- * along with this library; see the file COPYING.LIB.  If not, write to
- * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "plugin-list-view-delegate.h"
-// #include "kwidgetitemdelegate_p.h"
 
 #include <QIcon>
 #include <QSize>
@@ -45,34 +44,12 @@
 
 #include "gui/widgets/plugin-list-view-delegate-widgets.h"
 
+#include "plugin-list-view-delegate.h"
+
+
 Q_DECLARE_METATYPE(QList<QEvent::Type>)
 
-/**
-  Private class that helps to provide binary compatibility between releases.
-  @internal
-*/
-//@cond PRIVATE
-PluginListWidgetDelegatePrivate::PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent)
-                : QObject(parent)
-                , itemView(0)
-                , widgetPool(new PluginListWidgetDelegateWidgets(q))
-                , model(0)
-                , viewDestroyed(false)
-                , q(q)
-{
-}
-
-PluginListWidgetDelegatePrivate::~PluginListWidgetDelegatePrivate()
-{
-        if (!viewDestroyed)
-        {
-                widgetPool->fullClear();
-        }
-
-        delete widgetPool;
-}
-
-void PluginListWidgetDelegatePrivate::_k_slotRowsInserted(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegate::_k_slotRowsInserted(const QModelIndex &parent, int start, int end)
 {
         Q_UNUSED(end);
         // We need to update the rows behind the inserted row as well because the widgets need to be
@@ -80,12 +57,12 @@ void PluginListWidgetDelegatePrivate::_k_slotRowsInserted(const QModelIndex &par
         updateRowRange(parent, start, model->rowCount(parent), false);
 }
 
-void PluginListWidgetDelegatePrivate::_k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegate::_k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
         updateRowRange(parent, start, end, true);
 }
 
-void PluginListWidgetDelegatePrivate::_k_slotRowsRemoved(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegate::_k_slotRowsRemoved(const QModelIndex &parent, int start, int end)
 {
         Q_UNUSED(end);
         // We need to update the rows that come behind the deleted rows because the widgets need to be
@@ -93,7 +70,7 @@ void PluginListWidgetDelegatePrivate::_k_slotRowsRemoved(const QModelIndex &pare
         updateRowRange(parent, start, model->rowCount(parent), false);
 }
 
-void PluginListWidgetDelegatePrivate::_k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void PluginListWidgetDelegate::_k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
         for (int i = topLeft.row(); i <= bottomRight.row(); ++i)
         {
@@ -101,14 +78,14 @@ void PluginListWidgetDelegatePrivate::_k_slotDataChanged(const QModelIndex &topL
                 {
                         const QModelIndex index = model->index(i, j, topLeft.parent());
                         QStyleOptionViewItemV4 optionView;
-                        optionView.initFrom(itemView->viewport());
-                        optionView.rect = itemView->visualRect(index);
+                        optionView.initFrom(ItemView->viewport());
+                        optionView.rect = ItemView->visualRect(index);
                         widgetPool->findWidgets(index, optionView);
                 }
         }
 }
 
-void PluginListWidgetDelegatePrivate::_k_slotLayoutChanged()
+void PluginListWidgetDelegate::_k_slotLayoutChanged()
 {
         foreach (QWidget *widget, widgetPool->invalidIndexesWidgets())
         {
@@ -118,13 +95,13 @@ void PluginListWidgetDelegatePrivate::_k_slotLayoutChanged()
         QTimer::singleShot(0, this, SLOT(initializeModel()));
 }
 
-void PluginListWidgetDelegatePrivate::_k_slotModelReset()
+void PluginListWidgetDelegate::_k_slotModelReset()
 {
         widgetPool->fullClear();
         QTimer::singleShot(0, this, SLOT(initializeModel()));
 }
 
-void PluginListWidgetDelegatePrivate::updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving)
+void PluginListWidgetDelegate::updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving)
 {
         int i = start;
 
@@ -134,20 +111,20 @@ void PluginListWidgetDelegatePrivate::updateRowRange(const QModelIndex &parent, 
                 {
                         const QModelIndex index = model->index(i, j, parent);
                         QStyleOptionViewItemV4 optionView;
-                        optionView.initFrom(itemView->viewport());
-                        optionView.rect = itemView->visualRect(index);
+                        optionView.initFrom(ItemView->viewport());
+                        optionView.rect = ItemView->visualRect(index);
 
                         QList<QWidget*> widgetList = widgetPool->findWidgets(index, optionView, isRemoving ? PluginListWidgetDelegateWidgets::NotUpdateWidgets
                                                      : PluginListWidgetDelegateWidgets::UpdateWidgets);
 
                         if (isRemoving)
                         {
-                                widgetPool->d->allocatedWidgets.removeAll(widgetList);
+                                widgetPool->allocatedWidgets.removeAll(widgetList);
                                 foreach (QWidget *widget, widgetList)
                                 {
-                                        const QModelIndex idx = widgetPool->d->widgetInIndex[widget];
-                                        widgetPool->d->usedWidgets.remove(idx);
-                                        widgetPool->d->widgetInIndex.remove(widget);
+                                        const QModelIndex idx = widgetPool->widgetInIndex[widget];
+                                        widgetPool->usedWidgets.remove(idx);
+                                        widgetPool->widgetInIndex.remove(widget);
                                         delete widget;
                                 }
                         }
@@ -157,7 +134,7 @@ void PluginListWidgetDelegatePrivate::updateRowRange(const QModelIndex &parent, 
         }
 }
 
-void PluginListWidgetDelegatePrivate::initializeModel(const QModelIndex &parent)
+void PluginListWidgetDelegate::initializeModel(const QModelIndex &parent)
 {
         if (!model)
         {
@@ -173,8 +150,8 @@ void PluginListWidgetDelegatePrivate::initializeModel(const QModelIndex &parent)
                         if (index.isValid())
                         {
                                 QStyleOptionViewItemV4 optionView;
-                                optionView.initFrom(itemView->viewport());
-                                optionView.rect = itemView->visualRect(index);
+                                optionView.initFrom(ItemView->viewport());
+                                optionView.rect = ItemView->visualRect(index);
                                 widgetPool->findWidgets(index, optionView);
                         }
                 }
@@ -190,42 +167,50 @@ void PluginListWidgetDelegatePrivate::initializeModel(const QModelIndex &parent)
         }
 }
 
-PluginListWidgetDelegate::PluginListWidgetDelegate(QAbstractItemView *itemView, QObject *parent)
+PluginListWidgetDelegate::PluginListWidgetDelegate(QAbstractItemView *v, QObject *parent)
                 : QAbstractItemDelegate(parent)
-                , d(new PluginListWidgetDelegatePrivate(this))
+                , ItemView(0)
+                , widgetPool(new PluginListWidgetDelegateWidgets(this))
+                , model(0)
+                , viewDestroyed(false)
 {
-        Q_ASSERT(itemView);
+        Q_ASSERT(v);
 
-        itemView->setMouseTracking(true);
-        itemView->viewport()->setAttribute(Qt::WA_Hover);
+        v->setMouseTracking(true);
+        v->viewport()->setAttribute(Qt::WA_Hover);
 
-        d->itemView = itemView;
+        ItemView = v;
 
-        itemView->viewport()->installEventFilter(d); // mouse events
-        itemView->installEventFilter(d);             // keyboard events
+        ItemView->viewport()->installEventFilter(this); // mouse events
+        ItemView->installEventFilter(this);             // keyboard events
 
-        if (qobject_cast<QTreeView*>(itemView))
+        if (qobject_cast<QTreeView*>(ItemView))
         {
-                connect(itemView,  SIGNAL(collapsed(QModelIndex)),
-                        d, SLOT(initializeModel()));
-                connect(itemView,  SIGNAL(expanded(QModelIndex)),
-                        d, SLOT(initializeModel()));
+                connect(ItemView,  SIGNAL(collapsed(QModelIndex)),
+                        this, SLOT(initializeModel()));
+                connect(ItemView,  SIGNAL(expanded(QModelIndex)),
+                        this, SLOT(initializeModel()));
         }
 }
 
 PluginListWidgetDelegate::~PluginListWidgetDelegate()
 {
-        delete d;
+        if (!viewDestroyed)
+        {
+                widgetPool->fullClear();
+        }
+
+        delete widgetPool;
 }
 
 QAbstractItemView *PluginListWidgetDelegate::itemView() const
 {
-        return d->itemView;
+        return ItemView;
 }
 
 QPersistentModelIndex PluginListWidgetDelegate::focusedIndex() const
 {
-        const QPersistentModelIndex idx = d->widgetPool->d->widgetInIndex.value(QApplication::focusWidget());
+        const QPersistentModelIndex idx = widgetPool->widgetInIndex.value(QApplication::focusWidget());
 
         if (idx.isValid())
         {
@@ -233,12 +218,12 @@ QPersistentModelIndex PluginListWidgetDelegate::focusedIndex() const
         }
 
         // Use the mouse position, if the widget refused to take keyboard focus.
-        const QPoint pos = d->itemView->viewport()->mapFromGlobal(QCursor::pos());
+        const QPoint pos = ItemView->viewport()->mapFromGlobal(QCursor::pos());
 
-        return d->itemView->indexAt(pos);
+        return ItemView->indexAt(pos);
 }
 
-bool PluginListWidgetDelegatePrivate::eventFilter(QObject *watched, QEvent *event)
+bool PluginListWidgetDelegate::eventFilter(QObject *watched, QEvent *event)
 {
         if (event->type() == QEvent::Destroy)
         {
@@ -246,7 +231,7 @@ bool PluginListWidgetDelegatePrivate::eventFilter(QObject *watched, QEvent *even
                 // if the view hasn't been deleted, it might be that just the
                 // delegate is removed from it, in which case we need to remove the widgets
                 // manually, otherwise they still get drawn.
-                if (watched == itemView)
+                if (watched == ItemView)
                 {
                         viewDestroyed = true;
                 }
@@ -254,28 +239,28 @@ bool PluginListWidgetDelegatePrivate::eventFilter(QObject *watched, QEvent *even
                 return false;
         }
 
-        Q_ASSERT(itemView);
+        Q_ASSERT(ItemView);
 
-        if (model != itemView->model())
+        if (model != ItemView->model())
         {
                 if (model)
                 {
-                        disconnect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), q, SLOT(_k_slotRowsInserted(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), q, SLOT(_k_slotRowsAboutToBeRemoved(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), q, SLOT(_k_slotRowsRemoved(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), q, SLOT(_k_slotDataChanged(QModelIndex, QModelIndex)));
-                        disconnect(model, SIGNAL(layoutChanged()), q, SLOT(_k_slotLayoutChanged()));
-                        disconnect(model, SIGNAL(modelReset()), q, SLOT(_k_slotModelReset()));
+                        disconnect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(_k_slotRowsInserted(QModelIndex, int, int)));
+                        disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsAboutToBeRemoved(QModelIndex, int, int)));
+                        disconnect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsRemoved(QModelIndex, int, int)));
+                        disconnect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(_k_slotDataChanged(QModelIndex, QModelIndex)));
+                        disconnect(model, SIGNAL(layoutChanged()), this, SLOT(_k_slotLayoutChanged()));
+                        disconnect(model, SIGNAL(modelReset()), this, SLOT(_k_slotModelReset()));
                 }
 
-                model = itemView->model();
+                model = ItemView->model();
 
-                connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), q, SLOT(_k_slotRowsInserted(QModelIndex, int, int)));
-                connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), q, SLOT(_k_slotRowsAboutToBeRemoved(QModelIndex, int, int)));
-                connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), q, SLOT(_k_slotRowsRemoved(QModelIndex, int, int)));
-                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), q, SLOT(_k_slotDataChanged(QModelIndex, QModelIndex)));
-                connect(model, SIGNAL(layoutChanged()), q, SLOT(_k_slotLayoutChanged()));
-                connect(model, SIGNAL(modelReset()), q, SLOT(_k_slotModelReset()));
+                connect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(_k_slotRowsInserted(QModelIndex, int, int)));
+                connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsAboutToBeRemoved(QModelIndex, int, int)));
+                connect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsRemoved(QModelIndex, int, int)));
+                connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(_k_slotDataChanged(QModelIndex, QModelIndex)));
+                connect(model, SIGNAL(layoutChanged()), this, SLOT(_k_slotLayoutChanged()));
+                connect(model, SIGNAL(modelReset()), this, SLOT(_k_slotModelReset()));
                 QTimer::singleShot(0, this, SLOT(initializeModel()));
         }
 

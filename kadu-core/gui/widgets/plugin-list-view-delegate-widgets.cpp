@@ -45,44 +45,19 @@
 Q_DECLARE_METATYPE(QModelIndex);
 
 
-class PluginListWidgetDelegateEventListener
-                        : public QObject
-{
-
-public:
-        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgetsPrivate *poolPrivate, QObject *parent = 0)
-                        : QObject(parent)
-                        , poolPrivate(poolPrivate)
-        {
-        }
-
-        virtual bool eventFilter(QObject *watched, QEvent *event);
-
-private:
-        PluginListWidgetDelegateWidgetsPrivate *poolPrivate;
-};
-
-PluginListWidgetDelegateWidgetsPrivate::PluginListWidgetDelegateWidgetsPrivate(PluginListWidgetDelegate *d)
-                : delegate(d)
-                , eventListener(new PluginListWidgetDelegateEventListener(this))
-                , clearing(false)
-{
-}
-
 PluginListWidgetDelegateWidgets::PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate)
-                : d(new PluginListWidgetDelegateWidgetsPrivate(delegate))
+		: delegate(delegate), eventListener(new PluginListWidgetDelegateEventListener(this))
 {
 }
 
 PluginListWidgetDelegateWidgets::~PluginListWidgetDelegateWidgets()
 {
-        delete d->eventListener;
-        delete d;
+        delete eventListener;
 }
 
 QList<QWidget*> PluginListWidgetDelegateWidgets::findWidgets(const QPersistentModelIndex &idx,
                 const QStyleOptionViewItem &option,
-                UpdateWidgetsEnum updateWidgets) const
+                UpdateWidgetsEnum updateWidgets)
 {
         QList<QWidget*> result;
 
@@ -107,23 +82,23 @@ QList<QWidget*> PluginListWidgetDelegateWidgets::findWidgets(const QPersistentMo
                 return result;
         }
 
-        if (d->usedWidgets.contains(index))
+        if (usedWidgets.contains(index))
         {
-                result = d->usedWidgets[index];
+                result = usedWidgets[index];
         }
         else
         {
                 // ### KDE5 This sets a property on the delegate because we can't add an argument to createItemWidgets
-                d->delegate->setProperty("goya:creatingWidgetForIndex", QVariant::fromValue(index));
-                result = d->delegate->createItemWidgets();
-                d->delegate->setProperty("goya:creatingWidgetForIndex", QVariant());
-                d->allocatedWidgets << result;
-                d->usedWidgets[index] = result;
+                delegate->setProperty("goya:creatingWidgetForIndex", QVariant::fromValue(index));
+                result = delegate->createItemWidgets();
+                delegate->setProperty("goya:creatingWidgetForIndex", QVariant());
+                allocatedWidgets << result;
+                usedWidgets[index] = result;
                 foreach (QWidget *widget, result)
                 {
-                        d->widgetInIndex[widget] = index;
-                        widget->setParent(d->delegate->d->itemView->viewport());
-                        widget->installEventFilter(d->eventListener);
+                        widgetInIndex[widget] = index;
+                        widget->setParent(delegate->itemView()->viewport());
+                        widget->installEventFilter(eventListener);
                         widget->setVisible(true);
                 }
         }
@@ -135,7 +110,7 @@ QList<QWidget*> PluginListWidgetDelegateWidgets::findWidgets(const QPersistentMo
                         widget->setVisible(true);
                 }
 
-                d->delegate->updateItemWidgets(result, option, idx);
+                delegate->updateItemWidgets(result, option, idx);
 
                 foreach (QWidget *widget, result)
                 {
@@ -149,18 +124,18 @@ QList<QWidget*> PluginListWidgetDelegateWidgets::findWidgets(const QPersistentMo
 QList<QWidget*> PluginListWidgetDelegateWidgets::invalidIndexesWidgets() const
 {
         QList<QWidget*> result;
-        foreach (QWidget *widget, d->widgetInIndex.keys())
+        foreach (QWidget *widget, widgetInIndex.keys())
         {
-                const QAbstractProxyModel *proxyModel = qobject_cast<const QAbstractProxyModel*>(d->delegate->d->model);
+                const QAbstractProxyModel *proxyModel = qobject_cast<const QAbstractProxyModel*>(delegate->model);
                 QModelIndex index;
 
                 if (proxyModel)
                 {
-                        index = proxyModel->mapFromSource(d->widgetInIndex[widget]);
+                        index = proxyModel->mapFromSource(widgetInIndex[widget]);
                 }
                 else
                 {
-                        index = d->widgetInIndex[widget];
+                        index = widgetInIndex[widget];
                 }
 
                 if (!index.isValid())
@@ -174,30 +149,36 @@ QList<QWidget*> PluginListWidgetDelegateWidgets::invalidIndexesWidgets() const
 
 void PluginListWidgetDelegateWidgets::fullClear()
 {
-        d->clearing = true;
-        qDeleteAll(d->widgetInIndex.keys());
-        d->clearing = false;
-        d->allocatedWidgets.clear();
-        d->usedWidgets.clear();
-        d->widgetInIndex.clear();
+        clearing = true;
+        qDeleteAll(widgetInIndex.keys());
+        clearing = false;
+        allocatedWidgets.clear();
+        usedWidgets.clear();
+        widgetInIndex.clear();
+}
+
+PluginListWidgetDelegateEventListener::PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent)
+		: QObject(parent)
+		,Pool(pool)
+{
 }
 
 bool PluginListWidgetDelegateEventListener::eventFilter(QObject *watched, QEvent *event)
 {
         QWidget *widget = static_cast<QWidget*>(watched);
 
-        if (event->type() == QEvent::Destroy && !poolPrivate->clearing)
+        if (event->type() == QEvent::Destroy && !Pool->clearing)
         {
                 // assume the application has kept a list of widgets and tries to delete them manually
                 // they have been reparented to the view in any case, so no leaking occurs
-                poolPrivate->widgetInIndex.remove(widget);
-                QWidget *viewport = poolPrivate->delegate->d->itemView->viewport();
+                Pool->widgetInIndex.remove(widget);
+                QWidget *viewport = Pool->delegate->itemView()->viewport();
                 QApplication::sendEvent(viewport, event);
         }
 
-        if (dynamic_cast<QInputEvent*>(event) && !poolPrivate->delegate->blockedEventTypes(widget).contains(event->type()))
+        if (dynamic_cast<QInputEvent*>(event) && !Pool->delegate->blockedEventTypes(widget).contains(event->type()))
         {
-                QWidget *viewport = poolPrivate->delegate->d->itemView->viewport();
+                QWidget *viewport = Pool->delegate->itemView()->viewport();
 
                 switch (event->type())
                 {
@@ -258,4 +239,3 @@ bool PluginListWidgetDelegateEventListener::eventFilter(QObject *watched, QEvent
 
         return QObject::eventFilter(watched, event);
 }
-//@endcond

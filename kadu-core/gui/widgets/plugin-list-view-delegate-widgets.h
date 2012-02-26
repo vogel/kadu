@@ -31,15 +31,23 @@
 class QWidget;
 class QStyleOptionViewItem;
 class PluginListWidgetDelegate;
-class PluginListWidgetDelegateWidgetsPrivate;
+class PluginListWidgetDelegateEventListener;
 
-
-/**
-  * @internal
-  */
 
 class PluginListWidgetDelegateWidgets
 {
+        friend class PluginListWidgetDelegate;
+	friend class PluginListWidgetDelegateEventListener;
+
+	PluginListWidgetDelegate *delegate;
+
+	PluginListWidgetDelegateEventListener *eventListener;
+
+        QList<QList<QWidget*> > allocatedWidgets;
+        QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;
+        QHash<QWidget*, QPersistentModelIndex> widgetInIndex;
+
+        bool clearing;
 
 public:
         enum UpdateWidgetsEnum
@@ -48,17 +56,8 @@ public:
                 NotUpdateWidgets
         };
 
-        /**
-          * Creates a new ItemDelegateWidgets.
-          *
-          * @param delegate the ItemDelegate for this pool.
-          */
-
         PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate);
 
-        /**
-          * Destroys an ItemDelegateWidgets.
-          */
         ~PluginListWidgetDelegateWidgets();
 
         /**
@@ -69,47 +68,24 @@ public:
           * @internal
           */
         QList<QWidget*> findWidgets(const QPersistentModelIndex &index, const QStyleOptionViewItem &option,
-                                    UpdateWidgetsEnum updateWidgets = UpdateWidgets) const;
+                                    UpdateWidgetsEnum updateWidgets = UpdateWidgets);
 
-        /**
-          * @internal
-          */
         QList<QWidget*> invalidIndexesWidgets() const;
 
-        /**
-          * @internal
-          */
         void fullClear();
-
-private:
-
-        friend class PluginListWidgetDelegate;
-
-        friend class PluginListWidgetDelegatePrivate;
-        PluginListWidgetDelegateWidgetsPrivate *const d;
 };
 
-class PluginListWidgetDelegateEventListener;
-
-/**
-  * @internal
-  */
-
-class PluginListWidgetDelegateWidgetsPrivate
+class PluginListWidgetDelegateEventListener
+                        : public QObject
 {
+	friend class PluginListWidgetDelegateWidgets;
+
+        PluginListWidgetDelegateWidgets *Pool;
 
 public:
+        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent = 0);
 
-        PluginListWidgetDelegateWidgetsPrivate(PluginListWidgetDelegate *d);
-
-        PluginListWidgetDelegate *delegate;
-        PluginListWidgetDelegateEventListener *eventListener;
-
-        QList<QList<QWidget*> > allocatedWidgets;
-        QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;
-        QHash<QWidget*, QPersistentModelIndex> widgetInIndex;
-
-        bool clearing;
+        virtual bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif
