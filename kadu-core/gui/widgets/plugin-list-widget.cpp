@@ -29,7 +29,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QStyleOptionViewItemV4>
 
-// #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
@@ -42,9 +41,9 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
 
-#include "plugin-list-view.h"
+#include "plugin-list-widget.h"
 
-PluginListView::Private::Private(PluginListView *parent)
+PluginListWidget::Private::Private(PluginListWidget *parent)
                 : QObject(parent)
                 , parent(parent)
                 , listView(0)
@@ -52,12 +51,12 @@ PluginListView::Private::Private(PluginListView *parent)
 {
 }
 
-PluginListView::Private::~Private()
+PluginListWidget::Private::~Private()
 {
         delete categoryDrawer;
 }
 
-int PluginListView::Private::dependantLayoutValue(int value, int width, int totalWidth) const
+int PluginListWidget::Private::dependantLayoutValue(int value, int width, int totalWidth) const
 {
         if (listView->layoutDirection() == Qt::LeftToRight)
         {
@@ -67,7 +66,7 @@ int PluginListView::Private::dependantLayoutValue(int value, int width, int tota
         return totalWidth - width - value;
 }
 
-PluginListView::PluginListView(QWidget *parent)
+PluginListWidget::PluginListWidget(QWidget *parent)
                 : QWidget(parent)
                 , d(new Private(this))
 {
@@ -104,14 +103,14 @@ PluginListView::PluginListView(QWidget *parent)
         layout->addWidget(d->listView);
 }
 
-PluginListView::~PluginListView()
+PluginListWidget::~PluginListWidget()
 {
         delete d->listView->itemDelegate();
         delete d->listView; // depends on some other things in d, make sure this dies first.
         delete d;
 }
 
-void PluginListView::applyChanges()
+void PluginListWidget::applyChanges()
 {
         bool changeOccured = false;
 
@@ -138,7 +137,7 @@ void PluginListView::applyChanges()
                 ConfigurationManager::instance()->flush();
 }
 
-void PluginListView::Private::PluginModel::loadPluginData()
+void PluginListWidget::Private::PluginModel::loadPluginData()
 {
         QList<PluginEntry> listToAdd;
 
@@ -165,14 +164,14 @@ void PluginListView::Private::PluginModel::loadPluginData()
                 this, SLOT(pluginRemoved(const Plugin *)), Qt::DirectConnection);
 }
 
-PluginListView::Private::PluginModel::PluginModel(PluginListView::Private *pluginSelector_d, QObject *parent)
+PluginListWidget::Private::PluginModel::PluginModel(PluginListWidget::Private *pluginSelector_d, QObject *parent)
                 : QAbstractListModel(parent)
                 , pluginSelector_d(pluginSelector_d)
                 , Manager(PluginsManager::instance())
 {
 }
 
-PluginListView::Private::PluginModel::~PluginModel()
+PluginListWidget::Private::PluginModel::~PluginModel()
 {
         disconnect(Manager, SIGNAL(pluginAdded(const Plugin *)),
                    this, SLOT(pluginAdded(const Plugin *)));
@@ -180,7 +179,7 @@ PluginListView::Private::PluginModel::~PluginModel()
                    this, SLOT(pluginRemoved(const Plugin *)));
 }
 
-void PluginListView::Private::PluginModel::pluginAdded(const Plugin *plugin)
+void PluginListWidget::Private::PluginModel::pluginAdded(const Plugin *plugin)
 {
         Q_UNUSED(plugin)
 
@@ -198,7 +197,7 @@ void PluginListView::Private::PluginModel::pluginAdded(const Plugin *plugin)
         endInsertRows();
 }
 
-void PluginListView::Private::PluginModel::pluginRemoved(const Plugin *plugin)
+void PluginListWidget::Private::PluginModel::pluginRemoved(const Plugin *plugin)
 {
         int index = 0;
         foreach (PluginEntry pe, Plugins)
@@ -216,14 +215,14 @@ void PluginListView::Private::PluginModel::pluginRemoved(const Plugin *plugin)
 }
 
 
-QModelIndex PluginListView::Private::PluginModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex PluginListWidget::Private::PluginModel::index(int row, int column, const QModelIndex &parent) const
 {
         Q_UNUSED(parent)
 
         return createIndex(row, column, (row < Plugins.count()) ? (void*) &Plugins.at(row) : 0);
 }
 
-QVariant PluginListView::Private::PluginModel::data(const QModelIndex &index, int role) const
+QVariant PluginListWidget::Private::PluginModel::data(const QModelIndex &index, int role) const
 {
         if (!index.isValid() || !index.internalPointer())
         {
@@ -269,7 +268,7 @@ QVariant PluginListView::Private::PluginModel::data(const QModelIndex &index, in
         }
 }
 
-bool PluginListView::Private::PluginModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool PluginListWidget::Private::PluginModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
         if (!index.isValid())
         {
@@ -292,23 +291,23 @@ bool PluginListView::Private::PluginModel::setData(const QModelIndex &index, con
         return ret;
 }
 
-int PluginListView::Private::PluginModel::rowCount(const QModelIndex &parent) const
+int PluginListWidget::Private::PluginModel::rowCount(const QModelIndex &parent) const
 {
         return parent.isValid() ? 0 : Plugins.count();
 }
 
-PluginListView::Private::ProxyModel::ProxyModel(PluginListView::Private *pluginSelector_d, QObject *parent)
+PluginListWidget::Private::ProxyModel::ProxyModel(PluginListWidget::Private *pluginSelector_d, QObject *parent)
                 : CategorizedSortFilterProxyModel(parent)
                 , pluginSelector_d(pluginSelector_d)
 {
         sort(0);
 }
 
-PluginListView::Private::ProxyModel::~ProxyModel()
+PluginListWidget::Private::ProxyModel::~ProxyModel()
 {
 }
 
-bool PluginListView::Private::ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool PluginListWidget::Private::ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
         Q_UNUSED(sourceParent)
 
@@ -323,13 +322,13 @@ bool PluginListView::Private::ProxyModel::filterAcceptsRow(int sourceRow, const 
         return true;
 }
 
-bool PluginListView::Private::ProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
+bool PluginListWidget::Private::ProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
 {
         return static_cast<PluginEntry*>(left.internalPointer())->name.compare(static_cast<PluginEntry*>(right.internalPointer())->name, Qt::CaseInsensitive) < 0;
 }
 
-PluginListView::Private::PluginDelegate::PluginDelegate(PluginListView::Private *pluginSelector_d, QObject *parent)
-                : PluginListViewDelegate(pluginSelector_d->listView, parent)
+PluginListWidget::Private::PluginDelegate::PluginDelegate(PluginListWidget::Private *pluginSelector_d, QObject *parent)
+                : PluginListWidgetDelegate(pluginSelector_d->listView, parent)
                 , checkBox(new QCheckBox)
                 , pushButton(new QPushButton)
                 , pluginSelector_d(pluginSelector_d)
@@ -337,13 +336,13 @@ PluginListView::Private::PluginDelegate::PluginDelegate(PluginListView::Private 
         pushButton->setIcon(KaduIcon("preferences-other").icon()); // only for getting size matters
 }
 
-PluginListView::Private::PluginDelegate::~PluginDelegate()
+PluginListWidget::Private::PluginDelegate::~PluginDelegate()
 {
         delete checkBox;
         delete pushButton;
 }
 
-void PluginListView::Private::PluginDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void PluginListWidget::Private::PluginDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
         if (!index.isValid())
         {
@@ -416,7 +415,7 @@ void PluginListView::Private::PluginDelegate::paint(QPainter *painter, const QSt
         painter->restore();
 }
 
-QSize PluginListView::Private::PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize PluginListWidget::Private::PluginDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
         int i = 5;
         int j = 1;
@@ -442,7 +441,7 @@ QSize PluginListView::Private::PluginDelegate::sizeHint(const QStyleOptionViewIt
                      qMax(/*KIconLoader::SizeMedium*/32 + MARGIN * 2, fmTitle.height() + option.fontMetrics.height() + MARGIN * 2));
 }
 
-QList<QWidget*> PluginListView::Private::PluginDelegate::createItemWidgets() const
+QList<QWidget*> PluginListWidget::Private::PluginDelegate::createItemWidgets() const
 {
         QList<QWidget*> widgetList;
 
@@ -475,7 +474,7 @@ QList<QWidget*> PluginListView::Private::PluginDelegate::createItemWidgets() con
         return widgetList;
 }
 
-void PluginListView::Private::PluginDelegate::updateItemWidgets(const QList<QWidget*> widgets,
+void PluginListWidget::Private::PluginDelegate::updateItemWidgets(const QList<QWidget*> widgets,
                 const QStyleOptionViewItem &option,
                 const QPersistentModelIndex &index) const
 {
@@ -508,7 +507,7 @@ void PluginListView::Private::PluginDelegate::updateItemWidgets(const QList<QWid
         }
 }
 
-void PluginListView::Private::PluginDelegate::slotStateChanged(bool state)
+void PluginListWidget::Private::PluginDelegate::slotStateChanged(bool state)
 {
         if (!focusedIndex().isValid())
                 return;
@@ -516,12 +515,12 @@ void PluginListView::Private::PluginDelegate::slotStateChanged(bool state)
         const_cast<QAbstractItemModel*>(focusedIndex().model())->setData(focusedIndex(), state, Qt::CheckStateRole);
 }
 
-void PluginListView::Private::PluginDelegate::emitChanged()
+void PluginListWidget::Private::PluginDelegate::emitChanged()
 {
         emit changed(true);
 }
 
-void PluginListView::Private::PluginDelegate::slotAboutClicked()
+void PluginListWidget::Private::PluginDelegate::slotAboutClicked()
 {
         const QModelIndex index = focusedIndex();
         const QAbstractItemModel *model = index.model();
@@ -544,11 +543,11 @@ void PluginListView::Private::PluginDelegate::slotAboutClicked()
         MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin Information"), info, QMessageBox::Ok, itemView());
 }
 
-void PluginListView::Private::PluginDelegate::slotConfigureClicked()
+void PluginListWidget::Private::PluginDelegate::slotConfigureClicked()
 {
 }
 
-QFont PluginListView::Private::PluginDelegate::titleFont(const QFont &baseFont) const
+QFont PluginListWidget::Private::PluginDelegate::titleFont(const QFont &baseFont) const
 {
         QFont retFont(baseFont);
         retFont.setBold(true);

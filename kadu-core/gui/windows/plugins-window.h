@@ -48,7 +48,7 @@ class QLabel;
 class QListView;
 class QTreeWidgetItem;
 
-class PluginListView;
+class PluginListWidget;
 class QLineEdit;
 class KCategorizedView;
 
@@ -59,7 +59,7 @@ class PluginsWindow : public QWidget, DesktopAwareObject
 
 	static PluginsWindow *Instance;
 
-	PluginListView *PluginsList;
+	PluginListWidget *PluginsList;
 
 	PluginsWindow();
 	virtual ~PluginsWindow();

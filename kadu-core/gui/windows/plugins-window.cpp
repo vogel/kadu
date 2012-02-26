@@ -46,7 +46,7 @@
 #include <QtGui/QScrollBar>
 
 #include "debug.h"
-#include "gui/widgets/plugin-list-view.h"
+#include "gui/widgets/plugin-list-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "activate.h"
@@ -83,7 +83,7 @@ PluginsWindow::PluginsWindow()
 	layout->setMargin(10);
 	layout->setSpacing(10);
 
-	PluginsList = new PluginListView(this);
+	PluginsList = new PluginListWidget(this);
 	layout->addWidget(PluginsList);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);

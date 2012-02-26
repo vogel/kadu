@@ -37,7 +37,7 @@ class CategorizedListView;
 class CategorizedListViewPainter;
 // class FilterWidget;
 class PluginsManager;
-class PluginListViewDelegate;
+class PluginListWidgetDelegate;
 class Plugin;
 
 
@@ -65,7 +65,7 @@ class Plugin;
   * @author Rafael Fernández López <ereslibre@kde.org>
   */
 
-class PluginListView : public QWidget
+class PluginListWidget : public QWidget
 {
         Q_OBJECT
 
@@ -80,14 +80,14 @@ public:
         };
 
         /**
-          * Create a new PluginListView
+          * Create a new PluginListWidget
           */
-        PluginListView(QWidget *parent = 0);
+        PluginListWidget(QWidget *parent = 0);
 
         /**
           * Destructor
           */
-        ~PluginListView();
+        ~PluginListWidget();
 
 Q_SIGNALS:
         /**
@@ -108,7 +108,7 @@ private:
         Private * const d;
 };
 
-class PluginListView::Private
+class PluginListWidget::Private
                         : public QObject
 {
         Q_OBJECT
@@ -129,7 +129,7 @@ public:
                 IsCheckableRole   = 0x0AC2AFF8
         };
 
-        Private(PluginListView *parent);
+        Private(PluginListWidget *parent);
         ~Private();
 
         int dependantLayoutValue(int value, int width, int totalWidth) const;
@@ -167,13 +167,13 @@ public:
 
 Q_DECLARE_METATYPE(PluginEntry*)
 
-class PluginListView::Private::PluginModel
+class PluginListWidget::Private::PluginModel
                         : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-        PluginModel(PluginListView::Private *pluginSelector_d, QObject *parent = 0);
+        PluginModel(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
         ~PluginModel();
 
         virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const;
@@ -184,7 +184,7 @@ public:
         void loadPluginData();
 
 private:
-        PluginListView::Private *pluginSelector_d;
+        PluginListWidget::Private *pluginSelector_d;
         PluginsManager *Manager;
         QList<PluginEntry> Plugins;
 
@@ -193,12 +193,12 @@ private slots:
 	void pluginRemoved(const Plugin *plugin);
 };
 
-class PluginListView::Private::ProxyModel
+class PluginListWidget::Private::ProxyModel
                         : public CategorizedSortFilterProxyModel
 {
 
 public:
-        ProxyModel(PluginListView::Private *pluginSelector_d, QObject *parent = 0);
+        ProxyModel(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
         ~ProxyModel();
 
 protected:
@@ -206,17 +206,17 @@ protected:
         virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 private:
-        PluginListView::Private *pluginSelector_d;
+        PluginListWidget::Private *pluginSelector_d;
 };
 
 
-class PluginListView::Private::PluginDelegate
-                        : public PluginListViewDelegate
+class PluginListWidget::Private::PluginDelegate
+                        : public PluginListWidgetDelegate
 {
         Q_OBJECT
 
 public:
-        PluginDelegate(PluginListView::Private *pluginSelector_d, QObject *parent = 0);
+        PluginDelegate(PluginListWidget::Private *pluginSelector_d, QObject *parent = 0);
         ~PluginDelegate();
 
         void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
@@ -244,7 +244,7 @@ private:
         QCheckBox *checkBox;
         QPushButton *pushButton;
 
-        PluginListView::Private *pluginSelector_d;
+        PluginListWidget::Private *pluginSelector_d;
 };
 
 

@@ -59,7 +59,7 @@ set (gui_SRCS
 	widgets/modal-configuration-widget.cpp
 	widgets/path-edit.cpp
 	widgets/path-list-edit.cpp
-	widgets/plugin-list-view.cpp
+	widgets/plugin-list-widget.cpp
 	widgets/plugin-list-view-delegate.cpp
 	widgets/plugin-list-view-delegate-widgets.cpp
 	widgets/progress-icon.cpp
@@ -226,7 +226,7 @@ set (gui_MOC_SRCS
 	widgets/modal-configuration-widget.h
 	widgets/path-edit.h
 	widgets/path-list-edit.h
-	widgets/plugin-list-view.h
+	widgets/plugin-list-widget.h
 	widgets/plugin-list-view-delegate.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h

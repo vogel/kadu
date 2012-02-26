@@ -52,17 +52,17 @@ Q_DECLARE_METATYPE(QList<QEvent::Type>)
   @internal
 */
 //@cond PRIVATE
-PluginListViewDelegatePrivate::PluginListViewDelegatePrivate(PluginListViewDelegate *q, QObject *parent)
+PluginListWidgetDelegatePrivate::PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent)
                 : QObject(parent)
                 , itemView(0)
-                , widgetPool(new PluginListViewDelegateWidgets(q))
+                , widgetPool(new PluginListWidgetDelegateWidgets(q))
                 , model(0)
                 , viewDestroyed(false)
                 , q(q)
 {
 }
 
-PluginListViewDelegatePrivate::~PluginListViewDelegatePrivate()
+PluginListWidgetDelegatePrivate::~PluginListWidgetDelegatePrivate()
 {
         if (!viewDestroyed)
         {
@@ -72,7 +72,7 @@ PluginListViewDelegatePrivate::~PluginListViewDelegatePrivate()
         delete widgetPool;
 }
 
-void PluginListViewDelegatePrivate::_k_slotRowsInserted(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegatePrivate::_k_slotRowsInserted(const QModelIndex &parent, int start, int end)
 {
         Q_UNUSED(end);
         // We need to update the rows behind the inserted row as well because the widgets need to be
@@ -80,12 +80,12 @@ void PluginListViewDelegatePrivate::_k_slotRowsInserted(const QModelIndex &paren
         updateRowRange(parent, start, model->rowCount(parent), false);
 }
 
-void PluginListViewDelegatePrivate::_k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegatePrivate::_k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
 {
         updateRowRange(parent, start, end, true);
 }
 
-void PluginListViewDelegatePrivate::_k_slotRowsRemoved(const QModelIndex &parent, int start, int end)
+void PluginListWidgetDelegatePrivate::_k_slotRowsRemoved(const QModelIndex &parent, int start, int end)
 {
         Q_UNUSED(end);
         // We need to update the rows that come behind the deleted rows because the widgets need to be
@@ -93,7 +93,7 @@ void PluginListViewDelegatePrivate::_k_slotRowsRemoved(const QModelIndex &parent
         updateRowRange(parent, start, model->rowCount(parent), false);
 }
 
-void PluginListViewDelegatePrivate::_k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void PluginListWidgetDelegatePrivate::_k_slotDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
         for (int i = topLeft.row(); i <= bottomRight.row(); ++i)
         {
@@ -108,7 +108,7 @@ void PluginListViewDelegatePrivate::_k_slotDataChanged(const QModelIndex &topLef
         }
 }
 
-void PluginListViewDelegatePrivate::_k_slotLayoutChanged()
+void PluginListWidgetDelegatePrivate::_k_slotLayoutChanged()
 {
         foreach (QWidget *widget, widgetPool->invalidIndexesWidgets())
         {
@@ -118,13 +118,13 @@ void PluginListViewDelegatePrivate::_k_slotLayoutChanged()
         QTimer::singleShot(0, this, SLOT(initializeModel()));
 }
 
-void PluginListViewDelegatePrivate::_k_slotModelReset()
+void PluginListWidgetDelegatePrivate::_k_slotModelReset()
 {
         widgetPool->fullClear();
         QTimer::singleShot(0, this, SLOT(initializeModel()));
 }
 
-void PluginListViewDelegatePrivate::updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving)
+void PluginListWidgetDelegatePrivate::updateRowRange(const QModelIndex &parent, int start, int end, bool isRemoving)
 {
         int i = start;
 
@@ -137,8 +137,8 @@ void PluginListViewDelegatePrivate::updateRowRange(const QModelIndex &parent, in
                         optionView.initFrom(itemView->viewport());
                         optionView.rect = itemView->visualRect(index);
 
-                        QList<QWidget*> widgetList = widgetPool->findWidgets(index, optionView, isRemoving ? PluginListViewDelegateWidgets::NotUpdateWidgets
-                                                     : PluginListViewDelegateWidgets::UpdateWidgets);
+                        QList<QWidget*> widgetList = widgetPool->findWidgets(index, optionView, isRemoving ? PluginListWidgetDelegateWidgets::NotUpdateWidgets
+                                                     : PluginListWidgetDelegateWidgets::UpdateWidgets);
 
                         if (isRemoving)
                         {
@@ -157,7 +157,7 @@ void PluginListViewDelegatePrivate::updateRowRange(const QModelIndex &parent, in
         }
 }
 
-void PluginListViewDelegatePrivate::initializeModel(const QModelIndex &parent)
+void PluginListWidgetDelegatePrivate::initializeModel(const QModelIndex &parent)
 {
         if (!model)
         {
@@ -190,9 +190,9 @@ void PluginListViewDelegatePrivate::initializeModel(const QModelIndex &parent)
         }
 }
 
-PluginListViewDelegate::PluginListViewDelegate(QAbstractItemView *itemView, QObject *parent)
+PluginListWidgetDelegate::PluginListWidgetDelegate(QAbstractItemView *itemView, QObject *parent)
                 : QAbstractItemDelegate(parent)
-                , d(new PluginListViewDelegatePrivate(this))
+                , d(new PluginListWidgetDelegatePrivate(this))
 {
         Q_ASSERT(itemView);
 
@@ -213,17 +213,17 @@ PluginListViewDelegate::PluginListViewDelegate(QAbstractItemView *itemView, QObj
         }
 }
 
-PluginListViewDelegate::~PluginListViewDelegate()
+PluginListWidgetDelegate::~PluginListWidgetDelegate()
 {
         delete d;
 }
 
-QAbstractItemView *PluginListViewDelegate::itemView() const
+QAbstractItemView *PluginListWidgetDelegate::itemView() const
 {
         return d->itemView;
 }
 
-QPersistentModelIndex PluginListViewDelegate::focusedIndex() const
+QPersistentModelIndex PluginListWidgetDelegate::focusedIndex() const
 {
         const QPersistentModelIndex idx = d->widgetPool->d->widgetInIndex.value(QApplication::focusWidget());
 
@@ -238,7 +238,7 @@ QPersistentModelIndex PluginListViewDelegate::focusedIndex() const
         return d->itemView->indexAt(pos);
 }
 
-bool PluginListViewDelegatePrivate::eventFilter(QObject *watched, QEvent *event)
+bool PluginListWidgetDelegatePrivate::eventFilter(QObject *watched, QEvent *event)
 {
         if (event->type() == QEvent::Destroy)
         {
@@ -300,12 +300,12 @@ bool PluginListViewDelegatePrivate::eventFilter(QObject *watched, QEvent *event)
         return QObject::eventFilter(watched, event);
 }
 
-void PluginListViewDelegate::setBlockedEventTypes(QWidget *widget, QList<QEvent::Type> types) const
+void PluginListWidgetDelegate::setBlockedEventTypes(QWidget *widget, QList<QEvent::Type> types) const
 {
         widget->setProperty("goya:blockedEventTypes", qVariantFromValue(types));
 }
 
-QList<QEvent::Type> PluginListViewDelegate::blockedEventTypes(QWidget *widget) const
+QList<QEvent::Type> PluginListWidgetDelegate::blockedEventTypes(QWidget *widget) const
 {
         return widget->property("goya:blockedEventTypes").value<QList<QEvent::Type> >();
 }

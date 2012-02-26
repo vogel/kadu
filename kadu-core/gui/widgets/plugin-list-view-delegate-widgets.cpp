@@ -43,12 +43,12 @@
 Q_DECLARE_METATYPE(QModelIndex);
 
 
-class PluginListViewDelegateEventListener
+class PluginListWidgetDelegateEventListener
                         : public QObject
 {
 
 public:
-        PluginListViewDelegateEventListener(PluginListViewDelegateWidgetsPrivate *poolPrivate, QObject *parent = 0)
+        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgetsPrivate *poolPrivate, QObject *parent = 0)
                         : QObject(parent)
                         , poolPrivate(poolPrivate)
         {
@@ -57,28 +57,28 @@ public:
         virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private:
-        PluginListViewDelegateWidgetsPrivate *poolPrivate;
+        PluginListWidgetDelegateWidgetsPrivate *poolPrivate;
 };
 
-PluginListViewDelegateWidgetsPrivate::PluginListViewDelegateWidgetsPrivate(PluginListViewDelegate *d)
+PluginListWidgetDelegateWidgetsPrivate::PluginListWidgetDelegateWidgetsPrivate(PluginListWidgetDelegate *d)
                 : delegate(d)
-                , eventListener(new PluginListViewDelegateEventListener(this))
+                , eventListener(new PluginListWidgetDelegateEventListener(this))
                 , clearing(false)
 {
 }
 
-PluginListViewDelegateWidgets::PluginListViewDelegateWidgets(PluginListViewDelegate *delegate)
-                : d(new PluginListViewDelegateWidgetsPrivate(delegate))
+PluginListWidgetDelegateWidgets::PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate)
+                : d(new PluginListWidgetDelegateWidgetsPrivate(delegate))
 {
 }
 
-PluginListViewDelegateWidgets::~PluginListViewDelegateWidgets()
+PluginListWidgetDelegateWidgets::~PluginListWidgetDelegateWidgets()
 {
         delete d->eventListener;
         delete d;
 }
 
-QList<QWidget*> PluginListViewDelegateWidgets::findWidgets(const QPersistentModelIndex &idx,
+QList<QWidget*> PluginListWidgetDelegateWidgets::findWidgets(const QPersistentModelIndex &idx,
                 const QStyleOptionViewItem &option,
                 UpdateWidgetsEnum updateWidgets) const
 {
@@ -144,7 +144,7 @@ QList<QWidget*> PluginListViewDelegateWidgets::findWidgets(const QPersistentMode
         return result;
 }
 
-QList<QWidget*> PluginListViewDelegateWidgets::invalidIndexesWidgets() const
+QList<QWidget*> PluginListWidgetDelegateWidgets::invalidIndexesWidgets() const
 {
         QList<QWidget*> result;
         foreach (QWidget *widget, d->widgetInIndex.keys())
@@ -170,7 +170,7 @@ QList<QWidget*> PluginListViewDelegateWidgets::invalidIndexesWidgets() const
         return result;
 }
 
-void PluginListViewDelegateWidgets::fullClear()
+void PluginListWidgetDelegateWidgets::fullClear()
 {
         d->clearing = true;
         qDeleteAll(d->widgetInIndex.keys());
@@ -180,7 +180,7 @@ void PluginListViewDelegateWidgets::fullClear()
         d->widgetInIndex.clear();
 }
 
-bool PluginListViewDelegateEventListener::eventFilter(QObject *watched, QEvent *event)
+bool PluginListWidgetDelegateEventListener::eventFilter(QObject *watched, QEvent *event)
 {
         QWidget *widget = static_cast<QWidget*>(watched);
 

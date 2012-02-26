@@ -30,16 +30,16 @@ class QWidget;
 
 class QStyleOptionViewItem;
 
-class PluginListViewDelegate;
+class PluginListWidgetDelegate;
 
-class PluginListViewDelegateWidgetsPrivate;
+class PluginListWidgetDelegateWidgetsPrivate;
 
 
 /**
   * @internal
   */
 
-class PluginListViewDelegateWidgets
+class PluginListWidgetDelegateWidgets
 {
 
 public:
@@ -55,12 +55,12 @@ public:
           * @param delegate the ItemDelegate for this pool.
           */
 
-        PluginListViewDelegateWidgets(PluginListViewDelegate *delegate);
+        PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate);
 
         /**
           * Destroys an ItemDelegateWidgets.
           */
-        ~PluginListViewDelegateWidgets();
+        ~PluginListWidgetDelegateWidgets();
 
         /**
           * @brief Returns the widget associated to @p index and @p widget
@@ -84,27 +84,27 @@ public:
 
 private:
 
-        friend class PluginListViewDelegate;
+        friend class PluginListWidgetDelegate;
 
-        friend class PluginListViewDelegatePrivate;
-        PluginListViewDelegateWidgetsPrivate *const d;
+        friend class PluginListWidgetDelegatePrivate;
+        PluginListWidgetDelegateWidgetsPrivate *const d;
 };
 
-class PluginListViewDelegateEventListener;
+class PluginListWidgetDelegateEventListener;
 
 /**
   * @internal
   */
 
-class PluginListViewDelegateWidgetsPrivate
+class PluginListWidgetDelegateWidgetsPrivate
 {
 
 public:
 
-        PluginListViewDelegateWidgetsPrivate(PluginListViewDelegate *d);
+        PluginListWidgetDelegateWidgetsPrivate(PluginListWidgetDelegate *d);
 
-        PluginListViewDelegate *delegate;
-        PluginListViewDelegateEventListener *eventListener;
+        PluginListWidgetDelegate *delegate;
+        PluginListWidgetDelegateEventListener *eventListener;
 
         QList<QList<QWidget*> > allocatedWidgets;
         QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;

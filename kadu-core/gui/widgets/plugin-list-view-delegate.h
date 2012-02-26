@@ -30,18 +30,18 @@
 
 #include <QtGui/QItemSelectionModel>
 
-class PluginListViewDelegate;
+class PluginListWidgetDelegate;
 
-class PluginListViewDelegateWidgets;
+class PluginListWidgetDelegateWidgets;
 
-class PluginListViewDelegatePrivate
+class PluginListWidgetDelegatePrivate
                         : public QObject
 {
         Q_OBJECT
 
 public:
-        explicit PluginListViewDelegatePrivate(PluginListViewDelegate *q, QObject *parent = 0);
-        ~PluginListViewDelegatePrivate();
+        explicit PluginListWidgetDelegatePrivate(PluginListWidgetDelegate *q, QObject *parent = 0);
+        ~PluginListWidgetDelegatePrivate();
 
         void _k_slotRowsInserted(const QModelIndex &parent, int start, int end);
         void _k_slotRowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
@@ -60,11 +60,11 @@ protected:
 
 public:
         QAbstractItemView *itemView;
-        PluginListViewDelegateWidgets *widgetPool;
+        PluginListWidgetDelegateWidgets *widgetPool;
         QAbstractItemModel *model;
         bool viewDestroyed;
 
-        PluginListViewDelegate *q;
+        PluginListWidgetDelegate *q;
 };
 
 class QObject;
@@ -77,9 +77,9 @@ class QStyleOptionViewItem;
 
 class QAbstractItemView;
 
-class PluginListViewDelegatePrivate;
+class PluginListWidgetDelegatePrivate;
 
-class PluginListViewDelegateWidgets;
+class PluginListWidgetDelegateWidgets;
 
 /**
  * This class allows to create item delegates embedding simple widgets to interact
@@ -89,7 +89,7 @@ class PluginListViewDelegateWidgets;
  * @since 4.1
  */
 
-class PluginListViewDelegate : public QAbstractItemDelegate
+class PluginListWidgetDelegate : public QAbstractItemDelegate
 {
         Q_OBJECT
 
@@ -100,12 +100,12 @@ public:
          * @param itemView the item view the new delegate will monitor
          * @param parent the parent of this delegate
          */
-        explicit PluginListViewDelegate(QAbstractItemView *itemView, QObject *parent = 0);
+        explicit PluginListWidgetDelegate(QAbstractItemView *itemView, QObject *parent = 0);
 
         /**
          * Destroys an ItemDelegate.
          */
-        virtual ~PluginListViewDelegate();
+        virtual ~PluginListWidgetDelegate();
 
         /**
          * Retrieves the item view this delegate is monitoring.
@@ -196,10 +196,10 @@ protected:
 private:
         //@cond PRIVATE
 
-        friend class PluginListViewDelegateWidgets;
+        friend class PluginListWidgetDelegateWidgets;
 
-        friend class PluginListViewDelegateEventListener;
-        PluginListViewDelegatePrivate *const d;
+        friend class PluginListWidgetDelegateEventListener;
+        PluginListWidgetDelegatePrivate *const d;
         Q_PRIVATE_SLOT(d, void _k_slotRowsInserted(const QModelIndex&, int, int))
         Q_PRIVATE_SLOT(d, void _k_slotRowsAboutToBeRemoved(const QModelIndex&, int, int))
         Q_PRIVATE_SLOT(d, void _k_slotRowsRemoved(const QModelIndex&, int, int))
