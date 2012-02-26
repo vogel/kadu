@@ -69,6 +69,8 @@ public:
 	void setView(QAbstractItemView *view);
 	void setAutoVisibility(bool autoVisibility);
 
+	QString filterText() const;
+
 signals:
 	void textChanged(const QString &text);
 

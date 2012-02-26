@@ -35,7 +35,7 @@
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
-// #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget-item-delegate.h"
 #include "gui/windows/message-dialog.h"
@@ -60,7 +60,8 @@ PluginListWidget::PluginListWidget(QWidget *parent)
         layout->setMargin(0);
         setLayout(layout);
 
-        lineEdit = new QLineEdit(this);
+        lineEdit = new FilterWidget(this);
+        lineEdit->setAutoVisibility(false);
         listView = new CategorizedListView(this);
         listView->setVerticalScrollMode(QListView::ScrollPerPixel);
         listView->setAlternatingRowColors(true);
@@ -80,6 +81,8 @@ PluginListWidget::PluginListWidget(QWidget *parent)
 
         listView->setMouseTracking(true);
         listView->viewport()->setAttribute(Qt::WA_Hover);
+
+        lineEdit->setView(listView);
 
         connect(lineEdit, SIGNAL(textChanged(QString)), proxyModel, SLOT(invalidate()));
         connect(pluginDelegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));

@@ -35,7 +35,7 @@
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
-// #include "gui/widgets/filter-widget.h"
+#include "gui/widgets/filter-widget.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget.h"
 #include "gui/windows/message-dialog.h"
@@ -64,12 +64,12 @@ bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
 {
         Q_UNUSED(sourceParent)
 
-        if (!pluginSelector_d->lineEdit->text().isEmpty())
+        if (!pluginSelector_d->lineEdit->filterText().isEmpty())
         {
                 const QModelIndex index = sourceModel()->index(sourceRow, 0);
                 const PluginEntry *entry = static_cast<PluginEntry*>(index.internalPointer());
-                return entry->name.contains(pluginSelector_d->lineEdit->text(), Qt::CaseInsensitive) ||
-                       entry->description.contains(pluginSelector_d->lineEdit->text(), Qt::CaseInsensitive);
+                return entry->name.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
+                       entry->description.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive);
         }
 
         return true;

@@ -30,6 +30,7 @@ class QLineEdit;
 
 class CategorizedListView;
 class CategorizedListViewPainter;
+class FilterWidget;
 class PluginModel;
 class PluginListWidgetItemDelegate;
 class ProxyModel;
@@ -52,12 +53,12 @@ public:
         PluginListWidget(QWidget *parent = 0);
         ~PluginListWidget();
 
-	void applyChanges();
+        void applyChanges();
 
         int dependantLayoutValue(int value, int width, int totalWidth) const;
 
-	QWidget *parent;
-        QLineEdit *lineEdit;
+        QWidget *parent;
+        FilterWidget *lineEdit;
         CategorizedListView *listView;
         CategorizedListViewPainter *categoryDrawer;
         PluginModel *pluginModel;
