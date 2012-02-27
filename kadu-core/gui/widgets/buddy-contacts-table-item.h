@@ -35,7 +35,7 @@ class BuddyContactsTableItem : public QObject
 
 public:
 	enum ItemAction {
-		ItemView,
+		ItemEdit,
 		ItemAdd,
 		ItemDetach,
 		ItemRemove
@@ -50,6 +50,7 @@ private:
 	QString DetachedBuddyName;
 
 	bool isAddValid() const;
+	bool isEditValid() const;
 
 public:
 	explicit BuddyContactsTableItem(Contact contact = Contact::null, QObject *parent = 0);

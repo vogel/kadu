@@ -112,7 +112,8 @@ void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 {
 	switch (item->action())
 	{
-		case BuddyContactsTableItem::ItemView:
+		case BuddyContactsTableItem::ItemEdit:
+			performItemActionEdit(item);
 			break;
 
 		case BuddyContactsTableItem::ItemAdd:
@@ -127,6 +128,28 @@ void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 			performItemActionRemove(item);
 			break;
 	}
+}
+
+void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item)
+{
+	Contact contact = item->itemContact();
+	Q_ASSERT(contact);
+	Q_ASSERT(contact.contactAccount() == item->itemAccount());
+
+	contact.setPriority(item->itemContactPriority());
+
+	if (contact.id() == item->id())
+		return;
+
+	// First we need to remove existing contact from the manager to avoid duplicates.
+	Contact existingContact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionReturnNull);
+	if (existingContact)
+		ContactManager::instance()->removeItem(existingContact);
+
+	Roster::instance()->removeContact(contact);
+	contact.setId(item->id());
+	Roster::instance()->addContact(contact);
+	sendAuthorization(contact);
 }
 
 void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
@@ -248,7 +271,9 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
-	// do not allow to edit existing contacts
+	// do not allow to edit account on existing contacts
+	if (0 == index.column())
+		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 
 	BuddyContactsTableItem *item = Contacts.at(index.row());
 	if (BuddyContactsTableItem::ItemAdd == item->action())
@@ -329,7 +354,7 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 	{
 		case 0:
 		{
-			if (BuddyContactsTableItem::ItemAdd == item->action() && Qt::EditRole == role)
+			if (Qt::EditRole == role)
 			{
 				item->setId(value.toString());
 				return true;
@@ -339,7 +364,7 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 
 		case 1:
 		{
-			if (BuddyContactsTableItem::ItemAdd == item->action() && AccountRole == role)
+			if (BuddyContactsTableItem::ItemAdd == item->action() || AccountRole == role)
 			{
 				item->setItemAccount(value.value<Account>());
 				return true;
