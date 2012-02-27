@@ -1,4 +1,5 @@
 ﻿+++ version 0.12.0-alpha3
+* gui: #2122 fixed: do not move contact to the end of list when changing its account in Buddy Data Window (Vogel)
 
 +++ version 0.12.0-alpha2
 * gui: #2153 done: new and improved window for changing account status and description (Juzef)
