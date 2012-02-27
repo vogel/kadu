@@ -133,12 +133,12 @@ void BuddyContactsTableModel::performItemAction(BuddyContactsTableItem *item)
 void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item)
 {
 	Contact contact = item->itemContact();
-	Q_ASSERT(contact);
-	Q_ASSERT(contact.contactAccount() == item->itemAccount());
+	if (!contact)
+		return;
 
 	contact.setPriority(item->itemContactPriority());
 
-	if (contact.id() == item->id())
+	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
 		return;
 
 	// First we need to remove existing contact from the manager to avoid duplicates.
@@ -147,6 +147,7 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 		ContactManager::instance()->removeItem(existingContact);
 
 	Roster::instance()->removeContact(contact);
+	contact.setContactAccount(item->itemAccount());
 	contact.setId(item->id());
 	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);
@@ -271,15 +272,7 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
-	// do not allow to edit account on existing contacts
-	if (0 == index.column())
-		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-
-	BuddyContactsTableItem *item = Contacts.at(index.row());
-	if (BuddyContactsTableItem::ItemAdd == item->action())
-		return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
-	else
-		return QAbstractItemModel::flags(index);
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
 QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -353,25 +346,15 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 	switch (index.column())
 	{
 		case 0:
-		{
 			if (Qt::EditRole == role)
-			{
 				item->setId(value.toString());
-				return true;
-			}
 			break;
-		}
 
 		case 1:
-		{
-			if (BuddyContactsTableItem::ItemAdd == item->action() || AccountRole == role)
-			{
+			if (AccountRole == role)
 				item->setItemAccount(value.value<Account>());
-				return true;
-			}
 			break;
-		}
 	}
 
-	return false;
+	return true;
 }
