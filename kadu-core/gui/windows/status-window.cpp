@@ -26,6 +26,7 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
@@ -116,6 +117,7 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	StatusList->setCurrentIndex(selectedIndex);
 
 	DescriptionEdit = new KaduTextEdit(formWidget);
+	DescriptionEdit->installEventFilter(this);
 	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
 	DescriptionEdit->setFocus();
 	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -213,6 +215,28 @@ void StatusWindow::applyStatus()
 void StatusWindow::descriptionSelected(const QString &description)
 {
 	DescriptionEdit->setPlainText(description);
+}
+
+bool StatusWindow::eventFilter(QObject *source, QEvent *event)
+{
+	if (source != DescriptionEdit)
+		return false;
+
+	if (event->type() != QEvent::KeyPress)
+		return false;
+
+	QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+	if (!keyEvent)
+		return false;
+
+	if (Qt::ControlModifier == keyEvent->modifiers() &&
+	    (Qt::Key_Enter == keyEvent->key() || Qt::Key_Return == keyEvent->key()))
+	{
+		accept();
+		return true;
+	}
+
+	return false;
 }
 
 void StatusWindow::openDescriptionsList()

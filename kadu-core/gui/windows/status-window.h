@@ -57,6 +57,9 @@ private slots:
 	void openDescriptionsList();
   	void descriptionSelected(const QString &description);
 
+protected:
+	virtual bool eventFilter(QObject *source, QEvent *event);
+
 public:
 	/**
 	 * @short Shows new status window.
