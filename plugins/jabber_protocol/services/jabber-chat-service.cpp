@@ -82,7 +82,15 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 		return false;
 
 	QTextDocument document;
-	document.setHtml(message);
+	/*
+	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
+	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
+	 * these messages to have proper lines and paragraphs.
+	 */
+	if (message.contains('<'))
+		document.setHtml(message);
+	else
+		document.setPlainText(message);
 
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = document.toPlainText();
@@ -125,7 +133,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 		message.setMessageChat(chat);
 		message.setType(MessageTypeSent);
 		message.setMessageSender(account().accountContact());
-		message.setContent(plain);
+		message.setContent(document.toPlainText()); // do not add encrypted message here
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
