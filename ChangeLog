@@ -21,6 +21,10 @@
 * core: #2457 fixed: actually respect custom KADU_BINDIR, KADU_DATADIR and KADU_PLUGINS_LIBDIR directories (beevvy)
 * core: semi-official portable installation support on all platforms by creating file named "portable" in Kadu data directory (beevvy)
 
++++ version 0.11.2
+* url-handlers: #2485 fixed: do not treat strings beginning with "ftp." as http links (beevvy)
+* encryption_ng_simlite: #2504 fixed: invalid format of outgoing public keys (Vogel)
+
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
 
