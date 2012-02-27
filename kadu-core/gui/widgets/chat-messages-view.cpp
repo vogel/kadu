@@ -78,10 +78,6 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 
 	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
 
-	if (chat.chatAccount().protocolHandler() && chat.chatAccount().protocolHandler()->chatService())
-		connect(chat.chatAccount().protocolHandler()->chatService(), SIGNAL(sentMessageStatusChanged(const Message &)),
-		        this, SLOT(sentMessageStatusChanged(const Message &)));
-
 	ChatStylesManager::instance()->chatViewCreated(this);
 }
 
@@ -128,6 +124,11 @@ void ChatMessagesView::connectChat()
 	if (chatImageService)
 		connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
+
+	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	if (chatService)
+		connect(chatService, SIGNAL(sentMessageStatusChanged(const Message &)),
+		        this, SLOT(sentMessageStatusChanged(const Message &)));
 }
 
 void ChatMessagesView::disconnectChat()
@@ -142,6 +143,11 @@ void ChatMessagesView::disconnectChat()
 	if (chatImageService)
 		disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
+
+	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
+	if (chatService)
+		disconnect(chatService, SIGNAL(sentMessageStatusChanged(const Message &)),
+		           this, SLOT(sentMessageStatusChanged(const Message &)));
 }
 
 void ChatMessagesView::setChat(const Chat &chat)
