@@ -22,10 +22,10 @@
 
 #include "chat/chat.h"
 #include "misc/coding-conversion.h"
+
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
-#include "encryption-ng-simlite-chat-data.h"
 #include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
@@ -180,11 +180,10 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 	{
 		bool supportUtf = (head.flags & SIM_FLAG_SUPPORT_UTF8);
 
-		// if the interlocutor doesn't support UTF, we don't necessarily need to create EncryptionNgSimliteChatData object if it doesn't exist yet
-		EncryptionNgSimliteChatData *encryptionChatData =
-				chat.data()->moduleStorableData<EncryptionNgSimliteChatData>("encryption-ng-simlite", this, supportUtf);
-		if (encryptionChatData)
-			encryptionChatData->setSupportUtf(supportUtf);
+		if (!supportUtf)
+			chat.removeProperty("encryption-ng-simlite:SupportUtf");
+		else
+			chat.addProperty("encryption-ng-simlite:SupportUtf", true, CustomProperties::Storable);
 	}
 
 	return result;

@@ -24,10 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_SIMPLE_H
-#define CHAT_TYPE_SIMPLE_H
+#ifndef CHAT_TYPE_CONTACT_SET_H
+#define CHAT_TYPE_CONTACT_SET_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -40,25 +41,26 @@
  */
 
 /**
- * @class ChatTypeSimple
+ * @class ChatTypeContactSet
  * @author Rafal 'Vogel' Malinowski
- * @short Representation of chat type with one buddy.
+ * @short Representation of chat type with many buddies.
  *
- * Representation of chat type with one buddy.
+ * Representation of chat type with many buddies.
  */
-class KADUAPI ChatTypeSimple : public ChatType
+class KADUAPI ChatTypeContactSet : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeSimple)
+	Q_DISABLE_COPY(ChatTypeContactSet)
+
+	QStringList Aliases;
 
 public:
-	explicit ChatTypeSimple(QObject *parent = 0);
-	virtual ~ChatTypeSimple();
+	explicit ChatTypeContactSet(QObject *parent = 0);
+	virtual ~ChatTypeContactSet();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
-	virtual QString displayName() const;
-	virtual QString displayNamePlural() const;
+	virtual QStringList aliases() const;
 	virtual KaduIcon icon() const;
 	virtual QString windowRole() const;
 
@@ -66,10 +68,10 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatTypeSimple *)
+Q_DECLARE_METATYPE(ChatTypeContactSet *)
 
 /**
  * @}
  */
 
-#endif // CHAT_TYPE_SIMPLE_H
+#endif // CHAT_TYPE_CONTACT_SET_H

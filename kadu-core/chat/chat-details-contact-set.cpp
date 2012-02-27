@@ -26,32 +26,32 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
 
-#include "chat-details-conference.h"
+#include "chat-details-contact-set.h"
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates empty ChatDetailsConference object.
+ * @short Creates empty ChatDetailsContactSet object.
  * @param chatData Chat object that will be decribed by this object
  *
- * Creates empty ChatDetailsConference object assigned to chatData object.
+ * Creates empty ChatDetailsContactSet object assigned to chatData object.
  */
-ChatDetailsConference::ChatDetailsConference(ChatShared *chatData) :
+ChatDetailsContactSet::ChatDetailsContactSet(ChatShared *chatData) :
 		ChatDetails(chatData)
 {
 }
 
-ChatDetailsConference::~ChatDetailsConference()
+ChatDetailsContactSet::~ChatDetailsContactSet()
 {
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Loads ChatDetailsConference object from storage.
+ * @short Loads ChatDetailsContactSet object from storage.
  *
- * Loads ChatDetailsConference object from the same storage assigned Chat object is
+ * Loads ChatDetailsContactSet object from the same storage assigned Chat object is
  * using. This loads set of contacts from 'Contacts' subnode.
  */
-void ChatDetailsConference::load()
+void ChatDetailsContactSet::load()
 {
 	if (!isValidStorage())
 		return;
@@ -63,12 +63,12 @@ void ChatDetailsConference::load()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Stores ChatDetailsConference object to storage.
+ * @short Stores ChatDetailsContactSet object to storage.
  *
- * Stores ChatDetailsConference object to the same storage assigned Chat object is
+ * Stores ChatDetailsContactSet object to the same storage assigned Chat object is
  * using. This stores set of contacts into 'Contacts' subnode.
  */
-void ChatDetailsConference::store()
+void ChatDetailsContactSet::store()
 {
 	if (!isValidStorage())
 		return;
@@ -86,7 +86,7 @@ void ChatDetailsConference::store()
  * Returns true if assigned set of contacts is not empty. No empty chats (without contacts)
  * will be stored thanks to this method.
  */
-bool ChatDetailsConference::shouldStore()
+bool ChatDetailsContactSet::shouldStore()
 {
 	ensureLoaded();
 
@@ -95,14 +95,14 @@ bool ChatDetailsConference::shouldStore()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns type of this chat - 'Conference'.
- * @return 'Conference' ChatType object
+ * @short Returns type of this chat - 'ContactSet'.
+ * @return 'ContactSet' ChatType object
  *
- * Returns type of this chat - 'Conference'.
+ * Returns type of this chat - 'ContactSet'.
  */
-ChatType * ChatDetailsConference::type() const
+ChatType * ChatDetailsContactSet::type() const
 {
-	return ChatTypeManager::instance()->chatType("Conference");
+	return ChatTypeManager::instance()->chatType("ContactSet");
 }
 
 /**
@@ -113,7 +113,7 @@ ChatType * ChatDetailsConference::type() const
  * Returns name of this chat (which is display names of assigend contacts buddies
  * joined by commas).
  */
-QString ChatDetailsConference::name() const
+QString ChatDetailsContactSet::name() const
 {
 	QStringList displays;
 	foreach (const Contact &contact, Contacts)
@@ -130,7 +130,7 @@ QString ChatDetailsConference::name() const
  *
  * Assigns contact set to this chat.
  */
-void ChatDetailsConference::setContacts(const ContactSet &contacts)
+void ChatDetailsContactSet::setContacts(const ContactSet &contacts)
 {
 	ensureLoaded();
 

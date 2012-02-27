@@ -40,7 +40,7 @@ class HISTORY_MIGRATION_API HistoryImporter : public QObject
 	QString SourceDirectory;
 
 	QThread *Thread;
-	HistoryImportThread *ImportThread;
+	HistoryImportThread *HistoryImport;
 	HistoryImportWindow *ProgressWindow;
 
 private slots:

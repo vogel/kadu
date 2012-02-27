@@ -145,10 +145,10 @@ void RecentChatManager::store()
 
 	if (!config_file.readBoolEntry("Chat", "RecentChatsClear", false))
 		foreach (const Chat &chat, RecentChats)
-			if (!chat.isNull() && !chat.uuid().isNull())
+			if (chat && !chat.uuid().isNull())
 			{
 				QDomElement chatelement = point->point().ownerDocument().createElement("Chat");
-				chatelement.setAttribute("time", chat.data()->moduleData<QDateTime>("recent-chat")->toTime_t());
+				chatelement.setAttribute("time", chat.property("recent-chat:dateTime", QDateTime()).toDateTime().toTime_t());
 				chatelement.setAttribute("uuid", chat.uuid().toString());
 				mainElement.appendChild(chatelement);
 			}
@@ -186,8 +186,7 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 
 	ensureLoaded();
 
-	QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat", true);
-	*recentChatData = datetime;
+	chat.addProperty("recent-chat:dateTime", datetime, CustomProperties::NonStorable);
 
 	if (!RecentChats.isEmpty() && RecentChats.at(0) == chat)
 		return;
@@ -261,8 +260,8 @@ void RecentChatManager::cleanUp()
 
 	foreach (const Chat &chat, RecentChats)
 	{
-		QDateTime *recentChatData = chat.data()->moduleData<QDateTime>("recent-chat");
-		if (!recentChatData || recentChatData->addSecs(RecentChatsTimeout) < now)
+		if (chat.hasProperty("recent-chat:dateTime") &&
+		    chat.property("recent-chat:dateTime", QDateTime()).toDateTime().addSecs(RecentChatsTimeout) < now)
 			removeRecentChat(chat);
 	}
 }

@@ -26,7 +26,6 @@
 #include "accounts/account.h"
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
-#include "buddies/buddy-kadu-data.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -81,6 +80,90 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 	foreach (const QModelIndex &index, indexes)
 		if (index.isValid())
 			emit dataChanged(index, index);
+}
+
+void BuddiesModelBase::contactAboutToBeAdded(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	int count = buddy.contacts().size();
+	beginInsertRows(index, count, count);
+}
+
+void BuddiesModelBase::contactAdded(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	endInsertRows();
+}
+
+void BuddiesModelBase::contactAboutToBeRemoved(const Contact &contact)
+{
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	int contactIndex = buddy.contacts().indexOf(contact);
+	beginRemoveRows(index, contactIndex, contactIndex);
+}
+
+void BuddiesModelBase::contactRemoved(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	endRemoveRows();
 }
 
 int BuddiesModelBase::columnCount(const QModelIndex &parent) const

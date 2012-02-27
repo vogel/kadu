@@ -2,9 +2,9 @@
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_SIMPLE_H
-#define CHAT_DETAILS_SIMPLE_H
-
-#include "contacts/contact.h"
+#ifndef CHAT_DETAILS_BUDDY_H
+#define CHAT_DETAILS_BUDDY_H
 
 #include "chat/chat-details.h"
+#include "contacts/contact.h"
+#include "exports.h"
 
 /**
  * @addtogroup Chat
@@ -34,34 +34,33 @@
  */
 
 /**
- * @class ChatDetailsSimple
- * @author Rafal 'Vogel' Malinowski
- * @short Chat data specyfic to 'simple' chat type.
+ * @class ChatDetailsBuddy
+ * @short Chat data that aggregates some chats into one.
  *
- * Class contains one Contact object. Chat name is set to this Contact's
- * Buddy's display name, chat title is that name with current description.
+ * Class contains list of chat objects. It joins these chats into one chat.
+ * This is usable to join all chats for contacts of one buddy into one chat.
  */
-class ChatDetailsSimple : public ChatDetails
+class KADUAPI ChatDetailsBuddy : public ChatDetails
 {
 	Q_OBJECT
 
-	Contact CurrentContact;
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+	QVector<Chat> Chats;
 
 public:
-	explicit ChatDetailsSimple(ChatShared *chatData);
-	virtual ~ChatDetailsSimple();
+	explicit ChatDetailsBuddy(ChatShared *chatData);
+	virtual ~ChatDetailsBuddy();
+
+	virtual bool shouldStore();
 
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
-	void setContact(const Contact &contact);
-	Contact contact();
+	void setChats(const QVector<Chat> &chats);
+	const QVector<Chat> & chats() const;
+
+	void addChat(const Chat &chat);
+	void removeChat(const Chat &chat);
 
 };
 
@@ -69,4 +68,4 @@ public:
  * @}
  */
 
-#endif // CHAT_DETAILS_SIMPLE_H
+#endif // CHAT_DETAILS_BUDDY_H

@@ -1,6 +1,13 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,10 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_AGGREGATE_H
-#define CHAT_TYPE_AGGREGATE_H
+#ifndef CHAT_TYPE_CONTACT_H
+#define CHAT_TYPE_CONTACT_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -33,25 +41,26 @@
  */
 
 /**
- * @class ChatTypeAggregate
+ * @class ChatTypeContact
  * @author Rafal 'Vogel' Malinowski
- * @short Representation of chat type that contains other chats.
+ * @short Representation of chat type with one buddy.
  *
- * Representation of chat type that contains other chats.
+ * Representation of chat type with one buddy.
  */
-class KADUAPI ChatTypeAggregate : public ChatType
+class KADUAPI ChatTypeContact : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeAggregate)
+	Q_DISABLE_COPY(ChatTypeContact)
+
+	QStringList Aliases;
 
 public:
-	explicit ChatTypeAggregate(QObject *parent = 0);
-	virtual ~ChatTypeAggregate();
+	explicit ChatTypeContact(QObject *parent = 0);
+	virtual ~ChatTypeContact();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
-	virtual QString displayName() const;
-	virtual QString displayNamePlural() const;
+	virtual QStringList aliases() const;
 	virtual KaduIcon icon() const;
 	virtual QString windowRole() const;
 
@@ -59,10 +68,10 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatTypeAggregate *)
+Q_DECLARE_METATYPE(ChatTypeContact *)
 
 /**
  * @}
  */
 
-#endif // CHAT_TYPE_AGGREGATE_H
+#endif // CHAT_TYPE_CONTACT_H

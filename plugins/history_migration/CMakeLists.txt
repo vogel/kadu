@@ -20,7 +20,6 @@ set (SOURCES
 
 	history-import-thread.cpp
 	history-importer.cpp
-	history-importer-chat-data.cpp
 	history-importer-manager.cpp
 	history-migration-actions.cpp
 	history-migration-helper.cpp
@@ -33,7 +32,6 @@ set (MOC_SOURCES
 	history-migration-actions.h
 	history-import-thread.h
 	history-importer.h
-	history-importer-chat-data.h
 	history-importer-manager.h
 	history-migration-plugin.h
 )

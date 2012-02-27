@@ -1,10 +1,9 @@
 set (chat_SRCS
-	aggregate-chat-manager.cpp
+	buddy-chat-manager.cpp
 	chat.cpp
-	chat-details-aggregate.cpp
-	chat-details-conference.cpp
-	chat-details-simple.cpp
-	chat-geometry-data.cpp
+	chat-details-buddy.cpp
+	chat-details-contact.cpp
+	chat-details-contact-set.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
 	chat-shared.cpp
@@ -23,21 +22,20 @@ set (chat_SRCS
 	style-engines/chat-engine-kadu/kadu-chat-syntax.cpp
 
 	type/chat-type.cpp
-	type/chat-type-aggregate.cpp
 	type/chat-type-aware-object.cpp
-	type/chat-type-conference.cpp
+	type/chat-type-buddy.cpp
+	type/chat-type-contact.cpp
+	type/chat-type-contact-set.cpp
 	type/chat-type-manager.cpp
-	type/chat-type-simple.cpp
 )
 
 set (chat_MOC_SRCS
 	chat-details.h
-	chat-details-aggregate.h
-	chat-details-conference.h
-	chat-details-simple.h
-	chat-geometry-data.h
+	chat-details-buddy.h
+	chat-details-contact.h
+	chat-details-contact-set.h
 
-	aggregate-chat-manager.h
+	buddy-chat-manager.h
 	chat-manager.h
 	chat-shared.h
 	chat-styles-manager.h
@@ -51,10 +49,10 @@ set (chat_MOC_SRCS
 	style-engines/chat-engine-kadu/chat-engine-kadu.h
 
 	type/chat-type.h
-	type/chat-type-aggregate.h
-	type/chat-type-conference.h
+	type/chat-type-buddy.h
+	type/chat-type-contact.h
+	type/chat-type-contact-set.h
 	type/chat-type-manager.h
-	type/chat-type-simple.h
 )
 
 kadu_subdirectory (chat "${chat_SRCS}" "${chat_MOC_SRCS}" "")

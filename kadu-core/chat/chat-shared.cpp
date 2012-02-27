@@ -160,6 +160,11 @@ void ChatShared::load()
 	Display = loadValue<QString>("Display");
 	Type = loadValue<QString>("Type");
 
+	// import from alias to new name of chat type
+	ChatType *chatType = ChatTypeManager::instance()->chatType(Type);
+	if (chatType)
+		Type = chatType->name();
+
 	triggerAllChatTypesRegistered();
 }
 
@@ -183,6 +188,12 @@ void ChatShared::store()
 
 	storeValue("Account", ChatAccount->uuid().toString());
 	storeValue("Display", Display);
+
+	// import from alias to new name of chat type
+	ChatType *chatType = ChatTypeManager::instance()->chatType(Type);
+	if (chatType)
+		Type = chatType->name();
+
 	storeValue("Type", Type);
 
 	if (!Groups.isEmpty())

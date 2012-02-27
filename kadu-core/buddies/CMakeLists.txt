@@ -2,7 +2,6 @@ set (buddies_SRCS
 	buddy.cpp
 	buddy-additional-data-delete-handler.cpp
 	buddy-additional-data-delete-handler-manager.cpp
-	buddy-kadu-data.cpp
 	buddy-list.cpp
 	buddy-list-mime-data-helper.cpp
 	buddy-manager.cpp
@@ -25,7 +24,6 @@ set (buddies_SRCS
 
 set (buddies_MOC_SRCS
 	buddy-additional-data-delete-handler-manager.h
-	buddy-kadu-data.h
 	buddy-shared.h
 	buddy-manager.h
 	group-manager.h

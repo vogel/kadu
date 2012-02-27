@@ -23,20 +23,20 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 
-#include "chat-details-aggregate.h"
+#include "chat-details-buddy.h"
 
 /**
- * @short Creates empty ChatDetailsAggregate object.
+ * @short Creates empty ChatDetailsBuddy object.
  * @param chatData Chat object that will be decribed by this object
  *
- * Creates empty ChatDetailsAggregate object assigned to chatData object.
+ * Creates empty ChatDetailsBuddy object assigned to chatData object.
  */
-ChatDetailsAggregate::ChatDetailsAggregate(ChatShared *chatData) :
+ChatDetailsBuddy::ChatDetailsBuddy(ChatShared *chatData) :
 		ChatDetails(chatData)
 {
 }
 
-ChatDetailsAggregate::~ChatDetailsAggregate()
+ChatDetailsBuddy::~ChatDetailsBuddy()
 {
 }
 
@@ -47,20 +47,20 @@ ChatDetailsAggregate::~ChatDetailsAggregate()
  *
  * Return false, this class should never be stored.
  */
-bool ChatDetailsAggregate::shouldStore()
+bool ChatDetailsBuddy::shouldStore()
 {
 	return false;
 }
 
 /**
- * @short Returns type of this chat - 'Aggregate'.
- * @return 'Aggregate' ChatType object
+ * @short Returns type of this chat - 'Buddy'.
+ * @return 'Buddy' ChatType object
  *
- * Returns type of this chat - 'Aggregate'.
+ * Returns type of this chat - 'Buddy'.
  */
-ChatType * ChatDetailsAggregate::type() const
+ChatType * ChatDetailsBuddy::type() const
 {
-	return ChatTypeManager::instance()->chatType("Aggregate");
+	return ChatTypeManager::instance()->chatType("Buddy");
 }
 
 /**
@@ -70,7 +70,7 @@ ChatType * ChatDetailsAggregate::type() const
  * Returns set of contracts of first chat in this aggregate chat or empty set
  * no chats are aggreagated.
  */
-ContactSet ChatDetailsAggregate::contacts() const
+ContactSet ChatDetailsBuddy::contacts() const
 {
 	return Chats.isEmpty() ? ContactSet() : Chats.at(0).contacts();
 }
@@ -82,7 +82,7 @@ ContactSet ChatDetailsAggregate::contacts() const
  * Returns name of first chat in this aggregate chat or empty string if
  * no chats are aggreagated.
  */
-QString ChatDetailsAggregate::name() const
+QString ChatDetailsBuddy::name() const
 {
 	return Chats.isEmpty() ? QString() : Chats.at(0).name();
 }
@@ -93,7 +93,7 @@ QString ChatDetailsAggregate::name() const
  *
  * Assigns aggregate chats to this chat.
  */
-void ChatDetailsAggregate::setChats(const QVector<Chat> &chats)
+void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
 {
 	Chats = chats;
 }
@@ -104,7 +104,20 @@ void ChatDetailsAggregate::setChats(const QVector<Chat> &chats)
  *
  * Returns assigned aggregate chats to this chat.
  */
-const QVector<Chat> & ChatDetailsAggregate::chats() const
+const QVector<Chat> & ChatDetailsBuddy::chats() const
 {
 	return Chats;
+}
+
+void ChatDetailsBuddy::addChat(const Chat &chat)
+{
+	if (!Chats.contains(chat))
+		Chats.append(chat);
+}
+
+void ChatDetailsBuddy::removeChat(const Chat &chat)
+{
+	int indexOf = Chats.indexOf(chat);
+	if (indexOf >= 0)
+		Chats.remove(indexOf);
 }

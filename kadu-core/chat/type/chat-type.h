@@ -79,23 +79,13 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Display name of chat type.
-	 * @return display name of chat type
+	 * @short Internal aliases of chat type.
+	 * @return internal aliases of chat type
 	 *
-	 * Chat type display name. Display name is used in history window. This name
-	 * is translated into national languaes.
+	 * Chat type internal aliases. Used to import from old confirations where Simple was used
+	 * instead of Contact and Conference instead of ContactSet.
 	 */
-	virtual QString displayName() const = 0;
-
-	/**
-	 * @author Piotr 'ultr' Dąbrowski
-	 * @short Display name of chat type in plural form.
-	 * @return display name of chat type in plural form
-	 *
-	 * Plural chat type display name. Display name is used in history window.
-	 * This name is translated into national languaes.
-	 */
-	virtual QString displayNamePlural() const = 0;
+	virtual QStringList aliases() const = 0;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

@@ -33,8 +33,8 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "chat/chat-details-aggregate.h"
 #include "chat/chat-details.h"
+#include "chat/chat-details-buddy.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
@@ -203,12 +203,12 @@ QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix
 	if (!chat)
 		return QLatin1String("0");
 
-	ChatDetailsAggregate *aggregate = qobject_cast<ChatDetailsAggregate *>(chat.details());
-	if (!aggregate)
+	ChatDetailsBuddy *buddyChat = qobject_cast<ChatDetailsBuddy *>(chat.details());
+	if (!buddyChat)
 		return QString("%1uuid = '%2'").arg(chatPrefix).arg(chat.uuid().toString());
 
 	QStringList uuids;
-	foreach (const Chat &aggregatedChat, aggregate->chats())
+	foreach (const Chat &aggregatedChat, buddyChat->chats())
 		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
 
 	return QString("%1uuid IN (%2)").arg(chatPrefix).arg(uuids.join(QLatin1String(", ")));

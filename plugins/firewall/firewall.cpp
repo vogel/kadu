@@ -62,7 +62,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "status/status-container.h"
 #include "debug.h"
 
-#include "buddy-firewall-data.h"
 #include "firewall-notification.h"
 
 #include "firewall.h"
@@ -283,8 +282,8 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 	{
 		if (sender.currentStatus().isDisconnected())
 		{
-			QDateTime *dateTime = chat.chatAccount().data()->moduleData<QDateTime>("firewall-account-connected");
-			if (dateTime && (*dateTime < QDateTime::currentDateTime()))
+			QDateTime dateTime = chat.chatAccount().property("firewall:firewall-account-connected", QDateTime()).toDateTime();
+			if (dateTime.isValid() && dateTime < QDateTime::currentDateTime())
 			{
 				Protocol *protocol = chat.chatAccount().protocolHandler();
 				if (!protocol)
@@ -354,9 +353,8 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 
 		kdebugm(KDEBUG_INFO, "%s\n", qPrintable(message));
 
-		QDateTime *dateTime = chat.chatAccount().data()->moduleData<QDateTime>("firewall-account-connected");
-
-		if (dateTime && (*dateTime < QDateTime::currentDateTime()))
+		QDateTime dateTime = chat.chatAccount().property("firewall:firewall-account-connected", QDateTime()).toDateTime();
+		if (dateTime.isValid() && dateTime < QDateTime::currentDateTime())
 		{
 			Protocol *protocol = chat.chatAccount().protocolHandler();
 			if (!protocol)
@@ -430,8 +428,7 @@ void Firewall::accountConnected()
 	if (!account)
 		return;
 
-	QDateTime *dateTime = account.data()->moduleData<QDateTime>("firewall-account-connected", true);
-	*dateTime = QDateTime::currentDateTime().addMSecs(4000);
+	account.addProperty("firewall:firewall-account-connected", QDateTime::currentDateTime().addMSecs(4000), CustomProperties::NonStorable);
 
 	kdebugf2();
 }
@@ -472,9 +469,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 			if (buddy)
 			{
-				BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
-
-				if (!bfd || !bfd->securedSending())
+				if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
 					return;
 			}
 
@@ -537,9 +532,7 @@ void Firewall::import_0_6_5_configuration()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		bfd->setSecuredSending(true);
-		bfd->ensureStored();
+		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
 	config_file.removeVariable("Firewall", "Secured_list");

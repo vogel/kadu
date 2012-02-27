@@ -1,6 +1,13 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,17 +24,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-aggregate.h"
+#include "chat/chat-details-contact-set.h"
 #include "icons/kadu-icon.h"
 
-#include "chat-type-aggregate.h"
+#include "chat-type-contact-set.h"
 
-ChatTypeAggregate::ChatTypeAggregate(QObject *parent) :
+ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
 		ChatType(parent)
 {
+	Aliases.append("ContactSet");
+	Aliases.append("Conference");
 }
 
-ChatTypeAggregate::~ChatTypeAggregate()
+ChatTypeContactSet::~ChatTypeContactSet()
 {
 }
 
@@ -39,11 +48,11 @@ ChatTypeAggregate::~ChatTypeAggregate()
  * Sort index is used for sorting chat types in history window.
  * Chats with smaller sort indexes are displayed first.
  *
- * Sort index for ChatTypeAggregate is -1. That means, that this chat type wont be displayed in history window.
+ * Sort index for ChatTypeContactSet is 1.
  */
-int ChatTypeAggregate::sortIndex() const
+int ChatTypeContactSet::sortIndex() const
 {
-	return -1;
+	return 1;
 }
 
 /**
@@ -54,41 +63,25 @@ int ChatTypeAggregate::sortIndex() const
  * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
  * and also it is stored with @link Chat @endlink data.
  *
- * Internal name for ChatTypeAggregate is 'Aggregate'.
+ * Internal name for ChatTypeContactSet is 'Conference'.
  */
-QString ChatTypeAggregate::name() const
+QString ChatTypeContactSet::name() const
 {
-	return "Aggregate";
+	return "ContactSet";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Display name of chat type.
- * @return display name of chat type
+ * @short Internal aliases of chat type.
+ * @return internal aliases of chat type
  *
- * Chat type display name. Display name is used in history window. This name
- * is translated into national languaes.
+ * Chat type internal aliases, used to imporitng old configurations.
  *
- * Display name for ChatTypeAggregate is 'Aggregate'.
+ * Internal aliases for ChatTypeContactSet are 'ContactSet' and 'Conference'.
  */
-QString ChatTypeAggregate::displayName() const
+QStringList ChatTypeContactSet::aliases() const
 {
-	return tr("Aggregate");
-}
-
-/**
- * @author Piotr 'ultr' Dąbrowski
- * @short Display name of chat type in plural form.
- * @return display name of chat typein plural form
- *
- * Chat type display name in plural form. Display name is used in history window.
- * This name is translated into national languaes.
- *
- * Plural display name for ChatTypeAggregate is 'Aggregate'.
- */
-QString ChatTypeAggregate::displayNamePlural() const
-{
-	return tr("Aggregates");
+	return Aliases;
 }
 
 /**
@@ -98,9 +91,9 @@ QString ChatTypeAggregate::displayNamePlural() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeAggregate is 'kadu_icons/conference'.
+ * Icon for ChatTypeContactSet is 'kadu_icons/conference'.
  */
-KaduIcon ChatTypeAggregate::icon() const
+KaduIcon ChatTypeContactSet::icon() const
 {
 	return KaduIcon("kadu_icons/conference");
 }
@@ -111,22 +104,22 @@ KaduIcon ChatTypeAggregate::icon() const
  * @return window role for this chat type.
  *
  * Kadu window role for this chat type.
- * For conference the role is "kadu-chat-conference".
+ * For ContactSet the role is "kadu-chat-contact-set".
  */
-QString ChatTypeAggregate::windowRole() const
+QString ChatTypeContactSet::windowRole() const
 {
-	return "kadu-chat-aggregate";
+	return "kadu-chat-contact-set";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsConference object for given chat type.
- * @return new ChatDetailsConference object for given chat type
+ * @short Creates new ChatDetailsContactSet object for given chat type.
+ * @return new ChatDetailsContactSet object for given chat type
  *
- * Creates new @link ChatDetailsAggregate @endlink object for
+ * Creates new @link ChatDetailsContactSet @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeAggregate::createChatDetails(ChatShared *chatData) const
+ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsAggregate(chatData);
+	return new ChatDetailsContactSet(chatData);
 }

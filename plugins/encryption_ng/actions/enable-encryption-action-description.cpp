@@ -22,6 +22,7 @@
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 
+#include "encryption-chat-data.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
@@ -54,10 +55,13 @@ void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool to
 	if (!action)
 		return;
 
-	if (!action->context()->chat())
+	Chat chat = action->context()->chat();
+	if (!chat)
 		return;
 
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled, true) && toggled)
+	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(toggled);
+
+	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled) && toggled)
 	{
 		// disable it, we could not enable encryption for this contact
 		sender->setEnabled(false);
@@ -69,6 +73,7 @@ void EnableEncryptionActionDescription::updateActionState(Action *action)
 {
 	Chat chat = action->context()->chat();
 	action->setEnabled(chat && EncryptionProviderManager::instance()->canEncrypt(chat));
+	action->setChecked(EncryptionManager::instance()->chatEncryption(chat)->encrypt());
 }
 
 void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,31 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_TALKABLE_DATA_H
-#define HISTORY_TALKABLE_DATA_H
+#include "chat/chat.h"
 
-#include "storage/module-data.h"
+#include "hide-contact-chats-talkable-filter.h"
 
-class HistoryTalkableData : public ModuleData
+HideContactChatsTalkableFilter::HideContactChatsTalkableFilter(QObject *parent) :
+		TalkableFilter(parent)
 {
-	Q_OBJECT
+}
 
-	bool StoreHistory;
+HideContactChatsTalkableFilter::~HideContactChatsTalkableFilter()
+{
+}
 
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
-
-public:
-	HistoryTalkableData(const QString &moduleName, StorableObject *parent, QObject *qobjectParent);
-	virtual ~HistoryTalkableData();
-
-	virtual QString name() const;
-
-	bool storeHistory();
-	void setStoreHistory(bool storeHistory);
-
-};
-
-#endif // HISTORY_TALKABLE_DATA_H
+TalkableFilter::FilterResult HideContactChatsTalkableFilter::filterChat(const Chat &chat)
+{
+	if (chat.type() == "Contact" || chat.type() == "Simple")
+		return Rejected;
+	else
+		return Undecided;
+}

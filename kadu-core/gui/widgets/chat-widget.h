@@ -138,7 +138,7 @@ public:
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Icon of chat.
 	 *
-	 * Chat icon is used to display in window titles. For 'simple' chats it is icon of status
+	 * Chat icon is used to display in window titles. For 'contact' chats it is icon of status
 	 * of peer, for 'conference' chats it is generic icon.
 	 */
 	QIcon icon();

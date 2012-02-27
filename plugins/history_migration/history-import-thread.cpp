@@ -34,7 +34,6 @@
 #include "status/status.h"
 
 #include "history-import-thread.h"
-#include "history-importer-chat-data.h"
 #include "history-importer-manager.h"
 #include "history-migration-helper.h"
 
@@ -57,12 +56,6 @@ void HistoryImportThread::prepareChats()
 
 void HistoryImportThread::run()
 {
-	// we have to use this guard as a parent for HistoryImporterChatData
-	// without this there is a backtrace:
-	// "Warning: QObject: Cannot create children for a parent that is in a different thread."
-	// and Kadu is crashing as in bug #1938
-	QScopedPointer<QObject> guard(new QObject());
-
 	History::instance()->setSyncEnabled(false);
 
 	ImportedEntries = 0;
@@ -82,9 +75,7 @@ void HistoryImportThread::run()
 
 		QList<HistoryEntry> entries = HistoryMigrationHelper::historyEntries(Path, uinsList);
 
-		// guard as a parent. See above
-		HistoryImporterChatData *historyImporterChatData = chat.data()->moduleStorableData<HistoryImporterChatData>("history-importer", guard.data(), true);
-		if (historyImporterChatData->imported())
+		if (chat.property("history-importer:Imported", false).toBool())
 		{
 			ImportedEntries += entries.count();
 			continue;
@@ -107,8 +98,7 @@ void HistoryImportThread::run()
 		if (Canceled && CancelForced)
 			break;
 
-		historyImporterChatData->setImported(true);
-		historyImporterChatData->ensureStored();
+		chat.addProperty("history-importer:Imported", true, CustomProperties::Storable);
 		// force sync for every chat
 		History::instance()->forceSync();
 	}

@@ -43,7 +43,33 @@ BuddyListModel::~BuddyListModel()
 void BuddyListModel::setBuddyList(const BuddyList &list)
 {
 	beginResetModel();
+
+	foreach (const Buddy &buddy, List)
+	{
+		disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+		           this, SLOT(contactAboutToBeRemoved(Contact)));
+		disconnect(buddy, SIGNAL(contactRemoved(Contact)),
+		           this, SLOT(contactRemoved(Contact)));
+		disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+		           this, SLOT(contactAboutToBeAdded(Contact)));
+		disconnect(buddy, SIGNAL(contactAdded(Contact)),
+		           this, SLOT(contactAdded(Contact)));
+	}
+
 	List = list;
+
+	foreach (const Buddy &buddy, List)
+	{
+		connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+		        this, SLOT(contactAboutToBeRemoved(Contact)));
+		connect(buddy, SIGNAL(contactRemoved(Contact)),
+		        this, SLOT(contactRemoved(Contact)));
+		connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+		        this, SLOT(contactAboutToBeAdded(Contact)));
+		connect(buddy, SIGNAL(contactAdded(Contact)),
+		        this, SLOT(contactAdded(Contact)));
+	}
+
 	endResetModel();
 }
 

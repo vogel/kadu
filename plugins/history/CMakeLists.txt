@@ -49,7 +49,6 @@ set (SOURCES
 	history-query.cpp
 	history-query-result.cpp
 	history-save-thread.cpp
-	history-talkable-data.cpp
 )
 
 set (MOC_SOURCES
@@ -77,7 +76,6 @@ set (MOC_SOURCES
 	history-messages-prepender.h
 	history-plugin.h
 	history-save-thread.h
-	history-talkable-data.h
 )
 
 set (TRANSLATION_SOURCES

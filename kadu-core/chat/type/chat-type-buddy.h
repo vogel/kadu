@@ -1,13 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,10 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_TYPE_CONFERENCE_H
-#define CHAT_TYPE_CONFERENCE_H
+#ifndef CHAT_TYPE_BUDDY_H
+#define CHAT_TYPE_BUDDY_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
@@ -40,25 +34,26 @@
  */
 
 /**
- * @class ChatTypeConference
+ * @class ChatTypeBuddy
  * @author Rafal 'Vogel' Malinowski
- * @short Representation of chat type with many buddies.
+ * @short Representation of chat type that contains other chats.
  *
- * Representation of chat type with many buddies.
+ * Representation of chat type that contains other chats.
  */
-class KADUAPI ChatTypeConference : public ChatType
+class KADUAPI ChatTypeBuddy : public ChatType
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ChatTypeConference)
+	Q_DISABLE_COPY(ChatTypeBuddy)
+
+	QStringList Aliases;
 
 public:
-	explicit ChatTypeConference(QObject *parent = 0);
-	virtual ~ChatTypeConference();
+	explicit ChatTypeBuddy(QObject *parent = 0);
+	virtual ~ChatTypeBuddy();
 
 	virtual int sortIndex() const;
 	virtual QString name() const;
-	virtual QString displayName() const;
-	virtual QString displayNamePlural() const;
+	virtual QStringList aliases() const;
 	virtual KaduIcon icon() const;
 	virtual QString windowRole() const;
 
@@ -66,10 +61,10 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(ChatTypeConference *)
+Q_DECLARE_METATYPE(ChatTypeBuddy *)
 
 /**
  * @}
  */
 
-#endif // CHAT_TYPE_CONFERENCE_H
+#endif // CHAT_TYPE_BUDDY_H

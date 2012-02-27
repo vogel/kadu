@@ -47,7 +47,6 @@
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-list-model.h"
-#include "chat/chat-geometry-data.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/chat-configuration-holder.h"
@@ -447,7 +446,7 @@ QIcon ChatWidget::icon()
 			return ContactDataExtractor::data(contact, Qt::DecorationRole, false).value<QIcon>();
 	}
 	else if (contactsCount > 1)
-		return ChatTypeManager::instance()->chatType("Conference")->icon().icon();
+		return ChatTypeManager::instance()->chatType("ContactSet")->icon().icon();
 
 	return KaduIcon("internet-group-chat").icon();
 }
@@ -673,11 +672,7 @@ void ChatWidget::kaduRestoreGeometry()
 	if (!chat())
 		return;
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
-	if (!cgd)
-		return;
-
-	QList<int> horizSizes = cgd->widgetHorizontalSizes();
+	QList<int> horizSizes = stringToIntList(chat().property("chat-geometry:WidgetHorizontalSizes", QString()).toString());
 	if (!horizSizes.isEmpty())
 		HorizontalSplitter->setSizes(horizSizes);
 }
@@ -690,9 +685,8 @@ void ChatWidget::kaduStoreGeometry()
 	if (!chat())
 		return;
 
-	ChatGeometryData *cgd = chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
-	cgd->setWidgetHorizontalSizes(HorizontalSplitter->sizes());
-	cgd->ensureStored();
+	chat().addProperty("chat-geometry:WidgetHorizontalSizes", intListToString(HorizontalSplitter->sizes()),
+			CustomProperties::Storable);
 }
 
 void ChatWidget::showEvent(QShowEvent *e)

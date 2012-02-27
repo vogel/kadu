@@ -22,7 +22,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-set.h"
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/model/chat-data-extractor.h"
 #include "contacts/contact-set.h"
@@ -148,8 +148,8 @@ Chat Talkable::toChat() const
 		case ItemBuddy:
 		{
 			const Chat &chat = ChatManager::instance()->findChat(BuddySet(MyBuddy), true);
-			const Chat &aggregate = AggregateChatManager::instance()->aggregateChat(chat);
-			return aggregate ? aggregate : chat;
+			const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+			return buddyChat ? buddyChat : chat;
 		}
 		case ItemContact: return ChatManager::instance()->findChat(ContactSet(MyContact), true);
 		case ItemChat: return MyChat;

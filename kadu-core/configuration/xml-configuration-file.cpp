@@ -47,13 +47,18 @@ void XmlConfigFile::read()
 {
 	kdebugf();
 	QFile file;
-	QDir backups(KaduPaths::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-	QDir oldbackups(KaduPaths::instance()->profilePath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
-	QStringList files("kadu-0.6.6.conf.xml");
 
-	files += backups.entryList();
+	QDir backups_0_12(KaduPaths::instance()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir backups_0_6_6(KaduPaths::instance()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+	QDir backups_0_6_5(KaduPaths::instance()->profilePath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+
+	QStringList files("kadu-0.12.conf.xml");
+
+	files += backups_0_12.entryList();
+	files += "kadu-0.6.6.conf.xml";
+	files += backups_0_6_6.entryList();
 	files += "kadu.conf.xml";
-	files += oldbackups.entryList();
+	files += backups_0_6_5.entryList();
 
 	bool fileOpened(false);
 
@@ -102,7 +107,7 @@ void XmlConfigFile::read()
 		QDomElement root = DomDocument.createElement( "Kadu" );
 		DomDocument.appendChild(root);
 	}
-	
+
 	kdebugf2();
 }
 
@@ -114,7 +119,7 @@ void XmlConfigFile::write(const QString& f)
 	QFile file;
 	QString fileName, tmpFileName;
 	if (f.isEmpty())
-		fileName = KaduPaths::instance()->profilePath() + QLatin1String("kadu-0.6.6.conf.xml");
+		fileName = KaduPaths::instance()->profilePath() + QLatin1String("kadu-0.12.conf.xml");
 	else
 		fileName = f;
 	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
@@ -154,7 +159,7 @@ void XmlConfigFile::saveTo(const QString &f)
 
 void XmlConfigFile::makeBackup()
 {
-	QString f = QString("kadu-0.6.6.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+	QString f = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 	write(KaduPaths::instance()->profilePath() + f);
 }
 

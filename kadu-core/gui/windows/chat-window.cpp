@@ -33,7 +33,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/chat-details.h"
-#include "chat/chat-geometry-data.h"
 #include "chat/type/chat-type.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
@@ -147,28 +146,23 @@ void ChatWindow::setDefaultGeometry()
 
 void ChatWindow::kaduRestoreGeometry()
 {
-	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), false);
+	QRect windowGeometry = stringToRect(currentChatWidget->chat().property("chat-geometry:WindowGeometry", QString()).toString());
 
-	if (!cgd || !cgd->windowGeometry().isValid())
-		setDefaultGeometry();
-	else
+	if (windowGeometry.isValid())
 	{
-		QRect geom = cgd->windowGeometry();
-
-		setWindowGeometry(this, geom);
-		currentChatWidget->setGeometry(geom);
-
+		setWindowGeometry(this, windowGeometry);
+		currentChatWidget->setGeometry(windowGeometry);
 		currentChatWidget->kaduRestoreGeometry();
 	}
+	else
+		setDefaultGeometry();
 }
 
 void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	ChatGeometryData *cgd = currentChatWidget->chat().data()->moduleStorableData<ChatGeometryData>("chat-geometry", ChatWidgetManager::instance(), true);
-	cgd->setWindowGeometry(geometry());
-	cgd->ensureStored();
+	currentChatWidget->chat().addProperty("chat-geometry:WindowGeometry", rectToString(geometry()), CustomProperties::Storable);
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

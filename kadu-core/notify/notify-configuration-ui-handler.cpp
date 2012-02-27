@@ -40,7 +40,6 @@
 #include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
 
-#include "buddy-notify-data.h"
 #include "notifier.h"
 #include "notify-event.h"
 
@@ -160,8 +159,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), false);
-			if (!bnd || !bnd->notify())
+			if (!buddy.property("notify:Notify", false).toBool())
 				allUsers->addItem(buddy.display());
 			else
 				notifiedUsers->addItem(buddy.display());
@@ -252,9 +250,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		bnd->setNotify(true);
-		bnd->ensureStored();
+		buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
 	}
 
 	count = allUsers->count();
@@ -264,9 +260,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyNotifyData *bnd = buddy.data()->moduleStorableData<BuddyNotifyData>("notify", NotificationManager::instance(), true);
-		bnd->setNotify(false);
-		bnd->ensureStored();
+		buddy.removeProperty("notify:Notify");
 	}
 
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())

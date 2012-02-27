@@ -35,6 +35,7 @@ class ActionDescription;
 class Chat;
 class ChatWidget;
 class Contact;
+class EncryptionChatData;
 class KeyGenerator;
 
 class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
@@ -44,6 +45,7 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 
 	static EncryptionManager *Instance;
 
+	QMap<Chat, EncryptionChatData *> ChatEnryptions;
 	KeyGenerator *Generator;
 
 	EncryptionManager();
@@ -69,7 +71,9 @@ public:
 	void setGenerator(KeyGenerator *generator);
 	KeyGenerator * generator();
 
-	bool setEncryptionEnabled(const Chat &chat, bool enable, bool overrideChatDataSetting);
+	EncryptionChatData * chatEncryption(const Chat &chat);
+
+	bool setEncryptionEnabled(const Chat &chat, bool enabled);
 
 };
 

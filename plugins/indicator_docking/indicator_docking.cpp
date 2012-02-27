@@ -30,8 +30,8 @@
 
 #include "avatars/avatar.h"
 #include "buddies/buddy.h"
-#include "chat/aggregate-chat-manager.h"
-#include "chat/chat-details-aggregate.h"
+#include "chat/buddy-chat-manager.h"
+#include "chat/chat-details-buddy.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
@@ -300,14 +300,14 @@ QList<IndicatorDocking::IndMMap::iterator> IndicatorDocking::iteratorsForAggrega
 	if (!chat)
 		return list;
 
-	Chat aggregateChat = AggregateChatManager::instance()->aggregateChat(chat);
-	ChatDetailsAggregate *aggregateChatDetails = qobject_cast<ChatDetailsAggregate *>(aggregateChat.details());
-	if (!aggregateChatDetails)
+	Chat aggregateChat = BuddyChatManager::instance()->buddyChat(chat);
+	ChatDetailsBuddy *buddyChatDetails = qobject_cast<ChatDetailsBuddy *>(aggregateChat.details());
+	if (!buddyChatDetails)
 		return list;
 
 	IndMMap::iterator end = IndicatorsMap.end();
 	for (IndMMap::iterator it = IndicatorsMap.begin(); it != end; ++it)
-		if (aggregateChatDetails->chats().contains(it.value()->chat()))
+		if (buddyChatDetails->chats().contains(it.value()->chat()))
 			list.append(it);
 
 	return list;

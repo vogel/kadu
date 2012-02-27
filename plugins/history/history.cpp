@@ -46,7 +46,7 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
-#include "chat/aggregate-chat-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
@@ -63,7 +63,6 @@
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "protocols/services/chat-service.h"
-
 #include "debug.h"
 
 #include "actions/show-history-action-description.h"
@@ -73,7 +72,6 @@
 #include "history-save-thread.h"
 
 #include "history.h"
-#include "history-talkable-data.h"
 
 void disableNonHistoryContacts(Action *action)
 {
@@ -210,7 +208,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 	if (!chatMessagesView)
 		return;
 
-	Chat chat = AggregateChatManager::instance()->aggregateChat(chatWidget->chat());
+	Chat chat = BuddyChatManager::instance()->buddyChat(chatWidget->chat());
 
 	HistoryQuery query;
 	query.setTalkable(chat ? chat : chatWidget->chat());
@@ -248,8 +246,7 @@ bool History::shouldSaveForBuddy(const Buddy &buddy)
 	if (!buddy)
 		return false;
 
-	HistoryTalkableData *htd = buddy.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
-	return !htd || htd->storeHistory();
+	return buddy.property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldSaveForChat(const Chat &chat)
@@ -257,8 +254,7 @@ bool History::shouldSaveForChat(const Chat &chat)
 	if (!chat)
 		return false;
 
-	HistoryTalkableData *htd = chat.data()->moduleStorableData<HistoryTalkableData>("history", this, false);
-	return !htd || htd->storeHistory();
+	return chat.property("history:StoreHistory", true).toBool();
 }
 
 bool History::shouldEnqueueMessage(const Message &message)

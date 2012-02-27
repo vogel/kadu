@@ -34,7 +34,6 @@
 #include "misc/kadu-paths.h"
 #include "debug.h"
 
-#include "buddy-firewall-data.h"
 #include "firewall.h"
 
 #include "firewall-configuration-ui-handler.h"
@@ -99,11 +98,7 @@ void FirewallConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigur
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 		if (!buddy.isAnonymous())
 		{
-			BuddyFirewallData *bfd = 0;
-			if (buddy.data())
-				bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), false);
-
-			if (!bfd || !bfd->securedSending())
+			if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
 				AllList->addItem(buddy.display());
 			else
 				SecureList->addItem(buddy.display());
@@ -237,9 +232,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		bfd->setSecuredSending(true);
-		bfd->ensureStored();
+		buddy.addProperty("firewall-secured-sending:FirewallSecuredSending", true, CustomProperties::Storable);
 	}
 
 	count = AllList->count();
@@ -249,9 +242,7 @@ void FirewallConfigurationUiHandler::configurationApplied()
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		BuddyFirewallData *bfd = buddy.data()->moduleStorableData<BuddyFirewallData>("firewall-secured-sending", Firewall::instance(), true);
-		bfd->setSecuredSending(false);
-		bfd->ensureStored();
+		buddy.removeProperty("firewall-secured-sending:FirewallSecuredSending");
 	}
 
 	config_file.writeEntry("Firewall", "question", QuestionEdit->toPlainText());

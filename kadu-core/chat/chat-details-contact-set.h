@@ -2,9 +2,9 @@
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,12 +21,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_DETAILS_AGGREGATE_H
-#define CHAT_DETAILS_AGGREGATE_H
+#ifndef CHAT_DETAILS_CONTACT_SET_H
+#define CHAT_DETAILS_CONTACT_SET_H
+
+#include "buddies/buddy-set.h"
+#include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "chat/chat-details.h"
-#include "contacts/contact.h"
-#include "exports.h"
 
 /**
  * @addtogroup Chat
@@ -34,30 +36,34 @@
  */
 
 /**
- * @class ChatDetailsAggregate
- * @short Chat data that aggregates some chats into one.
+ * @class ChatDetailsContactSet
+ * @author Rafal 'Vogel' Malinowski
+ * @short Chat data specyfic to 'ContactSet' chat type.
  *
- * Class contains list of chat objects. It joins these chats into one chat.
- * This is usable to join all chats for contacts of one buddy into one chat.
+ * Class contains set of Contact objects. Chat name is set to this Contacts'
+ * Buddys' display names joined by commas, chat title is list of that names
+ * with current descriptions.
  */
-class KADUAPI ChatDetailsAggregate : public ChatDetails
+class ChatDetailsContactSet : public ChatDetails
 {
 	Q_OBJECT
 
-	QVector<Chat> Chats;
+	ContactSet Contacts;
 
-public:
-	explicit ChatDetailsAggregate(ChatShared *chatData);
-	virtual ~ChatDetailsAggregate();
-
+protected:
+	virtual void load();
+	virtual void store();
 	virtual bool shouldStore();
 
+public:
+	explicit ChatDetailsContactSet(ChatShared *chatData);
+	virtual ~ChatDetailsContactSet();
+
 	virtual ChatType * type() const;
-	virtual ContactSet contacts() const;
+	virtual ContactSet contacts() const { return Contacts; }
 	virtual QString name() const;
 
-	void setChats(const QVector<Chat> &chats);
-	const QVector<Chat> & chats() const;
+	void setContacts(const ContactSet &contacts);
 
 };
 
@@ -65,4 +71,4 @@ public:
  * @}
  */
 
-#endif // CHAT_DETAILS_AGGREGATE_H
+#endif // CHAT_DETAILS_CONTACT_SET_H

@@ -42,7 +42,7 @@
  * Chats are basic concept in Kadu. Chat can define any conversation beetwen people. In core Kadu code
  * exists two kinds of chats:
  * <ul>
- *  <li>simple - chat with one person</li>
+ *  <li>contact - chat with one person</li>
  *  <li>confernece - chat with more that one person</li>
  * </ul>
  *
@@ -56,7 +56,7 @@
  * @link ChatManager @endlink stores all chats that were used in program. Every chat type has associated
  * @link ChatDetails @endlink class that stored data specific to this chat type. ChatManager can load
  * only data common for all chats, remaining data can only by loaded by details class. Two details classes
- * are defined in core: @link ChatDetailsSimple @endlink and @link ChatDetailsConference @endlink
+ * are defined in core: @link ChatDetailsContact @endlink and @link ChatDetailsContactSet @endlink
  */
 
 /**
@@ -74,7 +74,7 @@ class XmlConfigFile;
  * @short Manager for all chats used in application.
  *
  * This class manages all chats used in application. It derives from @link Manager @endlink class.
- * All new chats of standard types (simple and conference) should be created by @link findChat @endlink
+ * All new chats of standard types (contact and contact set) should be created by @link findChat @endlink
  * method. No two chats will have the same contacts and no conflicts will be made.
  *
  * Signals @link chatAboutToBeAdded @endlink, @link chatAdded @endlink, @link chatAboutToBeRemoved @endlink
