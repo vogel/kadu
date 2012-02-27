@@ -31,32 +31,28 @@
 #include "encryption-chat-data.h"
 
 EncryptionChatData::EncryptionChatData(const Chat &chat, QObject *parent) :
-		QObject(parent), MyChat(chat), ChatEncryptor(0), ChatDecryptor(0), Encrypt(EncryptStateDefault)
+		QObject(parent), MyChat(chat), ChatEncryptor(0), ChatDecryptor(0), Encrypt(true)
 {
+	Encrypt = MyChat.property("encryption-ng:Encrypt", true).toBool();
+	importEncrypt(); // this is only done once
 }
 
 EncryptionChatData::~EncryptionChatData()
 {
 }
 
-EncryptionChatData::EncryptState EncryptionChatData::importEncrypt()
+void EncryptionChatData::importEncrypt()
 {
-	EncryptState result = EncryptStateDefault;
-
 	ContactSet contacts = MyChat.contacts();
 	if (1 != contacts.size())
-		return result;
+		return;
 
 	Contact contact = *contacts.constBegin();
 	QString encryptionEnabled = contact.ownerBuddy().customData("encryption_enabled");
 	contact.ownerBuddy().removeCustomData("encryption_enabled");
 
 	if (encryptionEnabled == "false")
-		result = EncryptStateDisabled;
-	else if (encryptionEnabled == "true")
-		result = EncryptStateEnabled;
-
-	return result;
+		Encrypt = false;
 }
 
 void EncryptionChatData::encryptorDestroyed()
@@ -69,28 +65,21 @@ void EncryptionChatData::decryptorDestroyed()
 	ChatDecryptor = 0;
 }
 
-void EncryptionChatData::setEncrypt(EncryptionChatData::EncryptState encrypt)
+void EncryptionChatData::setEncrypt(bool encrypt)
 {
 	if (!MyChat || Encrypt == encrypt)
 		return;
 
 	Encrypt = encrypt;
 
-	if (Encrypt != EncryptStateDefault)
-		MyChat.addProperty("encryption-ng:Encrypt", Encrypt == EncryptStateEnabled, CustomProperties::Storable);
+	if (!Encrypt)
+		MyChat.addProperty("encryption-ng:Encrypt", false, CustomProperties::Storable);
 	else
 		MyChat.removeProperty("encryption-ng:Encrypt");
 }
 
-EncryptionChatData::EncryptState EncryptionChatData::encrypt()
+bool EncryptionChatData::encrypt()
 {
-	if (!MyChat.hasProperty("encryption-ng:Encrypt"))
-		Encrypt = importEncrypt();
-	else if (MyChat.property("encryption-ng:Encrypt", true).toBool())
-		Encrypt = EncryptStateEnabled;
-	else
-		Encrypt = EncryptStateDisabled;
-
 	return Encrypt;
 }
 

@@ -48,7 +48,6 @@ void EncryptionNgConfiguration::destroyInstance()
 EncryptionNgConfiguration::EncryptionNgConfiguration()
 {
 	configurationUpdated();
-
 	createDefaultConfiguration();
 }
 
@@ -59,12 +58,11 @@ EncryptionNgConfiguration::~EncryptionNgConfiguration()
 
 void EncryptionNgConfiguration::createDefaultConfiguration()
 {
-	config_file.addVariable("Chat", "Encryption", true);
+	config_file.removeVariable("Chat", "Encryption");
 	config_file.addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
 void EncryptionNgConfiguration::configurationUpdated()
 {
-	EncryptByDefault = config_file.readBoolEntry("Chat", "Encryption", true);
 	EncryptAfterReceiveEncryptedMessage = config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

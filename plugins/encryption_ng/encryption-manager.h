@@ -51,8 +51,6 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 	EncryptionManager();
 	virtual ~EncryptionManager();
 
-	EncryptionChatData * chatEncryption(const Chat &chat);
-
 private slots:
 	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
 	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
@@ -73,7 +71,9 @@ public:
 	void setGenerator(KeyGenerator *generator);
 	KeyGenerator * generator();
 
-	bool setEncryptionEnabled(const Chat &chat, bool enable, bool overrideChatDataSetting);
+	EncryptionChatData * chatEncryption(const Chat &chat);
+
+	bool setEncryptionEnabled(const Chat &chat, bool enabled);
 
 };
 

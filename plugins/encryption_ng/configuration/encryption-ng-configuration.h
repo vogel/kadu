@@ -32,7 +32,6 @@ class EncryptionNgConfiguration : private ConfigurationAwareObject
 
 	static EncryptionNgConfiguration * Instance;
 
-	bool EncryptByDefault;
 	bool EncryptAfterReceiveEncryptedMessage;
 
 	EncryptionNgConfiguration();
@@ -49,7 +48,6 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 
-	bool encryptByDefault() { return EncryptByDefault; }
 	bool encryptAfterReceiveEncryptedMessage() { return EncryptAfterReceiveEncryptedMessage; }
 
 };

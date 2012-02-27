@@ -36,21 +36,14 @@ class EncryptionChatData : public QObject
 {
 	Q_OBJECT
 
-public:
-	enum EncryptState {
-		EncryptStateDefault,
-		EncryptStateEnabled,
-		EncryptStateDisabled,
-	};
-
 private:
 	Chat MyChat;
 	Encryptor *ChatEncryptor;
 	Decryptor *ChatDecryptor;
 
-	EncryptState Encrypt;
+	bool Encrypt;
 
-	EncryptState importEncrypt();
+	void importEncrypt();
 
 private slots:
 	void encryptorDestroyed();
@@ -60,8 +53,8 @@ public:
 	explicit EncryptionChatData(const Chat &chat, QObject *parent);
 	virtual ~EncryptionChatData();
 
-	void setEncrypt(EncryptState encrypt);
-	EncryptState encrypt();
+	void setEncrypt(bool encrypt);
+	bool encrypt();
 
 	void setEncryptor(Encryptor *encryptor);
 	Encryptor * encryptor();
