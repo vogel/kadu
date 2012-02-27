@@ -47,7 +47,7 @@ class KADUAPI Contact : public SharedBase<ContactShared>
 	KaduSharedBaseClass(Contact)
 
 public:
-	static Contact create(const QString &id);
+	static Contact create();
 	static Contact loadStubFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact loadFromStorage(const QSharedPointer<StoragePoint> &storage);
 	static Contact null;

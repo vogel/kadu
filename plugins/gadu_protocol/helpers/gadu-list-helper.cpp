@@ -250,10 +250,11 @@ BuddyList GaduListHelper::streamPost70ToBuddyList(const QString &line, Account a
 			QDomElement numberElement = contactElement.firstChildElement("GGNumber");
 			if (!numberElement.text().isEmpty() && numberElement.text() != account.id())
 			{
-				Contact contact = Contact::create(numberElement.text());
+				Contact contact = Contact::create();
 				contact.setContactAccount(account);
 				GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
 				details->setState(StorableObject::StateNew);
+				contact.setId(numberElement.text());
 				contact.data()->setState(StorableObject::StateNew);
 				contact.setOwnerBuddy(buddy);
 
@@ -310,8 +311,9 @@ Buddy GaduListHelper::linePre70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin && QString::number(uin) != account.id())
 		{
-			Contact contact = Contact::create(QString::number(uin));
+			Contact contact = Contact::create();
 			contact.setContactAccount(account);
+			contact.setId(QString::number(uin));
 			GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
 			details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);
@@ -381,8 +383,9 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 			uin = 0;
 		if (uin && QString::number(uin) != account.id())
 		{
-			Contact contact = Contact::create(QString::number(uin));
+			Contact contact = Contact::create();
 			contact.setContactAccount(account);
+			contact.setId(QString::number(uin));
 			GaduContactDetails *details = dynamic_cast<GaduContactDetails *>(contact.details());
 			details->setState(StorableObject::StateNew);
 			contact.data()->setState(StorableObject::StateNew);

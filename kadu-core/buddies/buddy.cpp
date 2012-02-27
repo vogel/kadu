@@ -235,9 +235,10 @@ Buddy Buddy::dummy()
 	Account account = Account::create("");
 	account.setAccountIdentity(identity);
 
-	Contact contact = Contact::create("999999");
+	Contact contact = Contact::create();
 	contact.setContactAccount(account);
 	contact.setOwnerBuddy(example);
+	contact.setId("999999");
 	contact.setCurrentStatus(Status(StatusTypeAway, example.data()->tr("Example description")));
 	contact.setAddress(QHostAddress(2130706433));
 	contact.setPort(80);

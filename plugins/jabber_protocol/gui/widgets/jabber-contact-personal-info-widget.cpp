@@ -60,7 +60,8 @@ JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(const Contact &
 	connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 
 	Buddy b = Buddy::create();
-	Contact c = Contact::create(contact.id());
+	Contact c = Contact::create();
+	c.setId(contact.id());
 	c.setOwnerBuddy(b);
 
 	service->fetchPersonalInfo(c);

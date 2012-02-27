@@ -85,7 +85,7 @@ public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 
-	explicit ContactShared(const QString &id = QString());
+	explicit ContactShared(const QUuid &uuid = QUuid());
 	virtual ~ContactShared();
 
 	virtual StorableObject * storageParent();

@@ -805,7 +805,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 			const Buddy &buddy = Buddy::create();
 			buddy.setDisplay("?");
 
-			contact = Contact::create("");
+			contact = Contact::create();
 			contact.setUuid(query.value(2).toString());
 			contact.setOwnerBuddy(buddy);
 
@@ -1100,7 +1100,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
 		if (!sender)
 		{
-			Contact sender = Contact::create("");
+			Contact sender = Contact::create();
 			Buddy senderBuddy = Buddy::create();
 			senderBuddy.setDisplay("?");
 			sender.setOwnerBuddy(senderBuddy);
