@@ -75,7 +75,15 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 		return false;
 
 	QTextDocument document;
-	document.setHtml(message);
+	/*
+	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
+	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
+	 * these messages to have proper lines and paragraphs.
+	 */
+	if (message.contains('<'))
+		document.setHtml(message);
+	else
+		document.setPlainText(message);
 
 	FormattedMessage formattedMessage = FormattedMessage::parse(&document);
 
