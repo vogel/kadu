@@ -146,22 +146,25 @@ void HistorySqlStorage::initializerProgressFinished(bool ok, const QString &icon
 
 void HistorySqlStorage::databaseReady(bool ok)
 {
-	if (InitializerThread)
-		InitializerThread->quit();
-
 	if (ok)
 		Database = QSqlDatabase::database("kadu-history", true);
 
-	if (!Database.isOpen())
+	if (!Database.isOpen() || Database.isOpenError())
 	{
 		initializerProgressFinished(false, "dialog-error",
 				tr("Opening database failed. Error message:\n%1").arg(Database.lastError().text()));
 		History::instance()->unregisterStorage(this);
+
+		if (InitializerThread)
+			InitializerThread->quit();
 		return;
 	}
 
 	Database.transaction();
 	initQueries();
+
+	if (InitializerThread)
+		InitializerThread->quit();
 }
 
 bool HistorySqlStorage::isDatabaseReady()
