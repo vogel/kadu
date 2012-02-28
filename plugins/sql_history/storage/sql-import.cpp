@@ -25,7 +25,7 @@
 
 #include "sql-import.h"
 
-#define CURRENT_SCHEMA_VERSION 3
+#define CURRENT_SCHEMA_VERSION 4
 
 quint16 SqlImport::databaseSchemaVersion(QSqlDatabase &database)
 {
@@ -61,6 +61,8 @@ void SqlImport::initTables(QSqlDatabase &database)
 	initKaduMessagesTable(database);
 	initKaduStatusesTable(database);
 	initKaduSmsTable(database);
+
+	initV4Tables(database);
 }
 
 void SqlImport::initKaduSchemaTable(QSqlDatabase &database)
@@ -175,6 +177,28 @@ void SqlImport::initKaduSmsTable(QSqlDatabase &database)
 	query.exec();
 }
 
+void SqlImport::initV4Tables(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+
+	query.prepare("PRAGMA encoding = \"UTF-8\";");
+	query.exec();
+
+	query.prepare("PRAGMA synchronous = OFF;");
+	query.exec();
+
+	query.prepare("PRAGMA foreign_keys = ON;");
+	query.exec();
+
+	query.prepare(
+			"CREATE TABLE kadu_accounts ("
+			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"protocol VARCHAR(128),"
+			"account VARCHAR(1024));"
+	);
+	query.exec();
+}
+
 void SqlImport::initIndexes(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
@@ -210,6 +234,16 @@ void SqlImport::initIndexes(QSqlDatabase &database)
 	query.exec();
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_content ON kadu_messages (content_id)");
+	query.exec();
+
+	initV4Indexes(database);
+}
+
+void SqlImport::initV4Indexes(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_account_pk ON kadu_accounts (id)");
 	query.exec();
 }
 
@@ -276,6 +310,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 		query.exec();
 	}
 
+	initV4Tables(database);
 	initIndexes(database);
 
 	database.commit();
@@ -291,7 +326,9 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 	removeDuplicatesFromVersion2Schema(database, "kadu_chats", "uuid", "chat_id");
 	removeDuplicatesFromVersion2Schema(database, "kadu_contacts", "uuid", "contact_id");
 	removeDuplicatesFromVersion2Schema(database, "kadu_dates", "date", "date_id");
-	initKaduSchemaTable(database);
+
+	initV4Tables(database);
+	initV4Indexes(database);
 
 	database.commit();
 
@@ -340,6 +377,12 @@ void SqlImport::removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const
 	query.exec();
 }
 
+void SqlImport::importVersion3Schema(QSqlDatabase &database)
+{
+	initV4Tables(database);
+	initV4Indexes(database);
+}
+
 void SqlImport::performImport(QSqlDatabase &database)
 {
 	quint16 storedSchemaVersion = databaseSchemaVersion(database);
@@ -361,7 +404,12 @@ void SqlImport::performImport(QSqlDatabase &database)
 		case 2:
 			importVersion2Schema(database);
 			break;
+		case 3:
+			importVersion3Schema(database);
+			break;
 		default:
 			break; // no need to import
 	}
+
+	initKaduSchemaTable(database);
 }
