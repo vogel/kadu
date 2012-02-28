@@ -56,6 +56,7 @@
 #include "plugins/history/history-query.h"
 #include "plugins/history/history-query-result.h"
 
+#include "storage/sql-accounts-mapping.h"
 #include "storage/sql-initializer.h"
 #include "storage/sql-messages-chat-storage.h"
 #include "storage/sql-messages-sms-storage.h"
@@ -66,7 +67,7 @@
 #define DATE_TITLE_LENGTH 120
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
-		HistoryStorage(parent), ImportProgressWindow(0), DatabaseMutex(QMutex::NonRecursive)
+		HistoryStorage(parent), ImportProgressWindow(0), AccountsMapping(0), DatabaseMutex(QMutex::NonRecursive)
 {
 	kdebugf();
 
@@ -162,6 +163,8 @@ void HistorySqlStorage::databaseReady(bool ok)
 
 	Database.transaction();
 	initQueries();
+
+	AccountsMapping = new SqlAccountsMapping(Database, this);
 
 	if (InitializerThread)
 		InitializerThread->quit();

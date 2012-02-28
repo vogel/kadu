@@ -34,6 +34,8 @@ class QSqlError;
 class HistoryQuery;
 class ProgressWindow2;
 
+class SqlAccountsMapping;
+
 /**
 	@class HistorySqlStorage
 	@author Juzef, Adrian
@@ -47,6 +49,7 @@ class HistorySqlStorage : public HistoryStorage
 	ProgressWindow2 *ImportProgressWindow;
 
 	QSqlDatabase Database;
+	SqlAccountsMapping *AccountsMapping;
 
 	QSqlQuery AppendMessageQuery;
 	QSqlQuery AppendStatusQuery;
