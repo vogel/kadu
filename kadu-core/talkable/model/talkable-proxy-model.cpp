@@ -141,8 +141,9 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 {
 	Q_ASSERT(left.parent().isValid() == right.parent().isValid());
 
-	if (left.parent().isValid())
-		return QSortFilterProxyModel::lessThan(left, right);
+	// sort contacts under buddies by prorities
+	if (left.parent().isValid() && BuddyRole == left.parent().data(ItemTypeRole).value<int>())
+		return left.row() < right.row();
 
 	const int leftRole = left.data(ItemTypeRole).value<int>();
 	const int rightRole = right.data(ItemTypeRole).value<int>();
