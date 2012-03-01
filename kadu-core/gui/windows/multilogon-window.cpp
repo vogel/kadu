@@ -86,6 +86,7 @@ void MultilogonWindow::createGui()
 	QHBoxLayout *selectAccountLayout = new QHBoxLayout(selectAccountWidget);
 
 	selectAccountLayout->addWidget(new QLabel(tr("Account:"), selectAccountWidget));
+	selectAccountLayout->setMargin(0);
 
 	Accounts = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, selectAccountWidget);
 	Accounts->addFilter(new HaveMultilogonFilter(Accounts));
@@ -118,6 +119,7 @@ void MultilogonWindow::createGui()
 	buttons->addButton(KillSessionButton, QDialogButtonBox::DestructiveRole);
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
 
+	layout->addSpacing(16);
 	layout->addWidget(buttons);
 
 	accountChanged();
