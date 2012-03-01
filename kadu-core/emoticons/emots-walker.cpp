@@ -160,11 +160,7 @@ int EmotsWalker::checkEmotOccurrence(const QChar &c, bool nextIsLetter)
 			}
 		}
 	else
-	{
-		--amountPositions;
-		lengths[amountPositions + 1] = lengths.at(amountPositions);
-		positions[amountPositions + 1] = positions.at(amountPositions);
-	}
+		amountPositions = 0;
 
 	previousWasLetter = c.isLetter();
 
