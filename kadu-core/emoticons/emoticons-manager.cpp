@@ -265,7 +265,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 		{
 			// find out if there is some emot occurrence when we
 			// add current character
-			int idx = walker->checkEmotOccurrence(text.at(j));
+			int idx = walker->checkEmotOccurrence(text.at(j), (j < textlength - 1) && text.at(j + 1).isLetter());
 			// when some emot from dictionary is ending at current character
 			if (idx >= 0)
 			{
