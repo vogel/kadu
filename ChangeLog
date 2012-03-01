@@ -3,6 +3,7 @@
 * encryption_ng: #2505 done: removed "Encrypt by default" option, it is now always set to true (Vogel)
 * gui: #2122 fixed: do not move contact to the end of list when changing its account in Buddy Data Window (Vogel)
 * gui: #370 fixed: do not display emoticons in middle of word (Vogel)
+* chat styles: #2499 fixed: keep message borders for long content (ultr)
 
 +++ version 0.12.0-alpha2
 * gui: #2153 done: new and improved window for changing account status and description (Juzef)
