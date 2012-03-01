@@ -88,6 +88,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	main_layout->addWidget(configurationWidget);
+	main_layout->addSpacing(16);
 	main_layout->addWidget(buttons_layout);
 
 	loadWindowGeometry(this, section, name + "_Geometry", 0, 50, 790, 580);
