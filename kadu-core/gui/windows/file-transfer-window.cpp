@@ -21,11 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
+#include <QtGui/QStyle>
+#include <QtGui/QVBoxLayout>
 
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
@@ -80,14 +81,11 @@ void FileTransferWindow::createGui()
 
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QGridLayout *mainGrid = new QGridLayout(this);
-	mainGrid->setSpacing(2);
-	mainGrid->setMargin(2);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	ScrollView = new QScrollArea(this);
-// 	scrollView->setResizePolicy(QScrollArea::AutoOneFit);
 
-	mainGrid->addWidget(ScrollView, 0, 0);
+	layout->addWidget(ScrollView);
 	ScrollView->move(0, 0);
 
 	InnerFrame = new QFrame(this);
@@ -99,21 +97,19 @@ void FileTransferWindow::createGui()
  	ScrollView->setWidget(InnerFrame);
 	ScrollView->setWidgetResizable(true);
 
-	QWidget *buttonBox = new QWidget;
-	QHBoxLayout *buttonBox_layout = new QHBoxLayout;
-	buttonBox_layout->setContentsMargins(2, 2, 2, 2);
-	buttonBox_layout->setSpacing(2);
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *cleanButton = new QPushButton(tr("Clear"), this);
-	connect(cleanButton, SIGNAL(clicked()), this, SLOT(clearClicked()));
+	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"), buttons);
+	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clearClicked()));
 
-	QPushButton *hideButton = new QPushButton(tr("Hide"), this);
-	connect(hideButton, SIGNAL(clicked()), this, SLOT(close()));
-	buttonBox_layout->addWidget(cleanButton);
-	buttonBox_layout->addWidget(hideButton);
-	buttonBox->setLayout(buttonBox_layout);
-	mainGrid->addWidget(buttonBox, 1, 0, Qt::AlignRight);
+	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"), this);
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
+	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
+
+	layout->addSpacing(16);
+	layout->addWidget(buttons);
 }
 
 void FileTransferWindow::keyPressEvent(QKeyEvent *e)
