@@ -136,21 +136,6 @@ void GaduSocketNotifiers::watchFor(int socket)
 	createSocketNotifiers();
 }
 
-void GaduSocketNotifiers::lock()
-{
-	kdebugf();
-
-	Lock = true;
-}
-
-void GaduSocketNotifiers::unlock()
-{
-	kdebugf();
-
-	Lock = false;
-	enable();
-}
-
 void GaduSocketNotifiers::socketTimeout()
 {
 	kdebugf();

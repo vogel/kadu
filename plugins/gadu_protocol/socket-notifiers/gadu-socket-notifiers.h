@@ -52,9 +52,6 @@ protected:
 	void disable();
 	void enable();
 
-	void lock();
-	void unlock();
-
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;
 	virtual void socketEvent() = 0;
