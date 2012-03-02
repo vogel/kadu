@@ -132,7 +132,11 @@ void PluginListWidget::applyChanges()
                 }
         }
 
+        pluginModel->loadPluginData();
+
         if (changeOccured)
                 ConfigurationManager::instance()->flush();
+
+        emit changed(false);
 }
 

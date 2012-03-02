@@ -50,6 +50,9 @@
 
 void PluginModel::loadPluginData()
 {
+	beginRemoveRows(QModelIndex(), 0, Plugins.size() - 1);
+	Plugins.clear();
+	endRemoveRows();
         QList<PluginEntry> listToAdd;
 
         foreach (Plugin *p, PluginsManager::instance()->plugins())
@@ -68,11 +71,6 @@ void PluginModel::loadPluginData()
         endInsertRows();
 
         pluginSelector_d->proxyModel->sort(0);
-
-        connect(Manager, SIGNAL(pluginAdded(const Plugin *)),
-                this, SLOT(pluginAdded(const Plugin *)), Qt::DirectConnection);
-        connect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
-                this, SLOT(pluginRemoved(const Plugin *)), Qt::DirectConnection);
 }
 
 PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)
@@ -84,47 +82,7 @@ PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)
 
 PluginModel::~PluginModel()
 {
-        disconnect(Manager, SIGNAL(pluginAdded(const Plugin *)),
-                   this, SLOT(pluginAdded(const Plugin *)));
-        disconnect(Manager, SIGNAL(pluginRemoved(const Plugin *)),
-                   this, SLOT(pluginRemoved(const Plugin *)));
 }
-
-void PluginModel::pluginAdded(const Plugin *plugin)
-{
-        Q_UNUSED(plugin)
-
-        beginInsertRows(QModelIndex(), Plugins.size(), Plugins.size());
-
-        PluginEntry pe;
-        pe.category = plugin->info() && !plugin->info()->type().isEmpty() ? plugin->info()->type() : "other";
-        pe.name = plugin->name();
-        pe.description = plugin->info() ? plugin->info()->description() : "";
-        pe.checked = plugin->isActive();
-        pe.isCheckable = true;
-
-        Plugins.append(pe);
-
-        endInsertRows();
-}
-
-void PluginModel::pluginRemoved(const Plugin *plugin)
-{
-        int index = 0;
-        foreach (PluginEntry pe, Plugins)
-        {
-                if (pe.name == plugin->name())
-                {
-                        index = Plugins.indexOf(pe);
-                        break;
-                }
-        }
-
-        beginRemoveRows(QModelIndex(), index, index);
-        Plugins.removeAt(index);
-        endRemoveRows();
-}
-
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const
 {

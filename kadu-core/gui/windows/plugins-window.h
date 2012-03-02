@@ -65,7 +65,8 @@ class PluginsWindow : public QWidget, DesktopAwareObject
 	virtual ~PluginsWindow();
 
 private slots:
-	void apply();
+	void applyChanges();
+	void applyAndClose();
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

@@ -80,10 +80,6 @@ private:
         PluginListWidget *pluginSelector_d;
         PluginsManager *Manager;
         QList<PluginEntry> Plugins;
-
-private slots:
-	void pluginAdded(const Plugin *plugin);
-	void pluginRemoved(const Plugin *plugin);
 };
 
 

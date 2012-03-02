@@ -91,10 +91,16 @@ PluginsWindow::PluginsWindow()
 	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 
+	QPushButton *applyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+	applyButton->setEnabled(false);
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	connect(PluginsList, SIGNAL(changed(bool)), applyButton, SLOT(setEnabled(bool)));
+
 	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Close"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(applyAndClose()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(applyChanges()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
@@ -124,9 +130,14 @@ void PluginsWindow::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-void PluginsWindow::apply()
+void PluginsWindow::applyChanges()
 {
 	PluginsList->applyChanges();
+}
+
+void PluginsWindow::applyAndClose()
+{
+	applyChanges();
 	close();
 }
 
