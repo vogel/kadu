@@ -75,7 +75,9 @@ void GaduRosterService::prepareRoster()
 
 	if (sendList.isEmpty())
 	{
+		static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 		gg_notify_ex(GaduSession, 0, 0, 0);
+		static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		setState(StateInitialized);
@@ -103,7 +105,9 @@ void GaduRosterService::prepareRoster()
 		++i;
 	}
 
+	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	gg_notify_ex(static_cast<GaduProtocol *>(protocol())->gaduSession(), uins.data(), types.data(), count);
+	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	setState(StateInitialized);
@@ -135,9 +139,11 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 	details->setGaduFlags(newFlags);
 
+	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	updateFlag(uin, newFlags, oldFlags, 0x01);
 	updateFlag(uin, newFlags, oldFlags, 0x02);
 	updateFlag(uin, newFlags, oldFlags, 0x04);
+	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 }
 
 bool GaduRosterService::addContact(const Contact &contact)

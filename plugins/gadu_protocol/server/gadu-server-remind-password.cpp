@@ -22,8 +22,6 @@
 
 #include "misc/misc.h"
 
-#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
-
 #include "gadu-server-remind-password.h"
 
 GaduServerRemindPassword::GaduServerRemindPassword(UinType uin, const QString &mail, const QString &tokenId, const QString &tokenValue) :

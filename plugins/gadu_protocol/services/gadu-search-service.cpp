@@ -25,7 +25,6 @@
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
-#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
@@ -83,7 +82,9 @@ void GaduSearchService::searchNext()
 
 	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(From).toUtf8().constData());
 
+	Protocol->disableSocketNotifiers();
 	SearchSeq = gg_pubdir50(Protocol->gaduSession(), req);
+	Protocol->enableSocketNotifiers();
 	gg_pubdir50_free(req);
 }
 

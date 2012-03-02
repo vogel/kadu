@@ -70,6 +70,7 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!GaduSession)
 		return;
 
+	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	switch (state)
 	{
 		case StateComposing:
@@ -82,4 +83,5 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 		default:
 			break;
 	}
+	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 }
