@@ -35,7 +35,6 @@
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
-// #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget.h"
 #include "gui/windows/message-dialog.h"
@@ -58,9 +57,13 @@ void PluginModel::loadPluginData()
         foreach (Plugin *p, PluginsManager::instance()->plugins())
         {
                 PluginEntry pe;
-                pe.category = p->info() && !p->info()->type().isEmpty() ? p->info()->type() : "other";
+                pe.category = p->info() && !p->info()->category().isEmpty()
+			? p->info()->category()
+			: "Other";
                 pe.name = p->name();
-                pe.description = p->info() ? p->info()->description() : "";
+                pe.description = p->info()
+			? p->info()->description()
+			: "";
                 pe.checked = p->isActive();
                 pe.isCheckable = true;
                 listToAdd.append(pe);

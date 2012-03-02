@@ -49,6 +49,7 @@
 class PluginInfo
 {
 	QString Type;
+	QString Category;
 	QStringList Dependencies;
 	QStringList Conflicts;
 	QStringList Provides;
@@ -169,6 +170,7 @@ public:
 	 */
 	bool loadByDefault() const { return LoadByDefault; }
 
+	const QString & category() const { return Category; }
 };
 
 /**

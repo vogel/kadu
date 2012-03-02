@@ -7,3 +7,4 @@ Provides=sound_driver
 Conflicts=sound_driver
 Version=core
 Plugin=true
+Category=Sound

@@ -6,4 +6,5 @@ LoadByDefault=true
 Version=core
 Dependencies=
 Type=protocol
+Category=Protocols
 Plugin=true
