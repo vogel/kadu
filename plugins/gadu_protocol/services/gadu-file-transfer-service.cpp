@@ -30,7 +30,6 @@
 #include "dcc/dcc-socket-notifiers.h"
 #include "file-transfer/gadu-file-transfer-handler.h"
 #include "helpers/gadu-protocol-helper.h"
-#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
@@ -119,6 +118,7 @@ void GaduFileTransferService::handleEventDcc7New(struct gg_event *e)
 
 	if (!connectionAcceptable(dcc->uin, dcc->peer_uin) || GG_DCC7_TYPE_FILE != dcc->dcc_type)
 	{
+		// No need to reenable socket notifiers as we close connection here.
 		gg_dcc7_reject(dcc, 0);
 		gg_dcc7_free(dcc);
 		return;

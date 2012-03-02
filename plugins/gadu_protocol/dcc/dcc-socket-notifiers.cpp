@@ -27,7 +27,6 @@
 #include "debug.h"
 
 #include "file-transfer/gadu-file-transfer-handler.h"
-#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "dcc-socket-notifiers.h"
 
@@ -273,10 +272,13 @@ bool DccSocketNotifiers::acceptFileTransfer(const QString &fileName, bool resume
 
 	Socket7->file_fd = dup(file.handle());
 	Socket7->offset = file.size();
+	disable();
 	gg_dcc7_accept(Socket7, Socket7->offset);
 	if (FileTransferHandler)
 		FileTransferHandler->transfer().setTransferStatus(StatusTransfer);
 	watchFor(); // descriptor may be changed
+	// but if not, we have to enable notifiers anyway
+	enable();
 
 	return true;
 }
@@ -285,5 +287,7 @@ void DccSocketNotifiers::rejectFileTransfer()
 {
 	kdebugf();
 
+	disable();
 	gg_dcc7_reject(Socket7, GG_DCC7_REJECT_USER);
+	enable();
 }

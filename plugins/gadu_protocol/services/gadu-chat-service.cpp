@@ -100,6 +100,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 
 	uinsCount = contacts.count();
 
+	static_cast<GaduProtocol *>(Protocol)->disableSocketNotifiers();
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
@@ -127,6 +128,7 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 			messageId = gg_send_message(
 					Protocol->gaduSession(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
 	}
+	static_cast<GaduProtocol *>(Protocol)->enableSocketNotifiers();
 
 	if (-1 == messageId)
 		return false;

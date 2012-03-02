@@ -22,8 +22,6 @@
 
 #include "misc/misc.h"
 
-#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
-
 #include "gadu-server-change-password.h"
 
 GaduServerChangePassword::GaduServerChangePassword(UinType uin,	const QString &mail, const QString &password,

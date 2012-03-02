@@ -64,8 +64,12 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 		return;
 
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
-	if (gaduSession)
-		gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
+	if (!gaduSession)
+		return;
+
+	gaduProtocolHandler->disableSocketNotifiers();
+	gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
+	gaduProtocolHandler->enableSocketNotifiers();
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)

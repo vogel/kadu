@@ -22,8 +22,6 @@
 
 #include "misc/misc.h"
 
-#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
-
 #include "gadu-server-unregister-account.h"
 
 GaduServerUnregisterAccount::GaduServerUnregisterAccount(UinType uin, const QString &password, const QString &tokenId, const QString &tokenValue) :

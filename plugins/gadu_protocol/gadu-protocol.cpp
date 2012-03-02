@@ -66,7 +66,6 @@
 #include "server/gadu-contact-list-handler.h"
 #include "server/gadu-servers-manager.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
@@ -143,10 +142,12 @@ void GaduProtocol::sendStatusToServer()
 
 	setStatusFlags();
 
+	disableSocketNotifiers();
 	if (hasDescription)
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8().constData());
 	else
 		gg_change_status(GaduSession, type | friends);
+	enableSocketNotifiers();
 
 	account().accountContact().setCurrentStatus(status());
 }
@@ -170,7 +171,9 @@ void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
 
+	disableSocketNotifiers();
 	gg_ping(GaduSession);
+	enableSocketNotifiers();
 	CurrentChatImageService->resetSendImageRequests();
 }
 
@@ -511,6 +514,16 @@ void GaduProtocol::disconnectedFromServer()
 QString GaduProtocol::statusPixmapPath()
 {
 	return QLatin1String("gadu-gadu");
+}
+
+void GaduProtocol::disableSocketNotifiers()
+{
+	SocketNotifiers->disable();
+}
+
+void GaduProtocol::enableSocketNotifiers()
+{
+	SocketNotifiers->enable();
 }
 
 void GaduProtocol::configurationUpdated()

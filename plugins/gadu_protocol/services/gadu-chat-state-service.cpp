@@ -78,7 +78,9 @@ void GaduChatStateService::composingStarted(const Chat &chat)
 	if (!Protocol->gaduSession())
 		return;
 
+	static_cast<GaduProtocol *>(Protocol)->disableSocketNotifiers();
 	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0001);
+	static_cast<GaduProtocol *>(Protocol)->enableSocketNotifiers();
 }
 
 void GaduChatStateService::composingStopped(const Chat &chat)
@@ -93,7 +95,9 @@ void GaduChatStateService::composingStopped(const Chat &chat)
 	if (!Protocol->gaduSession())
 		return;
 
+	static_cast<GaduProtocol *>(Protocol)->disableSocketNotifiers();
 	gg_typing_notification(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), 0x0000);
+	static_cast<GaduProtocol *>(Protocol)->enableSocketNotifiers();
 }
 
 void GaduChatStateService::chatWidgetClosed(const Chat &chat)

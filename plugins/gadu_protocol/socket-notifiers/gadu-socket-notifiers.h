@@ -49,8 +49,6 @@ private slots:
 
 protected:
 	void watchFor(int socket);
-	void disable();
-	void enable();
 
 	void lock();
 	void unlock();
@@ -65,6 +63,9 @@ protected:
 public:
 	GaduSocketNotifiers(QObject *parent = 0);
 	virtual ~GaduSocketNotifiers();
+
+	void disable();
+	void enable();
 
 };
 
