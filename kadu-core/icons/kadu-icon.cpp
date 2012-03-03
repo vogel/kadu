@@ -86,6 +86,7 @@ KaduIcon::KaduIcon(const KaduIcon &copyMe) :
 		Path(copyMe.Path), IconSize(copyMe.IconSize),
 		FullPath(copyMe.FullPath), Icon(copyMe.Icon), Watcher(new KaduIconThemeChangeWatcher(this))
 {
+	setThemePath(copyMe.ThemePath);
 }
 
 KaduIcon::~KaduIcon()
