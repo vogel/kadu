@@ -28,7 +28,7 @@
 ProgressIcon::ProgressIcon(QWidget *parent) :
 		QLabel(parent), State(StateFinished)
 {
-	ProgressMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath(),
+	ProgressMovie = new QMovie(KaduIcon("kadu_icons/please-wait", "16x16").fullPath(),
 			QByteArray(), this);
 
 	setState(StateInProgress);

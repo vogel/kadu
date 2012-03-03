@@ -134,7 +134,7 @@ static QString getSeparator(const QObject * const object)
 static QString loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath())
+			.arg(KaduIcon("kadu_icons/please-wait", "16x16").fullPath())
 			.arg(imageId);
 }
 

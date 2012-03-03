@@ -40,10 +40,10 @@ static QString getAvatarPath(Talkable talkable)
 static QString getStatusIconPath(Talkable talkable)
 {
 	if (talkable.isBlocked())
-		return KaduIcon("kadu_icons", "16x16", "blocked").webKitPath();
+		return KaduIcon("kadu_icons/blocked", "16x16").webKitPath();
 
 	if (talkable.isBlocking())
-		return KaduIcon("kadu_icons", "16x16", "blocking").webKitPath();
+		return KaduIcon("kadu_icons/blocking", "16x16").webKitPath();
 
 	const Status &status = talkable.currentStatus();
 

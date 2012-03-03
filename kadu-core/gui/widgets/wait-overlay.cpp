@@ -30,7 +30,7 @@ WaitOverlay::WaitOverlay(QWidget *parent) :
 		QLabel(parent)
 {
 	setAlignment(Qt::AlignCenter);
-	setMovie(new QMovie(KaduIcon("kadu_icons/64x64/please-wait.gif").fullPath(), QByteArray(), this));
+	setMovie(new QMovie(KaduIcon("kadu_icons/please-wait", "64x64").fullPath(), QByteArray(), this));
 	setStyleSheet("background-color: rgba(127, 127, 127, 127)");
 
 	hide();

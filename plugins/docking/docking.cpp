@@ -175,7 +175,7 @@ void DockingManager::changeIcon()
 	{
 		case AnimatedEnvelope:
 			if (CurrentDocker)
-				CurrentDocker->changeTrayMovie(KaduIcon("protocols/common/16x16/message_anim.gif").fullPath());
+				CurrentDocker->changeTrayMovie(KaduIcon("protocols/common/message_anim", "16x16").fullPath());
 			break;
 		case StaticEnvelope:
 			if (CurrentDocker)

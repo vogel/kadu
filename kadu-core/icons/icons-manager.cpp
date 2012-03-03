@@ -80,6 +80,10 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
 
+	fileInfo.setFile(ThemeManager->currentTheme().path() + path + '/' + size + '/' + name + ".gif" );
+	if (fileInfo.isFile() && fileInfo.isReadable())
+		return fileInfo.canonicalFilePath();
+
 	fileInfo.setFile(ThemeManager->currentTheme().path() + path + "/svg/" + name + ".svg" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
 		return fileInfo.canonicalFilePath();
