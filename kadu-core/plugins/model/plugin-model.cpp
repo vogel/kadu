@@ -49,9 +49,8 @@
 
 void PluginModel::loadPluginData()
 {
-        beginRemoveRows(QModelIndex(), 0, Plugins.size() - 1);
+        beginResetModel();
         Plugins.clear();
-        endRemoveRows();
         QList<PluginEntry> listToAdd;
 
         foreach (Plugin *plugin, PluginsManager::instance()->plugins())
@@ -75,9 +74,8 @@ void PluginModel::loadPluginData()
                 listToAdd.append(pluginEntry);
         }
 
-        beginInsertRows(QModelIndex(), 0, listToAdd.size() - 1);
         Plugins << listToAdd;
-        endInsertRows();
+        endResetModel();
 
         pluginSelector_d->proxyModel->sort(0);
 }
