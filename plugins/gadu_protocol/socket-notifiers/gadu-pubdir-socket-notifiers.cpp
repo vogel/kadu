@@ -30,7 +30,7 @@
 void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
 {
 	H = h;
-	GaduSocketNotifiers::watchFor(H ? H->fd : 0);
+	GaduSocketNotifiers::watchFor(H ? H->fd : -1);
 }
 
 bool GaduPubdirSocketNotifiers::checkRead()

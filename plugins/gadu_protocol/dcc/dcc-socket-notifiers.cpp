@@ -54,10 +54,7 @@ void DccSocketNotifiers::start()
 
 void DccSocketNotifiers::watchFor()
 {
-	if (-1 != Socket7->fd)
-		GaduSocketNotifiers::watchFor(Socket7->fd);
-	else
-		GaduSocketNotifiers::watchFor(0);
+	GaduSocketNotifiers::watchFor(Socket7->fd);
 }
 
 bool DccSocketNotifiers::checkRead()
@@ -215,7 +212,7 @@ void DccSocketNotifiers::connectionTimeout()
 
 void DccSocketNotifiers::finished(bool ok)
 {
-	GaduSocketNotifiers::watchFor(0);
+	GaduSocketNotifiers::watchFor(-1);
 	deleteLater();
 	emit done(ok);
 

@@ -52,7 +52,7 @@ GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduPr
 void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
 {
 	Sess = sess;
-	GaduSocketNotifiers::watchFor(Sess ? Sess->fd : 0);
+	GaduSocketNotifiers::watchFor(Sess ? Sess->fd : -1);
 }
 
 bool GaduProtocolSocketNotifiers::checkRead()
