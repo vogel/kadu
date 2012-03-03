@@ -37,8 +37,6 @@ class GaduSocketNotifiers : public QObject
 	QSocketNotifier *WriteNotifier;
 	QTimer *TimeoutTimer;
 
-	bool Lock;
-
 	void createSocketNotifiers();
 	void deleteSocketNotifiers();
 
