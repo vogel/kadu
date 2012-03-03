@@ -85,7 +85,7 @@ public:
 		@param widget1 widget dodawany z lewej strony (zazwyczaj etykieta)
 		@param widget2 widget dodawany z prawej strony
 	 **/
-	void addWidgets(QWidget *widget1, QWidget *widget2);
+	void addWidgets(QWidget *widget1, QWidget *widget2, Qt::Alignment alignment = Qt::AlignRight);
 
 	void insertWidget(int pos, QWidget *widget, bool fullSpace = false);
 

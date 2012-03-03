@@ -62,12 +62,12 @@ void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 		GridLayout->addWidget(widget, numRows, 1);
 }
 
-void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
+void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2, Qt::Alignment alignment)
 {
 	int numRows = GridLayout->rowCount();
 
 	if (widget1)
-		GridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);
+		GridLayout->addWidget(widget1, numRows, 0, alignment);
 
 	if (widget2)
 		GridLayout->addWidget(widget2, numRows, 1);

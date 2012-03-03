@@ -380,7 +380,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 //
 	groupBox->addWidgets(editorLabel, editor);
 	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Style variant") + ':'), VariantListCombo);
-	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ':'), EnginePreview);
+	groupBox->addWidgets(new QLabel(qApp->translate("@default", "Preview") + ':'), EnginePreview, Qt::AlignRight | Qt::AlignTop);
 
 	TurnOnTransparency = static_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
 	TurnOnTransparency->setEnabled(CompositingEnabled);

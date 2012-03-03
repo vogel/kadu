@@ -50,7 +50,7 @@ void ConfigPreview::createWidgets()
 	kdebugf();
 
 	label = new QLabel(qApp->translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 }
 
 void ConfigPreview::setVisible(bool visible)
