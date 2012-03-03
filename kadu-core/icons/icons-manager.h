@@ -66,13 +66,8 @@ public:
 
 	IconThemeManager * themeManager() const;
 
-	QString iconPathAllowEmpty(const QString &path, const QString &size, const QString &name) const;
 	QString iconPathAllowEmpty(const QString &path, const QString &size) const;
-	QString iconPathAllowEmpty(const QString &path) const;
-
-	QString iconPath(const QString &path, const QString &size, const QString &name) const;
 	QString iconPath(const QString &path, const QString &size) const;
-	QString iconPath(const QString &path) const;
 
 	const QIcon & iconByPath(const QString &path, bool allowEmpty = false);
 
