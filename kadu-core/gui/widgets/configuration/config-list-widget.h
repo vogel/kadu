@@ -24,7 +24,7 @@
 
 #include <QtGui/QListWidget>
 
-#include "gui/widgets/configuration/config-widget.h"
+#include "gui/widgets/configuration/config-widget-value.h"
 
 class QLabel;
 class QDomElement;
@@ -40,7 +40,7 @@ class ConfigurationWindowDataManager;
 	@arg value - wartość zapisana do pliku konfiguracyjnego
 	@arg caption - wartość wyświetlana
  **/
-class KADUAPI ConfigListWidget : public QListWidget, public ConfigWidget
+class KADUAPI ConfigListWidget : public QListWidget, public ConfigWidgetValue
 {
 	Q_OBJECT
 
@@ -53,7 +53,7 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
+	ConfigListWidget(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions,
 		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
@@ -62,10 +62,11 @@ public:
 	virtual void setVisible(bool visible);
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+	void setCurrentItem(const QString &currentItem);
 	const QString & currentItemValue() { return itemValues.at(currentRow()); }
 
-	virtual void loadConfiguration() {};
-	virtual void saveConfiguration() {};
+	virtual void loadConfiguration();
+	virtual void saveConfiguration();
 
 	virtual bool fromDomElement(QDomElement domElement);
 

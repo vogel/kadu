@@ -29,9 +29,9 @@
 
 #include "debug.h"
 
-ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
+ConfigListWidget::ConfigListWidget(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+	: QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
 	Q_UNUSED(itemValues)
 	Q_UNUSED(itemCaptions)
@@ -40,7 +40,7 @@ ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &
 }
 
 ConfigListWidget::ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager), label(0)
+	: QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
@@ -59,6 +59,11 @@ void ConfigListWidget::setItems(const QStringList &itemValues, const QStringList
 	addItems(itemCaptions);
 }
 
+void ConfigListWidget::setCurrentItem(const QString &currentItem)
+{
+	setCurrentRow(itemValues.indexOf(currentItem));
+}
+
 void ConfigListWidget::createWidgets()
 {
 	kdebugf();
@@ -74,6 +79,24 @@ void ConfigListWidget::createWidgets()
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 	}
+}
+
+void ConfigListWidget::loadConfiguration()
+{
+	if (!dataManager)
+		return;
+
+	if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
+		setCurrentItem(dataManager->readEntry(section, ConfigWidgetValue::item).toString());
+}
+
+void ConfigListWidget::saveConfiguration()
+{
+	if (!dataManager)
+		return;
+
+	if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
+		dataManager->writeEntry(section, ConfigWidgetValue::item, currentItemValue());
 }
 
 void ConfigListWidget::setVisible(bool visible)
@@ -102,5 +125,5 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 		}
 	}
 
-	return ConfigWidget::fromDomElement(domElement);
+	return ConfigWidgetValue::fromDomElement(domElement);
 }
