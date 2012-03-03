@@ -356,14 +356,14 @@ void GaduProtocol::setupLoginParams()
 		return;
 
 	GaduLoginParams.uin = account().id().toULong();
-	GaduLoginParams.password = strdup(account().password().toAscii().constData());
+	GaduLoginParams.password = qstrdup(account().password().toAscii().constData());
 
 	GaduLoginParams.async = 1;
 
 	GaduLoginParams.status = (GaduProtocolHelper::gaduStatusFromStatus(loginStatus()) | (account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0));
 
 	if (!loginStatus().description().isEmpty())
-		GaduLoginParams.status_descr = strdup(loginStatus().description().toUtf8().constData());
+		GaduLoginParams.status_descr = qstrdup(loginStatus().description().toUtf8().constData());
 
 	GaduLoginParams.tls = gaduAccountDetails->tlsEncryption() ? GG_SSL_ENABLED : GG_SSL_DISABLED;
 
@@ -383,7 +383,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.external_port = gaduAccountDetails->externalPort();
 
 	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	GaduLoginParams.client_version = strdup(Core::nameWithVersion().toUtf8().constData());
+	GaduLoginParams.client_version = qstrdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
 			GG_FEATURE_UNKNOWN_4 | // GG_FEATURE_STATUS80
 			GG_FEATURE_DND_FFC |
@@ -407,7 +407,7 @@ void GaduProtocol::setupLoginParams()
 
 void GaduProtocol::cleanUpLoginParams()
 {
-	memset(GaduLoginParams.password, 0, strlen(GaduLoginParams.password));
+	memset(GaduLoginParams.password, 0, qstrlen(GaduLoginParams.password));
 	free(GaduLoginParams.password);
 	GaduLoginParams.password = 0;
 

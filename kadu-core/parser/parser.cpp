@@ -629,7 +629,7 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
 						if (filePath.startsWith(QLatin1String("file://")))
-							filePath = filePath.mid(7 /*strlen("file://")*/);
+							filePath = filePath.mid(qstrlen("file://"));
 
 						bool checkFileExists = (pe2.type() == PT_CHECK_FILE_EXISTS);
 						if (QFile::exists(filePath) == checkFileExists)

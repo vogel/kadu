@@ -52,7 +52,7 @@ void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 	if (!gg_proxy_enabled)
 		return;
 
-	gg_proxy_host = strdup(unicode2latin(networkProxy.address()).constData());
+	gg_proxy_host = qstrdup(unicode2latin(networkProxy.address()).constData());
 	gg_proxy_port = networkProxy.port();
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
@@ -60,7 +60,7 @@ void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 
 	if (!networkProxy.user().isEmpty())
 	{
-		gg_proxy_username = strdup(unicode2latin(networkProxy.user()).constData());
-		gg_proxy_password = strdup(unicode2latin(networkProxy.password()).constData());
+		gg_proxy_username = qstrdup(unicode2latin(networkProxy.user()).constData());
+		gg_proxy_password = qstrdup(unicode2latin(networkProxy.password()).constData());
 	}
 }
