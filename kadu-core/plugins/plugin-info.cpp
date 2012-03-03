@@ -29,6 +29,10 @@ PluginInfo::PluginInfo(const QString &fileName) :
 
 	const QString lang = config_file.readEntry("General", "Language");
 
+	DisplayName = file.readEntry("Module", "DisplayName[" + lang + ']');
+	if (DisplayName.isEmpty())
+		DisplayName = file.readEntry("Module", "DisplayName");
+
 	Type = file.readEntry("Module", "Type");
 	Category = file.readEntry("Module", "Category");
 	Description = file.readEntry("Module", "Description[" + lang + ']');

@@ -35,7 +35,6 @@
 #include "configuration/configuration-manager.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
-// #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget.h"
 #include "gui/windows/message-dialog.h"
@@ -131,8 +130,12 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         painter->setFont(font);
         painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignTop, fmTitle.elidedText(index.model()->data(index, Qt::DisplayRole).toString(), Qt::ElideRight, contentsRect.width()));
         painter->restore();
-
         painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignBottom, option.fontMetrics.elidedText(index.model()->data(index, PluginModel::CommentRole).toString(), Qt::ElideRight, contentsRect.width()));
+
+        QFont subfont = subtitleFont(option.font);
+        QFontMetrics fmSubtitle(subfont);
+        painter->setFont(subfont);
+        painter->drawText(contentsRect, Qt::AlignLeft | Qt::AlignVCenter, fmSubtitle.elidedText(index.model()->data(index, PluginModel::NameRole).toString(), Qt::ElideRight, contentsRect.width()));
 
         painter->restore();
         painter->restore();
@@ -160,8 +163,8 @@ QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 
         return QSize(qMax(fmTitle.width(index.model()->data(index, Qt::DisplayRole).toString()),
                           option.fontMetrics.width(index.model()->data(index, PluginModel::CommentRole).toString())) +
-                     /*(pluginSelector_d->showIcons ? KIconLoader::SizeMedium : 0)*/32 + MARGIN * i + pushButton->sizeHint().width() * j,
-                     qMax(/*KIconLoader::SizeMedium*/32 + MARGIN * 2, fmTitle.height() + option.fontMetrics.height() + MARGIN * 2));
+			  + MARGIN * i + pushButton->sizeHint().width() * j,
+                     qMax(MARGIN * 2, fmTitle.height() * 2 + option.fontMetrics.height() + MARGIN * 2));
 }
 
 QList<QWidget*> PluginListWidgetItemDelegate::createItemWidgets() const
@@ -274,6 +277,15 @@ QFont PluginListWidgetItemDelegate::titleFont(const QFont &baseFont) const
 {
         QFont retFont(baseFont);
         retFont.setBold(true);
+
+        return retFont;
+}
+
+QFont PluginListWidgetItemDelegate::subtitleFont(const QFont &baseFont) const
+{
+        QFont retFont(baseFont);
+        retFont.setItalic(true);
+	retFont.setPointSize(baseFont.pointSize()-2);
 
         return retFont;
 }

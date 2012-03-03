@@ -49,24 +49,30 @@
 
 void PluginModel::loadPluginData()
 {
-	beginRemoveRows(QModelIndex(), 0, Plugins.size() - 1);
-	Plugins.clear();
-	endRemoveRows();
+        beginRemoveRows(QModelIndex(), 0, Plugins.size() - 1);
+        Plugins.clear();
+        endRemoveRows();
         QList<PluginEntry> listToAdd;
 
-        foreach (Plugin *p, PluginsManager::instance()->plugins())
+        foreach (Plugin *plugin, PluginsManager::instance()->plugins())
         {
-                PluginEntry pe;
-                pe.category = p->info() && !p->info()->category().isEmpty()
-			? p->info()->category()
-			: "Other";
-                pe.name = p->name();
-                pe.description = p->info()
-			? p->info()->description()
-			: "";
-                pe.checked = p->isActive();
-                pe.isCheckable = true;
-                listToAdd.append(pe);
+                PluginEntry pluginEntry;
+                PluginInfo *pluginInfo = plugin->info();
+
+                pluginEntry.category = pluginInfo && !pluginInfo->category().isEmpty()
+                        ? pluginInfo->category()
+                        : "Other";
+                pluginEntry.name = pluginInfo && !pluginInfo->displayName().isEmpty()
+                        ? pluginInfo->displayName()
+                        : plugin->name();
+                pluginEntry.description = pluginInfo
+                        ? pluginInfo->description()
+                        : "";
+                pluginEntry.pluginName = plugin->name();
+                pluginEntry.checked = plugin->isActive();
+                pluginEntry.isCheckable = true;
+
+                listToAdd.append(pluginEntry);
         }
 
         beginInsertRows(QModelIndex(), 0, listToAdd.size() - 1);
@@ -117,7 +123,7 @@ QVariant PluginModel::data(const QModelIndex &index, int role) const
                         return QVariant::fromValue(pluginEntry);
 
                 case NameRole:
-                        return pluginEntry->name;
+                        return pluginEntry->pluginName;
 
                 case CommentRole:
                         return pluginEntry->description;

@@ -48,8 +48,9 @@
  */
 class PluginInfo
 {
-	QString Type;
+	QString DisplayName;
 	QString Category;
+	QString Type;
 	QStringList Dependencies;
 	QStringList Conflicts;
 	QStringList Provides;
@@ -171,6 +172,8 @@ public:
 	bool loadByDefault() const { return LoadByDefault; }
 
 	const QString & category() const { return Category; }
+
+	const QString & displayName() const { return DisplayName; }
 };
 
 /**

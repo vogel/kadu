@@ -36,11 +36,12 @@ class PluginListWidgetItemDelegate : public PluginListWidgetDelegate
 {
         Q_OBJECT
 
-        QFont titleFont(const QFont &baseFont) const;
         QCheckBox *checkBox;
         QPushButton *pushButton;
         PluginListWidget *pluginSelector_d;
 
+        QFont titleFont(const QFont &baseFont) const;
+        QFont subtitleFont(const QFont &baseFont) const;
 public:
         PluginListWidgetItemDelegate(PluginListWidget *pluginSelector_d, QObject *parent = 0);
         ~PluginListWidgetItemDelegate();

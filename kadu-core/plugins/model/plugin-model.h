@@ -54,7 +54,7 @@ public:
         PluginModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
         ~PluginModel();
 
-	enum ExtraRoles
+        enum ExtraRoles
         {
                 PluginEntryRole   = 0x09386561,
                 ServicesCountRole = 0x1422E2AA,
@@ -89,6 +89,7 @@ class PluginEntry
 public:
         QString category;
         QString name;
+        QString pluginName;
         QString description;
         bool checked;
         bool isCheckable;
