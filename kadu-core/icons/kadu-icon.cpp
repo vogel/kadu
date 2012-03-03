@@ -183,7 +183,7 @@ const QString & KaduIcon::fullPath() const
 {
 	// defer getting it until we need it for the first time
 	if (FullPath.isEmpty())
-		FullPath = IconsManager::instance()->iconPath(path(), IconSize);
+		FullPath = IconsManager::instance()->iconPath(*this);
 
 	return FullPath;
 }

@@ -37,6 +37,7 @@
 #include "exports.h"
 
 class IconThemeManager;
+class KaduIcon;
 
 class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 {
@@ -62,14 +63,18 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	enum AllowEmpty
+	{
+		EmptyNotAllowed,
+		EmptyAllowed
+	};
+
 	static IconsManager * instance();
 
 	IconThemeManager * themeManager() const;
 
-	QString iconPathAllowEmpty(const QString &path, const QString &size) const;
-	QString iconPath(const QString &path, const QString &size) const;
-
-	const QIcon & iconByPath(const QString &path, bool allowEmpty = false);
+	QString iconPath(KaduIcon icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
+	const QIcon & iconByPath(const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
 
 	QSize getIconsSize();
 

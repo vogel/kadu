@@ -32,6 +32,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
+#include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "themes/icon-theme-manager.h"
@@ -72,8 +73,11 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
-QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &size) const
+QString IconsManager::iconPath(KaduIcon icon, AllowEmpty allowEmpty) const
 {
+	QString path = icon.path();
+	QString size = icon.size();
+
 	QString realPath;
 	QString name;
 
@@ -111,18 +115,15 @@ QString IconsManager::iconPathAllowEmpty(const QString &path, const QString &siz
 			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
 			protocolpath = localProtocolPath;
-		return iconPathAllowEmpty(QString("protocols/%1/%2").arg(protocolpath).arg(name), size);
+
+		icon.setPath(QString("protocols/%1/%2").arg(protocolpath).arg(name));
+		return iconPath(icon, allowEmpty);
 	}
 
-	return QString();
-}
-
-QString IconsManager::iconPath(const QString &path, const QString &size) const
-{
-	QString result = iconPathAllowEmpty(path, size);
-	if (!result.isEmpty())
-		return result;
-	return iconPathAllowEmpty("kadu_icons/0", size);
+	if (EmptyAllowed == allowEmpty)
+		return QString();
+	else
+		return iconPath(KaduIcon("kadu_icons/0", size), EmptyAllowed);
 }
 
 QIcon IconsManager::buildPngIcon(const QString &path)
@@ -139,7 +140,7 @@ QIcon IconsManager::buildPngIcon(const QString &path)
 	QIcon icon;
 	for (int i = 0; i < sizes_count; i++)
 	{
-		QString fullPath = iconPathAllowEmpty(path, sizes[i]);
+		QString fullPath = iconPath(KaduIcon(path, sizes[i]), EmptyAllowed);
 		if (!fullPath.isEmpty())
 			icon.addFile(fullPath);
 	}
@@ -176,7 +177,7 @@ QIcon IconsManager::buildSvgIcon(const QString& path)
 	return icon;
 }
 
-const QIcon & IconsManager::iconByPath(const QString &path, bool allowEmpty)
+const QIcon & IconsManager::iconByPath(const QString &path, AllowEmpty allowEmpty)
 {
 	if (!IconCache.contains(path))
 	{
@@ -207,10 +208,10 @@ const QIcon & IconsManager::iconByPath(const QString &path, bool allowEmpty)
 				}
 			}
 
-			if (icon.isNull() && !allowEmpty)
+			if (icon.isNull() && EmptyNotAllowed == allowEmpty)
 				icon = buildSvgIcon("kadu_icons/0");
 
-			if (icon.isNull() && !allowEmpty)
+			if (icon.isNull() && EmptyNotAllowed == allowEmpty)
 				icon = buildPngIcon("kadu_icons/0");
 
 		}
