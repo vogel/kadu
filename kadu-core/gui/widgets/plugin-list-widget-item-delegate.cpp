@@ -255,16 +255,21 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         info += tr("Plugin name: %1\n").arg(model->data(index, PluginModel::NameRole).toString());
 
         PluginEntry *pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
-        PluginInfo *pluginInfo = PluginsManager::instance()->plugins().value(pluginEntry->name)->info();
+		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->name);
 
-        if (pluginInfo)
-        {
-                info += tr("Author: %1\n").arg(pluginInfo->author());
-                info += tr("Version: %1\n").arg(pluginInfo->version());
-                info += tr("Description: %1\n").arg(pluginInfo->description());
-                info += tr("Dependencies: %1\n").arg(pluginInfo->dependencies().join(", "));
-                info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
-        }
+		if (plugin)
+		{
+        	PluginInfo *pluginInfo = plugin->info();
+
+        	if (pluginInfo)
+        	{
+                	info += tr("Author: %1\n").arg(pluginInfo->author());
+                	info += tr("Version: %1\n").arg(pluginInfo->version());
+                	info += tr("Description: %1\n").arg(pluginInfo->description());
+                	info += tr("Dependencies: %1\n").arg(pluginInfo->dependencies().join(", "));
+                	info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
+        	}
+		}
 
         MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());
 }
