@@ -41,8 +41,6 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 
 	gg_session *Sess;
 
-	int Timeout;
-
 	void dumpConnectionState();
 
 	void handleEventNotify(struct gg_event *e);

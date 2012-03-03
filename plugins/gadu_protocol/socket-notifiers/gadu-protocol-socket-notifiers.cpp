@@ -44,8 +44,7 @@
 #include "gadu-protocol-socket-notifiers.h"
 
 GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol) :
-		GaduSocketNotifiers(protocol), CurrentAccount(account), CurrentProtocol(protocol), Sess(0),
-		Timeout(15000)
+		GaduSocketNotifiers(protocol), CurrentAccount(account), CurrentProtocol(protocol), Sess(0)
 {
 }
 
@@ -343,7 +342,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 
 int GaduProtocolSocketNotifiers::timeout()
 {
-	return Timeout;
+	return 15000;
 }
 
 bool GaduProtocolSocketNotifiers::handleSoftTimeout()
