@@ -125,11 +125,10 @@ void PluginsManager::load()
 	StorableObject::load();
 
 	foreach (const QString &pluginName, installedPlugins())
-		if (!Plugins.contains(pluginName))
-		{
-			Plugin *plugin = new Plugin(pluginName, this);
-			Plugins.insert(pluginName, plugin);
-		}
+	{
+		Q_ASSERT(!Plugins.contains(pluginName));
+		Plugins.insert(pluginName, new Plugin(pluginName, this));
+	}
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{
@@ -176,11 +175,12 @@ void PluginsManager::importFrom09()
 	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
 
 	QStringList allPlugins = everLoaded + unloadedPlugins; // just in case...
+	QMap<QString, Plugin *> oldPlugins;
 	foreach (const QString &pluginName, allPlugins)
-		if (!Plugins.contains(pluginName))
+		if (!Plugins.contains(pluginName) && !oldPlugins.contains(pluginName))
 		{
 			Plugin *plugin = new Plugin(pluginName, this);
-			Plugins.insert(pluginName, plugin);
+			oldPlugins.insert(pluginName, plugin);
 		}
 
 	if (loadedPlugins.contains("encryption"))
@@ -196,7 +196,7 @@ void PluginsManager::importFrom09()
 			loadedPlugins.append("hints");
 	}
 
-	foreach (Plugin *plugin, Plugins)
+	foreach (Plugin *plugin, Plugins.values() + oldPlugins.values())
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
@@ -204,6 +204,12 @@ void PluginsManager::importFrom09()
 			else if (everLoaded.contains(plugin->name()))
 				plugin->setState(Plugin::PluginStateDisabled);
 		}
+
+	foreach (Plugin *plugin, oldPlugins)
+	{
+		plugin->ensureStored();
+		plugin->deleteLater();
+	}
 }
 
 /**
@@ -376,9 +382,8 @@ QStringList PluginsManager::installedPlugins() const
 	dir.setFilter(QDir::Files);
 
 	QStringList installed;
-	QStringList entries = dir.entryList();
-	foreach (const QString &entry, entries)
-		installed.append(entry.left(entry.length() - 5));
+	foreach (const QString &entry, dir.entryList())
+		installed.append(entry.left(entry.length() - qstrlen(".desc")));
 	return installed;
 }
 
