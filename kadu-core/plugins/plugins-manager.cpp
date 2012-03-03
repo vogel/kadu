@@ -124,23 +124,6 @@ void PluginsManager::load()
 
 	StorableObject::load();
 
-	QDomElement itemsNode = storage()->point();
-	if (!itemsNode.isNull())
-	{
-		QVector<QDomElement> pluginElements = storage()->storage()->getNodes(itemsNode, QLatin1String("Plugin"));
-
-		foreach (const QDomElement &pluginElement, pluginElements)
-		{
-			QSharedPointer<StoragePoint> storagePoint(new StoragePoint(storage()->storage(), pluginElement));
-			QString name = storagePoint->point().attribute("name");
-			if (!name.isEmpty() && !Plugins.contains(name))
-			{
-				Plugin *plugin = new Plugin(name, this);
-				Plugins.insert(name, plugin);
-			}
-		}
-	}
-
 	foreach (const QString &pluginName, installedPlugins())
 		if (!Plugins.contains(pluginName))
 		{
