@@ -1,7 +1,11 @@
 [Module]
-Description=Allows control of MPD playback
+DisplayName=MPD media player integration
+DisplayName[pl]=Integracja z odtwarzaczem MPD
+Description=Allows MPD playback control
 Description[pl]=Umo¿liwia sterowanie odtwarzaniem MPD
 Author=badboy
 Dependencies=mediaplayer
 Version=core
 Plugin=true
+Category=Media players
+

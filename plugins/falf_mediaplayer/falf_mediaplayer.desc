@@ -1,9 +1,12 @@
 [Module]
-Description=FALF media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza FALF
+DisplayName=FALF player integration
+DisplayName[pl]=Integracja z odtwarzaczem FALF
+Description=Integrates Kadu with FALF player
+Description[pl]=Integruje Kadu z odtwarzaczem FALF
 Author=amdfanatyk
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
 Version=core
 Plugin=true
+Category=Media players

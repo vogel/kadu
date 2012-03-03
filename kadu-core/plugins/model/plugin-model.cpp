@@ -61,7 +61,7 @@ void PluginModel::loadPluginData()
 
                 pluginEntry.category = pluginInfo && !pluginInfo->category().isEmpty()
                         ? pluginInfo->category()
-                        : "Other";
+                        : "Misc";
                 pluginEntry.name = pluginInfo && !pluginInfo->displayName().isEmpty()
                         ? pluginInfo->displayName()
                         : plugin->name();

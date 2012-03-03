@@ -1,6 +1,8 @@
 [Module]
-Description=General sound support module
-Description[pl]=Modu³ podstawowej obs³ugi d¼wiêku
+DisplayName=Basic sound support
+DisplayName[pl]=Podstawowa obs³uga d¼wiêku
+Description=Basic sound support
+Description[pl]=Podstawowa obs³uga d¼wiêku
 Author=Kadu Team
 Provides=notify_method
 Version=core

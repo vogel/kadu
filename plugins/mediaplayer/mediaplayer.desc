@@ -1,6 +1,8 @@
 [Module]
-Description=Media players support plugin
-Description[pl]=Plugin obs³ugi odtwarzaczy multimediów
+DisplayName=Media player integration
+DisplayName[pl]=Integracja z odtwarzaczami multimediów
+Description=Integrates Kadu with most known media players
+Description[pl]=Integruje Kadu z wiêkszo¶ci± znanych odtwarzaczy multimediów
 Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
 Version=core

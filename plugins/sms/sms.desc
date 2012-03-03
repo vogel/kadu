@@ -1,6 +1,8 @@
 [Module]
-Description=SMS module
-Description[pl]=Modu³ obs³ugi bramek SMS
+DisplayName=SMS support
+DisplayName[pl]=Obs³uga SMS'ów
+Description=Allows sending text messages to polish GSM networks
+Description[pl]=Umo¿liwia wysy³anie SMS'ów do polskich sieci
 Author=Kadu Team
 Dependencies=history
 LoadByDefault=true

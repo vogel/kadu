@@ -1,9 +1,12 @@
 [Module]
-Description=SQL history storage module
-Description[pl]=Modu³ przechowuj±cy historiê rozmów w bazach danych SQLite.
+DisplayName=SQLite chats history storage
+DisplayName[pl]=Przechowywanie historii rozmów SQLite
+Description=Stores chats history in SQLite database
+Description[pl]=Przechowywanie historii rozmów w bazie SQLite.
 Author=Adrian, Juzef, Kadu Team
 Dependencies=history
 Provides=history_storage
 LoadByDefault=true
 Version=core
 Plugin=true
+Category=Chats history

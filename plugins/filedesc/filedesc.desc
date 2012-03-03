@@ -1,8 +1,11 @@
 [Module]
-Description=Descriptions from file module
-Description[pl]=Modu³ obs³ugi opisów z pliku
+DisplayName=Status descripions from file
+DisplayName[pl]=Opisy statusu z pliku
+Description=Sets status descriptions from given file
+Description[pl]=Ustawia opisy statusu z wybranego pliku
 Author=Googie
 Provides=descriptions
 Conflicts=
 Version=core
 Plugin=true
+Category=Status

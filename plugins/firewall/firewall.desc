@@ -1,7 +1,10 @@
 [Module]
-Description=Firewall module - protection against unwanted chats
-Description[pl]=Modu³ zapory sieciowej broni±cej przed nieznajomymi
+DisplayName=Unwanted chats protection
+DisplayName[pl]=Ochrona przed niechcianymi rozmowami
+Description=Protects against bots, spam, strangers etc.
+Description[pl]=Blokuje wiadomo¶ci od botów, nieznajomych, spam itp.
 Author=Pan Wojtas (Wojtek Sulewski), Attis, Kadu Team
 Version=core
 Dependencies=history
 Plugin=true
+Category=Privacy

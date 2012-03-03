@@ -1,6 +1,8 @@
 [Module]
-Description=Tray icon support module
-Description[pl]=Modu³ obs³ugi ikony w tray'u
+DisplayName=Docking Kadu in system tray
+DisplayName[pl]=Dokowanie Kadu w zasobniku systemowym
+Description=Allows docking Kadu in system tray
+Description[pl]=Pozwala zadokowaæ Kadu jako ikonê w zasobniku systemowym
 Author=Kadu Team
 Version=core
 Plugin=true

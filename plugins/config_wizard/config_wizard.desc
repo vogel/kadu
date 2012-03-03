@@ -1,6 +1,8 @@
 [Module]
-Description=Configuration wizard
-Description[pl]=Kreator konfiguracji
+DisplayName=Configuration wizard
+DisplayName[pl]=Kreator konfiguracji
+Description=Provides quick basic Kadu configuration
+Description[pl]=Pozwala szybko skonfigurować Kadu
 Author=Dorregaray
 LoadByDefault=true
 Version=core

@@ -1,6 +1,8 @@
 [Module]
-Description=Idle Timer
-Description[pl]=Wykrywanie bezczynno¶ci
+DisplayName=Inactivity detection
+DisplayName[pl]=Wykrywanie bezczynno¶ci
+Description=Checks how long user is away from computer
+Description[pl]=Sprawdza czas przez jaki u¿ytkownik nie jest obecny przy komputerze
 Author=Kadu Team
 LoadByDefault=false
 Version=core

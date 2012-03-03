@@ -1,9 +1,13 @@
 [Module]
-Description=iTunes media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza iTunes
+DisplayName=iTunes player integration
+DisplayName[pl]=Integracja z odtwarzaczem iTunes
+Description=Integrates Kadu with iTunes player
+Description[pl]=Integrates Kadu with iTunes player
 Author=Kadu Team
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
 Plugin=true
 Version=core
+Category=Media players
+

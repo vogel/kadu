@@ -1,7 +1,10 @@
 [Module]
-Description=Tabbed chat dialog module
-Description[pl]=Modu³ okna rozmowy z kartami
+DisplayName=Chat windows in tabs
+DisplayName[pl]=Okna rozmowy w kartach
+Description=Displays chat windows in tabs
+Description[pl]=Grupuje rozmowy w jednym oknie na kartach
 Author=Michal Podsiadlik, Kadu Team
 LoadByDefault=true
 Version=core
 Plugin=true
+Category=Chat

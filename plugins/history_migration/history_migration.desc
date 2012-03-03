@@ -1,8 +1,11 @@
 [Module]
-Description=History migration module from Kadu < 0.6.6
-Description[pl]=Modu³ importu historii z Kadu < 0.6.6
+DisplayName=History migration
+DisplayName[pl]=Migracja historii
+Description=Migrates history from older Kadu versions (< 0.9)
+Description[pl]=Migruje historiê ze starszych wersji Kadu (<0.9)
 Author=Kadu Team
 Dependencies=gadu_protocol sql_history
 LoadByDefault=true
 Version=core
 Plugin=true
+Category=Chats history

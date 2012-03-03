@@ -1,6 +1,8 @@
 [Module]
-Description=Provides Single Window Mode
-Description[pl]=Dodaje Tryb pojedynczego okna
+DisplayName=Kadu in single window
+DisplayName[pl]=Pojedyncze okno Kadu
+Description=Merges all Kadu windows into one window
+Description[pl]=Łączy wszystkie okna Kadu w jedno
 Author=Kadu Team
 Dependencies=
 Provides=tabs

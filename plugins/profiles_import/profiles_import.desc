@@ -1,6 +1,8 @@
 [Module]
-Description=Old Kadu profiles import
-Description[pl]=Import profili z poprzednich wersji programu
+DisplayName=Import profiles
+DisplayName[pl]=Import profili
+Description=Import profiles from older Kadu versions
+Description[pl]=Import profili z poprzednich wersji Kadu
 Author=Kadu Team
 LoadByDefault=true
 Version=core

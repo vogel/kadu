@@ -1,7 +1,10 @@
 [Module]
-Description=Antistring
-Description[pl]=Ochrona przed ³añcuszkami
+DisplayName=Chain messages prevention
+DisplayName[pl]=Ochrona przed ³añcuszkami
+Description=Detects and blocks chain messages
+Description[pl]=Wykrywa i blokuje ³añcuszki internetowe
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
 Plugin=true
+Category=Privacy

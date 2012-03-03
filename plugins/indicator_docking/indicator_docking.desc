@@ -1,9 +1,12 @@
 [Module]
-Description=Kadu Message Indicator integrate plugin
-Description[pl]=Wtyczka integruj±ca Kadu z Message Indicator (u¿ywanym m.in. w Ubuntu)
+DisplayName=Notifications in Ubuntu
+DisplayName[pl]=Powiadomienia w Ubuntu
+Description=Native notifications for Ubuntu (Message Indicator)
+Description[pl]=Integruje powiadomienia z Ubuntu (Message Indicator)
 Author=Marcin Dawidziuk, Kadu Team
 Dependencies=docking
 Provides=notify_method docking_method
 Conflicts=docking_method
 Version=core
 Plugin=true
+Category=Notifications

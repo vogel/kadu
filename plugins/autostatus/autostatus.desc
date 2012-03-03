@@ -1,7 +1,10 @@
 [Module]
-Description=Autostatus
-Description[pl]=Automatyczne zmiany statusu
+DisplayName=Automatic status description changer
+DisplayName[pl]=Zmieniacz opisów statusu
+Description=Automatically changes status description
+Description[pl]=Ustawia opisy z podanej listy
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
 Plugin=true
+Category=Status

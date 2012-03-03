@@ -1,8 +1,11 @@
 [Module]
-Description=OpenSSL chat encryption module
-Description[pl]=Modu³ obs³ugi szyfrowania rozmów w QCA2
+DisplayName=Extended chat encryption
+DisplayName[pl]=Rozszerzone szyfrowanie rozmów
+Description=Provides extended chat encryption using QCA2 library
+Description[pl]=Dostarcza rozszerzone szyfrowanie rozmów w oparciu o bibliotekê QCA2
 Author=Kadu Team
 LoadByDefault=true
 Version=core
 Dependencies=encryption_ng
 Plugin=true
+Category=Privacy

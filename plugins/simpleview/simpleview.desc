@@ -1,6 +1,8 @@
 [Module]
-Description=Simple view module
-Description[pl]=Modu³ uproszczonego widoku
+DisplayName=Simplified Kadu window
+DisplayName[pl]=Uproszczone okno Kadu
+Description=Simplifies Kadu window leaving only buddies list
+Description[pl]=Pozwala usun±æ z okna Kadu wszystkie elementy prócz listy kontaktów
 Author=prudy
 Dependencies=docking
 Version=core

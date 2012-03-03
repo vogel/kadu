@@ -1,6 +1,8 @@
 [Module]
-Description=Autoresponder module
-Description[pl]=Modu³ autoodpowiedzi
+DisplayName=Automatic response
+DisplayName[pl]=Automatyczna odpowied¼
+Description=Automatically replies on incoming messages
+Description[pl]=Automatycznie odpowiada na przychodz±ce wiadomo¶ci
 Author=Kadu Team
 Version=core
 Plugin=true

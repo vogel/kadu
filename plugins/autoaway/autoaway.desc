@@ -1,8 +1,11 @@
 [Module]
-Description=Autoaway module
-Description[pl]=Modu³ automatycznie zmieniaj±cy status
+DisplayName=Inactivity status
+DisplayName[pl]=Status na czas nieobecno¶ci
+Description=Changes status after inacitivity period
+Description[pl]=Zmienia status podczas nieobecno¶ci u¿ytkownika przy komputerze
 Author=Kadu Team
 Dependencies=idle
 LoadByDefault=true
 Version=core
 Plugin=true
+Category=Status

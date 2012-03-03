@@ -1,6 +1,8 @@
 [Module]
-Description=Last Seen
-Description[pl]=Ostatnio widziani
+DisplayName=Last seen
+DisplayName[pl]=Ostatnio widziany
+Description=Informs when a contact was recently online
+Description[pl]=Informuje, kiedy ostatnio osoba była dostępna
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core

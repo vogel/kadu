@@ -1,6 +1,9 @@
 [Module]
-Description=Automatic images and YouTube links parser
-Description[pl]=Pokazuje obrazki i filmy YouTube w oknie rozmowy
+DisplayName=Images and videos in chat window
+DisplayName[pl]=Obrazki i filmy w oknie rozmowy
+Description=Displays images and YouTube videos in chat window
+Description[pl]=Wyświetla obrazki i odtwarza filmy YouTube w oknie rozmowy
 Author=NeoX
 Version=core
 Plugin=true
+Category=Chat

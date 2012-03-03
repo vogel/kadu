@@ -1,6 +1,9 @@
 [Module]
-Description=PC Speaker module
-Description[pl]=Powiadamianie o zdarzeniach przy pomocy PC Speakera
+DisplayName=System speaker notifications
+DisplayName[pl]=Powiadomienia przez brzęczyk systemowy
+Description=Notifications via system speaker
+Description[pl]=Powiadamianie o zdarzeniach przy pomocy brzęczyka systemowego
 Author=Kadu Team
 Version=core
 Plugin=true
+Category=Notifications

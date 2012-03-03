@@ -1,7 +1,10 @@
 [Module]
-Description=History module
-Description[pl]=Modu³ historii
+DisplayName=Chats history
+DisplayName[pl]=Historia rozmów
+Description=Provides chats history browsing and search
+Description[pl]=Umo¿liwia przegl±danie i przeszukiwanie historii rozmów
 Author=Kadu Team
 LoadByDefault=true
 Version=core
 Plugin=true
+Category=Chats history

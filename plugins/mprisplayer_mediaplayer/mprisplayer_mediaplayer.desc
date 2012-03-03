@@ -1,6 +1,8 @@
 [Module]
-Description=Generic MPRIS media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza przez interfejs MPRIS
+DisplayName=Amarok/VLC/Audacious media player integration
+DisplayName[pl]=Integracja z odtwarzaczami Amarok/VLC/Audacious
+Description=Integration with Amarok, VLC, Audacious, XMMS2, Dragon Player and other MPRIS-compatible media players
+Description[pl]=Integruje Kadu z odtwarzaczami Amarok, VLC, Audacious, XMMS2, Dragon Player i innymi zgodnymi z MPRIS
 Author=dienet
 Provides=media_player
 Conflicts=media_player
@@ -8,3 +10,4 @@ Dependencies=mediaplayer
 Replaces=amarok2_mediaplayer audacious_mediaplayer bmpx_mediaplayer dragon_mediaplayer mpris_mediaplayer vlc_mediaplayer xmms2_mediaplayer
 Version=core
 Plugin=true
+Category=Media players

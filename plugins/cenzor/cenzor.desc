@@ -1,7 +1,10 @@
 [Module]
-Description=Cenzor
-Description[pl]=Cenzor
+DisplayName=Censoring messages
+DisplayName[pl]=Cenzurowanie wiadomości
+Description=Censors vulgar phrases in messages
+Description[pl]=Cenzuruje wulgarne zwroty w wiadomościach
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
 Plugin=true
+Category=Privacy

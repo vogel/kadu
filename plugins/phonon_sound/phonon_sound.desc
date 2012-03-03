@@ -1,6 +1,8 @@
 [Module]
-Description=Sound module using Phonon
-Description[pl]=Modu³ obs³ugi d¼wiêku przez Phonon
+DisplayName=Sound support
+DisplayName[pl]=Obs³uga d¼wiêków
+Description=Sound support via Phonon library
+Description[pl]=Obs³uga d¼wiêku przez bibliotekê Phonon
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver
@@ -9,3 +11,4 @@ Replaces=alsa_sound ao_sound dsp_sound dshow_sound win32_sound
 Version=core
 LoadByDefault=true
 Plugin=true
+Category=Sound

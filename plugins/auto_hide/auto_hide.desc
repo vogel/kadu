@@ -1,6 +1,8 @@
 [Module]
-Description=Auto hide Kadu window
-Description[pl]=Automatyczne ukrywanie okna Kadu
+DisplayName=Auto-hiding Kadu window
+DisplayName[pl]=Auto-ukrywanie okna Kadu
+Description=Automatically hides Kadu window if unused
+Description[pl]=Automatycznie ukrywa okno Kadu gdy nieużywane
 Author=PK Team, Dorregaray
 Dependencies=idle
 LoadByDefault=false
