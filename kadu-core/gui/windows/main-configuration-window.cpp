@@ -52,6 +52,7 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
+#include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
@@ -326,7 +327,7 @@ void MainConfigurationWindow::setLanguages()
 
 void MainConfigurationWindow::setIconThemes()
 {
-	ConfigComboBox *iconThemes = static_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
+	ConfigListWidget *iconThemes = static_cast<ConfigListWidget *>(widget()->widgetById("iconThemes"));
 	IconsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");

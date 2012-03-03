@@ -105,7 +105,7 @@
 	<section name="Look" icon="preferences-desktop-theme">
 		<tab name="General">
 			<group-box name="General">
-				<combo-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
+				<list-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
 					tool-tip="Choose icon theme" />
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
 					tool-tip="Definie icons paths" />
