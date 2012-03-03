@@ -182,7 +182,7 @@ QIcon IconsManager::buildSvgIcon(const QString &themePath, const QString& path)
 	return icon;
 }
 
-const QIcon & IconsManager::iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty)
+QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty)
 {
 	if (!IconCache.contains(themePath + path))
 	{
