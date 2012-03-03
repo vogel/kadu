@@ -343,6 +343,35 @@ void MainConfigurationWindow::setIconThemes()
 
 	iconThemes->setItems(values, captions);
 	iconThemes->setCurrentItem(IconsManager::instance()->themeManager()->currentTheme().path());
+
+	QStringList iconPaths;
+	iconPaths
+			<< "kadu_icons/kadu"
+			<< "protocols/gadu-gadu/online"
+			<< "protocols/common/message"
+			<< "preferences-other";
+
+	QList<QIcon> icons;
+	foreach (const Theme &theme, themes)
+	{
+		QPixmap combinedIcon(iconPaths.count() * 36, 36);
+		combinedIcon.fill(Qt::transparent);
+
+		QPainter iconPainter(&combinedIcon);
+
+		for (int i = 0; i < iconPaths.count(); i++)
+		{
+			KaduIcon kaduIcon(iconPaths.at(i));
+			kaduIcon.setThemePath(theme.path());
+			QIcon icon = kaduIcon.icon();
+			icon.paint(&iconPainter, 2 + 36 * i, 2, 32, 32);
+		}
+
+		icons.append(QIcon(combinedIcon));
+	}
+
+	iconThemes->setIconSize(QSize(iconPaths.count() * 36, 36));
+	iconThemes->setIcons(icons);
 }
 
 void MainConfigurationWindow::setEmoticonThemes()
