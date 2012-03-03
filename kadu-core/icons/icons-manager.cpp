@@ -78,20 +78,10 @@ QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty al
 	QString path = icon.path();
 	QString size = icon.size();
 
+	QFileInfo fileInfo(path);
 	QString themePath = icon.themePath().isEmpty() ? ThemeManager->currentTheme().path() : icon.themePath();
-	QString realPath;
-	QString name;
-
-	int lastHash = path.lastIndexOf('/');
-	if (-1 != lastHash)
-	{
-		realPath = path.left(lastHash);
-		name = path.mid(lastHash + 1);
-	}
-	else
-		name = path;
-
-	QFileInfo fileInfo;
+	QString name = fileInfo.fileName();
+	QString realPath = fileInfo.path();
 
 	fileInfo.setFile(themePath + realPath + '/' + size + '/' + name + ".png" );
 	if (fileInfo.isFile() && fileInfo.isReadable())
