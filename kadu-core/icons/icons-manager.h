@@ -56,8 +56,8 @@ class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 
 	QString localProtocolPath;
 
-	QIcon buildPngIcon(const QString &path);
-	QIcon buildSvgIcon(const QString &path);
+	QIcon buildPngIcon(const QString &themePath, const QString &path);
+	QIcon buildSvgIcon(const QString &themePath, const QString &path);
 
 protected:
 	virtual void configurationUpdated();
@@ -74,7 +74,7 @@ public:
 	IconThemeManager * themeManager() const;
 
 	QString iconPath(KaduIcon icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
-	const QIcon & iconByPath(const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
+	const QIcon & iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
 
 	QSize getIconsSize();
 

@@ -58,18 +58,20 @@ public:
 /**
  * @class KaduIcon
  * @author Bartosz 'beevvy' Brachaczek
+ * @author Rafał 'Vogel' Malinowski
  * @short Object that stores Kadu-specific information about icon and allows for retrieving the icon itself.
  *
  * Objects of this class store Kadu-specific information about icons and allow for retrieving the icons
  * themselves, as well as their paths and other IconsManager-related parameters (i.e., size and name)
- * and also full system paths and WebKit-friendly paths.
+ * and also full system paths and WebKit-friendly paths. KaduIcon can be bound to specific theme or
+ * to current one (default behaviour). Use setThemePath() method to set specific theme.
  *
  * Creating objects of this class is relatively cheap as no data is verified or additionally retrieved
  * in the constructor. When the user ask for QIcon object or full path to icon file for the first time,
  * that data is retrieved by this time and cached for future use.
  *
- * KaduIcon is aware of IconsManager::themeChanged() signals and deletes any cache it might have when
- * a them change occurs.
+ * If KaduIcon is bound to current theme then it is connected to IconsManager::themeChanged() signal and
+ * deletes any cache it might have when a them change occurs.
  *
  * It is recommended for use everywhere using icons provided by IconsManager. It saves direct calls to
  * IconsManager and helps managing icons, especially when one wants to store for example both the icon
@@ -77,23 +79,47 @@ public:
  */
 class KADUAPI KaduIcon
 {
+	QString ThemePath;
 	QString Path;
 	QString IconSize;
+
 	mutable QString FullPath;
 	mutable QIcon Icon;
 
-	KaduIconThemeChangeWatcher Watcher;
+	KaduIconThemeChangeWatcher *Watcher;
 
 public:
 	KaduIcon();
 	explicit KaduIcon(const QString &path, const QString &size = QString());
 	KaduIcon(const KaduIcon &copyMe);
 
+	~KaduIcon();
+
 	KaduIcon & operator = (const KaduIcon &copyMe);
 
 	bool isNull() const;
 
 	void clearCache() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return theme path of this icon.
+	 * @return theme path of this icon
+	 *
+	 * If this method returns empty string, then current theme path should be used.
+	 */
+	QString themePath() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set theme path of this icon.
+	 * @param themePath new theme path of this icon
+	 *
+	 * Empty value of themePath meands that current theme path should be used for this icon.
+	 * Also when it is empty this icon's cache will be cleared every time current icon theme
+	 * changes.
+	 */
+	void setThemePath(const QString &themePath);
 
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek

@@ -58,7 +58,7 @@ void KaduIconThemeChangeWatcher::themeChanged() const
  * Creates null KaduIcon object. isNull() will return true.
  */
 KaduIcon::KaduIcon() :
-		Watcher(this)
+		Watcher(new KaduIconThemeChangeWatcher(this))
 {
 }
 
@@ -71,7 +71,7 @@ KaduIcon::KaduIcon() :
  * Creates KaduIcon object from given path and optionally size and name.
  */
 KaduIcon::KaduIcon(const QString &path, const QString &size) :
-		Path(path), IconSize(size), Watcher(this)
+		Path(path), IconSize(size), Watcher(new KaduIconThemeChangeWatcher(this))
 {
 }
 
@@ -84,8 +84,14 @@ KaduIcon::KaduIcon(const QString &path, const QString &size) :
  */
 KaduIcon::KaduIcon(const KaduIcon &copyMe) :
 		Path(copyMe.Path), IconSize(copyMe.IconSize),
-		FullPath(copyMe.FullPath), Icon(copyMe.Icon), Watcher(this)
+		FullPath(copyMe.FullPath), Icon(copyMe.Icon), Watcher(new KaduIconThemeChangeWatcher(this))
 {
+}
+
+KaduIcon::~KaduIcon()
+{
+	delete Watcher;
+	Watcher = 0;
 }
 
 /**
@@ -98,6 +104,8 @@ KaduIcon::KaduIcon(const KaduIcon &copyMe) :
  */
 KaduIcon & KaduIcon::operator = (const KaduIcon &copyMe)
 {
+	setThemePath(copyMe.ThemePath);
+
 	Path = copyMe.Path;
 	IconSize = copyMe.IconSize;
 	FullPath = copyMe.FullPath;
@@ -128,6 +136,26 @@ void KaduIcon::clearCache() const
 {
 	FullPath.clear();
 	Icon = QIcon();
+}
+
+QString KaduIcon::themePath() const
+{
+	return ThemePath;
+}
+
+void KaduIcon::setThemePath(const QString &themePath)
+{
+	if (themePath == ThemePath)
+		return;
+
+	delete Watcher;
+	Watcher = 0;
+
+	ThemePath = themePath;
+	if (ThemePath.isEmpty())
+		Watcher = new KaduIconThemeChangeWatcher(this);
+
+	clearCache();
 }
 
 /**
@@ -213,7 +241,7 @@ const QIcon & KaduIcon::icon() const
 {
 	// defer getting it until we need it for the first time
 	if (Icon.isNull())
-		Icon = IconsManager::instance()->iconByPath(path());
+		Icon = IconsManager::instance()->iconByPath(ThemePath, path());
 
 	return Icon;
 }
