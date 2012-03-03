@@ -73,7 +73,7 @@ public:
 
 	IconThemeManager * themeManager() const;
 
-	QString iconPath(KaduIcon icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
+	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
 	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
 
 	QSize getIconsSize();

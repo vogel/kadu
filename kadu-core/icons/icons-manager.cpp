@@ -73,7 +73,7 @@ IconThemeManager * IconsManager::themeManager() const
 	return ThemeManager;
 }
 
-QString IconsManager::iconPath(KaduIcon icon, AllowEmpty allowEmpty) const
+QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty allowEmpty) const
 {
 	QString path = icon.path();
 	QString size = icon.size();
@@ -111,14 +111,15 @@ QString IconsManager::iconPath(KaduIcon icon, AllowEmpty allowEmpty) const
 
 	if (realPath == QLatin1String("protocols/common"))
 	{
-		QString protocolpath;
+		QString protocolPath;
 		if (AccountManager::instance()->defaultAccount().protocolHandler())
-			protocolpath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
+			protocolPath = AccountManager::instance()->defaultAccount().protocolHandler()->statusPixmapPath();
 		else
-			protocolpath = localProtocolPath;
+			protocolPath = localProtocolPath;
 
-		icon.setPath(QString("protocols/%1/%2").arg(protocolpath).arg(name));
-		return iconPath(icon, allowEmpty);
+		KaduIcon protocolPathIcon = icon;
+		protocolPathIcon.setPath(QString("protocols/%1/%2").arg(protocolPath).arg(name));
+		return iconPath(protocolPathIcon, allowEmpty);
 	}
 
 	if (EmptyAllowed == allowEmpty)
