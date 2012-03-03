@@ -62,6 +62,7 @@ public:
 	virtual void setVisible(bool visible);
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+	void setIcons(const QList<QIcon> &icons);
 	void setCurrentItem(const QString &currentItem);
 	const QString & currentItemValue() { return itemValues.at(currentRow()); }
 

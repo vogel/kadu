@@ -59,6 +59,16 @@ void ConfigListWidget::setItems(const QStringList &itemValues, const QStringList
 	addItems(itemCaptions);
 }
 
+void ConfigListWidget::setIcons(const QList<QIcon> &icons)
+{
+	const int c = qMin(count(), icons.count());
+	for (int i = 0; i < c; i++)
+	{
+		QListWidgetItem *listItem = QListWidget::item(i);
+		listItem->setIcon(icons.at(i));
+	}
+}
+
 void ConfigListWidget::setCurrentItem(const QString &currentItem)
 {
 	setCurrentRow(itemValues.indexOf(currentItem));
