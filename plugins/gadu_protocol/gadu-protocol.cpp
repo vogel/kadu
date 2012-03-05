@@ -407,18 +407,18 @@ void GaduProtocol::setupLoginParams()
 
 void GaduProtocol::cleanUpLoginParams()
 {
-	memset(GaduLoginParams.password, 0, qstrlen(GaduLoginParams.password));
-	free(GaduLoginParams.password);
-	GaduLoginParams.password = 0;
+	if (GaduLoginParams.password)
+	{
+		memset(GaduLoginParams.password, 0, qstrlen(GaduLoginParams.password));
+		delete [] GaduLoginParams.password;
+		GaduLoginParams.password = 0;
+	}
 
-	free(GaduLoginParams.client_version);
+	delete [] GaduLoginParams.client_version;
 	GaduLoginParams.client_version = 0;
 
-	if (GaduLoginParams.status_descr)
-	{
-		free(GaduLoginParams.status_descr);
-		GaduLoginParams.status_descr = 0;
-	}
+	delete [] GaduLoginParams.status_descr;
+	GaduLoginParams.status_descr = 0;
 }
 
 void GaduProtocol::startFileTransferService()

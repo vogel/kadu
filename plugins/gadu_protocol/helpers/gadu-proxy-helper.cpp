@@ -28,18 +28,14 @@
 
 void GaduProxyHelper::cleanUpProxySettings()
 {
-	if (gg_proxy_host)
-	{
-		free(gg_proxy_host);
-		gg_proxy_host = 0;
-	}
+	delete [] gg_proxy_host;
+	gg_proxy_host = 0;
 
-	if (gg_proxy_username)
-	{
-		free(gg_proxy_username);
-		free(gg_proxy_password);
-		gg_proxy_username = gg_proxy_password = 0;
-	}
+	delete [] gg_proxy_username;
+	gg_proxy_username = 0;
+
+	delete [] gg_proxy_password;
+	gg_proxy_password = 0;
 }
 
 void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
