@@ -37,18 +37,20 @@ EncryptionManager * EncryptionManager::Instance = 0;
 
 void EncryptionManager::createInstance()
 {
-	Instance = new EncryptionManager();
+	if (!Instance)
+		new EncryptionManager();
 }
 
 void EncryptionManager::destroyInstance()
 {
 	delete Instance;
-	Instance = 0;
 }
 
 EncryptionManager::EncryptionManager() :
 		Generator(0)
 {
+	Instance = this;
+
 	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
 		chatWidgetCreated(chatWidget);
 
@@ -71,6 +73,8 @@ EncryptionManager::~EncryptionManager()
 
 	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
 		chatWidgetDestroying(chatWidget);
+
+	Instance = 0;
 }
 
 void EncryptionManager::accountRegistered(Account account)
