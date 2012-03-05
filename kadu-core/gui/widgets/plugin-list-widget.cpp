@@ -118,15 +118,14 @@ void PluginListWidget::applyChanges()
                 const QModelIndex index = pluginModel->index(i, 0);
                 PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
 
-                Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->name);
-
+                Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
 
                 if (plugin && plugin->isActive() != pluginEntry->checked)
                 {
                         if (pluginEntry->checked)
-                                PluginsManager::instance()->activatePlugin(PluginsManager::instance()->plugins().value(pluginEntry->name), PluginActivationReasonUserRequest);
+                                PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
                         else
-                                PluginsManager::instance()->deactivatePlugin(PluginsManager::instance()->plugins().value(pluginEntry->name), PluginDeactivationReasonUserRequest);
+                                PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
 
                         changeOccured = true;
                 }

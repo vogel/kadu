@@ -258,7 +258,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         info += tr("Plugin name: %1\n").arg(model->data(index, PluginModel::NameRole).toString());
 
         PluginEntry *pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
-		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->name);
+		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
 
 		if (plugin)
 		{
