@@ -23,7 +23,19 @@ include (CheckIncludeFiles)
 include (CheckFunctionExists)
 
 if (NOT KADU_VERSION)
-	find_program (GIT_EXECUTABLE git DOC "git command line client")
+	if (WIN32)
+		set (guessed_paths
+			"C:/Program Files/Git/bin"
+			"C:/Program Files (x86)/Git/bin"
+		)
+	else (WIN32)
+		set (guessed_paths)
+	endif (WIN32)
+
+	find_program (GIT_EXECUTABLE git
+		PATHS ${guessed_paths}
+		DOC "git command line client"
+	)
 	if (GIT_EXECUTABLE)
 		execute_process (COMMAND ${GIT_EXECUTABLE} describe --tags HEAD
 			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
