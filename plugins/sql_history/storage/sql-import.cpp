@@ -23,6 +23,12 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
+#include "accounts/account.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
+
+#include "storage/sql-accounts-mapping.h"
+
 #include "sql-import.h"
 
 #define CURRENT_SCHEMA_VERSION 4
@@ -258,6 +264,58 @@ void SqlImport::initV4Indexes(QSqlDatabase &database)
 	query.exec();
 }
 
+void SqlImport::importAccountsToV4(QSqlDatabase &database)
+{
+	// this is enough
+	// SqlAccountsMapping fills database in constructor
+	// maybe this is not best API, but this is how it works
+	SqlAccountsMapping mapping(database);
+}
+
+void SqlImport::importContactsToV4(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	QMap<int, Contact> contacts;
+
+	query.prepare("SELECT id, uuid FROM kadu_contacts");
+	query.setForwardOnly(true);
+	query.exec();
+
+	while (query.next())
+	{
+		int id = query.value(0).toInt();
+		QString uuid = query.value(1).toString();
+
+		Contact contact = ContactManager::instance()->byUuid(uuid);
+		if (contact && contact.contactAccount() && !contact.id().isEmpty())
+			contacts.insert(id, contact);
+	}
+
+	database.transaction();
+
+	query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
+	query.setForwardOnly(false);
+
+	QList<int> ids = contacts.keys();
+	foreach (int id, ids)
+	{
+		Contact contact = contacts.value(id);
+		int accountId = SqlAccountsMapping::idByAccount(contact.contactAccount());
+
+		if (id > 0 && accountId > 0)
+		{
+			query.bindValue(":id", id);
+			query.bindValue(":account_id", accountId);
+			query.bindValue(":contact", contact.id());
+			query.exec();
+
+			contact.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
+		}
+	}
+
+	database.commit();
+}
+
 void SqlImport::importVersion1Schema(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
@@ -324,6 +382,9 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 	initV4Tables(database);
 	initIndexes(database);
 
+	importAccountsToV4(database);
+	importContactsToV4(database);
+
 	database.commit();
 
 	query.prepare("VACUUM;");
@@ -340,6 +401,9 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 
 	initV4Tables(database);
 	initV4Indexes(database);
+
+	importAccountsToV4(database);
+	importContactsToV4(database);
 
 	database.commit();
 
@@ -392,6 +456,9 @@ void SqlImport::importVersion3Schema(QSqlDatabase &database)
 {
 	initV4Tables(database);
 	initV4Indexes(database);
+
+	importAccountsToV4(database);
+	importContactsToV4(database);
 }
 
 void SqlImport::performImport(QSqlDatabase &database)
