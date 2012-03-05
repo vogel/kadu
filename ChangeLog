@@ -1,6 +1,7 @@
 +++ version 0.11.2
 * url-handlers: #2485 fixed: do not treat strings beginning with "ftp." as http links (beevvy)
-* gadu: fixed rare problem which have been causing unability to send any messages (beevvy)
+* gadu: fixed rare problem which have been causing inability to send any messages (beevvy)
+* gadu: fixed possible application hangs, especially when trying to connect on unstable Internet connection (beevvy)
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)

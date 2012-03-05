@@ -35,7 +35,6 @@
 #include "server/gadu-servers-manager.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
-#include "gadu-resolver.h"
 #include "gadu-url-handler.h"
 
 #include "gadu-protocol-plugin.h"
@@ -69,8 +68,6 @@ int GaduProtocolPlugin::init(bool firstLoad)
 	gg_proxy_host = 0;
 	gg_proxy_username = 0;
 	gg_proxy_password = 0;
-
-	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
 
 	GaduIdValidator::createInstance();
 
