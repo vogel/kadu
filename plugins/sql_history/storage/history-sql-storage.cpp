@@ -332,43 +332,6 @@ Chat HistorySqlStorage::findChat(int id)
 	return chat;
 }
 
-int HistorySqlStorage::findOrCreateContact(const Contact &contact)
-{
-	if (ContactMap.contains(contact))
-		return ContactMap.value(contact);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT id FROM kadu_contacts WHERE uuid=:uuid";
-
-	query.prepare(queryString);
-	query.bindValue(":uuid", contact.uuid().toString());
-
-	int contactId = -1;
-
-	executeQuery(query);
-
-	if (query.next())
-	{
-		contactId = query.value(0).toInt();
-		Q_ASSERT(!query.next());
-	}
-	else
-	{
-		QSqlQuery query(Database);
-		QString queryString = "INSERT INTO kadu_contacts (uuid) VALUES (:uuid)";
-
-		query.prepare(queryString);
-		query.bindValue(":uuid", contact.uuid().toString());
-
-		executeQuery(query);
-		contactId = query.lastInsertId().toInt();
-	}
-
-	ContactMap.insert(contact, contactId);
-
-	return contactId;
-}
-
 int HistorySqlStorage::findOrCreateDate(const QDate &date)
 {
 	QString stringDate = date.toString("yyyyMMdd");
@@ -436,7 +399,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 			: 0;
 
 	AppendMessageQuery.bindValue(":chat_id", findOrCreateChat(message.messageChat()));
-	AppendMessageQuery.bindValue(":contact_id", findOrCreateContact(message.messageSender()));
+	AppendMessageQuery.bindValue(":contact_id", ContactsMapping->idByContact(message.messageSender(), true));
 	AppendMessageQuery.bindValue(":send_time", message.sendDate());
 	AppendMessageQuery.bindValue(":receive_time", message.receiveDate());
 	AppendMessageQuery.bindValue(":date_id", findOrCreateDate(message.receiveDate().date()));
@@ -911,10 +874,9 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 	const Talkable &talkable = historyQuery.talkable();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT chat.uuid, con.uuid, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
+	QString queryString = "SELECT chat.uuid, contact_id, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
 			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
 			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
-			"LEFT JOIN kadu_contacts con ON (kadu_messages.contact_id=con.id) "
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE 1";
 
 	if (!talkable.isEmpty())
@@ -1102,7 +1064,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		MessageType type = outgoing ? MessageTypeSent : MessageTypeReceived;
 
 		// allow displaying messages for non-existing contacts
-		Contact sender = ContactManager::instance()->byUuid(query.value(1).toString());
+		Contact sender = ContactsMapping->contactById(query.value(1).toInt());
 		if (!sender)
 		{
 			Contact sender = Contact::create();

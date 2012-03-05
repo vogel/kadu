@@ -60,7 +60,6 @@ class HistorySqlStorage : public HistoryStorage
 	QMutex DatabaseMutex;
 
 	QMap<Chat, int> ChatMap;
-	QMap<Contact, int> ContactMap;
 	QMap<QString, int> DateMap;
 
 	HistoryMessagesStorage *ChatStorage;
@@ -71,7 +70,6 @@ class HistorySqlStorage : public HistoryStorage
 
 	int findOrCreateChat(const Chat &chat);
 	Chat findChat(int id);
-	int findOrCreateContact(const Contact &contact);
 	int saveMessageContent(const Message &message);
 	int findOrCreateDate(const QDate &date);
 
