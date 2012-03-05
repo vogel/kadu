@@ -25,6 +25,8 @@
 #include <QtCore/QSet>
 #include <QtCore/QSharedPointer>
 
+#include "exports.h"
+
 class QDomNode;
 
 class CustomProperty;
@@ -53,7 +55,7 @@ class StoragePoint;
  * to properties named like this: module-data-name:module-data-property-name. This is also prefferred
  * way to naming new properties: prefix:property-name.
  */
-class CustomProperties : public QObject
+class KADUAPI CustomProperties : public QObject
 {
 	Q_OBJECT
 
