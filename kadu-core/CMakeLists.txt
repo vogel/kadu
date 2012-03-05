@@ -276,6 +276,9 @@ if (WIN32)
 
 	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BINDIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
+
+	file (WRITE "${CMAKE_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
+	install (FILES "${CMAKE_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
 else (WIN32)
 	if (NOT FAST_LINKING)
 		kadu_source_subdirectories (kadu ${kadu_SUBDIRS})
