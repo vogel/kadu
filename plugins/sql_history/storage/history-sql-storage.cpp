@@ -57,6 +57,7 @@
 #include "plugins/history/history-query-result.h"
 
 #include "storage/sql-accounts-mapping.h"
+#include "storage/sql-contacts-mapping.h"
 #include "storage/sql-initializer.h"
 #include "storage/sql-messages-chat-storage.h"
 #include "storage/sql-messages-sms-storage.h"
@@ -165,6 +166,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 	initQueries();
 
 	AccountsMapping = new SqlAccountsMapping(Database, this);
+	ContactsMapping = new SqlContactsMapping(Database, AccountsMapping, this);
 
 	if (InitializerThread)
 		InitializerThread->quit();

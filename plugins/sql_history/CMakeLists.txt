@@ -11,6 +11,7 @@ include (FindKadu)
 set (SOURCES
 	storage/history-sql-storage.cpp
 	storage/sql-accounts-mapping.cpp
+	storage/sql-contacts-mapping.cpp
 	storage/sql-import.cpp
 	storage/sql-initializer.cpp
 	storage/sql-messages-chat-storage.cpp
@@ -24,6 +25,7 @@ set (SOURCES
 set (MOC_SOURCES
 	storage/history-sql-storage.h
 	storage/sql-accounts-mapping.h
+	storage/sql-contacts-mapping.h
 	storage/sql-import.h
 	storage/sql-initializer.h
 	storage/sql-messages-chat-storage.h

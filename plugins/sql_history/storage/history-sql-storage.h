@@ -35,6 +35,7 @@ class HistoryQuery;
 class ProgressWindow2;
 
 class SqlAccountsMapping;
+class SqlContactsMapping;
 
 /**
 	@class HistorySqlStorage
@@ -50,6 +51,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	QSqlDatabase Database;
 	SqlAccountsMapping *AccountsMapping;
+	SqlContactsMapping *ContactsMapping;
 
 	QSqlQuery AppendMessageQuery;
 	QSqlQuery AppendStatusQuery;

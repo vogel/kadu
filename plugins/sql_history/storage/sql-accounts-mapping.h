@@ -39,7 +39,7 @@
  * This class is responsible for mapping IM accounts to database entries in kadu_accounts table of database
  * provided in costructor. This class does not check for validity of database tables.
  *
- * Each account  in application have its own mapping to entry in kadu_accounts table in databse. Added accounts
+ * Each account in application have its own mapping to entry in kadu_accounts table in databse. Added accounts
  * are added to database. Removed accounts have their data (protocol and account username) removed from database,
  * but id entry will be always available. Accounts updates (account username changes) are also reflected in database.
  *
