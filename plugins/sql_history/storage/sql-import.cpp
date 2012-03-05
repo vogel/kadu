@@ -197,6 +197,17 @@ void SqlImport::initV4Tables(QSqlDatabase &database)
 			"account VARCHAR(1024));"
 	);
 	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_contacts ADD COLUMN account_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_accounts(id)"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_contacts ADD COLUMN contact VARCHAR(1024)"
+	);
+	query.exec();
 }
 
 void SqlImport::initIndexes(QSqlDatabase &database)
