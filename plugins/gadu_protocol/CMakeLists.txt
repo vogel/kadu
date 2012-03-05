@@ -102,7 +102,6 @@ set (SOURCES
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 	gadu-protocol-plugin.cpp
-	gadu-resolver.cpp
 	gadu-url-handler.cpp
 )
 
@@ -160,7 +159,6 @@ set (MOC_SOURCES
 	gadu-protocol-factory.h
 	gadu-protocol-plugin.h
 	gadu-protocol.h
-	gadu-resolver.h
 	gadu-url-handler.h
 )
 
@@ -176,12 +174,6 @@ set (CONFIGURATION_FILES
 set (SERVERS_FILE
 	data/servers.txt
 )
-
-if (MINGW)
-	set_source_files_properties (gadu-resolver.cpp PROPERTIES
-		COMPILE_FLAGS -fno-strict-aliasing
-	)
-endif (MINGW)
 
 if (WIN32)
 	if (NOT WIN_LIBGADU_DIR)
