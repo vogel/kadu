@@ -72,14 +72,13 @@ void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool to
 void EnableEncryptionActionDescription::updateActionState(Action *action)
 {
 	Chat chat = action->context()->chat();
-	action->setEnabled(chat && EncryptionProviderManager::instance()->canEncrypt(chat));
-
 	// This is needed beacause we may be called before it is called in EncryptionNgPlugin::init().
 	// And EncryptionManager may need EnableEncryptionActionDescription from its c-tor,
 	// so we cannot simply change order in EncryptionNgPlugin::init().
-	// TODO: review it, it probably wasn't an issue in 0.11.x and before (why?)
 	EncryptionManager::createInstance();
-	action->setChecked(EncryptionManager::instance()->chatEncryption(chat)->encrypt());
+	bool canEncrypt = chat && EncryptionProviderManager::instance()->canEncrypt(chat);
+	action->setEnabled(canEncrypt);
+	action->setChecked(canEncrypt && EncryptionManager::instance()->chatEncryption(chat)->encrypt());
 }
 
 void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)
