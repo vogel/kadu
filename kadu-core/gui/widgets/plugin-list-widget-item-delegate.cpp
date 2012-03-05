@@ -72,6 +72,9 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
         }
 
         int xOffset = checkBox->sizeHint().width();
+#ifdef Q_WS_WIN
+        xOffset += QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing);
+#endif
 
         bool disabled = !index.model()->data(index, PluginModel::IsCheckableRole).toBool();
 
