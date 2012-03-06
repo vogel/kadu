@@ -364,6 +364,35 @@ void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
 	database.commit();
 }
 
+void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	database.transaction();
+
+	QStringList queries;
+	queries
+			<< "ALTER TABLE kadu_contacts RENAME TO kadu_contacts_old;"
+			<< "CREATE TABLE kadu_contacts ("
+					"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
+					"contact VARCHAR(1024)"
+				")"
+			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old;"
+			<< "DROP TABLE kadu_contacts_old";
+
+	foreach (const QString &queryString, queries)
+	{
+		query.prepare(queryString);
+		query.setForwardOnly(true);
+		query.exec();
+	}
+
+	database.commit();
+
+	query.prepare("VACUUM;");
+	query.exec();
+}
+
 void SqlImport::importVersion1Schema(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
@@ -433,6 +462,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	dropBeforeV4Fields(database);
 
 	database.commit();
 
@@ -454,6 +484,7 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	dropBeforeV4Fields(database);
 
 	database.commit();
 
@@ -510,6 +541,7 @@ void SqlImport::importVersion3Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	dropBeforeV4Fields(database);
 }
 
 void SqlImport::performImport(QSqlDatabase &database)

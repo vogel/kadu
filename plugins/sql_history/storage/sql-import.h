@@ -54,6 +54,7 @@ class SqlImport : public QObject
 	void importAccountsToV4(QSqlDatabase &database);
 	void importContactsToV4(QSqlDatabase &database);
 	void importContactsToV4StatusesTable(QSqlDatabase &database);
+	void dropBeforeV4Fields(QSqlDatabase &database);
 
 	void importVersion1Schema(QSqlDatabase &database);
 	void importVersion2Schema(QSqlDatabase &database);
