@@ -28,6 +28,7 @@
 #include "contacts/contact-manager.h"
 
 #include "storage/sql-accounts-mapping.h"
+#include "storage/sql-contacts-mapping.h"
 
 #include "sql-import.h"
 
@@ -214,6 +215,12 @@ void SqlImport::initV4Tables(QSqlDatabase &database)
 			"ALTER TABLE kadu_contacts ADD COLUMN contact VARCHAR(1024)"
 	);
 	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_statuses ADD COLUMN contact_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_contacts(id)"
+	);
+	query.exec();
 }
 
 void SqlImport::initIndexes(QSqlDatabase &database)
@@ -277,6 +284,8 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	QSqlQuery query(database);
 	QMap<int, Contact> contacts;
 
+	database.transaction();
+
 	query.prepare("SELECT id, uuid FROM kadu_contacts");
 	query.setForwardOnly(true);
 	query.exec();
@@ -290,8 +299,6 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 		if (contact && contact.contactAccount() && !contact.id().isEmpty())
 			contacts.insert(id, contact);
 	}
-
-	database.transaction();
 
 	query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
 	query.setForwardOnly(false);
@@ -311,6 +318,47 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 
 			contact.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
 		}
+	}
+
+	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
+	query.setForwardOnly(true);
+	query.exec();
+
+	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+
+	// force creating contacts table entries for all contacts used in statuses
+	while (query.next())
+	{
+		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		if (contact)
+			contactsMapping->idByContact(contact, true);
+	}
+
+	database.commit();
+}
+
+void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	database.transaction();
+
+	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+
+	QMap<int, Contact> mapping = contactsMapping->mapping();
+	QMap<int, Contact>::const_iterator i = mapping.constBegin();
+	QMap<int, Contact>::const_iterator end = mapping.constEnd();
+
+	query.prepare("UPDATE kadu_statuses SET contact_id = :contact_id where contact = :contact");
+
+	while (i != end)
+	{
+		query.bindValue(":contact_id", i.key());
+		query.bindValue(":contact", i.value().uuid().toString());
+		query.exec();
+
+		i++;
 	}
 
 	database.commit();
@@ -384,6 +432,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 
 	importAccountsToV4(database);
 	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
 
 	database.commit();
 
@@ -404,6 +453,7 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 
 	importAccountsToV4(database);
 	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
 
 	database.commit();
 
@@ -459,6 +509,7 @@ void SqlImport::importVersion3Schema(QSqlDatabase &database)
 
 	importAccountsToV4(database);
 	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
 }
 
 void SqlImport::performImport(QSqlDatabase &database)
