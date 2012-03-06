@@ -377,8 +377,18 @@ void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
 					"contact VARCHAR(1024)"
 				")"
-			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old;"
-			<< "DROP TABLE kadu_contacts_old";
+			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old"
+			<< "DROP TABLE kadu_contacts_old"
+
+			<< "ALTER TABLE kadu_statuses RENAME TO kadu_statuses_old"
+			<< "CREATE TABLE kadu_statuses ("
+					"contact_id INTEGER REFERENCES kadu_contacts(id),"
+					"status VARCHAR(255),"
+					"set_time TIMESTAMP,"
+					"description TEXT"
+				")"
+			<< "INSERT INTO kadu_statuses (contact_id, status, set_time, description) SELECT contact_id, status, set_time, description FROM kadu_statuses_old;"
+			<< "DROP TABLE kadu_statuses_old";
 
 	foreach (const QString &queryString, queries)
 	{
