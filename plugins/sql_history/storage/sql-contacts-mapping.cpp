@@ -109,3 +109,8 @@ int SqlContactsMapping::idByContact(const Contact &contact, bool create)
 
 	return id;
 }
+
+const QMap<int, Contact> & SqlContactsMapping::mapping() const
+{
+	return ContactMapping;
+}

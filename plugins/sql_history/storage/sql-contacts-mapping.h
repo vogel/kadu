@@ -128,6 +128,13 @@ public:
 	 */
 	int idByContact(const Contact &contact, bool create);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return current mappings.
+	 * @param return current mappings
+	 */
+	const QMap<int, Contact> & mapping() const;
+
 };
 
 /**
