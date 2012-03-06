@@ -195,8 +195,8 @@ void HistorySqlStorage::initQueries()
 			"(:chat_id, :contact_id, :send_time, :receive_time, :date_id, :is_outgoing, :content_id)");
 
 	AppendStatusQuery = QSqlQuery(Database);
-	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact, status, set_time, description) VALUES "
-			"(:contact, :status, :set_time, :description)");
+	AppendStatusQuery.prepare("INSERT INTO kadu_statuses (contact_id, status, set_time, description) VALUES "
+			"(:contact_id, :status, :set_time, :description)");
 
 	AppendSmsQuery = QSqlQuery(Database);
 	AppendSmsQuery.prepare("INSERT INTO kadu_sms (receipient, send_time, content) VALUES "
@@ -219,26 +219,26 @@ QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix
 	return QString("%1uuid IN (%2)").arg(chatPrefix).arg(uuids.join(QLatin1String(", ")));
 }
 
-QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable, const QString &fieldName)
+QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable)
 {
 	if (talkable.isValidBuddy())
-		return buddyContactsWhere(talkable.toBuddy(), fieldName);
+		return buddyContactsWhere(talkable.toBuddy());
 	else if (talkable.isValidContact())
-		return QString("(%1) = '%2'").arg(fieldName).arg(talkable.toContact().uuid().toString());
+		return QString("contact_id = %1").arg(ContactsMapping->idByContact(talkable.toContact(), true));
 
 	return QLatin1String("1");
 }
 
-QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy, const QString &fieldName)
+QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
 {
 	if (!buddy || buddy.contacts().isEmpty())
 		return QLatin1String("0");
 
-	QStringList uuids;
+	QStringList ids;
 	foreach (const Contact &contact, buddy.contacts())
-		uuids.append(QString("'%1'").arg(contact.uuid().toString()));
+		ids.append(QString("%1").arg(ContactsMapping->idByContact(contact, true)));
 
-	return QString("(%1) IN (%2)").arg(fieldName).arg(uuids.join(QLatin1String(", ")));
+	return QString("contact_id IN (%1)").arg(ids.join(QLatin1String(", ")));
 }
 
 void HistorySqlStorage::sync()
@@ -422,7 +422,7 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	QMutexLocker locker(&DatabaseMutex);
 
-	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
+	AppendStatusQuery.bindValue(":contact_id", ContactsMapping->idByContact(contact, true));
 	AppendStatusQuery.bindValue(":status", status.type());
 	AppendStatusQuery.bindValue(":set_time", time);
 	AppendStatusQuery.bindValue(":description", status.description());
@@ -494,7 +494,7 @@ void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+	QString queryString = "DELETE FROM kadu_statuses WHERE " + talkableContactsWhere(talkable);
 	if (!date.isNull())
 		queryString += " AND substr(set_time,0,11) = :date";
 
@@ -577,13 +577,13 @@ QVector<Talkable> HistorySqlStorage::syncStatusBuddies()
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
+	query.prepare("SELECT DISTINCT contact_id FROM kadu_statuses");
 	executeQuery(query);
 
 	QVector<Talkable> result;
 	while (query.next())
 	{
-		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		Contact contact = ContactsMapping->contactById(query.value(0).toInt());
 		if (!contact)
 			continue;
 
@@ -727,8 +727,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT count(1), substr(set_time,0,11), contact, description FROM";
-	queryString += " (SELECT set_time, contact, description FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+	QString queryString = "SELECT count(1), substr(set_time,0,11), contact_id, description FROM";
+	queryString += " (SELECT set_time, contact_id, description FROM kadu_statuses WHERE " + talkableContactsWhere(talkable);
 
 	if (!historyQuery.string().isEmpty())
 		queryString += " AND kadu_statuses.description LIKE :query";
@@ -738,7 +738,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 		queryString += " AND replace(substr(set_time,0,11), '-', '') <= :toDate";
 
 	queryString += " ORDER BY set_time DESC, rowid DESC)";
-	queryString += " GROUP BY substr(set_time,0,11), contact ORDER BY set_time ASC";
+	queryString += " GROUP BY substr(set_time,0,11), contact_id ORDER BY set_time ASC";
 
 	query.prepare(queryString);
 
@@ -762,7 +762,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 
 		HistoryQueryResult result;
 
-		Contact contact = ContactManager::instance()->byUuid(query.value(2).toString());
+		Contact contact = ContactsMapping->contactById(query.value(2).toInt());
 		if (contact)
 		{
 			const Buddy &buddy = BuddyManager::instance()->byContact(contact, ActionCreate);
@@ -948,7 +948,7 @@ QVector<Message> HistorySqlStorage::syncStatuses(const HistoryQuery &historyQuer
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT contact, status, description, set_time FROM kadu_statuses WHERE " + talkableContactsWhere(talkable, "contact");
+	QString queryString = "SELECT contact_id, status, description, set_time FROM kadu_statuses WHERE " + talkableContactsWhere(talkable);
 
 	if (historyQuery.fromDate().isValid())
 		queryString += " AND replace(substr(set_time,0,11), '-', '') >= :fromDate";

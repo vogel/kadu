@@ -76,8 +76,8 @@ class HistorySqlStorage : public HistoryStorage
 	void ensureProgressWindowReady();
 
 	QString chatWhere(const Chat &chat, const QString &chatPrefix = "chat.");
-	QString talkableContactsWhere(const Talkable &talkable, const QString &fieldName);
-	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
+	QString talkableContactsWhere(const Talkable &talkable);
+	QString buddyContactsWhere(const Buddy &buddy);
 
 	static QString stripAllScriptTags(const QString &string);
 
