@@ -20,6 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QColor>
+#include <QtGui/QIcon>
+
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"

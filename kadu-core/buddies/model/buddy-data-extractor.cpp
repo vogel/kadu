@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"

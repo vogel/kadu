@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
 #include "accounts/account.h"
 #include "chat/chat.h"

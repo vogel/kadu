@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QIcon>
+
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "icons/kadu-icon.h"

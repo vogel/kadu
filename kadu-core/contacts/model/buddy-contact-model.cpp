@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QIcon>
+
 #include "accounts/account.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"

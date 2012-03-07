@@ -21,6 +21,7 @@
  */
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 
 #include "accounts/account.h"
 #include "avatars/avatar.h"

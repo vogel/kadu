@@ -5,7 +5,6 @@ set (icons_SRCS
 
 set (icons_MOC_SRCS
 	icons-manager.h
-	kadu-icon.h
 )
 
 kadu_subdirectory (icons "${icons_SRCS}" "${icons_MOC_SRCS}" "")

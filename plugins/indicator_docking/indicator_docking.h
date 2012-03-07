@@ -23,6 +23,7 @@
 #define INDICATOR_DOCKING_H
 
 #include <QtCore/QMultiMap>
+#include <QtCore/QPoint>
 #include <QtCore/QScopedPointer>
 
 #include "chat/chat.h"
