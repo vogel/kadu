@@ -9,18 +9,16 @@ if (ICON_THEMES)
 		DEPENDS ${ICON_THEMES}
 	)
 	add_dependencies (kadu icon_themes)
-
-	foreach (ICON_THEME ${ICON_THEMES})
-		message (STATUS "Icon theme: " ${ICON_THEME})
-	endforeach (ICON_THEME)
 	
 	if (UNIX AND NOT APPLE)
-		option (COMPRESS_SVG "Compress SVG files when installing (will break notification-daemon, notify-osd and possibly other daemons support" OFF)
+		option (COMPRESS_SVG "Compress SVG files when installing (will break freedesktop_notify on notification-daemon, notify-osd and possibly other daemons, though will work on KDE)" OFF)
 	else (UNIX AND NOT APPLE)
 		option (COMPRESS_SVG "Compress SVG files when installing" ON)
 	endif (UNIX AND NOT APPLE)
 
 	if (COMPRESS_SVG)
+		message (STATUS "SVG icons compressing enabled")
+
 		foreach (ICON_THEME ${ICON_THEMES})
 			file (GLOB_RECURSE tmp RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
 				"${CMAKE_CURRENT_SOURCE_DIR}/${ICON_THEME}/*.svg"
@@ -73,7 +71,13 @@ if (ICON_THEMES)
 				add_dependencies (icon_themes compress_svgs)
 			endif (NOT GZIP_EXECUTABLE OR (WIN32 AND NOT SHELL_EXECUTABLE))
 		endif (inFiles)
+	else (COMPRESS_SVG)
+		message (STATUS "SVG icons compressing disabled")
 	endif (COMPRESS_SVG)
+
+	foreach (ICON_THEME ${ICON_THEMES})
+		message (STATUS "Icon theme: " ${ICON_THEME})
+	endforeach (ICON_THEME)
 
 	install (DIRECTORY ${ICON_THEMES}
 		DESTINATION "${KADU_DATADIR}/themes/icons"
