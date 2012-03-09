@@ -221,6 +221,17 @@ void SqlImport::initV4Tables(QSqlDatabase &database)
 			"REFERENCES kadu_contacts(id)"
 	);
 	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_chats ADD COLUMN chat TEXT"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_chats ADD COLUMN account_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_accounts(id)"
+	);
+	query.exec();
 }
 
 void SqlImport::initIndexes(QSqlDatabase &database)
