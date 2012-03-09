@@ -453,7 +453,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 	foreach (const Contact &contact, chat.contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
 		if (!chat)
 			continue;
 

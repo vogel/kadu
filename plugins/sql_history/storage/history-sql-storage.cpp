@@ -534,7 +534,7 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
 	foreach (const Contact &contact, talkable.toBuddy().contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
 		clearChatHistory(chat, QDate());
 	}
 

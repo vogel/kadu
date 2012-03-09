@@ -100,7 +100,7 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 	foreach (const QModelIndex &index, ModelIndexList)
 		buddies.insert(index.data(BuddyRole).value<Buddy>());
 
-	return ChatManager::instance()->findChat(buddies, true);
+	return ChatManager::instance()->findChat(buddies, ActionCreateAndAdd);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
@@ -118,7 +118,7 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 		contacts.insert(contact);
 	}
 
-	return ChatManager::instance()->findChat(contacts, true);
+	return ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
 }
 
 Account ModelIndexListConverter::commonAccount() const

@@ -164,7 +164,7 @@ void EncryptioNgSimliteProvider::releaseEncryptor(const Chat &chat, Encryptor *e
 
 void EncryptioNgSimliteProvider::keyUpdated(Key key)
 {
-	Chat chat = ChatManager::instance()->findChat(ContactSet(key.keyContact()), false);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(key.keyContact()), ActionReturnNull);
 	if (!chat)
 		return;
 

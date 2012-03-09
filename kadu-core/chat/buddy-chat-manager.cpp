@@ -87,7 +87,7 @@ Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 	QVector<Chat> chats;
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		const Chat &contactChat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		const Chat &contactChat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
 		if (contactChat)
 			chats.append(contactChat);
 	}
@@ -105,7 +105,7 @@ void BuddyChatManager::buddyContactAdded(const Buddy &buddy, const Contact &cont
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	Q_ASSERT(buddyDetails);
 
-	buddyDetails->addChat(ChatManager::instance()->findChat(ContactSet(contact), false));
+	buddyDetails->addChat(ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull));
 }
 
 void BuddyChatManager::buddyContactRemoved(const Buddy &buddy, const Contact &contact)
@@ -117,7 +117,7 @@ void BuddyChatManager::buddyContactRemoved(const Buddy &buddy, const Contact &co
 	ChatDetailsBuddy *buddyDetails = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	Q_ASSERT(buddyDetails);
 
-	buddyDetails->removeChat(ChatManager::instance()->findChat(ContactSet(contact), false));
+	buddyDetails->removeChat(ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull));
 }
 
 void BuddyChatManager::chatAdded(const Chat &addedChat)

@@ -107,7 +107,7 @@ void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 		return;
 	}
 
-	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), true);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionCreateAndAdd);
 	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
 
 	EncryptionNgNotification::notifyPublicKeySent(contact);

@@ -159,7 +159,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 	ContactSet contacts(contact);
 
-	Chat chat = ChatManager::instance()->findChat(contacts);
+	Chat chat = ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
 	bool ignore = false;
 
 	QByteArray body = msg.body().toUtf8();
