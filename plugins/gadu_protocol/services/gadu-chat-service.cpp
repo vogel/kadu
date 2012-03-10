@@ -91,9 +91,9 @@ bool GaduChatService::sendMessage(const Chat &chat, FormattedMessage &message, b
 		return false;
 	}
 
-	if (data.length() >= 2000)
+	if (data.length() >= 10000)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(10000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}
