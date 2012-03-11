@@ -24,7 +24,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/filter/protocol-filter.h"
-#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/model/buddy-manager-adapter.h"
 // will be used when Qt 4.8 .is required
 // #include "buddies/model/checkable-buddies-proxy-model.h"
 #include "chat/chat-manager.h"
@@ -101,8 +102,8 @@ void AddConferenceWindow::createGui()
 
 	ModelChain *chain = new ModelChain(this);
 
-	Model = new BuddiesModel(chain);
-	Model->setIncludeMyself(false);
+	Model = new BuddyListModel(chain);
+	new BuddyManagerAdapter(Model);
 
 	// will be removed when Qt 4.8 .is required
 	Model->setCheckable(true);
