@@ -121,7 +121,7 @@ Account ChatManager::getCommonAccount(const BuddySet &buddies)
 	return Account::null;
 }
 
-Chat ChatManager::findChat(const BuddySet &buddies, bool create)
+Chat ChatManager::findChat(const BuddySet &buddies, NotFoundAction action)
 {
 	QMutexLocker locker(&mutex());
 
@@ -131,7 +131,7 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 		if (!contact)
 			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
 
-		return findChat(ContactSet(contact), create);
+		return findChat(ContactSet(contact), action);
 	}
 
 	Account commonAccount = getCommonAccount(buddies);
@@ -146,14 +146,14 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
 	if (contacts.size() != buddies.size())
 		return Chat::null;
 
-	return findChat(contacts, create);
+	return findChat(contacts, action);
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Finds chat for given lsit of contacts.
  * @param contacts set of contacts that builds chat
- * @param create when true new chat will be returned when none was found with contacts
+ * @param action action executed when do such chat was found
  * @return chat for given lsit of contacts
  *
  * Every contact in contacts parameters needs to be in the same account. When there
@@ -170,7 +170,7 @@ Chat ChatManager::findChat(const BuddySet &buddies, bool create)
  * Do not manually create chats of type "Contact" and "ContactSet" - use this
  * method instead.
  */
-Chat ChatManager::findChat(const ContactSet &contacts, bool create)
+Chat ChatManager::findChat(const ContactSet &contacts, NotFoundAction action)
 {
 	QMutexLocker locker(&mutex());
 
@@ -195,10 +195,8 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	// for some users that have self on user list
 	// this should not be possible, and prevented on other level (like in ContactManager)
 	foreach (const Contact &contact, contacts)
-	{
 		if (contact.id() == account.id())
 			return Chat::null;
-	}
 
 	foreach (const Chat &c, allItems()) // search allItems, chats can be not loaded yet
 		if ((c.type() == QLatin1String("Contact") || c.type() == QLatin1String("Simple") ||
@@ -209,7 +207,7 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 			return c;
 		}
 
-	if (!create)
+	if (ActionReturnNull == action)
 		return Chat::null;
 
 	Chat chat = Chat::create();
@@ -240,7 +238,10 @@ Chat ChatManager::findChat(const ContactSet &contacts, bool create)
 	else
 		return Chat::null;
 
-	addItem(chat);
+
+	if (ActionCreateAndAdd == action)
+		addItem(chat);
+
 	return chat;
 }
 

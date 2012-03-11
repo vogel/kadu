@@ -247,7 +247,7 @@ void OpenChatWith::openChat()
 
 	BuddySet buddies = contacts.toBuddySet();
 
-	const Chat &chat = ChatManager::instance()->findChat(contacts);
+	const Chat &chat = ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
 	if (chat)
 	{
 		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);

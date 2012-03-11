@@ -140,7 +140,7 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	}
 
 	bool supportUtf8 = false;
-	Chat chat = ChatManager::instance()->findChat(ContactSet(MyContact), false);
+	Chat chat = ChatManager::instance()->findChat(ContactSet(MyContact), ActionReturnNull);
 	if (chat)
 		supportUtf8 = chat.property("encryption-ng-simlite:SupportUtf", false).toBool();
 

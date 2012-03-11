@@ -34,6 +34,10 @@ class QSqlError;
 class HistoryQuery;
 class ProgressWindow2;
 
+class SqlAccountsMapping;
+class SqlChatsMapping;
+class SqlContactsMapping;
+
 /**
 	@class HistorySqlStorage
 	@author Juzef, Adrian
@@ -47,6 +51,9 @@ class HistorySqlStorage : public HistoryStorage
 	ProgressWindow2 *ImportProgressWindow;
 
 	QSqlDatabase Database;
+	SqlAccountsMapping *AccountsMapping;
+	SqlContactsMapping *ContactsMapping;
+	SqlChatsMapping *ChatsMapping;
 
 	QSqlQuery AppendMessageQuery;
 	QSqlQuery AppendStatusQuery;
@@ -54,8 +61,6 @@ class HistorySqlStorage : public HistoryStorage
 
 	QMutex DatabaseMutex;
 
-	QMap<Chat, int> ChatMap;
-	QMap<Contact, int> ContactMap;
 	QMap<QString, int> DateMap;
 
 	HistoryMessagesStorage *ChatStorage;
@@ -64,17 +69,14 @@ class HistorySqlStorage : public HistoryStorage
 
 	void initQueries();
 
-	int findOrCreateChat(const Chat &chat);
-	Chat findChat(int id);
-	int findOrCreateContact(const Contact &contact);
 	int saveMessageContent(const Message &message);
 	int findOrCreateDate(const QDate &date);
 
 	void ensureProgressWindowReady();
 
-	QString chatWhere(const Chat &chat, const QString &chatPrefix = "chat.");
-	QString talkableContactsWhere(const Talkable &talkable, const QString &fieldName);
-	QString buddyContactsWhere(const Buddy &buddy, const QString &fieldName);
+	QString chatIdList(const Chat &chat);
+	QString talkableContactsWhere(const Talkable &talkable);
+	QString buddyContactsWhere(const Buddy &buddy);
 
 	static QString stripAllScriptTags(const QString &string);
 
@@ -137,6 +139,7 @@ public:
 	virtual HistoryMessagesStorage * chatStorage();
 	virtual HistoryMessagesStorage * statusStorage();
 	virtual HistoryMessagesStorage * smsStorage();
+	void chatWhere (Chat toChat);
 
 };
 

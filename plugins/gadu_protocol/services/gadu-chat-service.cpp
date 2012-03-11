@@ -261,7 +261,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	ContactSet chatContacts = conference;
 	chatContacts.remove(account().accountContact());
 
-	Chat chat = ChatManager::instance()->findChat(chatContacts);
+	Chat chat = ChatManager::instance()->findChat(chatContacts, ActionCreateAndAdd);
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
 	if (!chat || chat.isIgnoreAllMessages())
 		return;

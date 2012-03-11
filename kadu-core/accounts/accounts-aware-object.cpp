@@ -34,6 +34,16 @@ void AccountsAwareObject::accountRemoved(Account account)
 	Q_UNUSED(account)
 }
 
+void AccountsAwareObject::accountRegistered(Account account)
+{
+	Q_UNUSED(account)
+}
+
+void AccountsAwareObject::accountUnregistered(Account account)
+{
+	Q_UNUSED(account)
+}
+
 void AccountsAwareObject::notifyAccountAdded(Account account)
 {
 	foreach (AccountsAwareObject *object, Objects)

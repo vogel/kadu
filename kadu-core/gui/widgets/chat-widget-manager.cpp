@@ -262,7 +262,7 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 {
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact), false);
+		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
 		if (chat)
 			closeChat(chat);
 	}

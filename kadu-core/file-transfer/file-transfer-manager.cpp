@@ -192,7 +192,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		if (!haveFileName && fi.exists())
 		{
 			QWidget *parent = 0;
-			Chat chat = ChatManager::instance()->findChat(ContactSet(transfer.peer()), false);
+			Chat chat = ChatManager::instance()->findChat(ContactSet(transfer.peer()), ActionReturnNull);
 			if (chat)
 				parent = ChatWidgetManager::instance()->byChat(chat, false);
 
@@ -292,7 +292,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
 	}
 
-	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.peer()));
+	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.peer()), ActionCreateAndAdd);
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
 			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
 	notification->setTitle(tr("Incoming transfer"));

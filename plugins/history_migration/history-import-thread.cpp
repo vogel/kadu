@@ -120,7 +120,8 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 	foreach (UinType uin, uinsList)
 		contacts.insert(ContactManager::instance()->byId(GaduAccount, QString::number(uin), ActionCreateAndAdd));
 
-	return ChatManager::instance()->findChat(contacts);
+	// it is called before this object is move to separate thread, so it is safe to add it to ChatManager later
+	return ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
 }
 
 void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entry)

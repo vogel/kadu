@@ -49,9 +49,20 @@ class SqlImport : public QObject
 	void initKaduSmsTable(QSqlDatabase &database);
 	void initIndexes(QSqlDatabase &database);
 
+	void initV4Tables(QSqlDatabase &database);
+	void initV4Indexes(QSqlDatabase &database);
+	void importAccountsToV4(QSqlDatabase &database);
+	void importContactsToV4(QSqlDatabase &database);
+	void importContactsToV4StatusesTable(QSqlDatabase &database);
+	void importChatsToV4(QSqlDatabase &database);
+	void dropBeforeV4Fields(QSqlDatabase &database);
+	void dropBeforeV4Indexes(QSqlDatabase &database);
+
 	void importVersion1Schema(QSqlDatabase &database);
 	void importVersion2Schema(QSqlDatabase &database);
 	void removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const QString &idTableName, const QString &valueFieldName, const QString &idFieldName);
+
+	void importVersion3Schema(QSqlDatabase &database);
 
 public:
 	/**

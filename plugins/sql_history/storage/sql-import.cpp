@@ -23,9 +23,20 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 
+#include "accounts/account.h"
+#include "chat/chat.h"
+#include "chat/chat-manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
+
+#include "storage/sql-accounts-mapping.h"
+#include "storage/sql-chats-mapping.h"
+#include "storage/sql-contacts-mapping.h"
+
 #include "sql-import.h"
 
-#define CURRENT_SCHEMA_VERSION 3
+#define CURRENT_SCHEMA_VERSION 4
 
 quint16 SqlImport::databaseSchemaVersion(QSqlDatabase &database)
 {
@@ -61,6 +72,8 @@ void SqlImport::initTables(QSqlDatabase &database)
 	initKaduMessagesTable(database);
 	initKaduStatusesTable(database);
 	initKaduSmsTable(database);
+
+	initV4Tables(database);
 }
 
 void SqlImport::initKaduSchemaTable(QSqlDatabase &database)
@@ -92,15 +105,13 @@ void SqlImport::initKaduMessagesTable(QSqlDatabase &database)
 
 	query.prepare(
 			"CREATE TABLE kadu_chats ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"uuid VARCHAR(16));"
+			"id INTEGER PRIMARY KEY AUTOINCREMENT);"
 	);
 	query.exec();
 
 	query.prepare(
 			"CREATE TABLE kadu_contacts ("
-			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"uuid VARCHAR(16));"
+			"id INTEGER PRIMARY KEY AUTOINCREMENT);"
 	);
 	query.exec();
 
@@ -148,7 +159,6 @@ void SqlImport::initKaduStatusesTable(QSqlDatabase &database)
 
 	query.prepare(
 		"CREATE TABLE kadu_statuses ("
-			"contact VARCHAR(255),"
 			"status VARCHAR(255),"
 			"set_time TIMESTAMP,"
 			"description TEXT);"
@@ -175,6 +185,56 @@ void SqlImport::initKaduSmsTable(QSqlDatabase &database)
 	query.exec();
 }
 
+void SqlImport::initV4Tables(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+
+	query.prepare("PRAGMA encoding = \"UTF-8\";");
+	query.exec();
+
+	query.prepare("PRAGMA synchronous = OFF;");
+	query.exec();
+
+	query.prepare("PRAGMA foreign_keys = ON;");
+	query.exec();
+
+	query.prepare(
+			"CREATE TABLE kadu_accounts ("
+			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"protocol VARCHAR(128),"
+			"account VARCHAR(1024));"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_contacts ADD COLUMN account_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_accounts(id)"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_contacts ADD COLUMN contact VARCHAR(1024)"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_statuses ADD COLUMN contact_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_contacts(id)"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_chats ADD COLUMN chat TEXT"
+	);
+	query.exec();
+
+	query.prepare(
+			"ALTER TABLE kadu_chats ADD COLUMN account_id INTEGER DEFAULT NULL "
+			"REFERENCES kadu_accounts(id)"
+	);
+	query.exec();
+}
+
 void SqlImport::initIndexes(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
@@ -182,13 +242,7 @@ void SqlImport::initIndexes(QSqlDatabase &database)
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_pk ON kadu_chats (id)");
 	query.exec();
 
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_chat_uuid ON kadu_chats (uuid)");
-	query.exec();
-
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_pk ON kadu_contacts (id)");
-	query.exec();
-
-	query.prepare("CREATE INDEX IF NOT EXISTS kadu_contact_uuid ON kadu_contacts (uuid)");
 	query.exec();
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_dates_pk ON kadu_dates (id)");
@@ -210,6 +264,228 @@ void SqlImport::initIndexes(QSqlDatabase &database)
 	query.exec();
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_msg_content ON kadu_messages (content_id)");
+	query.exec();
+
+	initV4Indexes(database);
+}
+
+void SqlImport::initV4Indexes(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_account_pk ON kadu_accounts (id)");
+	query.exec();
+}
+
+void SqlImport::importAccountsToV4(QSqlDatabase &database)
+{
+	// this is enough
+	// SqlAccountsMapping fills database in constructor
+	// maybe this is not best API, but this is how it works
+	SqlAccountsMapping mapping(database);
+}
+
+void SqlImport::importContactsToV4(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	QMap<int, Contact> contacts;
+
+	database.transaction();
+
+	query.prepare("SELECT id, uuid FROM kadu_contacts");
+	query.setForwardOnly(true);
+	query.exec();
+
+	while (query.next())
+	{
+		int id = query.value(0).toInt();
+		QString uuid = query.value(1).toString();
+
+		Contact contact = ContactManager::instance()->byUuid(uuid);
+		if (contact && contact.contactAccount() && !contact.id().isEmpty())
+			contacts.insert(id, contact);
+	}
+
+	query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
+	query.setForwardOnly(false);
+
+	QList<int> ids = contacts.keys();
+	foreach (int id, ids)
+	{
+		Contact contact = contacts.value(id);
+		int accountId = SqlAccountsMapping::idByAccount(contact.contactAccount());
+
+		if (id > 0 && accountId > 0)
+		{
+			query.bindValue(":id", id);
+			query.bindValue(":account_id", accountId);
+			query.bindValue(":contact", contact.id());
+			query.exec();
+
+			contact.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
+		}
+	}
+
+	query.prepare("SELECT DISTINCT contact FROM kadu_statuses");
+	query.setForwardOnly(true);
+	query.exec();
+
+	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+
+	// force creating contacts table entries for all contacts used in statuses
+	while (query.next())
+	{
+		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
+		if (contact)
+			contactsMapping->idByContact(contact, true);
+	}
+
+	database.commit();
+}
+
+void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	database.transaction();
+
+	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+
+	QMap<int, Contact> mapping = contactsMapping->mapping();
+	QMap<int, Contact>::const_iterator i = mapping.constBegin();
+	QMap<int, Contact>::const_iterator end = mapping.constEnd();
+
+	query.prepare("UPDATE kadu_statuses SET contact_id = :contact_id where contact = :contact");
+
+	while (i != end)
+	{
+		query.bindValue(":contact_id", i.key());
+		query.bindValue(":contact", i.value().uuid().toString());
+		query.exec();
+
+		i++;
+	}
+
+	database.commit();
+}
+
+void SqlImport::importChatsToV4(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	QMap<int, Chat> chats;
+
+	database.transaction();
+
+	query.prepare("SELECT id, uuid FROM kadu_chats");
+	query.setForwardOnly(true);
+	query.exec();
+
+	while (query.next())
+	{
+		int id = query.value(0).toInt();
+		QString uuid = query.value(1).toString();
+
+		Chat chat = ChatManager::instance()->byUuid(uuid);
+		if (chat && chat.chatAccount() && !chat.contacts().isEmpty())
+			chats.insert(id, chat);
+	}
+
+	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
+	query.setForwardOnly(false);
+
+	QScopedPointer<SqlAccountsMapping> accountsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accountsMapping.data()));
+	QScopedPointer<SqlChatsMapping> chatsMapping(new SqlChatsMapping(database, accountsMapping.data(), contactsMapping.data()));
+
+	QList<int> ids = chats.keys();
+	foreach (int id, ids)
+	{
+		Chat chat = chats.value(id);
+		int accountId = SqlAccountsMapping::idByAccount(chat.chatAccount());
+
+		if (id > 0 && accountId > 0)
+		{
+			query.bindValue(":id", id);
+			query.bindValue(":account_id", accountId);
+			query.bindValue(":chat", chatsMapping->chatToString(chat));
+			query.exec();
+
+			chat.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
+		}
+	}
+
+	database.commit();
+}
+
+void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	database.transaction();
+
+	QStringList queries;
+	queries
+			<< "ALTER TABLE kadu_contacts RENAME TO kadu_contacts_old;"
+			<< "CREATE TABLE kadu_contacts ("
+					"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
+					"contact VARCHAR(1024)"
+				")"
+			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old"
+			<< "DROP TABLE kadu_contacts_old"
+
+			<< "ALTER TABLE kadu_statuses RENAME TO kadu_statuses_old"
+			<< "CREATE TABLE kadu_statuses ("
+					"contact_id INTEGER REFERENCES kadu_contacts(id),"
+					"status VARCHAR(255),"
+					"set_time TIMESTAMP,"
+					"description TEXT"
+				")"
+			<< "INSERT INTO kadu_statuses (contact_id, status, set_time, description) SELECT contact_id, status, set_time, description FROM kadu_statuses_old;"
+			<< "DROP TABLE kadu_statuses_old"
+
+			<< "ALTER TABLE kadu_chats RENAME TO kadu_chats_old;"
+			<< "CREATE TABLE kadu_chats ("
+					"id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
+					"chat TEXT"
+				")"
+			<< "INSERT INTO kadu_chats (id, account_id, chat) SELECT id, account_id, chat FROM kadu_chats_old"
+			<< "DROP TABLE kadu_chats_old";
+
+	foreach (const QString &queryString, queries)
+	{
+		query.prepare(queryString);
+		query.setForwardOnly(true);
+		query.exec();
+	}
+
+	database.commit();
+
+	query.prepare("VACUUM;");
+	query.exec();
+}
+
+void SqlImport::dropBeforeV4Indexes(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	database.transaction();
+
+	QStringList queries;
+	queries
+			<< "DROP INDEX IF EXISTS kadu_chat_uuid;"
+			<< "DROP INDEX IF EXISTS kadu_contact_uuid;";
+
+	foreach (const QString &queryString, queries)
+	{
+		query.prepare(queryString);
+		query.setForwardOnly(true);
+		query.exec();
+	}
+
+	database.commit();
+
+	query.prepare("VACUUM;");
 	query.exec();
 }
 
@@ -276,7 +552,15 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 		query.exec();
 	}
 
-	initIndexes(database);
+	initV4Tables(database);
+	initV4Indexes(database);
+
+	importAccountsToV4(database);
+	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
+	dropBeforeV4Fields(database);
+	dropBeforeV4Indexes(database);
 
 	database.commit();
 
@@ -291,7 +575,16 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 	removeDuplicatesFromVersion2Schema(database, "kadu_chats", "uuid", "chat_id");
 	removeDuplicatesFromVersion2Schema(database, "kadu_contacts", "uuid", "contact_id");
 	removeDuplicatesFromVersion2Schema(database, "kadu_dates", "date", "date_id");
-	initKaduSchemaTable(database);
+
+	initV4Tables(database);
+	initV4Indexes(database);
+
+	importAccountsToV4(database);
+	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
+	dropBeforeV4Fields(database);
+	dropBeforeV4Indexes(database);
 
 	database.commit();
 
@@ -340,6 +633,19 @@ void SqlImport::removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const
 	query.exec();
 }
 
+void SqlImport::importVersion3Schema(QSqlDatabase &database)
+{
+	initV4Tables(database);
+	initV4Indexes(database);
+
+	importAccountsToV4(database);
+	importContactsToV4(database);
+	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
+	dropBeforeV4Fields(database);
+	dropBeforeV4Indexes(database);
+}
+
 void SqlImport::performImport(QSqlDatabase &database)
 {
 	quint16 storedSchemaVersion = databaseSchemaVersion(database);
@@ -361,7 +667,12 @@ void SqlImport::performImport(QSqlDatabase &database)
 		case 2:
 			importVersion2Schema(database);
 			break;
+		case 3:
+			importVersion3Schema(database);
+			break;
 		default:
 			break; // no need to import
 	}
+
+	initKaduSchemaTable(database);
 }
