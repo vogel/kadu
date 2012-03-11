@@ -21,11 +21,12 @@
 
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
+#include "core/core.h"
 
 #include "buddy-manager-adapter.h"
 
 BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) :
-		QObject(model), Model(model)
+		QObject(model), Model(model), IncludeMyself(false)
 {
 	Model->setBuddyList(BuddyManager::instance()->items().toList());
 
@@ -54,4 +55,16 @@ void BuddyManagerAdapter::buddyAdded(const Buddy &buddy)
 void BuddyManagerAdapter::buddyRemoved(const Buddy &buddy)
 {
 	Model->removeBuddy(buddy);
+}
+
+void BuddyManagerAdapter::setIncludeMyself(bool includeMyself)
+{
+	if (IncludeMyself == includeMyself)
+		return;
+
+	IncludeMyself = includeMyself;
+	if (IncludeMyself)
+		Model->addBuddy(Core::instance()->myself());
+	else
+		Model->removeBuddy(Core::instance()->myself());
 }
