@@ -16,7 +16,6 @@ set (buddies_SRCS
 	model/buddy-data-extractor.cpp
 	model/buddy-list-model.cpp
 	model/buddy-manager-adapter.cpp
-	model/buddies-model.cpp
 	model/buddies-model-base.cpp
 	# will be used when Qt 4.8 .is required
 	# model/checkable-buddies-proxy-model.cpp
@@ -33,7 +32,6 @@ set (buddies_MOC_SRCS
 
 	model/buddy-list-model.h
 	model/buddy-manager-adapter.h
-	model/buddies-model.h
 	model/buddies-model-base.h
 	# will be used when Qt 4.8 .is required
 	# model/checkable-buddies-proxy-model.h
