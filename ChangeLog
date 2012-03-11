@@ -6,6 +6,7 @@
 * gui: #598 fixed: added icons preview to Configuration Window (Vogel)
 * configuration: #2496 done: support custom icons for plugins in configuration sections (beevvy)
 * gui: new and improved plugins configuration window (Juzef)
+* sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)
 
 +++ version 0.12.0-alpha2
 * gui: #2153 done: new and improved window for changing account status and description (Juzef)
