@@ -57,6 +57,7 @@
 #include "plugins/history/history-query-result.h"
 
 #include "storage/sql-accounts-mapping.h"
+#include "storage/sql-chats-mapping.h"
 #include "storage/sql-contacts-mapping.h"
 #include "storage/sql-initializer.h"
 #include "storage/sql-messages-chat-storage.h"
@@ -68,7 +69,9 @@
 #define DATE_TITLE_LENGTH 120
 
 HistorySqlStorage::HistorySqlStorage(QObject *parent) :
-		HistoryStorage(parent), ImportProgressWindow(0), AccountsMapping(0), DatabaseMutex(QMutex::NonRecursive)
+		HistoryStorage(parent), ImportProgressWindow(0),
+		AccountsMapping(0), ContactsMapping(0), ChatsMapping(0),
+		DatabaseMutex(QMutex::NonRecursive)
 {
 	kdebugf();
 
@@ -167,6 +170,7 @@ void HistorySqlStorage::databaseReady(bool ok)
 
 	AccountsMapping = new SqlAccountsMapping(Database, this);
 	ContactsMapping = new SqlContactsMapping(Database, AccountsMapping, this);
+	ChatsMapping = new SqlChatsMapping(Database, AccountsMapping, ContactsMapping, this);
 
 	if (InitializerThread)
 		InitializerThread->quit();
@@ -203,20 +207,20 @@ void HistorySqlStorage::initQueries()
 			"(:receipient, :send_time, :content)");
 }
 
-QString HistorySqlStorage::chatWhere(const Chat &chat, const QString &chatPrefix)
+QString HistorySqlStorage::chatIdList(const Chat &chat)
 {
 	if (!chat)
-		return QLatin1String("0");
+		return QLatin1String("(0)");
 
 	ChatDetailsBuddy *buddyChat = qobject_cast<ChatDetailsBuddy *>(chat.details());
 	if (!buddyChat)
-		return QString("%1uuid = '%2'").arg(chatPrefix).arg(chat.uuid().toString());
+		return QString("(%1)").arg(ChatsMapping->idByChat(chat, false));
 
-	QStringList uuids;
+	QStringList ids;
 	foreach (const Chat &aggregatedChat, buddyChat->chats())
-		uuids.append(QString("'%1'").arg(aggregatedChat.uuid().toString()));
+		ids.append(QString::number(ChatsMapping->idByChat(aggregatedChat, false)));
 
-	return QString("%1uuid IN (%2)").arg(chatPrefix).arg(uuids.join(QLatin1String(", ")));
+	return QString("(%1)").arg(ids.join(QLatin1String(", ")));
 }
 
 QString HistorySqlStorage::talkableContactsWhere(const Talkable &talkable)
@@ -260,76 +264,6 @@ void HistorySqlStorage::messageReceived(const Message &message)
 void HistorySqlStorage::messageSent(const Message &message)
 {
 	appendMessage(message);
-}
-
-int HistorySqlStorage::findOrCreateChat(const Chat &chat)
-{
-	if (ChatMap.contains(chat))
-		return ChatMap.value(chat);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT id FROM kadu_chats WHERE uuid=:uuid";
-
-	query.prepare(queryString);
-	query.bindValue(":uuid", chat.uuid().toString());
-
-	int chatId = -1;
-
-	executeQuery(query);
-
-	if (query.next())
-	{
-		chatId = query.value(0).toInt();
-		Q_ASSERT(!query.next());
-	}
-	else
-	{
-		QSqlQuery query(Database);
-		QString queryString = "INSERT INTO kadu_chats (uuid) VALUES (:uuid)";
-
-		query.prepare(queryString);
-		query.bindValue(":uuid", chat.uuid().toString());
-
-		executeQuery(query);
-		chatId = query.lastInsertId().toInt();
-	}
-
-	ChatMap.insert(chat, chatId);
-
-	return chatId;
-}
-
-Chat HistorySqlStorage::findChat(int id)
-{
-	if (ChatMap.values().contains(id))
-		return ChatMap.key(id);
-
-	QSqlQuery query(Database);
-	QString queryString = "SELECT uuid FROM kadu_chats WHERE id=:id";
-
-	query.prepare(queryString);
-	query.bindValue(":id", id);
-
-	Chat chat;
-
-	executeQuery(query);
-
-	if (query.next())
-	{
-		chat = ChatManager::instance()->byUuid(query.value(0).toString());
-		if (!chat)
-		{
-			chat = Chat::create();
-			chat.setUuid(query.value(0).toString());
-			chat.setDisplay("?");
-		}
-
-		Q_ASSERT(!query.next());
-	}
-
-	ChatMap.insert(chat, id);
-
-	return chat;
 }
 
 int HistorySqlStorage::findOrCreateDate(const QDate &date)
@@ -398,7 +332,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 			? 1
 			: 0;
 
-	AppendMessageQuery.bindValue(":chat_id", findOrCreateChat(message.messageChat()));
+	AppendMessageQuery.bindValue(":chat_id", ChatsMapping->idByChat(message.messageChat(), true));
 	AppendMessageQuery.bindValue(":contact_id", ContactsMapping->idByContact(message.messageSender(), true));
 	AppendMessageQuery.bindValue(":send_time", message.sendDate());
 	AppendMessageQuery.bindValue(":receive_time", message.receiveDate());
@@ -462,7 +396,7 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 	QMutexLocker locker(&DatabaseMutex);
 
 	QSqlQuery query(Database);
-	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN (SELECT id FROM kadu_chats chat WHERE " + chatWhere(talkable.toChat()) + ")";
+	QString queryString = "DELETE FROM kadu_messages WHERE chat_id IN " + chatIdList(talkable.toChat());
 	if (!date.isNull())
 		queryString += " AND date_id IN (SELECT id FROM kadu_dates WHERE date = :date)";
 
@@ -473,7 +407,7 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 
 	executeQuery(query);
 
-	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE " + chatWhere(talkable.toChat(), "") +
+	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE id IN " + chatIdList(talkable.toChat()) +
 	        " AND 0 = (SELECT count(*) FROM kadu_messages WHERE chat_id = kadu_chats.id)";
 
 	QSqlQuery removeChatsQuery(Database);
@@ -546,22 +480,13 @@ QVector<Talkable> HistorySqlStorage::syncChats()
 	if (!waitForDatabase())
 		return QVector<Talkable>();
 
-	QMutexLocker locker(&DatabaseMutex);
+	QList<Chat> chats = ChatsMapping->mapping().values();
+	QVector<Talkable> talkables;
 
-	QSqlQuery query(Database);
-	query.prepare("SELECT uuid FROM kadu_chats");
+	foreach (const Chat &chat, chats)
+		talkables.append(chat);
 
-	executeQuery(query);
-
-	QVector<Talkable> result;
-	while (query.next())
-	{
-		Chat chat = ChatManager::instance()->byUuid(query.value(0).toString());
-		if (chat)
-			result.append(chat);
-	}
-
-	return result;
+	return talkables;
 }
 
 QFuture<QVector<Talkable> > HistorySqlStorage::chats()
@@ -643,11 +568,10 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 	QString queryString = "SELECT count(1), date, content, chat_id FROM";
 	queryString += " (SELECT km.rowid, date, date_id, chat_id, content FROM kadu_messages km "
 		"LEFT JOIN kadu_message_contents kmc ON (km.content_id=kmc.id) "
-		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) "
-		"LEFT JOIN kadu_chats chat ON (km.chat_id=chat.id) WHERE 1";
+		"LEFT JOIN kadu_dates d ON (km.date_id=d.id) WHERE 1";
 
 	if (!talkable.isEmpty())
-		queryString += QString(" AND %1").arg(chatWhere(talkable.toChat()));
+		queryString += QString(" AND chat_id IN %1").arg(chatIdList(talkable.toChat()));
 	if (!historyQuery.string().isEmpty())
 		queryString += " AND kmc.content LIKE :query";
 	if (historyQuery.fromDate().isValid())
@@ -699,10 +623,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			title += " ...";
 		}
 
-		Chat chat = findChat(query.value(3).toInt());
-
 		HistoryQueryResult result;
-		result.setTalkable(Talkable(chat));
+		result.setTalkable(ChatsMapping->chatById(query.value(3).toInt()));
 		result.setDate(date);
 		result.setTitle(title);
 		result.setCount(count);
@@ -774,7 +696,6 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncStatusDates(const HistoryQuer
 			buddy.setDisplay("?");
 
 			contact = Contact::create();
-			contact.setUuid(query.value(2).toString());
 			contact.setOwnerBuddy(buddy);
 
 			result.setTalkable(Talkable(contact));
@@ -874,13 +795,12 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 	const Talkable &talkable = historyQuery.talkable();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT chat.uuid, contact_id, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
-			"LEFT JOIN kadu_chats chat ON (kadu_messages.chat_id=chat.id) "
+	QString queryString = "SELECT chat_id, contact_id, kmc.content, send_time, receive_time, is_outgoing FROM kadu_messages "
 			"LEFT JOIN kadu_dates d ON (kadu_messages.date_id=d.id) "
 			"LEFT JOIN kadu_message_contents kmc ON (kadu_messages.content_id=kmc.id) WHERE 1";
 
 	if (!talkable.isEmpty())
-		queryString += QString(" AND %1").arg(chatWhere(talkable.toChat()));
+		queryString += QString(" AND chat_id IN %1").arg(chatIdList(talkable.toChat()));
 	if (historyQuery.fromDate().isValid())
 		queryString += " AND date >= :fromDate";
 	if (historyQuery.toDate().isValid())
@@ -1074,7 +994,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		}
 
 		Message message = Message::create();
-		message.setMessageChat(ChatManager::instance()->byUuid(query.value(0).toString()));
+		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
 		message.setContent(stripAllScriptTags(query.value(2).toString()));
