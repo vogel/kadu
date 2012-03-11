@@ -125,8 +125,7 @@ void SqlImport::initKaduMessagesTable(QSqlDatabase &database)
 	query.prepare(
 			"CREATE TABLE kadu_message_contents ("
 			"id INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"content TEXT,"
-			"attributes VARCHAR(25));"
+			"content TEXT);"
 	);
 	query.exec();
 
@@ -421,7 +420,6 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
-	database.transaction();
 
 	QStringList queries;
 	queries
@@ -430,28 +428,36 @@ void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 					"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
 					"contact VARCHAR(1024)"
-				")"
-			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old"
-			<< "DROP TABLE kadu_contacts_old"
+				");"
+			<< "INSERT INTO kadu_contacts (id, account_id, contact) SELECT id, account_id, contact FROM kadu_contacts_old;"
+			<< "DROP TABLE kadu_contacts_old;"
 
-			<< "ALTER TABLE kadu_statuses RENAME TO kadu_statuses_old"
+			<< "ALTER TABLE kadu_statuses RENAME TO kadu_statuses_old;"
 			<< "CREATE TABLE kadu_statuses ("
 					"contact_id INTEGER REFERENCES kadu_contacts(id),"
 					"status VARCHAR(255),"
 					"set_time TIMESTAMP,"
 					"description TEXT"
-				")"
+				");"
 			<< "INSERT INTO kadu_statuses (contact_id, status, set_time, description) SELECT contact_id, status, set_time, description FROM kadu_statuses_old;"
-			<< "DROP TABLE kadu_statuses_old"
+			<< "DROP TABLE kadu_statuses_old;"
 
 			<< "ALTER TABLE kadu_chats RENAME TO kadu_chats_old;"
 			<< "CREATE TABLE kadu_chats ("
 					"id INTEGER PRIMARY KEY AUTOINCREMENT, "
 					"account_id INTEGER DEFAULT NULL REFERENCES kadu_accounts(id), "
 					"chat TEXT"
-				")"
-			<< "INSERT INTO kadu_chats (id, account_id, chat) SELECT id, account_id, chat FROM kadu_chats_old"
-			<< "DROP TABLE kadu_chats_old";
+				");"
+			<< "INSERT INTO kadu_chats (id, account_id, chat) SELECT id, account_id, chat FROM kadu_chats_old;"
+			<< "DROP TABLE kadu_chats_old;"
+
+			<< "ALTER TABLE kadu_message_contents RENAME TO kadu_message_contents_old;"
+			<< "CREATE TABLE kadu_message_contents ("
+					"id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					"content TEXT"
+				");"
+			<< "INSERT INTO kadu_message_contents (id, content) SELECT id, content FROM kadu_message_contents_old;"
+			<< "DROP TABLE kadu_message_contents_old;";
 
 	foreach (const QString &queryString, queries)
 	{
@@ -459,17 +465,11 @@ void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 		query.setForwardOnly(true);
 		query.exec();
 	}
-
-	database.commit();
-
-	query.prepare("VACUUM;");
-	query.exec();
 }
 
 void SqlImport::dropBeforeV4Indexes(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
-	database.transaction();
 
 	QStringList queries;
 	queries
@@ -482,11 +482,6 @@ void SqlImport::dropBeforeV4Indexes(QSqlDatabase &database)
 		query.setForwardOnly(true);
 		query.exec();
 	}
-
-	database.commit();
-
-	query.prepare("VACUUM;");
-	query.exec();
 }
 
 void SqlImport::importVersion1Schema(QSqlDatabase &database)
@@ -635,6 +630,8 @@ void SqlImport::removeDuplicatesFromVersion2Schema(QSqlDatabase &database, const
 
 void SqlImport::importVersion3Schema(QSqlDatabase &database)
 {
+	database.transaction();
+
 	initV4Tables(database);
 	initV4Indexes(database);
 
@@ -644,6 +641,12 @@ void SqlImport::importVersion3Schema(QSqlDatabase &database)
 	importChatsToV4(database);
 	dropBeforeV4Fields(database);
 	dropBeforeV4Indexes(database);
+
+	database.commit();
+
+	QSqlQuery query(database);
+	query.prepare("VACUUM;");
+	query.exec();
 }
 
 void SqlImport::performImport(QSqlDatabase &database)
