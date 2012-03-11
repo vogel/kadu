@@ -553,7 +553,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 	}
 
 	initV4Tables(database);
-	initIndexes(database);
+	initV4Indexes(database);
 
 	importAccountsToV4(database);
 	importContactsToV4(database);
