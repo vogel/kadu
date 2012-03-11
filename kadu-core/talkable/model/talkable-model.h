@@ -22,7 +22,8 @@
 
 #include "model/kadu-merged-proxy-model.h"
 
-class BuddiesModel;
+class BuddyListModel;
+class BuddyManagerAdapter;
 class ChatsModel;
 
 /**
@@ -43,7 +44,8 @@ class TalkableModel : public KaduMergedProxyModel
 	Q_OBJECT
 
 	ChatsModel *Chats;
-	BuddiesModel *Buddies;
+	BuddyListModel *Buddies;
+	BuddyManagerAdapter *BuddiesAdapter;
 
 public:
 	/**

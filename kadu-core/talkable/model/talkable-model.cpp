@@ -17,7 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/model/buddy-manager-adapter.h"
 #include "chat/model/chats-model.h"
 
 #include "talkable-model.h"
@@ -26,7 +27,8 @@ TalkableModel::TalkableModel(QObject *parent) :
 		KaduMergedProxyModel(parent)
 {
 	Chats = new ChatsModel(this);
-	Buddies = new BuddiesModel(this);
+	Buddies = new BuddyListModel(this);
+	BuddiesAdapter = new BuddyManagerAdapter(Buddies);
 
 	QList<QAbstractItemModel *> models;
 	models.append(Chats);
@@ -40,10 +42,10 @@ TalkableModel::~TalkableModel()
 
 void TalkableModel::setIncludeMyself(bool includeMyself)
 {
-	Buddies->setIncludeMyself(includeMyself);
+	BuddiesAdapter->setIncludeMyself(includeMyself);
 }
 
 bool TalkableModel::includeMyself() const
 {
-	return Buddies->includeMyself();
+	return BuddiesAdapter->includeMyself();
 }
