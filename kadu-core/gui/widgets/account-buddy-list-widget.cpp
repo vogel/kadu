@@ -27,7 +27,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/model/buddy-manager-adapter.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
@@ -53,8 +54,11 @@ AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new BuddiesModel(chain));
+	ModelChain *chain = new ModelChain(this)
+;
+	BuddyListModel *buddyListModel = new BuddyListModel(chain);
+	new BuddyManagerAdapter(buddyListModel);
+	chain->setBaseModel(buddyListModel);
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(chain);
 
 	AccountTalkableFilter *accountTalkableFilter = new AccountTalkableFilter(proxyModel);
