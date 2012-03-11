@@ -43,7 +43,8 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/model/buddy-manager-adapter.h"
 #include "buddies/model/groups-model.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
@@ -171,7 +172,10 @@ void AddBuddyWindow::createGui()
 
 	SelectBuddy = new SelectTalkableComboBox(this);
 	SelectBuddy->addBeforeAction(new QAction(tr(" - Select buddy - "), SelectBuddy));
-	SelectBuddy->setBaseModel(new BuddiesModel(SelectBuddy));
+
+	BuddyListModel *buddyListModel = new BuddyListModel(SelectBuddy);
+	new BuddyManagerAdapter(buddyListModel);
+	SelectBuddy->setBaseModel(buddyListModel);
 	SelectBuddy->setEnabled(false);
 	SelectBuddy->setVisible(false);
 	SelectBuddy->addFilter(new ExcludeBuddyTalkableFilter(Core::instance()->myself(), SelectBuddy));
