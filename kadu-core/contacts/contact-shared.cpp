@@ -150,7 +150,11 @@ bool ContactShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !Id.isEmpty() && !ContactAccount->uuid().isNull();
+	return (UuidStorableObject::shouldStore()
+			&& !Id.isEmpty()
+			&& !ContactAccount->uuid().isNull()
+			&& !isAnonymous())
+			|| customProperties()->shouldStore();
 }
 
 void ContactShared::emitUpdated()
