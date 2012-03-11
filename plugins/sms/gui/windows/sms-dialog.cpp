@@ -32,7 +32,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/model/buddies-model.h"
+#include "buddies/model/buddy-list-model.h"
+#include "buddies/model/buddy-manager-adapter.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
@@ -103,7 +104,11 @@ void SmsDialog::createGui()
 
 	RecipientComboBox = new SelectTalkableComboBox(this);
 	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
-	RecipientComboBox->setBaseModel(new BuddiesModel(RecipientComboBox));
+
+	BuddyListModel *buddyListModel = new BuddyListModel(RecipientComboBox);
+	new BuddyManagerAdapter(buddyListModel);
+
+	RecipientComboBox->setBaseModel(buddyListModel);
 	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
 
 	connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
