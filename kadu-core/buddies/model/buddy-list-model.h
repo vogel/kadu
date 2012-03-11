@@ -41,6 +41,9 @@ class KADUAPI BuddyListModel : public BuddiesModelBase
 
 	BuddyList List;
 
+	void connectBuddy(const Buddy &buddy);
+	void disconnectBuddy(const Buddy &buddy);
+
 protected:
 	virtual int buddyIndex(const Buddy &buddy) const;
 	virtual Buddy buddyAt(int index) const;
@@ -50,6 +53,8 @@ public:
 	virtual ~BuddyListModel();
 
 	void setBuddyList(const BuddyList &list);
+	void addBuddy(const Buddy &buddy);
+	void removeBuddy(const Buddy &buddy);
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 

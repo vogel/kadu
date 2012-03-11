@@ -40,37 +40,68 @@ BuddyListModel::~BuddyListModel()
 {
 }
 
+void BuddyListModel::connectBuddy(const Buddy &buddy)
+{
+	connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	        this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(buddy, SIGNAL(contactRemoved(Contact)),
+	        this, SLOT(contactRemoved(Contact)));
+	connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	        this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(buddy, SIGNAL(contactAdded(Contact)),
+	        this, SLOT(contactAdded(Contact)));
+}
+
+void BuddyListModel::disconnectBuddy(const Buddy &buddy)
+{
+	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
+	           this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
+	           this, SLOT(contactRemoved(Contact)));
+	disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
+	           this, SLOT(contactAboutToBeAdded(Contact)));
+	disconnect(buddy, SIGNAL(contactAdded(Contact)),
+	           this, SLOT(contactAdded(Contact)));
+}
+
 void BuddyListModel::setBuddyList(const BuddyList &list)
 {
 	beginResetModel();
 
 	foreach (const Buddy &buddy, List)
-	{
-		disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-		           this, SLOT(contactAboutToBeRemoved(Contact)));
-		disconnect(buddy, SIGNAL(contactRemoved(Contact)),
-		           this, SLOT(contactRemoved(Contact)));
-		disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
-		           this, SLOT(contactAboutToBeAdded(Contact)));
-		disconnect(buddy, SIGNAL(contactAdded(Contact)),
-		           this, SLOT(contactAdded(Contact)));
-	}
+		disconnectBuddy(buddy);
 
 	List = list;
 
 	foreach (const Buddy &buddy, List)
-	{
-		connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-		        this, SLOT(contactAboutToBeRemoved(Contact)));
-		connect(buddy, SIGNAL(contactRemoved(Contact)),
-		        this, SLOT(contactRemoved(Contact)));
-		connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
-		        this, SLOT(contactAboutToBeAdded(Contact)));
-		connect(buddy, SIGNAL(contactAdded(Contact)),
-		        this, SLOT(contactAdded(Contact)));
-	}
+		connectBuddy(buddy);
 
 	endResetModel();
+}
+
+void BuddyListModel::addBuddy(const Buddy &buddy)
+{
+	if (List.contains(buddy))
+		return;
+
+	connectBuddy(buddy);
+
+	beginInsertRows(QModelIndex(), List.count(), List.count());
+	List.append(buddy);
+	endInsertRows();
+}
+
+void BuddyListModel::removeBuddy(const Buddy &buddy)
+{
+	int index = List.indexOf(buddy);
+	if (-1 == index)
+		return;
+
+	disconnectBuddy(buddy);
+
+	beginRemoveRows(QModelIndex(), index, index);
+	List.removeAt(index);
+	endRemoveRows();
 }
 
 int BuddyListModel::rowCount(const QModelIndex &parent) const
