@@ -92,6 +92,15 @@ void IdentityShared::store()
 	storeValue("Name", Name);
 }
 
+bool IdentityShared::shouldStore()
+{
+	ensureLoaded();
+
+	return (UuidStorableObject::shouldStore()
+			&& !Name.isEmpty())
+			|| customProperties()->shouldStore();
+}
+
 void IdentityShared::aboutToBeRemoved()
 {
 	Accounts.clear();
