@@ -211,20 +211,20 @@ void ChatShared::store()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns true if object should be stored (is valid).
- * @return true if object should be stored (is valid)
+ * @short Returns true if object should be stored.
+ * @return true if object should be stored
  *
- * Returns true if object shoudl be stored (data is valid). When account is not set
- * or details class is loaded and is invalid chat data is removed from storage (it
- * is unusable after all).
+ * Chat is only stored when it is valid and has either any custom property or display name set.
  */
 bool ChatShared::shouldStore()
 {
 	ensureLoaded();
 
-	return UuidStorableObject::shouldStore()
+	return (UuidStorableObject::shouldStore()
 			&& !ChatAccount->uuid().isNull()
-			&& (!Details || Details->shouldStore());
+			&& (!Details || Details->shouldStore())
+			&& !Display.isEmpty())
+			|| customProperties()->shouldStore();
 }
 
 /**
