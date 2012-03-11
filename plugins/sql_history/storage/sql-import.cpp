@@ -24,10 +24,14 @@
 #include <QtSql/QSqlQuery>
 
 #include "accounts/account.h"
+#include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 
 #include "storage/sql-accounts-mapping.h"
+#include "storage/sql-chats-mapping.h"
 #include "storage/sql-contacts-mapping.h"
 
 #include "sql-import.h"
@@ -375,6 +379,54 @@ void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
 	database.commit();
 }
 
+void SqlImport::importChatsToV4(QSqlDatabase &database)
+{
+	QSqlQuery query(database);
+	QMap<int, Chat> chats;
+
+	database.transaction();
+
+	query.prepare("SELECT id, uuid FROM kadu_chats");
+	query.setForwardOnly(true);
+	query.exec();
+
+	while (query.next())
+	{
+		int id = query.value(0).toInt();
+		QString uuid = query.value(1).toString();
+
+		Chat chat = ChatManager::instance()->byUuid(uuid);
+		if (chat && chat.chatAccount() && !chat.contacts().isEmpty())
+			chats.insert(id, chat);
+	}
+
+	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
+	query.setForwardOnly(false);
+
+	QScopedPointer<SqlAccountsMapping> accountsMapping(new SqlAccountsMapping(database));
+	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accountsMapping.data()));
+	QScopedPointer<SqlChatsMapping> chatsMapping(new SqlChatsMapping(database, accountsMapping.data(), contactsMapping.data()));
+
+	QList<int> ids = chats.keys();
+	foreach (int id, ids)
+	{
+		Chat chat = chats.value(id);
+		int accountId = SqlAccountsMapping::idByAccount(chat.chatAccount());
+
+		if (id > 0 && accountId > 0)
+		{
+			query.bindValue(":id", id);
+			query.bindValue(":account_id", accountId);
+			query.bindValue(":chat", chatsMapping->chatToString(chat));
+			query.exec();
+
+			chat.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);
+		}
+	}
+
+	database.commit();
+}
+
 void SqlImport::dropBeforeV4Fields(QSqlDatabase &database)
 {
 	QSqlQuery query(database);
@@ -483,6 +535,7 @@ void SqlImport::importVersion1Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
 	dropBeforeV4Fields(database);
 
 	database.commit();
@@ -505,6 +558,7 @@ void SqlImport::importVersion2Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
 	dropBeforeV4Fields(database);
 
 	database.commit();
@@ -562,6 +616,7 @@ void SqlImport::importVersion3Schema(QSqlDatabase &database)
 	importAccountsToV4(database);
 	importContactsToV4(database);
 	importContactsToV4StatusesTable(database);
+	importChatsToV4(database);
 	dropBeforeV4Fields(database);
 }
 
