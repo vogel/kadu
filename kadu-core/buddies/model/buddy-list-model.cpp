@@ -89,6 +89,8 @@ void BuddyListModel::addBuddy(const Buddy &buddy)
 	beginInsertRows(QModelIndex(), List.count(), List.count());
 	List.append(buddy);
 	endInsertRows();
+
+	dataChanged(index(List.count() - 1, 0), index(List.count() - 1, 0));
 }
 
 void BuddyListModel::removeBuddy(const Buddy &buddy)
