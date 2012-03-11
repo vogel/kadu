@@ -59,6 +59,9 @@ protected:
 	virtual Buddy buddyAt(int index) const = 0;
 
 protected slots:
+	void buddyUpdated(const Buddy &buddy);
+	void contactUpdated(const Contact &contact);
+
 	void contactAboutToBeAdded(const Contact &contact);
 	void contactAdded(const Contact &contact);
 	void contactAboutToBeRemoved(const Contact &contact);

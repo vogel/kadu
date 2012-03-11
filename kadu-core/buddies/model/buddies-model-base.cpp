@@ -32,6 +32,7 @@
 #include "buddies/buddy.h"
 #include "buddies/model/buddy-data-extractor.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
@@ -43,11 +44,16 @@
 BuddiesModelBase::BuddiesModelBase(QObject *parent) :
 		QAbstractItemModel(parent), Checkable(false)
 {
+	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),
+	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
 BuddiesModelBase::~BuddiesModelBase()
 {
 	triggerAllAccountsUnregistered();
+
+	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),
+	           this, SLOT(contactUpdated(Contact)));
 }
 
 void BuddiesModelBase::setCheckable(bool checkable)
@@ -80,6 +86,40 @@ void BuddiesModelBase::buddyStatusChanged(Contact contact, Status oldStatus)
 	foreach (const QModelIndex &index, indexes)
 		if (index.isValid())
 			emit dataChanged(index, index);
+}
+
+void BuddiesModelBase::buddyUpdated(const Buddy &buddy)
+{
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	emit dataChanged(index, index);
+}
+
+void BuddiesModelBase::contactUpdated(const Contact &contact)
+{
+	const Buddy &buddy = contact.ownerBuddy();
+	if (!buddy)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(buddy);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &indexOfBuddy = indexes.at(0);
+	if (!indexOfBuddy.isValid())
+		return;
+
+	const QModelIndex &contactIndex = index(buddy.contacts().indexOf(contact), 0, indexOfBuddy);
+
+	emit dataChanged(indexOfBuddy, indexOfBuddy);
+	emit dataChanged(contactIndex, contactIndex);
 }
 
 void BuddiesModelBase::contactAboutToBeAdded(const Contact &contact)
