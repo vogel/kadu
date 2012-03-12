@@ -1,7 +1,7 @@
 /****************************************************************************
 *                                                                           *
 *   X11tools                                                                *
-*   Copyright (C) 2008-2011  Piotr Dąbrowski ultr@ultr.pl                   *
+*   Copyright (C) 2008-2012  Piotr Dąbrowski ultr@ultr.pl                   *
 *   Copyright (C) 2011       Przemysław Rudy prudy1@o2.pl                   *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
@@ -20,7 +20,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.21
+// VERSION: 1.23
 
 
 /*
@@ -36,10 +36,10 @@ KNOWN ISSUES:
 	#define X11TOOLS_H
 
 
-#include <X11/Xlib.h>
 #include <stdint.h>
 #include <string>
 #include <utility>
+#include <X11/Xlib.h>
 
 
 #ifdef X11TOOLSDEBUG
@@ -99,6 +99,7 @@ std::pair<int,int> X11_getWindowFramelessSize( Display *display, Window window )
 void X11_moveWindow( Display *display, Window window, int x, int y );
 void X11_centerWindow( Display *display, Window window, uint32_t desktop = X11_NODESKTOP, bool forceFreeDesktop = false );
 void X11_resizeWindow( Display *display, Window window, int width, int height );
+void X11_setSizeHintsOfWindow( Display *display, Window window, int minwidth, int minheight, int maxwidth, int maxheight );
 
 Window X11_getActiveWindow( Display *display );
 void X11_setActiveWindow( Display *display, Window window );
@@ -123,4 +124,6 @@ void X11_waitForWindowMapped( Display *display, Window window );
 bool X11_isCompositingManagerRunning( Display *display );
 
 void X11_setBlur( Display *display, Window window, bool enable );
+
+
 #endif
