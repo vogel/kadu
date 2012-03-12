@@ -27,6 +27,20 @@
 
 class BuddyListModel;
 
+/**
+ * @addtogroup Buddy
+ * @{
+ */
+
+/**
+ * @class BuddyManagerAdapter
+ * @author Rafał 'Vogel' Malinowski
+ * @short Adapter that makes BuddyListModel to use copy of buddies from BuddiesManager.
+ *
+ * This adapter created with a @link BuddyListModel @endlink as parent replicates list of buddies from
+ * @link BuddiesManager @endlink on this model. After creation other, non-managable, buddies can be
+ * added and removed from @link BuddyListModel @endlink. Removing or adding managable buddies is undefined.
+ */
 class BuddyManagerAdapter : public QObject
 {
 	Q_OBJECT
@@ -34,13 +48,40 @@ class BuddyManagerAdapter : public QObject
 	BuddyListModel *Model;
 
 private slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
+	 * @param buddy added buddy
+	 *
+	 * Buddy is added to @link BuddyListModel @endlink instance.
+	 */
 	void buddyAdded(const Buddy &buddy);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called after a buddy is removed from @link BuddiesManager @endlink singleton.
+	 * @param buddy removed buddy
+	 *
+	 * Buddy is removed from @link BuddyListModel @endlink instance.
+	 */
 	void buddyRemoved(const Buddy &buddy);
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
+	 * @param model model to adapt @link BuddiesManager @endlink to
+	 *
+	 * Given @link BuddyListModel @endlink will not have exactly the same data as @link BuddiesManager @endlink singleton.
+	 * Non-managable buddies can be added or removed from this model.
+	 */
 	explicit BuddyManagerAdapter(BuddyListModel *model);
 	virtual ~BuddyManagerAdapter();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // BUDDY_MANAGER_ADAPTER_H
