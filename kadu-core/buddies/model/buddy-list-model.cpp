@@ -103,6 +103,7 @@ Contact BuddyListModel::buddyContact(const QModelIndex &index, int contactIndex)
 
 void BuddyListModel::connectBuddy(const Buddy &buddy)
 {
+	connect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
 	connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
 	        this, SLOT(contactAboutToBeRemoved(Contact)));
 	connect(buddy, SIGNAL(contactRemoved(Contact)),
@@ -115,6 +116,7 @@ void BuddyListModel::connectBuddy(const Buddy &buddy)
 
 void BuddyListModel::disconnectBuddy(const Buddy &buddy)
 {
+	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
 	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
 	           this, SLOT(contactAboutToBeRemoved(Contact)));
 	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
@@ -125,8 +127,12 @@ void BuddyListModel::disconnectBuddy(const Buddy &buddy)
 	           this, SLOT(contactAdded(Contact)));
 }
 
-void BuddyListModel::buddyUpdated(const Buddy &buddy)
+void BuddyListModel::buddyUpdated()
 {
+	Buddy buddy(sender());
+	if (!buddy)
+		return;
+
 	const QModelIndexList &indexes = indexListForValue(buddy);
 	if (indexes.isEmpty())
 		return;
@@ -135,16 +141,6 @@ void BuddyListModel::buddyUpdated(const Buddy &buddy)
 
 	const QModelIndex &index = indexes.at(0);
 	emit dataChanged(index, index);
-}
-
-void BuddyListModel::buddyStatusChanged(Contact contact, Status oldStatus)
-{
-	Q_UNUSED(oldStatus)
-
-	const QModelIndexList& indexes = indexListForValue(contact.ownerBuddy());
-	foreach (const QModelIndex &index, indexes)
-		if (index.isValid())
-			emit dataChanged(index, index);
 }
 
 void BuddyListModel::contactUpdated(const Contact &contact)
@@ -167,6 +163,16 @@ void BuddyListModel::contactUpdated(const Contact &contact)
 
 	emit dataChanged(buddyIndex, buddyIndex);
 	emit dataChanged(contactIndex, contactIndex);
+}
+
+void BuddyListModel::contactStatusChanged(const Contact &contact, const Status &oldStatus)
+{
+	Q_UNUSED(oldStatus)
+
+	const QModelIndexList& indexes = indexListForValue(contact.ownerBuddy());
+	foreach (const QModelIndex &index, indexes)
+		if (index.isValid())
+			emit dataChanged(index, index);
 }
 
 void BuddyListModel::contactAboutToBeAdded(const Contact &contact)
@@ -303,6 +309,8 @@ void BuddyListModel::setCheckable(bool checkable)
 	beginResetModel();
 	Checkable = checkable;
 	endResetModel();
+
+	emit checkedBuddiesChanged(checkedBuddies());
 }
 
 QModelIndex BuddyListModel::index(int row, int column, const QModelIndex &parent) const
@@ -312,10 +320,10 @@ QModelIndex BuddyListModel::index(int row, int column, const QModelIndex &parent
 
 	if (!parent.isValid()) // buddy
 	{
-		if (row >= rowCount())
+		if (row >= List.count())
 			return QModelIndex(); // invalid
 
-		const Buddy &buddy = buddyAt(row);
+		const Buddy &buddy = List.at(row);
 		Q_ASSERT(buddy.data());
 
 		return createIndex(row, column, buddy.data());
@@ -347,7 +355,7 @@ QModelIndex BuddyListModel::parent(const QModelIndex &child) const
 	ContactShared *childContactShared = qobject_cast<ContactShared *>(sharedData);
 	Q_ASSERT(childContactShared);
 
-	return index(buddyIndex(childContactShared->ownerBuddy()), 0);
+	return index(List.indexOf(childContactShared->ownerBuddy()), 0);
 }
 
 int BuddyListModel::columnCount(const QModelIndex &parent) const
@@ -456,7 +464,10 @@ bool BuddyListModel::setData(const QModelIndex &index, const QVariant &value, in
 
 BuddySet BuddyListModel::checkedBuddies() const
 {
-	return CheckedBuddies;
+	if (Checkable)
+		return CheckedBuddies;
+	else
+		return BuddySet();
 }
 
 QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
@@ -466,7 +477,7 @@ QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
 	const Buddy &buddy = buddyFromVariant(value);
 	if (buddy)
 	{
-		const int i = buddyIndex(buddy);
+		const int i = List.indexOf(buddy);
 		if (-1 != i)
 			result.append(index(i, 0));
 		return result;
@@ -481,7 +492,7 @@ QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
 
 	if (-1 != contactIndexInBuddy)
 	{
-		const int i = buddyIndex(buddy);
+		const int i = List.indexOf(buddy);
 		if (-1 != i)
 			result.append(index(i, 0).child(contactIndexInBuddy, 0));
 	}
@@ -510,15 +521,12 @@ QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
 	return BuddyListMimeDataHelper::toMimeData(list);
 }
 
-int BuddyListModel::buddyIndex(const Buddy &buddy) const
+void BuddyListModel::accountRegistered(Account account)
 {
-	return List.indexOf(buddy);
+	connect(account, SLOT(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
 }
 
-Buddy BuddyListModel::buddyAt(int index) const
+void BuddyListModel::accountUnregistered (Account account)
 {
-	if (index >= 0 && index < List.size())
-		return List.at(index);
-	else
-		return Buddy::null;
+	disconnect(account, SLOT(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
 }

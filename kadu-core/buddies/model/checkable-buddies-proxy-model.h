@@ -30,7 +30,7 @@
  */
 
 /**
- * @class Buddy
+ * @class CheckableBuddiesProxyModel
  * @author Rafał 'Vogel' Malinowski
  * @short Proxy models that adds check capabilities to any model with buddies.
  *
