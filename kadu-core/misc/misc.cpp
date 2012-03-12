@@ -91,6 +91,17 @@ QRect properGeometry(const QRect &rect)
 	if (geometry.topLeft().y() < availableGeometry.y())
 		geometry.moveTop(availableGeometry.x());
 
+#ifdef Q_OS_MAC
+	// looks like QDesktopWidget::availableGeometry() does not work correctly on Mac OS X, so we need a workaround
+	if (availableGeometry.top() == 0)
+	{
+		if (geometry.y() < 20)
+			geometry.moveTop(20);
+		if (geometry.height() > availableGeometry.height() - 20)
+			geometry.setHeight(availableGeometry.height() - 20);
+	}
+#endif
+
 	// done
 	return geometry;
 }
@@ -104,12 +115,6 @@ QRect windowGeometry(const QWidget *w)
 void setWindowGeometry(QWidget *w, const QRect &geometry)
 {
 	QRect rect = properGeometry(geometry);
-
-#ifdef Q_OS_MAC
-	// Looks like availableGeometry() does not work correctly on Mac OS X, so we need a workaround.
-	if (rect.y() < 20)
-		rect.setY(20);
-#endif
 
 	// setGeometry() will do no good here, refer to Qt docs and Kadu bug #2262
 	// note it has to be symmetric to what windowGeometry() does
