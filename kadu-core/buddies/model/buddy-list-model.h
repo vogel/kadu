@@ -28,21 +28,41 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "exports.h"
 #include "status/status.h"
 
-#include "buddies-model-base.h"
+#include "accounts/accounts-aware-object.h"
+#include "model/kadu-abstract-model.h"
 
 class Buddy;
 
-class KADUAPI BuddyListModel : public BuddiesModelBase
+class KADUAPI BuddyListModel : public QAbstractItemModel, public KaduAbstractModel, public AccountsAwareObject
 {
 	Q_OBJECT
 
+	bool Checkable;
 	BuddyList List;
+	BuddySet CheckedBuddies;
+
+	Buddy buddyFromVariant(const QVariant &variant) const;
+	Contact contactFromVariant(const QVariant &variant) const;
+
+	bool isCheckableIndex(const QModelIndex &index) const;
+	Contact buddyContact(const QModelIndex &index, int contactIndex) const;
 
 	void connectBuddy(const Buddy &buddy);
 	void disconnectBuddy(const Buddy &buddy);
+
+private slots:
+	void buddyUpdated(const Buddy &buddy);
+	void buddyStatusChanged(Contact contact, Status oldStatus);
+	void contactUpdated(const Contact &contact);
+
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
 
 protected:
 	virtual int buddyIndex(const Buddy &buddy) const;
@@ -56,7 +76,30 @@ public:
 	void addBuddy(const Buddy &buddy);
 	void removeBuddy(const Buddy &buddy);
 
+	void setCheckable(bool checkable);
+
+	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	virtual QModelIndex parent(const QModelIndex &child) const;
+
+	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+
+	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
+	virtual QVariant data(const QModelIndex &index, int role) const;
+
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	BuddySet checkedBuddies() const;
+
+	// AbstractContactsModel implementation
+	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+
+	// D&D
+	virtual QStringList mimeTypes() const;
+	virtual QMimeData * mimeData(const QModelIndexList & indexes) const;
+
+signals:
+	void checkedBuddiesChanged(const BuddySet &checkedBuddies);
+
 
 };
 
