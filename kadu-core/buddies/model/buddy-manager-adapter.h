@@ -32,7 +32,6 @@ class BuddyManagerAdapter : public QObject
 	Q_OBJECT
 
 	BuddyListModel *Model;
-	bool IncludeMyself;
 
 private slots:
 	void buddyAdded(const Buddy &buddy);
@@ -41,9 +40,6 @@ private slots:
 public:
 	explicit BuddyManagerAdapter(BuddyListModel *model);
 	virtual ~BuddyManagerAdapter();
-
-	void setIncludeMyself(bool includeMyself);
-	bool includeMyself() const { return IncludeMyself; }
 
 };
 

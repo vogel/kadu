@@ -46,6 +46,7 @@ class TalkableModel : public KaduMergedProxyModel
 	ChatsModel *Chats;
 	BuddyListModel *Buddies;
 	BuddyManagerAdapter *BuddiesAdapter;
+	bool IncludeMyself;
 
 public:
 	/**

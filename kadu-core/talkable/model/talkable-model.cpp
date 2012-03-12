@@ -20,11 +20,12 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "chat/model/chats-model.h"
+#include "core/core.h"
 
 #include "talkable-model.h"
 
 TalkableModel::TalkableModel(QObject *parent) :
-		KaduMergedProxyModel(parent)
+		KaduMergedProxyModel(parent), IncludeMyself(false)
 {
 	Chats = new ChatsModel(this);
 	Buddies = new BuddyListModel(this);
@@ -42,10 +43,17 @@ TalkableModel::~TalkableModel()
 
 void TalkableModel::setIncludeMyself(bool includeMyself)
 {
-	BuddiesAdapter->setIncludeMyself(includeMyself);
+	if (IncludeMyself == includeMyself)
+		return;
+
+	IncludeMyself = includeMyself;
+	if (IncludeMyself)
+		Buddies->addBuddy(Core::instance()->myself());
+	else
+		Buddies->removeBuddy(Core::instance()->myself());
 }
 
 bool TalkableModel::includeMyself() const
 {
-	return BuddiesAdapter->includeMyself();
+	return IncludeMyself;
 }
