@@ -1,5 +1,8 @@
 body {margin: 10px 15px 10px 15px;}
 
+* { -webkit-user-select:none; }
+.selectable, .selectable * { -webkit-user-select:text; }
+
 p {margin: 0px;overflow: hidden;}
 
 .spacer {clear: both;}
@@ -22,7 +25,7 @@ p {margin: 0px;overflow: hidden;}
 .message {
 	font-size: 12px;
 	color: #454545;
-	text-shadow: 0px 1px 0px rgba(255,255,255,0.9);
+	/*text-shadow: 0px 1px 0px rgba(255,255,255,0.9);*/
 	word-wrap: break-word;
 	}
 .messagetime {

@@ -34,9 +34,11 @@
 	}
 .messagetopleft, .messagemidleft, .messagebotleft {
 	width: 12px;
+	min-width: 12px;
 	}
 .messagetopright, .messagemidright, .messagebotright {
 	width: 12px;
+	min-width: 12px;
 	}
 .messagetopleft, .messagetopcenter, .messagetopright {
 	height: 12px;
