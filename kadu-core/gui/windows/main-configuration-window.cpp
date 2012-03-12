@@ -346,7 +346,7 @@ void MainConfigurationWindow::setIconThemes()
 
 	QStringList iconPaths;
 	iconPaths
-			<< "kadu_icons/kadu"
+			<< "protocols/xmpp/online"
 			<< "protocols/gadu-gadu/online"
 			<< "protocols/common/message"
 			<< "preferences-other";
