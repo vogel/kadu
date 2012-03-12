@@ -42,21 +42,6 @@ ChatTypeContact::~ChatTypeContact()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Sort index for this object.
- * @return sort index for this object
- *
- * Sort index is used for sorting chat types in history window.
- * Chats with smaller sort indexes are displayed first.
- *
- * Sort index for ChatTypeContact is 0.
- */
-int ChatTypeContact::sortIndex() const
-{
-	return 0;
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal name of chat type.
  * @return internal name of chat type
  *

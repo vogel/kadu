@@ -59,16 +59,6 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sort index for this object.
-	 * @return sort index for this object
-	 *
-	 * Sort index is used for sorting chat types in history window.
-	 * Chats with smaller sort indexes are displayed first.
-	 */
-	virtual int sortIndex() const = 0;
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Internal name of chat type.
 	 * @return internal name of chat type
 	 *
@@ -114,9 +104,6 @@ public:
 	 * given @link Chat @endlink (@link ChatShared @endlink).
 	 */
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
-
-	bool operator == (const ChatType &compare) const;
-	bool operator < (const ChatType &compare) const;
 
 };
 

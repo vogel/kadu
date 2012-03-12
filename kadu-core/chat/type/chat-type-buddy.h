@@ -51,7 +51,6 @@ public:
 	explicit ChatTypeBuddy(QObject *parent = 0);
 	virtual ~ChatTypeBuddy();
 
-	virtual int sortIndex() const;
 	virtual QString name() const;
 	virtual QStringList aliases() const;
 	virtual KaduIcon icon() const;

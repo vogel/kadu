@@ -35,21 +35,6 @@ ChatTypeBuddy::~ChatTypeBuddy()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Sort index for this object.
- * @return sort index for this object
- *
- * Sort index is used for sorting chat types in history window.
- * Chats with smaller sort indexes are displayed first.
- *
- * Sort index for ChatTypeBuddy is -1. That means, that this chat type wont be displayed in history window.
- */
-int ChatTypeBuddy::sortIndex() const
-{
-	return -1;
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal name of chat type.
  * @return internal name of chat type
  *

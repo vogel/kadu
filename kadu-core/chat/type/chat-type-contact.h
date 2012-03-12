@@ -58,7 +58,6 @@ public:
 	explicit ChatTypeContact(QObject *parent = 0);
 	virtual ~ChatTypeContact();
 
-	virtual int sortIndex() const;
 	virtual QString name() const;
 	virtual QStringList aliases() const;
 	virtual KaduIcon icon() const;
