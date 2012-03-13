@@ -1,0 +1,258 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
+
+#include "accounts/filter/protocol-filter.h"
+#include "chat/chat-details-room.h"
+#include "chat/chat-manager.h"
+#include "gui/widgets/accounts-combo-box.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "icons/kadu-icon.h"
+#include "misc/misc.h"
+#include "protocols/protocol.h"
+
+#include "add-room-chat-window.h"
+
+AddRoomChatWindow::AddRoomChatWindow(QWidget *parent) :
+		QDialog(parent)
+{
+	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowRole("kadu-add-room-chat");
+	setWindowTitle(tr("Add Conference"));
+
+	createGui();
+
+	validateData();
+
+	loadWindowGeometry(this, "General", "AddRoomChatWindowGeometry", 0, 50, 430, 250);
+}
+
+AddRoomChatWindow::~AddRoomChatWindow()
+{
+	saveWindowGeometry(this, "General", "AddRoomChatWindowGeometry");
+}
+
+void AddRoomChatWindow::createGui()
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QWidget *mainWidget = new QWidget(this);
+	mainLayout->addWidget(mainWidget);
+
+	QFormLayout *layout = new QFormLayout(mainWidget);
+
+	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo->setIncludeIdInDisplay(true);
+
+	// only xmpp rooms for now
+	// we need to add something like Protocol::supporterChatTypes()
+	ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
+	protocolFilter->setProtocolName("jabber");
+	AccountCombo->addFilter(protocolFilter);
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Account:"), AccountCombo);
+
+	DisplayNameEdit = new QLineEdit(this);
+	connect(DisplayNameEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Visible name:"), DisplayNameEdit);
+
+	QLabel *hintLabel = new QLabel(tr("Enter a name for this conference if you want to have it on roster"));
+	QFont hintLabelFont = hintLabel->font();
+	hintLabelFont.setItalic(true);
+	hintLabelFont.setPointSize(hintLabelFont.pointSize() - 2);
+	hintLabel->setFont(hintLabelFont);
+	layout->addRow(0, hintLabel);
+
+	ErrorLabel = new QLabel(this);
+	QFont labelFont = ErrorLabel->font();
+	labelFont.setBold(true);
+	ErrorLabel->setFont(labelFont);
+	mainLayout->addWidget(ErrorLabel);
+
+	ServerEdit = new QLineEdit(this);
+	connect(ServerEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Server name:"), ServerEdit);
+
+	RoomNameEdit = new QLineEdit(this);
+	connect(RoomNameEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Room name:"), RoomNameEdit);
+
+	PasswordEdit = new QLineEdit(this);
+	PasswordEdit->setEchoMode(QLineEdit::Password);
+	connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Password:"), PasswordEdit);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(mainWidget);
+
+	AddButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Add Room Chat"), this);
+	AddButton->setDefault(true);
+	connect(AddButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+
+	StartButton = new QPushButton(KaduIcon("internet-group-chat").icon(), tr("Start Room Chat"), this);
+	connect(StartButton, SIGNAL(clicked(bool)), this, SLOT(start()));
+
+	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+
+	buttons->addButton(AddButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(StartButton, QDialogButtonBox::ActionRole);
+	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
+
+	mainLayout->addSpacing(32);
+	mainLayout->addWidget(buttons);
+
+	if (AccountCombo->currentAccount())
+		DisplayNameEdit->setFocus();
+	else
+		AccountCombo->setFocus();
+}
+
+void AddRoomChatWindow::displayErrorMessage(const QString &message)
+{
+	ErrorLabel->setText(message);
+}
+
+void AddRoomChatWindow::validateData()
+{
+	AddButton->setEnabled(false);
+	StartButton->setEnabled(false);
+
+	Account account = AccountCombo->currentAccount();
+	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->protocolFactory())
+	{
+		displayErrorMessage(tr("Account is not selected"));
+		return;
+	}
+
+	if (ServerEdit->text().isEmpty())
+	{
+		displayErrorMessage(tr("Enter server name"));
+		return;
+	}
+
+	if (RoomNameEdit->text().isEmpty())
+	{
+		displayErrorMessage(tr("Enter room name"));
+		return;
+	}
+
+	StartButton->setEnabled(true);
+
+	const QString &display = DisplayNameEdit->text();
+	if (!display.isEmpty() && ChatManager::instance()->byDisplay(display))
+	{
+		displayErrorMessage(tr("Visible name is already used for another chat"));
+		return;
+	}
+
+	const Chat &chat = computeChat();
+	Q_ASSERT(!chat.isNull());
+
+	if (!chat.display().isEmpty())
+	{
+		displayErrorMessage(tr("This room chat is already available as <i>%1</i>").arg(chat.display()));
+		return;
+	}
+
+	if (display.isEmpty())
+		displayErrorMessage(tr("Enter visible name to add this room chat to roster"));
+	else
+		displayErrorMessage(QString());
+
+	AddButton->setEnabled(!display.isEmpty());
+}
+
+Chat AddRoomChatWindow::computeChat() const
+{
+	const Account &account = AccountCombo->currentAccount();
+	Q_ASSERT(account);
+
+	foreach (const Chat &chat, ChatManager::instance()->items())
+	{
+		if (chat.type() != "Room")
+			continue;
+		if (chat.chatAccount() != account)
+			continue;
+
+		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		if (!details)
+			continue;
+
+		if (details->server() == ServerEdit->text() && details->roomName() == RoomNameEdit->text())
+		{
+			details->setPassword(PasswordEdit->text());
+			return chat;
+		}
+	}
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account);
+	chat.setType("Room");
+
+	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+	Q_ASSERT(details);
+
+	details->setServer(ServerEdit->text());
+	details->setRoomName(RoomNameEdit->text());
+	details->setPassword(PasswordEdit->text());
+
+	ChatManager::instance()->addItem(chat);
+
+	return chat;
+}
+
+void AddRoomChatWindow::accept()
+{
+	const Chat &chat = computeChat();
+	Q_ASSERT(!chat.isNull());
+
+	chat.setDisplay(DisplayNameEdit->text());
+
+	QDialog::accept();
+}
+
+void AddRoomChatWindow::start()
+{
+	const Chat &chat = computeChat();
+	Q_ASSERT(!chat.isNull());
+
+	// only update display chat name when not empty
+	// this method can be called even when uer did not enter display name
+	if (!DisplayNameEdit->text().isEmpty())
+		chat.setDisplay(DisplayNameEdit->text());
+
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(computeChat(), true);
+	if (chatWidget)
+		chatWidget->activate();
+
+	QDialog::accept();
+}

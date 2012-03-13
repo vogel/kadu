@@ -42,6 +42,7 @@
 #include "gui/actions/actions.h"
 #include "gui/actions/change-status-action.h"
 #include "gui/actions/chat/add-conference-action.h"
+#include "gui/actions/chat/add-room-chat-action.h"
 #include "gui/actions/default-proxy-action.h"
 #include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/edit-talkable-action.h"
@@ -207,6 +208,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
 	AddConference = new AddConferenceAction(this);
+	AddRoomChat = new AddRoomChatAction(this);
 
 	AddGroup= new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",

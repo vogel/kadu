@@ -48,6 +48,7 @@
 #include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
+#include "gui/actions/chat/add-room-chat-action.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
@@ -213,6 +214,7 @@ void KaduWindow::createContactsMenu()
 
 	insertMenuActionDescription(Actions->AddUser, MenuBuddies);
 	AddConference = insertMenuActionDescription(Actions->addConference(), MenuBuddies);
+	AddRoomChat = insertMenuActionDescription(Actions->addRoomChat(), MenuBuddies);
 	insertMenuActionDescription(Actions->AddGroup, MenuBuddies);
 	insertMenuActionDescription(Actions->OpenSearch, MenuBuddies);
 
@@ -228,11 +230,11 @@ void KaduWindow::createContactsMenu()
 	menuBar()->addMenu(ContactsMenu);
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-	        this, SLOT(updateAddConferenceMenuItem()));
+	        this, SLOT(updateAddChatMenuItem()));
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-	        this, SLOT(updateAddConferenceMenuItem()));
+	        this, SLOT(updateAddChatMenuItem()));
 
-	updateAddConferenceMenuItem();
+	updateAddChatMenuItem();
 }
 
 void KaduWindow::createToolsMenu()
@@ -362,16 +364,16 @@ void KaduWindow::updateRecentChatsMenu()
 	kdebugf2();
 }
 
-void KaduWindow::updateAddConferenceMenuItem()
+void KaduWindow::updateAddChatMenuItem()
 {
 	AddConference->setVisible(false);
+	AddRoomChat->setVisible(false);
 
 	foreach (const Account &account, AccountManager::instance()->items())
 		if (account.protocolName() == "gadu")
-		{
 			AddConference->setVisible(true);
-			return;
-		}
+		else if (account.protocolName() == "jabber")
+			AddRoomChat->setVisible(true);
 }
 
 void KaduWindow::openRecentChats(QAction *action)

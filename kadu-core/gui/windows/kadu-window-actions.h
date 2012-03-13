@@ -34,6 +34,7 @@ class Action;
 class ActionContext;
 class ActionDescription;
 class AddConferenceAction;
+class AddRoomChatAction;
 class ChangeStatusAction;
 class DeleteTalkableAction;
 class DefaultProxyAction;
@@ -52,6 +53,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
 	AddConferenceAction *AddConference;
+	AddRoomChatAction *AddRoomChat;
 	ActionDescription *MergeContact;
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
@@ -131,6 +133,7 @@ public:
 	virtual ~KaduWindowActions();
 
 	AddConferenceAction * addConference() { return AddConference; }
+	AddRoomChatAction * addRoomChat() { return AddRoomChat; }
 	EditTalkableAction * editTalkable() { return EditTalkable; }
 	DeleteTalkableAction * deleteTalkable() { return DeleteTalkable; }
 

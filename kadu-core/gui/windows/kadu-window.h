@@ -87,6 +87,7 @@ private:
 	bool RecentChatsMenuNeedsUpdate;
 
 	QAction *AddConference;
+	QAction *AddRoomChat;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -125,7 +126,7 @@ private:
 private slots:
 	void invalidateRecentChatsMenu();
 	void updateRecentChatsMenu();
-	void updateAddConferenceMenuItem();
+	void updateAddChatMenuItem();
 	void openRecentChats(QAction *action);
 
 	void iconThemeChanged();
