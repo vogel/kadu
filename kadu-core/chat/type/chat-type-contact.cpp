@@ -24,10 +24,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-preferred-manager.h"
+#include "chat/chat.h"
 #include "chat/chat-details-contact.h"
+#include "chat/chat-manager.h"
+#include "contacts/contact-set.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact.h"
+
+Chat ChatTypeContact::findChat(const Buddy &buddy, NotFoundAction notFoundAction)
+{
+	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(buddy);
+	if (!contact)
+		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
+
+	Account account = contact.contactAccount();
+	if (account.isNull())
+		return Chat::null;
+
+	if (contact.id() == account.id())
+		return Chat::null;
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems())
+		if (chat.type() == QLatin1String("Contact") || chat.type() == QLatin1String("Simple"))
+			if (chat.contacts().toContact() == contact)
+			{
+				// when contacts changed their accounts we need to change account of chat too
+				chat.setChatAccount(account);
+				return chat;
+			}
+
+	if (ActionReturnNull == notFoundAction)
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account);
+	chat.setType("Contact");
+
+	ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
+	chatDetailsContact->setState(StorableObject::StateNew);
+	chatDetailsContact->setContact(contact);
+
+	if (ActionCreateAndAdd == notFoundAction)
+		ChatManager::instance()->addItem(chat);
+
+	return chat;
+}
 
 ChatTypeContact::ChatTypeContact(QObject *parent) :
 		ChatType(parent)

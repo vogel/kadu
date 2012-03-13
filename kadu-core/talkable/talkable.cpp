@@ -25,6 +25,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/model/chat-data-extractor.h"
+#include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
 
@@ -147,7 +148,7 @@ Chat Talkable::toChat() const
 	{
 		case ItemBuddy:
 		{
-			const Chat &chat = ChatManager::instance()->findChat(BuddySet(MyBuddy), ActionCreateAndAdd);
+			const Chat &chat = ChatTypeContact::findChat(MyBuddy, ActionCreateAndAdd);
 			const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 			return buddyChat ? buddyChat : chat;
 		}
