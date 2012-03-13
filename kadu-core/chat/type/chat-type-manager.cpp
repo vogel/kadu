@@ -23,6 +23,7 @@
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-room.h"
 #include "icons/icons-manager.h"
 
 #include "chat-type-manager.h"
@@ -58,6 +59,7 @@ void ChatTypeManager::init()
 	registerChatType(new ChatTypeBuddy());
 	registerChatType(new ChatTypeContact());
 	registerChatType(new ChatTypeContactSet());
+	registerChatType(new ChatTypeRoom());
 }
 
 

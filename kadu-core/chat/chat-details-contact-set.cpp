@@ -80,8 +80,8 @@ void ChatDetailsContactSet::store()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Returns true if assigned contact is valid.
- * @return true if assigned set of contact is not valid
+ * @short Returns true if assigned set of contact is valid.
+ * @return true if assigned set of contact is valid
  *
  * Returns true if assigned set of contacts is not empty. No empty chats (without contacts)
  * will be stored thanks to this method.

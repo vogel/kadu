@@ -4,6 +4,7 @@ set (chat_SRCS
 	chat-details-buddy.cpp
 	chat-details-contact.cpp
 	chat-details-contact-set.cpp
+	chat-details-room.cpp
 	chat-list-mime-data-helper.cpp
 	chat-manager.cpp
 	chat-shared.cpp
@@ -27,15 +28,16 @@ set (chat_SRCS
 	type/chat-type-contact.cpp
 	type/chat-type-contact-set.cpp
 	type/chat-type-manager.cpp
+	type/chat-type-room.cpp
 )
 
 set (chat_MOC_SRCS
+	buddy-chat-manager.h
 	chat-details.h
 	chat-details-buddy.h
 	chat-details-contact.h
 	chat-details-contact-set.h
-
-	buddy-chat-manager.h
+	chat-details-room.h
 	chat-manager.h
 	chat-shared.h
 	chat-styles-manager.h
@@ -53,6 +55,7 @@ set (chat_MOC_SRCS
 	type/chat-type-contact.h
 	type/chat-type-contact-set.h
 	type/chat-type-manager.h
+	type/chat-type-room.h
 )
 
 kadu_subdirectory (chat "${chat_SRCS}" "${chat_MOC_SRCS}" "")

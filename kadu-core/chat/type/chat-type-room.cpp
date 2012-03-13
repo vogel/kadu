@@ -1,13 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,19 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-contact-set.h"
+#include "chat/chat-details-room.h"
 #include "icons/kadu-icon.h"
 
-#include "chat-type-contact-set.h"
+#include "chat-type-room.h"
 
-ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
+ChatTypeRoom::ChatTypeRoom(QObject *parent) :
 		ChatType(parent)
 {
-	Aliases.append("ContactSet");
-	Aliases.append("Conference");
 }
 
-ChatTypeContactSet::~ChatTypeContactSet()
+ChatTypeRoom::~ChatTypeRoom()
 {
 }
 
@@ -48,11 +39,11 @@ ChatTypeContactSet::~ChatTypeContactSet()
  * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
  * and also it is stored with @link Chat @endlink data.
  *
- * Internal name for ChatTypeContactSet is 'ContactSet'.
+ * Internal name for ChatTypeRoom is 'Room'.
  */
-QString ChatTypeContactSet::name() const
+QString ChatTypeRoom::name() const
 {
-	return "ContactSet";
+	return "Room";
 }
 
 /**
@@ -62,11 +53,11 @@ QString ChatTypeContactSet::name() const
  *
  * Chat type internal aliases, used to imporitng old configurations.
  *
- * Internal aliases for ChatTypeContactSet are 'ContactSet' and 'Conference'.
+ * Internal aliase for ChatTypeRoom is 'Room'.
  */
-QStringList ChatTypeContactSet::aliases() const
+QStringList ChatTypeRoom::aliases() const
 {
-	return Aliases;
+	return QStringList() << name();
 }
 
 /**
@@ -76,9 +67,9 @@ QStringList ChatTypeContactSet::aliases() const
  *
  * Chat type icon. Icon is used in history window and as icon of chat windows.
  *
- * Icon for ChatTypeContactSet is 'kadu_icons/conference'.
+ * Icon for ChatTypeRoom is 'kadu_icons/conference'.
  */
-KaduIcon ChatTypeContactSet::icon() const
+KaduIcon ChatTypeRoom::icon() const
 {
 	return KaduIcon("kadu_icons/conference");
 }
@@ -89,22 +80,22 @@ KaduIcon ChatTypeContactSet::icon() const
  * @return window role for this chat type.
  *
  * Kadu window role for this chat type.
- * For ContactSet the role is "kadu-chat-contact-set".
+ * For ContactSet the role is "kadu-chat-room".
  */
-QString ChatTypeContactSet::windowRole() const
+QString ChatTypeRoom::windowRole() const
 {
-	return "kadu-chat-contact-set";
+	return "kadu-chat-room";
 }
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Creates new ChatDetailsContactSet object for given chat type.
- * @return new ChatDetailsContactSet object for given chat type
+ * @short Creates new ChatDetailsRoom object for given chat type.
+ * @return new ChatDetailsRoom object for given chat type
  *
- * Creates new @link ChatDetailsContactSet @endlink object for
+ * Creates new @link ChatDetailsRoom @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
+ChatDetails * ChatTypeRoom::createChatDetails(ChatShared *chatData) const
 {
-	return new ChatDetailsContactSet(chatData);
+	return new ChatDetailsRoom(chatData);
 }
