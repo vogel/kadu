@@ -523,10 +523,10 @@ QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
 
 void BuddyListModel::accountRegistered(Account account)
 {
-	connect(account, SLOT(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
+	connect(account, SIGNAL(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
 }
 
 void BuddyListModel::accountUnregistered (Account account)
 {
-	disconnect(account, SLOT(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
+	disconnect(account, SIGNAL(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
 }
