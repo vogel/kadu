@@ -48,6 +48,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -453,7 +454,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 
 	foreach (const Contact &contact, chat.contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(contact, ActionReturnNull);
 		if (!chat)
 			continue;
 

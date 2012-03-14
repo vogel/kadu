@@ -41,6 +41,8 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -333,7 +335,9 @@ void SearchWindow::chatFound()
 	const ContactSet &contacts = selectedContacts();
 	if (!contacts.isEmpty())
 	{
-		const Chat &chat = ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
+		const Chat &chat = 1 == contacts.size()
+				? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+				: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, ActionCreateAndAdd);
 		if (chatWidget)
 			chatWidget->activate();

@@ -30,6 +30,7 @@
 #include "activate.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -192,7 +193,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 		if (!haveFileName && fi.exists())
 		{
 			QWidget *parent = 0;
-			Chat chat = ChatManager::instance()->findChat(ContactSet(transfer.peer()), ActionReturnNull);
+			Chat chat = ChatTypeContact::findChat(transfer.peer(), ActionReturnNull);
 			if (chat)
 				parent = ChatWidgetManager::instance()->byChat(chat, false);
 
@@ -292,7 +293,7 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
 	}
 
-	Chat chat = ChatManager::instance()->findChat(ContactSet(fileTransfer.peer()), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
 	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
 			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
 	notification->setTitle(tr("Incoming transfer"));

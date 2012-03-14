@@ -26,6 +26,8 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -120,8 +122,13 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 	foreach (UinType uin, uinsList)
 		contacts.insert(ContactManager::instance()->byId(GaduAccount, QString::number(uin), ActionCreateAndAdd));
 
+	if (contacts.isEmpty())
+		return Chat::null;
+
 	// it is called before this object is move to separate thread, so it is safe to add it to ChatManager later
-	return ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
+	return 1 == contacts.size()
+			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+			: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 }
 
 void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entry)

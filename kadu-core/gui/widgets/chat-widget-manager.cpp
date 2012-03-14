@@ -27,6 +27,7 @@
 
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -262,7 +263,7 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 {
 	foreach (const Contact &contact, buddy.contacts())
 	{
-		const Chat &chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
+		const Chat &chat = ChatTypeContact::findChat(contact, ActionReturnNull);
 		if (chat)
 			closeChat(chat);
 	}

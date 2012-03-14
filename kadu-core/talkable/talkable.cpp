@@ -152,7 +152,7 @@ Chat Talkable::toChat() const
 			const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 			return buddyChat ? buddyChat : chat;
 		}
-		case ItemContact: return ChatManager::instance()->findChat(ContactSet(MyContact), ActionCreateAndAdd);
+		case ItemContact: return ChatTypeContact::findChat(MyContact, ActionCreateAndAdd);
 		case ItemChat: return MyChat;
 		default:
 			return Chat::null;

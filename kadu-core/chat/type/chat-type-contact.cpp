@@ -35,12 +35,20 @@
 
 Chat ChatTypeContact::findChat(const Buddy &buddy, NotFoundAction notFoundAction)
 {
+	if (!buddy)
+		return Chat::null;
+
 	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(buddy);
 	if (!contact)
 		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
+	return findChat(contact, notFoundAction);
+}
+
+Chat ChatTypeContact::findChat(const Contact &contact, NotFoundAction notFoundAction)
+{
 	Account account = contact.contactAccount();
-	if (account.isNull())
+	if (!account)
 		return Chat::null;
 
 	if (contact.id() == account.id())

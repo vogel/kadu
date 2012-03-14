@@ -27,6 +27,7 @@
 #include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -157,9 +158,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		return;
 
 	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
-	ContactSet contacts(contact);
-
-	Chat chat = ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	bool ignore = false;
 
 	QByteArray body = msg.body().toUtf8();

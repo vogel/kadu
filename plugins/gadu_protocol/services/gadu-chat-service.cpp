@@ -27,7 +27,8 @@
 #include <QtCore/QTimer>
 #include <QtGui/QTextDocument>
 
-#include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -261,7 +262,13 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	ContactSet chatContacts = conference;
 	chatContacts.remove(account().accountContact());
 
-	Chat chat = ChatManager::instance()->findChat(chatContacts, ActionCreateAndAdd);
+	if (chatContacts.isEmpty())
+		return;
+
+	Chat chat = 1 == chatContacts.size()
+			? ChatTypeContact::findChat(*chatContacts.constBegin(), ActionCreateAndAdd)
+			: ChatTypeContactSet::findChat(chatContacts, ActionCreateAndAdd);
+
 	// create=true in our call for findChat(), but chat might be null for example if chatContacts was empty
 	if (!chat || chat.isIgnoreAllMessages())
 		return;

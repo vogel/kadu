@@ -36,6 +36,7 @@
 #include "chat/chat-details.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -468,7 +469,7 @@ void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
 	foreach (const Contact &contact, talkable.toBuddy().contacts())
 	{
-		Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionReturnNull);
+		Chat chat = ChatTypeContact::findChat(contact, ActionReturnNull);
 		clearChatHistory(chat, QDate());
 	}
 

@@ -38,6 +38,7 @@
 
 class Buddy;
 class Chat;
+class Contact;
 
 /**
  * @addtogroup Chat
@@ -60,6 +61,7 @@ class KADUAPI ChatTypeContact : public ChatType
 
 public:
 	static Chat findChat(const Buddy &buddy, NotFoundAction notFoundAction);
+	static Chat findChat(const Contact &contact, NotFoundAction notFoundAction);
 
 	explicit ChatTypeContact(QObject *parent = 0);
 	virtual ~ChatTypeContact();

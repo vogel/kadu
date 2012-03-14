@@ -34,6 +34,8 @@
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -247,7 +249,9 @@ void OpenChatWith::openChat()
 
 	BuddySet buddies = contacts.toBuddySet();
 
-	const Chat &chat = ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
+	const Chat &chat = 1 == contacts.size()
+			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+	 		: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 	if (chat)
 	{
 		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);

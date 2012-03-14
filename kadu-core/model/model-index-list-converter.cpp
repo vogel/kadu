@@ -126,7 +126,11 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 		contacts.insert(contact);
 	}
 
-	return ChatManager::instance()->findChat(contacts, ActionCreateAndAdd);
+	if (contacts.isEmpty())
+		return Chat::null;
+	return 1 == contacts.size()
+			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
+			: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 }
 
 Account ModelIndexListConverter::commonAccount() const

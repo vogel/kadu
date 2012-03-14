@@ -20,6 +20,7 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -107,7 +108,7 @@ void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 		return;
 	}
 
-	Chat chat = ChatManager::instance()->findChat(ContactSet(contact), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
 
 	EncryptionNgNotification::notifyPublicKeySent(contact);
