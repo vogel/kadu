@@ -121,34 +121,6 @@ Account ChatManager::getCommonAccount(const BuddySet &buddies)
 	return Account::null;
 }
 
-Chat ChatManager::findChat(const BuddySet &buddies, NotFoundAction action)
-{
-	QMutexLocker locker(&mutex());
-
-	if (buddies.count() == 1)
-	{
-		Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(*buddies.constBegin());
-		if (!contact)
-			contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
-
-		return findChat(ContactSet(contact), action);
-	}
-
-	Account commonAccount = getCommonAccount(buddies);
-	if (!commonAccount)
-		return Chat::null;
-
-	ContactSet contacts;
-	foreach (const Buddy &buddy, buddies)
-		// it is common account, so each buddy has at least one contact in this account
-		contacts.insert(buddy.contacts(commonAccount).at(0));
-
-	if (contacts.size() != buddies.size())
-		return Chat::null;
-
-	return findChat(contacts, action);
-}
-
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Finds chat for given lsit of contacts.

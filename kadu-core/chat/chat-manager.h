@@ -133,7 +133,6 @@ public:
 	bool isAccountCommon(const Account &account, const BuddySet &buddies);
 	Account getCommonAccount(const BuddySet &buddies);
 
-	Chat findChat(const BuddySet &buddies, NotFoundAction action);
 	Chat findChat(const ContactSet &contacts, NotFoundAction action);
 
 	Chat byDisplay(const QString &display);
