@@ -87,9 +87,9 @@ void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageR
 	html.replace('\\', QLatin1String("\\\\"));
 	html.replace('\'', QLatin1String("\\'"));
 	if (!message->message().id().isEmpty())
-		html.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
+		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(message->message().id()));
 	else
-		html.prepend("<span>");
+		html.prepend("<span class=\"kadu_message\">");
 	html.append("</span>");
 
 	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendMessage('" + html + "')");
@@ -210,9 +210,9 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 	{
 		QString messageText;
 		if (!message->message().id().isEmpty())
-			messageText = QString("<span id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message, prevMessage));
+			messageText = QString("<span class=\"kadu_message\" id=\"message_%1\">%2</span>").arg(message->message().id()).arg(formatMessage(message, prevMessage));
 		else
-			messageText = QString("<span>%1</span>").arg(formatMessage(message, prevMessage));
+			messageText = QString("<span class=\"kadu_message\">%1</span>").arg(formatMessage(message, prevMessage));
 		messageText = scriptsAtEnd(messageText);
 		text += messageText;
 		prevMessage = message;
