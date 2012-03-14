@@ -24,7 +24,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
@@ -32,14 +31,6 @@
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact.h"
-
-Chat ChatTypeContact::findChat(const Buddy &buddy, NotFoundAction notFoundAction)
-{
-	if (!buddy)
-		return Chat::null;
-
-	return findChat(BuddyPreferredManager::instance()->preferredContact2(buddy), notFoundAction);
-}
 
 Chat ChatTypeContact::findChat(const Contact &contact, NotFoundAction notFoundAction)
 {

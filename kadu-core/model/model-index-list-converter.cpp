@@ -106,7 +106,7 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 		return Chat::null;
 
 	if (1 == buddies.size())
-		return ChatTypeContact::findChat(*buddies.begin(), ActionCreateAndAdd);
+		return ChatTypeContact::findChat(BuddyPreferredManager::instance()->preferredContact2(*buddies.begin()), ActionCreateAndAdd);
 	else
 		return ChatTypeContactSet::findChat(buddies, ActionCreateAndAdd);
 }

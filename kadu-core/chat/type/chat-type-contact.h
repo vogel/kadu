@@ -60,7 +60,6 @@ class KADUAPI ChatTypeContact : public ChatType
 	QStringList Aliases;
 
 public:
-	static Chat findChat(const Buddy &buddy, NotFoundAction notFoundAction);
 	static Chat findChat(const Contact &contact, NotFoundAction notFoundAction);
 
 	explicit ChatTypeContact(QObject *parent = 0);
