@@ -82,6 +82,15 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 	return contact;*/
 }
 
+Contact BuddyPreferredManager::preferredContact2(const Buddy &buddy)
+{
+	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(buddy);
+	if (!contact)
+		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
+
+	return contact;
+}
+
 Contact BuddyPreferredManager::preferredContactByPriority(const Buddy &buddy, const Account &account)
 {
 	if (account.isNull())

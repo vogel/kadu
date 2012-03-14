@@ -56,6 +56,7 @@ public:
 
 	Contact preferredContact(const Buddy &buddy, const Account &account, bool includechats = true);
 	Contact preferredContact(const Buddy &buddy, bool includechats = true);
+	Contact preferredContact2(const Buddy &buddy);
 	Account preferredAccount(const Buddy &buddy, bool includechats = true);
 
 	Contact preferredContactByPriority(const Buddy &buddy, const Account &account = Account::null);

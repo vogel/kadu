@@ -38,11 +38,7 @@ Chat ChatTypeContact::findChat(const Buddy &buddy, NotFoundAction notFoundAction
 	if (!buddy)
 		return Chat::null;
 
-	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(buddy);
-	if (!contact)
-		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
-
-	return findChat(contact, notFoundAction);
+	return findChat(BuddyPreferredManager::instance()->preferredContact2(buddy), notFoundAction);
 }
 
 Chat ChatTypeContact::findChat(const Contact &contact, NotFoundAction notFoundAction)
