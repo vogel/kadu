@@ -3,6 +3,7 @@
 * gadu: fixed rare problem which have been causing inability to send any messages (beevvy)
 * gadu: fixed possible application hangs, especially when trying to connect on unstable Internet connection (beevvy)
 * chat styles: fixed issues with contact activity icon not being displayed in old message styles (beevvy)
+* history: #2527 fixed: sort messages in history correctly (ultr)
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)

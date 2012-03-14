@@ -600,7 +600,7 @@ QVector<DatesModelItem> HistorySqlStorage::chatDates(const Chat &chat, const His
 	  queryString += " AND date <= :toDate";
 	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
 	queryString += " GROUP BY date_id";
-	queryString += " ORDER BY date_id ASC, rowid ASC";
+	queryString += " ORDER BY date ASC, rowid ASC";
 
 	query.prepare(queryString);
 
