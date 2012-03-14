@@ -32,8 +32,13 @@
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
+#include "storage/manager-common.h"
 
 #include "exports.h"
+
+class BuddySet;
+class Chat;
+class ContactSet;
 
 /**
  * @addtogroup Chat
@@ -55,6 +60,9 @@ class KADUAPI ChatTypeContactSet : public ChatType
 	QStringList Aliases;
 
 public:
+	static Chat findChat(const BuddySet &buddies, NotFoundAction notFoundAction);
+	static Chat findChat(const ContactSet &contacts, NotFoundAction notFoundAction);
+
 	explicit ChatTypeContactSet(QObject *parent = 0);
 	virtual ~ChatTypeContactSet();
 

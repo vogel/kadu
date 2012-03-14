@@ -20,6 +20,7 @@
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "message/message-manager.h"
 #include "model/roles.h"
 
@@ -101,10 +102,13 @@ Chat ModelIndexListConverter::chatFromBuddies() const
 	foreach (const QModelIndex &index, ModelIndexList)
 		buddies.insert(index.data(BuddyRole).value<Buddy>());
 
+	if (0 == buddies.size())
+		return Chat::null;
+
 	if (1 == buddies.size())
 		return ChatTypeContact::findChat(*buddies.begin(), ActionCreateAndAdd);
 	else
-		return ChatManager::instance()->findChat(buddies, ActionCreateAndAdd);
+		return ChatTypeContactSet::findChat(buddies, ActionCreateAndAdd);
 }
 
 Chat ModelIndexListConverter::chatFromContacts(const Account &account) const

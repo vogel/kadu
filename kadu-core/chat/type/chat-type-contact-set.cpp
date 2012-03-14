@@ -24,10 +24,91 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact-set.h"
+#include "chat/chat-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact-set.h"
+
+Chat ChatTypeContactSet::findChat(const BuddySet &buddies, NotFoundAction notFoundAction)
+{
+	if (buddies.count() < 2)
+		return Chat::null;
+
+	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(*buddies.constBegin());
+	if (!contact)
+		contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
+
+	Account account = contact.contactAccount();
+	if (account.isNull())
+		return Chat::null;
+
+	Account commonAccount = ChatManager::instance()->getCommonAccount(buddies);
+	if (!commonAccount)
+		return Chat::null;
+
+	ContactSet contacts;
+	foreach (const Buddy &buddy, buddies)
+		// it is common account, so each buddy has at least one contact in this account
+		contacts.insert(buddy.contacts(commonAccount).at(0));
+
+	return findChat(contacts, notFoundAction);
+}
+
+Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction notFoundAction)
+{
+	if (contacts.count() < 2)
+		return Chat::null;
+
+	Account account = (*contacts.constBegin()).contactAccount();
+	if (account.isNull())
+		return Chat::null;
+
+	foreach (const Contact &contact, contacts)
+		if (account != contact.contactAccount())
+			return Chat::null;
+
+	// TODO #1694
+	// for some users that have self on user list
+	// this should not be possible, and prevented on other level (like in ContactManager)
+	foreach (const Contact &contact, contacts)
+		if (contact.id() == account.id())
+			return Chat::null;
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems()) // search allItems, chats can be not loaded yet
+		if (chat.type() == QLatin1String("ContactSet") || chat.type() == QLatin1String("Conference"))
+			if (chat.contacts() == contacts)
+			{
+				// when contacts changed their accounts we need to change account of chat too
+				chat.setChatAccount(account);
+				return chat;
+			}
+
+	if (ActionReturnNull == notFoundAction)
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account);
+
+	Contact contact = contacts.toContact();
+
+	// only gadu-gadu support contact-sets
+	// TODO: this should be done better
+	if (chat.chatAccount().protocolName() != "gadu")
+		return Chat::null;
+
+	chat.setType("ContactSet");
+
+	ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
+	chatDetailsContactSet->setState(StorableObject::StateNew);
+	chatDetailsContactSet->setContacts(contacts);
+
+	if (ActionCreateAndAdd == notFoundAction)
+		ChatManager::instance()->addItem(chat);
+
+	return chat;
+}
 
 ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
 		ChatType(parent)
