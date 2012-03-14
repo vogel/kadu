@@ -16,18 +16,17 @@ StateInactive = 3;
 StateNone = 4;
 StatePaused = 5;
 
-//clear messages
 function adium_clearMessages()
 {
 	var chatElement = document.getElementById('Chat');
 	chatElement.innerHTML = "";
 }
 
-//removes first message
 function adium_removeFirstMessage()
 {
 	var chatElement = document.getElementById('Chat');
-	chatElement.removeChild(chatElement.firstChild);
+	if (chatElement && chatElement.firstChild)
+		chatElement.removeChild(chatElement.firstChild);
 }
 
 function adium_contactActivityChanged(state, message, name)
@@ -38,19 +37,33 @@ function adium_contactActivityChanged(state, message, name)
 
 function kadu_clearMessages()
 {
-	var node = document.getElementsByTagName('body')[0];
-	node.innerHTML = "";
+	// A style can place its own content before any messages with <kadu:top>,
+	// so we don't want to delete that content here. Also bear in mind that
+	// kadu_takeScriptNodes() usage might result in <script> tags being put as
+	// direct <body> children (but surely not preceding the first
+	// <span class="kadu_message">).
+	var messages = document.getElementsByClassName('kadu_message');
+	if (0 == messages.length)
+		return;
+
+	var node = messages[0];
+	while (node)
+	{
+		var nextNode = node.nextSibling;
+		if (node.parentNode)
+			node.parentNode.removeChild(node);
+		node = nextNode;
+	}
 }
 
 function kadu_appendMessage(html)
 {
-	var node = document.getElementsByTagName('body')[0];
+	var body = document.getElementsByTagName('body')[0];
 	var range = document.createRange();
-	range.selectNode(node);
+	range.selectNode(body);
 	var documentFragment = range.createContextualFragment(html);
 	var scriptnodes = kadu_takeScriptNodes(documentFragment);
-	node.appendChild(documentFragment);
-	var body = document.getElementsByTagName('body')[0];
+	body.appendChild(documentFragment);
 	for (var k in scriptnodes)
 		body.appendChild(scriptnodes[k]);
 }
@@ -80,8 +93,25 @@ function scrollToBottom()
 
 function kadu_removeFirstMessage()
 {
-	var node = document.getElementsByTagName('body')[0];
-	node.removeChild(node.firstChild);
+	var messages = document.getElementsByClassName('kadu_message');
+	for (var k in messages)
+	{
+		var message = messages[k];
+		if (message.parentNode)
+		{
+			var node = message.nextSibling;
+			message.parentNode.removeChild(message);
+			// There can be some <script> tags, see kadu_clearMessages() for explanation.
+			while (node.className != 'kadu_message')
+			{
+				var nextNode = node.nextSibling;
+				if (node.parentNode)
+					node.parentNode.removeChild(node);
+				node = nextNode;
+			}
+			break;
+		}
+	}
 }
 
 function kadu_messageStatusChanged(messageid, status)
