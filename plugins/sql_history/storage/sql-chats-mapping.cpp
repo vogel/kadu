@@ -22,6 +22,7 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "contacts/contact-set.h"
 
 #include "storage/sql-accounts-mapping.h"
@@ -157,7 +158,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 			contacts.insert(contact);
 		}
 
-		return ChatManager::instance()->findChat(contacts, ActionCreate);
+		return ChatTypeContactSet::findChat(contacts, ActionCreate);
 	}
 
 	return Chat::null;

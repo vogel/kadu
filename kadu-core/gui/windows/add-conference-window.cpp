@@ -29,6 +29,7 @@
 // will be used when Qt 4.8 .is required
 // #include "buddies/model/checkable-buddies-proxy-model.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-contact-set.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/chat-widget.h"
@@ -237,7 +238,7 @@ Chat AddConferenceWindow::computeChat() const
 	foreach (const Buddy &buddy, conferenceBuddies)
 		conferenceContacts.insert(buddy.contacts(account).first());
 
-	return ChatManager::instance()->findChat(conferenceContacts, ActionCreateAndAdd);
+	return ChatTypeContactSet::findChat(conferenceContacts, ActionCreateAndAdd);
 }
 
 // we need to filter by account here because CheckableBuddiesProxyModel does not do filtering at all
