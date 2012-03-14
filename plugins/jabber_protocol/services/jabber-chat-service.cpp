@@ -25,9 +25,11 @@
 #include <QtGui/QTextDocument>
 
 #include "buddies/buddy-set.h"
-#include "chat/chat-manager.h"
 #include "chat/chat.h"
+#include "chat/chat-manager.h"
+#include "chat/chat-details-room.h"
 #include "chat/type/chat-type-contact.h"
+#include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -55,6 +57,20 @@ JabberChatService::~JabberChatService()
 {
 }
 
+void JabberChatService::connectClient()
+{
+	connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+	connect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	connect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
+}
+
+void JabberChatService::disconnectClient()
+{
+	disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+	disconnect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	disconnect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
+}
+
 void JabberChatService::clientDestroyed()
 {
 	XmppClient = 0;
@@ -63,20 +79,26 @@ void JabberChatService::clientDestroyed()
 void JabberChatService::setClient(Client *xmppClient)
 {
 	if (XmppClient)
-		disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+		disconnectClient();
 
 	XmppClient = xmppClient;
 
 	if (XmppClient)
-		connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
+		connectClient();
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
+void JabberChatService::groupChatJoined(const Jid &jid)
 {
-	if (!XmppClient)
-		return false;
+	printf("properly joined group chat: %s\n", qPrintable(jid.full()));
+}
 
-	kdebugf();
+void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
+{
+	printf("group chat presence: %s %d\n", qPrintable(jid.full()), status.type());
+}
+
+bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString &message, bool silent)
+{
 	ContactSet contacts = chat.contacts();
 	// TODO send to more users
 	if (contacts.count() > 1 || contacts.count() == 0)
@@ -141,14 +163,42 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 		emit messageSent(message);
 	}
 
-	kdebugf2();
 	return true;
 }
 
-void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
+bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent)
 {
-	kdebugf();
+	Q_UNUSED(message);
+	Q_UNUSED(silent);
 
+	ChatDetailsRoom *chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
+	if (!chatDetails)
+		return false;
+
+	XmppClient->groupChatJoin(chatDetails->server(), chatDetails->roomName(), account().id());
+	OpenedRoomChats.insert(QString("%1@%2").arg(chatDetails->roomName()).arg(chatDetails->server()), chat);
+	return true;
+}
+
+bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
+{
+	if (!XmppClient)
+		return false;
+
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return false;
+
+	if (chatType->name() == "Contact")
+		return sendMessageToContactChat(chat, message, silent);
+	if (chatType->name() == "Room")
+		return sendMessageToRoomChat(chat, message, silent);
+
+	return false;
+}
+
+void JabberChatService::handleContactChatReceivedMessage(const Message &msg)
+{
 	// skip empty messages
 	if (msg.body().isEmpty())
 		return;
@@ -190,7 +240,69 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	emit messageReceived(message);
 
-	kdebugf2();
+}
+
+void JabberChatService::handleRoomChatReceivedMessage(const Message &msg)
+{
+	printf("received message from %s %s of %s\n", qPrintable(msg.nick()), qPrintable(msg.from().full()),
+		   qPrintable(msg.body()));
+	MUCDecline decline = msg.mucDecline();
+	printf("decline: %s %s\n", qPrintable(decline.from().full()), qPrintable(decline.reason()));
+	QString password = msg.mucPassword();
+	printf("password: %s\n", qPrintable(password));
+	QList<MUCInvite> invites = msg.mucInvites();
+	foreach (MUCInvite invite, invites)
+		printf("invite: %s %s\n", qPrintable(invite.from().bare()), qPrintable(invite.reason()));
+	QList<int> statuses = msg.getMUCStatuses();
+	foreach (int status, statuses)
+		printf("muc status: %d\n", status);
+
+	if (!OpenedRoomChats.contains(msg.from().bare()))
+		return;
+
+	Chat chat = OpenedRoomChats.value(msg.from().bare());
+	Contact contact = Contact::create();
+	Buddy buddy = Buddy::create();
+	buddy.setDisplay(msg.from().resource());
+	contact.setOwnerBuddy(buddy);
+	bool ignore = false;
+
+	QByteArray body = msg.body().toUtf8();
+	emit filterRawIncomingMessage(chat, contact, body, ignore);
+
+	FormattedMessage formattedMessage(QString::fromUtf8(body));
+
+	QString plain = formattedMessage.toPlain();
+
+	emit filterIncomingMessage(chat, contact, plain, ignore);
+	if (ignore)
+		return;
+
+	QString messageType = msg.type().isEmpty()
+	        ? "message"
+	        : msg.type();
+
+	ContactMessageTypes.insert(msg.from().bare(), messageType);
+
+	HtmlDocument::escapeText(plain);
+
+	::Message message = ::Message::create();
+	message.setMessageChat(chat);
+	message.setType(MessageTypeReceived);
+	message.setMessageSender(contact);
+	message.setContent(plain);
+	message.setSendDate(msg.timeStamp());
+	message.setReceiveDate(QDateTime::currentDateTime());
+
+	emit messageReceived(message);
+}
+
+void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
+{
+	if (OpenedRoomChats.contains(msg.from().bare()))
+		handleRoomChatReceivedMessage(msg);
+	else
+		handleContactChatReceivedMessage(msg);
 }
 
 }

@@ -45,8 +45,21 @@ class JabberChatService : public ChatService
 	Client *XmppClient;
 
 	QMap<QString, QString> ContactMessageTypes;
+	QMap<QString, Chat> OpenedRoomChats;
+
+	void connectClient();
+	void disconnectClient();
+
+	bool sendMessageToContactChat(const Chat &chat, const QString &message, bool silent);
+	bool sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent);
+
+	void handleContactChatReceivedMessage(const Message &msg);
+	void handleRoomChatReceivedMessage(const Message &msg);
 
 private slots:
+	void groupChatJoined(const Jid &jid);
+	void groupChatPresence(const Jid &jid, const Status &status);
+
 	void clientDestroyed();
 
 public:
