@@ -17,10 +17,51 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "chat/chat-details-room.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-room.h"
+
+Chat ChatTypeRoom::findChat(const Account &account, const QString &server, const QString &room, NotFoundAction notFoundAction)
+{
+	if (!account)
+		return Chat::null;
+
+	foreach (const Chat &chat, ChatManager::instance()->allItems())
+	{
+		if (chat.type() != "Room")
+			continue;
+		if (chat.chatAccount() != account)
+			continue;
+
+		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		if (!details)
+			continue;
+
+		if (details->server() == server && details->roomName() == room)
+			return chat;
+	}
+
+	if (ActionReturnNull == notFoundAction)
+		return Chat::null;
+
+	Chat chat = Chat::create();
+	chat.setChatAccount(account);
+	chat.setType("Room");
+
+	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+	Q_ASSERT(details);
+
+	details->setServer(server);
+	details->setRoomName(room);
+
+	if (ActionCreateAndAdd == notFoundAction)
+		ChatManager::instance()->addItem(chat);
+
+	return chat;
+}
 
 ChatTypeRoom::ChatTypeRoom(QObject *parent) :
 		ChatType(parent)

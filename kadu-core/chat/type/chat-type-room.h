@@ -25,8 +25,12 @@
 #include <QtCore/QVariant>
 
 #include "chat/type/chat-type.h"
+#include "storage/manager-common.h"
 
 #include "exports.h"
+
+class Account;
+class Chat;
 
 /**
  * @addtogroup Chat
@@ -46,6 +50,8 @@ class KADUAPI ChatTypeRoom : public ChatType
 	Q_DISABLE_COPY(ChatTypeRoom)
 
 public:
+	static Chat findChat(const Account &account, const QString &server, const QString &room, NotFoundAction notFoundAction);
+
 	explicit ChatTypeRoom(QObject *parent = 0);
 	virtual ~ChatTypeRoom();
 

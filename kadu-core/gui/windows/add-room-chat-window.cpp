@@ -27,6 +27,7 @@
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
+#include <chat/type/chat-type-room.h>
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -193,39 +194,14 @@ void AddRoomChatWindow::validateData()
 
 Chat AddRoomChatWindow::computeChat() const
 {
-	const Account &account = AccountCombo->currentAccount();
-	Q_ASSERT(account);
-
-	foreach (const Chat &chat, ChatManager::instance()->items())
-	{
-		if (chat.type() != "Room")
-			continue;
-		if (chat.chatAccount() != account)
-			continue;
-
-		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
-		if (!details)
-			continue;
-
-		if (details->server() == ServerEdit->text() && details->roomName() == RoomNameEdit->text())
-		{
-			details->setPassword(PasswordEdit->text());
-			return chat;
-		}
-	}
-
-	Chat chat = Chat::create();
-	chat.setChatAccount(account);
-	chat.setType("Room");
+	Chat chat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), ServerEdit->text(), RoomNameEdit->text(), ActionCreateAndAdd);
+	if (!chat)
+		return Chat::null;
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);
 
-	details->setServer(ServerEdit->text());
-	details->setRoomName(RoomNameEdit->text());
 	details->setPassword(PasswordEdit->text());
-
-	ChatManager::instance()->addItem(chat);
 
 	return chat;
 }
