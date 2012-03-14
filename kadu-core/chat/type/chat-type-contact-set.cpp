@@ -24,37 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-manager.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact-set.h"
-
-Chat ChatTypeContactSet::findChat(const BuddySet &buddies, NotFoundAction notFoundAction)
-{
-	if (buddies.count() < 2)
-		return Chat::null;
-
-	Contact contact = BuddyPreferredManager::instance()->preferredContactByUnreadMessages(*buddies.constBegin());
-	if (!contact)
-		contact = BuddyPreferredManager::instance()->preferredContact(*buddies.constBegin());
-
-	Account account = contact.contactAccount();
-	if (account.isNull())
-		return Chat::null;
-
-	Account commonAccount = ChatManager::instance()->getCommonAccount(buddies);
-	if (!commonAccount)
-		return Chat::null;
-
-	ContactSet contacts;
-	foreach (const Buddy &buddy, buddies)
-		// it is common account, so each buddy has at least one contact in this account
-		contacts.insert(buddy.contacts(commonAccount).at(0));
-
-	return findChat(contacts, notFoundAction);
-}
 
 Chat ChatTypeContactSet::findChat(const ContactSet &contacts, NotFoundAction notFoundAction)
 {
