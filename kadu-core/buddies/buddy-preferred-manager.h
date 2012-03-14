@@ -37,7 +37,9 @@
 
 class Account;
 class Buddy;
+class BuddySet;
 class Contact;
+class ContactSet;
 
 class KADUAPI BuddyPreferredManager : public QObject
 {
@@ -56,7 +58,10 @@ public:
 
 	Contact preferredContact(const Buddy &buddy, const Account &account, bool includechats = true);
 	Contact preferredContact(const Buddy &buddy, bool includechats = true);
+
 	Contact preferredContact2(const Buddy &buddy);
+	ContactSet preferredContacts(const BuddySet &buddies);
+
 	Account preferredAccount(const Buddy &buddy, bool includechats = true);
 
 	Contact preferredContactByPriority(const Buddy &buddy, const Account &account = Account::null);

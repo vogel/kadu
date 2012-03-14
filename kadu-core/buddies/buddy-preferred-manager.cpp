@@ -20,8 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
+#include "buddy.h"
+#include "buddies/buddy-set.h"
 #include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -89,6 +91,29 @@ Contact BuddyPreferredManager::preferredContact2(const Buddy &buddy)
 		contact = BuddyPreferredManager::instance()->preferredContact(buddy);
 
 	return contact;
+}
+
+ContactSet BuddyPreferredManager::preferredContacts(const BuddySet &buddies)
+{
+	if (buddies.isEmpty())
+		return ContactSet();
+
+	Contact contact = preferredContact2(*buddies.constBegin());
+
+	Account account = contact.contactAccount();
+	if (account.isNull())
+		return ContactSet();
+
+	Account commonAccount = ChatManager::instance()->getCommonAccount(buddies);
+	if (!commonAccount)
+		return ContactSet();
+
+	ContactSet contacts;
+	foreach (const Buddy &buddy, buddies)
+		// it is common account, so each buddy has at least one contact in this account
+		contacts.insert(buddy.contacts(commonAccount).at(0));
+
+	return contacts;
 }
 
 Contact BuddyPreferredManager::preferredContactByPriority(const Buddy &buddy, const Account &account)
