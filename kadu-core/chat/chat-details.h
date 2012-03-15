@@ -32,6 +32,7 @@
 class BuddySet;
 class Chat;
 class ChatType;
+class Contact;
 class ContactSet;
 
 /**
@@ -93,6 +94,21 @@ public:
 	 * or list of names of contacts.
 	 */
 	virtual QString name() const = 0;
+
+signals:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when a new contact was added to @link Chat @endlink represented by these details.
+	 * @param contact just added contact
+	 */
+	void contactAdded(const Contact &contact);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when a new contact was removed from @link Chat @endlink represented by these details.
+	 * @param contact just removed contact
+	 */
+	void contactRemoved(const Contact &contact);
 
 };
 

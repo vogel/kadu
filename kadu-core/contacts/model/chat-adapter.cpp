@@ -29,8 +29,21 @@ ChatAdapter::ChatAdapter(ContactListModel *model, const Chat &chat) :
 		QObject(model), Model(model)
 {
 	Model->setContactList(chat.contacts().toContactVector());
+
+	connect(chat, SIGNAL(contactAdded(Contact)), SLOT(contactAdded(Contact)));
+	connect(chat, SIGNAL(contactRemoved(Contact)), SLOT(contactRemoved(Contact)));
 }
 
 ChatAdapter::~ChatAdapter()
 {
+}
+
+void ChatAdapter::contactAdded(const Contact &contact)
+{
+	Model->addContact(contact);
+}
+
+void ChatAdapter::contactRemoved(const Contact &contact)
+{
+	Model->removeContact(contact);
 }

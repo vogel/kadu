@@ -28,6 +28,7 @@
 #include <QtCore/QSet>
 
 #include "chat/type/chat-type-aware-object.h"
+#include "contacts/contact.h"
 #include "storage/shared.h"
 
 class Account;
@@ -134,6 +135,20 @@ public:
 	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
 signals:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when a new contact was added to this Chat.
+	 * @param contact just added contact
+	 */
+	void contactAdded(const Contact &contact);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when a new contact was removed from this Chat.
+	 * @param contact just removed contact
+	 */
+	void contactRemoved(const Contact &contact);
+
 	void updated();
 
 };

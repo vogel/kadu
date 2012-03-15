@@ -276,6 +276,9 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		Details = chatType->createChatDetails(this);
 		Q_ASSERT(Details);
 
+		connect(Details, SIGNAL(contactAdded(Contact)), this, SIGNAL(contactAdded(Contact)));
+		connect(Details, SIGNAL(contactRemoved(Contact)), this, SIGNAL(contactRemoved(Contact)));
+
 		Details->ensureLoaded();
 	}
 

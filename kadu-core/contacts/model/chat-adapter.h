@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "contacts/contact.h"
+
 class Chat;
 class ContactListModel;
 
@@ -43,6 +45,25 @@ class ChatAdapter : public QObject
 	Q_OBJECT
 
 	ContactListModel *Model;
+
+private slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called after a contact is added to @link Chat @endlink.
+	 * @param contact added contact
+	 *
+	 * Contact is added to @link ContactListModel @endlink instance.
+	 */
+	void contactAdded(const Contact &contact);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Slot called after a contact is removed from @link Chat @endlink.
+	 * @param contact removed contact
+	 *
+	 * Contact is removed from @link ContactListModel @endlink instance.
+	 */
+	void contactRemoved(const Contact &contact);
 
 public:
 	/**
