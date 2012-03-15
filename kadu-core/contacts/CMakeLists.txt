@@ -8,6 +8,7 @@ set (contacts_SRCS
 	contact-shared.cpp
 
 	model/buddy-contact-model.cpp
+	model/chat-adapter.cpp
 	model/contact-data-extractor.cpp
 	model/contact-list-model.cpp
 )
@@ -17,6 +18,7 @@ set (contacts_MOC_SRCS
 	contact-shared.h
 
 	model/buddy-contact-model.h
+	model/chat-adapter.h
 	model/contact-list-model.h
 )
 

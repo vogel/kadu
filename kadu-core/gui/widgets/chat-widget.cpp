@@ -53,6 +53,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "contacts/model/chat-adapter.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
@@ -260,7 +261,7 @@ void ChatWidget::createContactsList()
 
 	ModelChain *chain = new ModelChain(this);
 	ContactListModel *contactListModel = new ContactListModel(chain);
-	contactListModel->setContactList(CurrentChat.contacts().toContactVector());
+	new ChatAdapter(contactListModel, CurrentChat);
 	chain->setBaseModel(contactListModel);
 	ProxyModel = new TalkableProxyModel(chain);
 
