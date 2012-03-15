@@ -24,6 +24,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
@@ -41,7 +42,8 @@
 #include "debug.h"
 #include "html_document.h"
 
-#include "../jabber-protocol.h"
+#include "iris-status-adapter.h"
+#include "jabber-protocol.h"
 
 #include "jabber-chat-service.h"
 
@@ -94,7 +96,29 @@ void JabberChatService::groupChatJoined(const Jid &jid)
 
 void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 {
-	printf("group chat presence: %s %d\n", qPrintable(jid.full()), status.type());
+	printf("status: %d\n", status.type());
+
+	Chat chat = OpenedRoomChats.value(jid.bare());
+
+	ChatDetailsRoom *chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
+	if (!chatDetails)
+		return;
+
+	::Status contactStatus = IrisStatusAdapter::fromIrisStatus(status);
+	Contact contact = ContactManager::instance()->byId(account(), jid.full(), ActionCreateAndAdd);
+
+	if (!contactStatus.isDisconnected())
+	{
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		buddy.setDisplay(jid.resource());
+	}
+
+	contact.setCurrentStatus(contactStatus);
+
+	if (contactStatus.isDisconnected())
+		chatDetails->removeContact(contact);
+	else
+		chatDetails->addContact(contact);
 }
 
 bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString &message, bool silent)
@@ -176,7 +200,67 @@ bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &m
 		return false;
 
 	XmppClient->groupChatJoin(chatDetails->server(), chatDetails->roomName(), account().id());
-	OpenedRoomChats.insert(QString("%1@%2").arg(chatDetails->roomName()).arg(chatDetails->server()), chat);
+
+	QString chatId = QString("%1@%2").arg(chatDetails->roomName()).arg(chatDetails->server());
+	OpenedRoomChats.insert(chatId, chat);
+
+	Jid jid = chatId;
+	XMPP::Message msg = XMPP::Message(jid);
+
+	bool stop = false;
+
+	QTextDocument document;
+	/*
+	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
+	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
+	 * these messages to have proper lines and paragraphs.
+	 */
+	if (message.contains('<'))
+		document.setHtml(message);
+	else
+		document.setPlainText(message);
+
+	//QString cleanmsg = toPlainText(mesg);
+	QString plain = document.toPlainText();
+
+	QByteArray data = plain.toUtf8();
+	emit filterRawOutgoingMessage(chat, data, stop);
+	plain = QString::fromUtf8(data);
+	emit filterOutgoingMessage(chat, plain, stop);
+
+	if (stop)
+	{
+		// TODO: implement formats
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
+		return false;
+	}
+
+	QString messageType = false == ContactMessageTypes.value(jid.bare()).isEmpty()
+	        ? ContactMessageTypes.value(jid.bare())
+	        : "chat";
+
+	msg.setType(messageType);
+	msg.setBody(plain);
+	msg.setTimeStamp(QDateTime::currentDateTime());
+
+	emit messageAboutToSend(msg);
+	XmppClient->sendMessage(msg);
+
+	if (!silent)
+	{
+		HtmlDocument::escapeText(plain);
+
+		::Message message = ::Message::create();
+		message.setMessageChat(chat);
+		message.setType(MessageTypeSent);
+		message.setMessageSender(account().accountContact());
+		message.setContent(document.toPlainText()); // do not add encrypted message here
+		message.setSendDate(QDateTime::currentDateTime());
+		message.setReceiveDate(QDateTime::currentDateTime());
+
+		emit messageSent(message);
+	}
+
 	return true;
 }
 
@@ -244,6 +328,10 @@ void JabberChatService::handleContactChatReceivedMessage(const Message &msg)
 
 void JabberChatService::handleRoomChatReceivedMessage(const Message &msg)
 {
+	// skip empty messages
+	if (msg.body().isEmpty())
+		return;
+
 	printf("received message from %s %s of %s\n", qPrintable(msg.nick()), qPrintable(msg.from().full()),
 		   qPrintable(msg.body()));
 	MUCDecline decline = msg.mucDecline();
@@ -261,10 +349,11 @@ void JabberChatService::handleRoomChatReceivedMessage(const Message &msg)
 		return;
 
 	Chat chat = OpenedRoomChats.value(msg.from().bare());
-	Contact contact = Contact::create();
-	Buddy buddy = Buddy::create();
+
+	Contact contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
+	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 	buddy.setDisplay(msg.from().resource());
-	contact.setOwnerBuddy(buddy);
+
 	bool ignore = false;
 
 	QByteArray body = msg.body().toUtf8();
