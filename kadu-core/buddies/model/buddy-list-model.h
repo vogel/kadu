@@ -48,7 +48,7 @@ class Buddy;
  * @short Model that list buddies with their contacts.
  *
  * This model lists buddies with their contacts. Buddies can be added or removed. Model automatically updates
- * itself when a buddy is changes, a buddy's contact is changed or a list of buddy's contacts is changed.
+ * itself when a buddy is changed, a buddy's contact is changed or a list of buddy's contacts is changed.
  */
 class KADUAPI BuddyListModel : public QAbstractItemModel, public KaduAbstractModel, public AccountsAwareObject
 {
@@ -221,7 +221,7 @@ public:
 	 * @param list new list of buddies
 	 *
 	 * All current buddies are disconnected and removed from list and new ones are added and connected.
-	 * Added list can be changed by @link addBuddy @endlink and @link removeBuddy @endlink methods.
+	 * List can be later changed by @link addBuddy @endlink and @link removeBuddy @endlink methods.
 	 */
 	void setBuddyList(const BuddyList &list);
 
