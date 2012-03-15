@@ -34,12 +34,19 @@ class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 
 	QVector<Contact> List;
 
+	void connectContact(const Contact &contact);
+	void disconnectContact(const Contact &contact);
+
 private slots:
 	void contactUpdated();
 
 public:
-	explicit ContactListModel(const QVector<Contact> &list, QObject *parent = 0);
+	explicit ContactListModel(QObject *parent = 0);
 	virtual ~ContactListModel();
+
+	void setContactList(const QVector<Contact> &contacts);
+	void addContact(const Contact &contact);
+	void removeContact(const Contact &contact);
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
 

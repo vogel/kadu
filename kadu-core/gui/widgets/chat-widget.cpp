@@ -259,7 +259,9 @@ void ChatWidget::createContactsList()
 	view->setItemsExpandable(false);
 
 	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new ContactListModel(CurrentChat.contacts().toContactVector(), chain));
+	ContactListModel *contactListModel = new ContactListModel(chain);
+	contactListModel->setContactList(CurrentChat.contacts().toContactVector());
+	chain->setBaseModel(contactListModel);
 	ProxyModel = new TalkableProxyModel(chain);
 
 	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);

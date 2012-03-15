@@ -23,17 +23,57 @@
 
 #include "contact-list-model.h"
 
-ContactListModel::ContactListModel(const QVector<Contact> &list, QObject *parent) :
-		QAbstractItemModel(parent), List(list)
+ContactListModel::ContactListModel(QObject *parent) :
+		QAbstractItemModel(parent)
 {
-	foreach (const Contact &contact, List)
-		connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
 }
 
 ContactListModel::~ContactListModel()
 {
+}
+
+void ContactListModel::connectContact(const Contact &contact)
+{
+	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+}
+
+void ContactListModel::disconnectContact(const Contact &contact)
+{
+	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+}
+
+void ContactListModel::setContactList(const QVector<Contact> &contacts)
+{
+	beginResetModel();
+
 	foreach (const Contact &contact, List)
-		connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+		disconnectContact(contact);
+	List = contacts;
+	foreach (const Contact &contact, List)
+		connectContact(contact);
+
+	endResetModel();
+}
+
+void ContactListModel::addContact(const Contact &contact)
+{
+	if (List.contains(contact))
+		return;
+
+	beginInsertRows(QModelIndex(), List.count(), List.count());
+	List.append(contact);
+	endInsertRows();
+}
+
+void ContactListModel::removeContact(const Contact &contact)
+{
+	int index = List.indexOf(contact);
+	if (-1 == index)
+		return;
+
+	beginRemoveRows(QModelIndex(), index, index);
+	List.remove(index);
+	endRemoveRows();
 }
 
 void ContactListModel::contactUpdated()
