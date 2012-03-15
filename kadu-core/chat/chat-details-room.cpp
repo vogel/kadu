@@ -159,3 +159,25 @@ void ChatDetailsRoom::setContacts(const ContactSet &contacts)
 
 	Contacts = contacts;
 }
+
+void ChatDetailsRoom::addContact(const Contact &contact)
+{
+	ensureLoaded();
+
+	if (Contacts.contains(contact))
+		return;
+
+	Contacts.insert(contact);
+	emit contactAdded(contact);
+}
+
+void ChatDetailsRoom::removeContact(const Contact &contact)
+{
+	ensureLoaded();
+
+	if (!Contacts.contains(contact))
+		return;
+
+	Contacts.remove(contact);
+	emit contactAdded(contact);
+}

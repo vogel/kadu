@@ -105,6 +105,24 @@ public:
 
 	void setContacts(const ContactSet &contacts);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Add new contact to this chat.
+	 * @param contact contact to add
+	 *
+	 * Calling this method may result in emiiting of @link contactAdded @endlink signal if contact was not already on chat.
+	 */
+	void addContact(const Contact &contact);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Remove contact from this chat.
+	 * @param contact contact to remove
+	 *
+	 * Calling this method may result in emiiting of @link contactRemoved @endlink signal if contact was on chat.
+	 */
+	void removeContact(const Contact &contact);
+
 };
 
 /**
