@@ -229,7 +229,8 @@ void ChatWidget::createGui()
 
 	messagesSearchBar->setSearchWidget(InputBox->inputBox());
 
-	if (CurrentChat.contacts().count() > 1)
+	ChatType *chatType = ChatTypeManager::instance()->chatType(CurrentChat.type());
+	if (chatType && chatType->name() != "Contact")
 		createContactsList();
 
 	VerticalSplitter->addWidget(HorizontalSplitter);
