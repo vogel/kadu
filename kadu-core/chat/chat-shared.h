@@ -134,7 +134,36 @@ public:
 
 	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Return true when chat is connected.
+	 * @return true when chat is connected
+	 *
+	 * Chat messages can only be send to/received from connected chat.
+	 * Chat connection depends on chat type and is implemented in @link ChatDetails @endlink subclasses.
+	 *
+	 * For example, simple Contact and ContactSet chats are connected when an account is connected.
+	 * MUC chats in XMPP are connected when account is connected and given group chat is joined.
+	 */
+	bool isConnected() const;
+
 signals:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when given chat has connected.
+	 *
+	 * Chat messages can only be send to/received from connected chat.
+	 */
+	void connected();
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when given chat has disconnected.
+	 *
+	 * Chat messages can only be send to/received from connected chat.
+	 */
+	void disconnected();
+
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Signal emited when a new contact was added to this Chat.

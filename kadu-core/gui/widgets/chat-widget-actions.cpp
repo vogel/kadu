@@ -55,7 +55,7 @@
 
 #include "chat-widget-actions.h"
 
-static void disableEmptyTextBox(Action *action)
+static void disableEmptyTextBoxOrNotConnected(Action *action)
 {
 	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -64,7 +64,7 @@ static void disableEmptyTextBox(Action *action)
 		return;
 	}
 
-	action->setEnabled(!chatEditBox->inputBox()->toPlainText().isEmpty());
+	action->setEnabled(chatEditBox->chatWidget()->chat().isConnected() && !chatEditBox->inputBox()->toPlainText().isEmpty());
 }
 
 static void disableEmptyMessages(Action *action)
@@ -196,7 +196,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
 		KaduIcon("go-next"), tr("&Send"), false,
-		disableEmptyTextBox
+		disableEmptyTextBoxOrNotConnected
 	);
 	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
 
@@ -273,6 +273,8 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 		return;
 
 	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkState()));
+	connect(chatEditBox->chatWidget()->chat(), SIGNAL(connected()), action, SLOT(checkState()));
+	connect(chatEditBox->chatWidget()->chat(), SIGNAL(disconnected()), action, SLOT(checkState()));
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)

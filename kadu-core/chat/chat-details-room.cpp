@@ -21,6 +21,7 @@
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "misc/misc.h"
+#include "protocols/protocol.h"
 
 #include "chat-details-room.h"
 
@@ -32,8 +33,13 @@
  * Creates empty ChatDetailsRoom object assigned to chatData object.
  */
 ChatDetailsRoom::ChatDetailsRoom(ChatShared *chatData) :
-		ChatDetails(chatData)
+		ChatDetails(chatData), Connected(false)
 {
+	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+	Q_ASSERT(protocol);
+
+	connect(protocol, SIGNAL(connected(Account)), this, SLOT(updateConnected()));
+	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(updateConnected()));
 }
 
 ChatDetailsRoom::~ChatDetailsRoom()
@@ -144,6 +150,41 @@ QString ChatDetailsRoom::password() const
 QString ChatDetailsRoom::name() const
 {
 	return RoomName;
+}
+
+void ChatDetailsRoom::updateConnected()
+{
+	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+	Q_ASSERT(protocol);
+
+	if (!protocol->isConnected())
+		setConnected(false);
+}
+
+void ChatDetailsRoom::setConnected(bool newConnected)
+{
+	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+	Q_ASSERT(protocol);
+
+	if (!protocol->isConnected())
+		newConnected = false;
+
+	if (Connected == newConnected)
+		return;
+
+	Connected = newConnected;
+	if (Connected)
+		emit connected();
+	else
+		emit disconnected();
+}
+
+bool ChatDetailsRoom::isConnected() const
+{
+	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+	Q_ASSERT(protocol);
+
+	return protocol->isConnected() && Connected;
 }
 
 /**

@@ -276,6 +276,8 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 		Details = chatType->createChatDetails(this);
 		Q_ASSERT(Details);
 
+		connect(Details, SIGNAL(connected()), this, SIGNAL(connected()));
+		connect(Details, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 		connect(Details, SIGNAL(contactAdded(Contact)), this, SIGNAL(contactAdded(Contact)));
 		connect(Details, SIGNAL(contactRemoved(Contact)), this, SIGNAL(contactRemoved(Contact)));
 
@@ -442,3 +444,11 @@ void ChatShared::groupAboutToBeRemoved()
 }
 
 KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);
+
+bool ChatShared::isConnected() const
+{
+	if (!Details)
+		return false;
+
+	return Details->isConnected();
+}

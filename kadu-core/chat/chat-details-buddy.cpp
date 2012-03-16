@@ -87,6 +87,11 @@ QString ChatDetailsBuddy::name() const
 	return Chats.isEmpty() ? QString() : Chats.at(0).name();
 }
 
+bool ChatDetailsBuddy::isConnected() const
+{
+	return false;
+}
+
 /**
  * @short Assigns aggregate chats to this chat.
  * @param chats chats to be assigned

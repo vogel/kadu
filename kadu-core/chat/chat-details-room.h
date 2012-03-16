@@ -48,6 +48,18 @@ class ChatDetailsRoom : public ChatDetails
 
 	ContactSet Contacts;
 
+	bool Connected;
+
+private slots:
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Slot called when a protocol's connection state changes.
+	 *
+	 * This slot is called when a protocol's connection state changes. If protocol is disconnected then value of Connected property
+	 * is set to false and @link disconnected @endlink may be emited.
+	 */
+	void updateConnected();
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -60,6 +72,19 @@ public:
 	virtual ChatType * type() const;
 	virtual ContactSet contacts() const { return Contacts; }
 	virtual QString name() const;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Set value of Connected property.
+	 * @param newConnected new value of Connected property
+	 *
+	 * This method sets value of Connected property only when protocol of this @link Chat @endlink is connected. If not,
+	 * the value of Connected property will remain false.
+	 *
+	 * One of signals @link connected @endlink and @link disconnected @endlink may be emited after calling this method.
+	 */
+	void setConnected(bool newConnected);
+	virtual bool isConnected() const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

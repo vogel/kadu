@@ -85,7 +85,7 @@ public:
 	 *
 	 * Returns main data object (object, with the same StoragePoint) for this Details.
 	 */
-	T * mainData()
+	T * mainData() const
 	{
 		return MainData;
 	}

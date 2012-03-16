@@ -150,3 +150,11 @@ KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
 KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
 KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>())
 KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
+
+bool Chat::isConnected() const
+{
+	if (!isNull())
+		return data()->isConnected();
+	else
+		return false;
+}

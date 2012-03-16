@@ -56,6 +56,8 @@ public:
 	virtual ContactSet contacts() const;
 	virtual QString name() const;
 
+	virtual bool isConnected() const;
+
 	void setChats(const QVector<Chat> &chats);
 	const QVector<Chat> & chats() const;
 

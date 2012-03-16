@@ -63,6 +63,8 @@ public:
 	virtual ContactSet contacts() const { return Contacts; }
 	virtual QString name() const;
 
+	virtual bool isConnected() const;
+
 	void setContacts(const ContactSet &contacts);
 
 };

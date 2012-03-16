@@ -27,6 +27,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "protocols/protocol.h"
 
 #include "chat-details-contact.h"
 
@@ -40,6 +41,11 @@
 ChatDetailsContact::ChatDetailsContact(ChatShared *chatData) :
 		ChatDetails(chatData)
 {
+	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+	Q_ASSERT(protocol);
+
+	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 }
 
 ChatDetailsContact::~ChatDetailsContact()
@@ -147,6 +153,11 @@ ContactSet ChatDetailsContact::contacts() const
 QString ChatDetailsContact::name() const
 {
 	return CurrentContact.display(true);
+}
+
+bool ChatDetailsContact::isConnected() const
+{
+	return mainData()->chatAccount().protocolHandler() && mainData()->chatAccount().protocolHandler()->isConnected();
 }
 
 /**
