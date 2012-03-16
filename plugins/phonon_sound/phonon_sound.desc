@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Sound support
-DisplayName[pl]=Obs³uga d¼wiêków
+DisplayName[pl]=ObsÅ‚uga dÅºwiÄ™kÃ³w
 Description=Sound support via Phonon library
-Description[pl]=Obs³uga d¼wiêku przez bibliotekê Phonon
+Description[pl]=ObsÅ‚uga dÅºwiÄ™ku przez bibliotekÄ™ Phonon
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver

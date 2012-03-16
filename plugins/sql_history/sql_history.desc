@@ -1,8 +1,8 @@
 [Module]
 DisplayName=SQLite chats history storage
-DisplayName[pl]=Przechowywanie historii rozmów SQLite
+DisplayName[pl]=Przechowywanie historii rozmÃ³w SQLite
 Description=Stores chats history in SQLite database
-Description[pl]=Przechowywanie historii rozmów w bazie SQLite.
+Description[pl]=Przechowywanie historii rozmÃ³w w bazie SQLite.
 Author=Adrian, Juzef, Kadu Team
 Dependencies=history
 Provides=history_storage

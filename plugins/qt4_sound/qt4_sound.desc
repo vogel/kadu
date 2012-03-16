@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Sound support
-DisplayName[pl]=Obs³uga d¼wiêku
+DisplayName[pl]=ObsÅ‚uga dÅºwiÄ™ku
 Description=Sound support using standard Qt4 mechanisms
-Description[pl]=Obs³uga d¼wiêku z u¿yciem standardowych funkcji Qt4
+Description[pl]=ObsÅ‚uga dÅºwiÄ™ku z uÅ¼yciem standardowych funkcji Qt4
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver

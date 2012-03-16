@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Chats history
-DisplayName[pl]=Historia rozmów
+DisplayName[pl]=Historia rozmÃ³w
 Description=Provides chats history browsing and search
-Description[pl]=Umo¿liwia przegl±danie i przeszukiwanie historii rozmów
+Description[pl]=UmoÅ¼liwia przeglÄ…danie i przeszukiwanie historii rozmÃ³w
 Author=Kadu Team
 LoadByDefault=true
 Version=core

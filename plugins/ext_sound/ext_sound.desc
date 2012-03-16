@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Sound via external application
-DisplayName[pl]=D¼wiêk przez zewnêtrzn± aplikacjê
+DisplayName[pl]=DÅºwiÄ™k przez zewnÄ™trznÄ… aplikacjÄ™
 Description=Delegates sound support to external application
-Description[pl]=Umo¿liwia obs³ugê d¼wiêku poprzez zewnêtrzn± aplikacjê
+Description[pl]=UmoÅ¼liwia obsÅ‚ugÄ™ dÅºwiÄ™ku poprzez zewnÄ™trznÄ… aplikacjÄ™
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver

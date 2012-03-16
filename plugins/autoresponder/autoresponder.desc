@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Automatic response
-DisplayName[pl]=Automatyczna odpowiedº
+DisplayName[pl]=Automatyczna odpowied≈∫
 Description=Automatically replies on incoming messages
-Description[pl]=Automatycznie odpowiada na przychodz±ce wiadomo∂ci
+Description[pl]=Automatycznie odpowiada na przychodzƒÖce wiadomo≈õci
 Author=Kadu Team
 Version=core
 Plugin=true

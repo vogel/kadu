@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Word replacement
-DisplayName[pl]=Zamiana s≥Ûw
+DisplayName[pl]=Zamiana s≈Ç√≥w
 Description=Replaces words in sent messages
-Description[pl]=Zamienia s≥owa w wysy≥anych wiadomo∂ciach
+Description[pl]=Zamienia s≈Çowa w wysy≈Çanych wiadomo≈õciach
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core

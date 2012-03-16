@@ -31,6 +31,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QMutex>
 #include <QtCore/QMutexLocker>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtGui/QApplication>
 
@@ -45,7 +46,7 @@
 
 static QMutex GlobalMutex;
 
-PlainConfigFile::PlainConfigFile(const QString &filename) : filename(filename), groups(), activeGroupName()
+PlainConfigFile::PlainConfigFile(const QString &filename, const QString &codec) : filename(filename), CodecName(codec), groups(), activeGroupName()
 {
 	read();
 }
@@ -80,7 +81,7 @@ void PlainConfigFile::read()
 	if (file.open(QIODevice::ReadOnly))
 	{
 		QTextStream stream(&file);
-		stream.setCodec(codec_latin2);
+		stream.setCodec(QTextCodec::codecForName(CodecName.toLocal8Bit().data()));
 		while (!stream.atEnd())
 		{
 			line = stream.readLine().trimmed();

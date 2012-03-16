@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Media player integration
-DisplayName[pl]=Integracja z odtwarzaczami multimediów
+DisplayName[pl]=Integracja z odtwarzaczami multimediÃ³w
 Description=Integrates Kadu with most known media players
-Description[pl]=Integruje Kadu z wiêkszo¶ci± znanych odtwarzaczy multimediów
+Description[pl]=Integruje Kadu z wiÄ™kszoÅ›ciÄ… znanych odtwarzaczy multimediÃ³w
 Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
 Version=core

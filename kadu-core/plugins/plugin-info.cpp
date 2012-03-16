@@ -25,7 +25,7 @@
 PluginInfo::PluginInfo(const QString &fileName) :
 		LoadByDefault(false)
 {
-	PlainConfigFile file(fileName);
+	PlainConfigFile file(fileName, "UTF-8");
 
 	const QString lang = config_file.readEntry("General", "Language");
 

@@ -2,7 +2,7 @@
 DisplayName=Spelling correction
 DisplayName[pl]=Sprawdzanie pisowni
 Description=Checks sent messages for spelling mistakes
-Description[pl]=Sprawdza wysy³ane wiadomo¶ci pod k±tem b³êdów pisowni
+Description[pl]=Sprawdza wysyÅ‚ane wiadomoÅ›ci pod kÄ…tem bÅ‚Ä™dÃ³w pisowni
 Author=nazgul,Googie,Kadu Team
 Version=core
 Plugin=true

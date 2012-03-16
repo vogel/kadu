@@ -2,7 +2,7 @@
 DisplayName=MPD media player integration
 DisplayName[pl]=Integracja z odtwarzaczem MPD
 Description=Allows MPD playback control
-Description[pl]=Umoøliwia sterowanie odtwarzaniem MPD
+Description[pl]=Umo≈ºliwia sterowanie odtwarzaniem MPD
 Author=badboy
 Dependencies=mediaplayer
 Version=core

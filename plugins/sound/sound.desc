@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Basic sound support
-DisplayName[pl]=Podstawowa obs³uga d¼wiêku
+DisplayName[pl]=Podstawowa obsÅ‚uga dÅºwiÄ™ku
 Description=Basic sound support
-Description[pl]=Podstawowa obs³uga d¼wiêku
+Description[pl]=Podstawowa obsÅ‚uga dÅºwiÄ™ku
 Author=Kadu Team
 Provides=notify_method
 Version=core

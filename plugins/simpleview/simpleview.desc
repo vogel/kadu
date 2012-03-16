@@ -2,7 +2,7 @@
 DisplayName=Simplified Kadu window
 DisplayName[pl]=Uproszczone okno Kadu
 Description=Simplifies Kadu window leaving only buddies list
-Description[pl]=Pozwala usun±æ z okna Kadu wszystkie elementy prócz listy kontaktów
+Description[pl]=Pozwala usunÄ…Ä‡ z okna Kadu wszystkie elementy prÃ³cz listy kontaktÃ³w
 Author=prudy
 Dependencies=docking
 Version=core

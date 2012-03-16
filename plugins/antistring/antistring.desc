@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Chain messages prevention
-DisplayName[pl]=Ochrona przed ³añcuszkami
+DisplayName[pl]=Ochrona przed Å‚aÅ„cuszkami
 Description=Detects and blocks chain messages
-Description[pl]=Wykrywa i blokuje ³añcuszki internetowe
+Description[pl]=Wykrywa i blokuje Å‚aÅ„cuszki internetowe
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core

@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Inactivity detection
-DisplayName[pl]=Wykrywanie bezczynno∂ci
+DisplayName[pl]=Wykrywanie bezczynno≈õci
 Description=Checks how long user is away from computer
-Description[pl]=Sprawdza czas przez jaki uøytkownik nie jest obecny przy komputerze
+Description[pl]=Sprawdza czas przez jaki u≈ºytkownik nie jest obecny przy komputerze
 Author=Kadu Team
 LoadByDefault=false
 Version=core

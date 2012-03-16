@@ -1,6 +1,6 @@
 [Module]
 DisplayName=System speaker notifications
-DisplayName[pl]=Powiadomienia przez brzęczyk systemowy
+DisplayName[pl]=Powiadomienia brzęczykiem systemowym
 Description=Notifications via system speaker
 Description[pl]=Powiadamianie o zdarzeniach przy pomocy brzęczyka systemowego
 Author=Kadu Team

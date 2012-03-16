@@ -2,7 +2,7 @@
 DisplayName=Unwanted chats protection
 DisplayName[pl]=Ochrona przed niechcianymi rozmowami
 Description=Protects against bots, spam, strangers etc.
-Description[pl]=Blokuje wiadomo∂ci od botÛw, nieznajomych, spam itp.
+Description[pl]=Blokuje wiadomo≈õci od bot√≥w, nieznajomych, spam itp.
 Author=Pan Wojtas (Wojtek Sulewski), Attis, Kadu Team
 Version=core
 Dependencies=history

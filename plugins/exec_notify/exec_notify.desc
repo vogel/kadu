@@ -1,8 +1,8 @@
 [Module]
 DisplayName=External notifications
-DisplayName[pl]=Powiadomienia przez zewnêtrzne aplikacje
+DisplayName[pl]=Powiadomienia przez zewnÄ™trzne aplikacje
 Description=Notifies of events using external applications or commands
-Description[pl]=Powiadamiania o zdarzeniach za pomoc± zewnêtrznych aplikacji lub poleceñ
+Description[pl]=Powiadamiania o zdarzeniach za pomocÄ… zewnÄ™trznych aplikacji lub poleceÅ„
 Author=joi
 Provides=notify_method
 Version=core

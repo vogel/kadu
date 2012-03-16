@@ -1,8 +1,8 @@
 [Module]
 DisplayName=SMS support
-DisplayName[pl]=Obs≥uga SMS'Ûw
+DisplayName[pl]=Obs≈Çuga SMS'√≥w
 Description=Allows sending text messages to polish GSM networks
-Description[pl]=Umoøliwia wysy≥anie SMS'Ûw do polskich sieci
+Description[pl]=Umo≈ºliwia wysy≈Çanie SMS'√≥w do polskich sieci
 Author=Kadu Team
 Dependencies=history
 LoadByDefault=true

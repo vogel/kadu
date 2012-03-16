@@ -48,6 +48,7 @@ class PlainConfigFile
 	QString getEntry(const QString &group, const QString &name, bool *ok = 0);
 
 	QString filename;
+	QString CodecName;
 	QMap<QString, QMap<QString, QString> > groups;
 	mutable QString activeGroupName;
 	mutable QMap<QString, QString> activeGroup;
@@ -60,7 +61,7 @@ public:
 	/**
 		Otwiera plik filename i go wczytuje
 	**/
-	PlainConfigFile(const QString &filename);
+	PlainConfigFile(const QString &filename, const QString &codec = "ISO8859-2");
 
 	/**
 		Wczytuje plik konfiguracyjny z dysku

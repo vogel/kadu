@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Chat encryption
-DisplayName[pl]=Szyfrowanie rozmÛw
+DisplayName[pl]=Szyfrowanie rozm√≥w
 Description=Provides chat encryption
-Description[pl]=Umoøliwia szyfrowanie rozmÛw
+Description[pl]=Umo≈ºliwia szyfrowanie rozm√≥w
 Author=Kadu Team
 LoadByDefault=true
 Version=core

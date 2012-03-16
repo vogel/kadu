@@ -1,6 +1,6 @@
 [Module]
 DisplayName=XMPP/Jabber/GTalk network support
-DisplayName[pl]=Obs≥uga sieci XMPP/Jabber/GTalk
+DisplayName[pl]=Obs≈Çuga sieci XMPP/Jabber/GTalk
 Description=XMPP/Jabber/GTalk network support
 Description[pl]=Dostarcza wsparcie dla sieci XMPP/Jabber/GTalk
 Author=Kadu Team

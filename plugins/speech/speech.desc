@@ -2,7 +2,7 @@
 DisplayName=Speech
 DisplayName[pl]=Odczytywanie tekstu
 Description=Reading text using external program
-Description[pl]=Odczytywanie tekstu przez zewnêtrzny program "Powiedz"
+Description[pl]=Odczytywanie tekstu przez zewnÄ™trzny program "Powiedz"
 Author=Kadu Team
 Provides=notify_method
 Version=core

@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Extended chat encryption
-DisplayName[pl]=Rozszerzone szyfrowanie rozmów
+DisplayName[pl]=Rozszerzone szyfrowanie rozmÃ³w
 Description=Provides extended chat encryption using QCA2 library
-Description[pl]=Dostarcza rozszerzone szyfrowanie rozmów w oparciu o bibliotekê QCA2
+Description[pl]=Dostarcza rozszerzone szyfrowanie rozmÃ³w w oparciu o bibliotekÄ™ QCA2
 Author=Kadu Team
 LoadByDefault=true
 Version=core

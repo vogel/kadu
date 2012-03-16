@@ -1,8 +1,8 @@
 [Module]
 DisplayName=System tray icon notifications
-DisplayName[pl]=Powiadomienia ikon± w zasobniku
+DisplayName[pl]=Powiadomienia ikonÄ… w zasobniku
 Description=Notifications using icon in system tray
-Description[pl]=Powiadomienia z u¿yciem ikony w zasobniku systemowym
+Description[pl]=Powiadomienia z uÅ¼yciem ikony w zasobniku systemowym
 Author=Kadu Team
 Dependencies=qt4_docking
 Provides=notify_method

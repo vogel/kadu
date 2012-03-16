@@ -2,7 +2,7 @@
 DisplayName=History migration
 DisplayName[pl]=Migracja historii
 Description=Migrates history from older Kadu versions (< 0.9)
-Description[pl]=Migruje historiê ze starszych wersji Kadu (<0.9)
+Description[pl]=Migruje historiÄ™ ze starszych wersji Kadu (<0.9)
 Author=Kadu Team
 Dependencies=gadu_protocol sql_history
 LoadByDefault=true

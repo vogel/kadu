@@ -1,8 +1,8 @@
 [Module]
 DisplayName=MacOSX notifications integration
-DisplayName[pl]=Integracja powiadomieÒ z MacOSX
+DisplayName[pl]=Integracja powiadomie≈Ñ z MacOSX
 Description=Notifications via Growl (MacOSX)
-Description[pl]=Powiadomienia za po∂rednictwem Growl'a (MacOSX)
+Description[pl]=Powiadomienia za po≈õrednictwem Growl'a (MacOSX)
 Author=Kadu Team
 Provides=notify_method
 LoadByDefault=false

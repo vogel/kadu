@@ -1,8 +1,8 @@
 [Module]
 DisplayName=Inactivity status
-DisplayName[pl]=Status na czas nieobecno∂ci
+DisplayName[pl]=Status na czas nieobecno≈õci
 Description=Changes status after inacitivity period
-Description[pl]=Zmienia status podczas nieobecno∂ci uøytkownika przy komputerze
+Description[pl]=Zmienia status podczas nieobecno≈õci u≈ºytkownika przy komputerze
 Author=Kadu Team
 Dependencies=idle
 LoadByDefault=true

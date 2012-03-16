@@ -2,7 +2,7 @@
 DisplayName=Docking Kadu in system tray
 DisplayName[pl]=Dokowanie Kadu w zasobniku systemowym
 Description=Allows docking Kadu in system tray
-Description[pl]=Pozwala zadokowaæ Kadu jako ikonê w zasobniku systemowym
+Description[pl]=Pozwala zadokowaÄ‡ Kadu jako ikonÄ™ w zasobniku systemowym
 Author=Kadu Team
 Version=core
 Plugin=true
