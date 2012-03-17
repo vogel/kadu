@@ -31,6 +31,7 @@
 #include "protocols/services/chat-service.h"
 
 class Chat;
+class ChatDetailsRoom;
 class JabberProtocol;
 
 namespace XMPP
@@ -46,9 +47,13 @@ class JabberChatService : public ChatService
 
 	QMap<QString, QString> ContactMessageTypes;
 	QMap<QString, Chat> OpenedRoomChats;
+ 	QMap<QString, Chat> ClosedRoomChats;
 
 	void connectClient();
 	void disconnectClient();
+
+	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
+	QString roomChatId(ChatDetailsRoom *details) const;
 
 	bool sendMessageToContactChat(const Chat &chat, const QString &message, bool silent);
 	bool sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent);
@@ -57,7 +62,11 @@ class JabberChatService : public ChatService
 	void handleRoomChatReceivedMessage(const Message &msg);
 
 private slots:
+	void chatOpened(const Chat &chat);
+	void chatClosed(const Chat &chat);
+
 	void groupChatJoined(const Jid &jid);
+	void groupChatLeft(const Jid &jid);
 	void groupChatPresence(const Jid &jid, const Status &status);
 
 	void clientDestroyed();

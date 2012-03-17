@@ -53,16 +53,21 @@ namespace XMPP
 JabberChatService::JabberChatService(JabberProtocol *protocol) :
 		ChatService(protocol), XmppClient(0)
 {
+	connect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
+	connect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
 }
 
 JabberChatService::~JabberChatService()
 {
+	disconnect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
+	disconnect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
 }
 
 void JabberChatService::connectClient()
 {
 	connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
 	connect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	connect(XmppClient, SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
 	connect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
@@ -70,6 +75,7 @@ void JabberChatService::disconnectClient()
 {
 	disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
 	disconnect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	disconnect(XmppClient, SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
 	disconnect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
@@ -89,9 +95,68 @@ void JabberChatService::setClient(Client *xmppClient)
 		connectClient();
 }
 
+ChatDetailsRoom * JabberChatService::myRoomChatDetails(const Chat &chat) const
+{
+	if (chat.chatAccount() != account())
+		return 0;
+
+	return qobject_cast<ChatDetailsRoom *>(chat.details());
+}
+
+QString JabberChatService::roomChatId(ChatDetailsRoom *details) const
+{
+	return QString("%1@%2").arg(details->roomName()).arg(details->server());
+}
+
+
+void JabberChatService::chatOpened(const Chat &chat)
+{
+	ChatDetailsRoom *details = myRoomChatDetails(chat);
+	if (!details)
+		return;
+
+	OpenedRoomChats.insert(roomChatId(details), chat);
+
+	XmppClient->groupChatJoin(details->server(), details->roomName(), account().id());
+}
+
+void JabberChatService::chatClosed(const Chat &chat)
+{
+	ChatDetailsRoom *details = myRoomChatDetails(chat);
+	if (!details)
+		return;
+
+	QString chatId = roomChatId(details);
+	OpenedRoomChats.remove(chatId);
+	ClosedRoomChats.insert(chatId, chat);
+
+	XmppClient->groupChatLeave(details->server(), details->roomName());
+}
+
 void JabberChatService::groupChatJoined(const Jid &jid)
 {
-	printf("properly joined group chat: %s\n", qPrintable(jid.full()));
+	QString chatId = jid.bare();
+	if (!OpenedRoomChats.contains(chatId))
+		return;
+
+	Chat chat = OpenedRoomChats.value(chatId);
+	ChatDetailsRoom *details = myRoomChatDetails(chat);
+	if (details)
+		details->setConnected(true);
+}
+
+void JabberChatService::groupChatLeft(const Jid &jid)
+{
+	QString chatId = jid.bare();
+	if (!ClosedRoomChats.contains(chatId))
+		return;
+
+	Chat chat = ClosedRoomChats.value(chatId);
+	ChatDetailsRoom *details = myRoomChatDetails(chat);
+	if (details)
+		details->setConnected(false);
+
+	ClosedRoomChats.remove(chatId);
 }
 
 void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
@@ -195,16 +260,11 @@ bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &m
 	Q_UNUSED(message);
 	Q_UNUSED(silent);
 
-	ChatDetailsRoom *chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
+	ChatDetailsRoom *chatDetails = myRoomChatDetails(chat);
 	if (!chatDetails)
 		return false;
 
-	XmppClient->groupChatJoin(chatDetails->server(), chatDetails->roomName(), account().id());
-
-	QString chatId = QString("%1@%2").arg(chatDetails->roomName()).arg(chatDetails->server());
-	OpenedRoomChats.insert(chatId, chat);
-
-	Jid jid = chatId;
+	Jid jid = roomChatId(chatDetails);
 	XMPP::Message msg = XMPP::Message(jid);
 
 	bool stop = false;
