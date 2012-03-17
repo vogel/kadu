@@ -60,8 +60,7 @@ void ChatDetailsRoom::load()
 
 	ChatDetails::load();
 
-	Server = loadValue<QString>("Server");
-	RoomName = loadValue<QString>("RoomName");
+	Room = loadValue<QString>("Room");
 	Password = pwHash(loadValue<QString>("Password"));
 }
 
@@ -79,8 +78,7 @@ void ChatDetailsRoom::store()
 
 	ensureLoaded();
 
-	storeValue("Server", Server);
-	storeValue("RoomName", RoomName);
+	storeValue("Room", Room);
 	storeValue("Password", pwHash(Password));
 }
 
@@ -95,7 +93,7 @@ bool ChatDetailsRoom::shouldStore()
 {
 	ensureLoaded();
 
-	return StorableObject::shouldStore() && !RoomName.isEmpty();
+	return StorableObject::shouldStore() && !Room.isEmpty();
 }
 
 /**
@@ -110,24 +108,14 @@ ChatType * ChatDetailsRoom::type() const
 	return ChatTypeManager::instance()->chatType("Room");
 }
 
-void ChatDetailsRoom::setServer(const QString &server)
+void ChatDetailsRoom::setRoom(const QString &room)
 {
-	Server = server;
+	Room = room;
 }
 
-QString ChatDetailsRoom::server() const
+QString ChatDetailsRoom::room() const
 {
-	return Server;
-}
-
-void ChatDetailsRoom::setRoomName(const QString &roomName)
-{
-	RoomName = roomName;
-}
-
-QString ChatDetailsRoom::roomName() const
-{
-	return RoomName;
+	return Room;
 }
 
 void ChatDetailsRoom::setPassword(const QString &password)
@@ -149,7 +137,7 @@ QString ChatDetailsRoom::password() const
  */
 QString ChatDetailsRoom::name() const
 {
-	return RoomName;
+	return Room;
 }
 
 void ChatDetailsRoom::updateConnected()

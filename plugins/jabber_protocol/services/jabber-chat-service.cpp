@@ -103,21 +103,16 @@ ChatDetailsRoom * JabberChatService::myRoomChatDetails(const Chat &chat) const
 	return qobject_cast<ChatDetailsRoom *>(chat.details());
 }
 
-QString JabberChatService::roomChatId(ChatDetailsRoom *details) const
-{
-	return QString("%1@%2").arg(details->roomName()).arg(details->server());
-}
-
-
 void JabberChatService::chatOpened(const Chat &chat)
 {
 	ChatDetailsRoom *details = myRoomChatDetails(chat);
 	if (!details)
 		return;
 
-	OpenedRoomChats.insert(roomChatId(details), chat);
+	OpenedRoomChats.insert(details->room(), chat);
 
-	XmppClient->groupChatJoin(details->server(), details->roomName(), account().id());
+	Jid jid = details->room();
+	XmppClient->groupChatJoin(jid.domain(), jid.node(), account().id());
 }
 
 void JabberChatService::chatClosed(const Chat &chat)
@@ -126,11 +121,11 @@ void JabberChatService::chatClosed(const Chat &chat)
 	if (!details)
 		return;
 
-	QString chatId = roomChatId(details);
-	OpenedRoomChats.remove(chatId);
-	ClosedRoomChats.insert(chatId, chat);
+	OpenedRoomChats.remove(details->room());
+	ClosedRoomChats.insert(details->room(), chat);
 
-	XmppClient->groupChatLeave(details->server(), details->roomName());
+	Jid jid = details->room();
+	XmppClient->groupChatLeave(jid.domain(), jid.node());
 }
 
 void JabberChatService::groupChatJoined(const Jid &jid)
@@ -148,10 +143,17 @@ void JabberChatService::groupChatJoined(const Jid &jid)
 void JabberChatService::groupChatLeft(const Jid &jid)
 {
 	QString chatId = jid.bare();
-	if (!ClosedRoomChats.contains(chatId))
-		return;
+	Chat chat;
 
-	Chat chat = ClosedRoomChats.value(chatId);
+	if (!ClosedRoomChats.contains(chatId))
+	{
+		if (!OpenedRoomChats.contains(chatId))
+			return;
+		chat = OpenedRoomChats.value(chatId);
+	}
+	else
+		chat = ClosedRoomChats.value(chatId);
+
 	ChatDetailsRoom *details = myRoomChatDetails(chat);
 	if (details)
 		details->setConnected(false);
@@ -264,7 +266,7 @@ bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &m
 	if (!chatDetails)
 		return false;
 
-	Jid jid = roomChatId(chatDetails);
+	Jid jid = chatDetails->room();
 	XMPP::Message msg = XMPP::Message(jid);
 
 	bool stop = false;

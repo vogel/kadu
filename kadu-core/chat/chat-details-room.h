@@ -42,8 +42,7 @@ class ChatDetailsRoom : public ChatDetails
 {
 	Q_OBJECT
 
-	QString Server;
-	QString RoomName;
+	QString Room;
 	QString Password;
 
 	ContactSet Contacts;
@@ -88,31 +87,20 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Set server for this chat.
-	 * @param server new server for this chat
+	 * @short Set room for this chat.
+	 * @param room new room for this chat
+	 *
+	 * Room can have different format depending on protocol. For example, for XMPP MUC it is JIS in form of
+	 * room@server.
 	 */
-	void setServer(const QString &server);
+	void setRoom(const QString &room);
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Get current server for this chat.
-	 * @return current server for this chat
+	 * @short Get current room for this chat.
+	 * @return current room for this chat
 	 */
-	QString server() const;
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Set room name for this chat.
-	 * @param roomName new room name for this chat
-	 */
-	void setRoomName(const QString &roomName);
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Get current name of room for this chat.
-	 * @return current name of room for this chat
-	 */
-	QString roomName() const;
+	QString room() const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

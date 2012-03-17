@@ -24,7 +24,7 @@
 
 #include "chat-type-room.h"
 
-Chat ChatTypeRoom::findChat(const Account &account, const QString &server, const QString &room, NotFoundAction notFoundAction)
+Chat ChatTypeRoom::findChat(const Account &account, const QString &room, NotFoundAction notFoundAction)
 {
 	if (!account)
 		return Chat::null;
@@ -40,7 +40,7 @@ Chat ChatTypeRoom::findChat(const Account &account, const QString &server, const
 		if (!details)
 			continue;
 
-		if (details->server() == server && details->roomName() == room)
+		if (details->room() == room)
 			return chat;
 	}
 
@@ -54,8 +54,7 @@ Chat ChatTypeRoom::findChat(const Account &account, const QString &server, const
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);
 
-	details->setServer(server);
-	details->setRoomName(room);
+	details->setRoom(room);
 
 	if (ActionCreateAndAdd == notFoundAction)
 		ChatManager::instance()->addItem(chat);

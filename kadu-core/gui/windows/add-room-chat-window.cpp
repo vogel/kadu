@@ -96,15 +96,10 @@ void AddRoomChatWindow::createGui()
 	ErrorLabel->setFont(labelFont);
 	mainLayout->addWidget(ErrorLabel);
 
-	ServerEdit = new QLineEdit(this);
-	connect(ServerEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+	RoomEdit = new QLineEdit(this);
+	connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
 
-	layout->addRow(tr("Server name:"), ServerEdit);
-
-	RoomNameEdit = new QLineEdit(this);
-	connect(RoomNameEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
-
-	layout->addRow(tr("Room name:"), RoomNameEdit);
+	layout->addRow(tr("Room:"), RoomEdit);
 
 	PasswordEdit = new QLineEdit(this);
 	PasswordEdit->setEchoMode(QLineEdit::Password);
@@ -154,13 +149,7 @@ void AddRoomChatWindow::validateData()
 		return;
 	}
 
-	if (ServerEdit->text().isEmpty())
-	{
-		displayErrorMessage(tr("Enter server name"));
-		return;
-	}
-
-	if (RoomNameEdit->text().isEmpty())
+	if (RoomEdit->text().isEmpty())
 	{
 		displayErrorMessage(tr("Enter room name"));
 		return;
@@ -194,7 +183,7 @@ void AddRoomChatWindow::validateData()
 
 Chat AddRoomChatWindow::computeChat() const
 {
-	Chat chat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), ServerEdit->text(), RoomNameEdit->text(), ActionCreateAndAdd);
+	Chat chat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), RoomEdit->text(), ActionCreateAndAdd);
 	if (!chat)
 		return Chat::null;
 

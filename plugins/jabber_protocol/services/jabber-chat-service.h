@@ -53,7 +53,6 @@ class JabberChatService : public ChatService
 	void disconnectClient();
 
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
-	QString roomChatId(ChatDetailsRoom *details) const;
 
 	bool sendMessageToContactChat(const Chat &chat, const QString &message, bool silent);
 	bool sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent);
