@@ -297,11 +297,7 @@ bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &m
 		return false;
 	}
 
-	QString messageType = false == ContactMessageTypes.value(jid.bare()).isEmpty()
-	        ? ContactMessageTypes.value(jid.bare())
-	        : "chat";
-
-	msg.setType(messageType);
+	msg.setType("groupchat");
 	msg.setBody(plain);
 	msg.setTimeStamp(QDateTime::currentDateTime());
 
@@ -392,6 +388,10 @@ void JabberChatService::handleRoomChatReceivedMessage(const Message &msg)
 {
 	// skip empty messages
 	if (msg.body().isEmpty())
+		return;
+
+	// skip messages with type error == Cancel (fixes bug #1642)
+	if (msg.type() == "error")
 		return;
 
 	printf("received message from %s %s of %s\n", qPrintable(msg.nick()), qPrintable(msg.from().full()),
