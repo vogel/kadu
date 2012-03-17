@@ -54,12 +54,6 @@ class JabberChatService : public ChatService
 
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
 
-	bool sendMessageToContactChat(const Chat &chat, const QString &message, bool silent);
-	bool sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent);
-
-	void handleContactChatReceivedMessage(const Message &msg);
-	void handleRoomChatReceivedMessage(const Message &msg);
-
 private slots:
 	void chatOpened(const Chat &chat);
 	void chatClosed(const Chat &chat);

@@ -188,11 +188,32 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 		chatDetails->addContact(contact);
 }
 
-bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString &message, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
-	ContactSet contacts = chat.contacts();
-	// TODO send to more users
-	if (contacts.count() > 1 || contacts.count() == 0)
+	if (!XmppClient)
+		return false;
+
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return false;
+
+	QString jid;
+
+	if (chatType->name() == "Contact")
+	{
+		ContactSet contacts = chat.contacts();
+		Q_ASSERT(1 == contacts.size());
+
+		jid = contacts.toContact().id();
+	}
+	else if (chatType->name() == "Room")
+	{
+		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		Q_ASSERT(details);
+
+		jid = details->room();
+	}
+	else
 		return false;
 
 	QTextDocument document;
@@ -208,7 +229,6 @@ bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString
 
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = document.toPlainText();
-	QString jid = contacts.toContact().id();
 	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
 	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
@@ -227,9 +247,11 @@ bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString
 		return false;
 	}
 
-	QString messageType = false == ContactMessageTypes.value(jus.bare()).isEmpty()
-	        ? ContactMessageTypes.value(jus.bare())
-	        : "chat";
+	QString messageType = chatType->name() == "Room"
+			? "groupchat"
+			: !ContactMessageTypes.value(jus.bare()).isEmpty()
+					? ContactMessageTypes.value(jus.bare())
+					: "chat";
 
 	msg.setType(messageType);
 	msg.setBody(plain);
@@ -257,203 +279,62 @@ bool JabberChatService::sendMessageToContactChat(const Chat &chat, const QString
 	return true;
 }
 
-bool JabberChatService::sendMessageToRoomChat(const Chat &chat, const QString &message, bool silent)
-{
-	Q_UNUSED(message);
-	Q_UNUSED(silent);
-
-	ChatDetailsRoom *chatDetails = myRoomChatDetails(chat);
-	if (!chatDetails)
-		return false;
-
-	Jid jid = chatDetails->room();
-	XMPP::Message msg = XMPP::Message(jid);
-
-	bool stop = false;
-
-	QTextDocument document;
-	/*
-	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
-	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
-	 * these messages to have proper lines and paragraphs.
-	 */
-	if (message.contains('<'))
-		document.setHtml(message);
-	else
-		document.setPlainText(message);
-
-	//QString cleanmsg = toPlainText(mesg);
-	QString plain = document.toPlainText();
-
-	QByteArray data = plain.toUtf8();
-	emit filterRawOutgoingMessage(chat, data, stop);
-	plain = QString::fromUtf8(data);
-	emit filterOutgoingMessage(chat, plain, stop);
-
-	if (stop)
-	{
-		// TODO: implement formats
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-		return false;
-	}
-
-	msg.setType("groupchat");
-	msg.setBody(plain);
-	msg.setTimeStamp(QDateTime::currentDateTime());
-
-	emit messageAboutToSend(msg);
-	XmppClient->sendMessage(msg);
-
-	if (!silent)
-	{
-		HtmlDocument::escapeText(plain);
-
-		::Message message = ::Message::create();
-		message.setMessageChat(chat);
-		message.setType(MessageTypeSent);
-		message.setMessageSender(account().accountContact());
-		message.setContent(document.toPlainText()); // do not add encrypted message here
-		message.setSendDate(QDateTime::currentDateTime());
-		message.setReceiveDate(QDateTime::currentDateTime());
-
-		emit messageSent(message);
-	}
-
-	return true;
-}
-
-bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
-{
-	if (!XmppClient)
-		return false;
-
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
-		return false;
-
-	if (chatType->name() == "Contact")
-		return sendMessageToContactChat(chat, message, silent);
-	if (chatType->name() == "Room")
-		return sendMessageToRoomChat(chat, message, silent);
-
-	return false;
-}
-
-void JabberChatService::handleContactChatReceivedMessage(const Message &msg)
-{
-	// skip empty messages
-	if (msg.body().isEmpty())
-		return;
-
-	// skip messages with type error == Cancel (fixes bug #1642)
-	if (msg.type() == "error")
-		return;
-
-	Contact contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	bool ignore = false;
-
-	QByteArray body = msg.body().toUtf8();
-	emit filterRawIncomingMessage(chat, contact, body, ignore);
-
-	FormattedMessage formattedMessage(QString::fromUtf8(body));
-
-	QString plain = formattedMessage.toPlain();
-
-	emit filterIncomingMessage(chat, contact, plain, ignore);
-	if (ignore)
-		return;
-
-	QString messageType = msg.type().isEmpty()
-	        ? "message"
-	        : msg.type();
-
-	ContactMessageTypes.insert(msg.from().bare(), messageType);
-
-	HtmlDocument::escapeText(plain);
-
-	::Message message = ::Message::create();
-	message.setMessageChat(chat);
-	message.setType(MessageTypeReceived);
-	message.setMessageSender(contact);
-	message.setContent(plain);
-	message.setSendDate(msg.timeStamp());
-	message.setReceiveDate(QDateTime::currentDateTime());
-
-	emit messageReceived(message);
-
-}
-
-void JabberChatService::handleRoomChatReceivedMessage(const Message &msg)
-{
-	// skip empty messages
-	if (msg.body().isEmpty())
-		return;
-
-	// skip messages with type error == Cancel (fixes bug #1642)
-	if (msg.type() == "error")
-		return;
-
-	printf("received message from %s %s of %s\n", qPrintable(msg.nick()), qPrintable(msg.from().full()),
-		   qPrintable(msg.body()));
-	MUCDecline decline = msg.mucDecline();
-	printf("decline: %s %s\n", qPrintable(decline.from().full()), qPrintable(decline.reason()));
-	QString password = msg.mucPassword();
-	printf("password: %s\n", qPrintable(password));
-	QList<MUCInvite> invites = msg.mucInvites();
-	foreach (MUCInvite invite, invites)
-		printf("invite: %s %s\n", qPrintable(invite.from().bare()), qPrintable(invite.reason()));
-	QList<int> statuses = msg.getMUCStatuses();
-	foreach (int status, statuses)
-		printf("muc status: %d\n", status);
-
-	if (!OpenedRoomChats.contains(msg.from().bare()))
-		return;
-
-	Chat chat = OpenedRoomChats.value(msg.from().bare());
-
-	Contact contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
-	Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	buddy.setDisplay(msg.from().resource());
-
-	bool ignore = false;
-
-	QByteArray body = msg.body().toUtf8();
-	emit filterRawIncomingMessage(chat, contact, body, ignore);
-
-	FormattedMessage formattedMessage(QString::fromUtf8(body));
-
-	QString plain = formattedMessage.toPlain();
-
-	emit filterIncomingMessage(chat, contact, plain, ignore);
-	if (ignore)
-		return;
-
-	QString messageType = msg.type().isEmpty()
-	        ? "message"
-	        : msg.type();
-
-	ContactMessageTypes.insert(msg.from().bare(), messageType);
-
-	HtmlDocument::escapeText(plain);
-
-	::Message message = ::Message::create();
-	message.setMessageChat(chat);
-	message.setType(MessageTypeReceived);
-	message.setMessageSender(contact);
-	message.setContent(plain);
-	message.setSendDate(msg.timeStamp());
-	message.setReceiveDate(QDateTime::currentDateTime());
-
-	emit messageReceived(message);
-}
-
 void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 {
+	// skip empty messages
+	if (msg.body().isEmpty())
+		return;
+
+	// skip messages with type error == Cancel (fixes bug #1642)
+	if (msg.type() == "error")
+		return;
+
+	Chat chat;
+	Contact contact;
+
 	if (OpenedRoomChats.contains(msg.from().bare()))
-		handleRoomChatReceivedMessage(msg);
+	{
+		contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
+		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
+		buddy.setDisplay(msg.from().resource());
+		chat = OpenedRoomChats.value(msg.from().bare());
+	}
 	else
-		handleContactChatReceivedMessage(msg);
+	{
+		contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
+		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	}
+
+	bool ignore = false;
+
+	QByteArray body = msg.body().toUtf8();
+	emit filterRawIncomingMessage(chat, contact, body, ignore);
+
+	FormattedMessage formattedMessage(QString::fromUtf8(body));
+
+	QString plain = formattedMessage.toPlain();
+
+	emit filterIncomingMessage(chat, contact, plain, ignore);
+	if (ignore)
+		return;
+
+	QString messageType = msg.type().isEmpty()
+	        ? "message"
+	        : msg.type();
+
+	ContactMessageTypes.insert(msg.from().bare(), messageType);
+
+	HtmlDocument::escapeText(plain);
+
+	::Message message = ::Message::create();
+	message.setMessageChat(chat);
+	message.setType(MessageTypeReceived);
+	message.setMessageSender(contact);
+	message.setContent(plain);
+	message.setSendDate(msg.timeStamp());
+	message.setReceiveDate(QDateTime::currentDateTime());
+
+	emit messageReceived(message);
 }
 
 }
