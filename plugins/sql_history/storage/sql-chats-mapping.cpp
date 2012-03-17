@@ -21,9 +21,11 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-room.h"
 #include "contacts/contact-set.h"
 
 #include "storage/sql-accounts-mapping.h"
@@ -110,6 +112,15 @@ const QMap<int, Chat> & SqlChatsMapping::mapping() const
 
 QString SqlChatsMapping::chatToString(const Chat &chat)
 {
+	if ("Room" == chat.type())
+	{
+		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		if (!details || details->room().isEmpty())
+			return QString();
+
+		return QString("Room;") + details->room();
+	}
+
 	if ("Contact" == chat.type())
 		return QString("Contact;") + QString::number(ContactsMapping->idByContact(chat.contacts().toContact(), true));
 
@@ -138,6 +149,10 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		return Chat::null;
 
 	QString chatType = items.at(0);
+
+	if ("Room" == chatType)
+		return ChatTypeRoom::findChat(account, items.at(1), ActionCreate);
+
 	if ("Contact" == chatType)
 	{
 		Contact contact = ContactsMapping->contactById(items.at(1).toInt());
