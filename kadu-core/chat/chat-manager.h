@@ -98,6 +98,8 @@ class KADUAPI ChatManager : public QObject, public Manager<Chat>
 
 private slots:
 	void chatDataUpdated();
+	void chatOpened();
+	void chatClosed();
 
 	void unreadMessageAdded(const Message &message);
 	void unreadMessageRemoved(const Message &message);
@@ -180,7 +182,26 @@ signals:
 	 */
 	void chatRemoved(Chat chat);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Emitted when data of given chat has changed.
+	 * @param chat updated chat
+	 */
 	void chatUpdated(const Chat &chat);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when given chat has been opened.
+	 * @param chat opened chat
+	 */
+	void chatOpened(const Chat &chat);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when given chat has been closed.
+	 * @param chat closed chat
+	 */
+	void chatClosed(const Chat &chat);
 
 };
 

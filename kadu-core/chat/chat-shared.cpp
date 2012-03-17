@@ -73,7 +73,7 @@ ChatShared * ChatShared::loadFromStorage(const QSharedPointer<StoragePoint> &sto
  * created.
  */
 ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0)
+		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
 {
 	ChatAccount = new Account();
 }
@@ -451,4 +451,21 @@ bool ChatShared::isConnected() const
 		return false;
 
 	return Details->isConnected();
+}
+
+bool ChatShared::isOpen() const
+{
+	return Open;
+}
+
+void ChatShared::setOpen(bool open)
+{
+	if (Open == open)
+		return;
+
+	Open = open;
+	if (Open)
+		emit opened();
+	else
+		emit closed();
 }

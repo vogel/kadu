@@ -141,6 +141,8 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SIGNAL(iconChanged()));
 
+	CurrentChat.setOpen(true);
+
 	kdebugf2();
 }
 
@@ -153,6 +155,8 @@ ChatWidget::~ChatWidget()
 
 	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())
 		currentProtocol()->chatStateService()->sendState(chat().contacts().toContact(), ChatStateService::StateGone);
+
+	CurrentChat.setOpen(false);
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }

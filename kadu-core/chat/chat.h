@@ -121,6 +121,25 @@ public:
 	 */
 	bool isConnected() const;
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Get value of Open property.
+	 * @return true when chat is open
+	 *
+	 * Chat is open when an associated chat widget is open.
+	 */
+	bool isOpen() const;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Set value of open property.
+	 * @param open new value of Open property
+	 *
+	 * Changing value of Open property may result in emiting of @link opened() @endlink or @link closed() @endlink
+	 * singals.
+	 */
+	void setOpen(bool open);
+
 };
 
 /**

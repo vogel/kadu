@@ -78,6 +78,8 @@ void ChatManager::init()
 void ChatManager::itemAboutToBeRegistered(Chat item)
 {
 	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
+	connect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
+	connect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
 
 	emit chatAboutToBeAdded(item);
 }
@@ -90,6 +92,8 @@ void ChatManager::itemRegistered(Chat item)
 void ChatManager::itemAboutToBeUnregisterd(Chat item)
 {
 	disconnect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
+	disconnect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
+	disconnect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
 
 	emit chatAboutToBeRemoved(item);
 }
@@ -142,6 +146,20 @@ void ChatManager::chatDataUpdated()
 	Chat chat(sender());
 	if (!chat.isNull())
 		emit chatUpdated(chat);
+}
+
+void ChatManager::chatOpened()
+{
+	Chat chat(sender());
+	if (!chat.isNull())
+		emit chatOpened(chat);
+}
+
+void ChatManager::chatClosed()
+{
+	Chat chat(sender());
+	if (!chat.isNull())
+		emit chatClosed(chat);
 }
 
 void ChatManager::unreadMessageAdded(const Message &message)

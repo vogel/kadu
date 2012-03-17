@@ -158,3 +158,17 @@ bool Chat::isConnected() const
 	else
 		return false;
 }
+
+bool Chat::isOpen() const
+{
+	if (!isNull())
+		return data()->isOpen();
+	else
+		return false;
+}
+
+void Chat::setOpen(bool open)
+{
+	if (!isNull())
+		data()->setOpen(open);
+}
