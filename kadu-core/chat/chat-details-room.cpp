@@ -175,20 +175,6 @@ bool ChatDetailsRoom::isConnected() const
 	return protocol->isConnected() && Connected;
 }
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Assigns contact set to this chat.
- * @param contacts contact set to assign
- *
- * Assigns contact set to this chat.
- */
-void ChatDetailsRoom::setContacts(const ContactSet &contacts)
-{
-	ensureLoaded();
-
-	Contacts = contacts;
-}
-
 void ChatDetailsRoom::addContact(const Contact &contact)
 {
 	ensureLoaded();
@@ -196,6 +182,7 @@ void ChatDetailsRoom::addContact(const Contact &contact)
 	if (Contacts.contains(contact))
 		return;
 
+	emit contactAboutToBeAdded(contact);
 	Contacts.insert(contact);
 	emit contactAdded(contact);
 }
@@ -207,6 +194,7 @@ void ChatDetailsRoom::removeContact(const Contact &contact)
 	if (!Contacts.contains(contact))
 		return;
 
+	emit contactAboutToBeRemoved(contact);
 	Contacts.remove(contact);
-	emit contactAdded(contact);
+	emit contactRemoved(contact);
 }

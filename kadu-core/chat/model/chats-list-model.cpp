@@ -35,12 +35,30 @@ ChatsListModel::~ChatsListModel()
 {
 }
 
+void ChatsListModel::connectChat(const Chat &chat)
+{
+	connect(chat, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
+	connect(chat, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+	connect(chat, SIGNAL(contactAboutToBeRemoved(Contact)), this, SLOT(contactAboutToBeRemoved(Contact)));
+	connect(chat, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemoved(Contact)));
+	connect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+}
+
+void ChatsListModel::disconnectChat(const Chat &chat)
+{
+	disconnect(chat, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
+	disconnect(chat, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+	disconnect(chat, SIGNAL(contactAboutToBeRemoved(Contact)), this, SLOT(contactAboutToBeRemoved(Contact)));
+	disconnect(chat, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemoved(Contact)));
+	disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+}
+
 void ChatsListModel::setChats(const QVector<Chat> &chats)
 {
 	beginResetModel();
 
 	foreach (const Chat &chat, Chats)
-		disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+		disconnectChat(chat);
 
 	Chats = chats;
 
@@ -49,7 +67,8 @@ void ChatsListModel::setChats(const QVector<Chat> &chats)
 	{
 		Q_ASSERT(chat.data());
 		chat.data()->ensureLoaded();
-		connect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+
+		connectChat(chat);
 	}
 
 	endResetModel();
@@ -124,6 +143,91 @@ QVariant ChatsListModel::data(const QModelIndex &index, int role) const
 	}
 
 	return QVariant();
+}
+
+void ChatsListModel::contactAboutToBeAdded(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Chat chat(sender());
+	if (!chat)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	int count = chat.contacts().size();
+	beginInsertRows(index, count, count);
+}
+
+void ChatsListModel::contactAdded(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Chat chat(sender());
+	if (!chat)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	endInsertRows();
+}
+
+void ChatsListModel::contactAboutToBeRemoved(const Contact &contact)
+{
+	Q_UNUSED(contact);
+
+	Chat chat(sender());
+	if (!chat)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	beginRemoveRows(index, 0, 0);
+}
+
+void ChatsListModel::contactRemoved(const Contact &contact)
+{
+	Q_UNUSED(contact)
+
+	Chat chat(sender());
+	if (!chat)
+		return;
+
+	const QModelIndexList &indexes = indexListForValue(chat);
+	if (indexes.isEmpty())
+		return;
+
+	Q_ASSERT(indexes.size() == 1);
+
+	const QModelIndex &index = indexes.at(0);
+	if (!index.isValid())
+		return;
+
+	endRemoveRows();
 }
 
 void ChatsListModel::chatUpdated()

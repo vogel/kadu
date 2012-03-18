@@ -126,6 +126,13 @@ signals:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited before a new contact is added to @link Chat @endlink represented by these details.
+	 * @param contact added contact
+	 */
+	void contactAboutToBeAdded(const Contact &contact);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
 	 * @short Signal emited when a new contact was added to @link Chat @endlink represented by these details.
 	 * @param contact just added contact
 	 */
@@ -133,7 +140,14 @@ signals:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Signal emited when a new contact was removed from @link Chat @endlink represented by these details.
+	 * @short Signal emited before a contact is removed from @link Chat @endlink represented by these details.
+	 * @param contact just removed contact
+	 */
+	void contactAboutToBeRemoved(const Contact &contact);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Signal emited when a contact was removed from @link Chat @endlink represented by these details.
 	 * @param contact just removed contact
 	 */
 	void contactRemoved(const Contact &contact);

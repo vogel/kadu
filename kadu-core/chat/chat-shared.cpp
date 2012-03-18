@@ -278,7 +278,9 @@ void ChatShared::chatTypeRegistered(ChatType *chatType)
 
 		connect(Details, SIGNAL(connected()), this, SIGNAL(connected()));
 		connect(Details, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+		connect(Details, SIGNAL(contactAboutToBeAdded(Contact)), this, SIGNAL(contactAboutToBeAdded(Contact)));
 		connect(Details, SIGNAL(contactAdded(Contact)), this, SIGNAL(contactAdded(Contact)));
+		connect(Details, SIGNAL(contactAboutToBeRemoved(Contact)), this, SIGNAL(contactAboutToBeRemoved(Contact)));
 		connect(Details, SIGNAL(contactRemoved(Contact)), this, SIGNAL(contactRemoved(Contact)));
 
 		Details->ensureLoaded();

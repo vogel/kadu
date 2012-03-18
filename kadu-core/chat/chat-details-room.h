@@ -116,8 +116,6 @@ public:
 	 */
 	QString password() const;
 
-	void setContacts(const ContactSet &contacts);
-
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Add new contact to this chat.

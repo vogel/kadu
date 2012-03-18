@@ -33,9 +33,17 @@ class KADUAPI ChatsListModel : public QAbstractItemModel, public KaduAbstractMod
 
 	QVector<Chat> Chats;
 
+	void connectChat(const Chat &chat);
+	void disconnectChat(const Chat &chat);
+
 	Chat chatFromVariant(const QVariant &variant) const;
 
 private slots:
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
+
 	void chatUpdated();
 
 public:

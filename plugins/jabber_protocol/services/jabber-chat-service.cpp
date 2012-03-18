@@ -158,6 +158,10 @@ void JabberChatService::groupChatLeft(const Jid &jid)
 	if (details)
 		details->setConnected(false);
 
+	ContactSet contacts = details->contacts();
+	foreach (const Contact &contact, contacts)
+		details->removeContact(contact);
+
 	ClosedRoomChats.remove(chatId);
 }
 

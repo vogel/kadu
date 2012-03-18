@@ -31,11 +31,19 @@ class ChatsModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
+	void connectChat(const Chat &chat);
+	void disconnectChat(const Chat &chat);
+
 private slots:
 	void chatAboutToBeAdded(Chat chat);
 	void chatAdded(Chat chat);
 	void chatAboutToBeRemoved(Chat chat);
 	void chatRemoved(Chat chat);
+
+	void contactAboutToBeAdded(const Contact &contact);
+	void contactAdded(const Contact &contact);
+	void contactAboutToBeRemoved(const Contact &contact);
+	void contactRemoved(const Contact &contact);
 
 	void chatUpdated(const Chat &chat);
 
