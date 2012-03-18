@@ -60,6 +60,8 @@ void ContactListModel::addContact(const Contact &contact)
 	if (List.contains(contact))
 		return;
 
+	connectContact(contact);
+
 	beginInsertRows(QModelIndex(), List.count(), List.count());
 	List.append(contact);
 	endInsertRows();
@@ -70,6 +72,8 @@ void ContactListModel::removeContact(const Contact &contact)
 	int index = List.indexOf(contact);
 	if (-1 == index)
 		return;
+
+	disconnectContact(contact);
 
 	beginRemoveRows(QModelIndex(), index, index);
 	List.remove(index);

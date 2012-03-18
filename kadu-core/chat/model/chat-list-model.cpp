@@ -79,6 +79,8 @@ void ChatListModel::addChat(const Chat &chat)
 	if (List.contains(chat))
 		return;
 
+	connectChat(chat);
+
 	beginInsertRows(QModelIndex(), List.count(), List.count());
 	List.append(chat);
 	endInsertRows();
@@ -89,6 +91,8 @@ void ChatListModel::removeChat(const Chat &chat)
 	int index = List.indexOf(chat);
 	if (-1 == index)
 		return;
+
+	disconnectChat(chat);
 
 	beginRemoveRows(QModelIndex(), index, index);
 	List.remove(index);
