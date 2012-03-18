@@ -31,7 +31,7 @@ class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractMode
 {
 	Q_OBJECT
 
-	QVector<Chat> Chats;
+	QVector<Chat> List;
 
 	void connectChat(const Chat &chat);
 	void disconnectChat(const Chat &chat);
@@ -51,6 +51,8 @@ public:
 	virtual ~ChatListModel();
 
 	void setChats(const QVector<Chat> &chats);
+	void addChat(const Chat &chat);
+	void removeChat(const Chat &chat);
 
 	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
 

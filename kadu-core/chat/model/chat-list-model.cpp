@@ -57,13 +57,13 @@ void ChatListModel::setChats(const QVector<Chat> &chats)
 {
 	beginResetModel();
 
-	foreach (const Chat &chat, Chats)
+	foreach (const Chat &chat, List)
 		disconnectChat(chat);
 
-	Chats = chats;
+	List = chats;
 
 	// We want all items to be loaded
-	foreach (const Chat &chat, Chats)
+	foreach (const Chat &chat, List)
 	{
 		Q_ASSERT(chat.data());
 		chat.data()->ensureLoaded();
@@ -72,6 +72,27 @@ void ChatListModel::setChats(const QVector<Chat> &chats)
 	}
 
 	endResetModel();
+}
+
+void ChatListModel::addChat(const Chat &chat)
+{
+	if (List.contains(chat))
+		return;
+
+	beginInsertRows(QModelIndex(), List.count(), List.count());
+	List.append(chat);
+	endInsertRows();
+}
+
+void ChatListModel::removeChat(const Chat &chat)
+{
+	int index = List.indexOf(chat);
+	if (-1 == index)
+		return;
+
+	beginRemoveRows(QModelIndex(), index, index);
+	List.remove(index);
+	endRemoveRows();
 }
 
 QModelIndex ChatListModel::index(int row, int column, const QModelIndex &parent) const
@@ -97,7 +118,7 @@ int ChatListModel::rowCount(const QModelIndex &parent) const
 		return chat.contacts().size();
 	}
 
-	return Chats.size();
+	return List.size();
 }
 
 QFlags<Qt::ItemFlag> ChatListModel::flags(const QModelIndex& index) const
@@ -252,7 +273,7 @@ Chat ChatListModel::chatAt(const QModelIndex &index) const
 	const QModelIndex &parent = index.parent();
 	const int row = parent.isValid() ? parent.row() : index.row();
 
-	return row >= 0 && row < Chats.size() ? Chats.at(row) : Chat::null;
+	return row >= 0 && row < List.size() ? List.at(row) : Chat::null;
 }
 
 Chat ChatListModel::chatFromVariant(const QVariant &variant) const
@@ -277,7 +298,7 @@ QModelIndexList ChatListModel::indexListForValue(const QVariant &value) const
 
 	if (chat)
 	{
-		const int i = Chats.indexOf(chat);
+		const int i = List.indexOf(chat);
 		if (-1 != i)
 			result.append(index(i, 0));
 		return result;
@@ -286,11 +307,11 @@ QModelIndexList ChatListModel::indexListForValue(const QVariant &value) const
 	const Contact &contact = value.value<Contact>();
 	if (contact)
 	{
-		const int count = Chats.count();
+		const int count = List.count();
 
 		for (int i = 0; i < count; i++)
 		{
-			const Chat &chat = Chats.at(i);
+			const Chat &chat = List.at(i);
 			const QList<Contact> &contacts = chat.contacts().toList();
 			const int contactIndex = contacts.indexOf(contact);
 
