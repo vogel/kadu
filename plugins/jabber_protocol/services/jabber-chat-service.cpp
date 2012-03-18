@@ -267,8 +267,6 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 
 	if (!silent)
 	{
-		HtmlDocument::escapeText(plain);
-
 		::Message message = ::Message::create();
 		message.setMessageChat(chat);
 		message.setType(MessageTypeSent);
@@ -298,6 +296,9 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	if (OpenedRoomChats.contains(msg.from().bare()))
 	{
+		if (msg.from().resource() == account().id()) // message from myself
+			return;
+
 		contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		buddy.setDisplay(msg.from().resource());
