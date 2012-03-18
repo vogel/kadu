@@ -17,14 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BUDDY_MANAGER_ADAPTER_H
-#define BUDDY_MANAGER_ADAPTER_H
+#ifndef CHAT_MANAGER_ADAPTER_H
+#define CHAT_MANAGER_ADAPTER_H
 
 #include <QtCore/QObject>
 
-#include "buddies/buddy.h"
+#include "chat/chat.h"
 
-class BuddyListModel;
+class ChatListModel;
 
 /**
  * @addtogroup Buddy
@@ -32,38 +32,38 @@ class BuddyListModel;
  */
 
 /**
- * @class BuddyManagerAdapter
+ * @class ChatManagerAdapter
  * @author Rafał 'Vogel' Malinowski
- * @short Adapter that makes BuddyListModel to use copy of buddies from BuddiesManager.
+ * @short Adapter that makes ChatListModel to use copy of buddies from ChatManager.
  *
- * This adapter created with a @link BuddyListModel @endlink as parent replicates list of buddies from
- * @link BuddiesManager @endlink on this model. After creation other, non-managable, buddies can be
- * added and removed from @link BuddyListModel @endlink. Removing or adding managable buddies is undefined.
+ * This adapter created with a @link ChatListModel @endlink as parent replicates list of chats from
+ * @link ChatManager @endlink on this model. After creation other, non-managable, chats can be
+ * added and removed from @link ChatListModel @endlink. Removing or adding managable chats is undefined.
  */
-class BuddyManagerAdapter : public QObject
+class ChatManagerAdapter : public QObject
 {
 	Q_OBJECT
 
-	BuddyListModel *Model;
+	ChatListModel *Model;
 
 private slots:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
-	 * @param buddy added buddy
+	 * @short Slot called after a chat is added to @link ChatManager @endlink singleton.
+	 * @param chat added chat
 	 *
-	 * Buddy is added to @link BuddyListModel @endlink instance.
+	 * Chat is added to @link ChatListModel @endlink instance.
 	 */
-	void buddyAdded(const Buddy &buddy);
+	void chatAdded(const Chat &chat);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a buddy is removed from @link BuddiesManager @endlink singleton.
-	 * @param buddy removed buddy
+	 * @short Slot called after a chat is removed from @link ChatManager @endlink singleton.
+	 * @param chat removed chat
 	 *
-	 * Buddy is removed from @link BuddyListModel @endlink instance.
+	 * Chat is removed from @link ChatListModel @endlink instance.
 	 */
-	void buddyRemoved(const Buddy &buddy);
+	void chatRemoved(const Chat &chat);
 
 public:
 	/**
@@ -74,8 +74,8 @@ public:
 	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
 	 * Non-managable buddies can be added or removed from this model.
 	 */
-	explicit BuddyManagerAdapter(BuddyListModel *model);
-	virtual ~BuddyManagerAdapter();
+	explicit ChatManagerAdapter(ChatListModel *model);
+	virtual ~ChatManagerAdapter();
 
 };
 
@@ -83,4 +83,4 @@ public:
  * @}
  */
 
-#endif // BUDDY_MANAGER_ADAPTER_H
+#endif // CHAT_MANAGER_ADAPTER_H
