@@ -23,7 +23,6 @@
 #include <QtGui/QScrollBar>
 #include <QtGui/QStackedWidget>
 
-#include "chat/model/chats-model.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"

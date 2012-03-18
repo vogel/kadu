@@ -15,7 +15,6 @@ set (chat_SRCS
 	model/chat-data-extractor.cpp
 	model/chat-list-model.cpp
 	model/chat-manager-adapter.cpp
-	model/chats-model.cpp
 
 	style-engines/chat-engine-adium/adium-style.cpp
 	style-engines/chat-engine-adium/adium-time-formatter.cpp
@@ -47,7 +46,6 @@ set (chat_MOC_SRCS
 
 	model/chat-list-model.h
 	model/chat-manager-adapter.h
-	model/chats-model.h
 
 	style-engines/chat-engine-adium/chat-engine-adium.h
 	style-engines/chat-engine-kadu/chat-engine-kadu.h
