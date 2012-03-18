@@ -57,6 +57,7 @@ public:
 	virtual QString windowRole() const;
 
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
+	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
 };
 

@@ -29,7 +29,9 @@
 
 #include "exports.h"
 
+class Chat;
 class ChatDetails;
+class ChatEditWidget;
 class ChatShared;
 class KaduIcon;
 
@@ -104,6 +106,17 @@ public:
 	 * given @link Chat @endlink (@link ChatShared @endlink).
 	 */
 	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Create new ChatEditWidget for editing given chat.
+	 * @param chat chat to edit
+	 * @param parent QWidget parent of new edit widget
+	 * @return ChatEditWidget for editing given chat
+	 *
+	 * May return null.
+	 */
+	virtual ChatEditWidget * createEditWidget(const Chat &chat, QWidget *parent) const = 0;
 
 };
 

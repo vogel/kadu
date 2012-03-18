@@ -163,3 +163,11 @@ ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
 {
 	return new ChatDetailsContactSet(chatData);
 }
+
+ChatEditWidget * ChatTypeContactSet::createEditWidget(const Chat &chat, QWidget *parent) const
+{
+	Q_UNUSED(chat);
+	Q_UNUSED(parent);
+
+	return 0;
+}

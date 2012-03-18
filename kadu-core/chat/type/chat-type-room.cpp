@@ -139,3 +139,11 @@ ChatDetails * ChatTypeRoom::createChatDetails(ChatShared *chatData) const
 {
 	return new ChatDetailsRoom(chatData);
 }
+
+ChatEditWidget * ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *parent) const
+{
+	Q_UNUSED(chat);
+	Q_UNUSED(parent);
+
+	return 0;
+}

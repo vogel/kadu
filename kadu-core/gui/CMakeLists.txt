@@ -203,6 +203,7 @@ set (gui_MOC_SRCS
 	widgets/categorized-list-view-painter.h
 	widgets/chat-edit-box.h
 	widgets/chat-edit-box-size-manager.h
+	widgets/chat-edit-widget.h
 	widgets/chat-messages-view.h
 	widgets/chat-view-network-access-manager.h
 	widgets/chat-widget.h

@@ -101,3 +101,11 @@ ChatDetails * ChatTypeBuddy::createChatDetails(ChatShared *chatData) const
 {
 	return new ChatDetailsBuddy(chatData);
 }
+
+ChatEditWidget * ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *parent) const
+{
+	Q_UNUSED(chat);
+	Q_UNUSED(parent);
+
+	return 0;
+}
