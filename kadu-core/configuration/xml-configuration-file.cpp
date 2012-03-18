@@ -301,7 +301,7 @@ QDomElement XmlConfigFile::getNamedNode(const QString &nodeTagName, const QStrin
 
 QDomElement XmlConfigFile::getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
-	return getNamedNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
+	return getUuidNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
 }
 
 QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
