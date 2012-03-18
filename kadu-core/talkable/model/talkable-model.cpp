@@ -19,7 +19,8 @@
 
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
-#include "chat/model/chats-model.h"
+#include "chat/model/chat-list-model.h"
+#include "chat/model/chat-manager-adapter.h"
 #include "core/core.h"
 
 #include "talkable-model.h"
@@ -27,7 +28,8 @@
 TalkableModel::TalkableModel(QObject *parent) :
 		KaduMergedProxyModel(parent), IncludeMyself(false)
 {
-	Chats = new ChatsModel(this);
+	Chats = new ChatListModel(this);
+	new ChatManagerAdapter(Chats);
 	Buddies = new BuddyListModel(this);
 	BuddiesAdapter = new BuddyManagerAdapter(Buddies);
 

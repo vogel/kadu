@@ -24,7 +24,7 @@
 
 class BuddyListModel;
 class BuddyManagerAdapter;
-class ChatsModel;
+class ChatListModel;
 
 /**
  * @addtogroup Talkable
@@ -34,16 +34,16 @@ class ChatsModel;
 /**
  * @class TalkableModel
  * @author Rafał 'Vogel' Malinowski
- * @short Proxy model than merges BuddiesModel and ChatsModel.
+ * @short Proxy model than merges BuddyListModel and ChatListModel with Manager adapters.
  *
- * This proxy model merges BuddiesModel and ChatsModel and displays registered instances of Buddy and Chat classes.
+ * This proxy model merges BuddyListModel and ChatListModel and displays registered instances of Buddy and Chat classes.
  * Chat instances are displayed before Buddy ones.
  */
 class TalkableModel : public KaduMergedProxyModel
 {
 	Q_OBJECT
 
-	ChatsModel *Chats;
+	ChatListModel *Chats;
 	BuddyListModel *Buddies;
 	BuddyManagerAdapter *BuddiesAdapter;
 	bool IncludeMyself;
