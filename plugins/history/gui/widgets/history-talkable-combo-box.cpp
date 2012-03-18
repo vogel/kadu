@@ -21,7 +21,7 @@
 #include <QtGui/QAction>
 
 #include "buddies/model/buddy-list-model.h"
-#include "chat/model/chats-list-model.h"
+#include "chat/model/chat-list-model.h"
 #include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
 #include "chats-buddies-splitter.h"
@@ -37,7 +37,7 @@ HistoryTalkableComboBox::HistoryTalkableComboBox(QWidget *parent) :
 	AllAction = new QAction(this);
 	actionModel->appendAction(AllAction);
 
-	ChatsModel = new ChatsListModel(this);
+	ChatsModel = new ChatListModel(this);
 	BuddiesModel = new BuddyListModel(this);
 
 	QList<KaduAbstractModel *> models;

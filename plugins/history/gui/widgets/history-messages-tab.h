@@ -33,7 +33,7 @@ class QSplitter;
 
 class ActionContext;
 class BuddyListModel;
-class ChatsListModel;
+class ChatListModel;
 class FilteredTreeView;
 class HistoryQueryResult;
 class HistoryMessagesStorage;
@@ -67,7 +67,7 @@ class HistoryMessagesTab : public HistoryTab
 	QSplitter *Splitter;
 	WaitOverlay *TabWaitOverlay;
 
-	ChatsListModel *ChatsModel;
+	ChatListModel *ChatsModel;
 	BuddyListModel *BuddiesModel;
 	ModelChain *Chain;
 

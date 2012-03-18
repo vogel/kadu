@@ -24,7 +24,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/model/chats-list-model.h"
+#include "chat/model/chat-list-model.h"
 #include "buddies/model/buddy-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
@@ -114,7 +114,7 @@ void HistoryMessagesTab::createGui()
 
 void HistoryMessagesTab::createModelChain()
 {
-	ChatsModel = new ChatsListModel(TalkableTree);
+	ChatsModel = new ChatListModel(TalkableTree);
 	BuddiesModel = new BuddyListModel(TalkableTree);
 
 	QList<KaduAbstractModel *> models;

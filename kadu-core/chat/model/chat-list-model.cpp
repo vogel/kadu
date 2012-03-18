@@ -24,18 +24,18 @@
 #include "model/roles.h"
 #include "talkable/talkable.h"
 
-#include "chats-list-model.h"
+#include "chat-list-model.h"
 
-ChatsListModel::ChatsListModel(QObject *parent) :
+ChatListModel::ChatListModel(QObject *parent) :
 		QAbstractItemModel(parent)
 {
 }
 
-ChatsListModel::~ChatsListModel()
+ChatListModel::~ChatListModel()
 {
 }
 
-void ChatsListModel::connectChat(const Chat &chat)
+void ChatListModel::connectChat(const Chat &chat)
 {
 	connect(chat, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
 	connect(chat, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
@@ -44,7 +44,7 @@ void ChatsListModel::connectChat(const Chat &chat)
 	connect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 }
 
-void ChatsListModel::disconnectChat(const Chat &chat)
+void ChatListModel::disconnectChat(const Chat &chat)
 {
 	disconnect(chat, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
 	disconnect(chat, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
@@ -53,7 +53,7 @@ void ChatsListModel::disconnectChat(const Chat &chat)
 	disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 }
 
-void ChatsListModel::setChats(const QVector<Chat> &chats)
+void ChatListModel::setChats(const QVector<Chat> &chats)
 {
 	beginResetModel();
 
@@ -74,19 +74,19 @@ void ChatsListModel::setChats(const QVector<Chat> &chats)
 	endResetModel();
 }
 
-QModelIndex ChatsListModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex ChatListModel::index(int row, int column, const QModelIndex &parent) const
 {
 	return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1) : QModelIndex();
 }
 
-int ChatsListModel::columnCount(const QModelIndex &parent) const
+int ChatListModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent)
 
 	return 1;
 }
 
-int ChatsListModel::rowCount(const QModelIndex &parent) const
+int ChatListModel::rowCount(const QModelIndex &parent) const
 {
 	if (parent.parent().isValid())
 		return 0;
@@ -100,7 +100,7 @@ int ChatsListModel::rowCount(const QModelIndex &parent) const
 	return Chats.size();
 }
 
-QFlags<Qt::ItemFlag> ChatsListModel::flags(const QModelIndex& index) const
+QFlags<Qt::ItemFlag> ChatListModel::flags(const QModelIndex& index) const
 {
 	if (index.isValid())
 		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
@@ -108,7 +108,7 @@ QFlags<Qt::ItemFlag> ChatsListModel::flags(const QModelIndex& index) const
 		return QAbstractItemModel::flags(index);
 }
 
-QModelIndex ChatsListModel::parent(const QModelIndex &child) const
+QModelIndex ChatListModel::parent(const QModelIndex &child) const
 {
 	if (-1 == child.internalId())
 		return QModelIndex();
@@ -116,7 +116,7 @@ QModelIndex ChatsListModel::parent(const QModelIndex &child) const
 		return index(child.internalId(), 0, QModelIndex());
 }
 
-QVariant ChatsListModel::data(const QModelIndex &index, int role) const
+QVariant ChatListModel::data(const QModelIndex &index, int role) const
 {
 	if (!index.isValid())
 		return QVariant();
@@ -145,7 +145,7 @@ QVariant ChatsListModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-void ChatsListModel::contactAboutToBeAdded(const Contact &contact)
+void ChatListModel::contactAboutToBeAdded(const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -167,7 +167,7 @@ void ChatsListModel::contactAboutToBeAdded(const Contact &contact)
 	beginInsertRows(index, count, count);
 }
 
-void ChatsListModel::contactAdded(const Contact &contact)
+void ChatListModel::contactAdded(const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -188,7 +188,7 @@ void ChatsListModel::contactAdded(const Contact &contact)
 	endInsertRows();
 }
 
-void ChatsListModel::contactAboutToBeRemoved(const Contact &contact)
+void ChatListModel::contactAboutToBeRemoved(const Contact &contact)
 {
 	Q_UNUSED(contact);
 
@@ -209,7 +209,7 @@ void ChatsListModel::contactAboutToBeRemoved(const Contact &contact)
 	beginRemoveRows(index, 0, 0);
 }
 
-void ChatsListModel::contactRemoved(const Contact &contact)
+void ChatListModel::contactRemoved(const Contact &contact)
 {
 	Q_UNUSED(contact)
 
@@ -230,7 +230,7 @@ void ChatsListModel::contactRemoved(const Contact &contact)
 	endRemoveRows();
 }
 
-void ChatsListModel::chatUpdated()
+void ChatListModel::chatUpdated()
 {
 	Chat chat(sender());
 	if (!chat)
@@ -247,7 +247,7 @@ void ChatsListModel::chatUpdated()
 		emit dataChanged(index, index);
 }
 
-Chat ChatsListModel::chatAt(const QModelIndex &index) const
+Chat ChatListModel::chatAt(const QModelIndex &index) const
 {
 	const QModelIndex &parent = index.parent();
 	const int row = parent.isValid() ? parent.row() : index.row();
@@ -255,7 +255,7 @@ Chat ChatsListModel::chatAt(const QModelIndex &index) const
 	return row >= 0 && row < Chats.size() ? Chats.at(row) : Chat::null;
 }
 
-Chat ChatsListModel::chatFromVariant(const QVariant &variant) const
+Chat ChatListModel::chatFromVariant(const QVariant &variant) const
 {
 	const Chat &chat = variant.value<Chat>();
 
@@ -269,7 +269,7 @@ Chat ChatsListModel::chatFromVariant(const QVariant &variant) const
 	return Chat::null;
 }
 
-QModelIndexList ChatsListModel::indexListForValue(const QVariant &value) const
+QModelIndexList ChatListModel::indexListForValue(const QVariant &value) const
 {
 	QModelIndexList result;
 
@@ -306,12 +306,12 @@ QModelIndexList ChatsListModel::indexListForValue(const QVariant &value) const
 
 // D&D
 
-QStringList ChatsListModel::mimeTypes() const
+QStringList ChatListModel::mimeTypes() const
 {
 	return ChatListMimeDataHelper::mimeTypes();
 }
 
-QMimeData * ChatsListModel::mimeData(const QModelIndexList &indexes) const
+QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
 {
 	QList<Chat> list;
 	foreach (const QModelIndex &index, indexes)

@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHATS_LIST_MODEL_H
-#define CHATS_LIST_MODEL_H
+#ifndef CHAT_LIST_MODEL_H
+#define CHAT_LIST_MODEL_H
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QVector>
@@ -27,7 +27,7 @@
 #include "exports.h"
 #include "model/kadu-abstract-model.h"
 
-class KADUAPI ChatsListModel : public QAbstractItemModel, public KaduAbstractModel
+class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractModel
 {
 	Q_OBJECT
 
@@ -47,8 +47,8 @@ private slots:
 	void chatUpdated();
 
 public:
-	explicit ChatsListModel(QObject *parent = 0);
-	virtual ~ChatsListModel();
+	explicit ChatListModel(QObject *parent = 0);
+	virtual ~ChatListModel();
 
 	void setChats(const QVector<Chat> &chats);
 
@@ -71,4 +71,4 @@ public:
 
 };
 
-#endif // CHATS_LIST_MODEL_H
+#endif // CHAT_LIST_MODEL_H

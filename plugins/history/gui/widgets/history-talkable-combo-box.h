@@ -27,7 +27,7 @@
 class QAction;
 
 class BuddyListModel;
-class ChatsListModel;
+class ChatListModel;
 
 /**
  * @addtogroup History
@@ -51,7 +51,7 @@ class HistoryTalkableComboBox : public SelectTalkableComboBox
 	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
 
 	QAction *AllAction;
-	ChatsListModel *ChatsModel;
+	ChatListModel *ChatsModel;
 	BuddyListModel *BuddiesModel;
 
 private slots:
