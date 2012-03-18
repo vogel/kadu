@@ -21,6 +21,7 @@
 
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
 #include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
@@ -95,7 +96,8 @@ void EditTalkableAction::updateChatActionState(Action *action)
 	setChatActionTitleAndIcon(action);
 
 	const Chat &chat = actionChat(action->context());
-	action->setEnabled(chat && chat.contacts().size() > 1);
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	action->setEnabled(!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty()));
 }
 
 void EditTalkableAction::updateBuddyActionState(Action *action)
