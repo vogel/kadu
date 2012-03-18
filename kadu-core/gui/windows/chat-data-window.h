@@ -34,6 +34,7 @@
 
 class QLineEdit;
 class QPushButton;
+class QTabWidget;
 class QVBoxLayout;
 
 class GroupList;
@@ -48,6 +49,9 @@ class KADUAPI ChatDataWindow : public QWidget
 	static const QMap<Chat, ChatDataWindow *> & instances() { return Instances; }
 
 	Chat MyChat;
+
+	QTabWidget *TabWidget;
+	QWidget *GeneralTab;
 
 	QLineEdit *DisplayEdit;
 	GroupList *ChatGroupList;
@@ -78,6 +82,8 @@ public:
 	void show();
 
 	Chat chat() const { return MyChat; }
+
+	QWidget * generalTab() const { return GeneralTab; }
 
 signals:
 	void save();

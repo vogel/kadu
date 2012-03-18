@@ -91,6 +91,11 @@ void ChatDataWindow::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
+	TabWidget = new QTabWidget(this);
+
+	GeneralTab = new QWidget(TabWidget);
+	QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
+
 	QWidget *nameWidget = new QWidget(this);
 
 	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
@@ -109,9 +114,13 @@ void ChatDataWindow::createGui()
 	ChatGroupList = new GroupList(this);
 	ChatGroupList->setCheckedGroups(MyChat.groups());
 
-	layout->addWidget(nameWidget);
-	layout->addWidget(groupsLabel);
-	layout->addWidget(ChatGroupList);
+	generalLayout->addWidget(nameWidget);
+	generalLayout->addWidget(groupsLabel);
+	generalLayout->addWidget(ChatGroupList);
+
+	TabWidget->addTab(GeneralTab, tr("General"));
+
+	layout->addWidget(TabWidget);
 
 	createButtons(layout);
 

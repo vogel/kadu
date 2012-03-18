@@ -62,7 +62,7 @@ void HistoryChatDataWindowAddons::chatDataWindowCreated(ChatDataWindow *chatData
 {
 	Q_ASSERT(!StoreHistoryCheckBoxes.contains(chatDataWindow));
 
-	QVBoxLayout *layout = static_cast<QVBoxLayout *>(chatDataWindow->layout());
+	QVBoxLayout *layout = static_cast<QVBoxLayout *>(chatDataWindow->generalTab()->layout());
 
 	QCheckBox *historyCheckBox = new QCheckBox(tr("Store history"), chatDataWindow);
 	layout->insertWidget(3, historyCheckBox);
