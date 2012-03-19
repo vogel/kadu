@@ -20,8 +20,10 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
 
+#include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
-#include <chat/type/chat-type-room.h>
+#include "chat/type/chat-type-room.h"
+#include "gui/widgets/accounts-combo-box.h"
 
 #include "chat-room-edit-widget.h"
 
@@ -42,6 +44,18 @@ void ChatRoomEditWidget::createGui()
 {
 	QFormLayout *layout = new QFormLayout(this);
 
+	AccountCombo = new AccountsComboBox(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+	AccountCombo->setIncludeIdInDisplay(true);
+
+	// only xmpp rooms for now
+	// we need to add something like Protocol::supporterChatTypes()
+	ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
+	protocolFilter->setProtocolName("jabber");
+	AccountCombo->addFilter(protocolFilter);
+	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
+
+	layout->addRow(tr("Account:"), AccountCombo);
+
 	RoomEdit = new QLineEdit(this);
 	connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
@@ -59,19 +73,21 @@ void ChatRoomEditWidget::dataChanged()
 	if (!RoomDetails)
 		return;
 
-	if (RoomEdit->text() == RoomDetails->room() && PasswordEdit->text() == RoomDetails->password())
+	if (AccountCombo->currentAccount() == chat().chatAccount()
+			&& RoomEdit->text() == RoomDetails->room()
+			&& PasswordEdit->text() == RoomDetails->password())
 	{
 		setState(StateNotChanged);
 		return;
 	}
 
-	if (RoomEdit->text().isEmpty())
+	if (!AccountCombo->currentAccount() || RoomEdit->text().isEmpty())
 	{
 		setState(StateChangedDataInvalid);
 		return;
 	}
 
-	Chat sameChat = ChatTypeRoom::findChat(chat().chatAccount(), RoomEdit->text(), ActionReturnNull);
+	Chat sameChat = ChatTypeRoom::findChat(AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
 	if (sameChat && (sameChat != chat()))
 	{
 		setState(StateChangedDataInvalid);
@@ -86,6 +102,7 @@ void ChatRoomEditWidget::loadChatData()
 	if (!RoomDetails)
 		return;
 
+	AccountCombo->setCurrentAccount(chat().chatAccount());
 	RoomEdit->setText(RoomDetails->room());
 	PasswordEdit->setText(RoomDetails->password());
 }
@@ -95,6 +112,7 @@ void ChatRoomEditWidget::apply()
 	if (!RoomDetails)
 		return;
 
+	chat().setChatAccount(AccountCombo);
 	RoomDetails->setRoom(RoomEdit->text());
 	RoomDetails->setPassword(PasswordEdit->text());
 

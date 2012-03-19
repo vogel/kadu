@@ -73,7 +73,6 @@ void AddRoomChatWindow::createGui()
 	ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
 	protocolFilter->setProtocolName("jabber");
 	AccountCombo->addFilter(protocolFilter);
-	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountChanged()));
 	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(validateData()));
 
 	layout->addRow(tr("Account:"), AccountCombo);

@@ -24,12 +24,14 @@
 
 class QLineEdit;
 
+class AccountsComboBox;
 class ChatDetailsRoom;
 
 class ChatRoomEditWidget : public ChatEditWidget
 {
 	Q_OBJECT
 
+	AccountsComboBox *AccountCombo;
 	QLineEdit *RoomEdit;
 	QLineEdit *PasswordEdit;
 	ChatDetailsRoom *RoomDetails;
