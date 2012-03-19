@@ -29,6 +29,7 @@
 #include <QtGui/QWidget>
 
 #include "chat/chat.h"
+#include "gui/widgets/modal-configuration-widget.h"
 
 #include "exports.h"
 
@@ -37,6 +38,7 @@ class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
+class ChatEditWidget;
 class GroupList;
 
 class KADUAPI ChatDataWindow : public QWidget
@@ -56,6 +58,8 @@ class KADUAPI ChatDataWindow : public QWidget
 	QLineEdit *DisplayEdit;
 	GroupList *ChatGroupList;
 
+	ChatEditWidget *EditWidget;
+
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
 
@@ -72,6 +76,7 @@ private slots:
 	void updateChat();
 	void updateChatAndClose();
 	void chatRemoved(const Chat &buddy);
+	void editChatStateChanged(ModalConfigurationWidgetState state);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

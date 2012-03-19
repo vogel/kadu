@@ -54,7 +54,7 @@ ChatDataWindow * ChatDataWindow::instance(const Chat &chat, QWidget *parent)
 }
 
 ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
-		QWidget(parent, Qt::Dialog), MyChat(chat)
+		QWidget(parent, Qt::Dialog), MyChat(chat), EditWidget(0)
 {
 	Instances.insert(MyChat, this);
 
@@ -125,9 +125,12 @@ void ChatDataWindow::createGui()
 	ChatType *chatType = ChatTypeManager::instance()->chatType(MyChat.type());
 	if (chatType)
 	{
-		QWidget *editWidget = chatType->createEditWidget(MyChat, TabWidget);
-		if (editWidget)
-			TabWidget->addTab(editWidget, tr("Chat"));
+		EditWidget = chatType->createEditWidget(MyChat, TabWidget);
+		if (EditWidget)
+		{
+			TabWidget->addTab(EditWidget, tr("Chat"));
+			connect(EditWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(editChatStateChanged(ModalConfigurationWidgetState)));
+		}
 	}
 
 	layout->addWidget(TabWidget);
@@ -162,6 +165,9 @@ void ChatDataWindow::updateChat()
 {
 	MyChat.blockUpdatedSignal();
 
+	if (EditWidget)
+		EditWidget->apply();
+
 	MyChat.setDisplay(DisplayEdit->text());
 	MyChat.setGroups(ChatGroupList->checkedGroups());
 
@@ -180,6 +186,12 @@ void ChatDataWindow::chatRemoved(const Chat &chat)
 {
 	if (chat == MyChat)
 		close();
+}
+
+void ChatDataWindow::editChatStateChanged(ModalConfigurationWidgetState state)
+{
+	OkButton->setEnabled(state != StateChangedDataInvalid);
+	ApplyButton->setEnabled(state != StateChangedDataInvalid);
 }
 
 void ChatDataWindow::keyPressEvent(QKeyEvent *event)

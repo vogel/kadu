@@ -24,14 +24,21 @@
 
 class QLineEdit;
 
+class ChatDetailsRoom;
+
 class ChatRoomEditWidget : public ChatEditWidget
 {
 	Q_OBJECT
 
 	QLineEdit *RoomEdit;
 	QLineEdit *PasswordEdit;
+	ChatDetailsRoom *RoomDetails;
 
 	void createGui();
+	void loadChatData();
+
+private slots:
+	void dataChanged();
 
 public:
 	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = 0);

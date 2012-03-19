@@ -20,12 +20,18 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLineEdit>
 
+#include "chat/chat-details-room.h"
+#include <chat/type/chat-type-room.h>
+
 #include "chat-room-edit-widget.h"
 
 ChatRoomEditWidget::ChatRoomEditWidget(const Chat &chat, QWidget *parent) :
 		ChatEditWidget(chat, parent)
 {
+	RoomDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
+
 	createGui();
+	loadChatData();
 }
 
 ChatRoomEditWidget::~ChatRoomEditWidget()
@@ -37,21 +43,67 @@ void ChatRoomEditWidget::createGui()
 	QFormLayout *layout = new QFormLayout(this);
 
 	RoomEdit = new QLineEdit(this);
-	// connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+	connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
 	layout->addRow(tr("Room:"), RoomEdit);
 
 	PasswordEdit = new QLineEdit(this);
 	PasswordEdit->setEchoMode(QLineEdit::Password);
-	// connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+	connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
 	layout->addRow(tr("Password:"), PasswordEdit);
 }
 
+void ChatRoomEditWidget::dataChanged()
+{
+	if (!RoomDetails)
+		return;
+
+	if (RoomEdit->text() == RoomDetails->room() && PasswordEdit->text() == RoomDetails->password())
+	{
+		setState(StateNotChanged);
+		return;
+	}
+
+	if (RoomEdit->text().isEmpty())
+	{
+		setState(StateChangedDataInvalid);
+		return;
+	}
+
+	Chat sameChat = ChatTypeRoom::findChat(chat().chatAccount(), RoomEdit->text(), ActionReturnNull);
+	if (sameChat && (sameChat != chat()))
+	{
+		setState(StateChangedDataInvalid);
+		return;
+	}
+
+	setState(StateChangedDataValid);
+}
+
+void ChatRoomEditWidget::loadChatData()
+{
+	if (!RoomDetails)
+		return;
+
+	RoomEdit->setText(RoomDetails->room());
+	PasswordEdit->setText(RoomDetails->password());
+}
+
 void ChatRoomEditWidget::apply()
 {
+	if (!RoomDetails)
+		return;
+
+	RoomDetails->setRoom(RoomEdit->text());
+	RoomDetails->setPassword(PasswordEdit->text());
+
+	setState(StateNotChanged);
 }
 
 void ChatRoomEditWidget::cancel()
 {
+	loadChatData();
+
+	setState(StateNotChanged);
 }
