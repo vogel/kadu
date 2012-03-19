@@ -20,6 +20,7 @@
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-details-room.h"
+#include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-room.h"
@@ -142,8 +143,5 @@ ChatDetails * ChatTypeRoom::createChatDetails(ChatShared *chatData) const
 
 ChatEditWidget * ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	Q_UNUSED(chat);
-	Q_UNUSED(parent);
-
-	return 0;
+	return new ChatRoomEditWidget(chat, parent);
 }

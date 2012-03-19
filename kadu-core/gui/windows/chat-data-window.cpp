@@ -32,6 +32,8 @@
 
 #include "buddies/group.h"
 #include "chat/chat-manager.h"
+#include "chat/type/chat-type-manager.h"
+#include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/group-list.h"
 #include "gui/windows/chat-data-window-aware-object.h"
 #include "icons/icons-manager.h"
@@ -119,6 +121,14 @@ void ChatDataWindow::createGui()
 	generalLayout->addWidget(ChatGroupList);
 
 	TabWidget->addTab(GeneralTab, tr("General"));
+
+	ChatType *chatType = ChatTypeManager::instance()->chatType(MyChat.type());
+	if (chatType)
+	{
+		QWidget *editWidget = chatType->createEditWidget(MyChat, TabWidget);
+		if (editWidget)
+			TabWidget->addTab(editWidget, tr("Chat"));
+	}
 
 	layout->addWidget(TabWidget);
 

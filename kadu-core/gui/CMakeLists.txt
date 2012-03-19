@@ -33,6 +33,7 @@ set (gui_SRCS
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-messages-view.cpp
+	widgets/chat-room-edit-widget.cpp
 	widgets/chat-view-network-access-manager.cpp
 	widgets/chat-widget.cpp
 	widgets/chat-widget-actions.cpp
@@ -205,6 +206,7 @@ set (gui_MOC_SRCS
 	widgets/chat-edit-box-size-manager.h
 	widgets/chat-edit-widget.h
 	widgets/chat-messages-view.h
+	widgets/chat-room-edit-widget.h
 	widgets/chat-view-network-access-manager.h
 	widgets/chat-widget.h
 	widgets/chat-widget-actions.h
