@@ -40,10 +40,25 @@ SqlChatsMapping::SqlChatsMapping(const QSqlDatabase &database, SqlAccountsMappin
 	Q_ASSERT(ContactsMapping);
 
 	loadMappingsFromDatabase();
+
+	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 }
 
 SqlChatsMapping::~SqlChatsMapping()
 {
+}
+
+void SqlChatsMapping::chatUpdated(const Chat &chat)
+{
+	if (idByChat(chat, false) <= 0)
+		return;
+
+	QSqlQuery query(Database);
+	query.prepare("UPDATE kadu_chats SET account_id = :account_id, account = :account WHERE id = :id");
+	query.bindValue(":account_id", AccountsMapping->idByAccount(chat.chatAccount()));
+	query.bindValue(":chat", chatToString(chat));
+	query.bindValue(":id", idByChat(chat, false));
+	query.exec();
 }
 
 void SqlChatsMapping::addMapping(int id, const Chat &chat)

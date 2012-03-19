@@ -84,6 +84,16 @@ class SqlChatsMapping : public QObject
 	 */
 	void loadMappingsFromDatabase();
 
+private slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Update SQL mapping of changed chat.
+	 * @param chat changes chat
+	 *
+	 * This method is called when chat's data changes. Probably an update is required in mapping table.
+	 */
+	void chatUpdated(const Chat &chat);
+
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
