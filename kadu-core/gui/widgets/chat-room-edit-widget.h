@@ -33,6 +33,7 @@ class ChatRoomEditWidget : public ChatEditWidget
 
 	AccountsComboBox *AccountCombo;
 	QLineEdit *RoomEdit;
+	QLineEdit *NickEdit;
 	QLineEdit *PasswordEdit;
 	ChatDetailsRoom *RoomDetails;
 

@@ -43,6 +43,7 @@ class ChatDetailsRoom : public ChatDetails
 	Q_OBJECT
 
 	QString Room;
+	QString Nick;
 	QString Password;
 
 	ContactSet Contacts;
@@ -101,6 +102,20 @@ public:
 	 * @return current room for this chat
 	 */
 	QString room() const;
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Set nick for this chat.
+	 * @param nick new nick for this chat
+	 */
+	void setNick(const QString &nick);
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Get current nick for this chat.
+	 * @return current nick for this chat
+	 */
+	QString nick() const;
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski

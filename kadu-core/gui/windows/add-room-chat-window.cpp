@@ -100,6 +100,11 @@ void AddRoomChatWindow::createGui()
 
 	layout->addRow(tr("Room:"), RoomEdit);
 
+	NickEdit = new QLineEdit(this);
+	connect(NickEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
+
+	layout->addRow(tr("Nick:"), NickEdit);
+
 	PasswordEdit = new QLineEdit(this);
 	PasswordEdit->setEchoMode(QLineEdit::Password);
 	connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(validateData()));
@@ -154,6 +159,12 @@ void AddRoomChatWindow::validateData()
 		return;
 	}
 
+	if (NickEdit->text().isEmpty())
+	{
+		displayErrorMessage(tr("Enter nick"));
+		return;
+	}
+
 	StartButton->setEnabled(true);
 
 	const QString &display = DisplayNameEdit->text();
@@ -186,11 +197,6 @@ Chat AddRoomChatWindow::computeChat() const
 	if (!chat)
 		return Chat::null;
 
-	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
-	Q_ASSERT(details);
-
-	details->setPassword(PasswordEdit->text());
-
 	return chat;
 }
 
@@ -200,6 +206,12 @@ void AddRoomChatWindow::accept()
 	Q_ASSERT(!chat.isNull());
 
 	chat.setDisplay(DisplayNameEdit->text());
+
+	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+	Q_ASSERT(details);
+
+	details->setNick(NickEdit->text());
+	details->setPassword(PasswordEdit->text());
 
 	QDialog::accept();
 }
@@ -217,6 +229,12 @@ void AddRoomChatWindow::start()
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(computeChat(), true);
 	if (chatWidget)
 		chatWidget->activate();
+
+	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+	Q_ASSERT(details);
+
+	details->setNick(NickEdit->text());
+	details->setPassword(PasswordEdit->text());
 
 	QDialog::accept();
 }

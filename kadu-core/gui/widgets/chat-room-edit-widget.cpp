@@ -61,6 +61,11 @@ void ChatRoomEditWidget::createGui()
 
 	layout->addRow(tr("Room:"), RoomEdit);
 
+	NickEdit = new QLineEdit(this);
+	connect(NickEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+
+	layout->addRow(tr("Nick:"), NickEdit);
+
 	PasswordEdit = new QLineEdit(this);
 	PasswordEdit->setEchoMode(QLineEdit::Password);
 	connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
@@ -75,13 +80,14 @@ void ChatRoomEditWidget::dataChanged()
 
 	if (AccountCombo->currentAccount() == chat().chatAccount()
 			&& RoomEdit->text() == RoomDetails->room()
+			&& NickEdit->text() == RoomDetails->nick()
 			&& PasswordEdit->text() == RoomDetails->password())
 	{
 		setState(StateNotChanged);
 		return;
 	}
 
-	if (!AccountCombo->currentAccount() || RoomEdit->text().isEmpty())
+	if (!AccountCombo->currentAccount() || RoomEdit->text().isEmpty() || NickEdit->text().isEmpty())
 	{
 		setState(StateChangedDataInvalid);
 		return;
@@ -104,6 +110,7 @@ void ChatRoomEditWidget::loadChatData()
 
 	AccountCombo->setCurrentAccount(chat().chatAccount());
 	RoomEdit->setText(RoomDetails->room());
+	NickEdit->setText(RoomDetails->nick());
 	PasswordEdit->setText(RoomDetails->password());
 }
 
@@ -112,8 +119,9 @@ void ChatRoomEditWidget::apply()
 	if (!RoomDetails)
 		return;
 
-	chat().setChatAccount(AccountCombo);
+	chat().setChatAccount(AccountCombo->currentAccount());
 	RoomDetails->setRoom(RoomEdit->text());
+	RoomDetails->setNick(NickEdit->text());
 	RoomDetails->setPassword(PasswordEdit->text());
 
 	setState(StateNotChanged);

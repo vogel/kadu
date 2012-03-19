@@ -36,10 +36,8 @@ ChatDetailsRoom::ChatDetailsRoom(ChatShared *chatData) :
 		ChatDetails(chatData), Connected(false)
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
-	Q_ASSERT(protocol);
-
-	connect(protocol, SIGNAL(connected(Account)), this, SLOT(updateConnected()));
-	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(updateConnected()));
+	if (protocol)
+		connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(updateConnected()));
 }
 
 ChatDetailsRoom::~ChatDetailsRoom()
@@ -61,6 +59,7 @@ void ChatDetailsRoom::load()
 	ChatDetails::load();
 
 	Room = loadValue<QString>("Room");
+	Nick = loadValue<QString>("Nick");
 	Password = pwHash(loadValue<QString>("Password"));
 }
 
@@ -79,6 +78,7 @@ void ChatDetailsRoom::store()
 	ensureLoaded();
 
 	storeValue("Room", Room);
+	storeValue("Nick", Nick);
 	storeValue("Password", pwHash(Password));
 }
 
@@ -118,6 +118,16 @@ QString ChatDetailsRoom::room() const
 	return Room;
 }
 
+void ChatDetailsRoom::setNick(const QString &nick)
+{
+	Nick = nick;
+}
+
+QString ChatDetailsRoom::nick() const
+{
+	return Nick;
+}
+
 void ChatDetailsRoom::setPassword(const QString &password)
 {
 	Password = password;
@@ -143,18 +153,14 @@ QString ChatDetailsRoom::name() const
 void ChatDetailsRoom::updateConnected()
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
-	Q_ASSERT(protocol);
-
-	if (!protocol->isConnected())
+	if (!protocol || !protocol->isConnected())
 		setConnected(false);
 }
 
 void ChatDetailsRoom::setConnected(bool newConnected)
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
-	Q_ASSERT(protocol);
-
-	if (!protocol->isConnected())
+	if (protocol && !protocol->isConnected())
 		newConnected = false;
 
 	if (Connected == newConnected)
@@ -170,9 +176,8 @@ void ChatDetailsRoom::setConnected(bool newConnected)
 bool ChatDetailsRoom::isConnected() const
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
-	Q_ASSERT(protocol);
 
-	return protocol->isConnected() && Connected;
+	return protocol && protocol->isConnected() && Connected;
 }
 
 void ChatDetailsRoom::addContact(const Contact &contact)

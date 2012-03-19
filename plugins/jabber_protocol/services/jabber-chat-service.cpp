@@ -112,7 +112,7 @@ void JabberChatService::chatOpened(const Chat &chat)
 	OpenedRoomChats.insert(details->room(), chat);
 
 	Jid jid = details->room();
-	XmppClient->groupChatJoin(jid.domain(), jid.node(), account().id());
+	XmppClient->groupChatJoin(jid.domain(), jid.node(), details->nick());
 }
 
 void JabberChatService::chatClosed(const Chat &chat)
@@ -167,8 +167,6 @@ void JabberChatService::groupChatLeft(const Jid &jid)
 
 void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 {
-	printf("status: %d\n", status.type());
-
 	Chat chat = OpenedRoomChats.value(jid.bare());
 
 	ChatDetailsRoom *chatDetails = qobject_cast<ChatDetailsRoom *>(chat.details());
@@ -296,13 +294,18 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	if (OpenedRoomChats.contains(msg.from().bare()))
 	{
-		if (msg.from().resource() == account().id()) // message from myself
+		chat = OpenedRoomChats.value(msg.from().bare());
+		ChatDetailsRoom *details = myRoomChatDetails(chat);
+
+		if (!details)
+			return;
+
+		if (msg.from().resource() == details->nick()) // message from myself
 			return;
 
 		contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		buddy.setDisplay(msg.from().resource());
-		chat = OpenedRoomChats.value(msg.from().bare());
 	}
 	else
 	{

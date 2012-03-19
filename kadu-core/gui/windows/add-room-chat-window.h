@@ -41,6 +41,7 @@ class AddRoomChatWindow : public QDialog
 	AccountsComboBox *AccountCombo;
 	QLineEdit *DisplayNameEdit;
 	QLineEdit *RoomEdit;
+	QLineEdit *NickEdit;
 	QLineEdit *PasswordEdit;
 	QLabel *ErrorLabel;
 	QPushButton *AddButton;
