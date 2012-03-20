@@ -117,6 +117,7 @@ public:
 	KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
 	KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	KaduSharedBase_PropertyBool(Anonymous)
+	KaduSharedBase_PropertyBool(Temporary)
 	KaduSharedBase_PropertyBool(Ignored)
 	KaduSharedBase_PropertyBool(Blocked)
 	KaduSharedBase_PropertyBool(OfflineTo)

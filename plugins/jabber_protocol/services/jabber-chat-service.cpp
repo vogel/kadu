@@ -180,6 +180,7 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 	{
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		buddy.setDisplay(jid.resource());
+		buddy.setTemporary(true);
 	}
 
 	contact.setCurrentStatus(contactStatus);
@@ -306,6 +307,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		contact = ContactManager::instance()->byId(account(), msg.from().full(), ActionCreateAndAdd);
 		Buddy buddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
 		buddy.setDisplay(msg.from().resource());
+		buddy.setTemporary(true);
 	}
 	else
 	{

@@ -33,6 +33,7 @@
 #include "talkable/filter/group-talkable-filter.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/hide-contact-chats-talkable-filter.h"
+#include "talkable/filter/hide-temporary-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/filter/unread-messages-talkable-filter.h"
 #include "talkable/model/talkable-model-factory.h"
@@ -170,6 +171,7 @@ ModelChain * RosterWidget::createModelChain()
 
 	ProxyModel = new TalkableProxyModel(chain);
 	ProxyModel->addFilter(new HideContactChatsTalkableFilter(ProxyModel));
+	ProxyModel->addFilter(new HideTemporaryTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new UnreadMessagesTalkableFilter(ProxyModel));
 	ProxyModel->addFilter(new HideAnonymousTalkableFilter(ProxyModel));
 

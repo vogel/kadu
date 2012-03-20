@@ -39,6 +39,7 @@
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
 #include "talkable/filter/name-talkable-filter.h"
+#include <talkable/filter/hide-temporary-talkable-filter.h>
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "storage/history-messages-storage.h"
@@ -127,6 +128,7 @@ void HistoryMessagesTab::createModelChain()
 	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
 	proxyModel->setSortByStatusAndUnreadMessages(false);
 
+	proxyModel->addFilter(new HideTemporaryTalkableFilter(proxyModel));
 	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
 	connect(FilteredView, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	proxyModel->addFilter(nameTalkableFilter);
