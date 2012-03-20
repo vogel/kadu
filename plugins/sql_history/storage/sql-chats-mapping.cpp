@@ -166,7 +166,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 	QString chatType = items.at(0);
 
 	if ("Room" == chatType)
-		return ChatTypeRoom::findChat(account, items.at(1), ActionCreate);
+		return ChatTypeRoom::findChat(account, items.at(1), ActionCreateAndAdd);
 
 	if ("Contact" == chatType)
 	{
@@ -174,7 +174,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		if (!contact)
 			return Chat::null;
 
-		return ChatTypeContact::findChat(contact, ActionCreate);
+		return ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	}
 
 	if ("ContactSet" == chatType)
@@ -189,7 +189,7 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 			contacts.insert(contact);
 		}
 
-		return ChatTypeContactSet::findChat(contacts, ActionCreate);
+		return ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 	}
 
 	return Chat::null;

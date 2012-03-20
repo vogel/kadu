@@ -24,6 +24,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-details-buddy.h"
+#include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 #include "talkable/talkable.h"
 
@@ -62,10 +63,14 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 
 void ChatsBuddiesSplitter::assignChat(const Chat &chat)
 {
-	if (chat.contacts().size() > 1)
-		Chats.insert(chat);
-	else if (1 == chat.contacts().size())
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return;
+
+	if (chatType->name() == "Contact" || chatType->name() == "Buddy")
 		Buddies.insert(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
+	else
+		Chats.insert(chat);
 }
 
 QSet<Chat> ChatsBuddiesSplitter::chats() const
