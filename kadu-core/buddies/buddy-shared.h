@@ -99,6 +99,7 @@ class KADUAPI BuddyShared : public QObject, public Shared
 	bool PreferHigherStatuses;
 
 	bool Anonymous;
+	bool Temporary;
 	bool Blocked;
 	bool OfflineTo;
 
@@ -178,6 +179,7 @@ public:
 	KaduShared_Property(BuddyGender, gender, Gender)
 	KaduShared_Property(bool, preferHigherStatuses, PreferHigherStatuses)
 	BuddyShared_PropertySubscription(Anonymous)
+	KaduShared_PropertyBool(Temporary)
 	BuddyShared_PropertySubscriptionDirty(Blocked)
 	BuddyShared_PropertySubscriptionDirty(OfflineTo)
 

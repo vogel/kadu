@@ -57,7 +57,7 @@ BuddyShared * BuddyShared::loadFromStorage(const QSharedPointer<StoragePoint> &b
 BuddyShared::BuddyShared(const QUuid &uuid) :
 		Shared(uuid), CollectingGarbage(false),
 		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
-		Anonymous(true), Blocked(false), OfflineTo(false)
+		Anonymous(true), Temporary(false), Blocked(false), OfflineTo(false)
 {
 	BuddyAvatar = new Avatar();
 }
