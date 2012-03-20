@@ -544,10 +544,7 @@ void ChatWidget::sendMessage()
 
 	emit messageSendRequested(this);
 
-	if (!currentProtocol())
-		return;
-
-	if (!currentProtocol()->isConnected())
+	if (!CurrentChat.isConnected())
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Cannot send message while being offline.") + tr("Account:") + chat().chatAccount().id(),
 				QMessageBox::Ok, this);
