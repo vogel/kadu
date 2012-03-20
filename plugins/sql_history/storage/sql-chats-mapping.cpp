@@ -54,7 +54,7 @@ void SqlChatsMapping::chatUpdated(const Chat &chat)
 		return;
 
 	QSqlQuery query(Database);
-	query.prepare("UPDATE kadu_chats SET account_id = :account_id, account = :account WHERE id = :id");
+	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
 	query.bindValue(":account_id", AccountsMapping->idByAccount(chat.chatAccount()));
 	query.bindValue(":chat", chatToString(chat));
 	query.bindValue(":id", idByChat(chat, false));
