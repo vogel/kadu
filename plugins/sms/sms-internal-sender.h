@@ -57,11 +57,8 @@ public:
 
 	void findGatewayForNumber(const QString &number);
 
-	virtual void tokenRead(const QString &tokenValue);
-
 public slots:
 	void gatewayQueryDone(const QString &gatewayId);
-	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
 
 	QScriptValue readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue);
 

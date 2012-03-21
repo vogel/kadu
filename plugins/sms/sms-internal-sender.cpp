@@ -83,47 +83,6 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 	sendSms();
 }
 
-void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
-{
-	if (!tokenReader())
-	{
-		failure("Cannot read token value");
-		return;
-	}
-
-	TokenCallbackObject = callbackObject;
-	TokenCallbackMethod = callbackMethod;
-
-	QNetworkAccessManager *network = new QNetworkAccessManager(this);
-	TokenReply = network->get(QNetworkRequest(tokenImageUrl));
-	connect(TokenReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
-}
-
-void SmsInternalSender::tokenImageDownloaded()
-{
-	if (QNetworkReply::NoError != TokenReply->error())
-	{
-		failure("Cannot download token image");
-		return;
-	}
-
-	QPixmap image;
-	if (!image.loadFromData(TokenReply->readAll()))
-	{
-		failure("Cannot display token image");
-		return;
-	}
-
-	tokenReader()->readTokenAsync(image, this);
-}
-
-void SmsInternalSender::tokenRead(const QString &tokenValue)
-{
-	QScriptValueList arguments;
-	arguments.append(tokenValue);
-	TokenCallbackMethod.call(TokenCallbackObject, arguments);
-}
-
 QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
 	return config_file.readEntry(group, name, defaultValue);
