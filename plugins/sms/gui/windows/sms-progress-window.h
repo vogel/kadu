@@ -25,40 +25,23 @@
 
 #include "gui/windows/progress-window.h"
 
-#include "misc/token-reader.h"
-
-class QLabel;
-class QLineEdit;
-class QMovie;
-class QPushButton;
-class QVBoxLayout;
-
-class ProgressLabel;
 class SmsSender;
 
-class SmsProgressWindow : public ProgressWindow, public TokenReader
+class SmsProgressWindow : public ProgressWindow
 {
 	Q_OBJECT
-
-	QLabel *TokenLabel;
-	QLineEdit *TokenEdit;
-	QPushButton *TokenAcceptButton;
 
 	SmsSender *Sender;
 
 	void createGui();
 
 private slots:
-    void tokenValueEntered();
 	void sendingFailed(const QString &errorMessage);
 	void sendingSucceed(const QString &message);
 
 public:
 	explicit SmsProgressWindow(SmsSender *sender, QWidget *parent = 0);
 	virtual ~SmsProgressWindow();
-
-	virtual QString readToken(const QPixmap &tokenPixmap);
-	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor);
 
 };
 
