@@ -38,6 +38,7 @@
 * gadu: fixed possible application hangs, especially when trying to connect on unstable Internet connection (beevvy)
 * chat styles: fixed issues with contact activity icon not being displayed in old message styles (beevvy)
 * history: #2517 fixed: statuses were always stored as Offline (Vogel)
+* chat styles: #2518 fixed: text in system messages was overflowing time (Vogel)
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
