@@ -70,7 +70,7 @@ PlusGatewaySmsSender.prototype = {
 
 		var imageUrl = "http://www1.plus.pl/bsm/jcaptcha?captchaId=" + this.tokenId;
 
-		this.callbackObject.readToken(imageUrl, this, this.tokenRead);
+		tokenReader.readToken(imageUrl, this, this.tokenRead);
 	},
 
 	tokenRead: function(tokenValue) {

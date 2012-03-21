@@ -90,7 +90,7 @@ GatewaySmsSender.prototype = {
 
 		this.token = match[1];
 		var imageUrl = "http://sms.orange.pl/" + match[0];
-		this.callbackObject.readToken(imageUrl, this, this.tokenRead);
+		tokenReader.readToken(imageUrl, this, this.tokenRead);
 	},
 
 	tokenRead: function(tokenValue) {
