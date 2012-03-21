@@ -19,7 +19,7 @@
 	height: 18px;
 	top: 0px;
 	}
-	
+
 .messagebox {
 	display: table;
 	width:100%;
@@ -67,16 +67,14 @@
 	position: relative;
 	top: 0px;
 	left: 0px;
-	padding: 5px 0px 0px 12px;
+	padding: 5px 4px 0px 12px;
 	margin: 0px 30px 6px 0px;
-	text-overflow: ellipsis;
-	overflow: hidden;
 	}
 .statustime {
-	position: absolute;
+	position: relative;
 	float: right;
 	top: 0px;
 	right: 0px;
-	padding: 5px 12px 0px 0px;
+	padding: 5px 12px 0px 4px;
 	margin: 0px 0px 0px 0px;
 	}
