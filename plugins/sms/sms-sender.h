@@ -67,6 +67,7 @@ signals:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
 	void succeed(const QString &message);
 	void failed(const QString &errorMessage);
+
 };
 
 #endif // SMS_SENDER_H

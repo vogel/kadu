@@ -1,15 +1,25 @@
-/***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/*
+ * %kadu copyright begin%
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMovie>
@@ -39,19 +49,23 @@ SmsImageDialog::~SmsImageDialog()
 
 void SmsImageDialog::createGui()
 {
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
 	QMovie *pleaseWaitMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath());
 	pleaseWaitMovie->start();
 
 	PixmapLabel = new QLabel(this);
 	PixmapLabel->setMovie(pleaseWaitMovie);
 
-	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
 	TokenEdit = new QLineEdit(this);
 
-	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(PixmapLabel, 0, 0, 1, 2, Qt::AlignCenter);
-	grid->addWidget(label, 1, 0, 1, 1);
-	grid->addWidget(TokenEdit, 1, 1, 1, 1);
+	QWidget *formWidget = new QWidget(this);
+	layout->addWidget(formWidget);
+
+	QFormLayout *formLayout = new QFormLayout(formWidget);
+	formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
+	formLayout->addRow(0, PixmapLabel);
+	formLayout->addRow(tr("Enter text from the picture:"), TokenEdit);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
@@ -61,7 +75,8 @@ void SmsImageDialog::createGui()
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
 
-	grid->addWidget(buttons, 2, 0, 1, 2);
+	layout->addSpacing(16);
+	layout->addWidget(buttons);
 
 	connect(TokenEdit, SIGNAL(returnPressed()), this, SLOT(accept()));
 	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
@@ -100,6 +115,9 @@ void SmsImageDialog::tokenImageDownloaded()
 	}
 
 	PixmapLabel->setPixmap(tokenPixmap);
+
+	updateGeometry();
+	setFixedSize(sizeHint());
 }
 
 void SmsImageDialog::accept()
