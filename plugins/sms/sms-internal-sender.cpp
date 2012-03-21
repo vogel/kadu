@@ -51,7 +51,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 	if (Gateway.signatureRequired() && !validateSignature())
 	{
-		emit failed(tr("Signature can't be empty"));
+		emit finished(false, "dialog-error", tr("Signature can't be empty"));
 		kdebugf2();
 		return;
 	}
@@ -73,12 +73,14 @@ void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 {
 	if (gatewayId.isEmpty())
 	{
-		emit failed(tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
+		emit finished(false, "dialog-error", tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
 		kdebugf2();
 		return;
 	}
 
 	Gateway = SmsGatewayManager::instance()->byId(gatewayId);
+
+	emit progress("dialog-information", tr("Detected gateway: %1.").arg(Gateway.name()));
 
 	sendSms();
 }
@@ -108,10 +110,10 @@ void SmsInternalSender::sendSms()
 
 void SmsInternalSender::result()
 {
-	emit succeed(Message);
+	emit finished(true, "dialog-information", tr("SMS sent"));
 }
 
 void SmsInternalSender::failure(const QString &errorMessage)
 {
-	emit failed(errorMessage);
+	emit finished(false, "dialog-error", errorMessage);
 }

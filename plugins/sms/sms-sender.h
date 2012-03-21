@@ -54,8 +54,9 @@ public:
 
 signals:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
-	void succeed(const QString &message);
-	void failed(const QString &errorMessage);
+
+	void progress(const QString &entryIcon, const QString &entryMessage);
+	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 };
 

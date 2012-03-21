@@ -26,6 +26,7 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
@@ -37,13 +38,13 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/progress-window2.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugins-manager.h"
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
 
-#include "gui/windows/sms-progress-window.h"
 #include "mobile-number-manager.h"
 #include "sms-external-sender.h"
 #include "sms-gateway.h"
@@ -290,8 +291,11 @@ void SmsDialog::sendSms()
 	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
 	sender->setSignature(SignatureEdit->text());
 
-	SmsProgressWindow *window = new SmsProgressWindow(sender);
+	ProgressWindow2 *window = new ProgressWindow2(tr("Sending SMS..."));
 	window->show();
+
+	connect(sender, SIGNAL(progress(QString,QString)), window, SLOT(addProgressEntry(QString,QString)));
+	connect(sender, SIGNAL(finished(bool,QString,QString)), window, SLOT(progressFinished(bool,QString,QString)));
 
 	sender->sendMessage(ContentEdit->toPlainText());
 
