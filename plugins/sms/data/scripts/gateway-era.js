@@ -91,6 +91,7 @@ EraGatewaySmsSender.prototype = {
 		}
 
 		network.setUtf8(false);
+		network.setHeader("Content-Type", "application/x-www-form-urlencoded");
 		this.reply = network.post(postUrl, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},

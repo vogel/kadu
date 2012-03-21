@@ -108,11 +108,12 @@ GatewaySmsSender.prototype = {
 		postData += "&pass=";
 		postData += escape(tokenValue);
 		postData += "&CHK_RESP=";
-		postData += "FALSE";
-		postData += "&respInfo=";
-		postData += "1";
+		postData += "off";
+		postData += "&RESPINFO=";
+		postData += "4";
 
 		network.setUtf8(false);
+		network.setHeader("Content-Type", "application/x-www-form-urlencoded");
 		this.reply = network.post(url, postData);
 		this.reply.finished.connect(this, this.smsSent);
 	},
