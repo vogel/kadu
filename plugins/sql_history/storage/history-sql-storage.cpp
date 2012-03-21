@@ -48,6 +48,9 @@
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "status/status-type-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
+#include "talkable/talkable.h"
 #include "debug.h"
 
 #include "plugins/history/history.h"
@@ -401,8 +404,10 @@ void HistorySqlStorage::appendStatus(const Contact &contact, const Status &statu
 
 	QMutexLocker locker(&DatabaseMutex);
 
+	StatusTypeData statusTypeData = StatusTypeManager::instance()->statusTypeData(status.type());
+
 	AppendStatusQuery.bindValue(":contact", contact.uuid().toString());
-	AppendStatusQuery.bindValue(":status", status.type());
+	AppendStatusQuery.bindValue(":status", statusTypeData.name());
 	AppendStatusQuery.bindValue(":set_time", time);
 	AppendStatusQuery.bindValue(":description", status.description());
 
