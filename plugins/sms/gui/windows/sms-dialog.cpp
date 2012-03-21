@@ -148,6 +148,7 @@ void SmsDialog::createGui()
 	formLayout->addRow(0, SaveInHistoryCheckBox);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	mainLayout->addSpacing(16);
 	mainLayout->addWidget(buttons);
 
 	SendButton = new QPushButton(this);
