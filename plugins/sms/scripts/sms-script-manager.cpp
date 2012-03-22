@@ -34,9 +34,10 @@
 #include <QtScriptTools/QScriptEngineDebugger>
 #endif
 
-#include "gui/windows/sms-token-reader.h"
 #include "misc/kadu-paths.h"
+
 #include "scripts/network-access-manager-wrapper.h"
+#include "sms-token-reader.h"
 
 #include "sms-script-manager.h"
 
