@@ -35,7 +35,6 @@
 #include "debug.h"
 
 #include "gui/windows/sms-dialog.h"
-#include "gui/windows/sms-image-dialog.h"
 
 #include "sms-actions.h"
 

@@ -17,7 +17,6 @@ include (FindKadu)
 
 set (SOURCES
 	gui/windows/sms-dialog.cpp
-	gui/windows/sms-image-dialog.cpp
 	gui/windows/sms-token-reader.cpp
 	scripts/network-access-manager-wrapper.cpp
 	scripts/network-reply-wrapper.cpp
@@ -39,7 +38,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	gui/windows/sms-dialog.h
-	gui/windows/sms-image-dialog.h
 	gui/windows/sms-token-reader.h
 	scripts/network-access-manager-wrapper.h
 	scripts/network-reply-wrapper.h
