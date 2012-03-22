@@ -82,6 +82,4 @@ public:
 
 };
 
-/** @} */
-
 #endif // SMS_DIALOG_H
