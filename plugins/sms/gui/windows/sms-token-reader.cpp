@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/windows/sms-image-dialog.h"
+#include "sms-token-read-job.h"
 
 #include "sms-token-reader.h"
 
@@ -36,6 +36,6 @@ SmsTokenReader::~SmsTokenReader()
 
 void SmsTokenReader::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
-	SmsImageDialog *smsImageDialog = new SmsImageDialog(tokenImageUrl, callbackObject, callbackMethod, 0);
-	smsImageDialog->exec();
+	SmsTokenReadJob *job = new SmsTokenReadJob(callbackObject, callbackMethod);
+	job->exec(tokenImageUrl);
 }

@@ -30,6 +30,9 @@ class SmsTokenReader : public QObject
 {
 	Q_OBJECT
 
+private slots:
+	void tokenValueEntered(const QString &tokenValue);
+
 public:
 	explicit SmsTokenReader(QObject *parent = 0);
 	virtual ~SmsTokenReader();
