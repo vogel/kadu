@@ -71,6 +71,24 @@ public:
 	 */
 	virtual void exec(const QString &tokenImageUrl);
 
+signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short A progress was done in doing this job.
+	 * @param entryIcon icon for progress message
+	 * @param entryMessage message for progress item
+	 */
+	void progress(const QString &entryIcon, const QString &entryMessage);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Job has finished.
+	 * @param ok true, if job was finished successfully
+	 * @param entryIcon icon for finish message
+	 * @param entryMessage finish message
+	 */
+	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
+
 };
 
 /**

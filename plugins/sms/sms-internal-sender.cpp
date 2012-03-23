@@ -71,9 +71,24 @@ void SmsInternalSender::queryForGateway()
 	query->process(number());
 }
 
+void SmsInternalSender::jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
+{
+	if (!ok)
+	{
+		emit finished(ok, entryIcon, entryMessage);
+		deleteLater();
+	}
+	else
+		emit progress(entryIcon, entryMessage);
+}
+
 void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
 	SmsTokenReadJob *job = new SmsTokenReadJob(callbackObject, callbackMethod);
+
+	connect(job, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
+	connect(job, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
+
 	job->exec(tokenImageUrl);
 }
 
@@ -121,9 +136,13 @@ void SmsInternalSender::sendSms()
 void SmsInternalSender::result()
 {
 	emit finished(true, "dialog-information", tr("SMS sent"));
+
+	deleteLater();
 }
 
 void SmsInternalSender::failure(const QString &errorMessage)
 {
 	emit finished(false, "dialog-error", errorMessage);
+
+	deleteLater();
 }

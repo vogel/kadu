@@ -41,13 +41,15 @@ void SmsTokenReadJob::exec(const QString &tokenImageUrl)
 	TokenNetworkReply = network->get(QNetworkRequest(tokenImageUrl));
 
 	connect(TokenNetworkReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
+
+	emit progress("dialog-information", tr("Downloading token image..."));
 }
 
 void SmsTokenReadJob::tokenImageDownloaded()
 {
 	if (QNetworkReply::NoError != TokenNetworkReply->error())
 	{
-		MessageDialog::exec(KaduIcon("dialog-error"), tr("SMS"), tr("Unable to fetch required token"));
+		emit finished(false, "dialog-error", tr("Unable to fetch token image."));
 		tokenValueEntered(QString());
 		return;
 	}
@@ -55,9 +57,12 @@ void SmsTokenReadJob::tokenImageDownloaded()
 	QPixmap tokenPixmap;
 	if (!tokenPixmap.loadFromData(TokenNetworkReply->readAll()))
 	{
+		emit finished(false, "dialog-error", tr("Unable to read token image."));
 		tokenValueEntered(QString());
 		return;
 	}
+
+	emit progress("dialog-information", tr("Waiting for entry of token value..."));
 
 	TokenWindow *tokenWindow = new TokenWindow(tokenPixmap, 0);
 	connect(tokenWindow, SIGNAL(tokenValueEntered(QString)), this, SLOT(tokenValueEntered(QString)));
@@ -66,6 +71,14 @@ void SmsTokenReadJob::tokenImageDownloaded()
 
 void SmsTokenReadJob::tokenValueEntered(const QString &tokenValue)
 {
+	if (tokenValue.isEmpty())
+	{
+		emit finished(false, "dialog-error", tr("No token value provided."));
+		return;
+	}
+
+	emit progress("dialog-information", tr("Received token value."));
+
 	QScriptValueList arguments;
 	arguments.append(tokenValue);
 	CallbackMethod.call(CallbackObject, arguments);

@@ -39,6 +39,9 @@ class SmsInternalSender : public SmsSender
 
 	void sendSms();
 
+private slots:
+	void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
+
 public:
 	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway = SmsGateway(), QObject *parent = 0);
 	virtual ~SmsInternalSender();
