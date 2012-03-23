@@ -28,26 +28,16 @@
 
 #include "sms-sender.h"
 
-class QNetworkReply;
-
 class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
 
 	SmsGateway Gateway;
 
-	QNetworkReply *TokenReply;
-
-	QScriptValue TokenCallbackObject;
-	QScriptValue TokenCallbackMethod;
-
 	void queryForGateway();
 	void gatewaySelected();
 
 	void sendSms();
-
-private slots:
-    void tokenImageDownloaded();
 
 public:
 	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway = SmsGateway(), QObject *parent = 0);
