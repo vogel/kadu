@@ -26,8 +26,8 @@
 
 #include "sms-token-read-job.h"
 
-SmsTokenReadJob::SmsTokenReadJob(QScriptValue callbackObject, QScriptValue callbackMethod, QObject *parent) :
-		QObject(parent), CallbackObject(callbackObject), CallbackMethod(callbackMethod)
+SmsTokenReadJob::SmsTokenReadJob(QObject *parent) :
+		QObject(parent)
 {
 }
 
@@ -35,10 +35,27 @@ SmsTokenReadJob::~SmsTokenReadJob()
 {
 }
 
-void SmsTokenReadJob::exec(const QString &tokenImageUrl)
+void SmsTokenReadJob::setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod)
 {
+	CallbackObject = callbackObject;
+	CallbackMethod = callbackMethod;
+}
+
+void SmsTokenReadJob::setTokenImageUrl(const QString &tokenImageUrl)
+{
+	TokenImageUrl = tokenImageUrl;
+}
+
+void SmsTokenReadJob::exec()
+{
+	if (!CallbackObject.isValid() || !CallbackMethod.isValid() || TokenImageUrl.isEmpty())
+	{
+		emit finished(false, "dialog-error", tr("Invalid paremeters for token read job."));
+		return;
+	}
+
 	QNetworkAccessManager *network = new QNetworkAccessManager(this);
-	TokenNetworkReply = network->get(QNetworkRequest(tokenImageUrl));
+	TokenNetworkReply = network->get(QNetworkRequest(TokenImageUrl));
 
 	connect(TokenNetworkReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
 

@@ -48,6 +48,7 @@ class SmsTokenReadJob : public QObject
 
 	QScriptValue CallbackObject;
 	QScriptValue CallbackMethod;
+	QString TokenImageUrl;
 
 private slots:
 	void tokenImageDownloaded();
@@ -57,19 +58,33 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new SmsTokenReadJob instance.
-	 * @param callbackObject javascript object that will receive callback after token is read
-	 * @param callbackMethod javascript method that will be called on callbackObject after token is read
 	 * @param parent QObject parent of new object
 	 */
-	SmsTokenReadJob(QScriptValue callbackObject, QScriptValue callbackMethod, QObject *parent = 0);
+	explicit SmsTokenReadJob(QObject *parent = 0);
 	virtual ~SmsTokenReadJob();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute this job with given token URL.
+	 * @short Set callback object and method for this job.
+	 * @param callbackObject javascript object that will receive callback after token is read
+	 * @param callbackMethod javascript method that will be called on callbackObject after token is read
+	 */
+	void setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set token image URL for this job.
 	 * @param tokenImageUrl URL of token image to read
 	 */
-	virtual void exec(const QString &tokenImageUrl);
+	void setTokenImageUrl(const QString &tokenImageUrl);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute this job.
+	 *
+	 * If any of requires parameters is empty this method will immediately emit finished(false) signal.
+	 */
+	virtual void exec();
 
 signals:
 	/**
