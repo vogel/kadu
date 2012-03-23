@@ -76,6 +76,7 @@ void SmsInternalSender::jobFinished(bool ok, const QString &entryIcon, const QSt
 	if (!ok)
 	{
 		emit finished(ok, entryIcon, entryMessage);
+		emit canceled();
 		deleteLater();
 	}
 	else

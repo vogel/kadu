@@ -60,6 +60,7 @@ signals:
 
 	void progress(const QString &entryIcon, const QString &entryMessage);
 	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
+	void canceled();
 
 };
 

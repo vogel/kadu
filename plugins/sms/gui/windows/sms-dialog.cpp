@@ -296,6 +296,7 @@ void SmsDialog::sendSms()
 	window->show();
 
 	connect(window, SIGNAL(canceled()), sender, SLOT(cancel()));
+	connect(sender, SIGNAL(canceled()), window, SLOT(reject()));
 
 	connect(sender, SIGNAL(progress(QString,QString)), window, SLOT(addProgressEntry(QString,QString)));
 	connect(sender, SIGNAL(finished(bool,QString,QString)), window, SLOT(progressFinished(bool,QString,QString)));
