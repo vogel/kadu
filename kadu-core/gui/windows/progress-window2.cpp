@@ -140,10 +140,11 @@ void ProgressWindow2::progressFinished(bool ok, const QString &entryIcon, const 
 	else
 		ProgressBar->setValue(0);
 
-	addProgressEntry(entryIcon, entryMessage);
+	if (!entryMessage.isEmpty())
+		addProgressEntry(entryIcon, entryMessage);
 
 	qApp->alert(this);
 
-	if (!ok)
+	if (!ok && !entryMessage.isEmpty())
 		MessageDialog::exec(KaduIcon(entryIcon), Label, entryMessage);
 }

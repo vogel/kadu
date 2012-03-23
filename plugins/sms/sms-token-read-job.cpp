@@ -90,7 +90,8 @@ void SmsTokenReadJob::tokenValueEntered(const QString &tokenValue)
 {
 	if (tokenValue.isEmpty())
 	{
-		emit finished(false, "dialog-error", tr("No token value provided."));
+		emit progress("dialog-error", tr("No token value provided."));
+		emit finished(false, "dialog-error", QString());
 		return;
 	}
 
