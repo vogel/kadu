@@ -47,7 +47,9 @@ class QProgressBar;
  *
  * If action failed additional message box is displayed if message text is provided.
  *
- * Window can only be closed after action is finished.
+ * Window can only be closed after action is finished or if its Cancellable property is set to true.
+ * When window is closed before action is finished and Cancellable is true @link cancelled() @endlink
+ * is emited.
  */
 class KADUAPI ProgressWindow2 : public QDialog
 {
@@ -59,7 +61,8 @@ class KADUAPI ProgressWindow2 : public QDialog
 	QPushButton *CloseButton;
 
 	QString Label;
-	bool CanClose;
+	bool Finished;
+	bool Cancellable;
 
 	void createGui();
 
@@ -79,6 +82,15 @@ public:
 	 */
 	explicit ProgressWindow2(const QString &label, QWidget *parent = 0);
 	virtual ~ProgressWindow2();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set value of Cancellable property.
+	 * @param setCancellable new value of Cancellable property
+	 *
+	 * If window is Cancellable it can be closed before action is finished. Signal @link canceled() @endlink will be emited in such case.
+	 */
+	void setCancellable(bool cancellable);
 
 public slots:
 	/**
@@ -112,6 +124,13 @@ public slots:
 	 * icon and message is displayed.
 	 */
 	void progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
+
+signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Emited when window is closed before finishing its task.
+	 */
+	void canceled();
 
 };
 

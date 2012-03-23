@@ -36,7 +36,7 @@
 #include "progress-window2.h"
 
 ProgressWindow2::ProgressWindow2(const QString &label, QWidget *parent) :
-		QDialog(parent), Label(label)
+		QDialog(parent), Label(label), Finished(false), Cancellable(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-progress");
@@ -92,20 +92,51 @@ void ProgressWindow2::createGui()
 	mainLayout->addWidget(buttons);
 }
 
+void ProgressWindow2::setCancellable(bool cancellable)
+{
+	if (Cancellable == cancellable)
+		return;
+
+	Cancellable = cancellable;
+
+	CloseButton->setEnabled(Cancellable || Finished);
+	CloseButton->setDefault(Cancellable || Finished);
+}
+
 void ProgressWindow2::closeEvent(QCloseEvent *closeEvent)
 {
-	if (!CanClose)
-		closeEvent->ignore();
-	else
+	if (Finished)
+	{
 		QDialog::closeEvent(closeEvent);
+		return;
+	}
+
+	if (Cancellable)
+	{
+		emit canceled();
+		QDialog::closeEvent(closeEvent);
+		return;
+	}
+
+	closeEvent->ignore();
 }
 
 void ProgressWindow2::keyPressEvent(QKeyEvent *keyEvent)
 {
-	if (!CanClose && Qt::Key_Escape == keyEvent->key())
-		keyEvent->ignore();
-	else
+	if (Qt::Key_Escape != keyEvent->key() || Finished)
+	{
 		QDialog::keyPressEvent(keyEvent);
+		return;
+	}
+
+	if (Cancellable)
+	{
+		emit canceled();
+		QDialog::keyPressEvent(keyEvent);
+		return;
+	}
+
+	keyEvent->ignore();
 }
 
 void ProgressWindow2::showDetailsClicked()
@@ -128,7 +159,7 @@ void ProgressWindow2::setProgressValue(int value, int maximum)
 
 void ProgressWindow2::progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
 {
-	CanClose = true;
+	Finished = true;
 	CloseButton->setEnabled(true);
 	CloseButton->setDefault(true);
 	CloseButton->setFocus();
