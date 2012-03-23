@@ -32,6 +32,7 @@
 #include "scripts/sms-script-manager.h"
 #include "sms-gateway-manager.h"
 #include "sms-gateway-query.h"
+#include "sms-token-read-job.h"
 
 #include "sms-internal-sender.h"
 
@@ -50,7 +51,7 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 	if (Gateway.signatureRequired() && !validateSignature())
 	{
-		emit finished(false, "dialog-error", tr("Signature can't be empty"));
+		emit finished(false, "dialog-error", tr("Signature can't be empty."));
 		kdebugf2();
 		return;
 	}
@@ -63,9 +64,17 @@ void SmsInternalSender::sendMessage(const QString &message)
 
 void SmsInternalSender::queryForGateway()
 {
+	emit progress("dialog-information", tr("Detecting gateway..."));
+
 	SmsGatewayQuery *query = new SmsGatewayQuery(this);
 	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
 	query->process(number());
+}
+
+void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
+{
+	SmsTokenReadJob *job = new SmsTokenReadJob(callbackObject, callbackMethod);
+	job->exec(tokenImageUrl);
 }
 
 void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
@@ -92,6 +101,8 @@ QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, cons
 void SmsInternalSender::sendSms()
 {
 	emit gatewayAssigned(number(), Gateway.id());
+
+	emit progress("dialog-information", tr("Sending SMS..."));
 
 	QScriptEngine *engine = SmsScriptsManager::instance()->engine();
 

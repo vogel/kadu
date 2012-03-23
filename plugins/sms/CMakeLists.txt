@@ -33,7 +33,6 @@ set (SOURCES
 	sms-plugin.cpp
 	sms-sender.cpp
 	sms-token-read-job.cpp
-	sms-token-reader.cpp
 )
 
 set (MOC_SOURCES
@@ -50,7 +49,6 @@ set (MOC_SOURCES
 	sms-plugin.h
 	sms-sender.h
 	sms-token-read-job.h
-	sms-token-reader.h
 )
 
 set (DATA_DIRECTORY

@@ -33,7 +33,6 @@ class QDir;
 class QScriptEngine;
 
 class NetworkAccessManagerWrapper;
-class SmsTokenReader;
 
 class SmsScriptsManager : public QObject
 {
@@ -44,7 +43,6 @@ class SmsScriptsManager : public QObject
 
 	QScriptEngine *Engine;
 	NetworkAccessManagerWrapper *Network;
-	SmsTokenReader *TokenReader;
 
 	QList<QString> LoadedFiles;
 
