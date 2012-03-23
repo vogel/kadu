@@ -66,8 +66,9 @@ void SmsExternalSender::sendMessage(const QString &message)
 	if (!Process->waitForStarted())
 	{
 		emit finished(false, "dialog-error", tr("Could not spawn child process. Check if the program is functional"));
-		delete Process;
+		Process->deleteLater();
 		Process = 0;
+		deleteLater();
 		return;
 	}
 
@@ -83,4 +84,20 @@ void SmsExternalSender::processFinished()
 
 	Process->deleteLater();
 	Process = 0;
+
+	deleteLater();
+}
+
+void SmsExternalSender::cancel()
+{
+	if (Process)
+	{
+		disconnect(Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished()));
+		Process->terminate();
+		Process->kill();
+		Process->deleteLater();
+		Process = 0;
+	}
+
+	deleteLater();
 }

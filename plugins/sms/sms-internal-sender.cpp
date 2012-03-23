@@ -37,7 +37,7 @@
 #include "sms-internal-sender.h"
 
 SmsInternalSender::SmsInternalSender(const QString &number, const SmsGateway &gateway, QObject *parent) :
-		SmsSender(number, parent), Gateway(gateway)
+		SmsSender(number, parent), Gateway(gateway), TokenJob(0)
 {
 }
 
@@ -80,19 +80,21 @@ void SmsInternalSender::jobFinished(bool ok, const QString &entryIcon, const QSt
 	}
 	else
 		emit progress(entryIcon, entryMessage);
+
+	TokenJob = 0;
 }
 
 void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
-	SmsTokenReadJob *job = new SmsTokenReadJob(this);
+	TokenJob = new SmsTokenReadJob(this);
 
-	job->setCallback(callbackObject, callbackMethod);
-	job->setTokenImageUrl(tokenImageUrl);
+	TokenJob->setCallback(callbackObject, callbackMethod);
+	TokenJob->setTokenImageUrl(tokenImageUrl);
 
-	connect(job, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
-	connect(job, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
+	connect(TokenJob, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
+	connect(TokenJob, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
 
-	job->exec();
+	TokenJob->exec();
 }
 
 void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
@@ -134,6 +136,19 @@ void SmsInternalSender::sendSms()
 	arguments.append(engine->newQObject(this));
 
 	jsSendSms.call(jsGatewayManagerObject, arguments);
+}
+
+void SmsInternalSender::cancel()
+{
+	if (TokenJob)
+	{
+		disconnect(TokenJob, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
+		disconnect(TokenJob, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
+		TokenJob->cancel(); // it will destroy job
+		TokenJob = 0;
+	}
+
+	deleteLater();
 }
 
 void SmsInternalSender::result()

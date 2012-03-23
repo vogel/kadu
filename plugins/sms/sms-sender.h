@@ -52,6 +52,9 @@ public:
 
 	virtual void sendMessage(const QString &message) = 0;
 
+public slots:
+	virtual void cancel() = 0;
+
 signals:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
 

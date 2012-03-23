@@ -86,6 +86,14 @@ public:
 	 */
 	virtual void exec();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Cancels this job.
+	 *
+	 * Canceled job deletes itself and does not emits any signals.
+	 */
+	virtual void cancel();
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

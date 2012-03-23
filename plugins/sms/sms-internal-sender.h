@@ -28,11 +28,14 @@
 
 #include "sms-sender.h"
 
+class SmsTokenReadJob;
+
 class SmsInternalSender : public SmsSender
 {
 	Q_OBJECT
 
 	SmsGateway Gateway;
+	SmsTokenReadJob *TokenJob;
 
 	void queryForGateway();
 	void gatewaySelected();
@@ -55,6 +58,8 @@ public slots:
 	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
 
 	QScriptValue readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue);
+
+	virtual void cancel();
 
 	void result();
 	void failure(const QString &errorMessage);

@@ -62,6 +62,18 @@ void SmsTokenReadJob::exec()
 	emit progress("dialog-information", tr("Downloading token image..."));
 }
 
+void SmsTokenReadJob::cancel()
+{
+	if (TokenNetworkReply)
+	{
+		TokenNetworkReply->abort();
+		TokenNetworkReply->deleteLater();
+		TokenNetworkReply = 0;
+	}
+
+	deleteLater();
+}
+
 void SmsTokenReadJob::tokenImageDownloaded()
 {
 	if (QNetworkReply::NoError != TokenNetworkReply->error())

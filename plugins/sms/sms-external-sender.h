@@ -45,6 +45,9 @@ public:
 
 	virtual void sendMessage(const QString& message);
 
+public slots:
+	virtual void cancel();
+
 };
 
 #endif // SMS_EXTERNAL_SENDER_H
