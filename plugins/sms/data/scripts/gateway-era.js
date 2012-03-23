@@ -80,8 +80,7 @@ EraGatewaySmsSender.prototype = {
 			postUrl += "sponsored";
 			postData +=	"&number=" + recipient;
 		}
-		else if (gateway == "OmnixMultimedia")
-		{
+		else if (gateway == "OmnixMultimedia") {
 			postUrl += "omnix"
 			postData +=	"&numbers=" + recipient;
 		}
