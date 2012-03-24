@@ -67,7 +67,7 @@ OMGatewaySmsSender.prototype = {
 		this.callbackObject = callbackObject;
 
 		if (!network) {
-			this.failure("Network not available");
+			this.failure(translator.tr("Network not available"));
 			return;
 		}
 
@@ -123,11 +123,11 @@ OMGatewaySmsSender.prototype = {
 
 		if (content.indexOf("welcome-message") < 0)
 		{
-			this.failure("You are not logged in!")
+			this.failure(translator.tr("You are not logged in!"))
 		}
 		else if (count[1] == "0")
 		{
-			this.failure("You don't have enough tokens");
+			this.failure(translator.tr("You don't have enough tokens"));
 		}
 
 		var tokenPattern = new RegExp("</textarea></div><input value=\"([a-zA-Z0-9]+)\"");
@@ -166,7 +166,7 @@ OMGatewaySmsSender.prototype = {
 		var redirect = this.reply.redirect();
 		if (redirect.indexOf("newsms") >= 0)
 		{
-			this.failure("SMS was probably NOT sent.");
+			this.failure(translator.tr("SMS was probably NOT sent."));
 		}
 
 		if (redirect.indexOf("messageslist") >= 0)

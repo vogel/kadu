@@ -33,7 +33,7 @@ GatewayManager.prototype = {
 		if (this.byId(gatewayId)) {
 			this.byId(gatewayId).sendSms(recipient, signature, content, callbackObject);
 		} else {
-			callbackObject.failure("No valid gateway found");
+			callbackObject.failure(translator.tr("No valid gateway found"));
 		}
 	},
 };

@@ -63,7 +63,7 @@ GatewaySmsSender.prototype = {
 		this.callbackObject = callbackObject;
 
 		if (!network) {
-			this.failure("Network not available");
+			this.failure(translator.tr("Network not available"));
 			return;
 		}
 
@@ -75,7 +75,7 @@ GatewaySmsSender.prototype = {
 
 	formReceived: function() {
 		if (!this.reply.ok()) {
-			this.failure("Cannot fetch token image");
+			this.failure(translator.tr("Cannot fetch token image"));
 			return;
 		}
 
@@ -84,7 +84,7 @@ GatewaySmsSender.prototype = {
 		var match = tokenPattern.exec(content);
 
 		if (null == match) {
-			this.failure("Cannot fetch token image");
+			this.failure(translator.tr("Cannot fetch token image"));
 			return;
 		}
 
@@ -120,7 +120,7 @@ GatewaySmsSender.prototype = {
 
 	smsSent: function() {
 		if (!this.reply.ok()) {
-			this.failure("Network error");
+			this.failure(translator.tr("Network error"));
 			return;
 		}
 
@@ -145,17 +145,17 @@ GatewaySmsSender.prototype = {
 
         var content = this.reply.content();
         if (content.indexOf("wyczerpany") >= 0) {
-            this.failure("You exceeded your daily limit");
+            this.failure(translator.tr("You exceeded your daily limit"));
         } else if (content.indexOf("Podano błędne hasło") >= 0) {
-            this.failure("Text from the picture is incorrect");
+            this.failure(translator.tr("Text from the picture is incorrect"));
         } else if (content.indexOf("Użytkownik nie ma aktywnej usługi") >= 0) {
-            this.failure("The receiver has to enable SMS STANDARD service");
+            this.failure(translator.tr("The receiver has to enable SMS STANDARD service"));
         } else if (content.indexOf("Twój SMS został wysłany") >= 0) {
             this.finished();
         } else if (content.indexOf("Wiadomość została pomyślnie wysłana") >= 0) {
             this.finished();
         } else {
-            this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
+            this.failure(translator.tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
         }
     }
 };

@@ -20,6 +20,7 @@ set (SOURCES
 	scripts/network-access-manager-wrapper.cpp
 	scripts/network-reply-wrapper.cpp
 	scripts/sms-script-manager.cpp
+	scripts/sms-translator.cpp
 
 	mobile-number.cpp
 	mobile-number-manager.cpp
@@ -40,6 +41,7 @@ set (MOC_SOURCES
 	scripts/network-access-manager-wrapper.h
 	scripts/network-reply-wrapper.h
 	scripts/sms-script-manager.h
+	scripts/sms-translator.h
 
 	sms-actions.h
 	sms-configuration-ui-handler.h

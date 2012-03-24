@@ -37,6 +37,7 @@
 #include "misc/kadu-paths.h"
 
 #include "scripts/network-access-manager-wrapper.h"
+#include "scripts/sms-translator.h"
 
 #include "sms-script-manager.h"
 
@@ -65,6 +66,7 @@ SmsScriptsManager::SmsScriptsManager()
 	Network = new NetworkAccessManagerWrapper(Engine, this);
 
 	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
+	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
 }
 
 SmsScriptsManager::~SmsScriptsManager()

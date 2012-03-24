@@ -64,7 +64,7 @@ PlusGatewaySmsSender.prototype = {
 		this.tokenId = "3tWYNk1UOXRraM5C";
 
 		if (!network) {
-			this.failure("Network not available");
+			this.failure(translator.tr("Network not available"));
 			return;
 		}
 
@@ -165,7 +165,7 @@ PlusGatewaySmsSender.prototype = {
 		else if (content.indexOf("OK") >= 0)
 			this.finished();
 		else if (content.indexOf("IncorrectCaptchaTextException") >= 0)
-			this.failure("Text from the picture is incorrect");
+			this.failure(translator.tr("Text from the picture is incorrect"));
 		else
 			//this.failure("Provider gateway results page looks strange. SMS was probably NOT sent.");
 			this.failure(content);
