@@ -66,6 +66,10 @@ do
 			popd >> $LOG 2>&1
 		fi
 
+		if [ -x ./translations/extract-custom-strings.js ]; then
+			./translations/extract-custom-strings.js
+		fi
+
 		if [ -d data/configuration ]; then
 			UI_TRANS=.configuration-ui-translations.cpp
 
