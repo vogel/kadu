@@ -75,12 +75,17 @@ void SqlContactsMapping::loadMappingsFromDatabase()
 		Account account = AccountsMapping->accountById(query.value(1).toInt());
 		QString contactId = query.value(2).toString();
 
-		if (id <= 0 || !account || contactId.isEmpty())
+		if (id <= 0)
 			continue;
 
 		Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
-		if (contact)
-			addMapping(id, contact);
+		if (!contact)
+		{
+			contact = Contact::create();
+			contact.setId(QString::number(id));
+		}
+
+		addMapping(id, contact);
 	}
 }
 
