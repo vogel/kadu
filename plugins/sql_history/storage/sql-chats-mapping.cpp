@@ -81,12 +81,16 @@ void SqlChatsMapping::loadMappingsFromDatabase()
 		Account account = AccountsMapping->accountById(query.value(1).toInt());
 		QString chatString = query.value(2).toString();
 
-		if (id <= 0 || !account || chatString.isEmpty())
+		if (id <= 0)
 			continue;
 
 		Chat chat = stringToChat(account, chatString);
 		if (chat)
+		{
+			if (chat.display().isEmpty())
+				chat.setDisplay(QString::number(id));
 			addMapping(id, chat);
+		}
 	}
 }
 
@@ -155,13 +159,14 @@ QString SqlChatsMapping::chatToString(const Chat &chat)
 
 Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string)
 {
-	Q_UNUSED(account);
+	if (!account)
+		return Chat::create();
 
 	QStringList items = string.split(";", QString::SkipEmptyParts);
 	int len = items.length();
 
 	if (len < 2)
-		return Chat::null;
+		return Chat::create();
 
 	QString chatType = items.at(0);
 
@@ -192,5 +197,5 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 		return ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
 	}
 
-	return Chat::null;
+	return Chat::create();
 }

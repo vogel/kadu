@@ -64,10 +64,7 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
 void ChatsBuddiesSplitter::assignChat(const Chat &chat)
 {
 	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
-		return;
-
-	if (chatType->name() == "Contact" || chatType->name() == "Buddy")
+	if (chatType && (chatType->name() == "Contact" || chatType->name() == "Buddy"))
 		Buddies.insert(BuddyManager::instance()->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
 	else
 		Chats.insert(chat);
