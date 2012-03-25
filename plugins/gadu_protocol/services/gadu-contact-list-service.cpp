@@ -226,7 +226,10 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!accountDetails)
+	{
 		emit stateMachineInternalError();
+		return;
+	}
 
 	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	int ret = gg_userlist100_request(Protocol->gaduSession(),
