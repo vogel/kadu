@@ -223,7 +223,7 @@ bool ChatShared::shouldStore()
 	return (UuidStorableObject::shouldStore()
 			&& !ChatAccount->uuid().isNull()
 			&& (!Details || Details->shouldStore())
-			&& !Display.isEmpty())
+			&& (!Display.isEmpty() && type() != "Contact"))
 			|| customProperties()->shouldStore();
 }
 

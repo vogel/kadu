@@ -86,11 +86,7 @@ void SqlChatsMapping::loadMappingsFromDatabase()
 
 		Chat chat = stringToChat(account, chatString);
 		if (chat)
-		{
-			if (chat.display().isEmpty())
-				chat.setDisplay(QString::number(id));
 			addMapping(id, chat);
-		}
 	}
 }
 
