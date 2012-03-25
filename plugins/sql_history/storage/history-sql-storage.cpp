@@ -33,6 +33,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-details.h"
 #include "chat/chat-details-buddy.h"
 #include "chat/chat-manager.h"
@@ -598,39 +599,68 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 	QVector<HistoryQueryResult> dates;
 	executeQuery(query);
 
-	int count;
-	QString message;
-	QDate date;
+	Chat lastChat;
+	QDate lastDate;
+	QString lastTitle;
+	int lastCount;
+
 	while (query.next())
 	{
-		count = query.value(0).toInt();
+		int count = query.value(0).toInt();
 
 		QString dateString = query.value(1).toString();
-		date = QDate::fromString(dateString, "yyyyMMdd");
+		QDate date = QDate::fromString(dateString, "yyyyMMdd");
 		if (!date.isValid())
 			continue;
 
-		message = query.value(2).toString();
+		QString message = query.value(2).toString();
 		if (message.isEmpty())
 			continue;
 
-		// TODO: this should be done in different place
-		QTextDocument document;
-		document.setHtml(message);
-		FormattedMessage formatted = FormattedMessage::parse(&document);
-		QString title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
+		Chat chat = ChatsMapping->chatById(query.value(3).toInt());
+		Chat buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+		chat = buddyChat ? buddyChat : chat;
 
-		if (title.length() > DATE_TITLE_LENGTH)
+		if (chat != lastChat || date != lastDate)
 		{
-			title.truncate(DATE_TITLE_LENGTH);
-			title += " ...";
-		}
+			if (lastChat)
+			{
+				HistoryQueryResult result;
+				result.setTalkable(lastChat);
+				result.setDate(lastDate);
+				result.setTitle(lastTitle);
+				result.setCount(lastCount);
+				dates.append(result);
+			}
 
+			// TODO: this should be done in different place
+			QTextDocument document;
+			document.setHtml(message);
+			FormattedMessage formatted = FormattedMessage::parse(&document);
+
+			QString title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
+			if (title.length() > DATE_TITLE_LENGTH)
+			{
+				title.truncate(DATE_TITLE_LENGTH);
+				title += " ...";
+			}
+
+			lastChat = chat;
+			lastDate = date;
+			lastTitle = title;
+			lastCount = count;
+		}
+		else
+			lastCount += count;
+	}
+
+	if (lastChat)
+	{
 		HistoryQueryResult result;
-		result.setTalkable(ChatsMapping->chatById(query.value(3).toInt()));
-		result.setDate(date);
-		result.setTitle(title);
-		result.setCount(count);
+		result.setTalkable(lastChat);
+		result.setDate(lastDate);
+		result.setTitle(lastTitle);
+		result.setCount(lastCount);
 		dates.append(result);
 	}
 
