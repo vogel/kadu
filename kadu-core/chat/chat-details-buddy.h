@@ -44,6 +44,7 @@ class KADUAPI ChatDetailsBuddy : public ChatDetails
 {
 	Q_OBJECT
 
+	Buddy MyBuddy;
 	QVector<Chat> Chats;
 
 public:
@@ -57,6 +58,9 @@ public:
 	virtual QString name() const;
 
 	virtual bool isConnected() const;
+
+	void setBuddy(const Buddy &buddy);
+	Buddy buddy() const;
 
 	void setChats(const QVector<Chat> &chats);
 	const QVector<Chat> & chats() const;

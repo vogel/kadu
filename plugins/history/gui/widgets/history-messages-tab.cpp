@@ -24,6 +24,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
 #include "buddies/model/buddy-list-model.h"
 #include "gui/widgets/chat-messages-view.h"
@@ -144,7 +145,12 @@ void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 		return;
 
 	CurrentTalkable = talkable;
-	TimelineView->messagesView()->setChat(CurrentTalkable.toChat());
+	Chat chat = CurrentTalkable.toChat();
+	// if buddy do not have any contact we have to create chat manually
+	if (!chat)
+		chat = BuddyChatManager::instance()->buddyChat(CurrentTalkable.toBuddy());
+
+	TimelineView->messagesView()->setChat(chat);
 
 	HistoryQuery query;
 	query.setTalkable(CurrentTalkable);
@@ -264,7 +270,12 @@ void HistoryMessagesTab::currentDateChanged()
 	query.setFromDate(date);
 	query.setToDate(date);
 
-	timelineView()->messagesView()->setChat(CurrentTalkable.toChat());
+	Chat chat = CurrentTalkable.toChat();
+	// if buddy do not have any contact we have to create chat manually
+	if (!chat)
+		chat = BuddyChatManager::instance()->buddyChat(CurrentTalkable.toBuddy());
+
+	timelineView()->messagesView()->setChat(chat);
 	TimelineView->setFutureMessages(Storage->messages(query));
 }
 

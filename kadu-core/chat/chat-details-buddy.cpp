@@ -84,12 +84,22 @@ ContactSet ChatDetailsBuddy::contacts() const
  */
 QString ChatDetailsBuddy::name() const
 {
-	return Chats.isEmpty() ? QString() : Chats.at(0).name();
+	return Chats.isEmpty() ? MyBuddy.isEmpty() ? QString() : MyBuddy.display() : Chats.at(0).name();
 }
 
 bool ChatDetailsBuddy::isConnected() const
 {
 	return false;
+}
+
+void ChatDetailsBuddy::setBuddy(const Buddy &buddy)
+{
+	MyBuddy = buddy;
+}
+
+Buddy ChatDetailsBuddy::buddy() const
+{
+	return MyBuddy;
 }
 
 /**

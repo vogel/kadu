@@ -93,6 +93,7 @@ Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
 			chats.append(contactChat);
 	}
 
+	buddyDetails->setBuddy(buddy);
 	buddyDetails->setChats(chats);
 
 	BuddyChats.insert(buddy, result);
