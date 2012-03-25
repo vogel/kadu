@@ -120,6 +120,15 @@ int SqlChatsMapping::idByChat(const Chat &chat, bool create)
 	return id;
 }
 
+void SqlChatsMapping::removeChat(const Chat &chat)
+{
+	int id = idByChat(chat, false);
+	chat.removeProperty("sql_history:id");
+
+	if (ChatMapping.contains(id))
+		ChatMapping.remove(id);
+}
+
 const QMap<int, Chat> & SqlChatsMapping::mapping() const
 {
 	return ChatMapping;

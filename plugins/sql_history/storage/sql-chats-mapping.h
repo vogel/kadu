@@ -131,6 +131,15 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Remove chat from mapping.
+	 * @param chat chat to remove
+	 *
+	 * Given chat is removed from mapping. It can by re-added by using @link idByChat @endlink method.
+	 */
+	void removeChat(const Chat &chat);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return current mappings.
 	 * @param return current mappings
 	 */

@@ -410,14 +410,14 @@ void HistorySqlStorage::clearChatHistory(const Talkable &talkable, const QDate &
 
 	executeQuery(query);
 
-	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE id IN " + chatIdList(talkable.toChat()) +
-	        " AND 0 = (SELECT count(*) FROM kadu_messages WHERE chat_id = kadu_chats.id)";
-
+	QString removeChatsQueryString = "DELETE FROM kadu_chats WHERE 0 = (SELECT COUNT(*) FROM kadu_messages WHERE chat_id = kadu_chats.id)";
 	QSqlQuery removeChatsQuery(Database);
 
 	removeChatsQuery.prepare(removeChatsQueryString);
 
 	executeQuery(removeChatsQuery);
+
+	ChatsMapping->removeChat(talkable.toChat());
 }
 
 void HistorySqlStorage::clearStatusHistory(const Talkable &talkable, const QDate &date)
