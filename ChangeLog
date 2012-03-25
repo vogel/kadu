@@ -6,6 +6,7 @@
 * sms: #359 done: more detailed process of sending SMS with possibility of cancelation in any moment (Vogel)
 * sms: #2466 fixed: messages from JavaScript are now translatable (Vogel)
 * history: #2526 fixed: display history for unknown chats and unknown contacts (Vogel)
+* history: #1586 fixed: history was not available for removed accounts (Vogel)
 
 +++ version 0.12.0-alpha3
 * core: configuration file renamed to kadu-0.12.conf.xml as format will be changed (Vogel)
