@@ -583,9 +583,9 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 	if (historyQuery.toDate().isValid())
 		queryString += " AND date <= :toDate";
 
-	queryString += " ORDER BY date_id DESC, km.rowid DESC )";
+	queryString += " ORDER BY date DESC, km.rowid DESC )";
 	queryString += " GROUP BY date_id, chat_id";
-	queryString += " ORDER BY date_id ASC, rowid ASC";
+	queryString += " ORDER BY date ASC, rowid ASC";
 
 	query.prepare(queryString);
 
@@ -847,11 +847,11 @@ QVector<Message> HistorySqlStorage::syncMessages(const HistoryQuery &historyQuer
 	// it is reverted back manually below
 	if (historyQuery.limit() > 0)
 	{
-		queryString += " ORDER BY kadu_messages.date_id DESC, kadu_messages.rowid DESC";
+		queryString += " ORDER BY date DESC, kadu_messages.rowid DESC";
 		queryString += " LIMIT :limit";
 	}
 	else
-		queryString += " ORDER BY kadu_messages.date_id ASC, kadu_messages.rowid ASC";
+		queryString += " ORDER BY date ASC, kadu_messages.rowid ASC";
 
 	query.prepare(queryString);
 

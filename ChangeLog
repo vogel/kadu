@@ -43,6 +43,7 @@
 * chat styles: fixed issues with contact activity icon not being displayed in old message styles (beevvy)
 * history: #2517 fixed: statuses were always stored as Offline (Vogel)
 * chat styles: #2518 fixed: text in system messages was overflowing time (Vogel)
+* history: #2527 fixed: correctly sort messages in history (ultr)
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)
