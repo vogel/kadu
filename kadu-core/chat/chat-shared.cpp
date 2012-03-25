@@ -165,6 +165,10 @@ void ChatShared::load()
 	if (chatType)
 		Type = chatType->name();
 
+	// we should not have display names for Contact chats
+	if (Type == "Contact")
+		Display.clear();
+
 	triggerAllChatTypesRegistered();
 }
 
