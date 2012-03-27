@@ -1,4 +1,6 @@
-﻿+++ version 0.12.0-alpha4
+﻿+++ version 0.12.0-beta1
+
++++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)
 * buddies: #2489 done: removed BuddiesModel and BuddiesModelBase classes (Vogel)
 * chat styles: #2499 fixed: keep message borders for long content (ultr)
