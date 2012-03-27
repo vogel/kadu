@@ -42,7 +42,7 @@ AddRoomChatWindow::AddRoomChatWindow(QWidget *parent) :
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowRole("kadu-add-room-chat");
-	setWindowTitle(tr("Add Conference"));
+	setWindowTitle(tr("Join Room"));
 
 	createGui();
 

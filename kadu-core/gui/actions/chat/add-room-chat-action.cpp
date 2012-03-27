@@ -26,7 +26,7 @@ AddRoomChatAction::AddRoomChatAction(QObject *parent) :
 {
 	setType(ActionDescription::TypeGlobal);
 	setName("addRoomChatAction");
-	setText(tr("Add Room Chat..."));
+	setText(tr("Join Room..."));
 
 	registerAction();
 }
