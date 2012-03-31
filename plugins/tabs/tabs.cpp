@@ -219,6 +219,9 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 	disconnect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	disconnect(chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+
+	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
+
 	kdebugf2();
 }
 
@@ -346,6 +349,8 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+
+	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 
 	kdebugf2();
 }
@@ -477,6 +482,8 @@ void TabsManager::makePopupMenu()
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
 	CloseTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-close").icon(), tr("Close"), this, SLOT(onMenuActionClose()));
+	CloseOtherTabsMenuAction = Menu->addAction(tr("Close all but active"), this, SLOT(onMenuActionCloseAllButActive()));
+	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -502,6 +509,19 @@ void TabsManager::onMenuActionCloseAll()
 {
 	for (int i = TabDialog->count() - 1; i >= 0; --i)
 		delete TabDialog->widget(i);
+}
+
+void TabsManager::onMenuActionCloseAllButActive()
+{
+	int activeTabIndex = TabDialog->indexOf(SelectedChat);
+	if (activeTabIndex == -1)
+		return;
+
+	for (int i = TabDialog->count() - 1; i >= 0; --i)
+	{
+		if (i != activeTabIndex)
+			delete TabDialog->widget(i);
+	}
 }
 
 void TabsManager::attachToTabsActionCreated(Action *action)

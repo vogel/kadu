@@ -74,6 +74,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QMenu *Menu;
 	QAction *DetachTabMenuAction;
 	QAction *CloseTabMenuAction;
+	QAction *CloseOtherTabsMenuAction;
 
 	void updateTabName(ChatWidget *chatWidget);
 	void updateTabIcon(ChatWidget *chatWidget);
@@ -95,6 +96,7 @@ private slots:
 	void onMenuActionDetachAll();
 	void onMenuActionClose();
 	void onMenuActionCloseAll();
+	void onMenuActionCloseAllButActive();
 
 protected:
 	virtual void configurationUpdated();

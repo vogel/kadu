@@ -107,6 +107,10 @@
         <translation>Zamknij wszystkie</translation>
     </message>
     <message>
+        <source>Close all but active</source>
+        <translation>Zamknij wszystkie oprócz aktywnej</translation>
+    </message>
+    <message>
         <source>Conference [%1]</source>
         <translation>Konferencja [%1]</translation>
     </message>
