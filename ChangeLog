@@ -7,6 +7,7 @@
 * sms: fixed gateway code (Vogel)
 * history: #2517 fixed: statuses were always stored as Offline (Vogel)
 * chat styles: #2518 fixed: text in system messages was overflowing time (Vogel)
+* gui: #2534 fixed: first incoming message was being displayed twice when "Open chat window on new message" option was enabled (beevvy)
 
 +++ version 0.11.1
 * gui: #2464 fixed: Clear Chat button was not properly activated after reading messages from history (Vogel)

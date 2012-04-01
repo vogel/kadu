@@ -310,9 +310,9 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		return;
 	}
 
-	ChatWidget *newChatWidget = byChat(chat, true);
-	if (newChatWidget)
-		newChatWidget->appendMessage(message);
+	// createChatWidget() method takes care of appending unread messages
+	// to the chat view, so no need to do that here.
+	byChat(chat, true);
 }
 
 void ChatWidgetManager::messageSent(const Message &message)
