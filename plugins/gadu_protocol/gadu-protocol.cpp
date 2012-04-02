@@ -548,12 +548,14 @@ QString GaduProtocol::statusPixmapPath()
 
 void GaduProtocol::disableSocketNotifiers()
 {
-	SocketNotifiers->disable();
+	if (SocketNotifiers)
+		SocketNotifiers->disable();
 }
 
 void GaduProtocol::enableSocketNotifiers()
 {
-	SocketNotifiers->enable();
+	if (SocketNotifiers)
+		SocketNotifiers->enable();
 }
 
 void GaduProtocol::configurationUpdated()
