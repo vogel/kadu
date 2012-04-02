@@ -40,13 +40,13 @@
 
 +++ version 0.11.2
 * url-handlers: #2485 fixed: do not treat strings beginning with "ftp." as http links (beevvy)
-* encryption_ng_simlite: #2504 fixed: invalid format of outgoing public keys (Vogel)
 * gadu: fixed rare problem which have been causing inability to send any messages (beevvy)
 * gadu: fixed possible application hangs, especially when trying to connect on unstable Internet connection (beevvy)
 * chat styles: fixed issues with contact activity icon not being displayed in old message styles (beevvy)
+* history: #2527 fixed: sort messages in history correctly (ultr)
+* sms: fixed gateway code (Vogel)
 * history: #2517 fixed: statuses were always stored as Offline (Vogel)
 * chat styles: #2518 fixed: text in system messages was overflowing time (Vogel)
-* history: #2527 fixed: correctly sort messages in history (ultr)
 * gui: #2534 fixed: first incoming message was being displayed twice when "Open chat window on new message" option was enabled (beevvy)
 
 +++ version 0.11.1
