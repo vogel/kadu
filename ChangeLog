@@ -2,6 +2,7 @@
 * tabs: 'close all tabs but active one' action added (Juzef)
 * last_seen: #1430 done: added context menu in Last Seen window (Vogel)
 * configuration: #2529 fixed: prevent loss of XML nodes with same tags in one parent node (ultr)
+* tabs: #2098, #2497 fixed: respect blocking window closing settings (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)

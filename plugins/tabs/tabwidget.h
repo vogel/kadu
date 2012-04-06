@@ -89,6 +89,8 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	*/
 	bool config_oldStyleClosing;
 
+	void closeTab(QWidget *tabWidget);
+
 private slots:
 	void onContextMenu(int id, const QPoint &pos);
 

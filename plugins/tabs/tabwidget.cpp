@@ -30,6 +30,7 @@
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
@@ -111,6 +112,27 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 	Manager->addChatWidgetToChatWidgetsWithMessage(chatWidget);
 }
 
+void TabWidget::closeTab(QWidget *tabWidget)
+{
+	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);
+	if (!chatWidget)
+		return;
+
+	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
+	{
+		unsigned int period = config_file.readUnsignedNumEntry("Chat",
+			"ChatCloseTimerPeriod", 2);
+
+		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
+		{
+			if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?")))
+				return;
+		}
+	}
+
+	delete chatWidget;
+}
+
 void TabWidget::closeChatWidget(ChatWidget *chatWidget)
 {
 	delete chatWidget;
@@ -132,10 +154,10 @@ void TabWidget::closeEvent(QCloseEvent *e)
 
 	//w zaleznosci od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywna
 	if (config_oldStyleClosing)
-		delete currentWidget();
+		closeTab(currentWidget());
 	else
-		while(count())
-			delete currentWidget();
+		for (int i = count() - 1; i >= 0; i--)
+			closeTab(widget(i));
 
 	if (count() > 0)
 		e->ignore();
@@ -192,7 +214,7 @@ void TabWidget::moveTab(int from, int to)
 
 void TabWidget::onDeleteTab(int id)
 {
-	delete widget(id);
+	closeTab(widget(id));
 }
 
 void TabWidget::switchTabLeft()
@@ -293,7 +315,7 @@ void TabWidget::newChat()
 
 void TabWidget::deleteTab()
 {
-	delete currentWidget();
+	closeTab(currentWidget());
 }
 
 void TabWidget::tabInserted(int index)
