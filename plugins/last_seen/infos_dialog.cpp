@@ -24,6 +24,7 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QVBoxLayout>
@@ -47,19 +48,18 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 	setWindowTitle(tr("Buddies Information"));
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->setSpacing(5);
 
 	QTreeWidget *listView = new QTreeWidget(this);
-	listView->setColumnCount(9);
-	listView->setSelectionMode(QAbstractItemView::NoSelection);
 	listView->setAllColumnsShowFocus(true);
+	listView->setColumnCount(9);
+	listView->setRootIsDecorated(false);
+	listView->setSelectionMode(QAbstractItemView::SingleSelection);
 	listView->setSortingEnabled(true);
 
 	QStringList labels;
 	labels << tr("Buddy")
 			<< tr("Protocol")
-			<< tr("UIN")
+			<< tr("Username")
 			<< tr("Nick")
 			<< tr("IP")
 			<< tr("Domain name")
@@ -95,16 +95,14 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 	}
 	listView->sortItems(0, Qt::AscendingOrder);
 
-	QWidget *buttons = new QWidget(this);
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
-	buttonsLayout->setContentsMargins(0, 0, 0, 0);
-	buttonsLayout->setSpacing(5);
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
-	QPushButton *closeButton = new QPushButton(tr("&Close"), this);
-	buttonsLayout->addStretch();
-	buttonsLayout->addWidget(closeButton);
+	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("&Close"), this);
+
+	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
 
 	layout->addWidget(listView);
+	layout->addSpacing(16);
 	layout->addWidget(buttons);
 
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
