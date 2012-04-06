@@ -5,6 +5,7 @@
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -300,7 +301,7 @@ QDomElement XmlConfigFile::getNamedNode(const QString &nodeTagName, const QStrin
 
 QDomElement XmlConfigFile::getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
-	return getNamedNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
+	return getUuidNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
 }
 
 QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
@@ -329,51 +330,45 @@ QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTa
 
 QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
 {
-	QDomElement result;
-	if (ModeAppend == getMode)
-		return result;
-
 	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeNamedNodes(parentNode, nodes, nodeName);
 
-	foreach (const QDomElement &element, nodes)
-		if (isElementNamed(element, nodeName))
-			return element;
+	if (ModeGet == getMode || ModeFind == getMode)
+		foreach (const QDomElement &element, nodes)
+			if (isElementNamed(element, nodeName))
+				return element;
 
+	QDomElement result;
 	if (ModeFind != getMode)
 	{
 		result = DomDocument.createElement(nodeTagName);
 		result.setAttribute("name", nodeName);
 		parentNode.appendChild(result);
 	}
-
 	return result;
 }
 
 QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
 {
-	QDomElement result;
-	if (ModeAppend == getMode)
-		return result;
-
 	QVector<QDomElement> nodes = getNodes(parentNode, nodeTagName);
 
 	if (ModeCreate == getMode)
 		removeUuidNodes(parentNode, nodes, nodeUuid);
 
-	foreach (const QDomElement &element, nodes)
-		if (isElementUuid(element, nodeUuid))
-			return element;
+	if (ModeGet == getMode || ModeFind == getMode)
+		foreach (const QDomElement &element, nodes)
+			if (isElementUuid(element, nodeUuid))
+				return element;
 
+	QDomElement result;
 	if (ModeFind != getMode)
 	{
 		result = DomDocument.createElement(nodeTagName);
 		result.setAttribute("uuid", nodeUuid);
 		parentNode.appendChild(result);
 	}
-
 	return result;
 }
 
