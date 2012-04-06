@@ -79,7 +79,9 @@ void MergeBuddiesWindow::createGui()
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	layout->addSpacing(16);
 	layout->addWidget(buttons);
 
 	MergeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Merge"), this);
