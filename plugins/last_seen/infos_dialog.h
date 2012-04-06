@@ -27,6 +27,8 @@
 
 typedef QMap<QPair<QString, QString>, QString> LastSeen;
 
+class QTreeWidget;
+
 /*!
  * Creates a QListView within itself. It also updates the "last seen" times.
  * \brief Dialog window for "last seen", IP, DNS.
@@ -34,6 +36,11 @@ typedef QMap<QPair<QString, QString>, QString> LastSeen;
 class InfosDialog : public QDialog
 {
 	Q_OBJECT
+
+	QTreeWidget *ListView;
+
+private slots:
+	void customContextMenuRequested(const QPoint &point);
 
 public:
 	/*! Default constructor. */

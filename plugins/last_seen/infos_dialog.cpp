@@ -25,13 +25,18 @@
 
 #include <QtCore/QStringList>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostAddress>
 
+#include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
+#include "gui/actions/base-action-context.h"
+#include "gui/widgets/talkable-menu-manager.h"
 #include "misc/misc.h"
+#include "model/roles.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "debug.h"
@@ -49,12 +54,15 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QTreeWidget *listView = new QTreeWidget(this);
-	listView->setAllColumnsShowFocus(true);
-	listView->setColumnCount(9);
-	listView->setRootIsDecorated(false);
-	listView->setSelectionMode(QAbstractItemView::SingleSelection);
-	listView->setSortingEnabled(true);
+	ListView = new QTreeWidget(this);
+	ListView->setAllColumnsShowFocus(true);
+	ListView->setColumnCount(9);
+	ListView->setContextMenuPolicy(Qt::CustomContextMenu);
+	ListView->setRootIsDecorated(false);
+	ListView->setSelectionMode(QAbstractItemView::SingleSelection);
+	ListView->setSortingEnabled(true);
+
+	connect(ListView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(customContextMenuRequested(QPoint)));
 
 	QStringList labels;
 	labels << tr("Buddy")
@@ -66,7 +74,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 			<< tr("Description")
 			<< tr("State")
 			<< tr("Last time seen on");
-	listView->setHeaderLabels(labels);
+	ListView->setHeaderLabels(labels);
 
 	foreach (const Contact &contact, ContactManager::instance()->items())
 	{
@@ -91,9 +99,11 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 				<< StatusTypeManager::instance()->statusTypeData(contact.currentStatus().type()).name()
 				<< lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())];
 
-		listView->addTopLevelItem(new QTreeWidgetItem(labels));
+		QTreeWidgetItem *item = new QTreeWidgetItem(labels);
+		item->setData(0, ContactRole, contact);
+		ListView->addTopLevelItem(item);
 	}
-	listView->sortItems(0, Qt::AscendingOrder);
+	ListView->sortItems(0, Qt::AscendingOrder);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
@@ -101,7 +111,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 
 	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
 
-	layout->addWidget(listView);
+	layout->addWidget(ListView);
 	layout->addSpacing(16);
 	layout->addWidget(buttons);
 
@@ -119,4 +129,30 @@ InfosDialog::~InfosDialog()
 	saveWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry");
 
 	kdebugf2();
+}
+
+void InfosDialog::customContextMenuRequested(const QPoint &point)
+{
+	Q_UNUSED(point);
+
+	QList<QTreeWidgetItem *> selectedItems = ListView->selectedItems();
+	if (1 != selectedItems.count())
+		return;
+
+	QTreeWidgetItem *selectedItem = selectedItems.at(0);
+	if (!selectedItem)
+		return;
+
+	Contact contact = selectedItem->data(0, ContactRole).value<Contact>();
+	if (!contact)
+		return;
+
+	QScopedPointer<BaseActionContext> actionContext(new BaseActionContext());
+	actionContext->setBuddies(BuddySet(contact.ownerBuddy()));
+	actionContext->setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	actionContext->setContacts(ContactSet(contact));
+	actionContext->setRoles(RoleSet() << ContactRole);
+
+	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, actionContext.data()));
+	menu->exec(QCursor::pos());
 }
