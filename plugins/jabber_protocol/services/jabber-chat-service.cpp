@@ -230,8 +230,11 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	else
 		document.setPlainText(message);
 
-	//QString cleanmsg = toPlainText(mesg);
-	QString plain = document.toPlainText();
+
+	FormattedMessage formattedMessage = FormattedMessage::parse(&document);
+
+	QString plain = formattedMessage.toPlain();
+
 	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
 	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
@@ -266,15 +269,15 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 
 	if (!silent)
 	{
-		::Message message = ::Message::create();
-		message.setMessageChat(chat);
-		message.setType(MessageTypeSent);
-		message.setMessageSender(account().accountContact());
-		message.setContent(document.toPlainText()); // do not add encrypted message here
-		message.setSendDate(QDateTime::currentDateTime());
-		message.setReceiveDate(QDateTime::currentDateTime());
+		::Message msg = ::Message::create();
+		msg.setMessageChat(chat);
+		msg.setType(MessageTypeSent);
+		msg.setMessageSender(account().accountContact());
+		msg.setContent(formattedMessage.toHtml()); // do not add encrypted message here
+		msg.setSendDate(QDateTime::currentDateTime());
+		msg.setReceiveDate(QDateTime::currentDateTime());
 
-		emit messageSent(message);
+		emit messageSent(msg);
 	}
 
 	return true;
