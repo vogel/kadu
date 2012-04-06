@@ -70,7 +70,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false), ListModel(0), Chain(0)
+	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false)
 {
 	kdebugf();
 
@@ -94,6 +94,13 @@ OpenChatWith::OpenChatWith() :
 	BuddiesWidget = new TalkableTreeView(this);
 	connect(BuddiesWidget, SIGNAL(talkableActivated(Talkable)), this, SLOT(openChat()));
 	MainLayout->addWidget(BuddiesWidget);
+
+	ModelChain *chain = new ModelChain(this);
+	ListModel = new BuddyListModel(chain);
+	chain->setBaseModel(ListModel);
+	chain->addProxyModel(new TalkableProxyModel(chain));
+
+	BuddiesWidget->setChain(chain);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -121,9 +128,6 @@ OpenChatWith::~OpenChatWith()
 
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
-
-	delete Chain;
-	Chain = 0;
 }
 
 bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
@@ -189,16 +193,7 @@ void OpenChatWith::inputChanged(const QString &text)
 			? BuddyList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
-	delete Chain; // it deletes ListModel too
-
-	Chain = new ModelChain(this);
-	ListModel = new BuddyListModel(Chain);
 	ListModel->setBuddyList(matchingContacts);
-	Chain->setBaseModel(ListModel);
-	TalkableProxyModel *proxyModel = new TalkableProxyModel(Chain);
-	Chain->addProxyModel(proxyModel);
-
-	BuddiesWidget->setChain(Chain);
 
 	if (!text.isEmpty())
 	{
