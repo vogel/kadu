@@ -85,8 +85,6 @@ OpenChatWith::OpenChatWith() :
 	setWindowGeometry(this, rect);
 
 	MainLayout = new QVBoxLayout(this);
-	MainLayout->setMargin(0);
-	MainLayout->setSpacing(0);
 
 	ContactID = new LineEditWithClearButton(this);
 	ContactID->installEventFilter(this);
@@ -107,6 +105,7 @@ OpenChatWith::OpenChatWith() :
 	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(inputAccepted()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
+	MainLayout->addSpacing(16);
 	MainLayout->addWidget(buttons);
 
 	OpenChatRunner = new OpenChatWithContactListRunner();
