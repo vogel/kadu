@@ -46,6 +46,8 @@ BuddyListModel::BuddyListModel(QObject *parent) :
 
 BuddyListModel::~BuddyListModel()
 {
+	setBuddyList(BuddyList());
+
 	triggerAllAccountsUnregistered();
 
 	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),
