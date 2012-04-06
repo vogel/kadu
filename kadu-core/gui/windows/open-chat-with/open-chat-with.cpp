@@ -25,6 +25,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
@@ -86,13 +87,21 @@ OpenChatWith::OpenChatWith() :
 
 	MainLayout = new QVBoxLayout(this);
 
+	QWidget *idWidget = new QWidget(this);
+
+	QHBoxLayout *idLayout = new QHBoxLayout(idWidget);
+	idLayout->setMargin(0);
+	idLayout->addWidget(new QLabel(tr("User name:"), idWidget));
+
 	ContactID = new LineEditWithClearButton(this);
 	ContactID->installEventFilter(this);
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
-	MainLayout->addWidget(ContactID);
+	idLayout->addWidget(ContactID);
 
 	BuddiesWidget = new TalkableTreeView(this);
 	connect(BuddiesWidget, SIGNAL(talkableActivated(Talkable)), this, SLOT(openChat()));
+
+	MainLayout->addWidget(idWidget);
 	MainLayout->addWidget(BuddiesWidget);
 
 	ModelChain *chain = new ModelChain(this);
