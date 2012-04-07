@@ -45,7 +45,7 @@ class KADUAPI StatusMenu : public QObject
 
 	QPoint MousePositionBeforeMenuHide;
 
-	QList<StatusContainer *> StatusContainers;
+	StatusContainer *Container;
 
 private slots:
 	void addStatusActions();

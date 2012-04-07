@@ -38,7 +38,7 @@
 #include "status-menu.h"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu) :
-		QObject(menu), Menu(menu), StatusContainers(statusContainer->subStatusContainers())
+		QObject(menu), Menu(menu), Container(statusContainer)
 {
 	Actions = new StatusActions(statusContainer, includePrefix, this);
 
@@ -71,7 +71,7 @@ void StatusMenu::changeStatus(QAction *action)
 {
 	StatusType statusType = action->data().value<StatusType>();
 
-	foreach (StatusContainer *container, StatusContainers)
+	foreach (StatusContainer *container, Container->subStatusContainers())
 	{
 		Status status(StatusSetter::instance()->manuallySetStatus(container));
 		status.setType(statusType);
@@ -83,6 +83,6 @@ void StatusMenu::changeStatus(QAction *action)
 
 void StatusMenu::changeDescription()
 {
-	QWidget *statusWindow = StatusWindow::showDialog(StatusContainers, Menu);
+	QWidget *statusWindow = StatusWindow::showDialog(Container, Menu);
 	WindowManager::instance()->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }

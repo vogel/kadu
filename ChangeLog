@@ -5,6 +5,7 @@
 * tabs: #2098, #2497 fixed: respect blocking window closing settings (Vogel)
 * history: #2539 fixed: improper import of 0.6.5 history in some cases (Vogel)
 * gui: #2479 fixed: information panel didn't display anything for chats (Vogel)
+* gui: #2472 fixed: use common status icons in Status Window when changing status for all accounts (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)
@@ -149,7 +150,7 @@
 * gadu: #1737 fixed: added per-account "Receive URLs from anonymous" option (Vogel)
 * jabber: #2074 fixed: support socks5 proxy (Juzef)
 * gui: #2070 fixed: proper link to online help in help menu (Vogel)
-* jabber: #2080 fixed: do not crash when chaning password (Vogel)
+* jabber: #2080 fixed: do not crash when changing password (Vogel)
 * gadu: #2364 fixed: updated avatar upload code to match current GG implementation (Vogel)
 * core: #2288 fixed: mark all contacts as offline after network error (Vogel)
 

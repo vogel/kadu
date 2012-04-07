@@ -49,20 +49,20 @@
 
 #include "status-window.h"
 
-QMap<QWidget *, StatusWindow *> StatusWindow::Dialogs;
+QMap<StatusContainer *, StatusWindow *> StatusWindow::Dialogs;
 
-StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusContainerList, QWidget *parent)
+StatusWindow * StatusWindow::showDialog(StatusContainer *statusContainer, QWidget *parent)
 {
-	if (statusContainerList.isEmpty())
+	if (!statusContainer)
 		return 0;
 
 	StatusWindow *dialog;
-	if (Dialogs.contains(parent))
-		dialog = Dialogs[parent];
+	if (Dialogs.contains(statusContainer))
+		dialog = Dialogs.value(statusContainer);
 	else
 	{
-		dialog = new StatusWindow(statusContainerList, parent);
-		Dialogs[parent] = dialog;
+		dialog = new StatusWindow(statusContainer, parent);
+		Dialogs.insert(statusContainer, dialog);
 	}
 
 	dialog->show();
@@ -71,20 +71,18 @@ StatusWindow * StatusWindow::showDialog(const QList<StatusContainer *> &statusCo
 	return dialog;
 }
 
-StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), StatusContainers(statusContainerList)
+StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
+		QDialog(parent), DesktopAwareObject(this), Container(statusContainer)
 {
-	Q_ASSERT(!StatusContainers.isEmpty());
-
-	FirstStatusContainer = StatusContainers.at(0);
+	Q_ASSERT(Container);
 
 	kdebugf();
 
 	setWindowRole("kadu-status-window");
 
-	QString windowTitle = StatusContainers.count() > 1
+	QString windowTitle = Container->subStatusContainers().count() > 1
 		? tr("Change status")
-		: tr("Change account status: %1").arg(FirstStatusContainer->statusContainerName());
+		: tr("Change account status: %1").arg(Container->statusContainerName());
 	setWindowTitle(windowTitle);
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -97,7 +95,7 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 	StatusList = new QComboBox(formWidget);
 	layout->addRow(new QLabel(tr("Status") + ':'), StatusList);
 
-	QList<StatusType> statusTypes = FirstStatusContainer->supportedStatusTypes();
+	QList<StatusType> statusTypes = Container->supportedStatusTypes();
 	int selectedIndex, i = 0;
 
 	foreach (StatusType statusType, statusTypes)
@@ -107,10 +105,10 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 		const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(statusType);
 
-		KaduIcon icon = FirstStatusContainer->statusIcon(typeData.type());
+		KaduIcon icon = Container->statusIcon(typeData.type());
 		StatusList->addItem(icon.icon(), typeData.displayName(), QVariant::fromValue(typeData.type()));
 
-		if (typeData.type() == FirstStatusContainer->status().type())
+		if (typeData.type() == Container->status().type())
 			selectedIndex = i;
 		i++;
 	}
@@ -118,7 +116,7 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 	DescriptionEdit = new KaduTextEdit(formWidget);
 	DescriptionEdit->installEventFilter(this);
-	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(FirstStatusContainer).description());
+	DescriptionEdit->setPlainText(StatusSetter::instance()->manuallySetStatus(Container).description());
 	DescriptionEdit->setFocus();
 	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	DescriptionEdit->setTabChangesFocus(true);
@@ -170,7 +168,7 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
-	int maxDescriptionLength = FirstStatusContainer->maxDescriptionLength();
+	int maxDescriptionLength = Container->maxDescriptionLength();
 	if (maxDescriptionLength > 0)
 	{
 		DescriptionLimitCounter->setVisible(true);
@@ -183,7 +181,7 @@ StatusWindow::StatusWindow(const QList<StatusContainer *> &statusContainerList, 
 
 StatusWindow::~StatusWindow()
 {
-	Dialogs.remove(parentWidget());
+	Dialogs.remove(Container);
 }
 
 QSize StatusWindow::sizeHint() const
@@ -199,7 +197,7 @@ void StatusWindow::applyStatus()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, Talkable(Core::instance()->myself()), false);
 
-	foreach (StatusContainer *container, StatusContainers)
+	foreach (StatusContainer *container, Container->subStatusContainers())
 	{
 		Status status = StatusSetter::instance()->manuallySetStatus(container);
 		status.setDescription(description);
@@ -249,7 +247,7 @@ void StatusWindow::openDescriptionsList()
 void StatusWindow::checkDescriptionLengthLimit()
 {
 	int length = DescriptionEdit->toPlainText().length();
-	int charactersLeft = FirstStatusContainer->maxDescriptionLength() - length;
+	int charactersLeft = Container->maxDescriptionLength() - length;
 	bool limitExceeded = charactersLeft < 0;
 
 	OkButton->setEnabled(!limitExceeded);

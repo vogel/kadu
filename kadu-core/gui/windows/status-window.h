@@ -27,6 +27,7 @@
 #include <QtGui/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
+#include <status/status.h>
 
 class QComboBox;
 class QLabel;
@@ -38,17 +39,16 @@ class StatusWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	static QMap<QWidget *, StatusWindow *> Dialogs;
+	static QMap<StatusContainer *, StatusWindow *> Dialogs;
 
 	QComboBox *StatusList;
 	QTextEdit *DescriptionEdit;
 	QLabel *DescriptionLimitCounter;
 	QPushButton *OkButton;
 
-	QList<StatusContainer *> StatusContainers;
-	StatusContainer *FirstStatusContainer;
+	StatusContainer *Container;
 
-	explicit StatusWindow(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
+	explicit StatusWindow(StatusContainer *Container, QWidget *parent = 0);
 	virtual ~StatusWindow();
 
 private slots:
@@ -63,13 +63,13 @@ protected:
 public:
 	/**
 	 * @short Shows new status window.
-	 * @param statusContainerList list of statusContainers
+	 * @param statusContainer status container
 	 * @param parent dialog's parent widget, null by default
 	 * @return Pointer to the created StatusWindow dialog.
 	 *
 	 * Creates and shows new status window.
 	 */
-	static StatusWindow * showDialog(const QList<StatusContainer *> &statusContainerList, QWidget *parent = 0);
+	static StatusWindow * showDialog(StatusContainer *statusContainer, QWidget *parent = 0);
 
 	virtual QSize sizeHint() const;
 };
