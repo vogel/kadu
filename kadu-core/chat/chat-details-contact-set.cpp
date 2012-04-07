@@ -40,10 +40,12 @@ ChatDetailsContactSet::ChatDetailsContactSet(ChatShared *chatData) :
 		ChatDetails(chatData)
 {
 	Protocol *protocol = mainData()->chatAccount().protocolHandler();
-	Q_ASSERT(protocol);
 
-	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+	if (protocol)
+	{
+		connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+		connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+	}
 }
 
 ChatDetailsContactSet::~ChatDetailsContactSet()
