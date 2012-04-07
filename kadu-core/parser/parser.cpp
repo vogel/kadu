@@ -34,6 +34,7 @@
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-manager.h"
+#include "chat/model/chat-data-extractor.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "icons/kadu-icon.h"
@@ -186,6 +187,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 	ParserToken pe;
 	pe.setType(PT_STRING);
 
+	Chat chat = talkable.toChat();
 	Buddy buddy = talkable.toBuddy();
 	Contact contact = talkable.toContact();
 
@@ -213,6 +215,11 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 					pe.setContent(typeData.displayName());
 				}
 			}
+			else if (chat && chat.chatAccount().statusContainer())
+			{
+				const StatusTypeData & typeData = StatusTypeManager::instance()->statusTypeData(chat.chatAccount().statusContainer()->status().type());
+				pe.setContent(typeData.displayName());
+			}
 
 			break;
 		case 'q':
@@ -225,6 +232,14 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 					pe.setContent(container->statusIcon(contact.currentStatus().type()).path());
 				else
 					pe.setContent(StatusContainerManager::instance()->statusIcon(contact.currentStatus().type()).path());
+			}
+			else if (chat)
+			{
+				StatusContainer *container = chat.chatAccount().statusContainer();
+				if (container)
+					pe.setContent(container->statusIcon().path());
+				else
+					pe.setContent(StatusContainerManager::instance()->statusIcon(Status()).path());
 			}
 
 			break;
@@ -290,7 +305,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString nickName = buddy.nickName();
+			QString nickName = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.nickName();
 			if (escape)
 				HtmlDocument::escapeText(nickName);
 
@@ -302,7 +317,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 		{
 			++idx;
 
-			QString display = buddy.display();
+			QString display = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.display();
 			if (escape)
 				HtmlDocument::escapeText(display);
 
@@ -345,8 +360,12 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			QStringList groups;
-			foreach (const Group &group, buddy.groups())
-				groups << group.name();
+			if (chat)
+				foreach (const Group &group, chat.groups())
+					groups << group.name();
+			else
+				foreach (const Group &group, buddy.groups())
+					groups << group.name();
 
 			pe.setContent(groups.join(","));
 

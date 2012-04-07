@@ -4,6 +4,7 @@
 * configuration: #2529 fixed: prevent loss of XML nodes with same tags in one parent node (ultr)
 * tabs: #2098, #2497 fixed: respect blocking window closing settings (Vogel)
 * history: #2539 fixed: improper import of 0.6.5 history in some cases (Vogel)
+* gui: #2479 fixed: information panel didn't display anything for chats (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)

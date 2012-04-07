@@ -28,6 +28,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
 #include "model/roles.h"
+#include "status/status-container.h"
 
 #include "talkable.h"
 
@@ -217,7 +218,10 @@ QString Talkable::display() const
 
 Status Talkable::currentStatus() const
 {
-	return toContact().currentStatus();
+	if (isValidChat())
+		return MyChat.chatAccount().statusContainer() ? MyChat.chatAccount().statusContainer()->status() : Status();
+	else
+		return toContact().currentStatus();
 }
 
 bool Talkable::isValidChat() const
