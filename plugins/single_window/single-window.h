@@ -12,6 +12,7 @@
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
+#include "provider/simple-provider.h"
 
 class SingleWindow : public QMainWindow, public ChatWidgetContainer
 {
@@ -60,7 +61,8 @@ class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationA
 {
 	Q_OBJECT
 
-	SingleWindow *singleWindow;
+	QSharedPointer<SimpleProvider<QWidget *> > WindowProvider;
+	SingleWindow *Window;
 
 protected:
 	virtual void configurationUpdated();

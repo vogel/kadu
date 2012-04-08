@@ -22,6 +22,7 @@
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
 #include "misc/misc.h"
+#include "provider/default-provider.h"
 #include "activate.h"
 #include "debug.h"
 #include "kadu-application.h"
@@ -29,25 +30,31 @@
 #include "single-window.h"
 
 SingleWindowManager::SingleWindowManager(QObject *parent) :
-		ConfigurationUiHandler(parent)
+		ConfigurationUiHandler(parent),
+		WindowProvider(new SimpleProvider<QWidget *>(0))
 {
 	config_file.addVariable("SingleWindow", "RosterPosition", 0);
 	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
-	singleWindow = new SingleWindow();
+
+	Window = new SingleWindow();
+	WindowProvider->provideValue(Window);
+
+	Core::instance()->mainWindowProvider()->installCustomProvider(WindowProvider);
 }
 
 SingleWindowManager::~SingleWindowManager()
 {
-	delete singleWindow;
+	Core::instance()->mainWindowProvider()->removeCustomProvider(WindowProvider);
+
+	WindowProvider->provideValue(0);
+	delete Window;
 }
 
 void SingleWindowManager::configurationUpdated()
 {
 	int newRosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
-	if (singleWindow->rosterPosition() != newRosterPos)
-	{
-		singleWindow->changeRosterPos(newRosterPos);
-	}
+	if (Window->rosterPosition() != newRosterPos)
+		Window->changeRosterPos(newRosterPos);
 }
 
 SingleWindow::SingleWindow()
@@ -55,6 +62,8 @@ SingleWindow::SingleWindow()
 	setWindowRole("kadu-single-window");
 
 	KaduWindow *kadu = Core::instance()->kaduWindow();
+	bool visible = kadu->isVisible();
+
 	split = new QSplitter(Qt::Horizontal, this);
 
 	tabs = new QTabWidget(this);
@@ -129,7 +138,8 @@ SingleWindow::SingleWindow()
 	setFocusProxy(kadu);
 	kadu->show();
 	kadu->setFocus();
-	show();
+
+	setVisible(visible);
 }
 
 SingleWindow::~SingleWindow()
