@@ -71,8 +71,8 @@ class KADUAPI Protocol : public QObject
 	Account CurrentAccount;
 
 	// services
-	ChatService *CurrentChatService;
-	ChatStateService *CurrentChatStateService;
+	QWeakPointer<ChatService> CurrentChatService;
+	QWeakPointer<ChatStateService> CurrentChatStateService;
 	QWeakPointer<RosterService> CurrentRosterService;
 
 	// real status, can be offline after connection error
@@ -128,8 +128,8 @@ public:
 
 	virtual AvatarService * avatarService() { return 0; }
 	virtual ChatImageService * chatImageService() { return 0; }
-	virtual ChatService * chatService() { return CurrentChatService; }
-	virtual ChatStateService * chatStateService() { return CurrentChatStateService; }
+	virtual ChatService * chatService() { return CurrentChatService.data(); }
+	virtual ChatStateService * chatStateService() { return CurrentChatStateService.data(); }
 	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 	virtual FileTransferService * fileTransferService() { return 0; }

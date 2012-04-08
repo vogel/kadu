@@ -37,6 +37,8 @@
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-state-machine.h"
+#include "services/chat-service.h"
+#include "services/chat-state-service.h"
 #include "services/roster-service.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
@@ -45,8 +47,7 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		Factory(factory), CurrentAccount(account),
-		CurrentChatService(0), CurrentChatStateService(0)
+		Factory(factory), CurrentAccount(account)
 {
 	Machine = new ProtocolStateMachine(this);
 	/*
