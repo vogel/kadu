@@ -145,6 +145,7 @@ SingleWindow::SingleWindow()
 SingleWindow::~SingleWindow()
 {
 	KaduWindow *kadu = Core::instance()->kaduWindow();
+	bool visible = isVisible();
 
 	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
 	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
@@ -170,11 +171,9 @@ SingleWindow::~SingleWindow()
 	}
 
 	kadu->setParent(0);
+	loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
 	if (!Core::instance()->isClosing())
-	{
-		loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
-		kadu->show();
-	}
+		kadu->setVisible(visible);
 }
 
 void SingleWindow::changeEvent(QEvent *event)
