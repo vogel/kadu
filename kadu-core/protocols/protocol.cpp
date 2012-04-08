@@ -46,7 +46,7 @@
 
 Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		Factory(factory), CurrentAccount(account),
-		CurrentChatService(0), CurrentChatStateService(0), CurrentRosterService(0)
+		CurrentChatService(0), CurrentChatStateService(0)
 {
 	Machine = new ProtocolStateMachine(this);
 	/*

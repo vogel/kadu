@@ -24,6 +24,7 @@
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-manager.h"
+#include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -36,6 +37,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/services/roster-service.h"
 #include "debug.h"
 
 #include "account-manager.h"
@@ -217,11 +219,23 @@ void AccountManager::connectionError(Account account, const QString &server, con
 
 void AccountManager::removeAccountAndBuddies(Account account)
 {
+	StatusContainer *statusContainer = account.statusContainer();
+	if (statusContainer)
+		statusContainer->setStatus(Status());
+
+	Protocol *protocolHandler = account.protocolHandler();
+	if (protocolHandler)
+		delete protocolHandler->rosterService();
+
+	removeItem(account);
+
 	QVector<Contact> contacts = ContactManager::instance()->contacts(account);
 	foreach (const Contact &contact, contacts)
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 
-	removeItem(account);
+	QVector<Chat> chats = ChatManager::instance()->chats(account);
+	foreach (const Chat &chat, chats)
+		chat.setDisplay(QString());
 }
 
 void AccountManager::passwordProvided(const QVariant& data, const QString& password, bool permanent)

@@ -135,6 +135,15 @@ public:
 	bool isAccountCommon(const Account &account, const BuddySet &buddies);
 	Account getCommonAccount(const BuddySet &buddies);
 
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Return list of chats assigned to given account.
+	 * @param account account of returned chats
+	 *
+	 * If account is null then this method returns empty vector.
+	 */
+	QVector<Chat> chats(const Account &account);
+
 	Chat byDisplay(const QString &display);
 
 signals:

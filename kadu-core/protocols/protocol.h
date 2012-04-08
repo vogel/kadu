@@ -73,7 +73,7 @@ class KADUAPI Protocol : public QObject
 	// services
 	ChatService *CurrentChatService;
 	ChatStateService *CurrentChatStateService;
-	RosterService *CurrentRosterService;
+	QWeakPointer<RosterService> CurrentRosterService;
 
 	// real status, can be offline after connection error
 	Status CurrentStatus;
@@ -135,7 +135,7 @@ public:
 	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual MultilogonService * multilogonService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
-	virtual RosterService * rosterService() const { return CurrentRosterService; }
+	virtual RosterService * rosterService() const { return CurrentRosterService.data(); }
 	virtual SearchService * searchService() { return 0; }
 	virtual SubscriptionService * subscriptionService() { return 0; }
 

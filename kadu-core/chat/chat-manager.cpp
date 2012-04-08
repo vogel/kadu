@@ -125,6 +125,24 @@ Account ChatManager::getCommonAccount(const BuddySet &buddies)
 	return Account::null;
 }
 
+QVector<Chat> ChatManager::chats(const Account &account)
+{
+	QMutexLocker locker(&mutex());
+
+	ensureLoaded();
+
+	QVector<Chat> chats;
+
+	if (account.isNull())
+		return chats;
+
+	foreach (const Chat &chat, allItems())
+		if (account == chat.chatAccount())
+			chats.append(chat);
+
+	return chats;
+}
+
 Chat ChatManager::byDisplay(const QString &display)
 {
 	QMutexLocker locker(&mutex());
