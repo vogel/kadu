@@ -67,8 +67,6 @@ void HistoryWindow::show(const Chat &chat)
 HistoryWindow::HistoryWindow(QWidget *parent) :
 		QDialog(parent), CurrentTab(-1)
 {
-	setProperty("ownWindowIcon", true);
-
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
 

@@ -145,7 +145,7 @@ Core::~Core()
 	PluginsManager::instance()->deactivatePlugins();
 
 #ifdef Q_OS_MAC
-	setIcon(KaduIcon("kadu_icons/kadu"));
+	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
 	QWidget *hiddenParent = Window->parentWidget();
@@ -399,12 +399,10 @@ void Core::init()
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
 
-	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
-
 	new Updates(this);
 
-	setIcon(KaduIcon(QLatin1String("protocols/common/offline")));
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(statusUpdated()));
+	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	// TODO: add some life-cycle management
@@ -462,12 +460,12 @@ void Core::deleteOldConfigurationFiles()
 	kdebugf2();
 }
 
-void Core::statusUpdated()
+void Core::updateIcon()
 {
 	if (isClosing())
 		return;
 
-	setIcon(StatusContainerManager::instance()->statusIcon());
+	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 }
 
 void Core::kaduWindowDestroyed()
@@ -544,25 +542,6 @@ void Core::setShowMainWindowOnStart(bool show)
 KaduWindow * Core::kaduWindow()
 {
 	return Window;
-}
-
-void Core::setIcon(const KaduIcon &icon)
-{
-	bool blocked = false;
-	emit settingMainIconBlocked(blocked);
-
-	if (!blocked)
-	{
-		QApplication::setWindowIcon(icon.icon());
-		foreach (QWidget *window, QApplication::topLevelWidgets())
-			if (window->property("ownWindowIcon").toBool() == false)
-				window->setWindowIcon(icon.icon());
-
-		if (Window && !Window->isWindow())
-			Window->setWindowIcon(icon.icon());
-
-		emit mainIconChanged(icon);
-	}
 }
 
 QSharedPointer<DefaultProvider<QWidget *> > Core::mainWindowProvider() const

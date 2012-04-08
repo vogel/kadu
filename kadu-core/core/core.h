@@ -88,7 +88,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	void storeConfiguration();
 
 private slots:
-	void statusUpdated();
+	void updateIcon();
 
 	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
@@ -130,13 +130,8 @@ signals:
 	void connected();
 	void disconnected();
 
-	// TODO: remove
-	void settingMainIconBlocked(bool &blocked);
-
 	//TODO:
 	void searchingForTrayPosition(QPoint &);
-
-	void mainIconChanged(const KaduIcon &);
 
 };
 

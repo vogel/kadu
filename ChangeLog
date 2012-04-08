@@ -7,6 +7,7 @@
 * gui: #2479 fixed: information panel didn't display anything for chats (Vogel)
 * gui: #2472 fixed: use common status icons in Status Window when changing status for all accounts (Vogel)
 * single_window: #2470 fixed: "Start Docked" didn't work for Single Window plugin (Vogel)
+* gui: #1916 fixed: use Kadu icon for all non-chat windows (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)

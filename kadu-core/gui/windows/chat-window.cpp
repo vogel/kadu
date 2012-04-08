@@ -54,7 +54,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 {
 	kdebugf();
 
-	setProperty("ownWindowIcon", true);
 	setWindowRole("kadu-chat");
 	if (chatWidget && chatWidget->chat().details() && chatWidget->chat().details()->type())
 		setWindowRole(chatWidget->chat().details()->type()->windowRole());
