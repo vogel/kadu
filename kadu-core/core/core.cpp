@@ -60,6 +60,8 @@
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "provider/default-provider.h"
+#include "provider/simple-provider.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
@@ -110,7 +112,10 @@ KaduApplication * Core::application()
 }
 
 Core::Core() :
-		Myself(Buddy::create()), Window(0), IsClosing(false),
+		KaduWindowProvider(new SimpleProvider<QWidget *>(0)),
+		MainWindowProvider(new DefaultProvider<QWidget *>(KaduWindowProvider)),
+		Window(0),
+		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
@@ -146,6 +151,8 @@ Core::~Core()
 	QWidget *hiddenParent = Window->parentWidget();
 	delete Window;
 	Window = 0;
+	KaduWindowProvider->provideValue(0);
+
 	delete hiddenParent;
 
 	MainConfigurationHolder::destroyInstance();
@@ -514,6 +521,7 @@ void Core::createGui()
 {
 	Window = new KaduWindow();
 	connect(Window, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
+	KaduWindowProvider->provideValue(Window);
 
 	// initialize file transfers
 	FileTransferManager::instance();
@@ -549,6 +557,7 @@ void Core::setIcon(const KaduIcon &icon)
 		foreach (QWidget *window, QApplication::topLevelWidgets())
 			if (window->property("ownWindowIcon").toBool() == false)
 				window->setWindowIcon(icon.icon());
+
 		if (Window && !Window->isWindow())
 			Window->setWindowIcon(icon.icon());
 
@@ -556,10 +565,15 @@ void Core::setIcon(const KaduIcon &icon)
 	}
 }
 
+QSharedPointer<DefaultProvider<QWidget *> > Core::mainWindowProvider() const
+{
+	return MainWindowProvider;
+}
+
 void Core::receivedSignal(const QString &signal)
 {
 	if ("activate" == signal)
-		_activateWindow(Window);
+		_activateWindow(MainWindowProvider->provide());
 	else
 		UrlHandlerManager::instance()->openUrl(signal.toUtf8(), true);
 }
