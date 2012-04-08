@@ -10,6 +10,7 @@
 * gui: #1916 fixed: use Kadu icon for all non-chat windows (Vogel)
 * core: #2312 fixed: properly remove all contacts and chats when removing account (Vogel)
 * gui: #1785 fixed: invalid parsing of some URLs (Vogel)
+* gui: #1838 fixed: use system highlight color in emoticons selector (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)

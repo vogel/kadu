@@ -75,7 +75,7 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 
 	QString style =
 		"QLabel {"
-		"	background-color: #fbe333;"
+		"	background-color: palette(highlight);"
 		"	padding: 4px;"
 		"}";
 	setStyleSheet(style);
