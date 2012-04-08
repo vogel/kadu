@@ -407,6 +407,14 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
+	xml_config_file->sync();
+
+	delete xml_config_file;
+	delete config_file_ptr;
+
+	xml_config_file = 0;
+	config_file_ptr = 0;
+
 	// On some systems it leads to crash with sms module.
 	// Reproducible by simply calling "delete new QScriptEngine();" in a module,
 	// so it's probably a bug in Qt. Sigh.

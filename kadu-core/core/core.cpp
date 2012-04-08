@@ -152,19 +152,11 @@ Core::~Core()
 
 	triggerAllAccountsUnregistered();
 
-	xml_config_file->sync();
-
 	// Sometimes it causes crash which I don't understand. For me 100% reproducible
 	// if Kadu was compiled with Clang and we logged in to a jabber account. --beevvy
 	// TODO: fix it
 	// delete QcaInit;
 	// QcaInit = 0;
-
-	delete xml_config_file;
-	delete config_file_ptr;
-
-	xml_config_file = 0;
-	config_file_ptr = 0;
 }
 
 void Core::import_0_6_5_configuration()
