@@ -528,9 +528,9 @@ void Core::createGui()
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)
-		Window->show();
+		MainWindowProvider->provide()->show();
 
-	// after first call which has to be placed in main(), this method should always show Window
+	// after first call which has to be placed in main(), this method should always show main window
 	ShowMainWindowOnStart = true;
 }
 
