@@ -148,11 +148,10 @@ Core::~Core()
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
 
+	KaduWindowProvider->provideValue(0);
 	QWidget *hiddenParent = Window->parentWidget();
 	delete Window;
 	Window = 0;
-	KaduWindowProvider->provideValue(0);
-
 	delete hiddenParent;
 
 	MainConfigurationHolder::destroyInstance();
@@ -470,6 +469,7 @@ void Core::updateIcon()
 
 void Core::kaduWindowDestroyed()
 {
+	KaduWindowProvider->provideValue(0);
 	Window = 0;
 }
 
@@ -544,7 +544,7 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-QSharedPointer<DefaultProvider<QWidget *> > Core::mainWindowProvider() const
+const QSharedPointer<DefaultProvider<QWidget *> > & Core::mainWindowProvider() const
 {
 	return MainWindowProvider;
 }

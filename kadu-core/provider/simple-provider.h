@@ -53,7 +53,7 @@ public:
 	 * @short Update provded value.
 	 * @param value value that will be provided
 	 */
-	void provideValue(const T &value)
+	void provideValue(T value)
 	{
 		Value = value;
 	}
@@ -62,7 +62,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return value set in constructor or in provideValue method.
 	 */
-	virtual T provide()
+	virtual T provide() const
 	{
 		return Value;
 	}

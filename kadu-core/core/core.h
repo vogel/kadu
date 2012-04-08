@@ -118,7 +118,7 @@ public:
 	void initialized();
 	void setIcon(const KaduIcon &icon);
 
-	QSharedPointer<DefaultProvider<QWidget *> > mainWindowProvider() const;
+	const QSharedPointer<DefaultProvider<QWidget *> > & mainWindowProvider() const;
 
 public slots:
 	void receivedSignal(const QString &signal);

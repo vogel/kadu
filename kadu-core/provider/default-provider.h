@@ -59,7 +59,7 @@ public:
 	 *
 	 * Given defaultProvider parameter must not be null.
 	 */
-	explicit DefaultProvider(QSharedPointer<Provider<T> > defaultProvider) : Default(defaultProvider)
+	explicit DefaultProvider(const QSharedPointer<Provider<T> > &defaultProvider) : Default(defaultProvider)
 	{
 		Q_ASSERT(Default);
 	}
@@ -73,7 +73,7 @@ public:
 	 * This method will take effect only if there is no Custom Provider already set.
 	 * This method will return true if after call given custom Provider is properly installed.
 	 */
-	bool installCustomProvider(QSharedPointer<Provider<T> > custom)
+	bool installCustomProvider(const QSharedPointer<Provider<T> > &custom)
 	{
 		if (Custom)
 			return custom == Custom;
@@ -91,7 +91,7 @@ public:
 	 * This method will take effect only if there is Custom Provider set to value passed as parameter.
 	 * This method will return true if after call no custom Provider is installed.
 	 */
-	bool removeCustomProvider(QSharedPointer<Provider<T> > custom)
+	bool removeCustomProvider(const QSharedPointer<Provider<T> > &custom)
 	{
 		if (!Custom || Custom != custom)
 			return false;
@@ -107,7 +107,7 @@ public:
 	 * This method will return value provided by Default Provider if no Custom Provider is installed and
 	 * value provided by Custom Provider otherwise.
 	 */
-	virtual T provide()
+	virtual T provide() const
 	{
 		return Custom
 				? Custom->provide()

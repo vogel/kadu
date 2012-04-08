@@ -41,7 +41,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Provide value of given type.
 	 */
-	virtual T provide() = 0;
+	virtual T provide() const = 0;
 
 };
 
