@@ -36,7 +36,7 @@
 #include "buddy-data-extractor.h"
 
 BuddyListModel::BuddyListModel(QObject *parent) :
-		QAbstractItemModel(parent)
+		QAbstractItemModel(parent), Checkable(false)
 {
 	triggerAllAccountsRegistered();
 
