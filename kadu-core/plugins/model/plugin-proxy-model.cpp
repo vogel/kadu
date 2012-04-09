@@ -70,7 +70,8 @@ bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
                 const PluginEntry *entry = static_cast<PluginEntry*>(index.internalPointer());
                 return entry->pluginName.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
                        entry->name.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
-                       entry->description.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive);
+                       entry->description.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
+                       entry->author.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive);
         }
 
         return true;
