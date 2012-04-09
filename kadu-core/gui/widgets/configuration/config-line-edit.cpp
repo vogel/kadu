@@ -29,14 +29,16 @@
 #include "debug.h"
 
 ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QLineEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+	: LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
 	createWidgets();
+	setClearButtonVisible(false);
 }
 
 ConfigLineEdit::ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QLineEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+	: LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
+	setClearButtonVisible(false);
 }
 
 ConfigLineEdit::~ConfigLineEdit()
@@ -76,5 +78,5 @@ void ConfigLineEdit::saveConfiguration()
 void ConfigLineEdit::setVisible(bool visible)
 {
 	label->setVisible(visible);
-	QLineEdit::setVisible(visible);
+	LineEditWithClearButton::setVisible(visible);
 }

@@ -22,10 +22,9 @@
 #ifndef CONFIG_LINE_EDIT_H
 #define CONFIG_LINE_EDIT_H
 
-#include <QtGui/QLineEdit>
-
 #include "configuration/configuration-window-data-manager.h"
 #include "gui/widgets/configuration/config-widget-value.h"
+#include "gui/widgets/line-edit-with-clear-button.h"
 
 class QLabel;
 class ConfigGroupBox;
@@ -33,7 +32,7 @@ class ConfigGroupBox;
 /**
 	&lt;line-edit caption="caption" id="id" /&gt;
  **/
-class KADUAPI ConfigLineEdit : public QLineEdit, public ConfigWidgetValue
+class KADUAPI ConfigLineEdit : public LineEditWithClearButton, public ConfigWidgetValue
 {
 	Q_OBJECT
 

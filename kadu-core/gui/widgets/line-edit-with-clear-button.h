@@ -35,6 +35,7 @@ class KADUAPI LineEditWithClearButton : public QLineEdit
 	Q_OBJECT
 
 	LineEditClearButton *ClearButton;
+	bool ClearButtonVisible;
 
 	bool WideEnoughForClear;
 	int Overlap;
@@ -53,6 +54,9 @@ protected:
 public:
 	explicit LineEditWithClearButton(QWidget *parent = 0);
 	virtual ~LineEditWithClearButton();
+
+	bool isClearButtonVisible() const { return ClearButtonVisible; }
+	void setClearButtonVisible(bool clearButtonVisible);
 
 };
 

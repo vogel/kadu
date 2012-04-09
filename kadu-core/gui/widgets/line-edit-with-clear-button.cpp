@@ -30,7 +30,7 @@
 #include "line-edit-with-clear-button.h"
 
 LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) :
-		QLineEdit(parent)
+		QLineEdit(parent), ClearButtonVisible(true)
 {
 	WideEnoughForClear = true;
 	Overlap = 0;
@@ -96,7 +96,8 @@ void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 	if (!ClearButton || isReadOnly())
 		return;
 
-	bool visible = WideEnoughForClear && text.length() > 0;
+	bool visible = ClearButtonVisible && WideEnoughForClear && text.length() > 0;
+
 	ClearButton->animateVisible(visible);
 
 	if (!ClearButton->pixmap().isNull())
@@ -107,7 +108,7 @@ void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 	else
 		ClearButton->setPixmap(KaduIcon("edit-clear-locationbar-ltr").icon().pixmap(16, 16));
 
-	ClearButton->setVisible(text.length());
+	ClearButton->setVisible(visible);
 }
 
 void LineEditWithClearButton::mousePressEvent(QMouseEvent *e)
@@ -130,4 +131,10 @@ void LineEditWithClearButton::mouseReleaseEvent(QMouseEvent *e)
 	}
 
 	QLineEdit::mouseReleaseEvent(e);
+}
+
+void LineEditWithClearButton::setClearButtonVisible(bool visible)
+{
+	ClearButtonVisible = visible;
+	updateClearButtonIcon(text());
 }
