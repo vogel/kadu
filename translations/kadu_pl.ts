@@ -2752,8 +2752,8 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
-        <source>Clear current text in the line edit.</source>
-        <translation>Wyczyść wprowadzony tekst.</translation>
+        <source>Clear this field</source>
+        <translation>Wyczyść to pole</translation>
     </message>
 </context>
 <context>

@@ -38,7 +38,7 @@ LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) :
 
 	ClearFilterButton = new LineEditClearButton(this);
 	ClearFilterButton->setCursor(Qt::ArrowCursor);
-	ClearFilterButton->setToolTip(tr("Clear current text in the line edit."));
+	ClearFilterButton->setToolTip(tr("Clear this field"));
 	updateClearButtonIcon(text());
 	connect(this, SIGNAL(textChanged(const QString &)),
 			this, SLOT(updateClearButtonIcon(const QString &)));

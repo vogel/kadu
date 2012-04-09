@@ -2745,8 +2745,8 @@ Jste si jistý, že tuto poradu chcete opustit?</translation>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
-        <source>Clear current text in the line edit.</source>
-        <translation>Smazat současný text v upravovaném řádku.</translation>
+        <source>Clear this field</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -2743,8 +2743,8 @@ from now on. Are you sure you want to leave this conference?</source>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
-        <source>Clear current text in the line edit.</source>
-        <translation>Очстить текущий текст в редакторе строк.</translation>
+        <source>Clear this field</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

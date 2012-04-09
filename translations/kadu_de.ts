@@ -2741,8 +2741,8 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
 <context>
     <name>LineEditWithClearButton</name>
     <message>
-        <source>Clear current text in the line edit.</source>
-        <translation>Lösche den Text der Texteingabenzeile.</translation>
+        <source>Clear this field</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

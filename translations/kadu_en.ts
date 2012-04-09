@@ -2728,8 +2728,8 @@ from now on. Are you sure you want to leave this conference?</source>
 <context>
     <name>LineEditWithClearButton</name>
     <message>
-        <source>Clear current text in the line edit.</source>
-        <translation type="unfinished"></translation>
+        <source>Clear this field</source>
+        <translation>Clear this field</translation>
     </message>
 </context>
 <context>
