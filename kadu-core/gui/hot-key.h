@@ -1,8 +1,7 @@
 #ifndef HOT_KEY_H
 #define HOT_KEY_H
 
-#include <QtGui/QLineEdit>
-
+#include "gui/widgets/line-edit-with-clear-button.h"
 #include "exports.h"
 
 class KADUAPI HotKey
@@ -24,7 +23,7 @@ public:
 
 };
 
-class KADUAPI HotKeyEdit : public QLineEdit
+class KADUAPI HotKeyEdit : public LineEditWithClearButton
 {
 	Q_OBJECT
 

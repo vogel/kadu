@@ -61,7 +61,7 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 }
 
 HotKeyEdit::HotKeyEdit(QWidget *parent)
-	: QLineEdit(parent)
+	: LineEditWithClearButton(parent)
 {
 }
 
