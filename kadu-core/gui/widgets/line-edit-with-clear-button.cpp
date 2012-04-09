@@ -36,9 +36,9 @@ LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) :
 	Overlap = 0;
 	ClickInClear = false;
 
-	ClearFilterButton = new LineEditClearButton(this);
-	ClearFilterButton->setCursor(Qt::ArrowCursor);
-	ClearFilterButton->setToolTip(tr("Clear this field"));
+	ClearButton = new LineEditClearButton(this);
+	ClearButton->setCursor(Qt::ArrowCursor);
+	ClearButton->setToolTip(tr("Clear this field"));
 	updateClearButtonIcon(text());
 	connect(this, SIGNAL(textChanged(const QString &)),
 			this, SLOT(updateClearButtonIcon(const QString &)));
@@ -50,12 +50,12 @@ LineEditWithClearButton::~LineEditWithClearButton()
 
 void LineEditWithClearButton::updateClearButton()
 {
-	if (!ClearFilterButton || isReadOnly())
+	if (!ClearButton || isReadOnly())
 		return;
 
 	const QSize geom = size();
 	const int frameWidth = style()->pixelMetric(QStyle::PM_DefaultFrameWidth, 0, this);
-	const int buttonWidth = ClearFilterButton->sizeHint().width();
+	const int buttonWidth = ClearButton->sizeHint().width();
 	const QSize newButtonSize(buttonWidth, geom.height());
 	const QFontMetrics fm(font());
 	const int em = fm.width("m");
@@ -64,16 +64,16 @@ void LineEditWithClearButton::updateClearButton()
 	// no point in showing it if we can't also see a few characters as well
 	const bool wideEnough = geom.width() > 4 * em + buttonWidth + frameWidth;
 
-	if (newButtonSize != ClearFilterButton->size())
+	if (newButtonSize != ClearButton->size())
 	{
-		ClearFilterButton->resize(newButtonSize);
+		ClearButton->resize(newButtonSize);
 		Overlap = wideEnough ? buttonWidth + frameWidth : 0;
 	}
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearFilterButton->move(geom.width() - frameWidth - buttonWidth - 1, 0);
+		ClearButton->move(geom.width() - frameWidth - buttonWidth - 1, 0);
 	else
-		ClearFilterButton->move(frameWidth + 1, 0);
+		ClearButton->move(frameWidth + 1, 0);
 
 	if (wideEnough != WideEnoughForClear)
 	{
@@ -93,27 +93,27 @@ void LineEditWithClearButton::resizeEvent(QResizeEvent *e)
 
 void LineEditWithClearButton::updateClearButtonIcon(const QString& text)
 {
-	if (!ClearFilterButton || isReadOnly())
+	if (!ClearButton || isReadOnly())
 		return;
 
 	bool visible = WideEnoughForClear && text.length() > 0;
-	ClearFilterButton->animateVisible(visible);
+	ClearButton->animateVisible(visible);
 
-	if (!ClearFilterButton->pixmap().isNull())
+	if (!ClearButton->pixmap().isNull())
 		return;
 
 	if (layoutDirection() == Qt::LeftToRight)
-		ClearFilterButton->setPixmap(KaduIcon("edit-clear-locationbar-rtl").icon().pixmap(16, 16));
+		ClearButton->setPixmap(KaduIcon("edit-clear-locationbar-rtl").icon().pixmap(16, 16));
 	else
-		ClearFilterButton->setPixmap(KaduIcon("edit-clear-locationbar-ltr").icon().pixmap(16, 16));
+		ClearButton->setPixmap(KaduIcon("edit-clear-locationbar-ltr").icon().pixmap(16, 16));
 
-	ClearFilterButton->setVisible(text.length());
+	ClearButton->setVisible(text.length());
 }
 
 void LineEditWithClearButton::mousePressEvent(QMouseEvent *e)
 {
-	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && ClearFilterButton)
-		ClickInClear = ClearFilterButton->underMouse();
+	if ((e->button() == Qt::LeftButton || e->button() == Qt::MidButton) && ClearButton)
+		ClickInClear = ClearButton->underMouse();
 	QLineEdit::mousePressEvent(e);
 }
 
@@ -121,7 +121,7 @@ void LineEditWithClearButton::mouseReleaseEvent(QMouseEvent *e)
 {
 	if (ClickInClear)
 	{
-		if (ClearFilterButton->underMouse())
+		if (ClearButton->underMouse())
 			clear();
 
 		ClickInClear = false;

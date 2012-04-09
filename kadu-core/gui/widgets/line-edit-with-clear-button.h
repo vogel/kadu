@@ -34,7 +34,7 @@ class KADUAPI LineEditWithClearButton : public QLineEdit
 {
 	Q_OBJECT
 
-	LineEditClearButton *ClearFilterButton;
+	LineEditClearButton *ClearButton;
 
 	bool WideEnoughForClear;
 	int Overlap;
