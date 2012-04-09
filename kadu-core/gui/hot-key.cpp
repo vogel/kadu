@@ -98,6 +98,8 @@ void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
 {
 	// sprawdzenie czy ostatnim znakiem jest "+"
 	// jesli tak to nie ma takiego skrotu klawiszowego
+	if (text().isEmpty())
+		return;
 	if (text().at(text().length() - 1) == '+')
 		clear();
 }
