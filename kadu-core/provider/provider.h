@@ -42,6 +42,7 @@ public:
 	 * @short Provide value of given type.
 	 */
 	virtual T provide() const = 0;
+	virtual ~Provider() {}
 
 };
 
