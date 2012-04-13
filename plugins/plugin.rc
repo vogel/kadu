@@ -20,7 +20,6 @@ BEGIN
 		VALUE "FileDescription", DESCRIPTION " for Kadu"
 		VALUE "LegalCopyright", AUTHOR
 		VALUE "FileVersion", VERSION
-		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END
 #ifdef DESCRIPTION_PL
@@ -32,7 +31,6 @@ BEGIN
 		VALUE "FileDescription", DESCRIPTION_PL
 		VALUE "LegalCopyright", AUTHOR
 		VALUE "FileVersion", VERSION
-		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END
 #endif
