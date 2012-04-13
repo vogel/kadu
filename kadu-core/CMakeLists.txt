@@ -239,7 +239,7 @@ if (WIN32)
 	if (NOT FAST_LINKING)
 		kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
 	endif (NOT FAST_LINKING)
-	add_library (kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
+	add_library (kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu.rc)
 	if (FAST_LINKING)
 		kadu_source_subdirectories (kadu_core ${kadu_SUBDIRS})
 	endif (FAST_LINKING)
@@ -250,17 +250,8 @@ if (WIN32)
 	)
 	target_link_libraries (kadu_core ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 
-	if (MINGW)
-		exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
-			ARGS "kadu_mingw.rc kadu_rc.o"
-			OUTPUT_VARIABLE NULL_VAR
-		)
-		add_executable (kadu WIN32 main.cpp main_win32.cpp kadu_rc.o)
-		add_executable (kadu_c main.cpp main_win32.cpp)
-	else (MINGW)
-		add_executable (kadu WIN32 main.cpp main_win32.cpp kadu.rc)
-		add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
-	endif (MINGW)
+	add_executable (kadu WIN32 main.cpp main_win32.cpp kadu.rc)
+	add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
 
 	set_target_properties (kadu_c PROPERTIES COMPILE_DEFINITIONS KADU_CONSOLE)
 

@@ -2,7 +2,4 @@
 *.kdev4
 build*
 .configuration-ui-translations.cpp
-
-kadu-core/kadu_rc.o
-.configuration-ui-translations.cpp
 docs

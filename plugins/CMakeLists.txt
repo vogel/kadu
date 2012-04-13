@@ -33,6 +33,6 @@ if (BUILD_PLUGINS)
 endif (BUILD_PLUGINS)
 
 if (WIN32 AND INSTALL_SDK)
-	install (FILES plugin.rc DESTINATION ${KADU_PLUGINS_SDK_DIR})
-	install (FILES plugver.bat DESTINATION ${KADU_PLUGINS_SDK_DIR})
+	install (PROGRAMS pluginrcgen.bat DESTINATION "${KADU_SDK_DIR}/plugins")
+	install (FILES pluginbase.rc DESTINATION "${KADU_SDK_DIR}/plugins")
 endif (WIN32 AND INSTALL_SDK)

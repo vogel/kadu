@@ -48,8 +48,11 @@ endif (NOT KADU_VERSION)
 
 if (WIN32)
 	# Add more version info to files
-	string (REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3, 0" KADU_NUMERIC_VERSION ${KADU_VERSION})
+	string (REGEX REPLACE "([^\\.]+)\\.([^\\.]+)\\.([^\\.-]+)[\\.-].*" "\\1, \\2, \\3, 0" KADU_NUMERIC_VERSION ${KADU_VERSION})
 	set (PACKAGE_VERSION ${KADU_VERSION})
+	if (KADU_VERSION MATCHES ".*-.*")
+		set (KADU_PRERELEASE 1)
+	endif (KADU_VERSION MATCHES ".*-.*")
 
 	# package
 	set (CPACK_GENERATOR "ZIP")
@@ -73,12 +76,12 @@ set (KADU_INSTALLS_SDK TRUE)
 include (FindKadu)
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
+configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)
+
 if (INSTALL_SDK)
 	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
+	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_SDK_DIR})
 endif (INSTALL_SDK)
-
-# build
-configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
 
