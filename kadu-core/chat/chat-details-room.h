@@ -23,6 +23,7 @@
 #include "buddies/buddy-set.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "exports.h"
 
 #include "chat/chat-details.h"
 
@@ -38,7 +39,7 @@
  *
  * Class contains dynamic set of Contact objects and a room's name. Chat name is set to this room's name.
  */
-class ChatDetailsRoom : public ChatDetails
+class KADUAPI ChatDetailsRoom : public ChatDetails
 {
 	Q_OBJECT
 

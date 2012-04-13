@@ -18,6 +18,7 @@
  */
 
 #include "chat/chat-details-buddy.h"
+#include "chat/chat.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-buddy.h"

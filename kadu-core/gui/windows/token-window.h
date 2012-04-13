@@ -22,6 +22,8 @@
 
 #include <QtGui/QDialog>
 
+#include "exports.h"
+
 class QLineEdit;
 
 /**
@@ -37,7 +39,7 @@ class QLineEdit;
  * This window displays a picture and text field to enter text from picture. When user enters texts or closes window
  * signal @link tokenValueEntered @endlink is emited.
  */
-class TokenWindow : public QDialog
+class KADUAPI TokenWindow : public QDialog
 {
 	Q_OBJECT
 

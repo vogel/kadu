@@ -22,6 +22,7 @@
 
 #include <QtCore/QMetaType>
 
+#include "exports.h"
 #include "talkable/filter/talkable-filter.h"
 
 /**
@@ -36,7 +37,7 @@
  *
  * This filter removes temporary items. An example of temporary item is Contat or Buddy from XMPP MUC chat.
  */
-class HideTemporaryTalkableFilter : public TalkableFilter
+class KADUAPI HideTemporaryTalkableFilter : public TalkableFilter
 {
 	Q_OBJECT
 

@@ -23,6 +23,7 @@
 #include <QtCore/QObject>
 
 #include "buddies/buddy.h"
+#include "exports.h"
 
 class BuddyListModel;
 
@@ -40,7 +41,7 @@ class BuddyListModel;
  * @link BuddiesManager @endlink on this model. After creation other, non-managable, buddies can be
  * added and removed from @link BuddyListModel @endlink. Removing or adding managable buddies is undefined.
  */
-class BuddyManagerAdapter : public QObject
+class KADUAPI BuddyManagerAdapter : public QObject
 {
 	Q_OBJECT
 

@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Buddy;
 class Chat;
 class Contact;
@@ -44,7 +46,7 @@ class Contact;
  * Filers can have a configuration. If filter's configuration changes, filterChanged() signal is
  * emited and filtering results needs to be recalculated.
  */
-class TalkableFilter : public QObject
+class KADUAPI TalkableFilter : public QObject
 {
 	Q_OBJECT
 
