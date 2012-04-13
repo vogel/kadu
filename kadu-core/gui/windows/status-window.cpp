@@ -96,7 +96,7 @@ StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 	layout->addRow(new QLabel(tr("Status") + ':'), StatusList);
 
 	QList<StatusType> statusTypes = Container->supportedStatusTypes();
-	int selectedIndex, i = 0;
+	int selectedIndex = -1, i = 0;
 
 	foreach (StatusType statusType, statusTypes)
 	{
@@ -112,6 +112,7 @@ StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
 			selectedIndex = i;
 		i++;
 	}
+	Q_ASSERT(selectedIndex != -1);
 	StatusList->setCurrentIndex(selectedIndex);
 
 	DescriptionEdit = new KaduTextEdit(formWidget);

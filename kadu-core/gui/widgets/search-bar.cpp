@@ -138,6 +138,7 @@ void SearchBar::searchWidgetDestroyed()
 
 bool SearchBar::eventFilter(QObject *object, QEvent *event)
 {
+	Q_UNUSED(object)
 	Q_ASSERT(object == SearchWidget);
 
 	if (QEvent::KeyPress != event->type())

@@ -602,7 +602,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 	Chat lastChat;
 	QDate lastDate;
 	QString lastTitle;
-	int lastCount;
+	int lastCount = 0;
 
 	while (query.next())
 	{
