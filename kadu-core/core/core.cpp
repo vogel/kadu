@@ -98,7 +98,7 @@ QString Core::name()
 
 QString Core::version()
 {
-	return QLatin1String(VERSION);
+	return QLatin1String(KADU_VERSION);
 }
 
 QString Core::nameWithVersion()

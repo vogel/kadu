@@ -48,7 +48,7 @@ endif (NOT KADU_VERSION)
 
 if (WIN32)
 	# Add more version info to files
-	string (REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3, 0" NUMERIC_VERSION ${KADU_VERSION})
+	string (REGEX REPLACE "(.+)\\.(.+)\\.(.+)[.-].*" "\\1, \\2, \\3, 0" KADU_NUMERIC_VERSION ${KADU_VERSION})
 	set (PACKAGE_VERSION ${KADU_VERSION})
 
 	# package

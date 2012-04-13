@@ -2,8 +2,8 @@
 #include <winver.h>
 
 VS_VERSION_INFO	VERSIONINFO
-FILEVERSION 	NUMERIC_VERSION
-PRODUCTVERSION	NUMERIC_VERSION
+FILEVERSION 	KADU_NUMERIC_VERSION
+PRODUCTVERSION	KADU_NUMERIC_VERSION
 #ifdef DEBUG_ENABLED
 FILEFLAGS	(VS_FF_DEBUG | VS_FF_PRERELEASE)
 #else
@@ -20,7 +20,7 @@ BEGIN
 		VALUE "CompanyName",	"Kadu Team\0"
 		VALUE "FileDescription",  "Kadu Core Library\0"
 		VALUE "LegalCopyright", "Kadu Team\0"
-		VALUE "FileVersion", VERSION
+		VALUE "FileVersion", KADU_VERSION
 		VALUE "OriginalFilename", "kadu_core.dll\0"
 		VALUE "URL", "http://www.kadu.im/\0"
 		END
