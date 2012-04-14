@@ -329,15 +329,15 @@ void SqlImport::importContactsToV4(QSqlDatabase &database)
 	query.setForwardOnly(true);
 	query.exec();
 
-	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
-	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+	SqlAccountsMapping accounsMapping(database);
+	SqlContactsMapping contactsMapping(database, &accounsMapping);
 
 	// force creating contacts table entries for all contacts used in statuses
 	while (query.next())
 	{
 		Contact contact = ContactManager::instance()->byUuid(query.value(0).toString());
 		if (contact)
-			contactsMapping->idByContact(contact, true);
+			contactsMapping.idByContact(contact, true);
 	}
 
 	database.commit();
@@ -348,10 +348,10 @@ void SqlImport::importContactsToV4StatusesTable(QSqlDatabase &database)
 	QSqlQuery query(database);
 	database.transaction();
 
-	QScopedPointer<SqlAccountsMapping> accounsMapping(new SqlAccountsMapping(database));
-	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accounsMapping.data()));
+	SqlAccountsMapping accounsMapping(database);
+	SqlContactsMapping contactsMapping(database, &accounsMapping);
 
-	QMap<int, Contact> mapping = contactsMapping->mapping();
+	QMap<int, Contact> mapping = contactsMapping.mapping();
 	QMap<int, Contact>::const_iterator i = mapping.constBegin();
 	QMap<int, Contact>::const_iterator end = mapping.constEnd();
 
@@ -393,9 +393,9 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 	query.prepare("UPDATE kadu_chats SET account_id = :account_id, chat = :chat WHERE id = :id");
 	query.setForwardOnly(false);
 
-	QScopedPointer<SqlAccountsMapping> accountsMapping(new SqlAccountsMapping(database));
-	QScopedPointer<SqlContactsMapping> contactsMapping(new SqlContactsMapping(database, accountsMapping.data()));
-	QScopedPointer<SqlChatsMapping> chatsMapping(new SqlChatsMapping(database, accountsMapping.data(), contactsMapping.data()));
+	SqlAccountsMapping accountsMapping(database);
+	SqlContactsMapping contactsMapping(database, &accountsMapping);
+	SqlChatsMapping chatsMapping(database, &accountsMapping, &contactsMapping);
 
 	QList<int> ids = chats.keys();
 	foreach (int id, ids)
@@ -407,7 +407,7 @@ void SqlImport::importChatsToV4(QSqlDatabase &database)
 		{
 			query.bindValue(":id", id);
 			query.bindValue(":account_id", accountId);
-			query.bindValue(":chat", chatsMapping->chatToString(chat));
+			query.bindValue(":chat", chatsMapping.chatToString(chat));
 			query.exec();
 
 			chat.addProperty("sql_history:id", query.lastInsertId(), CustomProperties::NonStorable);

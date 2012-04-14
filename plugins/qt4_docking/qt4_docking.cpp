@@ -24,7 +24,6 @@
  */
 
 #include <QtCore/QEvent>
-#include <QtCore/QScopedPointer>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 
@@ -150,18 +149,19 @@ void Qt4TrayIcon::movieUpdate()
 
 void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 {
-	QScopedPointer<QMouseEvent> event;
-
 	/* NOTE: We don't pass right button click 'cause QSystemTrayIcon
 	 * takes care of it and displays context menu for us.
 	 */
 	if (reason == QSystemTrayIcon::Trigger)
-		event.reset(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier));
+	{
+		QMouseEvent event(QEvent::MouseButtonPress, QPoint(0,0), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+		DockingManager::instance()->trayMousePressEvent(&event);
+	}
 	else if (reason == QSystemTrayIcon::MiddleClick)
-		event.reset(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0,0), Qt::MidButton, Qt::MidButton, Qt::NoModifier));
-
-	if (!event.isNull())
-		DockingManager::instance()->trayMousePressEvent(event.data());
+	{
+		QMouseEvent event(QEvent::MouseButtonPress, QPoint(0,0), Qt::MidButton, Qt::MidButton, Qt::NoModifier);
+		DockingManager::instance()->trayMousePressEvent(&event);
+	}
 }
 
 /** @} */

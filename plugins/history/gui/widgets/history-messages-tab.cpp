@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QScopedPointer>
 #include <QtGui/QAction>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
@@ -286,8 +287,7 @@ void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistor
 
 void HistoryMessagesTab::showTalkablePopupMenu()
 {
-	QScopedPointer<QMenu> menu;
-	menu.reset(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
+	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));

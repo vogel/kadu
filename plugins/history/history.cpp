@@ -35,7 +35,6 @@
 
 #include <QtCore/QList>
 #include <QtCore/QMutex>
-#include <QtCore/QScopedPointer>
 #include <QtGui/QGridLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>

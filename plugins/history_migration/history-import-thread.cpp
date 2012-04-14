@@ -22,7 +22,6 @@
  */
 
 #include <QtCore/QDateTime>
-#include <QtCore/QScopedPointer>
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"

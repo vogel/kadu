@@ -20,7 +20,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QScopedPointer>
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
 #include <QtGui/QTextDocument>
@@ -115,7 +114,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 	}
 	else
 	{
-		QScopedPointer<QMenu> menu(new QMenu());
+		QMenu menu;
 
 		QStringList ids;
 		foreach (Account account, jabberAccounts)
@@ -124,12 +123,12 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 			ids.append(account.id());
 			ids.append(jabberId);
 
-			menu->addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
+			menu.addAction(account.statusContainer()->statusIcon().icon(), account.id())->setData(ids);
 		}
 
-		connect(menu.data(), SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
+		connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
 
-		menu->exec(QCursor::pos());
+		menu.exec(QCursor::pos());
 	}
 }
 

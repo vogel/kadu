@@ -70,8 +70,7 @@ IndicatorDocking * IndicatorDocking::instance()
 }
 
 IndicatorDocking::IndicatorDocking() :
-		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail")),
-		EventForShowMainWindow(new QMouseEvent(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::ControlModifier))
+		Notifier("IndicatorNotify", QT_TRANSLATE_NOOP("@default", "Indicator"), KaduIcon("external_modules/mail-internet-mail"))
 {
 	Server = QIndicate::Server::defaultInstance();
 	Server->setDesktopFile(KaduPaths::instance()->desktopFilePath());
@@ -134,7 +133,8 @@ void IndicatorDocking::silentModeToggled(bool silentMode)
 
 void IndicatorDocking::showMainWindow()
 {
-	DockingManager::instance()->trayMousePressEvent(EventForShowMainWindow.data());
+	QMouseEvent event(QEvent::MouseButtonPress, QPoint(0, 0), Qt::LeftButton, Qt::LeftButton, Qt::ControlModifier);
+	DockingManager::instance()->trayMousePressEvent(&event);
 }
 
 void IndicatorDocking::notify(Notification *notification)

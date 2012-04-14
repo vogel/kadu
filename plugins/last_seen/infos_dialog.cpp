@@ -147,12 +147,12 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	if (!contact)
 		return;
 
-	QScopedPointer<BaseActionContext> actionContext(new BaseActionContext());
-	actionContext->setBuddies(BuddySet(contact.ownerBuddy()));
-	actionContext->setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
-	actionContext->setContacts(ContactSet(contact));
-	actionContext->setRoles(RoleSet() << ContactRole);
+	BaseActionContext actionContext;
+	actionContext.setBuddies(BuddySet(contact.ownerBuddy()));
+	actionContext.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	actionContext.setContacts(ContactSet(contact));
+	actionContext.setRoles(RoleSet() << ContactRole);
 
-	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, actionContext.data()));
+	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, &actionContext));
 	menu->exec(QCursor::pos());
 }
