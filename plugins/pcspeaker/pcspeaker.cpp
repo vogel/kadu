@@ -215,7 +215,7 @@ void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 				tab[k]=sounds[tmp];				//store sound frequency
 				if (line[i+1]=='/')
 				{
-						tmp3=0;				//set duration
+						//set duration
 						if (line[i+2]=='F') tmp3=16;
 						else if ((line[i+2]>='1') && (line[i+2]<='8')) tmp3=line[i+2].toLatin1()-48;
 						else tmp3=1;

@@ -35,8 +35,6 @@
 #include <QtCore/QTextStream>
 #include <QtGui/QApplication>
 
-#include <errno.h>
-
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
 
@@ -502,45 +500,33 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 	return true;
 }
 
-QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
+QString ConfigFile::getEntry(const QString &group, const QString &name) const
 {
 	QMutexLocker locker(&GlobalMutex);
 
-	bool resOk;
-	QString result;
-
 //	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
+	QDomElement root_elem = xml_config_file->rootElement();
+	QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
+	if (!deprecated_elem.isNull())
 	{
-		QDomElement root_elem = xml_config_file->rootElement();
-		QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");
-		if (!deprecated_elem.isNull())
+		QDomElement config_file_elem = xml_config_file->findElementByFileNameProperty(
+			deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
+		if (!config_file_elem.isNull())
 		{
-			QDomElement config_file_elem = xml_config_file->findElementByFileNameProperty(
-				deprecated_elem, "ConfigFile", "name", filename.section('/', -1));
-			if (!config_file_elem.isNull())
+			QDomElement group_elem = xml_config_file->findElementByProperty(
+				config_file_elem, "Group", "name", group);
+			if (!group_elem.isNull())
 			{
-				QDomElement group_elem = xml_config_file->findElementByProperty(
-					config_file_elem, "Group", "name", group);
-				if (!group_elem.isNull())
-				{
-					QDomElement entry_elem =
-						xml_config_file->findElementByProperty(
-							group_elem, "Entry", "name", name);
-					if (!entry_elem.isNull())
-					{
-						resOk = true;
-						result = entry_elem.attribute("value");
-					}
-				}
+				QDomElement entry_elem =
+					xml_config_file->findElementByProperty(
+						group_elem, "Entry", "name", name);
+				if (!entry_elem.isNull())
+					return entry_elem.attribute("value");
 			}
 		}
 	}
 
-	resOk = false;
-	if (ok)
-		*ok = resOk;
-
-	return result;
+	return QString();
 }
 
 void ConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)

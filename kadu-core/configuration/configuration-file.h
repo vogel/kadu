@@ -387,7 +387,7 @@ template <class T>
 class KADUAPI ConfigFile
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
-	QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
+	QString getEntry(const QString &group, const QString &name) const;
 
 	QString filename;
 
