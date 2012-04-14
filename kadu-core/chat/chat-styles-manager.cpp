@@ -406,8 +406,6 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	details->setState(StorableObject::StateNew);
 	details->setContact(BuddyPreferredManager::instance()->preferredContact(example));
 
-	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
-
 	Message sentMessage = Message::create();
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
