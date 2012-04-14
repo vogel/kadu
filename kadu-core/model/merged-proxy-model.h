@@ -169,6 +169,8 @@ private slots:
 	void modelAboutToBeResetSlot();
 	void modelResetSlot();
 
+	void modelDestroyedSlot();
+
 protected:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

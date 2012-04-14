@@ -60,6 +60,8 @@ void MergedProxyModel::connectModels()
 
 		connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()), Qt::DirectConnection);
 		connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()), Qt::DirectConnection);
+
+		connect(model, SIGNAL(destroyed()), this, SLOT(modelDestroyedSlot()), Qt::DirectConnection);
 	}
 }
 
@@ -69,28 +71,7 @@ void MergedProxyModel::disconnectModels()
 	{
 		Q_ASSERT(model);
 
-		disconnect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()));
-		disconnect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()));
-
-		disconnect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)));
-
-		disconnect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeInsertedSlot(QModelIndex,int,int)));
-		disconnect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsInsertedSlot(QModelIndex,int,int)));
-
-		disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeRemovedSlot(QModelIndex,int,int)));
-		disconnect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsRemovedSlot(QModelIndex,int,int)));
-
-		disconnect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsAboutToBeMovedSlot(QModelIndex,int,int,QModelIndex,int)));
-		disconnect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsMovedSlot(QModelIndex,int,int,QModelIndex,int)));
-
-		disconnect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()));
-		disconnect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()));
+		disconnect(model,0, this, 0);
 	}
 }
 
@@ -239,6 +220,11 @@ void MergedProxyModel::modelResetSlot()
 	updateBoundaries();
 
 	endResetModel();
+}
+
+void MergedProxyModel::modelDestroyedSlot()
+{
+	Models.removeAll(static_cast<QAbstractItemModel *>(sender()));
 }
 
 QModelIndex MergedProxyModel::mapFirstLevelToSource(const QModelIndex &proxyIndex) const
