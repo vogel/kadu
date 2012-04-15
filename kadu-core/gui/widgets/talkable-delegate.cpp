@@ -49,10 +49,9 @@ TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 
 TalkableDelegate::~TalkableDelegate()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
-	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
+	disconnect(ContactManager::instance(), 0, this, 0);
+	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
+	disconnect(MessageManager::instance(), 0, this, 0);
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)

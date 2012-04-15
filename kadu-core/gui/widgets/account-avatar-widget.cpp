@@ -101,10 +101,7 @@ void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 	Q_UNUSED(protocolFactory)
 
 	if (Service)
-	{
-		disconnect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
-		disconnect(Service, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
-	}
+		disconnect(Service, 0, this, 0);
 
 	Protocol *protocol = MyAccount.protocolHandler();
 	if (!protocol)

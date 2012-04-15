@@ -94,7 +94,7 @@ FileDescription::FileDescription(QObject *parent) :
 FileDescription::~FileDescription()
 {
 	kdebugf();
-	disconnect(Timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
+	Timer->stop();
 
 	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
 }

@@ -94,8 +94,7 @@ void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
-			this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
+	disconnect(chatService, 0, this, 0);
 }
 
 void EncryptioNgSimliteProvider::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)

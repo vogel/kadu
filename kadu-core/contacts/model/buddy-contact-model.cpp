@@ -47,14 +47,7 @@ BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
 
 BuddyContactModel::~BuddyContactModel()
 {
-	disconnect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)));
-	disconnect(SourceBuddy, SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)));
-	disconnect(SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(SourceBuddy, SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)));
+	disconnect(SourceBuddy, 0, this, 0);
 }
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const

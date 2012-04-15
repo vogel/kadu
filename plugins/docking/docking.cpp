@@ -148,14 +148,7 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-	           this, SLOT(unreadMessageAdded()));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-	           this, SLOT(unreadMessageRemoved()));
-
-//	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
-
-	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
+	icon_timer->stop();
 
 	delete DockMenu;
 	DockMenu = 0;

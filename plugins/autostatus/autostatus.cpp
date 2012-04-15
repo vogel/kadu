@@ -62,7 +62,7 @@ Autostatus::~Autostatus()
 {
 	StatusChangerManager::instance()->unregisterStatusChanger(MyStatusChanger);
 
-	disconnect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
+	Timer->stop();
 }
 
 void Autostatus::on()

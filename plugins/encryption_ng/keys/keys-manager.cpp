@@ -67,7 +67,7 @@ void KeysManager::itemAdded(Key item)
 void KeysManager::itemAboutToBeRemoved(Key item)
 {
 	emit keyAboutToBeRemoved(item);
-	disconnect(item, SIGNAL(updated()), this, SLOT(keyDataUpdated()));
+	disconnect(item, 0, this, 0);
 }
 
 void KeysManager::itemRemoved(Key item)

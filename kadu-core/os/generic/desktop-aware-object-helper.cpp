@@ -40,8 +40,6 @@ DesktopAwareObjectHelper::DesktopAwareObjectHelper()
 DesktopAwareObjectHelper::~DesktopAwareObjectHelper()
 {
 	Timer.stop();
-	disconnect(&Timer, SIGNAL(timeout()), this, SLOT(workAreaResized()));
-	disconnect(QApplication::desktop(), SIGNAL(workAreaResized(int)), &Timer, SLOT(start()));
 }
 
 void DesktopAwareObjectHelper::workAreaResized()

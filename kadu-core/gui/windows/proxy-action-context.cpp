@@ -36,7 +36,7 @@ ProxyActionContext::~ProxyActionContext()
 void ProxyActionContext::setForwardActionContext(ActionContext *forwardActionContext)
 {
 	if (ForwardActionContext)
-		disconnect(ForwardActionContext, SIGNAL(changed()), this, SIGNAL(changed()));
+		disconnect(ForwardActionContext, 0, this, 0);
 
 	ForwardActionContext = forwardActionContext;
 

@@ -79,8 +79,7 @@ void Antistring::accountUnregistered(Account account)
 	if (!accountChatService)
 		return;
 
-	disconnect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
+	disconnect(accountChatService, 0, this, 0);
 }
 
 void Antistring::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)

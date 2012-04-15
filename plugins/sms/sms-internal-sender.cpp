@@ -143,8 +143,7 @@ void SmsInternalSender::cancel()
 {
 	if (TokenJob)
 	{
-		disconnect(TokenJob, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
-		disconnect(TokenJob, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
+		disconnect(TokenJob, 0, this, 0);
 		TokenJob->cancel(); // it will destroy job
 		TokenJob = 0;
 	}

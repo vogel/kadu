@@ -45,8 +45,7 @@ EnableEncryptionActionDescription::EnableEncryptionActionDescription(QObject *pa
 
 EnableEncryptionActionDescription::~EnableEncryptionActionDescription()
 {
-	disconnect(EncryptionProviderManager::instance(), SIGNAL(canEncryptChanged(Chat)),
-			this, SLOT(canEncryptChanged(Chat)));
+	disconnect(EncryptionProviderManager::instance(), 0, this, 0);
 }
 
 void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool toggled)

@@ -84,5 +84,5 @@ void HistoryChatDataWindowAddons::chatDataWindowDestroyed(ChatDataWindow *chatDa
 
 	StoreHistoryCheckBoxes.remove(chatDataWindow);
 
-	disconnect(chatDataWindow, SIGNAL(save()), this, SLOT(save()));
+	disconnect(chatDataWindow, 0, this, 0);
 }

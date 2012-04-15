@@ -98,8 +98,7 @@ SpellChecker::SpellChecker(QObject *parent) :
 
 SpellChecker::~SpellChecker()
 {
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
-			this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	Highlighter::removeAll();
 

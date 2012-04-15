@@ -424,7 +424,7 @@ bool ChatShared::doRemoveFromGroup(const Group &group)
 	if (!Groups.remove(group))
 		return false;
 
-	disconnect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+	disconnect(group, 0, this, 0);
 
 	return true;
 }

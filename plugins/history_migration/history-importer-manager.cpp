@@ -71,7 +71,7 @@ bool HistoryImporterManager::containsImporter(const QString &path)
 void HistoryImporterManager::removeImporter(HistoryImporter *importer)
 {
 	Importers.removeAll(importer);
-	disconnect(importer, SIGNAL(destroyed(QObject*)), this, SLOT(importerDestroyed(QObject*)));
+	disconnect(importer, 0, this, 0);
 }
 
 void HistoryImporterManager::importerDestroyed(QObject *importer)

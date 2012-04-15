@@ -76,12 +76,8 @@ MainWindow::MainWindow(ActionContext *context, const QString &windowName, QWidge
 
 MainWindow::~MainWindow()
 {
-	disconnect(Actions::instance(), SIGNAL(actionUnloaded(ActionDescription*)),
-			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
-	disconnect(Actions::instance(), SIGNAL(actionLoaded(ActionDescription*)),
-			this, SLOT(actionLoadedOrUnloaded(ActionDescription*)));
-	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), SIGNAL(configurationUpdated()),
-			this, SLOT(refreshToolBars()));
+	disconnect(Actions::instance(), 0, this, 0);
+	disconnect(ConfigurationManager::instance()->toolbarConfigurationManager(), 0, this, 0);
 
 	delete Context;
 	Context = 0;

@@ -119,7 +119,7 @@ GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
-	disconnect(account(), SIGNAL(updated()), this, SLOT(accountUpdated()));
+	disconnect(account(), 0, this, 0);
 
 	kdebugf2();
 }

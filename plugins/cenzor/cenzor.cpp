@@ -77,8 +77,7 @@ void Cenzor::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,bool&)),
-			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,bool&)));
+	disconnect(chatService, 0, this, 0);
 }
 
 void Cenzor::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)

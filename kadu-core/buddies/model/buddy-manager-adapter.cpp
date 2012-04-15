@@ -38,12 +38,8 @@ BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) :
 
 BuddyManagerAdapter::~BuddyManagerAdapter()
 {
-
 	BuddyManager *manager = BuddyManager::instance();
-	disconnect(manager, SIGNAL(buddyAdded(Buddy)),
-			this, SLOT(buddyAdded(Buddy)));
-	disconnect(manager, SIGNAL(buddyAboutToBeRemoved(Buddy)),
-			this, SLOT(buddyRemoved(Buddy)));
+	disconnect(manager, 0, this, 0);
 }
 
 void BuddyManagerAdapter::buddyAdded(const Buddy &buddy)

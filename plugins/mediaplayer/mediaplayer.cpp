@@ -230,10 +230,7 @@ MediaPlayer::~MediaPlayer()
 	timer->stop();
 
 	// Disconnect all slots
-	disconnect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
 		chatWidgetDestroying(it);
@@ -294,8 +291,7 @@ void MediaPlayer::chatWidgetCreated(ChatWidget *chat)
 void MediaPlayer::chatWidgetDestroying(ChatWidget *chat)
 {
 	kdebugf();
-	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
-	disconnect(chat->edit(), SIGNAL(keyReleased(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyReleased(QKeyEvent *, CustomInput *, bool &)));
+	disconnect(chat->edit(), 0, this, 0);
 }
 
 void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)

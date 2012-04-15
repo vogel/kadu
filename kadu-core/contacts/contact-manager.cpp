@@ -62,10 +62,7 @@ ContactManager::ContactManager()
 
 ContactManager::~ContactManager()
 {
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-	           this, SLOT(unreadMessageAdded(Message)));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-	           this, SLOT(unreadMessageRemoved(Message)));
+	disconnect(MessageManager::instance(), 0, this, 0);
 
 	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 		unreadMessageRemoved(message);

@@ -269,10 +269,7 @@ void AddBuddyWindow::accountChanged()
 	Account account = AccountCombo->currentAccount();
 
 	if (LastSelectedAccount && LastSelectedAccount.protocolHandler())
-	{
-		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(setAddContactEnabled()));
-		disconnect(LastSelectedAccount.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(setAddContactEnabled()));
-	}
+		disconnect(LastSelectedAccount.protocolHandler(), 0, this, 0);
 
 	if (!account || !account.protocolHandler() || !account.protocolHandler()->subscriptionService())
 	{

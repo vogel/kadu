@@ -59,7 +59,7 @@ void Updates::accountRegistered(Account account)
 
 void Updates::accountUnregistered(Account account)
 {
-	disconnect(account, SIGNAL(connected()), this, SLOT(run()));
+	disconnect(account, 0, this, 0);
 }
 
 void Updates::buildQuery()

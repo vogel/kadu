@@ -130,6 +130,6 @@ void NetworkProxyManager::itemAboutToBeRemoved(NetworkProxy item)
 
 void NetworkProxyManager::itemRemoved(NetworkProxy item)
 {
-	disconnect(item, SIGNAL(updated()), this, SLOT(networkProxyDataUpdated()));
+	disconnect(item, 0, this, 0);
 	emit networkProxyRemoved(item);
 }

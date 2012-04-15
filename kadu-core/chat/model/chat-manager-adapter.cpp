@@ -38,12 +38,8 @@ ChatManagerAdapter::ChatManagerAdapter(ChatListModel *model) :
 
 ChatManagerAdapter::~ChatManagerAdapter()
 {
-
 	ChatManager *manager = ChatManager::instance();
-	disconnect(manager, SIGNAL(chatAdded(Chat)),
-			this, SLOT(chatAdded(Chat)));
-	disconnect(manager, SIGNAL(chatAboutToBeRemoved(Chat)),
-			this, SLOT(chatRemoved(Chat)));
+	disconnect(manager, 0, this, 0);
 }
 
 void ChatManagerAdapter::chatAdded(const Chat &chat)

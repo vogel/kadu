@@ -48,16 +48,7 @@ AccountsModel::AccountsModel(QObject *parent) :
 
 AccountsModel::~AccountsModel()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)),
-			this, SLOT(accountUpdated(Account)));
-	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
-			this, SLOT(accountAboutToBeRegistered(Account)));
-	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-			this, SLOT(accountRegistered(Account)));
-	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account)),
-			this, SLOT(accountAboutToBeUnregistered(Account)));
-	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-			this, SLOT(accountUnregistered(Account)));
+	disconnect(AccountManager::instance(), 0, this, 0);
 }
 
 int AccountsModel::columnCount(const QModelIndex &parent) const

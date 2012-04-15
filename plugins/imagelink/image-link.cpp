@@ -74,7 +74,6 @@ void ImageLink::accountRegistered(Account account)
 		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 }
 
-
 void ImageLink::accountUnregistered(Account account)
 {
 	Protocol *protocol = account.protocolHandler();

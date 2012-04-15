@@ -82,7 +82,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 HistoryWindow::~HistoryWindow()
 {
-	disconnect(History::instance(), SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
+	disconnect(History::instance(), 0, this, 0);
 
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 

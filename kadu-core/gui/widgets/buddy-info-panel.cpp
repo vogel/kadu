@@ -59,7 +59,7 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 
 BuddyInfoPanel::~BuddyInfoPanel()
 {
-	disconnect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
+	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
 }
 
 void BuddyInfoPanel::configurationUpdated()
@@ -175,17 +175,17 @@ void BuddyInfoPanel::disconnectItem()
 	Buddy buddy = Item.toBuddy();
 	if (buddy)
 	{
-		disconnect(buddy, SIGNAL(updated()), this, SLOT(update()));
+		disconnect(buddy, 0, this, 0);
 		if (buddy.buddyAvatar())
-			disconnect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
+			disconnect(buddy.buddyAvatar(), 0, this, 0);
 	}
 
 	Contact contact = Item.toContact();
 	if (contact)
 	{
-		disconnect(contact, SIGNAL(updated()), this, SLOT(update()));
+		disconnect(contact, 0, this, 0);
 		if (contact.contactAvatar())
-			disconnect(contact.contactAvatar(), SIGNAL(updated()), this, SLOT(update()));
+			disconnect(contact.contactAvatar(), 0, this, 0);
 	}
 }
 

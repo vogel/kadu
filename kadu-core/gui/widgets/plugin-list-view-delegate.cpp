@@ -244,14 +244,7 @@ bool PluginListWidgetDelegate::eventFilter(QObject *watched, QEvent *event)
         if (model != ItemView->model())
         {
                 if (model)
-                {
-                        disconnect(model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(_k_slotRowsInserted(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsAboutToBeRemoved(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(_k_slotRowsRemoved(QModelIndex, int, int)));
-                        disconnect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(_k_slotDataChanged(QModelIndex, QModelIndex)));
-                        disconnect(model, SIGNAL(layoutChanged()), this, SLOT(_k_slotLayoutChanged()));
-                        disconnect(model, SIGNAL(modelReset()), this, SLOT(_k_slotModelReset()));
-                }
+                        disconnect(model, 0, this, 0);
 
                 model = ItemView->model();
 

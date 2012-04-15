@@ -91,7 +91,7 @@ void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 		return;
 
 	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
+	disconnect(filter, 0, this, 0);
 }
 
 void AccountsProxyModel::filterChangedSlot()

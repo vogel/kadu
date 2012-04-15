@@ -142,11 +142,6 @@ void Infos::onShowInfos()
 void Infos::accountRegistered(Account account)
 {
 	kdebugf();
-	if (!account.protocolHandler())
-	{
-		kdebugf2();
-		return;
-	}
 
 	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
 			this, SLOT(contactStatusChanged(Contact, Status)));
@@ -156,14 +151,8 @@ void Infos::accountRegistered(Account account)
 void Infos::accountUnregistered(Account account)
 {
 	kdebugf();
-	if (!account.protocolHandler())
-	{
-		kdebugf2();
-		return;
-	}
 
-	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
+	disconnect(account, 0, this, 0);
 	kdebugf2();
 }
 

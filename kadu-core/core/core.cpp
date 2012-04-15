@@ -489,11 +489,7 @@ void Core::accountUnregistered(Account account)
 	Protocol *protocol = account.protocolHandler();
 
 	if (protocol)
-	{
-		disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
-		disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-		disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-	}
+		disconnect(protocol, 0, this, 0);
 }
 
 void Core::configurationUpdated()

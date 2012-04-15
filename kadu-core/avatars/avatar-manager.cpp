@@ -57,7 +57,7 @@ AvatarManager::AvatarManager()
 AvatarManager::~AvatarManager()
 {
 	triggerAllAccountsUnregistered();
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
+	disconnect(ContactManager::instance(), 0, this, 0);
 }
 
 void AvatarManager::init()
@@ -87,8 +87,7 @@ void AvatarManager::itemAdded(Avatar item)
 void AvatarManager::itemAboutToBeRemoved(Avatar item)
 {
 	emit avatarAboutToBeRemoved(item);
-	disconnect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
-	disconnect(item, SIGNAL(pixmapUpdated()), this, SLOT(avatarPixmapUpdated()));
+	disconnect(item, 0, this, 0);
 }
 
 void AvatarManager::itemRemoved(Avatar item)
@@ -107,7 +106,7 @@ void AvatarManager::accountUnregistered(Account account)
 {
 	QMutexLocker locker(&mutex());
 
-	disconnect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
+	disconnect(account, 0, this, 0);
 }
 
 void AvatarManager::contactAdded(Contact contact)

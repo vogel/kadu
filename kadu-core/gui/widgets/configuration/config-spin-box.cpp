@@ -52,8 +52,7 @@ ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, Configuration
 ConfigSpinBox::~ConfigSpinBox()
 {
 	disconnect(this, SIGNAL(valueChanged(int)), this, SLOT(onValueChanged(int)));
-	if (label)
-		delete label;
+	delete label;
 }
 
 void ConfigSpinBox::createWidgets()

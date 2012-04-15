@@ -307,18 +307,11 @@ void NotificationManager::accountUnregistered(Account account)
 	if (!protocol)
 		return;
 
-	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
-	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
+	disconnect(account, 0, this, 0);
 
 	MultilogonService *multilogonService = protocol->multilogonService();
 	if (multilogonService)
-	{
-		disconnect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
-		disconnect(multilogonService, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
-	}
+		disconnect(multilogonService, 0, this, 0);
 }
 
 void NotificationManager::accountConnected()

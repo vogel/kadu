@@ -46,11 +46,7 @@ void ChatListModel::connectChat(const Chat &chat)
 
 void ChatListModel::disconnectChat(const Chat &chat)
 {
-	disconnect(chat, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
-	disconnect(chat, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
-	disconnect(chat, SIGNAL(contactAboutToBeRemoved(Contact)), this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(chat, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemoved(Contact)));
-	disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+	disconnect(chat, 0, this, 0);
 }
 
 void ChatListModel::setChats(const QVector<Chat> &chats)

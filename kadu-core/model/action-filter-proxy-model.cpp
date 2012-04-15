@@ -37,10 +37,7 @@ ActionFilterProxyModel::~ActionFilterProxyModel()
 void ActionFilterProxyModel::setModel(QAbstractItemModel *model)
 {
 	if (Model)
-	{
-		disconnect(Model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(updateSize()));
-		disconnect(Model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(updateSize()));
-	}
+		disconnect(Model, 0, this, 0);
 
 	Model = model;
 

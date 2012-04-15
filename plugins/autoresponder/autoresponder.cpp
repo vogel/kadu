@@ -70,8 +70,7 @@ AutoResponder::~AutoResponder()
 {
 	kdebugf();
 
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-			this, SLOT(chatWidgetClosed(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	kdebugf2();
 }
@@ -114,10 +113,7 @@ void AutoResponder::accountUnregistered(Account account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-	{
-		disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-	}
+		disconnect(chatService, 0, this, 0);
 }
 
 void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)

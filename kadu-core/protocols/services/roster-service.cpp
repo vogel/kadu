@@ -85,12 +85,10 @@ bool RosterService::addContact(const Contact &contact)
 
 bool RosterService::removeContact(const Contact &contact)
 {
-	if (!Contacts.contains(contact))
+	if (Contacts.removeAll(contact) <= 0)
 		return false;
 
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	disconnect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
-	Contacts.removeAll(contact);
+	disconnect(contact, 0, this, 0);
 
 	return true;
 }

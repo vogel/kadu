@@ -153,10 +153,7 @@ void MessageManager::accountUnregistered(Account account)
 	if (!chatService)
 		return;
 
-	disconnect(chatService, SIGNAL(messageReceived(const Message &)),
-	        this, SLOT(messageReceivedSlot(const Message &)));
-	disconnect(chatService, SIGNAL(messageSent(const Message &)),
-	        this, SIGNAL(messageSent(const Message &)));
+	disconnect(chatService, 0, this, 0);
 }
 
 void MessageManager::messageReceivedSlot(const Message &message)

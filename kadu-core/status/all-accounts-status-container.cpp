@@ -47,7 +47,7 @@ void AllAccountsStatusContainer::accountUnregistered(Account account)
 {
 	if (Accounts.removeAll(account) > 0)
 	{
-		disconnect(account.statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		disconnect(account.statusContainer(), 0, this, 0);
 		emit statusUpdated();
 	}
 }

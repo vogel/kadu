@@ -97,8 +97,7 @@ ConfigurationWidget::~ConfigurationWidget()
 	if (SectionsListWidget->currentItem())
 		config_file.writeEntry("General", "ConfigurationWindow_" + Name, SectionsListWidget->currentItem()->text());
 
-	disconnect(SectionsListWidget, SIGNAL(currentTextChanged(const QString &)),
-			this, SLOT(changeSection(const QString &)));
+	disconnect(SectionsListWidget, 0, this, 0);
 
 	// qDeleteAll() won't work here because of connection to destroyed() signal
 	foreach (const ConfigSection *cs, ConfigSections)

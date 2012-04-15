@@ -80,17 +80,8 @@ void JabberRosterService::connectToClient()
 
 void JabberRosterService::disconnectFromClient()
 {
-	if (!XmppClient)
-		return;
-
-	disconnect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
-	           this, SLOT(contactUpdated(const RosterItem &)));
-	disconnect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
-	           this, SLOT(contactUpdated(const RosterItem &)));
-	disconnect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
-	           this, SLOT(contactDeleted(const RosterItem &)));
-	disconnect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
-	           this, SLOT(rosterRequestFinished(bool)));
+	if (XmppClient)
+		disconnect(XmppClient.data(), 0, this, 0);
 }
 
 void JabberRosterService::setClient(Client *xmppClient)

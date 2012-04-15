@@ -50,8 +50,7 @@ BuddyListModel::~BuddyListModel()
 
 	triggerAllAccountsUnregistered();
 
-	disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),
-	           this, SLOT(contactUpdated(Contact)));
+	disconnect(ContactManager::instance(), 0, this, 0);
 }
 
 Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const
@@ -118,15 +117,7 @@ void BuddyListModel::connectBuddy(const Buddy &buddy)
 
 void BuddyListModel::disconnectBuddy(const Buddy &buddy)
 {
-	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
-	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-	           this, SLOT(contactAboutToBeRemoved(Contact)));
-	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
-	           this, SLOT(contactRemoved(Contact)));
-	disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
-	           this, SLOT(contactAboutToBeAdded(Contact)));
-	disconnect(buddy, SIGNAL(contactAdded(Contact)),
-	           this, SLOT(contactAdded(Contact)));
+	disconnect(buddy, 0, this, 0);
 }
 
 void BuddyListModel::buddyUpdated()
@@ -530,5 +521,5 @@ void BuddyListModel::accountRegistered(Account account)
 
 void BuddyListModel::accountUnregistered (Account account)
 {
-	disconnect(account, SIGNAL(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
+	disconnect(account, 0, this, 0);
 }

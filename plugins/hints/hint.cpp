@@ -107,7 +107,7 @@ Hint::~Hint()
 {
 	kdebugf();
 
-	disconnect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
+	disconnect(notification, 0, this, 0);
 	notification->release();
 
 	kdebugf2();

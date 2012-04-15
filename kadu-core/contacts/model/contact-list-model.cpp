@@ -39,7 +39,7 @@ void ContactListModel::connectContact(const Contact &contact)
 
 void ContactListModel::disconnectContact(const Contact &contact)
 {
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+	disconnect(contact, 0, this, 0);
 }
 
 void ContactListModel::setContactList(const QVector<Contact> &contacts)

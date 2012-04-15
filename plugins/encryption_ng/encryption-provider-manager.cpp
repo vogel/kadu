@@ -71,11 +71,10 @@ void EncryptionProviderManager::registerProvider(EncryptionProvider *provider)
 
 void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 {
-	Providers.removeAll(provider);
+	if (Providers.removeAll(provider) <= 0)
+		return;
 
-	disconnect(provider, SIGNAL(keyReceived(Contact,QString,QByteArray)), this, SLOT(keyReceived(Contact,QString,QByteArray)));
-	disconnect(provider, SIGNAL(canDecryptChanged(Chat)), this, SIGNAL(canDecryptChanged(Chat)));
-	disconnect(provider, SIGNAL(canEncryptChanged(Chat)), this, SIGNAL(canEncryptChanged(Chat)));
+	disconnect(provider, 0, this, 0);
 
 	foreach (const Chat &chat, ChatManager::instance()->items())
 	{

@@ -46,10 +46,7 @@ EncryptioNgSimliteEncryptor::EncryptioNgSimliteEncryptor(const Contact &contact,
 
 EncryptioNgSimliteEncryptor::~EncryptioNgSimliteEncryptor()
 {
-	disconnect(KeysManager::instance(), SIGNAL(keyAdded(Key)), this, SLOT(keyUpdated(Key)));
-	disconnect(KeysManager::instance(), SIGNAL(keyUpdated(Key)), this, SLOT(keyUpdated(Key)));
-	disconnect(KeysManager::instance(), SIGNAL(keyRemoved(Key)), this, SLOT(keyUpdated(Key)));
-
+	disconnect(KeysManager::instance(), 0, this, 0);
 }
 
 void EncryptioNgSimliteEncryptor::keyUpdated(const Key &key)

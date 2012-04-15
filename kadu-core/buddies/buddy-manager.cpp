@@ -140,17 +140,7 @@ void BuddyManager::itemRemoved(Buddy buddy)
 {
 	QMutexLocker locker(&mutex());
 
-	disconnect(buddy, SIGNAL(updated()), this, SLOT(buddyDataUpdated()));
-	disconnect(buddy, SIGNAL(buddySubscriptionChanged()), this, SLOT(buddySubscriptionChanged()));
-
-	disconnect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
-	           this, SLOT(buddyContactAboutToBeAdded(Contact)));
-	disconnect(buddy, SIGNAL(contactAdded(Contact)),
-	           this, SLOT(buddyContactAdded(Contact)));
-	disconnect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-	           this, SLOT(buddyContactAboutToBeRemoved(Contact)));
-	disconnect(buddy, SIGNAL(contactRemoved(Contact)),
-	           this, SLOT(buddyContactRemoved(Contact)));
+	disconnect(buddy, 0, this, 0);
 
 	emit buddyRemoved(buddy);
 }

@@ -63,8 +63,8 @@ StatusContainerManager::StatusContainerManager() :
 
 StatusContainerManager::~StatusContainerManager()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
-	disconnect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
+	disconnect(AccountManager::instance(), 0, this, 0);
+	disconnect(MainConfigurationHolder::instance(), 0, this, 0);
 
 	if (MainConfigurationHolder::instance()->isSetStatusPerIdentity())
 		triggerAllIdentitiesRemoved();
@@ -139,7 +139,7 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 		return;
 
 	if (DefaultStatusContainer)
-		disconnect(DefaultStatusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		disconnect(DefaultStatusContainer, 0, this, 0);
 
 	if (this != defaultStatusContainer)
 		DefaultStatusContainer = defaultStatusContainer;
@@ -191,7 +191,7 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 			setDefaultStatusContainer(StatusContainers.at(0));
 	}
 
-	disconnect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+	disconnect(statusContainer, 0, this, 0);
 }
 
 bool StatusContainerManager::allStatusOfType(StatusType type)

@@ -136,10 +136,11 @@ void FileTransferShared::setHandler(FileTransferHandler *handler)
 		return;
 
 	if (Handler)
-		disconnect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
-
+		disconnect(Handler, 0, this, 0);
 	Handler = handler;
-	connect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
+	if (Handler)
+		connect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
+
 	dataUpdated();
 }
 

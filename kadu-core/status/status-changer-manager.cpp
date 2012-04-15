@@ -70,7 +70,7 @@ void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 
 	if (StatusChangers.removeAll(statusChanger))
 	{
-		disconnect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
+		disconnect(statusChanger, 0, this, 0);
 		statusChanged();
 	}
 

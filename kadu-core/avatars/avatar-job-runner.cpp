@@ -91,8 +91,7 @@ void AvatarJobRunner::timeout()
 {
 	AvatarService *service = avatarService(MyContact);
 	if (service)
-		disconnect(service, SIGNAL(avatarFetched(Contact,bool)),
-				this, SLOT(avatarFetched(Contact,bool)));
+		disconnect(service, 0, this, 0);
 
 	emit jobFinished(false);
 	deleteLater();

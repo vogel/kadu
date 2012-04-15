@@ -103,5 +103,5 @@ void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
 		return;
 
 	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+	disconnect(filter, 0, this, 0);
 }

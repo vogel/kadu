@@ -92,7 +92,7 @@ void SmsExternalSender::cancel()
 {
 	if (Process)
 	{
-		disconnect(Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished()));
+		disconnect(Process, 0, this, 0);
 		Process->terminate();
 		Process->kill();
 		Process->deleteLater();

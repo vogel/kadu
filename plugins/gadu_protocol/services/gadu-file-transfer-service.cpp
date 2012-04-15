@@ -60,7 +60,7 @@ void GaduFileTransferService::connectSocketNotifiers(DccSocketNotifiers *notifie
 
 void GaduFileTransferService::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 {
-	disconnect(notifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDestroyed(QObject *)));
+	disconnect(notifiers, 0, this, 0);
 }
 
 void GaduFileTransferService::socketNotifiersDestroyed(QObject *socketNotifiers)

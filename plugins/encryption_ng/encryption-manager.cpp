@@ -66,10 +66,7 @@ EncryptionManager::~EncryptionManager()
 {
 	triggerAllAccountsUnregistered();
 
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)),
-			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
-			this, SLOT(chatWidgetDestroying(ChatWidget*)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
 		chatWidgetDestroying(chatWidget);
@@ -99,12 +96,7 @@ void EncryptionManager::accountUnregistered(Account account)
 
 	ChatService *chatService = account.protocolHandler()->chatService();
 	if (chatService)
-	{
-		disconnect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
-				this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
-		disconnect(chatService, SIGNAL(filterRawOutgoingMessage(Chat,QByteArray&,bool&)),
-				this, SLOT(filterRawOutgoingMessage(Chat,QByteArray&,bool&)));
-	}
+		disconnect(chatService, 0, this, 0);
 }
 
 EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)

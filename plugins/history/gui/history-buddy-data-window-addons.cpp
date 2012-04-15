@@ -89,5 +89,5 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowDestroyed(BuddyDataWindow *bud
 
 	StoreHistoryCheckBoxes.remove(buddyDataWindow);
 
-	disconnect(buddyDataWindow, SIGNAL(save()), this, SLOT(save()));
+	disconnect(buddyDataWindow, 0, this, 0);
 }

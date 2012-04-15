@@ -69,10 +69,7 @@ ContactShared::~ContactShared()
 {
 	ref.ref();
 
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
-	           this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
-	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
-	           this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
+	disconnect(ProtocolsManager::instance(), 0, this, 0);
 
 	protocolFactoryUnregistered(ProtocolsManager::instance()->byName(ContactAccount->protocolName()));
 
@@ -318,7 +315,7 @@ void ContactShared::avatarUpdated()
 void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
 {
 	if (*OwnerBuddy)
-		disconnect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
+		disconnect(*OwnerBuddy, 0, this, 0);
 
 	*OwnerBuddy = buddy;
 
@@ -329,7 +326,7 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
 void ContactShared::doSetContactAvatar(const Avatar &contactAvatar)
 {
 	if (*ContactAvatar)
-		disconnect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+		disconnect(*ContactAvatar, 0, this, 0);
 
 	*ContactAvatar = contactAvatar;
 

@@ -131,6 +131,7 @@ TabsManager::~TabsManager()
 
 	TalkableMenuManager::instance()->removeActionDescription(OpenInNewTabActionDescription);
 
+	Timer.stop();
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	saveWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry");
@@ -214,10 +215,8 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 
 	removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 
-	disconnect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	disconnect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
-	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-	disconnect(chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+	disconnect(chatWidget->edit(), 0, TabDialog, 0);
+	disconnect(chatWidget, 0, this, 0);
 
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 

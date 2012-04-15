@@ -80,8 +80,7 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 	MessageRenderInfo::unregisterParserTags();
 
-	disconnect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceived(const Message &)));
+	disconnect(MessageManager::instance(), 0, this, 0);
 
 	closeAllWindows();
 }

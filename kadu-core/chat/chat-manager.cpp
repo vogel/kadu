@@ -55,10 +55,7 @@ ChatManager::ChatManager()
 
 ChatManager::~ChatManager()
 {
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
-	           this, SLOT(unreadMessageAdded(Message)));
-	disconnect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
-	           this, SLOT(unreadMessageRemoved(Message)));
+	disconnect(MessageManager::instance(), 0, this, 0);
 
 	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 		unreadMessageRemoved(message);
@@ -91,9 +88,7 @@ void ChatManager::itemRegistered(Chat item)
 
 void ChatManager::itemAboutToBeUnregisterd(Chat item)
 {
-	disconnect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
-	disconnect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
-	disconnect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
+	disconnect(item, 0, this, 0);
 
 	emit chatAboutToBeRemoved(item);
 }

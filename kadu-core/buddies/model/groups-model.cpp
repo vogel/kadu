@@ -44,14 +44,7 @@ GroupsModel::GroupsModel(QObject *parent)
 
 GroupsModel::~GroupsModel()
 {
-	disconnect(GroupManager::instance(), SIGNAL(groupAboutToBeAdded(Group)),
-			this, SLOT(groupAboutToBeAdded(Group)));
-	disconnect(GroupManager::instance(), SIGNAL(groupAdded(Group)),
-			this, SLOT(groupAdded(Group)));
-	disconnect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)),
-			this, SLOT(groupAboutToBeRemoved(Group)));
-	disconnect(GroupManager::instance(), SIGNAL(groupRemoved(Group)),
-			this, SLOT(groupRemoved(Group)));
+	disconnect(GroupManager::instance(), 0, this, 0);
 }
 
 int GroupsModel::rowCount(const QModelIndex &parent) const

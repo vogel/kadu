@@ -273,8 +273,7 @@ void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 		return;
 
 	invalidateFilter();
-	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
-	disconnect(filter, SIGNAL(filterChanged()), this, SIGNAL(invalidate()));
+	disconnect(filter, 0, this, 0);
 
 	emit invalidated();
 }

@@ -133,19 +133,15 @@ void Firewall::accountRegistered(Account account)
 
 void Firewall::accountUnregistered(Account account)
 {
+	disconnect(account, 0, this, 0);
+
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
 
 	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	disconnect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-	disconnect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
-			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
-	disconnect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
+	if (chatService)
+		disconnect(chatService, 0, this, 0);
 }
 
 void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)

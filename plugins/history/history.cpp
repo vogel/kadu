@@ -139,8 +139,7 @@ History::~History()
 {
 	kdebugf();
 
-	disconnect(MessageManager::instance(), SIGNAL(messageReceived(Message)),
-		this, SLOT(enqueueMessage(Message)));
+	disconnect(MessageManager::instance(), 0, this, 0);
 
 	stopSaveThread();
 	deleteActionDescriptions();
@@ -228,16 +227,14 @@ void History::accountRegistered(Account account)
 
 void History::accountUnregistered(Account account)
 {
+	disconnect(account, 0, this, 0);
+
 	if (!account.protocolHandler())
 		return;
 
-	disconnect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
-
 	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
-		disconnect(service, SIGNAL(messageSent(const Message &)),
-				this, SLOT(enqueueMessage(const Message &)));
+		disconnect(service, 0, this, 0);
 }
 
 bool History::shouldSaveForBuddy(const Buddy &buddy)

@@ -63,7 +63,7 @@ FileTransferWidget::~FileTransferWidget()
 {
 	kdebugf();
 
-	disconnect(CurrentTransfer, SIGNAL(updated()), this, SLOT(fileTransferUpdate()));
+	disconnect(CurrentTransfer, 0, this, 0);
 }
 
 void FileTransferWidget::createGui()

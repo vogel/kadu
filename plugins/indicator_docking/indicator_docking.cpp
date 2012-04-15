@@ -95,15 +95,15 @@ IndicatorDocking::~IndicatorDocking()
 	NotificationManager::instance()->unregisterNotifier(this);
 	DockingManager::instance()->setDocker(0);
 
-	disconnect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
-	disconnect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
+	disconnect(Server, 0, this, 0);
+	disconnect(ChatManager::instance(), 0, this, 0);
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
 	IndMMap::const_iterator end = IndicatorsMap.constEnd();
 	for (IndMMap::const_iterator it = IndicatorsMap.constBegin(); it != end; ++it)
 	{
-		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+		disconnect(it.value(), 0, this, 0);
 		it.value()->release();
 		// because it is a multimap, keys may repeat
 		indicatorsToDelete.insert(it.key());
@@ -158,7 +158,7 @@ void IndicatorDocking::notify(Notification *notification)
 	IndMMap::iterator it = iteratorForChat(chat);
 	if (it != IndicatorsMap.end())
 	{
-		disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+		disconnect(it.value(), 0, this, 0);
 		it.value()->release();
 		it.value() = chatNotification;
 		indicator = it.key();
@@ -271,7 +271,7 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 		return;
 
 	QIndicate::Indicator *indicator = it.key();
-	disconnect(it.value(), SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+	disconnect(it.value(), 0, this, 0);
 	it.value()->release();
 	IndicatorsMap.erase(it);
 

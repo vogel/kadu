@@ -92,7 +92,7 @@ TalkableTreeView::TalkableTreeView(QWidget *parent) :
 
 TalkableTreeView::~TalkableTreeView()
 {
-	disconnect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+	disconnect(MainConfigurationHolder::instance(), 0, this, 0);
 
 	delete Context;
 	Context = 0;

@@ -69,7 +69,7 @@ Qt4Notify::~Qt4Notify()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	if (Qt4TrayIcon::instance())
-		disconnect(Qt4TrayIcon::instance(), SIGNAL(messageClicked()), this, SLOT(messageClicked()));
+		disconnect(Qt4TrayIcon::instance(), 0, this, 0);
 
 	kdebugf2();
 }

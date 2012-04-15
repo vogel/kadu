@@ -39,14 +39,7 @@ DescriptionModel::DescriptionModel(DescriptionManager *manager) :
 
 DescriptionModel::~DescriptionModel()
 {
-	disconnect(Manager, SIGNAL(descriptionAboutToBeAdded(const QString &)),
-			this, SLOT(descriptionAboutToBeAdded(const QString &)));
-	disconnect(Manager, SIGNAL(descriptionAdded(const QString &)),
-			this, SLOT(descriptionAdded(const QString &)));
-	disconnect(Manager, SIGNAL(descriptionAboutToBeRemoved(const QString &)),
-			this, SLOT(descriptionAboutToBeRemoved(const QString &)));
-	disconnect(Manager, SIGNAL(descriptionRemoved(const QString &)),
-			this, SLOT(descriptionRemoved(const QString &)));
+	disconnect(Manager, 0, this, 0);
 }
 
 int DescriptionModel::rowCount(const QModelIndex &parent) const

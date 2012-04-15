@@ -56,7 +56,7 @@ HistoryImporter::~HistoryImporter()
 
 	if (Thread)
 	{
-		disconnect(HistoryImport, SIGNAL(finished()), this, SLOT(threadFinished()));
+		disconnect(HistoryImport, 0, this, 0);
 		HistoryImport->cancel(true);
 		Thread->wait(2000);
 		if (Thread->isRunning())

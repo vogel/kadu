@@ -213,6 +213,6 @@ void GroupManager::itemAboutToBeRemoved(Group item)
 
 void GroupManager::itemRemoved(Group item)
 {
-	disconnect(item, SIGNAL(updated()), this, SLOT(groupDataUpdated()));
+	disconnect(item, 0, this, 0);
 	emit groupRemoved(item);
 }

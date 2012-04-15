@@ -40,14 +40,7 @@ IdentityModel::IdentityModel(QObject *parent) :
 
 IdentityModel::~IdentityModel()
 {
-	disconnect(IdentityManager::instance(), SIGNAL(identityAboutToBeAdded(Identity)),
-			this, SLOT(identityAboutToBeAdded(Identity)));
-	disconnect(IdentityManager::instance(), SIGNAL(identityAdded(Identity)),
-			this, SLOT(identityAdded(Identity)));
-	disconnect(IdentityManager::instance(), SIGNAL(identityAboutToBeRemoved(Identity)),
-			this, SLOT(identityAboutToBeRemoved(Identity)));
-	disconnect(IdentityManager::instance(), SIGNAL(identityRemoved(Identity)),
-			this, SLOT(identityRemoved(Identity)));
+	disconnect(IdentityManager::instance(), 0, this, 0);
 }
 
 int IdentityModel::rowCount(const QModelIndex &parent) const

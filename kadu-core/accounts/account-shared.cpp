@@ -295,10 +295,7 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 		return;
 
 	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
-	disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
-	           this, SIGNAL(buddyStatusChanged(Contact, Status)));
-	disconnect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-	disconnect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+	disconnect(ProtocolHandler, 0, this, 0);
 
 	setDisconnectStatus();
 

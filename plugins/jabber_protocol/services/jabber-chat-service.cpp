@@ -59,8 +59,7 @@ JabberChatService::JabberChatService(JabberProtocol *protocol) :
 
 JabberChatService::~JabberChatService()
 {
-	disconnect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
-	disconnect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
+	disconnect(ChatManager::instance(), 0, this, 0);
 }
 
 void JabberChatService::connectClient()
@@ -72,9 +71,7 @@ void JabberChatService::connectClient()
 
 void JabberChatService::disconnectClient()
 {
-	disconnect(XmppClient.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
-	disconnect(XmppClient.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
-	disconnect(XmppClient.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
+	disconnect(XmppClient.data(), 0, this, 0);
 }
 
 void JabberChatService::setClient(Client *xmppClient)

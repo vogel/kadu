@@ -56,14 +56,8 @@ void JabberFileTransferHandler::connectJabberTransfer()
 
 void JabberFileTransferHandler::disconnectJabberTransfer()
 {
-	if (!JabberTransfer)
-		return;
-
-	disconnect(JabberTransfer, SIGNAL(accepted()), this, SLOT(fileTransferAccepted()));
-	disconnect(JabberTransfer, SIGNAL(connected()), this, SLOT(fileTransferConnected()));
-	disconnect(JabberTransfer, SIGNAL(readyRead(const QByteArray &)), this, SLOT(fileTransferReadyRead(const QByteArray &)));
-	disconnect(JabberTransfer, SIGNAL(bytesWritten(int)), this, SLOT(fileTransferBytesWritten(int)));
-	disconnect(JabberTransfer, SIGNAL(error(int)), this, SLOT(fileTransferError(int)));
+	if (JabberTransfer)
+		disconnect(JabberTransfer, 0, this, 0);
 }
 
 void JabberFileTransferHandler::setJTransfer(XMPP::FileTransfer *jTransfer)

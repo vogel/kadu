@@ -129,8 +129,8 @@ HintManager::~HintManager()
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
 	NotificationManager::instance()->unregisterNotifier(this);
 
-	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
-	disconnect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
+	disconnect();
+	disconnect(ChatManager::instance(), 0, this, 0);
 
 	delete tipFrame;
 	tipFrame = 0;

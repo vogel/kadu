@@ -52,7 +52,7 @@ void DecryptorWrapper::addDecryptor(Decryptor *decryptor)
 void DecryptorWrapper::removeDecryptor(Decryptor *decryptor)
 {
 	Decryptors.removeAll(decryptor);
-	disconnect(decryptor, SIGNAL(destroyed(QObject*)), this, SLOT(decryptorDestroyed(QObject*)));
+	disconnect(decryptor, 0, this, 0);
 }
 
 void DecryptorWrapper::decryptorDestroyed(QObject *decryptor)

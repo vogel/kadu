@@ -114,9 +114,8 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 ChatEditBox::~ChatEditBox()
 {
-// 	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
-// 			this, SLOT(colorSelectorActionCreated(Action *)));
-	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
+// 	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), 0, this, 0);
+	disconnect(InputBox, 0, this, 0);
 
 	chatEditBoxes.removeAll(this);
 }

@@ -150,13 +150,9 @@ SingleWindow::~SingleWindow()
 	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
 	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
-	disconnect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
-			this, SLOT(onNewChat(ChatWidget *,bool &)));
-
-	disconnect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
-	disconnect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
-
-	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	disconnect(tabs, 0, this, 0);
+	disconnect(kadu, 0, this, 0);
 
 	if (!Core::instance()->isClosing())
 	{
@@ -263,12 +259,8 @@ void SingleWindow::closeTab(int index)
 {
 	ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->widget(index));
 
-	disconnect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
-		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
-	disconnect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
-	disconnect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
-	disconnect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
-			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+	disconnect(chatWidget->edit(), 0, this, 0);
+	disconnect(chatWidget, 0, this, 0);
 
 	tabs->widget(index)->deleteLater();
 	tabs->removeTab(index);

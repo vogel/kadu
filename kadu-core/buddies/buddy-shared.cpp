@@ -393,7 +393,7 @@ void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
 		return;
 
 	if (*BuddyAvatar)
-		disconnect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+		disconnect(*BuddyAvatar, 0, this, 0);
 
 	*BuddyAvatar = buddyAvatar;
 	dataUpdated();
@@ -471,8 +471,7 @@ bool BuddyShared::doRemoveFromGroup(const Group &group)
 	if (!Groups.remove(group))
 		return false;
 
-	disconnect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
-	disconnect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+	disconnect(group, 0, this, 0);
 
 	return true;
 }

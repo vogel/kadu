@@ -40,16 +40,7 @@ NetworkProxyModel::NetworkProxyModel(QObject *parent) :
 
 NetworkProxyModel::~NetworkProxyModel()
 {
-	disconnect(NetworkProxyManager::instance(), SIGNAL(networkProxyUpdated(NetworkProxy)),
-			this, SLOT(networkProxyUpdated(NetworkProxy)));
-	disconnect(NetworkProxyManager::instance(), SIGNAL(networkProxyAboutToBeAdded(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeAdded(NetworkProxy)));
-	disconnect(NetworkProxyManager::instance(), SIGNAL(networkProxyAdded(NetworkProxy)),
-			this, SLOT(networkProxyAdded(NetworkProxy)));
-	disconnect(NetworkProxyManager::instance(), SIGNAL(networkProxyAboutToBeRemoved(NetworkProxy)),
-			this, SLOT(networkProxyAboutToBeRemoved(NetworkProxy)));
-	disconnect(NetworkProxyManager::instance(), SIGNAL(networkProxyRemoved(NetworkProxy)),
-			this, SLOT(networkProxyRemoved(NetworkProxy)));
+	disconnect(NetworkProxyManager::instance(), 0, this, 0);
 }
 
 int NetworkProxyModel::columnCount(const QModelIndex &parent) const

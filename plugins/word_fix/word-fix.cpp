@@ -107,10 +107,7 @@ WordFix::WordFix(QObject *parent) :
 WordFix::~WordFix()
 {
 	kdebugf();
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
-		this, SLOT(chatCreated(ChatWidget *)));
-	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-		this, SLOT(chatDestroying(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 		disconnectFromChat(chat);
@@ -157,7 +154,7 @@ void WordFix::connectToChat(const ChatWidget *chat)
 void WordFix::disconnectFromChat(const ChatWidget *chat)
 {
 	kdebugf();
-	disconnect(chat, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
+	disconnect(chat, 0, this, 0);
 	kdebugf2();
 }
 
