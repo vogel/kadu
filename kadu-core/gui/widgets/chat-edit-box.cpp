@@ -67,7 +67,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 	Context = static_cast<BaseActionContext *>(actionContext());
 
-	Context->blockChangedSignal();
+	Context->changeNotifier()->block();;
 
 	RoleSet roles;
 	if (CurrentChat.contacts().size() > 1)
@@ -80,7 +80,8 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	Context->setContacts(CurrentChat.contacts());
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
 	updateContext();
-	Context->unblockChangedSignal();
+
+	Context->changeNotifier()->unblock();
 
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
