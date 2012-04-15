@@ -74,7 +74,17 @@ public:
 	KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus)
 	KaduSharedBase_PropertyBool(Blocking)
 	KaduSharedBase_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
-	KaduSharedBase_PropertyBool(Dirty)
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return RosterEntry fot this Contact.
+	 * @return RosterEntry fot this Contact
+	 *
+	 * This method only returns null value for null contact.
+	 */
+	const RosterEntry * rosterEntry() const;
+
+	KaduSharedBase_PropertyBoolWrite(Dirty)
 	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)

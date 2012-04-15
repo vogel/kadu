@@ -33,6 +33,7 @@
 #include "message/message-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "contact-manager.h"
@@ -96,7 +97,7 @@ void ContactManager::dirtinessChanged()
 	Contact contact(sender());
 	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
 	{
-		if (contact.isDirty())
+		if (contact.rosterEntry()->requiresSynchronization())
 		{
 			DirtyContacts.append(contact);
 			emit dirtyContactAdded(contact);
@@ -136,7 +137,7 @@ void ContactManager::itemRegistered(Contact item)
 
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.setDirty(false);
-	else if (item.isDirty())
+	else if (item && item.rosterEntry()->requiresSynchronization())
 	{
 		DirtyContacts.append(item);
 		emit dirtyContactAdded(item);
@@ -157,7 +158,7 @@ void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 
-	if (item.isDirty())
+	if (item && item.rosterEntry()->requiresSynchronization())
 		DirtyContacts.removeAll(item);
 
 	emit contactRemoved(item);

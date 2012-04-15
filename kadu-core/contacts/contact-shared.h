@@ -100,7 +100,15 @@ public:
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
-	KaduShared_PropertyBoolRead(Dirty)
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return RosterEntry fot this Contact.
+	 * @return RosterEntry fot this Contact
+	 *
+	 * This method never returns null entry.
+	 */
+	const RosterEntry * rosterEntry() const;
+
 	void setDirty(bool dirty);
 
 	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)

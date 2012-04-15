@@ -27,6 +27,7 @@
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocol.h"
 #include "protocols/roster.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "contact-list-service.h"
@@ -142,7 +143,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 				// do not import dirty removed contacts unless we will be asking the user
 				// (We will be asking only if we are migrating from 0.9.x. Remember that
 				// all migrated contacts, including those with anynomous buddies, are initially marked dirty.)
-				if (!(knownContact.isDirty() && knownContact.isAnonymous() && !haveToAskForAddingContacts()))
+				if (!(knownContact.rosterEntry()->requiresSynchronization() && knownContact.isAnonymous() && !haveToAskForAddingContacts()))
 				{
 					if (knownContact.isAnonymous())
 						contactsToAdd.insert(targetBuddy, knownContact);
@@ -207,10 +208,10 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 	QList<Contact>::iterator i = unImportedContacts.begin();
 	while (i != unImportedContacts.end())
 	{
-		if (i->isDirty() || i->isAnonymous())
+		if (i->rosterEntry()->requiresSynchronization() || i->isAnonymous())
 		{
 			// local dirty removed contacts are no longer dirty if they were absent on server
-			if (i->isDirty() && i->isAnonymous())
+			if (i->rosterEntry()->requiresSynchronization() && i->isAnonymous())
 				i->setDirty(false);
 
 			i = unImportedContacts.erase(i);

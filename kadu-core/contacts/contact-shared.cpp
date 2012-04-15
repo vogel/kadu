@@ -322,6 +322,11 @@ void ContactShared::setId(const QString &id)
 	dataUpdated();
 }
 
+const RosterEntry * ContactShared::rosterEntry() const
+{
+	return Entry;
+}
+
 /**
  * Sets state if this contact to \p dirty. All contacts are dirty by default.
  *
