@@ -44,3 +44,11 @@ bool RosterEntry::requiresSynchronization() const
 {
 	return RosterEntryDirty == Status;
 }
+
+void RosterEntry::markDirty(bool dirty)
+{
+	if (RosterEntryDetached == Status)
+		return;
+
+	Status = dirty ? RosterEntryDirty : RosterEntrySynchronized;
+}

@@ -75,6 +75,18 @@ public:
 	 */
 	bool requiresSynchronization() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set status to Dirty/Synchronized if not Detached.
+	 * @param dirty dirntess flag
+	 *
+	 * If Status of this RosterEntry is set to RosterStatusDetached nothing changes. In other cases
+	 * Status is set to RosterStatusDirty if Dirty is true and RosterStatusSynchronized otherwise.
+	 *
+	 * To change status from RosterStatusDetached use setStatus() directly.
+	 */
+	void markDirty(bool dirty);
+
 };
 
 /**
