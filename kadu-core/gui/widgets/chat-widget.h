@@ -179,7 +179,7 @@ signals:
 	void iconChanged();
 	void titleChanged(ChatWidget *chatWidget, const QString &newTitle);
 
-	void widgetDestroyed();
+	void widgetDestroyed(ChatWidget *widget);
 	void closed();
 
 };

@@ -90,11 +90,12 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 private slots:
 	/**
 	 * @short Slot called when ChatWidget is destroyed.
+	 * @param chatWidget ChatWidget object which is being destroyed
 	 *
 	 * Slot called when ChatWidget is destroyed. Removes mapping Chat-ChatWidget map entry for destroyed
 	 * widget. Emits chatWidgetDestroying signal.
 	 */
-	void chatWidgetDestroyed();
+	void chatWidgetDestroyed(ChatWidget *chatWidget);
 
 	/**
 	 * @short Slot called when message is sent from Kadu.

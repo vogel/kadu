@@ -188,7 +188,7 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		return 0;
 
 	ChatWidget *chatWidget = new ChatWidget(chat);
-	connect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
+	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 	Chats.insert(chat, chatWidget);
 
 	// We need to append unread messages before chat widget container could mark them as read.
@@ -215,18 +215,13 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 	return chatWidget;
 }
 
-void ChatWidgetManager::chatWidgetDestroyed()
+void ChatWidgetManager::chatWidgetDestroyed(ChatWidget *chatWidget)
 {
-	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(sender());
 	if (!chatWidget)
 		return;
 
-	disconnect(chatWidget, SIGNAL(widgetDestroyed()), this, SLOT(chatWidgetDestroyed()));
-
-	if (!Chats.contains(chatWidget->chat()))
+	if (Chats.remove(chatWidget->chat()) <= 0)
 		return;
-
-	Chats.remove(chatWidget->chat());
 
 //	if (chatwidget->chat().contacts().count() == 1)
 //	{
