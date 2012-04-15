@@ -169,7 +169,7 @@ private slots:
 	void modelAboutToBeResetSlot();
 	void modelResetSlot();
 
-	void modelDestroyedSlot();
+	void modelDestroyedSlot(QObject *model);
 
 protected:
 	/**

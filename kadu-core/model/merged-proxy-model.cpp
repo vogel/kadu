@@ -61,7 +61,7 @@ void MergedProxyModel::connectModels()
 		connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()), Qt::DirectConnection);
 		connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()), Qt::DirectConnection);
 
-		connect(model, SIGNAL(destroyed()), this, SLOT(modelDestroyedSlot()), Qt::DirectConnection);
+		connect(model, SIGNAL(destroyed(QObject*)), this, SLOT(modelDestroyedSlot(QObject*)), Qt::DirectConnection);
 	}
 }
 
@@ -222,9 +222,9 @@ void MergedProxyModel::modelResetSlot()
 	endResetModel();
 }
 
-void MergedProxyModel::modelDestroyedSlot()
+void MergedProxyModel::modelDestroyedSlot(QObject *model)
 {
-	Models.removeAll(static_cast<QAbstractItemModel *>(sender()));
+	Models.removeAll(static_cast<QAbstractItemModel *>(model));
 }
 
 QModelIndex MergedProxyModel::mapFirstLevelToSource(const QModelIndex &proxyIndex) const
