@@ -31,6 +31,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "contact-shared.h"
 
@@ -55,6 +56,7 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
 		Blocking(false), Dirty(true), IgnoreNextStatusChange(false), Port(0)
 {
+	Entry = new RosterEntry(this);
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
@@ -100,7 +102,25 @@ void ContactShared::load()
 
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
+
+	bool hasDirty = hasValue("Dirty");
 	Dirty = loadValue<bool>("Dirty", true);
+
+	if (hasDirty)
+	{
+		Entry->setStatus(Dirty ? RosterEntryDirty : RosterEntrySynchronized);
+	}
+	else
+	{
+		QString status = loadValue<QString>("Status", "Dirty");
+		if (status == "Synchronized")
+			Entry->setStatus(RosterEntrySynchronized);
+		else if (status == "Dirty")
+			Entry->setStatus(RosterEntryDirty);
+		else if (status == "Detached")
+			Entry->setStatus(RosterEntryDetached);
+	}
+
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
@@ -135,6 +155,23 @@ void ContactShared::store()
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
 	storeValue("Dirty", Dirty);
+
+	switch (Entry->status())
+	{
+		case RosterEntrySynchronized:
+			storeValue("Status", "Synchronized");
+			break;
+		case RosterEntryDirty:
+			storeValue("Status", "Dirty");
+			break;
+		case RosterEntryDetached:
+			storeValue("Status", "Detached");
+			break;
+		default:
+			removeValue("Status");
+			break;
+	}
+
 	storeValue("Account", ContactAccount->uuid().toString());
 	storeValue("Buddy", !isAnonymous()
 			? OwnerBuddy->uuid().toString()
@@ -301,6 +338,9 @@ void ContactShared::setId(const QString &id)
 void ContactShared::setDirty(bool dirty)
 {
 	ensureLoaded();
+
+	if (RosterEntryDetached != Entry->status())
+		Entry->setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
 
 	if (Dirty == dirty)
 		return;

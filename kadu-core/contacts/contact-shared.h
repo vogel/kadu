@@ -33,6 +33,7 @@ class Account;
 class Avatar;
 class Buddy;
 class ProtocolFactory;
+class RosterEntry;
 
 class KADUAPI ContactShared : public QObject, public Shared
 {
@@ -40,6 +41,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	Q_DISABLE_COPY(ContactShared)
 
 	ContactDetails *Details;
+	RosterEntry *Entry;
 
 	Account *ContactAccount;
 	Avatar *ContactAvatar;
