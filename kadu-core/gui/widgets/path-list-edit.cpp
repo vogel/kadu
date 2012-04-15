@@ -37,7 +37,7 @@
 #include "path-list-edit.h"
 
 PathListEdit::PathListEdit(QWidget *parent)
-	: QPushButton(tr("Select"), parent), Dialog(0)
+	: QPushButton(tr("Select"), parent)
 {
 	connect(this, SIGNAL(clicked()), this, SLOT(showDialog()));
 }
@@ -47,15 +47,9 @@ void PathListEdit::showDialog()
 	if (!Dialog)
 	{
 		Dialog = new PathListEditWindow(PathList);
-		connect(Dialog, SIGNAL(destroyed()), this, SLOT(dialogDestroyed()));
-		connect(Dialog, SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
+		connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
 	}
-	Dialog->show();
-}
-
-void PathListEdit::dialogDestroyed()
-{
-	Dialog = 0;
+	Dialog.data()->show();
 }
 
 void PathListEdit::pathListChanged(const QStringList &pathList)
@@ -69,7 +63,7 @@ void PathListEdit::setPathList(const QStringList &pathList)
 	PathList = pathList;
 
 	if (Dialog)
-		Dialog->setPathList(PathList);
+		Dialog.data()->setPathList(PathList);
 }
 
 PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)

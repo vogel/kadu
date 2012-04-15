@@ -86,9 +86,7 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	QComboBox *SyntaxListCombo;
 	QPushButton *EditButton;
 	QPushButton *DeleteButton;
-
 	QComboBox *VariantListCombo;
-
 	QCheckBox *TurnOnTransparency;
 
 	Preview *EnginePreview;

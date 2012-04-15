@@ -30,7 +30,10 @@
 #ifndef TALKABLE_DELEGATE_H
 #define TALKABLE_DELEGATE_H
 
+// for OS X
 #undef check
+
+#include <QtCore/QWeakPointer>
 
 #include "buddies/buddy.h"
 #include "gui/widgets/kadu-tree-view-delegate.h"
@@ -44,13 +47,12 @@ class TalkableDelegate : public KaduTreeViewDelegate
 {
 	Q_OBJECT
 
-	ModelChain *Chain;
+	QWeakPointer<ModelChain> Chain;
 
 private slots:
 	void contactUpdated(const Contact &contact);
 	void buddyUpdated(const Buddy &buddy);
 	void messageStatusChanged(Message message);
-	void chainDestroyed();
 
 public:
 	explicit TalkableDelegate(TalkableTreeView *parent = 0);

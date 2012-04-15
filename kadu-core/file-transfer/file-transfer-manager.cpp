@@ -62,8 +62,7 @@ FileTransferManager * FileTransferManager::instance()
 	return Instance;
 }
 
-FileTransferManager::FileTransferManager() :
-		Window(0)
+FileTransferManager::FileTransferManager()
 {
 	Actions = new FileTransferActions(this);
 	NewFileTransferNotification::registerEvents();
@@ -73,12 +72,7 @@ FileTransferManager::FileTransferManager() :
 
 FileTransferManager::~FileTransferManager()
 {
-	if (Window)
-	{
-		disconnect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
-		delete Window;
-		Window = 0;
-	}
+	delete Window.data();
 
 	triggerAllAccountsUnregistered();
 
@@ -252,23 +246,13 @@ void FileTransferManager::rejectFileTransfer(FileTransfer transfer)
 		transfer.handler()->reject();
 }
 
-void FileTransferManager::fileTransferWindowDestroyed()
-{
-	QMutexLocker locker(&mutex());
-
-	Window = 0;
-}
-
 void FileTransferManager::showFileTransferWindow()
 {
 	QMutexLocker locker(&mutex());
 
 	if (!Window)
-	{
 		Window = new FileTransferWindow();
-		connect(Window, SIGNAL(destroyed()), this, SLOT(fileTransferWindowDestroyed()));
-	}
-	_activateWindow(Window);
+	_activateWindow(Window.data());
 }
 
 FileTransfer FileTransferManager::byPeerAndRemoteFileName(Contact peer, const QString &remoteFileName)

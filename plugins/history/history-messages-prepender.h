@@ -22,6 +22,7 @@
 
 #include <QtCore/QFuture>
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 #include "message/message.h"
 
@@ -46,11 +47,10 @@ class HistoryMessagesPrepender : public QObject
 	Q_OBJECT
 
 	QFuture<QVector<Message> > Messages;
-	ChatMessagesView *MessagesView;
+	QWeakPointer<ChatMessagesView> MessagesView;
 
 private slots:
 	void messagesAvailable();
-	void chatMessagesViewDestroyed();
 
 public:
 	/**

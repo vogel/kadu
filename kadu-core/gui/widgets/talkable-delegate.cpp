@@ -39,7 +39,7 @@
 #include "talkable-delegate.h"
 
 TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
-		KaduTreeViewDelegate(parent), Chain(0)
+		KaduTreeViewDelegate(parent)
 {
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
@@ -57,13 +57,7 @@ TalkableDelegate::~TalkableDelegate()
 
 void TalkableDelegate::setChain(ModelChain *chain)
 {
-	if (Chain)
-		disconnect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
-
 	Chain = chain;
-
-	if (Chain)
-		connect(Chain, SIGNAL(destroyed(QObject *)), this, SLOT(chainDestroyed()));
 }
 
 void TalkableDelegate::contactUpdated(const Contact &contact)
@@ -71,7 +65,7 @@ void TalkableDelegate::contactUpdated(const Contact &contact)
 	if (!Chain)
 		return;
 
-	const QModelIndexList &contactsIndexList = Chain->indexListForValue(contact);
+	const QModelIndexList &contactsIndexList = Chain.data()->indexListForValue(contact);
 	foreach (const QModelIndex &contactIndex, contactsIndexList)
 		emit sizeHintChanged(contactIndex);
 }
@@ -81,7 +75,7 @@ void TalkableDelegate::buddyUpdated(const Buddy &buddy)
 	if (!Chain)
 		return;
 
-	const QModelIndexList &buddyIndexList = Chain->indexListForValue(buddy);
+	const QModelIndexList &buddyIndexList = Chain.data()->indexListForValue(buddy);
 	foreach (const QModelIndex &buddyIndex, buddyIndexList)
 		emit sizeHintChanged(buddyIndex);
 }
@@ -90,11 +84,6 @@ void TalkableDelegate::messageStatusChanged(Message message)
 {
 	Buddy buddy = message.messageSender().ownerBuddy();
 	buddyUpdated(buddy);
-}
-
-void TalkableDelegate::chainDestroyed()
-{
-	Chain = 0;
 }
 
 bool TalkableDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,

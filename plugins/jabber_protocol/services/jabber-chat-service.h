@@ -24,6 +24,7 @@
 #define JABBER_CHAT_SERVICE_H
 
 #include <QtCore/QMap>
+#include <QtCore/QWeakPointer>
 
 #include <im.h>
 #include <xmpp.h>
@@ -43,7 +44,7 @@ class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
-	Client *XmppClient;
+	QWeakPointer<Client> XmppClient;
 
 	QMap<QString, QString> ContactMessageTypes;
 	QMap<QString, Chat> OpenedRoomChats;
@@ -61,8 +62,6 @@ private slots:
 	void groupChatJoined(const Jid &jid);
 	void groupChatLeft(const Jid &jid);
 	void groupChatPresence(const Jid &jid, const Status &status);
-
-	void clientDestroyed();
 
 public:
 	explicit JabberChatService(JabberProtocol *protocol);

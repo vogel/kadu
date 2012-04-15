@@ -20,6 +20,7 @@
 #ifndef SEARCH_BAR_H
 #define SEARCH_BAR_H
 
+#include <QtCore/QWeakPointer>
 #include <QtGui/QToolBar>
 
 #include "exports.h"
@@ -48,7 +49,7 @@ class KADUAPI SearchBar : public QToolBar
 {
 	Q_OBJECT
 
-	QWidget *SearchWidget;
+	QWeakPointer<QWidget> SearchWidget;
 	bool AutoVisibility;
 
 	QLineEdit *FindEdit;
@@ -56,8 +57,6 @@ class KADUAPI SearchBar : public QToolBar
 	void createGui();
 
 private slots:
-	void searchWidgetDestroyed();
-
 	void previous();
 	void next();
 	void close();

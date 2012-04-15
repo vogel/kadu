@@ -33,7 +33,7 @@
 #include "config-wizard-set-up-account-page.h"
 
 ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent), AccountWidget(0), AccountSuccessfullyCreated(false)
+		ConfigWizardPage(parent), AccountSuccessfullyCreated(false)
 {
 	setDescription(tr("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>"));
 
@@ -52,7 +52,7 @@ void ConfigWizardSetUpAccountPage::createGui()
 bool ConfigWizardSetUpAccountPage::isComplete() const
 {
 	if (AccountWidget)
-		return StateChangedDataValid == AccountWidget->state();
+		return StateChangedDataValid == AccountWidget.data()->state();
 
 	return true;
 }
@@ -70,13 +70,14 @@ void ConfigWizardSetUpAccountPage::initializePage()
 
 	if (AccountWidget)
 	{
-		formLayout()->addRow(QString(), AccountWidget);
+		formLayout()->addRow(QString(), AccountWidget.data());
 
-		connect(AccountWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		connect(AccountWidget.data(), SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
 		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
 		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
-		connect(AccountWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		connect(AccountWidget, SIGNAL(destroyed()), this, SLOT(accountWidgetDestroyed()));
+		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+		// Same as above, parentWidget() is QWizard.
+		connect(AccountWidget.data(), SIGNAL(destroyed()), parentWidget(), SLOT(back()));
 	}
 }
 
@@ -84,9 +85,8 @@ void ConfigWizardSetUpAccountPage::cleanupPage()
 {
 	if (AccountWidget)
 	{
-		disconnect(AccountWidget, SIGNAL(destroyed()), this, SLOT(accountWidgetDestroyed()));
-		delete AccountWidget;
-		AccountWidget = 0;
+		disconnect(AccountWidget.data(), 0, this, 0);
+		delete AccountWidget.data();
 	}
 
 	QWizardPage::cleanupPage();
@@ -97,7 +97,7 @@ bool ConfigWizardSetUpAccountPage::validatePage()
 	if (!AccountWidget)
 		return true;
 
-	AccountWidget->apply();
+	AccountWidget.data()->apply();
 
 	// apply() call should have blocked until accountCreated() was emitted,
 	// so AccountSuccessfullyCreated should now be filled.
@@ -118,13 +118,4 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 	AccountSuccessfullyCreated = true;
 
 	ConfigurationManager::instance()->flush();
-}
-
-void ConfigWizardSetUpAccountPage::accountWidgetDestroyed()
-{
-	AccountWidget = 0;
-
-	QWizard *wizard = qobject_cast<QWizard *>(parentWidget());
-	if (wizard)
-		wizard->back();
 }

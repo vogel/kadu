@@ -30,7 +30,7 @@
 #include "sound-play-thread.h"
 
 SoundPlayThread::SoundPlayThread() :
-		End(false), CurrentlyNotWaiting(false), Play(false), Player(0)
+		End(false), CurrentlyNotWaiting(false), Play(false)
 {
 }
 
@@ -55,7 +55,7 @@ void SoundPlayThread::start()
 			if (Player)
 			{
 				PlayingMutex.lock();
-				Player->playSound(Path);
+				Player.data()->playSound(Path);
 				PlayingMutex.unlock();
 			}
 
@@ -98,26 +98,10 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path)
 	if (!PlayingMutex.tryLock())
 		return; // one sound is played, we ignore next one
 
-	if (Player != player)
-	{
-		if (Player)
-			disconnect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
-
-		Player = player;
-
-		if (Player)
-			connect(Player, SIGNAL(destroyed()), this, SLOT(playerDestroyed()));
-	}
-
+	Player = player;
 	Path = path;
-
 	Play = true;
 
 	PlayingMutex.unlock();
 	WaitForNewSoundToPlay.wakeAll();
-}
-
-void SoundPlayThread::playerDestroyed()
-{
-	Player = 0;
 }

@@ -35,7 +35,7 @@ namespace XMPP
 {
 
 JabberChatStateService::JabberChatStateService(JabberProtocol *protocol) :
-		ChatStateService(protocol), XmppClient(0)
+		ChatStateService(protocol)
 {
 }
 
@@ -43,20 +43,9 @@ JabberChatStateService::~JabberChatStateService()
 {
 }
 
-void JabberChatStateService::clientDestroyed()
-{
-	XmppClient = 0;
-}
-
 void JabberChatStateService::setClient(Client *xmppClient)
 {
-	if (XmppClient)
-		disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
-
 	XmppClient = xmppClient;
-
-	if (XmppClient)
-		connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
 }
 
 bool JabberChatStateService::shouldSendEvent(const Contact &contact)
@@ -138,7 +127,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 						: XMPP::StateActive);
 
 				if (protocol()->isConnected())
-					XmppClient->sendMessage(tm);
+					XmppClient.data()->sendMessage(tm);
 			}
 			m.setChatState(state);
 		}
@@ -149,7 +138,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	{
 		m.setType("chat");
 		if (protocol()->isConnected())
-			XmppClient->sendMessage(m);
+			XmppClient.data()->sendMessage(m);
 	}
 
 	// Save last state

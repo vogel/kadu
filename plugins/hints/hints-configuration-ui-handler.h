@@ -22,6 +22,8 @@
 #ifndef HINTS_CONFIGURATION_UI_HANDLER_H
 #define HINTS_CONFIGURATION_UI_HANDLER_H
 
+#include <QtCore/QWeakPointer>
+
 #include "gui/windows/main-configuration-window.h"
 
 #include "hint_manager.h"
@@ -34,7 +36,7 @@ class HintsConfigurationUiHandler : public ConfigurationUiHandler
 	Q_OBJECT
 
 private:
-	ConfigurationWindow *AdvancedWindow;
+	QWeakPointer<ConfigurationWindow> AdvancedWindow;
 
 	QFrame *previewHintsFrame;
 	QVBoxLayout *previewHintsLayout;
@@ -49,7 +51,7 @@ private:
 	QComboBox *ownPositionCorner;
 	QComboBox *newHintUnder;
 	
-	HintOverUserConfigurationWindow *overUserConfigurationWindow;
+	QWeakPointer<HintOverUserConfigurationWindow> overUserConfigurationWindow;
 	QFrame *overUserConfigurationPreview;
 	QLabel *overUserConfigurationTipLabel;
 	
@@ -58,7 +60,6 @@ private:
 
 private slots:
 	void showAdvanced();
-	void advancedDestroyed();
 
 	void minimumWidthChanged(int value);
 	void maximumWidthChanged(int value);
@@ -66,7 +67,6 @@ private slots:
 	void toolTipClassesHighlighted(const QString &value);
 
 	void mainConfigurationWindowDestroyed();
-	void hintOverUserConfigurationWindowDestroyed();
 	void showOverUserConfigurationWindow();
 	void updateOverUserPreview();
 	void addHintsPreview();

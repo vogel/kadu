@@ -54,7 +54,7 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 }
 
 JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		RosterService(protocol), XmppClient(0)
+		RosterService(protocol)
 {
 	Q_ASSERT(protocol);
 }
@@ -68,14 +68,13 @@ void JabberRosterService::connectToClient()
 	if (!XmppClient)
 		return;
 
-	connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
-	connect(XmppClient, SIGNAL(rosterItemAdded(const RosterItem &)),
+	connect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
 	        this, SLOT(contactUpdated(const RosterItem &)));
-	connect(XmppClient, SIGNAL(rosterItemUpdated(const RosterItem &)),
+	connect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
 	        this, SLOT(contactUpdated(const RosterItem &)));
-	connect(XmppClient, SIGNAL(rosterItemRemoved(const RosterItem &)),
+	connect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
 	        this, SLOT(contactDeleted(const RosterItem &)));
-	connect(XmppClient, SIGNAL(rosterRequestFinished(bool, int, QString)),
+	connect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 	        this, SLOT(rosterRequestFinished(bool)));
 }
 
@@ -84,20 +83,14 @@ void JabberRosterService::disconnectFromClient()
 	if (!XmppClient)
 		return;
 
-	disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
-	disconnect(XmppClient, SIGNAL(rosterItemAdded(const RosterItem &)),
+	disconnect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
 	           this, SLOT(contactUpdated(const RosterItem &)));
-	disconnect(XmppClient, SIGNAL(rosterItemUpdated(const RosterItem &)),
+	disconnect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
 	           this, SLOT(contactUpdated(const RosterItem &)));
-	disconnect(XmppClient, SIGNAL(rosterItemRemoved(const RosterItem &)),
+	disconnect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
 	           this, SLOT(contactDeleted(const RosterItem &)));
-	disconnect(XmppClient, SIGNAL(rosterRequestFinished(bool, int, QString)),
+	disconnect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 	           this, SLOT(rosterRequestFinished(bool)));
-}
-
-void JabberRosterService::clientDestroyed()
-{
-	XmppClient = 0;
 }
 
 void JabberRosterService::setClient(Client *xmppClient)
@@ -266,7 +259,7 @@ void JabberRosterService::prepareRoster()
 	ContactsForDelete = ContactManager::instance()->contacts(account()).toList();
 	ContactsForDelete.removeAll(account().accountContact());
 
-	XmppClient->rosterRequest();
+	XmppClient.data()->rosterRequest();
 }
 
 bool JabberRosterService::canPerformLocalUpdate() const
@@ -274,10 +267,7 @@ bool JabberRosterService::canPerformLocalUpdate() const
 	if (!RosterService::canPerformLocalUpdate())
 		return false;
 
-	if (!XmppClient)
-		return false;
-
-	return true;
+	return !XmppClient.isNull();
 }
 
 bool JabberRosterService::addContact(const Contact &contact)
@@ -295,7 +285,7 @@ bool JabberRosterService::addContact(const Contact &contact)
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	rosterTask->go(true);
 
@@ -318,7 +308,7 @@ bool JabberRosterService::removeContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
 	rosterTask->remove(contact.id());
 	rosterTask->go(true);
 
@@ -338,7 +328,7 @@ void JabberRosterService::updateContact(const Contact &contact)
 
 	setState(StateProcessingLocalUpdate);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	rosterTask->go(true);
 

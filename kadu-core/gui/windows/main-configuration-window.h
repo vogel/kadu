@@ -1,6 +1,8 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
+#include <QtCore/QWeakPointer>
+
 #include "gui/windows/configuration-window.h"
 #include "os/generic/compositing-aware-object.h"
 #include "exports.h"
@@ -55,7 +57,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 	static void instanceCreated();
 
-	ConfigurationWindow *lookChatAdvanced;
+	QWeakPointer<ConfigurationWindow> lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
 	QCheckBox *userboxTransparency;
@@ -81,7 +83,6 @@ private slots:
 	void onChangeStartupStatus(int index);
 
 	void showLookChatAdvanced();
-	void lookChatAdvancedDestroyed();
 
 	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 

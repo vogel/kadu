@@ -28,6 +28,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtCore/QWeakPointer>
 
 #include "accounts/accounts-aware-object.h"
 #include "file-transfer/file-transfer-enums.h"
@@ -48,7 +49,7 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 	static FileTransferManager * Instance;
 
 	FileTransferActions *Actions;
-	FileTransferWindow *Window;
+	QWeakPointer<FileTransferWindow> Window;
 
 	FileTransferManager();
 	virtual ~FileTransferManager();
@@ -59,7 +60,6 @@ class KADUAPI FileTransferManager : public QObject, public SimpleManager<FileTra
 	void removeFileTransferService(Account account);
 
 private slots:
-	void fileTransferWindowDestroyed();
 	void incomingFileTransfer(FileTransfer fileTransfer);
 
 	void fileTransferServiceRegistered();

@@ -22,6 +22,8 @@
 #ifndef CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 #define CONFIG_WIZARD_SET_UP_ACCOUNT_PAGE_H
 
+#include <QtCore/QWeakPointer>
+
 #include "accounts/account.h"
 #include "gui/widgets/config-wizard-page.h"
 
@@ -31,14 +33,13 @@ class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
 	Q_OBJECT
 
-	ModalConfigurationWidget *AccountWidget;
+	QWeakPointer<ModalConfigurationWidget> AccountWidget;
 	bool AccountSuccessfullyCreated;
 
 	void createGui();
 
 private slots:
 	void accountCreated(Account account);
-	void accountWidgetDestroyed();
 
 public:
 	explicit ConfigWizardSetUpAccountPage(QWidget *parent = 0);

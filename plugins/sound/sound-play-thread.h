@@ -30,6 +30,7 @@
 #include <QtCore/QMutex>
 #include <QtCore/QObject>
 #include <QtCore/QWaitCondition>
+#include <QtCore/QWeakPointer>
 
 class SoundPlayer;
 
@@ -45,11 +46,8 @@ class SoundPlayThread : public QObject
 
 	bool Play;
 
-	SoundPlayer *Player;
+	QWeakPointer<SoundPlayer> Player;
 	QString Path;
-
-private slots:
-	void playerDestroyed();
 
 public:
 	explicit SoundPlayThread();

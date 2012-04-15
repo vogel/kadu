@@ -38,7 +38,7 @@
 #define NS_AVATAR_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 
 JabberAvatarPepFetcher::JabberAvatarPepFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact), DiscoItems(0)
+		QObject(parent), MyContact(contact)
 {
 }
 
@@ -46,9 +46,10 @@ JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 {
 	if (DiscoItems)
 	{
-		disconnect(DiscoItems, SIGNAL(destroyed()), this, SLOT(discoItemsDestroyed()));
-		delete DiscoItems;
-		DiscoItems = 0;
+		XMPP::JT_DiscoItems *discoItems = DiscoItems.data();
+		DiscoItems.clear();
+		disconnect(discoItems, 0, this, 0);
+		delete discoItems;
 	}
 }
 
@@ -74,21 +75,15 @@ void JabberAvatarPepFetcher::fetchAvatar()
 	}
 
 	DiscoItems = new XMPP::JT_DiscoItems(jabberProtocol->client()->rootTask());
-	connect(DiscoItems, SIGNAL(destroyed()), this, SLOT(discoItemsDestroyed()));
-	connect(DiscoItems, SIGNAL(finished()), this, SLOT(discoItemsFinished()));
-	DiscoItems->get(MyContact.id());
-	DiscoItems->go();
-}
-
-void JabberAvatarPepFetcher::discoItemsDestroyed()
-{
-	DiscoItems = 0;
-	deleteLater();
+	connect(DiscoItems.data(), SIGNAL(destroyed()), this, SLOT(deleteLater()));
+	connect(DiscoItems.data(), SIGNAL(finished()), this, SLOT(discoItemsFinished()));
+	DiscoItems.data()->get(MyContact.id());
+	DiscoItems.data()->go();
 }
 
 void JabberAvatarPepFetcher::discoItemsFinished()
 {
-	XMPP::DiscoList result = DiscoItems->items();
+	XMPP::DiscoList result = DiscoItems.data()->items();
 
 	bool hasAvatar = false;
 	foreach (const XMPP::DiscoItem &item, result)

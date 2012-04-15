@@ -24,6 +24,8 @@
 #ifndef JABBER_ROSTER_SERVICE_H
 #define JABBER_ROSTER_SERVICE_H
 
+#include <QtCore/QWeakPointer>
+
 #include "protocols/services/roster-service.h"
 
 class Buddy;
@@ -40,7 +42,7 @@ class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	Client *XmppClient;
+	QWeakPointer<Client> XmppClient;
 
 	QList<Contact> ContactsForDelete;
 
@@ -53,8 +55,6 @@ class JabberRosterService : public RosterService
 	void disconnectFromClient();
 
 private slots:
-	void clientDestroyed();
-
 	void contactUpdated(const RosterItem &item);
 	void contactDeleted(const RosterItem &item);
 	void rosterRequestFinished(bool success);

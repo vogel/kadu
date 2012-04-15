@@ -58,6 +58,7 @@ AccountAvatarWidget::~AccountAvatarWidget()
 void AccountAvatarWidget::serviceDestroyed()
 {
 	Service = 0;
+	setEnabled(false);
 }
 
 void AccountAvatarWidget::createGui()

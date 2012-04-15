@@ -28,7 +28,7 @@
 #include "search-bar.h"
 
 SearchBar::SearchBar(QWidget *parent) :
-		QToolBar(parent), SearchWidget(0), AutoVisibility(true)
+		QToolBar(parent), AutoVisibility(true)
 {
 	createGui();
 
@@ -107,18 +107,12 @@ void SearchBar::showEvent(QShowEvent *event)
 void SearchBar::setSearchWidget(QWidget * const widget)
 {
 	if (SearchWidget)
-	{
-		SearchWidget->removeEventFilter(this);
-		disconnect(SearchWidget, SIGNAL(destroyed()), this, SLOT(searchWidgetDestroyed()));
-	}
+		SearchWidget.data()->removeEventFilter(this);
 
 	SearchWidget = widget;
 
 	if (SearchWidget)
-	{
-		SearchWidget->installEventFilter(this);
-		connect(SearchWidget, SIGNAL(destroyed()), this, SLOT(searchWidgetDestroyed()));
-	}
+		SearchWidget.data()->installEventFilter(this);
 }
 
 void SearchBar::setAutoVisibility(bool autoVisibility)
@@ -131,15 +125,10 @@ void SearchBar::setAutoVisibility(bool autoVisibility)
 		show();
 }
 
-void SearchBar::searchWidgetDestroyed()
-{
-	SearchWidget = 0;
-}
-
 bool SearchBar::eventFilter(QObject *object, QEvent *event)
 {
 	Q_UNUSED(object)
-	Q_ASSERT(object == SearchWidget);
+	Q_ASSERT(object == SearchWidget.data());
 
 	if (QEvent::KeyPress != event->type())
 		return false;
@@ -182,5 +171,5 @@ void SearchBar::close()
 		hide();
 
 	if (SearchWidget)
-		SearchWidget->setFocus();
+		SearchWidget.data()->setFocus();
 }

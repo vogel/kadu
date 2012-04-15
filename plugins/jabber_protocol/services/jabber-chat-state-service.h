@@ -24,6 +24,7 @@
 #define JABBER_CHAT_STATE_SERVICE_H
 
 #include <QtCore/QHash>
+#include <QtCore/QWeakPointer>
 
 #include "chat/chat.h"
 
@@ -56,7 +57,7 @@ class JabberChatStateService : public ChatStateService
 		}
 	};
 
-	Client *XmppClient;
+	QWeakPointer<Client> XmppClient;
 
 	QHash<Contact, ContactInfo> ContactInfos;
 
@@ -65,9 +66,6 @@ class JabberChatStateService : public ChatStateService
 	void setChatState(const Contact &contact, ChatState state);
 
 	static State xmppStateToContactState(ChatState state);
-
-private slots:
-	void clientDestroyed();
 
 public:
 	explicit JabberChatStateService(JabberProtocol *protocol);

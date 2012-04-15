@@ -27,6 +27,8 @@
 #ifndef JABBER_AVATAR_PEP_FETCHER_H
 #define JABBER_AVATAR_PEP_FETCHER_H
 
+#include <QtCore/QWeakPointer>
+
 #include "contacts/contact.h"
 
 namespace XMPP
@@ -41,14 +43,13 @@ class JabberAvatarPepFetcher : public QObject
 	Q_OBJECT
 
 	Contact MyContact;
-	XMPP::JT_DiscoItems *DiscoItems;
+	QWeakPointer<XMPP::JT_DiscoItems> DiscoItems;
 	QString AvatarId;
 
 	void done();
 	void failed();
 
 private slots:
-	void discoItemsDestroyed();
 	void discoItemsFinished();
 	void avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);

@@ -28,7 +28,7 @@ HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<QVector<Message> > me
 {
 	Q_ASSERT(MessagesView);
 
-	connect(chatMessagesView, SIGNAL(destroyed()), this, SLOT(chatMessagesViewDestroyed()));
+	connect(MessagesView.data(), SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
 	QFutureWatcher<QVector<Message> > *futureWatcher = new QFutureWatcher<QVector<Message> >(this);
 	connect(futureWatcher, SIGNAL(finished()), this, SLOT(messagesAvailable()));
@@ -45,13 +45,7 @@ void HistoryMessagesPrepender::messagesAvailable()
 	if (!MessagesView)
 		return;
 
-	MessagesView->prependMessages(Messages.result());
-	MessagesView = 0;
-	deleteLater();
-}
-
-void HistoryMessagesPrepender::chatMessagesViewDestroyed()
-{
-	MessagesView = 0;
+	MessagesView.data()->prependMessages(Messages.result());
+	MessagesView.clear();
 	deleteLater();
 }

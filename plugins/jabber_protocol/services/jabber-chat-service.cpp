@@ -51,7 +51,7 @@ namespace XMPP
 {
 
 JabberChatService::JabberChatService(JabberProtocol *protocol) :
-		ChatService(protocol), XmppClient(0)
+		ChatService(protocol)
 {
 	connect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
 	connect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));
@@ -65,23 +65,16 @@ JabberChatService::~JabberChatService()
 
 void JabberChatService::connectClient()
 {
-	connect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
-	connect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
-	connect(XmppClient, SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
-	connect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
+	connect(XmppClient.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	connect(XmppClient.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
+	connect(XmppClient.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
 void JabberChatService::disconnectClient()
 {
-	disconnect(XmppClient, SIGNAL(destroyed()), this, SLOT(clientDestroyed()));
-	disconnect(XmppClient, SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
-	disconnect(XmppClient, SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
-	disconnect(XmppClient, SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
-}
-
-void JabberChatService::clientDestroyed()
-{
-	XmppClient = 0;
+	disconnect(XmppClient.data(), SIGNAL(groupChatJoined(Jid)), this, SLOT(groupChatJoined(Jid)));
+	disconnect(XmppClient.data(), SIGNAL(groupChatLeft(Jid)), this, SLOT(groupChatLeft(Jid)));
+	disconnect(XmppClient.data(), SIGNAL(groupChatPresence(Jid,Status)), this, SLOT(groupChatPresence(Jid,Status)));
 }
 
 void JabberChatService::setClient(Client *xmppClient)
@@ -112,7 +105,7 @@ void JabberChatService::chatOpened(const Chat &chat)
 	OpenedRoomChats.insert(details->room(), chat);
 
 	Jid jid = details->room();
-	XmppClient->groupChatJoin(jid.domain(), jid.node(), details->nick());
+	XmppClient.data()->groupChatJoin(jid.domain(), jid.node(), details->nick());
 }
 
 void JabberChatService::chatClosed(const Chat &chat)
@@ -125,7 +118,7 @@ void JabberChatService::chatClosed(const Chat &chat)
 	ClosedRoomChats.insert(details->room(), chat);
 
 	Jid jid = details->room();
-	XmppClient->groupChatLeave(jid.domain(), jid.node());
+	XmppClient.data()->groupChatLeave(jid.domain(), jid.node());
 }
 
 void JabberChatService::groupChatJoined(const Jid &jid)
@@ -265,7 +258,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	//msg.setFrom(jabberID);
 
 	emit messageAboutToSend(msg);
-	XmppClient->sendMessage(msg);
+	XmppClient.data()->sendMessage(msg);
 
 	if (!silent)
 	{

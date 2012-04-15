@@ -45,10 +45,8 @@ void JabberResourcePool::slotResourceDestroyed(QObject *sender)
 {
 	kdebug("Resource has been destroyed, collecting the pieces.\n");
 
-	JabberResource *oldResource = static_cast<JabberResource *>(sender);
-
 	// remove this resource from the lock list if it existed
-	lockList.removeAll(oldResource);
+	lockList.removeAll(static_cast<JabberResource *>(sender));
 }
 
 void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource &resource)

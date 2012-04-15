@@ -31,7 +31,7 @@
 #include "encryption-chat-data.h"
 
 EncryptionChatData::EncryptionChatData(const Chat &chat, QObject *parent) :
-		QObject(parent), MyChat(chat), ChatEncryptor(0), ChatDecryptor(0), Encrypt(true)
+		QObject(parent), MyChat(chat), Encrypt(true)
 {
 	Encrypt = MyChat.property("encryption-ng:Encrypt", true).toBool();
 	importEncrypt(); // this is only done once
@@ -55,16 +55,6 @@ void EncryptionChatData::importEncrypt()
 		Encrypt = false;
 }
 
-void EncryptionChatData::encryptorDestroyed()
-{
-	ChatEncryptor = 0;
-}
-
-void EncryptionChatData::decryptorDestroyed()
-{
-	ChatDecryptor = 0;
-}
-
 void EncryptionChatData::setEncrypt(bool encrypt)
 {
 	if (!MyChat || Encrypt == encrypt)
@@ -78,39 +68,12 @@ void EncryptionChatData::setEncrypt(bool encrypt)
 		MyChat.removeProperty("encryption-ng:Encrypt");
 }
 
-bool EncryptionChatData::encrypt()
-{
-	return Encrypt;
-}
-
 void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 {
-	if (ChatEncryptor)
-		disconnect(ChatEncryptor, SIGNAL(destroyed()), this, SLOT(encryptorDestroyed()));
-
 	ChatEncryptor = encryptor;
-
-	if (ChatEncryptor)
-		connect(ChatEncryptor, SIGNAL(destroyed()), this, SLOT(encryptorDestroyed()));
-}
-
-Encryptor * EncryptionChatData::encryptor()
-{
-	return ChatEncryptor;
 }
 
 void EncryptionChatData::setDecryptor(Decryptor *decryptor)
 {
-	if (ChatDecryptor)
-		disconnect(ChatDecryptor, SIGNAL(destroyed()), this, SLOT(decryptorDestroyed()));
-
 	ChatDecryptor = decryptor;
-
-	if (ChatDecryptor)
-		connect(ChatDecryptor, SIGNAL(destroyed()), this, SLOT(decryptorDestroyed()));
-}
-
-Decryptor * EncryptionChatData::decryptor()
-{
-	return ChatDecryptor;
 }

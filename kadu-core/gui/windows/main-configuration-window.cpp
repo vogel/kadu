@@ -174,7 +174,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow() :
-		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager()), lookChatAdvanced(0)
+		ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", instanceDataManager())
 {
 	setWindowRole("kadu-configuration");
 
@@ -427,28 +427,21 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
-		lookChatAdvanced->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
 
-		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
-		connect(lookChatAdvanced->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced.data()->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced.data()->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced.data()->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced.data()->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 
-		lookChatAdvanced->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
-		lookChatAdvanced->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", SyntaxText));
-		lookChatAdvanced->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
-
-		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
+		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
+		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", SyntaxText));
+		lookChatAdvanced.data()->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
 
 		connect(ChatStylesManager::instance(), SIGNAL(previewSyntaxChanged(QString)), this, SLOT(chatPreviewSyntaxChanged(QString)));
 		if (ChatStylesManager::instance()->syntaxListCombo())
 			chatPreviewSyntaxChanged(ChatStylesManager::instance()->syntaxListCombo()->currentText());
 	}
 
-	lookChatAdvanced->show();
-}
-
-void MainConfigurationWindow::lookChatAdvancedDestroyed()
-{
-	lookChatAdvanced = 0;
+	lookChatAdvanced.data()->show();
 }
 
 void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName)
@@ -459,14 +452,14 @@ void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName
 	StyleInfo styleInfo = ChatStylesManager::instance()->chatStyleInfo(syntaxName);
 	if (!styleInfo.engine)
 	{
-		lookChatAdvanced->deleteLater();
+		lookChatAdvanced.data()->deleteLater();
 		return;
 	}
 
 	bool enableKaduFeatures = styleInfo.engine->engineName() == "Kadu";
 
-	lookChatAdvanced->widget()->widgetById("chatHeaderSeparatorsHeight")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced->widget()->widgetById("messageSeparatorsHeight")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced->widget()->widgetById("removeServerTime")->setEnabled(enableKaduFeatures);
-	lookChatAdvanced->widget()->widgetById("maxTimeDifference")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced.data()->widget()->widgetById("chatHeaderSeparatorsHeight")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced.data()->widget()->widgetById("messageSeparatorsHeight")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced.data()->widget()->widgetById("removeServerTime")->setEnabled(enableKaduFeatures);
+	lookChatAdvanced.data()->widget()->widgetById("maxTimeDifference")->setEnabled(enableKaduFeatures);
 }
