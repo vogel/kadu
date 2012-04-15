@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/change-notifier.h"
+
 #include "shared.h"
 
 /**
@@ -31,7 +33,7 @@
  * new uuid is created and assigned to object.
  */
 Shared::Shared(const QUuid &uuid) :
-		BlockUpdatedSignalCount(0), Updated(false)
+		MyChangeNotifier(new ChangeNotifier())
 {
 	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
@@ -56,6 +58,8 @@ Shared::Shared(const QUuid &uuid) :
 Shared::~Shared()
 {
 	ref.ref();
+
+	delete MyChangeNotifier;
 }
 
 /**
@@ -125,71 +129,7 @@ void Shared::aboutToBeRemoved()
 {
 }
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Call this method to block calling of emitUpdated method.
- *
- * Calling this method blocks calling of emitUpdated when data stored in this object is
- * changed. Homever, if data is changed after calling this method and unblockUpdatedSignal
- * is called, emitUpdated is called. If blockUpdatedSignal is called more than once
- * you have to call unblockUpdatedSignal the same amount to get emitUpdated called.
- */
-void Shared::blockUpdatedSignal()
+ChangeNotifier * Shared::changeNotifier() const
 {
-	BlockUpdatedSignalCount++;
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Call this method to unblock calling of emitUpdated method.
- *
- * Calling this method unblocks calling of emitUpdated when data stored in this object is
- * changed. If data was changed after call of blockUpdatedSignal this method calls emitUpdated.
- * If blockUpdatedSignal was called more than once this method must be calles the same
- * amount to get emitUpdated called.
- */
-void Shared::unblockUpdatedSignal()
-{
-	BlockUpdatedSignalCount--;
-	doEmitUpdated();
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Call this method when any data was changed.
- *
- * Method should be called after any data in this object was changed. Setters implemented by
- * KaduShared_PropertyWrite, KaduShared_Property, KaduShared_PropertyBoolWrite calls this
- * method by default.
- */
-void Shared::dataUpdated()
-{
-	Updated = true;
-	doEmitUpdated();
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Calls emitUpdated and changed Updated flag.
- *
- * Calls emitUpdated when no blockUpdatedSignal was called without correspondent unblockUpdatedSignal
- * and any data was changed (Updated flag is set to true). Then resets Updated flag to false.
- */
-void Shared::doEmitUpdated()
-{
-	if (0 == BlockUpdatedSignalCount && Updated)
-	{
-		emitUpdated();
-		Updated = false;
-	}
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Method called when any data was changed.
- *
- * Method called when any data was changed. Reimplement it to emit signal from you class when needed.
- */
-void Shared::emitUpdated()
-{
+	return MyChangeNotifier;
 }

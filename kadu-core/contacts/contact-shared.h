@@ -80,8 +80,6 @@ protected:
 	virtual void store();
 	virtual bool shouldStore();
 
-	virtual void emitUpdated();
-
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);

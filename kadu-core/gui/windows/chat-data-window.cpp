@@ -37,6 +37,7 @@
 #include "gui/widgets/group-list.h"
 #include "gui/windows/chat-data-window-aware-object.h"
 #include "icons/icons-manager.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 #include "activate.h"
 
@@ -163,7 +164,8 @@ void ChatDataWindow::createButtons(QVBoxLayout *layout)
 
 void ChatDataWindow::updateChat()
 {
-	MyChat.blockUpdatedSignal();
+	if (MyChat)
+		MyChat.changeNotifier()->block();
 
 	if (EditWidget)
 		EditWidget->apply();
@@ -173,7 +175,8 @@ void ChatDataWindow::updateChat()
 
 	emit save();
 
-	MyChat.unblockUpdatedSignal();
+	if (MyChat)
+		MyChat.changeNotifier()->unblock();
 }
 
 void ChatDataWindow::updateChatAndClose()

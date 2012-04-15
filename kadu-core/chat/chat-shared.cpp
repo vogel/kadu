@@ -33,6 +33,7 @@
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "misc/change-notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
 
@@ -76,6 +77,8 @@ ChatShared::ChatShared(const QUuid &uuid) :
 		Shared(uuid), Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
 {
 	ChatAccount = new Account();
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 /**
@@ -256,18 +259,6 @@ void ChatShared::aboutToBeRemoved()
 
 /**
  * @author Rafal 'Vogel' Malinowski
- * @short Called after any chat data was changed.
- *
- * Method is called after any chat data was changed and signal emiting is non blocked.
- * Informs any object about chat data change.
- */
-void ChatShared::emitUpdated()
-{
-	emit updated();
-}
-
-/**
- * @author Rafal 'Vogel' Malinowski
  * @short Called after new chat type was registered.
  *
  * If no details class is loaded and registered chat type is valid for this chat
@@ -387,7 +378,7 @@ void ChatShared::setGroups(const QSet<Group> &groups)
 	foreach (const Group &group, groupsToRemove)
 		doRemoveFromGroup(group);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 bool ChatShared::isInGroup(const Group &group)
@@ -434,7 +425,7 @@ void ChatShared::addToGroup(const Group &group)
 	ensureLoaded();
 
 	if (doAddToGroup(group))
-		dataUpdated();
+		changeNotifier()->notify();
 }
 
 void ChatShared::removeFromGroup(const Group &group)
@@ -442,7 +433,7 @@ void ChatShared::removeFromGroup(const Group &group)
 	ensureLoaded();
 
 	if (doRemoveFromGroup(group))
-		dataUpdated();
+		changeNotifier()->notify();
 }
 
 void ChatShared::groupAboutToBeRemoved()

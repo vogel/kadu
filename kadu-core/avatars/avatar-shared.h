@@ -45,8 +45,6 @@ protected:
 	virtual void store();
 	virtual bool shouldStore();
 
-	virtual void emitUpdated();
-
 public:
 	static AvatarShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 	static AvatarShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);

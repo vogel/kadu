@@ -29,6 +29,7 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
@@ -74,6 +75,8 @@ AccountShared::AccountShared(const QString &protocolName) :
 		if (factory)
 			protocolRegistered(factory);
 	}
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AccountShared::~AccountShared()
@@ -229,7 +232,7 @@ void AccountShared::aboutToBeRemoved()
 	setAccountIdentity(Identity::null);
 }
 
-void AccountShared::emitUpdated()
+void AccountShared::forceEmitUpdated()
 {
 	emit updated();
 }
@@ -338,7 +341,7 @@ void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 
 	doSetAccountIdentity(accountIdentity);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void AccountShared::doSetId(const QString &id)
@@ -356,7 +359,7 @@ void AccountShared::setId(const QString &id)
 
 	doSetId(id);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 Contact AccountShared::accountContact()

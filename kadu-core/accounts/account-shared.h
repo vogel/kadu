@@ -86,7 +86,7 @@ protected:
 	// TODO: 0.11, fix this
 	// hack, changing details does not trigger this
 	friend class GaduEditAccountWidget;
-	void emitUpdated();
+	void forceEmitUpdated();
 
 public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);

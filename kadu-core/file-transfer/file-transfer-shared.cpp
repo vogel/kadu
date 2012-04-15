@@ -25,6 +25,7 @@
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
@@ -51,6 +52,8 @@ FileTransferShared::FileTransferShared(const QUuid &uuid) :
 		TransferError(ErrorOk), Handler(0)
 {
 	Peer = new Contact();
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 FileTransferShared::~FileTransferShared()
@@ -112,7 +115,7 @@ void FileTransferShared::setTransferStatus(FileTransferStatus transferStatus)
 
 	TransferStatus = transferStatus;
 	emit statusChanged();
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void FileTransferShared::setTransferError(FileTransferError transferError)
@@ -125,7 +128,7 @@ void FileTransferShared::setTransferError(FileTransferError transferError)
 	TransferStatus = StatusNotConnected;
 	TransferError = transferError;
 	emit statusChanged();
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void FileTransferShared::setHandler(FileTransferHandler *handler)
@@ -140,7 +143,7 @@ void FileTransferShared::setHandler(FileTransferHandler *handler)
 
 	Handler = handler;
 	connect(Handler, SIGNAL(destroyed()), this, SLOT(handlerDestroyed()));
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void FileTransferShared::createHandler()
@@ -159,15 +162,10 @@ void FileTransferShared::createHandler()
 	Handler = service->createFileTransferHandler(this);
 }
 
-void FileTransferShared::emitUpdated()
-{
-	emit updated();
-}
-
 void FileTransferShared::handlerDestroyed()
 {
 	Handler = 0;
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 KaduShared_PropertyPtrDefCRW(FileTransferShared, Contact, peer, Peer)

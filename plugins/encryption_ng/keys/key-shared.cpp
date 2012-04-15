@@ -24,6 +24,7 @@
 
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 
 #include "keys/keys-manager.h"
@@ -51,6 +52,8 @@ KeyShared::KeyShared(const QUuid &uuid) :
 {
 	KeysDir = KaduPaths::instance()->profilePath() + QLatin1String("keys/");
 	KeyContact = new Contact();
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 KeyShared::~KeyShared()
@@ -148,11 +151,6 @@ bool KeyShared::isEmpty()
 	ensureLoaded();
 
 	return Key.isEmpty();
-}
-
-void KeyShared::emitUpdated()
-{
-	emit updated();
 }
 
 KaduShared_PropertyPtrDefCRW(KeyShared, Contact, keyContact, KeyContact)

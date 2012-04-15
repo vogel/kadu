@@ -22,6 +22,7 @@
 #include "accounts/account.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "helpers/gadu-protocol-helper.h"
+#include "misc/change-notifier.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
 
@@ -44,7 +45,8 @@ GaduFileTransferHandler::~GaduFileTransferHandler()
 
 void GaduFileTransferHandler::updateFileInfo()
 {
-	transfer().blockUpdatedSignal();
+	if (transfer())
+		transfer().changeNotifier()->block();
 
 	if (SocketNotifiers)
 	{
@@ -57,7 +59,8 @@ void GaduFileTransferHandler::updateFileInfo()
 		transfer().setTransferredSize(0);
 	}
 
-	transfer().unblockUpdatedSignal();
+	if (transfer())
+		transfer().changeNotifier()->unblock();
 }
 
 void GaduFileTransferHandler::setFileTransferNotifiers(DccSocketNotifiers *socketNotifiers)

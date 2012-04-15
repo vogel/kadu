@@ -62,6 +62,7 @@
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/misc.h"
+#include "misc/change-notifier.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "activate.h"
@@ -188,14 +189,16 @@ void BuddyDataWindow::updateBuddy()
 {
 	if (isValid())
 	{
-		MyBuddy.blockUpdatedSignal();
+		if (MyBuddy)
+			MyBuddy.changeNotifier()->block();
 
 		ContactTab->save();
 		GroupsTab->save();
 		OptionsTab->save();
 		emit save();
 
-		MyBuddy.unblockUpdatedSignal();
+		if (MyBuddy)
+			MyBuddy.changeNotifier()->unblock();
 	}
 }
 

@@ -36,6 +36,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "misc/change-notifier.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"
@@ -60,6 +61,8 @@ BuddyShared::BuddyShared(const QUuid &uuid) :
 		Anonymous(true), Temporary(false), Blocked(false), OfflineTo(false)
 {
 	BuddyAvatar = new Avatar();
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 BuddyShared::~BuddyShared()
@@ -310,7 +313,7 @@ void BuddyShared::addContact(const Contact &contact)
 
 	emit contactAdded(contact);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void BuddyShared::removeContact(const Contact &contact)
@@ -326,7 +329,7 @@ void BuddyShared::removeContact(const Contact &contact)
 
 	normalizePriorities();
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 QVector<Contact> BuddyShared::contacts(const Account &account)
@@ -377,14 +380,9 @@ void BuddyShared::normalizePriorities()
 		contact.setPriority(priority++);
 }
 
-void BuddyShared::emitUpdated()
-{
-	emit updated();
-}
-
 void BuddyShared::avatarUpdated()
 {
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
@@ -396,7 +394,7 @@ void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
 		disconnect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 
 	*BuddyAvatar = buddyAvatar;
-	dataUpdated();
+	changeNotifier()->notify();
 
 	if (*BuddyAvatar)
 		connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
@@ -409,7 +407,7 @@ void BuddyShared::setDisplay(const QString &display)
 	if (Display != display)
 	{
 		Display = display;
-		dataUpdated();
+		changeNotifier()->notify();
 		markContactsDirty();
 
 		emit displayUpdated();
@@ -432,7 +430,7 @@ void BuddyShared::setGroups(const QSet<Group> &groups)
 	foreach (const Group &group, groupsToRemove)
 		doRemoveFromGroup(group);
 
-	dataUpdated();
+	changeNotifier()->notify();
 	markContactsDirty();
 }
 
@@ -483,7 +481,7 @@ void BuddyShared::addToGroup(const Group &group)
 
 	if (doAddToGroup(group))
 	{
-		dataUpdated();
+		changeNotifier()->notify();
 		markContactsDirty();
 	}
 }
@@ -494,7 +492,7 @@ void BuddyShared::removeFromGroup(const Group &group)
 
 	if (doRemoveFromGroup(group))
 	{
-		dataUpdated();
+		changeNotifier()->notify();
 		markContactsDirty();
 	}
 }

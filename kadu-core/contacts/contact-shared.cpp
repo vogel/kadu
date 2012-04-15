@@ -28,6 +28,7 @@
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -65,6 +66,8 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 ContactShared::~ContactShared()
@@ -140,7 +143,7 @@ void ContactShared::aboutToBeRemoved()
 
 	deleteDetails();
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::store()
@@ -194,11 +197,6 @@ bool ContactShared::shouldStore()
 			|| customProperties()->shouldStore();
 }
 
-void ContactShared::emitUpdated()
-{
-	emit updated();
-}
-
 void ContactShared::addToBuddy()
 {
 	// dont add to buddy if details are not available
@@ -230,7 +228,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	addToBuddy();
 
 	setDirty(true);
-	dataUpdated();
+	changeNotifier()->notify();
 	emit buddyUpdated();
 }
 
@@ -249,7 +247,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
@@ -267,7 +265,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 
 	Details->ensureLoaded();
 
-	dataUpdated();
+	changeNotifier()->notify();
 
 	ContactManager::instance()->registerItem(this);
 	addToBuddy();
@@ -288,7 +286,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 
 	deleteDetails();
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::deleteDetails()
@@ -319,7 +317,7 @@ void ContactShared::setId(const QString &id)
 	Id = id;
 
 	setDirty(true);
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 const RosterEntry * ContactShared::rosterEntry() const
@@ -353,13 +351,13 @@ void ContactShared::setDirty(bool dirty)
 
 	Entry->setStatus(newStatus);
 
-	dataUpdated();
+	changeNotifier()->notify();
 	emit dirtinessChanged();
 }
 
 void ContactShared::avatarUpdated()
 {
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
@@ -392,7 +390,7 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 		return;
 
 	doSetContactAvatar(contactAvatar);
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 bool ContactShared::isAnonymous()
