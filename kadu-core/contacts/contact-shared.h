@@ -53,7 +53,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 
 	Status CurrentStatus;
 	bool Blocking;
-	bool Dirty;
 	bool IgnoreNextStatusChange;
 
 	QString ProtocolVersion;

@@ -54,7 +54,7 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid), Details(0),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
-		Blocking(false), Dirty(true), IgnoreNextStatusChange(false), Port(0)
+		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
 	ContactAccount = new Account();
@@ -104,11 +104,11 @@ void ContactShared::load()
 	Priority = loadValue<int>("Priority", -1);
 
 	bool hasDirty = hasValue("Dirty");
-	Dirty = loadValue<bool>("Dirty", true);
 
 	if (hasDirty)
 	{
-		Entry->setStatus(Dirty ? RosterEntryDirty : RosterEntrySynchronized);
+		bool dirty = loadValue<bool>("Dirty", true);
+		Entry->setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
 	}
 	else
 	{
@@ -154,7 +154,7 @@ void ContactShared::store()
 
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
-	storeValue("Dirty", Dirty);
+	removeValue("Dirty");
 
 	switch (Entry->status())
 	{
@@ -344,13 +344,15 @@ void ContactShared::setDirty(bool dirty)
 {
 	ensureLoaded();
 
-	if (RosterEntryDetached != Entry->status())
-		Entry->setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
-
-	if (Dirty == dirty)
+	if (RosterEntryDetached == Entry->status())
 		return;
 
-	Dirty = dirty;
+	RosterEntryStatus newStatus = dirty ? RosterEntryDirty : RosterEntrySynchronized;
+	if (newStatus == Entry->status())
+		return;
+
+	Entry->setStatus(newStatus);
+
 	dataUpdated();
 	emit dirtinessChanged();
 }
