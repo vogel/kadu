@@ -33,14 +33,14 @@
  * @enum RosterEntry
  * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
- * 
+ *
  * This class describes entry in local and remote roster and its synchronization status.
  */
 class RosterEntry : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(RosterEntry)
-	
+
 	RosterEntryStatus Status;
 
 public:
@@ -58,13 +58,22 @@ public:
 	 * @param status new value of Status property
 	 */
 	void setStatus(RosterEntryStatus status);
-	
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Get current value of Status property.
-	 * @return Current value of Status property.
+	 * @return current value of Status property
 	 */
 	RosterEntryStatus status() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if this entry required synchronization with server.
+	 * @return true if this entry required synchronization with server
+	 *
+	 * This method only returns true if status if equal to RosterEntryDirty.
+	 */
+	bool requiresSynchronization() const;
 
 };
 

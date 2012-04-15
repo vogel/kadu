@@ -39,3 +39,8 @@ RosterEntryStatus RosterEntry::status() const
 {
 	return Status;
 }
+
+bool RosterEntry::requiresSynchronization() const
+{
+	return RosterEntryDirty == Status;
+}
