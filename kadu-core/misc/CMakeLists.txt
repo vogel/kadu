@@ -1,4 +1,5 @@
 set (misc_SRCS
+	change-notifier.cpp
 	coding-conversion.cpp
 	date-time.cpp
 	date-time-parser-tags.cpp
@@ -8,6 +9,7 @@ set (misc_SRCS
 )
 
 set (misc_MOC_SRCS
+	change-notifier.h
 	syntax-list.h
 )
 
