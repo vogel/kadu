@@ -46,10 +46,6 @@ private:
 
 	void importEncrypt();
 
-private slots:
-	void encryptorDestroyed();
-	void decryptorDestroyed();
-
 public:
 	explicit EncryptionChatData(const Chat &chat, QObject *parent);
 	virtual ~EncryptionChatData();
