@@ -88,7 +88,7 @@ QVector<Contact> ContactListService::performAdds(const QMap<Buddy, Contact> &con
 	{
 		ContactManager::instance()->addItem(i.value());
 		i.value().setOwnerBuddy(i.key());
-		i.value().setDirty(false);
+		i.value().rosterEntry()->markDirty(false);
 		resultContacts.append(i.value());
 
 		Roster::instance()->addContact(i.value());
@@ -105,7 +105,7 @@ void ContactListService::performRenames(const QMap<Buddy, Contact> &contactsToRe
 		// do not remove now as theoretically it could be used in next loop run
 		buddiesToRemove.append(i.value().ownerBuddy());
 		i.value().setOwnerBuddy(i.key());
-		i.value().setDirty(false);
+		i.value().rosterEntry()->markDirty(false);
 	}
 
 	foreach (const Buddy &buddy, buddiesToRemove)
@@ -154,7 +154,7 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 						if (knownContact.ownerBuddy() != targetBuddy)
 							contactsToRename.insert(targetBuddy, knownContact);
 						else
-							knownContact.setDirty(false);
+							knownContact.rosterEntry()->markDirty(false);
 					}
 
 					personalInfoSourceBuddies.insert(targetBuddy, buddy);
@@ -212,7 +212,7 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 		{
 			// local dirty removed contacts are no longer dirty if they were absent on server
 			if (i->rosterEntry()->requiresSynchronization() && i->isAnonymous())
-				i->setDirty(false);
+				i->rosterEntry()->markDirty(false);
 
 			i = unImportedContacts.erase(i);
 		}

@@ -25,6 +25,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "services/jabber-subscription-service.h"
@@ -171,7 +172,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
 
 	// in case we return before next call of it
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 	ContactsForDelete.removeAll(contact);
 
 	if (contact == account().accountContact())
@@ -207,7 +208,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 		buddy.setGroups(groups);
 	}
 
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 
 	setState(originalState);
 
@@ -226,7 +227,7 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 
 	RosterService::removeContact(contact);
 
@@ -245,7 +246,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 		foreach (const Contact &contact, ContactsForDelete)
 		{
 			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-			contact.setDirty(false);
+			contact.rosterEntry()->markDirty(false);
 		}
 
 	setState(StateInitialized);
@@ -299,7 +300,7 @@ bool JabberRosterService::addContact(const Contact &contact)
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	rosterTask->go(true);
 
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 
 	setState(StateInitialized);
 
@@ -322,7 +323,7 @@ bool JabberRosterService::removeContact(const Contact &contact)
 	rosterTask->remove(contact.id());
 	rosterTask->go(true);
 
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 
 	setState(StateInitialized);
 

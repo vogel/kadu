@@ -37,6 +37,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "misc/change-notifier.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "storage/storage-point.h"
 
 #include "buddy-shared.h"
@@ -519,7 +520,8 @@ void BuddyShared::markContactsDirty()
 	ensureLoaded();
 
 	foreach (const Contact &contact, Contacts)
-		contact.setDirty(true);
+		if (contact.rosterEntry())
+			contact.rosterEntry()->markDirty(true);
 }
 
 quint16 BuddyShared::unreadMessagesCount()

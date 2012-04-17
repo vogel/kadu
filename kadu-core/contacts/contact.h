@@ -82,9 +82,8 @@ public:
 	 *
 	 * This method only returns null value for null contact.
 	 */
-	const RosterEntry * rosterEntry() const;
+	RosterEntry * rosterEntry() const;
 
-	KaduSharedBase_PropertyBoolWrite(Dirty)
 	KaduSharedBase_PropertyCRW(QString, protocolVersion, ProtocolVersion)
 	KaduSharedBase_PropertyCRW(QHostAddress, address, Address)
 	KaduSharedBase_Property(unsigned int, port, Port)

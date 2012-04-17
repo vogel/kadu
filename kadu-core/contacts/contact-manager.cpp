@@ -131,12 +131,15 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 
 void ContactManager::itemRegistered(Contact item)
 {
+	if (!item)
+		return;
+
 	QMutexLocker locker(&mutex());
 
 	emit contactAdded(item);
 
 	if (Core::instance()->myself() == item.ownerBuddy())
-		item.setDirty(false);
+		item.rosterEntry()->markDirty(false);
 	else if (item && item.rosterEntry()->requiresSynchronization())
 	{
 		DirtyContacts.append(item);
@@ -193,7 +196,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.setDirty(false);
+	contact.rosterEntry()->markDirty(false);
 
 	return contact;
 }

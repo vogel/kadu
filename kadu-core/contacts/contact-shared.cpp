@@ -229,7 +229,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	setDirty(true);
+	Entry->markDirty(true);
 	changeNotifier()->notify();
 	emit buddyUpdated();
 }
@@ -318,18 +318,20 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
-	setDirty(true);
+	Entry->markDirty(true);
 	changeNotifier()->notify();
 }
 
-const RosterEntry * ContactShared::rosterEntry()
+RosterEntry * ContactShared::rosterEntry()
 {
 	ensureLoaded();
 
 	return Entry;
 }
 
-/**
+/*
+ * @todo: move this comment somewhere
+ *
  * Sets state if this contact to \p dirty. All contacts are dirty by default.
  *
  * Dirty contacts with anonymous owner buddies are considered dirty removed and will
@@ -342,13 +344,6 @@ const RosterEntry * ContactShared::rosterEntry()
  * to mark them not dirty, otherwise they will be considered dirty removed and will
  * not be added to roster if remote roster says so, which is probably not what one expects.
  */
-void ContactShared::setDirty(bool dirty)
-{
-	ensureLoaded();
-
-	changeNotifier()->notify();
-	Entry->markDirty(dirty);
-}
 
 void ContactShared::avatarUpdated()
 {

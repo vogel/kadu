@@ -115,7 +115,7 @@ KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Sta
 KaduSharedBase_PropertyBoolDef(Contact, Blocking, false)
 KaduSharedBase_PropertyDef(Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
 
-const RosterEntry * Contact::rosterEntry() const
+RosterEntry * Contact::rosterEntry() const
 {
 	if (isNull())
 		return 0;
@@ -123,7 +123,6 @@ const RosterEntry * Contact::rosterEntry() const
 		return data()->rosterEntry();
 }
 
-KaduSharedBase_PropertyBoolWriteDef(Contact, Dirty)
 KaduSharedBase_PropertyDefCRW(Contact, QString, protocolVersion, ProtocolVersion, QString())
 KaduSharedBase_PropertyDefCRW(Contact, QHostAddress, address, Address, QHostAddress())
 KaduSharedBase_PropertyDef(Contact, unsigned int, port, Port, 0)

@@ -104,9 +104,7 @@ public:
 	 *
 	 * This method never returns null entry.
 	 */
-	const RosterEntry * rosterEntry();
-
-	void setDirty(bool dirty);
+	RosterEntry * rosterEntry();
 
 	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
 

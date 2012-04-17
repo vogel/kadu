@@ -30,6 +30,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "misc/misc.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "helpers/gadu-list-helper.h"
@@ -138,7 +139,7 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 			// there is potential possibility that something changed after we sent request but before getting reply
 			// TODO: fix it
 			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(Protocol->account()))
-				contact.setDirty(false);
+				contact.rosterEntry()->markDirty(false);
 
 			emit stateMachineSucceededExporting();
 
