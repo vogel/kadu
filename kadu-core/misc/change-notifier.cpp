@@ -56,3 +56,8 @@ void ChangeNotifier::notify()
 
 	Changed = true;
 }
+
+void ChangeNotifier::forget()
+{
+	Changed = false;
+}

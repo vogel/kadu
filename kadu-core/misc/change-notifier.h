@@ -79,6 +79,15 @@ public slots:
 	 */
 	void notify();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Forget about all changes.
+	 *
+	 * Forget about all changes. Call this method between block() and unblock() to forget about all changes made up to this moment. In
+	 * that case no changed() signal will be emitted.
+	 */
+	void forget();
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
