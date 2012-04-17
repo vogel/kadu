@@ -17,12 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/change-notifier.h"
 #include "protocols/services/roster/roster-entry-status.h"
 
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), Status(RosterEntryUnkown)
+		QObject(parent), Status(RosterEntryUnkown), StatusChangeNotifier(new ChangeNotifier(this))
 {
 }
 
@@ -32,12 +33,21 @@ RosterEntry::~RosterEntry()
 
 void RosterEntry::setStatus(RosterEntryStatus status)
 {
+	if (Status == status)
+		return;
+
 	Status = status;
+	StatusChangeNotifier->notify();
 }
 
 RosterEntryStatus RosterEntry::status() const
 {
 	return Status;
+}
+
+ChangeNotifier * RosterEntry::statusChangeNotifier() const
+{
+	return StatusChangeNotifier;
 }
 
 bool RosterEntry::requiresSynchronization() const
@@ -50,5 +60,5 @@ void RosterEntry::markDirty(bool dirty)
 	if (RosterEntryDetached == Status)
 		return;
 
-	Status = dirty ? RosterEntryDirty : RosterEntrySynchronized;
+	setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
 }

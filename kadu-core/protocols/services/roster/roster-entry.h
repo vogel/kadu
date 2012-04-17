@@ -24,6 +24,8 @@
 
 #include "protocols/services/roster/roster-entry-status.h"
 
+class ChangeNotifier;
+
 /**
  * @addtogroup Protocol
  * @{
@@ -42,6 +44,7 @@ class RosterEntry : public QObject
 	Q_DISABLE_COPY(RosterEntry)
 
 	RosterEntryStatus Status;
+	ChangeNotifier *StatusChangeNotifier;
 
 public:
 	/**
@@ -65,6 +68,16 @@ public:
 	 * @return current value of Status property
 	 */
 	RosterEntryStatus status() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Get change notifier for Status property.
+	 * @return change notifier of Status property
+	 *
+	 * Use this getter to obtain change notifier object for Status property. Each time Status property value changes this object will
+	 * emit its changed() signal.
+	 */
+	ChangeNotifier * statusChangeNotifier() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
