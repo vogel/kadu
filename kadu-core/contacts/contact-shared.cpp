@@ -58,6 +58,8 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
+	connect(Entry->statusChangeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
@@ -344,17 +346,8 @@ void ContactShared::setDirty(bool dirty)
 {
 	ensureLoaded();
 
-	if (RosterEntryDetached == Entry->status())
-		return;
-
-	RosterEntryStatus newStatus = dirty ? RosterEntryDirty : RosterEntrySynchronized;
-	if (newStatus == Entry->status())
-		return;
-
-	Entry->setStatus(newStatus);
-
 	changeNotifier()->notify();
-	emit dirtinessChanged();
+	Entry->markDirty(dirty);
 }
 
 void ContactShared::avatarUpdated()
