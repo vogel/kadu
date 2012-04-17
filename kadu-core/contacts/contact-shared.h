@@ -104,7 +104,7 @@ public:
 	 *
 	 * This method never returns null entry.
 	 */
-	const RosterEntry * rosterEntry() const;
+	const RosterEntry * rosterEntry();
 
 	void setDirty(bool dirty);
 

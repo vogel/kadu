@@ -320,8 +320,10 @@ void ContactShared::setId(const QString &id)
 	changeNotifier()->notify();
 }
 
-const RosterEntry * ContactShared::rosterEntry() const
+const RosterEntry * ContactShared::rosterEntry()
 {
+	ensureLoaded();
+
 	return Entry;
 }
 
