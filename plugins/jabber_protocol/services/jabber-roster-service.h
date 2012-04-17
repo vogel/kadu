@@ -34,6 +34,7 @@ namespace XMPP
 {
 
 class Client;
+class JT_Roster;
 class RosterItem;
 
 class JabberRosterService : public RosterService
@@ -43,11 +44,13 @@ class JabberRosterService : public RosterService
 	Client *XmppClient;
 
 	QList<Contact> ContactsForDelete;
+	QMap<JT_Roster *, Contact> ContactForTask;
 
 	static QStringList buddyGroups(const Buddy &buddy);
 	static const QString & itemDisplay(const RosterItem &item);
 
 	Buddy itemBuddy(const RosterItem &item, const Contact &contact);
+	JT_Roster * createContactTask(const Contact &contact);
 
 	void connectToClient();
 	void disconnectFromClient();
@@ -57,6 +60,10 @@ private slots:
 
 	void contactUpdated(const RosterItem &item);
 	void contactDeleted(const RosterItem &item);
+
+	void rosterTaskFinished();
+	void rosterTaskDeleted(QObject *object);
+
 	void rosterRequestFinished(bool success);
 
 protected:

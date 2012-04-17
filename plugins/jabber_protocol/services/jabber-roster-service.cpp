@@ -140,6 +140,17 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 	return buddy;
 }
 
+JT_Roster * JabberRosterService::createContactTask(const Contact& contact)
+{
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	connect(rosterTask, SIGNAL(finished()), this, SLOT(rosterTaskFinished()));
+	connect(rosterTask, SIGNAL(destroyed(QObject*)), this, SLOT(rosterTaskDeleted(QObject*)));
+
+	ContactForTask.insert(rosterTask, contact);
+
+	return rosterTask;
+}
+
 void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
@@ -234,6 +245,39 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 	setState(originalState);
 }
 
+void JabberRosterService::rosterTaskFinished()
+{
+	XMPP::JT_Roster *rosterTask = qobject_cast<XMPP::JT_Roster *>(sender());
+	if (!rosterTask)
+		return;
+
+	if (!ContactForTask.contains(rosterTask))
+		return;
+
+	Contact contact = ContactForTask.value(rosterTask);
+	if (!contact || !contact.rosterEntry())
+		return;
+
+	if (rosterTask->success())
+	{
+		contact.rosterEntry()->markDirty(false);
+		return;
+	}
+
+	XMPP::Stanza::Error error;
+	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
+		contact.rosterEntry()->setStatus(RosterEntryDetached);
+}
+
+void JabberRosterService::rosterTaskDeleted(QObject* object)
+{
+	XMPP::JT_Roster *rosterTask = qobject_cast<XMPP::JT_Roster *>(object);
+	if (!rosterTask)
+		return;
+
+	ContactForTask.remove(rosterTask);
+}
+
 void JabberRosterService::rosterRequestFinished(bool success)
 {
 	kdebugf();
@@ -291,16 +335,17 @@ bool JabberRosterService::addContact(const Contact &contact)
 	if (!RosterService::addContact(contact))
 		return false;
 
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return true;
+
 	setState(StateProcessingLocalUpdate);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	rosterTask->go(true);
-
-	contact.rosterEntry()->markDirty(false);
 
 	setState(StateInitialized);
 
@@ -317,13 +362,14 @@ bool JabberRosterService::removeContact(const Contact &contact)
 	if (!RosterService::removeContact(contact))
 		return false;
 
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return true;
+
 	setState(StateProcessingLocalUpdate);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	rosterTask->remove(contact.id());
 	rosterTask->go(true);
-
-	contact.rosterEntry()->markDirty(false);
 
 	setState(StateInitialized);
 
@@ -337,9 +383,12 @@ void JabberRosterService::updateContact(const Contact &contact)
 
 	Q_ASSERT(StateInitialized == state());
 
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
 	setState(StateProcessingLocalUpdate);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient->rootTask());
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 	rosterTask->go(true);
 
