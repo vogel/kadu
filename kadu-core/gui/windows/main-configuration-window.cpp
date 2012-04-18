@@ -191,6 +191,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 #ifndef Q_WS_X11
 	widget()->widgetById("windowActivationMethod")->hide();
+#endif
+
+#if !defined(Q_WS_X11) && !defined(Q_WS_WIN)
 	widget()->widgetById("notify/fullscreenSilentMode")->hide();
 #endif
 

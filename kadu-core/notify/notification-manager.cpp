@@ -82,6 +82,31 @@
 #undef Status            // and Status defined by Xlib.h must be undefined
 #endif
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+
+static bool win32_checkFullScreen()
+{
+	HWND hWnd = GetForegroundWindow();
+	if (NULL == hWnd)
+		return false;
+
+	int cx = GetSystemMetrics(SM_CXSCREEN);
+	int cy = GetSystemMetrics(SM_CYSCREEN);
+	RECT r;
+	GetWindowRect(hWnd, &r);
+
+	return (r.right - r.left == cx && r.bottom - r.top == cy);
+}
+
+static bool win32_isScreenSaverRunning()
+{
+    BOOL ret;
+    SystemParametersInfo(SPI_GETSCREENSAVERRUNNING, 0, &ret, 0);
+    return (0 != ret);
+}
+#endif
+
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
 NotificationManager *NotificationManager::Instance = 0;
@@ -562,7 +587,7 @@ void NotificationManager::configurationUpdated()
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
 	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if (defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)) || defined(Q_WS_WIN)
 	if (SilentModeWhenFullscreen)
 		FullScreenCheckTimer.start();
 	else
@@ -607,9 +632,17 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 
 void NotificationManager::checkFullScreen()
 {
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if (defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)) || defined(Q_WS_WIN)
 	bool wasSilent = silentMode();
-	IsFullScreen = X11_checkFullScreen(x11display) && (!isScreenSaverRunning());
+
+	IsFullScreen = 
+# if !defined(Q_WS_WIN)
+			X11_checkFullScreen(x11display)
+# else
+			win32_checkFullScreen()
+# endif
+			&& (!isScreenSaverRunning());
+
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
 #endif
@@ -648,6 +681,8 @@ bool NotificationManager::isScreenSaverRunning()
 				return true;
 		}
 	}
+#elif defined(Q_WS_WIN)
+	return win32_isScreenSaverRunning();
 #endif
 	// no screensaver
 	return false;
