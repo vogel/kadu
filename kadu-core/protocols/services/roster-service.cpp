@@ -24,6 +24,7 @@
  */
 
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "roster-service.h"
 
@@ -46,24 +47,23 @@ void RosterService::disconnected()
 
 void RosterService::contactUpdated()
 {
-	Contact contact(sender());
+	// TODO abstraction leak
+	Q_ASSERT(sender()); // ChangeNotifier
+	Q_ASSERT(sender()->parent()); // RosterEntry
+	Q_ASSERT(sender()->parent()->parent()); // ContactShared
+
+	Contact contact(sender()->parent()->parent());
 
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
 
-	if (StateInitialized == State)
+	if (canPerformLocalUpdate())
 		updateContact(contact);
 }
 
 bool RosterService::canPerformLocalUpdate() const
 {
-	if (StateInitialized != State)
-		return false;
-
-	// we reset State on disconnected signal
-	Q_ASSERT(protocol()->isConnected());
-
-	return true;
+	return protocol()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
 }
 
 void RosterService::setState(RosterState state)
@@ -77,8 +77,7 @@ bool RosterService::addContact(const Contact &contact)
 		return false;
 
 	Contacts.append(contact);
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	connect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
+	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
 
 	return true;
 }
@@ -88,8 +87,7 @@ bool RosterService::removeContact(const Contact &contact)
 	if (!Contacts.contains(contact))
 		return false;
 
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	disconnect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
+	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
 	Contacts.removeAll(contact);
 
 	return true;

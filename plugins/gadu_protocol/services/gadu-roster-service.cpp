@@ -153,8 +153,6 @@ bool GaduRosterService::addContact(const Contact &contact)
 	        account().accountContact() == contact)
 		return false;
 
-	Q_ASSERT(StateInitialized == state());
-
 	if (!RosterService::addContact(contact))
 		return false;
 
@@ -172,8 +170,6 @@ bool GaduRosterService::removeContact(const Contact &contact)
 	        account().accountContact() == contact)
 		return false;
 
-	Q_ASSERT(StateInitialized == state());
-
 	if (!RosterService::removeContact(contact))
 		return false;
 
@@ -190,8 +186,6 @@ void GaduRosterService::updateContact(const Contact &contact)
 	        account() != contact.contactAccount() ||
 	        account().accountContact() == contact)
 		return;
-
-	Q_ASSERT(StateInitialized == state());
 
 	setState(StateProcessingLocalUpdate);
 	sendNewFlags(contact, notifyTypeFromContact(contact));

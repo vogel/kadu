@@ -136,7 +136,7 @@ protected slots:
 	/**
 	 * @enum RosterState
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called when data of contact or contact's owner buddy changed.
+	 * @short Method called when contact's dirtness is changed.
 	 *
 	 * This method is only called for contacts that were previously added to roster using addContact() methods
 	 * and were not removed and state of roster service is StateInitialized.

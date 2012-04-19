@@ -204,6 +204,8 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 		return;
 	}
 
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
+
 	Buddy buddy = itemBuddy(item, contact);
 	BuddyManager::instance()->addItem(buddy);
 
@@ -237,6 +239,8 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 	setState(StateProcessingRemoteUpdate);
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
+
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
 	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
@@ -332,8 +336,6 @@ bool JabberRosterService::addContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
 		return false;
 
-	Q_ASSERT(StateInitialized == state());
-
 	if (!RosterService::addContact(contact))
 		return false;
 
@@ -341,6 +343,8 @@ bool JabberRosterService::addContact(const Contact &contact)
 		return true;
 
 	setState(StateProcessingLocalUpdate);
+
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
 	contact.setIgnoreNextStatusChange(true);
@@ -359,8 +363,6 @@ bool JabberRosterService::removeContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != account())
 		return false;
 
-	Q_ASSERT(StateInitialized == state());
-
 	if (!RosterService::removeContact(contact))
 		return false;
 
@@ -368,6 +370,8 @@ bool JabberRosterService::removeContact(const Contact &contact)
 		return true;
 
 	setState(StateProcessingLocalUpdate);
+
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
 	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	rosterTask->remove(contact.id());
@@ -383,12 +387,12 @@ void JabberRosterService::updateContact(const Contact &contact)
 	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
-	Q_ASSERT(StateInitialized == state());
-
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
 	setState(StateProcessingLocalUpdate);
+
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
 	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
