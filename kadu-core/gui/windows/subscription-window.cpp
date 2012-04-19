@@ -59,7 +59,7 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	if (knownContact)
 		CurrentContact = knownContact;
 	else if (CurrentContact)
-		CurrentContact.rosterEntry()->markDirty(false);
+		CurrentContact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);

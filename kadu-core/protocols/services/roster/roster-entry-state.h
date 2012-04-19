@@ -30,7 +30,7 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Description of state of roster entry.
  *
- * This enum describes state of roster entry that can be either synchronized with remote entry, require an update on can be detached from remote roster.
+ * This enum describes state of roster entry that can be either synchronized, desynchronized or synchronizing with remote entry.
  */
 enum RosterEntryState
 {
@@ -45,12 +45,11 @@ enum RosterEntryState
 	/**
 	 * Entries with this state have different value on local and remote roster. At first opportunity new value must be sent to remote roster.
 	 */
-	RosterEntryDirty,
+	RosterEntryDesynchronized,
 	/**
-	 * Entries with this state are detached from remote roster. No updated are synchronized between remote and local roster.
-	 * For example, Facebook contacts can have updated Display name, but on local roster it can be changed.
+	 * Entries with this state are being synchronized with remote server.
 	 */
-	RosterEntryDetached
+	RosterEntrySynchronizing
 };
 
 /**

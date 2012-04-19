@@ -36,7 +36,8 @@ class ChangeNotifier;
  * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
  *
- * This class describes entry in local and remote roster and its synchronization state.
+ * This class describes entry in local and remote roster and its synchronization state. It also has Detached flag. When Detached flag is true
+ * no synchronization is made between local and remote roster.
  */
 class RosterEntry : public QObject
 {
@@ -44,13 +45,16 @@ class RosterEntry : public QObject
 	Q_DISABLE_COPY(RosterEntry)
 
 	RosterEntryState State;
-	ChangeNotifier *StateChangeNotifier;
+	bool Detached;
+	ChangeNotifier *MyChangeNotifier;
 
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new RosterEntry instance.
 	 * @param paretn QObject parent of new instance
+	 *
+	 * New instance has Detached property set to false and RosterEntryUnkown synchronization state.
 	 */
 	explicit RosterEntry(QObject *parent = 0);
 	virtual ~RosterEntry();
@@ -71,34 +75,35 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get change notifier for State property.
-	 * @return change notifier of State property
-	 *
-	 * Use this getter to obtain change notifier object for State property. Each time State property value changes this object will
-	 * emit its changed() signal.
+	 * @short Set new value of Detached property.
+	 * @param detached new value of Detached property
 	 */
-	ChangeNotifier * stateChangeNotifier() const;
+	void setDetached(bool detached);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Get current value of Detached property.
+	 * @return current value of Detached property
+	 */
+	bool detached() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Get change notifier for this object.
+	 * @return change notifier of this object
+	 *
+	 * Each time a property of this object changes returned ChangeNotifier will emit chagned() signal.
+	 */
+	ChangeNotifier * changeNotifier() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Check if this entry required synchronization with server.
 	 * @return true if this entry required synchronization with server
 	 *
-	 * This method only returns true if state if equal to RosterEntryDirty.
+	 * This method only returns true if state if RosterEntryDesynchronized and this entry is not Detached.
 	 */
 	bool requiresSynchronization() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set state to Dirty/Synchronized if not Detached.
-	 * @param dirty dirntess flag
-	 *
-	 * If State of this RosterEntry is set to RosterStateDetached nothing changes. In other cases
-	 * State is set to RosterStateDirty if Dirty is true and RosterStateSynchronized otherwise.
-	 *
-	 * To change state from RosterStateDetached use setState() directly.
-	 */
-	void markDirty(bool dirty);
 
 };
 

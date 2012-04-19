@@ -183,7 +183,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
 
 	// in case we return before next call of it
-	contact.rosterEntry()->markDirty(false);
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 	ContactsForDelete.removeAll(contact);
 
 	if (contact == account().accountContact())
@@ -219,7 +219,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 		buddy.setGroups(groups);
 	}
 
-	contact.rosterEntry()->markDirty(false);
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	setState(originalState);
 
@@ -238,7 +238,7 @@ void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-	contact.rosterEntry()->markDirty(false);
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	RosterService::removeContact(contact);
 
@@ -260,13 +260,15 @@ void JabberRosterService::rosterTaskFinished()
 
 	if (rosterTask->success())
 	{
-		contact.rosterEntry()->markDirty(false);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 		return;
 	}
 
 	XMPP::Stanza::Error error;
 	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
-		contact.rosterEntry()->setState(RosterEntryDetached);
+		contact.rosterEntry()->setDetached(true);
+
+	contact.rosterEntry()->setState(RosterEntryDesynchronized);
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
@@ -290,7 +292,7 @@ void JabberRosterService::rosterRequestFinished(bool success)
 		foreach (const Contact &contact, ContactsForDelete)
 		{
 			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-			contact.rosterEntry()->markDirty(false);
+			contact.rosterEntry()->setState(RosterEntrySynchronized);
 		}
 
 	setState(StateInitialized);

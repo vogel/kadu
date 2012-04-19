@@ -243,7 +243,7 @@ void OpenChatWith::openChat()
 		}
 		else
 		{
-			it->rosterEntry()->markDirty(false);
+			it->rosterEntry()->setState(RosterEntrySynchronized);
 			ContactManager::instance()->addItem(*it);
 			++it;
 		}

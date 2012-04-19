@@ -58,7 +58,7 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
-	connect(Entry->stateChangeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+	connect(Entry->changeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
 
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
@@ -108,23 +108,11 @@ void ContactShared::load()
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
 
-	bool hasDirty = hasValue("Dirty");
-
-	if (hasDirty)
-	{
-		bool dirty = loadValue<bool>("Dirty", true);
-		Entry->setState(dirty ? RosterEntryDirty : RosterEntrySynchronized);
-	}
+	if (loadValue<bool>("Dirty", true))
+		Entry->setState(RosterEntryDesynchronized);
 	else
-	{
-		QString status = loadValue<QString>("Status", "Dirty");
-		if (status == "Synchronized")
-			Entry->setState(RosterEntrySynchronized);
-		else if (status == "Dirty")
-			Entry->setState(RosterEntryDirty);
-		else if (status == "Detached")
-			Entry->setState(RosterEntryDetached);
-	}
+		Entry->setState(RosterEntrySynchronized);
+	Entry->setDetached(loadValue<bool>("Detached", false));
 
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
@@ -159,23 +147,9 @@ void ContactShared::store()
 
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
-	removeValue("Dirty");
 
-	switch (Entry->state())
-	{
-		case RosterEntrySynchronized:
-			storeValue("Status", "Synchronized");
-			break;
-		case RosterEntryDirty:
-			storeValue("Status", "Dirty");
-			break;
-		case RosterEntryDetached:
-			storeValue("Status", "Detached");
-			break;
-		default:
-			removeValue("Status");
-			break;
-	}
+	storeValue("Dirty", RosterEntrySynchronized != Entry->state());
+	storeValue("Detached", Entry->detached());
 
 	storeValue("Account", ContactAccount->uuid().toString());
 	storeValue("Buddy", !isAnonymous()
@@ -229,7 +203,7 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	Entry->markDirty(true);
+	Entry->setState(RosterEntryDesynchronized);
 	changeNotifier()->notify();
 	emit buddyUpdated();
 }
@@ -318,7 +292,7 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
-	Entry->markDirty(true);
+	Entry->setState(RosterEntryDesynchronized);
 	changeNotifier()->notify();
 }
 

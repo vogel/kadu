@@ -23,7 +23,7 @@
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), State(RosterEntryUnkown), StateChangeNotifier(new ChangeNotifier(this))
+		QObject(parent), State(RosterEntryUnkown), Detached(false), MyChangeNotifier(new ChangeNotifier(this))
 {
 }
 
@@ -37,7 +37,7 @@ void RosterEntry::setState(RosterEntryState state)
 		return;
 
 	State = state;
-	StateChangeNotifier->notify();
+	MyChangeNotifier->notify();
 }
 
 RosterEntryState RosterEntry::state() const
@@ -45,20 +45,26 @@ RosterEntryState RosterEntry::state() const
 	return State;
 }
 
-ChangeNotifier * RosterEntry::stateChangeNotifier() const
+void RosterEntry::setDetached(bool detached)
 {
-	return StateChangeNotifier;
+	if (Detached == detached)
+		return;
+
+	Detached = detached;
+	MyChangeNotifier->notify();
+}
+
+bool RosterEntry::detached() const
+{
+	return Detached;
+}
+
+ChangeNotifier * RosterEntry::changeNotifier() const
+{
+	return MyChangeNotifier;
 }
 
 bool RosterEntry::requiresSynchronization() const
 {
-	return RosterEntryDirty == State;
-}
-
-void RosterEntry::markDirty(bool dirty)
-{
-	if (RosterEntryDetached == State)
-		return;
-
-	setState(dirty ? RosterEntryDirty : RosterEntrySynchronized);
+	return !Detached && RosterEntryDesynchronized == State;
 }

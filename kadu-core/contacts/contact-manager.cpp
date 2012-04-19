@@ -139,7 +139,7 @@ void ContactManager::itemRegistered(Contact item)
 	emit contactAdded(item);
 
 	if (Core::instance()->myself() == item.ownerBuddy())
-		item.rosterEntry()->markDirty(false);
+		item.rosterEntry()->setState(RosterEntrySynchronized);
 	else if (item && item.rosterEntry()->requiresSynchronization())
 	{
 		DirtyContacts.append(item);
@@ -196,7 +196,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.rosterEntry()->markDirty(false);
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	return contact;
 }

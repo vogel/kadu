@@ -521,7 +521,7 @@ void BuddyShared::markContactsDirty()
 
 	foreach (const Contact &contact, Contacts)
 		if (contact.rosterEntry())
-			contact.rosterEntry()->markDirty(true);
+			contact.rosterEntry()->setState(RosterEntryDesynchronized);
 }
 
 quint16 BuddyShared::unreadMessagesCount()
