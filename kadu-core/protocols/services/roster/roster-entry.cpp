@@ -18,12 +18,12 @@
  */
 
 #include "misc/change-notifier.h"
-#include "protocols/services/roster/roster-entry-status.h"
+#include "protocols/services/roster/roster-entry-state.h"
 
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), Status(RosterEntryUnkown), StatusChangeNotifier(new ChangeNotifier(this))
+		QObject(parent), State(RosterEntryUnkown), StateChangeNotifier(new ChangeNotifier(this))
 {
 }
 
@@ -31,34 +31,34 @@ RosterEntry::~RosterEntry()
 {
 }
 
-void RosterEntry::setStatus(RosterEntryStatus status)
+void RosterEntry::setState(RosterEntryState state)
 {
-	if (Status == status)
+	if (State == state)
 		return;
 
-	Status = status;
-	StatusChangeNotifier->notify();
+	State = state;
+	StateChangeNotifier->notify();
 }
 
-RosterEntryStatus RosterEntry::status() const
+RosterEntryState RosterEntry::state() const
 {
-	return Status;
+	return State;
 }
 
-ChangeNotifier * RosterEntry::statusChangeNotifier() const
+ChangeNotifier * RosterEntry::stateChangeNotifier() const
 {
-	return StatusChangeNotifier;
+	return StateChangeNotifier;
 }
 
 bool RosterEntry::requiresSynchronization() const
 {
-	return RosterEntryDirty == Status;
+	return RosterEntryDirty == State;
 }
 
 void RosterEntry::markDirty(bool dirty)
 {
-	if (RosterEntryDetached == Status)
+	if (RosterEntryDetached == State)
 		return;
 
-	setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
+	setState(dirty ? RosterEntryDirty : RosterEntrySynchronized);
 }

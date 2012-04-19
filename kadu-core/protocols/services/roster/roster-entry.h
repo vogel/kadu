@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 
-#include "protocols/services/roster/roster-entry-status.h"
+#include "protocols/services/roster/roster-entry-state.h"
 
 class ChangeNotifier;
 
@@ -36,15 +36,15 @@ class ChangeNotifier;
  * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
  *
- * This class describes entry in local and remote roster and its synchronization status.
+ * This class describes entry in local and remote roster and its synchronization state.
  */
 class RosterEntry : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(RosterEntry)
 
-	RosterEntryStatus Status;
-	ChangeNotifier *StatusChangeNotifier;
+	RosterEntryState State;
+	ChangeNotifier *StateChangeNotifier;
 
 public:
 	/**
@@ -57,46 +57,46 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new value of Status property.
-	 * @param status new value of Status property
+	 * @short Set new value of State property.
+	 * @param state new value of State property
 	 */
-	void setStatus(RosterEntryStatus status);
+	void setState(RosterEntryState state);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get current value of Status property.
-	 * @return current value of Status property
+	 * @short Get current value of State property.
+	 * @return current value of State property
 	 */
-	RosterEntryStatus status() const;
+	RosterEntryState state() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get change notifier for Status property.
-	 * @return change notifier of Status property
+	 * @short Get change notifier for State property.
+	 * @return change notifier of State property
 	 *
-	 * Use this getter to obtain change notifier object for Status property. Each time Status property value changes this object will
+	 * Use this getter to obtain change notifier object for State property. Each time State property value changes this object will
 	 * emit its changed() signal.
 	 */
-	ChangeNotifier * statusChangeNotifier() const;
+	ChangeNotifier * stateChangeNotifier() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Check if this entry required synchronization with server.
 	 * @return true if this entry required synchronization with server
 	 *
-	 * This method only returns true if status if equal to RosterEntryDirty.
+	 * This method only returns true if state if equal to RosterEntryDirty.
 	 */
 	bool requiresSynchronization() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set status to Dirty/Synchronized if not Detached.
+	 * @short Set state to Dirty/Synchronized if not Detached.
 	 * @param dirty dirntess flag
 	 *
-	 * If Status of this RosterEntry is set to RosterStatusDetached nothing changes. In other cases
-	 * Status is set to RosterStatusDirty if Dirty is true and RosterStatusSynchronized otherwise.
+	 * If State of this RosterEntry is set to RosterStateDetached nothing changes. In other cases
+	 * State is set to RosterStateDirty if Dirty is true and RosterStateSynchronized otherwise.
 	 *
-	 * To change status from RosterStatusDetached use setStatus() directly.
+	 * To change state from RosterStateDetached use setState() directly.
 	 */
 	void markDirty(bool dirty);
 

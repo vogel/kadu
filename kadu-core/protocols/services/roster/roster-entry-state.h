@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ROSTER_ENTRY_STATUS_H
-#define ROSTER_ENTRY_STATUS_H
+#ifndef ROSTER_ENTRY_STATE_H
+#define ROSTER_ENTRY_STATE_H
 
 /**
  * @addtogroup Protocol
@@ -26,28 +26,28 @@
  */
 
 /**
- * @enum RosterEntryStatus
+ * @enum RosterEntryState
  * @author Rafał 'Vogel' Malinowski
- * @short Description of status of roster entry.
- * 
- * This enum describes status of roster entry that can be either synchronized with remote entry, require an update on can be detached from remote roster.
+ * @short Description of state of roster entry.
+ *
+ * This enum describes state of roster entry that can be either synchronized with remote entry, require an update on can be detached from remote roster.
  */
-enum RosterEntryStatus
+enum RosterEntryState
 {
 	/**
-	 * Unkown, not yet set status.
+	 * Unkown, not yet set state.
 	 */
 	RosterEntryUnkown,
 	/**
-	 * Entries with this status have the same value on local and remote roster. When remote roster sends an update then local value must be updated as well.
+	 * Entries with this state have the same value on local and remote roster. When remote roster sends an update then local value must be updated as well.
 	 */
 	RosterEntrySynchronized,
 	/**
-	 * Entries with this status have different value on local and remote roster. At first opportunity new value must be sent to remote roster.
+	 * Entries with this state have different value on local and remote roster. At first opportunity new value must be sent to remote roster.
 	 */
 	RosterEntryDirty,
 	/**
-	 * Entries with this status are detached from remote roster. No updated are synchronized between remote and local roster.
+	 * Entries with this state are detached from remote roster. No updated are synchronized between remote and local roster.
 	 * For example, Facebook contacts can have updated Display name, but on local roster it can be changed.
 	 */
 	RosterEntryDetached
@@ -57,4 +57,4 @@ enum RosterEntryStatus
  * @}
  */
 
-#endif // ROSTER_ENTRY_STATUS_H
+#endif // ROSTER_ENTRY_STATE_H

@@ -266,7 +266,7 @@ void JabberRosterService::rosterTaskFinished()
 
 	XMPP::Stanza::Error error;
 	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
-		contact.rosterEntry()->setStatus(RosterEntryDetached);
+		contact.rosterEntry()->setState(RosterEntryDetached);
 }
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)

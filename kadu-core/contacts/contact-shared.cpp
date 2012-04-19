@@ -58,7 +58,7 @@ ContactShared::ContactShared(const QUuid &uuid) :
 		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
 	Entry = new RosterEntry(this);
-	connect(Entry->statusChangeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+	connect(Entry->stateChangeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
 
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
@@ -113,17 +113,17 @@ void ContactShared::load()
 	if (hasDirty)
 	{
 		bool dirty = loadValue<bool>("Dirty", true);
-		Entry->setStatus(dirty ? RosterEntryDirty : RosterEntrySynchronized);
+		Entry->setState(dirty ? RosterEntryDirty : RosterEntrySynchronized);
 	}
 	else
 	{
 		QString status = loadValue<QString>("Status", "Dirty");
 		if (status == "Synchronized")
-			Entry->setStatus(RosterEntrySynchronized);
+			Entry->setState(RosterEntrySynchronized);
 		else if (status == "Dirty")
-			Entry->setStatus(RosterEntryDirty);
+			Entry->setState(RosterEntryDirty);
 		else if (status == "Detached")
-			Entry->setStatus(RosterEntryDetached);
+			Entry->setState(RosterEntryDetached);
 	}
 
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
@@ -161,7 +161,7 @@ void ContactShared::store()
 	storeValue("Priority", Priority);
 	removeValue("Dirty");
 
-	switch (Entry->status())
+	switch (Entry->state())
 	{
 		case RosterEntrySynchronized:
 			storeValue("Status", "Synchronized");
