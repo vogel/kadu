@@ -277,11 +277,7 @@ void JabberRosterService::rosterTaskFinished()
 
 void JabberRosterService::rosterTaskDeleted(QObject* object)
 {
-	XMPP::JT_Roster *rosterTask = qobject_cast<XMPP::JT_Roster *>(object);
-	if (!rosterTask)
-		return;
-
-	ContactForTask.remove(rosterTask);
+	ContactForTask.remove(static_cast<XMPP::JT_Roster *>(object));
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
