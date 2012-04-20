@@ -41,7 +41,7 @@ class JabberRosterService : public RosterService
 {
 	Q_OBJECT
 
-	Client *XmppClient;
+	QWeakPointer<Client> XmppClient;
 
 	QList<Contact> ContactsForDelete;
 	QMap<JT_Roster *, Contact> ContactForTask;
@@ -56,8 +56,6 @@ class JabberRosterService : public RosterService
 	void disconnectFromClient();
 
 private slots:
-	void clientDestroyed();
-
 	void contactUpdated(const RosterItem &item);
 	void contactDeleted(const RosterItem &item);
 
