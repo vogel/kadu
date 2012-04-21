@@ -70,11 +70,11 @@ void JabberRosterService::connectToClient()
 		return;
 
 	connect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
-	        this, SLOT(contactUpdated(const RosterItem &)));
+	        this, SLOT(remoteContactUpdated(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
-	        this, SLOT(contactUpdated(const RosterItem &)));
+	        this, SLOT(remoteContactUpdated(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
-	        this, SLOT(contactDeleted(const RosterItem &)));
+	        this, SLOT(remoteContactDeleted(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 	        this, SLOT(rosterRequestFinished(bool)));
 }
@@ -85,11 +85,11 @@ void JabberRosterService::disconnectFromClient()
 		return;
 
 	disconnect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
-	           this, SLOT(contactUpdated(const RosterItem &)));
+	           this, SLOT(remoteContactUpdated(const RosterItem &)));
 	disconnect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
-	           this, SLOT(contactUpdated(const RosterItem &)));
+	           this, SLOT(remoteContactUpdated(const RosterItem &)));
 	disconnect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
-	           this, SLOT(contactDeleted(const RosterItem &)));
+	           this, SLOT(remoteContactDeleted(const RosterItem &)));
 	disconnect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 	           this, SLOT(rosterRequestFinished(bool)));
 }
@@ -126,7 +126,7 @@ JT_Roster * JabberRosterService::createContactTask(const Contact& contact)
 	return rosterTask;
 }
 
-void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
+void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
 
@@ -204,7 +204,7 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	kdebugf2();
 }
 
-void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
+void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 {
 	// StateInitialized - this is new update from roster
 	// StateInitializing - this is initial data from roster

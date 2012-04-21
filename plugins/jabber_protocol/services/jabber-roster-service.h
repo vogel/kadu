@@ -56,8 +56,8 @@ class JabberRosterService : public RosterService
 	void disconnectFromClient();
 
 private slots:
-	void contactUpdated(const RosterItem &item);
-	void contactDeleted(const RosterItem &item);
+	void remoteContactUpdated(const RosterItem &item);
+	void remoteContactDeleted(const RosterItem &item);
 
 	void rosterTaskFinished();
 	void rosterTaskDeleted(QObject *object);
