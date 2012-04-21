@@ -108,17 +108,9 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 
 	if (buddy.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
-		Buddy byDisplayBuddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
-		if (byDisplayBuddy) // move to buddy by display, why not?
-		{
-			buddy = byDisplayBuddy;
-			contact.setOwnerBuddy(buddy);
-		}
-		else if (!buddy)
-		{
-			buddy = Buddy::create();
-			contact.setOwnerBuddy(buddy);
-		}
+		Buddy byDisplayBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
+		buddy = byDisplayBuddy;
+		contact.setOwnerBuddy(buddy);
 
 		buddy.setAnonymous(false);
 	}
