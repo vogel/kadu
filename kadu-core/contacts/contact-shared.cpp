@@ -166,12 +166,13 @@ bool ContactShared::shouldStore()
 {
 	ensureLoaded();
 
-	return (UuidStorableObject::shouldStore()
-			&& !Id.isEmpty()
-			&& !ContactAccount->uuid().isNull()
-			&& !isAnonymous())
-			|| (rosterEntry()->requiresSynchronization())
-			|| customProperties()->shouldStore();
+	if (!UuidStorableObject::shouldStore())
+		return false;
+
+	if (Id.isEmpty() || ContactAccount->uuid().isNull())
+		return false;
+
+	return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();
 }
 
 void ContactShared::addToBuddy()
