@@ -25,6 +25,7 @@
 #include "contacts/contact-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "buddy-contacts-table-item.h"
 
@@ -35,6 +36,7 @@ BuddyContactsTableItem::BuddyContactsTableItem(Contact contact, QObject *parent)
 	ItemContactPriority = contact.priority();
 	ItemAccount = contact.contactAccount();
 	Id = contact.id();
+	RosterDetached = !contact.isNull() ? contact.rosterEntry()->detached() : false;
 	Action = ItemEdit;
 }
 
@@ -61,6 +63,15 @@ void BuddyContactsTableItem::setId(const QString& id)
 	if (Id != id)
 	{
 		Id = id;
+		emit updated(this);
+	}
+}
+
+void BuddyContactsTableItem::setRosterDetached(bool rosterDetached)
+{
+	if (RosterDetached != rosterDetached)
+	{
+		RosterDetached = rosterDetached;
 		emit updated(this);
 	}
 }
