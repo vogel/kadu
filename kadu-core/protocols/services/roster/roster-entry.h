@@ -121,6 +121,16 @@ public:
 	 */
 	bool requiresSynchronization() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if this entry can be updated by remote roster.
+	 * @return true if this entry can be updated by remote roster
+	 *
+	 * This method only returns true if state if different than RosterEntryDesynchronized and than RosterEntrySynchronizing
+	 * and this entry is not Detached. We assume that our changes are more important that these from remote roster.
+	 */
+	bool acceptRemoteUpdate() const;
+
 };
 
 /**

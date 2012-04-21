@@ -82,3 +82,8 @@ bool RosterEntry::requiresSynchronization() const
 {
 	return !Detached && RosterEntryDesynchronized == State;
 }
+
+bool RosterEntry::acceptRemoteUpdate() const
+{
+	return !Detached && RosterEntryDesynchronized != State && RosterEntrySynchronizing != State;
+}
