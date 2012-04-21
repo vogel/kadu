@@ -23,7 +23,7 @@
 #include "roster-entry.h"
 
 RosterEntry::RosterEntry(QObject *parent) :
-		QObject(parent), State(RosterEntryUnkown), Detached(false), MyChangeNotifier(new ChangeNotifier(this))
+		QObject(parent), State(RosterEntryUnkown), Detached(false), Deleted(false), MyChangeNotifier(new ChangeNotifier(this))
 {
 }
 
@@ -57,6 +57,20 @@ void RosterEntry::setDetached(bool detached)
 bool RosterEntry::detached() const
 {
 	return Detached;
+}
+
+void RosterEntry::setDeleted(bool deleted)
+{
+	if (Deleted == deleted)
+		return;
+
+	Deleted = deleted;
+	MyChangeNotifier->notify();
+}
+
+bool RosterEntry::deleted() const
+{
+	return Deleted;
 }
 
 ChangeNotifier * RosterEntry::changeNotifier() const

@@ -157,9 +157,10 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
 
+	contact.rosterEntry()->setDeleted(false);
+
 	// in case we return before next call of it
 	contact.rosterEntry()->setState(RosterEntrySynchronized);
-	ContactsForDelete.removeAll(contact);
 
 	if (contact == account().accountContact())
 	{
@@ -251,26 +252,35 @@ void JabberRosterService::rosterTaskDeleted(QObject* object)
 	ContactForTask.remove(static_cast<XMPP::JT_Roster *>(object));
 }
 
-void JabberRosterService::rosterRequestFinished(bool success)
+void JabberRosterService::markContactsForDeletion()
 {
-	kdebugf();
+	QList<Contact> accountContacts = ContactManager::instance()->contacts(account()).toList();
+	foreach (const Contact &contact, accountContacts)
+	{
+		if (contact == account().accountContact())
+			continue;
 
-	Q_ASSERT(StateInitializing == state());
+		RosterEntry *rosterEntry = contact.rosterEntry();
+		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->requiresSynchronization()))
+			rosterEntry->setDeleted(true);
+	}
+}
 
-	// the roster was imported successfully, clear
-	// all "dirty" items from the contact list
-	if (success)
-		foreach (const Contact &contact, ContactsForDelete)
-		{
-			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-			contact.rosterEntry()->setState(RosterEntrySynchronized);
-		}
+void JabberRosterService::deleteMarkedContacts()
+{
+	QList<Contact> accountContacts = ContactManager::instance()->contacts(account()).toList();
+	foreach (const Contact &contact, accountContacts)
+	{
+		if (contact == account().accountContact())
+			continue;
 
-	setState(StateInitialized);
+		RosterEntry *rosterEntry = contact.rosterEntry();
+		if (!rosterEntry || !rosterEntry->deleted())
+			continue;
 
-	emit rosterReady(success);
-
-	kdebugf2();
+		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
+	}
 }
 
 void JabberRosterService::prepareRoster()
@@ -279,12 +289,21 @@ void JabberRosterService::prepareRoster()
 	Q_ASSERT(XmppClient);
 
 	setState(StateInitializing);
-
-	// flag roster for delete
-	ContactsForDelete = ContactManager::instance()->contacts(account()).toList();
-	ContactsForDelete.removeAll(account().accountContact());
+	markContactsForDeletion();
 
 	XmppClient.data()->rosterRequest();
+}
+
+void JabberRosterService::rosterRequestFinished(bool success)
+{
+	Q_ASSERT(StateInitializing == state());
+
+	if (success)
+		deleteMarkedContacts();
+
+	setState(StateInitialized);
+
+	emit rosterReady(success);
 }
 
 bool JabberRosterService::canPerformLocalUpdate() const

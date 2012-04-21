@@ -36,8 +36,9 @@ class ChangeNotifier;
  * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
  *
- * This class describes entry in local and remote roster and its synchronization state. It also has Detached flag. When Detached flag is true
- * no synchronization is made between local and remote roster.
+ * This class describes entry in local and remote roster and its synchronization state. It also has two flags. When Detached flag is true
+ * no synchronization is made between local and remote roster. When Deleted flag is true the entry is assumed to be deleted from remote
+ * roster.
  */
 class RosterEntry : public QObject
 {
@@ -46,6 +47,7 @@ class RosterEntry : public QObject
 
 	RosterEntryState State;
 	bool Detached;
+	bool Deleted;
 	ChangeNotifier *MyChangeNotifier;
 
 public:
@@ -86,6 +88,20 @@ public:
 	 * @return current value of Detached property
 	 */
 	bool detached() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set new value of Deleted property.
+	 * @param deleted new value of Deleted property
+	 */
+	void setDeleted(bool deleted);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Get current value of Deleted property.
+	 * @return current value of Deleted property
+	 */
+	bool deleted() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

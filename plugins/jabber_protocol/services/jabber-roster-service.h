@@ -43,7 +43,6 @@ class JabberRosterService : public RosterService
 
 	QWeakPointer<Client> XmppClient;
 
-	QList<Contact> ContactsForDelete;
 	QMap<JT_Roster *, Contact> ContactForTask;
 
 	static QStringList buddyGroups(const Buddy &buddy);
@@ -54,6 +53,24 @@ class JabberRosterService : public RosterService
 
 	void connectToClient();
 	void disconnectFromClient();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Mark all contacts of given account to deletion.
+	 *
+	 * Assume that all synchronized contacts was removed from roster. During roster download all still existing
+	 * entries will be marked as synchronized (if not dirty). Even detached entries can be removed as detaching is
+	 * only about groups and display name.
+	 */
+	void markContactsForDeletion();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Delete all contacts marked to deletion.
+	 *
+	 * All contacts that after roster updated are still marked for deletion are deleted from local roster.
+	 */
+	void deleteMarkedContacts();
 
 private slots:
 	void remoteContactUpdated(const RosterItem &item);
