@@ -170,7 +170,7 @@ bool ContactShared::shouldStore()
 			&& !Id.isEmpty()
 			&& !ContactAccount->uuid().isNull()
 			&& !isAnonymous())
-			|| (!rosterEntry()->detached() && RosterEntrySynchronized != rosterEntry()->state())
+			|| (rosterEntry()->requiresSynchronization())
 			|| customProperties()->shouldStore();
 }
 
