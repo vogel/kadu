@@ -116,7 +116,10 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 		else
 		{
 			if (!buddy)
+			{
 				buddy = Buddy::create();
+				contact.setOwnerBuddy(buddy);
+			}
 			buddy.setDisplay(display);
 		}
 
