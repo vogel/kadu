@@ -187,15 +187,10 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	RosterService::addContact(contact);
 
-	// Facebook Chat does not support groups. So make Facebook contacts not remove their
-	// owner buddies (which may own more contacts) from their groups. See bug #2320.
-	if (!protocol()->contactsListReadOnly())
-	{
-		QSet<Group> groups;
-		foreach (const QString &group, item.groups())
-			groups << GroupManager::instance()->byName(group);
-		buddy.setGroups(groups);
-	}
+	QSet<Group> groups;
+	foreach (const QString &group, item.groups())
+		groups << GroupManager::instance()->byName(group);
+	buddy.setGroups(groups);
 
 	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
