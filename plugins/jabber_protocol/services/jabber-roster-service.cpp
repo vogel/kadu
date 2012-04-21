@@ -160,7 +160,8 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	contact.rosterEntry()->setDeleted(false);
 
 	// in case we return before next call of it
-	contact.rosterEntry()->setState(RosterEntrySynchronized);
+	if (contact.rosterEntry()->acceptRemoteUpdate())
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	if (contact == account().accountContact())
 	{
@@ -181,17 +182,22 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	}
 
 	contact.rosterEntry()->setState(RosterEntrySynchronizing);
-	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
+
+	if (contact.isAnonymous() || contact.rosterEntry()->acceptRemoteUpdate())
+		ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
 	Buddy buddy = contact.ownerBuddy();
 	BuddyManager::instance()->addItem(buddy);
 
 	RosterService::addContact(contact);
 
-	QSet<Group> groups;
-	foreach (const QString &group, item.groups())
-		groups << GroupManager::instance()->byName(group);
-	buddy.setGroups(groups);
+	if (contact.rosterEntry()->acceptRemoteUpdate())
+	{
+		QSet<Group> groups;
+		foreach (const QString &group, item.groups())
+			groups << GroupManager::instance()->byName(group);
+		buddy.setGroups(groups);
+	}
 
 	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
