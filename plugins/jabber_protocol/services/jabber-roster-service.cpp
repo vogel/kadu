@@ -101,23 +101,15 @@ void JabberRosterService::setClient(Client *xmppClient)
 	connectToClient();
 }
 
-Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact &contact)
+void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display)
 {
-	QString display = itemDisplay(item);
-	Buddy buddy = contact.ownerBuddy();
-
-	if (buddy.isAnonymous()) // contact has anonymous buddy, we should search for other
+	if (contact.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
-		Buddy byDisplayBuddy = BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd);
-		buddy = byDisplayBuddy;
-		contact.setOwnerBuddy(buddy);
-
-		buddy.setAnonymous(false);
+		contact.setOwnerBuddy(BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd));
+		contact.ownerBuddy().setAnonymous(false);
 	}
-
-	buddy.setDisplay(display);
-
-	return buddy;
+	else
+		contact.ownerBuddy().setDisplay(display);
 }
 
 JT_Roster * JabberRosterService::createContactTask(const Contact& contact)
@@ -188,8 +180,9 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	}
 
 	contact.rosterEntry()->setState(RosterEntrySynchronizing);
+	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
-	Buddy buddy = itemBuddy(item, contact);
+	Buddy buddy = contact.ownerBuddy();
 	BuddyManager::instance()->addItem(buddy);
 
 	RosterService::addContact(contact);

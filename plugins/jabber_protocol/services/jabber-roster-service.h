@@ -49,7 +49,7 @@ class JabberRosterService : public RosterService
 	static QStringList buddyGroups(const Buddy &buddy);
 	static const QString & itemDisplay(const RosterItem &item);
 
-	Buddy itemBuddy(const RosterItem &item, const Contact &contact);
+	void ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display);
 	JT_Roster * createContactTask(const Contact &contact);
 
 	void connectToClient();
