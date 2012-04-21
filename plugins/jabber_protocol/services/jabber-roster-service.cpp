@@ -105,6 +105,7 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 {
 	QString display = itemDisplay(item);
 	Buddy buddy = contact.ownerBuddy();
+
 	if (buddy.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
 		Buddy byDisplayBuddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
@@ -113,25 +114,16 @@ Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact
 			buddy = byDisplayBuddy;
 			contact.setOwnerBuddy(buddy);
 		}
-		else
+		else if (!buddy)
 		{
-			if (!buddy)
-			{
-				buddy = Buddy::create();
-				contact.setOwnerBuddy(buddy);
-			}
-			buddy.setDisplay(display);
+			buddy = Buddy::create();
+			contact.setOwnerBuddy(buddy);
 		}
 
 		buddy.setAnonymous(false);
 	}
-	else
-	{
-		// Prevent read-only rosters (e.g., Facebook Chat) from changing names of buddies with multiple contacts (#1570).
-		// Though, if given buddy has exactly one contact, let the name be changed (#2226).
-		if (!protocol()->contactsListReadOnly() || 1 == buddy.contacts().count())
-			buddy.setDisplay(display);
-	}
+
+	buddy.setDisplay(display);
 
 	return buddy;
 }
