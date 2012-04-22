@@ -117,6 +117,14 @@ void RosterService::addTask(const RosterTask &task)
 	}
 }
 
+RosterTaskType RosterService::taskType(const QString &id)
+{
+	if (!IdToTask.contains(id))
+		return RosterTaskNone;
+	else
+		return IdToTask.value(id).type();
+}
+
 void RosterService::executeTask(const RosterTask &task)
 {
 	Q_UNUSED(task);

@@ -164,6 +164,16 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return type of task for given id.
+	 * @param id id of contact to check task for
+	 * @return type of task for given id
+	 *
+	 * If no task for given id is found then RosterTaskNone is returned.
+	 */
+	RosterTaskType taskType(const QString &id);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Execute given roster task.
 	 * @param task to execut
 	 *
