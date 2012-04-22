@@ -74,6 +74,9 @@ class KADUAPI AccountShared : public QObject, public Shared
 
 	void importNetworkProxy();
 
+	void loadRosterTasks();
+	void storeRosterTasks();
+
 private slots:
 	void protocolRegistered(ProtocolFactory *protocolHandler);
 	void protocolUnregistered(ProtocolFactory *protocolHandler);

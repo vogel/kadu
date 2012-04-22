@@ -143,6 +143,48 @@ void AccountShared::importNetworkProxy()
 	removeValue("ProxyPassword");
 }
 
+void AccountShared::loadRosterTasks()
+{
+	if (!isValidStorage())
+		return;
+
+	if (!protocolHandler() || !protocolHandler()->rosterService())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+
+	QDomNodeList rosterTaskNodes = rosterTasksNode.childNodes();
+	const int rosterTaskCount = rosterTaskNodes.count();
+
+	QVector<RosterTask> tasks;
+
+	for (int i = 0; i < rosterTaskCount; i++)
+	{
+		QDomElement rosterTaskElement = rosterTaskNodes.at(i).toElement();
+		if (rosterTaskElement.isNull())
+			continue;
+
+		if (rosterTaskElement.text().isEmpty())
+			continue;
+
+		RosterTaskType taskType = RosterTaskNone;
+		if (rosterTaskElement.nodeName() == "Add")
+			taskType = RosterTaskAdd;
+		else if (rosterTaskElement.nodeName() == "Delete")
+			taskType = RosterTaskDelete;
+		else if (rosterTaskElement.nodeName() == "Update")
+			taskType = RosterTaskUpdate;
+
+		if (RosterTaskNone == taskType)
+			continue;
+
+		tasks.append(RosterTask(taskType, rosterTaskElement.text()));
+	}
+
+	protocolHandler()->rosterService()->setTasks(tasks);
+}
+
 void AccountShared::load()
 {
 	if (!isValidStorage())
@@ -184,6 +226,40 @@ void AccountShared::load()
 		if (factory)
 			protocolRegistered(factory);
 	}
+
+	loadRosterTasks();
+}
+
+void AccountShared::storeRosterTasks()
+{
+	if (!isValidStorage())
+		return;
+
+	if (!protocolHandler() || !protocolHandler()->rosterService())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+
+	while (!rosterTasksNode.childNodes().isEmpty())
+		rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
+
+	QVector<RosterTask> tasks = protocolHandler()->rosterService()->tasks();
+	foreach (const RosterTask &task, tasks)
+		switch (task.type())
+		{
+			case RosterTaskAdd:
+				configurationStorage->createTextNode(rosterTasksNode, "Add", task.id());
+				break;
+			case RosterTaskDelete:
+				configurationStorage->createTextNode(rosterTasksNode, "Delete", task.id());
+				break;
+			case RosterTaskUpdate:
+				configurationStorage->createTextNode(rosterTasksNode, "Update", task.id());
+				break;
+			default:
+				break;
+		}
 }
 
 void AccountShared::store()
@@ -211,31 +287,7 @@ void AccountShared::store()
 
 	storeValue("PrivateStatus", PrivateStatus);
 
-	if (protocolHandler() && protocolHandler()->rosterService())
-	{
-		XmlConfigFile *configurationStorage = storage()->storage();
-		QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
-
-		while (!rosterTasksNode.childNodes().isEmpty())
-			rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
-
-		QVector<RosterTask> tasks = protocolHandler()->rosterService()->tasks();
-		foreach (const RosterTask &task, tasks)
-			switch (task.type())
-			{
-				case RosterTaskAdd:
-					configurationStorage->createTextNode(rosterTasksNode, "Add", task.id());
-					break;
-				case RosterTaskDelete:
-					configurationStorage->createTextNode(rosterTasksNode, "Delete", task.id());
-					break;
-				case RosterTaskUpdate:
-					configurationStorage->createTextNode(rosterTasksNode, "Update", task.id());
-					break;
-				default:
-					break;
-			}
-		}
+	storeRosterTasks();
 }
 
 bool AccountShared::shouldStore()
@@ -308,6 +360,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
+	loadRosterTasks();
+
 	MyStatusContainer->triggerStatusUpdated();
 
 	AccountManager::instance()->registerItem(this);
@@ -323,6 +377,8 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
 		return;
+
+	storeRosterTasks();
 
 	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	disconnect(ProtocolHandler, SIGNAL(contactStatusChanged(Contact, Status)),
