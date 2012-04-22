@@ -27,9 +27,11 @@
 #define ROSTER_SERVICE_H
 
 #include <QtCore/QObject>
+#include <QtCore/QQueue>
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "protocols/services/roster/roster-task.h"
 
 #include "exports.h"
 
@@ -101,7 +103,8 @@ public:
 
 private:
 	RosterState State;
-	QList<Contact> Contacts;
+	QVector<Contact> Contacts;
+	QQueue<RosterTask> Tasks;
 
 private slots:
 	/**
@@ -135,10 +138,17 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short sets state of roster service
+	 * @short Sets state of roster service.
 	 * @param state new state
 	 */
 	void setState(RosterState state);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new task for later execution.
+	 * @param task new task
+	 */
+	void addTask(const RosterTask &task);
 
 protected slots:
 	/**
@@ -178,6 +188,20 @@ public:
 	 * emited.
 	 */
 	virtual void prepareRoster() = 0;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return list of current non-executed roster tasks.
+	 * @return list of current non-executed roster tasks
+	 */
+	QVector<RosterTask> tasks();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set list of non-executed roster tasks.
+	 * @param tasks new list of non-executed roster tasks
+	 */
+	void setTasks(const QVector<RosterTask> tasks);
 
 public slots:
 	/**

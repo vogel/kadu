@@ -71,6 +71,22 @@ void RosterService::setState(RosterState state)
 	State = state;
 }
 
+QVector<RosterTask> RosterService::tasks()
+{
+	return Tasks.toVector();
+}
+
+void RosterService::setTasks(const QVector<RosterTask> tasks)
+{
+	Tasks.clear();
+	Tasks.append(QList<RosterTask>::fromVector(tasks));
+}
+
+void RosterService::addTask(const RosterTask &task)
+{
+	Tasks.enqueue(task);
+}
+
 void RosterService::addContact(const Contact &contact)
 {
 	if (!Contacts.contains(contact))
@@ -85,6 +101,8 @@ void RosterService::removeContact(const Contact &contact)
 	if (Contacts.contains(contact))
 	{
 		disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
-		Contacts.removeAll(contact);
+		int index = Contacts.indexOf(contact);
+		if (index >= 0)
+			Contacts.remove(index);
 	}
 }

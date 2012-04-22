@@ -370,10 +370,11 @@ void JabberRosterService::executeTask(const RosterTask& task)
 
 void JabberRosterService::executeAllTasks()
 {
-	foreach (const RosterTask &task, NotExecuted)
+	QVector<RosterTask> notExecuted = tasks();
+	foreach (const RosterTask &task, notExecuted)
 		executeTask(task);
 
-	NotExecuted.clear();
+	setTasks(QVector<RosterTask>());
 }
 
 void JabberRosterService::addContact(const Contact &contact)
@@ -386,7 +387,7 @@ void JabberRosterService::addContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -401,7 +402,7 @@ void JabberRosterService::removeContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
@@ -414,7 +415,7 @@ void JabberRosterService::updateContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }

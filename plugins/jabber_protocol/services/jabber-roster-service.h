@@ -29,7 +29,6 @@
 class Buddy;
 class Contact;
 class JabberProtocol;
-class RosterTask;
 
 namespace XMPP
 {
@@ -44,7 +43,6 @@ class JabberRosterService : public RosterService
 
 	QWeakPointer<Client> XmppClient;
 
-	QVector<RosterTask> NotExecuted;
 	QMap<JT_Roster *, Contact> ContactForTask;
 
 	static QStringList buddyGroups(const Buddy &buddy);
