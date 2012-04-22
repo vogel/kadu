@@ -79,12 +79,42 @@ QVector<RosterTask> RosterService::tasks()
 void RosterService::setTasks(const QVector<RosterTask> tasks)
 {
 	Tasks.clear();
-	Tasks.append(QList<RosterTask>::fromVector(tasks));
+	IdToTask.clear();
+
+	foreach (const RosterTask &task, tasks)
+		addTask(task);
+}
+
+bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
+{
+	Q_ASSERT(RosterTaskNone != taskType);
+	Q_ASSERT(RosterTaskNone != replacementType);
+
+	if (RosterTaskDelete == taskType)
+		return true;
+
+	if (RosterTaskAdd == taskType)
+		return RosterTaskDelete == replacementType;
+
+	return RosterTaskUpdate != replacementType;
 }
 
 void RosterService::addTask(const RosterTask &task)
 {
-	Tasks.enqueue(task);
+	if (!IdToTask.contains(task.id()))
+	{
+		Tasks.enqueue(task);
+		return;
+	}
+
+	RosterTask existingTask = IdToTask.value(task.id());
+	if (shouldReplaceTask(existingTask.type(), task.type()))
+	{
+		Tasks.removeAll(existingTask);
+		IdToTask.remove(task.id());
+		IdToTask.insert(task.id(), task);
+		Tasks.enqueue(task);
+	}
 }
 
 void RosterService::executeTask(const RosterTask &task)
@@ -97,6 +127,7 @@ void RosterService::executeAllTasks()
 	while (!Tasks.isEmpty())
 	{
 		RosterTask task = Tasks.dequeue();
+		IdToTask.remove(task.id());
 		executeTask(task);
 	}
 }

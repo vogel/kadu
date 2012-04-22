@@ -105,6 +105,14 @@ private:
 	RosterState State;
 	QVector<Contact> Contacts;
 	QQueue<RosterTask> Tasks;
+	QMap<QString, RosterTask> IdToTask;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if task of second type should replace task of first type on list of task to execute.
+	 * @return true if task of second type should replace task of first type on list of task to execute
+	 */
+	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
 
 private slots:
 	/**
@@ -147,6 +155,10 @@ protected:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Add new task for later execution.
 	 * @param task new task
+	 *
+	 * If existing task for given id is available then this service decided which one to use and which one to ignore.
+	 * If exsiting task is delete then it is always replaced. Add task can be only replaced by delete task. Update task
+	 * can be replaced by any non-update task.
 	 */
 	void addTask(const RosterTask &task);
 

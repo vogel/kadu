@@ -43,6 +43,11 @@ RosterTask & RosterTask::operator = (const RosterTask &copyMe)
 	return *this;
 }
 
+bool RosterTask::operator == (const RosterTask &compare) const
+{
+	return Type == compare.Type && Id == compare.Id;
+}
+
 RosterTaskType RosterTask::type() const
 {
 	return Type;

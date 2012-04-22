@@ -73,6 +73,13 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if this instance is idenitcal to other one.
+	 * @param compare instance to compare with
+	 */
+	bool operator == (const RosterTask &compare) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return value of Type property.
 	 * @return value of Type property
 	 */
