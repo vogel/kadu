@@ -146,38 +146,32 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 }
 
-bool GaduRosterService::addContact(const Contact &contact)
+void GaduRosterService::addContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
 	        account() != contact.contactAccount() ||
 	        account().accountContact() == contact)
-		return false;
+		return;
 
-	if (!RosterService::addContact(contact))
-		return false;
+	RosterService::addContact(contact);
 
 	setState(StateProcessingLocalUpdate);
 	sendNewFlags(contact, notifyTypeFromContact(contact));
 	setState(StateInitialized);
-
-	return true;
 }
 
-bool GaduRosterService::removeContact(const Contact &contact)
+void GaduRosterService::removeContact(const Contact &contact)
 {
 	if (!canPerformLocalUpdate() ||
 	        account() != contact.contactAccount() ||
 	        account().accountContact() == contact)
-		return false;
+		return;
 
-	if (!RosterService::removeContact(contact))
-		return false;
+	RosterService::removeContact(contact);
 
 	setState(StateProcessingLocalUpdate);
 	sendNewFlags(contact, 0);
 	setState(StateInitialized);
-
-	return true;
 }
 
 void GaduRosterService::updateContact(const Contact &contact)

@@ -176,29 +176,25 @@ public slots:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Add new contact to roster.
 	 * @param contact new contact
-	 * @return true if adding was successfull
 	 *
 	 * This method add new contact to roster. Derivered services should reimplement this method and call
 	 * RosterService::addContact at begining and check it return value - when false, no remote adding should be done.
 	 *
-	 * This implementation adds contact to internal list and returns true if contact was not added before. It also
-	 * starts watching on changes on this contact.
+	 * This implementation adds contact to internal list. It also starts watching on changes on this contact.
 	 */
-	virtual bool addContact(const Contact &contact);
+	virtual void addContact(const Contact &contact);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Remove contact from roster.
 	 * @param contact contact to remove
-	 * @return true if removing was successfull
 	 *
 	 * This method removes contact from roster. Derivered services should reimplement this method and call
 	 * RosterService::removeContact at begining and check it return value - when false, no remote removing should be done.
 	 *
-	 * This implementation removes contact from internal list and returns true if contact was added before. It also
-	 * stops watching on changes on this contact.
+	 * This implementation removes contact from internal list. It also stops watching on changes on this contact.
 	 */
-	virtual bool removeContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
 
 signals:
 	/**

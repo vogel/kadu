@@ -71,24 +71,20 @@ void RosterService::setState(RosterState state)
 	State = state;
 }
 
-bool RosterService::addContact(const Contact &contact)
-{
-	if (Contacts.contains(contact))
-		return false;
-
-	Contacts.append(contact);
-	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
-
-	return true;
-}
-
-bool RosterService::removeContact(const Contact &contact)
+void RosterService::addContact(const Contact &contact)
 {
 	if (!Contacts.contains(contact))
-		return false;
+	{
+		Contacts.append(contact);
+		connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+	}
+}
 
-	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
-	Contacts.removeAll(contact);
-
-	return true;
+void RosterService::removeContact(const Contact &contact)
+{
+	if (Contacts.contains(contact))
+	{
+		disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+		Contacts.removeAll(contact);
+	}
 }

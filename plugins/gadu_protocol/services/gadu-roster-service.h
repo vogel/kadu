@@ -51,8 +51,8 @@ public:
 public slots:
 	void setGaduSession(gg_session *gaduSession);
 
-	virtual bool addContact(const Contact &contact);
-	virtual bool removeContact(const Contact &contact);
+	virtual void addContact(const Contact &contact);
+	virtual void removeContact(const Contact &contact);
 
 };
 
