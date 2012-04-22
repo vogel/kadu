@@ -161,7 +161,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	contact.rosterEntry()->setDeleted(false);
 
 	// in case we return before next call of it
-	if (contact.rosterEntry()->acceptRemoteUpdate())
+	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
 		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	if (contact == account().accountContact())
@@ -184,7 +184,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
-	if (contact.isAnonymous() || contact.rosterEntry()->acceptRemoteUpdate())
+	if ((contact.isAnonymous() || contact.rosterEntry()->acceptRemoteUpdate()) && RosterTaskNone == taskType(contact.id()))
 		ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
 	Buddy buddy = contact.ownerBuddy();
@@ -200,7 +200,8 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 		buddy.setGroups(groups);
 	}
 
-	contact.rosterEntry()->setState(RosterEntrySynchronized);
+	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	setState(originalState);
 
@@ -219,11 +220,15 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 
-	contact.rosterEntry()->setState(RosterEntrySynchronizing);
-	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-	contact.rosterEntry()->setState(RosterEntrySynchronized);
+	RosterTaskType rosterTaskType = taskType(contact.id());
+	if (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType)
+	{
+		contact.rosterEntry()->setState(RosterEntrySynchronizing);
+		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
-	RosterService::removeContact(contact);
+		RosterService::removeContact(contact);
+	}
 
 	setState(originalState);
 }
@@ -268,7 +273,10 @@ void JabberRosterService::markContactsForDeletion()
 			continue;
 
 		RosterEntry *rosterEntry = contact.rosterEntry();
-		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->requiresSynchronization()))
+		RosterTaskType rosterTaskType = taskType(contact.id());
+
+		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->state())
+				&& (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType))
 			rosterEntry->setDeleted(true);
 	}
 }
