@@ -376,47 +376,4 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	setState(StateInitialized);
 }
 
-void JabberRosterService::addContact(const Contact &contact)
-{
-	if (!contact.contactAccount() != account() || contact.isAnonymous())
-		return;
-
-	RosterService::addContact(contact);
-
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
-	if (canPerformLocalUpdate())
-		executeAllTasks();
-}
-
-void JabberRosterService::removeContact(const Contact &contact)
-{
-	if (contact.contactAccount() != account())
-		return;
-
-	RosterService::removeContact(contact);
-
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
-	if (canPerformLocalUpdate())
-		executeAllTasks();
-}
-
-void JabberRosterService::updateContact(const Contact &contact)
-{
-	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
-
-	if (!contact.rosterEntry()->requiresSynchronization())
-		return;
-
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
-	if (canPerformLocalUpdate())
-		executeAllTasks();
-}
-
 }

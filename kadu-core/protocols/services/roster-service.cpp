@@ -57,8 +57,15 @@ void RosterService::contactUpdated()
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
 
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
 	if (canPerformLocalUpdate())
-		updateContact(contact);
+		executeAllTasks();
 }
 
 bool RosterService::canPerformLocalUpdate() const
@@ -125,11 +132,6 @@ RosterTaskType RosterService::taskType(const QString &id)
 		return IdToTask.value(id).type();
 }
 
-void RosterService::executeTask(const RosterTask &task)
-{
-	Q_UNUSED(task);
-}
-
 void RosterService::executeAllTasks()
 {
 	while (!Tasks.isEmpty())
@@ -142,20 +144,52 @@ void RosterService::executeAllTasks()
 
 void RosterService::addContact(const Contact &contact)
 {
-	if (!Contacts.contains(contact))
-	{
-		Contacts.append(contact);
-		connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
-	}
+	if (!contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (Contacts.contains(contact))
+		return;
+
+	Contacts.append(contact);
+	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
 }
 
 void RosterService::removeContact(const Contact &contact)
 {
-	if (Contacts.contains(contact))
-	{
-		disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
-		int index = Contacts.indexOf(contact);
-		if (index >= 0)
-			Contacts.remove(index);
-	}
+	if (contact.contactAccount() != account())
+		return;
+
+	int index = Contacts.indexOf(contact);
+	if (index < 0)
+		return;
+
+	Contacts.remove(index);
+	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskDelete, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
+}
+
+void RosterService::updateContact(const Contact& contact)
+{
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
 }

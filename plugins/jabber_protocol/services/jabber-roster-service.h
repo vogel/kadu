@@ -85,9 +85,6 @@ protected:
 	virtual bool canPerformLocalUpdate() const;
 	virtual void executeTask(const RosterTask &task);
 
-protected slots:
-	virtual void updateContact(const Contact &contact);
-
 public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
@@ -95,10 +92,6 @@ public:
 	virtual void prepareRoster();
 
 	void setClient(Client *xmppClient);
-
-public slots:
-	virtual void addContact(const Contact &contact);
-	virtual void removeContact(const Contact &contact);
 
 };
 

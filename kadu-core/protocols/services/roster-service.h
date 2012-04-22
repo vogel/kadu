@@ -175,11 +175,9 @@ protected:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Execute given roster task.
-	 * @param task to execut
-	 *
-	 * Default implementation of this method does nothing.
+	 * @param task to execute
 	 */
-	virtual void executeTask(const RosterTask &task);
+	virtual void executeTask(const RosterTask &task) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -195,12 +193,10 @@ protected slots:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Method called when contact's dirtness is changed.
 	 *
-	 * This method is only called for contacts that were previously added to roster using addContact() methods
-	 * and were not removed and state of roster service is StateInitialized.
-	 *
-	 * Derivered services must reimplement this method.
+	 * If given contact is valid and belongs to current account then new roster task for adding item to roster is created.
+	 * If it is possible task is executed immediately. If not, it is stored for later execution.
 	 */
-	virtual void updateContact(const Contact &contact) = 0;
+	void updateContact(const Contact &contact);
 
 public:
 	/**
@@ -248,24 +244,20 @@ public slots:
 	 * @short Add new contact to roster.
 	 * @param contact new contact
 	 *
-	 * This method add new contact to roster. Derivered services should reimplement this method and call
-	 * RosterService::addContact at begining and check it return value - when false, no remote adding should be done.
-	 *
-	 * This implementation adds contact to internal list. It also starts watching on changes on this contact.
+	 * If given contact is valid and belongs to current account then new roster task for adding item to roster is created.
+	 * If it is possible task is executed immediately. If not, it is stored for later execution.
 	 */
-	virtual void addContact(const Contact &contact);
+	void addContact(const Contact &contact);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Remove contact from roster.
 	 * @param contact contact to remove
 	 *
-	 * This method removes contact from roster. Derivered services should reimplement this method and call
-	 * RosterService::removeContact at begining and check it return value - when false, no remote removing should be done.
-	 *
-	 * This implementation removes contact from internal list. It also stops watching on changes on this contact.
+	 * If given contact is valid and belongs to current account then new roster task for deleting item from roster is created.
+	 * If it is possible task is executed immediately. If not, it is stored for later execution.
 	 */
-	virtual void removeContact(const Contact &contact);
+	void removeContact(const Contact &contact);
 
 signals:
 	/**
