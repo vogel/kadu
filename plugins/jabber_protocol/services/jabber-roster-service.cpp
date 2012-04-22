@@ -363,7 +363,8 @@ void JabberRosterService::executeTask(const RosterTask& task)
 
 bool JabberRosterService::addContact(const Contact &contact)
 {
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
+
+	if (!contact.contactAccount() != account() || contact.isAnonymous())
 		return false;
 
 	if (!RosterService::addContact(contact))
@@ -371,6 +372,9 @@ bool JabberRosterService::addContact(const Contact &contact)
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return true;
+
+	if (!canPerformLocalUpdate())
+		return false;
 
 	setState(StateProcessingLocalUpdate);
 
@@ -395,7 +399,7 @@ bool JabberRosterService::addContact(const Contact &contact)
 
 bool JabberRosterService::removeContact(const Contact &contact)
 {
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account())
+	if (contact.contactAccount() != account())
 		return false;
 
 	if (!RosterService::removeContact(contact))
@@ -403,6 +407,9 @@ bool JabberRosterService::removeContact(const Contact &contact)
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return true;
+
+	if (!canPerformLocalUpdate())
+		return false;
 
 	setState(StateProcessingLocalUpdate);
 
@@ -424,10 +431,13 @@ bool JabberRosterService::removeContact(const Contact &contact)
 
 void JabberRosterService::updateContact(const Contact &contact)
 {
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
+	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
 	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	if (!canPerformLocalUpdate())
 		return;
 
 	setState(StateProcessingLocalUpdate);
