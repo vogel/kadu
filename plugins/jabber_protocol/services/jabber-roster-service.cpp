@@ -26,6 +26,7 @@
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-task.h"
 #include "debug.h"
 
 #include "services/jabber-subscription-service.h"
@@ -112,7 +113,7 @@ void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contac
 		contact.ownerBuddy().setDisplay(display);
 }
 
-JT_Roster * JabberRosterService::createContactTask(const Contact& contact)
+JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 {
 	if (!XmppClient)
 		return 0;
@@ -321,6 +322,43 @@ bool JabberRosterService::canPerformLocalUpdate() const
 		return false;
 
 	return true;
+}
+
+void JabberRosterService::executeTask(const RosterTask& task)
+{
+	Q_ASSERT(StateInitialized == state());
+
+	setState(StateProcessingLocalUpdate);
+
+	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
+	if (!rosterTask)
+		return;
+
+	RosterTaskType taskType = contact ? task.type() : RosterTaskDelete;
+
+	if (contact)
+		contact.rosterEntry()->setState(RosterEntrySynchronizing);
+
+	switch (taskType)
+	{
+		case RosterTaskAdd:
+			contact.setIgnoreNextStatusChange(true);
+			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+			break;
+
+		case RosterTaskDelete:
+			rosterTask->remove(contact.id());
+			break;
+
+		case RosterTaskUpdate:
+			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+			break;
+	}
+
+	rosterTask->go(true);
+
+	setState(StateInitialized);
 }
 
 bool JabberRosterService::addContact(const Contact &contact)

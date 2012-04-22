@@ -29,6 +29,7 @@
 class Buddy;
 class Contact;
 class JabberProtocol;
+class RosterTask;
 
 namespace XMPP
 {
@@ -43,6 +44,7 @@ class JabberRosterService : public RosterService
 
 	QWeakPointer<Client> XmppClient;
 
+	QVector<RosterTask> NotExecuted;
 	QMap<JT_Roster *, Contact> ContactForTask;
 
 	static QStringList buddyGroups(const Buddy &buddy);
@@ -71,6 +73,16 @@ class JabberRosterService : public RosterService
 	 * All contacts that after roster updated are still marked for deletion are deleted from local roster.
 	 */
 	void deleteMarkedContacts();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute given RosterTask.
+	 * @param task task to execute
+	 *
+	 * This method executes given task - add/delete/update item on remote roster. This method can only be called if roster is
+	 * already initialized. No other condition is checked - task is assumed to be valid.
+	 */
+	void executeTask(const RosterTask &task);
 
 private slots:
 	void remoteContactUpdated(const RosterItem &item);
