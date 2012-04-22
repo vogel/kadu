@@ -48,15 +48,23 @@
  * This service allows adding, removing and updating contacts on remote roster. Every added contact is watched
  * for changes and updated automatically, until it is removed.
  *
- * Four methods should be overrided by subclasses: addContact(), removeContact(), updateContact() and prepareRoster().
- * First two of them returns true if contact was properly added or removed and false otherwise.
+ * If an action cannot be executed immediately it is stored as @link RosterTask @endlink object for later execution.
+ * List of tasks is available by calling tasks() getter and can be changed by setTasks() setted. This allows for storing
+ * and restoring this list between program invocations. Only one @link RosterTask @endlink for each contact id can be on
+ * the list at a time. This service is responsible of choosing which task should be left on a list and which one should
+ * be removed in case when second one is added for given id.
  *
- * Roster service has a state. Local updates are propagated to remote server only when state is StateInitialized.
- * During operations it is changed to StateProcessingRemoteUpdate or StateProcessingLocalUpdate (depending on
- * source of change). StateNonInitialized is used before calling prepareRoster() and StateInitializing during this
- * call.
+ * When receiving updates from remote roster list of tasks is checked for id of contact from remote roster. Request for
+ * contact removal or update from remote roster will be ignored if an update or add task is on the task list. This service
+ * assumes that its changes are more important that these of remote roster. Update request are ignored if Detached flag
+ * of @link RosterEntry @endlink of given contact is set to true.
  *
- * Signal rosterRead() is emited after calling prepareRoster() when implementation decidec that preparation was finished.
+ * At begining of roster initialization all contacts of service's account that do not have any task are marked as deleted by
+ * remote roster. During initialization deletion mark is removed from contacts that have data on remote roster. After
+ * initialization rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
+ * does not count as it is only used for detaching from data synchronization.
+ *
+ * Signal rosterRead() is emited after calling prepareRoster() when implementation decides that initialization was finished.
  */
 class KADUAPI RosterService : public ProtocolService
 {
