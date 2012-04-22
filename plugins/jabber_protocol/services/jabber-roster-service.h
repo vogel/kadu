@@ -74,16 +74,6 @@ class JabberRosterService : public RosterService
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute given RosterTask.
-	 * @param task task to execute
-	 *
-	 * This method executes given task - add/delete/update item on remote roster. This method can only be called if roster is
-	 * already initialized. No other condition is checked - task is assumed to be valid.
-	 */
-	void executeTask(const RosterTask &task);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Execute all stored RosterTask.
 	 *
 	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
@@ -101,6 +91,7 @@ private slots:
 
 protected:
 	virtual bool canPerformLocalUpdate() const;
+	virtual void executeTask(const RosterTask &task);
 
 protected slots:
 	virtual void updateContact(const Contact &contact);

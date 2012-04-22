@@ -87,6 +87,11 @@ void RosterService::addTask(const RosterTask &task)
 	Tasks.enqueue(task);
 }
 
+void RosterService::executeTask(const RosterTask &task)
+{
+	Q_UNUSED(task);
+}
+
 void RosterService::addContact(const Contact &contact)
 {
 	if (!Contacts.contains(contact))

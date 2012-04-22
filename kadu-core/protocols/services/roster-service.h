@@ -150,6 +150,15 @@ protected:
 	 */
 	void addTask(const RosterTask &task);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute given roster task.
+	 * @param task to execut
+	 *
+	 * Default implementation of this method does nothing.
+	 */
+	virtual void executeTask(const RosterTask &task);
+
 protected slots:
 	/**
 	 * @enum RosterState
