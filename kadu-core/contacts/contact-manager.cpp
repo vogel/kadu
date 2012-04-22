@@ -219,15 +219,6 @@ QVector<Contact> ContactManager::contacts(Account account, bool excludeAnonymous
 	return contacts;
 }
 
-const QList<Contact> & ContactManager::dirtyContacts()
-{
-	QMutexLocker locker(&mutex());
-
-	ensureLoaded();
-
-	return DirtyContacts;
-}
-
 QVector<Contact> ContactManager::dirtyContacts(Account account)
 {
 	QMutexLocker locker(&mutex());
