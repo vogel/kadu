@@ -311,6 +311,8 @@ void JabberRosterService::rosterRequestFinished(bool success)
 	setState(StateInitialized);
 
 	emit rosterReady(success);
+
+	executeAllTasks();
 }
 
 bool JabberRosterService::canPerformLocalUpdate() const
@@ -366,6 +368,14 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	setState(StateInitialized);
 }
 
+void JabberRosterService::executeAllTasks()
+{
+	foreach (const RosterTask &task, NotExecuted)
+		executeTask(task);
+
+	NotExecuted.clear();
+}
+
 bool JabberRosterService::addContact(const Contact &contact)
 {
 
@@ -383,24 +393,7 @@ bool JabberRosterService::addContact(const Contact &contact)
 	if (!canPerformLocalUpdate())
 		return false;
 
-	setState(StateProcessingLocalUpdate);
-
-	contact.rosterEntry()->setState(RosterEntrySynchronizing);
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
-
-	XMPP::JT_Roster *rosterTask = createContactTask(contact);
-	if (rosterTask)
-	{
-		rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
-		rosterTask->go(true);
-	}
-	else
-		contact.rosterEntry()->setState(RosterEntryDesynchronized);
-
-	setState(StateInitialized);
-
+	executeAllTasks();
 	return true;
 }
 
@@ -420,21 +413,7 @@ bool JabberRosterService::removeContact(const Contact &contact)
 	if (!canPerformLocalUpdate())
 		return false;
 
-	setState(StateProcessingLocalUpdate);
-
-	contact.rosterEntry()->setState(RosterEntrySynchronizing);
-
-	XMPP::JT_Roster *rosterTask = createContactTask(contact);
-	if (rosterTask)
-	{
-		rosterTask->remove(contact.id());
-		rosterTask->go(true);
-	}
-	else
-		contact.rosterEntry()->setState(RosterEntryDesynchronized);
-
-	setState(StateInitialized);
-
+	executeAllTasks();
 	return true;
 }
 
@@ -451,20 +430,7 @@ void JabberRosterService::updateContact(const Contact &contact)
 	if (!canPerformLocalUpdate())
 		return;
 
-	setState(StateProcessingLocalUpdate);
-
-	contact.rosterEntry()->setState(RosterEntrySynchronizing);
-
-	XMPP::JT_Roster *rosterTask = createContactTask(contact);
-	if (rosterTask)
-	{
-		rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
-		rosterTask->go(true);
-	}
-	else
-		contact.rosterEntry()->setState(RosterEntryDesynchronized);
-
-	setState(StateInitialized);
+	executeAllTasks();
 }
 
 }

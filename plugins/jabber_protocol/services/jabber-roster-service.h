@@ -84,6 +84,14 @@ class JabberRosterService : public RosterService
 	 */
 	void executeTask(const RosterTask &task);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Execute all stored RosterTask.
+	 *
+	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
+	 */
+	void executeAllTasks();
+
 private slots:
 	void remoteContactUpdated(const RosterItem &item);
 	void remoteContactDeleted(const RosterItem &item);
