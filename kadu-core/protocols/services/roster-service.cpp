@@ -92,6 +92,15 @@ void RosterService::executeTask(const RosterTask &task)
 	Q_UNUSED(task);
 }
 
+void RosterService::executeAllTasks()
+{
+	while (!Tasks.isEmpty())
+	{
+		RosterTask task = Tasks.dequeue();
+		executeTask(task);
+	}
+}
+
 void RosterService::addContact(const Contact &contact)
 {
 	if (!Contacts.contains(contact))

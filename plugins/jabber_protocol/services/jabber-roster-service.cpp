@@ -368,15 +368,6 @@ void JabberRosterService::executeTask(const RosterTask& task)
 	setState(StateInitialized);
 }
 
-void JabberRosterService::executeAllTasks()
-{
-	QVector<RosterTask> notExecuted = tasks();
-	foreach (const RosterTask &task, notExecuted)
-		executeTask(task);
-
-	setTasks(QVector<RosterTask>());
-}
-
 void JabberRosterService::addContact(const Contact &contact)
 {
 	if (!contact.contactAccount() != account() || contact.isAnonymous())

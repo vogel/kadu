@@ -72,14 +72,6 @@ class JabberRosterService : public RosterService
 	 */
 	void deleteMarkedContacts();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute all stored RosterTask.
-	 *
-	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
-	 */
-	void executeAllTasks();
-
 private slots:
 	void remoteContactUpdated(const RosterItem &item);
 	void remoteContactDeleted(const RosterItem &item);
