@@ -36,7 +36,11 @@ RosterService::RosterService(Protocol *protocol, QVector<Contact> contacts) :
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 
 	foreach (const Contact &contact, Contacts)
+	{
 		connectContact(contact);
+		if (contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
+			addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	}
 }
 
 RosterService::~RosterService()
