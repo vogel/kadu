@@ -45,6 +45,12 @@ class RosterTask
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create empty instance of RosterTask class.
+	 */
+	RosterTask();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterTask class.
 	 * @param type type of roster task
 	 * @param id id of contact

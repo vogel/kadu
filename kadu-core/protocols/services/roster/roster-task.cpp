@@ -19,6 +19,11 @@
 
 #include "roster-task.h"
 
+RosterTask::RosterTask() :
+		Type(RosterTaskNone)
+{
+}
+
 RosterTask::RosterTask(RosterTaskType type, const QString &id) :
 		Type(type), Id(id)
 {

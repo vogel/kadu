@@ -35,7 +35,11 @@
 enum RosterTaskType
 {
 	/**
-	 * Add roster entry
+	 * Do nothing.
+	 */
+	RosterTaskNone,
+	/**
+	 * Add roster entry.
 	 */
 	RosterTaskAdd,
 	/**

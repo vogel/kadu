@@ -354,6 +354,11 @@ void JabberRosterService::executeTask(const RosterTask& task)
 		case RosterTaskUpdate:
 			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
 			break;
+
+		default:
+			delete rosterTask;
+			setState(StateInitialized);
+			return;
 	}
 
 	rosterTask->go(true);
@@ -372,6 +377,8 @@ bool JabberRosterService::addContact(const Contact &contact)
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return true;
+
+	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
 
 	if (!canPerformLocalUpdate())
 		return false;
@@ -408,6 +415,8 @@ bool JabberRosterService::removeContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return true;
 
+	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
+
 	if (!canPerformLocalUpdate())
 		return false;
 
@@ -436,6 +445,8 @@ void JabberRosterService::updateContact(const Contact &contact)
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
+
+	NotExecuted.append(RosterTask(RosterTaskUpdate, contact.id()));
 
 	if (!canPerformLocalUpdate())
 		return;
