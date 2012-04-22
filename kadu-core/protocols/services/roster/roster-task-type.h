@@ -30,7 +30,7 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Description type of roster task.
  *
- * Roster task can be either adding an entry, removing one or updating one.
+ * Roster task can be either adding an entry, deleting one or updating one.
  */
 enum RosterTaskType
 {
@@ -39,9 +39,9 @@ enum RosterTaskType
 	 */
 	RosterTaskAdd,
 	/**
-	 * Remove roster entry.
+	 * Delete roster entry.
 	 */
-	RosterTaskRemove,
+	RosterTaskDelete,
 	/**
 	 * Update roster entry.
 	 */
