@@ -34,6 +34,7 @@
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/services/roster-service.h"
 #include "status/status-setter.h"
 
 #include "account-shared.h"
@@ -209,6 +210,32 @@ void AccountShared::store()
 		removeValue("Password");
 
 	storeValue("PrivateStatus", PrivateStatus);
+
+	if (protocolHandler() && protocolHandler()->rosterService())
+	{
+		XmlConfigFile *configurationStorage = storage()->storage();
+		QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+
+		while (!rosterTasksNode.childNodes().isEmpty())
+			rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
+
+		QVector<RosterTask> tasks = protocolHandler()->rosterService()->tasks();
+		foreach (const RosterTask &task, tasks)
+			switch (task.type())
+			{
+				case RosterTaskAdd:
+					configurationStorage->createTextNode(rosterTasksNode, "Add", task.id());
+					break;
+				case RosterTaskDelete:
+					configurationStorage->createTextNode(rosterTasksNode, "Delete", task.id());
+					break;
+				case RosterTaskUpdate:
+					configurationStorage->createTextNode(rosterTasksNode, "Update", task.id());
+					break;
+				default:
+					break;
+			}
+		}
 }
 
 bool AccountShared::shouldStore()
