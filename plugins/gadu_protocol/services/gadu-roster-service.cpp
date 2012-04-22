@@ -44,8 +44,8 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 	return result;
 }
 
-GaduRosterService::GaduRosterService(Protocol *protocol) :
-		RosterService(protocol), GaduSession(0)
+GaduRosterService::GaduRosterService(Protocol *protocol, QVector<Contact> contacts) :
+		RosterService(protocol, contacts), GaduSession(0)
 {
 	Q_ASSERT(protocol);
 }

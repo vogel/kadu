@@ -55,8 +55,8 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 		return item.jid().bare();
 }
 
-JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
-		RosterService(protocol)
+JabberRosterService::JabberRosterService(JabberProtocol *protocol, QVector<Contact> contacts) :
+		RosterService(protocol, contacts)
 {
 	Q_ASSERT(protocol);
 }

@@ -114,6 +114,20 @@ private:
 	 */
 	bool shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Connects to data emited by given contact when its roster data changes.
+	 * @param contact contact to connect to
+	 */
+	void connectContact(const Contact &contact);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Disconnects data emited by given contact when its roster data changes.
+	 * @param contact contact to disconnect from
+	 */
+	void disconnectContact(const Contact &contact);
+
 private slots:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -203,8 +217,11 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterService bound to given Protocol.
 	 * @param protocol protocol to bound this service to
+	 * @param contacts initial list of contacts that are assumed to be also on remote roster
+	 *
+	 * This service will read all non-anoynoums contacts assigned to this protocol/account and connect.
 	 */
-	explicit RosterService(Protocol *protocol);
+	explicit RosterService(Protocol *protocol, QVector<Contact> contacts);
 	virtual ~RosterService();
 
 	/**

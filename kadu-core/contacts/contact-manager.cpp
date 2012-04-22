@@ -201,7 +201,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 	return contact;
 }
 
-QVector<Contact> ContactManager::contacts(Account account)
+QVector<Contact> ContactManager::contacts(Account account, bool excludeAnonymous)
 {
 	QMutexLocker locker(&mutex());
 
@@ -213,7 +213,7 @@ QVector<Contact> ContactManager::contacts(Account account)
 		return contacts;
 
 	foreach (const Contact &contact, allItems())
-		if (account == contact.contactAccount())
+		if (account == contact.contactAccount() && (!excludeAnonymous || !contact.isAnonymous()))
 			contacts.append(contact);
 
 	return contacts;

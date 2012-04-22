@@ -84,7 +84,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
-	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
+	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this, ContactManager::instance()->contacts(account, true));
 
 	chatService->setClient(JabberClient->client());
 	chatStateService->setClient(JabberClient->client());

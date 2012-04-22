@@ -86,7 +86,7 @@ protected:
 	virtual void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(JabberProtocol *protocol);
+	explicit JabberRosterService(JabberProtocol *protocol, QVector<Contact> contacts);
 	virtual ~JabberRosterService();
 
 	virtual void prepareRoster();

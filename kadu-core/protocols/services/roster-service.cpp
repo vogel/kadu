@@ -28,12 +28,15 @@
 
 #include "roster-service.h"
 
-RosterService::RosterService(Protocol *protocol) :
-		ProtocolService(protocol), State(StateNonInitialized)
+RosterService::RosterService(Protocol *protocol, QVector<Contact> contacts) :
+		ProtocolService(protocol), State(StateNonInitialized), Contacts(contacts)
 {
 	Q_ASSERT(protocol);
 
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+
+	foreach (const Contact &contact, Contacts)
+		connectContact(contact);
 }
 
 RosterService::~RosterService()
@@ -106,6 +109,16 @@ bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType re
 	return RosterTaskUpdate != replacementType;
 }
 
+void RosterService::connectContact(const Contact &contact)
+{
+	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+}
+
+void RosterService::disconnectContact(const Contact &contact)
+{
+	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+}
+
 void RosterService::addTask(const RosterTask &task)
 {
 	if (!IdToTask.contains(task.id()))
@@ -151,7 +164,7 @@ void RosterService::addContact(const Contact &contact)
 		return;
 
 	Contacts.append(contact);
-	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+	connectContact(contact);
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
@@ -171,7 +184,7 @@ void RosterService::removeContact(const Contact &contact)
 		return;
 
 	Contacts.remove(index);
-	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+	disconnectContact(contact);
 
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
