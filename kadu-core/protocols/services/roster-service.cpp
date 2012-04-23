@@ -80,6 +80,20 @@ bool RosterService::canPerformLocalUpdate() const
 	return protocol()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
 }
 
+bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
+{
+	if (!contact.rosterEntry())
+		return false;
+
+	if (!protocol()->isConnected() || StateNonInitialized == State)
+		return false;
+
+	if (IdToTask.contains(contact.id()))
+		return false;
+
+	return !contact.rosterEntry()->detached() || contact.isAnonymous();
+}
+
 void RosterService::setState(RosterState state)
 {
 	State = state;

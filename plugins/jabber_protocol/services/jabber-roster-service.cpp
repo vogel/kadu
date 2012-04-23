@@ -172,41 +172,35 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 
-	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
-
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-	if (contact == account().accountContact())
+	if (!contact || contact == account().accountContact())
 		return;
 
 	contact.rosterEntry()->setDeleted(false);
+	if (!canPerformRemoteUpdate(contact))
+		return;
 
 	if (!isIntrestedIn(item))
 	{
-		if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
-			contact.rosterEntry()->setState(RosterEntrySynchronized);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 		return;
 	}
 
-	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
-		contact.rosterEntry()->setState(RosterEntrySynchronizing);
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
-	if ((contact.isAnonymous() || contact.rosterEntry()->acceptRemoteUpdate()) && RosterTaskNone == taskType(contact.id()))
-		ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
+	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
 	Buddy buddy = contact.ownerBuddy();
 	BuddyManager::instance()->addItem(buddy);
 
 	RosterService::addContact(contact);
 
-	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
-	{
-		QSet<Group> groups;
-		foreach (const QString &group, item.groups())
-			groups << GroupManager::instance()->byName(group);
-		buddy.setGroups(groups);
+	QSet<Group> groups;
+	foreach (const QString &group, item.groups())
+		groups << GroupManager::instance()->byName(group);
+	buddy.setGroups(groups);
 
-		contact.rosterEntry()->setState(RosterEntrySynchronized);
-	}
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 }
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)

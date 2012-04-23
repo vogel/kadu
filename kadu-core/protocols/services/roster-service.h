@@ -152,6 +152,17 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return true if remote update for given contact can be processed.
+	 * @param contact contact to check
+	 * @return true if remote update can be processed
+	 *
+	 * Remote update can only be processed when roster is in StateInitialized or StateInitializing, given contact
+	 * is not detached (or is anonymous) and no tasks for given contact are awaiting execution
+	 */
+	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets state of roster service.
 	 * @param state new state
 	 */
