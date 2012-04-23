@@ -72,6 +72,20 @@ class JabberRosterService : public RosterService
 	 */
 	void deleteMarkedContacts();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if user is intrested in seing given roster item data.
+	 * @param item roster item to check
+	 * @return true,  if user is intrested in seing given roster item data
+	 *
+	 * See: http://xmpp.org/extensions/xep-0162.html#contacts
+	 *
+	 * items with subscription='both' or subscription='to' ;
+	 * items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
+	 * items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
+	 */
+	bool isIntrestedIn(const XMPP::RosterItem &item);
+
 private slots:
 	void remoteContactUpdated(const RosterItem &item);
 	void remoteContactDeleted(const RosterItem &item);

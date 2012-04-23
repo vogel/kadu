@@ -127,6 +127,31 @@ JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 	return rosterTask;
 }
 
+bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
+{
+	int subscription = item.subscription().type();
+
+	if (XMPP::Subscription::Both == subscription)
+		return true;
+
+	if (XMPP::Subscription::To == subscription)
+		return true;
+
+	if (XMPP::Subscription::None != subscription && XMPP::Subscription::From != subscription)
+		return false;
+
+	if (item.ask() == "subscribe")
+		return true;
+
+	if (!item.name().isEmpty())
+		return true;
+
+	if (!item.groups().isEmpty())
+		return true;
+
+	return false;
+}
+
 void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 {
 	if (StateNonInitialized == state())
@@ -155,14 +180,8 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	contact.rosterEntry()->setDeleted(false);
 
-	int subType = item.subscription().type();
-
-	// http://xmpp.org/extensions/xep-0162.html#contacts
-	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To
-	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
-	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))))
+	if (!isIntrestedIn(item))
 	{
-		// in case we return before next call of it
 		if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
 			contact.rosterEntry()->setState(RosterEntrySynchronized);
 		return;
