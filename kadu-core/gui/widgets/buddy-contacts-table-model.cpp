@@ -142,6 +142,13 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 
 	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
 	{
+		// TODO fix this issue
+		// when user marks detached contact as non-detached we set it as Synchronized
+		// so next data from roster overrides our changes
+		// this is not perfect solution but i'm unable to figure out a perfect one now
+		if (!item->rosterDetached() && contact.rosterEntry()->detached())
+			contact.rosterEntry()->setState(RosterEntrySynchronized);
+
 		contact.rosterEntry()->setDetached(item->rosterDetached());
 		return;
 	}
