@@ -51,22 +51,22 @@
  * for changes and updated automatically, until it is removed.
  *
  * If an action cannot be executed immediately it is stored as @link RosterTask @endlink object for later execution.
- * List of tasks is available by calling tasks() getter and can be changed by setTasks() setted. This allows for storing
+ * List of tasks is available by calling tasks() getter and can be changed by setTasks() setter. This allows for storing
  * and restoring this list between program invocations. Only one @link RosterTask @endlink for each contact id can be on
- * the list at a time. This service is responsible of choosing which task should be left on a list and which one should
+ * the list at a time. This service is responsible of choosing which task should be left on the list and which one should
  * be removed in case when second one is added for given id.
  *
- * When receiving updates from remote roster list of tasks is checked for id of contact from remote roster. Request for
- * contact removal or update from remote roster will be ignored if an update or add task is on the task list. This service
- * assumes that its changes are more important that these of remote roster. Update request are ignored if Detached flag
+ * When receiving updates from the remote roster, list of tasks is checked for id of contact from remote roster. Requests for
+ * contact removal or update from remote roster will be ignored if an update or addition task is on the task list. This service
+ * assumes that its changes are more important that these of remote roster. Update requests are ignored if Detached flag
  * of @link RosterEntry @endlink of given contact is set to true.
  *
- * At begining of roster initialization all contacts of service's account that do not have any task are marked as deleted by
+ * At the beginning of roster initialization all contacts of service's account that do not have any tasks are marked as deleted by
  * remote roster. During initialization deletion mark is removed from contacts that have data on remote roster. After
- * initialization rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
+ * initialization the rest of contacts is removed from local roster. In this case Detached flag of @link RosterEntry @endlink
  * does not count as it is only used for detaching from data synchronization.
  *
- * Signal rosterRead() is emited after calling prepareRoster() when implementation decides that initialization was finished.
+ * Signal rosterRead() is emitted after calling prepareRoster() when implementation decides that initialization was finished.
  */
 class KADUAPI RosterService : public ProtocolService
 {
@@ -108,14 +108,14 @@ private:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Connects to data emited by given contact when its roster data changes.
+	 * @short Connects to data emitted by given contact when its roster data changes.
 	 * @param contact contact to connect to
 	 */
 	void connectContact(const Contact &contact);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Disconnects data emited by given contact when its roster data changes.
+	 * @short Disconnects data emitted by given contact when its roster data changes.
 	 * @param contact contact to disconnect from
 	 */
 	void disconnectContact(const Contact &contact);
@@ -146,7 +146,7 @@ protected:
 	 * @return true if local update can be processed
 	 *
 	 * Local update can only be processed when roster is in StateInitialized. Derivered services can override this
-	 * method and add another conditions.
+	 * method and add more conditions.
 	 */
 	virtual bool canPerformLocalUpdate() const;
 
@@ -157,7 +157,7 @@ protected:
 	 * @return true if remote update can be processed
 	 *
 	 * Remote update can only be processed when roster is in StateInitialized or StateInitializing, given contact
-	 * is not detached (or is anonymous) and no tasks for given contact are awaiting execution
+	 * is not detached (or is anonymous) and no tasks for given contact are awaiting execution.
 	 */
 	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
 
@@ -187,7 +187,7 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute all stored RosterTask.
+	 * @short Execute all stored RosterTasks.
 	 *
 	 * This method executes all stored tasks. List of not-executed tasks will be empty after this call.
 	 */
@@ -197,10 +197,10 @@ protected slots:
 	/**
 	 * @enum RosterState
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called when contact's dirtness is changed.
+	 * @short Method called when contact's dirtiness is changed.
 	 *
-	 * If given contact is valid and belongs to current account then new roster task for adding item to roster is created.
-	 * If it is possible task is executed immediately. If not, it is stored for later execution.
+	 * If given contact is valid and belongs to current account, then new roster task for adding item to roster is created.
+	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
 	 */
 	void updateContact(const Contact &contact);
 
@@ -227,9 +227,9 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Prepare roster to its work.
 	 *
-	 * This method must be reimplemented by derivered services. Depending on protocol it should download remote roster,
+	 * This method must be reimplemented by derived services. Depending on protocol it should download remote roster,
 	 * upload local one, merge both or do nothig. After successfull (or not) preparation rosterReady() signal must be
-	 * emited.
+	 * emitted.
 	 */
 	virtual void prepareRoster() = 0;
 
@@ -252,8 +252,8 @@ public:
 	 * @short Add new task for later execution.
 	 * @param task new task
 	 *
-	 * If existing task for given id is available then this service decided which one to use and which one to ignore.
-	 * If exsiting task is delete then it is always replaced. Add task can be only replaced by delete task. Update task
+	 * If existing task for given id is available then this service decides which one to use and which one to ignore.
+	 * If existing task is deletion, then it is always replaced. Addition task can be only replaced by deletion task. Update task
 	 * can be replaced by any non-update task.
 	 */
 	void addTask(const RosterTask &task);
@@ -264,8 +264,8 @@ public slots:
 	 * @short Add new contact to roster.
 	 * @param contact new contact
 	 *
-	 * If given contact is valid and belongs to current account then new roster task for adding item to roster is created.
-	 * If it is possible task is executed immediately. If not, it is stored for later execution.
+	 * If given contact is valid and belongs to current account, then new roster task for adding item to roster is created.
+	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
 	 */
 	void addContact(const Contact &contact);
 
@@ -274,15 +274,15 @@ public slots:
 	 * @short Remove contact from roster.
 	 * @param contact contact to remove
 	 *
-	 * If given contact is valid and belongs to current account then new roster task for deleting item from roster is created.
-	 * If it is possible task is executed immediately. If not, it is stored for later execution.
+	 * If given contact is valid and belongs to current account, then new roster task for deleting item from roster is created.
+	 * If it is possible, task is executed immediately. If not, it is stored for later execution.
 	 */
 	void removeContact(const Contact &contact);
 
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when prepareRoster() operation is finished
+	 * @short Signal emitted when prepareRoster() operation is finished
 	 * @param ok true, if preparing roster was successfull
 	 */
 	void rosterReady(bool ok);

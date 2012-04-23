@@ -36,8 +36,8 @@ class ChangeNotifier;
  * @author Rafał 'Vogel' Malinowski
  * @short Entry in local and remote roster.
  *
- * This class describes entry in local and remote roster and its synchronization state. It also has two flags. When Detached flag is true
- * no synchronization is made between local and remote roster. When Deleted flag is true the entry is assumed to be deleted from remote
+ * This class describes entry in local and remote roster and its synchronization state. It also has two flags. When Detached flag is true,
+ * no synchronization of data is made between local and remote roster. When Deleted flag is true, the entry is assumed to be deleted from remote
  * roster.
  */
 class RosterEntry : public QObject
@@ -54,7 +54,7 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new RosterEntry instance.
-	 * @param paretn QObject parent of new instance
+	 * @param parent QObject parent of new instance
 	 *
 	 * New instance has Detached property set to false and RosterEntryUnkown synchronization state.
 	 */
@@ -108,16 +108,16 @@ public:
 	 * @short Get change notifier for this object.
 	 * @return change notifier of this object
 	 *
-	 * Each time a property of this object changes returned ChangeNotifier will emit chagned() signal.
+	 * Each time a property of this object changes returned ChangeNotifier will emit changed() signal.
 	 */
 	ChangeNotifier * changeNotifier() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if this entry required synchronization with server.
-	 * @return true if this entry required synchronization with server
+	 * @short Check if this entry requires synchronization with server.
+	 * @return true if this entry requires synchronization with server
 	 *
-	 * This method only returns true if state if RosterEntryDesynchronized and this entry is not Detached.
+	 * This method returns true only if state is RosterEntryDesynchronized and this entry is not Detached.
 	 */
 	bool requiresSynchronization() const;
 
@@ -126,7 +126,7 @@ public:
 	 * @short Check if this entry can be updated by remote roster.
 	 * @return true if this entry can be updated by remote roster
 	 *
-	 * This method only returns true if state if different than RosterEntryDesynchronized and than RosterEntrySynchronizing
+	 * This method only returns true if state is different than RosterEntryDesynchronized and than RosterEntrySynchronizing
 	 * and this entry is not Detached. We assume that our changes are more important that these from remote roster.
 	 */
 	bool acceptRemoteUpdate() const;

@@ -32,12 +32,13 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Notify about change in object properties.
  *
- * This class can be used to notify about changes in other object properties. Each time a property in given object changes
- * a notify() method should be called. Then changed() signal is emited.
+ * This class can be used to notify about changes in other object's properties. Each time a property in given object changes,
+ * the notify() method should be called. Then the changed() signal is emitted.
  *
- * It is possible to block emitting of changed() signal when changing a lot of properties at once. After last change and unblocking
- * changed() signal is emited - reducing number of calls from many to one. It is also possible to stack blocking - when object has
- * been blocked n times then it must be unblocked n times again to emit signal.
+ * It is possible to block emitting of the changed() signal, for example when changing a lot of properties at once. After the last
+ * change and call to unblock(), the changed() signal will be emitted - reducing number of calls from many to one. It is also
+ * possible to stack blocking - if object has been blocked n times then it must be unblocked n times again to begin emitting
+ * the changed() signal again.
  */
 
 class ChangeNotifier : public QObject
@@ -53,19 +54,19 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Block emiting of changed() signal.
+	 * @short Block emitting of changed() signal.
 	 *
-	 * This method can be called multiple times. After that unblock() must be called the same amount of times to allow emiting changed()
+	 * This method can be called multiple times. After that unblock() must be called the same amount of times to allow emitting changed()
 	 * signal again.
 	 */
 	void block();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unblock emiting of changed() signal.
+	 * @short Unblock emitting of changed() signal and emit the changed() signal if a change happened when the object was blocked.
 	 *
-	 * This method must be called the same amount of times as block() before it to allow emiting changed() signal again.
-	 * If this method is called one time too many an assertion is issued.
+	 * This method must be called the same amount of times as block() before it will allow emitting changed() signal again.
+	 * If this method is called without a correspoing block() call, an assertion is issued.
 	 */
 	void unblock();
 
@@ -74,7 +75,7 @@ public slots:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Notify about change.
 	 *
-	 * Changed object should call this method after every change. After that changed() signal is emitted if not blocked. In other case
+	 * Changed object should call this method after every change. After that, changed() signal is emitted if not blocked. In other case
 	 * it will be emitted after unblocking.
 	 */
 	void notify();
@@ -93,7 +94,7 @@ signals:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emitted after every change.
 	 *
-	 * Signal emited after every change. If blocking is used then it will be emitted after last change, when called unblocks it.
+	 * Signal emitted after each change. If blocking is used then it will be emitted only once after last change, after call to unblock().
 	 */
 	void changed();
 

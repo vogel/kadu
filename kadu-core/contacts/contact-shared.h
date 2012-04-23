@@ -99,8 +99,8 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return RosterEntry fot this Contact.
-	 * @return RosterEntry fot this Contact
+	 * @short Return RosterEntry for this Contact.
+	 * @return RosterEntry for this Contact
 	 *
 	 * This method never returns null entry.
 	 */

@@ -30,7 +30,7 @@
  * @author Rafał 'Vogel' Malinowski
  * @short Description of state of roster entry.
  *
- * This enum describes state of roster entry that can be either synchronized, desynchronized or synchronizing with remote entry.
+ * This enum describes state of roster entry that can be either synchronized, desynchronized or being synchronizing with remote entry.
  */
 enum RosterEntryState
 {

@@ -58,7 +58,7 @@ class JabberRosterService : public RosterService
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Mark all contacts of given account to deletion.
 	 *
-	 * Assume that all synchronized contacts was removed from roster. During roster download all still existing
+	 * Assume that all synchronized contacts were removed from roster. During roster download all still existing
 	 * entries will be marked as synchronized (if not dirty). Even detached entries can be removed as detaching is
 	 * only about groups and display name.
 	 */
@@ -66,23 +66,23 @@ class JabberRosterService : public RosterService
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Delete all contacts marked to deletion.
+	 * @short Delete all contacts marked for deletion.
 	 *
-	 * All contacts that after roster updated are still marked for deletion are deleted from local roster.
+	 * All contacts that after synchronization with remote roster are still marked for deletion are deleted from local roster.
 	 */
 	void deleteMarkedContacts();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if user is intrested in seing given roster item data.
+	 * @short Check if user is intrested in seeing given roster item data.
 	 * @param item roster item to check
-	 * @return true,  if user is intrested in seing given roster item data
+	 * @return true, if user is intrested in seeing given roster item data
 	 *
 	 * See: http://xmpp.org/extensions/xep-0162.html#contacts
 	 *
-	 * items with subscription='both' or subscription='to' ;
-	 * items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
-	 * items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
+	 * - items with subscription='both' or subscription='to' ;
+	 * - items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
+	 * - items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
 	 */
 	bool isIntrestedIn(const XMPP::RosterItem &item);
 

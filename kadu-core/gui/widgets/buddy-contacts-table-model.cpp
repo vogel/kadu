@@ -315,7 +315,7 @@ QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orient
 	{
 		case 0: return tr("Username");
 		case 1: return tr("Account");
-		case 2: return tr("Synchrionize");
+		case 2: return tr("Synchronize");
 	}
 
 	return QVariant();
