@@ -159,17 +159,6 @@ protected:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new task for later execution.
-	 * @param task new task
-	 *
-	 * If existing task for given id is available then this service decided which one to use and which one to ignore.
-	 * If exsiting task is delete then it is always replaced. Add task can be only replaced by delete task. Update task
-	 * can be replaced by any non-update task.
-	 */
-	void addTask(const RosterTask &task);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return type of task for given id.
 	 * @param id id of contact to check task for
 	 * @return type of task for given id
@@ -246,6 +235,17 @@ public:
 	 * @param tasks new list of non-executed roster tasks
 	 */
 	void setTasks(const QVector<RosterTask> tasks);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Add new task for later execution.
+	 * @param task new task
+	 *
+	 * If existing task for given id is available then this service decided which one to use and which one to ignore.
+	 * If exsiting task is delete then it is always replaced. Add task can be only replaced by delete task. Update task
+	 * can be replaced by any non-update task.
+	 */
+	void addTask(const RosterTask &task);
 
 public slots:
 	/**

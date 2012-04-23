@@ -157,8 +157,6 @@ void AccountShared::loadRosterTasks()
 	QDomNodeList rosterTaskNodes = rosterTasksNode.childNodes();
 	const int rosterTaskCount = rosterTaskNodes.count();
 
-	QVector<RosterTask> tasks;
-
 	for (int i = 0; i < rosterTaskCount; i++)
 	{
 		QDomElement rosterTaskElement = rosterTaskNodes.at(i).toElement();
@@ -179,10 +177,8 @@ void AccountShared::loadRosterTasks()
 		if (RosterTaskNone == taskType)
 			continue;
 
-		tasks.append(RosterTask(taskType, rosterTaskElement.text()));
+		protocolHandler()->rosterService()->addTask(RosterTask(taskType, rosterTaskElement.text()));
 	}
-
-	protocolHandler()->rosterService()->setTasks(tasks);
 }
 
 void AccountShared::load()

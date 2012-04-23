@@ -150,15 +150,10 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
-
-	contact.rosterEntry()->setDeleted(false);
-
-	// in case we return before next call of it
-	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
-		contact.rosterEntry()->setState(RosterEntrySynchronized);
-
 	if (contact == account().accountContact())
 		return;
+
+	contact.rosterEntry()->setDeleted(false);
 
 	int subType = item.subscription().type();
 
@@ -166,9 +161,15 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))))
+	{
+		// in case we return before next call of it
+		if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
+			contact.rosterEntry()->setState(RosterEntrySynchronized);
 		return;
+	}
 
-	contact.rosterEntry()->setState(RosterEntrySynchronizing);
+	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
+		contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
 	if ((contact.isAnonymous() || contact.rosterEntry()->acceptRemoteUpdate()) && RosterTaskNone == taskType(contact.id()))
 		ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
@@ -178,16 +179,15 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	RosterService::addContact(contact);
 
-	if (contact.rosterEntry()->acceptRemoteUpdate())
+	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
 	{
 		QSet<Group> groups;
 		foreach (const QString &group, item.groups())
 			groups << GroupManager::instance()->byName(group);
 		buddy.setGroups(groups);
-	}
 
-	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
 		contact.rosterEntry()->setState(RosterEntrySynchronized);
+	}
 }
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
