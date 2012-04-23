@@ -150,8 +150,6 @@ void GaduRosterService::executeTask(const RosterTask &task)
 {
 	Q_ASSERT(StateInitialized == state());
 
-	setState(StateProcessingLocalUpdate);
-
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	switch (task.type())
 	{
@@ -165,6 +163,4 @@ void GaduRosterService::executeTask(const RosterTask &task)
 		default:
 			break;
 	}
-
-	setState(StateInitialized);
 }

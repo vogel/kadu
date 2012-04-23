@@ -90,15 +90,7 @@ public:
 		/**
 		 * Roster is initialized and ready to accept local or remote changes.
 		 */
-		StateInitialized,
-		/**
-		 * Remote update was detected and is not being processed to update local roster.
-		 */
-		StateProcessingRemoteUpdate,
-		/**
-		 * Local update was detected and is not being processed to update remote roster.
-		 */
-		StateProcessingLocalUpdate
+		StateInitialized
 	};
 
 private:

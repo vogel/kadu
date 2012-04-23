@@ -129,15 +129,8 @@ JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 
 void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 {
-	kdebugf();
-
-	// StateInitialized - this is new update from roster
-	// StateInitializing - this is initial data from roster
-	RosterState originalState = state();
-	if (StateInitialized != originalState && StateInitializing != originalState)
+	if (StateNonInitialized == state())
 		return;
-
-	setState(StateProcessingRemoteUpdate);
 
 	/**
 	 * Subscription types are: Both, From, To, Remove, None.
@@ -165,22 +158,15 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	if (contact == account().accountContact())
-	{
-		setState(originalState);
 		return;
-	}
 
 	int subType = item.subscription().type();
 
 	// http://xmpp.org/extensions/xep-0162.html#contacts
 	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To
 	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
-	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
-	   ))
-	{
-		setState(originalState);
+	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))))
 		return;
-	}
 
 	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
@@ -202,21 +188,12 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 
 	if (contact.rosterEntry()->acceptRemoteUpdate() && RosterTaskNone == taskType(contact.id()))
 		contact.rosterEntry()->setState(RosterEntrySynchronized);
-
-	setState(originalState);
-
-	kdebugf2();
 }
 
 void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 {
-	// StateInitialized - this is new update from roster
-	// StateInitializing - this is initial data from roster
-	RosterState originalState = state();
-	if (StateInitialized != originalState && StateInitializing != originalState)
+	if (StateNonInitialized == state())
 		return;
-
-	setState(StateProcessingRemoteUpdate);
 
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
 
@@ -229,8 +206,6 @@ void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 
 		RosterService::removeContact(contact);
 	}
-
-	setState(originalState);
 }
 
 void JabberRosterService::rosterTaskFinished()
@@ -338,8 +313,6 @@ void JabberRosterService::executeTask(const RosterTask& task)
 {
 	Q_ASSERT(StateInitialized == state());
 
-	setState(StateProcessingLocalUpdate);
-
 	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
 	XMPP::JT_Roster *rosterTask = createContactTask(contact);
 	if (!rosterTask)
@@ -367,13 +340,10 @@ void JabberRosterService::executeTask(const RosterTask& task)
 
 		default:
 			delete rosterTask;
-			setState(StateInitialized);
 			return;
 	}
 
 	rosterTask->go(true);
-
-	setState(StateInitialized);
 }
 
 }
