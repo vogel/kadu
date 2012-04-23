@@ -56,6 +56,11 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	setApplicationName("Kadu");
 	setQuitOnLastWindowClosed(false);
 
+#ifdef Q_WS_WIN
+	// Fix for #2491
+	setStyleSheet("QToolBar{border:0px}");
+#endif
+
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 	xfixes_event_base = -1;
 	int dummy;
