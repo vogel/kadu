@@ -50,6 +50,9 @@
 * core: #2457 fixed: actually respect custom KADU_BINDIR, KADU_DATADIR and KADU_PLUGINS_LIBDIR directories (beevvy)
 * core: semi-official portable installation support on all platforms by creating file named "portable" in Kadu data directory (beevvy)
 
++++ version 0.11.3
+* gui: #2335 fixed: fixed QPalette::HighlightedText and QPalette::Highlight Windows workaround to always work properly (beevvy)
+
 +++ version 0.11.2
 * url-handlers: #2485 fixed: do not treat strings beginning with "ftp." as http links (beevvy)
 * gadu: fixed rare problem which have been causing inability to send any messages (beevvy)

@@ -94,6 +94,10 @@ class TalkablePainter
 	void paintName(QPainter *painter);
 	void paintDescription(QPainter *painter);
 
+#ifdef Q_WS_WIN
+	static bool useColorsWorkaround();
+#endif
+
 public:
 	TalkablePainter(const TalkableDelegateConfiguration &configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
 	~TalkablePainter();
