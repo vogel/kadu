@@ -287,6 +287,19 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
+	if (index.row() < 0 || index.row() >= Contacts.size())
+		return QAbstractItemModel::flags(index);
+
+	if (2 == index.column())
+	{
+		BuddyContactsTableItem *item = Contacts.at(index.row());
+		// TODO fix when we support more than 2 protocols...
+		if ("gadu" == item->itemAccount().protocolName())
+			return QAbstractItemModel::flags(index);
+		else
+			return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	}
+
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
@@ -358,7 +371,10 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 			{
 				case Qt::DisplayRole:
 				case Qt::EditRole:
-					return !item->rosterDetached();
+					if ("gadu" == item->itemAccount().protocolName())
+						return true;
+					else
+						return !item->rosterDetached();
 			}
 
 			return QVariant();
@@ -387,7 +403,7 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 			break;
 
 		case 2:
-			if (Qt::EditRole == role)
+			if (Qt::EditRole == role && "gadu" != item->itemAccount().protocolName())
 				item->setRosterDetached(!value.toBool());
 			break;
 	}
