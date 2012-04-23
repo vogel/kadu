@@ -1,5 +1,6 @@
 +++ version 0.11.3
 * history: #2539 fixed: improper import of 0.6.5 history in some cases (Vogel)
+* gui: #2335 fixed: fixed QPalette::HighlightedText and QPalette::Highlight Windows workaround to always work properly (beevvy)
 
 +++ version 0.11.2
 * url-handlers: #2485 fixed: do not treat strings beginning with "ftp." as http links (beevvy)
