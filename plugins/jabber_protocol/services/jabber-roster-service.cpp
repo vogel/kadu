@@ -55,7 +55,7 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 		return item.jid().bare();
 }
 
-JabberRosterService::JabberRosterService(JabberProtocol *protocol, QVector<Contact> contacts) :
+JabberRosterService::JabberRosterService(JabberProtocol *protocol, const QVector<Contact> &contacts) :
 		RosterService(protocol, contacts)
 {
 	Q_ASSERT(protocol);
@@ -254,7 +254,7 @@ void JabberRosterService::rosterTaskDeleted(QObject* object)
 
 void JabberRosterService::markContactsForDeletion()
 {
-	QList<Contact> accountContacts = ContactManager::instance()->contacts(account()).toList();
+	QVector<Contact> accountContacts = ContactManager::instance()->contacts(account());
 	foreach (const Contact &contact, accountContacts)
 	{
 		if (contact == account().accountContact())
@@ -271,7 +271,7 @@ void JabberRosterService::markContactsForDeletion()
 
 void JabberRosterService::deleteMarkedContacts()
 {
-	QList<Contact> accountContacts = ContactManager::instance()->contacts(account()).toList();
+	QVector<Contact> accountContacts = ContactManager::instance()->contacts(account());
 	foreach (const Contact &contact, accountContacts)
 	{
 		if (contact == account().accountContact())

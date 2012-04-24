@@ -28,7 +28,7 @@
 
 #include "roster-service.h"
 
-RosterService::RosterService(Protocol *protocol, QVector<Contact> contacts) :
+RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts) :
 		ProtocolService(protocol), State(StateNonInitialized), Contacts(contacts)
 {
 	Q_ASSERT(protocol);
@@ -104,7 +104,7 @@ QVector<RosterTask> RosterService::tasks()
 	return Tasks.toVector();
 }
 
-void RosterService::setTasks(const QVector<RosterTask> tasks)
+void RosterService::setTasks(const QVector<RosterTask> &tasks)
 {
 	Tasks.clear();
 	IdToTask.clear();

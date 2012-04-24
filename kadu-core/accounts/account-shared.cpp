@@ -160,24 +160,15 @@ void AccountShared::loadRosterTasks()
 	for (int i = 0; i < rosterTaskCount; i++)
 	{
 		QDomElement rosterTaskElement = rosterTaskNodes.at(i).toElement();
-		if (rosterTaskElement.isNull())
+		if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
 			continue;
 
-		if (rosterTaskElement.text().isEmpty())
-			continue;
-
-		RosterTaskType taskType = RosterTaskNone;
 		if (rosterTaskElement.nodeName() == "Add")
-			taskType = RosterTaskAdd;
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Delete")
-			taskType = RosterTaskDelete;
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
 		else if (rosterTaskElement.nodeName() == "Update")
-			taskType = RosterTaskUpdate;
-
-		if (RosterTaskNone == taskType)
-			continue;
-
-		protocolHandler()->rosterService()->addTask(RosterTask(taskType, rosterTaskElement.text()));
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
 	}
 }
 

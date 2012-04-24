@@ -43,7 +43,7 @@ protected:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduRosterService(Protocol *protocol, QVector<Contact> contacts);
+	explicit GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts);
 	virtual ~GaduRosterService();
 
 	virtual void prepareRoster();

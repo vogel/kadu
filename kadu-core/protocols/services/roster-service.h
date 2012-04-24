@@ -213,7 +213,7 @@ public:
 	 *
 	 * This service will read all non-anoynoums contacts assigned to this protocol/account and connect.
 	 */
-	explicit RosterService(Protocol *protocol, QVector<Contact> contacts);
+	explicit RosterService(Protocol *protocol, const QVector<Contact> &contacts);
 	virtual ~RosterService();
 
 	/**
@@ -245,7 +245,7 @@ public:
 	 * @short Set list of non-executed roster tasks.
 	 * @param tasks new list of non-executed roster tasks
 	 */
-	void setTasks(const QVector<RosterTask> tasks);
+	void setTasks(const QVector<RosterTask> &tasks);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
