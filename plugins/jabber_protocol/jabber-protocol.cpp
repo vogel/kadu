@@ -275,7 +275,7 @@ void JabberProtocol::logout()
 
 void JabberProtocol::sendStatusToServer()
 {
-	if (!isConnected())
+	if (!isConnected() && !isDisconnecting())
 		return;
 
 	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));

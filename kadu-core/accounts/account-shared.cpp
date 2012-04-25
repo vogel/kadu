@@ -238,7 +238,7 @@ void AccountShared::setDisconnectStatus()
 {
 	if (!ProtocolHandler)
 		return;
-	if (!ProtocolHandler->isConnected())
+	if (!ProtocolHandler->isConnected() && !ProtocolHandler->isDisconnecting())
 		return;
 
 	bool disconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");

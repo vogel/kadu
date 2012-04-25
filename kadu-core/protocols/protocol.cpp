@@ -129,6 +129,7 @@ void Protocol::setStatus(Status status)
 void Protocol::doSetStatus(Status status)
 {
 	CurrentStatus = status;
+
 	if (!CurrentStatus.isDisconnected())
 	{
 		emit statusChanged(CurrentAccount, CurrentStatus);
@@ -276,6 +277,11 @@ bool Protocol::isConnected()
 bool Protocol::isConnecting()
 {
 	return Machine->isLoggingIn();
+}
+
+bool Protocol::isDisconnecting()
+{
+	return Machine->isLoggingOut();
 }
 
 void Protocol::setChatService(ChatService * const chatService)

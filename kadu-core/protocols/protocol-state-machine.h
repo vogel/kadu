@@ -182,6 +182,7 @@ public:
 
 	bool isLoggedIn();
 	bool isLoggingIn();
+	bool isLoggingOut();
 
 signals:
 	/**
