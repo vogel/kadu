@@ -64,7 +64,7 @@ public:
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
 	void setIcons(const QList<QIcon> &icons);
 	void setCurrentItem(const QString &currentItem);
-	const QString & currentItemValue() { return itemValues.at(currentRow()); }
+	QString currentItemValue() const { return currentRow() != -1 ? itemValues.at(currentRow()) : QString(); }
 
 	virtual void loadConfiguration();
 	virtual void saveConfiguration();
