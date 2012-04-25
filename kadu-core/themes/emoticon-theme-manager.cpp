@@ -32,6 +32,15 @@
 
 #include "emoticon-theme-manager.h"
 
+QString EmoticonThemeManager::defaultTheme()
+{
+#ifdef Q_WS_X11
+	return QLatin1String("penguins");
+#else
+	return QLatin1String("tango");
+#endif
+}
+
 bool EmoticonThemeManager::containsEmotsTxt(const QString &dir)
 {
 	QString kaduIconFileName = dir + "/emots.txt";
@@ -47,6 +56,11 @@ EmoticonThemeManager::EmoticonThemeManager(QObject *parent) :
 
 EmoticonThemeManager::~EmoticonThemeManager()
 {
+}
+
+QString EmoticonThemeManager::defaultThemeName() const
+{
+	return defaultTheme();
 }
 
 QStringList EmoticonThemeManager::defaultThemePaths() const

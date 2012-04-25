@@ -66,6 +66,8 @@
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
+#include "themes/emoticon-theme-manager.h"
+#include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "debug.h"
@@ -188,11 +190,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "EmoticonsPaths", QString());
 	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
 	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
-#ifdef Q_WS_X11
-	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
-#else
-	config_file.addVariable("Chat", "EmoticonsTheme", "tango");
-#endif
+	config_file.addVariable("Chat", "EmoticonsTheme", EmoticonThemeManager::defaultTheme());
 	config_file.addVariable("Chat", "FoldLink", true);
 	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
@@ -299,11 +297,10 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
 #ifdef Q_WS_MAEMO_5
 	config_file.addVariable("Look", "ShowAvatars", false);
-	config_file.addVariable("Look", "IconTheme", "glass22");
 #else
 	config_file.addVariable("Look", "ShowAvatars", true);
-	config_file.addVariable("Look", "IconTheme", "default");
 #endif
+	config_file.addVariable("Look", "IconTheme", IconThemeManager::defaultTheme());
 	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);

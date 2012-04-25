@@ -36,7 +36,7 @@ ThemeManager::~ThemeManager()
 int ThemeManager::getDefaultThemeIndex()
 {
 	for (int i = 0; i < Themes.size(); i++)
-		if (Themes.at(i).name() == "default")
+		if (Themes.at(i).name() == defaultThemeName())
 			return i;
 
 	return -1;

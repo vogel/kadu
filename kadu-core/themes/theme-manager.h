@@ -43,6 +43,7 @@ class ThemeManager : public QObject
 protected:
 	QStringList getSubDirs(const QString &dirPath) const;
 
+	virtual QString defaultThemeName() const = 0;
 	virtual QStringList defaultThemePaths() const = 0;
 	virtual bool isValidThemePath(const QString &themePath) const = 0;
 	virtual QString getThemeName(const QString &themePath);
