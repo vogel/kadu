@@ -131,6 +131,7 @@ public:
 
 	bool isConnected();
 	bool isConnecting();
+	bool isDisconnecting();
 
 	// method called by user
 	void setStatus(Status status);

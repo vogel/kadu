@@ -127,7 +127,7 @@ void GaduProtocol::setStatusFlags()
 
 void GaduProtocol::sendStatusToServer()
 {
-	if (!isConnected())
+	if (!isConnected() && !isDisconnecting())
 		return;
 
 	if (!GaduSession)
@@ -259,14 +259,12 @@ void GaduProtocol::afterLoggedIn()
 
 void GaduProtocol::logout()
 {
-	kdebugf();
-
-	// we need to change status manually in gadu
+	// we need to changestatus manually in gadu
 	// status is offline
 	sendStatusToServer();
-	gg_logoff(GaduSession);
+	// gg_logoff(GaduSession);
 
-	loggedOut();
+	QTimer::singleShot(0, this, SLOT(loggedOut()));
 }
 
 void GaduProtocol::disconnectedCleanup()

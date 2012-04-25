@@ -170,3 +170,15 @@ bool ProtocolStateMachine::isLoggingIn()
 {
 	return configuration().contains(LoggingInState) || configuration().contains(LoggingInDelayState);
 }
+
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Returns true is machine is currently in logging out state.
+ * @return true is machine is currently in logging out state
+ *
+ * Returns true is machine is currently in logging out state.
+ */
+bool ProtocolStateMachine::isLoggingOut()
+{
+	return configuration().contains(LoggingOutState);
+}
