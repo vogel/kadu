@@ -1135,6 +1135,10 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Select window activation method</source>
         <translation>Metoda aktywacji okna</translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation>Brak</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3652,13 +3656,6 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>More Actions...</source>
         <translation>Więcej operacji...</translation>
-    </message>
-</context>
-<context>
-    <name>ThemeManager</name>
-    <message>
-        <source>None</source>
-        <translation>Brak</translation>
     </message>
 </context>
 <context>

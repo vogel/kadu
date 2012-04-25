@@ -20,26 +20,18 @@
  */
 
 #include <QtCore/QDir>
+#include <QtCore/QFileInfo>
 #include <QtCore/QStringList>
 
 #include "theme-manager.h"
 
 ThemeManager::ThemeManager(bool includeNone, QObject *parent) :
-		QObject(parent), IncludeNone(includeNone), CurrentThemeIndex(-1)
+		QObject(parent), IncludeNone(includeNone)
 {
 }
 
 ThemeManager::~ThemeManager()
 {
-}
-
-int ThemeManager::getDefaultThemeIndex()
-{
-	for (int i = 0; i < Themes.size(); i++)
-		if (Themes.at(i).name() == defaultThemeName())
-			return i;
-
-	return -1;
 }
 
 QStringList ThemeManager::getSubDirs(const QString &dirPath) const
@@ -55,83 +47,50 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath) const
 	return result;
 }
 
-QString ThemeManager::getThemeName(const QString &themePath)
+void ThemeManager::loadThemes(const QStringList &customThemePaths)
 {
-	QString path(themePath);
-	// remove trailing slashes
-#ifdef Q_WS_WIN
-	path.remove(QRegExp("[/\\\\]*$"));
-#else
-	path.remove(QRegExp("/*$"));
-#endif
-
-	int lastSlash = path.lastIndexOf('/');
-	if (-1 == lastSlash)
-#ifdef Q_WS_WIN
-		if (-1 == (lastSlash = path.lastIndexOf('\\')))
-#endif
-			return QString();
-
-	return path.mid(lastSlash + 1);
-}
-
-void ThemeManager::loadThemes(QStringList pathList)
-{
-	pathList = pathList + defaultThemePaths();
-
-	QString currentThemeName = currentTheme().name();
-	CurrentThemeIndex = -1;
-
 	Themes.clear();
 
-	// Use " " instead of "" to prevent autoloading of default theme on startup
+	(void)QT_TRANSLATE_NOOP("@default", "None");
 	if (IncludeNone)
-		Themes.append(Theme(" ", tr("None")));
+		Themes.insert("None", Theme(QString(), "None"));
 
-	foreach (const QString &path, pathList)
+	// Prefer custom theme paths.
+	QStringList themePaths = customThemePaths + defaultThemePaths();
+	foreach (const QString &path, themePaths)
 	{
 		if (!isValidThemePath(path))
 			continue;
 
-		QString newThemeName = getThemeName(path);
-		Theme theme(path + '/', newThemeName);
-		Themes.append(theme);
+		QString name = QDir(path).dirName();
+		if (Themes.contains(name))
+			continue;
 
-		if (newThemeName == currentThemeName)
-			CurrentThemeIndex = Themes.size() - 1;
+		Theme theme(path + '/', name);
+		Themes.insert(name, theme);
 	}
 
-	if (-1 == CurrentThemeIndex)
-		CurrentThemeIndex = getDefaultThemeIndex();
+	setCurrentTheme(CurrentThemeName);
 
 	emit themeListUpdated();
 }
 
-void ThemeManager::setCurrentTheme(const QString &themePath)
+void ThemeManager::setCurrentTheme(const QString &themeName)
 {
-	for (int i = 0; i < Themes.size(); i++)
-	{
-		const Theme &theme = Themes.at(i);
+	// compatibility with pre-0.12 versions
+	QString fixedName = themeName;
+	// custom themes had two trailing slashes and QDir::dirName() was returning empty string
+	fixedName.replace(QRegExp("/*$"), QString());
+	if (QFileInfo(fixedName).isAbsolute())
+		fixedName = QDir(fixedName).dirName();
 
-		if (themePath == theme.name() || themePath == theme.path())
-		{
-			CurrentThemeIndex = i;
-			return;
-		}
-	}
-
-	CurrentThemeIndex = getDefaultThemeIndex();
+	if (Themes.contains(fixedName))
+		CurrentThemeName = fixedName;
+	else
+		CurrentThemeName = IncludeNone ? "None" : defaultThemeName();
 }
 
-int ThemeManager::currentThemeIndex() const
+Theme ThemeManager::currentTheme() const
 {
-	return CurrentThemeIndex;
-}
-
-const Theme & ThemeManager::currentTheme() const
-{
-	if (CurrentThemeIndex < 0 || CurrentThemeIndex >= Themes.size())
-		return Theme::null;
-
-	return Themes.at(CurrentThemeIndex);
+	return Themes.value(CurrentThemeName);
 }

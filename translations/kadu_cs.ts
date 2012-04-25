@@ -1127,6 +1127,10 @@ ihned po zřízení spojení se serverem</translation>
         <source>Turn on blur</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation>Žádná</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3637,13 +3641,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>More Actions...</source>
         <translation type="unfinished">Více činností...</translation>
-    </message>
-</context>
-<context>
-    <name>ThemeManager</name>
-    <message>
-        <source>None</source>
-        <translation>Žádná</translation>
     </message>
 </context>
 <context>

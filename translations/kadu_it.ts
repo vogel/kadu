@@ -1123,6 +1123,10 @@ changes upon establishing connection to the server</source>
         <source>Turn on blur</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Senza emoticon</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3621,13 +3625,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     <message>
         <source>More Actions...</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ThemeManager</name>
-    <message>
-        <source>None</source>
-        <translation type="unfinished">Senza emoticon</translation>
     </message>
 </context>
 <context>

@@ -58,7 +58,6 @@ EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 
 EmoticonsManager::EmoticonsManager() :
 		Aliases(), Selector(), walker(0)
-
 {
 	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts);
 
@@ -80,11 +79,11 @@ EmoticonThemeManager * EmoticonsManager::themeManager() const
 
 void EmoticonsManager::configurationUpdated()
 {
-	bool themeWasChanged = config_file.readEntry("Chat", "EmoticonsTheme") != ThemeManager->currentTheme().path();
+	bool themeWasChanged = config_file.readEntry("Chat", "EmoticonsTheme") != ThemeManager->currentTheme().name();
 	if (themeWasChanged)
 	{
 		ThemeManager->setCurrentTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-		config_file.writeEntry("Chat", "EmoticonsTheme", ThemeManager->currentTheme().path());
+		config_file.writeEntry("Chat", "EmoticonsTheme", ThemeManager->currentTheme().name());
 
 		loadTheme();
 	}

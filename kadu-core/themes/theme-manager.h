@@ -26,6 +26,7 @@
 #ifndef THEME_MANAGER_H
 #define THEME_MANAGER_H
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
 #include "themes/theme.h"
@@ -35,10 +36,8 @@ class ThemeManager : public QObject
 	Q_OBJECT
 
 	bool IncludeNone;
-	QList<Theme> Themes;
-	int CurrentThemeIndex;
-
-	int getDefaultThemeIndex();
+	QMap<QString, Theme> Themes;
+	QString CurrentThemeName;
 
 protected:
 	QStringList getSubDirs(const QString &dirPath) const;
@@ -46,19 +45,17 @@ protected:
 	virtual QString defaultThemeName() const = 0;
 	virtual QStringList defaultThemePaths() const = 0;
 	virtual bool isValidThemePath(const QString &themePath) const = 0;
-	virtual QString getThemeName(const QString &themePath);
 
 public:
 	explicit ThemeManager(bool includeNone, QObject *parent = 0);
 	virtual ~ThemeManager();
 
-	void loadThemes(QStringList pathList);
+	void loadThemes(const QStringList &customThemePaths);
 
-	const QList<Theme> & themes() const { return Themes; }
+	const QMap<QString, Theme> & themes() const { return Themes; }
 
-	void setCurrentTheme(const QString &themePath);
-	int currentThemeIndex() const;
-	const Theme & currentTheme() const;
+	void setCurrentTheme(const QString &themeName);
+	Theme currentTheme() const;
 
 signals:
 	void themeListUpdated();

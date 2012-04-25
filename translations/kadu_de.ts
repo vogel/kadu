@@ -1124,6 +1124,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Turn on blur</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>None</source>
+        <translation>Nichts</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -3634,13 +3638,6 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     <message>
         <source>More Actions...</source>
         <translation type="unfinished">Weitere Aktionen...</translation>
-    </message>
-</context>
-<context>
-    <name>ThemeManager</name>
-    <message>
-        <source>None</source>
-        <translation>Nichts</translation>
     </message>
 </context>
 <context>

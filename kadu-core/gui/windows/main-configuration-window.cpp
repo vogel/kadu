@@ -335,18 +335,17 @@ void MainConfigurationWindow::setIconThemes()
 	IconsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
-	QList<Theme> themes = IconsManager::instance()->themeManager()->themes();
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, themes)
+	foreach (const Theme &theme, IconsManager::instance()->themeManager()->themes())
 	{
-		values.append(theme.path());
+		values.append(theme.name());
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	iconThemes->setItems(values, captions);
-	iconThemes->setCurrentItem(IconsManager::instance()->themeManager()->currentTheme().path());
+	iconThemes->setCurrentItem(IconsManager::instance()->themeManager()->currentTheme().name());
 
 	QStringList iconPaths;
 	iconPaths
@@ -356,7 +355,7 @@ void MainConfigurationWindow::setIconThemes()
 			<< "preferences-other";
 
 	QList<QIcon> icons;
-	foreach (const Theme &theme, themes)
+	foreach (const Theme &theme, IconsManager::instance()->themeManager()->themes())
 	{
 		QPixmap combinedIcon(iconPaths.count() * 36, 36);
 		combinedIcon.fill(Qt::transparent);
@@ -384,18 +383,17 @@ void MainConfigurationWindow::setEmoticonThemes()
 	EmoticonsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
-	QList<Theme> themes = EmoticonsManager::instance()->themeManager()->themes();
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, themes)
+	foreach (const Theme &theme, EmoticonsManager::instance()->themeManager()->themes())
 	{
-		values.append(theme.path());
+		values.append(theme.name());
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	emoticonsThemes->setItems(values, captions);
-	emoticonsThemes->setCurrentItem(EmoticonsManager::instance()->themeManager()->currentTheme().path());
+	emoticonsThemes->setCurrentItem(EmoticonsManager::instance()->themeManager()->currentTheme().name());
 }
 
 void MainConfigurationWindow::setToolTipClasses()

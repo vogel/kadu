@@ -34,6 +34,7 @@ class Theme
 public:
 	static Theme null;
 
+	Theme() {}
 	Theme(const QString &path, const QString &name);
 	Theme(const Theme &copyMe);
 

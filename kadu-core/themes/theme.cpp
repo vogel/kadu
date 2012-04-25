@@ -46,7 +46,7 @@ Theme & Theme::operator = (const Theme &copyMe)
 
 bool Theme::isValid() const
 {
-	return !Name.isEmpty();
+	return !Path.isEmpty() && !Name.isEmpty();
 }
 
 Theme::operator bool () const
