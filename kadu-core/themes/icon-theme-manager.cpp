@@ -40,7 +40,7 @@ IconThemeManager::~IconThemeManager()
 {
 }
 
-QStringList IconThemeManager::defaultThemePaths()
+QStringList IconThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
 	QStringList result = getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
@@ -49,7 +49,7 @@ QStringList IconThemeManager::defaultThemePaths()
 	return result;
 }
 
-bool IconThemeManager::isValidThemePath(const QString &themePath)
+bool IconThemeManager::isValidThemePath(const QString &themePath) const
 {
 	QString kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
 	QFileInfo kaduIconFile(kaduIconFileName);

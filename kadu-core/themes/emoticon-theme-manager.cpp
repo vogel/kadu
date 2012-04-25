@@ -49,7 +49,7 @@ EmoticonThemeManager::~EmoticonThemeManager()
 {
 }
 
-QStringList EmoticonThemeManager::defaultThemePaths()
+QStringList EmoticonThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
 	QStringList result = getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
@@ -58,7 +58,7 @@ QStringList EmoticonThemeManager::defaultThemePaths()
 	return result;
 }
 
-bool EmoticonThemeManager::isValidThemePath(const QString &themePath)
+bool EmoticonThemeManager::isValidThemePath(const QString &themePath) const
 {
 	if (containsEmotsTxt(themePath))
 		return true;

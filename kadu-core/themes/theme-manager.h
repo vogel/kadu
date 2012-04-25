@@ -41,10 +41,10 @@ class ThemeManager : public QObject
 	int getDefaultThemeIndex();
 
 protected:
-	QStringList getSubDirs(const QString &dirPath);
+	QStringList getSubDirs(const QString &dirPath) const;
 
-	virtual QStringList defaultThemePaths() = 0;
-	virtual bool isValidThemePath(const QString &themePath) = 0;
+	virtual QStringList defaultThemePaths() const = 0;
+	virtual bool isValidThemePath(const QString &themePath) const = 0;
 	virtual QString getThemeName(const QString &themePath);
 
 public:

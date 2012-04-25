@@ -42,7 +42,7 @@ int ThemeManager::getDefaultThemeIndex()
 	return -1;
 }
 
-QStringList ThemeManager::getSubDirs(const QString &dirPath)
+QStringList ThemeManager::getSubDirs(const QString &dirPath) const
 {
 	QDir dir(dirPath);
 	QStringList subDirs = dir.entryList(QDir::Dirs);
