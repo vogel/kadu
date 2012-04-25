@@ -42,8 +42,9 @@ IconThemeManager::~IconThemeManager()
 
 QStringList IconThemeManager::defaultThemePaths()
 {
-	QStringList result = getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/icons"));
-	result += getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
+	// Allow local themes to override global ones.
+	QStringList result = getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
+	result += getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/icons"));
 
 	return result;
 }
