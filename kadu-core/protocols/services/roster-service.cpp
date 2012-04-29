@@ -175,7 +175,7 @@ void RosterService::executeAllTasks()
 
 void RosterService::addContact(const Contact &contact)
 {
-	if (!contact.contactAccount() != account() || contact.isAnonymous())
+	if (contact.contactAccount() != account() || contact.isAnonymous())
 		return;
 
 	if (Contacts.contains(contact))
