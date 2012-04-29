@@ -266,7 +266,7 @@ void TalkableTreeView::updateContext()
 
 	ModelIndexListConverter converter(selectedIndexes());
 
-	Context->blockChangedSignal();
+	Context->changeNotifier()->block();
 
 	Context->setRoles(converter.roles());
 	Context->setBuddies(converter.buddies());
@@ -274,7 +274,7 @@ void TalkableTreeView::updateContext()
 	Context->setChat(converter.chat());
 	Context->setStatusContainer(statusContainerForChat(converter.chat()));
 
-	Context->unblockChangedSignal();
+	Context->changeNotifier()->unblock();
 }
 
 ActionContext * TalkableTreeView::actionContext()

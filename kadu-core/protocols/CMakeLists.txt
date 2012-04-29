@@ -11,6 +11,9 @@ set (protocols_SRCS
 	services/protocol-service.cpp
 	services/roster-service.cpp
 
+	services/roster/roster-entry.cpp
+	services/roster/roster-task.cpp
+
 	connection-error-notification.cpp
 	protocol.cpp
 	protocols-manager.cpp
@@ -38,6 +41,8 @@ set (protocols_MOC_SRCS
 	services/roster-service.h
 	services/search-service.h
 	services/subscription-service.h
+
+	services/roster/roster-entry.h
 
 	connection-error-notification.h
 	protocol.h

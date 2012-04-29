@@ -50,6 +50,7 @@
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "os/generic/url-opener.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "activate.h"
@@ -242,7 +243,7 @@ void OpenChatWith::openChat()
 		}
 		else
 		{
-			it->setDirty(false);
+			it->rosterEntry()->setState(RosterEntrySynchronized);
 			ContactManager::instance()->addItem(*it);
 			++it;
 		}

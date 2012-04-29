@@ -29,6 +29,7 @@
 #include "contacts/contact.h"
 #include "message/message-manager.h"
 #include "message/message.h"
+#include "misc/change-notifier.h"
 
 #include "message-shared.h"
 
@@ -51,6 +52,8 @@ MessageShared::MessageShared(const QUuid &uuid) :
 {
 	MessageChat = new Chat();
 	MessageSender = new Contact();
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 MessageShared::~MessageShared()
@@ -119,11 +122,6 @@ bool MessageShared::shouldStore()
 			&& Pending;
 }
 
-void MessageShared::emitUpdated()
-{
-	emit updated();
-}
-
 void MessageShared::setStatus(MessageStatus status)
 {
 	ensureLoaded();
@@ -132,7 +130,7 @@ void MessageShared::setStatus(MessageStatus status)
 	{
 		MessageStatus oldStatus = Status;
 		Status = status;
-		dataUpdated();
+		changeNotifier()->notify();
 		emit statusChanged(oldStatus);
 	}
 }

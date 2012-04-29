@@ -29,10 +29,12 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity-manager.h"
 #include "identities/identity.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/services/roster-service.h"
 #include "status/status-setter.h"
 
 #include "account-shared.h"
@@ -74,6 +76,8 @@ AccountShared::AccountShared(const QString &protocolName) :
 		if (factory)
 			protocolRegistered(factory);
 	}
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AccountShared::~AccountShared()
@@ -139,6 +143,35 @@ void AccountShared::importNetworkProxy()
 	removeValue("ProxyPassword");
 }
 
+void AccountShared::loadRosterTasks()
+{
+	if (!isValidStorage())
+		return;
+
+	if (!protocolHandler() || !protocolHandler()->rosterService())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+
+	QDomNodeList rosterTaskNodes = rosterTasksNode.childNodes();
+	const int rosterTaskCount = rosterTaskNodes.count();
+
+	for (int i = 0; i < rosterTaskCount; i++)
+	{
+		QDomElement rosterTaskElement = rosterTaskNodes.at(i).toElement();
+		if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
+			continue;
+
+		if (rosterTaskElement.nodeName() == "Add")
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskAdd, rosterTaskElement.text()));
+		else if (rosterTaskElement.nodeName() == "Delete")
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskDelete, rosterTaskElement.text()));
+		else if (rosterTaskElement.nodeName() == "Update")
+			protocolHandler()->rosterService()->addTask(RosterTask(RosterTaskUpdate, rosterTaskElement.text()));
+	}
+}
+
 void AccountShared::load()
 {
 	if (!isValidStorage())
@@ -180,6 +213,40 @@ void AccountShared::load()
 		if (factory)
 			protocolRegistered(factory);
 	}
+
+	loadRosterTasks();
+}
+
+void AccountShared::storeRosterTasks()
+{
+	if (!isValidStorage())
+		return;
+
+	if (!protocolHandler() || !protocolHandler()->rosterService())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement rosterTasksNode = configurationStorage->getNode(storage()->point(), "RosterTasks");
+
+	while (!rosterTasksNode.childNodes().isEmpty())
+		rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
+
+	QVector<RosterTask> tasks = protocolHandler()->rosterService()->tasks();
+	foreach (const RosterTask &task, tasks)
+		switch (task.type())
+		{
+			case RosterTaskAdd:
+				configurationStorage->createTextNode(rosterTasksNode, "Add", task.id());
+				break;
+			case RosterTaskDelete:
+				configurationStorage->createTextNode(rosterTasksNode, "Delete", task.id());
+				break;
+			case RosterTaskUpdate:
+				configurationStorage->createTextNode(rosterTasksNode, "Update", task.id());
+				break;
+			default:
+				break;
+		}
 }
 
 void AccountShared::store()
@@ -206,6 +273,8 @@ void AccountShared::store()
 		removeValue("Password");
 
 	storeValue("PrivateStatus", PrivateStatus);
+
+	storeRosterTasks();
 }
 
 bool AccountShared::shouldStore()
@@ -229,7 +298,7 @@ void AccountShared::aboutToBeRemoved()
 	setAccountIdentity(Identity::null);
 }
 
-void AccountShared::emitUpdated()
+void AccountShared::forceEmitUpdated()
 {
 	emit updated();
 }
@@ -278,6 +347,8 @@ void AccountShared::protocolRegistered(ProtocolFactory *factory)
 	connect(ProtocolHandler, SIGNAL(connected(Account)), this, SIGNAL(connected()));
 	connect(ProtocolHandler, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
+	loadRosterTasks();
+
 	MyStatusContainer->triggerStatusUpdated();
 
 	AccountManager::instance()->registerItem(this);
@@ -293,6 +364,8 @@ void AccountShared::protocolUnregistered(ProtocolFactory* factory)
 
 	if (!ProtocolHandler || (factory->name() != ProtocolName) || !Details)
 		return;
+
+	storeRosterTasks();
 
 	disconnect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), MyStatusContainer, SLOT(triggerStatusUpdated()));
 	disconnect(ProtocolHandler, 0, this, 0);
@@ -335,7 +408,7 @@ void AccountShared::setAccountIdentity(const Identity &accountIdentity)
 
 	doSetAccountIdentity(accountIdentity);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void AccountShared::doSetId(const QString &id)
@@ -353,7 +426,7 @@ void AccountShared::setId(const QString &id)
 
 	doSetId(id);
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 Contact AccountShared::accountContact()

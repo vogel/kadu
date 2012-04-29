@@ -39,6 +39,7 @@ class QDomElement;
 class QMenu;
 class QToolButton;
 
+class ChangeNotifier;
 class ToolBarSeparator;
 class ToolBarSpacer;
 
@@ -76,6 +77,8 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	friend class DisabledActionsWatcher;
 
+	ChangeNotifier *MyChangeNotifier;
+
 	// TODO: ugly hack
 	QWidget *currentWidget;
 	QAction *IconsOnly, *TextOnly, *Text, *TextUnder;
@@ -99,8 +102,6 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	int YOffset;
 
 	QPoint MouseStart;
-
-	bool EnableUpdatedSignal;
 
 	Qt::ToolBarArea toolBarArea();
 	Qt::Orientation orientationByArea(Qt::ToolBarArea toolbararea);
@@ -129,8 +130,6 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	QWidget * createActionWidget(QAction *before, ToolBarAction &action);
 
 	QMenu * createContextMenu(QWidget *widget);
-
-	void emitUpdated();
 
 private slots:
 	/**

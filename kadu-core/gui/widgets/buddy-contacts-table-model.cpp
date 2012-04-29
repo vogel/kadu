@@ -31,6 +31,7 @@
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/roster.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "protocols/services/subscription-service.h"
 
 #include "buddy-contacts-table-model.h"
@@ -85,21 +86,19 @@ void BuddyContactsTableModel::contactsFromBuddy()
 	else
 		CurrentMaxPriority = ModelBuddy.contacts().last().priority();
 
+	beginResetModel();
+
 	if (!Contacts.isEmpty())
 	{
-		beginRemoveRows(QModelIndex(), 0, Contacts.count() - 1);
 		qDeleteAll(Contacts);
 		Contacts.clear();
-		endRemoveRows();
 	}
 
 	if (!ModelBuddy.contacts().isEmpty())
-	{
-		beginInsertRows(QModelIndex(), 0, ModelBuddy.contacts().count() - 1);
 		foreach (const Contact &contact, ModelBuddy.contacts())
 			addItem(new BuddyContactsTableItem(contact, this), false);
-		endInsertRows();
-	}
+
+	endResetModel();
 }
 
 void BuddyContactsTableModel::buddyFromContacts()
@@ -142,7 +141,17 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	contact.setPriority(item->itemContactPriority());
 
 	if (contact.contactAccount() == item->itemAccount() && contact.id() == item->id())
+	{
+		// TODO fix this issue
+		// when user marks detached contact as non-detached we set it as Synchronized
+		// so next data from roster overrides our changes
+		// this is not perfect solution but i'm unable to figure out a perfect one now
+		if (!item->rosterDetached() && contact.rosterEntry()->detached())
+			contact.rosterEntry()->setState(RosterEntrySynchronized);
+
+		contact.rosterEntry()->setDetached(item->rosterDetached());
 		return;
+	}
 
 	// First we need to remove existing contact from the manager to avoid duplicates.
 	Contact existingContact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionReturnNull);
@@ -152,6 +161,7 @@ void BuddyContactsTableModel::performItemActionEdit(BuddyContactsTableItem *item
 	Roster::instance()->removeContact(contact);
 	contact.setContactAccount(item->itemAccount());
 	contact.setId(item->id());
+	contact.rosterEntry()->setDetached(item->rosterDetached());
 	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);
 }
@@ -161,6 +171,7 @@ void BuddyContactsTableModel::performItemActionAdd(BuddyContactsTableItem *item)
 	Contact contact = ContactManager::instance()->byId(item->itemAccount(), item->id(), ActionCreateAndAdd);
 	contact.setOwnerBuddy(ModelBuddy);
 	contact.setPriority(item->itemContactPriority());
+	contact.rosterEntry()->setDetached(item->rosterDetached());
 
 	Roster::instance()->addContact(contact);
 	sendAuthorization(contact);
@@ -228,7 +239,7 @@ void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
 
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 2;
+	return parent.isValid() ? 0 : 3;
 }
 
 int BuddyContactsTableModel::rowCount(const QModelIndex &parent) const
@@ -248,9 +259,10 @@ bool BuddyContactsTableModel::insertRows(int row, int count, const QModelIndex &
 	{
 		CurrentMaxPriority++;
 
-		BuddyContactsTableItem *item = new BuddyContactsTableItem(this);
+		BuddyContactsTableItem *item = new BuddyContactsTableItem(Contact::null, this);
 		item->setAction(BuddyContactsTableItem::ItemAdd);
 		item->setItemContactPriority(CurrentMaxPriority);
+		item->setRosterDetached(false);
 		addItem(item, false);
 	}
 	endInsertRows();
@@ -275,6 +287,19 @@ bool BuddyContactsTableModel::removeRows(int row, int count, const QModelIndex &
 
 Qt::ItemFlags BuddyContactsTableModel::flags(const QModelIndex &index) const
 {
+	if (index.row() < 0 || index.row() >= Contacts.size())
+		return QAbstractItemModel::flags(index);
+
+	if (2 == index.column())
+	{
+		BuddyContactsTableItem *item = Contacts.at(index.row());
+		// TODO fix when we support more than 2 protocols...
+		if ("gadu" == item->itemAccount().protocolName())
+			return QAbstractItemModel::flags(index);
+		else
+			return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+	}
+
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
@@ -290,6 +315,7 @@ QVariant BuddyContactsTableModel::headerData(int section, Qt::Orientation orient
 	{
 		case 0: return tr("Username");
 		case 1: return tr("Account");
+		case 2: return tr("Synchronize");
 	}
 
 	return QVariant();
@@ -315,9 +341,12 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 	switch (index.column())
 	{
 		case 0:
+		{
 			if (Qt::DisplayRole != role && Qt::EditRole != role)
 				return QVariant();
 			return item->id();
+		}
+
 		case 1:
 		{
 			switch (role)
@@ -331,6 +360,21 @@ QVariant BuddyContactsTableModel::data(const QModelIndex &index, int role) const
 							: QIcon();
 				case AccountRole:
 					return QVariant::fromValue<Account>(item->itemAccount());
+			}
+
+			return QVariant();
+		}
+
+		case 2:
+		{
+			switch (role)
+			{
+				case Qt::DisplayRole:
+				case Qt::EditRole:
+					if ("gadu" == item->itemAccount().protocolName())
+						return true;
+					else
+						return !item->rosterDetached();
 			}
 
 			return QVariant();
@@ -356,6 +400,11 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 		case 1:
 			if (AccountRole == role)
 				item->setItemAccount(value.value<Account>());
+			break;
+
+		case 2:
+			if (Qt::EditRole == role && "gadu" != item->itemAccount().protocolName())
+				item->setRosterDetached(!value.toBool());
 			break;
 	}
 

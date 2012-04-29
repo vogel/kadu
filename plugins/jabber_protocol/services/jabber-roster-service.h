@@ -36,6 +36,7 @@ namespace XMPP
 {
 
 class Client;
+class JT_Roster;
 class RosterItem;
 
 class JabberRosterService : public RosterService
@@ -44,38 +45,69 @@ class JabberRosterService : public RosterService
 
 	QWeakPointer<Client> XmppClient;
 
-	QList<Contact> ContactsForDelete;
+	QMap<JT_Roster *, Contact> ContactForTask;
 
 	static QStringList buddyGroups(const Buddy &buddy);
 	static const QString & itemDisplay(const RosterItem &item);
 
-	Buddy itemBuddy(const RosterItem &item, const Contact &contact);
+	void ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display);
+	JT_Roster * createContactTask(const Contact &contact);
 
 	void connectToClient();
 	void disconnectFromClient();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Mark all contacts of given account to deletion.
+	 *
+	 * Assume that all synchronized contacts were removed from roster. During roster download all still existing
+	 * entries will be marked as synchronized (if not dirty). Even detached entries can be removed as detaching is
+	 * only about groups and display name.
+	 */
+	void markContactsForDeletion();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Delete all contacts marked for deletion.
+	 *
+	 * All contacts that after synchronization with remote roster are still marked for deletion are deleted from local roster.
+	 */
+	void deleteMarkedContacts();
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Check if user is intrested in seeing given roster item data.
+	 * @param item roster item to check
+	 * @return true, if user is intrested in seeing given roster item data
+	 *
+	 * See: http://xmpp.org/extensions/xep-0162.html#contacts
+	 *
+	 * - items with subscription='both' or subscription='to' ;
+	 * - items with subscription='none' or subscription='from' and ask='subscribe'. It is ((subscription='none' or subscription='from') and ask='subscribe') ;
+	 * - items with subscription='none' or subscription='from' which have a 'name' attribute or a 'group' child set. It is ((subscription='none' or subscription='from') and (name attribute or group child)).
+	 */
+	bool isIntrestedIn(const XMPP::RosterItem &item);
+
 private slots:
-	void contactUpdated(const RosterItem &item);
-	void contactDeleted(const RosterItem &item);
+	void remoteContactUpdated(const RosterItem &item);
+	void remoteContactDeleted(const RosterItem &item);
+
+	void rosterTaskFinished();
+	void rosterTaskDeleted(QObject *object);
+
 	void rosterRequestFinished(bool success);
 
 protected:
 	virtual bool canPerformLocalUpdate() const;
-
-protected slots:
-	virtual void updateContact(const Contact &contact);
+	virtual void executeTask(const RosterTask &task);
 
 public:
 	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
-	virtual void prepareRoster();
+	virtual void prepareRoster(const QVector<Contact> &contacts);
 
 	void setClient(Client *xmppClient);
-
-public slots:
-	virtual bool addContact(const Contact &contact);
-	virtual bool removeContact(const Contact &contact);
 
 };
 

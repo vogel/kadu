@@ -26,6 +26,7 @@
 
 #include <QtCore/QSharedData>
 
+#include "misc/change-notifier.h"
 #include "storage/uuid-storable-object.h"
 #include "exports.h"
 
@@ -58,10 +59,10 @@
  * Defines setter for given property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link dataUpdated @endlink method after data is changed.
+ * Calls @link changeNotifier()->notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyWrite(type, name, capitalized_name) \
-	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; dataUpdated(); } }
+	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier()->notify(); } }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -73,7 +74,7 @@
  * Defines both getter and setter for given property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called name, setter is called set##capitalized_name).
- * Setter calls @link dataUpdated @endlink method after data is changed.
+ * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
  */
 #define KaduShared_Property(type, name, capitalized_name) \
 	KaduShared_PropertyRead(type, name, capitalized_name) \
@@ -100,10 +101,10 @@
  * Defines setter for given property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link dataUpdated @endlink method after data is changed.
+ * Calls @link changeNotifier()->notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBoolWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; dataUpdated(); } }
+	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier()->notify(); } }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -113,7 +114,7 @@
  * Defines both getter and setter for given property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called is##capitlized_name, setter is called set##capitalized_name).
- * Setter calls @link dataUpdated @endlink method after data is changed.
+ * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBool(capitalized_name) \
 	KaduShared_PropertyBoolRead(capitalized_name) \
@@ -183,10 +184,10 @@
  * Defines setter for given pointed property of @link StorableObject @endlink. Value of property will not be
  * ovveriden by load, because this method calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Setter is called set##capitalized_name).
- * Calls @link dataUpdated @endlink method after data is changed.
+ * Calls @link changeNotifier()->notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyPtrWriteDef(class_name, type, name, capitalized_name) \
-	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; dataUpdated(); } }
+	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; changeNotifier()->notify(); } }
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -199,12 +200,14 @@
  * Defines both getter and setter for given pointed property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
  * fully loaded before this method returns. Getter is called name, setter is called set##capitalized_name).
- * Setter calls @link dataUpdated @endlink method after data is changed.
+ * Setter calls @link changeNotifier()->notify @endlink method after data is changed.
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduShared_PropertyPtrDefCRW(class_name, type, name, capitalized_name) \
 	KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
 	KaduShared_PropertyPtrWriteDef(class_name, const type &, name, capitalized_name)
+
+class ChangeNotifier;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -216,13 +219,6 @@
  * can contain the same Shared object (so the same data) - especially copied objects, so every change
  * in one of them is immediately visible in all other. Setter
  *
- * Support for notyfiing of any changes to this object is also available. Every change calls
- * @link dataUpdated @endlink method (that can be overridden and used to send a signal). To block
- * this method (when multiple changes are performed at once) @link blockUpdatedSignal @endlink
- * can be called. Then first change creates deffered call that is executed after call of
- * @link unblockUpdatedSignal @endlink (multiple calls of blockUpdatedSignal requires as much calls
- * of unblockUpdatedSignal to call doEmitUpdated).
- *
  * Note that because of QExplicitlySharedDataPointer implementation details it is not guaranteed that in
  * some method when you do something causing directly or not to remove the last @link SharedBase @endlink
  * object that refers to this object, this object will be deleted after your method ends. Actually, the object
@@ -230,21 +226,17 @@
  * to create a @link SharedBase @endlink guard object on the stack that will delay deletion to the moment
  * when the stack unrolls and destroys that @link SharedBase @endlink object or even avoid deletion at all
  * if after removing the last reference you set up another one.
+ *
+ * This class holds instance of @link ChangeNotifier @endlink class to handle notifications about updated.
  */
 class KADUAPI Shared : public UuidStorableObject, public QSharedData
 {
-	int BlockUpdatedSignalCount;
-	bool Updated;
-
-	void doEmitUpdated();
+	ChangeNotifier *MyChangeNotifier;
 
 protected:
 	virtual void load();
 	virtual void store();
 	void loadStub();
-
-	void dataUpdated();
-	virtual void emitUpdated();
 
 public:
 	explicit Shared(const QUuid &uuid);
@@ -252,8 +244,14 @@ public:
 
 	virtual void aboutToBeRemoved();
 
-	void blockUpdatedSignal();
-	void unblockUpdatedSignal();
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Return ChangeNotifier for this object.
+	 * @return ChangeNotifier instance for this object
+	 *
+	 * This method never returns null value.
+	 */
+	ChangeNotifier * changeNotifier() const;
 
 };
 

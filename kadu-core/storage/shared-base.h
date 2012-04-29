@@ -291,6 +291,8 @@ private:
 	KaduSharedBase_PropertyBoolReadDef(class_name, capitalized_name, default) \
 	KaduSharedBase_PropertyBoolWriteDef(class_name, capitalized_name)
 
+class ChangeNotifier;
+
 /**
  * @class SharedBase
  * @author Rafal 'Vogel' Malinowski
@@ -449,30 +451,6 @@ public:
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
-	 * @short Delegates blockUpdatedSignal method to Shared object.
-	 *
-	 * @see Shared::blockUpdatedSignal
-	 */
-	void blockUpdatedSignal()
-	{
-		if (!isNull())
-			Data->blockUpdatedSignal();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Delegates unblockUpdatedSignal method to Shared object.
-	 *
-	 * @see Shared::unblockUpdatedSignal
-	 */
-	void unblockUpdatedSignal()
-	{
-		if (!isNull())
-			Data->unblockUpdatedSignal();
-	}
-
-	/**
-	 * @author Rafal 'Vogel' Malinowski
 	 * @short Delegates ensureStored method to Shared object.
 	 *
 	 * @see Shared::ensureStored
@@ -563,6 +541,21 @@ public:
 			return Data->customProperties()->property(name, defaultValue);
 		else
 			return defaultValue;
+	}
+
+	/**
+	 * @author Rafal 'Vogel' Malinowski
+	 * @short Return ChangeNotifier instance for this object.
+	 * @return ChangeNotifier instance for this object
+	 *
+	 * This method can return null value for null object.
+	 */
+	ChangeNotifier * changeNotifier() const
+	{
+		if (!isNull())
+			return Data->changeNotifier();
+		else
+			return 0;
 	}
 
 	KaduSharedBase_Property(QUuid, uuid, Uuid)

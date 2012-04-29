@@ -20,34 +20,18 @@
 #include "base-action-context.h"
 
 BaseActionContext::BaseActionContext() :
-		ChangedSignalBlocked(false), Changed(false), CurrentStatusContainer(0)
+		MyChangeNotifier(new ChangeNotifier(this)), CurrentStatusContainer(0)
 {
+	connect(MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
 }
 
 BaseActionContext::~BaseActionContext()
 {
 }
 
-void BaseActionContext::blockChangedSignal()
+ChangeNotifier * BaseActionContext::changeNotifier()
 {
-	ChangedSignalBlocked = true;
-}
-
-void BaseActionContext::unblockChangedSignal()
-{
-	if (Changed)
-		emit changed();
-
-	ChangedSignalBlocked = false;
-	Changed = false;
-}
-
-void BaseActionContext::dataUpdated()
-{
-	if (ChangedSignalBlocked)
-		Changed = true;
-	else
-		emit changed();
+	return MyChangeNotifier;
 }
 
 ContactSet BaseActionContext::contacts()
@@ -60,7 +44,7 @@ void BaseActionContext::setContacts(const ContactSet &contacts)
 	if (Contacts != contacts)
 	{
 		Contacts = contacts;
-		dataUpdated();
+		MyChangeNotifier->notify();
 	}
 }
 
@@ -74,7 +58,7 @@ void BaseActionContext::setBuddies(const BuddySet &buddies)
 	if (Buddies != buddies)
 	{
 		Buddies = buddies;
-		dataUpdated();
+		MyChangeNotifier->notify();
 	}
 }
 
@@ -88,7 +72,7 @@ void BaseActionContext::setChat(const Chat &chat)
 	if (CurrentChat != chat)
 	{
 		CurrentChat = chat;
-		dataUpdated();
+		MyChangeNotifier->notify();
 	}
 }
 
@@ -102,7 +86,7 @@ void BaseActionContext::setStatusContainer(StatusContainer *statusContainer)
 	if (CurrentStatusContainer != statusContainer)
 	{
 		CurrentStatusContainer = statusContainer;
-		dataUpdated();
+		MyChangeNotifier->notify();
 	}
 }
 
@@ -116,6 +100,6 @@ void BaseActionContext::setRoles(const RoleSet &roles)
 	if (Roles != roles)
 	{
 		Roles = roles;
-		dataUpdated();
+		MyChangeNotifier->notify();
 	}
 }

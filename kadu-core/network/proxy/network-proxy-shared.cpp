@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/change-notifier.h"
 #include "network/proxy/network-proxy-manager.h"
 
 #include "network-proxy-shared.h"
@@ -40,6 +41,7 @@ NetworkProxyShared * NetworkProxyShared::loadFromStorage(const QSharedPointer<St
 NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) :
 		Shared(uuid), Port(0)
 {
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 NetworkProxyShared::~NetworkProxyShared()
@@ -90,11 +92,6 @@ void NetworkProxyShared::store()
 	storeValue("User", User);
 	storeValue("Password", Password);
 	storeValue("PollingUrl", PollingUrl);
-}
-
-void NetworkProxyShared::emitUpdated()
-{
-	emit updated();
 }
 
 QString NetworkProxyShared::displayName()

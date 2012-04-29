@@ -27,6 +27,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 
 #include "avatar-shared.h"
@@ -51,6 +52,8 @@ AvatarShared::AvatarShared(const QUuid &uuid) :
 		Shared(uuid)
 {
 	AvatarsDir = KaduPaths::instance()->profilePath() + QLatin1String("avatars/");
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 AvatarShared::~AvatarShared()
@@ -84,7 +87,7 @@ void AvatarShared::setFilePath(const QString &filePath)
 		QImageReader imageReader(filePath);
 		Pixmap = QPixmap::fromImageReader(&imageReader);
 
-		dataUpdated();
+		changeNotifier()->notify();
 		emit pixmapUpdated();
 	}
 }
@@ -161,11 +164,6 @@ void AvatarShared::setPixmap(const QPixmap &pixmap)
 	ensureLoaded();
 
 	Pixmap = pixmap;
-	dataUpdated();
+	changeNotifier()->notify();
 	emit pixmapUpdated();
-}
-
-void AvatarShared::emitUpdated()
-{
-	emit updated();
 }

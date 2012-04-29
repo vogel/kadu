@@ -47,7 +47,6 @@ class KADUAPI GroupShared : public QObject, public Shared
 protected:
 	virtual void load();
 	virtual void store();
-	virtual void emitUpdated();
 
 public:
 	static GroupShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &groupStoragePoint);

@@ -36,6 +36,7 @@
 #include "configuration/configuration-file.h"
 
 #include "icons/kadu-icon.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 
 #include "group-properties-window.h"
@@ -150,7 +151,8 @@ void GroupPropertiesWindow::selectIcon()
 
 void GroupPropertiesWindow::applyClicked()
 {
-	group.blockUpdatedSignal();
+	if (group)
+		group.changeNotifier()->block();
 
 	group.setShowName(nameCheckBox->isChecked());
 	group.setShowIcon(iconCheckBox->isChecked());
@@ -159,7 +161,8 @@ void GroupPropertiesWindow::applyClicked()
 	group.setOfflineToGroup(offlineCheckBox->isChecked());
 	group.setShowInAllGroup(allGroupCheckBox->isChecked());
 
-	group.unblockUpdatedSignal();
+	if (group)
+		group.changeNotifier()->unblock();
 }
 
 void GroupPropertiesWindow::okClicked()

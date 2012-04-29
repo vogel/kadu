@@ -77,8 +77,6 @@ protected:
 	virtual void store();
 	virtual bool shouldStore();
 
-	virtual void emitUpdated();
-
 	virtual void chatTypeRegistered(ChatType *chatType);
 	virtual void chatTypeUnregistered(ChatType *chatType);
 

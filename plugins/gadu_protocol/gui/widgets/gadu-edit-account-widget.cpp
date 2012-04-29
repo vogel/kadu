@@ -388,9 +388,9 @@ void GaduEditAccountWidget::apply()
 
 	resetState();
 
-	// TODO: 0.11, fix this
+	// TODO: 0.13, fix this
 	// hack, changing details does not trigger this
-	account().data()->emitUpdated();
+	account().data()->forceEmitUpdated();
 }
 
 void GaduEditAccountWidget::cancel()

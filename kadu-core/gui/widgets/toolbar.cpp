@@ -41,9 +41,9 @@
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-dialog.h"
-
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "misc/change-notifier.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -95,10 +95,12 @@ DisabledActionsWatcher *watcher = 0;
 
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
-ToolBar::ToolBar(QWidget *parent)
-	: QToolBar(parent), XOffset(0), YOffset(0), EnableUpdatedSignal(true)
+ToolBar::ToolBar(QWidget *parent) :
+		QToolBar(parent), MyChangeNotifier(new ChangeNotifier(this)),  XOffset(0), YOffset(0)
 {
 	kdebugf();
+
+	connect(MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(updated()));
 
 	dragging = false;
 	dropmarker.visible = false;
@@ -238,7 +240,7 @@ void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QA
 	else
 		ToolBarActions.insert(beforeIndex, newAction);
 
-	emitUpdated();
+	MyChangeNotifier->notify();
 }
 
 void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before)
@@ -382,7 +384,7 @@ bool ToolBar::event(QEvent *event)
 
 	// this is for toolbar dragging
 	if (result && QEvent::MouseButtonRelease == event->type() && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton)
-		emitUpdated();
+		MyChangeNotifier->notify();
 
 	return result;
 }
@@ -620,7 +622,7 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
 	kdebugf();
 
-	EnableUpdatedSignal = false;
+	MyChangeNotifier->block();
 
 //	QString align = toolbar_element.attribute("align");
 //	if (align == "right")
@@ -683,7 +685,8 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 		addAction(actionName, buttonStyle, 0);
 	}
 
-	EnableUpdatedSignal = true;
+	MyChangeNotifier->forget();
+	MyChangeNotifier->unblock();
 
 	kdebugf2();
 }
@@ -853,7 +856,7 @@ void ToolBar::removeButton()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 }
@@ -869,7 +872,7 @@ void ToolBar::removeSeparator()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 }
@@ -885,7 +888,7 @@ void ToolBar::removeSpacer()
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
 			currentWidget = 0;
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 }
@@ -897,7 +900,7 @@ void ToolBar::deleteAction(const QString &actionName)
 		{
 			removeAction(toolBarAction.action);
 			ToolBarActions.removeOne(toolBarAction);
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 
@@ -916,7 +919,7 @@ void ToolBar::slotContextIcons()
 		{
 			(*toolBarAction).style = Qt::ToolButtonIconOnly;
 			currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 	}
@@ -935,7 +938,7 @@ void ToolBar::slotContextText()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextOnly;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 	}
@@ -954,7 +957,7 @@ void ToolBar::slotContextTextUnder()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextUnderIcon;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 	}
@@ -973,7 +976,7 @@ void ToolBar::slotContextTextRight()
 		{
 			(*toolBarAction).style = Qt::ToolButtonTextBesideIcon;
 			currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-			emitUpdated();
+			MyChangeNotifier->notify();
 			return;
 		}
 	}
@@ -1119,12 +1122,6 @@ void ToolBar::paintDropMarker()
 			painter.drawPoint(x+dx, y+1);
 		}
 	}
-}
-
-void ToolBar::emitUpdated()
-{
-	if (EnableUpdatedSignal)
-		emit updated();
 }
 
 ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource)

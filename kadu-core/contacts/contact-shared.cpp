@@ -28,9 +28,11 @@
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "misc/change-notifier.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "contact-shared.h"
 
@@ -53,8 +55,11 @@ ContactShared * ContactShared::loadFromStorage(const QSharedPointer<StoragePoint
 ContactShared::ContactShared(const QUuid &uuid) :
 		Shared(uuid), Details(0),
 		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
-		Blocking(false), Dirty(true), IgnoreNextStatusChange(false), Port(0)
+		Blocking(false), IgnoreNextStatusChange(false), Port(0)
 {
+	Entry = new RosterEntry(this);
+	connect(Entry->changeNotifier(), SIGNAL(changed()), this, SIGNAL(dirtinessChanged()));
+
 	ContactAccount = new Account();
 	ContactAvatar = new Avatar();
 	OwnerBuddy = new Buddy();
@@ -63,6 +68,8 @@ ContactShared::ContactShared(const QUuid &uuid) :
 	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
 	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
+
+	connect(changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 ContactShared::~ContactShared()
@@ -97,7 +104,13 @@ void ContactShared::load()
 
 	Id = loadValue<QString>("Id");
 	Priority = loadValue<int>("Priority", -1);
-	Dirty = loadValue<bool>("Dirty", true);
+
+	if (loadValue<bool>("Dirty", true))
+		Entry->setState(RosterEntryDesynchronized);
+	else
+		Entry->setState(RosterEntrySynchronized);
+	Entry->setDetached(loadValue<bool>("Detached", false));
+
 	*ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
 	doSetOwnerBuddy(BuddyManager::instance()->byUuid(loadValue<QString>("Buddy")));
 	doSetContactAvatar(AvatarManager::instance()->byUuid(loadValue<QString>("Avatar")));
@@ -117,7 +130,7 @@ void ContactShared::aboutToBeRemoved()
 
 	deleteDetails();
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::store()
@@ -131,7 +144,10 @@ void ContactShared::store()
 
 	storeValue("Id", Id);
 	storeValue("Priority", Priority);
-	storeValue("Dirty", Dirty);
+
+	storeValue("Dirty", RosterEntrySynchronized != Entry->state());
+	storeValue("Detached", Entry->detached());
+
 	storeValue("Account", ContactAccount->uuid().toString());
 	storeValue("Buddy", !isAnonymous()
 			? OwnerBuddy->uuid().toString()
@@ -147,16 +163,13 @@ bool ContactShared::shouldStore()
 {
 	ensureLoaded();
 
-	return (UuidStorableObject::shouldStore()
-			&& !Id.isEmpty()
-			&& !ContactAccount->uuid().isNull()
-			&& !isAnonymous())
-			|| customProperties()->shouldStore();
-}
+	if (!UuidStorableObject::shouldStore())
+		return false;
 
-void ContactShared::emitUpdated()
-{
-	emit updated();
+	if (Id.isEmpty() || ContactAccount->uuid().isNull())
+		return false;
+
+	return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();
 }
 
 void ContactShared::addToBuddy()
@@ -189,8 +202,8 @@ void ContactShared::setOwnerBuddy(const Buddy &buddy)
 	doSetOwnerBuddy(buddy);
 	addToBuddy();
 
-	setDirty(true);
-	dataUpdated();
+	Entry->setState(RosterEntryDesynchronized);
+	changeNotifier()->notify();
 	emit buddyUpdated();
 }
 
@@ -209,7 +222,7 @@ void ContactShared::setContactAccount(const Account &account)
 	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
 		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
@@ -227,7 +240,7 @@ void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 
 	Details->ensureLoaded();
 
-	dataUpdated();
+	changeNotifier()->notify();
 
 	ContactManager::instance()->registerItem(this);
 	addToBuddy();
@@ -248,7 +261,7 @@ void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory
 
 	deleteDetails();
 
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::deleteDetails()
@@ -278,11 +291,20 @@ void ContactShared::setId(const QString &id)
 	QString oldId = Id;
 	Id = id;
 
-	setDirty(true);
-	dataUpdated();
+	Entry->setState(RosterEntryDesynchronized);
+	changeNotifier()->notify();
 }
 
-/**
+RosterEntry * ContactShared::rosterEntry()
+{
+	ensureLoaded();
+
+	return Entry;
+}
+
+/*
+ * @todo: move this comment somewhere
+ *
  * Sets state if this contact to \p dirty. All contacts are dirty by default.
  *
  * Dirty contacts with anonymous owner buddies are considered dirty removed and will
@@ -295,21 +317,10 @@ void ContactShared::setId(const QString &id)
  * to mark them not dirty, otherwise they will be considered dirty removed and will
  * not be added to roster if remote roster says so, which is probably not what one expects.
  */
-void ContactShared::setDirty(bool dirty)
-{
-	ensureLoaded();
-
-	if (Dirty == dirty)
-		return;
-
-	Dirty = dirty;
-	dataUpdated();
-	emit dirtinessChanged();
-}
 
 void ContactShared::avatarUpdated()
 {
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
@@ -342,7 +353,7 @@ void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 		return;
 
 	doSetContactAvatar(contactAvatar);
-	dataUpdated();
+	changeNotifier()->notify();
 }
 
 bool ContactShared::isAnonymous()

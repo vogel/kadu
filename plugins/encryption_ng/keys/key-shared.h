@@ -49,8 +49,6 @@ protected:
 	virtual void store();
 	virtual bool shouldStore();
 
-	virtual void emitUpdated();
-
 public:
 	static KeyShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);
 	static KeyShared * loadFromStorage(const QSharedPointer<StoragePoint> &avatarStoragePoint);

@@ -74,6 +74,9 @@ class KADUAPI AccountShared : public QObject, public Shared
 
 	void importNetworkProxy();
 
+	void loadRosterTasks();
+	void storeRosterTasks();
+
 private slots:
 	void protocolRegistered(ProtocolFactory *protocolHandler);
 	void protocolUnregistered(ProtocolFactory *protocolHandler);
@@ -86,7 +89,7 @@ protected:
 	// TODO: 0.11, fix this
 	// hack, changing details does not trigger this
 	friend class GaduEditAccountWidget;
-	void emitUpdated();
+	void forceEmitUpdated();
 
 public:
 	static AccountShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &storagePoint);

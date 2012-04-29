@@ -52,7 +52,6 @@ protected:
 	virtual void load();
 	virtual void store();
 	virtual bool shouldStore();
-	virtual void emitUpdated();
 
 public:
 	static MessageShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint);

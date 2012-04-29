@@ -52,7 +52,6 @@ private slots:
 protected:
 	virtual void load();
 	virtual void store();
-	virtual void emitUpdated();
 
 public:
 	static FileTransferShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &fileTransferStoragePoint);

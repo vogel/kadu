@@ -46,6 +46,7 @@ private:
 	int ItemContactPriority;
 	Account ItemAccount;
 	QString Id;
+	bool RosterDetached;
 	ItemAction Action;
 	QString DetachedBuddyName;
 
@@ -66,6 +67,9 @@ public:
 
 	const QString & id() const { return Id; }
 	void setId(const QString &id);
+
+	bool rosterDetached() const { return RosterDetached; }
+	void setRosterDetached(bool rosterDetached);
 
 	ItemAction action() const { return Action; }
 	void setAction(ItemAction action);

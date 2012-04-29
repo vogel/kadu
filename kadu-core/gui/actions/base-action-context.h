@@ -33,8 +33,7 @@ class KADUAPI BaseActionContext : public ActionContext
 {
 	Q_OBJECT
 
-	bool ChangedSignalBlocked;
-	bool Changed;
+	ChangeNotifier *MyChangeNotifier;
 
 	ContactSet Contacts;
 	BuddySet Buddies;
@@ -42,14 +41,11 @@ class KADUAPI BaseActionContext : public ActionContext
 	StatusContainer *CurrentStatusContainer;
 	RoleSet Roles;
 
-	void dataUpdated();
-
 public:
 	BaseActionContext();
 	virtual ~BaseActionContext();
 
-	void blockChangedSignal();
-	void unblockChangedSignal();
+	ChangeNotifier * changeNotifier();
 
 	virtual ContactSet contacts();
 	void setContacts(const ContactSet &contacts);

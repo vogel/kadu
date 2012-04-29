@@ -67,15 +67,20 @@ protected:
 	virtual void itemUnregistered(Contact item);
 
 public:
+	enum AnonymousInclusion
+	{
+		IncludeAnonymous,
+		ExcludeAnonymous
+	};
+
 	static ContactManager * instance();
 
 	virtual QString storageNodeName() { return QLatin1String("Contacts"); }
 	virtual QString storageNodeItemName() { return QLatin1String("Contact"); }
 
 	Contact byId(Account account, const QString &id, NotFoundAction action);
-	QVector<Contact> contacts(Account account);
+	QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
 
-	const QList<Contact> & dirtyContacts();
 	QVector<Contact> dirtyContacts(Account account);
 
 signals:

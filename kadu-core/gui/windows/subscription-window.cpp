@@ -32,6 +32,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "icons/icons-manager.h"
 #include "model/roles.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "subscription-window.h"
 
@@ -57,10 +58,8 @@ SubscriptionWindow::SubscriptionWindow(Contact contact, QWidget *parent) :
 	Contact knownContact = ContactManager::instance()->byId(CurrentContact.contactAccount(), CurrentContact.id(), ActionReturnNull);
 	if (knownContact)
 		CurrentContact = knownContact;
-	else
-	{
-		CurrentContact.setDirty(false);
-	}
+	else if (CurrentContact)
+		CurrentContact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->setColumnStretch(2, 4);

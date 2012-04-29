@@ -33,6 +33,7 @@ class Account;
 class Avatar;
 class Buddy;
 class ProtocolFactory;
+class RosterEntry;
 
 class KADUAPI ContactShared : public QObject, public Shared
 {
@@ -40,6 +41,7 @@ class KADUAPI ContactShared : public QObject, public Shared
 	Q_DISABLE_COPY(ContactShared)
 
 	ContactDetails *Details;
+	RosterEntry *Entry;
 
 	Account *ContactAccount;
 	Avatar *ContactAvatar;
@@ -51,7 +53,6 @@ class KADUAPI ContactShared : public QObject, public Shared
 
 	Status CurrentStatus;
 	bool Blocking;
-	bool Dirty;
 	bool IgnoreNextStatusChange;
 
 	QString ProtocolVersion;
@@ -79,8 +80,6 @@ protected:
 	virtual void store();
 	virtual bool shouldStore();
 
-	virtual void emitUpdated();
-
 public:
 	static ContactShared * loadStubFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
 	static ContactShared * loadFromStorage(const QSharedPointer<StoragePoint> &contactStoragePoint);
@@ -98,8 +97,14 @@ public:
 	KaduShared_PropertyRead(const QString &, id, Id)
 	void setId(const QString &id);
 
-	KaduShared_PropertyBoolRead(Dirty)
-	void setDirty(bool dirty);
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return RosterEntry for this Contact.
+	 * @return RosterEntry for this Contact
+	 *
+	 * This method never returns null entry.
+	 */
+	RosterEntry * rosterEntry();
 
 	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
 

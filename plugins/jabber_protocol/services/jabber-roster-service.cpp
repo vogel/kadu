@@ -25,6 +25,8 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "contacts/contact-manager.h"
+#include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-task.h"
 #include "debug.h"
 
 #include "services/jabber-subscription-service.h"
@@ -69,11 +71,11 @@ void JabberRosterService::connectToClient()
 		return;
 
 	connect(XmppClient.data(), SIGNAL(rosterItemAdded(const RosterItem &)),
-	        this, SLOT(contactUpdated(const RosterItem &)));
+	        this, SLOT(remoteContactUpdated(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterItemUpdated(const RosterItem &)),
-	        this, SLOT(contactUpdated(const RosterItem &)));
+	        this, SLOT(remoteContactUpdated(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterItemRemoved(const RosterItem &)),
-	        this, SLOT(contactDeleted(const RosterItem &)));
+	        this, SLOT(remoteContactDeleted(const RosterItem &)));
 	connect(XmppClient.data(), SIGNAL(rosterRequestFinished(bool, int, QString)),
 	        this, SLOT(rosterRequestFinished(bool)));
 }
@@ -91,49 +93,60 @@ void JabberRosterService::setClient(Client *xmppClient)
 	connectToClient();
 }
 
-Buddy JabberRosterService::itemBuddy(const XMPP::RosterItem &item, const Contact &contact)
+void JabberRosterService::ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display)
 {
-	QString display = itemDisplay(item);
-	Buddy buddy = contact.ownerBuddy();
-	if (buddy.isAnonymous()) // contact has anonymous buddy, we should search for other
+	if (contact.isAnonymous()) // contact has anonymous buddy, we should search for other
 	{
-		Buddy byDisplayBuddy = BuddyManager::instance()->byDisplay(display, ActionReturnNull);
-		if (byDisplayBuddy) // move to buddy by display, why not?
-		{
-			buddy = byDisplayBuddy;
-			contact.setOwnerBuddy(buddy);
-		}
-		else
-		{
-			if (!buddy)
-				buddy = Buddy::create();
-			buddy.setDisplay(display);
-		}
-
-		buddy.setAnonymous(false);
+		contact.setOwnerBuddy(BuddyManager::instance()->byDisplay(display, ActionCreateAndAdd));
+		contact.ownerBuddy().setAnonymous(false);
 	}
 	else
-	{
-		// Prevent read-only rosters (e.g., Facebook Chat) from changing names of buddies with multiple contacts (#1570).
-		// Though, if given buddy has exactly one contact, let the name be changed (#2226).
-		if (!protocol()->contactsListReadOnly() || 1 == buddy.contacts().count())
-			buddy.setDisplay(display);
-	}
-
-	return buddy;
+		contact.ownerBuddy().setDisplay(display);
 }
 
-void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
+JT_Roster * JabberRosterService::createContactTask(const Contact &contact)
 {
-	kdebugf();
+	if (!XmppClient)
+		return 0;
 
-	// StateInitialized - this is new update from roster
-	// StateInitializing - this is initial data from roster
-	RosterState originalState = state();
-	if (StateInitialized != originalState && StateInitializing != originalState)
+	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
+	connect(rosterTask, SIGNAL(finished()), this, SLOT(rosterTaskFinished()));
+	connect(rosterTask, SIGNAL(destroyed(QObject*)), this, SLOT(rosterTaskDeleted(QObject*)));
+
+	ContactForTask.insert(rosterTask, contact);
+
+	return rosterTask;
+}
+
+bool JabberRosterService::isIntrestedIn(const XMPP::RosterItem &item)
+{
+	int subscription = item.subscription().type();
+
+	if (XMPP::Subscription::Both == subscription)
+		return true;
+
+	if (XMPP::Subscription::To == subscription)
+		return true;
+
+	if (XMPP::Subscription::None != subscription && XMPP::Subscription::From != subscription)
+		return false;
+
+	if (item.ask() == "subscribe")
+		return true;
+
+	if (!item.name().isEmpty())
+		return true;
+
+	if (!item.groups().isEmpty())
+		return true;
+
+	return false;
+}
+
+void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
+{
+	if (StateNonInitialized == state())
 		return;
-
-	setState(StateProcessingRemoteUpdate);
 
 	/**
 	 * Subscription types are: Both, From, To, Remove, None.
@@ -150,107 +163,145 @@ void JabberRosterService::contactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 
-	kdebug("New roster item: %s (Subscription: %s )\n", qPrintable(item.jid().full()), qPrintable(item.subscription().toString()));
-
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionCreateAndAdd);
+	if (!contact || contact == account().accountContact())
+		return;
 
-	// in case we return before next call of it
-	contact.setDirty(false);
-	ContactsForDelete.removeAll(contact);
+	contact.rosterEntry()->setRemotelyDeleted(false);
+	if (!canPerformRemoteUpdate(contact))
+		return;
 
-	if (contact == account().accountContact())
+	if (!isIntrestedIn(item))
 	{
-		setState(originalState);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 		return;
 	}
 
-	int subType = item.subscription().type();
+	contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
-	// http://xmpp.org/extensions/xep-0162.html#contacts
-	if (!(subType == XMPP::Subscription::Both || subType == XMPP::Subscription::To
-	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && item.ask() == "subscribe")
-	    || ((subType == XMPP::Subscription::None || subType == XMPP::Subscription::From) && (!item.name().isEmpty() || !item.groups().isEmpty()))
-	   ))
-	{
-		setState(originalState);
-		return;
-	}
+	ensureContactHasBuddyWithDisplay(contact, itemDisplay(item));
 
-	Buddy buddy = itemBuddy(item, contact);
+	Buddy buddy = contact.ownerBuddy();
 	BuddyManager::instance()->addItem(buddy);
 
 	RosterService::addContact(contact);
 
-	// Facebook Chat does not support groups. So make Facebook contacts not remove their
-	// owner buddies (which may own more contacts) from their groups. See bug #2320.
-	if (!protocol()->contactsListReadOnly())
-	{
-		QSet<Group> groups;
-		foreach (const QString &group, item.groups())
-			groups << GroupManager::instance()->byName(group);
-		buddy.setGroups(groups);
-	}
+	QSet<Group> groups;
+	foreach (const QString &group, item.groups())
+		groups << GroupManager::instance()->byName(group);
+	buddy.setGroups(groups);
 
-	contact.setDirty(false);
-
-	setState(originalState);
-
-	kdebugf2();
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 }
 
-void JabberRosterService::contactDeleted(const XMPP::RosterItem &item)
+void JabberRosterService::remoteContactDeleted(const XMPP::RosterItem &item)
 {
-	// StateInitialized - this is new update from roster
-	// StateInitializing - this is initial data from roster
-	RosterState originalState = state();
-	if (StateInitialized != originalState && StateInitializing != originalState)
+	if (StateNonInitialized == state())
 		return;
 
-	setState(StateProcessingRemoteUpdate);
-
 	Contact contact = ContactManager::instance()->byId(account(), item.jid().bare(), ActionReturnNull);
-	BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-	contact.setDirty(false);
 
-	RosterService::removeContact(contact);
+	RosterTaskType rosterTaskType = taskType(contact.id());
+	if (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType)
+	{
+		contact.rosterEntry()->setState(RosterEntrySynchronizing);
+		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
 
-	setState(originalState);
+		RosterService::removeContact(contact);
+	}
+}
+
+void JabberRosterService::rosterTaskFinished()
+{
+	XMPP::JT_Roster *rosterTask = qobject_cast<XMPP::JT_Roster *>(sender());
+	if (!rosterTask)
+		return;
+
+	if (!ContactForTask.contains(rosterTask))
+		return;
+
+	Contact contact = ContactForTask.value(rosterTask);
+	if (!contact || !contact.rosterEntry())
+		return;
+
+	if (rosterTask->success())
+	{
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
+		return;
+	}
+
+	XMPP::Stanza::Error error;
+	if (!error.fromCode(rosterTask->statusCode()) || XMPP::Stanza::Error::Cancel == error.type)
+		contact.rosterEntry()->setDetached(true);
+
+	contact.rosterEntry()->setState(RosterEntryDesynchronized);
+}
+
+void JabberRosterService::rosterTaskDeleted(QObject* object)
+{
+	ContactForTask.remove(static_cast<XMPP::JT_Roster *>(object));
+}
+
+void JabberRosterService::markContactsForDeletion()
+{
+	QVector<Contact> accountContacts = ContactManager::instance()->contacts(account());
+	foreach (const Contact &contact, accountContacts)
+	{
+		if (contact == account().accountContact())
+			continue;
+
+		RosterEntry *rosterEntry = contact.rosterEntry();
+		RosterTaskType rosterTaskType = taskType(contact.id());
+
+		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->state())
+				&& (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType))
+			rosterEntry->setRemotelyDeleted(true);
+	}
+}
+
+void JabberRosterService::deleteMarkedContacts()
+{
+	QVector<Contact> accountContacts = ContactManager::instance()->contacts(account());
+	foreach (const Contact &contact, accountContacts)
+	{
+		if (contact == account().accountContact())
+			continue;
+
+		RosterEntry *rosterEntry = contact.rosterEntry();
+		if (!rosterEntry || !rosterEntry->remotelyDeleted())
+			continue;
+
+		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
+		contact.rosterEntry()->setState(RosterEntrySynchronized);
+	}
+}
+
+void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
+{
+	RosterService::prepareRoster(contacts);
+
+	Q_ASSERT(StateNonInitialized == state());
+	Q_ASSERT(XmppClient);
+
+	setState(StateInitializing);
+	markContactsForDeletion();
+
+	XmppClient.data()->rosterRequest();
 }
 
 void JabberRosterService::rosterRequestFinished(bool success)
 {
-	kdebugf();
-
 	Q_ASSERT(StateInitializing == state());
 
-	// the roster was imported successfully, clear
-	// all "dirty" items from the contact list
 	if (success)
-		foreach (const Contact &contact, ContactsForDelete)
-		{
-			BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);
-			contact.setDirty(false);
-		}
+		deleteMarkedContacts();
 
 	setState(StateInitialized);
 
 	emit rosterReady(success);
 
-	kdebugf2();
-}
-
-void JabberRosterService::prepareRoster()
-{
-	Q_ASSERT(StateNonInitialized == state());
-	Q_ASSERT(XmppClient);
-
-	setState(StateInitializing);
-
-	// flag roster for delete
-	ContactsForDelete = ContactManager::instance()->contacts(account()).toList();
-	ContactsForDelete.removeAll(account().accountContact());
-
-	XmppClient.data()->rosterRequest();
+	executeAllTasks();
 }
 
 bool JabberRosterService::canPerformLocalUpdate() const
@@ -258,72 +309,47 @@ bool JabberRosterService::canPerformLocalUpdate() const
 	if (!RosterService::canPerformLocalUpdate())
 		return false;
 
-	return !XmppClient.isNull();
-}
-
-bool JabberRosterService::addContact(const Contact &contact)
-{
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
+	if (!XmppClient)
 		return false;
-
-	Q_ASSERT(StateInitialized == state());
-
-	if (!RosterService::addContact(contact))
-		return false;
-
-	setState(StateProcessingLocalUpdate);
-
-	// see issue #2159 - we need a way to ignore first status of given contact
-	contact.setIgnoreNextStatusChange(true);
-
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
-	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
-	rosterTask->go(true);
-
-	contact.setDirty(false);
-
-	setState(StateInitialized);
 
 	return true;
 }
 
-bool JabberRosterService::removeContact(const Contact &contact)
+void JabberRosterService::executeTask(const RosterTask& task)
 {
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account())
-		return false;
-
 	Q_ASSERT(StateInitialized == state());
 
-	if (!RosterService::removeContact(contact))
-		return false;
-
-	setState(StateProcessingLocalUpdate);
-
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
-	rosterTask->remove(contact.id());
-	rosterTask->go(true);
-
-	contact.setDirty(false);
-
-	setState(StateInitialized);
-
-	return true;
-}
-
-void JabberRosterService::updateContact(const Contact &contact)
-{
-	if (!canPerformLocalUpdate() || contact.contactAccount() != account() || contact.isAnonymous())
+	Contact contact = ContactManager::instance()->byId(account(), task.id(), ActionReturnNull);
+	XMPP::JT_Roster *rosterTask = createContactTask(contact);
+	if (!rosterTask)
 		return;
 
-	Q_ASSERT(StateInitialized == state());
+	RosterTaskType taskType = contact ? task.type() : RosterTaskDelete;
 
-	setState(StateProcessingLocalUpdate);
+	if (contact)
+		contact.rosterEntry()->setState(RosterEntrySynchronizing);
 
-	XMPP::JT_Roster *rosterTask = new XMPP::JT_Roster(XmppClient.data()->rootTask());
-	rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+	switch (taskType)
+	{
+		case RosterTaskAdd:
+			contact.setIgnoreNextStatusChange(true);
+			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+			break;
+
+		case RosterTaskDelete:
+			rosterTask->remove(contact.id());
+			break;
+
+		case RosterTaskUpdate:
+			rosterTask->set(contact.id(), contact.display(true), buddyGroups(contact.ownerBuddy()));
+			break;
+
+		default:
+			delete rosterTask;
+			return;
+	}
+
 	rosterTask->go(true);
-
-	setState(StateInitialized);
 }
 
 }

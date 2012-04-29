@@ -33,6 +33,7 @@
 #include "message/message-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "contact-manager.h"
@@ -93,7 +94,7 @@ void ContactManager::dirtinessChanged()
 	Contact contact(sender());
 	if (!contact.isNull() && contact.ownerBuddy() != Core::instance()->myself())
 	{
-		if (contact.isDirty())
+		if (contact.rosterEntry()->requiresSynchronization())
 		{
 			DirtyContacts.append(contact);
 			emit dirtyContactAdded(contact);
@@ -127,13 +128,16 @@ void ContactManager::itemAboutToBeRegistered(Contact item)
 
 void ContactManager::itemRegistered(Contact item)
 {
+	if (!item)
+		return;
+
 	QMutexLocker locker(&mutex());
 
 	emit contactAdded(item);
 
 	if (Core::instance()->myself() == item.ownerBuddy())
-		item.setDirty(false);
-	else if (item.isDirty())
+		item.rosterEntry()->setState(RosterEntrySynchronized);
+	else if (item.rosterEntry()->requiresSynchronization())
 	{
 		DirtyContacts.append(item);
 		emit dirtyContactAdded(item);
@@ -154,7 +158,7 @@ void ContactManager::itemUnregistered(Contact item)
 {
 	disconnect(item, SIGNAL(dirtinessChanged()), this, SLOT(dirtinessChanged()));
 
-	if (item.isDirty())
+	if (item && item.rosterEntry()->requiresSynchronization())
 		DirtyContacts.removeAll(item);
 
 	emit contactRemoved(item);
@@ -189,12 +193,12 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
 
 	Buddy buddy = Buddy::create();
 	contact.setOwnerBuddy(buddy);
-	contact.setDirty(false);
+	contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 	return contact;
 }
 
-QVector<Contact> ContactManager::contacts(Account account)
+QVector<Contact> ContactManager::contacts(Account account, AnonymousInclusion inclusion)
 {
 	QMutexLocker locker(&mutex());
 
@@ -206,19 +210,10 @@ QVector<Contact> ContactManager::contacts(Account account)
 		return contacts;
 
 	foreach (const Contact &contact, allItems())
-		if (account == contact.contactAccount())
+		if (account == contact.contactAccount() && ((IncludeAnonymous == inclusion) || !contact.isAnonymous()))
 			contacts.append(contact);
 
 	return contacts;
-}
-
-const QList<Contact> & ContactManager::dirtyContacts()
-{
-	QMutexLocker locker(&mutex());
-
-	ensureLoaded();
-
-	return DirtyContacts;
 }
 
 QVector<Contact> ContactManager::dirtyContacts(Account account)
