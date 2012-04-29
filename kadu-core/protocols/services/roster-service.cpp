@@ -127,6 +127,17 @@ bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType re
 	return RosterTaskUpdate != replacementType;
 }
 
+void RosterService::setContacts(const QVector<Contact> &contacts)
+{
+	foreach (const Contact &contact, Contacts)
+		disconnectContact(contact);
+
+	Contacts = contacts;
+
+	foreach (const Contact &contact, Contacts)
+		connectContact(contact);
+}
+
 void RosterService::connectContact(const Contact &contact)
 {
 	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));

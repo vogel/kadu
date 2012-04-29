@@ -108,6 +108,15 @@ private:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Set current list of contacts.
+	 * @param contacts new list of contacts
+	 *
+	 * All contacts that are currently on list are disconencted and new ones are connected.
+	 */
+	void setContacts(const QVector<Contact> &contacts);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Connects to data emitted by given contact when its roster data changes.
 	 * @param contact contact to connect to
 	 */
