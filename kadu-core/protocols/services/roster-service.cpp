@@ -24,6 +24,7 @@
  */
 
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-entry.h"
 
 #include "roster-service.h"
 
@@ -42,28 +43,46 @@ RosterService::~RosterService()
 void RosterService::disconnected()
 {
 	setState(StateNonInitialized);
+	setContacts(QVector<Contact>());
 }
 
 void RosterService::contactUpdated()
 {
-	Contact contact(sender());
+	// TODO abstraction leak
+	Q_ASSERT(sender()); // ChangeNotifier
+	Q_ASSERT(sender()->parent()); // RosterEntry
+	Q_ASSERT(sender()->parent()->parent()); // ContactShared
+
+	Contact contact(sender()->parent()->parent());
 
 	Q_ASSERT(contact);
 	Q_ASSERT(Contacts.contains(contact));
 
-	if (StateInitialized == State)
-		updateContact(contact);
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
 }
 
 bool RosterService::canPerformLocalUpdate() const
 {
-	if (StateInitialized != State)
+	return protocol()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
+}
+
+bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
+{
+	if (contact.isAnonymous())
+		return true;
+
+	if (!contact.rosterEntry()->canAcceptRemoteUpdate())
 		return false;
 
-	// we reset State on disconnected signal
-	Q_ASSERT(protocol()->isConnected());
-
-	return true;
+	return !IdToTask.contains(contact.id());
 }
 
 void RosterService::setState(RosterState state)
@@ -71,24 +90,152 @@ void RosterService::setState(RosterState state)
 	State = state;
 }
 
-bool RosterService::addContact(const Contact &contact)
+void RosterService::prepareRoster(const QVector<Contact> &contacts)
 {
-	if (Contacts.contains(contact))
-		return false;
+	setContacts(contacts);
 
-	Contacts.append(contact);
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	connect(contact, SIGNAL(buddyUpdated()), this, SLOT(contactUpdated()));
-
-	return true;
+	foreach (const Contact &contact, Contacts)
+	{
+		if (contact.rosterEntry() && RosterEntrySynchronizing == contact.rosterEntry()->state())
+			contact.rosterEntry()->setState(RosterEntryDesynchronized);
+		if (contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
+			addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	}
 }
 
-bool RosterService::removeContact(const Contact &contact)
+QVector<RosterTask> RosterService::tasks()
 {
-	if (Contacts.removeAll(contact) <= 0)
-		return false;
+	return Tasks.toVector();
+}
 
-	disconnect(contact, 0, this, 0);
+void RosterService::setTasks(const QVector<RosterTask> &tasks)
+{
+	Tasks.clear();
+	IdToTask.clear();
 
-	return true;
+	foreach (const RosterTask &task, tasks)
+		addTask(task);
+}
+
+bool RosterService::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
+{
+	Q_ASSERT(RosterTaskNone != taskType);
+	Q_ASSERT(RosterTaskNone != replacementType);
+
+	if (RosterTaskDelete == taskType)
+		return true;
+
+	if (RosterTaskAdd == taskType)
+		return RosterTaskDelete == replacementType;
+
+	return RosterTaskUpdate != replacementType;
+}
+
+void RosterService::setContacts(const QVector<Contact> &contacts)
+{
+	foreach (const Contact &contact, Contacts)
+		disconnectContact(contact);
+
+	Contacts = contacts;
+
+	foreach (const Contact &contact, Contacts)
+		connectContact(contact);
+}
+
+void RosterService::connectContact(const Contact &contact)
+{
+	connect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+}
+
+void RosterService::disconnectContact(const Contact &contact)
+{
+	disconnect(contact.rosterEntry()->changeNotifier(), SIGNAL(changed()), this, SLOT(contactUpdated()));
+}
+
+void RosterService::addTask(const RosterTask &task)
+{
+	if (!IdToTask.contains(task.id()))
+	{
+		Tasks.enqueue(task);
+		return;
+	}
+
+	RosterTask existingTask = IdToTask.value(task.id());
+	if (shouldReplaceTask(existingTask.type(), task.type()))
+	{
+		Tasks.removeAll(existingTask);
+		IdToTask.remove(task.id());
+		IdToTask.insert(task.id(), task);
+		Tasks.enqueue(task);
+	}
+}
+
+RosterTaskType RosterService::taskType(const QString &id)
+{
+	if (!IdToTask.contains(id))
+		return RosterTaskNone;
+	else
+		return IdToTask.value(id).type();
+}
+
+void RosterService::executeAllTasks()
+{
+	while (!Tasks.isEmpty())
+	{
+		RosterTask task = Tasks.dequeue();
+		IdToTask.remove(task.id());
+		executeTask(task);
+	}
+}
+
+void RosterService::addContact(const Contact &contact)
+{
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (Contacts.contains(contact))
+		return;
+
+	Contacts.append(contact);
+	connectContact(contact);
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskAdd, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
+}
+
+void RosterService::removeContact(const Contact &contact)
+{
+	if (contact.contactAccount() != account())
+		return;
+
+	int index = Contacts.indexOf(contact);
+	if (index < 0)
+		return;
+
+	Contacts.remove(index);
+	disconnectContact(contact);
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskDelete, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
+}
+
+void RosterService::updateContact(const Contact& contact)
+{
+	if (contact.contactAccount() != account() || contact.isAnonymous())
+		return;
+
+	if (!contact.rosterEntry()->requiresSynchronization())
+		return;
+
+	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	if (canPerformLocalUpdate())
+		executeAllTasks();
 }
