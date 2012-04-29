@@ -12,6 +12,7 @@
 * gui: #1838 fixed: use system highlight color in emoticons selector (Vogel)
 * notify: #2355 done: implement fullscreen apps detection option for Windows (mziab, beevvy)
 * gui: #2491 done: disable toolbar borders on Windows (beevvy)
+* jabber: #2000 fixed: not allowed to change buddy's name for GMail contacts (Vogel)
 
 +++ version 0.12.0-alpha4
 * sql_history: #2484 done: removed uuids from history file, now history can be moved between instances (Vogel)
