@@ -44,8 +44,8 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 	return result;
 }
 
-GaduRosterService::GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts) :
-		RosterService(protocol, contacts), GaduSession(0)
+GaduRosterService::GaduRosterService(Protocol *protocol) :
+		RosterService(protocol), GaduSession(0)
 {
 	Q_ASSERT(protocol);
 }
@@ -59,8 +59,10 @@ void GaduRosterService::setGaduSession(gg_session *gaduSession)
 	GaduSession = gaduSession;
 }
 
-void GaduRosterService::prepareRoster()
+void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
+	RosterService::prepareRoster(contacts);
+
 	Q_ASSERT(StateNonInitialized == state());
 	Q_ASSERT(GaduSession);
 

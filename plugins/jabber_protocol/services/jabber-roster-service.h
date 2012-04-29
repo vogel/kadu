@@ -100,10 +100,10 @@ protected:
 	virtual void executeTask(const RosterTask &task);
 
 public:
-	explicit JabberRosterService(JabberProtocol *protocol, const QVector<Contact> &contacts);
+	explicit JabberRosterService(JabberProtocol *protocol);
 	virtual ~JabberRosterService();
 
-	virtual void prepareRoster();
+	virtual void prepareRoster(const QVector<Contact> &contacts);
 
 	void setClient(Client *xmppClient);
 

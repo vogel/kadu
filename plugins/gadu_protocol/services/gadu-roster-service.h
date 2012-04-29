@@ -43,10 +43,10 @@ protected:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduRosterService(Protocol *protocol, const QVector<Contact> &contacts);
+	explicit GaduRosterService(Protocol *protocol);
 	virtual ~GaduRosterService();
 
-	virtual void prepareRoster();
+	virtual void prepareRoster(const QVector<Contact> &contacts);
 
 public slots:
 	void setGaduSession(gg_session *gaduSession);

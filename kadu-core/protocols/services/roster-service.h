@@ -218,11 +218,8 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create new instance of RosterService bound to given Protocol.
 	 * @param protocol protocol to bound this service to
-	 * @param contacts initial list of contacts that are assumed to be also on remote roster
-	 *
-	 * This service will read all non-anoynoums contacts assigned to this protocol/account and connect.
 	 */
-	explicit RosterService(Protocol *protocol, const QVector<Contact> &contacts);
+	explicit RosterService(Protocol *protocol);
 	virtual ~RosterService();
 
 	/**
@@ -235,12 +232,17 @@ public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Prepare roster to its work.
+	 * @param contacts initial list of contacts that are assumed to be also on remote roster
 	 *
 	 * This method must be reimplemented by derived services. Depending on protocol it should download remote roster,
 	 * upload local one, merge both or do nothig. After successfull (or not) preparation rosterReady() signal must be
 	 * emitted.
+	 *
+	 * Initial list of contacts is checked for contacts that requires synchronization to create tasks for them and execute
+	 * them later. If contact is in RosterEntrySynchronizing state then it is moved to RosterEntryDesynchronized with assumption
+	 * that previous synchronization was not finished.
 	 */
-	virtual void prepareRoster() = 0;
+	virtual void prepareRoster(const QVector<Contact> &contacts);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

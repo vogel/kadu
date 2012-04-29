@@ -28,19 +28,12 @@
 
 #include "roster-service.h"
 
-RosterService::RosterService(Protocol *protocol, const QVector<Contact> &contacts) :
-		ProtocolService(protocol), State(StateNonInitialized), Contacts(contacts)
+RosterService::RosterService(Protocol *protocol) :
+		ProtocolService(protocol), State(StateNonInitialized)
 {
 	Q_ASSERT(protocol);
 
 	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
-
-	foreach (const Contact &contact, Contacts)
-	{
-		connectContact(contact);
-		if (contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
-			addTask(RosterTask(RosterTaskUpdate, contact.id()));
-	}
 }
 
 RosterService::~RosterService()
@@ -50,6 +43,7 @@ RosterService::~RosterService()
 void RosterService::disconnected()
 {
 	setState(StateNonInitialized);
+	setContacts(QVector<Contact>());
 }
 
 void RosterService::contactUpdated()
@@ -97,6 +91,19 @@ bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
 void RosterService::setState(RosterState state)
 {
 	State = state;
+}
+
+void RosterService::prepareRoster(const QVector<Contact> &contacts)
+{
+	setContacts(contacts);
+
+	foreach (const Contact &contact, Contacts)
+	{
+		if (contact.rosterEntry() && RosterEntrySynchronizing == contact.rosterEntry()->state())
+			contact.rosterEntry()->setState(RosterEntryDesynchronized);
+		if (contact.rosterEntry() && contact.rosterEntry()->requiresSynchronization())
+			addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	}
 }
 
 QVector<RosterTask> RosterService::tasks()

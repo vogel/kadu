@@ -55,8 +55,8 @@ const QString & JabberRosterService::itemDisplay(const XMPP::RosterItem &item)
 		return item.jid().bare();
 }
 
-JabberRosterService::JabberRosterService(JabberProtocol *protocol, const QVector<Contact> &contacts) :
-		RosterService(protocol, contacts)
+JabberRosterService::JabberRosterService(JabberProtocol *protocol) :
+		RosterService(protocol)
 {
 	Q_ASSERT(protocol);
 }
@@ -286,8 +286,10 @@ void JabberRosterService::deleteMarkedContacts()
 	}
 }
 
-void JabberRosterService::prepareRoster()
+void JabberRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
+	RosterService::prepareRoster(contacts);
+
 	Q_ASSERT(StateNonInitialized == state());
 	Q_ASSERT(XmppClient);
 

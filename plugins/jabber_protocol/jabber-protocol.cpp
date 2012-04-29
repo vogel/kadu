@@ -84,7 +84,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
-	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this, ContactManager::instance()->contacts(account, true));
+	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
 
 	chatService->setClient(JabberClient->client());
 	chatStateService->setClient(JabberClient->client());
@@ -255,7 +255,7 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	rosterService()->prepareRoster();
+	rosterService()->prepareRoster(ContactManager::instance()->contacts(account(), true));
 }
 
 void JabberProtocol::disconnectedFromServer()

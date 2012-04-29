@@ -95,7 +95,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	GaduRosterService *rosterService = new GaduRosterService(this, ContactManager::instance()->contacts(account, true));
+	GaduRosterService *rosterService = new GaduRosterService(this);
 
 	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
@@ -301,7 +301,7 @@ void GaduProtocol::afterLoggedIn()
 	setUpFileTransferService();
 
 	// we do not need to wait for "rosterReady" signal in GaduGadu
-	rosterService()->prepareRoster();
+	rosterService()->prepareRoster(ContactManager::instance()->contacts(account(), true));
 	sendStatusToServer();
 }
 
