@@ -131,7 +131,7 @@ public:
 	 * For RosterEntryDesynchronized or RosterEntrySynchronizing entries remote changes cannot be accepted with assumption
 	 * that local changes are more important and will overwrite remote ones.
 	 */
-	bool acceptRemoteUpdate() const;
+	bool canAcceptRemoteUpdate() const;
 
 };
 

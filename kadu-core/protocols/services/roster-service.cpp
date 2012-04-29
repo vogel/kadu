@@ -79,7 +79,7 @@ bool RosterService::canPerformRemoteUpdate(const Contact &contact) const
 	if (contact.isAnonymous())
 		return true;
 
-	if (!contact.rosterEntry()->acceptRemoteUpdate())
+	if (!contact.rosterEntry()->canAcceptRemoteUpdate())
 		return false;
 
 	return !IdToTask.contains(contact.id());
