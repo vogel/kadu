@@ -140,7 +140,7 @@ void ContactManager::itemRegistered(Contact item)
 
 	if (Core::instance()->myself() == item.ownerBuddy())
 		item.rosterEntry()->setState(RosterEntrySynchronized);
-	else if (item && item.rosterEntry()->requiresSynchronization())
+	else if (item.rosterEntry()->requiresSynchronization())
 	{
 		DirtyContacts.append(item);
 		emit dirtyContactAdded(item);
