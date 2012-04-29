@@ -25,6 +25,7 @@
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-details.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -168,6 +169,10 @@ bool ContactShared::shouldStore()
 
 	if (Id.isEmpty() || ContactAccount->uuid().isNull())
 		return false;
+
+	// we dont need data for non-roster contacts only from 4 version of sql schema
+	if (config_file.readNumEntry("History", "Schema", 0) < 4)
+		return true;
 
 	return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();
 }

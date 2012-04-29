@@ -24,6 +24,7 @@
 #include <QtCore/QThread>
 #include <QtSql/QSqlError>
 
+#include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
 
 #include "storage/history-sql-storage.h"
@@ -152,5 +153,8 @@ void SqlInitializer::initDatabase()
 			emit progressFinished(true, "dialog-information", tr("Import completed."));
 	}
 	else
+	{
+		config_file.writeEntry("History", "Schema", SqlImport::databaseSchemaVersion(Database));
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
+	}
 }

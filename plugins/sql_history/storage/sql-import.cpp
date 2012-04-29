@@ -26,6 +26,7 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -678,4 +679,6 @@ void SqlImport::performImport(QSqlDatabase &database)
 	}
 
 	initKaduSchemaTable(database);
+
+	config_file.writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
