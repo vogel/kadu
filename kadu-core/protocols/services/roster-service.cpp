@@ -205,7 +205,7 @@ void RosterService::addContact(const Contact &contact)
 	if (!contact.rosterEntry()->requiresSynchronization())
 		return;
 
-	addTask(RosterTask(RosterTaskUpdate, contact.id()));
+	addTask(RosterTask(RosterTaskAdd, contact.id()));
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
