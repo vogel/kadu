@@ -165,8 +165,8 @@ protected:
 	 * @param contact contact to check
 	 * @return true if remote update can be processed
 	 *
-	 * Remote update can only be processed when roster is in StateInitialized or StateInitializing, given contact
-	 * is not detached (or is anonymous) and no tasks for given contact are awaiting execution.
+	 * Remote update can only be processed for either anonymous contacts or contacts than can accept remote updates (not detached
+	 * and not currently synchronizing) when there is no task for given contact.
 	 */
 	virtual bool canPerformRemoteUpdate(const Contact &contact) const;
 

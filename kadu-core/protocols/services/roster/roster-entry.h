@@ -126,8 +126,10 @@ public:
 	 * @short Check if this entry can be updated by remote roster.
 	 * @return true if this entry can be updated by remote roster
 	 *
-	 * This method only returns true if state is different than RosterEntryDesynchronized and than RosterEntrySynchronizing
-	 * and this entry is not Detached. We assume that our changes are more important that these from remote roster.
+	 * Always return false for detached entries.
+	 * If entry is not detached then this method returns true only if this entry is synchronized (or state is unknown).
+	 * For RosterEntryDesynchronized or RosterEntrySynchronizing entries remote changes cannot be accepted with assumption
+	 * that local changes are more important and will overwrite remote ones.
 	 */
 	bool acceptRemoteUpdate() const;
 
