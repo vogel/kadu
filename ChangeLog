@@ -1,4 +1,6 @@
-﻿+++ version 0.12.0-beta1
+﻿+++ version 0.12.0-beta2
+
++++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
 * last_seen: #1430 done: added context menu in Last Seen window (Vogel)
 * configuration: #2529 fixed: prevent loss of XML nodes with same tags in one parent node (ultr)
