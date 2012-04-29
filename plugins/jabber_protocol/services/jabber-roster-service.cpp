@@ -176,7 +176,7 @@ void JabberRosterService::remoteContactUpdated(const XMPP::RosterItem &item)
 	if (!contact || contact == account().accountContact())
 		return;
 
-	contact.rosterEntry()->setDeleted(false);
+	contact.rosterEntry()->setRemotelyDeleted(false);
 	if (!canPerformRemoteUpdate(contact))
 		return;
 
@@ -265,7 +265,7 @@ void JabberRosterService::markContactsForDeletion()
 
 		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->state())
 				&& (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType))
-			rosterEntry->setDeleted(true);
+			rosterEntry->setRemotelyDeleted(true);
 	}
 }
 
@@ -278,7 +278,7 @@ void JabberRosterService::deleteMarkedContacts()
 			continue;
 
 		RosterEntry *rosterEntry = contact.rosterEntry();
-		if (!rosterEntry || !rosterEntry->deleted())
+		if (!rosterEntry || !rosterEntry->remotelyDeleted())
 			continue;
 
 		BuddyManager::instance()->clearOwnerAndRemoveEmptyBuddy(contact);

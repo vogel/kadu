@@ -47,7 +47,7 @@ class RosterEntry : public QObject
 
 	RosterEntryState State;
 	bool Detached;
-	bool Deleted;
+	bool RemotelyDeleted;
 	ChangeNotifier *MyChangeNotifier;
 
 public:
@@ -91,17 +91,17 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new value of Deleted property.
-	 * @param deleted new value of Deleted property
+	 * @short Set new value of RemotelyDeleted property.
+	 * @param remotelyDeleted new value of RemotelyDeleted property
 	 */
-	void setDeleted(bool deleted);
+	void setRemotelyDeleted(bool remotelyDeleted);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Get current value of Deleted property.
-	 * @return current value of Deleted property
+	 * @short Get current value of RemotelyDeleted property.
+	 * @return current value of RemotelyDeleted property
 	 */
-	bool deleted() const;
+	bool remotelyDeleted() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

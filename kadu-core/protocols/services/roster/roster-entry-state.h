@@ -37,7 +37,7 @@ enum RosterEntryState
 	/**
 	 * Unkown, not yet set state.
 	 */
-	RosterEntryUnkown,
+	RosterEntryUnknown,
 	/**
 	 * Entries with this state have the same value on local and remote roster. When remote roster sends an update then local value must be updated as well.
 	 */
