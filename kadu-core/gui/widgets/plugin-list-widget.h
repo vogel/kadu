@@ -35,7 +35,6 @@ class PluginModel;
 class PluginListWidgetItemDelegate;
 class ProxyModel;
 
-
 /**
   * @short A widget to select what plugins to load and configure the plugins.
   *
@@ -44,40 +43,44 @@ class ProxyModel;
   * @author Matthias Kretz <kretz@kde.org>
   * @author Rafael Fernández López <ereslibre@kde.org>
   */
-
 class PluginListWidget : public QWidget
 {
-        Q_OBJECT
+	Q_OBJECT
+
+	friend class PluginListWidgetItemDelegate;
+	friend class PluginModel;
+	friend class ProxyModel;
+
+	FilterWidget *lineEdit;
+	CategorizedListView *listView;
+	CategorizedListViewPainter *categoryDrawer;
+	PluginModel *pluginModel;
+	ProxyModel *proxyModel;
+	PluginListWidgetItemDelegate *pluginDelegate;
+	bool showIcons;
 
 public:
-        PluginListWidget(QWidget *parent = 0);
-        ~PluginListWidget();
+	explicit PluginListWidget(QWidget *parent = 0);
+	virtual ~PluginListWidget();
 
-        void applyChanges();
+	void applyChanges();
 
-        int dependantLayoutValue(int value, int width, int totalWidth) const;
+	int dependantLayoutValue(int value, int width, int totalWidth) const;
 
-        QWidget *parent;
-        FilterWidget *lineEdit;
-        CategorizedListView *listView;
-        CategorizedListViewPainter *categoryDrawer;
-        PluginModel *pluginModel;
-        ProxyModel *proxyModel;
-        PluginListWidgetItemDelegate *pluginDelegate;
-        bool showIcons;
 
-Q_SIGNALS:
-        /**
-          * Tells you whether the configuration is changed or not.
-          */
-        void changed(bool hasChanged);
+signals:
+	/**
+	 * Tells you whether the configuration is changed or not.
+	 */
+	void changed(bool hasChanged);
 
-        /**
-          * Emitted after the config of an embedded KCM has been saved. The
-          * argument is the name of the parent component that needs to reload
-          * its config
-          */
-        void configCommitted(const QByteArray &componentName);
+	/**
+	 * Emitted after the config of an embedded KCM has been saved. The
+	 * argument is the name of the parent component that needs to reload
+	 * its config
+	 */
+	void configCommitted(const QByteArray &componentName);
+
 };
 
-#endif
+#endif // PLUGIN_LIST_WIDGET_H

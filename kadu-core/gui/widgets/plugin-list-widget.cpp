@@ -50,92 +50,86 @@
 #include "plugin-list-widget.h"
 
 
-PluginListWidget::PluginListWidget(QWidget *parent)
-                : QWidget(parent)
-                , parent(parent)
-                , listView(0)
-                , showIcons(false)
+PluginListWidget::PluginListWidget(QWidget *parent) :
+		QWidget(parent), listView(0), showIcons(false)
 {
-        QVBoxLayout *layout = new QVBoxLayout;
-        layout->setMargin(0);
-        setLayout(layout);
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->setMargin(0);
+	setLayout(layout);
 
-        lineEdit = new FilterWidget(this);
-        lineEdit->setAutoVisibility(false);
-        listView = new CategorizedListView(this);
-        listView->setVerticalScrollMode(QListView::ScrollPerPixel);
-        listView->setAlternatingRowColors(true);
-        categoryDrawer = new CategorizedListViewPainter(listView);
-        listView->setCategoryDrawer(categoryDrawer);
+	lineEdit = new FilterWidget(this);
+	lineEdit->setAutoVisibility(false);
+	listView = new CategorizedListView(this);
+	listView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	listView->setAlternatingRowColors(true);
+	categoryDrawer = new CategorizedListViewPainter(listView);
+	listView->setCategoryDrawer(categoryDrawer);
 
-        pluginModel = new PluginModel(this, this);
-        proxyModel = new ProxyModel(this, this);
-        proxyModel->setCategorizedModel(true);
-        proxyModel->setSourceModel(pluginModel);
-        pluginModel->loadPluginData();
-        listView->setModel(proxyModel);
-        listView->setAlternatingRowColors(true);
+	pluginModel = new PluginModel(this, this);
+	proxyModel = new ProxyModel(this, this);
+	proxyModel->setCategorizedModel(true);
+	proxyModel->setSourceModel(pluginModel);
+	pluginModel->loadPluginData();
+	listView->setModel(proxyModel);
+	listView->setAlternatingRowColors(true);
 
-        pluginDelegate = new PluginListWidgetItemDelegate(this, this);
-        listView->setItemDelegate(pluginDelegate);
+	pluginDelegate = new PluginListWidgetItemDelegate(this, this);
+	listView->setItemDelegate(pluginDelegate);
 
-        listView->setMouseTracking(true);
-        listView->viewport()->setAttribute(Qt::WA_Hover);
+	listView->setMouseTracking(true);
+	listView->viewport()->setAttribute(Qt::WA_Hover);
 
-        lineEdit->setView(listView);
+	lineEdit->setView(listView);
 
-        connect(lineEdit, SIGNAL(textChanged(QString)), proxyModel, SLOT(invalidate()));
-        connect(pluginDelegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
-        connect(pluginDelegate, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
+	connect(lineEdit, SIGNAL(textChanged(QString)), proxyModel, SLOT(invalidate()));
+	connect(pluginDelegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
+	connect(pluginDelegate, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
 
-        layout->addWidget(lineEdit);
-        layout->addWidget(listView);
+	layout->addWidget(lineEdit);
+	layout->addWidget(listView);
 }
 
 PluginListWidget::~PluginListWidget()
 {
-        delete listView->itemDelegate();
-        delete listView; // depends on some other things in d, make sure this dies first.
+	delete listView->itemDelegate();
+	delete listView;
 	delete categoryDrawer;
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
 {
-        if (listView->layoutDirection() == Qt::LeftToRight)
-        {
-                return value;
-        }
+	if (listView->layoutDirection() == Qt::LeftToRight)
+		return value;
 
-        return totalWidth - width - value;
+	return totalWidth - width - value;
 }
 
 void PluginListWidget::applyChanges()
 {
-        bool changeOccured = false;
+	bool changeOccured = false;
 
-        for (int i = 0; i < pluginModel->rowCount(); i++)
-        {
-                const QModelIndex index = pluginModel->index(i, 0);
-                PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
+	for (int i = 0; i < pluginModel->rowCount(); i++)
+	{
+		const QModelIndex index = pluginModel->index(i, 0);
+		PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
 
-                Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
+		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
 
-                if (plugin && plugin->isActive() != pluginEntry->checked)
-                {
-                        if (pluginEntry->checked)
-                                PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
-                        else
-                                PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
+		if (plugin && plugin->isActive() != pluginEntry->checked)
+		{
+			if (pluginEntry->checked)
+				PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
+			else
+				PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
 
-                        changeOccured = true;
-                }
-        }
+			changeOccured = true;
+		}
+	}
 
-        pluginModel->loadPluginData();
+	pluginModel->loadPluginData();
 
-        if (changeOccured)
-                ConfigurationManager::instance()->flush();
+	if (changeOccured)
+		ConfigurationManager::instance()->flush();
 
-        emit changed(false);
+	emit changed(false);
 }
-
