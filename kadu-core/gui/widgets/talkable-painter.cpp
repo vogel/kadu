@@ -110,6 +110,7 @@ void TalkablePainter::fixColors()
 	// for windows only
 	if (useColorsWorkaround())
 	{
+		// copied from QWindowsVistaStyle::drawControl()
 		Option.palette.setColor(QPalette::All, QPalette::HighlightedText, Option.palette.color(QPalette::Active, QPalette::Text));
 		Option.palette.setColor(QPalette::All, QPalette::Highlight, Option.palette.base().color().darker(108));
 	}

@@ -310,8 +310,10 @@ void GaduProtocol::logout()
 	// we need to changestatus manually in gadu
 	// status is offline
 	sendStatusToServer();
+	// Kadu bug #2542
 	// gg_logoff(GaduSession);
 
+	// TODO: it never gets called when unloading gadu_protocol and causes memory and resource leak
 	QTimer::singleShot(0, this, SLOT(loggedOut()));
 }
 
