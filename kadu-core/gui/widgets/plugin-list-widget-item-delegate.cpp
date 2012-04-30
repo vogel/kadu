@@ -50,7 +50,7 @@
 #include "plugin-list-widget-item-delegate.h"
 
 PluginListWidgetItemDelegate::PluginListWidgetItemDelegate(PluginListWidget *pluginSelector_d, QObject *parent)
-                : PluginListWidgetDelegate(pluginSelector_d->listView, parent)
+                : PluginListWidgetDelegate(pluginSelector_d->ListView, parent)
                 , checkBox(new QCheckBox)
                 , pushButton(new QPushButton)
                 , pluginSelector_d(pluginSelector_d)
@@ -84,7 +84,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
 
         int iconSize = option.rect.height() - MARGIN * 2;
 
-        if (pluginSelector_d->showIcons)
+        if (pluginSelector_d->ShowIcons)
         {
 //         QPixmap pixmap = KIconLoader::global()->loadIcon(index.model()->data(index, Qt::DecorationRole).toString(),
 //                                                          KIconLoader::Desktop, iconSize, disabled ? KIconLoader::DisabledState : KIconLoader::DefaultState);
@@ -112,7 +112,7 @@ void PluginListWidgetItemDelegate::paint(QPainter *painter, const QStyleOptionVi
                 painter->setPen(option.palette.highlightedText().color());
         }
 
-        if (pluginSelector_d->listView->layoutDirection() == Qt::RightToLeft)
+        if (pluginSelector_d->ListView->layoutDirection() == Qt::RightToLeft)
         {
                 contentsRect.translate(lessHorizontalSpace, 0);
         }
@@ -155,7 +155,7 @@ QSize PluginListWidgetItemDelegate::sizeHint(const QStyleOptionViewItem &option,
                 j = 2;
         }
 
-        if (!pluginSelector_d->showIcons)
+        if (!pluginSelector_d->ShowIcons)
         {
                 i--;
         }

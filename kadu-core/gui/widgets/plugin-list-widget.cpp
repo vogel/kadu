@@ -51,54 +51,54 @@
 
 
 PluginListWidget::PluginListWidget(QWidget *parent) :
-		QWidget(parent), listView(0), showIcons(false)
+		QWidget(parent), ListView(0), ShowIcons(false)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setMargin(0);
 	setLayout(layout);
 
-	lineEdit = new FilterWidget(this);
-	lineEdit->setAutoVisibility(false);
-	listView = new CategorizedListView(this);
-	listView->setVerticalScrollMode(QListView::ScrollPerPixel);
-	listView->setAlternatingRowColors(true);
-	categoryDrawer = new CategorizedListViewPainter(listView);
-	listView->setCategoryDrawer(categoryDrawer);
+	LineEdit = new FilterWidget(this);
+	LineEdit->setAutoVisibility(false);
+	ListView = new CategorizedListView(this);
+	ListView->setVerticalScrollMode(QListView::ScrollPerPixel);
+	ListView->setAlternatingRowColors(true);
+	CategoryDrawer = new CategorizedListViewPainter(ListView);
+	ListView->setCategoryDrawer(CategoryDrawer);
 
-	pluginModel = new PluginModel(this, this);
-	proxyModel = new ProxyModel(this, this);
-	proxyModel->setCategorizedModel(true);
-	proxyModel->setSourceModel(pluginModel);
-	pluginModel->loadPluginData();
-	listView->setModel(proxyModel);
-	listView->setAlternatingRowColors(true);
+	Model = new PluginModel(this, this);
+	Proxy = new ProxyModel(this, this);
+	Proxy->setCategorizedModel(true);
+	Proxy->setSourceModel(Model);
+	Model->loadPluginData();
+	ListView->setModel(Proxy);
+	ListView->setAlternatingRowColors(true);
 
-	pluginDelegate = new PluginListWidgetItemDelegate(this, this);
-	listView->setItemDelegate(pluginDelegate);
+	Delegaet = new PluginListWidgetItemDelegate(this, this);
+	ListView->setItemDelegate(Delegaet);
 
-	listView->setMouseTracking(true);
-	listView->viewport()->setAttribute(Qt::WA_Hover);
+	ListView->setMouseTracking(true);
+	ListView->viewport()->setAttribute(Qt::WA_Hover);
 
-	lineEdit->setView(listView);
+	LineEdit->setView(ListView);
 
-	connect(lineEdit, SIGNAL(textChanged(QString)), proxyModel, SLOT(invalidate()));
-	connect(pluginDelegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
-	connect(pluginDelegate, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
+	connect(LineEdit, SIGNAL(textChanged(QString)), Proxy, SLOT(invalidate()));
+	connect(Delegaet, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
+	connect(Delegaet, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
 
-	layout->addWidget(lineEdit);
-	layout->addWidget(listView);
+	layout->addWidget(LineEdit);
+	layout->addWidget(ListView);
 }
 
 PluginListWidget::~PluginListWidget()
 {
-	delete listView->itemDelegate();
-	delete listView;
-	delete categoryDrawer;
+	delete ListView->itemDelegate();
+	delete ListView;
+	delete CategoryDrawer;
 }
 
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
 {
-	if (listView->layoutDirection() == Qt::LeftToRight)
+	if (ListView->layoutDirection() == Qt::LeftToRight)
 		return value;
 
 	return totalWidth - width - value;
@@ -108,9 +108,9 @@ void PluginListWidget::applyChanges()
 {
 	bool changeOccured = false;
 
-	for (int i = 0; i < pluginModel->rowCount(); i++)
+	for (int i = 0; i < Model->rowCount(); i++)
 	{
-		const QModelIndex index = pluginModel->index(i, 0);
+		const QModelIndex index = Model->index(i, 0);
 		PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
 
 		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
@@ -126,7 +126,7 @@ void PluginListWidget::applyChanges()
 		}
 	}
 
-	pluginModel->loadPluginData();
+	Model->loadPluginData();
 
 	if (changeOccured)
 		ConfigurationManager::instance()->flush();

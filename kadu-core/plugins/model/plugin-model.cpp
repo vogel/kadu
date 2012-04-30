@@ -80,7 +80,7 @@ void PluginModel::loadPluginData()
         Plugins << listToAdd;
         endResetModel();
 
-        pluginSelector_d->proxyModel->sort(0);
+        pluginSelector_d->Proxy->sort(0);
 }
 
 PluginModel::PluginModel(PluginListWidget *pluginSelector_d, QObject *parent)

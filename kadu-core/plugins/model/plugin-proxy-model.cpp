@@ -64,14 +64,14 @@ bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
 {
         Q_UNUSED(sourceParent)
 
-        if (!pluginSelector_d->lineEdit->filterText().isEmpty())
+        if (!pluginSelector_d->LineEdit->filterText().isEmpty())
         {
                 const QModelIndex index = sourceModel()->index(sourceRow, 0);
                 const PluginEntry *entry = static_cast<PluginEntry*>(index.internalPointer());
-                return entry->pluginName.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
-                       entry->name.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
-                       entry->description.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive) ||
-                       entry->author.contains(pluginSelector_d->lineEdit->filterText(), Qt::CaseInsensitive);
+                return entry->pluginName.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
+                       entry->name.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
+                       entry->description.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive) ||
+                       entry->author.contains(pluginSelector_d->LineEdit->filterText(), Qt::CaseInsensitive);
         }
 
         return true;

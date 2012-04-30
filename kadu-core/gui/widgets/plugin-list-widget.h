@@ -51,13 +51,13 @@ class PluginListWidget : public QWidget
 	friend class PluginModel;
 	friend class ProxyModel;
 
-	FilterWidget *lineEdit;
-	CategorizedListView *listView;
-	CategorizedListViewPainter *categoryDrawer;
-	PluginModel *pluginModel;
-	ProxyModel *proxyModel;
-	PluginListWidgetItemDelegate *pluginDelegate;
-	bool showIcons;
+	FilterWidget *LineEdit;
+	CategorizedListView *ListView;
+	CategorizedListViewPainter *CategoryDrawer;
+	PluginModel *Model;
+	ProxyModel *Proxy;
+	PluginListWidgetItemDelegate *Delegaet;
+	bool ShowIcons;
 
 public:
 	explicit PluginListWidget(QWidget *parent = 0);
