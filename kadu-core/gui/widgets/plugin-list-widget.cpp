@@ -73,8 +73,8 @@ PluginListWidget::PluginListWidget(QWidget *parent) :
 	ListView->setModel(Proxy);
 	ListView->setAlternatingRowColors(true);
 
-	Delegaet = new PluginListWidgetItemDelegate(this, this);
-	ListView->setItemDelegate(Delegaet);
+	Delegate = new PluginListWidgetItemDelegate(this, this);
+	ListView->setItemDelegate(Delegate);
 
 	ListView->setMouseTracking(true);
 	ListView->viewport()->setAttribute(Qt::WA_Hover);
@@ -82,8 +82,7 @@ PluginListWidget::PluginListWidget(QWidget *parent) :
 	LineEdit->setView(ListView);
 
 	connect(LineEdit, SIGNAL(textChanged(QString)), Proxy, SLOT(invalidate()));
-	connect(Delegaet, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
-	connect(Delegaet, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
+	connect(Delegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
 
 	layout->addWidget(LineEdit);
 	layout->addWidget(ListView);

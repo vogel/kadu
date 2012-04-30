@@ -56,7 +56,7 @@ class PluginListWidget : public QWidget
 	CategorizedListViewPainter *CategoryDrawer;
 	PluginModel *Model;
 	PluginProxyModel *Proxy;
-	PluginListWidgetItemDelegate *Delegaet;
+	PluginListWidgetItemDelegate *Delegate;
 	bool ShowIcons;
 
 public:
@@ -67,19 +67,11 @@ public:
 
 	int dependantLayoutValue(int value, int width, int totalWidth) const;
 
-
 signals:
 	/**
 	 * Tells you whether the configuration is changed or not.
 	 */
 	void changed(bool hasChanged);
-
-	/**
-	 * Emitted after the config of an embedded KCM has been saved. The
-	 * argument is the name of the parent component that needs to reload
-	 * its config
-	 */
-	void configCommitted(const QByteArray &componentName);
 
 };
 

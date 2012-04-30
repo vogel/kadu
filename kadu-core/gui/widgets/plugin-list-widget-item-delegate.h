@@ -51,7 +51,6 @@ public:
 
 Q_SIGNALS:
         void changed(bool hasChanged);
-        void configCommitted(const QByteArray &componentName);
 
 protected:
         virtual QList<QWidget*> createItemWidgets() const;

@@ -277,7 +277,6 @@ PluginSelector::PluginSelector(QWidget *parent)
 
     connect(d->lineEdit, SIGNAL(textChanged(QString)), d->proxyModel, SLOT(invalidate()));
     connect(pluginDelegate, SIGNAL(changed(bool)), this, SIGNAL(changed(bool)));
-    connect(pluginDelegate, SIGNAL(configCommitted(QByteArray)), this, SIGNAL(configCommitted(QByteArray)));
 
     layout->addWidget(d->lineEdit);
     layout->addWidget(d->listView);
@@ -687,7 +686,7 @@ QList<QWidget*> PluginSelector::Private::PluginDelegate::createItemWidgets() con
     setBlockedEventTypes(aboutPushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
                             << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
                             << QEvent::KeyPress << QEvent::KeyRelease);
-                            
+
     setBlockedEventTypes(configurePushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress
                             << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
                             << QEvent::KeyPress << QEvent::KeyRelease);
@@ -870,9 +869,6 @@ void PluginSelector::Private::PluginDelegate::slotConfigureClicked()
             foreach (KCModuleProxy *moduleProxy, moduleProxyList) {
                 QStringList parentComponents = moduleProxy->moduleInfo().service()->property("X-KDE-ParentComponents").toStringList();
                 moduleProxy->save();
-                foreach (const QString &parentComponent, parentComponents) {
-                    emit configCommitted(parentComponent.toLatin1());
-                }
             }
         } else {
             foreach (KCModuleProxy *moduleProxy, moduleProxyList) {

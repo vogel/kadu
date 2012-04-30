@@ -216,13 +216,6 @@ Q_SIGNALS:
       */
     void changed(bool hasChanged);
 
-    /**
-      * Emitted after the config of an embedded KCM has been saved. The
-      * argument is the name of the parent component that needs to reload
-      * its config
-      */
-    void configCommitted(const QByteArray &componentName);
-
 private:
     class Private;
     Private * const d;
