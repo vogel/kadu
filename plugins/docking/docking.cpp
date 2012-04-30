@@ -121,11 +121,13 @@ DockingManager::DockingManager() :
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 
 	DockMenu = new QMenu();
+	DockMenu->setSeparatorsCollapsible(true);
 	connect(DockMenu, SIGNAL(aboutToShow()), this, SLOT(contextMenuAboutToBeShown()));
 
 #ifdef Q_OS_MAC
 	MacDockMenu = new QMenu();
 	qt_mac_set_dock_menu(MacDockMenu);
+	MacDockMenu->setSeparatorsCollapsible(true);
 #endif
 
 #ifdef Q_WS_X11
@@ -417,11 +419,13 @@ void DockingManager::doUpdateContextMenu()
 
 	if (!ModulesActions.isEmpty())
 	{
+		DockMenu->addSeparator();
+
 		foreach (QAction *action, ModulesActions)
 			DockMenu->addAction(action);
-
-		DockMenu->addSeparator();
 	}
+
+	DockMenu->addSeparator();
 
 #ifdef Q_WS_X11
 	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
