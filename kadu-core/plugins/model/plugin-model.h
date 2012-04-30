@@ -91,6 +91,7 @@ public:
         QString name;
         QString pluginName;
         QString description;
+        QString author;
         bool checked;
         bool isCheckable;
 

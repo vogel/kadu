@@ -67,6 +67,9 @@ void PluginModel::loadPluginData()
                 pluginEntry.description = pluginInfo
                         ? pluginInfo->description()
                         : QString();
+                pluginEntry.author = pluginInfo
+                        ? pluginInfo->author()
+                        : QString();
                 pluginEntry.pluginName = plugin->name();
                 pluginEntry.checked = plugin->isActive();
                 pluginEntry.isCheckable = true;
