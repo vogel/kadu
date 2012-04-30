@@ -231,8 +231,9 @@ void PluginListWidgetItemDelegate::updateItemWidgets(const QList<QWidget*> widge
         {
                 checkBox->setChecked(index.model()->data(index, Qt::CheckStateRole).toBool());
                 checkBox->setEnabled(index.model()->data(index, PluginModel::IsCheckableRole).toBool());
-                configurePushButton->setVisible(index.model()->data(index, PluginModel::ServicesCountRole).toBool());
-                configurePushButton->setEnabled(index.model()->data(index, Qt::CheckStateRole).toBool());
+				configurePushButton->setVisible(false);
+                //configurePushButton->setVisible(index.model()->data(index, PluginModel::ServicesCountRole).toBool());
+                //configurePushButton->setEnabled(index.model()->data(index, Qt::CheckStateRole).toBool());
         }
 }
 
