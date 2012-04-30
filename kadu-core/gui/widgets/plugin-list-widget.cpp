@@ -105,29 +105,38 @@ int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth)
 
 void PluginListWidget::applyChanges()
 {
-	bool changeOccured = false;
+	int count = Model->rowCount();
 
-	for (int i = 0; i < Model->rowCount(); i++)
+	QVector<Plugin *> pluginsToDeactivate;
+	QVector<Plugin *> pluginsToActivate;
+
+	for (int i = 0; i < count; i++)
 	{
-		const QModelIndex index = Model->index(i, 0);
-		PluginEntry *pluginEntry = static_cast<PluginEntry*>(index.internalPointer());
-
+		PluginEntry *pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
 		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
 
-		if (plugin && plugin->isActive() != pluginEntry->checked)
+		if (!plugin)
+			continue;
+
+		if (plugin->isActive() != pluginEntry->checked)
 		{
 			if (pluginEntry->checked)
-				PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
+				pluginsToActivate.append(plugin);
 			else
-				PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
+				pluginsToDeactivate.append(plugin);
 
-			changeOccured = true;
 		}
 	}
 
+	foreach (Plugin *plugin, pluginsToDeactivate)
+		PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
+
+	foreach (Plugin *plugin, pluginsToActivate)
+		PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
+
 	Model->loadPluginData();
 
-	if (changeOccured)
+	if (pluginsToDeactivate.size() > 0 || pluginsToActivate.size() > 0)
 		ConfigurationManager::instance()->flush();
 
 	emit changed(false);
