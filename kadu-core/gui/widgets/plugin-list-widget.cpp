@@ -66,7 +66,7 @@ PluginListWidget::PluginListWidget(QWidget *parent) :
 	ListView->setCategoryDrawer(CategoryDrawer);
 
 	Model = new PluginModel(this, this);
-	Proxy = new ProxyModel(this, this);
+	Proxy = new PluginProxyModel(this, this);
 	Proxy->setCategorizedModel(true);
 	Proxy->setSourceModel(Model);
 	Model->loadPluginData();

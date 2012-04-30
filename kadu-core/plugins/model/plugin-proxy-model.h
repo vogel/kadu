@@ -29,13 +29,13 @@
 class PluginListWidget;
 
 
-class ProxyModel : public CategorizedSortFilterProxyModel
+class PluginProxyModel : public CategorizedSortFilterProxyModel
 {
         PluginListWidget *pluginSelector_d;
 
 public:
-        ProxyModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
-        ~ProxyModel();
+        PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent = 0);
+        ~PluginProxyModel();
 
 protected:
         virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;

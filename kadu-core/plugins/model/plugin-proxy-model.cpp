@@ -49,18 +49,18 @@
 #include "plugin-proxy-model.h"
 
 
-ProxyModel::ProxyModel(PluginListWidget *pluginSelector_d, QObject *parent)
+PluginProxyModel::PluginProxyModel(PluginListWidget *pluginSelector_d, QObject *parent)
                 : CategorizedSortFilterProxyModel(parent)
                 , pluginSelector_d(pluginSelector_d)
 {
         sort(0);
 }
 
-ProxyModel::~ProxyModel()
+PluginProxyModel::~PluginProxyModel()
 {
 }
 
-bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
         Q_UNUSED(sourceParent)
 
@@ -77,7 +77,7 @@ bool ProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent
         return true;
 }
 
-bool ProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
+bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
 {
         return static_cast<PluginEntry*>(left.internalPointer())->name.compare(static_cast<PluginEntry*>(right.internalPointer())->name, Qt::CaseInsensitive) < 0;
 }

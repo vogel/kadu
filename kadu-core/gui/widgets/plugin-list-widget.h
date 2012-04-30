@@ -33,7 +33,7 @@ class CategorizedListViewPainter;
 class FilterWidget;
 class PluginModel;
 class PluginListWidgetItemDelegate;
-class ProxyModel;
+class PluginProxyModel;
 
 /**
   * @short A widget to select what plugins to load and configure the plugins.
@@ -49,13 +49,13 @@ class PluginListWidget : public QWidget
 
 	friend class PluginListWidgetItemDelegate;
 	friend class PluginModel;
-	friend class ProxyModel;
+	friend class PluginProxyModel;
 
 	FilterWidget *LineEdit;
 	CategorizedListView *ListView;
 	CategorizedListViewPainter *CategoryDrawer;
 	PluginModel *Model;
-	ProxyModel *Proxy;
+	PluginProxyModel *Proxy;
 	PluginListWidgetItemDelegate *Delegaet;
 	bool ShowIcons;
 
