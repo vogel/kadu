@@ -5,6 +5,7 @@
  * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -34,17 +35,19 @@ class KADUAPI LineEditWithClearButton : public QLineEdit
 {
 	Q_OBJECT
 
-	LineEditClearButton *ClearButton;
 	bool ClearButtonVisible;
 
+	LineEditClearButton *ClearButton;
+
 	bool WideEnoughForClear;
-	int Overlap;
 	bool ClickInClear;
 
+	void createClearButton();
 	void updateClearButton();
+	bool canShowClearButton();
 
 private slots:
-	void updateClearButtonIcon(const QString &text);
+	void updateClearButtonIcon();
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *e);
@@ -57,6 +60,9 @@ public:
 
 	bool isClearButtonVisible() const { return ClearButtonVisible; }
 	void setClearButtonVisible(bool clearButtonVisible);
+
+	virtual void setReadOnly(bool readonly);
+	virtual void setEnabled(bool enabled);
 
 };
 
