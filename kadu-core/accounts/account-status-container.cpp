@@ -42,6 +42,9 @@ void AccountStatusContainer::setStatus(Status newStatus)
 {
 	if (Account->ProtocolHandler)
 		Account->ProtocolHandler->setStatus(newStatus);
+
+	if (newStatus.isDisconnected() && !Account->rememberPassword())
+		Account->setPassword("");
 }
 
 Status AccountStatusContainer::status()
