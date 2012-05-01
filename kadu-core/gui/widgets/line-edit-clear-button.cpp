@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +25,8 @@
 #include <QEvent>
 #include <QPainter>
 
+#define ANIMATION_FRAMES_COUNT 255
+
 LineEditClearButton::LineEditClearButton(QWidget *parent) :
 		QWidget(parent)
 {
@@ -37,7 +40,7 @@ LineEditClearButton::~LineEditClearButton()
 void LineEditClearButton::setUpTimeLine()
 {
 	  Timeline = new QTimeLine(200, this);
-	  Timeline->setFrameRange(0, 255);
+	  Timeline->setFrameRange(0, ANIMATION_FRAMES_COUNT);
 	  Timeline->setCurveShape(QTimeLine::EaseInOutCurve);
 	  Timeline->setDirection(QTimeLine::Backward);
 	  connect(Timeline, SIGNAL(finished()), this, SLOT(animationFinished()));
@@ -49,22 +52,25 @@ void LineEditClearButton::animateVisible(bool visible)
 	if (visible)
 	{
 		if (Timeline->direction() == QTimeLine::Forward)
-		    return;
-
+			return;
 		Timeline->setDirection(QTimeLine::Forward);
 		Timeline->setDuration(150);
-		show();
 	}
 	else
 	{
 		if (Timeline->direction() == QTimeLine::Backward)
-		    return;
-
+			return;
 		Timeline->setDirection(QTimeLine::Backward);
 		Timeline->setDuration(250);
 	}
 
-	setVisible(Timeline->direction() == QTimeLine::Forward);
+	if (QTimeLine::Running != Timeline->state())
+		Timeline->start();
+
+	setAttribute(Qt::WA_TransparentForMouseEvents, !visible);
+
+	if (visible)
+		setVisible(true);
 }
 
 void LineEditClearButton::setPixmap(const QPixmap &pixmap)
@@ -72,7 +78,6 @@ void LineEditClearButton::setPixmap(const QPixmap &pixmap)
 	ButtonPixmap = pixmap;
 	ButtonIcon = QIcon(pixmap);
 }
-
 
 void LineEditClearButton::setAnimationsEnabled(bool animationsEnabled)
 {
@@ -90,6 +95,7 @@ void LineEditClearButton::paintEvent(QPaintEvent *event)
 	Q_UNUSED(event)
 
 	QPainter painter(this);
+	painter.setOpacity(1.0 * Timeline->currentFrame() / ANIMATION_FRAMES_COUNT);
 	painter.drawPixmap((width() - ButtonPixmap.width()) / 2,
 			(height() - ButtonPixmap.height()) / 2,
 			ButtonPixmap);
@@ -108,5 +114,5 @@ void LineEditClearButton::animationFinished()
 	if (Timeline->direction() == QTimeLine::Forward)
 		update();
 	else
-		hide();
+		setVisible(false);
 }
