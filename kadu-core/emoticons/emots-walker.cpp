@@ -105,9 +105,9 @@ void EmotsWalker::insertString(const QString &str, int num)
 
 	// it adds string to prefix tree character after character
 	while (pos < len) {
-		child = findChild(node, str.at(pos));
+		child = findChild(node, extractLetter(str.at(pos)));
 		if (child == NULL)
-			child = insertChild(node, str.at(pos));
+			child = insertChild(node, extractLetter(str.at(pos)));
 		node = child;
 		++pos;
 	}
@@ -116,13 +116,29 @@ void EmotsWalker::insertString(const QString &str, int num)
 		node -> emotIndex = num;
 }
 
+QChar EmotsWalker::extractLetter(QChar c)
+{
+	QString decomposition = c.decomposition();
+	if (decomposition.isEmpty())
+		return c;
+
+	int length = decomposition.length();
+	for (int i = 0; i < length; i++)
+		if (decomposition.at(i).isLetter())
+			return decomposition.at(i);
+
+	return c;
+}
+
 /** return number of emot, which occurre in analyzed text just
     after adding given character (thus ending on this character)
     beginning of text analysis is turned on by 'initWalking()'
     if no emot occurrs, -1 is returned
 */
-int EmotsWalker::checkEmotOccurrence(const QChar &c, bool nextIsLetter)
+int EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 {
+	c = extractLetter(c);
+
 	const PrefixNode* next;
 	int result = -1, resultLen = -1;
 
