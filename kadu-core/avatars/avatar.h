@@ -56,6 +56,7 @@ public:
 	KaduSharedBase_PropertyCRW(QDateTime, lastUpdated, LastUpdated)
 	KaduSharedBase_PropertyCRW(QDateTime, nextUpdate, NextUpdate)
 	KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap)
+	KaduSharedBase_PropertyRead(QString, smallFilePath, SmallFilePath)
 	KaduSharedBase_PropertyCRW(QString, filePath, FilePath)
 
 };

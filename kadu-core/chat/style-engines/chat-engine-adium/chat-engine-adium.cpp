@@ -477,7 +477,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 	{
 		const Avatar &avatar = chat.contacts().toContact().avatar(true);
 		if (!avatar.isEmpty())
-			photoIncoming = KaduPaths::webKitPath(avatar.filePath());
+			photoIncoming = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
 			photoIncoming = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
@@ -486,7 +486,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const Chat &chat, const QString &s
 
 	const Avatar &avatar = chat.chatAccount().accountContact().avatar(true);
 	if (!avatar.isEmpty())
-		photoOutgoing = KaduPaths::webKitPath(avatar.filePath());
+		photoOutgoing = KaduPaths::webKitPath(avatar.smallFilePath());
 	else
 		photoOutgoing = KaduPaths::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 
@@ -545,7 +545,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 
 		const Avatar &avatar = msg.messageSender().avatar(true);
 		if (!avatar.isEmpty())
-			photoPath = KaduPaths::webKitPath(avatar.filePath());
+			photoPath = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
 			photoPath = KaduPaths::webKitPath(styleHref + QLatin1String("Incoming/buddy_icon.png"));
 	}
@@ -554,7 +554,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		result.replace(QString("%messageClasses%"), "message outgoing");
 		const Avatar &avatar = msg.messageChat().chatAccount().accountContact().avatar(true);
 		if (!avatar.isEmpty())
-			photoPath = KaduPaths::webKitPath(avatar.filePath());
+			photoPath = KaduPaths::webKitPath(avatar.smallFilePath());
 		else
 			photoPath = KaduPaths::webKitPath(styleHref + QLatin1String("Outgoing/buddy_icon.png"));
 	}
