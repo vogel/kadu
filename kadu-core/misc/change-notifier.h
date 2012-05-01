@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 /**
  * @addtogroup Misc
  * @{
@@ -41,7 +43,7 @@
  * the changed() signal again.
  */
 
-class ChangeNotifier : public QObject
+class KADUAPI ChangeNotifier : public QObject
 {
 	Q_OBJECT
 

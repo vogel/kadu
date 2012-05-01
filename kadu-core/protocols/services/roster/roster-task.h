@@ -22,6 +22,7 @@
 
 #include <QtCore/QString>
 
+#include "exports.h"
 #include "protocols/services/roster/roster-task-type.h"
 
 /**
@@ -37,7 +38,7 @@
  * Roster task is described by contact id (username) and roster task type. More data about task is read from Kadu's
  * @link ContactManager @endlink singleton.
  */
-class RosterTask
+class KADUAPI RosterTask
 {
 	RosterTaskType Type;
 	QString Id;

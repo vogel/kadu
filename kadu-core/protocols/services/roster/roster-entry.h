@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "protocols/services/roster/roster-entry-state.h"
 
 class ChangeNotifier;
@@ -40,7 +41,7 @@ class ChangeNotifier;
  * no synchronization of data is made between local and remote roster. When Deleted flag is true, the entry is assumed to be deleted from remote
  * roster.
  */
-class RosterEntry : public QObject
+class KADUAPI RosterEntry : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(RosterEntry)
