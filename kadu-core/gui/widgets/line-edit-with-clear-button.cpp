@@ -50,7 +50,6 @@ void LineEditWithClearButton::createClearButton()
 
 	ClearButton = new LineEditClearButton(this);
 	ClearButton->setVisible(false);
-	ClearButton->setCursor(Qt::ArrowCursor);
 	ClearButton->setToolTip(tr("Clear this field"));
 
 	connect(this, SIGNAL(textChanged(const QString &)), this, SLOT(updateClearButtonIcon()));

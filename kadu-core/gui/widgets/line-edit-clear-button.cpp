@@ -67,6 +67,11 @@ void LineEditClearButton::animateVisible(bool visible)
 	if (QTimeLine::Running != Timeline->state())
 		Timeline->start();
 
+	if (visible)
+		setCursor(Qt::ArrowCursor);
+	else
+		unsetCursor();
+
 	setAttribute(Qt::WA_TransparentForMouseEvents, !visible);
 
 	if (visible)
