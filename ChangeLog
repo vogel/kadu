@@ -1,6 +1,6 @@
 ﻿+++ version 0.12.0-beta2
 * core: #2403 fixed: start conference with preferred contacts of each buddy instead of first ones (ultr)
-* core: #2434 done: account password is forgotten after offline status is set (Juzef)
+* core: #2434 done: account password is now forgotten after offline status is set and 'Remember password' option is disabled (Juzef)
 * chat styles: #1866 fixed: use small version of avatars in chat window (Vogel)
 * emoticons: #2475 fixed: accept non-latin characters in emoticons (Vogel)
 
