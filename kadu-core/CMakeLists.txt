@@ -370,6 +370,7 @@ kadu_api_directories (kadu-core
 	protocols/model
 	protocols/services
 	protocols
+	provider
 	qt
 	status
 	storage
