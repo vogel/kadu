@@ -99,5 +99,8 @@ message (STATUS "Kadu (version: ${KADU_VERSION}) will be built:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
-# install data files
-install (FILES AUTHORS HISTORY README THANKS ChangeLog ChangeLog.OLD-PL COPYING DESTINATION "${KADU_DATADIR}")
+install (FILES AUTHORS HISTORY README THANKS ChangeLog ChangeLog.OLD-PL DESTINATION "${KADU_DATADIR}")
+# For Win32 we use GPL3, and this COPYING is GPL2
+if (NOT WIN32)
+	install (FILES COPYING DESTINATION "${KADU_DATADIR}")
+endif (NOT WIN32)
