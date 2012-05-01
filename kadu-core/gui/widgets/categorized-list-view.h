@@ -282,6 +282,8 @@ protected:
         virtual QModelIndex moveCursor(CursorAction cursorAction,
                                        Qt::KeyboardModifiers modifiers);
 
+        virtual void wheelEvent(QWheelEvent *event);
+
         /**
           * Reimplemented from QAbstractItemView.
           */

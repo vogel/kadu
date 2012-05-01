@@ -1538,6 +1538,12 @@ QModelIndex CategorizedListView::moveCursor(CursorAction cursorAction,
         return QModelIndex();
 }
 
+void CategorizedListView::wheelEvent(QWheelEvent *event)
+{
+        clearSelection();
+        QListView::wheelEvent(event);
+}
+
 void CategorizedListView::rowsAboutToBeRemoved(const QModelIndex &parent,
                 int start,
                 int end)

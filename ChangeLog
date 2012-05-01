@@ -1,6 +1,7 @@
 ﻿+++ version 0.12.0-beta2
 * core: #2403 fixed: start conference with preferred contacts of each buddy instead of first ones (ultr)
 * core: #2434 done: account password is forgotten after offline status is set (Juzef)
+* core: #2549 fixed: clear selection on plugins list when scrolling with mouse wheel (Juzef)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
