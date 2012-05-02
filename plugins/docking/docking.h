@@ -12,6 +12,7 @@
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
  * Copyright 2002, 2003 Dariusz Jagodzik (mast3r@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -36,6 +37,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container-aware-object.h"
+#include "status/status-type.h"
 
 #include "docking_exports.h"
 
@@ -47,6 +49,9 @@ class KaduIcon;
 class StatusContainer;
 class StatusIcon;
 class StatusMenu;
+
+typedef QPair<QString,QList<StatusType> > StatusPair;
+typedef QPair<QStringList,QString> DescriptionPair;
 
 class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, StatusContainerAwareObject
 {
@@ -85,6 +90,10 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
 	QTimer *icon_timer;
 	bool blink;
+
+	QList<StatusPair> getStatuses() const;
+	QList<DescriptionPair> getDescriptions() const;
+	QString prepareDescription(const QString &description) const;
 	void defaultToolTip();
 
 	void createDefaultConfiguration();
