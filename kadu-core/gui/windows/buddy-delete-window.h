@@ -6,6 +6,7 @@
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Piotr "ultr" Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +27,7 @@
 #define BUDDY_DELETE_WINDOW_H
 
 #include <QtGui/QDialog>
+#include <QtGui/QListWidgetItem>
 
 #include "buddies/buddy-set.h"
 
@@ -38,12 +40,17 @@ class BuddyDeleteWindow : public QDialog
 	BuddySet BuddiesToDelete;
 
 	QListWidget *AdditionalDataListView;
+	Qt::CheckState ItemState;
 
 	void createGui();
 	void fillAdditionalDataListView();
 
 	QString getBuddiesNames();
 	void deleteBuddy(Buddy buddy);
+
+private slots:
+	void additionalDataListViewItemPressed(QListWidgetItem *item);
+	void additionalDataListViewItemClicked(QListWidgetItem *item);
 
 public:
 	explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = 0);
