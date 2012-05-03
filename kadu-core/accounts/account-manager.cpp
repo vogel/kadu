@@ -218,7 +218,7 @@ void AccountManager::removeAccountAndBuddies(Account account)
 {
 	StatusContainer *statusContainer = account.statusContainer();
 	if (statusContainer)
-		statusContainer->setStatus(Status());
+		statusContainer->setStatus(Status(), SourceUser); // user removed account
 
 	Protocol *protocolHandler = account.protocolHandler();
 	if (protocolHandler)

@@ -87,11 +87,11 @@ int AllAccountsStatusContainer::maxDescriptionLength()
 	return account ? account.statusContainer()->maxDescriptionLength() : -1;
 }
 
-void AllAccountsStatusContainer::setStatus(Status status)
+void AllAccountsStatusContainer::setStatus(Status status, StatusChangeSource source)
 {
 	foreach (const Account &account, Accounts)
 		if (account)
-			account.statusContainer()->setStatus(status);
+			account.statusContainer()->setStatus(status, source);
 }
 
 Status AllAccountsStatusContainer::loadStatus()

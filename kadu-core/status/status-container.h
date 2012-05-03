@@ -25,6 +25,7 @@
 #ifndef STATUS_CONTAINER_H
 #define STATUS_CONTAINER_H
 
+#include "status/status-change-source.h"
 #include "status/status-type.h"
 #include "status/status.h"
 #include "exports.h"
@@ -74,6 +75,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets status for this status container.
 	 * @param status status to set
+	 * @param source source of status change
 	 * @see StatusSetter
 	 * @see StatusChangerManager
 	 *
@@ -83,7 +85,7 @@ public:
 	 * Use StatusSetter class to setting status if this status should be changed by StatusChanger
 	 * classes.
 	 */
-	virtual void setStatus(Status status) = 0;
+	virtual void setStatus(Status status, StatusChangeSource source) = 0;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

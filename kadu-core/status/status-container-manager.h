@@ -239,10 +239,11 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets new status on all active status containers.
 	 * @param status new status
+	 * @param source source of status change
 	 *
 	 * Sets new status on all active status containers.
 	 */
-	virtual void setStatus(Status status);
+	virtual void setStatus(Status status, StatusChangeSource source);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

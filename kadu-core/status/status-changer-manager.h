@@ -24,6 +24,7 @@
 
 #include <QtCore/QMap>
 
+#include "status/status-change-source.h"
 #include "status/status.h"
 
 class Account;
@@ -75,16 +76,18 @@ private slots:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called when any of registered StatusChanger changes way it modifies status.
 	 * @param container change is touching this status container's status
-	 * @param forceStatusUpdate whether setStatus container method will be called even if status didn't actually change
+	 * @param source source of given status change
 	 *
 	 * This slot called when any of registered StatusChanger changes way it modifies status for given
 	 * statusContainer. If statusContainer is null, status for all registered status containers is
 	 * modified.
 	 *
-	 * After computing new status for given statusContainer, its setStatus method is called if
-	 * the status actually changed or @p forceStatusUpdate is true.
+	 * By default source is set to SourceStatusChanger. Thanks to that this slot can be connected to signals from StatusChanger
+	 * instances with only one parameter.
+	 *
+	 * If source is set to SourceUser then status change is performed even if new status is the same as previous one.
 	 */
-	void statusChanged(StatusContainer *container = 0, bool forceStatusUpdate = false);
+	void statusChanged(StatusContainer *container = 0, StatusChangeSource source = SourceStatusChanger);
 
 public:
 	/**

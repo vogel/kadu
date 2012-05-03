@@ -34,6 +34,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "status/status-change-source.h"
 #include "status/status.h"
 
 typedef quint32 UinType;
@@ -147,7 +148,7 @@ public:
 	bool isDisconnecting();
 
 	// method called by user
-	void setStatus(Status status);
+	void setStatus(Status status, StatusChangeSource source);
 	Status status() const;
 	virtual int maxDescriptionLength() { return -1; }
 

@@ -41,7 +41,7 @@ public:
 
 	virtual QString statusContainerName();
 
-	virtual void setStatus(Status newStatus);
+	virtual void setStatus(Status newStatus, StatusChangeSource source);
 	virtual Status status();
 
 	virtual bool isStatusSettingInProgress();

@@ -84,10 +84,11 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Sets status on all registered accounts.
 	 * @param status status to set
+	 * @param source source of change
 	 *
 	 * Sets status on all registered accounts.
 	 */
-	virtual void setStatus(Status status);
+	virtual void setStatus(Status status, StatusChangeSource source);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

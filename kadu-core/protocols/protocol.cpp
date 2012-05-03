@@ -120,8 +120,11 @@ void Protocol::disconnectedCleanup()
 	setAllOffline();
 }
 
-void Protocol::setStatus(Status status)
+void Protocol::setStatus(Status status, StatusChangeSource source)
 {
+	if (SourceStatusChanger == source && !account().hasPassword())
+		return;
+
 	LoginStatus = status;
 	doSetStatus(status);
 }

@@ -210,10 +210,10 @@ QString StatusContainerManager::statusContainerName()
 	return tr("All");
 }
 
-void StatusContainerManager::setStatus(Status status)
+void StatusContainerManager::setStatus(Status status, StatusChangeSource source)
 {
 	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(status);
+		container->setStatus(status, source);
 }
 
 Status StatusContainerManager::status()
