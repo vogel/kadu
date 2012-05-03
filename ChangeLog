@@ -3,6 +3,7 @@
 * core: #2434 done: account password is now forgotten after offline status is set and 'Remember password' option is disabled (Juzef)
 * chat styles: #1866 fixed: use small version of avatars in chat window (Vogel)
 * emoticons: #2475 fixed: accept non-latin characters in emoticons (Vogel)
+* gui: #2507 fixed: Link folding option's is respected before restarting kadu (marseel)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
