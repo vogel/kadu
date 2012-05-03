@@ -108,6 +108,12 @@ void BuddyOptionsConfigurationWidget::configurationUpdated()
 
 void BuddyOptionsConfigurationWidget::updateOfflineTo()
 {
+	if (MyBuddy.isOfflineTo())
+	{
+		OfflineToCheckBox->setEnabled(true);
+		return;
+	}
+
 	OfflineToCheckBox->setEnabled(false);
 	foreach (const Contact &contact, MyBuddy.contacts())
 	{
