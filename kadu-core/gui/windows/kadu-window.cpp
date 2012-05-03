@@ -400,6 +400,13 @@ void KaduWindow::storeConfiguration()
 	setUnifiedTitleAndToolBarOnMac(true);
 #endif
 
+	// see bug 1948 - this is a hack to get real values of info panel height
+	if (!isVisible())
+	{
+		show();
+		hide();
+	}
+
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
 		config_file.writeEntry("General", "UserBoxHeight", Roster->size().height());
