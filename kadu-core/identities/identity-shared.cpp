@@ -4,6 +4,7 @@
  * Copyright 2009, 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Piotr "ultr" Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -186,6 +187,13 @@ KaduIcon IdentityShared::statusIcon()
 
 KaduIcon IdentityShared::statusIcon(const Status &status)
 {
+	QSet<QString> protocols;
+	foreach (const Account &account, Accounts)
+		protocols.insert(account.protocolName());
+
+	if (protocols.count() > 1)
+		return StatusTypeManager::instance()->statusIcon("common", status);
+
 	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
 }
