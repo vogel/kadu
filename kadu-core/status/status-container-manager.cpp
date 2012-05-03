@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2009, 2010, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
@@ -218,9 +218,13 @@ void StatusContainerManager::setStatus(Status status, StatusChangeSource source)
 
 Status StatusContainerManager::status()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->status()
-			: Status();
+	Status status;
+
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (account.statusContainer()->status() < status)
+			status = account.statusContainer()->status();
+
+	return status;
 }
 
 bool StatusContainerManager::isStatusSettingInProgress()

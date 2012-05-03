@@ -18,6 +18,7 @@
 * tabs: #2005 fixed: support for alt+[0-9] shurtcuts in tabs window (mazlik)
 * build: by default compile with optimizations turned on (RelWithDebInfo instead of Debug) (beevvy)
 * spellchecker: switch default backend from aspell to enchant (aspell is still available) (beevvy)
+* core: #2551 done: use the most online account's status for the tray icon (ultr)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
