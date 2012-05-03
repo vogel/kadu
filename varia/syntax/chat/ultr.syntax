@@ -22,19 +22,19 @@
 	</div>
 </kadu:top>
 
-<div style="padding-left:4px; padding-right:4px; border-bottom:1px dashed #cccccc; color:#{fontColor}; background-color:#{backgroundColor}; cursor:default; -webkit-user-select:none;"
-	onmouseover="this.style.backgroundColor='rgba(255,255,255,0.9)';" onmouseout="this.style.backgroundColor='#{backgroundColor}';">
+<div style="clear:both; padding-left:4px; padding-right:4px; border-bottom:1px dashed #cccccc; color:#{fontColor}; background-color:#{backgroundColor}; cursor:default; -webkit-user-select:none;"
+	onmouseover="this.style.backgroundColor='rgba(255,255,255,0.6)';" onmouseout="this.style.backgroundColor='#{backgroundColor}';">
 	<kadu:header>
 		<span style="vertical-align:bottom;">
 		<span style="float:left; font-weight: bold; color:#{nickColor}; padding-top:3px; cursor:text; -webkit-user-select:text;">
-			%a
+			%a<br>
 		</span>
 		<span style="float:right; color:#666666; padding-top:5px; cursor:text; -webkit-user-select:text;">
 			<small>&nbsp;#{receivedDate}[&nbsp;(#{sentDate})]</small>
 		</span>
 		</span>
 	</kadu:header>
-	<span style="float:right; color:#888888; padding-right:3px; padding-top:3px; margin-left:10px;">
+	<span style="clear:right; float:right; color:#888888; padding-right:0px; padding-top:3px; margin-left:10px;">
 		<span id="confirm_#{messageId}" style="font-weight:bold;"></span>
 	</span>
 	<div style="clear:left; padding-top:3px; padding-bottom:3px; padding-left:6px; padding-right:6px;"
@@ -42,7 +42,7 @@
 		if( event.button != 1 )
 			return;
 		if( this.style.fontFamily == 'monospace' )
-			this.style.fontFamily = 'inherit';
+			this.style.fontFamily = '';
 		else
 			this.style.fontFamily = 'monospace';
 		if( this.style.whiteSpace == 'nowrap' )
