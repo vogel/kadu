@@ -7,6 +7,7 @@
 * core: #2436 fixed: do not ask for password for accounts with no passwords after saving configuration (Vogel)
 * gui: #2556 fixed: don't clear filter field's focus when its text is erased (ultr)
 * gui: #2507 fixed: link folding option is respected before restarting kadu (marseel)
+* jabber: #2476 fixed: transfer of files between Kadu and Pidgin works now (Vogel)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)

@@ -100,7 +100,8 @@ void JabberFileTransferHandler::send()
 	if (InProgress) // already sending/receiving
 		return;
 
-	transfer().setRemoteFileName(transfer().localFileName());
+	QFileInfo localFile(transfer().localFileName());
+	transfer().setRemoteFileName(localFile.fileName());
 
 	QFileInfo fileInfo(transfer().localFileName());
 	transfer().setFileSize(fileInfo.size());
@@ -149,7 +150,7 @@ void JabberFileTransferHandler::send()
 	transfer().setTransferStatus(StatusWaitingForAccept);
 	InProgress = true;
 
-	JabberTransfer->sendFile(PeerJid, transfer().localFileName(), transfer().fileSize(), QString());
+	JabberTransfer->sendFile(PeerJid, transfer().remoteFileName(), transfer().fileSize(), QString());
 }
 
 void JabberFileTransferHandler::stop()
