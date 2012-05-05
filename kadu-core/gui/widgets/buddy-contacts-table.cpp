@@ -29,6 +29,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QTableView>
 
+#include "gui/model/checkbox-styled-item-delegate.h"
 #include "gui/widgets/buddy-contacts-table-delegate.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
 #include "gui/widgets/buddy-contacts-table-model-proxy.h"
@@ -74,6 +75,8 @@ void BuddyContactsTable::createGui()
 
 	View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	View->horizontalHeader()->setStretchLastSection(true);
+
+	View->setItemDelegateForColumn(2, new CheckboxStyledItemDelegate(View));
 
 	connect(View->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
 			this, SLOT(viewSelectionChanged(QModelIndex,QModelIndex)));
