@@ -12,6 +12,8 @@ set (gui_SRCS
 	actions/delete-talkable-action.cpp
 	actions/edit-talkable-action.cpp
 
+	model/checkbox-styled-item-delegate.cpp
+
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
@@ -182,6 +184,8 @@ set (gui_MOC_SRCS
 	actions/delete-talkable-action.h
 	actions/default-proxy-action.h
 	actions/edit-talkable-action.h
+
+	model/checkbox-styled-item-delegate.h
 
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
