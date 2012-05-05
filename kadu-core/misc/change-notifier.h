@@ -30,7 +30,7 @@
  */
 
 /**
- * @enum ChangeNotifier
+ * @class ChangeNotifier
  * @author Rafał 'Vogel' Malinowski
  * @short Notify about change in object properties.
  *
@@ -42,7 +42,6 @@
  * possible to stack blocking - if object has been blocked n times then it must be unblocked n times again to begin emitting
  * the changed() signal again.
  */
-
 class KADUAPI ChangeNotifier : public QObject
 {
 	Q_OBJECT
