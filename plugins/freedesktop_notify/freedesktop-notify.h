@@ -50,7 +50,6 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	QRegExp StripHtml;
 	QRegExp StripUnsupportedHtml;
 	QMap<unsigned int, Notification *> NotificationMap;
-	QQueue<unsigned int> IdQueue;
 
 	bool CustomTimeout;
 	int Timeout;
@@ -75,9 +74,9 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 
 private slots:
 	void actionInvoked(unsigned int id, QString action);
-	void deleteMapItem();
 
 	void notificationClosed(Notification *notification);
+	void notificationClosed(unsigned int id, unsigned int reason);
 
 	void slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner);
 

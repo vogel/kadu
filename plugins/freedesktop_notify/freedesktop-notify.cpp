@@ -93,6 +93,8 @@ FreedesktopNotify::FreedesktopNotify() :
 
 	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
 			"ActionInvoked", this, SLOT(actionInvoked(unsigned int, QString)));
+	KNotify->connection().connect(KNotify->service(), KNotify->path(), KNotify->interface(),
+			"NotificationClosed", this, SLOT(notificationClosed(unsigned int, unsigned int)));
 
 	import_0_9_0_Configuration();
 	createDefaultConfiguration();
@@ -256,8 +258,6 @@ void FreedesktopNotify::notify(Notification *notification)
 		connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 
 		NotificationMap.insert(reply.value(), notification);
-		IdQueue.enqueue(reply.value());
-		QTimer::singleShot(Timeout * 1000 + 2000, this, SLOT(deleteMapItem()));
 	}
 }
 
@@ -268,7 +268,7 @@ void FreedesktopNotify::notificationClosed(Notification *notification)
 	{
 		if (i.value() == notification)
 		{
-			NotificationMap[i.key()] = 0;
+			NotificationMap.remove(i.key());
 
 			QList<QVariant> args;
 			args.append(i.key());
@@ -280,27 +280,40 @@ void FreedesktopNotify::notificationClosed(Notification *notification)
 	}
 }
 
+void FreedesktopNotify::notificationClosed(unsigned int id, unsigned int reason)
+{
+	Q_UNUSED(reason);
+
+	if (!NotificationMap.contains(id))
+		return;
+
+	Notification *notification = NotificationMap.take(id);
+	disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+	notification->release();
+}
+
 void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
 {
 	Q_UNUSED(serviceName)
 	Q_UNUSED(oldOwner)
 	Q_UNUSED(newOwner)
 
-	while (!IdQueue.isEmpty())
+	QMap<unsigned int, Notification *>::const_iterator i = NotificationMap.constBegin();
+	while (i != NotificationMap.constEnd())
 	{
-		unsigned int id = IdQueue.dequeue();
-		Notification *notification = NotificationMap.take(id);
-
-		if (notification)
-			notification->release();
+		Notification *notification = i.value();
+		disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
+		notification->release();
 	}
+
+	NotificationMap.clear();
 
 	ServerCapabilitiesRequireChecking = true;
 }
 
 void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 {
-	if (!IdQueue.contains(id))
+	if (!NotificationMap.contains(id))
 		return;
 
 	Notification *notification = NotificationMap.value(id);
@@ -328,20 +341,6 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 	QList<QVariant> args;
 	args.append(id);
 	KNotify->callWithArgumentList(QDBus::Block, "CloseNotification", args);
-
-	NotificationMap[id] = 0;
-}
-
-void FreedesktopNotify::deleteMapItem()
-{
-	if (IdQueue.isEmpty())
-		return;
-
-	unsigned int id = IdQueue.dequeue();
-	Notification *notification = NotificationMap.take(id);
-
-	if (notification)
-		notification->release();
 }
 
 void FreedesktopNotify::configurationUpdated()
