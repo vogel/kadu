@@ -59,10 +59,10 @@ void ScreenshotAction::actionInstanceCreated(Action *action)
 
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
-	menu->addAction(tr("Simple shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
-	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))->setData(chatWidgetData);
+	menu->addAction(tr("Simple Shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
+	menu->addAction(tr("With Chat Window Hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))->setData(chatWidgetData);
 #ifndef Q_WS_MAC
-	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
+	menu->addAction(tr("Window Shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
 #endif
 	action->setMenu(menu);
 }

@@ -125,15 +125,15 @@ Powinien być większy.</translation>
         <translation>ScreenShot</translation>
     </message>
     <message>
-        <source>Simple shot</source>
+        <source>Simple Shot</source>
         <translation>Zwykły zrzut</translation>
     </message>
     <message>
-        <source>With chat window hidden</source>
+        <source>With Chat Window Hidden</source>
         <translation>Z ukrytym oknem rozmowy</translation>
     </message>
     <message>
-        <source>Window shot</source>
+        <source>Window Shot</source>
         <translation>Zrzut okna</translation>
     </message>
 </context>

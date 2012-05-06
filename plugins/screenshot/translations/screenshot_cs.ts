@@ -125,15 +125,15 @@ Měl by být větší.</translation>
         <translation>Snímek obrazovky</translation>
     </message>
     <message>
-        <source>Simple shot</source>
+        <source>Simple Shot</source>
         <translation>Jednoduchý snímek</translation>
     </message>
     <message>
-        <source>With chat window hidden</source>
+        <source>With Chat Window Hidden</source>
         <translation>S oknem pro rozhovor skrytým</translation>
     </message>
     <message>
-        <source>Window shot</source>
+        <source>Window Shot</source>
         <translation>Snímek okna</translation>
     </message>
 </context>
