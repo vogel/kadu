@@ -96,15 +96,15 @@ void SelectFile::selectFileClicked()
 			emit fileChanged();
 		}
 	}
-        else if (Type == "directory")
-        {
-                QFileDialog dialog;
-                dialog.setFileMode(QFileDialog::DirectoryOnly);
-                if (dialog.exec()){
-                        LineEdit->setText(dialog.selectedFiles().first());
-                        emit fileChanged();
-                }
-        }
+	else if (Type == "directory")
+	{
+		QString s(QFileDialog::getExistingDirectory(this, tr("Select folder"), LineEdit->text()));
+		if (!s.isEmpty())
+		{
+			LineEdit->setText(s);
+			emit fileChanged();
+		}
+	}
 }
 
 QString SelectFile::file() const
