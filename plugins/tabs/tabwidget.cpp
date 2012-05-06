@@ -7,6 +7,7 @@
  * Copyright 2009, 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Jiri Zamazal (zamazal.jiri@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -54,6 +55,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	setDocumentMode(true);
 	setElideMode(Qt::ElideRight);
+
 
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
@@ -183,8 +185,33 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
 	else
-		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
-		handled = false;
+	{
+		if(QKeySequence("Alt+0")[0] == (e->key() | e->modifiers()))
+			newChat();	
+		else if(QKeySequence("Alt+1")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(0);
+		else if(QKeySequence("Alt+1")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(0);
+		else if(QKeySequence("Alt+2")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(1);
+		else if(QKeySequence("Alt+3")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(2);
+		else if(QKeySequence("Alt+4")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(3);
+		else if(QKeySequence("Alt+5")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(4);
+		else if(QKeySequence("Alt+6")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(5);
+		else if(QKeySequence("Alt+7")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(6);
+		else if(QKeySequence("Alt+8")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(7);
+		else if(QKeySequence("Alt+9")[0] == (e->key() | e->modifiers()))
+			setCurrentIndex(8);
+		else
+			// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
+			handled = false;
+	}
 }
 
 void TabWidget::onContextMenu(int id, const QPoint &pos)
