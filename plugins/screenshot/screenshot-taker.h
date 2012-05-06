@@ -5,6 +5,7 @@
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +28,9 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QWidget>
 
+class QLabel;
+class QPushButton;
+
 class ChatWidget;
 
 class ScreenshotTaker : public QWidget
@@ -34,6 +38,13 @@ class ScreenshotTaker : public QWidget
 	Q_OBJECT
 
 	ChatWidget *CurrentChatWidget;
+
+	QLabel *IconLabel;
+	QPushButton *CancelButton;
+
+	bool Dragging;
+
+	void createLayout();
 
 private slots:
 	void takeShot();

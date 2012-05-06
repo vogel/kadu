@@ -149,7 +149,7 @@ It should be bigger.</source>
 <context>
     <name>ScreenshotTaker</name>
     <message>
-        <source>Drag icon to some window</source>
+        <source>Drag this icon onto the desired window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

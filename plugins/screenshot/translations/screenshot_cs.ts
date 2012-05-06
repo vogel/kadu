@@ -151,8 +151,8 @@ Měl by být větší.</translation>
 <context>
     <name>ScreenshotTaker</name>
     <message>
-        <source>Drag icon to some window</source>
-        <translation>Přetáhněte ikonu do některého z oken</translation>
+        <source>Drag this icon onto the desired window</source>
+        <translation type="unfinished">Přetáhněte ikonu do některého z oken</translation>
     </message>
 </context>
 <context>

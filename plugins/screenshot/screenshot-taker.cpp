@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2011, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
@@ -26,6 +26,8 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPixmap>
+#include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
 #include "gui/widgets/chat-widget.h"
@@ -35,22 +37,67 @@
 #include "screenshot-taker.h"
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), CurrentChatWidget(chatWidget)
+		QWidget(parent), CurrentChatWidget(chatWidget), Dragging(false)
 {
+	setWindowRole("kadu-screenshot-taker");
+
+	setWindowModality(Qt::WindowModal);
+	setParent(CurrentChatWidget->window());
+	setWindowFlags(windowFlags() | Qt::Window);
+
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	setMouseTracking(true);
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(new QLabel(tr("Drag icon to some window"), this));
+	setWindowTitle(tr("Window Shot"));
+	setWindowIcon(qApp->windowIcon()); // don't use status icon from the chat window!
 
-	QLabel *crossLabel = new QLabel(this);
-	crossLabel->setAlignment(Qt::AlignCenter);
-	crossLabel->setPixmap(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(16, 16));
+	createLayout();
 
-	layout->addWidget(crossLabel, Qt::AlignCenter);
+	connect(CancelButton, SIGNAL(clicked()), this, SLOT(close()));
+
+	setFixedSize(sizeHint());
 }
 
 ScreenshotTaker::~ScreenshotTaker()
 {
+}
+
+void ScreenshotTaker::createLayout()
+{
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
+	// label
+
+	layout->addWidget(new QLabel(tr("Drag this icon onto the desired window"), this));
+
+	// icon
+
+	QHBoxLayout *iconLayout = new QHBoxLayout();
+	iconLayout->addStretch();
+	IconLabel = new QLabel(this);
+	IconLabel->setAlignment(Qt::AlignCenter);
+	IconLabel->setPixmap(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(32, 32));
+	iconLayout->addWidget(IconLabel);
+	iconLayout->addStretch();
+
+	layout->addLayout(iconLayout);
+
+	// spacing
+
+	layout->addSpacing(24);
+
+	// cancel button
+
+	QHBoxLayout *cancelLayout = new QHBoxLayout();
+	cancelLayout->addStretch();
+	CancelButton = new QPushButton(this);
+	CancelButton->setText(tr("Cancel"));
+	CancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
+	cancelLayout->addWidget(CancelButton);
+	cancelLayout->addStretch();
+
+	layout->addLayout(cancelLayout);
 }
 
 void ScreenshotTaker::takeStandardShot()
@@ -67,7 +114,6 @@ void ScreenshotTaker::takeShotWithChatWindowHidden()
 
 void ScreenshotTaker::takeWindowShot()
 {
-	CurrentChatWidget->window()->hide();
 	show();
 }
 
@@ -82,7 +128,10 @@ void ScreenshotTaker::closeEvent(QCloseEvent *e)
 
 void ScreenshotTaker::mousePressEvent(QMouseEvent *e)
 {
-	Q_UNUSED(e)
+	if (childAt(e->pos()) != IconLabel)
+		return;
+
+	Dragging = true;
 
 	setCursor(KaduIcon("external_modules/screenshot-camera-photo").icon().pixmap(32, 32));
 }
@@ -91,12 +140,16 @@ void ScreenshotTaker::mouseReleaseEvent(QMouseEvent *e)
 {
 	Q_UNUSED(e)
 
+	if (!Dragging)
+		return;
+
+	Dragging = false;
+
 	setCursor(Qt::ArrowCursor);
 
 	QPixmap pixmap = PixmapGrabber::grabCurrent();
 
-	hide();
-	CurrentChatWidget->window()->show();
+	close();
 
 	emit screenshotTaken(pixmap, false);
 }
