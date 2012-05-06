@@ -5,7 +5,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
-  * Copyright 2012 Jiri Zamazal (zamazal.jiri@gmail.com)
+ * Copyright 2012 Jiri Zamazal (zamazal.jiri@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -101,8 +101,8 @@ void SelectFile::selectFileClicked()
                 QFileDialog dialog;
                 dialog.setFileMode(QFileDialog::DirectoryOnly);
                 if (dialog.exec()){
-                    LineEdit->setText(dialog.selectedFiles().first());
-                    emit fileChanged();
+                        LineEdit->setText(dialog.selectedFiles().first());
+                        emit fileChanged();
                 }
         }
 }
