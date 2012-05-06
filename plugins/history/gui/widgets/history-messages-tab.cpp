@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012 Marcel Zięba (marseel@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -37,6 +38,7 @@
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/talkable-menu-manager.h"
+#include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
@@ -304,6 +306,9 @@ void HistoryMessagesTab::clearTalkableHistory()
 
 	const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
 	QList<Talkable> talkables;
+
+	if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("Do you really want to delete history?")))
+		return;
 
 	foreach (const QModelIndex &selectedIndex, selectedIndexes)
 	{

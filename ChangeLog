@@ -9,6 +9,7 @@
 * gui: #2507 fixed: link folding option is respected before restarting kadu (marseel)
 * jabber: #2476 fixed: transfer of files between Kadu and Pidgin works now (Vogel)
 * freedesktop_notify: #2356 fixed: forgot about notifications only when server asks for it (Vogel)
+* history: #2550 fixed: ask user for removing history (marseel)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
