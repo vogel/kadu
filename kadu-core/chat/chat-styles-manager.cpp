@@ -433,13 +433,19 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)
 {
+	if (!AvailableStyles.contains(styleName))
+		return;
+
 	ChatStyleEngine *engine = AvailableStyles.value(styleName).engine;
 	EditButton->setEnabled(engine->supportEditing());
 	DeleteButton->setEnabled(!AvailableStyles.value(styleName).global);
 	VariantListCombo->clear();
 	VariantListCombo->addItems(engine->styleVariants(styleName));
 
-	QString currentVariant = AvailableStyles.value(SyntaxListCombo->currentText()).engine->defaultVariant(styleName);
+	QString currentVariant;
+	if (AvailableStyles.contains(SyntaxListCombo->currentText()))
+		if (AvailableStyles.value(SyntaxListCombo->currentText()).engine)
+			currentVariant = AvailableStyles.value(SyntaxListCombo->currentText()).engine->defaultVariant(styleName);
 	if (!currentVariant.isEmpty() && VariantListCombo->findText(currentVariant) == -1)
 		VariantListCombo->insertItem(0, currentVariant);
 
@@ -454,17 +460,28 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 
 void ChatStylesManager::variantChangedSlot(const QString &variantName)
 {
-	AvailableStyles.value(SyntaxListCombo->currentText()).engine->prepareStylePreview(EnginePreview, SyntaxListCombo->currentText(), variantName);
+	QString styleName = SyntaxListCombo->currentText();
+	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
+		return;
+
+	AvailableStyles.value(styleName).engine->prepareStylePreview(EnginePreview, styleName, variantName);
 }
 
 void ChatStylesManager::editStyleClicked()
 {
-	AvailableStyles.value(SyntaxListCombo->currentText()).engine->styleEditionRequested(SyntaxListCombo->currentText());
+	QString styleName = SyntaxListCombo->currentText();
+	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
+		return;
+
+	AvailableStyles.value(styleName).engine->styleEditionRequested(styleName);
 }
 
 void ChatStylesManager::deleteStyleClicked()
 {
 	QString styleName = SyntaxListCombo->currentText();
+	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
+		return;
+
 	if (AvailableStyles.value(styleName).engine->removeStyle(styleName))
 	{
 		AvailableStyles.remove(styleName);
