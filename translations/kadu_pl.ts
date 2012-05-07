@@ -1363,7 +1363,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source> - Select buddy - </source>
-        <translation type="unfinished">- Wybierz znajomego -</translation>
+        <translation>- Wybierz znajomego -</translation>
     </message>
 </context>
 <context>
@@ -1424,74 +1424,74 @@ znajomych po połączeniu się z serwerem</translation>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz do pokoju...</translation>
     </message>
 </context>
 <context>
     <name>AddRoomChatWindow</name>
     <message>
         <source>Join Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz do pokoju</translation>
     </message>
     <message>
         <source>Account:</source>
-        <translation type="unfinished">Konto:</translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>Visible name:</source>
-        <translation type="unfinished">Nazwa wyświetlana:</translation>
+        <translation>Nazwa wyświetlana:</translation>
     </message>
     <message>
         <source>Enter a name for this conference if you want to have it on roster</source>
-        <translation type="unfinished">Podaj nazwę dla konferencji jeżeli chcesz, aby była wyświetlana na liście kontaktów</translation>
+        <translation>Podaj nazwę dla konferencji jeżeli chcesz, aby była wyświetlana na liście kontaktów</translation>
     </message>
     <message>
         <source>Room:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokój:</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished">Pseudonim:</translation>
+        <translation>Pseudonim:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło:</translation>
     </message>
     <message>
         <source>Add Room Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj pokój</translation>
     </message>
     <message>
         <source>Start Room Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpocznij rozmowę</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
     <message>
         <source>Account is not selected</source>
-        <translation type="unfinished">Konto nie jest wybrane</translation>
+        <translation>Konto nie jest wybrane</translation>
     </message>
     <message>
         <source>Enter room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź nazwę pokoju</translation>
     </message>
     <message>
         <source>Enter nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź pseudonim</translation>
     </message>
     <message>
         <source>Visible name is already used for another chat</source>
-        <translation type="unfinished">Nazwa wyświetlana jest już używana dla innej konferencji</translation>
+        <translation>Nazwa wyświetlana jest już używana dla innej konferencji</translation>
     </message>
     <message>
         <source>This room chat is already available as &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten pokój jest już dostępny jako &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Enter visible name to add this room chat to roster</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź nazwę wyświetlaną aby dodać pokój do listy kontaktów</translation>
     </message>
 </context>
 <context>
@@ -1528,7 +1528,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Example identity</source>
-        <translation type="unfinished"></translation>
+        <translation>Przykładowa toższamość</translation>
     </message>
 </context>
 <context>
@@ -1601,7 +1601,7 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>Synchronize</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizuj</translation>
     </message>
 </context>
 <context>
@@ -1769,11 +1769,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Ogólne</translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozmowa</translation>
+        <translation>Rozmowa</translation>
     </message>
 </context>
 <context>
@@ -1838,19 +1838,19 @@ znajomych po połączeniu się z serwerem</translation>
     <name>ChatRoomEditWidget</name>
     <message>
         <source>Account:</source>
-        <translation type="unfinished">Konto:</translation>
+        <translation>Konto:</translation>
     </message>
     <message>
         <source>Room:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokój:</translation>
     </message>
     <message>
         <source>Nick:</source>
-        <translation type="unfinished">Pseudonim:</translation>
+        <translation>Pseudonim:</translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hasło:</translation>
     </message>
 </context>
 <context>
@@ -2275,7 +2275,7 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -2798,7 +2798,7 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
     <message>
         <source> - Select buddy - </source>
-        <translation type="unfinished">- Wybierz znajomego -</translation>
+        <translation>- Wybierz znajomego -</translation>
     </message>
 </context>
 <context>
@@ -2975,7 +2975,7 @@ Klient: %3</translation>
     </message>
     <message>
         <source>User name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa użytkownika:</translation>
     </message>
 </context>
 <context>
@@ -3046,7 +3046,8 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Cannot load %1 plugin library:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można załadować wtyczki %1:
+%2</translation>
     </message>
 </context>
 <context>
@@ -3065,36 +3066,36 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Plugin name: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Nazwa wtyczki: %1</translation>
     </message>
     <message>
         <source>Author: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Autor: %1</translation>
     </message>
     <message>
         <source>Version: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Wersja: %1</translation>
     </message>
     <message>
         <source>Description: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Opis: %1</translation>
     </message>
     <message>
         <source>Dependencies: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Zależności: %1</translation>
     </message>
     <message>
         <source>Conflicts: %1
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Konflikty: %1</translation>
     </message>
     <message>
         <source>Plugin information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacje o wtyczce</translation>
     </message>
 </context>
 <context>
@@ -3120,34 +3121,34 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>PluginsWindow</name>
     <message>
         <source>Configure Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguruj wtyczki</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished">Zastosuj</translation>
+        <translation>Zastosuj</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
     <name>PreviousDescriptionsWindow</name>
     <message>
         <source>Previous descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzednie opisy</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Wybierz</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Anuluj</translation>
+        <translation>&amp;Anuluj</translation>
     </message>
 </context>
 <context>
@@ -3173,11 +3174,11 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Progress:</source>
-        <translation type="unfinished"></translation>
+        <translation>Postęp:</translation>
     </message>
     <message>
         <source>Show details &gt;&gt;&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż szczegóły &gt;&gt;&gt;</translation>
     </message>
 </context>
 <context>
@@ -3297,15 +3298,15 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>SearchBar</name>
     <message>
         <source>Find:</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajdź:</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished"></translation>
+        <translation>Poprzedni</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished"></translation>
+        <translation>Następny</translation>
     </message>
 </context>
 <context>
@@ -3494,7 +3495,7 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Select folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz katalog</translation>
     </message>
 </context>
 <context>
@@ -3537,31 +3538,31 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Change status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień status</translation>
     </message>
     <message>
         <source>Change account status: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień status konta: %1</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished">Status</translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished">Opis</translation>
+        <translation>Opis</translation>
     </message>
     <message>
         <source>Choose description...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz opis...</translation>
     </message>
     <message>
         <source>&amp;Set status</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ustaw status</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Wyczyść</translation>
+        <translation>Wyczyść</translation>
     </message>
 </context>
 <context>
@@ -3576,19 +3577,19 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
     <message>
         <source>Ask For Sharing Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Poproś o udostępnienie statusu</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; chce dodać Ciebie do swojej listy kontaktów. </translation>
     </message>
     <message>
         <source>Do you want this person to see your status?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz pozwolić tej osobie widzieć swój status?</translation>
     </message>
     <message>
         <source>Allow and add buddy...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zezwól i dodaj znajomego...</translation>
     </message>
 </context>
 <context>
@@ -3671,19 +3672,19 @@ Być może nie jest zgodna z Kadu.</translation>
     <name>TokenWindow</name>
     <message>
         <source>Enter Token Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź tekst z obrazka</translation>
     </message>
     <message>
         <source>Enter text from the picture:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź tekst z obrazka:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
