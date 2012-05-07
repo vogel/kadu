@@ -5,6 +5,7 @@
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2008 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2012 Jiri Zamazal (zamazal.jiri@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -89,6 +90,15 @@ void SelectFile::selectFileClicked()
 	else if (Type == "audio")
 	{
 		QString s(QFileDialog::getOpenFileName(this, tr("Select audio File"), LineEdit->text(), tr("Audio Files (*.wav *.au *.raw);;All Files (*)")));
+		if (!s.isEmpty())
+		{
+			LineEdit->setText(s);
+			emit fileChanged();
+		}
+	}
+	else if (Type == "directory")
+	{
+		QString s(QFileDialog::getExistingDirectory(this, tr("Select folder"), LineEdit->text()));
 		if (!s.isEmpty())
 		{
 			LineEdit->setText(s);

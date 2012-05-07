@@ -13,7 +13,7 @@
 						   tool-tip="When enabled, module will automatically paste ready to send [IMAGE] clause in chat window." />
 			</group-box>
 			<group-box name="Directory">
-				<line-edit caption="Screenshots directory path" config-section="ScreenShot" config-item="path" />
+				<select-file caption="Screenshots directory path" config-section="ScreenShot" config-item="path" type="directory" />
 				<line-edit caption="Screenshots filename prefix" config-section="ScreenShot" config-item="filenamePrefix" />
 				<check-box caption="Enable directory size control" config-section="ScreenShot" config-item="dir_size_warns" id="screenshot/enableSizeLimit"
 						   tool-tip="When enabled, module will check for shots directory size and warn you if it gets size specified below." />
