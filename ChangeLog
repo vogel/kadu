@@ -11,6 +11,7 @@
 * freedesktop_notify: #2356 fixed: forgot about notifications only when server asks for it (Vogel)
 * gui: #2555 fixed: identities should use common status icons when needed (ultr)
 * chat styles: #2565 fixed: no css style in chat window with one message after updating settings (marseel)
+* history: #2550 fixed: ask user for removing history (marseel)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
