@@ -90,7 +90,7 @@ void GaduAddAccountWidget::createGui(bool showButtons)
 	layout->addRow(0, RemindPassword);
 	connect(RemindPassword, SIGNAL(linkActivated(QString)), this, SLOT(remindPasssword()));
 
-	Identity = new IdentitiesComboBox(true, this);
+	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

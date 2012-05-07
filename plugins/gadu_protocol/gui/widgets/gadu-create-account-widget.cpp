@@ -88,7 +88,7 @@ void GaduCreateAccountWidget::createGui(bool showButtons)
 	connect(EMail, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
 	layout->addRow(tr("E-Mail Address") + ':', EMail);
 
-	IdentityCombo = new IdentitiesComboBox(true, this);
+	IdentityCombo = new IdentitiesComboBox(this);
 	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 

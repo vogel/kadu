@@ -129,7 +129,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	formLayout->addRow(0, changePasswordLabel);
 	connect(changePasswordLabel, SIGNAL(linkActivated(QString)), this, SLOT(changePasssword()));
 
-	Identities = new IdentitiesComboBox(false, this);
+	Identities = new IdentitiesComboBox(this);
 	connect(Identities, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	formLayout->addRow(tr("Account Identity") + ':', Identities);
 

@@ -32,13 +32,10 @@
 
 #include "identities-combo-box.h"
 
-IdentitiesComboBox::IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent) :
+IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
 		ActionsComboBox(parent)
 {
 	IdentityManager::instance()->removeUnused();
-
-	if (includeSelectIdentity)
-		addBeforeAction(new QAction(tr(" - Select identity - "), this));
 
 	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
 	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();

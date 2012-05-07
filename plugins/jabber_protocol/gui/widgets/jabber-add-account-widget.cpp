@@ -119,7 +119,7 @@ void JabberAddAccountWidget::createGui(bool showButtons)
 	RememberPassword = new QCheckBox(tr("Remember Password"), this);
 	layout->addRow(0, RememberPassword);
 
-	Identity = new IdentitiesComboBox(true, this);
+	Identity = new IdentitiesComboBox(this);
 	connect(Identity, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 	layout->addRow(tr("Account Identity") + ':', Identity);
 

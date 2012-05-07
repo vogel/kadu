@@ -40,7 +40,7 @@ private slots:
 	void createNewIdentity();
 
 public:
-	explicit IdentitiesComboBox(bool includeSelectIdentity, QWidget *parent = 0);
+	explicit IdentitiesComboBox(QWidget *parent = 0);
 	virtual ~IdentitiesComboBox();
 
 	void setCurrentIdentity(Identity identity);
