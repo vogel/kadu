@@ -39,5 +39,9 @@
         <source>Expiration timeout</source>
         <translation>Czas zanikania</translation>
     </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

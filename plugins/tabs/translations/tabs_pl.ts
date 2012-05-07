@@ -73,6 +73,17 @@
     </message>
 </context>
 <context>
+    <name>TabWidget</name>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New message received, close window anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TabsManager</name>
     <message>
         <source>Chat in New Window</source>

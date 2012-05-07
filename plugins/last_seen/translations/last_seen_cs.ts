@@ -23,10 +23,6 @@
         <translation>Protokol</translation>
     </message>
     <message>
-        <source>UIN</source>
-        <translation>Číslo Gadu Gadu</translation>
-    </message>
-    <message>
         <source>Nick</source>
         <translation>Přezdívka</translation>
     </message>
@@ -53,6 +49,10 @@
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

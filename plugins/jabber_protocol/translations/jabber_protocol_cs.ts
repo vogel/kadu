@@ -108,10 +108,30 @@
     </message>
 </context>
 <context>
-    <name>CertificateErrorDialog</name>
+    <name>CertificateErrorWindow</name>
     <message>
-        <source>The %1 certificate failed the authenticity test.</source>
-        <translation type="unfinished">Osvědčení %1 neprošlo zkouškou pravosti.</translation>
+        <source>Cannot establish secure connection with server &lt;i&gt;%1&lt;/i&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show certificate...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you do not trust &lt;i&gt;%1&lt;/i&gt;, cancel the connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember my choice for this certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -643,25 +663,6 @@ Důvod: %1</translation>
     </message>
 </context>
 <context>
-    <name>JabberSubscriptionService</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>The user %1 removed subscription to you. You will no longer be able to view his/her online/offline status. Do you want to delete the contact?</source>
-        <translation>Uživatel %1 odstranil přihlášení pro vás. Nadále si nebudete moci prohlížet jeho/její stav připojený/nepřipojený. Chcete smazat toto spojení?</translation>
-    </message>
-    <message>
-        <source>Kadu - authorize user?</source>
-        <translation>Kadu - oprávnit uživatele?</translation>
-    </message>
-    <message>
-        <source>The user %1 (%2) is asking for subscription from you. He will be able to view your online/offline status. Do you want to authorize the contact?</source>
-        <translation>Uživatel %1 (%2) vás žádá o přihlášení. Budete si moci prohlížet váš stav připojený/nepřipojený. Chcete oprávnit toto spojení?</translation>
-    </message>
-</context>
-<context>
     <name>JabberWaitForAccountRegisterWindow</name>
     <message>
         <source>Plase wait. New XMPP account is being registered.</source>
@@ -703,22 +704,6 @@ Podrobnosti: %1</translation>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <source>&amp;Details...</source>
-        <translation>&amp;Podrobnosti...</translation>
-    </message>
-    <message>
-        <source>&amp;Connect anyway</source>
-        <translation>Přesto &amp;připojit</translation>
-    </message>
-    <message>
-        <source>&amp;Trust this certificate</source>
-        <translation>&amp;Důvěřovat tomuto osvědčení</translation>
-    </message>
-    <message>
-        <source>&amp;Trust this domain</source>
-        <translation>&amp;Důvěřovat této doméně</translation>
-    </message>
     <message>
         <source>The server did not present a certificate.</source>
         <translation>Server nepředstavil osvědčení.</translation>
@@ -976,10 +961,6 @@ Opravte, prosím, a zkuste to znovu..</translation>
         <translation>Podporu SSL se nepodařilo spustit pro účet %1. Nejpravděpodobněji je to proto, že přídavný modul QCA TLS není nainstalován ve vašem systému.</translation>
     </message>
     <message>
-        <source>Server Authentication</source>
-        <translation>Ověření pravosti serveru</translation>
-    </message>
-    <message>
         <source>The server does not support TLS encryption.</source>
         <translation>Server nepodporuje šifrování TLS.</translation>
     </message>
@@ -1156,6 +1137,10 @@ Podrobnosti: %1</translation>
     <message>
         <source>None</source>
         <translation>Žádná</translation>
+    </message>
+    <message>
+        <source>security problem</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

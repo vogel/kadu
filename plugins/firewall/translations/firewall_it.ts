@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="it">
 <context>
     <name>@default</name>
     <message>
@@ -52,10 +54,6 @@
     <message>
         <source>Protect against chats with unknown persons</source>
         <translation>Protezione contro le chat con persone sconosciute</translation>
-    </message>
-    <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
-        <translation>Il modulo ti chiederà il tipo di domanda qui sotto, se qualcuno vorrà parlare con te a tu non hai egli nella tua lista</translation>
     </message>
     <message>
         <source>When invisible silently drop chats with unknown persons</source>
@@ -131,7 +129,18 @@
     </message>
     <message numerus="yes">
         <source>%n millisecond(s)</source>
-        <translation><numerusform>%n millisecondo</numerusform><numerusform>%n millisecondi</numerusform></translation>
+        <translation>
+            <numerusform>%n millisecondo</numerusform>
+            <numerusform>%n millisecondi</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Message was firewalled</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -161,7 +170,7 @@
     <message>
         <source>User wrote right answer!
 </source>
-        <translation>L'utente ha scritto una risposta sbagliata
+        <translation>L&apos;utente ha scritto una risposta sbagliata
 </translation>
     </message>
     <message>

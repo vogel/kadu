@@ -12,18 +12,6 @@
         <translation>Szyfrowanie</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Encrypt by default</source>
-        <translation>Domyślnie szyfruj</translation>
-    </message>
-    <message>
-        <source>Encrypt after receive encrypted message</source>
-        <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
-    </message>
-    <message>
         <source>Public key has been sent</source>
         <translation>Klucz publiczny został wysłany</translation>
     </message>
@@ -34,6 +22,14 @@
     <message>
         <source>Encryption error has occured</source>
         <translation>Błąd szyfrowania</translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encrypt after receiving encrypted message</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

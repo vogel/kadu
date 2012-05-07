@@ -139,6 +139,14 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
         <source>SMS application was not specified. Visit the configuration section</source>
         <translation>Nie określono aplikacji SMS. Sprawdź konfigurację</translation>
     </message>
+    <message>
+        <source> - Select recipient - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending SMS...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsExternalSender</name>
@@ -150,58 +158,67 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
         <source>The process exited abnormally. The SMS may not be sent</source>
         <translation>Proces zakończony nieprawidłowo. SMS mógł nie zostać wysłany</translation>
     </message>
-</context>
-<context>
-    <name>SmsImageDialog</name>
     <message>
-        <source>Enter text from the picture:</source>
-        <translation>Przepisz tekst z obrazka:</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>Unable to fetch required token</source>
-        <translation>Nie udało się pobrać wymaganego tokena</translation>
+        <source>SMS sent</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SmsInternalSender</name>
     <message>
-        <source>Signature can&apos;t be empty</source>
-        <translation>Pole &quot;Podpis&quot; nie może być puste</translation>
-    </message>
-    <message>
         <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
         <translation>Automatyczny wybór bramki jest niedostępny. Proszę wybierz bramkę SMS.</translation>
     </message>
+    <message>
+        <source>Signature can&apos;t be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detecting gateway...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected gateway: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending SMS...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS sent</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>SmsProgressWindow</name>
+    <name>SmsTokenReadJob</name>
     <message>
-        <source>Sending SMS in progress.</source>
-        <translation>Trwa wysyłanie SMS-a.</translation>
+        <source>Invalid paremeters for token read job.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter text from the picture:</source>
-        <translation>Przepisz tekst z obrazka:</translation>
+        <source>Downloading token image...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
+        <source>Unable to fetch token image.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SMS sent successfully</source>
-        <translation>SMS został pomyślnie wysłany</translation>
+        <source>Unable to read token image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waiting for entry of token value...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No token value provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Received token value.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

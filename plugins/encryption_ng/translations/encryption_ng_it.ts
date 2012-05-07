@@ -12,18 +12,6 @@
         <translation>Cifratura</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Generale</translation>
-    </message>
-    <message>
-        <source>Encrypt by default</source>
-        <translation>Cifra di default</translation>
-    </message>
-    <message>
-        <source>Encrypt after receive encrypted message</source>
-        <translation>Cifra dopo aver ricevuto il messaggio cifrato</translation>
-    </message>
-    <message>
         <source>Public key has been sent</source>
         <translation type="unfinished"></translation>
     </message>
@@ -33,6 +21,14 @@
     </message>
     <message>
         <source>Encryption error has occured</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Encrypt after receiving encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

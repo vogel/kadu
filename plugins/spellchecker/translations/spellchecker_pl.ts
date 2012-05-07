@@ -63,10 +63,6 @@
         <translation>Nie można znaleźć słownika dla języka %1.</translation>
     </message>
     <message>
-        <source>Details: %1.</source>
-        <translation>Szczegóły: %1.</translation>
-    </message>
-    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation>Przenieś do &apos;Sprawdzane&apos;</translation>
     </message>
@@ -81,6 +77,10 @@
     <message>
         <source>Checked</source>
         <translation>Sprawdzane</translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

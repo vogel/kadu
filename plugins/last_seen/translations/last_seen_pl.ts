@@ -23,10 +23,6 @@
         <translation>Protokół</translation>
     </message>
     <message>
-        <source>UIN</source>
-        <translation>Numer GG</translation>
-    </message>
-    <message>
         <source>Nick</source>
         <translation>Pseudonim</translation>
     </message>
@@ -53,6 +49,10 @@
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zamknij</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -79,7 +79,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Details: %1.</source>
+        <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

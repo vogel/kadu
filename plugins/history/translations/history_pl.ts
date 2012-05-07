@@ -73,29 +73,10 @@
     </message>
 </context>
 <context>
-    <name>BuddyStatusDatesModel</name>
+    <name>ChatHistoryTab</name>
     <message>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation>Długość</translation>
-    </message>
-</context>
-<context>
-    <name>ChatDatesModel</name>
-    <message>
-        <source>Title</source>
-        <translation>Tytuł</translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation>Długość</translation>
+        <source>&amp;Clear Chat History</source>
+        <translation type="unfinished">&amp;Wyczyść historię rozmów</translation>
     </message>
 </context>
 <context>
@@ -110,14 +91,55 @@
     </message>
 </context>
 <context>
-    <name>HistoryChatsModel</name>
+    <name>HistoryBuddyDataWindowAddons</name>
     <message>
-        <source>Statuses</source>
-        <translation>Statusy</translation>
+        <source>Store history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryChatDataWindowAddons</name>
+    <message>
+        <source>Store history</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryMessagesTab</name>
+    <message>
+        <source>&amp;Remove entries</source>
+        <translation type="unfinished">&amp;Usuń wpisy</translation>
     </message>
     <message>
-        <source>SMSes</source>
-        <translation>SMSy</translation>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished">Kadu</translation>
+    </message>
+    <message>
+        <source>Do you really want to delete history?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>HistoryQueryResultsModel</name>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished">Rozmowa</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Długość</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Data</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Tytuł</translation>
     </message>
 </context>
 <context>
@@ -127,28 +149,8 @@
         <translation>Historia</translation>
     </message>
     <message>
-        <source>&amp;Remove entries</source>
-        <translation>&amp;Usuń wpisy</translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation>Szukaj</translation>
-    </message>
-    <message>
-        <source>by date</source>
-        <translation>Po dacie</translation>
-    </message>
-    <message>
-        <source>From</source>
-        <translation>od</translation>
-    </message>
-    <message>
-        <source>To</source>
-        <translation>do</translation>
-    </message>
-    <message>
-        <source>&amp;Clear Chat History</source>
-        <translation>&amp;Wyczyść historię rozmów</translation>
     </message>
     <message>
         <source>&amp;Clear Status History</source>
@@ -159,12 +161,16 @@
         <translation>&amp;Wyczyść historię SMSów</translation>
     </message>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>Chats</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There is no history storage plugin loaded!</source>
-        <translation>Żaden plugin przechowywania historii nie jest załadowany.</translation>
+        <source>Statuses</source>
+        <translation type="unfinished">Statusy</translation>
+    </message>
+    <message>
+        <source>SMS</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -172,6 +178,65 @@
     <message>
         <source>Chat history</source>
         <translation>Historia rozmów</translation>
+    </message>
+</context>
+<context>
+    <name>SearchTab</name>
+    <message>
+        <source>Search for:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - All chats - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation type="unfinished">Statusy</translation>
+    </message>
+    <message>
+        <source> - All buddies - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> - All recipients - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished">Szukaj</translation>
+    </message>
+    <message>
+        <source>Found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished">Rozmowa</translation>
+    </message>
+    <message>
+        <source>Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recipient</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -199,17 +264,6 @@
     <message>
         <source>Show whole history</source>
         <translation>Wyświetl całą historię</translation>
-    </message>
-</context>
-<context>
-    <name>SmsDatesModel</name>
-    <message>
-        <source>Date</source>
-        <translation>Data</translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation>Długość</translation>
     </message>
 </context>
 </TS>

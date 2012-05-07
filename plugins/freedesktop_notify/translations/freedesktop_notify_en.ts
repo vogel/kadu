@@ -38,5 +38,9 @@
         <source>Show message content</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -23,10 +23,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>UIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Nick</source>
         <translation type="unfinished"></translation>
     </message>
@@ -52,6 +48,10 @@
     </message>
     <message>
         <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

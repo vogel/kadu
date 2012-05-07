@@ -63,10 +63,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Details: %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Move to &apos;Checked&apos;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,6 +76,10 @@
     </message>
     <message>
         <source>Checked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

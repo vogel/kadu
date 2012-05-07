@@ -1350,6 +1350,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Merge with buddy</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"> - Kontakt auswählen - </translation>
+    </message>
 </context>
 <context>
     <name>AddConferenceAction</name>
@@ -1406,6 +1410,80 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
 </context>
 <context>
+    <name>AddRoomChatAction</name>
+    <message>
+        <source>Join Room...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddRoomChatWindow</name>
+    <message>
+        <source>Join Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished">Konto:</translation>
+    </message>
+    <message>
+        <source>Visible name:</source>
+        <translation type="unfinished">Sichtbarer Name:</translation>
+    </message>
+    <message>
+        <source>Enter a name for this conference if you want to have it on roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished">Nick:</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Room Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Room Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
+    </message>
+    <message>
+        <source>Account is not selected</source>
+        <translation type="unfinished">Konto ist nicht ausgewählt</translation>
+    </message>
+    <message>
+        <source>Enter room name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter nick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visible name is already used for another chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This room chat is already available as &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter visible name to add this room chat to roster</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AdiumChatStyleEngine</name>
     <message>
         <source>Conference [%1]</source>
@@ -1436,6 +1514,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Example description</source>
         <translation>Beispielbeschreibung</translation>
+    </message>
+    <message>
+        <source>Example identity</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1505,6 +1587,10 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Account</source>
         <translation>Konto</translation>
+    </message>
+    <message>
+        <source>Synchronize</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1670,6 +1756,14 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Cancel</source>
         <translation type="unfinished">Abbrechen</translation>
     </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished">Allgemein</translation>
+    </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished">Chat</translation>
+    </message>
 </context>
 <context>
     <name>ChatEditBox</name>
@@ -1730,6 +1824,25 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
 </context>
 <context>
+    <name>ChatRoomEditWidget</name>
+    <message>
+        <source>Account:</source>
+        <translation type="unfinished">Konto:</translation>
+    </message>
+    <message>
+        <source>Room:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nick:</source>
+        <translation type="unfinished">Nick:</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ChatStylesManager</name>
     <message>
         <source>Edit</source>
@@ -1754,39 +1867,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Unable to remove style: %1</source>
         <translation>Kann den Stil %1 nicht entfernen</translation>
-    </message>
-</context>
-<context>
-    <name>ChatTypeAggregate</name>
-    <message>
-        <source>Aggregate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aggregates</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ChatTypeConference</name>
-    <message>
-        <source>Conference</source>
-        <translation>Konferenz</translation>
-    </message>
-    <message>
-        <source>Conferences</source>
-        <translation>Konferenzen</translation>
-    </message>
-</context>
-<context>
-    <name>ChatTypeSimple</name>
-    <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
-        <source>Chats</source>
-        <translation>Chats</translation>
     </message>
 </context>
 <context>
@@ -1900,21 +1980,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
-    </message>
-</context>
-<context>
-    <name>StatusWindow</name>
-    <message>
-        <source>Select description</source>
-        <translation>Beschreibung auswählen</translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -2198,8 +2263,8 @@ Was soll ich tun?</translation>
         <translation>Leeren</translation>
     </message>
     <message>
-        <source>Hide</source>
-        <translation>Verstecken</translation>
+        <source>Close</source>
+        <translation type="unfinished">Schließen</translation>
     </message>
 </context>
 <context>
@@ -2466,10 +2531,6 @@ Was soll ich tun?</translation>
         <translation>Kopieren</translation>
     </message>
     <message>
-        <source>Copy Link</source>
-        <translation>Link kopieren#</translation>
-    </message>
-    <message>
         <source>Copy Image</source>
         <translation>Bild kopieren</translation>
     </message>
@@ -2488,6 +2549,10 @@ Was soll ich tun?</translation>
     <message>
         <source>Cannot save image</source>
         <translation>Kann das Bild nicht speichern</translation>
+    </message>
+    <message>
+        <source>Copy Link Address</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2720,6 +2785,10 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
+    <message>
+        <source> - Select buddy - </source>
+        <translation type="unfinished"> - Kontakt auswählen - </translation>
+    </message>
 </context>
 <context>
     <name>MessageNotification</name>
@@ -2738,56 +2807,6 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
     <message>
         <source>New message</source>
         <translation type="unfinished">Neue Nachricht</translation>
-    </message>
-</context>
-<context>
-    <name>PluginsWindow</name>
-    <message>
-        <source>Manage Modules</source>
-        <translation>Verwalte Module</translation>
-    </message>
-    <message>
-        <source>Info</source>
-        <translation>Info</translation>
-    </message>
-    <message>
-        <source>Loaded</source>
-        <translation>Geladen</translation>
-    </message>
-    <message>
-        <source>Module name</source>
-        <translation>Modulname</translation>
-    </message>
-    <message>
-        <source>State</source>
-        <translation>Zustand</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>&amp;Schließen</translation>
-    </message>
-    <message>
-        <source>Not loaded</source>
-        <translation>Nicht geladen</translation>
-    </message>
-    <message>
-        <source>Version</source>
-        <translation>Version</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Depends on:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Conflicts with:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Provides:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Author:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Version:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Module:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Hängt ab von:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Im Konflikt
-mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Verion&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Beschreibung:&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;Module: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Depends on: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Conflicts with: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Provides: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Author: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Description: &lt;/b&gt;%7</source>
-        <translation>&lt;b&gt;Das Modul: &lt;/b&gt;%1&lt;br/&gt;&lt;b&gt;Hängt ab von: &lt;/b&gt;%2&lt;br/&gt;&lt;b&gt;Im Konflikt mit: &lt;/b&gt;%3&lt;br/&gt;&lt;b&gt;Frührt mit: &lt;/b&gt;%4&lt;br/&gt;&lt;b&gt;Autor: &lt;/b&gt;%5&lt;br/&gt;&lt;b&gt;Version: &lt;/b&gt;%6&lt;br/&gt;&lt;b&gt;Beschreibung: &lt;/b&gt;%7</translation>
-    </message>
-    <message>
-        <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption.
-You can load (or unload) them by double-clicking on their names.</source>
-        <translation>Hier können Sie die installierten Module verwalten. Module sind dafür zuständig, das Programm um zusätzliche Funktionen wie das abspielen von Klängen oder die Verschlüßelung.
-Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppelklicken.</translation>
     </message>
 </context>
 <context>
@@ -2937,6 +2956,10 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
         <source>&amp;Ok</source>
         <translation>&amp;Ok</translation>
     </message>
+    <message>
+        <source>User name:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PasswordWindow</name>
@@ -2994,12 +3017,6 @@ Sie können diese aktivieren oder deaktivieren, indem Sie auf deren Namen doppel
 <context>
     <name>Plugin</name>
     <message>
-        <source>Cannot load %1 plugin library.:
-%2</source>
-        <translation>Kann nicht die Plugin-Bibliothek %1 nicht laden:
-%2</translation>
-    </message>
-    <message>
         <source>Cannot find required object in module %1.
 Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation>Kann das benötigte Objekt im Modul %1 nicht finden.
@@ -3008,6 +3025,11 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     <message>
         <source>Module initialization routine for %1 failed.</source>
         <translation>Initialisationroutinen für Modul %1 fehlgeschlagen.</translation>
+    </message>
+    <message>
+        <source>Cannot load %1 plugin library:
+%2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3018,6 +3040,43 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
     <message>
         <source>Try to load this plugin on next Kadu run</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PluginListWidgetItemDelegate</name>
+    <message>
+        <source>Plugin name: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dependencies: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conflicts: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugin information</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3041,6 +3100,40 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
 </context>
 <context>
+    <name>PluginsWindow</name>
+    <message>
+        <source>Configure Plugins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished">Anwenden</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Schließen</translation>
+    </message>
+</context>
+<context>
+    <name>PreviousDescriptionsWindow</name>
+    <message>
+        <source>Previous descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Abbrechen</translation>
+    </message>
+</context>
+<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3060,6 +3153,14 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     <message>
         <source>Close</source>
         <translation type="unfinished">Schließen</translation>
+    </message>
+    <message>
+        <source>Progress:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show details &gt;&gt;&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3172,6 +3273,21 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SearchBar</name>
+    <message>
+        <source>Find:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Previous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3334,13 +3450,6 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
 </context>
 <context>
-    <name>SelectBuddyComboBox</name>
-    <message>
-        <source> - Select buddy - </source>
-        <translation> - Kontakt auswählen - </translation>
-    </message>
-</context>
-<context>
     <name>SelectFile</name>
     <message>
         <source>Insert image</source>
@@ -3364,6 +3473,10 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
     <message>
         <source>Audio Files (*.wav *.au *.raw);;All Files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3400,31 +3513,42 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
 </context>
 <context>
+    <name>StatusWindow</name>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation>&amp;Abbrechen</translation>
+    </message>
+    <message>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change account status: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished">Zustand</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Beschreibung</translation>
+    </message>
+    <message>
+        <source>Choose description...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Set status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Leeren</translation>
+    </message>
+</context>
+<context>
     <name>SubscriptionWindow</name>
-    <message>
-        <source>New Contact Request</source>
-        <translation>Neue Kontaktanfrage</translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;%1&lt;/b&gt; wants to be able to chat with you.</source>
-        <translation>&lt;b&gt;%1&lt;/b&gt; möchte mit Ihnen chatten.</translation>
-    </message>
-    <message>
-        <source>Add in Group</source>
-        <translation>Zur Gruppe hinzufügen</translation>
-    </message>
-    <message>
-        <source>Visible Name</source>
-        <translation>Sichtbarer Name</translation>
-    </message>
-    <message>
-        <source>Enter a name for this contact.</source>
-        <translation>Geben Sie einen Namen des Kontaktes an.</translation>
-    </message>
-    <message>
-        <source>Merge with an existing contact</source>
-        <translation>Zusammenführen mit existierendem Kontakt</translation>
-    </message>
     <message>
         <source>Allow</source>
         <translation>Erlauben</translation>
@@ -3432,6 +3556,22 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     <message>
         <source>Ignore</source>
         <translation>Ignorieren</translation>
+    </message>
+    <message>
+        <source>Ask For Sharing Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to add you to his contact list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want this person to see your status?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow and add buddy...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3508,6 +3648,25 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     <message>
         <source>None</source>
         <translation>Nichts</translation>
+    </message>
+</context>
+<context>
+    <name>TokenWindow</name>
+    <message>
+        <source>Enter Token Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter text from the picture:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Abbrechen</translation>
     </message>
 </context>
 <context>
