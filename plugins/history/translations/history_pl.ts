@@ -76,7 +76,7 @@
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished">&amp;Wyczyść historię rozmów</translation>
+        <translation>&amp;Wyczyść historię rozmów</translation>
     </message>
 </context>
 <context>
@@ -94,52 +94,52 @@
     <name>HistoryBuddyDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisuj historię</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisuj historię</translation>
     </message>
 </context>
 <context>
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished">&amp;Usuń wpisy</translation>
+        <translation>&amp;Usuń wpisy</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtruj</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"></translation>
+        <translation>Na prawdę chcesz usunąć historię?</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozmowa</translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Długość</translation>
+        <translation>Długość</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Data</translation>
+        <translation>Data</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Tytuł</translation>
+        <translation>Tytuł</translation>
     </message>
 </context>
 <context>
@@ -162,15 +162,15 @@
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowy</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished">Statusy</translation>
+        <translation>Statusy</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
 </context>
 <context>
@@ -184,59 +184,59 @@
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Szukaj:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozmowy</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Wszystkie rozmowy - </translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished">Statusy</translation>
+        <translation>Statusy</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Wszyscy znajomi - </translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"></translation>
+        <translation>Smsy</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Wszyscy odbiorcy - </translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"></translation>
+        <translation>Wg. daty</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>do</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Szukaj</translation>
+        <translation>Szukaj</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"></translation>
+        <translation>Znaleziono</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozmowa</translation>
+        <translation>Rozmowa</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajomy</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca</translation>
     </message>
 </context>
 <context>

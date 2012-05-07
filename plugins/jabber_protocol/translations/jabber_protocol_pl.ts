@@ -111,27 +111,27 @@
     <name>CertificateErrorWindow</name>
     <message>
         <source>Cannot establish secure connection with server &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć bezpiecznego połączenia z serwerem &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>Show certificate...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż certyfikat...</translation>
     </message>
     <message>
         <source>If you do not trust &lt;i&gt;%1&lt;/i&gt;, cancel the connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj połączenie, jeżeli nie ufasz &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>Remember my choice for this certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapamiętaj wybór dla tego certyfikatu</translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Połącz</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Anuluj</translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1144,7 +1144,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>security problem</source>
-        <translation type="unfinished"></translation>
+        <translation>problem bezpieczeństwa</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1227,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The recipient or server does not allow any entity to perform the action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca lub serwer nie zezwala na wykonanie akcji.</translation>
     </message>
     <message>
         <source>Not authorized</source>
@@ -1235,7 +1235,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nadawca musi się poprawnie uwierzytelnić przed wykonaniem akcji.</translation>
     </message>
     <message>
         <source>Payment required</source>
@@ -1243,7 +1243,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Opłata jest wymagana dla skorzystania z tego serwisu.</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
@@ -1255,11 +1255,11 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>Redirect</source>
-        <translation type="unfinished"></translation>
+        <translation>Przekierowanie</translation>
     </message>
     <message>
         <source>The recipient or server is redirecting requests for this information to another entity, usually temporarily.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbiorca lub serwer przekierowuje żądanie (prawdopodobnie tymczasowo).</translation>
     </message>
     <message>
         <source>Registration required</source>
@@ -1267,7 +1267,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because registration is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak upowaznienia do wykonania akcji - wymagana rejestracja.</translation>
     </message>
     <message>
         <source>Remote server not found</source>
@@ -1275,11 +1275,11 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer lub serwis podany jako część JID nie istnieje.</translation>
     </message>
     <message>
         <source>Remote server timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Przekroczenie czasu</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient (or required to fulfill a request) could not be contacted within a reasonable amount of time.</source>

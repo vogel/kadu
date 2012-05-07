@@ -25,11 +25,11 @@
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiadomości</translation>
     </message>
     <message>
         <source>Encrypt after receiving encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
     </message>
 </context>
 <context>

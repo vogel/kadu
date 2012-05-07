@@ -80,7 +80,7 @@
     </message>
     <message>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Szczegóły</translation>
     </message>
 </context>
 </TS>

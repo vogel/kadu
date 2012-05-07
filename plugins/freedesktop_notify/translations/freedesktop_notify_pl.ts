@@ -41,7 +41,7 @@
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nigdy</translation>
     </message>
 </context>
 </TS>

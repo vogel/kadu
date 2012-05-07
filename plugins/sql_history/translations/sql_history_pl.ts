@@ -13,86 +13,87 @@
     </message>
     <message>
         <source>Preparing history database...</source>
-        <translation type="unfinished"></translation>
+        <translation>Przygotowywanie bazy danych historii...</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished">Historia</translation>
+        <translation>Historia</translation>
     </message>
     <message>
         <source>Opening database failed. Error message:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwarcie bazy danych nieudane. Błąd:
+%1</translation>
     </message>
 </context>
 <context>
     <name>SqlInitializer</name>
     <message>
         <source>Copying history file to new location: %1 ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiowanie historii do nowego miejsca: %1...</translation>
     </message>
     <message>
         <source>Unable to copy history file to new location. Check if disk is full.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można skopiować historii do nowego miejsca. Sprawdź, czy dysk jest pełen.</translation>
     </message>
     <message>
         <source>Unable to open database: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można otworzyć bazy danych: %1</translation>
     </message>
     <message>
         <source>History file is corrupted, performing recovery...</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik historii jest uszkodzony, trwa naprawianie...</translation>
     </message>
     <message>
         <source>Recovery completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Naprawianie ukończone.</translation>
     </message>
     <message>
         <source>Recovery failed: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Naprawianie nieudane: %s</translation>
     </message>
     <message>
         <source>History file is outdated, performing import...</source>
-        <translation type="unfinished"></translation>
+        <translation>Plik historii jest przestarzały, aktualizowanie...</translation>
     </message>
     <message>
         <source>Import completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualizacja ukończona.</translation>
     </message>
     <message>
         <source>Copying completed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopiowanie ukończone.</translation>
     </message>
 </context>
 <context>
     <name>SqlRestore</name>
     <message>
         <source>No error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak błędu.</translation>
     </message>
     <message>
         <source>sqlite3 executable not found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono programu sqlite3.</translation>
     </message>
     <message>
         <source>Invalid invocation of recovery script.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niepoprawne wywołanie skryptu naprawiającego.</translation>
     </message>
     <message>
         <source>Unable to read corrupted database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można odczytać uszkodzonej bazy danych.</translation>
     </message>
     <message>
         <source>Unable to create backup file. Disc may be full.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można utworzyć pliku zapasowego. Być może dysk jest pełen.</translation>
     </message>
     <message>
         <source>Recovery script not found or not executable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrypt naprawiający nie został odnaleziony lub nie jest wykonywalny.</translation>
     </message>
     <message>
         <source>Unknown error during database recovery.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany błąd podczas naprawiania bazy danych.</translation>
     </message>
 </context>
 </TS>

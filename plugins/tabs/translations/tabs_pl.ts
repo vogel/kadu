@@ -76,11 +76,11 @@
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Otrzymano nową wiadomość. Zamknąć okno?</translation>
     </message>
 </context>
 <context>

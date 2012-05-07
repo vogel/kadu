@@ -141,11 +141,11 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source> - Select recipient - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Wybierz odbiorcę - </translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysyłanie wiadomości SMS...</translation>
     </message>
 </context>
 <context>
@@ -160,7 +160,7 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS wysłany</translation>
     </message>
 </context>
 <context>
@@ -171,54 +171,54 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>Signature can&apos;t be empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Podpis nie może być pusty.</translation>
     </message>
     <message>
         <source>Detecting gateway...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykrywanie bramki...</translation>
     </message>
     <message>
         <source>Detected gateway: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wykryto bramknę: %1.</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"></translation>
+        <translation>Wysyłanie wiadomości SMS...</translation>
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS wysłany</translation>
     </message>
 </context>
 <context>
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niepoprawny parametr dla zadania odczytu tokena.</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Pobieranie obrazka tokena...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pobrać obrazka tokena.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można przeczytać obrazka tokena.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"></translation>
+        <translation>Oczekiwanie na wporwadzenie wartości tokena...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wartość tokena nie została wprowadzona.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otrzymano wartość tokena.</translation>
     </message>
 </context>
 </TS>

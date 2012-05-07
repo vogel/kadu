@@ -170,8 +170,7 @@
     <message>
         <source>User wrote right answer!
 </source>
-        <translation>Użytkownik udzielił prawidłowej odpowiedzi
-</translation>
+        <translation>Użytkownik udzielił prawidłowej odpowiedzi!</translation>
     </message>
     <message>
         <source>This message has been generated AUTOMATICALLY!
