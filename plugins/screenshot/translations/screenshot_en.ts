@@ -123,15 +123,15 @@ It should be bigger.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Simple shot</source>
+        <source>Simple Shot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>With chat window hidden</source>
+        <source>With Chat Window Hidden</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Window shot</source>
+        <source>Window Shot</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
