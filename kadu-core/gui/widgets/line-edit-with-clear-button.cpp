@@ -128,7 +128,10 @@ void LineEditWithClearButton::mouseReleaseEvent(QMouseEvent *e)
 	if (ClickInClear)
 	{
 		if (ClearButton->underMouse())
+		{
 			clear();
+			emit cleared();
+		}
 
 		ClickInClear = false;
 		e->accept();
@@ -142,22 +145,25 @@ void LineEditWithClearButton::setClearButtonVisible(bool clearButtonVisible)
 {
 	if (clearButtonVisible == ClearButtonVisible)
 		return;
+
 	ClearButtonVisible = clearButtonVisible;
 	updateClearButton();
 }
 
 void LineEditWithClearButton::setReadOnly(bool readonly)
 {
-	bool oldvalue = isReadOnly();
+	if (isReadOnly() == readonly)
+		return;
+
 	QLineEdit::setReadOnly(readonly);
-	if (oldvalue != readonly)
-		updateClearButton();
+	updateClearButton();
 }
 
 void LineEditWithClearButton::setEnabled(bool enabled)
 {
-	bool oldvalue = isEnabled();
+	if (isEnabled() == enabled)
+		return;
+
 	QLineEdit::setEnabled(enabled);
-	if (oldvalue != enabled)
-		updateClearButton();
+	updateClearButton();
 }

@@ -64,6 +64,9 @@ public:
 	virtual void setReadOnly(bool readonly);
 	virtual void setEnabled(bool enabled);
 
+signals:
+	void cleared();
+
 };
 
 #endif // LINE_EDIT_WITH_CLEAR_BUTTON_H
