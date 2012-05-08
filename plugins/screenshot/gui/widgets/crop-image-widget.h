@@ -65,7 +65,6 @@ class CropImageWidget : public QGraphicsView
 	QPixmap croppedPixmap();
 
 private slots:
-	void crop();
 	void updateToolBoxFileSizeHint();
 	void handlerMovedTo(HandlerType type, int x, int y);
 
@@ -85,6 +84,9 @@ public:
 
 	void setPixmap(QPixmap pixmap);
 	void setCropRect(const QRect &cropRect);
+
+public slots:
+	void crop();
 
 signals:
 	void pixmapCropped(QPixmap pixmap);

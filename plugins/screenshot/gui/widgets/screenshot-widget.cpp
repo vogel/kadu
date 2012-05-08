@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010, 2011 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2011, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
@@ -44,7 +44,9 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 {
 	setWindowRole("kadu-screenshot");
 
-	setWindowFlags(windowFlags() | Qt::Tool | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
+	setFocusPolicy(Qt::StrongFocus);
+
+	setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 #ifdef Q_WS_X11
 	// set always-on-top and force taskbar and pager skipping
 	Atom win_state = XInternAtom( QX11Info::display(), "_NET_WM_STATE", False );
@@ -65,7 +67,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 
 	CropWidget = new CropImageWidget(this);
 	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SLOT(pixmapCapturedSlot(QPixmap)));
-	connect(CropWidget, SIGNAL(canceled()), this, SLOT(canceled()));
+	connect(CropWidget, SIGNAL(canceled()), this, SLOT(canceledSlot()));
 	layout->addWidget(CropWidget);
 }
 
@@ -85,6 +87,12 @@ void ScreenshotWidget::setPixmap(QPixmap pixmap)
 	resize(pixmap.size());
 }
 
+void ScreenshotWidget::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+		CropWidget->crop();
+}
+
 void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
 {
 	hide();
@@ -93,8 +101,10 @@ void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
 	deleteLater();
 }
 
-void ScreenshotWidget::canceled()
+void ScreenshotWidget::canceledSlot()
 {
 	hide();
+
+	emit canceled();
 	deleteLater();
 }

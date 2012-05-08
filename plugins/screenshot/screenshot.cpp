@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2008, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
@@ -30,6 +30,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "configuration/screen-shot-configuration.h"
@@ -56,6 +57,9 @@ ScreenShot::ScreenShot(ChatWidget *chatWidget) :
 
 ScreenShot::~ScreenShot()
 {
+	if (MyChatWidget)
+		_activateWindow(MyChatWidget->window());
+
 	delete MyScreenshotTaker;
 	MyScreenshotTaker = 0;
 }
@@ -83,14 +87,16 @@ void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 		return;
 	}
 
-	ScreenshotWidget *screenshotWidget = new ScreenshotWidget(0);
+	ScreenshotWidget *screenshotWidget = new ScreenshotWidget();
 	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(screenshotReady(QPixmap)));
-	connect(screenshotWidget, SIGNAL(closed()), this, SLOT(screenshotNotTaken()));
+	connect(screenshotWidget, SIGNAL(canceled()), this, SLOT(screenshotNotTaken()));
 
 	screenshotWidget->setPixmap(screenshot);
 	screenshotWidget->setShotMode(Mode);
 	screenshotWidget->showFullScreen();
 	screenshotWidget->show();
+	QApplication::processEvents(); // ensure window was shown, otherwise it won't be activated
+	_activateWindow(screenshotWidget);
 }
 
 void ScreenShot::screenshotNotTaken()

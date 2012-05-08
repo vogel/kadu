@@ -4,6 +4,7 @@
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +46,10 @@ class ScreenshotWidget : public QWidget
 
 private slots:
 	void pixmapCapturedSlot(QPixmap pixmap);
-	void canceled();
+	void canceledSlot();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	explicit ScreenshotWidget(QWidget *parent = 0);
@@ -56,7 +60,7 @@ public:
 
 signals:
 	void pixmapCaptured(QPixmap pixmap);
-	void closed();
+	void canceled();
 
 };
 

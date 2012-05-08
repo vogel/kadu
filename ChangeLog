@@ -14,6 +14,8 @@
 * history: #2550 fixed: ask user for removing history (marseel)
 * gui: #953 done: use directory selection dialog in screenshot plugin (mazlik)
 * gui: #2574 fixed: do not crash Kadu after deletion of currently used chat syntax (Vogel)
+* screenshot: #2558 fixed: activate and focus screenshot window properly, handle Esc and Return keys (ultr)
+* tabs: #2005 fixed: support for alt+[0-9] shurtcuts in tabs window (mazlik)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
