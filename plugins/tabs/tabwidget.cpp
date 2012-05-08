@@ -7,6 +7,7 @@
  * Copyright 2009, 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Jiri Zamazal (zamazal.jiri@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -54,6 +55,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	setDocumentMode(true);
 	setElideMode(Qt::ElideRight);
+
 
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
@@ -182,6 +184,26 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabLeft();
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
+	else if (HotKey::keyEventToString(e) == "Alt+0")
+		setCurrentIndex(count() - 1);
+	else if (HotKey::keyEventToString(e) == "Alt+1")
+		setCurrentIndex(0);
+	else if (HotKey::keyEventToString(e) == "Alt+2")
+		setCurrentIndex(1);
+	else if (HotKey::keyEventToString(e) == "Alt+3")
+		setCurrentIndex(2);
+	else if (HotKey::keyEventToString(e) == "Alt+4")
+		setCurrentIndex(3);
+	else if (HotKey::keyEventToString(e) == "Alt+5")
+		setCurrentIndex(4);
+	else if (HotKey::keyEventToString(e) == "Alt+6")
+		setCurrentIndex(5);
+	else if (HotKey::keyEventToString(e) == "Alt+7")
+		setCurrentIndex(6);
+	else if (HotKey::keyEventToString(e) == "Alt+8")
+		setCurrentIndex(7);
+	else if (HotKey::keyEventToString(e) == "Alt+9")
+		setCurrentIndex(8);
 	else
 		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
 		handled = false;
