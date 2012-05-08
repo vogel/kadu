@@ -1981,65 +1981,6 @@ changes upon establishing connection to the server</source>
     </message>
 </context>
 <context>
-    <name>StatusWindow</name>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>keep mixed statuses</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Change account status: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select Previously Used Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear Descriptions History</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Erase Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Set status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do you really want to clear the descriptions history?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>do not change</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ChooseIdentityWidget</name>
     <message>
         <source>Create new description...</source>
@@ -2534,10 +2475,6 @@ This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
     </message>
     <message>
         <source>Please enter the name for the new identity:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> - Select identity - </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3164,21 +3101,6 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
     </message>
 </context>
 <context>
-    <name>PreviousDescriptionsWindow</name>
-    <message>
-        <source>Previous descriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3576,11 +3498,19 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Select Previously Used Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Descriptions History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Choose description...</source>
+        <source>Erase Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3588,7 +3518,11 @@ Maybe it&apos;s not Kadu-compatible plugin.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear</source>
+        <source>Do you really want to clear the descriptions history?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>do not change</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

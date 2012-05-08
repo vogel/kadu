@@ -2485,10 +2485,6 @@ Was soll ich tun?</translation>
         <source>Please enter the name for the new identity:</source>
         <translation>Geben Sie bitte den Namen für die neue Identität ein:</translation>
     </message>
-    <message>
-        <source> - Select identity - </source>
-        <translation> - Identität auswählen - </translation>
-    </message>
 </context>
 <context>
     <name>IdentityManager</name>
@@ -3119,21 +3115,6 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
     </message>
 </context>
 <context>
-    <name>PreviousDescriptionsWindow</name>
-    <message>
-        <source>Previous descriptions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Abbrechen</translation>
-    </message>
-</context>
-<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3535,16 +3516,28 @@ Vielleicht ist das Modul nich Kadu-kompatibel.</translation>
         <translation type="unfinished">Beschreibung</translation>
     </message>
     <message>
-        <source>Choose description...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Set status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Clear</source>
-        <translation type="unfinished">Leeren</translation>
+        <source>Select Previously Used Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear Descriptions History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Erase Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>do not change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to clear the descriptions history?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

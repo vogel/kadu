@@ -154,6 +154,14 @@ Měl by být větší.</translation>
         <source>Drag this icon onto the desired window</source>
         <translation type="unfinished">Přetáhněte ikonu do některého z oken</translation>
     </message>
+    <message>
+        <source>Window Shot</source>
+        <translation type="unfinished">Snímek okna</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotToolBox</name>

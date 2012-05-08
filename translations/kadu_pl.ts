@@ -1994,65 +1994,6 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
-    <name>StatusWindow</name>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Anuluj</translation>
-    </message>
-    <message>
-        <source>keep mixed statuses</source>
-        <translation>zachowaj różne statusy</translation>
-    </message>
-    <message>
-        <source>Change status</source>
-        <translation>Zmień status</translation>
-    </message>
-    <message>
-        <source>Change account status: %1</source>
-        <translation>Zmień status konta: %1</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation>Status</translation>
-    </message>
-    <message>
-        <source>Select Previously Used Description</source>
-        <translation>Wybierz poprzednio użyty opis</translation>
-    </message>
-    <message>
-        <source>Clear Descriptions History</source>
-        <translation>Wyczyść historię opisów</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>Opis</translation>
-    </message>
-    <message>
-        <source>Erase Description</source>
-        <translation>Wyczyść opis</translation>
-    </message>
-    <message>
-        <source>&amp;Set status</source>
-        <translation>&amp;Ustaw status</translation>
-    </message>
-    <message>
-        <source>Do you really want to clear the descriptions history?</source>
-        <translation>Czy na pewno chcesz wyczyścić historię opisów?</translation>
-    </message>
-    <message>
-        <source>Yes</source>
-        <translation>Tak</translation>
-    </message>
-    <message>
-        <source>No</source>
-        <translation>Nie</translation>
-    </message>
-    <message>
-        <source>do not change</source>
-        <translation>nie zmieniaj</translation>
-    </message>
-</context>
-<context>
     <name>ChooseIdentityWidget</name>
     <message>
         <source>Create new description...</source>
@@ -2554,10 +2495,6 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     <message>
         <source>Please enter the name for the new identity:</source>
         <translation>Podaj nazwę dla nowej tożsamości:</translation>
-    </message>
-    <message>
-        <source> - Select identity - </source>
-        <translation> - Wybierz tożsamość - </translation>
     </message>
 </context>
 <context>
@@ -3196,21 +3133,6 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>PreviousDescriptionsWindow</name>
-    <message>
-        <source>Previous descriptions</source>
-        <translation>Poprzednie opisy</translation>
-    </message>
-    <message>
-        <source>&amp;Select</source>
-        <translation>&amp;Wybierz</translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation>&amp;Anuluj</translation>
-    </message>
-</context>
-<context>
     <name>ProgressWindow</name>
     <message>
         <source>Plase wait. New Gadu-Gadu account is being registered.</source>
@@ -3608,20 +3530,32 @@ Być może nie jest zgodna z Kadu.</translation>
         <translation>Status</translation>
     </message>
     <message>
+        <source>Select Previously Used Description</source>
+        <translation>Wybierz poprzednio użyty opis</translation>
+    </message>
+    <message>
+        <source>Clear Descriptions History</source>
+        <translation>Wyczyść historię opisów</translation>
+    </message>
+    <message>
         <source>Description</source>
         <translation>Opis</translation>
     </message>
     <message>
-        <source>Choose description...</source>
-        <translation>Wybierz opis...</translation>
+        <source>Erase Description</source>
+        <translation>Wyczyść opis</translation>
     </message>
     <message>
         <source>&amp;Set status</source>
         <translation>&amp;Ustaw status</translation>
     </message>
     <message>
-        <source>Clear</source>
-        <translation>Wyczyść</translation>
+        <source>Do you really want to clear the descriptions history?</source>
+        <translation>Czy na pewno chcesz wyczyścić historię opisów?</translation>
+    </message>
+    <message>
+        <source>do not change</source>
+        <translation>nie zmieniaj</translation>
     </message>
 </context>
 <context>

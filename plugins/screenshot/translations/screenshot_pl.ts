@@ -154,6 +154,14 @@ Powinien być większy.</translation>
         <source>Drag this icon onto the desired window</source>
         <translation>Przeciągnij poniższą ikonę na wybrane okno</translation>
     </message>
+    <message>
+        <source>Window Shot</source>
+        <translation>Zrzut okna</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Anuluj</translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotToolBox</name>

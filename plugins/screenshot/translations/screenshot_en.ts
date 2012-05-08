@@ -152,6 +152,14 @@ It should be bigger.</source>
         <source>Drag this icon onto the desired window</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Window Shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotToolBox</name>
