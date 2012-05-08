@@ -184,34 +184,29 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabLeft();
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
+	else if (HotKey::keyEventToString(e) == "Alt+0")
+		setCurrentIndex(count() - 1);
+	else if (HotKey::keyEventToString(e) == "Alt+1")
+		setCurrentIndex(0);
+	else if (HotKey::keyEventToString(e) == "Alt+2")
+		setCurrentIndex(1);
+	else if (HotKey::keyEventToString(e) == "Alt+3")
+		setCurrentIndex(2);
+	else if (HotKey::keyEventToString(e) == "Alt+4")
+		setCurrentIndex(3);
+	else if (HotKey::keyEventToString(e) == "Alt+5")
+		setCurrentIndex(4);
+	else if (HotKey::keyEventToString(e) == "Alt+6")
+		setCurrentIndex(5);
+	else if (HotKey::keyEventToString(e) == "Alt+7")
+		setCurrentIndex(6);
+	else if (HotKey::keyEventToString(e) == "Alt+8")
+		setCurrentIndex(7);
+	else if (HotKey::keyEventToString(e) == "Alt+9")
+		setCurrentIndex(8);
 	else
-	{
-		if(QKeySequence("Alt+0")[0] == (e->key() | e->modifiers()))
-			newChat();	
-		else if(QKeySequence("Alt+1")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(0);
-		else if(QKeySequence("Alt+1")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(0);
-		else if(QKeySequence("Alt+2")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(1);
-		else if(QKeySequence("Alt+3")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(2);
-		else if(QKeySequence("Alt+4")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(3);
-		else if(QKeySequence("Alt+5")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(4);
-		else if(QKeySequence("Alt+6")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(5);
-		else if(QKeySequence("Alt+7")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(6);
-		else if(QKeySequence("Alt+8")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(7);
-		else if(QKeySequence("Alt+9")[0] == (e->key() | e->modifiers()))
-			setCurrentIndex(8);
-		else
-			// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
-			handled = false;
-	}
+		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
+		handled = false;
 }
 
 void TabWidget::onContextMenu(int id, const QPoint &pos)
