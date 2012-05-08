@@ -49,8 +49,17 @@ if (NOT KADU_DO_NOT_FIND)
     endif (KADU_INCLUDE_DIR)
 endif (NOT KADU_DO_NOT_FIND)
 
+option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
+if (KADU_INSTALLS_SDK OR WIN32)
+	option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
+endif (KADU_INSTALLS_SDK OR WIN32)
+
 if (NOT MSVC AND NOT XCODE_VERSION AND NOT CMAKE_BUILD_TYPE)
-	set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
+	if (ENABLE_DEVELOPER_BUILD)
+		set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
+	else (ENABLE_DEVELOPER_BUILD)
+		set (CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
+	endif (ENABLE_DEVELOPER_BUILD)
 endif (NOT MSVC AND NOT XCODE_VERSION AND NOT CMAKE_BUILD_TYPE)
 
 # never use -O3 on GCC unless explicitly set by the user
@@ -58,11 +67,6 @@ if (CMAKE_COMPILER_IS_GNUCXX)
 	string (REPLACE "-O3" "-O2" CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}")
 	string (REPLACE "-O3" "-O2" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
 endif (CMAKE_COMPILER_IS_GNUCXX)
-
-option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
-if (KADU_INSTALLS_SDK OR WIN32)
-	option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
-endif (KADU_INSTALLS_SDK OR WIN32)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
 	set (DEBUG_ENABLED 1)
