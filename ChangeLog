@@ -17,6 +17,7 @@
 * screenshot: #2558 fixed: activate and focus screenshot window properly, handle Esc and Return keys (ultr)
 * tabs: #2005 fixed: support for alt+[0-9] shurtcuts in tabs window (mazlik)
 * build: by default compile with optimizations turned on (RelWithDebInfo instead of Debug) (beevvy)
+* spellchecker: switch default backend from aspell to enchant (aspell is still available) (beevvy)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
