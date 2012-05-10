@@ -8,6 +8,7 @@
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
  * Copyright 2004, 2005, 2006, 2007 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -40,6 +41,7 @@
 #include "services/chat-service.h"
 #include "services/chat-state-service.h"
 #include "services/roster-service.h"
+#include "status/status-adapter.h"
 #include "status/status-type-manager.h"
 #include "status/status.h"
 #include "debug.h"
@@ -125,8 +127,8 @@ void Protocol::setStatus(Status status, StatusChangeSource source)
 	if (SourceStatusChanger == source && !account().hasPassword())
 		return;
 
-	LoginStatus = status;
-	doSetStatus(status);
+	LoginStatus = protocolFactory()->statusAdapter()->adapt(status);
+	doSetStatus(LoginStatus);
 }
 
 void Protocol::doSetStatus(Status status)
