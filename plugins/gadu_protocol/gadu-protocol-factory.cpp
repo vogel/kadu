@@ -38,6 +38,7 @@
 #include "gadu-contact-details.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol.h"
+#include "gadu-status-adapter.h"
 
 #include "gadu-protocol-factory.h"
 
@@ -57,6 +58,8 @@ void GaduProtocolFactory::destroyInstance()
 
 GaduProtocolFactory::GaduProtocolFactory()
 {
+	MyStatusAdapter = new GaduStatusAdapter();
+
 	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);
 	SupportedStatusTypes.append(StatusTypeOnline);

@@ -102,6 +102,7 @@ set (SOURCES
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 	gadu-protocol-plugin.cpp
+	gadu-status-adapter.cpp
 	gadu-url-handler.cpp
 )
 
