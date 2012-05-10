@@ -163,6 +163,7 @@ set (SOURCES
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	jabber-protocol-plugin.cpp
+	jabber-status-adapter.cpp
 	jabber-url-handler.cpp
 	facebook-protocol-factory.cpp
 	gtalk-protocol-factory.cpp

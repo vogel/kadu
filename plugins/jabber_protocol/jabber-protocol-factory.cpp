@@ -36,6 +36,7 @@
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
 #include "jabber-protocol.h"
+#include "jabber-status-adapter.h"
 
 JabberProtocolFactory * JabberProtocolFactory::Instance = 0;
 
@@ -53,6 +54,8 @@ void JabberProtocolFactory::destroyInstance()
 
 JabberProtocolFactory::JabberProtocolFactory()
 {
+	MyStatusAdapter = new JabberStatusAdapter();
+
 	// already sorted
 	SupportedStatusTypes.append(StatusTypeFreeForChat);
 	SupportedStatusTypes.append(StatusTypeOnline);

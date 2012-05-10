@@ -7,6 +7,7 @@
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +28,7 @@
 #define JABBER_PROTOCOL_FACTORY_H
 
 #include "protocols/protocol-factory.h"
+#include "status/status-adapter.h"
 
 class JabberProtocolFactory : public ProtocolFactory
 {
@@ -35,6 +37,8 @@ class JabberProtocolFactory : public ProtocolFactory
 
 	static JabberProtocolFactory *Instance;
 	QList<StatusType> SupportedStatusTypes;
+
+	StatusAdapter *MyStatusAdapter;
 
 public:
 	static void createInstance();
@@ -51,6 +55,7 @@ public:
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0);
     virtual ProtocolMenuManager * protocolMenuManager();
 	virtual QList<StatusType> supportedStatusTypes();
+	virtual StatusAdapter * statusAdapter() { return MyStatusAdapter; }
 	virtual QString idLabel();
 	virtual QValidator::State validateId(QString id);
 	virtual bool allowChangeServer();
