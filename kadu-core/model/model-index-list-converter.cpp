@@ -86,7 +86,13 @@ Chat ModelIndexListConverter::chatFromIndex(const QModelIndex &index) const
 	switch (index.data(ItemTypeRole).toInt())
 	{
 		case ChatRole:
-			return index.data(ChatRole).value<Chat>();
+		{
+			Chat chat = index.data(ChatRole).value<Chat>();
+			if (chat.chatAccount())
+				return chat;
+			else
+				return Chat::null;
+		}
 		case BuddyRole:
 			return MessageManager::instance()->unreadMessageForBuddy(index.data(BuddyRole).value<Buddy>()).messageChat();
 		case ContactRole:
