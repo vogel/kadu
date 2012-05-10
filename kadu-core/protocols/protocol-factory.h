@@ -8,6 +8,7 @@
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -33,6 +34,7 @@
 
 #include "contacts/contact-details.h"
 #include "exports.h"
+#include "status/status-adapter.h"
 
 class Account;
 class AccountDetails;
@@ -65,6 +67,7 @@ public:
 	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType> supportedStatusTypes() = 0;
+	virtual StatusAdapter * statusAdapter() = 0;
 	virtual QString idLabel() = 0;
 	virtual QValidator::State validateId(QString id) = 0;
 	virtual bool canRegister() { return true; }
