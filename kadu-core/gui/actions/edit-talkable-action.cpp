@@ -97,7 +97,7 @@ void EditTalkableAction::updateChatActionState(Action *action)
 
 	const Chat &chat = actionChat(action->context());
 	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	action->setEnabled(!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty()));
+	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 
 void EditTalkableAction::updateBuddyActionState(Action *action)
