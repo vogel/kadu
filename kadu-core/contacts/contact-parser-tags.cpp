@@ -34,7 +34,10 @@
 static QString getAvatarPath(Talkable talkable)
 {
 	const Avatar &avatar = talkable.avatar();
-	return KaduPaths::webKitPath(avatar.filePath());
+	if (talkable.avatar().pixmap().isNull())
+		return QString();
+	else
+		return KaduPaths::webKitPath(avatar.filePath());
 }
 
 static QString getStatusIconPath(Talkable talkable)
