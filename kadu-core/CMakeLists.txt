@@ -151,10 +151,12 @@ if (UNIX AND NOT APPLE)
 	endif (X11_FOUND)
 
 	include_directories (${X11_INCLUDE_DIR})
+	list (APPEND ADDITIONAL_LIBRARIES ${X11_X11_LIB})
 
 	if (USE_X11_XFIXES)
 		if (X11_Xfixes_FOUND)
 			message (STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
+			list (APPEND ADDITIONAL_LIBRARIES ${X11_Xfixes_LIB})
 		else (X11_Xfixes_FOUND)
 			message (FATAL_ERROR "Could not find X11 Xfixes extension")
 		endif (X11_Xfixes_FOUND)
@@ -173,6 +175,10 @@ if (UNIX AND NOT APPLE)
 		DEPENDS ${DESKTOP_ENTRY}
 	)
 endif (UNIX AND NOT APPLE)
+
+if (APPLE)
+	list (APPEND ADDITIONAL_LIBRARIES "-framework carbon")
+endif (APPLE)
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 	if (FAST_LINKING)
@@ -285,15 +291,7 @@ else (WIN32)
 		LINK_INTERFACE_LIBRARIES ""
 	)
 
-	target_link_libraries (kadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${CMAKE_DL_LIBS} ${ADDITIONAL_LIBRARIES})
-
-	if (UNIX AND NOT APPLE)
-		target_link_libraries (kadu ${X11_X11_LIB})
-
-		if (USE_X11_XFIXES)
-			target_link_libraries (kadu ${X11_Xfixes_LIB})
-		endif (USE_X11_XFIXES)
-	endif (UNIX AND NOT APPLE)
+	target_link_libraries (kadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 endif (WIN32)
 
 install (TARGETS kadu DESTINATION ${KADU_BINDIR})
@@ -315,10 +313,6 @@ if (UNIX AND NOT APPLE)
 endif (UNIX AND NOT APPLE)
 
 install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_DATADIR}/scripts")
-
-if (APPLE)
-	target_link_libraries (kadu "-framework carbon")
-endif (APPLE)
 
 # install api headers
 kadu_api_directories (kadu-core
