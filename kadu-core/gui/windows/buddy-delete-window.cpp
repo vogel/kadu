@@ -2,7 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2010, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
- * Copyright 2010 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2010, 2012 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
@@ -86,6 +86,8 @@ void BuddyDeleteWindow::createGui()
 
 	AdditionalDataListView = new QListWidget(contentWidget);
 	contentLayout->addWidget(AdditionalDataListView);
+	connect(AdditionalDataListView, SIGNAL(itemPressed(QListWidgetItem *)), this, SLOT(additionalDataListViewItemPressed(QListWidgetItem *)));
+	connect(AdditionalDataListView, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(additionalDataListViewItemClicked(QListWidgetItem *)));
 
 	fillAdditionalDataListView();
 
@@ -159,4 +161,23 @@ void BuddyDeleteWindow::accept()
 void BuddyDeleteWindow::reject()
 {
 	QDialog::reject();
+}
+
+void BuddyDeleteWindow::additionalDataListViewItemPressed(QListWidgetItem *item)
+{
+	if (!item)
+		return;
+
+	// required for proper handling of mouse double clicks
+	ItemState = item->checkState();
+}
+
+void BuddyDeleteWindow::additionalDataListViewItemClicked(QListWidgetItem *item)
+{
+	if (!item)
+		return;
+
+	ItemState = (ItemState == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
+
+	item->setCheckState(ItemState);
 }
