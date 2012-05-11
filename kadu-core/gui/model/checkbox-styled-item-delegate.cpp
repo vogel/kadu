@@ -31,12 +31,37 @@ CheckboxStyledItemDelegate::~CheckboxStyledItemDelegate()
 {
 }
 
+QRect CheckboxStyledItemDelegate::getCenteredComboBoxRect(const QStyleOptionViewItem &option) const
+{
+	QSize size = QApplication::style()->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
+#ifdef Q_WS_WIN
+	size.setWidth(size.width() + QApplication::style()->->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
+#endif
+
+	QPoint center = option.rect.center();
+	QRect result;
+	result.setTop(center.y() - size.height() / 2);
+	result.setLeft(center.x() - size.width() / 2);
+	result.setSize(size);
+
+	return result;
+}
+#include <stdio.h>
 void CheckboxStyledItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	QStyleOptionButton checkBoxOption;
-	checkBoxOption.rect = option.rect;
-	checkBoxOption.state = QStyle::State_Enabled | (index.data().toBool() ? QStyle::State_On : QStyle::State_Off);
+	QStyleOptionViewItemV4 opt = option;
+	initStyleOption(&opt, index);
+	opt.text.clear(); // do not display anything in background, only show checkbox
 
+	QStyleOptionButton checkBoxOption;
+
+	checkBoxOption.rect = getCenteredComboBoxRect(option);
+	checkBoxOption.state = opt.state | (index.data().toBool() ? QStyle::State_On : QStyle::State_Off);
+
+	if (!index.flags().testFlag(Qt::ItemIsEditable))
+		checkBoxOption.state = checkBoxOption.state & ~QStyle::State_Enabled;
+
+	QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter); // draw background
 	QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkBoxOption, painter);
 }
 
@@ -46,7 +71,18 @@ QWidget * CheckboxStyledItemDelegate::createEditor(QWidget *parent, const QStyle
 
 	QCheckBox *checkBox = new QCheckBox(parent);
 	checkBox->setChecked(index.data().toBool());
+
+	if (!index.flags().testFlag(Qt::ItemIsEditable))
+		checkBox->setEnabled(false);
+
 	return checkBox;
+}
+
+void CheckboxStyledItemDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	Q_UNUSED(index);
+
+	editor->setGeometry(getCenteredComboBoxRect(option));
 }
 
 void CheckboxStyledItemDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const

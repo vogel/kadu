@@ -39,6 +39,14 @@ class CheckboxStyledItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return rect for QCheckBox that is centered in containerRect.
+	 * @param option item view option, it contains container rect data
+	 * @return centered rect for QCheckBox
+	 */
+	QRect getCenteredComboBoxRect(const QStyleOptionViewItem &option) const;
+
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -65,6 +73,15 @@ public:
 	 * @return new editor - QCheckBox instance
 	 */
 	virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Center editor QCheckBox.
+	 * @param editor checkbox to center
+	 * @param option style options for new widget
+	 * @param index data source, ignored
+	 */
+	virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
