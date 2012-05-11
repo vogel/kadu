@@ -23,8 +23,6 @@
 
 #include "action-filter-proxy-model.h"
 
-Q_DECLARE_METATYPE(QAction *)
-
 ActionFilterProxyModel::ActionFilterProxyModel(QObject *parent) :
 		QSortFilterProxyModel(parent), Size(0), Model(0)
 {

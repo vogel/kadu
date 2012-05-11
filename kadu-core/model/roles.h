@@ -26,7 +26,9 @@
 #ifndef ROLES_H
 #define ROLES_H
 
+#include <QtCore/QMetaType>
 #include <QtCore/QSet>
+#include <QtGui/QAction>
 
 const int KaduRoles = 1000;
 
@@ -50,5 +52,7 @@ const int NetworkProxyRole = KaduRoles + 17;
 const int TalkableRole = KaduRoles + 18;
 
 typedef QSet<int> RoleSet;
+// needed for ActionRole
+Q_DECLARE_METATYPE(QAction *);
 
 #endif // ROLES_H

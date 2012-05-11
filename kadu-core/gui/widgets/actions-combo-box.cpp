@@ -28,8 +28,6 @@
 
 #include "actions-combo-box.h"
 
-Q_DECLARE_METATYPE(QAction *);
-
 ActionsComboBox::ActionsComboBox(QWidget *parent) :
 		QComboBox(parent),
 		KaduModel(0), DataRole(0), LastIndex(-1)

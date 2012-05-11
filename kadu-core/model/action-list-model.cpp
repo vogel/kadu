@@ -23,8 +23,6 @@
 
 #include "action-list-model.h"
 
-Q_DECLARE_METATYPE(QAction *)
-
 ActionListModel::ActionListModel(QObject *parent) :
 		QAbstractItemModel(parent)
 {
