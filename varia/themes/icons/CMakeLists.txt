@@ -54,16 +54,17 @@ if (ICON_THEMES)
 			else (NOT GZIP_EXECUTABLE OR (WIN32 AND NOT CMD_EXECUTABLE))
 				foreach (inFile ${inFiles})
 					set (outFile "${CMAKE_CURRENT_BINARY_DIR}/svgzs/${inFile}z")
+					string (REGEX REPLACE "/[^/]*$" "" outFileDir "${outFile}")
 					if (WIN32)
-						string (REGEX REPLACE "/[^/]*$" "" outFileDir "${outFile}")
-						file (MAKE_DIRECTORY "${outFileDir}")
-						set (command "${CMD_EXECUTABLE}" "/c" "\"\"${GZIP_EXECUTABLE}\" --best -c \"${CMAKE_CURRENT_SOURCE_DIR}/${inFile}\" > \"${outFile}\"\"")
+						set (gzip_command "${CMD_EXECUTABLE}" "/c" "\"\"${GZIP_EXECUTABLE}\" --best -c \"${CMAKE_CURRENT_SOURCE_DIR}/${inFile}\" > \"${outFile}\"\"")
 					else (WIN32)
-						set (command mkdir -p `dirname "${outFile}"` && "${GZIP_EXECUTABLE}" --best -c "${CMAKE_CURRENT_SOURCE_DIR}/${inFile}" > "${outFile}")
+						set (gzip_command "${GZIP_EXECUTABLE}" --best -c "${CMAKE_CURRENT_SOURCE_DIR}/${inFile}" > "${outFile}")
 					endif (WIN32)
 
 					add_custom_command (OUTPUT "${outFile}"
-						COMMAND ${command}
+						COMMAND "${CMAKE_COMMAND}" -E make_directory ${outFileDir}
+						COMMAND ${gzip_command}
+						VERBATIM
 					)
 
 					set (outFiles ${outFiles} "${outFile}")
