@@ -8,6 +8,8 @@
 
 	#include "configuration/configuration-file.h"
 	#include "os/x11tools.h"
+	#undef KeyPress
+	#undef Status
 
 	bool _isActiveWindow( QWidget *window )
 	{

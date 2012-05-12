@@ -41,6 +41,8 @@
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 #include <X11/Xdefs.h>
+#undef KeyPress
+#undef Status
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
 #include "exports.h"

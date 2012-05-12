@@ -77,6 +77,7 @@
 
 #ifdef Q_WS_X11
 #include "os/x11tools.h" // this should be included as last one,
+#undef KeyPress
 #undef Status            // and Status defined by Xlib.h must be undefined
 #endif
 

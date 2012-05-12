@@ -42,7 +42,7 @@
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
-#undef Bool
+#undef KeyPress
 #undef Status
 
 #include <QtGui/QX11Info>
