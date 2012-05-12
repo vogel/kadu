@@ -1,8 +1,8 @@
-if (NOT MSVC)
+if (NOT MSVC AND NOT APPLE)
 	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" ON)
-else (NOT MSVC)
+else (NOT MSVC AND NOT APPLE)
 	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" OFF)
-endif (NOT MSVC)
+endif (NOT MSVC AND NOT APPLE)
 
 if (FAST_LINKING)
 	message (STATUS "Fast linking enabled")
