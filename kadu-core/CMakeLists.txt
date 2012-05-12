@@ -8,10 +8,10 @@ if (FAST_LINKING)
 	message (STATUS "Fast linking enabled")
 endif (FAST_LINKING)
 
-if (UNIX)
+if (NOT WIN32)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
-	if (NOT APPLE)
+	if (UNIX AND NOT APPLE)
 		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
 
 		pkg_search_module (INDICATEQT indicate-qt)
@@ -22,8 +22,8 @@ if (UNIX)
 			message (STATUS "libindicate-qt devel NOT FOUND. Disabling Ayatana support")
 			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
 		endif (INDICATEQT_FOUND)
-	endif (NOT APPLE)
-endif (UNIX)
+	endif (UNIX AND NOT APPLE)
+endif (NOT WIN32)
 
 if (NOT NETWORK_IMPLEMENTATION)
 	include (FindQNtrack)
