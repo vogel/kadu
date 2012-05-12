@@ -30,6 +30,7 @@
 #include <QtGui/QTabBar>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
+#include <QtGui/QWidget>
 
 #include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/custom-input.h"
@@ -80,7 +81,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	Q_OBJECT
 
 	QToolButton *CloseChatButton;
-	QToolButton *OpenChatButton;
+	QWidget *OpenChatButtonsWidget;
 
 	TabsManager *Manager;
 
@@ -114,6 +115,11 @@ private slots:
 	* Tu otwiera okienko lub przywraca ja na pierwszy plan
 	*/
 	void newChat();
+
+	/**
+	* Slot that handles click on button with last conversations
+	*/
+	void newChatFromLastConversation();
 
 	/**
 	* Slot zostaje wywołany w celu zmiany pozycji karty.
