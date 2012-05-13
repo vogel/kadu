@@ -23,56 +23,41 @@ if (ICON_THEMES)
 			file (GLOB_RECURSE tmp RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
 				"${CMAKE_CURRENT_SOURCE_DIR}/${ICON_THEME}/*.svg"
 			)
-			set (inFiles ${inFiles} ${tmp})
+			list (APPEND inFiles ${tmp})
 		endforeach (ICON_THEME)
 
 		if (inFiles)
 			if (WIN32)
 				set (guessed_paths
-					"C:/Program Files/GnuWin32/bin"
-					"C:/Program Files (x86)/GnuWin32/bin"
 					"C:/Program Files/Git/bin"
 					"C:/Program Files (x86)/Git/bin"
+					"C:/Program Files/GnuWin32/bin"
+					"C:/Program Files (x86)/GnuWin32/bin"
 				)
-			else (WIN32)
-				set (guessed_paths)
 			endif (WIN32)
 
-			if (WIN32)
-				find_program (CMD_EXECUTABLE cmd)
-			endif (WIN32)
 			find_program (GZIP_EXECUTABLE gzip
 				PATHS ${guessed_paths}
 				DOC "gzip command line utility"
 			)
-			if (NOT GZIP_EXECUTABLE OR (WIN32 AND NOT CMD_EXECUTABLE))
-				if (WIN32 AND NOT CMD_EXECUTABLE)
-					message (STATUS "Could not compress SVG files: cmd.exe not found")
-				else (WIN32 AND NOT CMD_EXECUTABLE)
-					message (STATUS "Could not compress SVG files: gzip not found")
-				endif (WIN32 AND NOT CMD_EXECUTABLE)
-			else (NOT GZIP_EXECUTABLE OR (WIN32 AND NOT CMD_EXECUTABLE))
+			if (NOT GZIP_EXECUTABLE)
+				message (STATUS "Could not compress SVG files: gzip not found")
+			else (NOT GZIP_EXECUTABLE)
 				foreach (inFile ${inFiles})
 					set (outFile "${CMAKE_CURRENT_BINARY_DIR}/svgzs/${inFile}z")
+					list (APPEND outFiles "${outFile}")
 					string (REGEX REPLACE "/[^/]*$" "" outFileDir "${outFile}")
-					if (WIN32)
-						set (gzip_command "${CMD_EXECUTABLE}" "/c" "\"\"${GZIP_EXECUTABLE}\" --best -c \"${CMAKE_CURRENT_SOURCE_DIR}/${inFile}\" > \"${outFile}\"\"")
-					else (WIN32)
-						set (gzip_command "${GZIP_EXECUTABLE}" --best -c "${CMAKE_CURRENT_SOURCE_DIR}/${inFile}" > "${outFile}")
-					endif (WIN32)
 
 					add_custom_command (OUTPUT "${outFile}"
-						COMMAND "${CMAKE_COMMAND}" -E make_directory ${outFileDir}
-						COMMAND ${gzip_command}
+						COMMAND "${CMAKE_COMMAND}" -E make_directory "${outFileDir}"
+						COMMAND "${GZIP_EXECUTABLE}" --best -c "${CMAKE_CURRENT_SOURCE_DIR}/${inFile}" > "${outFile}"
 						VERBATIM
 					)
-
-					set (outFiles ${outFiles} "${outFile}")
 				endforeach (inFile)
 
 				add_custom_target (compress_svgs ALL DEPENDS ${outFiles})
 				add_dependencies (icon_themes compress_svgs)
-			endif (NOT GZIP_EXECUTABLE OR (WIN32 AND NOT CMD_EXECUTABLE))
+			endif (NOT GZIP_EXECUTABLE)
 		endif (inFiles)
 	else (COMPRESS_SVG)
 		message (STATUS "SVG icons compressing disabled")
