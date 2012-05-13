@@ -46,10 +46,6 @@
 #include <QtGui/QTreeWidgetItem>
 #include <QtGui/QVBoxLayout>
 
-#ifndef Q_WS_WIN
-#include <dlfcn.h>
-#endif
-
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "gui/hot-key.h"
