@@ -273,8 +273,6 @@ set_target_properties (${KADU_MAIN_SOURCES_TARGET} PROPERTIES
 
 target_link_libraries (${KADU_MAIN_SOURCES_TARGET} ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 
-install (TARGETS ${KADU_MAIN_SOURCES_TARGET} DESTINATION ${KADU_BINDIR})
-
 if (WIN32)
 	add_executable (kadu WIN32 main.cpp main_win32.cpp kadu.rc)
 	add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
@@ -291,12 +289,14 @@ if (WIN32)
 		)
 	endif (INSTALL_SDK)
 
-	install (TARGETS kadu DESTINATION ${KADU_BINDIR})
+	install (TARGETS ${KADU_MAIN_SOURCES_TARGET} RUNTIME DESTINATION ${KADU_BINDIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
 
 	file (WRITE "${CMAKE_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
 	install (FILES "${CMAKE_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
 endif (WIN32)
+
+install (TARGETS kadu DESTINATION ${KADU_BINDIR})
 
 # install desktop file
 if (UNIX AND NOT APPLE)
