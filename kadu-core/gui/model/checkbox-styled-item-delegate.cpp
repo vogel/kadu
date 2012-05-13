@@ -35,7 +35,7 @@ QRect CheckboxStyledItemDelegate::getCenteredComboBoxRect(const QStyleOptionView
 {
 	QSize size = QApplication::style()->sizeFromContents(QStyle::CT_CheckBox, &option, QSize());
 #ifdef Q_WS_WIN
-	size.setWidth(size.width() + QApplication::style()->->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
+	size.setWidth(size.width() + QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, &option));
 #endif
 
 	QPoint center = option.rect.center();
