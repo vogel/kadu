@@ -22,6 +22,7 @@
 * gui: #2581 fixed: properly ignore non-existing avatars (Vogel)
 * core: #2559 fixed: StatusContainer::status() should return actual status instead of desired one (ultr)
 * gui: #2069 fixed: toggle checkboxes when the items are clicked in Delete Buddy window (ultr)
+* gui: #2588 fixed: in status menu check action of desired status not active one (ultr)
 
 +++ version 0.12.0-beta1
 * tabs: "Close all tabs but active one" action added (Juzef)
