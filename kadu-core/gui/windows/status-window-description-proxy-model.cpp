@@ -41,7 +41,9 @@ QVariant StatusWindowDescriptionProxyModel::data(const QModelIndex &index, int r
 		return QSortFilterProxyModel::data(index, role);
 
 	QString text = QSortFilterProxyModel::data(index, DescriptionRole).toString();
-	text = text.replace('\n', QString::fromUtf8(" \u21B5 "));
+	// it'd be easier to type QString::fromUtf8(" \u21B5 ") but it doesn't work in MSVC...
+	QChar arrow21b5[] = { QChar(' '), QChar(0xb5, 0x21), QChar(' '), QChar(0) };
+	text = text.replace('\n', QString(arrow21b5));
 	text = text.replace(QRegExp(" +"), " ");
 	text = text.trimmed();
 	text = StringUtils::ellipsis(text, DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH);
