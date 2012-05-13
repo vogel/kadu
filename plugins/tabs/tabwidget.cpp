@@ -27,8 +27,8 @@
 #include <QtGui/QDrag>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QMenu>
-#include <QPoint>
-#include <QVariant>
+#include <QtCore/QPoint>
+#include <QtCore/QVariant>
 
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
@@ -95,7 +95,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	//button for opening chat
 	QToolButton *OpenChatButton = new QToolButton(OpenChatButtonsWidget);
-	OpenChatButton->setIcon(KaduIcon("internet-group-chat").icon()); //another icon?
+	OpenChatButton->setIcon(KaduIcon("mail-message-new").icon()); //another icon?
 	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	
 	horizontalLayout->addWidget(OpenLastChatButton);
