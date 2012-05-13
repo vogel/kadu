@@ -123,9 +123,9 @@ void GaduAddAccountWidget::resetGui()
 	AccountId->clear();
 	AccountPassword->clear();
 	RememberPassword->setChecked(true);
-	Identity->setCurrentIdentity(Identity::null);
-
 	IdentityManager::instance()->removeUnused();
+	Identity->setCurrentIndex(0);
+
 	dataChanged();
 }
 
@@ -176,7 +176,7 @@ void GaduAddAccountWidget::dataChanged()
 	if (AccountId->text().isEmpty()
 			&& AccountPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
-			&& !Identity->currentIdentity())
+			&& 0 == Identity->currentIndex())
 		setState(StateNotChanged);
 	else
 		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);

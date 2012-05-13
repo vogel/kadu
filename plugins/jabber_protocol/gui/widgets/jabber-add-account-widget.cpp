@@ -161,7 +161,7 @@ void JabberAddAccountWidget::dataChanged()
 			&& AccountPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
 			&& Domain->currentText() == Factory->defaultServer()
-			&& !Identity->currentIdentity())
+			&& 0 == Identity->currentIndex())
 		setState(StateNotChanged);
 	else
 		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
@@ -216,10 +216,10 @@ void JabberAddAccountWidget::resetGui()
 	Username->clear();
 	Domain->setEditText(Factory->defaultServer());
 	RememberPassword->setChecked(true);
-	Identity->setCurrentIdentity(Identity::null);
+	IdentityManager::instance()->removeUnused();
+	Identity->setCurrentIndex(0);
 	AddAccountButton->setDisabled(true);
 
-	IdentityManager::instance()->removeUnused();
 	setState(StateNotChanged);
 }
 

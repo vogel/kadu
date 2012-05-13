@@ -274,7 +274,7 @@ void JabberCreateAccountWidget::dataChanged()
 			&& NewPassword->text().isEmpty()
 			&& ReNewPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
-			&& !IdentityCombo->currentIdentity()
+			&& 0 == IdentityCombo->currentIndex()
 			&& !CustomHostPort->isChecked()
 			&& CustomHost->text().isEmpty()
 			&& CustomPort->text().toUInt() == port_
@@ -320,7 +320,8 @@ void JabberCreateAccountWidget::resetGui()
 	NewPassword->clear();
 	ReNewPassword->clear();
 	RememberPassword->setChecked(true);
-	IdentityCombo->setCurrentIdentity(Identity::null);
+	IdentityManager::instance()->removeUnused();
+	IdentityCombo->setCurrentIndex(0);
 	ShowConnectionOptions = false;
 	ExpandConnectionOptionsButton->setText(">");
 	OptionsWidget->setVisible(false);
@@ -332,7 +333,6 @@ void JabberCreateAccountWidget::resetGui()
 	LegacySSLProbe->setChecked(true);
 	RegisterAccountButton->setEnabled(false);
 
-	IdentityManager::instance()->removeUnused();
 	setState(StateNotChanged);
 }
 
