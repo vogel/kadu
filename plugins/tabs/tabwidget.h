@@ -26,6 +26,7 @@
 #define TABS_TABWIDGET_H
 
 #include <QtGui/QCursor>
+#include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QTabBar>
 #include <QtGui/QTabWidget>
@@ -82,6 +83,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 
 	QToolButton *CloseChatButton;
 	QWidget *OpenChatButtonsWidget;
+	QMenu *RecentChatsMenu;
 
 	TabsManager *Manager;
 
@@ -118,8 +120,14 @@ private slots:
 
 	/**
 	* Slot that handles click on button with last conversations
+	* Opens a popup QMenu with last conversations
 	*/
 	void newChatFromLastConversation();
+
+	/**
+	* Slot for handling click on item from popup QMenu with last conversations
+	*/
+	void openRecentChat(QAction *action);
 
 	/**
 	* Slot zostaje wywołany w celu zmiany pozycji karty.
