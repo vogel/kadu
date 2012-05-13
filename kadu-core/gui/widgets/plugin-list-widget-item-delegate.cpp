@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2012 Marcel Zięba (marseel@gmail.com)
  * %kadu copyright end%
  *
  * This file is derived from part of the KDE project
@@ -256,7 +257,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         const QAbstractItemModel *model = index.model();
 
         QString info;
-        info += tr("Plugin name: %1\n").arg(model->data(index, PluginModel::NameRole).toString());
+        info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()).append("\n");
 
         PluginEntry *pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
 		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
@@ -267,11 +268,11 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
         	if (pluginInfo)
         	{
-                	info += tr("Author: %1\n").arg(pluginInfo->author());
-                	info += tr("Version: %1\n").arg(pluginInfo->version());
-                	info += tr("Description: %1\n").arg(pluginInfo->description());
-                	info += tr("Dependencies: %1\n").arg(pluginInfo->dependencies().join(", "));
-                	info += tr("Conflicts: %1\n").arg(pluginInfo->conflicts().join(", "));
+                	info += tr("Author: %1").arg(pluginInfo->author()).append("\n");
+                	info += tr("Version: %1").arg(pluginInfo->version()).append("\n");
+                	info += tr("Description: %1").arg(pluginInfo->description()).append("\n");
+                	info += tr("Dependencies: %1").arg(pluginInfo->dependencies().join(", ")).append("\n");
+                	info += tr("Conflicts: %1").arg(pluginInfo->conflicts().join(", "));
         	}
 		}
 
