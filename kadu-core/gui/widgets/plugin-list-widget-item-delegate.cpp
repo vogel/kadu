@@ -257,7 +257,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         const QAbstractItemModel *model = index.model();
 
         QString info;
-        info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()).append("\n");
+        info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
         PluginEntry *pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
 		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
@@ -268,10 +268,10 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
         	if (pluginInfo)
         	{
-                	info += tr("Author: %1").arg(pluginInfo->author()).append("\n");
-                	info += tr("Version: %1").arg(pluginInfo->version()).append("\n");
-                	info += tr("Description: %1").arg(pluginInfo->description()).append("\n");
-                	info += tr("Dependencies: %1").arg(pluginInfo->dependencies().join(", ")).append("\n");
+                	info += tr("Author: %1").arg(pluginInfo->author()) + "\n";
+                	info += tr("Version: %1").arg(pluginInfo->version()) + "\n";
+                	info += tr("Description: %1").arg(pluginInfo->description()) + "\n";
+                	info += tr("Dependencies: %1").arg(pluginInfo->dependencies().join(", ")) + "\n";
                 	info += tr("Conflicts: %1").arg(pluginInfo->conflicts().join(", "));
         	}
 		}
