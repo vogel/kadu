@@ -3064,33 +3064,27 @@ Być może nie jest zgodna z Kadu.</translation>
 <context>
     <name>PluginListWidgetItemDelegate</name>
     <message>
-        <source>Plugin name: %1
-</source>
+        <source>Plugin name: %1</source>
         <translation>Nazwa wtyczki: %1</translation>
     </message>
     <message>
-        <source>Author: %1
-</source>
+        <source>Author: %1</source>
         <translation>Autor: %1</translation>
     </message>
     <message>
-        <source>Version: %1
-</source>
+        <source>Version: %1</source>
         <translation>Wersja: %1</translation>
     </message>
     <message>
-        <source>Description: %1
-</source>
+        <source>Description: %1</source>
         <translation>Opis: %1</translation>
     </message>
     <message>
-        <source>Dependencies: %1
-</source>
+        <source>Dependencies: %1</source>
         <translation>Zależności: %1</translation>
     </message>
     <message>
-        <source>Conflicts: %1
-</source>
+        <source>Conflicts: %1</source>
         <translation>Konflikty: %1</translation>
     </message>
     <message>
