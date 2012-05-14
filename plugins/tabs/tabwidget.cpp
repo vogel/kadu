@@ -184,47 +184,30 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabLeft();
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
-	#ifdef Q_WS_MAC
-		else if (HotKey::keyEventToString(e) == "Ctrl+0")
-			setCurrentIndex(count() - 1);
-		else if (HotKey::keyEventToString(e) == "Ctrl+1")
-			setCurrentIndex(0);
-		else if (HotKey::keyEventToString(e) == "Ctrl+2")
-			setCurrentIndex(1);
-		else if (HotKey::keyEventToString(e) == "Ctrl+3")
-			setCurrentIndex(2);
-		else if (HotKey::keyEventToString(e) == "Ctrl+4")
-			setCurrentIndex(3);
-		else if (HotKey::keyEventToString(e) == "Ctrl+5")
-			setCurrentIndex(4);
-		else if (HotKey::keyEventToString(e) == "Ctrl+6")
-			setCurrentIndex(5);
-		else if (HotKey::keyEventToString(e) == "Ctrl+7")
-			setCurrentIndex(6);
-		else if (HotKey::keyEventToString(e) == "Ctrl+8")
-			setCurrentIndex(7);
-		else if (HotKey::keyEventToString(e) == "Ctrl+9")
-			setCurrentIndex(8);
+	#if defined(Q_WS_WIN) || defined(Q_WS_MAC)
+		#define TAB_SWITCH_MODIFIER "Ctrl"
+	#else
+		#define TAB_SWITCH_MODIFIER "Alt"
 	#endif
-	else if (HotKey::keyEventToString(e) == "Alt+0")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+0")
 		setCurrentIndex(count() - 1);
-	else if (HotKey::keyEventToString(e) == "Alt+1")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+1")
 		setCurrentIndex(0);
-	else if (HotKey::keyEventToString(e) == "Alt+2")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+2")
 		setCurrentIndex(1);
-	else if (HotKey::keyEventToString(e) == "Alt+3")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+3")
 		setCurrentIndex(2);
-	else if (HotKey::keyEventToString(e) == "Alt+4")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+4")
 		setCurrentIndex(3);
-	else if (HotKey::keyEventToString(e) == "Alt+5")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+5")
 		setCurrentIndex(4);
-	else if (HotKey::keyEventToString(e) == "Alt+6")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+6")
 		setCurrentIndex(5);
-	else if (HotKey::keyEventToString(e) == "Alt+7")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+7")
 		setCurrentIndex(6);
-	else if (HotKey::keyEventToString(e) == "Alt+8")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+8")
 		setCurrentIndex(7);
-	else if (HotKey::keyEventToString(e) == "Alt+9")
+	else if (HotKey::keyEventToString(e) == TAB_SWITCH_MODIFIER "+9")
 		setCurrentIndex(8);
 	else
 		// skrot nie zostal znaleziony i wykonany. Przekazujemy zdarzenie dalej
