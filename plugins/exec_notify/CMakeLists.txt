@@ -8,8 +8,6 @@ set (CMAKE_MIN_VERSION "2.6.0")
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
 
-include (FindPkgConfig)
-
 set (SOURCES
 	exec_notify.cpp
 	exec-notify-plugin.cpp

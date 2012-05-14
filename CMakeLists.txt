@@ -14,10 +14,6 @@ if (COMMAND cmake_policy)
 	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
 endif (COMMAND cmake_policy)
 
-include (FindPkgConfig)
-include (CheckIncludeFiles)
-include (CheckFunctionExists)
-
 if (NOT KADU_VERSION)
 	if (WIN32)
 		set (guessed_paths
@@ -61,9 +57,13 @@ if (WIN32)
 endif (WIN32)
 
 if (NOT WIN32)
+	include (CheckIncludeFiles)
+
 	# TODO: Add libexecinfo support
 	check_include_files ("execinfo.h" HAVE_EXECINFO)
 	if (HAVE_EXECINFO)
+		include (CheckFunctionExists)
+
 		check_function_exists ("backtrace" HAVE_EXECINFO)
 	endif (HAVE_EXECINFO)
 

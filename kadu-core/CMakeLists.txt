@@ -1,3 +1,5 @@
+include (FindPkgConfig)
+
 if (NOT MSVC AND NOT APPLE)
 	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" ON)
 else (NOT MSVC AND NOT APPLE)
@@ -158,7 +160,7 @@ if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (X11_FOUND)
 		message (STATUS "Found X11 libraries: ${X11_X11_LIB}")
-	else (X11_Xfixes_FOUND)
+	else (X11_FOUND)
 		message (FATAL_ERROR "Could not find X11 libraries")
 	endif (X11_FOUND)
 

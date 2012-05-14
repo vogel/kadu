@@ -9,8 +9,6 @@ set (KADU_FIND_REQUIRED true)
 set (KADU_INSTALLS_SDK TRUE)
 include (FindKadu)
 
-include (FindPkgConfig)
-
 kadu_api_directories (plugins/sound
 	configuration/gui
 	configuration
