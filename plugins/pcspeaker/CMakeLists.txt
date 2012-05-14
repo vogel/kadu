@@ -30,9 +30,16 @@ set (TRANSLATION_SOURCES
 #	configuration/pcspeaker.ui
 #)
 
+set (LIBRARIES "")
+
 if (UNIX AND NOT APPLE)
 	include (FindX11)
+	if (NOT X11_FOUND)
+		message (SEND_ERROR "X11 NOT FOUD")
+	endif (NOT X11_FOUND)
+
 	include_directories (${X11_INCLUDE_DIR})
+	set (LIBRARIES ${X11_X11_LIB})
 endif (UNIX AND NOT APPLE)
 
 kadu_plugin (pcspeaker
@@ -40,4 +47,5 @@ kadu_plugin (pcspeaker
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_LIBRARIES ${LIBRARIES}
 )

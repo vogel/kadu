@@ -51,9 +51,16 @@ set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
 
+set (LIBRARIES "")
+
 if (UNIX AND NOT APPLE)
 	include (FindX11)
+	if (NOT X11_Xshape_FOUND)
+		message (SEND_ERROR "X11 Xshape extension NOT FOUND")
+	endif (NOT X11_Xshape_FOUND)
+
 	include_directories (${X11_INCLUDE_DIR})
+	list (APPEND LIBRARIES ${X11_X11_LIB} ${X11_Xext_LIB})
 endif (UNIX AND NOT APPLE)
 
 kadu_plugin (screenshot
@@ -61,4 +68,5 @@ kadu_plugin (screenshot
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_LIBRARIES ${LIBRARIES}
 )
