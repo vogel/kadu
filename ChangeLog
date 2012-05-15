@@ -18,7 +18,6 @@
 * tabs: #2005 fixed: support for alt+[0-9] shurtcuts in tabs window (mazlik)
 * build: by default compile with optimizations turned on (RelWithDebInfo instead of Debug) (beevvy)
 * spellchecker: switch default backend from aspell to enchant (aspell is still available) (beevvy)
-* core: #2551 done: use the most online account's status for the tray icon (ultr)
 * gui: #2581 fixed: properly ignore non-existing avatars (Vogel)
 * core: #2559 fixed: StatusContainer::status() should return actual status instead of desired one (ultr)
 * gui: #2069 fixed: toggle checkboxes when the items are clicked in Delete Buddy window (ultr)
