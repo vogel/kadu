@@ -254,6 +254,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	if (lastMessage)
 	{
 		Message last = lastMessage->message();
+		Q_ASSERT(msg.receiveDate().toTime_t() >= last.receiveDate().toTime_t());
 
 		includeHeader =
 			msg.type() == MessageTypeSystem ||

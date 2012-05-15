@@ -161,6 +161,8 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		if (after && !includeHeader)
 		{
 			Message aft = after->message();
+			Q_ASSERT(msg.receiveDate().toTime_t() >= aft.receiveDate().toTime_t());
+
 			includeHeader =
 				(aft.type() == MessageTypeSystem) ||
 				((msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
