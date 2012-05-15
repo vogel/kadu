@@ -18,7 +18,6 @@
  */
 
 #include <QtCore/QSet>
-#include <qdbuspendingreply.h>
 
 #include "buddies/buddy-manager.h"
 #include "chat/buddy-chat-manager.h"
