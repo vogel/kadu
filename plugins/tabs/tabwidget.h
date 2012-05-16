@@ -84,6 +84,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	QToolButton *CloseChatButton;
 	QWidget *OpenChatButtonsWidget;
 	QMenu *RecentChatsMenu;
+	QToolButton *OpenRecentChatButton;
 
 	TabsManager *Manager;
 
@@ -128,6 +129,11 @@ private slots:
 	* Slot for handling click on item from popup QMenu with last conversations
 	*/
 	void openRecentChat(QAction *action);
+
+	/**
+	* Checks and enables/disables button for activating recent chat button
+	*/
+	void checkRecentChats();
 
 	/**
 	* Slot zostaje wywołany w celu zmiany pozycji karty.

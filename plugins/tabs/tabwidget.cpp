@@ -89,23 +89,27 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	horizontalLayout->setContentsMargins(4, 0, 4, 4);
 
 	//button for new chat from last conversations
-	QToolButton *OpenLastChatButton = new QToolButton(OpenChatButtonsWidget);
-	OpenLastChatButton->setIcon(KaduIcon("internet-group-chat").icon());
-	connect(OpenLastChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
+	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
+	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
 
 	//button for opening chat
-	QToolButton *OpenChatButton = new QToolButton(OpenChatButtonsWidget);
-	OpenChatButton->setIcon(KaduIcon("mail-message-new").icon()); //another icon?
-	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
+	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
+	openChatButton->setIcon(KaduIcon("mail-message-new").icon()); //another icon?
+	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	
-	horizontalLayout->addWidget(OpenLastChatButton);
-	horizontalLayout->addWidget(OpenChatButton);
+	horizontalLayout->addWidget(OpenRecentChatButton);
+	horizontalLayout->addWidget(openChatButton);
 
 	OpenChatButtonsWidget->setLayout(horizontalLayout);
 	OpenChatButtonsWidget->setVisible(false);
 
 	//menu for recent chats
 	RecentChatsMenu = new QMenu(this);
+
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(checkRecentChats()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(checkRecentChats()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(checkRecentChats()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
@@ -365,10 +369,6 @@ void TabWidget::newChat()
 	OpenChatWith::instance()->show();
 }
 
-/* 
- * these two methods for handling new chat from "recent chats" are similar to that ones in
- * "kadu-core/gui/windows/kadu-window.h" (private slots)
- */
 void TabWidget::newChatFromLastConversation()
 {
 	//load recent chats to popup menu
@@ -391,6 +391,17 @@ void TabWidget::openRecentChat(QAction *action)
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
 		chatWidget->activate();
+}
+
+void TabWidget::checkRecentChats()
+{
+	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
+		if (!ChatWidgetManager::instance()->byChat(chat, false))
+		{
+			OpenRecentChatButton->setEnabled(true);
+			return;
+		}
+	OpenRecentChatButton->setEnabled(false);
 }
 
 void TabWidget::deleteTab()
