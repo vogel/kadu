@@ -78,15 +78,13 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent *)),
 			SLOT(mouseDoubleClickEvent(QMouseEvent *)));
 
-	//widget (container) for buttons with opening conversations with horizontal box layout
+	//widget (container) for buttons with opening conversations
 	//both buttons are displayed when checking Show "New Tab" button in configurations
 	OpenChatButtonsWidget = new QWidget(this);
 	QHBoxLayout *horizontalLayout = new QHBoxLayout;
 
-	/* not sure if exact points are good choice but line with tabs is unstrachable in height
-		so 4 points up and down center it */
 	horizontalLayout->setSpacing(2);
-	horizontalLayout->setContentsMargins(4, 0, 4, 4);
+	horizontalLayout->setContentsMargins(3, 0, 2, 3);
 
 	//button for new chat from last conversations
 	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
@@ -95,7 +93,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	//button for opening chat
 	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
-	openChatButton->setIcon(KaduIcon("mail-message-new").icon()); //another icon?
+	openChatButton->setIcon(KaduIcon("mail-message-new").icon());
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	
 	horizontalLayout->addWidget(OpenRecentChatButton);
@@ -395,6 +393,7 @@ void TabWidget::openRecentChat(QAction *action)
 
 void TabWidget::checkRecentChats()
 {
+	//check if all recent chats are opened -> disable button
 	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
 		if (!ChatWidgetManager::instance()->byChat(chat, false))
 		{
