@@ -20,10 +20,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
+
 #include "network-manager-ntrack.h"
 
 NetworkManagerNTrack::NetworkManagerNTrack()
 {
+	// fuck QtNtrack
+	int argc = qApp->argc();
+	char **argv = qApp->argv();
+	QNtrack::instance()->init(&argc, &argv);
+
 	connect(QNtrack::instance(), SIGNAL(stateChanged(QNTrackState,QNTrackState)), this, SLOT(stateChanged(QNTrackState,QNTrackState)));
 }
 
@@ -31,17 +38,21 @@ NetworkManagerNTrack::~NetworkManagerNTrack()
 {
 }
 
+bool NetworkManagerNTrack::isOnline(QNTrackState state) const
+{
+	return state == NTRACK_STATE_ONLINE || state == NTRACK_STATE_UNKNOWN;
+}
+
 bool NetworkManagerNTrack::isOnline()
 {
-	QNTrackState state = QNtrack::instance()->networkState();
-	return state == NTRACK_STATE_ONLINE || state == NTRACK_STATE_UNKNOWN;
+	return isOnline(QNtrack::instance()->networkState());
 }
 
 void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newState)
 {
-	bool wasOnline = oldState == NTRACK_STATE_ONLINE || oldState == NTRACK_STATE_UNKNOWN;
-	bool isOnline = newState == NTRACK_STATE_ONLINE || newState == NTRACK_STATE_UNKNOWN;
+	bool wasOnline = isOnline(oldState);
+	bool nowOnline = isOnline(newState);
 
-	if (wasOnline != isOnline)
-		onlineStateChanged(isOnline);
+	if (wasOnline != nowOnline)
+		onlineStateChanged(nowOnline);
 }

@@ -54,6 +54,8 @@ class KADUAPI NetworkManagerNTrack : public NetworkManager
 {
 	Q_OBJECT
 
+	bool isOnline(QNTrackState state) const;
+
 private slots:
 	void stateChanged(QNTrackState oldState, QNTrackState newState);
 
