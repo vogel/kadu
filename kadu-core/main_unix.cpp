@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -47,6 +48,14 @@
 
 static void badSignalHandler(int signal)
 {
+	// We are calling abort(3) in this handler and we want it to always
+	// perform its default action (i.e., generate core dump and terminate).
+	struct sigaction sa;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGABRT, &sa, 0);
+
 	kdebugmf(KDEBUG_WARNING, "caught signal %d\n", signal);
 	kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
@@ -132,10 +141,15 @@ void enableSignalHandling()
 		sigaction(SIGPIPE, &sa, 0);
 
 		sa.sa_handler = quitSignalHandler;
+		sigaction(SIGHUP, &sa, 0);
 		sigaction(SIGINT, &sa, 0);
 		sigaction(SIGTERM, &sa, 0);
 
 		sa.sa_handler = badSignalHandler;
+		sigaction(SIGILL, &sa, 0);
+		sigaction(SIGABRT, &sa, 0);
+		sigaction(SIGFPE, &sa, 0);
 		sigaction(SIGSEGV, &sa, 0);
+		sigaction(SIGBUS, &sa, 0);
 	}
 }
