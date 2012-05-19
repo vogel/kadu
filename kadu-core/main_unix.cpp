@@ -48,16 +48,6 @@
 static void badSignalHandler(int signal)
 {
 	kdebugmf(KDEBUG_WARNING, "caught signal %d\n", signal);
-
-	static int sigsegvCount = 0;
-
-	if (sigsegvCount > 1)
-	{
-		kdebugmf(KDEBUG_WARNING, "sigsegv recursion: %d\n", sigsegvCount);
-		abort();
-	}
-
-	++sigsegvCount;
 	kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
 	CrashAwareObject::notifyCrash();
@@ -133,9 +123,19 @@ void enableSignalHandling()
 
 	if (signalHandlingEnabled)
 	{
-		signal(SIGSEGV, badSignalHandler);
-		signal(SIGINT, quitSignalHandler);
-		signal(SIGTERM, quitSignalHandler);
-		signal(SIGPIPE, SIG_IGN);
+		struct sigaction sa;
+		sigemptyset(&sa.sa_mask);
+		sa.sa_flags = 0;
+
+		// As required by libgadu.
+		sa.sa_handler = SIG_IGN;
+		sigaction(SIGPIPE, &sa, 0);
+
+		sa.sa_handler = quitSignalHandler;
+		sigaction(SIGINT, &sa, 0);
+		sigaction(SIGTERM, &sa, 0);
+
+		sa.sa_handler = badSignalHandler;
+		sigaction(SIGSEGV, &sa, 0);
 	}
 }
