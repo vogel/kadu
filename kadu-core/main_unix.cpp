@@ -34,7 +34,6 @@
 #include "misc/kadu-paths.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
-#include "activate.h"
 #include "debug.h"
 #include "kadu-config.h"
 
@@ -124,11 +123,6 @@ static void kadu_signal_handler(int signal)
 		xml_config_file->saveTo(KaduPaths::instance()->profilePath() + backupFileName);
 		abort();
 	}
-	else if (signal == SIGUSR1)
-	{
-		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
-		_activateWindow(Core::instance()->kaduWindow());
-	}
 	else if (signal == SIGINT || signal == SIGTERM)
 		qApp->quit();
 }
@@ -146,7 +140,6 @@ void enableSignalHandling()
 		signal(SIGSEGV, kadu_signal_handler);
 		signal(SIGINT, kadu_signal_handler);
 		signal(SIGTERM, kadu_signal_handler);
-		signal(SIGUSR1, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
 	}
 #endif // SIG_HANDLING_ENABLED
