@@ -45,9 +45,9 @@
 #include <execinfo.h>
 #endif // HAVE_EXECINFO
 
-static void kadu_signal_handler(int signal)
+static void badSignalHandler(int signal)
 {
-	kdebugmf(KDEBUG_WARNING, "%d\n", signal);
+	kdebugmf(KDEBUG_WARNING, "caught signal %d\n", signal);
 
 	static int sigsegvCount = 0;
 
@@ -57,72 +57,73 @@ static void kadu_signal_handler(int signal)
 		abort();
 	}
 
-	if (signal == SIGSEGV)
-	{
-		++sigsegvCount;
-		kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
+	++sigsegvCount;
+	kdebugm(KDEBUG_PANIC, "Kadu crashed :(\n");
 
-		CrashAwareObject::notifyCrash();
+	CrashAwareObject::notifyCrash();
 
-		QString backupFileName = QLatin1String("kadu.conf.xml.backup.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
-		QString backtraceFileName = QLatin1String("kadu.backtrace.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
+	QString backupFileName = QLatin1String("kadu.conf.xml.backup.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
+	QString backtraceFileName = QLatin1String("kadu.backtrace.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
 
 #if HAVE_EXECINFO
-		void *backtraceArray[100];
-		char **backtraceStrings;
-		int numEntries;
+	void *backtraceArray[100];
+	char **backtraceStrings;
+	int numEntries;
 
-		if ((numEntries = backtrace(backtraceArray, 100)) < 0)
-		{
-			kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
-			abort();
-		}
-		if (!(backtraceStrings = backtrace_symbols(backtraceArray, numEntries)))
-		{
-			kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
-			abort();
-		}
-
-		fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
-		for (int i = 0; i < numEntries; ++i)
-			fprintf(stderr, "[%d] %s\n", i, backtraceStrings[i]);
-		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
-		fflush(stderr);
-
-		FILE *backtraceFile = fopen(qPrintable(QString(KaduPaths::instance()->profilePath() + backtraceFileName)), "w");
-		if (backtraceFile)
-		{
-			fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
-			for (int i = 0; i < numEntries; ++i)
-				fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
-			fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
-
-			fprintf(backtraceFile, "loaded plugins:\n");
-			QList<Plugin *> plugins = PluginsManager::instance()->activePlugins();
-			foreach (Plugin *plugin, plugins)
-				fprintf(backtraceFile, "> %s\n", qPrintable(plugin->name()));
-			fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
-			fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
-					QT_VERSION_STR, qVersion());
-#ifdef __GNUC__
-			fprintf(backtraceFile, "GCC version: %d.%d.%d\n",
-					__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
-#endif // __GNUC__
-			fprintf(backtraceFile, "EOF\n");
-
-			fclose(backtraceFile);
-		}
-
-		free(backtraceStrings);
-#else // HAVE_EXECINFO
-		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
-#endif // HAVE_EXECINFO
-
-		xml_config_file->saveTo(KaduPaths::instance()->profilePath() + backupFileName);
+	if ((numEntries = backtrace(backtraceArray, 100)) < 0)
+	{
+		kdebugm(KDEBUG_PANIC, "could not generate backtrace\n");
 		abort();
 	}
-	else if (signal == SIGINT || signal == SIGTERM)
-		qApp->quit();
+	if (!(backtraceStrings = backtrace_symbols(backtraceArray, numEntries)))
+	{
+		kdebugm(KDEBUG_PANIC, "could not get symbol names for backtrace\n");
+		abort();
+	}
+
+	fprintf(stderr, "\n======= BEGIN OF BACKTRACE =====\n");
+	for (int i = 0; i < numEntries; ++i)
+		fprintf(stderr, "[%d] %s\n", i, backtraceStrings[i]);
+	fprintf(stderr, "======= END OF BACKTRACE  ======\n");
+	fflush(stderr);
+
+	FILE *backtraceFile = fopen(qPrintable(QString(KaduPaths::instance()->profilePath() + backtraceFileName)), "w");
+	if (backtraceFile)
+	{
+		fprintf(backtraceFile, "======= BEGIN OF BACKTRACE =====\n");
+		for (int i = 0; i < numEntries; ++i)
+			fprintf(backtraceFile, "[%d] %s\n", i, backtraceStrings[i]);
+		fprintf(backtraceFile, "======= END OF BACKTRACE  ======\n");
+
+		fprintf(backtraceFile, "loaded plugins:\n");
+		QList<Plugin *> plugins = PluginsManager::instance()->activePlugins();
+		foreach (Plugin *plugin, plugins)
+			fprintf(backtraceFile, "> %s\n", qPrintable(plugin->name()));
+		fprintf(backtraceFile, "Kadu version: %s\n", qPrintable(Core::version()));
+		fprintf(backtraceFile, "Qt compile time version: %s\nQt runtime version: %s\n",
+				QT_VERSION_STR, qVersion());
+#ifdef __GNUC__
+		fprintf(backtraceFile, "GCC version: %d.%d.%d\n",
+				__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+#endif // __GNUC__
+		fprintf(backtraceFile, "EOF\n");
+
+		fclose(backtraceFile);
+	}
+
+	free(backtraceStrings);
+#else // HAVE_EXECINFO
+	kdebugm(KDEBUG_PANIC, "backtrace not available\n");
+#endif // HAVE_EXECINFO
+
+	xml_config_file->saveTo(KaduPaths::instance()->profilePath() + backupFileName);
+	abort();
+}
+
+static void quitSignalHandler(int signal)
+{
+	kdebugmf(KDEBUG_INFO, "caught signal %d, quitting...\n", signal);
+	qApp->quit();
 }
 
 void enableSignalHandling()
@@ -132,9 +133,9 @@ void enableSignalHandling()
 
 	if (signalHandlingEnabled)
 	{
-		signal(SIGSEGV, kadu_signal_handler);
-		signal(SIGINT, kadu_signal_handler);
-		signal(SIGTERM, kadu_signal_handler);
+		signal(SIGSEGV, badSignalHandler);
+		signal(SIGINT, quitSignalHandler);
+		signal(SIGTERM, quitSignalHandler);
 		signal(SIGPIPE, SIG_IGN);
 	}
 }
