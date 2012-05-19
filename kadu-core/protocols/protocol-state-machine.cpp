@@ -71,6 +71,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggingInMaybeOnlineState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
+	connect(LoggedInState, SIGNAL(entered()), NetworkManager::instance(), SLOT(forceOnline()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
 
 	connect(WantToLogInState, SIGNAL(entered()), &TryToGoOnlineTimer, SLOT(start()));
