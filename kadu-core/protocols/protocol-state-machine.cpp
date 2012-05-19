@@ -38,6 +38,9 @@
 ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 		QStateMachine(protocol), CurrentProtocol(protocol)
 {
+	TryToGoOnlineTimer.setInterval(5000);
+	TryToGoOnlineTimer.setSingleShot(false);
+
 	DelayTimer.setInterval(500);
 	DelayTimer.setSingleShot(true);
 
@@ -47,6 +50,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	WantToLogInState = new QState(this);
 	LoggingInState = new QState(this);
 	LoggingInDelayState = new QState(this);
+	LoggingInMaybeOnlineState = new QState(this);
 	LoggedInState = new QState(this);
 	PasswordRequiredState = new QState(this);
 
@@ -56,6 +60,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(WantToLogInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggingInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggingInDelayState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LoggingInMaybeOnlineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LoggedInState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
@@ -64,8 +69,12 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	connect(LoggedOutOfflineState, SIGNAL(entered()), this, SIGNAL(loggedOutOfflineStateEntered()));
 	connect(WantToLogInState, SIGNAL(entered()), this, SIGNAL(wantToLogInStateEntered()));
 	connect(LoggingInState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
+	connect(LoggingInMaybeOnlineState, SIGNAL(entered()), this, SIGNAL(loggingInStateEntered()));
 	connect(LoggedInState, SIGNAL(entered()), this, SIGNAL(loggedInStateEntered()));
 	connect(PasswordRequiredState, SIGNAL(entered()), this, SIGNAL(passwordRequiredStateEntered()));
+
+	connect(WantToLogInState, SIGNAL(entered()), &TryToGoOnlineTimer, SLOT(start()));
+	connect(WantToLogInState, SIGNAL(exited()), &TryToGoOnlineTimer, SLOT(stop()));
 
 	connect(LoggingInDelayState, SIGNAL(entered()), &DelayTimer, SLOT(start()));
 	connect(LoggingInDelayState, SIGNAL(exited()), &DelayTimer, SLOT(stop()));
@@ -80,6 +89,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	LoggedOutOfflineState->addTransition(NetworkManager::instance(), SIGNAL(online()), LoggedOutOnlineState);
 
 	WantToLogInState->addTransition(NetworkManager::instance(), SIGNAL(online()), LoggingInState);
+	WantToLogInState->addTransition(&TryToGoOnlineTimer, SIGNAL(timeout()), LoggingInMaybeOnlineState);
 	WantToLogInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOfflineState);
 
 	LoggingInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
@@ -95,6 +105,14 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
 	LoggingInDelayState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), LoggedOutOnlineState);
+
+	LoggingInMaybeOnlineState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineLoggedIn()), LoggedInState);
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggedOutOnlineState);
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachinePasswordRequired()), PasswordRequiredState);
+	// in this case we assume that user still wants to log in even if connection failed badly
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionError()), WantToLogInState);
+	LoggingInMaybeOnlineState->addTransition(CurrentProtocol, SIGNAL(stateMachineConnectionClosed()), WantToLogInState);
 
 	LoggedInState->addTransition(NetworkManager::instance(), SIGNAL(offline()), WantToLogInState);
 	LoggedInState->addTransition(CurrentProtocol, SIGNAL(stateMachineLogout()), LoggingOutState);
@@ -141,6 +159,8 @@ void ProtocolStateMachine::printConfiguration()
 		states.append("logging-in");
 	if (configuration().contains(LoggingInDelayState))
 		states.append("logging-in-delay");
+	if (configuration().contains(LoggingInMaybeOnlineState))
+		states.append("logging-in-maybe-online");
 	if (configuration().contains(LoggedInState))
 		states.append("logged-in");
 

@@ -88,6 +88,7 @@ class Protocol;
  *     causes all contacts from this protocol to be offline. Possible transitions:
  *     <ul>
  *       <li>network goes online -> logging in</li>
+ *       <li>do-not-belive-we-are-offline timer elapses -> logging in maby online</li>
  *       <li>protocol changes state to offline state -> logged out, offline</li>
  *     </ul>
  *   </dd>
@@ -100,8 +101,32 @@ class Protocol;
  *       <li>protocol logged in -> logged in</li>
  *       <li>protocol logged out -> logged out, online</li>
  *       <li>protocol password required -> password required</li>
- *       <li>protocol connection error -> Logging in (another try)</li>
+ *       <li>protocol connection error -> Logging in (delay)</li>
  *       <li>protocol connection closed -> logged out, online</li>
+ *     </ul>
+ *   </dd>
+ *   <dt>Logging in delay</dt>
+ *   <dd>
+ *     This state is used to delay login in a half second after previous unsuccessfull attempt. Possible transitions:
+ *     <ul>
+ *       <li>network goes offline -> want to log in</li>
+ *       <li>delay timer elasped -> logging in</li>
+ *       <li>protocol logged in -> logged in</li>
+ *       <li>protocol logged out -> logged out, online</li>
+ *       <li>protocol password required -> password required</li>
+ *       <li>protocol connection closed -> logged out, online</li>
+ *     </ul>
+ *   </dd>
+ *   <dt>Logging in maybe online</dt>
+ *   <dd>
+ *     This state is used to try to login in when network state is offline but we dont belive this state (as ntrack has
+ *     some bugs). Possible transitions:
+ *     <ul>
+ *       <li>protocol logged in -> logged in</li>
+ *       <li>protocol logged out -> logged out, online</li>
+ *       <li>protocol password required -> password required</li>
+ *       <li>protocol connection closed -> want to log in</li>
+ *       <li>protocol connection error -> want to log in</li>
  *     </ul>
  *   </dd>
  *   <dt>Logged in</dt>
@@ -162,6 +187,7 @@ class ProtocolStateMachine : public QStateMachine
 
 	Protocol *CurrentProtocol;
 
+	QTimer TryToGoOnlineTimer;
 	QTimer DelayTimer;
 
 	QState *LoggingOutState;
@@ -171,6 +197,7 @@ class ProtocolStateMachine : public QStateMachine
 	QState *PasswordRequiredState;
 	QState *LoggingInState;
 	QState *LoggingInDelayState;
+	QState *LoggingInMaybeOnlineState;
 	QState *LoggedInState;
 
 private slots:
