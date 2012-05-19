@@ -34,3 +34,7 @@ bool NetworkManagerDummy::isOnline()
 {
 	return true;
 }
+
+void NetworkManagerDummy::forceOnline()
+{
+}

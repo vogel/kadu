@@ -65,6 +65,9 @@ public:
 
 	virtual bool isOnline();
 
+public slots:
+	virtual void forceOnline();
+
 };
 
 /**

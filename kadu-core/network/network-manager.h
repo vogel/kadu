@@ -78,6 +78,15 @@ public:
 	 */
 	virtual bool isOnline() = 0;
 
+public slots:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Force online status on network.
+	 *
+	 * If implementation of network manager is broken (as in ntrack) call this method if you are sure that network is online.
+	 */
+	virtual void forceOnline() = 0;
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

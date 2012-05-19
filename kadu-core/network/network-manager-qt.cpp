@@ -46,3 +46,8 @@ bool NetworkManagerQt::isOnline()
 			? ConfigurationManager->isOnline()
 			: true;
 }
+
+void NetworkManagerQt::forceOnline()
+{
+	onlineStateChanged(true);
+}

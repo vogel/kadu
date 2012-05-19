@@ -48,6 +48,11 @@ bool NetworkManagerNTrack::isOnline()
 	return isOnline(QNtrack::instance()->networkState());
 }
 
+void NetworkManagerNTrack::forceOnline()
+{
+	onlineStateChanged(true);
+}
+
 void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newState)
 {
 	bool wasOnline = isOnline(oldState);
