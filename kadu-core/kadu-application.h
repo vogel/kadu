@@ -47,6 +47,8 @@
 
 #include "exports.h"
 
+class QSocketNotifier;
+
 class KADUAPI KaduApplication : public QApplication
 {
 	Q_OBJECT
@@ -58,11 +60,24 @@ class KADUAPI KaduApplication : public QApplication
 #ifdef Q_OS_MAC
 	AEEventHandlerUPP m_appleEventProcessorUPP;
 #endif // Q_OS_MAC
+#ifndef Q_OS_WIN32
+	QSocketNotifier *QuitNotifier;
+#endif // !Q_OS_WIN32
 
 	bool SessionClosing;
 
+private slots:
+#ifndef Q_OS_WIN32
+	void handleQuitNotify(int socket);
+#endif // !Q_OS_WIN32
+
 public:
+#ifndef Q_OS_WIN32
+	static int QuitFd[2];
+#endif // !Q_OS_WIN32
+
 	KaduApplication(int &argc, char *argv[]);
+	virtual ~KaduApplication();
 
 	virtual void commitData(QSessionManager &manager);
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)

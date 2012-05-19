@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -28,6 +29,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDateTime>
@@ -36,6 +38,7 @@
 #include "core/core.h"
 #include "core/crash-aware-object.h"
 #include "gui/windows/kadu-window.h"
+#include "kadu-application.h"
 #include "misc/kadu-paths.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
@@ -121,8 +124,26 @@ static void badSignalHandler(int signal)
 
 static void quitSignalHandler(int signal)
 {
-	kdebugmf(KDEBUG_INFO, "caught signal %d, quitting...\n", signal);
-	qApp->quit();
+	int saveErrno = errno;
+
+	// Block the other signals here so that the ints (signal codes) will not be written interleaved.
+	sigset_t newSet, oldSet;
+	sigemptyset(&newSet);
+	sigaddset(&newSet, SIGHUP);
+	sigaddset(&newSet, SIGINT);
+	sigaddset(&newSet, SIGTERM);
+	sigprocmask(SIG_BLOCK, &newSet, &oldSet);
+
+	int ret;
+	do
+	{
+		ret = write(KaduApplication::QuitFd[1], &signal, sizeof(signal));
+	}
+	while (-1 == ret && EINTR == errno);
+
+	sigprocmask(SIG_SETMASK, &oldSet, 0);
+
+	errno = saveErrno;
 }
 
 void enableSignalHandling()

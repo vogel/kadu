@@ -50,6 +50,19 @@
 #include "os/generic/compositing-aware-object.h"
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
 
+#ifndef Q_OS_WIN32
+#include <errno.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#include <QtCore/QSocketNotifier>
+
+#include "debug.h"
+
+int KaduApplication::QuitFd[2] = { -1, -1 };
+#endif // !Q_OS_WIN32
+
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv), SessionClosing(false)
 {
@@ -75,7 +88,60 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	if (QX11Info::isCompositingManagerRunning())
 		CompositingAwareObject::compositingStateChanged();
 #endif // Q_WS_X11 && !Q_WS_MAEMO_5
+
+#ifndef Q_OS_WIN32
+#if !defined(Q_OS_OS2) && !defined(Q_OS_INTEGRITY)
+	if (-1 == ::pipe(QuitFd))
+		qFatal("pipe() failed (%d, %s)", errno, ::strerror(errno));
+#else
+	if (-1 == ::socketpair(AF_UNIX, SOCK_STREAM, 0, QuitFd))
+		qFatal("socketpair() failed (%d, %s)", errno, ::strerror(errno));
+#endif
+
+	QuitNotifier = new QSocketNotifier(QuitFd[0], QSocketNotifier::Read, this);
+	connect(QuitNotifier, SIGNAL(activated(int)), this, SLOT(handleQuitNotify(int)));
+#endif // !Q_OS_WIN32
 }
+
+KaduApplication::~KaduApplication()
+{
+#ifndef Q_OS_WIN32
+	close(QuitFd[0]);
+	QuitFd[0] = -1;
+	close(QuitFd[1]);
+	QuitFd[1] = -1;
+#endif // !Q_OS_WIN32
+}
+
+#ifndef Q_OS_WIN32
+void KaduApplication::handleQuitNotify(int socket)
+{
+	QuitNotifier->setEnabled(false);
+
+	int signal, ret;
+	do
+	{
+		ret = ::read(socket, &signal, sizeof(signal));
+	}
+	while (-1 == ret && EINTR == errno);
+
+	if (0 == ret)
+	{
+		qWarning("read() read nothing while it definitely should");
+		QuitNotifier->setEnabled(true);
+		return;
+	}
+
+	if (sizeof(signal) == ret)
+		kdebugmf(KDEBUG_INFO, "caught signal %d (%s), quitting...\n", signal, ::strsignal(signal));
+	else if (-1 == ret)
+		kdebugmf(KDEBUG_INFO, "caught unknown signal, read() failed (%d, %s), quitting...\n", errno, ::strerror(errno));
+	else
+		kdebugmf(KDEBUG_INFO, "caught unknown signal, read() returned %d, quitting anyway...\n", ret);
+
+	quit();
+}
+#endif // !Q_OS_WIN32
 
 void KaduApplication::commitData(QSessionManager &manager)
 {
