@@ -66,10 +66,6 @@ if (NOT WIN32)
 
 		check_function_exists ("backtrace" HAVE_EXECINFO)
 	endif (HAVE_EXECINFO)
-
-	if (SIG_HANDLING_ENABLED)
-		set (SIG_HANDLING_ENABLED 1)
-	endif (SIG_HANDLING_ENABLED)
 endif (NOT WIN32)
 
 set (KADU_INSTALLS_SDK TRUE)

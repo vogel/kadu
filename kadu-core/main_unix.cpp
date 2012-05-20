@@ -25,7 +25,11 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <stdio.h>
+
+#include <QtCore/QCoreApplication>
+#include <QtCore/QDateTime>
 
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
@@ -36,12 +40,6 @@
 #include "plugins/plugins-manager.h"
 #include "debug.h"
 #include "kadu-config.h"
-
-#if SIG_HANDLING_ENABLED
-#include <signal.h>
-
-#include <QtCore/QCoreApplication>
-#include <QtCore/QDateTime>
 
 #if HAVE_EXECINFO
 #include <execinfo.h>
@@ -127,11 +125,8 @@ static void kadu_signal_handler(int signal)
 		qApp->quit();
 }
 
-#endif // SIG_HANDLING_ENABLED
-
 void enableSignalHandling()
 {
-#if SIG_HANDLING_ENABLED
 	char *d = getenv("SIGNAL_HANDLING");
 	bool signalHandlingEnabled = d ? (atoi(d) != 0) : true;
 
@@ -142,5 +137,4 @@ void enableSignalHandling()
 		signal(SIGTERM, kadu_signal_handler);
 		signal(SIGPIPE, SIG_IGN);
 	}
-#endif // SIG_HANDLING_ENABLED
 }

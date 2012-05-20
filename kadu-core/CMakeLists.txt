@@ -11,8 +11,6 @@ if (FAST_LINKING)
 endif (FAST_LINKING)
 
 if (NOT WIN32)
-	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
-
 	if (UNIX AND NOT APPLE)
 		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
 
