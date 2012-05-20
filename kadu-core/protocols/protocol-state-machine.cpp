@@ -39,7 +39,7 @@ ProtocolStateMachine::ProtocolStateMachine(Protocol *protocol) :
 		QStateMachine(protocol), CurrentProtocol(protocol)
 {
 	TryToGoOnlineTimer.setInterval(5000);
-	TryToGoOnlineTimer.setSingleShot(false);
+	TryToGoOnlineTimer.setSingleShot(true);
 
 	DelayTimer.setInterval(500);
 	DelayTimer.setSingleShot(true);
