@@ -1,5 +1,6 @@
 ﻿+++ version 0.12.0-rc1
 * network: #2523 fixed: try to connect from time to time even if system tells us we are offline (Vogel)
+* tabs: #2118 fixed: add open recent chats button to tabswindow (kelmain)
 
 +++ version 0.12.0-beta2
 * core: #2403 fixed: start conference with preferred contacts of each buddy instead of first ones (ultr)

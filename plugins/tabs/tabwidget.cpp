@@ -25,11 +25,19 @@
  */
 
 #include <QtGui/QDrag>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QMenu>
+#include <QtCore/QPoint>
+#include <QtCore/QVariant>
 
+#include "chat/chat.h"
+#include "chat/model/chat-data-extractor.h"
+#include "chat/recent-chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
@@ -70,12 +78,36 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent *)),
 			SLOT(mouseDoubleClickEvent(QMouseEvent *)));
 
-	//przycisk otwarcia nowej karty pokazywany w lewym gornym rogu
-	OpenChatButton = new QToolButton(this);
-	OpenChatButton->setIcon(KaduIcon("kadu_icons/chat").icon());
-	OpenChatButton->setAutoRaise(true);
-	OpenChatButton->setVisible(false);
-	connect(OpenChatButton, SIGNAL(clicked()), SLOT(newChat()));
+	//widget (container) for buttons with opening conversations
+	//both buttons are displayed when checking Show "New Tab" button in configurations
+	OpenChatButtonsWidget = new QWidget(this);
+	QHBoxLayout *horizontalLayout = new QHBoxLayout;
+
+	horizontalLayout->setSpacing(2);
+	horizontalLayout->setContentsMargins(3, 0, 2, 3);
+
+	//button for new chat from last conversations
+	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
+	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
+
+	//button for opening chat
+	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
+	openChatButton->setIcon(KaduIcon("mail-message-new").icon());
+	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
+	
+	horizontalLayout->addWidget(OpenRecentChatButton);
+	horizontalLayout->addWidget(openChatButton);
+
+	OpenChatButtonsWidget->setLayout(horizontalLayout);
+	OpenChatButtonsWidget->setVisible(false);
+
+	//menu for recent chats
+	RecentChatsMenu = new QMenu(this);
+
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(checkRecentChats()));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(checkRecentChats()));
+	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(checkRecentChats()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
@@ -340,6 +372,42 @@ void TabWidget::newChat()
 	OpenChatWith::instance()->show();
 }
 
+void TabWidget::newChatFromLastConversation()
+{
+	//load recent chats to popup menu
+	RecentChatsMenu->clear();
+	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
+		if (!ChatWidgetManager::instance()->byChat(chat, false))
+		{
+			QAction *action = new QAction(ChatDataExtractor::data(chat, Qt::DisplayRole).toString(), RecentChatsMenu);
+			action->setData(QVariant::fromValue<Chat>(chat));
+			RecentChatsMenu->addAction(action);
+		}
+	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
+
+	//show last conversations menu under widget with buttons for opening chats
+	RecentChatsMenu->popup(OpenChatButtonsWidget->mapToGlobal(QPoint(0, OpenChatButtonsWidget->height())));
+}
+
+void TabWidget::openRecentChat(QAction *action)
+{
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
+	if (chatWidget)
+		chatWidget->activate();
+}
+
+void TabWidget::checkRecentChats()
+{
+	//check if all recent chats are opened -> disable button
+	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
+		if (!ChatWidgetManager::instance()->byChat(chat, false))
+		{
+			OpenRecentChatButton->setEnabled(true);
+			return;
+		}
+	OpenRecentChatButton->setEnabled(false);
+}
+
 void TabWidget::deleteTab()
 {
 	closeTab(currentWidget());
@@ -382,21 +450,20 @@ void TabWidget::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	OpenChatButton->setIcon(KaduIcon("internet-group-chat").icon());
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
 
 	setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 	config_oldStyleClosing = config_file.readBoolEntry("Tabs", "OldStyleClosing");
 
-	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButton);
+	bool isOpenChatButtonEnabled = (cornerWidget(Qt::TopLeftCorner) == OpenChatButtonsWidget);
 	bool shouldEnableOpenChatButton = config_file.readBoolEntry("Tabs", "OpenChatButton");
 	bool isCloseButtonEnabled = (cornerWidget(Qt::TopRightCorner) == CloseChatButton);
 	bool shouldEnableCloseButton = config_file.readBoolEntry("Tabs", "CloseButton");
 
 	if (isOpenChatButtonEnabled != shouldEnableOpenChatButton)
 	{
-		OpenChatButton->setVisible(shouldEnableOpenChatButton);
-		setCornerWidget(shouldEnableOpenChatButton ? OpenChatButton : 0, Qt::TopLeftCorner);
+		OpenChatButtonsWidget->setVisible(true);
+		setCornerWidget(shouldEnableOpenChatButton ? OpenChatButtonsWidget : 0, Qt::TopLeftCorner);
 	}
 
 	if (isCloseButtonEnabled != shouldEnableCloseButton)
