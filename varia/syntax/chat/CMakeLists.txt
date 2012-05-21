@@ -11,7 +11,6 @@ set (SYNTAX_FILES
 	kadu.syntax
 	skp_by_dam.syntax
 	skype_by_dorr.syntax
-	ultr.syntax
 )
 
 set (ADIUM_STYLES
@@ -21,6 +20,7 @@ set (ADIUM_STYLES
 	Satin
 	SimpleStuff
 	Stockholm
+	ultr
 )
 
 install (FILES ${SYNTAX_FILES}
