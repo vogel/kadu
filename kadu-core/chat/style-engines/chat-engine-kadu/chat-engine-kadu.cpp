@@ -161,7 +161,8 @@ QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRe
 		if (after && !includeHeader)
 		{
 			Message aft = after->message();
-			Q_ASSERT(msg.receiveDate().toTime_t() >= aft.receiveDate().toTime_t());
+			if (msg.receiveDate().toTime_t() < aft.receiveDate().toTime_t());
+				qWarning("New message has earlier date than last message");
 
 			includeHeader =
 				(aft.type() == MessageTypeSystem) ||

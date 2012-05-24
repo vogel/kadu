@@ -254,7 +254,8 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 	if (lastMessage)
 	{
 		Message last = lastMessage->message();
-		Q_ASSERT(msg.receiveDate().toTime_t() >= last.receiveDate().toTime_t());
+		if (msg.receiveDate().toTime_t() < last.receiveDate().toTime_t())
+			qWarning("New message has earlier date than last message");
 
 		includeHeader =
 			msg.type() == MessageTypeSystem ||
