@@ -89,13 +89,15 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	//button for new chat from last conversations
 	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
 	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	OpenRecentChatButton->setAutoRaise(true);
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
 
 	//button for opening chat
 	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
 	openChatButton->setIcon(KaduIcon("mail-message-new").icon());
+	openChatButton->setAutoRaise(true);
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
-	
+
 	horizontalLayout->addWidget(OpenRecentChatButton);
 	horizontalLayout->addWidget(openChatButton);
 
