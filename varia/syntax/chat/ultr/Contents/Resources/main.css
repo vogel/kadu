@@ -1,0 +1,25 @@
+@import url("common.css");
+
+.separator
+{
+	background:-webkit-gradient( linear, 5% 0%, 95% 0%, from(rgba(0,0,0,0)), color-stop(0.5, rgba(0,0,0,255)), to(rgba(0,0,0,0)) );
+	opacity:0.30;
+}
+.separator_next
+{
+	background:-webkit-gradient( linear, 5% 0%, 95% 0%, from(rgba(0,0,0,0)), color-stop(0.5, rgba(0,0,0,255)), to(rgba(0,0,0,0)) );
+	opacity:0.10;
+}
+
+.background_outgoing
+{
+	background:rgba(255,255,255,0.00);
+}
+.background_incoming
+{
+	background:rgba(255,255,255,0.30);
+}
+.background_hover
+{
+	background:rgba(255,255,255,0.60);
+}

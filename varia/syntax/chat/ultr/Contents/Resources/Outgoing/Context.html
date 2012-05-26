@@ -1,0 +1,43 @@
+<div class="background_outgoing" onmouseover="this.className='background_hover';" onmouseout="this.className='background_outgoing';">
+
+	<div class="separator"></div>
+
+	<div class="item">
+
+		<div class="header">
+			<span class="sender">
+				<span class="selectable">
+					%sender%
+				</span>
+				<br>
+			</span>
+			<span class="time">
+				%time%
+			</span>
+		</div>
+
+		<span class="confirm" id="confirm_%messageId%"></span>
+
+		<div class="message_outer" onmouseup="messageMouseUp(event);">
+			<span class="message_inner">
+				<span class="selectable">
+					%message%
+				</span>
+			</span>
+		</div>
+
+	</div>
+
+</div>
+
+<div id="insert">
+	<div class="separator"></div>
+</div>
+
+<script type="text/javascript">
+	if ("%messageId%" != "")
+	{
+		document.getElementById("confirm_%messageId%").innerHTML = "&#8230;";
+		messageStatusChanged("%messageId%", %messageStatus%);
+	}
+</script>

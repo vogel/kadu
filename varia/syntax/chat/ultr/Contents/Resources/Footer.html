@@ -1,0 +1,46 @@
+<script>
+
+	function kaduAlign()
+	{
+		return 0;
+	}
+
+	function initEvents()
+	{
+		KaduManualAlign = true;
+		alignChat( true );
+	}
+
+	function messageStatusChanged( messageid, status )
+	{
+		if( status == StatusDelivered )
+			document.getElementById("confirm_"+messageid).innerHTML = "&#10004;";
+		if( status == StatusWontDeliver )
+			document.getElementById("confirm_"+messageid).innerHTML = "&times;";
+	}
+
+	function contactActivityChanged( state, message, name )
+	{
+		if( state == StateComposing )
+			document.getElementById("composing").style.display = "block";
+		else
+			document.getElementById("composing").style.display = "none";
+	}
+
+	function messageMouseUp( event )
+	{
+		if( event.button != 1 )
+			return;
+		if( this.style.fontFamily == 'monospace' )
+			this.style.fontFamily = '';
+		else
+			this.style.fontFamily = 'monospace';
+		if( this.style.whiteSpace == 'nowrap' )
+			this.style.whiteSpace = 'inherit';
+		else
+			this.style.whiteSpace = 'nowrap';
+	}
+
+</script>
+
+<div id="MouseOverHack" style="position:fixed; top:0px; left:0px; width:100%; height:100%; background:none;" onmouseover="this.style.display='none';"></div>
