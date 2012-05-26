@@ -70,8 +70,6 @@ class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler
 	ConfigLineEdit *EraSponsoredPassword;
 	ConfigLineEdit *EraOmnixUser;
 	ConfigLineEdit *EraOmnixPassword;
-	ConfigLineEdit *OrangeMultiboxUser;
-	ConfigLineEdit *OrangeMultiboxPassword;
 
 	void createDefaultConfiguration();
 

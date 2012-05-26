@@ -23,10 +23,6 @@
 				<line-edit caption="User ID (48xxxxxxxxx)" config-section="SMS" config-item="EraGateway_OmnixMultimedia_User" id="default_sms/multimediaUser" />
 				<line-edit caption="Password" config-section="SMS" config-item="EraGateway_OmnixMultimedia_Password" id="default_sms/multimediaPassword" />
 			</group-box>
-			<group-box name="Orange Multibox">
-				<line-edit caption="User ID (48xxxxxxxxx)" config-section="SMS" config-item="OrangeMultibox_User" id="default_sms/orangeMultiboxUser" />
-				<line-edit caption="Password" config-section="SMS" config-item="OrangeMultibox_Password" id="default_sms/orangeMultiboxPassword" />
-			</group-box>
 		</tab>
 	</section>
 	<section name="Shortcuts">

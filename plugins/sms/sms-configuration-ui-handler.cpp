@@ -146,12 +146,9 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	EraSponsoredPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredPassword"));
 	EraOmnixUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaUser"));
 	EraOmnixPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaPassword"));
-	OrangeMultiboxUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/orangeMultiboxUser"));
-	OrangeMultiboxPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/orangeMultiboxPassword"));
 
 	EraSponsoredPassword->setEchoMode(QLineEdit::Password);
 	EraOmnixPassword->setEchoMode(QLineEdit::Password);
-	OrangeMultiboxPassword->setEchoMode(QLineEdit::Password);
 }
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
