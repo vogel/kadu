@@ -65,7 +65,7 @@ EraGatewaySmsSender.prototype = {
 			return;
 		}
 
-		var gateway = this.callbackObject.readFromConfiguration("SMS", "EraGateway", "Sponsored")
+		var gateway = this.callbackObject.readFromConfiguration("SMS", "EraGateway", "Sponsored");
 
 		var postUrl = "http://www.eraomnix.pl/msg/api/do/tinker/";
 
@@ -108,7 +108,7 @@ EraGatewaySmsSender.prototype = {
 			case "10": return translator.tr("You don't have enough tokens");
 		}
 
-		return translator.tr("Unknown error";
+		return translator.tr("Unknown error");
 	},
 
 	smsSent: function() {
