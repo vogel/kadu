@@ -30,6 +30,7 @@
 #include "protocols/protocol.h"
 #include "status/status-container-manager.h"
 #include "status/status-container.h"
+#include "status/status-setter.h"
 #include "status/status-type-data.h"
 #include "status/status-type-group.h"
 #include "status/status-type-manager.h"
@@ -144,7 +145,9 @@ void StatusActions::statusUpdated()
 		createActions();
 	}
 
-	StatusType currentStatusType = MyStatusContainer->status().type();
+	StatusType currentStatusType = StatusSetter::instance()->manuallySetStatus(MyStatusContainer).type();
+	if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
+		currentStatusType = MyStatusContainer->status().type();
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
