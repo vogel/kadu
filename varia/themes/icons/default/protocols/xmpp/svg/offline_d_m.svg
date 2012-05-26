@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -12,11 +11,11 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg6358"
    sodipodi:version="0.32"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.46"
    width="16"
    height="16"
    version="1.0"
-   sodipodi:docname="offline_d_m.svg"
+   sodipodi:docname="offline_d.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="/home/badboy/Desktop/Jabber.iconpack/ami/offline.png"
    inkscape:export-xdpi="90"
@@ -413,7 +412,7 @@
        y2="20.571428" />
   </defs>
   <sodipodi:namedview
-     inkscape:window-height="702"
+     inkscape:window-height="882"
      inkscape:window-width="1006"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -432,8 +431,7 @@
      inkscape:window-y="16"
      inkscape:current-layer="g5106"
      showguides="false"
-     inkscape:guide-bbox="true"
-     inkscape:window-maximized="0">
+     inkscape:guide-bbox="true">
     <sodipodi:guide
        orientation="0,1"
        position="-135.3125,-69.5"
@@ -459,7 +457,7 @@
            transform="matrix(0.9783097,0,0,0.8226523,22.118852,-2.2791266)"
            id="path5418"
            d="M -8.3176899,9.8194942 C -8.26426,12.696909 -10.425762,15.407897 -13.237122,16.010491 C -15.890257,16.668546 -18.858125,15.370274 -20.183074,12.981334 C -21.643368,10.535947 -21.151781,7.1487711 -19.054518,5.220841 C -17.028261,3.218013 -13.619645,2.8897743 -11.247652,4.4671366 C -9.4448059,5.6059042 -8.2986208,7.6845686 -8.3176899,9.8194942 z"
-           style="fill:url(#linearGradient20818);fill-opacity:1;fill-rule:evenodd;stroke:url(#radialGradient20820);stroke-width:1.06266141000000003;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;" />
+           style="fill:url(#linearGradient20818);fill-opacity:1;fill-rule:evenodd;stroke:url(#radialGradient20820);stroke-width:1.06266141;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter6694)" />
         <path
            id="path5420"
            d="M 13.101687,6.8656774 C 13.134076,5.0134736 12.073776,3.3146661 10.65058,2.5763479 C 9.747126,2.0899052 8.7363446,1.8295303 7.7422898,1.8793682 C 6.2070885,2.1282304 4.6311918,3.0647216 3.9521518,4.7712027 C 3.0925711,6.9203773 3.5935301,9.5338386 4.7660531,11.38503 C 5.5760427,12.690346 6.9495832,13.709011 8.3735049,13.399343 C 9.9407803,13.054043 11.048808,11.505528 11.83541,9.9908327 C 12.344054,9.0009607 12.751364,7.9439803 13.101687,6.8656774 z"
