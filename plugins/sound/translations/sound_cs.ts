@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -37,7 +35,7 @@
     </message>
     <message>
         <source>Play a sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Přehrát zvuk</translation>
     </message>
 </context>
 <context>

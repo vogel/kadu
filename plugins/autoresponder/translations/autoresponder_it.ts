@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -33,15 +31,15 @@
     </message>
     <message>
         <source>Auto Responder</source>
-        <translation type="unfinished"></translation>
+        <translation>Risposta automatica</translation>
     </message>
     <message>
         <source>Auto answer text</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto risposta</translation>
     </message>
     <message>
         <source>Choose Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Scegli stato</translation>
     </message>
 </context>
 <context>

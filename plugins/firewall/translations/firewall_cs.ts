@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -129,19 +127,15 @@
     </message>
     <message numerus="yes">
         <source>%n millisecond(s)</source>
-        <translation>
-            <numerusform>1 milisekunda</numerusform>
-            <numerusform>%n milisekundy</numerusform>
-            <numerusform>%n milisekund</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
-        <translation type="unfinished"></translation>
+        <translation><numerusform>1 milisekunda</numerusform><numerusform>%n milisekundy</numerusform><numerusform>%n milisekund</numerusform></translation>
     </message>
     <message>
         <source>Message was firewalled</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpráva byla zadržena ohnivou zdí</translation>
+    </message>
+    <message>
+        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <translation>Modul položí otázku napsanou níže, když s vámi bude chtít někdo mluvit, ale vy jej nemáte zapsaného ve svém seznamu.</translation>
     </message>
 </context>
 <context>

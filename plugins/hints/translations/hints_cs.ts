@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -177,66 +175,62 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>1 sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>On Top</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>On Bottom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hint&apos;s corner</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Top Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Top Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bottom Left</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bottom Right</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open Chat</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Hint</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete All Hints</source>
-        <translation type="unfinished"></translation>
+        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Margin size</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost okraje</translation>
+    </message>
+    <message>
+        <source>Hint&apos;s corner</source>
+        <translation>Roh rady</translation>
+    </message>
+    <message>
+        <source>On Top</source>
+        <translation>Nahoře</translation>
+    </message>
+    <message>
+        <source>On Bottom</source>
+        <translation>Dole</translation>
+    </message>
+    <message>
+        <source>Top Left</source>
+        <translation>Nahoře vlevo</translation>
+    </message>
+    <message>
+        <source>Top Right</source>
+        <translation>Nahoře vpravo</translation>
+    </message>
+    <message>
+        <source>Bottom Left</source>
+        <translation>Dole vlevo</translation>
+    </message>
+    <message>
+        <source>Bottom Right</source>
+        <translation>Dole vpravo</translation>
+    </message>
+    <message>
+        <source>Open Chat</source>
+        <translation>Otevřít okno pro rozhovor</translation>
+    </message>
+    <message>
+        <source>Delete Hint</source>
+        <translation>Smazat radu</translation>
+    </message>
+    <message>
+        <source>Delete All Hints</source>
+        <translation>Smazat všechny rady</translation>
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Zde&lt;/b&gt; si můžete prohlédnout náhled</translation>
     </message>
 </context>
 <context>
     <name>HintManager</name>
     <message>
         <source>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;table&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&lt;img style=&quot;max-width:64px; max-height:64px;&quot; src=&quot;{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}&quot;&gt;&lt;/td&gt;&lt;td width=&quot;100%&quot;&gt;&lt;div&gt;[&lt;b&gt;%a&lt;/b&gt;][&amp;nbsp;&lt;b&gt;(%g)&lt;/b&gt;]&lt;/div&gt;[&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///#{statusIconPath}&quot;&gt;&amp;nbsp;&amp;nbsp;%u&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{phone:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%m&lt;/div&gt;][&lt;div&gt;&lt;img height=&quot;16&quot; width=&quot;16&quot; src=&quot;file:///@{mail-message-new:16x16}&quot;&gt;&amp;nbsp;&amp;nbsp;%e&lt;/div&gt;]&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;[&lt;hr&gt;&lt;b&gt;%s&lt;/b&gt;][&lt;b&gt;:&lt;/b&gt;&lt;br&gt;&lt;small&gt;%d&lt;/small&gt;]</translation>
     </message>
 </context>
 <context>
@@ -266,7 +260,7 @@
     </message>
     <message>
         <source>Advanced hints&apos; configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokročilé nastavení rad</translation>
     </message>
 </context>
 <context>
@@ -277,7 +271,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Zde&lt;/b&gt; si můžete prohlédnout náhled</translation>
     </message>
 </context>
 <context>
@@ -292,7 +286,7 @@
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Zde&lt;/b&gt; si můžete prohlédnout náhled</translation>
     </message>
 </context>
 </TS>

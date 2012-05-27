@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -69,27 +67,15 @@
     </message>
     <message numerus="yes">
         <source>[every] %n second(s)</source>
-        <translation>
-            <numerusform>[co] %n sekundę</numerusform>
-            <numerusform>[co] %n sekundy</numerusform>
-            <numerusform>[co] %n sekund</numerusform>
-        </translation>
+        <translation><numerusform>[co] %n sekundę</numerusform><numerusform>[co] %n sekundy</numerusform><numerusform>[co] %n sekund</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>[after] %n second(s)</source>
-        <translation>
-            <numerusform>[po] %n sekundzie</numerusform>
-            <numerusform>[po] %n sekundach</numerusform>
-            <numerusform>[po] %n sekundach</numerusform>
-        </translation>
+        <translation><numerusform>[po] %n sekundzie</numerusform><numerusform>[po] %n sekundach</numerusform><numerusform>[po] %n sekundach</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Do Not Change</source>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -38,12 +36,12 @@
 <context>
     <name>MPRISPlayerDialog</name>
     <message>
-        <source>Edit Player</source>
-        <translation>Edytuj odtwarzacz</translation>
-    </message>
-    <message>
         <source>Add Player</source>
         <translation>Dodaj odtwarzacz</translation>
+    </message>
+    <message>
+        <source>Edit Player</source>
+        <translation>Edytuj odtwarzacz</translation>
     </message>
     <message>
         <source>Player:</source>

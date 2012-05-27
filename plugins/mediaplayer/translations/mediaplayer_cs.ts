@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -95,28 +93,32 @@
         <translation>Jiná nastavení</translation>
     </message>
     <message>
+        <source>With this option enabled you'll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Control+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation>Při povolení této volby budete moci ovládat svůj
+přehrávač v okně pro rozhovor klávesovými zkratkami:
+Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
+    </message>
+    <message>
+        <source>With this option enabled you'll be able to control
+your MediaPlayer in chat window by keyboard shortcuts:
+Win+ Enter/Backspace/Left/Right/Up/Down.</source>
+        <translation>Při povolení této volby budete moci ovládat svůj
+přehrávač v okně pro rozhovor klávesovými zkratkami:
+Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
+    </message>
+    <message>
         <source>Add in the Front</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat dopředu</translation>
     </message>
     <message>
         <source>Add at the Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat dozadu</translation>
     </message>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
-Control+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>With this option enabled you&apos;ll be able to control
-your MediaPlayer in chat window by keyboard shortcuts:
-Win+ Enter/Backspace/Left/Right/Up/Down.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nahradit značku &apos;#{player}&apos;</translation>
     </message>
 </context>
 <context>
@@ -207,7 +209,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>Player isn&apos;t running!</source>
-        <translation type="unfinished"></translation>
+        <translation>Přehrávač neběží</translation>
     </message>
 </context>
 </TS>
