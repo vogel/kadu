@@ -1,4 +1,8 @@
-﻿+++ version 0.12.0-rc1
+﻿+++ version 1.0-alpha1
+
++++ version 0.12.0-rc2
+
++++ version 0.12.0-rc1
 * network: #2523 fixed: try to connect from time to time even if system tells us we are offline (Vogel)
 * tabs: #2118 fixed: add open recent chats button to tabswindow (kelmain)
 * sms: #2538 fixed: removed unsupported multibox gateway (Vogel)
