@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -43,7 +45,7 @@
     </message>
     <message>
         <source>Send SMS</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Envoyez SMS</translation>
     </message>
     <message>
         <source>SMS T-Mobile.pl Gateway</source>
@@ -56,10 +58,6 @@
     <message>
         <source>OmnixMultimedia</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Orange Multibox</source>
-        <translation>Orange Multibox</translation>
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
@@ -136,6 +134,14 @@ Arguments should be separated with spaces. %k argument is converted to number, %
         <source>SMS application was not specified. Visit the configuration section</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source> - Select recipient - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending SMS...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SmsExternalSender</name>
@@ -147,58 +153,67 @@ Arguments should be separated with spaces. %k argument is converted to number, %
         <source>The process exited abnormally. The SMS may not be sent</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>SmsImageDialog</name>
     <message>
-        <source>Enter text from the picture:</source>
-        <translation>Veuillez reproduire le texte d&apos;image:</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Annule</translation>
-    </message>
-    <message>
-        <source>SMS</source>
-        <translation>SMS</translation>
-    </message>
-    <message>
-        <source>Unable to fetch required token</source>
+        <source>SMS sent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SmsInternalSender</name>
     <message>
-        <source>Signature can&apos;t be empty</source>
+        <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Automatic gateway selection is not available. Please select SMS gateway manually.</source>
+        <source>Signature can&apos;t be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detecting gateway...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Detected gateway: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending SMS...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS sent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>SmsProgressWindow</name>
+    <name>SmsTokenReadJob</name>
     <message>
-        <source>Sending SMS in progress.</source>
+        <source>Invalid paremeters for token read job.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enter text from the picture:</source>
+        <source>Downloading token image...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
+        <source>Unable to fetch token image.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SMS sent successfully</source>
-        <translation>SMS envoyé avec succès</translation>
+        <source>Unable to read token image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Waiting for entry of token value...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No token value provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Received token value.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

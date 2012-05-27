@@ -73,10 +73,6 @@ Arguments should be separated with spaces. %k argument is converted to number, %
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Orange Multibox</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>SMS proxy for built-in application</source>
         <translation type="unfinished"></translation>
     </message>

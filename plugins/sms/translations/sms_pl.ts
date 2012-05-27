@@ -60,10 +60,6 @@
         <translation>OmnixMultimedia</translation>
     </message>
     <message>
-        <source>Orange Multibox</source>
-        <translation>Orange Multibox</translation>
-    </message>
-    <message>
         <source>User ID (48xxxxxxxxx)</source>
         <translation>ID użytkownika (48xxxxxxxxx)</translation>
     </message>
