@@ -274,11 +274,6 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	preview->webView()->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
 }
 
-void KaduChatStyleEngine::styleEditionRequested(QString styleName)
-{
-	Q_UNUSED(styleName);
-}
-
 void KaduChatStyleEngine::chatSyntaxFixup(QString &syntax)
 {
 	syntax.remove("<kadu:header>");
@@ -293,11 +288,6 @@ void KaduChatStyleEngine::chatFixup(QString &syntax)
 void KaduChatStyleEngine::validateStyleName(const QString &name, bool &valid)
 {
 	valid = !ChatStylesManager::instance()->hasChatStyle(name) || (ChatStylesManager::instance()->hasChatStyle(name) && syntaxList->contains(name));
-}
-
-bool KaduChatStyleEngine::removeStyle(const QString &styleName)
-{
-	return syntaxList->deleteSyntax(styleName);
 }
 
 void KaduChatStyleEngine::syntaxAdded(const QString &syntaxName)

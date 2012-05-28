@@ -364,35 +364,6 @@ void AdiumChatStyleEngine::loadStyle(const QString &styleName, const QString &va
 	CurrentStyleName = styleName;
 }
 
-bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
-{
-	QDir dir(directory);
-	QFileInfo fi;
-
-	foreach (const QString &fileName, dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden))
-	{
-		fi.setFile(dir, fileName);
-		if (!fi.isDir())
-		{
-			if (!dir.remove(fileName))
-				return false;
-		}
-		else
-		{
-			if (!clearDirectory(QString(directory + '/' + fileName)) || !dir.rmdir(fileName))
-				return false;
-
-		}
-	}
-	return dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden).isEmpty();
-}
-
-bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
-{
-	QDir dir(QString(KaduPaths::instance()->profilePath() + QLatin1String("syntax/chat/") + styleName));
-	return clearDirectory(dir.absolutePath()) && dir.cdUp() && dir.rmdir(styleName);
-}
-
 void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
 {
 	AdiumStyle style(styleName);

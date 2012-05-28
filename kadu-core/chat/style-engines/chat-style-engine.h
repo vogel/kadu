@@ -48,7 +48,6 @@ public:
 	virtual QStringList styleVariants(QString) { return QStringList(); }
 
 	virtual bool supportVariants() = 0;
-	virtual bool supportEditing() = 0;
 	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
 	virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
@@ -66,9 +65,6 @@ public:
 
 	virtual void loadStyle(const QString &, const QString &) = 0;
 
-	virtual void styleEditionRequested(QString) = 0;
-
-	virtual bool removeStyle(const QString &) = 0;
 };
 
 #endif // CHAT_STYLE_ENGINE_H

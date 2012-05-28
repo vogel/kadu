@@ -84,8 +84,6 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 
 	//configuration
 	QComboBox *SyntaxListCombo;
-	QPushButton *EditButton;
-	QPushButton *DeleteButton;
 	QComboBox *VariantListCombo;
 	QCheckBox *TurnOnTransparency;
 
@@ -100,8 +98,6 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 private slots:
 	void styleChangedSlot(const QString &styleName);
 	void variantChangedSlot(const QString &variantName);
-	void editStyleClicked();
-	void deleteStyleClicked();
 	void configurationWindowDestroyed();
 	void configurationApplied();
 

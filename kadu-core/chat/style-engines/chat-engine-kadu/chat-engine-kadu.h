@@ -56,7 +56,6 @@ public:
 	explicit KaduChatStyleEngine(QObject *parent = 0);
 	virtual ~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
-	virtual bool supportEditing() { return false; }
 	virtual QString isStyleValid(QString styleName);
 	virtual bool styleUsesTransparencyByDefault(QString styleName)
 	{
@@ -78,9 +77,6 @@ public:
 
 	virtual void loadStyle(const QString &styleName, const QString &variantName);
 
-	virtual void styleEditionRequested(QString styleName);
-
-	virtual bool removeStyle(const QString &styleName);
 };
 
 #endif // CHAT_ENGINE_KADU_H

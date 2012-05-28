@@ -71,7 +71,7 @@ ChatStylesManager * ChatStylesManager::instance()
 }
 
 ChatStylesManager::ChatStylesManager() :
-		CurrentEngine(0), SyntaxListCombo(0), EditButton(0), DeleteButton(0),
+		CurrentEngine(0), SyntaxListCombo(0),
 		VariantListCombo(0), TurnOnTransparency(0), EnginePreview(0)
 {
 }
@@ -348,17 +348,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	SyntaxListCombo->setCurrentIndex(SyntaxListCombo->findText(CurrentEngine->currentStyleName()));
 	connect(SyntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
 
-	EditButton = new QPushButton(tr("Edit"), editor);
-	EditButton->setEnabled(CurrentEngine->supportEditing());
-
-	DeleteButton = new QPushButton(tr("Delete"), editor);
-	DeleteButton->setEnabled(!AvailableStyles.value(CurrentEngine->currentStyleName()).global);
-	connect(EditButton, SIGNAL(clicked()), this, SLOT(editStyleClicked()));
-	connect(DeleteButton, SIGNAL(clicked()), this, SLOT(deleteStyleClicked()));
-
 	editorLayout->addWidget(SyntaxListCombo, 100);
-	editorLayout->addWidget(EditButton);
-	editorLayout->addWidget(DeleteButton);
 //preview
 	EnginePreview = new Preview();
 
@@ -437,8 +427,6 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 		return;
 
 	ChatStyleEngine *engine = AvailableStyles.value(styleName).engine;
-	EditButton->setEnabled(engine->supportEditing());
-	DeleteButton->setEnabled(!AvailableStyles.value(styleName).global);
 	VariantListCombo->clear();
 	VariantListCombo->addItems(engine->styleVariants(styleName));
 
@@ -465,31 +453,6 @@ void ChatStylesManager::variantChangedSlot(const QString &variantName)
 		return;
 
 	AvailableStyles.value(styleName).engine->prepareStylePreview(EnginePreview, styleName, variantName);
-}
-
-void ChatStylesManager::editStyleClicked()
-{
-	QString styleName = SyntaxListCombo->currentText();
-	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
-		return;
-
-	AvailableStyles.value(styleName).engine->styleEditionRequested(styleName);
-}
-
-void ChatStylesManager::deleteStyleClicked()
-{
-	QString styleName = SyntaxListCombo->currentText();
-	if (!AvailableStyles.contains(styleName) || !AvailableStyles.value(styleName).engine)
-		return;
-
-	if (AvailableStyles.value(styleName).engine->removeStyle(styleName))
-	{
-		AvailableStyles.remove(styleName);
-		SyntaxListCombo->removeItem(SyntaxListCombo->currentIndex());
-		styleChangedSlot(*AvailableStyles.keys().constBegin());
-	}
-	else
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Unable to remove style: %1").arg(styleName));
 }
 
 void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
@@ -527,8 +490,6 @@ StyleInfo ChatStylesManager::chatStyleInfo(const QString &name)
 void ChatStylesManager::configurationWindowDestroyed()
 {
 	SyntaxListCombo = 0;
-	EditButton = 0;
-	DeleteButton = 0;
 	VariantListCombo = 0;
 	TurnOnTransparency = 0;
 }

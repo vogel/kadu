@@ -92,8 +92,6 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	QString replaceKeywords(const Chat &chat, const QString &styleHref, const QString &style);
 	QString replaceKeywords(const QString &styleHref, const QString &source, MessageRenderInfo *message);
 
-	bool clearDirectory(const QString &directory);
-
 	void appendChatMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 
 private slots:
@@ -104,7 +102,6 @@ public:
 	virtual ~AdiumChatStyleEngine();
 
 	virtual bool supportVariants() { return true; }
-	virtual bool supportEditing() { return false; }
 	virtual QString isStyleValid(QString styleName);
 	virtual QString currentStyleVariant();
 	virtual QString defaultVariant(const QString &styleName);
@@ -125,10 +122,6 @@ public:
 	virtual void configurationUpdated() {}
 
 	virtual void loadStyle(const QString &styleName, const QString &variantName);
-
-	virtual void styleEditionRequested(QString ) {} //do nothing. Adium styles don't support editing
-
-	virtual bool removeStyle(const QString &styleName);
 
 };
 
