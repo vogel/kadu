@@ -60,7 +60,6 @@
 #include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
-#include "gui/windows/syntax-editor-window.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"
 #include "network/proxy/network-proxy.h"
@@ -256,8 +255,6 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
 	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
-	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
-		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
  	connect(widget()->widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
@@ -417,11 +414,6 @@ void MainConfigurationWindow::onChangeEmoticonsTheme(int index)
 {
 	emoticonsStyleComboBox->setEnabled(index != 0);
 	emoticonsScalingComboBox->setEnabled(index != 0);
-}
-
-void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
-{
-	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

@@ -84,8 +84,6 @@ private slots:
 
 	void showLookChatAdvanced();
 
-	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
-
 	void setIconThemes();
 	void setEmoticonThemes();
 

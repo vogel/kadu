@@ -29,7 +29,6 @@
 #include "chat/html-messages-renderer.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
-#include "gui/windows/syntax-editor-window.h"
 #include "icons/kadu-icon.h"
 #include "message/message-render-info.h"
 #include "misc/misc.h"
@@ -277,27 +276,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 
 void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 {
-	QString syntaxHint = qApp->translate(
-		"@default", "Syntax:\n"
-		"%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name,"
-		" %r - surname, %m - mobile, %u - uin, %g - group,"
-		" %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),\n"
-		"#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message,"
-		" #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent,"
-		" #{receivedDate} - when message was received, #{separator} - separator between messages,\n"
-		"<kadu:header>...</kadu:header> - content will not be displayed in 'Remove repeated headers' mode,\n"
-		"<kadu:top>...</kadu:top> - content will be included once at the begining of the document"
-	);
-
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, styleName, "Chat", syntaxHint);
-	connect(editor, SIGNAL(updated(const QString &)), ChatStylesManager::instance(), SLOT(syntaxUpdated(const QString &)));
-	connect(editor, SIGNAL(syntaxAdded(const QString &)), this, SLOT(syntaxAdded(const QString &)));
-	connect(editor, SIGNAL(isNameValid(const QString &, bool &)), this, SLOT(validateStyleName(const QString &, bool &)));
-	ChatStylesManager::instance()->preparePreview(editor->preview());
-	connect(editor->preview(), SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
-	connect(editor->preview(), SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));
-	editor->refreshPreview();
-	editor->show();
+	Q_UNUSED(styleName);
 }
 
 void KaduChatStyleEngine::chatSyntaxFixup(QString &syntax)

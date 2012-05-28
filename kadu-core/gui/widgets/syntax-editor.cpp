@@ -27,7 +27,6 @@
 #include <QtGui/QPushButton>
 
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
 
@@ -41,14 +40,7 @@ SyntaxEditor::SyntaxEditor(QWidget *parent) :
 	syntaxListCombo = new QComboBox(this);
 	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChangedSlot(const QString &)));
 
-	QPushButton *editButton = new QPushButton(tr("Edit"), this);
-	deleteButton = new QPushButton(tr("Delete"), this);
-	connect(editButton, SIGNAL(clicked()), this, SLOT(editClicked()));
-	connect(deleteButton, SIGNAL(clicked()), this, SLOT(deleteClicked()));
-
 	layout->addWidget(syntaxListCombo, 100);
-	layout->addWidget(editButton);
-	layout->addWidget(deleteButton);
 }
 
 SyntaxEditor::~SyntaxEditor()
@@ -80,27 +72,6 @@ void SyntaxEditor::setSyntaxHint(const QString &syntaxHint)
 	this->syntaxHint = syntaxHint;
 }
 
-void SyntaxEditor::editClicked()
-{
-	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, syntaxListCombo->currentText(), category, syntaxHint);
-	connect(editor, SIGNAL(updated(const QString &)), this, SLOT(setCurrentSyntax(const QString &)));
-
-	emit onSyntaxEditorWindowCreated(editor);
-	editor->refreshPreview();
-	editor->show();
-}
-
-void SyntaxEditor::deleteClicked()
-{
-	if (!syntaxList)
-		return;
-
-	if (syntaxList->deleteSyntax(currentSyntax()))
-		setCurrentSyntax(*(syntaxList->keys().constBegin()));
-	else
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to remove syntax: %1").arg(currentSyntax()));
-}
-
 void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 {
 	if (!syntaxList)
@@ -128,7 +99,6 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 	content = stream.readAll();
 	file.close();
 
-	deleteButton->setEnabled(!info.global);
 	emit syntaxChanged(content);
 }
 

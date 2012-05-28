@@ -154,7 +154,6 @@ set (gui_SRCS
 	windows/status-window.cpp
 	windows/status-window-description-proxy-model.cpp
 	windows/subscription-window.cpp
-	windows/syntax-editor-window.cpp
 	windows/token-window.cpp
 	windows/updates-dialog.cpp
 	windows/window-notifier-window.cpp
@@ -322,7 +321,6 @@ set (gui_MOC_SRCS
 	windows/status-window.h
 	windows/status-window-description-proxy-model.h
 	windows/subscription-window.h
-	windows/syntax-editor-window.h
 	windows/token-window.h
 	windows/updates-dialog.h
 	windows/window-notifier-window.h
