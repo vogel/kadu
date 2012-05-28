@@ -22,6 +22,7 @@
  */
 
 #include <QtCore/QChar>
+#include <QtDeclarative/QDeclarativeView>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QKeyEvent>
@@ -104,6 +105,7 @@ OpenChatWith::OpenChatWith() :
 
 	MainLayout->addWidget(idWidget);
 	MainLayout->addWidget(BuddiesWidget);
+	MainLayout->addWidget(new QDeclarativeView());
 
 	ModelChain *chain = new ModelChain(this);
 	ListModel = new BuddyListModel(chain);
