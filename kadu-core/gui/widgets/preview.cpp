@@ -34,12 +34,12 @@
 Preview::Preview(QWidget *parent) :
 		QFrame(parent)
 {
-	setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(5, 5, 5, 5);
+	layout->setContentsMargins(0, 0, 0, 0);
 
 	WebView = new KaduWebView(this);
 	layout->addWidget(WebView);
