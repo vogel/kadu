@@ -22,6 +22,7 @@
  */
 
 #include <QtCore/QChar>
+#include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeView>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
@@ -105,7 +106,10 @@ OpenChatWith::OpenChatWith() :
 
 	MainLayout->addWidget(idWidget);
 	MainLayout->addWidget(BuddiesWidget);
-	MainLayout->addWidget(new QDeclarativeView());
+	BuddiesWidget->hide();
+
+	QDeclarativeView *testView = new QDeclarativeView();
+	testView->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 
 	ModelChain *chain = new ModelChain(this);
 	ListModel = new BuddyListModel(chain);
@@ -113,6 +117,14 @@ OpenChatWith::OpenChatWith() :
 	chain->addProxyModel(new TalkableProxyModel(chain));
 
 	BuddiesWidget->setChain(chain);
+
+	QDeclarativeContext *declarativeContext = testView->rootContext();
+	declarativeContext->setContextProperty("buddies", chain->lastModel());
+
+	testView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	testView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+	testView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+	MainLayout->addWidget(testView);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
