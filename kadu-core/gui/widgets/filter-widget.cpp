@@ -120,7 +120,11 @@ QSize FilterWidget::sizeHint (void) const
 
 QString FilterWidget::filterText() const
 {
+#ifdef Q_OS_MAC
+	return text();
+#else
 	return NameFilterEdit->text();
+#endif
 }
 
 void FilterWidget::updateVisibility()
