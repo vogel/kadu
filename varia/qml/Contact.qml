@@ -1,9 +1,11 @@
 import QtQuick 1.1
 
-Item
+Rectangle
 {
 	property string displayName : ""
 	property string avatarPath : ""
+
+	id: container
 	clip: true
 	width: 74
 	height: 148
@@ -56,4 +58,46 @@ Item
 			wrapMode: Text.WordWrap
 		}
 	}
+
+	MouseArea
+	{
+		id: mouseArea
+		anchors.fill: parent
+		hoverEnabled: true
+	}
+
+	SystemPalette
+	{
+		id: pallete
+	}
+
+	states:
+	[
+		State
+		{
+			name: "normal"
+			when: !mouseArea.containsMouse
+			PropertyChanges { target: container; color: pallete.base }
+		},
+
+		State
+		{
+			name: "hover"
+			when: mouseArea.containsMouse
+			PropertyChanges { target: container; color: pallete.highlight }
+		}
+	]
+
+	transitions:
+	[
+		Transition
+		{
+			from: "normal"; to: "hover"; reversible: true
+			ColorAnimation
+			{
+				duration: 300
+			}
+		}
+	]
+
 }
