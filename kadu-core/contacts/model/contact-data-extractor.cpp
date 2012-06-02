@@ -70,6 +70,8 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
 			return contact.avatar(useBuddyData).pixmap();
+		case AvatarPathRole:
+			return contact.avatar(useBuddyData).filePath();
 		case ItemTypeRole:
 			return ContactRole;
 		case TalkableRole:

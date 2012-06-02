@@ -17,14 +17,11 @@ Item
 				width: contactsGrid.cellWidth
 				height: contactsGrid.cellHeight
 
-				Column
+				Contact
 				{
 					anchors.fill: parent
-					Contact
-					{
-						anchors.fill: parent
-						displayName: display
-					}
+					displayName: display
+					avatarPath: avatar
 				}
 			}
 		}
@@ -34,7 +31,7 @@ Item
 			id: contactsGrid
 			anchors.fill: parent
 			cellWidth: 74
-			cellHeight: 106
+			cellHeight: 108
 			focus: true
 			highlight: Rectangle
 			{
