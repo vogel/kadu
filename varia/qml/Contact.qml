@@ -8,7 +8,7 @@ Rectangle
 	id: container
 	clip: true
 	width: 74
-	height: 148
+	height: 108
 
 	Column
 	{
@@ -29,20 +29,20 @@ Rectangle
 			{
 				anchors.horizontalCenter: parent.horizontalCenter
 				anchors.verticalCenter: parent.verticalCenter
-				border.color: "#dedede"
+				border.color: avatarImage.status == Image.Ready ? "transparent" : "#dedede"
 				height: width
 				width: parent.width
 
 				Image
 				{
 					id: avatarImage
-					anchors.horizontalCenter: parent.horizontalCenter
-					anchors.verticalCenter: parent.verticalCenter
-					clip: true
+					anchors
+					{
+						fill: parent
+						margins: 1
+					}
 					fillMode: Image.PreserveAspectFit
 					source: avatarPath
-					height: parent.height - 2
-					width: parent.width - 2
 				}
 			}
 		}
