@@ -2,6 +2,10 @@ import QtQuick 1.1
 
 Item
 {
+	SystemPalette
+	{
+		id: pallete
+	}
 
 	Rectangle
 	{
@@ -35,9 +39,9 @@ Item
 			focus: true
 			highlight: Rectangle
 			{
-				color: "lightsteelblue"
-				radius: 5
+				color: pallete.highlight
 			}
+			highlightFollowsCurrentItem: true
 			model: buddies
 			delegate: contactsDelegate
 		}

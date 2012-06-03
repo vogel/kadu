@@ -77,14 +77,14 @@ Rectangle
 		{
 			name: "normal"
 			when: !mouseArea.containsMouse
-			PropertyChanges { target: container; color: pallete.base }
+			PropertyChanges { target: container; color: "transparent" }
 		},
 
 		State
 		{
 			name: "hover"
 			when: mouseArea.containsMouse
-			PropertyChanges { target: container; color: pallete.highlight }
+			PropertyChanges { target: container; color: Qt.lighter(pallete.highlight) }
 		}
 	]
 
