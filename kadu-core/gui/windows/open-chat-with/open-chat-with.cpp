@@ -84,7 +84,7 @@ OpenChatWith::OpenChatWith() :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	int width = QDesktopWidget().availableGeometry().width()*0.25;
-	int height = QDesktopWidget().availableGeometry().height()*0.3;
+	int height = QDesktopWidget().availableGeometry().height()*0.6;
 	QRect rect(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
 	setWindowGeometry(this, rect);
 
@@ -141,7 +141,8 @@ OpenChatWith::OpenChatWith() :
 
 	OpenChatRunner = new OpenChatWithContactListRunner();
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
-	kdebugf2();
+
+	inputChanged(QString());
 }
 
 OpenChatWith::~OpenChatWith()
@@ -214,7 +215,7 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf();
 
 	BuddyList matchingContacts = text.isEmpty()
-			? BuddyList()
+			? BuddyManager::instance()->items().toList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
