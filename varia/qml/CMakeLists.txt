@@ -1,5 +1,6 @@
 set (QML_FILES
 	Contact.qml
+	ContactsGridView.qml
 	openChatWith.qml
 )
 
