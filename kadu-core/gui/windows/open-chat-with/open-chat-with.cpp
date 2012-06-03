@@ -109,7 +109,6 @@ OpenChatWith::OpenChatWith() :
 	BuddiesWidget->hide();
 
 	QDeclarativeView *testView = new QDeclarativeView();
-	testView->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 
 	ModelChain *chain = new ModelChain(this);
 	ListModel = new BuddyListModel(chain);
@@ -124,6 +123,7 @@ OpenChatWith::OpenChatWith() :
 	testView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	testView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 	testView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+
 	MainLayout->addWidget(testView);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);

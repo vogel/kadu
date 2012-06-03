@@ -2,6 +2,8 @@ import QtQuick 1.1
 
 Item
 {
+	property int count: contactsGrid.count
+
 	Component
 	{
 		id: contactsDelegate

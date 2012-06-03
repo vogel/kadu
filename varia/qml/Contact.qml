@@ -53,7 +53,7 @@ Rectangle
 			clip: true
 			horizontalAlignment: Text.AlignHCenter
 			text: displayName
-			width: parent.width - 10
+			width: parent.width
 			height: parent.height - top - 5
 			wrapMode: Text.WordWrap
 		}
