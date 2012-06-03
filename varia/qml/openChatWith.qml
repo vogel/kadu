@@ -23,8 +23,16 @@ Item
 
 			Text
 			{
-				id: text
+				id: found
 				text: "Found: " + contacts.count + " contacts"
+				height: 20
+			}
+
+			Text
+			{
+				id: currentlySelectedText
+				anchors.top: found.bottom
+				text: "Selected: " + (null != contacts.currentItem ? contacts.currentItem.contact.displayName : "none")
 				height: 20
 			}
 
@@ -33,7 +41,7 @@ Item
 				id: contacts
 				anchors.left: parent.left
 				anchors.right: parent.right
-				anchors.top: text.bottom
+				anchors.top: currentlySelectedText.bottom
 				anchors.bottom: parent.bottom
 				clip: true
 			}

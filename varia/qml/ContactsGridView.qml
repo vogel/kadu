@@ -3,6 +3,7 @@ import QtQuick 1.1
 Item
 {
 	property int count: contactsGrid.count
+	property Item currentItem: contactsGrid.currentItem
 
 	Component
 	{
@@ -12,11 +13,22 @@ Item
 			width: contactsGrid.cellWidth
 			height: contactsGrid.cellHeight
 
+			property Contact contact: contact
+
 			Contact
 			{
+				id: contact
 				anchors.fill: parent
 				displayName: display
 				avatarPath: avatar
+			}
+
+			MouseArea
+			{
+				anchors.fill: parent
+				onClicked: {
+					contactsGrid.currentIndex = index;
+				}
 			}
 		}
 	}
