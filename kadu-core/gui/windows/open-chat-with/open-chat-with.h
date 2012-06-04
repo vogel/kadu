@@ -62,7 +62,6 @@ private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
 	void itemActivated(int index);
-	void openChat();
 
 protected:
 	virtual bool eventFilter(QObject *obj, QEvent *e);

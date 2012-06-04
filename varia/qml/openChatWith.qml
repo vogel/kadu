@@ -6,6 +6,8 @@ Item
 
 	signal itemActivated(int index)
 
+	property int currentIndex: contacts.currentIndex
+
 	SystemPalette
 	{
 		id: pallete

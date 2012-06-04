@@ -259,62 +259,9 @@ void OpenChatWith::itemActivated(int index)
 	close();
 }
 
-void OpenChatWith::openChat()
-{
-	ContactSet contacts = BuddiesWidget->actionContext()->contacts();
-
-	if (contacts.isEmpty())
-	{
-		close();
-		return;
-	}
-
-	// In case a contact was added to the manager after BuddiesWidget was created,
-	// ensure that we don't add actually duplicate contacts to the manager.
-	ContactSet knownContacts;
-	for (ContactSet::iterator it = contacts.begin(), end = contacts.end(); it != end; )
-	{
-		Contact knownContact = ContactManager::instance()->byId(it->contactAccount(), it->id(), ActionReturnNull);
-		if (knownContact)
-		{
-			it = contacts.erase(it);
-			knownContacts.insert(knownContact);
-		}
-		else
-		{
-			it->rosterEntry()->setState(RosterEntrySynchronized);
-			ContactManager::instance()->addItem(*it);
-			++it;
-		}
-	}
-
-	contacts.unite(knownContacts);
-
-	BuddySet buddies = contacts.toBuddySet();
-
-	const Chat &chat = 1 == contacts.size()
-			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
-	 		: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
-	if (chat)
-	{
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-		if (chatWidget)
-			chatWidget->activate();
-
-		close();
-		return;
-	}
-
-	const Buddy &buddy = *buddies.constBegin();
-	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
-		UrlOpener::openEmail(buddy.email().toUtf8());
-
-	close();
-}
-
 void OpenChatWith::inputAccepted()
 {
-	openChat();
+	itemActivated(BuddiesView->rootObject()->property("currentIndex").toInt());
 }
 
 void OpenChatWith::show()

@@ -8,6 +8,7 @@ Item
 
 	property int count: contactsGrid.count
 	property Item currentItem: contactsGrid.currentItem
+	property int currentIndex: contactsGrid.currentIndex
 
 	Component
 	{
