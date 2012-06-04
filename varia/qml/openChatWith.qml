@@ -2,6 +2,10 @@ import QtQuick 1.1
 
 Item
 {
+	id: openChatWith
+
+	signal itemActivated(int index)
+
 	SystemPalette
 	{
 		id: pallete
@@ -44,6 +48,10 @@ Item
 				anchors.top: currentlySelectedText.bottom
 				anchors.bottom: parent.bottom
 				clip: true
+
+				onItemActivated: {
+					openChatWith.itemActivated(index)
+				}
 			}
 		}
 	}

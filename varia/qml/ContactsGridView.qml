@@ -2,6 +2,10 @@ import QtQuick 1.1
 
 Item
 {
+	id: component
+
+	signal itemActivated(int index)
+
 	property int count: contactsGrid.count
 	property Item currentItem: contactsGrid.currentItem
 
@@ -28,6 +32,9 @@ Item
 				anchors.fill: parent
 				onClicked: {
 					contactsGrid.currentIndex = index;
+				}
+				onDoubleClicked: {
+					component.itemActivated(index)
 				}
 			}
 		}

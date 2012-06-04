@@ -26,6 +26,7 @@
 #include <QtDeclarative/QDeclarativeView>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGraphicsObject>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
@@ -74,7 +75,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false)
+		QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false)
 {
 	kdebugf();
 
@@ -110,19 +111,21 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesView = new QDeclarativeView();
 
-	ModelChain *chain = new ModelChain(this);
-	ListModel = new BuddyListModel(chain);
-	chain->setBaseModel(ListModel);
-	chain->addProxyModel(new TalkableProxyModel(chain));
+	Chain = new ModelChain(this);
+	ListModel = new BuddyListModel(Chain);
+	Chain->setBaseModel(ListModel);
+	Chain->addProxyModel(new TalkableProxyModel(Chain));
 
-	BuddiesWidget->setChain(chain);
+	BuddiesWidget->setChain(Chain);
 
 	QDeclarativeContext *declarativeContext = BuddiesView->rootContext();
-	declarativeContext->setContextProperty("buddies", chain->lastModel());
+	declarativeContext->setContextProperty("buddies", Chain->lastModel());
 
 	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
 	BuddiesView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+
+	connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
 
 	MainLayout->addWidget(BuddiesView);
 
@@ -233,6 +236,27 @@ void OpenChatWith::inputChanged(const QString &text)
 		IsTyping = false;
 
 	kdebugf2();
+}
+
+void OpenChatWith::itemActivated(int index)
+{
+	QModelIndex modelIndex = Chain->lastModel()->index(index, 0);
+	if (!modelIndex.isValid())
+		return;
+
+	Contact contact = modelIndex.data(ContactRole).value<Contact>();
+	if (!contact)
+		return;
+
+	Chat chat =ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	if (!chat)
+		return;
+
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+	if (chatWidget)
+		chatWidget->activate();
+
+	close();
 }
 
 void OpenChatWith::openChat()

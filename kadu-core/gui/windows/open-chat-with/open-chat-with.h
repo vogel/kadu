@@ -36,6 +36,7 @@ class QVBoxLayout;
 
 class BuddyListModel;
 class LineEditWithClearButton;
+class ModelChain;
 class TalkableTreeView;
 
 class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
@@ -55,10 +56,12 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 	OpenChatWithRunner *OpenChatRunner;
 
 	BuddyListModel *ListModel;
+	ModelChain *Chain;
 
 private slots:
 	void inputAccepted();
 	void inputChanged(const QString &text);
+	void itemActivated(int index);
 	void openChat();
 
 protected:
@@ -71,6 +74,7 @@ public:
 	virtual ~OpenChatWith();
 
 	void show();
+    void contactIChain ( int index );
 
 };
 
