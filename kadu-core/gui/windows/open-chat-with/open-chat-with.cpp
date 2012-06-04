@@ -229,7 +229,7 @@ void OpenChatWith::itemActivated(int index)
 	if (chatWidget)
 		chatWidget->activate();
 
-	close();
+	deleteLater();
 }
 
 void OpenChatWith::inputAccepted()
