@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
@@ -71,7 +72,14 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 		case AvatarRole:
 			return contact.avatar(useBuddyData).pixmap();
 		case AvatarPathRole:
-			return contact.avatar(useBuddyData).filePath();
+		{
+			QFileInfo avatarInfo(contact.avatar(useBuddyData).filePath());
+
+			if (avatarInfo.exists() && avatarInfo.isReadable() && avatarInfo.isFile())
+				return avatarInfo.filePath();
+			else
+				return QString();
+		}
 		case ItemTypeRole:
 			return ContactRole;
 		case TalkableRole:
