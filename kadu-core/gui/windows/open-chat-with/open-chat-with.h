@@ -37,7 +37,6 @@ class QVBoxLayout;
 class BuddyListModel;
 class LineEditWithClearButton;
 class ModelChain;
-class TalkableTreeView;
 
 class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 {
@@ -47,9 +46,6 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 
 	explicit OpenChatWith();
 
-	bool IsTyping;
-
-	TalkableTreeView *BuddiesWidget;
 	QDeclarativeView *BuddiesView;
 	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;

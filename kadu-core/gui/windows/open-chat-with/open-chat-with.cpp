@@ -21,7 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QChar>
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeView>
 #include <QtGui/QDesktopWidget>
@@ -30,30 +29,23 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
-#include "chat/type/chat-type-contact-set.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
-#include "os/generic/url-opener.h"
-#include "protocols/services/roster/roster-entry.h"
+#include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "activate.h"
@@ -75,7 +67,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-		QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false)
+		QWidget(0, Qt::Window), DesktopAwareObject(this)
 {
 	kdebugf();
 
@@ -102,12 +94,7 @@ OpenChatWith::OpenChatWith() :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	idLayout->addWidget(ContactID);
 
-	BuddiesWidget = new TalkableTreeView(this);
-	connect(BuddiesWidget, SIGNAL(talkableActivated(Talkable)), this, SLOT(openChat()));
-
 	MainLayout->addWidget(idWidget);
-	MainLayout->addWidget(BuddiesWidget);
-	BuddiesWidget->hide();
 
 	BuddiesView = new QDeclarativeView();
 
@@ -115,8 +102,6 @@ OpenChatWith::OpenChatWith() :
 	ListModel = new BuddyListModel(Chain);
 	Chain->setBaseModel(ListModel);
 	Chain->addProxyModel(new TalkableProxyModel(Chain));
-
-	BuddiesWidget->setChain(Chain);
 
 	QDeclarativeContext *declarativeContext = BuddiesView->rootContext();
 	declarativeContext->setContextProperty("buddies", Chain->lastModel());
@@ -222,20 +207,8 @@ void OpenChatWith::inputChanged(const QString &text)
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
-
-	if (!text.isEmpty())
-	{
-		if (!IsTyping || BuddiesWidget->selectionModel()->selectedIndexes().isEmpty())
-		{
-			BuddiesWidget->setCurrentIndex(BuddiesWidget->model()->index(0, 0));
-			BuddiesWidget->selectionModel()->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
-		}
-		IsTyping = true;
-	}
-	else
-		IsTyping = false;
-
-	kdebugf2();
+	if (BuddiesView->rootObject()->property("currentIndex").toInt() < 0)
+		BuddiesView->rootObject()->setProperty("currentIndex", 0);
 }
 
 void OpenChatWith::itemActivated(int index)
@@ -248,7 +221,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!contact)
 		return;
 
-	Chat chat =ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	if (!chat)
 		return;
 
