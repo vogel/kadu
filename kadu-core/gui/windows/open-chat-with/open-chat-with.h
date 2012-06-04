@@ -29,6 +29,7 @@
 
 #include "open-chat-with-runner.h"
 
+class QDeclarativeView;
 class QLabel;
 class QPushButton;
 class QVBoxLayout;
@@ -48,6 +49,7 @@ class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 	bool IsTyping;
 
 	TalkableTreeView *BuddiesWidget;
+	QDeclarativeView *BuddiesView;
 	LineEditWithClearButton *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;
@@ -69,6 +71,7 @@ public:
 	virtual ~OpenChatWith();
 
 	void show();
+
 };
 
 #endif // OPEN_CHAT_WITH_H

@@ -108,7 +108,7 @@ OpenChatWith::OpenChatWith() :
 	MainLayout->addWidget(BuddiesWidget);
 	BuddiesWidget->hide();
 
-	QDeclarativeView *testView = new QDeclarativeView();
+	BuddiesView = new QDeclarativeView();
 
 	ModelChain *chain = new ModelChain(this);
 	ListModel = new BuddyListModel(chain);
@@ -117,14 +117,14 @@ OpenChatWith::OpenChatWith() :
 
 	BuddiesWidget->setChain(chain);
 
-	QDeclarativeContext *declarativeContext = testView->rootContext();
+	QDeclarativeContext *declarativeContext = BuddiesView->rootContext();
 	declarativeContext->setContextProperty("buddies", chain->lastModel());
 
-	testView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	testView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
-	testView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+	BuddiesView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
 
-	MainLayout->addWidget(testView);
+	MainLayout->addWidget(BuddiesView);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -169,7 +169,7 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					(key == Qt::Key_Left && ContactID->cursorPosition() == 0) ||
 					(key == Qt::Key_Right && ContactID->cursorPosition() == ContactID->text().length()))
 			{
-				qApp->sendEvent(BuddiesWidget, e);
+				qApp->sendEvent(BuddiesView, e);
 				return true;
 			}
 		}
