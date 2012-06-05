@@ -27,28 +27,10 @@ Item
 			width: parent.width - 10
 			height: parent.height - 10
 
-			Text
-			{
-				id: found
-				text: "Found: " + contacts.count + " contacts"
-				height: 20
-			}
-
-			Text
-			{
-				id: currentlySelectedText
-				anchors.top: found.bottom
-				text: "Selected: " + (null != contacts.currentItem ? contacts.currentItem.contact.displayName : "none")
-				height: 20
-			}
-
 			ContactsGridView
 			{
 				id: contacts
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.top: currentlySelectedText.bottom
-				anchors.bottom: parent.bottom
+				anchors.fill: parent
 				clip: true
 
 				onItemActivated: {
