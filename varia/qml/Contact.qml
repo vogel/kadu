@@ -8,23 +8,21 @@ Rectangle
 
 	id: container
 	clip: true
-	width: 74
-	height: 108
 
-	Column
+	Row
 	{
 		id: content
 		anchors.horizontalCenter: parent.horizontalCenter
 		anchors.verticalCenter: parent.verticalCenter
-		spacing: 2
+		spacing: 10
 		width: parent.width - 10
 		height: parent.height - 10
 
 		Item
 		{
 			id: avatarContainer
-			width: parent.width
-			height: parent.width
+			width: parent.height
+			height: parent.height
 
 			Rectangle
 			{
@@ -65,12 +63,13 @@ Rectangle
 
 		Text
 		{
-			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.top: parent.top
+			width: parent.width - avatarContainer.width - 20
+			height: parent.height
 			clip: true
-			horizontalAlignment: Text.AlignHCenter
+
+			maximumLineCount: 2
 			text: displayName
-			width: parent.width
-			height: parent.height - top - 5
 			wrapMode: Text.WordWrap
 		}
 	}

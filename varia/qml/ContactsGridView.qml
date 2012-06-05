@@ -46,8 +46,8 @@ Item
 	{
 		id: contactsGrid
 		anchors.fill: parent
-		cellWidth: 74
-		cellHeight: 108
+		cellWidth: 222
+		cellHeight: 74
 		focus: true
 		highlight: Rectangle
 		{
