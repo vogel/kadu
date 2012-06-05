@@ -56,6 +56,19 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon()
 					: QIcon();
 		}
+		case StatusIconPath:
+		{
+			if (contact.ownerBuddy().isBlocked())
+				return KaduIcon("kadu_icons/blocked").fullPath();
+
+			if (contact.isBlocking())
+				return KaduIcon("kadu_icons/blocking").fullPath();
+
+			// TODO generic icon
+			return contact.contactAccount().statusContainer()
+					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).fullPath()
+					: QString();
+		}
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());
 		case ContactRole:

@@ -26,6 +26,7 @@ Item
 				anchors.fill: parent
 				displayName: display
 				avatarPath: avatar
+				statusIconPath: statusIcon
 			}
 
 			MouseArea

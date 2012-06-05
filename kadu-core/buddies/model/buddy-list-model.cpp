@@ -41,6 +41,7 @@ BuddyListModel::BuddyListModel(QObject *parent) :
 	QHash<int, QByteArray> roles;
 	roles[Qt::DisplayRole] = "display";
 	roles[AvatarPathRole] = "avatar";
+	roles[StatusIconPath] = "statusIcon";
 	setRoleNames(roles);
 
 	triggerAllAccountsRegistered();

@@ -51,6 +51,7 @@ const int MultilogonSessionRole = KaduRoles + 16;
 const int NetworkProxyRole = KaduRoles + 17;
 const int TalkableRole = KaduRoles + 18;
 const int AvatarPathRole = KaduRoles + 19;
+const int StatusIconPath = KaduRoles + 20;
 
 typedef QSet<int> RoleSet;
 // needed for ActionRole

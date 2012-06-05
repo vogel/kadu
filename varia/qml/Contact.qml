@@ -4,6 +4,7 @@ Rectangle
 {
 	property string displayName : ""
 	property string avatarPath : ""
+	property string statusIconPath : ""
 
 	id: container
 	clip: true
@@ -43,6 +44,21 @@ Rectangle
 					}
 					fillMode: Image.PreserveAspectFit
 					source: avatarPath
+				}
+
+				Image
+				{
+					id: statusImage
+					anchors
+					{
+						right: parent.right
+						bottom: parent.bottom
+						margins: 5
+					}
+					width: 16
+					height: 16
+					fillMode: Image.PreserveAspectFit
+					source: statusIconPath
 				}
 			}
 		}
