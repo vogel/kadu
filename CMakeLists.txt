@@ -1,7 +1,7 @@
 project (kadu)
 
 # minimal required versions
-set (QT_MIN_VERSION "4.7.0")
+set (QT_MIN_VERSION "4.8.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)

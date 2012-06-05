@@ -12,10 +12,11 @@
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
+set (QT_USE_QTDECLARATIVE 1)
 if (UNIX AND NOT APPLE)
 	set (QT_USE_QTDBUS 1)
 endif (UNIX AND NOT APPLE)
-find_package (Qt4 4.7.0 REQUIRED)
+find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
 
 if (KADU_INCLUDE_DIR)

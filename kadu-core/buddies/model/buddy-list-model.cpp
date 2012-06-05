@@ -38,6 +38,12 @@
 BuddyListModel::BuddyListModel(QObject *parent) :
 		QAbstractItemModel(parent), Checkable(false)
 {
+	QHash<int, QByteArray> roles;
+	roles[Qt::DisplayRole] = "display";
+	roles[AvatarPathRole] = "avatar";
+	roles[StatusIconPath] = "statusIcon";
+	setRoleNames(roles);
+
 	triggerAllAccountsRegistered();
 
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)),

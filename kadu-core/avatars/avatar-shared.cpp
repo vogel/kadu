@@ -73,7 +73,7 @@ QString AvatarShared::storageNodeName()
 
 QString AvatarShared::filePath()
 {
-	return FilePath.isEmpty() ? AvatarsDir + uuid().toString() : FilePath;
+	return FilePath.isEmpty() && !uuid().toString().isEmpty() ? AvatarsDir + uuid().toString() : FilePath;
 }
 
 QString AvatarShared::smallFilePath()
@@ -116,8 +116,13 @@ void AvatarShared::load()
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
 
-	QImageReader imageReader(filePath());
-	Pixmap = QPixmap::fromImageReader(&imageReader);
+	QFileInfo avatarFile(filePath());
+
+	if (avatarFile.exists() && avatarFile.isReadable() && avatarFile.isFile())
+	{
+		QImageReader imageReader(avatarFile.path());
+		Pixmap = QPixmap::fromImageReader(&imageReader);
+	}
 
 	ensureSmallPixmapExists();
 }

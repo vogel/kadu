@@ -21,36 +21,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QChar>
+#include <QtDeclarative/QDeclarativeContext>
+#include <QtDeclarative/QDeclarativeView>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QGraphicsObject>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
+#include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/model/buddy-list-model.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
-#include "chat/type/chat-type-contact-set.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
-#include "gui/widgets/talkable-tree-view.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
-#include "os/generic/url-opener.h"
-#include "protocols/services/roster/roster-entry.h"
+#include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "activate.h"
@@ -72,7 +67,7 @@ OpenChatWith * OpenChatWith::instance()
 }
 
 OpenChatWith::OpenChatWith() :
-	QWidget(0, Qt::Window), DesktopAwareObject(this), IsTyping(false)
+		QWidget(0, Qt::Window), DesktopAwareObject(this)
 {
 	kdebugf();
 
@@ -82,7 +77,7 @@ OpenChatWith::OpenChatWith() :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	int width = QDesktopWidget().availableGeometry().width()*0.25;
-	int height = QDesktopWidget().availableGeometry().height()*0.3;
+	int height = QDesktopWidget().availableGeometry().height()*0.6;
 	QRect rect(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
 	setWindowGeometry(this, rect);
 
@@ -99,18 +94,25 @@ OpenChatWith::OpenChatWith() :
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	idLayout->addWidget(ContactID);
 
-	BuddiesWidget = new TalkableTreeView(this);
-	connect(BuddiesWidget, SIGNAL(talkableActivated(Talkable)), this, SLOT(openChat()));
-
 	MainLayout->addWidget(idWidget);
-	MainLayout->addWidget(BuddiesWidget);
 
-	ModelChain *chain = new ModelChain(this);
-	ListModel = new BuddyListModel(chain);
-	chain->setBaseModel(ListModel);
-	chain->addProxyModel(new TalkableProxyModel(chain));
+	BuddiesView = new QDeclarativeView();
 
-	BuddiesWidget->setChain(chain);
+	Chain = new ModelChain(this);
+	ListModel = new BuddyListModel(Chain);
+	Chain->setBaseModel(ListModel);
+	Chain->addProxyModel(new TalkableProxyModel(Chain));
+
+	QDeclarativeContext *declarativeContext = BuddiesView->rootContext();
+	declarativeContext->setContextProperty("buddies", Chain->lastModel());
+
+	BuddiesView->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	BuddiesView->setResizeMode(QDeclarativeView::SizeRootObjectToView);
+	BuddiesView->setSource(QUrl(KaduPaths::instance()->dataPath() + "qml/openChatWith.qml"));
+
+	connect(BuddiesView->rootObject(), SIGNAL(itemActivated(int)), this, SLOT(itemActivated(int)));
+
+	MainLayout->addWidget(BuddiesView);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -127,7 +129,8 @@ OpenChatWith::OpenChatWith() :
 
 	OpenChatRunner = new OpenChatWithContactListRunner();
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
-	kdebugf2();
+
+	inputChanged(QString());
 }
 
 OpenChatWith::~OpenChatWith()
@@ -154,7 +157,7 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					(key == Qt::Key_Left && ContactID->cursorPosition() == 0) ||
 					(key == Qt::Key_Right && ContactID->cursorPosition() == ContactID->text().length()))
 			{
-				qApp->sendEvent(BuddiesWidget, e);
+				qApp->sendEvent(BuddiesView, e);
 				return true;
 			}
 		}
@@ -200,82 +203,38 @@ void OpenChatWith::inputChanged(const QString &text)
 	kdebugf();
 
 	BuddyList matchingContacts = text.isEmpty()
-			? BuddyList()
+			? BuddyManager::instance()->items().toList()
 			: OpenChatWithRunnerManager::instance()->matchingContacts(text);
 
 	ListModel->setBuddyList(matchingContacts);
-
-	if (!text.isEmpty())
-	{
-		if (!IsTyping || BuddiesWidget->selectionModel()->selectedIndexes().isEmpty())
-		{
-			BuddiesWidget->setCurrentIndex(BuddiesWidget->model()->index(0, 0));
-			BuddiesWidget->selectionModel()->select(BuddiesWidget->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
-		}
-		IsTyping = true;
-	}
-	else
-		IsTyping = false;
-
-	kdebugf2();
+	if (BuddiesView->rootObject()->property("currentIndex").toInt() < 0)
+		BuddiesView->rootObject()->setProperty("currentIndex", 0);
 }
 
-void OpenChatWith::openChat()
+void OpenChatWith::itemActivated(int index)
 {
-	ContactSet contacts = BuddiesWidget->actionContext()->contacts();
-
-	if (contacts.isEmpty())
-	{
-		close();
+	QModelIndex modelIndex = Chain->lastModel()->index(index, 0);
+	if (!modelIndex.isValid())
 		return;
-	}
 
-	// In case a contact was added to the manager after BuddiesWidget was created,
-	// ensure that we don't add actually duplicate contacts to the manager.
-	ContactSet knownContacts;
-	for (ContactSet::iterator it = contacts.begin(), end = contacts.end(); it != end; )
-	{
-		Contact knownContact = ContactManager::instance()->byId(it->contactAccount(), it->id(), ActionReturnNull);
-		if (knownContact)
-		{
-			it = contacts.erase(it);
-			knownContacts.insert(knownContact);
-		}
-		else
-		{
-			it->rosterEntry()->setState(RosterEntrySynchronized);
-			ContactManager::instance()->addItem(*it);
-			++it;
-		}
-	}
-
-	contacts.unite(knownContacts);
-
-	BuddySet buddies = contacts.toBuddySet();
-
-	const Chat &chat = 1 == contacts.size()
-			? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
-	 		: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
-	if (chat)
-	{
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-		if (chatWidget)
-			chatWidget->activate();
-
-		close();
+	Contact contact = modelIndex.data(ContactRole).value<Contact>();
+	if (!contact)
 		return;
-	}
 
-	const Buddy &buddy = *buddies.constBegin();
-	if (buddy.mobile().isEmpty() && !buddy.email().isEmpty())
-		UrlOpener::openEmail(buddy.email().toUtf8());
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	if (!chat)
+		return;
 
-	close();
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
+	if (chatWidget)
+		chatWidget->activate();
+
+	deleteLater();
 }
 
 void OpenChatWith::inputAccepted()
 {
-	openChat();
+	itemActivated(BuddiesView->rootObject()->property("currentIndex").toInt());
 }
 
 void OpenChatWith::show()

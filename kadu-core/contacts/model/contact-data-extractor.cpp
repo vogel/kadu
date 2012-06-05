@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
@@ -55,6 +56,19 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).icon()
 					: QIcon();
 		}
+		case StatusIconPath:
+		{
+			if (contact.ownerBuddy().isBlocked())
+				return KaduIcon("kadu_icons/blocked").fullPath();
+
+			if (contact.isBlocking())
+				return KaduIcon("kadu_icons/blocking").fullPath();
+
+			// TODO generic icon
+			return contact.contactAccount().statusContainer()
+					? contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()).fullPath()
+					: QString();
+		}
 		case BuddyRole:
 			return QVariant::fromValue(contact.ownerBuddy());
 		case ContactRole:
@@ -70,6 +84,15 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
 			return QVariant::fromValue(contact.contactAccount());
 		case AvatarRole:
 			return contact.avatar(useBuddyData).pixmap();
+		case AvatarPathRole:
+		{
+			QFileInfo avatarInfo(contact.avatar(useBuddyData).filePath());
+
+			if (avatarInfo.exists() && avatarInfo.isReadable() && avatarInfo.isFile())
+				return avatarInfo.filePath();
+			else
+				return QString();
+		}
 		case ItemTypeRole:
 			return ContactRole;
 		case TalkableRole:
