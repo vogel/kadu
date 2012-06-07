@@ -6,6 +6,8 @@ Rectangle
 	property string avatarPath : ""
 	property string statusIconPath : ""
 
+	property color textColor
+
 	id: container
 	clip: true
 
@@ -67,6 +69,7 @@ Rectangle
 			width: parent.width - avatarContainer.width - 20
 			height: parent.height
 			clip: true
+			color: container.state == "normal" ? container.textColor : pallete.highlightedText
 
 			maximumLineCount: 2
 			text: displayName

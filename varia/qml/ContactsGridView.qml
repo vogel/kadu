@@ -10,6 +10,11 @@ Item
 	property Item currentItem: contactsGrid.currentItem
 	property int currentIndex: contactsGrid.currentIndex
 
+	SystemPalette
+	{
+		id: pallete
+	}
+
 	Component
 	{
 		id: contactsDelegate
@@ -27,6 +32,7 @@ Item
 				displayName: display
 				avatarPath: avatar
 				statusIconPath: statusIcon
+				textColor: index == contactsGrid.currentIndex ? pallete.highlightedText : pallete.text
 			}
 
 			MouseArea
