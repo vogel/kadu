@@ -154,8 +154,8 @@ bool OpenChatWith::eventFilter(QObject *obj, QEvent *e)
 					key == Qt::Key_Up ||
 					key == Qt::Key_PageDown ||
 					key == Qt::Key_PageUp ||
-					(key == Qt::Key_Left && ContactID->cursorPosition() == 0) ||
-					(key == Qt::Key_Right && ContactID->cursorPosition() == ContactID->text().length()))
+					key == Qt::Key_Left ||
+					key == Qt::Key_Right)
 			{
 				qApp->sendEvent(BuddiesView, e);
 				return true;
