@@ -28,7 +28,6 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/progress-label.h"
 #include "icons/icons-manager.h"
 
 #include "server/jabber-server-register-account.h"

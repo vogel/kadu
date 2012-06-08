@@ -67,8 +67,6 @@ set (gui_SRCS
 	widgets/plugin-list-view-delegate.cpp
 	widgets/plugin-list-view-delegate-widgets.cpp
 	widgets/plugin-list-widget-item-delegate.cpp
-	widgets/progress-icon.cpp
-	widgets/progress-label.cpp
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
@@ -145,7 +143,6 @@ set (gui_SRCS
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
-	windows/progress-window.cpp
 	windows/progress-window2.cpp
 	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
@@ -242,8 +239,6 @@ set (gui_MOC_SRCS
 	widgets/plugin-list-widget-item-delegate.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h
-	widgets/progress-icon.h
-	widgets/progress-label.h
 	widgets/protocols-combo-box.h
 	widgets/roster-widget.h
 	widgets/search-bar.h
@@ -312,7 +307,6 @@ set (gui_MOC_SRCS
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h
-	windows/progress-window.h
 	windows/progress-window2.h
 	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
