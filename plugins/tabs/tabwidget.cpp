@@ -89,12 +89,14 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	//button for new chat from last conversations
 	OpenRecentChatButton = new QToolButton(OpenChatButtonsWidget);
 	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
+	OpenRecentChatButton->setToolTip(tr("Recent Chats"));
 	OpenRecentChatButton->setAutoRaise(true);
 	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
 
 	//button for opening chat
 	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
 	openChatButton->setIcon(KaduIcon("mail-message-new").icon());
+	openChatButton->setToolTip(tr("Open Chat with..."));
 	openChatButton->setAutoRaise(true);
 	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 
@@ -114,6 +116,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
+	CloseChatButton->setToolTip(tr("Close Tab"));
 	CloseChatButton->setAutoRaise(true);
 	CloseChatButton->setVisible(false);
 	connect(CloseChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
