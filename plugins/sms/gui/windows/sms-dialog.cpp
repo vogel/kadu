@@ -38,7 +38,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/progress-window2.h"
+#include "gui/windows/progress-window.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugins/plugins-manager.h"
@@ -291,7 +291,7 @@ void SmsDialog::sendSms()
 	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
 	sender->setSignature(SignatureEdit->text());
 
-	ProgressWindow2 *window = new ProgressWindow2(tr("Sending SMS..."));
+	ProgressWindow *window = new ProgressWindow(tr("Sending SMS..."));
 	window->setCancellable(true);
 	window->show();
 

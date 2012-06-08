@@ -143,7 +143,7 @@ set (gui_SRCS
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
-	windows/progress-window2.cpp
+	windows/progress-window.cpp
 	windows/proxy-action-context.cpp
 	windows/proxy-edit-window.cpp
 	windows/search-window.cpp
@@ -307,7 +307,7 @@ set (gui_MOC_SRCS
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h
-	windows/progress-window2.h
+	windows/progress-window.h
 	windows/proxy-action-context.h
 	windows/proxy-edit-window.h
 	windows/search-window.h

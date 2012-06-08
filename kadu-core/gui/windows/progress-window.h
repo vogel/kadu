@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROGRESS_WINDOW2_H
-#define PROGRESS_WINDOW2_H
+#ifndef PROGRESS_WINDOW_H
+#define PROGRESS_WINDOW_H
 
 #include <QtGui/QDialog>
 
@@ -34,7 +34,7 @@ class QProgressBar;
  */
 
 /**
- * @class ProgressWindow2
+ * @class ProgressWindow
  * @author Rafał 'Vogel' Malinowski
  * @short Window used to show progress of an action to user.
  *
@@ -51,7 +51,7 @@ class QProgressBar;
  * When window is closed before action is finished and Cancellable is true @link cancelled() @endlink
  * is emited.
  */
-class KADUAPI ProgressWindow2 : public QDialog
+class KADUAPI ProgressWindow : public QDialog
 {
 	Q_OBJECT
 
@@ -80,8 +80,8 @@ public:
 	 * @param label label of progress window
 	 * @param parent parent QWidget of progress window
 	 */
-	explicit ProgressWindow2(const QString &label, QWidget *parent = 0);
-	virtual ~ProgressWindow2();
+	explicit ProgressWindow(const QString &label, QWidget *parent = 0);
+	virtual ~ProgressWindow();
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

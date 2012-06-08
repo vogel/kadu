@@ -36,7 +36,7 @@
 #include "gadu-wait-for-account-register-window.h"
 
 GaduWaitForAccountRegisterWindow::GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent) :
-		ProgressWindow2(tr("Registering new Gadu-Gadu account"), parent)
+		ProgressWindow(tr("Registering new Gadu-Gadu account"), parent)
 {
 	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));

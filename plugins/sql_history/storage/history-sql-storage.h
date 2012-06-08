@@ -32,7 +32,7 @@
 class QSqlError;
 
 class HistoryQuery;
-class ProgressWindow2;
+class ProgressWindow;
 
 class SqlAccountsMapping;
 class SqlChatsMapping;
@@ -48,7 +48,7 @@ class HistorySqlStorage : public HistoryStorage
 	Q_OBJECT
 
 	QThread *InitializerThread;
-	ProgressWindow2 *ImportProgressWindow;
+	ProgressWindow *ImportProgressWindow;
 
 	QSqlDatabase Database;
 	SqlAccountsMapping *AccountsMapping;

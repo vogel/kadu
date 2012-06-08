@@ -35,7 +35,7 @@
 #include "jabber-wait-for-account-register-window.h"
 
 JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberServerRegisterAccount *jsra, QWidget *parent) :
-		ProgressWindow2(tr("Registering new XMPP account"), parent)
+		ProgressWindow(tr("Registering new XMPP account"), parent)
 {
 	connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));

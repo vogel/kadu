@@ -44,7 +44,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/progress-window2.h"
+#include "gui/windows/progress-window.h"
 #include "message/formatted-message.h"
 #include "message/message.h"
 #include "misc/misc.h"
@@ -131,7 +131,7 @@ void HistorySqlStorage::ensureProgressWindowReady()
 	if (ImportProgressWindow)
 		return;
 
-	ImportProgressWindow = new ProgressWindow2(tr("Preparing history database..."));
+	ImportProgressWindow = new ProgressWindow(tr("Preparing history database..."));
 	ImportProgressWindow->setWindowTitle(tr("History"));
 	ImportProgressWindow->show();
 }

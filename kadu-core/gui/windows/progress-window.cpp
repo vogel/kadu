@@ -33,9 +33,9 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 
-#include "progress-window2.h"
+#include "progress-window.h"
 
-ProgressWindow2::ProgressWindow2(const QString &label, QWidget *parent) :
+ProgressWindow::ProgressWindow(const QString &label, QWidget *parent) :
 		QDialog(parent), Label(label), Finished(false), Cancellable(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -45,11 +45,11 @@ ProgressWindow2::ProgressWindow2(const QString &label, QWidget *parent) :
 	setFixedWidth(width());
 }
 
-ProgressWindow2::~ProgressWindow2()
+ProgressWindow::~ProgressWindow()
 {
 }
 
-void ProgressWindow2::createGui()
+void ProgressWindow::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->setMargin(12);
@@ -92,7 +92,7 @@ void ProgressWindow2::createGui()
 	mainLayout->addWidget(buttons);
 }
 
-void ProgressWindow2::setCancellable(bool cancellable)
+void ProgressWindow::setCancellable(bool cancellable)
 {
 	if (Cancellable == cancellable)
 		return;
@@ -103,7 +103,7 @@ void ProgressWindow2::setCancellable(bool cancellable)
 	CloseButton->setDefault(Cancellable || Finished);
 }
 
-void ProgressWindow2::closeEvent(QCloseEvent *closeEvent)
+void ProgressWindow::closeEvent(QCloseEvent *closeEvent)
 {
 	if (Finished)
 	{
@@ -121,7 +121,7 @@ void ProgressWindow2::closeEvent(QCloseEvent *closeEvent)
 	closeEvent->ignore();
 }
 
-void ProgressWindow2::keyPressEvent(QKeyEvent *keyEvent)
+void ProgressWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
 	if (Qt::Key_Escape != keyEvent->key() || Finished)
 	{
@@ -139,25 +139,25 @@ void ProgressWindow2::keyPressEvent(QKeyEvent *keyEvent)
 	keyEvent->ignore();
 }
 
-void ProgressWindow2::showDetailsClicked()
+void ProgressWindow::showDetailsClicked()
 {
 	ShowDetailsButton->setEnabled(false);
 	TextListWidget->show();
 }
 
-void ProgressWindow2::addProgressEntry(const QString &entryIcon, const QString &entryMessage)
+void ProgressWindow::addProgressEntry(const QString &entryIcon, const QString &entryMessage)
 {
 	QListWidgetItem *item = new QListWidgetItem(KaduIcon(entryIcon).icon(), entryMessage, TextListWidget);
 	TextListWidget->addItem(item);
 }
 
-void ProgressWindow2::setProgressValue(int value, int maximum)
+void ProgressWindow::setProgressValue(int value, int maximum)
 {
 	ProgressBar->setMaximum(maximum);
 	ProgressBar->setValue(value);
 }
 
-void ProgressWindow2::progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
+void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
 {
 	Finished = true;
 	CloseButton->setEnabled(true);

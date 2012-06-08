@@ -25,13 +25,13 @@
 #ifndef JABBER_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 #define JABBER_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 
-#include "gui/windows/progress-window2.h"
+#include "gui/windows/progress-window.h"
 
 #include "protocols/protocol.h"
 
 class JabberServerRegisterAccount;
 
-class JabberWaitForAccountRegisterWindow : public ProgressWindow2
+class JabberWaitForAccountRegisterWindow : public ProgressWindow
 {
 	Q_OBJECT
 
