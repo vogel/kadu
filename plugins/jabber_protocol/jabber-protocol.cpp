@@ -46,6 +46,7 @@
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
+#include "services/jabber-client-info-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-subscription-service.h"
 #include "utils/vcard-factory.h"
@@ -68,6 +69,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
+	CurrentClientInfoService = 0;
+
 	initializeJabberClient();
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
@@ -76,6 +79,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
+
+	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
+	CurrentClientInfoService->sendClientInfo();
 
 	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
 	        chatService, SLOT(handleReceivedMessage(Message)));
@@ -214,9 +220,10 @@ void JabberProtocol::login()
 
 	if (jabberAccountDetails->publishSystemInfo())
 	{
-		JabberClient->setOSName(SystemInfo::instance()->osFullName());
-		JabberClient->setClientName("Kadu");
-		JabberClient->setClientVersion(Core::instance()->version());
+		CurrentClientInfoService->setClientName("Kadu");
+		CurrentClientInfoService->setClientVersion(Core::instance()->version());
+		CurrentClientInfoService->setOSName(SystemInfo::instance()->osFullName());
+
 		kdebugm(KDEBUG_WARNING, "CLIENT:  %s, %s\n", qPrintable(SystemInfo::instance()->osFullName()), qPrintable(Core::instance()->version()));
 	}
 

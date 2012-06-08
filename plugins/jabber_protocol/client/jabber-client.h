@@ -116,9 +116,6 @@ namespace XMPP
 		// current penalty time
 		int CurrentPenaltyTime;
 
-		// client information
-		QString ClientName, ClientVersion, OsName;
-
 		// Caps(JEP-0115: Entity Capabilities) information
 		QString CapsNode, CapsVersion;
 		DiscoItem::Identity DiscoIdentity;
@@ -312,33 +309,6 @@ namespace XMPP
 		 * Returns the address of the local interface.
 		 */
 		const QString & localAddress() const { return LocalAddress; }
-
-		/**
-		 * Set client name.
-		 */
-		void setClientName(const QString &clientName) { ClientName = clientName; }
-		/**
-		 * Return client name.
-		 */
-		const QString & clientName() const { return ClientName; }
-
-		/**
-		 * Set client version.
-		 */
-		void setClientVersion(const QString &clientVersion) { ClientVersion = clientVersion; }
-		/**
-		 * Return client version.
-		 */
-		const QString & clientVersion() const { return ClientVersion; }
-
-		/**
-		 * Set operating system name.
-		 */
-		void setOSName(const QString &osName) { OsName = osName; }
-		/**
-		 * Return operating system name.
-		 */
-		const QString & osName() const { return OsName; }
 
 		/**
 		 * Set the caps(JEP-0115: Entity capabilities) node name.

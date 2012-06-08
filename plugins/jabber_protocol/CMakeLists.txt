@@ -141,6 +141,7 @@ set (SOURCES
 	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
+	services/jabber-client-info-service.cpp
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-file-transfer-service.cpp
 	services/jabber-personal-info-service.cpp
@@ -209,6 +210,7 @@ set (MOC_SOURCES
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
 	services/jabber-chat-state-service.h
+	services/jabber-client-info-service.h
 	services/jabber-contact-personal-info-service.h
 	services/jabber-file-transfer-service.h
 	services/jabber-personal-info-service.h

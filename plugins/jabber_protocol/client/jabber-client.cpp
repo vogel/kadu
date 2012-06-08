@@ -39,6 +39,7 @@
 #include "certificates/certificate-helpers.h"
 #include "client/pong-server.h"
 #include "resource/jabber-resource-pool.h"
+#include "services/jabber-client-info-service.h"
 #include "utils/pep-manager.h"
 #include "utils/server-info-manager.h"
 #include "jabber-account-details.h"
@@ -57,8 +58,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 	cleanUp();
 
 	Client = new XMPP::Client(this);
-
-	updateClientInfo();
 
 	// Set caps information
 	Client->setCapsNode(capsNode());
@@ -175,9 +174,12 @@ void JabberClient::cleanUp()
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
 
-	setClientName(QString());
-	setClientVersion(QString());
-	setOSName(QString());
+	if (Protocol->clientInfoService())
+	{
+		Protocol->clientInfoService()->setClientName(QString());
+		Protocol->clientInfoService()->setClientVersion(QString());
+		Protocol->clientInfoService()->setOSName(QString());
+	}
 
 	setIgnoreTLSWarnings(false);
 }
@@ -208,19 +210,12 @@ int JabberClient::getPenaltyTime()
 	return currentTime;
 }
 
-void JabberClient::updateClientInfo()
-{
-	Client->setClientName(clientName());
-	Client->setClientVersion(clientVersion());
-	Client->setOSName(osName());
-}
-
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
 {
 	MyJid = jid;
 	Password = password;
 
-	updateClientInfo();
+	Protocol->clientInfoService()->sendClientInfo();
 
 	/*
 	 * Return an error if we should force TLS but it's not available.
