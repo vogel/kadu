@@ -37,12 +37,12 @@
 #include "gadu-wait-for-account-register-window.h"
 
 GaduWaitForAccountRegisterWindow::GaduWaitForAccountRegisterWindow(GaduServerRegisterAccount *gsra, QWidget *parent) :
-		ProgressWindow(parent)
+		ProgressWindow2(tr("Registering new Gadu-Gadu account"), parent)
 {
 	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
 
-	setState(ProgressIcon::StateInProgress, tr("Plase wait. New Gadu-Gadu account is being registered."));
+	addProgressEntry("dialog-information", tr("Plase wait. New Gadu-Gadu account is being registered."));
 	gsra->performAction();
 }
 
@@ -55,14 +55,14 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 	if (gsra && gsra->result())
 	{
 		QString message(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist."));
-		setState(ProgressIcon::StateFinished, message.arg(gsra->uin()));
+		progressFinished(true, "dialog-information", message.arg(gsra->uin()));
 
 		emit uinRegistered(gsra->uin());
 	}
 	else
 	{
 		QString message(tr("An error has occurred during registration. Please try again later."));
-		setState(ProgressIcon::StateFailed, message);
+		progressFinished(false, "dialog-error", message);
 
 		emit uinRegistered(0);
 	}

@@ -25,13 +25,13 @@
 #ifndef GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 #define GADU_WAIT_FOR_ACCOUNT_REGISTER_WINDOW_H
 
-#include "gui/windows/progress-window.h"
+#include "gui/windows/progress-window2.h"
 
 #include "protocols/protocol.h"
 
 class GaduServerRegisterAccount;
 
-class GaduWaitForAccountRegisterWindow : public ProgressWindow
+class GaduWaitForAccountRegisterWindow : public ProgressWindow2
 {
 	Q_OBJECT
 
