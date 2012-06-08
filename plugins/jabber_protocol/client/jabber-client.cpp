@@ -354,11 +354,6 @@ void JabberClient::disconnect(XMPP::Status &reason)
 	QTimer::singleShot(100, this, SLOT(cleanUp()));
 }
 
-bool JabberClient::isConnected() const
-{
-	return Client->isActive();
-}
-
 void JabberClient::send(const QString &packet)
 {
 	Client->send(packet);
@@ -574,7 +569,7 @@ void JabberClient::setPresence(const XMPP::Status &status)
 		/*
 		 * Make sure we are actually connected before sending out a packet.
 		 */
-		if (isConnected())
+		if (Client->isActive())
 		{
 			kdebug("Sending new presence to the server.\n");
 

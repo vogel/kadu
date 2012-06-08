@@ -214,11 +214,6 @@ namespace XMPP
 		 */
 		void disconnect(XMPP::Status &reason);
 
-		/**
-		 * Returns if this instance is connected to a server.
-		 */
-		bool isConnected() const;
-
 		void setPresence(const XMPP::Status &status);
 
 		/**
