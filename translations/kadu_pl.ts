@@ -2590,6 +2590,13 @@ Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;
     </message>
 </context>
 <context>
+    <name>RecentChatsMenu</name>
+    <message>
+        <source>Recent chats</source>
+        <translation>Ostatnie rozmowy</translation>
+    </message>
+</context>
+<context>
     <name>KaduWindowActions</name>
     <message>
         <source>Add Buddy...</source>
