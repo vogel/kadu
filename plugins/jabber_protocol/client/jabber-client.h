@@ -214,8 +214,6 @@ namespace XMPP
 		 */
 		void disconnect(XMPP::Status &reason);
 
-		void setPresence(const XMPP::Status &status);
-
 		/**
 		 * Returns the JID associated with this instance.
 		 */

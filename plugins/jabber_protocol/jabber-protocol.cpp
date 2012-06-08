@@ -282,7 +282,30 @@ void JabberProtocol::sendStatusToServer()
 	if (!isConnected() && !isDisconnecting())
 		return;
 
-	JabberClient->setPresence(IrisStatusAdapter::toIrisStatus(status()));
+	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
+
+	xmppStatus.setCapsNode(client()->capsNode());
+	xmppStatus.setCapsVersion(client()->capsVersion());
+	xmppStatus.setCapsHashAlgorithm(QLatin1String("sha-1"));
+	xmppStatus.setCapsExt(client()->capsExt());
+
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
+	if (jabberAccountDetails)
+	{
+		xmppStatus.setPriority(jabberAccountDetails->priority());
+
+		XMPP::Resource newResource(jabberAccountDetails->resource(), xmppStatus);
+
+		// update our resource in the resource pool
+		resourcePool()->addResource(client()->jid(), newResource);
+
+		// make sure that we only consider our own resource locally
+		resourcePool()->lockToResource(client()->jid(), newResource);
+	}
+
+	if (xmppClient()->isActive() && xmppStatus.show() != QString("connecting"))
+		xmppClient()->setPresence(xmppStatus);
+
 	account().accountContact().setCurrentStatus(status());
 }
 
