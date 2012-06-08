@@ -533,28 +533,6 @@ void JabberClient::slotCSError(int error)
 	}
 }
 
-void JabberClient::requestSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "subscribe");
-}
-
-void JabberClient::resendSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "subscribed");
-}
-
-void JabberClient::rejectSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "unsubscribed");
-}
-
-void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString &type)
-{
-	XMPP::JT_Presence *task = new XMPP::JT_Presence(Client->rootTask());
-	task->sub(jid, type);
-	task->go(true);
-}
-
 void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)
 {
 	emit resourceAvailable(jid, resource);

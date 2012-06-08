@@ -47,6 +47,8 @@ public:
 	virtual void removeSubscription(const Contact &contact);
 	virtual void requestSubscription(const Contact &contact);
 
+	void sendSubsription(const Contact &contact, const QString &subscription);
+
 public slots:
 	virtual void authorizeContact(Contact contact, bool authorized);
 

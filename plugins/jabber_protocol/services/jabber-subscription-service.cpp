@@ -79,34 +79,33 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 
 void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)
 {
-	const XMPP::Jid jid = XMPP::Jid(contact.id());
-
 	if (authorized)
-		Protocol->client()->resendSubscription(jid);
+		resendSubscription(contact);
 	else
-		Protocol->client()->rejectSubscription(jid);
+		removeSubscription(contact);
 }
 
 void JabberSubscriptionService::resendSubscription(const Contact &contact)
 {
-	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
-		return;
-
-	Protocol->client()->resendSubscription(contact.id());
+	sendSubsription(contact, "subscribed");
 }
 
 void JabberSubscriptionService::removeSubscription(const Contact &contact)
 {
-	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
-		return;
-
-	Protocol->client()->rejectSubscription(contact.id());
+	sendSubsription(contact, "unsubscribed");
 }
 
 void JabberSubscriptionService::requestSubscription(const Contact &contact)
 {
-	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->client())
+	sendSubsription(contact, "subscribe");
+}
+
+void JabberSubscriptionService::sendSubsription(const Contact &contact, const QString &subscription)
+{
+	if (!Protocol || !Protocol->isConnected() || contact.contactAccount() != Protocol->account() || !Protocol->xmppClient() || !Protocol->xmppClient()->isActive())
 		return;
 
-	Protocol->client()->requestSubscription(contact.id());
+	XMPP::JT_Presence *task = new XMPP::JT_Presence(Protocol->xmppClient()->rootTask());
+	task->sub(contact.id(), subscription);
+	task->go(true);
 }

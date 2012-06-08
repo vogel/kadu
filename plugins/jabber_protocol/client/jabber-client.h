@@ -432,12 +432,6 @@ namespace XMPP
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
-		void changeSubscription(const XMPP::Jid &jid, const QString &type);
-		void requestSubscription(const XMPP::Jid &jid);
-		void resendSubscription(const XMPP::Jid &jid);
-		void rejectSubscription(const XMPP::Jid &jid);
-
-
 	signals:
 		/**
 		 * Connected successfully.
