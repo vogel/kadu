@@ -40,6 +40,7 @@
 
 #include "debug.h"
 
+class RecentChatsMenu;
 class TabsManager;
 
 class TabBar: public QTabBar
@@ -83,7 +84,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 
 	QToolButton *CloseChatButton;
 	QWidget *OpenChatButtonsWidget;
-	QMenu *RecentChatsMenu;
+	RecentChatsMenu *RecentChatsMenuWidget;
 	QToolButton *OpenRecentChatButton;
 
 	TabsManager *Manager;
@@ -123,17 +124,12 @@ private slots:
 	* Slot that handles click on button with last conversations
 	* Opens a popup QMenu with last conversations
 	*/
-	void newChatFromLastConversation();
+	void openRecentChatsMenu();
 
 	/**
 	* Slot for handling click on item from popup QMenu with last conversations
 	*/
 	void openRecentChat(QAction *action);
-
-	/**
-	* Checks and enables/disables button for activating recent chat button
-	*/
-	void checkRecentChats();
 
 	/**
 	* Slot zostaje wywołany w celu zmiany pozycji karty.

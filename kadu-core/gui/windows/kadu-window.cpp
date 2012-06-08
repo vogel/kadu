@@ -54,6 +54,7 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "gui/widgets/recent-chats-menu.h"
 #include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -179,24 +180,18 @@ void KaduWindow::createKaduMenu()
 #else
 	KaduMenu->setTitle("&Kadu");
 #endif
-	RecentChatsMenu = new QMenu(this);
-	RecentChatsMenu->setIcon(KaduIcon("internet-group-chat").icon());
-	RecentChatsMenu->setTitle(tr("Recent chats"));
-	RecentChatsMenuNeedsUpdate = true;
-	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(invalidateRecentChatsMenu()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidateRecentChatsMenu()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidateRecentChatsMenu()));
-	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(updateRecentChatsMenu()));
-	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+	RecentChatsMenuWidget = new RecentChatsMenu(this);
+	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
 	insertMenuActionDescription(Actions->ShowYourAccounts, MenuKadu);
 	insertMenuActionDescription(Actions->ManageModules, MenuKadu);
 
 	KaduMenu->addSeparator();
-	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenu);
+
+	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenuWidget);
+	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), RecentChatsMenuAction, SLOT(setEnabled(bool)));
+
 	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(NotificationManager::instance()->silentModeActionDescription(), MenuKadu);
@@ -333,37 +328,6 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	emit talkableActivated(talkable);
 }
 
-void KaduWindow::invalidateRecentChatsMenu()
-{
-	RecentChatsMenuNeedsUpdate = true;
-}
-
-void KaduWindow::updateRecentChatsMenu()
-{
-	kdebugf();
-
-	if (!RecentChatsMenuNeedsUpdate)
-		return;
-
-	RecentChatsMenu->clear();
-
-	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat, false))
-		{
-			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
-			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),
-			                              ChatDataExtractor::data(chat, Qt::DisplayRole).toString(),
-			                              RecentChatsMenu);
-			action->setData(QVariant::fromValue<Chat>(chat));
-			RecentChatsMenu->addAction(action);
-		}
-
-	RecentChatsMenuAction->setEnabled(!RecentChatsMenu->actions().isEmpty());
-	RecentChatsMenuNeedsUpdate = false;
-
-	kdebugf2();
-}
-
 void KaduWindow::updateAddChatMenuItem()
 {
 	AddConference->setVisible(false);
@@ -381,11 +345,6 @@ void KaduWindow::openRecentChats(QAction *action)
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
 		chatWidget->activate();
-}
-
-void KaduWindow::iconThemeChanged()
-{
-	RecentChatsMenu->setIcon(KaduIcon("internet-group-chat").icon());
 }
 
 void KaduWindow::storeConfiguration()

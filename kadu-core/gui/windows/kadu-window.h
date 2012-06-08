@@ -48,6 +48,7 @@ class ActionDescription;
 class BuddyInfoPanel;
 class ProxyActionContext;
 class KaduWindowActions;
+class RecentChatsMenu;
 class RosterWidget;
 class StatusButtons;
 class TalkableTreeView;
@@ -82,9 +83,8 @@ private:
 	QMenu *ContactsMenu;
 	QMenu *ToolsMenu;
 	QMenu *HelpMenu;
-	QMenu *RecentChatsMenu;
+	RecentChatsMenu *RecentChatsMenuWidget;
 	QAction *RecentChatsMenuAction;
-	bool RecentChatsMenuNeedsUpdate;
 
 	QAction *AddConference;
 	QAction *AddRoomChat;
@@ -124,12 +124,8 @@ private:
 	virtual void compositingDisabled();
 
 private slots:
-	void invalidateRecentChatsMenu();
-	void updateRecentChatsMenu();
 	void updateAddChatMenuItem();
 	void openRecentChats(QAction *action);
-
-	void iconThemeChanged();
 
 #ifdef Q_WS_WIN
 	void setHiddenParent();

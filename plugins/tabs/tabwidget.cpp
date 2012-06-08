@@ -39,6 +39,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
+#include "gui/widgets/recent-chats-menu.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "icons/kadu-icon.h"
@@ -91,7 +92,12 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	OpenRecentChatButton->setIcon(KaduIcon("internet-group-chat").icon());
 	OpenRecentChatButton->setToolTip(tr("Recent Chats"));
 	OpenRecentChatButton->setAutoRaise(true);
-	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(newChatFromLastConversation()));
+	connect(OpenRecentChatButton, SIGNAL(clicked()), SLOT(openRecentChatsMenu()));
+
+	//menu for recent chats
+	RecentChatsMenuWidget = new RecentChatsMenu(OpenRecentChatButton);
+	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
+	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), OpenRecentChatButton, SLOT(setEnabled(bool)));
 
 	//button for opening chat
 	QToolButton *openChatButton = new QToolButton(OpenChatButtonsWidget);
@@ -105,13 +111,6 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 
 	OpenChatButtonsWidget->setLayout(horizontalLayout);
 	OpenChatButtonsWidget->setVisible(false);
-
-	//menu for recent chats
-	RecentChatsMenu = new QMenu(this);
-
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(checkRecentChats()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(checkRecentChats()));
-	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(checkRecentChats()));
 
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
@@ -377,21 +376,10 @@ void TabWidget::newChat()
 	OpenChatWith::instance()->show();
 }
 
-void TabWidget::newChatFromLastConversation()
+void TabWidget::openRecentChatsMenu()
 {
-	//load recent chats to popup menu
-	RecentChatsMenu->clear();
-	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat, false))
-		{
-			QAction *action = new QAction(ChatDataExtractor::data(chat, Qt::DisplayRole).toString(), RecentChatsMenu);
-			action->setData(QVariant::fromValue<Chat>(chat));
-			RecentChatsMenu->addAction(action);
-		}
-	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChat(QAction *)));
-
 	//show last conversations menu under widget with buttons for opening chats
-	RecentChatsMenu->popup(OpenChatButtonsWidget->mapToGlobal(QPoint(0, OpenChatButtonsWidget->height())));
+	RecentChatsMenuWidget->popup(OpenChatButtonsWidget->mapToGlobal(QPoint(0, OpenChatButtonsWidget->height())));
 }
 
 void TabWidget::openRecentChat(QAction *action)
@@ -399,18 +387,6 @@ void TabWidget::openRecentChat(QAction *action)
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
 		chatWidget->activate();
-}
-
-void TabWidget::checkRecentChats()
-{
-	//check if all recent chats are opened -> disable button
-	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat, false))
-		{
-			OpenRecentChatButton->setEnabled(true);
-			return;
-		}
-	OpenRecentChatButton->setEnabled(false);
 }
 
 void TabWidget::deleteTab()

@@ -70,6 +70,7 @@ set (gui_SRCS
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
+	widgets/recent-chats-menu.cpp
 	widgets/roster-widget.cpp
 	widgets/search-bar.cpp
 	widgets/select-file.cpp
@@ -240,6 +241,7 @@ set (gui_MOC_SRCS
 	widgets/preview.h
 	widgets/proxy-combo-box.h
 	widgets/protocols-combo-box.h
+	widgets/recent-chats-menu.h
 	widgets/roster-widget.h
 	widgets/search-bar.h
 	widgets/select-file.h
