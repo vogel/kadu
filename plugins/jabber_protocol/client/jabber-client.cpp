@@ -59,38 +59,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 
 	Client = new XMPP::Client(this);
 
-	// Set caps information
-	Client->setCapsNode(capsNode());
-
-	// Set Disco Identity
-	//jabberClient->setIdentity( discoIdentity());
-
-	DiscoItem::Identity identity;
-	identity.category = "client";
-	identity.type = "pc";
-	identity.name = "Kadu";
-	Client->setIdentity(identity);
-
-	QStringList features;
-	features
-			<< "http://jabber.org/protocol/bytestreams"	// file transfer
-			<< "http://jabber.org/protocol/chatstates"
-			<< "http://jabber.org/protocol/disco#info"
-			<< "http://jabber.org/protocol/ibb"	// file transfer
-			<< "http://jabber.org/protocol/si"	// file transfer
-			<< "http://jabber.org/protocol/si/profile/file-transfer" // file transfer
-			<< "jabber:iq:version"
-			<< "jabber:x:data"
-			<< "urn:xmpp:avatar:data"
-			<< "urn:xmpp:avatar:metadata"
-			<< "urn:xmpp:avatar:metadata+notify"
-			<< "urn:xmpp:ping";
-
-	setCapsVersion(calculateCapsVersion(identity, features));
-
-	Client->setCapsVersion(capsVersion());
-	Client->setFeatures(Features(features));
-
 	serverInfoManager = new ServerInfoManager(Client, Client);
 	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
 		this, SLOT(serverFeaturesChanged()));
@@ -174,13 +142,6 @@ void JabberClient::cleanUp()
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
 
-	if (Protocol->clientInfoService())
-	{
-		Protocol->clientInfoService()->setClientName(QString());
-		Protocol->clientInfoService()->setClientVersion(QString());
-		Protocol->clientInfoService()->setOSName(QString());
-	}
-
 	setIgnoreTLSWarnings(false);
 }
 
@@ -214,8 +175,6 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 {
 	MyJid = jid;
 	Password = password;
-
-	Protocol->clientInfoService()->sendClientInfo();
 
 	/*
 	 * Return an error if we should force TLS but it's not available.
@@ -735,20 +694,6 @@ void JabberClient::setPEPAvailable(bool b)
 	}
 	else if (!b && client()->extensions().contains("ep"))
 		client()->removeExtension("ep");
-}
-
-QString JabberClient::calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features)
-{
-	QString result(identity.category);
-	result.append('/');
-	result.append(identity.type);
-	result.append("//");
-	result.append(identity.name);
-	result.append('<');
-	result.append(features.join(QLatin1String("<")));
-	result.append('<');
-
-	return QString::fromAscii(QCryptographicHash::hash(result.toAscii(), QCryptographicHash::Sha1).toBase64());
 }
 
 }

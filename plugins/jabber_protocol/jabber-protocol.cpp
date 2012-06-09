@@ -69,8 +69,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
-	CurrentClientInfoService = 0;
-
 	initializeJabberClient();
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
@@ -79,9 +77,24 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
-
 	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
-	CurrentClientInfoService->sendClientInfo();
+
+	QStringList features;
+	features
+			<< "http://jabber.org/protocol/bytestreams"	// file transfer
+			<< "http://jabber.org/protocol/chatstates"
+			<< "http://jabber.org/protocol/disco#info"
+			<< "http://jabber.org/protocol/ibb"	// file transfer
+			<< "http://jabber.org/protocol/si"	// file transfer
+			<< "http://jabber.org/protocol/si/profile/file-transfer" // file transfer
+			<< "jabber:iq:version"
+			<< "jabber:x:data"
+			<< "urn:xmpp:avatar:data"
+			<< "urn:xmpp:avatar:metadata"
+			<< "urn:xmpp:avatar:metadata+notify"
+			<< "urn:xmpp:ping";
+
+	CurrentClientInfoService->setFeatures(features);
 
 	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
 	        chatService, SLOT(handleReceivedMessage(Message)));
@@ -223,13 +236,13 @@ void JabberProtocol::login()
 		CurrentClientInfoService->setClientName("Kadu");
 		CurrentClientInfoService->setClientVersion(Core::instance()->version());
 		CurrentClientInfoService->setOSName(SystemInfo::instance()->osFullName());
-
-		kdebugm(KDEBUG_WARNING, "CLIENT:  %s, %s\n", qPrintable(SystemInfo::instance()->osFullName()), qPrintable(Core::instance()->version()));
 	}
-
-	// Set caps node information
-	JabberClient->setCapsNode("http://kadu.im/caps");
-	JabberClient->setCapsVersion("0.10");
+	else
+	{
+		CurrentClientInfoService->setClientName(QString());
+		CurrentClientInfoService->setClientVersion(QString());
+		CurrentClientInfoService->setOSName(QString());
+	}
 
 	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
 
@@ -292,11 +305,7 @@ void JabberProtocol::sendStatusToServer()
 		return;
 
 	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
-
-	xmppStatus.setCapsNode(client()->capsNode());
-	xmppStatus.setCapsVersion(client()->capsVersion());
-	xmppStatus.setCapsHashAlgorithm(QLatin1String("sha-1"));
-	xmppStatus.setCapsExt(client()->capsExt());
+	CurrentClientInfoService->fillStatusCapsData(xmppStatus);
 
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (jabberAccountDetails)

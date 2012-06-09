@@ -116,16 +116,10 @@ namespace XMPP
 		// current penalty time
 		int CurrentPenaltyTime;
 
-		// Caps(JEP-0115: Entity Capabilities) information
-		QString CapsNode, CapsVersion;
-		DiscoItem::Identity DiscoIdentity;
-
 		bool PepAvailable;
 
 		void setPEPAvailable(bool b);
 
-		// TODO 0.10: move this to proper place:
-		QString calculateCapsVersion(const DiscoItem::Identity &identity, const QStringList &features);
 		void updateClientInfo();
 
 	private slots:
@@ -309,56 +303,6 @@ namespace XMPP
 		 * Returns the address of the local interface.
 		 */
 		const QString & localAddress() const { return LocalAddress; }
-
-		/**
-		 * Set the caps(JEP-0115: Entity capabilities) node name.
-		 * @param node Node name.
-		 */
-		void setCapsNode(const QString &capsNode) { CapsNode = capsNode; }
-
-		/**
-		 * Return the caps node name for this client.
-		 * @return the caps node name.
-		 */
-		const QString & capsNode() const { return CapsNode;}
-
-		/**
-		 * Set the caps(JEP-0115: Entity capabilities) node version.
-		 * @param capsVersion the node version.
-		 */
-		void setCapsVersion(const QString &capsVersion) { CapsVersion = capsVersion; }
-
-		/**
-		 * Return the caps version for this client.
-		 * @return the caps version.
-		 */
-		const QString & capsVersion() const { return CapsVersion; }
-
-		/**
-		 * Return the caps extension list for this client.
-		 * @return A string containing all extensions separated by space.
-		 */
-		QString capsExt() const { return Client ? Client->capsExt() : QString(); }
-
-		/**
-		 * Set the disco Identity information for this client.
-		 * Create a Disco identity like this:
-		 * @code
-		 * DiscoItem::Identity identity;
-		 * identity.category = "client";
-		 * identity.type = "pc";
-		 * identity.name = "Kopete";
-		 * @endcode
-		 *
-		 * @param identity DiscoItem::Identity for the client.
-		 */
-		void setDiscoIdentity(const DiscoItem::Identity &identity) { DiscoIdentity = identity; }
-
-		/**
-		 * Get the disco Identity information for this client.
-		 * @return the DiscoItem::Identity for this client.
-		 */
-		const DiscoItem::Identity & discoIdentity() const { return DiscoIdentity; }
 
 		/**
 		 * This method can be used to implement a penalty

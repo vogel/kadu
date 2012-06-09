@@ -22,12 +22,16 @@
 
 #include <QtCore/QWeakPointer>
 
+#include "xmpp_discoitem.h"
+
 class JabberProtocol;
 
 namespace XMPP
 {
 
 class Client;
+class Features;
+class Status;
 
 class JabberClientInfoService : public QObject
 {
@@ -35,9 +39,7 @@ class JabberClientInfoService : public QObject
 
 	QWeakPointer<Client> XmppClient;
 
-	QString ClientName;
-	QString ClientVersion;
-	QString OSName;
+	QString calculateCapsVersion() const;
 
 public:
 	explicit JabberClientInfoService(JabberProtocol *protocol);
@@ -47,7 +49,13 @@ public:
 	void setClientVersion(const QString &clientVersion);
 	void setOSName(const QString &osName);
 
-	void sendClientInfo();
+	void setCapsNode(const QString &capsNode);
+	void setFeatures(QStringList featureList);
+	void setFeatures(const Features &features);
+
+	void fillStatusCapsData(Status &status);
+
+	void setIdentity(const DiscoItem::Identity &identity);
 
 };
 
