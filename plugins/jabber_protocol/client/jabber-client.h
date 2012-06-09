@@ -40,7 +40,6 @@ namespace XMPP
 }
 
 class JabberProtocol;
-class PEPManager;
 
 /**
  * This class provides an interface to the Iris subsystem. The goal is to
@@ -83,8 +82,6 @@ namespace XMPP
 
 		JabberProtocol *Protocol;
 
-		PEPManager *PepManager;
-
 		// ignore TLS warnings
 		bool IgnoreTLSWarnings;
 
@@ -113,10 +110,6 @@ namespace XMPP
 
 		// current penalty time
 		int CurrentPenaltyTime;
-
-		bool PepAvailable;
-
-		void setPEPAvailable(bool b);
 
 	private slots:
                 /**
@@ -159,9 +152,6 @@ namespace XMPP
 		void slotSubscription(const Jid &jid, const QString &type, const QString &nick);
 
 		void sessionStart_finished();
-
-	public slots:
-		void serverFeaturesChanged();
 
 	public:
 		/**
@@ -336,9 +326,6 @@ namespace XMPP
 		 * Send raw packet to the server.
 		 */
 		void send(const QString &packet);
-
-		PEPManager *pepManager() { return PepManager; }
-		bool isPEPAvailable() { return PepAvailable; }
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 

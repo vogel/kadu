@@ -30,7 +30,7 @@
 
 #include "pep-publish-task.h"
 
-PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, PEPManager::Access access) :
+PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, JabberPepService::Access access) :
 		XMPP::Task(parent), node_(node), item_(it)
 {
 	iq_ = createIQ(doc(), "set", QString(), id());
@@ -47,7 +47,7 @@ PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const XMPP::Pu
 	item.setAttribute("id", it.id());
 	publish.appendChild(item);
 
-	if (access != PEPManager::DefaultAccess)
+	if (access != JabberPepService::DefaultAccess)
 	{
 		QDomElement conf = doc()->createElement("configure");
 		QDomElement conf_x = doc()->createElementNS("jabber:x:data","x");
@@ -66,9 +66,9 @@ PEPPublishTask::PEPPublishTask(Task *parent, const QString &node, const XMPP::Pu
 		access_model.setAttribute("var","pubsub#access_model");
 		QDomElement access_model_value = doc()->createElement("value");
 		access_model.appendChild(access_model_value);
-		if (access == PEPManager::PublicAccess)
+		if (access == JabberPepService::PublicAccess)
 			access_model_value.appendChild(doc()->createTextNode("open"));
-		else if (access == PEPManager::PresenceAccess)
+		else if (access == JabberPepService::PresenceAccess)
 			access_model_value.appendChild(doc()->createTextNode("presence"));
 		conf_x.appendChild(access_model);
 

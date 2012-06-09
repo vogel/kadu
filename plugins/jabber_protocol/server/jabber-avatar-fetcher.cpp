@@ -22,6 +22,7 @@
 
 #include "server/jabber-avatar-pep-fetcher.h"
 #include "server/jabber-avatar-vcard-fetcher.h"
+#include "services/jabber-pep-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-fetcher.h"
@@ -74,7 +75,7 @@ void JabberAvatarFetcher::fetchAvatar()
 		return;
 	}
 
-	if (protocol->client()->isPEPAvailable() && protocol->client()->pepManager())
+	if (protocol->pepService()->enabled())
 		fetchAvatarPEP();
 	else
 		fetchAvatarVCard();

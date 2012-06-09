@@ -32,18 +32,18 @@
 
 #include "iris/xmpp_pubsubitem.h"
 #include "iris/xmpp_task.h"
-#include "utils/pep-manager.h"
+#include "services/jabber-pep-service.h"
 
 class PEPPublishTask : public XMPP::Task
 {
 	Q_OBJECT
-	
+
 	QDomElement iq_;
 	QString node_;
 	XMPP::PubSubItem item_;
 
 public:
-	PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, PEPManager::Access access);
+	PEPPublishTask(Task *parent, const QString &node, const XMPP::PubSubItem &it, JabberPepService::Access access);
 	virtual ~PEPPublishTask();
 
 	bool take(const QDomElement &x);

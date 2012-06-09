@@ -1,12 +1,12 @@
-/*
- * Copyright (C) 2006  Remko Troncon
- *
+/* *
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
+ *
+ * Copyright (C) 2006 Remko Troncon
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,33 +22,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PEP_MANAGER_H
-#define PEP_MANAGER_H
+#ifndef JABBER_PEP_SERVICE_H
+#define JABBER_PEP_SERVICE_H
 
-#include <QObject>
+#include <QtCore/QWeakPointer>
 
 #include "iris/xmpp_message.h"
 
+class JabberProtocol;
 class ServerInfoManager;
 
 namespace XMPP
 {
 	class Client;
-	class JabberServerInfoService;
 }
 
-class PEPManager : public QObject
+class JabberPepService : public QObject
 {
 	Q_OBJECT
 
-	// a workaround to Qt's MOC not doing really well when mixing namespaces
 	typedef XMPP::Message Message;
 
-	XMPP::Client *client_;
-	XMPP::JabberServerInfoService *serverInfo_;
+	JabberProtocol *ParentProtocol;
+	QWeakPointer<XMPP::Client> XmppClient;
+	bool Enabled;
 
 protected slots:
-	void messageReceived(const Message &m);
+	void messageReceived(const Message &message);
 	void getFinished();
 	void publishFinished();
 
@@ -59,21 +59,23 @@ public:
 		PublicAccess
 	};
 
-	PEPManager(XMPP::Client *client, QObject *parent = 0);
-	virtual ~PEPManager();
+	explicit JabberPepService(JabberProtocol *protocol);
+	virtual ~JabberPepService();
 
-	void setServerInfoService(XMPP::JabberServerInfoService *serverInfoService);
+	void setEnabled(bool enabled);
+	bool enabled() const { return Enabled; }
 
-	void publish(const QString &node, const XMPP::PubSubItem &, Access = DefaultAccess);
+	void publish(const QString &node, const XMPP::PubSubItem &item, Access = DefaultAccess);
 	void retract(const QString &node, const QString &id);
 	void get(const XMPP::Jid &jid, const QString &node, const QString &id);
 
 signals:
-	void publish_success(const QString &, const XMPP::PubSubItem &);
-	void publish_error(const QString &, const XMPP::PubSubItem &);
-	void itemPublished(const XMPP::Jid &jid, const QString & node, const XMPP::PubSubItem &);
-	void itemRetracted(const XMPP::Jid &jid, const QString & node, const XMPP::PubSubRetraction &);
+	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
+	void publishError(const QString &ns, const XMPP::PubSubItem &item);
+
+	void itemPublished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
+	void itemRetracted(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubRetraction &retraction);
 
 };
 
-#endif // PEP_MANAGER_H
+#endif // JABBER_PEP_SERVICE_H

@@ -47,11 +47,11 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
+#include "services/jabber-pep-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-server-info-service.h"
 #include "services/jabber-subscription-service.h"
 #include "utils/vcard-factory.h"
-#include "utils/pep-manager.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "iris-status-adapter.h"
@@ -82,8 +82,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
 
 	CurrentServerInfoService = new XMPP::JabberServerInfoService(this);
-	connect(CurrentServerInfoService, SIGNAL(featuresChanged()), JabberClient, SLOT(serverFeaturesChanged()));
-	JabberClient->pepManager()->setServerInfoService(CurrentServerInfoService);
+	connect(CurrentServerInfoService, SIGNAL(featuresChanged()), this, SLOT(serverFeaturesChanged()));
+
+	CurrentPepService = new JabberPepService(this);
 
 	QStringList features;
 	features
@@ -169,6 +170,11 @@ void JabberProtocol::connectionErrorSlot(const QString& message)
 {
 	if (JabberClient && JabberClient->clientConnector())
 		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
+}
+
+void JabberProtocol::serverFeaturesChanged()
+{
+	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
 }
 
 XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)

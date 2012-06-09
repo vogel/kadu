@@ -24,6 +24,7 @@
 
 #include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-vcard-uploader.h"
+#include "services/jabber-pep-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-uploader.h"
@@ -104,7 +105,7 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 	UploadingAvatar = createScaledAvatar(avatar);
 	UploadingAvatarData = avatarData(UploadingAvatar);
 
-	if (protocol->client()->isPEPAvailable() && protocol->client()->pepManager())
+	if (protocol->pepService()->enabled())
 		uploadAvatarPEP();
 	else
 		uploadAvatarVCard();

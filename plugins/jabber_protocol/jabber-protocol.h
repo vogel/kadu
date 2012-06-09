@@ -42,6 +42,7 @@ namespace XMPP
 }
 
 class JabberContactDetails;
+class JabberPepService;
 class JabberResourcePool;
 class JabberSubscriptionService;
 
@@ -56,6 +57,7 @@ class JabberProtocol : public Protocol
 	JabberSubscriptionService *CurrentSubscriptionService;
 	XMPP::JabberClientInfoService *CurrentClientInfoService;
 	XMPP::JabberServerInfoService *CurrentServerInfoService;
+	JabberPepService *CurrentPepService;
 
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
@@ -88,6 +90,8 @@ private slots:
 
 	void connectionErrorSlot(const QString &message);
 
+	void serverFeaturesChanged();
+
 protected:
 	virtual void login();
 	virtual void afterLoggedIn();
@@ -115,6 +119,7 @@ public:
 	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 	virtual XMPP::JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
 	virtual XMPP::JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
+	virtual JabberPepService * pepService() { return CurrentPepService; }
 
 	JabberResourcePool *resourcePool();
 
