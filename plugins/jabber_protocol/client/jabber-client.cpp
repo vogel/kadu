@@ -83,8 +83,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
 		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
-		//QObject::connect(jabberClient, SIGNAL(debugText(const QString &)),
-		//		   this, SLOT(slotPsiDebug(const QString &)));
 		QObject::connect(Client, SIGNAL(xmlIncoming(const QString&)),
 				   this, SLOT(slotIncomingXML(const QString &)));
 		QObject::connect(Client, SIGNAL(xmlOutgoing(const QString&)),
@@ -311,17 +309,6 @@ void JabberClient::disconnect(XMPP::Status &reason)
 void JabberClient::send(const QString &packet)
 {
 	Client->send(packet);
-}
-
-void JabberClient::slotPsiDebug(const QString &_msg)
-{
-	QString msg = _msg;
-
-	msg = msg.replace( QRegExp( "<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n");
-	msg = msg.replace( QRegExp( "<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
-
-	emit debugMessage("Psi: " + msg);
-
 }
 
 void JabberClient::slotIncomingXML(const QString &_msg)

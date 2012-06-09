@@ -38,7 +38,6 @@ ServerInfoManager::ServerInfoManager(XMPP::Client *client, QObject *parent) :
 void ServerInfoManager::reset()
 {
 	hasPEP_ = false;
-	multicastService_.clear();
 }
 
 void ServerInfoManager::initialize()
@@ -55,11 +54,6 @@ void ServerInfoManager::deinitialize()
 	emit featuresChanged();
 }
 
-const QString& ServerInfoManager::multicastService() const
-{
-	return multicastService_;
-}
-
 bool ServerInfoManager::hasPEP() const
 {
 	return hasPEP_;
@@ -71,8 +65,6 @@ void ServerInfoManager::disco_finished()
 	if (jt->success()) {
 		// Features
 		XMPP::Features f = jt->item().features();
-		if (f.canMulticast())
-			multicastService_ = client_->jid().domain();
 		// TODO: Remove this, this is legacy
 		if (f.test(QStringList("http://jabber.org/protocol/pubsub#pep")))
 			hasPEP_ = true;

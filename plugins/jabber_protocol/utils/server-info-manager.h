@@ -38,7 +38,6 @@ class ServerInfoManager : public QObject
 public:
 	explicit ServerInfoManager(XMPP::Client *client, QObject *parent = 0);
 
-	const QString& multicastService() const;
 	bool hasPEP() const;
 
 signals:
@@ -52,8 +51,6 @@ private slots:
 
 private:
 	XMPP::Client* client_;
-	QString multicastService_;
-	bool featuresRequested_;
 	bool hasPEP_;
 };
 

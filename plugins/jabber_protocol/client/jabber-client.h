@@ -120,8 +120,6 @@ namespace XMPP
 
 		void setPEPAvailable(bool b);
 
-		void updateClientInfo();
-
 	private slots:
                 /**
                  * Delete all member classes and reset the class to a predefined state.
@@ -156,7 +154,6 @@ namespace XMPP
 		void slotResourceUnavailable(const Jid &, const Resource &);
 
 		/* Called from Psi: debug messages from the backend. */
-		void slotPsiDebug(const QString &msg);
 		void slotIncomingXML(const QString &msg);
 		void slotOutgoingXML(const QString &msg);
 
