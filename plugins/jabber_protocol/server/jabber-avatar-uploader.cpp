@@ -95,7 +95,7 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 void JabberAvatarUploader::uploadAvatar(QImage avatar)
 {
 	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
-	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
+	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
 	{
 		deleteLater();
 		emit avatarUploaded(false, avatar);

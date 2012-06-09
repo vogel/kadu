@@ -59,7 +59,7 @@ void JabberAvatarVCardFetcher::fetchAvatar()
 		return;
 	}
 
-	VCardFactory::instance()->getVCard(MyContact.id(), jabberProtocol->client()->rootTask(), this, SLOT(vcardReceived()));
+	VCardFactory::instance()->getVCard(MyContact.id(), jabberProtocol->xmppClient()->rootTask(), this, SLOT(vcardReceived()));
 }
 
 void JabberAvatarVCardFetcher::vcardReceived()

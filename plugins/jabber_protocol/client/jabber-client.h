@@ -315,18 +315,6 @@ namespace XMPP
 		 */
 		XMPP::AdvancedConnector *clientConnector() const { return JabberClientConnector; }
 
-		/**
-		 * Get the root task for this connection.
-		 * You need this instance for every task
-		 * you want to start.
-		 */
-		XMPP::Task *rootTask() const { return client() ? client()->rootTask() : 0; }
-
-		/**
-		 * Send raw packet to the server.
-		 */
-		void send(const QString &packet);
-
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
 	signals:
@@ -406,9 +394,6 @@ namespace XMPP
 		void debugMessage(const QString &message);
 		void incomingXML(const QString &msg);
 		void outgoingXML(const QString &msg);
-
-		void publishSuccess(const QString&, const XMPP::PubSubItem&);
-		void publishError(const QString&, const XMPP::PubSubItem&);
 	};
 }
 

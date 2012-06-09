@@ -35,8 +35,8 @@ JabberContactPersonalInfoService::JabberContactPersonalInfoService(JabberProtoco
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
 	CurrentBuddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	if (Protocol && Protocol->client() && Protocol->client()->rootTask())
-		VCardFactory::instance()->getVCard(contact.id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	if (Protocol && Protocol->xmppClient() && Protocol->xmppClient()->rootTask())
+		VCardFactory::instance()->getVCard(contact.id(), Protocol->xmppClient()->rootTask(), this, SLOT(fetchingVCardFinished()));
 }
 
 void JabberContactPersonalInfoService::fetchingVCardFinished()

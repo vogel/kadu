@@ -33,15 +33,15 @@ JabberPersonalInfoService::JabberPersonalInfoService(JabberProtocol *protocol) :
 void JabberPersonalInfoService::fetchPersonalInfo()
 {
 	CurrentBuddy = Buddy::create();
-	if (Protocol && Protocol->isConnected() && Protocol->client() && Protocol->client()->rootTask())
-		VCardFactory::instance()->getVCard(Protocol->account().id(), Protocol->client()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	if (Protocol && Protocol->isConnected() && Protocol->client() && Protocol->xmppClient()->rootTask())
+		VCardFactory::instance()->getVCard(Protocol->account().id(), Protocol->xmppClient()->rootTask(), this, SLOT(fetchingVCardFinished()));
 }
 
 void JabberPersonalInfoService::fetchingVCardFinished()
 {
 	XMPP::VCard vcard;
 	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
-	
+
 	if (task && task->success())
 	{
 		vcard = task->vcard();
@@ -64,11 +64,11 @@ void JabberPersonalInfoService::fetchingVCardFinished()
 
 void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 {
-	if (!Protocol || !Protocol->client() || !Protocol->client()->rootTask())
+	if (!Protocol || !Protocol->xmppClient() || !Protocol->xmppClient()->rootTask())
 		return;
 
 	CurrentBuddy = buddy;
-	
+
 	XMPP::Jid jid = XMPP::Jid(Protocol->account().id());
 	XMPP::VCard vcard;
 	vcard.setFullName(CurrentBuddy.firstName());
@@ -77,22 +77,22 @@ void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 	QDate birthday;
 	birthday.setDate(CurrentBuddy.birthYear(), 1, 1);
 	vcard.setBdayStr(birthday.toString("yyyy-MM-dd"));
-	
+
 	XMPP::VCard::Address addr;
 	XMPP::VCard::AddressList addrList;
 	addr.locality = CurrentBuddy.city();
 	addrList.append(addr);
 	vcard.setAddressList(addrList);
-	
+
 	XMPP::VCard::Email email;
 	XMPP::VCard::EmailList emailList;
 	email.userid = CurrentBuddy.email();
 	emailList.append(email);
 	vcard.setEmailList(emailList);
-	
+
 	vcard.setUrl(CurrentBuddy.website());
-	
-	VCardFactory::instance()->setVCard(Protocol->client()->rootTask(), jid, vcard, this, SLOT(uploadingVCardFinished()));
+
+	VCardFactory::instance()->setVCard(Protocol->xmppClient()->rootTask(), jid, vcard, this, SLOT(uploadingVCardFinished()));
 }
 
 void JabberPersonalInfoService::uploadingVCardFinished()

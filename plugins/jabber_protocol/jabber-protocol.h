@@ -90,7 +90,7 @@ private slots:
 
 	void connectionErrorSlot(const QString &message);
 
-	void serverFeaturesChanged();
+	void serverInfoUpdated();
 
 protected:
 	virtual void login();

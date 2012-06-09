@@ -66,7 +66,7 @@ void JabberAvatarPepFetcher::failed()
 void JabberAvatarPepFetcher::fetchAvatar()
 {
 	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!jabberProtocol || !jabberProtocol->isConnected() || !jabberProtocol->client() || !jabberProtocol->client()->rootTask() ||
+	if (!jabberProtocol || !jabberProtocol->isConnected() || !jabberProtocol->xmppClient() || !jabberProtocol->xmppClient()->rootTask() ||
 		!jabberProtocol->pepService()->enabled())
 	{
 		failed();
@@ -74,7 +74,7 @@ void JabberAvatarPepFetcher::fetchAvatar()
 		return;
 	}
 
-	DiscoItems = new XMPP::JT_DiscoItems(jabberProtocol->client()->rootTask());
+	DiscoItems = new XMPP::JT_DiscoItems(jabberProtocol->xmppClient()->rootTask());
 	connect(DiscoItems.data(), SIGNAL(destroyed()), this, SLOT(deleteLater()));
 	connect(DiscoItems.data(), SIGNAL(finished()), this, SLOT(discoItemsFinished()));
 	DiscoItems.data()->get(MyContact.id());

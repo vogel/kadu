@@ -44,7 +44,7 @@ void JabberAvatarVCardUploader::uploadAvatar(const QByteArray &data)
 {
 	UploadedAvatarData = data;
 
-	VCardFactory::instance()->getVCard(MyAccount.id(), MyProtocol->client()->rootTask(), this, SLOT(vcardReceived()));
+	VCardFactory::instance()->getVCard(MyAccount.id(), MyProtocol->xmppClient()->rootTask(), this, SLOT(vcardReceived()));
 }
 
 void JabberAvatarVCardUploader::vcardReceived()
@@ -63,7 +63,7 @@ void JabberAvatarVCardUploader::vcardReceived()
 	XMPP::VCard vcard = task->vcard();
 	vcard.setPhoto(UploadedAvatarData);
 
-	VCardFactory::instance()->setVCard(MyProtocol->client()->rootTask(), jid, vcard, this, SLOT(vcardUploaded()));
+	VCardFactory::instance()->setVCard(MyProtocol->xmppClient()->rootTask(), jid, vcard, this, SLOT(vcardUploaded()));
 }
 
 void JabberAvatarVCardUploader::vcardUploaded()

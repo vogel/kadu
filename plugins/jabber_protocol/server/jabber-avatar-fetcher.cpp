@@ -68,7 +68,7 @@ void JabberAvatarFetcher::avatarFetchedSlot(Contact contact, bool ok)
 void JabberAvatarFetcher::fetchAvatar()
 {
 	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!protocol || !protocol->client() || !protocol->client()->rootTask())
+	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
 	{
 		emit avatarFetched(MyContact, false);
 		deleteLater();

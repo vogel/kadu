@@ -82,7 +82,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
 
 	CurrentServerInfoService = new XMPP::JabberServerInfoService(this);
-	connect(CurrentServerInfoService, SIGNAL(featuresChanged()), this, SLOT(serverFeaturesChanged()));
+	connect(CurrentServerInfoService, SIGNAL(updated()), this, SLOT(serverInfoUpdated()));
 
 	CurrentPepService = new JabberPepService(this);
 
@@ -172,7 +172,7 @@ void JabberProtocol::connectionErrorSlot(const QString& message)
 		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
 }
 
-void JabberProtocol::serverFeaturesChanged()
+void JabberProtocol::serverInfoUpdated()
 {
 	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
 }

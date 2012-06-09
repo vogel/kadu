@@ -294,11 +294,6 @@ void JabberClient::disconnect(XMPP::Status &reason)
 	QTimer::singleShot(100, this, SLOT(cleanUp()));
 }
 
-void JabberClient::send(const QString &packet)
-{
-	Client->send(packet);
-}
-
 void JabberClient::slotIncomingXML(const QString &_msg)
 {
 	QString msg = _msg;
