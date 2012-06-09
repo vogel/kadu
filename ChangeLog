@@ -1,4 +1,7 @@
-﻿+++ version 0.12.0
+﻿+++ version 0.12.1
+* jabber: reconnect after waking up from suspend (Juzef)
+
++++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
 
 +++ version 0.12.0-rc1
