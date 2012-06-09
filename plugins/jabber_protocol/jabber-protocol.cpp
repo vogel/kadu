@@ -275,6 +275,8 @@ void JabberProtocol::disconnectedFromServer()
 
 	disconnect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 
+	QTimer::singleShot(5000, this, SLOT(reconnect()));
+
 	kdebugf2();
 }
 
