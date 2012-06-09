@@ -35,7 +35,12 @@
 #include "services/jabber-subscription-service.h"
 #include "jabber-account-details.h"
 
-namespace XMPP { class JabberClientInfoService; }
+namespace XMPP
+{
+	class JabberClientInfoService;
+	class JabberServerInfoService;
+}
+
 class JabberContactDetails;
 class JabberResourcePool;
 class JabberSubscriptionService;
@@ -50,6 +55,7 @@ class JabberProtocol : public Protocol
 	JabberPersonalInfoService *CurrentPersonalInfoService;
 	JabberSubscriptionService *CurrentSubscriptionService;
 	XMPP::JabberClientInfoService *CurrentClientInfoService;
+	XMPP::JabberServerInfoService *CurrentServerInfoService;
 
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
@@ -108,6 +114,7 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SubscriptionService * subscriptionService() { return CurrentSubscriptionService; }
 	virtual XMPP::JabberClientInfoService * clientInfoService() { return CurrentClientInfoService; }
+	virtual XMPP::JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
 
 	JabberResourcePool *resourcePool();
 

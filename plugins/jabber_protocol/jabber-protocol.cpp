@@ -48,8 +48,10 @@
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
 #include "services/jabber-roster-service.h"
+#include "services/jabber-server-info-service.h"
 #include "services/jabber-subscription-service.h"
 #include "utils/vcard-factory.h"
+#include "utils/pep-manager.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "iris-status-adapter.h"
@@ -78,6 +80,10 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
 	CurrentClientInfoService = new XMPP::JabberClientInfoService(this);
+
+	CurrentServerInfoService = new XMPP::JabberServerInfoService(this);
+	connect(CurrentServerInfoService, SIGNAL(featuresChanged()), JabberClient, SLOT(serverFeaturesChanged()));
+	JabberClient->pepManager()->setServerInfoService(CurrentServerInfoService);
 
 	QStringList features;
 	features
@@ -187,6 +193,7 @@ void JabberProtocol::rosterReady(bool success)
 	kdebug("Setting initial presence...\n");
 
 	sendStatusToServer();
+	CurrentServerInfoService->requestServerInfo();
 }
 
 void JabberProtocol::disconnectFromServer(const XMPP::Status &s)

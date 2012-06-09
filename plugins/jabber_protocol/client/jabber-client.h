@@ -41,7 +41,6 @@ namespace XMPP
 
 class JabberProtocol;
 class PEPManager;
-class ServerInfoManager;
 
 /**
  * This class provides an interface to the Iris subsystem. The goal is to
@@ -84,7 +83,6 @@ namespace XMPP
 
 		JabberProtocol *Protocol;
 
-		ServerInfoManager *serverInfoManager;
 		PEPManager *PepManager;
 
 		// ignore TLS warnings
@@ -160,9 +158,10 @@ namespace XMPP
 		/* Incoming subscription request. */
 		void slotSubscription(const Jid &jid, const QString &type, const QString &nick);
 
-		void serverFeaturesChanged();
-
 		void sessionStart_finished();
+
+	public slots:
+		void serverFeaturesChanged();
 
 	public:
 		/**

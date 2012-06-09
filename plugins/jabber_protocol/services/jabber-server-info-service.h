@@ -1,13 +1,12 @@
 /*
- * serverinfomanager.h
- * Copyright (C) 2006  Remko Troncon
- *
  * %kadu copyright begin%
  * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
+ *
+ * Copyright (C) 2006  Remko Troncon
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,35 +22,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SERVER_INFO_MANAGER_H
-#define SERVER_INFO_MANAGER_H
+#ifndef JABBER_SERVER_INFO_SERVICE_H
+#define JABBER_SERVER_INFO_SERVICE_H
 
-#include <QObject>
+#include <QtCore/QObject>
 #include <QString>
 
 #include "xmpp_tasks.h"
 
-class ServerInfoManager : public QObject
+class JabberProtocol;
+
+namespace XMPP
+{
+
+class JabberServerInfoService : public QObject
 {
 	Q_OBJECT
 
-public:
-	explicit ServerInfoManager(XMPP::Client *client, QObject *parent = 0);
+	QWeakPointer<Client> XmppClient;
+	XMPP::Features ServerFeatures;
+	XMPP::DiscoItem::Identities ServerIdentities;
 
-	bool hasPEP() const;
-
-signals:
-	void featuresChanged();
+	bool SupportsPep;
 
 private slots:
-	void disco_finished();
-	void initialize();
-	void deinitialize();
+	void requestFinished();
 	void reset();
 
-private:
-	XMPP::Client* client_;
-	bool hasPEP_;
+public:
+	explicit JabberServerInfoService(JabberProtocol *protocol);
+	virtual ~JabberServerInfoService();
+
+	const XMPP::Features & features() const;
+	const XMPP::DiscoItem::Identities & identities() const;
+
+	bool supportsPep() const;
+
+	void requestServerInfo();
+
+signals:
+	void updated();
+
 };
 
-#endif
+}
+
+#endif // JABBER_SERVER_INFO_SERVICE_H

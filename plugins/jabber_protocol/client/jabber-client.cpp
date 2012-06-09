@@ -40,8 +40,8 @@
 #include "client/pong-server.h"
 #include "resource/jabber-resource-pool.h"
 #include "services/jabber-client-info-service.h"
+#include "services/jabber-server-info-service.h"
 #include "utils/pep-manager.h"
-#include "utils/server-info-manager.h"
 #include "jabber-account-details.h"
 #include "jabber-client.h"
 #include "jabber-protocol.h"
@@ -53,17 +53,13 @@ namespace XMPP
 
 JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject(parent), Client(0), JabberClientStream(0), JabberClientConnector(0),
-		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol), serverInfoManager(0), PepManager(0)
+		JabberTLS(0), JabberTLSHandler(0), Protocol(protocol),  PepManager(0)
 {
 	cleanUp();
 
 	Client = new XMPP::Client(this);
 
-	serverInfoManager = new ServerInfoManager(Client, Client);
-	QObject::connect(serverInfoManager, SIGNAL(featuresChanged()),
-		this, SLOT(serverFeaturesChanged()));
-
-	PepManager = new PEPManager(Client, serverInfoManager, Client);
+	PepManager = new PEPManager(Client, Client);
 	QObject::connect(PepManager, SIGNAL(publish_success(const QString&, const XMPP::PubSubItem&)),
 		this, SIGNAL(publishSuccess(const QString&,const XMPP::PubSubItem&)));
 	QObject::connect(PepManager, SIGNAL(publish_error(const QString&, const XMPP::PubSubItem&)),
@@ -655,8 +651,7 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 
 void JabberClient::serverFeaturesChanged()
 {
-	if (serverInfoManager)
-		setPEPAvailable(serverInfoManager->hasPEP());
+	setPEPAvailable(Protocol->serverInfoService()->supportsPep());
 }
 
 void JabberClient::setPEPAvailable(bool b)

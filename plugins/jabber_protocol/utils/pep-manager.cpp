@@ -29,7 +29,8 @@
 #include "tasks/pep-get-task.h"
 #include "tasks/pep-publish-task.h"
 #include "tasks/pep-retract-task.h"
-#include "utils/server-info-manager.h"
+
+#include "services/jabber-server-info-service.h"
 
 #include "pep-manager.h"
 
@@ -37,8 +38,8 @@
 // (subscriptions is not accurate, since one doesn't subscribe to the
 // avatar data node)
 
-PEPManager::PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent) :
-		QObject(parent), client_(client), serverInfo_(serverInfo)
+PEPManager::PEPManager(XMPP::Client *client, QObject *parent) :
+		QObject(parent), client_(client), serverInfo_(0)
 {
 	connect(client_, SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));
 }
@@ -47,9 +48,14 @@ PEPManager::~PEPManager()
 {
 }
 
+void PEPManager::setServerInfoService(XMPP::JabberServerInfoService *serverInfoService)
+{
+	serverInfo_ = serverInfoService;
+}
+
 void PEPManager::publish(const QString &node, const XMPP::PubSubItem &it, Access access)
 {
-	if (!serverInfo_->hasPEP())
+	if (!serverInfo_ || !serverInfo_->supportsPep())
 		return;
 
 	PEPPublishTask *tp = new PEPPublishTask(client_->rootTask(), node, it, access);
@@ -60,7 +66,7 @@ void PEPManager::publish(const QString &node, const XMPP::PubSubItem &it, Access
 
 void PEPManager::retract(const QString &node, const QString &id)
 {
-	if (!serverInfo_->hasPEP())
+	if (!serverInfo_ || !serverInfo_->supportsPep())
 		return;
 
 	PEPRetractTask* tp = new PEPRetractTask(client_->rootTask(), node, id);

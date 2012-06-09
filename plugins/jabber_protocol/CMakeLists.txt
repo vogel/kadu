@@ -146,6 +146,7 @@ set (SOURCES
 	services/jabber-file-transfer-service.cpp
 	services/jabber-personal-info-service.cpp
 	services/jabber-roster-service.cpp
+	services/jabber-server-info-service.cpp
 	services/jabber-subscription-service.cpp
 
 	tasks/pep-get-task.cpp
@@ -154,7 +155,6 @@ set (SOURCES
 
 	utils/jid-util.cpp
 	utils/pep-manager.cpp
-	utils/server-info-manager.cpp
 	utils/vcard-factory.cpp
 
 	iris-status-adapter.cpp
@@ -215,6 +215,7 @@ set (MOC_SOURCES
 	services/jabber-file-transfer-service.h
 	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
+	services/jabber-server-info-service.h
 	services/jabber-subscription-service.h
 
 	tasks/pep-get-task.h
@@ -222,7 +223,6 @@ set (MOC_SOURCES
 	tasks/pep-retract-task.h
 
 	utils/pep-manager.h
-	utils/server-info-manager.h
 	utils/vcard-factory.h
 
 	facebook-protocol-factory.h

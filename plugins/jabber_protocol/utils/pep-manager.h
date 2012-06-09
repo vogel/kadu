@@ -34,6 +34,7 @@ class ServerInfoManager;
 namespace XMPP
 {
 	class Client;
+	class JabberServerInfoService;
 }
 
 class PEPManager : public QObject
@@ -44,7 +45,7 @@ class PEPManager : public QObject
 	typedef XMPP::Message Message;
 
 	XMPP::Client *client_;
-	ServerInfoManager *serverInfo_;
+	XMPP::JabberServerInfoService *serverInfo_;
 
 protected slots:
 	void messageReceived(const Message &m);
@@ -58,8 +59,10 @@ public:
 		PublicAccess
 	};
 
-	PEPManager(XMPP::Client *client, ServerInfoManager *serverInfo, QObject *parent = 0);
+	PEPManager(XMPP::Client *client, QObject *parent = 0);
 	virtual ~PEPManager();
+
+	void setServerInfoService(XMPP::JabberServerInfoService *serverInfoService);
 
 	void publish(const QString &node, const XMPP::PubSubItem &, Access = DefaultAccess);
 	void retract(const QString &node, const QString &id);
