@@ -70,7 +70,6 @@ class JabberProtocol : public Protocol
 private slots:
 	void connectedToServer();
 	void disconnectedFromServer();
-	void reconnect();
 	void disconnectFromServer(const XMPP::Status &s = XMPP::Status (QString(), QString(), 0, false));
 	void rosterReady(bool success);
 
