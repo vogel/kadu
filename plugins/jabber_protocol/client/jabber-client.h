@@ -346,26 +346,6 @@ namespace XMPP
 		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
 		/**
-		 * Groupchat has been joined.
-		 */
-		void groupChatJoined(const XMPP::Jid &jid);
-
-		/**
-		 * Groupchat has been left.
-		 */
-		void groupChatLeft(const XMPP::Jid &jid);
-
-		/**
-		 * A presence to a groupchat has been signalled.
-		 */
-		void groupChatPresence(const XMPP::Jid &jid, const XMPP::Status &status);
-
-		/**
-		 * An error was encountered joining or processing a groupchat.
-		 */
-		void groupChatError(const XMPP::Jid &jid, int error, const QString &reason);
-
-		/**
 		 * New subscription request.
 		 */
 		void subscription(const XMPP::Jid &jid, const QString &type, const QString &nick);

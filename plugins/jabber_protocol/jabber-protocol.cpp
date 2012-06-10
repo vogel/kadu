@@ -152,16 +152,6 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
 
-		/*//TODO: implement in the future
-		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
-				   this, SLOT ( slotGroupChatJoined ( const XMPP::Jid & ) ) );
-		connect( JabberClient, SIGNAL ( groupChatLeft ( const XMPP::Jid & ) ),
-				   this, SLOT ( slotGroupChatLeft ( const XMPP::Jid & ) ) );
-		connect( JabberClient, SIGNAL ( groupChatPresence ( const XMPP::Jid &, const XMPP::Status & ) ),
-				   this, SLOT ( slotGroupChatPresence ( const XMPP::Jid &, const XMPP::Status & ) ) );
-		connect( JabberClient, SIGNAL ( groupChatError ( const XMPP::Jid &, int, const QString & ) ),
-				   this, SLOT ( slotGroupChatError ( const XMPP::Jid &, int, const QString & ) ) );
-		*/
 	connect(JabberClient, SIGNAL( debugMessage(const QString &)),
 		   this, SLOT(slotClientDebugMessage(const QString &)));
 }
