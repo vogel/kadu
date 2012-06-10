@@ -108,17 +108,11 @@ namespace XMPP
 		// allow transmission of plaintext passwords
 		XMPP::ClientStream::AllowPlainType AllowPlainTextPassword;
 
-		// current penalty time
-		int CurrentPenaltyTime;
-
 	private slots:
                 /**
                  * Delete all member classes and reset the class to a predefined state.
                  */
                 void cleanUp();
-
-		/* update the penalty timer */
-		void slotUpdatePenaltyTime();
 
 		/* Login if the connection was OK. */
 		void slotCSNeedAuthParams(bool user, bool pass, bool realm);
@@ -289,16 +283,6 @@ namespace XMPP
 		 * Returns the address of the local interface.
 		 */
 		const QString & localAddress() const { return LocalAddress; }
-
-		/**
-		 * This method can be used to implement a penalty
-		 * system when a lot of queries need to be sent to the
-		 * server. Using the time returned by this method,
-		 * the caller can determine a delay until the next
-		 * operation in the queue can be carried out.
-		 * @brief Return current penalty time in seconds.
-		 */
-		int getPenaltyTime();
 
 		/**
 		 * Return the XMPP client instance.

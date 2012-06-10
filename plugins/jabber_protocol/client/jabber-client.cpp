@@ -76,9 +76,6 @@ JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
 		QObject::connect(Client, SIGNAL(xmlOutgoing(const QString&)),
 				   this, SLOT(slotOutgoingXML(const QString &)));
 	}
-
-	// initiate penalty timer
-	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
 }
 
 JabberClient::~JabberClient()
@@ -114,8 +111,6 @@ void JabberClient::cleanUp()
 	JabberTLSHandler = 0;
 	JabberTLS = 0;
 
-	CurrentPenaltyTime = 0;
-
 	MyJid = XMPP::Jid();
 	Password.clear();
 
@@ -131,30 +126,11 @@ void JabberClient::cleanUp()
 	setIgnoreTLSWarnings(false);
 }
 
-void JabberClient::slotUpdatePenaltyTime()
-{
-	if (CurrentPenaltyTime >= JABBER_PENALTY_TIME)
-		CurrentPenaltyTime -= JABBER_PENALTY_TIME;
-	else
-		CurrentPenaltyTime = 0;
-
-	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
-}
-
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
 {
 	OverrideHost = flag;
 	Server = server;
 	Port = port;
-}
-
-int JabberClient::getPenaltyTime()
-{
-	int currentTime = CurrentPenaltyTime;
-
-	CurrentPenaltyTime += JABBER_PENALTY_TIME;
-
-	return currentTime;
 }
 
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
