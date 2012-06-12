@@ -117,8 +117,6 @@ void JabberClient::cleanUp()
 	setOverrideHost(false);
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-
-	setIgnoreTLSWarnings(false);
 }
 
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)

@@ -82,9 +82,6 @@ namespace XMPP
 
 		JabberProtocol *Protocol;
 
-		// ignore TLS warnings
-		bool IgnoreTLSWarnings;
-
 		// local IP address
 		QString LocalAddress;
 
@@ -177,19 +174,6 @@ namespace XMPP
 		 * Returns the JID associated with this instance.
 		 */
 		const XMPP::Jid & jid() const { return MyJid; }
-
-		/**
-		 * Set flag to ignore TLS warnings. If TLS
-		 * warnings are not ignored, the class will emit
-		 * @ref tlsWarning and wait for the user to
-		 * call @ref continueAfterTLSWarning or
-		 * @ref disconnect. Default is false.
-		 */
-		void setIgnoreTLSWarnings(bool flag) { IgnoreTLSWarnings = flag; }
-		/**
-		 * Return if TLS warnings are being ignored.
-		 */
-		bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
 
 		bool forceTLS() const;
 
