@@ -114,16 +114,7 @@ void JabberClient::cleanUp()
 	MyJid = XMPP::Jid();
 	Password.clear();
 
-	setOverrideHost(false);
-
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-}
-
-void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
-{
-	OverrideHost = flag;
-	Server = server;
-	Port = port;
 }
 
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
@@ -151,8 +142,9 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	JabberClientConnector->setOptSSL(useSSL());
 
-	if (overrideHost())
-		JabberClientConnector->setOptHostPort(Server, Port);
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	if (jabberAccountDetails->useCustomHostPort())
+		JabberClientConnector->setOptHostPort(jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
 	NetworkProxy proxy = Protocol->account().useDefaultProxy()
 			? NetworkProxyManager::instance()->defaultProxy()
@@ -171,10 +163,10 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 			QUrl pollingUrl = proxy.pollingUrl();
 			if (pollingUrl.queryItems().isEmpty())
 			{
-				if (overrideHost())
+				if (jabberAccountDetails->useCustomHostPort())
 				{
-					QString host = Server.isEmpty() ? MyJid.domain() : Server;
-					pollingUrl.addQueryItem("server", host + ':' + QString::number(Port));
+					QString host = jabberAccountDetails->customHost().isEmpty() ? MyJid.domain() : jabberAccountDetails->customHost();
+					pollingUrl.addQueryItem("server", host + ':' + QString::number(jabberAccountDetails->customPort()));
 				}
 				else
 					pollingUrl.addQueryItem("server", MyJid.domain());

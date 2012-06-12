@@ -85,11 +85,6 @@ namespace XMPP
 		// local IP address
 		QString LocalAddress;
 
-		// override the default server name and port (only pre-XMPP 1.0)
-		bool OverrideHost;
-		QString Server;
-		int Port;
-
 		// allow transmission of plaintext passwords
 		XMPP::ClientStream::AllowPlainType AllowPlainTextPassword;
 
@@ -178,18 +173,6 @@ namespace XMPP
 		bool forceTLS() const;
 
 		bool useSSL() const;
-
-		/**
-		 * Override the name and port of the server to connect to.
-		 * This only has an effect if the old protocol (@ref useXMPP09)
-		 * has been enabled. Default is false.
-		 */
-		void setOverrideHost(bool flag, const QString &server = QString(), int port = 5222);
-
-		/**
-		 * Returns if the server name and port are overridden.
-		 */
-		bool overrideHost() const { return OverrideHost; }
 
 		/**
 		 * Allow the transmission of a plain text password. If digested

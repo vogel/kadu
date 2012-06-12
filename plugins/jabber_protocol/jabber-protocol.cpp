@@ -247,9 +247,6 @@ void JabberProtocol::login()
 		CurrentClientInfoService->setOSName(QString());
 	}
 
-	// override server and port (this should be dropped when using the new protocol and no direct SSL)
-	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
-
 	jabberID = account().id();
 
 	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
