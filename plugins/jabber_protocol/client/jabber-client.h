@@ -71,7 +71,6 @@ namespace XMPP
 	{
 		Q_OBJECT
 
-		// connection details
 		XMPP::Jid MyJid;
 		QString Password;
 
@@ -149,11 +148,8 @@ namespace XMPP
 
 		/**
 		 * Connect to a Jabber server.
-		 * @param jid JID to connect to.
-		 * @param password Password to authenticate with.
-		 * @param auth True if authentication should be done, false if not.
 		 */
-		void connect(const XMPP::Jid &jid, const QString &password, bool auth = true);
+		void connect();
 
 		/**
 		 * Disconnect from Jabber server.
@@ -166,10 +162,7 @@ namespace XMPP
 		 */
 		void disconnect(XMPP::Status &reason);
 
-		/**
-		 * Returns the JID associated with this instance.
-		 */
-		const XMPP::Jid & jid() const { return MyJid; }
+		XMPP::Jid jid() const { return MyJid; }
 
 		bool forceTLS() const;
 

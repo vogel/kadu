@@ -110,15 +110,14 @@ void JabberClient::cleanUp()
 	JabberClientConnector = 0;
 	JabberTLSHandler = 0;
 	JabberTLS = 0;
-
-	MyJid = XMPP::Jid();
-	Password.clear();
 }
 
-void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
+void JabberClient::connect()
 {
-	MyJid = jid;
-	Password = password;
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+
+	MyJid = XMPP::Jid(Protocol->account().id()).withResource(jabberAccountDetails->resource());
+	Password = Protocol->account().password();
 
 	/*
 	 * Return an error if we should force TLS but it's not available.
@@ -140,7 +139,6 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	JabberClientConnector->setOptSSL(useSSL());
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	if (jabberAccountDetails->useCustomHostPort())
 		JabberClientConnector->setOptHostPort(jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
@@ -233,7 +231,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 */
 	JabberClientStream->setAllowPlain(allowPlainTextPassword());
 
-	Client->connectToServer(JabberClientStream, jid, auth);
+	Client->connectToServer(JabberClientStream, MyJid, true);
 }
 
 void JabberClient::disconnect()
@@ -296,13 +294,13 @@ void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)
 	emit debugMessage("Sending auth credentials...");
 
 	if (user)
-		JabberClientStream->setUsername(jid().node());
+		JabberClientStream->setUsername(MyJid.node());
 
 	if (pass)
 		JabberClientStream->setPassword(Password);
 
 	if (realm)
-		JabberClientStream->setRealm(jid().domain());
+		JabberClientStream->setRealm(MyJid.domain());
 
 	JabberClientStream->continueAfterParams();
 
@@ -327,7 +325,7 @@ void JabberClient::slotCSAuthenticated()
 		LocalAddress =((BSocket *)bs)->address().toString();
 
 	// start the client operation
-	Client->start(jid().domain(), jid().node(), Password, jid().resource());
+	Client->start(MyJid.domain(), MyJid.node(), Password, MyJid.resource());
 
 
 	if (!JabberClientStream->old())

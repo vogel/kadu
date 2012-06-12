@@ -61,7 +61,6 @@ class JabberProtocol : public Protocol
 
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
-	XMPP::Jid jabberID;
 	JabberResourcePool *ResourcePool;
 
 	bool usingSSL;

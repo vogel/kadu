@@ -237,10 +237,7 @@ void JabberProtocol::login()
 		CurrentClientInfoService->setOSName(QString());
 	}
 
-	jabberID = account().id();
-
-	jabberID = jabberID.withResource(jabberAccountDetails->resource());
-	JabberClient->connect(jabberID, account().password(), true);
+	JabberClient->connect();
 
 	kdebugf2();
 }
