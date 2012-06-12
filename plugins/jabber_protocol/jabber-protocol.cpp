@@ -247,10 +247,7 @@ void JabberProtocol::login()
 		CurrentClientInfoService->setOSName(QString());
 	}
 
-	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
-
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
-	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
 	jabberID = account().id();

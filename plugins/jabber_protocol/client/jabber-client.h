@@ -88,18 +88,6 @@ namespace XMPP
 		// local IP address
 		QString LocalAddress;
 
-		// whether TLS (or direct SSL in case of the old protocol) should be used
-		bool ForceTLS;
-
-		// whether direct SSL connections should be used
-		bool UseSSL;
-
-		// use XMPP 1.0 or the older protocol version
-		bool UseXMPP09;
-
-		// whether SSL support should be probed in case the old protocol is used
-		bool ProbeSSL;
-
 		// override the default server name and port (only pre-XMPP 1.0)
 		bool OverrideHost;
 		QString Server;
@@ -203,57 +191,9 @@ namespace XMPP
 		 */
 		bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
 
-		/**
-		 * Force the use of TLS. If TLS connections are forced,
-		 * unencrypted connections will not be established.
-		 * Default is false.
-		 */
-		void setForceTLS(bool flag) { ForceTLS = flag; }
+		bool forceTLS() const;
 
-		/**
-		 * Returns if TLS connections are forced.
-		 */
-		bool forceTLS() const { return ForceTLS; }
-
-		/**
-		 * Force direct SSL connection, also for the
-		 * handshake. This is only useful if you know
-		 * the server supports it or you want to use
-		 * a non-standard port, in which case @ref setOverrideHost
-		 * will be useful. Default is false.
-		 */
-		void setUseSSL(bool flag) { UseSSL = flag; }
-		/**
-		 * Returns if an SSL connection attempt should be made.
-		 */
-		bool useSSL() const { return UseSSL; }
-
-		/**
-		 * Use only the old protocol (pre-XMPP 1.0). This should only
-		 * be used with servers not supporting XMPP 1.0 or with servers
-		 * that have a broken login procedure. Default is false. If
-		 * a connection attempt is not possible, Iris will automatically
-		 * fall back to the old protocol.
-		 */
-		void setUseXMPP09(bool flag) { UseXMPP09 = flag; }
-
-		/**
-		 * Returns if the old protocol should be used.
-		 */
-		bool useXMPP09() const { return UseXMPP09; }
-
-		/**
-		 * Probe port 5223 if an SSL connection is possible. If
-		 * a connection is not possible, an unencrypted connection
-		 * will be attempted at port 5222. This is only meaningful
-		 * if @ref useXMPP09 is true. Default is false.
-		 */
-		void setProbeSSL(bool flag) { ProbeSSL = flag; }
-
-		/**
-		 * Returns if SSL support will be probed.
-		 */
-		bool probeSSL() const { return ProbeSSL; }
+		bool useSSL() const;
 
 		/**
 		 * Override the name and port of the server to connect to.

@@ -114,11 +114,6 @@ void JabberClient::cleanUp()
 	MyJid = XMPP::Jid();
 	Password.clear();
 
-	setForceTLS(false);
-	setUseSSL(false);
-	setUseXMPP09(false);
-	setProbeSSL(false);
-
 	setOverrideHost(false);
 
 	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
@@ -141,7 +136,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	/*
 	 * Return an error if we should force TLS but it's not available.
 	 */
-	if ((forceTLS() || useSSL() || probeSSL()) && !QCA::isSupported("tls"))
+	if ((forceTLS() || useSSL()) && !QCA::isSupported("tls"))
 	{
 		qDebug("no TLS");
 		// no SSL support, at the connecting stage this means the problem is client-side
@@ -160,9 +155,6 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	if (overrideHost())
 		JabberClientConnector->setOptHostPort(Server, Port);
-
-	if (useXMPP09())
-		JabberClientConnector->setOptProbe(probeSSL());
 
 	NetworkProxy proxy = Protocol->account().useDefaultProxy()
 			? NetworkProxyManager::instance()->defaultProxy()
@@ -241,7 +233,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 				   this, SLOT(slotCSError(int)));
 	}
 
-	JabberClientStream->setOldOnly(useXMPP09());
+	JabberClientStream->setOldOnly(false);
 
 	/*
 	 * Initiate anti-idle timer (will be triggered every 55 seconds).
@@ -610,6 +602,18 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 	//printf("str[%s], reconn=%d\n", str.latin1(), reconn);
 	*_str = str;
 	*_reconn = reconn;
+}
+
+bool JabberClient::forceTLS() const
+{
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	return JabberAccountDetails::Encryption_No != jabberAccountDetails->encryptionMode();
+}
+
+bool JabberClient::useSSL() const
+{
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	return JabberAccountDetails::Encryption_Legacy == jabberAccountDetails->encryptionMode();
 }
 
 }
