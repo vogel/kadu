@@ -26,13 +26,15 @@
 
 #include <QtCore/QObject>
 
-#include <accounts/account.h>
-
 // include these because of namespace reasons
 #include <iris/im.h>
 #include <iris/xmpp.h>
 
 #include <QtCrypto>
+
+#include "accounts/account.h"
+
+#include "jabber-account-details.h"
 
 namespace XMPP
 {
@@ -85,8 +87,7 @@ namespace XMPP
 		// local IP address
 		QString LocalAddress;
 
-		// allow transmission of plaintext passwords
-		XMPP::ClientStream::AllowPlainType AllowPlainTextPassword;
+		XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
 	private slots:
                 /**
@@ -174,17 +175,7 @@ namespace XMPP
 
 		bool useSSL() const;
 
-		/**
-		 * Allow the transmission of a plain text password. If digested
-		 * passwords are supported by the server, they will still be preferred.
-		 * Defaults to true.
-		 */
-		void setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainType flag) { AllowPlainTextPassword = flag; }
-
-		/**
-		* Returns if plain text passwords are allowed.
-		 */
-		XMPP::ClientStream::AllowPlainType allowPlainTextPassword() const { return AllowPlainTextPassword; }
+		XMPP::ClientStream::AllowPlainType allowPlainTextPassword();
 
 		/**
 		 * Returns the address of the local interface.

@@ -73,8 +73,6 @@ class JabberProtocol : public Protocol
 
 	void initializeJabberClient();
 
-	XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
-
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
 private slots:

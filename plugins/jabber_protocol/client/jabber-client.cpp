@@ -113,8 +113,6 @@ void JabberClient::cleanUp()
 
 	MyJid = XMPP::Jid();
 	Password.clear();
-
-	setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
 }
 
 void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool auth)
@@ -604,6 +602,22 @@ bool JabberClient::useSSL() const
 {
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
 	return JabberAccountDetails::Encryption_Legacy == jabberAccountDetails->encryptionMode();
+}
+
+ClientStream::AllowPlainType JabberClient::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
+{
+	if (type == JabberAccountDetails::NoAllowPlain)
+		return XMPP::ClientStream::NoAllowPlain;
+	if (type == JabberAccountDetails::AllowPlain)
+		return XMPP::ClientStream::AllowPlain;
+	else
+		return XMPP::ClientStream::AllowPlainOverTLS;
+}
+
+ClientStream::AllowPlainType JabberClient::allowPlainTextPassword()
+{
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	return plainAuthToXMPP(jabberAccountDetails->plainAuthMode());
 }
 
 }

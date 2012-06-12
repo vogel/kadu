@@ -167,16 +167,6 @@ void JabberProtocol::serverInfoUpdated()
 	CurrentPepService->setEnabled(CurrentServerInfoService->supportsPep());
 }
 
-XMPP::ClientStream::AllowPlainType JabberProtocol::plainAuthToXMPP(JabberAccountDetails::AllowPlainType type)
-{
-	if (type == JabberAccountDetails::NoAllowPlain)
-		return XMPP::ClientStream::NoAllowPlain;
-	if (type == JabberAccountDetails::AllowPlain)
-		return XMPP::ClientStream::AllowPlain;
-	else
-		return XMPP::ClientStream::AllowPlainOverTLS;
-}
-
 void JabberProtocol::rosterReady(bool success)
 {
 	Q_UNUSED(success)
@@ -248,8 +238,6 @@ void JabberProtocol::login()
 	}
 
 	jabberID = account().id();
-
-	JabberClient->setAllowPlainTextPassword(plainAuthToXMPP(jabberAccountDetails->plainAuthMode()));
 
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	JabberClient->connect(jabberID, account().password(), true);
