@@ -112,6 +112,61 @@ void JabberClient::cleanUp()
 	JabberTLS = 0;
 }
 
+XMPP::AdvancedConnector::Proxy JabberClient::networkProxyToXMPPProxy(const NetworkProxy &proxy)
+{
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+
+	XMPP::AdvancedConnector::Proxy proxySettings;
+
+	if (proxy.type() == "http") // HTTP Connect
+		proxySettings.setHttpConnect(proxy.address(), proxy.port());
+	else if (proxy.type() == "socks") // SOCKS
+		proxySettings.setSocks(proxy.address(), proxy.port());
+	else if (proxy.type() == "poll") // HTTP Poll
+	{
+		QUrl pollingUrl = proxy.pollingUrl();
+		if (pollingUrl.queryItems().isEmpty())
+		{
+			if (jabberAccountDetails->useCustomHostPort())
+			{
+				QString host = jabberAccountDetails->customHost().isEmpty() ? MyJid.domain() : jabberAccountDetails->customHost();
+				pollingUrl.addQueryItem("server", host + ':' + QString::number(jabberAccountDetails->customPort()));
+			}
+			else
+				pollingUrl.addQueryItem("server", MyJid.domain());
+		}
+		proxySettings.setHttpPoll(proxy.address(), proxy.port(), pollingUrl.toString());
+		proxySettings.setPollInterval(2);
+	}
+
+	if (!proxy.user().isEmpty())
+		proxySettings.setUserPass(proxy.user(), proxy.password());
+
+	return proxySettings;
+}
+
+void JabberClient::configureProxy(const NetworkProxy &proxy)
+{
+	JabberClientConnector->setProxy(networkProxyToXMPPProxy(proxy));
+}
+
+void JabberClient::setUpTLS()
+{
+	JabberTLS = new QCA::TLS();
+	JabberTLS->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
+	JabberTLSHandler = new QCATLSHandler(JabberTLS);
+	JabberTLSHandler->setXMPPCertCheck(true);
+
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
+	if (jabberAccountDetails)
+	{
+		QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
+		JabberTLSHandler->startClient(host);
+	}
+
+	QObject::connect(JabberTLSHandler, SIGNAL(tlsHandshaken()), SLOT(slotTLSHandshaken()));
+}
+
 void JabberClient::connect()
 {
 	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
@@ -147,55 +202,13 @@ void JabberClient::connect()
 			: Protocol->account().proxy();
 
 	if (proxy && !proxy.address().isEmpty())
-	{
-		XMPP::AdvancedConnector::Proxy proxySettings;
-
-		if (proxy.type() == "http") // HTTP Connect
-			proxySettings.setHttpConnect(proxy.address(), proxy.port());
-		else if (proxy.type() == "socks") // SOCKS
-			proxySettings.setSocks(proxy.address(), proxy.port());
-		else if (proxy.type() == "poll") // HTTP Poll
-		{
-			QUrl pollingUrl = proxy.pollingUrl();
-			if (pollingUrl.queryItems().isEmpty())
-			{
-				if (jabberAccountDetails->useCustomHostPort())
-				{
-					QString host = jabberAccountDetails->customHost().isEmpty() ? MyJid.domain() : jabberAccountDetails->customHost();
-					pollingUrl.addQueryItem("server", host + ':' + QString::number(jabberAccountDetails->customPort()));
-				}
-				else
-					pollingUrl.addQueryItem("server", MyJid.domain());
-			}
-			proxySettings.setHttpPoll(proxy.address(), proxy.port(), pollingUrl.toString());
-			proxySettings.setPollInterval(2);
-		}
-
-		if (!proxy.user().isEmpty())
-			proxySettings.setUserPass(proxy.user(), proxy.password());
-
-		JabberClientConnector->setProxy(proxySettings);
-	}
+		configureProxy(proxy);
 
 	/*
 	 * Setup authentication layer
 	 */
 	if ((forceTLS() || useSSL()) && QCA::isSupported("tls"))
-	{
-		JabberTLS = new QCA::TLS;
-		JabberTLS->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
-		JabberTLSHandler = new QCATLSHandler(JabberTLS);
-		JabberTLSHandler->setXMPPCertCheck(true);
-
-		JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account().details());
-		if (jabberAccountDetails)
-		{
-			QString host = jabberAccountDetails->useCustomHostPort() ? jabberAccountDetails->customHost() : XMPP::Jid(Protocol->account().id()).domain();
-			JabberTLSHandler->startClient(host);
-		}
-
-		QObject::connect(JabberTLSHandler, SIGNAL(tlsHandshaken()), SLOT(slotTLSHandshaken()));
-	}
+		setUpTLS();
 
 	/*
 	 * Instantiate client stream which handles the network communication by referring

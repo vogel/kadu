@@ -88,6 +88,11 @@ namespace XMPP
 
 		XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
 
+		XMPP::AdvancedConnector::Proxy networkProxyToXMPPProxy(const NetworkProxy &proxy);
+		void configureProxy(const NetworkProxy &proxy);
+
+		void setUpTLS();
+
 	private slots:
                 /**
                  * Delete all member classes and reset the class to a predefined state.
