@@ -181,11 +181,6 @@ namespace XMPP
 		XMPP::Client *client() const { return Client; }
 
 		/**
-		 * Return client stream instance.
-		 */
-		XMPP::ClientStream *clientStream() const { return JabberClientStream; }
-
-		/**
 		 * Return client connector instance.
 		 */
 		XMPP::AdvancedConnector *clientConnector() const { return JabberClientConnector; }

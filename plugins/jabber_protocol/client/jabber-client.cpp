@@ -381,7 +381,7 @@ void JabberClient::slotCSError(int error)
 	bool reconn;
 
 	if ((error == XMPP::ClientStream::ErrAuth)
-		&& (clientStream()->errorCondition() == XMPP::ClientStream::NotAuthorized))
+		&& (JabberClientStream->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
 		kdebug("Incorrect password, retrying.\n");
 		Protocol->logout();
