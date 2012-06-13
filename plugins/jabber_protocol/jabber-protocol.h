@@ -85,8 +85,7 @@ private slots:
 	void clientAvailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 	void clientUnavailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
 
-	void slotClientDebugMessage (const QString &msg);
-
+	void connectionClosedSlot(const QString &message);
 	void connectionErrorSlot(const QString &message);
 
 	void serverInfoUpdated();

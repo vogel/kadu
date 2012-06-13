@@ -42,28 +42,45 @@ namespace XMPP
 
 JabberConnectionService::JabberConnectionService(JabberProtocol *protocol) :
 		QObject(protocol), ParentProtocol(protocol),
-		AccountDetails(dynamic_cast<JabberAccountDetails *>(protocol->account().details())),
 		XmppClient(protocol->xmppClient()), Connector(0), TLSHandler(0)
 {
 }
 
 JabberConnectionService::~JabberConnectionService()
 {
+	cleanUp();
+}
+
+void JabberConnectionService::cleanUp()
+{
+	Connector->deleteLater();
+	Stream->deleteLater();
+	TLSHandler->parent()->deleteLater();
+
+	Connector = 0;
+	Stream = 0;
+	TLSHandler = 0;
 }
 
 bool JabberConnectionService::forceTLS() const
 {
-	return JabberAccountDetails::Encryption_No != AccountDetails->encryptionMode();
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	return details && JabberAccountDetails::Encryption_No != details->encryptionMode();
 }
 
 bool JabberConnectionService::useSSL() const
 {
-	return JabberAccountDetails::Encryption_Legacy == AccountDetails->encryptionMode();
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	return details && JabberAccountDetails::Encryption_Legacy == details->encryptionMode();
 }
 
 AdvancedConnector::Proxy JabberConnectionService::createProxyConfiguration(NetworkProxy proxy) const
 {
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+
 	XMPP::AdvancedConnector::Proxy proxySettings;
+	if (!details)
+		return proxySettings;
 
 	if (proxy.type() == "http") // HTTP Connect
 		proxySettings.setHttpConnect(proxy.address(), proxy.port());
@@ -74,10 +91,10 @@ AdvancedConnector::Proxy JabberConnectionService::createProxyConfiguration(Netwo
 		QUrl pollingUrl = proxy.pollingUrl();
 		if (pollingUrl.queryItems().isEmpty())
 		{
-			if (AccountDetails->useCustomHostPort())
+			if (details->useCustomHostPort())
 			{
-				QString host = AccountDetails->customHost().isEmpty() ? MyJid.domain() : AccountDetails->customHost();
-				pollingUrl.addQueryItem("server", host + ':' + QString::number(AccountDetails->customPort()));
+				QString host = details->customHost().isEmpty() ? MyJid.domain() : details->customHost();
+				pollingUrl.addQueryItem("server", host + ':' + QString::number(details->customPort()));
 			}
 			else
 				pollingUrl.addQueryItem("server", MyJid.domain());
@@ -94,11 +111,15 @@ AdvancedConnector::Proxy JabberConnectionService::createProxyConfiguration(Netwo
 
 AdvancedConnector * JabberConnectionService::createConnector()
 {
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	if (!details)
+		return 0;
+
 	AdvancedConnector *result = new AdvancedConnector(this);
 	result->setOptSSL(useSSL());
 
-	if (AccountDetails->useCustomHostPort())
-		result->setOptHostPort(AccountDetails->customHost(), AccountDetails->customPort());
+	if (details->useCustomHostPort())
+		result->setOptHostPort(details->customHost(), details->customPort());
 
 	NetworkProxy proxy = ParentProtocol->account().useDefaultProxy()
 			? NetworkProxyManager::instance()->defaultProxy()
@@ -133,25 +154,36 @@ ClientStream::AllowPlainType JabberConnectionService::plainAuthToXMPP(JabberAcco
 
 ClientStream * JabberConnectionService::createClientStream(AdvancedConnector *connector, QCATLSHandler *tlsHandler) const
 {
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	if (!details)
+		return 0;
+
 	ClientStream *result = new XMPP::ClientStream(connector, tlsHandler);
 	result->setNoopTime(55000); // send noop every 55 seconds
-	result->setAllowPlain(plainAuthToXMPP(AccountDetails->plainAuthMode()));
+	result->setAllowPlain(plainAuthToXMPP(details->plainAuthMode()));
 
 	return result;
 }
 
 void JabberConnectionService::tlsHandshaken()
 {
-	QString domain = AccountDetails->tlsOverrideDomain();
-	QString host = AccountDetails->useCustomHostPort() ? AccountDetails->customHost() : XMPP::Jid(ParentProtocol->account().id()).domain();
-	QByteArray cert = AccountDetails->tlsOverrideCert();
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	if (!details)
+		return;
+
+	QString domain = details->tlsOverrideDomain();
+	QString host = details->useCustomHostPort() ? details->customHost() : XMPP::Jid(ParentProtocol->account().id()).domain();
+	QByteArray cert = details->tlsOverrideCert();
 
 	// TODO: use signal for checking certificates
 	if (CertificateHelpers::checkCertificate(TLSHandler->tls(), TLSHandler, domain,
 		QString("%1: ").arg(ParentProtocol->account().accountIdentity().name()) + tr("security problem"), host, ParentProtocol))
 		TLSHandler->continueAfterHandshake();
 	else
+	{
+		cleanUp();
 		emit connectionClosed(tr("TLS certificate not accepted"));
+	}
 }
 
 void JabberConnectionService::streamNeedAuthParams(bool user, bool pass, bool realm)
@@ -180,6 +212,7 @@ void JabberConnectionService::streamAuthenticated()
 	ByteStream *bs = Connector->stream();
 	if (!bs)
 	{
+		cleanUp();
 		emit connectionError(tr("Unknown error"));
 		return;
 	}
@@ -206,13 +239,19 @@ void JabberConnectionService::streamSessionStarted()
 	if (j->success())
 		emit connected();
 	else
+	{
+		cleanUp();
 		emit connectionError(tr("Unknown error"));
+	}
 }
 
 void JabberConnectionService::streamWarning(int warning)
 {
 	if ((warning == ClientStream::WarnNoTLS) && forceTLS())
-		emit connectionError(tr("The server does not support TLS encryption."));
+	{
+		cleanUp();
+		emit connectionClosed(tr("The server does not support TLS encryption."));
+	}
 	else
 		Stream->continueAfterWarning();
 }
@@ -221,6 +260,7 @@ void JabberConnectionService::streamError(int error)
 {
 	if ((error == XMPP::ClientStream::ErrAuth) && (Stream->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
+		cleanUp();
 		emit invalidPassword();
 		return;
 	}
@@ -229,6 +269,7 @@ void JabberConnectionService::streamError(int error)
 	bool reconn;
 
 	XMPP::JabberClient::getErrorInfo(error, Connector, Stream, TLSHandler, &errorText, &reconn);
+	cleanUp();
 
 	if (reconn)
 		emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
@@ -238,6 +279,10 @@ void JabberConnectionService::streamError(int error)
 
 void JabberConnectionService::connectToServer()
 {
+	JabberAccountDetails *details = dynamic_cast<JabberAccountDetails *>(ParentProtocol->account().details());
+	if (!details)
+		return;
+
 	if (!XmppClient)
 		return;
 
@@ -247,7 +292,7 @@ void JabberConnectionService::connectToServer()
 		return;
 	}
 
-	MyJid = XMPP::Jid(ParentProtocol->account().id()).withResource(AccountDetails->resource());
+	MyJid = XMPP::Jid(ParentProtocol->account().id()).withResource(details->resource());
 	Password = ParentProtocol->account().password();
 
 	Connector = createConnector();
@@ -257,7 +302,7 @@ void JabberConnectionService::connectToServer()
 		TLSHandler = createTLSHandler();
 		connect(TLSHandler, SIGNAL(tlsHandshaken()), SLOT(tlsHandshaken()));
 
-		QString host = AccountDetails->useCustomHostPort() ? AccountDetails->customHost() : XMPP::Jid(ParentProtocol->account().id()).domain();
+		QString host = details->useCustomHostPort() ? details->customHost() : XMPP::Jid(ParentProtocol->account().id()).domain();
 		TLSHandler->startClient(host);
 	}
 
@@ -270,6 +315,13 @@ void JabberConnectionService::connectToServer()
 	connect(Stream, SIGNAL(error(int)), this, SLOT(streamError(int)));
 
 	XmppClient.data()->connectToServer(Stream, MyJid, true);
+}
+
+QString JabberConnectionService::host()
+{
+	if (Connector)
+		return Connector->host();
+	return QString();
 }
 
 }

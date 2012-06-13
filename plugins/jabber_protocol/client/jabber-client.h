@@ -185,11 +185,6 @@ namespace XMPP
 		 */
 		XMPP::Client *client() const { return Client; }
 
-		/**
-		 * Return client connector instance.
-		 */
-		XMPP::AdvancedConnector *clientConnector() const { return JabberClientConnector; }
-
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
 	signals:

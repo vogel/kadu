@@ -46,7 +46,6 @@ class JabberConnectionService : public QObject
 	Q_OBJECT
 
 	JabberProtocol *ParentProtocol;
-	JabberAccountDetails *AccountDetails;
 	QWeakPointer<XMPP::Client> XmppClient;
 
 	XMPP::AdvancedConnector *Connector;
@@ -68,6 +67,8 @@ class JabberConnectionService : public QObject
 	XMPP::ClientStream * createClientStream(XMPP::AdvancedConnector *connector, XMPP::QCATLSHandler *tlsHandler) const;
 
 private slots:
+	void cleanUp();
+
 	void tlsHandshaken();
 
 	void streamNeedAuthParams(bool user, bool pass, bool realm);
@@ -82,12 +83,13 @@ public:
 
 	void connectToServer();
 
+	QString host();
+
 signals:
 	void connected();
-	void disconnected();
 
-	void connectionError(const QString &message);
-	void connectionClosed(const QString &message);
+	void connectionError(const QString &message = QString());
+	void connectionClosed(const QString &message = QString());
 
 	void invalidPassword();
 

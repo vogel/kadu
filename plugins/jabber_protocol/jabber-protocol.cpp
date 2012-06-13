@@ -86,7 +86,12 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentServerInfoService, SIGNAL(updated()), this, SLOT(serverInfoUpdated()));
 
 	CurrentPepService = new JabberPepService(this);
+
 	CurrentConnectionService = new XMPP::JabberConnectionService(this);
+	connect(CurrentConnectionService, SIGNAL(connected()), this, SLOT(connectedToServer()));
+	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
+	connect(CurrentConnectionService, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
+	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
 
 	QStringList features;
 	features
@@ -144,24 +149,23 @@ void JabberProtocol::initializeJabberClient()
 	JabberClient = new XMPP::JabberClient(this, this);
 
 	connect(JabberClient->client(), SIGNAL(disconnected()), this, SLOT(connectionError()));
-	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
 	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientAvailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientUnavailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
+}
 
-	connect(JabberClient, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
-	connect(JabberClient, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
-
-	connect(JabberClient, SIGNAL( debugMessage(const QString &)),
-		   this, SLOT(slotClientDebugMessage(const QString &)));
+void JabberProtocol::connectionClosedSlot(const QString &message)
+{
+	emit connectionError(account(), CurrentConnectionService->host(), message);
+	connectionClosed();
 }
 
 void JabberProtocol::connectionErrorSlot(const QString& message)
 {
-	if (JabberClient && JabberClient->clientConnector())
-		emit connectionError(account(), JabberClient->clientConnector()->host(), message);
+	emit connectionError(account(), CurrentConnectionService->host(), message);
+	connectionError();
 }
 
 void JabberProtocol::serverInfoUpdated()
@@ -202,13 +206,6 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 	kdebugf2();
 }
 
-void JabberProtocol::slotClientDebugMessage(const QString &msg)
-{
-	Q_UNUSED(msg)
-
-	kdebugm(KDEBUG_WARNING, "XMPP Client debug:  %s\n", qPrintable(msg));
-}
-
 /*
  * login procedure
  *
@@ -239,7 +236,7 @@ void JabberProtocol::login()
 		CurrentClientInfoService->setOSName(QString());
 	}
 
-	JabberClient->connect();
+	CurrentConnectionService->connectToServer();
 
 	kdebugf2();
 }
