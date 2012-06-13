@@ -83,7 +83,8 @@ public:
 
 	void connectToServer();
 
-	QString host();
+	QString host() const;
+	QString localAddress() const;
 
 signals:
 	void connected();

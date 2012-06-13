@@ -76,47 +76,10 @@ namespace XMPP
 
 		// XMPP backend
 		XMPP::Client *Client;
-		XMPP::ClientStream *JabberClientStream;
-		XMPP::AdvancedConnector *JabberClientConnector;
-		QCA::TLS *JabberTLS;
-		XMPP::QCATLSHandler *JabberTLSHandler;
 
 		JabberProtocol *Protocol;
 
-		// local IP address
-		QString LocalAddress;
-
-		XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
-
-		XMPP::AdvancedConnector::Proxy networkProxyToXMPPProxy(const NetworkProxy &proxy);
-		void configureProxy(const NetworkProxy &proxy);
-
-		void setUpTLS();
-
 	private slots:
-                /**
-                 * Delete all member classes and reset the class to a predefined state.
-                 */
-                void cleanUp();
-
-		/* Login if the connection was OK. */
-		void slotCSNeedAuthParams(bool user, bool pass, bool realm);
-
-		/* Called from Psi: tells us when we're logged in OK. */
-		void slotCSAuthenticated();
-
-		/* Called from Psi: tells us when we've been disconnected from the server. */
-		void slotCSDisconnected();
-
-		/* Called from Psi: alerts us to a protocol warning. */
-		void slotCSWarning(int);
-
-		/* Called from Psi: alerts us to a protocol error. */
-		void slotCSError(int);
-
-		/* Called from Psi: report certificate status */
-		void slotTLSHandshaken();
-
 		/* Someone on our contact list had(another) resource come online. */
 		void slotResourceAvailable(const Jid &, const Resource &);
 
@@ -152,11 +115,6 @@ namespace XMPP
 		virtual ~JabberClient();
 
 		/**
-		 * Connect to a Jabber server.
-		 */
-		void connect();
-
-		/**
 		 * Disconnect from Jabber server.
 		 */
 		void disconnect();
@@ -168,17 +126,6 @@ namespace XMPP
 		void disconnect(XMPP::Status &reason);
 
 		XMPP::Jid jid() const { return MyJid; }
-
-		bool forceTLS() const;
-
-		bool useSSL() const;
-
-		XMPP::ClientStream::AllowPlainType allowPlainTextPassword();
-
-		/**
-		 * Returns the address of the local interface.
-		 */
-		const QString & localAddress() const { return LocalAddress; }
 
 		/**
 		 * Return the XMPP client instance.

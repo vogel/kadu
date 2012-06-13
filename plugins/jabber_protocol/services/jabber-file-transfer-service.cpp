@@ -28,6 +28,7 @@
 
 #include "file-transfer/jabber-file-transfer-handler.h"
 #include "file-transfer/s5b-server-manager.h"
+#include "services/jabber-connection-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"
@@ -59,13 +60,13 @@ FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileT
 
 void JabberFileTransferService::loggedIn()
 {
-	S5BServerManager::instance()->addAddress(Protocol->client()->localAddress());
+	S5BServerManager::instance()->addAddress(Protocol->connectionService()->localAddress());
 	Protocol->xmppClient()->s5bManager()->setServer(S5BServerManager::instance()->server());
 }
 
 void JabberFileTransferService::loggedOut()
 {
-	S5BServerManager::instance()->removeAddress(Protocol->client()->localAddress());
+	S5BServerManager::instance()->removeAddress(Protocol->connectionService()->localAddress());
 	Protocol->xmppClient()->s5bManager()->setServer(0);
 }
 

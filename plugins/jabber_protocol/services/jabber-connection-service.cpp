@@ -60,6 +60,8 @@ void JabberConnectionService::cleanUp()
 	Connector = 0;
 	Stream = 0;
 	TLSHandler = 0;
+
+	LocalAddress.clear();
 }
 
 bool JabberConnectionService::forceTLS() const
@@ -317,11 +319,16 @@ void JabberConnectionService::connectToServer()
 	XmppClient.data()->connectToServer(Stream, MyJid, true);
 }
 
-QString JabberConnectionService::host()
+QString JabberConnectionService::host() const
 {
 	if (Connector)
 		return Connector->host();
 	return QString();
+}
+
+QString JabberConnectionService::localAddress() const
+{
+	return LocalAddress;
 }
 
 }
