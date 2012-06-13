@@ -28,8 +28,13 @@
 
 #include <QtCore/QWeakPointer>
 
-class JabberAccountDetails;
+#include <jid.h>
+#include <xmpp.h>
+
+#include "jabber-account-details.h"
+
 class JabberProtocol;
+class NetworkProxy;
 
 namespace XMPP
 {
@@ -44,9 +49,47 @@ class JabberConnectionService : public QObject
 	JabberAccountDetails *AccountDetails;
 	QWeakPointer<XMPP::Client> XmppClient;
 
+	XMPP::AdvancedConnector *Connector;
+	XMPP::QCATLSHandler *TLSHandler;
+	XMPP::ClientStream *Stream;
+
+	XMPP::Jid MyJid;
+	QString Password;
+	QString LocalAddress;
+
+	bool forceTLS() const;
+	bool useSSL() const;
+
+	XMPP::AdvancedConnector::Proxy createProxyConfiguration(NetworkProxy proxy) const;
+	XMPP::AdvancedConnector * createConnector();
+	XMPP::QCATLSHandler * createTLSHandler();
+
+	static XMPP::ClientStream::AllowPlainType plainAuthToXMPP(JabberAccountDetails::AllowPlainType type);
+	XMPP::ClientStream * createClientStream(XMPP::AdvancedConnector *connector, XMPP::QCATLSHandler *tlsHandler) const;
+
+private slots:
+	void tlsHandshaken();
+
+	void streamNeedAuthParams(bool user, bool pass, bool realm);
+	void streamAuthenticated();
+	void streamSessionStarted();
+	void streamWarning(int warning);
+	void streamError(int error);
+
 public:
 	explicit JabberConnectionService(JabberProtocol *protocol);
 	virtual ~JabberConnectionService();
+
+	void connectToServer();
+
+signals:
+	void connected();
+	void disconnected();
+
+	void connectionError(const QString &message);
+	void connectionClosed(const QString &message);
+
+	void invalidPassword();
 
 };
 
