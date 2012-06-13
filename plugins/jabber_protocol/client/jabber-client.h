@@ -106,7 +106,7 @@ namespace XMPP
 			MaxUsersReachedForThisMuc = 503	/** You can't join this Multi-User Chat because it is full */
 									};
 
-		explicit JabberClient(JabberProtocol *protocol, QObject *parent = 0);
+		explicit JabberClient(XMPP::Client *client, QObject *parent = 0);
 		virtual ~JabberClient();
 
 		/**
@@ -114,11 +114,6 @@ namespace XMPP
 		 * @param reason The reason for disconnecting
 		 */
 		void disconnect(XMPP::Status &reason);
-
-		/**
-		 * Return the XMPP client instance.
-		 */
-		XMPP::Client *client() const { return Client; }
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 

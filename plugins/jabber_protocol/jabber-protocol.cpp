@@ -72,6 +72,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	if (account.id().endsWith(QLatin1String("@chat.facebook.com")))
 		setContactsListReadOnly(true);
 
+	XmppClient = new XMPP::Client(this);
 	initializeJabberClient();
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
@@ -110,18 +111,18 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentClientInfoService->setFeatures(features);
 
-	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
+	connect(XmppClient, SIGNAL(messageReceived(const Message &)),
 	        chatService, SLOT(handleReceivedMessage(Message)));
-	connect(xmppClient(), SIGNAL(messageReceived(const Message &)),
+	connect(XmppClient, SIGNAL(messageReceived(const Message &)),
 	        chatStateService, SLOT(handleReceivedMessage(const Message &)));
 	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
 
-	chatService->setClient(JabberClient->client());
-	chatStateService->setClient(JabberClient->client());
-	rosterService->setClient(JabberClient->client());
+	chatService->setClient(XmppClient);
+	chatStateService->setClient(XmppClient);
+	rosterService->setClient(XmppClient);
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));
@@ -139,6 +140,11 @@ JabberProtocol::~JabberProtocol()
 	logout();
 }
 
+XMPP::Client * JabberProtocol::xmppClient()
+{
+	return XmppClient;
+}
+
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 {
 	ContactsListReadOnly = contactsListReadOnly;
@@ -146,9 +152,9 @@ void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 
 void JabberProtocol::initializeJabberClient()
 {
-	JabberClient = new XMPP::JabberClient(this, this);
+	JabberClient = new XMPP::JabberClient(XmppClient, this);
 
-	connect(JabberClient->client(), SIGNAL(disconnected()), this, SLOT(connectionError()));
+	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
 
 	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientAvailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
@@ -192,12 +198,9 @@ void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
 {
 	kdebugf();
 
-	if (JabberClient->client())
-	{
-		XMPP::Status status = s;
-		/* Tell backend class to disconnect. */
-		JabberClient->disconnect(status);
-	}
+	XMPP::Status status = s;
+	/* Tell backend class to disconnect. */
+	JabberClient->disconnect(status);
 
 	kdebug("Disconnected.\n");
 

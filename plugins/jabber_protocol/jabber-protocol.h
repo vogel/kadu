@@ -63,6 +63,7 @@ class JabberProtocol : public Protocol
 
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
+	XMPP::Client *XmppClient;
 	JabberResourcePool *ResourcePool;
 
 	bool usingSSL;
@@ -103,7 +104,7 @@ public:
 	virtual ~JabberProtocol();
 
 	XMPP::JabberClient * client() { return JabberClient; }
-	XMPP::Client * xmppClient() { return JabberClient->client(); }
+	XMPP::Client * xmppClient();
 
 	void setContactsListReadOnly(bool contactsListReadOnly);
 	virtual bool contactsListReadOnly() { return ContactsListReadOnly; }

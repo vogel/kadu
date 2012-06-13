@@ -50,11 +50,9 @@
 namespace XMPP
 {
 
-JabberClient::JabberClient(JabberProtocol *protocol, QObject *parent) :
-		QObject(parent), Client(0),Protocol(protocol)
+JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
+		QObject(parent), Client(client)
 {
-	Client = new XMPP::Client(this);
-
 	new PongServer(Client->rootTask());
 
 	/* This should only be done here to connect the signals, otherwise it is a
