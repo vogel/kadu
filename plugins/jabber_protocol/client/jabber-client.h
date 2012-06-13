@@ -71,9 +71,6 @@ namespace XMPP
 	{
 		Q_OBJECT
 
-		XMPP::Jid MyJid;
-		QString Password;
-
 		// XMPP backend
 		XMPP::Client *Client;
 
@@ -92,8 +89,6 @@ namespace XMPP
 
 		/* Incoming subscription request. */
 		void slotSubscription(const Jid &jid, const QString &type, const QString &nick);
-
-		void sessionStart_finished();
 
 	public:
 		/**
@@ -115,17 +110,10 @@ namespace XMPP
 		virtual ~JabberClient();
 
 		/**
-		 * Disconnect from Jabber server.
-		 */
-		void disconnect();
-
-		/**
 		 * Disconnect from Jabber server with reason
 		 * @param reason The reason for disconnecting
 		 */
 		void disconnect(XMPP::Status &reason);
-
-		XMPP::Jid jid() const { return MyJid; }
 
 		/**
 		 * Return the XMPP client instance.
@@ -136,37 +124,9 @@ namespace XMPP
 
 	signals:
 		/**
-		 * Connected successfully.
-		 */
-		void connected();
-
-		/**
-		 * Client stream authenticated. This
-		 * signal is emitted when the socket
-		 * connection has been successfully
-		 * established, before sending the login
-		 * packet.
-		 */
-		void csAuthenticated();
-
-		void connectionError(const QString &message);
-		void invalidPassword();
-
-		/**
-		 * Client stream error.
-		 */
-		void csError(int error);
-
-		/**
 		 * Client stream was disconnected.
 		 */
 		void csDisconnected();
-
-		/**
-		 * Fatal error has been encountered,
-		 * further operations are not possible.
-		 */
-		void error(XMPP::JabberClient::ErrorCode code);
 
 		/**
 		 * New resource is available for a contact.

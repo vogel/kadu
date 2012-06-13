@@ -291,10 +291,10 @@ void JabberProtocol::sendStatusToServer()
 		XMPP::Resource newResource(jabberAccountDetails->resource(), xmppStatus);
 
 		// update our resource in the resource pool
-		resourcePool()->addResource(client()->jid(), newResource);
+		resourcePool()->addResource(CurrentConnectionService->jid(), newResource);
 
 		// make sure that we only consider our own resource locally
-		resourcePool()->lockToResource(client()->jid(), newResource);
+		resourcePool()->lockToResource(CurrentConnectionService->jid(), newResource);
 	}
 
 	if (xmppClient()->isActive() && xmppStatus.show() != QString("connecting"))

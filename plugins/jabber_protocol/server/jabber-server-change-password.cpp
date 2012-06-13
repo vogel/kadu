@@ -39,7 +39,7 @@ void JabberServerChangePassword::performAction()
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		emit finished(this);
 
-	XMPP::JT_Register *task = new XMPP::JT_Register(jabberProtocol->client()->client()->rootTask());
+	XMPP::JT_Register *task = new XMPP::JT_Register(jabberProtocol->xmppClient()->rootTask());
 	QObject::connect(task, SIGNAL(finished()),
 			 this, SLOT(actionFinished()));
 	XMPP::Jid j = MyAccount.id();

@@ -56,7 +56,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 		return;
 	}
 
-	QDomDocument *doc = MyProtocol->client()->client()->doc();
+	QDomDocument *doc = MyProtocol->xmppClient()->doc();
 
 	QDomElement metaElement = doc->createElement("metadata");
 	metaElement.setAttribute("xmlns", XMLNS_METADATA);
@@ -89,7 +89,7 @@ void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSub
 
 void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 {
-	QDomDocument *doc = MyProtocol->client()->client()->doc();
+	QDomDocument *doc = MyProtocol->xmppClient()->doc();
 
 	QString hash = QCA::Hash("sha1").hashToString(data);
 
@@ -104,7 +104,7 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 
 void JabberAvatarPepUploader::doRemove()
 {
-	QDomDocument *doc = MyProtocol->client()->client()->doc();
+	QDomDocument *doc = MyProtocol->xmppClient()->doc();
 
 	ItemId = "current";
 

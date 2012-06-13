@@ -81,13 +81,6 @@ JabberClient::~JabberClient()
 		Client->close();
 }
 
-void JabberClient::disconnect()
-{
-	// do real disconnect
-	XMPP::Status status = XMPP::Status(XMPP::Status::Offline);
-	disconnect(status);
-}
-
 void JabberClient::disconnect(XMPP::Status &reason)
 {
 	Client->setPresence(reason);

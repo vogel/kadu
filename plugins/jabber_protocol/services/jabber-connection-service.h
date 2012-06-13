@@ -83,6 +83,7 @@ public:
 
 	void connectToServer();
 
+	XMPP::Jid jid() const;
 	QString host() const;
 	QString localAddress() const;
 

@@ -319,6 +319,11 @@ void JabberConnectionService::connectToServer()
 	XmppClient.data()->connectToServer(Stream, MyJid, true);
 }
 
+Jid JabberConnectionService::jid() const
+{
+	return MyJid;
+}
+
 QString JabberConnectionService::host() const
 {
 	if (Connector)
