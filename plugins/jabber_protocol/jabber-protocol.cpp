@@ -47,6 +47,7 @@
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
 #include "services/jabber-client-info-service.h"
+#include "services/jabber-connection-service.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-server-info-service.h"
@@ -85,6 +86,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentServerInfoService, SIGNAL(updated()), this, SLOT(serverInfoUpdated()));
 
 	CurrentPepService = new JabberPepService(this);
+	CurrentConnectionService = new XMPP::JabberConnectionService(this);
 
 	QStringList features;
 	features
