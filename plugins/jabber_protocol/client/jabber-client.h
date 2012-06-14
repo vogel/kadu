@@ -87,9 +87,6 @@ namespace XMPP
 		void slotIncomingXML(const QString &msg);
 		void slotOutgoingXML(const QString &msg);
 
-		/* Incoming subscription request. */
-		void slotSubscription(const Jid &jid, const QString &type, const QString &nick);
-
 	public:
 		/**
 		 * Error codes indicating problems during operation.
@@ -132,11 +129,6 @@ namespace XMPP
 		 * An existing resource has been removed.
 		 */
 		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-
-		/**
-		 * New subscription request.
-		 */
-		void subscription(const XMPP::Jid &jid, const QString &type, const QString &nick);
 
 		/**
 		 * Dispatches a debug message. Debug messages

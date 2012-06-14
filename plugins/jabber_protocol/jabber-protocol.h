@@ -40,12 +40,12 @@ namespace XMPP
 	class JabberClientInfoService;
 	class JabberConnectionService;
 	class JabberServerInfoService;
+	class JabberSubscriptionService;
 }
 
 class JabberContactDetails;
 class JabberPepService;
 class JabberResourcePool;
-class JabberSubscriptionService;
 
 class JabberProtocol : public Protocol
 {
@@ -55,7 +55,7 @@ class JabberProtocol : public Protocol
 	JabberContactPersonalInfoService *CurrentContactPersonalInfoService;
 	JabberFileTransferService *CurrentFileTransferService;
 	JabberPersonalInfoService *CurrentPersonalInfoService;
-	JabberSubscriptionService *CurrentSubscriptionService;
+	XMPP::JabberSubscriptionService *CurrentSubscriptionService;
 	XMPP::JabberClientInfoService *CurrentClientInfoService;
 	XMPP::JabberServerInfoService *CurrentServerInfoService;
 	XMPP::JabberConnectionService *CurrentConnectionService;

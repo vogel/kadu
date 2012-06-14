@@ -35,11 +35,14 @@
 
 #include "jabber-subscription-service.h"
 
-JabberSubscriptionService::JabberSubscriptionService(JabberProtocol *protocol) :
-		SubscriptionService(protocol), Protocol(protocol)
+namespace XMPP
 {
-	connect(Protocol->client(), SIGNAL(subscription(const XMPP::Jid &, const QString &, const QString &)),
-		   this, SLOT(subscription(const XMPP::Jid &, const QString &, const QString &)));
+
+JabberSubscriptionService::JabberSubscriptionService(JabberProtocol *protocol) :
+		SubscriptionService(protocol), Protocol(protocol), XmppClient(protocol->xmppClient())
+{
+	connect(XmppClient.data(), SIGNAL(subscription(const Jid &, const QString &, const QString &)),
+		   this, SLOT(subscription(const Jid &, const QString &, const QString &)));
 }
 
 void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString &type, const QString &nick)
@@ -56,12 +59,12 @@ void JabberSubscriptionService::subscription(const XMPP::Jid &jid, const QString
 		 * we have for it, as the Jabber server won't signal us
 		 * that the contact is offline now.
 		 */
-		Status offlineStatus;
+		::Status offlineStatus;
 		Contact contact = ContactManager::instance()->byId(Protocol->account(), jid.bare(), ActionReturnNull);
 
 		if (contact)
 		{
-			Status oldStatus = contact.currentStatus();
+			::Status oldStatus = contact.currentStatus();
 			contact.setCurrentStatus(offlineStatus);
 
 			Protocol->emitContactStatusChanged(contact, oldStatus);
@@ -108,4 +111,6 @@ void JabberSubscriptionService::sendSubsription(const Contact &contact, const QS
 	XMPP::JT_Presence *task = new XMPP::JT_Presence(Protocol->xmppClient()->rootTask());
 	task->sub(contact.id(), subscription);
 	task->go(true);
+}
+
 }

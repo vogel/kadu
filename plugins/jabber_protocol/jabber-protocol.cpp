@@ -130,7 +130,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	setChatService(chatService);
 	setRosterService(rosterService);
 
-	CurrentSubscriptionService = new JabberSubscriptionService(this);
+	CurrentSubscriptionService = new XMPP::JabberSubscriptionService(this);
 
 	kdebugf2();
 }

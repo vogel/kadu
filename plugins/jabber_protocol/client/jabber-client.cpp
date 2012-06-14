@@ -60,8 +60,6 @@ JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
 	 */
 	{
 		using namespace XMPP;
-		QObject::connect(Client, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
-				   this, SLOT(slotSubscription(const Jid &, const QString &, const QString &)));
 		QObject::connect(Client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
 		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
@@ -116,11 +114,6 @@ void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &r
 void JabberClient::slotResourceUnavailable(const XMPP::Jid &jid, const Resource &resource)
 {
 	emit resourceUnavailable(jid, resource);
-}
-
-void JabberClient::slotSubscription(const XMPP::Jid &jid, const QString &type, const QString &nick)
-{
-	emit subscription(jid, type, nick);
 }
 
 void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn)
