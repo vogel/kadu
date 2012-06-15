@@ -25,7 +25,7 @@
 #include <im.h>
 
 class JabberResource;
-class JabberProtocol;
+namespace XMPP { class JabberProtocol; }
 
 /**
  * @author Till Gerken <till@tantalo.net>
@@ -41,7 +41,7 @@ class JabberResourcePool : public QObject
 	/**
 	 * Pointer to the JabberProtocol instance.
 	 */
-	JabberProtocol *protocol;
+	XMPP::JabberProtocol *protocol;
 
 	/**
 	 * Return a usable JabberResource for a given JID.
@@ -50,7 +50,7 @@ class JabberResourcePool : public QObject
 
 private slots:
 	void slotResourceDestroyed(QObject *sender);
-	
+
 public:
 	static XMPP::Resource EmptyResource;
 
@@ -59,7 +59,7 @@ public:
 	/**
 	 * Default constructor
 	 */
-	explicit JabberResourcePool(JabberProtocol *protocol);
+	explicit JabberResourcePool(XMPP::JabberProtocol *protocol);
 
 	/**
 	 * Default destructor

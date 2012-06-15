@@ -29,12 +29,13 @@
 
 #include "iris/xmpp_message.h"
 
-class JabberProtocol;
 class ServerInfoManager;
 
 namespace XMPP
 {
 	class Client;
+
+	class JabberProtocol;
 }
 
 class JabberPepService : public QObject
@@ -43,7 +44,7 @@ class JabberPepService : public QObject
 
 	typedef XMPP::Message Message;
 
-	JabberProtocol *ParentProtocol;
+	XMPP::JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 	bool Enabled;
 
@@ -59,7 +60,7 @@ public:
 		PublicAccess
 	};
 
-	explicit JabberPepService(JabberProtocol *protocol);
+	explicit JabberPepService(XMPP::JabberProtocol *protocol);
 	virtual ~JabberPepService();
 
 	void setEnabled(bool enabled);

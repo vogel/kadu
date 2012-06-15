@@ -36,29 +36,21 @@
 
 #include "jabber-account-details.h"
 
-class JabberProtocol;
-
 namespace XMPP
 {
+	class JabberProtocol;
+
 	class JabberClient : public QObject
 	{
 		Q_OBJECT
 
 		JabberProtocol *Protocol;
 
-	private slots:
-		void slotResourceAvailable(const Jid &, const Resource &);
-		void slotResourceUnavailable(const Jid &, const Resource &);
-
 	public:
 		explicit JabberClient(XMPP::Client *client, QObject *parent = 0);
 		virtual ~JabberClient();
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
-
-	signals:
-		void resourceAvailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
 	};
 }
 

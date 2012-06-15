@@ -36,7 +36,7 @@ XmlConsole::XmlConsole(Account account) :
 	setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));
 	setWindowRole("kadu-xml-console");
 
-	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
 	if (protocol)
 	{
 		createGui();

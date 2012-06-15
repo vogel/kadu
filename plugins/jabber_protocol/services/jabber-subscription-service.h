@@ -29,12 +29,12 @@
 
 #include "protocols/services/subscription-service.h"
 
-class JabberProtocol;
-
 namespace XMPP
 {
 
 class Client;
+
+class JabberProtocol;
 
 class JabberSubscriptionService : public SubscriptionService
 {

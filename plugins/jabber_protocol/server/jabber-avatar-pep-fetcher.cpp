@@ -65,7 +65,7 @@ void JabberAvatarPepFetcher::failed()
 
 void JabberAvatarPepFetcher::fetchAvatar()
 {
-	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected() || !jabberProtocol->xmppClient() || !jabberProtocol->xmppClient()->rootTask() ||
 		!jabberProtocol->pepService()->enabled())
 	{
@@ -100,7 +100,7 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 		return;
 	}
 
-	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (jabberProtocol)
 	{
 		connect(jabberProtocol->pepService(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
@@ -126,7 +126,7 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 		return;
 	}
 
-	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (jabberProtocol)
 	{
 		disconnect(jabberProtocol->pepService(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
@@ -140,7 +140,7 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 	if (jid.bare() != MyContact.id() || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
 		return; // not our data :(
 
-	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (jabberProtocol)
 		disconnect(jabberProtocol->pepService(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
 

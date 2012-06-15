@@ -31,7 +31,7 @@
  */
 XMPP::Resource JabberResourcePool::EmptyResource(QString(), XMPP::Status(QString(), QString(), 0, false));
 
-JabberResourcePool::JabberResourcePool(JabberProtocol *protocol) :
+JabberResourcePool::JabberResourcePool(XMPP::JabberProtocol *protocol) :
 	QObject(protocol), protocol(protocol)
 {
 }

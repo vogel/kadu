@@ -31,14 +31,14 @@
 
 #include "accounts/account.h"
 
-class JabberProtocol;
+namespace XMPP { class JabberProtocol; }
 
 class JabberAvatarPepUploader : public QObject
 {
 	Q_OBJECT
 
 	Account MyAccount;
-	JabberProtocol *MyProtocol;
+	XMPP::JabberProtocol *MyProtocol;
 
 	QImage UploadedAvatar;
 

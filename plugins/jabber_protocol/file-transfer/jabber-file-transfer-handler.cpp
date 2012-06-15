@@ -114,7 +114,7 @@ void JabberFileTransferHandler::send()
 		return; // TODO: notify
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account.protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = dynamic_cast<XMPP::JabberProtocol *>(account.protocolHandler());
 	if (!jabberProtocol)
 	{
 		transfer().setTransferStatus(StatusNotConnected);

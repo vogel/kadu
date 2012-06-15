@@ -27,17 +27,17 @@
 
 #include "protocols/services/contact-personal-info-service.h"
 
-class JabberProtocol;
+namespace XMPP { class JabberProtocol; }
 
 class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
-	JabberProtocol *Protocol;
+	XMPP::JabberProtocol *Protocol;
 	Buddy CurrentBuddy;
 
 public:
-	JabberContactPersonalInfoService(JabberProtocol *protocol);
+	JabberContactPersonalInfoService(XMPP::JabberProtocol *protocol);
 
 	virtual void fetchPersonalInfo(Contact contact);
 

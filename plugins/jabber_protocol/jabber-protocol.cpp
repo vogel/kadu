@@ -64,6 +64,9 @@
 
 #include "jabber-protocol.h"
 
+namespace XMPP
+{
+
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), JabberClient(0), ResourcePool(0),
 		ContactsListReadOnly(false)
@@ -159,10 +162,8 @@ void JabberProtocol::initializeJabberClient()
 
 	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
 
-	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientAvailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
-	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
-		   this, SLOT(clientUnavailableResourceReceived(const XMPP::Jid &, const XMPP::Resource &)));
+	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
+	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
 }
 
 void JabberProtocol::connectionClosedSlot(const QString &message)
@@ -321,13 +322,13 @@ void JabberProtocol::clientUnavailableResourceReceived(const XMPP::Jid &jid, con
 
 void JabberProtocol::notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
-	Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
+	::Status status(IrisStatusAdapter::fromIrisStatus(resource.status()));
 	Contact contact = ContactManager::instance()->byId(account(), jid.bare(), ActionReturnNull);
 
 	if (!contact)
 		return;
 
-	Status oldStatus = contact.currentStatus();
+	::Status oldStatus = contact.currentStatus();
 	contact.setCurrentStatus(status);
 
 	// see issue #2159 - we need a way to ignore first status of given contact
@@ -356,4 +357,6 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 		return 0;
 
 	return dynamic_cast<JabberContactDetails *>(contact.details());
+}
+
 }

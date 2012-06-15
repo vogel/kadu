@@ -35,7 +35,7 @@ JabberServerChangePassword::JabberServerChangePassword(Account account, const QS
 
 void JabberServerChangePassword::performAction()
 {
-	JabberProtocol *jabberProtocol = qobject_cast<JabberProtocol *>(MyAccount.protocolHandler());
+	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 		emit finished(this);
 

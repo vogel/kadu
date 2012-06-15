@@ -29,15 +29,15 @@
 namespace XMPP
 {
 	class S5BServer;
-}
 
-class JabberProtocol;
+	class JabberProtocol;
+}
 
 class JabberFileTransferService : public FileTransferService
 {
 	Q_OBJECT
 
-	JabberProtocol *Protocol;
+	XMPP::JabberProtocol *Protocol;
 
 private slots:
 	void loggedIn();
@@ -46,7 +46,7 @@ private slots:
 	void incomingFileTransferSlot();
 
 public:
-	explicit JabberFileTransferService(JabberProtocol *protocol);
+	explicit JabberFileTransferService(XMPP::JabberProtocol *protocol);
 	virtual ~JabberFileTransferService();
 
 	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer);

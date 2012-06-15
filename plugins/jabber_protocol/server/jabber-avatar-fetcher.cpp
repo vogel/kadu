@@ -67,7 +67,7 @@ void JabberAvatarFetcher::avatarFetchedSlot(Contact contact, bool ok)
 
 void JabberAvatarFetcher::fetchAvatar()
 {
-	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
 	{
 		emit avatarFetched(MyContact, false);

@@ -72,7 +72,7 @@ KaduIcon JabberProtocolFactory::icon()
 
 Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 {
-	return new JabberProtocol(account, this);
+	return new XMPP::JabberProtocol(account, this);
 }
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(AccountShared *accountShared)

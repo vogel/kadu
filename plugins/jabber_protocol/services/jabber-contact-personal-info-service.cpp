@@ -27,7 +27,7 @@
 
 #include "jabber-contact-personal-info-service.h"
 
-JabberContactPersonalInfoService::JabberContactPersonalInfoService(JabberProtocol *protocol) :
+JabberContactPersonalInfoService::JabberContactPersonalInfoService(XMPP::JabberProtocol *protocol) :
 		ContactPersonalInfoService(protocol), Protocol(protocol)
 {
 }

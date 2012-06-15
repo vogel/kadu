@@ -55,7 +55,7 @@ FacebookProtocolFactory::FacebookProtocolFactory()
 
 Protocol * FacebookProtocolFactory::createProtocolHandler(Account account)
 {
-	JabberProtocol *result = static_cast<JabberProtocol *>(JabberProtocolFactory::createProtocolHandler(account));
+	XMPP::JabberProtocol *result = static_cast<XMPP::JabberProtocol *>(JabberProtocolFactory::createProtocolHandler(account));
 	result->setContactsListReadOnly(true);
 
 	return result;

@@ -38,7 +38,7 @@
 // (subscriptions is not accurate, since one doesn't subscribe to the
 // avatar data node)
 
-JabberPepService::JabberPepService(JabberProtocol *protocol) :
+JabberPepService::JabberPepService(XMPP::JabberProtocol *protocol) :
 		QObject(protocol), ParentProtocol(protocol), XmppClient(protocol->xmppClient()), Enabled(false)
 {
 	if (XmppClient)

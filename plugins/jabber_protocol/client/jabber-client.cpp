@@ -54,31 +54,10 @@ JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
 		QObject(parent)
 {
 	new PongServer(client->rootTask());
-
-	/* This should only be done here to connect the signals, otherwise it is a
-	 * bad idea.
-	 */
-	{
-		using namespace XMPP;
-		QObject::connect(client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
-				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
-		QObject::connect(client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
-				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
-	}
 }
 
 JabberClient::~JabberClient()
 {
-}
-
-void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)
-{
-	emit resourceAvailable(jid, resource);
-}
-
-void JabberClient::slotResourceUnavailable(const XMPP::Jid &jid, const Resource &resource)
-{
-	emit resourceUnavailable(jid, resource);
 }
 
 void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn)

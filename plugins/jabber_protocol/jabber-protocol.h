@@ -48,6 +48,9 @@ class JabberContactDetails;
 class JabberPepService;
 class JabberResourcePool;
 
+namespace XMPP
+{
+
 class JabberProtocol : public Protocol
 {
 	Q_OBJECT
@@ -83,8 +86,8 @@ private slots:
 	void connectedToServer();
 	void rosterReady(bool success);
 
-	void clientAvailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
-	void clientUnavailableResourceReceived(const XMPP::Jid &j, const XMPP::Resource &r);
+	void clientAvailableResourceReceived(const Jid &j, const Resource &r);
+	void clientUnavailableResourceReceived(const Jid &j, const Resource &r);
 
 	void connectionClosedSlot(const QString &message);
 	void connectionErrorSlot(const QString &message);
@@ -130,5 +133,7 @@ signals:
 	void userStatusChangeIgnored(Buddy);
 
 };
+
+}
 
 #endif //JABBER_PROTOCOL_H

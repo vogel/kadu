@@ -33,7 +33,7 @@
 JabberAvatarVCardUploader::JabberAvatarVCardUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
 {
-	MyProtocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
+	MyProtocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
 }
 
 JabberAvatarVCardUploader::~JabberAvatarVCardUploader()

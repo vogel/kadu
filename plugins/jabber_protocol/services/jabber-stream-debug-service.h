@@ -24,18 +24,18 @@
 
 #include <QtCore/QWeakPointer>
 
-class JabberProtocol;
-
 namespace XMPP
 {
 
 class Client;
 
+class JabberProtocol;
+
 class JabberStreamDebugService : public QObject
 {
 	Q_OBJECT
 
-	JabberProtocol *ParentProtocol;
+	XMPP::JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 
 	QString filterPrivateData(const QString &streamData);

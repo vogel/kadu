@@ -105,7 +105,7 @@ Contact JabberActions::contactFromAction(QAction *action)
 
 SubscriptionService * JabberActions::subscriptionServiceFromContact(const Contact &contact)
 {
-	JabberProtocol *jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
+	XMPP::JabberProtocol *jabberProtocolHandler = qobject_cast<XMPP::JabberProtocol *>(contact.contactAccount().protocolHandler());
 	if (!jabberProtocolHandler)
 		return 0;
 

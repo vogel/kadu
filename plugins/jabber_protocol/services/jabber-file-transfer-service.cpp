@@ -33,7 +33,7 @@
 
 #include "jabber-file-transfer-service.h"
 
-JabberFileTransferService::JabberFileTransferService(JabberProtocol *protocol) :
+JabberFileTransferService::JabberFileTransferService(XMPP::JabberProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
 	connect(Protocol, SIGNAL(stateMachineLoggedIn()), this, SLOT(loggedIn()));
