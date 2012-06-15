@@ -78,8 +78,6 @@ class JabberProtocol : public Protocol
 
 	bool ContactsListReadOnly;
 
-	void initializeJabberClient();
-
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
 private slots:

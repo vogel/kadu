@@ -47,7 +47,7 @@ namespace XMPP
 		JabberProtocol *Protocol;
 
 	public:
-		explicit JabberClient(XMPP::Client *client, QObject *parent = 0);
+		explicit JabberClient(QObject *parent = 0);
 		virtual ~JabberClient();
 
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);

@@ -41,6 +41,7 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "client/pong-server.h"
 #include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "resource/jabber-resource-pool.h"
@@ -77,7 +78,11 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 		setContactsListReadOnly(true);
 
 	XmppClient = new XMPP::Client(this);
-	initializeJabberClient();
+	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
+	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
+	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
+
+	new PongServer(XmppClient->rootTask());
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(this);
@@ -154,16 +159,6 @@ XMPP::Client * JabberProtocol::xmppClient()
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 {
 	ContactsListReadOnly = contactsListReadOnly;
-}
-
-void JabberProtocol::initializeJabberClient()
-{
-	JabberClient = new XMPP::JabberClient(XmppClient, this);
-
-	connect(XmppClient, SIGNAL(disconnected()), this, SLOT(connectionError()));
-
-	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
-	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
 }
 
 void JabberProtocol::connectionClosedSlot(const QString &message)

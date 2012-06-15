@@ -50,10 +50,9 @@
 namespace XMPP
 {
 
-JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
+JabberClient::JabberClient(QObject *parent) :
 		QObject(parent)
 {
-	new PongServer(client->rootTask());
 }
 
 JabberClient::~JabberClient()
