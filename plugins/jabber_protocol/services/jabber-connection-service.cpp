@@ -24,6 +24,7 @@
  */
 
 #include <QtCore/QUrl>
+#include <QtCore/QTimer>
 
 #include <bsocket.h>
 #include <xmpp_tasks.h>
@@ -32,6 +33,7 @@
 #include "network/proxy/network-proxy-manager.h"
 
 #include "certificates/certificate-helpers.h"
+#include "iris-status-adapter.h"
 #include "jabber-account-details.h"
 #include "jabber-protocol.h"
 
@@ -317,6 +319,15 @@ void JabberConnectionService::connectToServer()
 	connect(Stream, SIGNAL(error(int)), this, SLOT(streamError(int)));
 
 	XmppClient.data()->connectToServer(Stream, MyJid, true);
+}
+
+void JabberConnectionService::disconnectFromServer(const ::Status &status)
+{
+	XMPP::Status presence = IrisStatusAdapter::toIrisStatus(status);
+	XmppClient.data()->setPresence(presence);
+
+	// server needs some time to close connection
+	QTimer::singleShot(500, this, SLOT(cleanUp()));
 }
 
 Jid JabberConnectionService::jid() const

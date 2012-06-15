@@ -106,12 +106,6 @@ namespace XMPP
 		explicit JabberClient(XMPP::Client *client, QObject *parent = 0);
 		virtual ~JabberClient();
 
-		/**
-		 * Disconnect from Jabber server with reason
-		 * @param reason The reason for disconnecting
-		 */
-		void disconnect(XMPP::Status &reason);
-
 		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
 	signals:

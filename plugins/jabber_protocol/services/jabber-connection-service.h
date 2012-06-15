@@ -82,6 +82,7 @@ public:
 	virtual ~JabberConnectionService();
 
 	void connectToServer();
+	void disconnectFromServer(const ::Status &status);
 
 	XMPP::Jid jid() const;
 	QString host() const;

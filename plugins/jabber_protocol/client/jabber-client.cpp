@@ -77,13 +77,6 @@ JabberClient::~JabberClient()
 		Client->close();
 }
 
-void JabberClient::disconnect(XMPP::Status &reason)
-{
-	Client->setPresence(reason);
-	//HACK Following PSI solution, server needs some delay to store status properly before we close the connection.
-	QTimer::singleShot(100, this, SLOT(cleanUp()));
-}
-
 void JabberClient::slotIncomingXML(const QString &_msg)
 {
 	QString msg = _msg;

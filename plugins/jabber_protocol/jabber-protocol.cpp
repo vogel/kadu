@@ -259,8 +259,7 @@ void JabberProtocol::disconnectedFromServer()
 
 void JabberProtocol::logout()
 {
-	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
-	JabberClient->disconnect(xmppStatus);
+	CurrentConnectionService->disconnectFromServer(status());
 
 	loggedOut();
 }
