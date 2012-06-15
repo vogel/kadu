@@ -124,12 +124,6 @@ namespace XMPP
 		 */
 		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
 
-		/**
-		 * Dispatches a debug message. Debug messages
-		 * include incoming and outgoing XML packets
-		 * as well as internal status messages.
-		 */
-		void debugMessage(const QString &message);
 		void incomingXML(const QString &msg);
 		void outgoingXML(const QString &msg);
 	};

@@ -84,7 +84,6 @@ void JabberClient::slotIncomingXML(const QString &_msg)
 	msg = msg.replace( QRegExp( "<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n");
 	msg = msg.replace( QRegExp( "<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
 
-	emit debugMessage("XML IN: " + msg);
 	emit incomingXML(msg);
 }
 
@@ -95,7 +94,6 @@ void JabberClient::slotOutgoingXML(const QString &_msg)
 	msg = msg.replace( QRegExp( "<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n");
 	msg = msg.replace( QRegExp( "<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
 
-	emit debugMessage("XML OUT: " + msg);
 	emit outgoingXML(msg);
 }
 
