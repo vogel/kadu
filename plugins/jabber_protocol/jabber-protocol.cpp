@@ -194,21 +194,6 @@ void JabberProtocol::rosterReady(bool success)
 	CurrentServerInfoService->requestServerInfo();
 }
 
-void JabberProtocol::disconnectFromServer(const XMPP::Status &s)
-{
-	kdebugf();
-
-	XMPP::Status status = s;
-	/* Tell backend class to disconnect. */
-	JabberClient->disconnect(status);
-
-	kdebug("Disconnected.\n");
-
-	// in state machine?
-// 	machine()->loggedOut();
-	kdebugf2();
-}
-
 /*
  * login procedure
  *
@@ -274,7 +259,9 @@ void JabberProtocol::disconnectedFromServer()
 
 void JabberProtocol::logout()
 {
-	disconnectFromServer(IrisStatusAdapter::toIrisStatus(status()));
+	XMPP::Status xmppStatus = IrisStatusAdapter::toIrisStatus(status());
+	JabberClient->disconnect(xmppStatus);
+
 	loggedOut();
 }
 
