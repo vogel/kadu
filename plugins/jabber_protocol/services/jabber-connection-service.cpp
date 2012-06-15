@@ -314,8 +314,8 @@ void JabberConnectionService::connectToServer()
 	Stream = createClientStream(Connector.data(), TLSHandler.data());
 	connect(Stream.data(), SIGNAL(needAuthParams(bool, bool, bool)), this, SLOT(streamNeedAuthParams(bool, bool, bool)));
 	connect(Stream.data(), SIGNAL(authenticated()), this, SLOT(streamAuthenticated()));
-	connect(Stream.data(), SIGNAL(connectionClosed()), this, SIGNAL(connectionClosed()));
-	connect(Stream.data(), SIGNAL(delayedCloseFinished()), this, SIGNAL(connectionClosed()));
+	connect(Stream.data(), SIGNAL(connectionClosed()), this, SIGNAL(connectionError()));
+	connect(Stream.data(), SIGNAL(delayedCloseFinished()), this, SIGNAL(connectionError()));
 	connect(Stream.data(), SIGNAL(warning(int)), this, SLOT(streamWarning(int)));
 	connect(Stream.data(), SIGNAL(error(int)), this, SLOT(streamError(int)));
 

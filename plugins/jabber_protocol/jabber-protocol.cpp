@@ -242,22 +242,7 @@ void JabberProtocol::connectedToServer()
 
 void JabberProtocol::afterLoggedIn()
 {
-	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
-
 	rosterService()->prepareRoster(ContactManager::instance()->contacts(account(), ContactManager::ExcludeAnonymous));
-}
-
-void JabberProtocol::disconnectedFromServer()
-{
-	kdebugf();
-
-	loggedOut();
-
-	disconnect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
-
-	connectionError();
-
-	kdebugf2();
 }
 
 void JabberProtocol::logout()
