@@ -44,8 +44,6 @@ namespace XMPP
 	{
 		Q_OBJECT
 
-		XMPP::Client *Client;
-
 		JabberProtocol *Protocol;
 
 	private slots:

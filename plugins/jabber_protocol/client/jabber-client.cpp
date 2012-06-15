@@ -51,26 +51,24 @@ namespace XMPP
 {
 
 JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
-		QObject(parent), Client(client)
+		QObject(parent)
 {
-	new PongServer(Client->rootTask());
+	new PongServer(client->rootTask());
 
 	/* This should only be done here to connect the signals, otherwise it is a
 	 * bad idea.
 	 */
 	{
 		using namespace XMPP;
-		QObject::connect(Client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
+		QObject::connect(client, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
-		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
+		QObject::connect(client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
 	}
 }
 
 JabberClient::~JabberClient()
 {
-	if (Client)
-		Client->close();
 }
 
 void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)
