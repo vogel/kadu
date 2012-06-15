@@ -48,9 +48,9 @@ class JabberConnectionService : public QObject
 	JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 
-	XMPP::AdvancedConnector *Connector;
-	XMPP::QCATLSHandler *TLSHandler;
-	XMPP::ClientStream *Stream;
+	QWeakPointer<XMPP::AdvancedConnector> Connector;
+	QWeakPointer<XMPP::QCATLSHandler> TLSHandler;
+	QWeakPointer<XMPP::ClientStream> Stream;
 
 	XMPP::Jid MyJid;
 	QString Password;
