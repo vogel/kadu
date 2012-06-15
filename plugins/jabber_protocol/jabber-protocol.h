@@ -27,7 +27,6 @@
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 
-#include "client/jabber-client.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-file-transfer-service.h"
@@ -37,6 +36,8 @@
 
 namespace XMPP
 {
+	class Resource;
+
 	class JabberClientInfoService;
 	class JabberConnectionService;
 	class JabberServerInfoService;
@@ -66,8 +67,6 @@ class JabberProtocol : public Protocol
 	JabberPepService *CurrentPepService;
 	XMPP::JabberStreamDebugService *CurrentStreamDebugService;
 
-	friend class XMPP::JabberClient;
-	XMPP::JabberClient *JabberClient;
 	XMPP::Client *XmppClient;
 	JabberResourcePool *ResourcePool;
 
@@ -104,7 +103,6 @@ public:
 	JabberProtocol(Account account, ProtocolFactory *factory);
 	virtual ~JabberProtocol();
 
-	XMPP::JabberClient * client() { return JabberClient; }
 	XMPP::Client * xmppClient();
 
 	void setContactsListReadOnly(bool contactsListReadOnly);

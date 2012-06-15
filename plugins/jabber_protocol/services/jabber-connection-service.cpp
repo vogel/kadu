@@ -35,6 +35,7 @@
 #include "certificates/certificate-helpers.h"
 #include "iris-status-adapter.h"
 #include "jabber-account-details.h"
+#include "jabber-error-helper.h"
 #include "jabber-protocol.h"
 
 #include "jabber-connection-service.h"
@@ -273,7 +274,7 @@ void JabberConnectionService::streamError(int error)
 	QString errorText;
 	bool reconn;
 
-	XMPP::JabberClient::getErrorInfo(error, Connector.data(), Stream.data(), TLSHandler.data(), &errorText, &reconn);
+	JabberErrorHelper::getErrorInfo(error, Connector.data(), Stream.data(), TLSHandler.data(), &errorText, &reconn);
 	cleanUp();
 
 	if (reconn)

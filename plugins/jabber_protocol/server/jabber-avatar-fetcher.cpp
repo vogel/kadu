@@ -20,6 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <xmpp_client.h>
+
 #include "server/jabber-avatar-pep-fetcher.h"
 #include "server/jabber-avatar-vcard-fetcher.h"
 #include "services/jabber-pep-service.h"

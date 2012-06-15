@@ -20,6 +20,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCrypto>
+
+#include <xmpp_client.h>
+
 #include "services/jabber-pep-service.h"
 #include "jabber-protocol.h"
 

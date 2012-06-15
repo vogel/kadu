@@ -19,6 +19,8 @@
 
 #include <QtCore/QCryptographicHash>
 
+#include <xmpp_client.h>
+
 #include "jabber-protocol.h"
 
 #include "jabber-client-info-service.h"

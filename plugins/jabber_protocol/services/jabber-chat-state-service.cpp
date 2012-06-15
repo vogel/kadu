@@ -24,6 +24,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <xmpp_client.h>
+
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"

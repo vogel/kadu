@@ -7,6 +7,8 @@
  * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
+ * Copyright (C) 2006 Remko Troncon
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation; either version 2 of
@@ -21,37 +23,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_CLIENT_H
-#define JABBER_CLIENT_H
-
-#include <QtCore/QObject>
-
-// include these because of namespace reasons
-#include <iris/im.h>
-#include <iris/xmpp.h>
-
-#include <QtCrypto>
-
-#include "accounts/account.h"
-
-#include "jabber-account-details.h"
+#ifndef JABBER_ERROR_HELPER_H
+#define JABBER_ERROR_HELPER_H
 
 namespace XMPP
 {
-	class JabberProtocol;
-
-	class JabberClient : public QObject
-	{
-		Q_OBJECT
-
-		JabberProtocol *Protocol;
-
-	public:
-		explicit JabberClient(QObject *parent = 0);
-		virtual ~JabberClient();
-
-		static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
-	};
+	class AdvancedConnector;
+	class QCATLSHandler;
+	class Stream;
 }
 
-#endif // JABBER_CLIENT_H
+namespace JabberErrorHelper
+{
+	void getErrorInfo(int err, XMPP::AdvancedConnector *conn, XMPP::Stream *stream, XMPP::QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
+}
+
+#endif // JABBER_ERROR_HELPER_H

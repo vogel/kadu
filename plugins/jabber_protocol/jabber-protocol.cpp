@@ -69,7 +69,7 @@ namespace XMPP
 {
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol(account, factory), JabberClient(0), ResourcePool(0),
+		Protocol(account, factory), ResourcePool(0),
 		ContactsListReadOnly(false)
 {
 	kdebugf();

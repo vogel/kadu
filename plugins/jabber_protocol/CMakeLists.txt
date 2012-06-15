@@ -106,7 +106,6 @@ set (SOURCES
 	certificates/certificate-helpers.cpp
 	certificates/trusted-certificates-manager.cpp
 
-	client/jabber-client.cpp
 	client/mini-client.cpp
 	client/pong-server.cpp
 
@@ -162,6 +161,7 @@ set (SOURCES
 	iris-status-adapter.cpp
 	jabber-account-details.cpp
 	jabber-contact-details.cpp
+	jabber-error-helper.cpp
 	jabber-id-validator.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
@@ -179,7 +179,6 @@ set (MOC_SOURCES
 	certificates/certificate-display-dialog.h
 	certificates/trusted-certificates-manager.h
 
-	client/jabber-client.h
 	client/mini-client.h
 	client/pong-server.h
 

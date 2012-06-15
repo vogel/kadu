@@ -33,7 +33,7 @@
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
-#include "client/jabber-client.h"
+#include "jabber-error-helper.h"
 #include "mini-client.h"
 #include "xmpp_tasks.h"
 
@@ -247,7 +247,7 @@ void MiniClient::cs_error(int err)
 {
 	QString str;
 	bool reconn;
-	JabberClient::getErrorInfo(err, conn, stream, tlsHandler, &str, &reconn);
+	JabberErrorHelper::getErrorInfo(err, conn, stream, tlsHandler, &str, &reconn);
 	close();
 
 	MessageDialog::show(KaduIcon("dialog-error"), tr("Server Error"), tr("There was an error communicating with the Jabber server.\nDetails: %1").arg(str));
