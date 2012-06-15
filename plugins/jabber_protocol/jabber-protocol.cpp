@@ -51,6 +51,7 @@
 #include "services/jabber-pep-service.h"
 #include "services/jabber-roster-service.h"
 #include "services/jabber-server-info-service.h"
+#include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
 #include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
@@ -93,6 +94,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
+
+	CurrentStreamDebugService = new XMPP::JabberStreamDebugService(this);
 
 	QStringList features;
 	features

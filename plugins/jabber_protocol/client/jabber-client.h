@@ -83,10 +83,6 @@ namespace XMPP
 		/* Someone on our contact list had a resource go offline. */
 		void slotResourceUnavailable(const Jid &, const Resource &);
 
-		/* Called from Psi: debug messages from the backend. */
-		void slotIncomingXML(const QString &msg);
-		void slotOutgoingXML(const QString &msg);
-
 	public:
 		/**
 		 * Error codes indicating problems during operation.
@@ -123,9 +119,6 @@ namespace XMPP
 		 * An existing resource has been removed.
 		 */
 		void resourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource);
-
-		void incomingXML(const QString &msg);
-		void outgoingXML(const QString &msg);
 	};
 }
 

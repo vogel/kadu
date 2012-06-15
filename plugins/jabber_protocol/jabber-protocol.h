@@ -40,6 +40,7 @@ namespace XMPP
 	class JabberClientInfoService;
 	class JabberConnectionService;
 	class JabberServerInfoService;
+	class JabberStreamDebugService;
 	class JabberSubscriptionService;
 }
 
@@ -60,6 +61,7 @@ class JabberProtocol : public Protocol
 	XMPP::JabberServerInfoService *CurrentServerInfoService;
 	XMPP::JabberConnectionService *CurrentConnectionService;
 	JabberPepService *CurrentPepService;
+	XMPP::JabberStreamDebugService *CurrentStreamDebugService;
 
 	friend class XMPP::JabberClient;
 	XMPP::JabberClient *JabberClient;
@@ -119,6 +121,7 @@ public:
 	virtual XMPP::JabberServerInfoService * serverInfoService() { return CurrentServerInfoService; }
 	virtual JabberPepService * pepService() { return CurrentPepService; }
 	virtual XMPP::JabberConnectionService * connectionService() { return CurrentConnectionService; }
+	virtual XMPP::JabberStreamDebugService * streamDebugService() { return CurrentStreamDebugService; }
 
 	JabberResourcePool *resourcePool();
 

@@ -64,10 +64,6 @@ JabberClient::JabberClient(XMPP::Client *client, QObject *parent) :
 				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
 		QObject::connect(Client, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
 				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
-		QObject::connect(Client, SIGNAL(xmlIncoming(const QString&)),
-				   this, SLOT(slotIncomingXML(const QString &)));
-		QObject::connect(Client, SIGNAL(xmlOutgoing(const QString&)),
-				   this, SLOT(slotOutgoingXML(const QString &)));
 	}
 }
 
@@ -75,26 +71,6 @@ JabberClient::~JabberClient()
 {
 	if (Client)
 		Client->close();
-}
-
-void JabberClient::slotIncomingXML(const QString &_msg)
-{
-	QString msg = _msg;
-
-	msg = msg.replace( QRegExp( "<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n");
-	msg = msg.replace( QRegExp( "<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
-
-	emit incomingXML(msg);
-}
-
-void JabberClient::slotOutgoingXML(const QString &_msg)
-{
-	QString msg = _msg;
-
-	msg = msg.replace( QRegExp( "<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n");
-	msg = msg.replace( QRegExp( "<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
-
-	emit outgoingXML(msg);
 }
 
 void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)

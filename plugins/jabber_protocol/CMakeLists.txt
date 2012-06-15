@@ -149,6 +149,7 @@ set (SOURCES
 	services/jabber-personal-info-service.cpp
 	services/jabber-roster-service.cpp
 	services/jabber-server-info-service.cpp
+	services/jabber-stream-debug-service.cpp
 	services/jabber-subscription-service.cpp
 
 	tasks/pep-get-task.cpp
@@ -219,6 +220,7 @@ set (MOC_SOURCES
 	services/jabber-personal-info-service.h
 	services/jabber-roster-service.h
 	services/jabber-server-info-service.h
+	services/jabber-stream-debug-service.h
 	services/jabber-subscription-service.h
 
 	tasks/pep-get-task.h

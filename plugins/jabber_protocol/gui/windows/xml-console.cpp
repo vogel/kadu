@@ -24,7 +24,7 @@
 #include "QtGui/QTextFrame"
 #include "QtGui/QVBoxLayout"
 
-#include "client/jabber-client.h"
+#include "services/jabber-stream-debug-service.h"
 #include "jabber-protocol.h"
 
 #include "xml-console.h"
@@ -41,8 +41,8 @@ XmlConsole::XmlConsole(Account account) :
 	{
 		createGui();
 
-		connect(protocol->client(), SIGNAL(incomingXML(const QString &)), SLOT(xmlIncomingSlot(const QString &)));
-		connect(protocol->client(), SIGNAL(outgoingXML(const QString &)), SLOT(xmlOutgoingSlot(const QString &)));
+		connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
+		connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
 	}
 	else
 		deleteLater();
