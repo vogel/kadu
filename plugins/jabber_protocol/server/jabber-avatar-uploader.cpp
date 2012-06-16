@@ -34,6 +34,17 @@
 
 #define MAX_AVATAR_DIMENSION 96
 
+QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
+{
+	QByteArray data;
+	QBuffer buffer(&data);
+	buffer.open(QIODevice::WriteOnly);
+	avatar.save(&buffer, "PNG");
+	buffer.close();
+
+	return data;
+}
+
 JabberAvatarUploader::JabberAvatarUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
 {
@@ -49,17 +60,6 @@ QImage JabberAvatarUploader::createScaledAvatar(const QImage &avatarToScale)
 		return avatarToScale;
 
 	return avatarToScale.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-}
-
-QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
-{
-	QByteArray data;
-	QBuffer buffer(&data);
-	buffer.open(QIODevice::WriteOnly);
-	avatar.save(&buffer, "PNG");
-	buffer.close();
-
-	return data;
 }
 
 void JabberAvatarUploader::uploadAvatarPEP()

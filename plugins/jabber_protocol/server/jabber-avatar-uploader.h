@@ -41,7 +41,6 @@ class JabberAvatarUploader : public QObject
 	// http://xmpp.org/extensions/xep-0153.html
 	// we dont like too big files
 	QImage createScaledAvatar(const QImage &avatarToScale);
-	QByteArray avatarData(const QImage &avatar);
 
 	void uploadAvatarPEP();
 	void uploadAvatarVCard();
@@ -51,6 +50,8 @@ private slots:
 	void avatarUploadedSlot(bool ok);
 
 public:
+	static QByteArray avatarData(const QImage &avatar);
+
 	JabberAvatarUploader(Account account, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
