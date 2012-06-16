@@ -44,7 +44,6 @@ class JabberAvatarPepUploader : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<XMPP::Client> XmppClient;
 	QWeakPointer<JabberPepService> PepService;
 
 	QImage UploadedAvatar;
@@ -61,7 +60,7 @@ private slots:
 public:
 	static JabberAvatarPepUploader * createForAccount(const Account &account, QObject *parent);
 
-	explicit JabberAvatarPepUploader(XMPP::Client *xmppClient, JabberPepService *pepService, QObject *parent);
+	explicit JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent);
 	virtual ~JabberAvatarPepUploader();
 
 	void uploadAvatar(const QImage &avatar);

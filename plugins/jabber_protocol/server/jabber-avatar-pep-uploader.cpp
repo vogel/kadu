@@ -39,11 +39,11 @@ JabberAvatarPepUploader * JabberAvatarPepUploader::createForAccount(const Accoun
 	if (!protocol)
 		return 0;
 	else
-		return new JabberAvatarPepUploader(protocol->xmppClient(), protocol->pepService(), parent);
+		return new JabberAvatarPepUploader(protocol->pepService(), parent);
 }
 
-JabberAvatarPepUploader::JabberAvatarPepUploader(XMPP::Client *xmppClient, JabberPepService *pepService, QObject *parent) :
-		QObject(parent), XmppClient(xmppClient), PepService(pepService)
+JabberAvatarPepUploader::JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent) :
+		QObject(parent), PepService(pepService)
 {
 	if (PepService)
 	{
@@ -63,7 +63,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
 
-	if (!XmppClient || !PepService)
+	if (!PepService || !PepService.data()->xmppClient())
 	{
 		emit avatarUploaded(false);
 
@@ -79,7 +79,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 		return;
 	}
 
-	QDomDocument *doc = XmppClient.data()->doc();
+	QDomDocument *doc = PepService.data()->xmppClient()->doc();
 
 	QDomElement metaElement = doc->createElement("metadata");
 	metaElement.setAttribute("xmlns", XMLNS_METADATA);
@@ -112,10 +112,10 @@ void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSub
 
 void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 {
-	if (!XmppClient || !PepService)
+	if (!PepService || !PepService.data()->xmppClient())
 		return;
 
-	QDomDocument *doc = XmppClient.data()->doc();
+	QDomDocument *doc = PepService.data()->xmppClient()->doc();
 
 	QString hash = QCA::Hash("sha1").hashToString(data);
 
@@ -130,10 +130,10 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 
 void JabberAvatarPepUploader::doRemove()
 {
-	if (!XmppClient || !PepService)
+	if (!PepService || !PepService.data()->xmppClient())
 		return;
 
-	QDomDocument *doc = XmppClient.data()->doc();
+	QDomDocument *doc = PepService.data()->xmppClient()->doc();
 
 	ItemId = "current";
 
