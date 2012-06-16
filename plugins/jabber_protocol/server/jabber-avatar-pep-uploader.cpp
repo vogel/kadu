@@ -63,7 +63,15 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
 
-	if (UploadedAvatar.isNull() || !XmppClient || !PepService) // avatar was removed
+	if (!XmppClient || !PepService)
+	{
+		emit avatarUploaded(false);
+
+		deleteLater();
+		return;
+	}
+
+	if (UploadedAvatar.isNull()) // avatar was removed
 	{
 		emit avatarUploaded(true);
 
