@@ -49,6 +49,11 @@ JabberPepService::~JabberPepService()
 {
 }
 
+XMPP::Client * JabberPepService::xmppClient() const
+{
+	return XmppClient.data();
+}
+
 void JabberPepService::setEnabled(bool enabled)
 {
 	if (!XmppClient || Enabled == enabled)

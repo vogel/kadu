@@ -63,6 +63,8 @@ public:
 	explicit JabberPepService(XMPP::JabberProtocol *protocol);
 	virtual ~JabberPepService();
 
+	XMPP::Client * xmppClient() const;
+
 	void setEnabled(bool enabled);
 	bool enabled() const { return Enabled; }
 
