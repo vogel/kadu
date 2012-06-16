@@ -1,4 +1,5 @@
-﻿+++ version 0.12.0-rc2
+﻿+++ version 0.12.0
+* gui: better preview in configuration window (Vogel)
 
 +++ version 0.12.0-rc1
 * network: #2523 fixed: try to connect from time to time even if system tells us we are offline (Vogel)
