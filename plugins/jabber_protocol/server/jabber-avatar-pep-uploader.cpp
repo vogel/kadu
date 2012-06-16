@@ -24,6 +24,7 @@
 
 #include <xmpp_client.h>
 
+#include "server/jabber-avatar-uploader.h"
 #include "services/jabber-pep-service.h"
 #include "jabber-protocol.h"
 
@@ -135,12 +136,12 @@ void JabberAvatarPepUploader::doRemove()
 	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem("current", metaDataElement));
 }
 
-void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar, const QByteArray &data)
+void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar)
 {
 	UploadedAvatar = avatar;
 
 	if (!UploadedAvatar.isNull())
-		doUpload(data);
+		doUpload(JabberAvatarUploader::avatarData(avatar));
 	else
 		doRemove();
 }

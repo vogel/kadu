@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "server/jabber-avatar-uploader.h"
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
@@ -40,9 +41,9 @@ JabberAvatarVCardUploader::~JabberAvatarVCardUploader()
 {
 }
 
-void JabberAvatarVCardUploader::uploadAvatar(const QByteArray &data)
+void JabberAvatarVCardUploader::uploadAvatar(const QImage &avatar)
 {
-	UploadedAvatarData = data;
+	UploadedAvatar = avatar;
 
 	VCardFactory::instance()->getVCard(MyAccount.id(), MyProtocol->xmppClient()->rootTask(), this, SLOT(vcardReceived()));
 }
@@ -61,7 +62,7 @@ void JabberAvatarVCardUploader::vcardReceived()
 	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
 
 	XMPP::VCard vcard = task->vcard();
-	vcard.setPhoto(UploadedAvatarData);
+	vcard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
 	VCardFactory::instance()->setVCard(MyProtocol->xmppClient()->rootTask(), jid, vcard, this, SLOT(vcardUploaded()));
 }

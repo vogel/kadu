@@ -36,7 +36,6 @@ class JabberAvatarUploader : public QObject
 
 	Account MyAccount;
 	QImage UploadingAvatar;
-	QByteArray UploadingAvatarData;
 
 	// http://xmpp.org/extensions/xep-0153.html
 	// we dont like too big files

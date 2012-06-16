@@ -69,14 +69,14 @@ void JabberAvatarUploader::uploadAvatarPEP()
 		return;
 
 	connect(pepUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(pepAvatarUploaded(bool)));
-	pepUploader->uploadAvatar(UploadingAvatar, UploadingAvatarData);
+	pepUploader->uploadAvatar(UploadingAvatar);
 }
 
 void JabberAvatarUploader::uploadAvatarVCard()
 {
 	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount, this);
 	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
-	vcardUploader->uploadAvatar(UploadingAvatarData);
+	vcardUploader->uploadAvatar(UploadingAvatar);
 }
 
 void JabberAvatarUploader::pepAvatarUploaded(bool ok)
@@ -109,7 +109,6 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 	}
 
 	UploadingAvatar = createScaledAvatar(avatar);
-	UploadingAvatarData = avatarData(UploadingAvatar);
 
 	if (protocol->pepService()->enabled())
 		uploadAvatarPEP();

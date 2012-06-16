@@ -64,7 +64,7 @@ public:
 	explicit JabberAvatarPepUploader(XMPP::Client *xmppClient, JabberPepService *pepService, QObject *parent);
 	virtual ~JabberAvatarPepUploader();
 
-	void uploadAvatar(const QImage &avatar, const QByteArray &data);
+	void uploadAvatar(const QImage &avatar);
 
 signals:
 	void avatarUploaded(bool ok);

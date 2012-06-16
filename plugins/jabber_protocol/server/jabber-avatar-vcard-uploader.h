@@ -43,7 +43,7 @@ class JabberAvatarVCardUploader : public QObject
 	Account MyAccount;
 	XMPP::JabberProtocol *MyProtocol;
 
-	QByteArray UploadedAvatarData;
+	QImage UploadedAvatar;
 
 private slots:
 	void vcardReceived();
@@ -53,7 +53,7 @@ public:
 	JabberAvatarVCardUploader(Account account, QObject *parent);
 	virtual ~JabberAvatarVCardUploader();
 
-	void uploadAvatar(const QByteArray &data);
+	void uploadAvatar(const QImage &avatar);
 
 signals:
 	void avatarUploaded(bool ok);
