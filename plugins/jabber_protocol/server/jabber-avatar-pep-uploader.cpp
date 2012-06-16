@@ -32,6 +32,11 @@
 #define XMLNS_METADATA "urn:xmpp:avatar:metadata"
 #define XMLNS_DATA "urn:xmpp:avatar:data"
 
+JabberAvatarPepUploader * JabberAvatarPepUploader::createForAccount(const Account &account, QObject *parent)
+{
+	return new JabberAvatarPepUploader(account, parent);
+}
+
 JabberAvatarPepUploader::JabberAvatarPepUploader(Account account, QObject *parent) :
 		QObject(parent), MyAccount(account)
 {

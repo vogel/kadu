@@ -64,7 +64,7 @@ QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
 
 void JabberAvatarUploader::uploadAvatarPEP()
 {
-	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(MyAccount, this);
+	JabberAvatarPepUploader *pepUploader = JabberAvatarPepUploader::createForAccount(MyAccount, this);
 	connect(pepUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(pepAvatarUploaded(bool)));
 	pepUploader->uploadAvatar(UploadingAvatar, UploadingAvatarData);
 }
