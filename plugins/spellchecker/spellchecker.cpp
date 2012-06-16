@@ -29,7 +29,10 @@
 #define ASPELL_STATIC
 #include <aspell.h>
 #elif defined(HAVE_ENCHANT)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
 #include <enchant++.h>
+ #pragma GCC diagnostic pop
 #endif
 
 #include <QtCore/QTextCodec>
@@ -350,7 +353,7 @@ bool SpellChecker::checkWord(const QString &word)
 
 	if (MyCheckers.isEmpty())
 		return true;
-	
+
 	if (!word.contains(QRegExp("\\D")))
 		isWordValid = true;
 	else
