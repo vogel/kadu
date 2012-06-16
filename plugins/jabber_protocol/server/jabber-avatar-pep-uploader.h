@@ -31,14 +31,21 @@
 
 #include "accounts/account.h"
 
-namespace XMPP { class JabberProtocol; }
+namespace XMPP
+{
+	class Client;
+
+	class JabberProtocol;
+}
+
+class JabberPepService;
 
 class JabberAvatarPepUploader : public QObject
 {
 	Q_OBJECT
 
-	Account MyAccount;
-	XMPP::JabberProtocol *MyProtocol;
+	QWeakPointer<XMPP::Client> XmppClient;
+	QWeakPointer<JabberPepService> PepService;
 
 	QImage UploadedAvatar;
 
@@ -54,7 +61,7 @@ private slots:
 public:
 	static JabberAvatarPepUploader * createForAccount(const Account &account, QObject *parent);
 
-	explicit JabberAvatarPepUploader(Account account, QObject *parent);
+	explicit JabberAvatarPepUploader(XMPP::Client *xmppClient, JabberPepService *pepService, QObject *parent);
 	virtual ~JabberAvatarPepUploader();
 
 	void uploadAvatar(const QImage &avatar, const QByteArray &data);
