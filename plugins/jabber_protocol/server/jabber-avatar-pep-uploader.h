@@ -33,13 +33,28 @@
 
 namespace XMPP
 {
-	class Client;
-
 	class JabberProtocol;
 }
 
 class JabberPepService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberAvatarPepUploader
+ * @author Rafał 'Vogel' Malinowski
+ * @short Uploads avatar to XMPP server using Pep.
+ *
+ * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
+ * XMPP::Client and JabberPepService arguments or by using static factory method createForAccount() that requires only
+ * Account argument.
+ *
+ * After creating call uploadAvatar() to send new avatar and wait for avatarUploaded() signal to be emited. This class will
+ * delete itself after emiting avatarUploaded() signal.
+ */
 class JabberAvatarPepUploader : public QObject
 {
 	Q_OBJECT
@@ -58,16 +73,56 @@ private slots:
 	void publishError(const QString &ns, const XMPP::PubSubItem &item);
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create instance with JabberPepService from given Account.
+	 * @param account account to assign this uploader to
+	 * @param parent QObject parent of new instance
+	 * @return instance with JabberPepService from given Account
+	 *
+	 * This static factory method creates new instance of JabberAvatarPepUploader using JabberPepService from
+	 * XMPP::JabberProtocol assigned to passed account. If account is invalid or does not have XMPP::JabberProtocol
+	 * assigned then null will be returned.
+	 */
 	static JabberAvatarPepUploader * createForAccount(const Account &account, QObject *parent);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create instance attached to given JabberPepService.
+	 * @param pepService instance of JabberPepService
+	 * @return instance attached to given JabberPepService
+	 */
 	explicit JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent);
 	virtual ~JabberAvatarPepUploader();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Uploads avatar to server.
+	 * @param avatar avatar to upload
+	 *
+	 * Avatar can be null. In that case, avatar will be deleted from server.
+	 * After uploading avatarUploaded() signal is emited and this instance is destroyed.
+	 *
+	 * This method can be called only once per instance. Behaviour on second call is undefined.
+	 */
 	void uploadAvatar(const QImage &avatar);
 
 signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited after upload is finished.
+	 * @param ok result of upload
+	 *
+	 * If ok is true then uploading/deleting avatar was successfull. If not, then it failed.
+	 *
+	 * After this signal is emited instance is no longer available, as this class destroys itself.
+	 */
 	void avatarUploaded(bool ok);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // JABBER_AVATAR_UPLOADER_H
