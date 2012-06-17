@@ -23,10 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <xmpp_vcard.h>
+
 #include "avatars/avatar-manager.h"
 
 #include "services/jabber-vcard-service.h"
-#include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-vcard-fetcher.h"

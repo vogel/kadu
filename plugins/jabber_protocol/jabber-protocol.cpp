@@ -55,7 +55,6 @@
 #include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
-#include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "iris-status-adapter.h"

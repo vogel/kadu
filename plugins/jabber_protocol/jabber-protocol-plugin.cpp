@@ -30,7 +30,6 @@
 #include "file-transfer/s5b-server-manager.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
-#include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
@@ -55,7 +54,6 @@ int JabberProtocolPlugin::init(bool firstLoad)
 	S5BServerManager::createInstance();
 
 	JabberIdValidator::createInstance();
-	VCardFactory::createInstance();
 
 	JabberActions::registerActions();
 	JabberProtocolMenuManager::createInstance();
@@ -92,7 +90,6 @@ void JabberProtocolPlugin::done()
 	JabberProtocolMenuManager::destroyInstance();
 	JabberActions::unregisterActions();
 
-	VCardFactory::destroyInstance();
 	JabberIdValidator::destroyInstance();
 	TrustedCertificatesManager::destroyInstance();
 

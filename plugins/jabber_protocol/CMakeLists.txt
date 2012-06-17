@@ -157,7 +157,6 @@ set (SOURCES
 	tasks/pep-retract-task.cpp
 
 	utils/jid-util.cpp
-	utils/vcard-factory.cpp
 
 	iris-status-adapter.cpp
 	jabber-account-details.cpp
@@ -227,8 +226,6 @@ set (MOC_SOURCES
 	tasks/pep-get-task.h
 	tasks/pep-publish-task.h
 	tasks/pep-retract-task.h
-
-	utils/vcard-factory.h
 
 	facebook-protocol-factory.h
 	gtalk-protocol-factory.h

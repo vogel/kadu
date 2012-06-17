@@ -20,9 +20,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy-manager.h"
+#include <QtCore/QDate>
 
-#include "utils/vcard-factory.h"
+#include <xmpp_jid.h>
+#include <xmpp_vcard.h>
+
+#include "buddies/buddy-manager.h"
 
 #include "jabber-contact-personal-info-service.h"
 #include "jabber-vcard-service.h"
