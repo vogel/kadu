@@ -110,6 +110,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentVCardService->setXmppClient(XmppClient);
 
 	CurrentContactPersonalInfoService->setVCardService(CurrentVCardService);
+	CurrentPersonalInfoService->setVCardService(CurrentVCardService);
 
 	QStringList features;
 	features

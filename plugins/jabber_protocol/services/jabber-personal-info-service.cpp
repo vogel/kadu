@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "services/jabber-vcard-service.h"
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
@@ -30,36 +31,41 @@ JabberPersonalInfoService::JabberPersonalInfoService(XMPP::JabberProtocol *proto
 {
 }
 
+JabberPersonalInfoService::~JabberPersonalInfoService()
+{
+}
+
+void JabberPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardService)
+{
+	VCardService = vCardService;
+}
+
 void JabberPersonalInfoService::fetchPersonalInfo()
 {
 	CurrentBuddy = Buddy::create();
-	if (Protocol && Protocol->isConnected() && Protocol->xmppClient()->rootTask())
-		VCardFactory::instance()->getVCard(Protocol->account().id(), Protocol->xmppClient()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	if (VCardService)
+		VCardService.data()->fetch(Protocol->account().id(), this);
 }
 
-void JabberPersonalInfoService::fetchingVCardFinished()
+void JabberPersonalInfoService::vcardFetched(bool ok, const XMPP::VCard &vcard)
 {
-	XMPP::VCard vcard;
-	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
+	if (!ok)
+		return;
 
-	if (task && task->success())
-	{
-		vcard = task->vcard();
-		CurrentBuddy.setNickName(vcard.nickName());
-		CurrentBuddy.setFirstName(vcard.fullName());
-		CurrentBuddy.setFamilyName(vcard.familyName());
-		QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
-		if (bday.isValid() && !bday.isNull())
-			CurrentBuddy.setBirthYear(bday.year());
+	CurrentBuddy.setNickName(vcard.nickName());
+	CurrentBuddy.setFirstName(vcard.fullName());
+	CurrentBuddy.setFamilyName(vcard.familyName());
+	QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
+	if (bday.isValid() && !bday.isNull())
+		CurrentBuddy.setBirthYear(bday.year());
 
-		if (!vcard.addressList().isEmpty())
-			CurrentBuddy.setCity(vcard.addressList().at(0).locality);
-		if (!vcard.emailList().isEmpty())
-			CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
-		CurrentBuddy.setWebsite(vcard.url());
+	if (!vcard.addressList().isEmpty())
+		CurrentBuddy.setCity(vcard.addressList().at(0).locality);
+	if (!vcard.emailList().isEmpty())
+		CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
+	CurrentBuddy.setWebsite(vcard.url());
 
-		emit personalInfoAvailable(CurrentBuddy);
-	}
+	emit personalInfoAvailable(CurrentBuddy);
 }
 
 void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
