@@ -126,36 +126,7 @@ void VCardFactory::saveVCard(const Jid& j, const VCard& _vcard)
 	QDomDocument doc;
 	doc.appendChild( vcard->toXml ( &doc ) );
 	out << doc.toString(4);
-
-	Jid jid = j;
-	emit vcardChanged(jid);
 }
-
-/**
- * \brief Call this, when you need a cached vCard.
- */
-const VCard* VCardFactory::vcard(const Jid &j)
-{
-	// first, try to get vCard from runtime cache
-	if (vcardDict_.contains(j.bare())) {
-		return vcardDict_[j.bare()];
-	}
-
-	// then try to load from cache on disk
-	QFile file ( KaduPaths::instance()->profilePath() + QLatin1String("vcard/") + JIDUtil::encode(j.bare()).toLower() + QLatin1String(".xml") );
-	file.open (QIODevice::ReadOnly);
-	QDomDocument doc;
-	VCard *vcard = new VCard;
-	if ( doc.setContent(&file, false) ) {
-		vcard->fromXml( doc.documentElement() );
-		checkLimit(j.bare(), vcard);
-		return vcard;
-	}
-
-	delete vcard;
-	return 0;
-}
-
 
 /**
  * \brief Call this when you need to update vCard in cache.
