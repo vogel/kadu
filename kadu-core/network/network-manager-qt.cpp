@@ -23,17 +23,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QSysInfo>
 #include <QtNetwork/QNetworkConfigurationManager>
 
 #include "network-manager-qt.h"
 
 NetworkManagerQt::NetworkManagerQt()
 {
-	ConfigurationManager = new QNetworkConfigurationManager(this);
-	HasValidCapabilities = ConfigurationManager->capabilities() & QNetworkConfigurationManager::CanStartAndStopInterfaces;
+#ifdef Q_WS_WIN
+	// Kadu bug #2591
+	if (QSysInfo::WindowsVersion < QSysInfo::WV_VISTA)
+	{
+		ConfigurationManager = 0;
+		HasValidCapabilities = false;
+	}
+	else
+#endif
+	{
+		ConfigurationManager = new QNetworkConfigurationManager(this);
+		HasValidCapabilities = ConfigurationManager->capabilities() & QNetworkConfigurationManager::CanStartAndStopInterfaces;
 
-	if (HasValidCapabilities)
-		connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
+		if (HasValidCapabilities)
+			connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
+	}
 }
 
 NetworkManagerQt::~NetworkManagerQt()
