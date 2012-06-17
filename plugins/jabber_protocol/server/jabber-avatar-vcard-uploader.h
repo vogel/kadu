@@ -35,6 +35,7 @@
 #include "accounts/account.h"
 
 #include "services/jabber-vcard-fetch-callback.h"
+#include "services/jabber-vcard-update-callback.h"
 
 namespace XMPP
 {
@@ -42,7 +43,7 @@ namespace XMPP
 	class JabberVCardService;
 }
 
-class JabberAvatarVCardUploader : public QObject, public XMPP::JabberVCardFetchCallback
+class JabberAvatarVCardUploader : public QObject, public XMPP::JabberVCardFetchCallback, public XMPP::JabberVCardUpdateCallback
 {
 	Q_OBJECT
 
@@ -54,11 +55,9 @@ class JabberAvatarVCardUploader : public QObject, public XMPP::JabberVCardFetchC
 	void done();
 	void failed();
 
-private slots:
-	void vcardUploaded();
-
 protected:
 	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vcardUpdated(bool ok);
 
 public:
 	JabberAvatarVCardUploader(const XMPP::Jid &jid, XMPP::JabberVCardService *vcardService, QObject *parent = 0);

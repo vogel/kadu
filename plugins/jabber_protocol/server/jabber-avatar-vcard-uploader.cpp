@@ -22,7 +22,6 @@
 
 #include "server/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-service.h"
-#include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-vcard-uploader.h"
@@ -77,14 +76,13 @@ void JabberAvatarVCardUploader::vcardFetched(bool ok, const XMPP::VCard &vcard)
 	XMPP::VCard updatedVCard = vcard;
 	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
-	VCardFactory::instance()->setVCard(VCardService.data()->xmppClient()->rootTask(), MyJid, updatedVCard, this, SLOT(vcardUploaded()));
+	VCardService.data()->update(MyJid, updatedVCard, this);
 }
 
-void JabberAvatarVCardUploader::vcardUploaded()
+void JabberAvatarVCardUploader::vcardUpdated(bool ok)
 {
-	XMPP::JT_VCard *task = qobject_cast<XMPP::JT_VCard *>(sender());
-	if (!task || !task->success())
-		failed();
-	else
+	if (ok)
 		done();
+	else
+		failed();
 }
