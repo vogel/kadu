@@ -29,18 +29,22 @@ namespace XMPP
 class Client;
 class Jid;
 class JT_VCard;
+class VCard;
 
 class JabberVCardFetchCallback;
+class JabberVCardUpdateCallback;
 
 class JabberVCardService : public QObject
 {
 	Q_OBJECT
 
 	QWeakPointer<XMPP::Client> XmppClient;
-	QMap<JT_VCard *, JabberVCardFetchCallback *> Callbacks;
+	QMap<JT_VCard *, JabberVCardFetchCallback *> FetchCallbacks;
+	QMap<JT_VCard *, JabberVCardUpdateCallback *> UpdateCallbacks;
 
 private slots:
 	void fetched();
+	void updated();
 
 public:
 	explicit JabberVCardService(QObject *parent = 0);
@@ -50,6 +54,7 @@ public:
 	XMPP::Client * xmppClient() const;
 
 	void fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *callback);
+	void update(const XMPP::Jid &jid, XMPP::VCard vCard, JabberVCardUpdateCallback *callback);
 
 };
 

@@ -20,6 +20,7 @@
 #include <xmpp_tasks.h>
 
 #include "services/jabber-vcard-fetch-callback.h"
+#include "services/jabber-vcard-update-callback.h"
 
 #include "jabber-vcard-service.h"
 
@@ -57,10 +58,29 @@ void JabberVCardService::fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *c
 	}
 
 	JT_VCard *task = new JT_VCard(XmppClient.data()->rootTask());
-	Callbacks.insert(task, callback);
+	FetchCallbacks.insert(task, callback);
 
 	connect(task, SIGNAL(finished()), this, SLOT(fetched()));
 	task->get(jid);
+	task->go(true);
+}
+
+void JabberVCardService::update(const Jid &jid, XMPP::VCard vCard, JabberVCardUpdateCallback *callback)
+{
+	if (!callback)
+		return;
+
+	if (!XmppClient || !XmppClient.data()->rootTask())
+	{
+		callback->vcardUpdated(false);
+		return;
+	}
+
+	JT_VCard *task = new JT_VCard(XmppClient.data()->rootTask());
+	UpdateCallbacks.insert(task, callback);
+
+	connect(task, SIGNAL(finished()), this, SLOT(updated()));
+	task->set(jid, vCard);
 	task->go(true);
 }
 
@@ -68,15 +88,30 @@ void JabberVCardService::fetched()
 {
 	JT_VCard *task = qobject_cast<JT_VCard *>(sender());
 	Q_ASSERT(task);
-	Q_ASSERT(Callbacks.contains(task));
+	Q_ASSERT(FetchCallbacks.contains(task));
 
-	JabberVCardFetchCallback *callback = Callbacks.value(task);
-	Callbacks.remove(task);
+	JabberVCardFetchCallback *callback = FetchCallbacks.value(task);
+	FetchCallbacks.remove(task);
 
 	if (task->success())
 		callback->vcardFetched(true, task->vcard());
 	else
 		callback->vcardFetched(false, VCard());
+}
+
+void JabberVCardService::updated()
+{
+	JT_VCard *task = qobject_cast<JT_VCard *>(sender());
+	Q_ASSERT(task);
+	Q_ASSERT(UpdateCallbacks.contains(task));
+
+	JabberVCardUpdateCallback *callback = UpdateCallbacks.value(task);
+	UpdateCallbacks.remove(task);
+
+	if (task->success())
+		callback->vcardUpdated(true);
+	else
+		callback->vcardUpdated(false);
 }
 
 }
