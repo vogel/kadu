@@ -27,6 +27,18 @@ class VCard;
 
 class JabberVCardService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberVCardFetchCallback
+ * @author Rafał 'Vogel' Malinowski
+ * @short Callback object that is notified about finishing fetching a vcard from JabberVCardService.
+ *
+ * Override virtual vcardFetched method to get informed about finishing of fetching VCard action.
+ */
 class JabberVCardFetchCallback
 {
 	friend class JabberVCardService;
@@ -35,9 +47,19 @@ public:
 	virtual ~JabberVCardFetchCallback() {}
 
 protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Callback method called when fetching of VCard data finished.
+	 * @param ok true if fetching was successfull
+	 * @param vcard fetched data
+	 */
 	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 }
 

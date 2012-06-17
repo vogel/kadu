@@ -34,6 +34,22 @@ class VCard;
 class JabberVCardFetchCallback;
 class JabberVCardUpdateCallback;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberVCardService
+ * @author Rafał 'Vogel' Malinowski
+ * @short Service for feteching and updating VCard data.
+ *
+ * This service allows feteching and updating VCard data. Each fetch and update action require a callback object of
+ * JabberVCardFetchCallback or JabberVCardUpdateCallback type. Do not destroy these objects before callback method
+ * is executed.
+ *
+ * This service requres XMPP::Client instance for connecting with server. Use setXmppClient() method to provide one.
+ */
 class JabberVCardService : public QObject
 {
 	Q_OBJECT
@@ -47,16 +63,63 @@ private slots:
 	void updated();
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create new instance of JabberVCardService.
+	 * @param parent QObject parent
+	 */
 	explicit JabberVCardService(QObject *parent = 0);
 	virtual ~JabberVCardService();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Sets instance of XMPP::Client to use by this serivce.
+	 * @param xmppClient instance of XMPP::Client to be used by this service
+	 *
+	 * There is no need to call setXmppClient(0) as this service is aware of object destroying.
+	 * If no XMPP::Client is available all actions will fail.
+	 */
 	void setXmppClient(XMPP::Client *xmppClient);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns XMPP::Client instance used by this service.
+	 * @return XMPP::Client instance used by this service
+	 */
 	XMPP::Client * xmppClient() const;
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Fetch VCard data for given jid.
+	 * @param jid jid to fetch data for
+	 * @param callback callback object will receive finished notification
+	 *
+	 * This method will do nothing if no callback object is provided. If no valid XMPP::Client is availabe
+	 * then this emthod will fail immediately and notify callback object.
+	 *
+	 * In other cases a new task will be send to XMPP server and notification will be issued after it is finished.
+	 */
 	void fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *callback);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Update VCard data for given jid.
+	 * @param jid jid to update data for
+	 * @param vCard new VCard data for given jid
+	 * @param callback callback object will receive finished notification
+	 *
+	 * This method will do nothing if no callback object is provided. If no valid XMPP::Client is availabe
+	 * then this emthod will fail immediately and notify callback object.
+	 *
+	 * In other cases a new task will be send to XMPP server and notification will be issued after it is finished.
+	 */
 	void update(const XMPP::Jid &jid, XMPP::VCard vCard, JabberVCardUpdateCallback *callback);
 
 };
+
+/**
+ * @}
+ */
 
 }
 

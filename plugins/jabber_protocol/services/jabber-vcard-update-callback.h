@@ -23,10 +23,20 @@
 namespace XMPP
 {
 
-class VCard;
-
 class JabberVCardService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberVCardUpdateCallback
+ * @author Rafał 'Vogel' Malinowski
+ * @short Callback object that is notified about finishing updateing a vcard from JabberVCardService.
+ *
+ * Override virtual vcardUpdated method to get informed about finishing of updating VCard action.
+ */
 class JabberVCardUpdateCallback
 {
 	friend class JabberVCardService;
@@ -35,9 +45,18 @@ public:
 	virtual ~JabberVCardUpdateCallback() {}
 
 protected:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Callback method called when updating of VCard data finished.
+	 * @param ok true if updating was successfull
+	 */
 	virtual void vcardUpdated(bool ok) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 }
 
