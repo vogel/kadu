@@ -23,43 +23,48 @@
 #include "buddies/buddy-manager.h"
 
 #include "utils/vcard-factory.h"
-#include "jabber-protocol.h"
 
 #include "jabber-contact-personal-info-service.h"
+#include "jabber-vcard-service.h"
 
-JabberContactPersonalInfoService::JabberContactPersonalInfoService(XMPP::JabberProtocol *protocol) :
-		ContactPersonalInfoService(protocol), Protocol(protocol)
+JabberContactPersonalInfoService::JabberContactPersonalInfoService(QObject *parent) :
+		ContactPersonalInfoService(parent)
 {
+}
+
+JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
+{
+}
+
+void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService *vcardService)
+{
+	VCardService = vcardService;
 }
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
 	CurrentBuddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	if (Protocol && Protocol->xmppClient() && Protocol->xmppClient()->rootTask())
-		VCardFactory::instance()->getVCard(contact.id(), Protocol->xmppClient()->rootTask(), this, SLOT(fetchingVCardFinished()));
+	if (VCardService)
+		VCardService.data()->fetch(contact.id(), this);
 }
 
-void JabberContactPersonalInfoService::fetchingVCardFinished()
+void JabberContactPersonalInfoService::vcardFetched(bool ok, const XMPP::VCard &vcard)
 {
-	XMPP::VCard vcard;
-	XMPP::JT_VCard *task = (XMPP::JT_VCard *)sender();
+	if (!ok)
+		return;
 
-	if (task && task->success())
-	{
-		vcard = task->vcard();
-		CurrentBuddy.setNickName(vcard.nickName());
-		CurrentBuddy.setFirstName(vcard.fullName());
-		CurrentBuddy.setFamilyName(vcard.familyName());
-		QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
-		if (bday.isValid() && !bday.isNull())
-			CurrentBuddy.setBirthYear(bday.year());
+	CurrentBuddy.setNickName(vcard.nickName());
+	CurrentBuddy.setFirstName(vcard.fullName());
+	CurrentBuddy.setFamilyName(vcard.familyName());
+	QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
+	if (bday.isValid() && !bday.isNull())
+		CurrentBuddy.setBirthYear(bday.year());
 
-		if (!vcard.addressList().isEmpty())
-			CurrentBuddy.setCity(vcard.addressList().at(0).locality);
-		if (!vcard.emailList().isEmpty())
-			CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
-		CurrentBuddy.setWebsite(vcard.url());
+	if (!vcard.addressList().isEmpty())
+		CurrentBuddy.setCity(vcard.addressList().at(0).locality);
+	if (!vcard.emailList().isEmpty())
+		CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
+	CurrentBuddy.setWebsite(vcard.url());
 
-		emit personalInfoAvailable(CurrentBuddy);
-	}
+	emit personalInfoAvailable(CurrentBuddy);
 }

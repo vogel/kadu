@@ -109,6 +109,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentVCardService = new XMPP::JabberVCardService(this);
 	CurrentVCardService->setXmppClient(XmppClient);
 
+	CurrentContactPersonalInfoService->setVCardService(CurrentVCardService);
+
 	QStringList features;
 	features
 			<< "http://jabber.org/protocol/bytestreams"	// file transfer
