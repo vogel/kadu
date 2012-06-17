@@ -95,17 +95,6 @@ void VCardFactory::checkLimit(QString jid, VCard *vcard)
 	vcardList_.push_front(jid);
 }
 
-
-void VCardFactory::taskFinished()
-{
-	JT_VCard *task = (JT_VCard *)sender();
-	if ( task->success() ) {
-		Jid j = task->jid();
-
-		saveVCard(j, task->vcard());
-	}
-}
-
 void VCardFactory::saveVCard(const Jid& j, const VCard& _vcard)
 {
 	VCard *vcard = new VCard;
@@ -158,20 +147,6 @@ void VCardFactory::updateVCardFinished()
 	if (jtVCard) {
 		jtVCard->deleteLater();
 	}
-}
-
-/**
- * \brief Call this when you need to retrieve fresh vCard from server (and store it in cache afterwards)
- */
-JT_VCard* VCardFactory::getVCard(const Jid &jid, Task *rootTask, const QObject *obj, const char *slot, bool cacheVCard)
-{
-	JT_VCard *task = new JT_VCard( rootTask );
-	if ( cacheVCard )
-		task->connect(task, SIGNAL(finished()), this, SLOT(taskFinished()));
-	task->connect(task, SIGNAL(finished()), obj, slot);
-	task->get(Jid(jid.full()));
-	task->go(true);
-	return task;
 }
 
 VCardFactory* VCardFactory::instance_ = NULL;
