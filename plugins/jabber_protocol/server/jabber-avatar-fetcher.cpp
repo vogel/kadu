@@ -43,7 +43,15 @@ void JabberAvatarFetcher::fetchAvatarPEP()
 
 void JabberAvatarFetcher::fetchAvatarVCard()
 {
-	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, this);
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (!protocol || !protocol->vcardService())
+	{
+		emit avatarFetched(MyContact, false);
+		deleteLater();
+		return;
+	}
+
+	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, protocol->vcardService(), this);
 	connect(vcardFetcher, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(avatarFetchedSlot(Contact,bool)));
 	vcardFetcher->fetchAvatar();
 }

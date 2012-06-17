@@ -25,13 +25,14 @@
 
 #include "avatars/avatar-manager.h"
 
+#include "services/jabber-vcard-service.h"
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-vcard-fetcher.h"
 
-JabberAvatarVCardFetcher::JabberAvatarVCardFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact)
+JabberAvatarVCardFetcher::JabberAvatarVCardFetcher(Contact contact, XMPP::JabberVCardService *vCardService, QObject *parent) :
+		QObject(parent), MyContact(contact), VCardService(vCardService)
 {
 }
 
@@ -42,11 +43,13 @@ JabberAvatarVCardFetcher::~JabberAvatarVCardFetcher()
 void JabberAvatarVCardFetcher::done()
 {
 	emit avatarFetched(MyContact, true);
+	deleteLater();
 }
 
 void JabberAvatarVCardFetcher::failed()
 {
 	emit avatarFetched(MyContact, false);
+	deleteLater();
 }
 
 void JabberAvatarVCardFetcher::fetchAvatar()
@@ -55,31 +58,30 @@ void JabberAvatarVCardFetcher::fetchAvatar()
 	if (!jabberProtocol || !jabberProtocol->isConnected())
 	{
 		failed();
-		deleteLater();
 		return;
 	}
 
-	VCardFactory::instance()->getVCard(MyContact.id(), jabberProtocol->xmppClient()->rootTask(), this, SLOT(vcardReceived()));
-}
-
-void JabberAvatarVCardFetcher::vcardReceived()
-{
-	const XMPP::VCard *vcard = VCardFactory::instance()->vcard(MyContact.id());
-
-	if (vcard)
-	{
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-
-		QPixmap pixmap;
-		pixmap.loadFromData(vcard->photo());
-
-		contactAvatar.setPixmap(pixmap);
-		done();
-	}
+	if (VCardService)
+		VCardService.data()->fetch(MyContact.id(), this);
 	else
 		failed();
+}
 
-	deleteLater();
+void JabberAvatarVCardFetcher::vcardFetched(bool ok, const XMPP::VCard &vcard)
+{
+	if (!ok)
+	{
+		failed();
+		return;
+	}
+
+	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+
+	QPixmap pixmap;
+	pixmap.loadFromData(vcard.photo());
+
+	contactAvatar.setPixmap(pixmap);
+	done();
 }

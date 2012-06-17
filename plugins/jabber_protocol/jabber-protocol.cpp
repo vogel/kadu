@@ -54,6 +54,7 @@
 #include "services/jabber-server-info-service.h"
 #include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
+#include "services/jabber-vcard-service.h"
 #include "utils/vcard-factory.h"
 #include "facebook-protocol-factory.h"
 #include "gtalk-protocol-factory.h"
@@ -104,6 +105,9 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
 
 	CurrentStreamDebugService = new XMPP::JabberStreamDebugService(this);
+
+	CurrentVCardService = new XMPP::JabberVCardService(this);
+	CurrentVCardService->setXmppClient(XmppClient);
 
 	QStringList features;
 	features

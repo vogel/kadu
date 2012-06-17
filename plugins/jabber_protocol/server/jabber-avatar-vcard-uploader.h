@@ -34,23 +34,34 @@
 
 #include "accounts/account.h"
 
-namespace XMPP { class JabberProtocol; }
+#include "services/jabber-vcard-fetch-callback.h"
 
-class JabberAvatarVCardUploader : public QObject
+namespace XMPP
+{
+	class JabberProtocol;
+	class JabberVCardService;
+}
+
+class JabberAvatarVCardUploader : public QObject, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
 
-	Account MyAccount;
-	XMPP::JabberProtocol *MyProtocol;
+	XMPP::Jid MyJid;
+	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	QImage UploadedAvatar;
 
+	void done();
+	void failed();
+
 private slots:
-	void vcardReceived();
 	void vcardUploaded();
 
+protected:
+	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+
 public:
-	JabberAvatarVCardUploader(Account account, QObject *parent);
+	JabberAvatarVCardUploader(const XMPP::Jid &jid, XMPP::JabberVCardService *vcardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardUploader();
 
 	void uploadAvatar(const QImage &avatar);

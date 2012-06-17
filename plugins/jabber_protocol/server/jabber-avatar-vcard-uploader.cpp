@@ -21,6 +21,7 @@
  */
 
 #include "server/jabber-avatar-uploader.h"
+#include "services/jabber-vcard-service.h"
 #include "utils/vcard-factory.h"
 #include "jabber-protocol.h"
 
@@ -31,55 +32,59 @@
 #define NS_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 #define MAX_AVATAR_DIMENSION 96
 
-JabberAvatarVCardUploader::JabberAvatarVCardUploader(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+JabberAvatarVCardUploader::JabberAvatarVCardUploader(const XMPP::Jid &jid, XMPP::JabberVCardService *vcardService, QObject *parent) :
+		QObject(parent), MyJid(jid), VCardService(vcardService)
 {
-	MyProtocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
 }
 
 JabberAvatarVCardUploader::~JabberAvatarVCardUploader()
 {
 }
 
+void JabberAvatarVCardUploader::done()
+{
+	emit avatarUploaded(true);
+	deleteLater();
+}
+
+void JabberAvatarVCardUploader::failed()
+{
+	emit avatarUploaded(false);
+	deleteLater();
+}
+
 void JabberAvatarVCardUploader::uploadAvatar(const QImage &avatar)
 {
 	UploadedAvatar = avatar;
 
-	VCardFactory::instance()->getVCard(MyAccount.id(), MyProtocol->xmppClient()->rootTask(), this, SLOT(vcardReceived()));
-}
-
-void JabberAvatarVCardUploader::vcardReceived()
-{
-	XMPP::JT_VCard *task = qobject_cast<XMPP::JT_VCard *>(sender());
-
-	if (!task || !task->success())
+	if (!VCardService)
 	{
-		emit avatarUploaded(false);
-		deleteLater();
+		failed();
 		return;
 	}
 
-	XMPP::Jid jid = XMPP::Jid(MyAccount.id());
+	VCardService.data()->fetch(MyJid, this);
+}
 
-	XMPP::VCard vcard = task->vcard();
-	vcard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
+void JabberAvatarVCardUploader::vcardFetched(bool ok, const XMPP::VCard &vcard)
+{
+	if (!ok || !VCardService || !VCardService.data()->xmppClient())
+	{
+		failed();
+		return;
+	}
 
-	VCardFactory::instance()->setVCard(MyProtocol->xmppClient()->rootTask(), jid, vcard, this, SLOT(vcardUploaded()));
+	XMPP::VCard updatedVCard = vcard;
+	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
+
+	VCardFactory::instance()->setVCard(VCardService.data()->xmppClient()->rootTask(), MyJid, updatedVCard, this, SLOT(vcardUploaded()));
 }
 
 void JabberAvatarVCardUploader::vcardUploaded()
 {
 	XMPP::JT_VCard *task = qobject_cast<XMPP::JT_VCard *>(sender());
 	if (!task || !task->success())
-	{
-		emit avatarUploaded(false);
-		deleteLater();
-		return;
-	}
-
-
-	emit avatarUploaded(true);
-	deleteLater();
-
-	printf("vcard uploaded\n");
+		failed();
+	else
+		done();
 }

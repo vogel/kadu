@@ -74,7 +74,15 @@ void JabberAvatarUploader::uploadAvatarPEP()
 
 void JabberAvatarUploader::uploadAvatarVCard()
 {
-	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount, this);
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
+	if (!protocol || !protocol->vcardService())
+	{
+		deleteLater();
+		emit avatarUploaded(false, UploadingAvatar);
+		return;
+	}
+
+	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount.id(), protocol->vcardService(), this);
 	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
 	vcardUploader->uploadAvatar(UploadingAvatar);
 }

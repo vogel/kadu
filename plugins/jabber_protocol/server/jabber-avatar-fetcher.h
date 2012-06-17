@@ -44,7 +44,7 @@ private slots:
 	void avatarFetchedSlot(Contact contact, bool ok);
 
 public:
-	JabberAvatarFetcher(Contact contact, QObject *parent );
+	JabberAvatarFetcher(Contact contact, QObject *parent);
 	void fetchAvatar();
 
 signals:

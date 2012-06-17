@@ -27,22 +27,32 @@
 #ifndef JABBER_AVATAR_VCARD_FETCHER_H
 #define JABBER_AVATAR_VCARD_FETCHER_H
 
+#include "services/jabber-vcard-fetch-callback.h"
+
 #include "contacts/contact.h"
 
-class JabberAvatarVCardFetcher : public QObject
+namespace XMPP
+{
+	class VCard;
+
+	class JabberVCardService;
+}
+
+class JabberAvatarVCardFetcher : public QObject, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
 
 	Contact MyContact;
+	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	void done();
 	void failed();
 
-private slots:
-	void vcardReceived();
+protected:
+	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
 
 public:
-	JabberAvatarVCardFetcher(Contact contact, QObject *parent);
+	explicit JabberAvatarVCardFetcher(Contact contact, XMPP::JabberVCardService *vCardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardFetcher();
 
 	void fetchAvatar();
