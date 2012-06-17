@@ -48,8 +48,8 @@ class GaduPersonalInfoService : public PersonalInfoService
 public:
 	GaduPersonalInfoService(GaduProtocol *protocol);
 
-	virtual void fetchPersonalInfo();
-	virtual void updatePersonalInfo(Buddy buddy);
+	virtual void fetchPersonalInfo(const QString &id);
+	virtual void updatePersonalInfo(const QString &id, Buddy buddy);
 
 };
 

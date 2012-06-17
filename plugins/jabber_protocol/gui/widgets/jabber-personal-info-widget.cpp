@@ -32,7 +32,7 @@
 #include "jabber-personal-info-widget.h"
 
 JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), MyBuddy(Buddy::create())
+		QWidget(parent), Id(account.id()), MyBuddy(Buddy::create())
 {
 	createGui();
 	fillForm();
@@ -45,7 +45,7 @@ JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* par
 		return;
 
 	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
-	Service->fetchPersonalInfo();
+	Service->fetchPersonalInfo(Id);
 }
 
 JabberPersonalInfoWidget::~JabberPersonalInfoWidget()
@@ -127,7 +127,7 @@ void JabberPersonalInfoWidget::apply()
 	buddy.setEmail((*Email).text());
 	buddy.setWebsite((*Website).text());
 
-	Service->updatePersonalInfo(buddy);
+	Service->updatePersonalInfo(Id, buddy);
 	MyBuddy = buddy;
 }
 

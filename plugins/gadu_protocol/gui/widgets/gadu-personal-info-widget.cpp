@@ -32,7 +32,7 @@
 #include "gadu-personal-info-widget.h"
 
 GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), MyBuddy(Buddy::create())
+		QWidget(parent), Id(account.id()), MyBuddy(Buddy::create())
 {
 	createGui();
 	fillForm();
@@ -45,7 +45,7 @@ GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent)
 		return;
 
 	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
-	Service->fetchPersonalInfo();
+	Service->fetchPersonalInfo(Id);
 }
 
 GaduPersonalInfoWidget::~GaduPersonalInfoWidget()
@@ -138,7 +138,7 @@ void GaduPersonalInfoWidget::apply()
 	buddy.setFamilyCity((*FamilyCity).text());
 	buddy.setGender((BuddyGender)Sex->currentIndex());
 
-	Service->updatePersonalInfo(buddy);
+	Service->updatePersonalInfo(Id, buddy);
 	MyBuddy = buddy;
 }
 

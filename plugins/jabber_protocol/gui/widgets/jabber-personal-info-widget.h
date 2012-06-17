@@ -42,6 +42,7 @@ class JabberPersonalInfoWidget : public QWidget
 	Q_OBJECT
 
 	PersonalInfoService *Service;
+	QString Id;
 	Buddy MyBuddy;
 
 	QLineEdit *FullName;

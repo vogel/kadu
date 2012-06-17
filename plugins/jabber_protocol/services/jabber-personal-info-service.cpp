@@ -26,8 +26,8 @@
 
 #include "jabber-personal-info-service.h"
 
-JabberPersonalInfoService::JabberPersonalInfoService(XMPP::JabberProtocol *protocol) :
-		PersonalInfoService(protocol), Protocol(protocol)
+JabberPersonalInfoService::JabberPersonalInfoService(QObject *parent) :
+		PersonalInfoService(parent)
 {
 }
 
@@ -40,11 +40,11 @@ void JabberPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardS
 	VCardService = vCardService;
 }
 
-void JabberPersonalInfoService::fetchPersonalInfo()
+void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
 	CurrentBuddy = Buddy::create();
 	if (VCardService)
-		VCardService.data()->fetch(Protocol->account().id(), this);
+		VCardService.data()->fetch(id, this);
 }
 
 void JabberPersonalInfoService::vcardFetched(bool ok, const XMPP::VCard &vcard)
@@ -68,14 +68,17 @@ void JabberPersonalInfoService::vcardFetched(bool ok, const XMPP::VCard &vcard)
 	emit personalInfoAvailable(CurrentBuddy);
 }
 
-void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
+void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
-	if (!Protocol || !Protocol->xmppClient() || !Protocol->xmppClient()->rootTask())
+	if (!VCardService)
+	{
+		emit personalInfoUpdated(false);
 		return;
+	}
 
 	CurrentBuddy = buddy;
 
-	XMPP::Jid jid = XMPP::Jid(Protocol->account().id());
+	XMPP::Jid jid = XMPP::Jid(id);
 	XMPP::VCard vcard;
 	vcard.setFullName(CurrentBuddy.firstName());
 	vcard.setNickName(CurrentBuddy.nickName());
@@ -98,11 +101,10 @@ void JabberPersonalInfoService::updatePersonalInfo(Buddy buddy)
 
 	vcard.setUrl(CurrentBuddy.website());
 
-	VCardFactory::instance()->setVCard(Protocol->xmppClient()->rootTask(), jid, vcard, this, SLOT(uploadingVCardFinished()));
+	VCardService.data()->update(jid, vcard, this);
 }
 
-void JabberPersonalInfoService::uploadingVCardFinished()
+void JabberPersonalInfoService::vcardUpdated(bool ok)
 {
-	XMPP::JT_VCard *VCardHandler = static_cast<XMPP::JT_VCard *>(sender());
-	emit personalInfoUpdated(VCardHandler->success());
+	emit personalInfoUpdated(ok);
 }

@@ -28,6 +28,7 @@
 #include "protocols/services/personal-info-service.h"
 
 #include "services/jabber-vcard-fetch-callback.h"
+#include "services/jabber-vcard-update-callback.h"
 
 namespace XMPP
 {
@@ -35,28 +36,25 @@ namespace XMPP
 	class JabberVCardService;
 }
 
-class JabberPersonalInfoService : public PersonalInfoService, public XMPP::JabberVCardFetchCallback
+class JabberPersonalInfoService : public PersonalInfoService, public XMPP::JabberVCardFetchCallback, public XMPP::JabberVCardUpdateCallback
 {
 	Q_OBJECT
 
-	XMPP::JabberProtocol *Protocol;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 	Buddy CurrentBuddy;
 
 protected:
 	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vcardUpdated(bool ok);
 
 public:
-	explicit JabberPersonalInfoService(XMPP::JabberProtocol *protocol);
+	explicit JabberPersonalInfoService(QObject *parent = 0);
 	virtual ~JabberPersonalInfoService();
 
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
-	virtual void fetchPersonalInfo();
-	virtual void updatePersonalInfo(Buddy buddy);
-
-private slots:
-	void uploadingVCardFinished();
+	virtual void fetchPersonalInfo(const QString &id);
+	virtual void updatePersonalInfo(const QString &id, Buddy buddy);
 
 };
 

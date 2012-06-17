@@ -69,8 +69,10 @@ void GaduPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
 	emit personalInfoUpdated(true);
 }
 
-void GaduPersonalInfoService::fetchPersonalInfo()
+void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
+	Q_UNUSED(id)
+
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
 	Protocol->disableSocketNotifiers();
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
@@ -78,8 +80,10 @@ void GaduPersonalInfoService::fetchPersonalInfo()
 	//gg_pubdir50_free(req);
 }
 
-void GaduPersonalInfoService::updatePersonalInfo(Buddy buddy)
+void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
+	Q_UNUSED(id)
+
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
 	if (!buddy.firstName().isEmpty())
