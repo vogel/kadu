@@ -51,23 +51,23 @@ void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 		VCardService.data()->fetch(contact.id(), this);
 }
 
-void JabberContactPersonalInfoService::vcardFetched(bool ok, const XMPP::VCard &vcard)
+void JabberContactPersonalInfoService::vCardFetched(bool ok, const XMPP::VCard &vCard)
 {
 	if (!ok)
 		return;
 
-	CurrentBuddy.setNickName(vcard.nickName());
-	CurrentBuddy.setFirstName(vcard.fullName());
-	CurrentBuddy.setFamilyName(vcard.familyName());
-	QDate bday = QDate::fromString(vcard.bdayStr(), "yyyy-MM-dd");
+	CurrentBuddy.setNickName(vCard.nickName());
+	CurrentBuddy.setFirstName(vCard.fullName());
+	CurrentBuddy.setFamilyName(vCard.familyName());
+	QDate bday = QDate::fromString(vCard.bdayStr(), "yyyy-MM-dd");
 	if (bday.isValid() && !bday.isNull())
 		CurrentBuddy.setBirthYear(bday.year());
 
-	if (!vcard.addressList().isEmpty())
-		CurrentBuddy.setCity(vcard.addressList().at(0).locality);
-	if (!vcard.emailList().isEmpty())
-		CurrentBuddy.setEmail(vcard.emailList().at(0).userid);
-	CurrentBuddy.setWebsite(vcard.url());
+	if (!vCard.addressList().isEmpty())
+		CurrentBuddy.setCity(vCard.addressList().at(0).locality);
+	if (!vCard.emailList().isEmpty())
+		CurrentBuddy.setEmail(vCard.emailList().at(0).userid);
+	CurrentBuddy.setWebsite(vCard.url());
 
 	emit personalInfoAvailable(CurrentBuddy);
 }

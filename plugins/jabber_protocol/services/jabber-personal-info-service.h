@@ -44,7 +44,7 @@ class JabberPersonalInfoService : public PersonalInfoService, public XMPP::Jabbe
 	Buddy CurrentBuddy;
 
 protected:
-	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 	virtual void vcardUpdated(bool ok);
 
 public:

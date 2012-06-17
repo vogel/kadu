@@ -67,7 +67,7 @@ void JabberAvatarVCardUploader::uploadAvatar(const QImage &avatar)
 	VCardService.data()->fetch(MyJid, this);
 }
 
-void JabberAvatarVCardUploader::vcardFetched(bool ok, const XMPP::VCard &vcard)
+void JabberAvatarVCardUploader::vCardFetched(bool ok, const XMPP::VCard &vCard)
 {
 	if (!ok || !VCardService || !VCardService.data()->xmppClient())
 	{
@@ -75,7 +75,7 @@ void JabberAvatarVCardUploader::vcardFetched(bool ok, const XMPP::VCard &vcard)
 		return;
 	}
 
-	XMPP::VCard updatedVCard = vcard;
+	XMPP::VCard updatedVCard = vCard;
 	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
 	VCardService.data()->update(MyJid, updatedVCard, this);

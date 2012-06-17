@@ -53,7 +53,7 @@ protected:
 	 * @param ok true if fetching was successfull
 	 * @param vcard fetched data
 	 */
-	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard) = 0;
+	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard) = 0;
 
 };
 

@@ -39,7 +39,7 @@ class JabberContactPersonalInfoService : public ContactPersonalInfoService, publ
 	Buddy CurrentBuddy;
 
 protected:
-	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 
 public:
 	explicit JabberContactPersonalInfoService(QObject *parent = 0);

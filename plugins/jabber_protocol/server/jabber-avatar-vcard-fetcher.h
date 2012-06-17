@@ -49,7 +49,7 @@ class JabberAvatarVCardFetcher : public QObject, public XMPP::JabberVCardFetchCa
 	void failed();
 
 protected:
-	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 
 public:
 	explicit JabberAvatarVCardFetcher(Contact contact, XMPP::JabberVCardService *vCardService, QObject *parent = 0);

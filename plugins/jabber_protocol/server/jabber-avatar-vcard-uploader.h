@@ -56,7 +56,7 @@ class JabberAvatarVCardUploader : public QObject, public XMPP::JabberVCardFetchC
 	void failed();
 
 protected:
-	virtual void vcardFetched(bool ok, const XMPP::VCard &vcard);
+	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 	virtual void vcardUpdated(bool ok);
 
 public:

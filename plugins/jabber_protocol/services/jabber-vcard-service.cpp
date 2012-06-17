@@ -53,7 +53,7 @@ void JabberVCardService::fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *c
 
 	if (!XmppClient || !XmppClient.data()->rootTask())
 	{
-		callback->vcardFetched(false, VCard());
+		callback->vCardFetched(false, VCard());
 		return;
 	}
 
@@ -94,9 +94,9 @@ void JabberVCardService::fetched()
 	FetchCallbacks.remove(task);
 
 	if (task->success())
-		callback->vcardFetched(true, task->vcard());
+		callback->vCardFetched(true, task->vcard());
 	else
-		callback->vcardFetched(false, VCard());
+		callback->vCardFetched(false, VCard());
 }
 
 void JabberVCardService::updated()

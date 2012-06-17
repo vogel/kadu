@@ -68,7 +68,7 @@ void JabberAvatarVCardFetcher::fetchAvatar()
 		failed();
 }
 
-void JabberAvatarVCardFetcher::vcardFetched(bool ok, const XMPP::VCard &vcard)
+void JabberAvatarVCardFetcher::vCardFetched(bool ok, const XMPP::VCard &vCard)
 {
 	if (!ok)
 	{
@@ -81,7 +81,7 @@ void JabberAvatarVCardFetcher::vcardFetched(bool ok, const XMPP::VCard &vcard)
 	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 
 	QPixmap pixmap;
-	pixmap.loadFromData(vcard.photo());
+	pixmap.loadFromData(vCard.photo());
 
 	contactAvatar.setPixmap(pixmap);
 	done();
