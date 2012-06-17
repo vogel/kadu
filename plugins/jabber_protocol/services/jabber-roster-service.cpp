@@ -255,7 +255,7 @@ void JabberRosterService::markContactsForDeletion()
 		RosterTaskType rosterTaskType = taskType(contact.id());
 
 		if (rosterEntry && (RosterEntrySynchronized == rosterEntry->state())
-				&& (RosterTaskNone == rosterTaskType && RosterTaskDelete == rosterTaskType))
+				&& (RosterTaskNone == rosterTaskType || RosterTaskDelete == rosterTaskType))
 			rosterEntry->setRemotelyDeleted(true);
 	}
 }
