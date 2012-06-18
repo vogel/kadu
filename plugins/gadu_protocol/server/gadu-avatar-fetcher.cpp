@@ -41,11 +41,13 @@ GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
 void GaduAvatarFetcher::done()
 {
 	emit avatarFetched(true, MyContact);
+	deleteLater();
 }
 
 void GaduAvatarFetcher::failed()
 {
 	emit avatarFetched(false, MyContact);
+	deleteLater();
 }
 
 void GaduAvatarFetcher::fetchAvatar()
@@ -61,14 +63,12 @@ void GaduAvatarFetcher::requestFinished()
 	if (redirect.isNull())
 	{
 		parseReply();
-		deleteLater();
 		return;
 	}
 
 	if (RedirectCount > 5)
 	{
-		done();
-		deleteLater();
+		failed();
 		return;
 	}
 
