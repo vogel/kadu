@@ -28,6 +28,7 @@
 #define JABBER_AVATAR_PEP_FETCHER_H
 
 #include <QtCore/QWeakPointer>
+#include <QtGui/QPixmap>
 
 #include "contacts/contact.h"
 
@@ -47,7 +48,7 @@ class JabberAvatarPepFetcher : public QObject
 	Contact MyContact;
 	QString AvatarId;
 
-	void done();
+	void done(QPixmap avatar);
 	void failed();
 
 private slots:
@@ -62,7 +63,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 
 };
 

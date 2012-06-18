@@ -27,6 +27,8 @@
 #ifndef JABBER_AVATAR_VCARD_FETCHER_H
 #define JABBER_AVATAR_VCARD_FETCHER_H
 
+#include <QtGui/QPixmap>
+
 #include "services/jabber-vcard-fetch-callback.h"
 
 #include "contacts/contact.h"
@@ -45,7 +47,7 @@ class JabberAvatarVCardFetcher : public QObject, public XMPP::JabberVCardFetchCa
 	Contact MyContact;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
-	void done();
+	void done(QPixmap avatar);
 	void failed();
 
 protected:
@@ -58,7 +60,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 
 };
 

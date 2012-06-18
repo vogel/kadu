@@ -34,18 +34,23 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
+void JabberAvatarFetcher::failed()
+{
+	emit avatarFetched(false, QPixmap(), MyContact);
+	deleteLater();
+}
+
 void JabberAvatarFetcher::fetchAvatarPEP()
 {
 	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!protocol || !protocol->pepService())
 	{
-		emit avatarFetched(false, MyContact);
-		deleteLater();
+		failed();
 		return;
 	}
 
 	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, protocol->pepService(), this);
-	connect(pepFetcher, SIGNAL(avatarFetched(bool,Contact)), this, SLOT(pepAvatarFetched(bool,Contact)));
+	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)), this, SLOT(pepAvatarFetched(bool,QPixmap,Contact)));
 	pepFetcher->fetchAvatar();
 }
 
@@ -54,21 +59,20 @@ void JabberAvatarFetcher::fetchAvatarVCard()
 	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!protocol || !protocol->vcardService())
 	{
-		emit avatarFetched(false, MyContact);
-		deleteLater();
+		failed();
 		return;
 	}
 
 	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, protocol->vcardService(), this);
-	connect(vcardFetcher, SIGNAL(avatarFetched(bool,Contact)), this, SLOT(avatarFetchedSlot(bool.Contact)));
+	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)), this, SLOT(avatarFetchedSlot(bool,QPixmap,Contact)));
 	vcardFetcher->fetchAvatar();
 }
 
-void JabberAvatarFetcher::pepAvatarFetched(bool ok, Contact contact)
+void JabberAvatarFetcher::pepAvatarFetched(bool ok, QPixmap avatar, Contact contact)
 {
 	if (ok)
 	{
-		emit avatarFetched(ok, contact);
+		emit avatarFetched(ok, avatar, contact);
 		deleteLater();
 		return;
 	}
@@ -77,9 +81,9 @@ void JabberAvatarFetcher::pepAvatarFetched(bool ok, Contact contact)
 	fetchAvatarVCard();
 }
 
-void JabberAvatarFetcher::avatarFetchedSlot(bool ok, Contact contact)
+void JabberAvatarFetcher::avatarFetchedSlot(bool ok, QPixmap avatar, Contact contact)
 {
-	emit avatarFetched(ok, contact);
+	emit avatarFetched(ok, avatar, contact);
 	deleteLater();
 }
 
@@ -88,8 +92,7 @@ void JabberAvatarFetcher::fetchAvatar()
 	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
 	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
 	{
-		emit avatarFetched(false, MyContact);
-		deleteLater();
+		failed();
 		return;
 	}
 

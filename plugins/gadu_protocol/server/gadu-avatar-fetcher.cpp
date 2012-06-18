@@ -38,15 +38,15 @@ GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
 	NetworkAccessManager = new QNetworkAccessManager(this);
 }
 
-void GaduAvatarFetcher::done()
+void GaduAvatarFetcher::done(QPixmap avatar)
 {
-	emit avatarFetched(true, MyContact);
+	emit avatarFetched(true, avatar, MyContact);
 	deleteLater();
 }
 
 void GaduAvatarFetcher::failed()
 {
-	emit avatarFetched(false, MyContact);
+	emit avatarFetched(false, QPixmap(), MyContact);
 	deleteLater();
 }
 
@@ -95,5 +95,5 @@ void GaduAvatarFetcher::parseReply()
 
 	AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd).setPixmap(pixmap);
 
-	done();
+	done(pixmap);
 }

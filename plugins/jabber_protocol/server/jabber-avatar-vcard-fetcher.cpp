@@ -41,15 +41,15 @@ JabberAvatarVCardFetcher::~JabberAvatarVCardFetcher()
 {
 }
 
-void JabberAvatarVCardFetcher::done()
+void JabberAvatarVCardFetcher::done(QPixmap avatar)
 {
-	emit avatarFetched(true, MyContact);
+	emit avatarFetched(true, avatar, MyContact);
 	deleteLater();
 }
 
 void JabberAvatarVCardFetcher::failed()
 {
-	emit avatarFetched(false, MyContact);
+	emit avatarFetched(false, QPixmap(), MyContact);
 	deleteLater();
 }
 
@@ -84,5 +84,5 @@ void JabberAvatarVCardFetcher::vCardFetched(bool ok, const XMPP::VCard &vCard)
 	pixmap.loadFromData(vCard.photo());
 
 	contactAvatar.setPixmap(pixmap);
-	done();
+	done(pixmap);
 }

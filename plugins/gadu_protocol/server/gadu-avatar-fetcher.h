@@ -40,7 +40,7 @@ class GaduAvatarFetcher : public QObject
 	QNetworkReply *Reply;
 	int RedirectCount;
 
-	void done();
+	void done(QPixmap avatar);
 	void failed();
 
 	void fetch(const QString &url);
@@ -54,7 +54,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 
 };
 

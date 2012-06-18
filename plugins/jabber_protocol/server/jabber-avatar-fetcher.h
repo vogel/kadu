@@ -36,19 +36,21 @@ class JabberAvatarFetcher : public QObject
 
 	Contact MyContact;
 
+	void failed();
+
 	void fetchAvatarPEP();
 	void fetchAvatarVCard();
 
 private slots:
-	void pepAvatarFetched(bool ok, Contact contact);
-	void avatarFetchedSlot(bool ok, Contact contact);
+	void pepAvatarFetched(bool ok, QPixmap avatar, Contact contact);
+	void avatarFetchedSlot(bool ok, QPixmap avatar, Contact contact);
 
 public:
 	JabberAvatarFetcher(Contact contact, QObject *parent);
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 
 };
 

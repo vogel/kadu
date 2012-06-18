@@ -45,15 +45,15 @@ JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 {
 }
 
-void JabberAvatarPepFetcher::done()
+void JabberAvatarPepFetcher::done(QPixmap avatar)
 {
-	emit avatarFetched(true, MyContact);
+	emit avatarFetched(true, avatar, MyContact);
 	deleteLater();
 }
 
 void JabberAvatarPepFetcher::failed()
 {
-	emit avatarFetched(false, MyContact);
+	emit avatarFetched(false, QPixmap(), MyContact);
 	deleteLater();
 }
 
@@ -114,7 +114,7 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
 		contactAvatar.setPixmap(QPixmap());
 
-		done();
+		done(QPixmap());
 		return;
 	}
 
@@ -147,5 +147,5 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 
 	contactAvatar.setPixmap(pixmap);
 
-	done();
+	done(pixmap);
 }
