@@ -36,7 +36,7 @@
 JabberAvatarPepUploader * JabberAvatarPepUploader::createForAccount(const Account &account, QObject *parent)
 {
 	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
-	if (!protocol)
+	if (!protocol || !protocol->pepService())
 		return 0;
 	else
 		return new JabberAvatarPepUploader(protocol->pepService(), parent);
@@ -45,13 +45,12 @@ JabberAvatarPepUploader * JabberAvatarPepUploader::createForAccount(const Accoun
 JabberAvatarPepUploader::JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent) :
 		QObject(parent), PepService(pepService)
 {
-	if (PepService)
-	{
-		connect(PepService.data(), SIGNAL(publishSuccess(const QString &, const XMPP::PubSubItem &)),
-			this, SLOT(publishSuccess(const QString &, const XMPP::PubSubItem &)));
-		connect(PepService.data(), SIGNAL(publishError(const QString &, const XMPP::PubSubItem &)),
-			this, SLOT(publishError(const QString &, const XMPP::PubSubItem &)));
-	}
+	Q_ASSERT(PepService.data());
+
+	connect(PepService.data(), SIGNAL(publishSuccess(const QString &, const XMPP::PubSubItem &)),
+		this, SLOT(publishSuccess(const QString &, const XMPP::PubSubItem &)));
+	connect(PepService.data(), SIGNAL(publishError(const QString &, const XMPP::PubSubItem &)),
+		this, SLOT(publishError(const QString &, const XMPP::PubSubItem &)));
 }
 
 JabberAvatarPepUploader::~JabberAvatarPepUploader()
@@ -97,13 +96,12 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 	emit avatarUploaded(true);
 
 	deleteLater();
-
 }
 
 void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSubItem &item)
 {
-	Q_UNUSED(ns)
-	Q_UNUSED(item)
+	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
+		return; // not our data
 
 	emit avatarUploaded(false);
 
@@ -115,17 +113,15 @@ void JabberAvatarPepUploader::doUpload(const QByteArray &data)
 	if (!PepService || !PepService.data()->xmppClient())
 		return;
 
+	ItemId = QCA::Hash("sha1").hashToString(data);
+
 	QDomDocument *doc = PepService.data()->xmppClient()->doc();
 
-	QString hash = QCA::Hash("sha1").hashToString(data);
+	QDomElement dataElement = doc->createElement("data");
+	dataElement.setAttribute("xmlns", XMLNS_DATA);
+	dataElement.appendChild(doc->createTextNode(QCA::Base64().arrayToString(data)));
 
-	QDomElement el = doc->createElement("data");
-	el.setAttribute("xmlns", XMLNS_DATA);
-	el.appendChild(doc->createTextNode(QCA::Base64().arrayToString(data)));
-
-	ItemId = hash;
-
-	PepService.data()->publish(XMLNS_DATA, XMPP::PubSubItem(hash, el));
+	PepService.data()->publish(XMLNS_DATA, XMPP::PubSubItem(ItemId, dataElement));
 }
 
 void JabberAvatarPepUploader::doRemove()
@@ -141,7 +137,7 @@ void JabberAvatarPepUploader::doRemove()
 	metaDataElement.setAttribute("xmlns", XMLNS_METADATA);
 	metaDataElement.appendChild(doc->createElement("stop"));
 
-	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem("current", metaDataElement));
+	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaDataElement));
 }
 
 void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar)
