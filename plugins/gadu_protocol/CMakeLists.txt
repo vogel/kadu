@@ -67,7 +67,6 @@ set (SOURCES
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
-	server/gadu-avatar-data-parser.cpp
 	server/gadu-avatar-fetcher.cpp
 	server/gadu-avatar-uploader.cpp
 	server/gadu-server-change-password.cpp

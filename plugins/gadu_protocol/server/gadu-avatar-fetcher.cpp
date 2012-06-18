@@ -26,8 +26,6 @@
 
 #include "accounts/account.h"
 
-#include "server/gadu-avatar-data-parser.h"
-
 #include "gadu-avatar-fetcher.h"
 
 GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
