@@ -34,16 +34,17 @@
 namespace XMPP
 {
 	class Jid;
-	class JT_DiscoItems;
 	class PubSubItem;
 }
+
+class JabberPepService;
 
 class JabberAvatarPepFetcher : public QObject
 {
 	Q_OBJECT
 
+	QWeakPointer<JabberPepService> PepService;
 	Contact MyContact;
-	QWeakPointer<XMPP::JT_DiscoItems> DiscoItems;
 	QString AvatarId;
 
 	void done();
@@ -55,7 +56,7 @@ private slots:
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarPepFetcher(Contact contact, QObject *parent = 0);
+	explicit JabberAvatarPepFetcher(Contact contact, JabberPepService *pepService, QObject *parent = 0);
 	virtual ~JabberAvatarPepFetcher();
 
 	void fetchAvatar();

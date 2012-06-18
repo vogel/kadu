@@ -36,7 +36,15 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 
 void JabberAvatarFetcher::fetchAvatarPEP()
 {
-	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, this);
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
+	if (!protocol || !protocol->pepService())
+	{
+		emit avatarFetched(MyContact, false);
+		deleteLater();
+		return;
+	}
+
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, protocol->pepService(), this);
 	connect(pepFetcher, SIGNAL(avatarFetched(Contact,bool)), this, SLOT(pepAvatarFetched(Contact,bool)));
 	pepFetcher->fetchAvatar();
 }
