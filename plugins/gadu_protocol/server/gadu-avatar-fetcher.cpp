@@ -25,8 +25,6 @@
 #include <QtNetwork/QNetworkRequest>
 
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
 
 #include "server/gadu-avatar-data-parser.h"
 
@@ -89,11 +87,10 @@ void GaduAvatarFetcher::fetch(const QString &url)
 void GaduAvatarFetcher::parseReply()
 {
 	QByteArray data = Reply->readAll();
+
 	QPixmap pixmap;
 	if (!data.isEmpty())
 		pixmap.loadFromData(data);
-
-	AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd).setPixmap(pixmap);
 
 	done(pixmap);
 }

@@ -24,6 +24,7 @@
 #define AVATAR_JOB_RUNNER_H
 
 #include <QtCore/QObject>
+#include <QtGui/QPixmap>
 
 #include "contacts/contact.h"
 
@@ -46,7 +47,7 @@ class KADUAPI AvatarJobRunner : public QObject
 	AvatarService * avatarService(const Contact &contact);
 
 private slots:
-	void avatarFetched(bool ok, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 	void timeout();
 
 public:

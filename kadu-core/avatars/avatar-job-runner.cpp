@@ -66,8 +66,8 @@ void AvatarJobRunner::runJob()
 		return;
 	}
 
-	connect(service, SIGNAL(avatarFetched(bool,Contact)),
-			this, SLOT(avatarFetched(bool,Contact)));
+	connect(service, SIGNAL(avatarFetched(bool,QPixmap,Contact)),
+			this, SLOT(avatarFetched(bool,QPixmap,Contact)));
 	service->fetchAvatar(MyContact);
 
 	Timer = new QTimer(this);
@@ -75,12 +75,19 @@ void AvatarJobRunner::runJob()
 	Timer->start(15000);
 }
 
-void AvatarJobRunner::avatarFetched(bool ok, Contact contact)
+void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar, Contact contact)
 {
+	Q_UNUSED(avatar)
+
 	if (MyContact == contact)
 	{
 		if (Timer)
 			Timer->stop();
+
+		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		contactAvatar.setPixmap(avatar);
 
 		emit jobFinished(ok);
 		deleteLater();

@@ -25,8 +25,6 @@
 
 #include <xmpp_vcard.h>
 
-#include "avatars/avatar-manager.h"
-
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 
@@ -76,13 +74,8 @@ void JabberAvatarVCardFetcher::vCardFetched(bool ok, const XMPP::VCard &vCard)
 		return;
 	}
 
-	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-
 	QPixmap pixmap;
 	pixmap.loadFromData(vCard.photo());
 
-	contactAvatar.setPixmap(pixmap);
 	done(pixmap);
 }

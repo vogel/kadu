@@ -24,8 +24,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatars/avatar-manager.h"
-
 #include "iris/xmpp_tasks.h"
 #include "services/jabber-pep-service.h"
 #include "base64.h"
@@ -109,11 +107,6 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 	AvatarId = item.id();
 	if (AvatarId == "current") // removed
 	{
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		contactAvatar.setPixmap(QPixmap());
-
 		done(QPixmap());
 		return;
 	}
@@ -136,16 +129,10 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 
 	QByteArray imageData = XMPP::Base64::decode(item.payload().text());
 
-	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-
 	QPixmap pixmap;
 
 	if (!imageData.isEmpty())
 		pixmap.loadFromData(imageData);
-
-	contactAvatar.setPixmap(pixmap);
 
 	done(pixmap);
 }
