@@ -56,11 +56,13 @@ JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 void JabberAvatarPepFetcher::done()
 {
 	emit avatarFetched(MyContact, true);
+	deleteLater();
 }
 
 void JabberAvatarPepFetcher::failed()
 {
 	emit avatarFetched(MyContact, false);
+	deleteLater();
 }
 
 void JabberAvatarPepFetcher::fetchAvatar()
@@ -70,7 +72,6 @@ void JabberAvatarPepFetcher::fetchAvatar()
 		!jabberProtocol->pepService()->enabled())
 	{
 		failed();
-		deleteLater();
 		return;
 	}
 
@@ -96,7 +97,6 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 	if (!hasAvatar)
 	{
 		failed();
-		deleteLater();
 		return;
 	}
 
@@ -122,7 +122,6 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 		contactAvatar.setPixmap(QPixmap());
 
 		done();
-		deleteLater();
 		return;
 	}
 
@@ -158,5 +157,4 @@ void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const
 	contactAvatar.setPixmap(pixmap);
 
 	done();
-	deleteLater();
 }
