@@ -40,12 +40,12 @@ GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
 
 void GaduAvatarFetcher::done()
 {
-	emit avatarFetched(MyContact, true);
+	emit avatarFetched(true, MyContact);
 }
 
 void GaduAvatarFetcher::failed()
 {
-	emit avatarFetched(MyContact, false);
+	emit avatarFetched(false, MyContact);
 }
 
 void GaduAvatarFetcher::fetchAvatar()

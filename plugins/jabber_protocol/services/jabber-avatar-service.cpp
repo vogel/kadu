@@ -33,8 +33,8 @@ void JabberAvatarService::fetchAvatar(Contact contact)
 		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, bool)),
-			this, SIGNAL(avatarFetched(Contact, bool)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(bool,Contact)),
+			this, SIGNAL(avatarFetched(bool,Contact)));
 	avatarFetcher->fetchAvatar();
 }
 

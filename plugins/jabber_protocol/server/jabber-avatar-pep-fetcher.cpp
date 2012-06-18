@@ -47,13 +47,13 @@ JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 
 void JabberAvatarPepFetcher::done()
 {
-	emit avatarFetched(MyContact, true);
+	emit avatarFetched(true, MyContact);
 	deleteLater();
 }
 
 void JabberAvatarPepFetcher::failed()
 {
-	emit avatarFetched(MyContact, false);
+	emit avatarFetched(false, MyContact);
 	deleteLater();
 }
 

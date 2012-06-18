@@ -31,8 +31,8 @@ void GaduAvatarService::fetchAvatar(Contact contact)
 		return;
 
 	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(Contact, bool)),
-			this, SIGNAL(avatarFetched(Contact, bool)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(bool,Contact)),
+			this, SIGNAL(avatarFetched(bool,Contact)));
 	avatarFetcher->fetchAvatar();
 }
 

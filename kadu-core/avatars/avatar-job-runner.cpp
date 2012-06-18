@@ -66,8 +66,8 @@ void AvatarJobRunner::runJob()
 		return;
 	}
 
-	connect(service, SIGNAL(avatarFetched(Contact,bool)),
-			this, SLOT(avatarFetched(Contact,bool)));
+	connect(service, SIGNAL(avatarFetched(bool,Contact)),
+			this, SLOT(avatarFetched(bool,Contact)));
 	service->fetchAvatar(MyContact);
 
 	Timer = new QTimer(this);
@@ -75,7 +75,7 @@ void AvatarJobRunner::runJob()
 	Timer->start(15000);
 }
 
-void AvatarJobRunner::avatarFetched(Contact contact, bool ok)
+void AvatarJobRunner::avatarFetched(bool ok, Contact contact)
 {
 	if (MyContact == contact)
 	{

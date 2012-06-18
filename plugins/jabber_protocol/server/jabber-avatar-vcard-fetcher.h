@@ -58,7 +58,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(Contact contact, bool ok);
+	void avatarFetched(bool ok, Contact contact);
 
 };
 

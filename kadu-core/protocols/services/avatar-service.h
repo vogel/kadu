@@ -46,7 +46,7 @@ public:
 	virtual void uploadAvatar(QImage avatar) = 0;
 
 signals:
-	void avatarFetched(Contact contact, bool ok);
+	void avatarFetched(bool ok, Contact contact);
 	void avatarUploaded(bool ok, QImage avatar);
 
 };

@@ -46,7 +46,7 @@ class KADUAPI AvatarJobRunner : public QObject
 	AvatarService * avatarService(const Contact &contact);
 
 private slots:
-	void avatarFetched(Contact contact, bool ok);
+	void avatarFetched(bool ok, Contact contact);
 	void timeout();
 
 public:
