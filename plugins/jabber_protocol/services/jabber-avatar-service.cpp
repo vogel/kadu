@@ -27,14 +27,14 @@
 #include "server/jabber-avatar-uploader.h"
 
 
-void JabberAvatarService::fetchAvatar(Contact contact)
+void JabberAvatarService::fetchAvatar(Contact contact, QObject *receiver)
 {
 	if (contact.id().isEmpty())
 		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)),
-			this, SIGNAL(avatarFetched(bool,QPixmap,Contact)));
+			receiver, SLOT(avatarFetched(bool,QPixmap,Contact)));
 	avatarFetcher->fetchAvatar();
 }
 

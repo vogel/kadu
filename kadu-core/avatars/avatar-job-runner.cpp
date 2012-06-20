@@ -49,7 +49,7 @@ AvatarService * AvatarJobRunner::avatarService(const Account &account)
 AvatarService * AvatarJobRunner::avatarService(const Contact &contact)
 {
 	Account account = contact.contactAccount();
-	if (account.isNull())
+	if (!account)
 		return 0;
 
 	return avatarService(account);
@@ -66,9 +66,7 @@ void AvatarJobRunner::runJob()
 		return;
 	}
 
-	connect(service, SIGNAL(avatarFetched(bool,QPixmap,Contact)),
-			this, SLOT(avatarFetched(bool,QPixmap,Contact)));
-	service->fetchAvatar(MyContact);
+	service->fetchAvatar(MyContact, this);
 
 	Timer = new QTimer(this);
 	connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
@@ -77,21 +75,18 @@ void AvatarJobRunner::runJob()
 
 void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar, Contact contact)
 {
-	Q_UNUSED(avatar)
+	Q_UNUSED(contact)
 
-	if (MyContact == contact)
-	{
-		if (Timer)
-			Timer->stop();
+	if (Timer)
+		Timer->stop();
 
-		Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
-		contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-		contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		contactAvatar.setPixmap(avatar);
+	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
+	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+	contactAvatar.setPixmap(avatar);
 
-		emit jobFinished(ok);
-		deleteLater();
-	}
+	emit jobFinished(ok);
+	deleteLater();
 }
 
 void AvatarJobRunner::timeout()

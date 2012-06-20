@@ -47,7 +47,6 @@ class KADUAPI AvatarJobRunner : public QObject
 	AvatarService * avatarService(const Contact &contact);
 
 private slots:
-	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 	void timeout();
 
 public:
@@ -55,6 +54,9 @@ public:
 	virtual ~AvatarJobRunner();
 
 	void runJob();
+
+public slots:
+	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 
 signals:
 	void jobFinished(bool ok);

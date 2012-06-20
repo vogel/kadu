@@ -46,7 +46,9 @@ private slots:
 	void avatarFetchedSlot(bool ok, QPixmap avatar, Contact contact);
 
 public:
-	JabberAvatarFetcher(Contact contact, QObject *parent);
+	explicit JabberAvatarFetcher(Contact contact, QObject *parent);
+	virtual ~JabberAvatarFetcher();
+
 	void fetchAvatar();
 
 signals:

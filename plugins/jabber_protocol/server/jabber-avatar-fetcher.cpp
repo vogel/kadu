@@ -34,6 +34,10 @@ JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
 {
 }
 
+JabberAvatarFetcher::~JabberAvatarFetcher()
+{
+}
+
 void JabberAvatarFetcher::failed()
 {
 	emit avatarFetched(false, QPixmap(), MyContact);

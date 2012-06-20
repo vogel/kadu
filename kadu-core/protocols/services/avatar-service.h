@@ -42,11 +42,10 @@ public:
 
 	Account account() { return MyAccount; }
 
-	virtual void fetchAvatar(Contact contact) = 0;
+	virtual void fetchAvatar(Contact contact, QObject *receiver) = 0;
 	virtual void uploadAvatar(QImage avatar) = 0;
 
 signals:
-	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
 	void avatarUploaded(bool ok, QImage avatar);
 
 };
