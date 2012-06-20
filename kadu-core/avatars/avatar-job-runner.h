@@ -43,9 +43,6 @@ class KADUAPI AvatarJobRunner : public QObject
 
 	QTimer *Timer;
 
-	AvatarService * avatarService(const Account &account);
-	AvatarService * avatarService(const Contact &contact);
-
 private slots:
 	void timeout();
 

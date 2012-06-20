@@ -20,38 +20,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef AVATAR_SERVICE_H
-#define AVATAR_SERVICE_H
+#include "protocols/protocol.h"
 
-#include <QtCore/QObject>
-#include <QtGui/QPixmap>
+#include "avatar-service.h"
 
-#include "accounts/account.h"
-#include "exports.h"
-#include <avatars/avatar.h>
-
-class Contact;
-
-class KADUAPI AvatarService : public QObject
+AvatarService * AvatarService::fromAccount(Account account)
 {
-	Q_OBJECT
+	if (!account)
+		return 0;
 
-	Account MyAccount;
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return 0;
 
-public:
-	static AvatarService * fromAccount(Account account);
+	return protocol->avatarService();
+}
 
-	explicit AvatarService(Account account, QObject *parent = 0);
-	virtual ~AvatarService();
+AvatarService::AvatarService(Account account, QObject *parent) :
+		QObject(parent), MyAccount(account)
+{
+}
 
-	Account account() const;
+AvatarService::~AvatarService()
+{
+}
 
-	virtual void fetchAvatar(const QString &id, QObject *receiver) = 0;
-	virtual void uploadAvatar(QImage avatar) = 0;
-
-signals:
-	void avatarUploaded(bool ok, QImage avatar);
-
-};
-
-#endif // AVATAR_SERVICE_H
+Account AvatarService::account() const
+{
+	return MyAccount;
+}

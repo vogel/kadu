@@ -37,27 +37,9 @@ AvatarJobRunner::~AvatarJobRunner()
 {
 }
 
-AvatarService * AvatarJobRunner::avatarService(const Account &account)
-{
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return 0;
-
-	return protocol->avatarService();
-}
-
-AvatarService * AvatarJobRunner::avatarService(const Contact &contact)
-{
-	Account account = contact.contactAccount();
-	if (!account)
-		return 0;
-
-	return avatarService(account);
-}
-
 void AvatarJobRunner::runJob()
 {
-	AvatarService *service = avatarService(MyContact);
+	AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
 	if (!service)
 	{
 		emit jobFinished(false);
@@ -89,7 +71,7 @@ void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar)
 
 void AvatarJobRunner::timeout()
 {
-	AvatarService *service = avatarService(MyContact);
+	AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
 	if (service)
 		disconnect(service, 0, this, 0);
 
