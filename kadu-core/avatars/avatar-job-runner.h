@@ -56,7 +56,7 @@ public:
 	void runJob();
 
 public slots:
-	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar);
 
 signals:
 	void jobFinished(bool ok);

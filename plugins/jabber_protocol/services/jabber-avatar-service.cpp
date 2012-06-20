@@ -33,8 +33,8 @@ void JabberAvatarService::fetchAvatar(Contact contact, QObject *receiver)
 		return;
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)),
-			receiver, SLOT(avatarFetched(bool,QPixmap,Contact)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
+			receiver, SLOT(avatarFetched(bool,QPixmap)));
 	avatarFetcher->fetchAvatar();
 }
 

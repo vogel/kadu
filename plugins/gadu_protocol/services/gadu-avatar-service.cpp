@@ -31,8 +31,8 @@ void GaduAvatarService::fetchAvatar(Contact contact, QObject *receiver)
 		return;
 
 	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contact, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)),
-			receiver, SLOT(avatarFetched(bool,QPixmap,Contact)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
+			receiver, SLOT(avatarFetched(bool,QPixmap)));
 	avatarFetcher->fetchAvatar();
 }
 

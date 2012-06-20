@@ -63,7 +63,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar);
 
 };
 

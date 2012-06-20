@@ -40,7 +40,7 @@ JabberAvatarFetcher::~JabberAvatarFetcher()
 
 void JabberAvatarFetcher::failed()
 {
-	emit avatarFetched(false, QPixmap(), MyContact);
+	emit avatarFetched(false, QPixmap());
 	deleteLater();
 }
 
@@ -54,7 +54,7 @@ void JabberAvatarFetcher::fetchAvatarPEP()
 	}
 
 	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, protocol->pepService(), this);
-	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)), this, SLOT(pepAvatarFetched(bool,QPixmap,Contact)));
+	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(pepAvatarFetched(bool,QPixmap)));
 	pepFetcher->fetchAvatar();
 }
 
@@ -68,15 +68,15 @@ void JabberAvatarFetcher::fetchAvatarVCard()
 	}
 
 	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, protocol->vcardService(), this);
-	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap,Contact)), this, SLOT(avatarFetchedSlot(bool,QPixmap,Contact)));
+	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(avatarFetchedSlot(bool,QPixmap)));
 	vcardFetcher->fetchAvatar();
 }
 
-void JabberAvatarFetcher::pepAvatarFetched(bool ok, QPixmap avatar, Contact contact)
+void JabberAvatarFetcher::pepAvatarFetched(bool ok, QPixmap avatar)
 {
 	if (ok)
 	{
-		emit avatarFetched(ok, avatar, contact);
+		emit avatarFetched(ok, avatar);
 		deleteLater();
 		return;
 	}
@@ -85,9 +85,9 @@ void JabberAvatarFetcher::pepAvatarFetched(bool ok, QPixmap avatar, Contact cont
 	fetchAvatarVCard();
 }
 
-void JabberAvatarFetcher::avatarFetchedSlot(bool ok, QPixmap avatar, Contact contact)
+void JabberAvatarFetcher::avatarFetchedSlot(bool ok, QPixmap avatar)
 {
-	emit avatarFetched(ok, avatar, contact);
+	emit avatarFetched(ok, avatar);
 	deleteLater();
 }
 

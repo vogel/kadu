@@ -73,10 +73,8 @@ void AvatarJobRunner::runJob()
 	Timer->start(15000);
 }
 
-void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar, Contact contact)
+void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar)
 {
-	Q_UNUSED(contact)
-
 	if (Timer)
 		Timer->stop();
 

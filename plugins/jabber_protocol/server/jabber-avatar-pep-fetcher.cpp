@@ -45,13 +45,13 @@ JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
 
 void JabberAvatarPepFetcher::done(QPixmap avatar)
 {
-	emit avatarFetched(true, avatar, MyContact);
+	emit avatarFetched(true, avatar);
 	deleteLater();
 }
 
 void JabberAvatarPepFetcher::failed()
 {
-	emit avatarFetched(false, QPixmap(), MyContact);
+	emit avatarFetched(false, QPixmap());
 	deleteLater();
 }
 

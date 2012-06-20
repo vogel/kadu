@@ -36,13 +36,13 @@ GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
 
 void GaduAvatarFetcher::done(QPixmap avatar)
 {
-	emit avatarFetched(true, avatar, MyContact);
+	emit avatarFetched(true, avatar);
 	deleteLater();
 }
 
 void GaduAvatarFetcher::failed()
 {
-	emit avatarFetched(false, QPixmap(), MyContact);
+	emit avatarFetched(false, QPixmap());
 	deleteLater();
 }
 

@@ -42,8 +42,8 @@ class JabberAvatarFetcher : public QObject
 	void fetchAvatarVCard();
 
 private slots:
-	void pepAvatarFetched(bool ok, QPixmap avatar, Contact contact);
-	void avatarFetchedSlot(bool ok, QPixmap avatar, Contact contact);
+	void pepAvatarFetched(bool ok, QPixmap avatar);
+	void avatarFetchedSlot(bool ok, QPixmap avatar);
 
 public:
 	explicit JabberAvatarFetcher(Contact contact, QObject *parent);
@@ -52,7 +52,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(bool ok, QPixmap avatar, Contact contact);
+	void avatarFetched(bool ok, QPixmap avatar);
 
 };
 
