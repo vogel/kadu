@@ -26,12 +26,11 @@
 #include "server/jabber-avatar-vcard-fetcher.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
-#include "jabber-protocol.h"
 
 #include "jabber-avatar-fetcher.h"
 
-JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
-		QObject(parent), MyContact(contact), PepService(pepService), VCardService(vCardService)
+JabberAvatarFetcher::JabberAvatarFetcher(const QString &id, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+		QObject(parent), Id(id), PepService(pepService), VCardService(vCardService)
 {
 }
 
@@ -53,7 +52,7 @@ void JabberAvatarFetcher::fetchAvatarPEP()
 		return;
 	}
 
-	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact.id(), PepService.data(), this);
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(Id, PepService.data(), this);
 	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(pepAvatarFetched(bool,QPixmap)));
 	pepFetcher->fetchAvatar();
 }
@@ -66,7 +65,7 @@ void JabberAvatarFetcher::fetchAvatarVCard()
 		return;
 	}
 
-	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact.id(), VCardService.data(), this);
+	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(Id, VCardService.data(), this);
 	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(avatarFetchedSlot(bool,QPixmap)));
 	vcardFetcher->fetchAvatar();
 }
@@ -92,14 +91,7 @@ void JabberAvatarFetcher::avatarFetchedSlot(bool ok, QPixmap avatar)
 
 void JabberAvatarFetcher::fetchAvatar()
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
-	{
-		failed();
-		return;
-	}
-
-	if (protocol->pepService()->enabled())
+	if (PepService && PepService.data()->enabled())
 		fetchAvatarPEP();
 	else
 		fetchAvatarVCard();

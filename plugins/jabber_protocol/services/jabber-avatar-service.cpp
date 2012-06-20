@@ -47,12 +47,12 @@ void JabberAvatarService::setVCardService(XMPP::JabberVCardService *vCardService
 	VCardService = vCardService;
 }
 
-void JabberAvatarService::fetchAvatar(Contact contact, QObject *receiver)
+void JabberAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 {
-	if (contact.id().isEmpty())
+	if (id.isEmpty())
 		return;
 
-	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, PepService.data(), VCardService.data(), this);
+	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(id, PepService.data(), VCardService.data(), this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
 			receiver, SLOT(avatarFetched(bool,QPixmap)));
 	avatarFetcher->fetchAvatar();

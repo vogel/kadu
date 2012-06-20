@@ -42,15 +42,12 @@ public:
 
 	Account account() { return MyAccount; }
 
-	virtual void fetchAvatar(Contact contact, QObject *receiver) = 0;
+	virtual void fetchAvatar(const QString &id, QObject *receiver) = 0;
 	virtual void uploadAvatar(QImage avatar) = 0;
 
 signals:
 	void avatarUploaded(bool ok, QImage avatar);
 
 };
-
-// for MOC
-#include "contacts/contact.h"
 
 #endif // AVATAR_SERVICE_H

@@ -22,7 +22,6 @@
 #ifndef GADU_AVATAR_SERVICE_H
 #define GADU_AVATAR_SERVICE_H
 
-#include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
 class GaduAvatarService : public AvatarService
@@ -30,9 +29,10 @@ class GaduAvatarService : public AvatarService
 	Q_OBJECT
 
 public:
-	GaduAvatarService(Account account, QObject *parent) : AvatarService(account, parent) {}
+	explicit GaduAvatarService(Account account, QObject *parent = 0);
+	virtual ~GaduAvatarService();
 
-	virtual void fetchAvatar(Contact contact, QObject *receiver);
+	virtual void fetchAvatar(const QString &id, QObject *receiver);
 	virtual void uploadAvatar(QImage avatar);
 
 };

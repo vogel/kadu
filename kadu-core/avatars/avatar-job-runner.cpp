@@ -66,7 +66,7 @@ void AvatarJobRunner::runJob()
 		return;
 	}
 
-	service->fetchAvatar(MyContact, this);
+	service->fetchAvatar(MyContact.id(), this);
 
 	Timer = new QTimer(this);
 	connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));

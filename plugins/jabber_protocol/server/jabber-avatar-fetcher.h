@@ -26,10 +26,6 @@
 #include <QtCore/QBuffer>
 #include <QtGui/QPixmap>
 
-#include "contacts/contact.h"
-
-class QHttp;
-
 namespace XMPP { class JabberVCardService; }
 
 class JabberPepService;
@@ -38,7 +34,7 @@ class JabberAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	QString Id;
 	QWeakPointer<JabberPepService> PepService;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
@@ -52,7 +48,7 @@ private slots:
 	void avatarFetchedSlot(bool ok, QPixmap avatar);
 
 public:
-	explicit JabberAvatarFetcher(Contact contact, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
+	explicit JabberAvatarFetcher(const QString &id, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarFetcher();
 
 	void fetchAvatar();

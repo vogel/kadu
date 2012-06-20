@@ -44,7 +44,7 @@ public:
 	void setPepService(JabberPepService *pepService);
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
-	virtual void fetchAvatar(Contact contact, QObject *receiver);
+	virtual void fetchAvatar(const QString &id, QObject *receiver);
 	virtual void uploadAvatar(QImage avatar);
 
 };

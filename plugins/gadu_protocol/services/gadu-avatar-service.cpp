@@ -25,12 +25,21 @@
 #include "server/gadu-avatar-uploader.h"
 #include "gadu-avatar-service.h"
 
-void GaduAvatarService::fetchAvatar(Contact contact, QObject *receiver)
+GaduAvatarService::GaduAvatarService(Account account, QObject *parent) :
+		AvatarService(parent, account)
 {
-	if (contact.id().isEmpty() || !receiver)
+}
+
+GaduAvatarService::~GaduAvatarService()
+{
+}
+
+void GaduAvatarService::fetchAvatar(const QString &id, QObject *receiver)
+{
+	if (id.isEmpty() || !receiver)
 		return;
 
-	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contact.id(), this);
+	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(id, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
 			receiver, SLOT(avatarFetched(bool,QPixmap)));
 	avatarFetcher->fetchAvatar();
