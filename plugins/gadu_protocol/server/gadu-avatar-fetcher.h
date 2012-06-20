@@ -23,10 +23,7 @@
 #ifndef GADU_AVATAR_FETCHER_H
 #define GADU_AVATAR_FETCHER_H
 
-#include <QtCore/QBuffer>
 #include <QtGui/QPixmap>
-
-#include "contacts/contact.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -35,7 +32,7 @@ class GaduAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	QString Id;
 	QNetworkAccessManager *NetworkAccessManager;
 	QNetworkReply *Reply;
 	int RedirectCount;
@@ -50,7 +47,9 @@ private slots:
 	void requestFinished();
 
 public:
-	explicit GaduAvatarFetcher(Contact contact, QObject *parent = 0);
+	explicit GaduAvatarFetcher(const QString &id, QObject *parent = 0);
+	virtual ~GaduAvatarFetcher();
+
 	void fetchAvatar();
 
 signals:

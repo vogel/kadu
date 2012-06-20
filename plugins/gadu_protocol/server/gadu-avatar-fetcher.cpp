@@ -28,10 +28,14 @@
 
 #include "gadu-avatar-fetcher.h"
 
-GaduAvatarFetcher::GaduAvatarFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact), RedirectCount(0)
+GaduAvatarFetcher::GaduAvatarFetcher(const QString &id, QObject *parent) :
+		QObject(parent), Id(id), RedirectCount(0)
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
+}
+
+GaduAvatarFetcher::~GaduAvatarFetcher()
+{
 }
 
 void GaduAvatarFetcher::done(QPixmap avatar)
@@ -48,7 +52,7 @@ void GaduAvatarFetcher::failed()
 
 void GaduAvatarFetcher::fetchAvatar()
 {
-	fetch(QString("http://avatars.gg.pl/%1").arg(MyContact.id()));
+	fetch(QString("http://avatars.gg.pl/%1").arg(Id));
 }
 
 void GaduAvatarFetcher::requestFinished()
