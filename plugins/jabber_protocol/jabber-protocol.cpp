@@ -97,6 +97,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentPepService = new JabberPepService(this);
 
+	CurrentAvatarService->setPepService(CurrentPepService);
+
 	CurrentConnectionService = new XMPP::JabberConnectionService(this);
 	connect(CurrentConnectionService, SIGNAL(connected()), this, SLOT(connectedToServer()));
 	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
@@ -108,6 +110,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	CurrentVCardService = new XMPP::JabberVCardService(this);
 	CurrentVCardService->setXmppClient(XmppClient);
 
+	CurrentAvatarService->setVCardService(CurrentVCardService);
 	CurrentContactPersonalInfoService->setVCardService(CurrentVCardService);
 	CurrentPersonalInfoService->setVCardService(CurrentVCardService);
 

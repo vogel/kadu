@@ -25,12 +25,13 @@
 #include "server/jabber-avatar-pep-fetcher.h"
 #include "server/jabber-avatar-vcard-fetcher.h"
 #include "services/jabber-pep-service.h"
+#include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-fetcher.h"
 
-JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, QObject *parent) :
-		QObject(parent), MyContact(contact)
+JabberAvatarFetcher::JabberAvatarFetcher(Contact contact, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+		QObject(parent), MyContact(contact), PepService(pepService), VCardService(vCardService)
 {
 }
 
@@ -46,28 +47,26 @@ void JabberAvatarFetcher::failed()
 
 void JabberAvatarFetcher::fetchAvatarPEP()
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!protocol || !protocol->pepService())
+	if (!PepService)
 	{
 		failed();
 		return;
 	}
 
-	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact.id(), protocol->pepService(), this);
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact.id(), PepService.data(), this);
 	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(pepAvatarFetched(bool,QPixmap)));
 	pepFetcher->fetchAvatar();
 }
 
 void JabberAvatarFetcher::fetchAvatarVCard()
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!protocol || !protocol->vcardService())
+	if (!VCardService)
 	{
 		failed();
 		return;
 	}
 
-	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact.id(), protocol->vcardService(), this);
+	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact.id(), VCardService.data(), this);
 	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(avatarFetchedSlot(bool,QPixmap)));
 	vcardFetcher->fetchAvatar();
 }

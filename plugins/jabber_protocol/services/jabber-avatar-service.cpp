@@ -21,18 +21,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-avatar-service.h"
-
 #include "server/jabber-avatar-fetcher.h"
 #include "server/jabber-avatar-uploader.h"
+#include "services/jabber-pep-service.h"
+#include "services/jabber-vcard-service.h"
 
+#include "jabber-avatar-service.h"
+
+JabberAvatarService::JabberAvatarService(Account account, QObject *parent) :
+		AvatarService(account, parent)
+{
+}
+
+JabberAvatarService::~JabberAvatarService()
+{
+}
+
+void JabberAvatarService::setPepService(JabberPepService *pepService)
+{
+	PepService = pepService;
+}
+
+void JabberAvatarService::setVCardService(XMPP::JabberVCardService *vCardService)
+{
+	VCardService = vCardService;
+}
 
 void JabberAvatarService::fetchAvatar(Contact contact, QObject *receiver)
 {
 	if (contact.id().isEmpty())
 		return;
 
-	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, this);
+	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contact, PepService.data(), VCardService.data(), this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
 			receiver, SLOT(avatarFetched(bool,QPixmap)));
 	avatarFetcher->fetchAvatar();

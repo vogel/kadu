@@ -26,12 +26,23 @@
 #include "contacts/contact.h"
 #include "protocols/services/avatar-service.h"
 
+namespace XMPP { class JabberVCardService; }
+
+class JabberPepService;
+
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
 
+	QWeakPointer<JabberPepService> PepService;
+	QWeakPointer<XMPP::JabberVCardService> VCardService;
+
 public:
-	JabberAvatarService(Account account, QObject *parent) : AvatarService(account, parent) {}
+	explicit JabberAvatarService(Account account, QObject *parent = 0);
+	virtual ~JabberAvatarService();
+
+	void setPepService(JabberPepService *pepService);
+	void setVCardService(XMPP::JabberVCardService *vCardService);
 
 	virtual void fetchAvatar(Contact contact, QObject *receiver);
 	virtual void uploadAvatar(QImage avatar);

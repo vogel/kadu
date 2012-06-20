@@ -30,11 +30,17 @@
 
 class QHttp;
 
+namespace XMPP { class JabberVCardService; }
+
+class JabberPepService;
+
 class JabberAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
 	Contact MyContact;
+	QWeakPointer<JabberPepService> PepService;
+	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	void failed();
 
@@ -46,7 +52,7 @@ private slots:
 	void avatarFetchedSlot(bool ok, QPixmap avatar);
 
 public:
-	explicit JabberAvatarFetcher(Contact contact, QObject *parent);
+	explicit JabberAvatarFetcher(Contact contact, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarFetcher();
 
 	void fetchAvatar();
