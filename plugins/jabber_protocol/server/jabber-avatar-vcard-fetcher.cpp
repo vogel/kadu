@@ -30,8 +30,8 @@
 
 #include "jabber-avatar-vcard-fetcher.h"
 
-JabberAvatarVCardFetcher::JabberAvatarVCardFetcher(Contact contact, XMPP::JabberVCardService *vCardService, QObject *parent) :
-		QObject(parent), MyContact(contact), VCardService(vCardService)
+JabberAvatarVCardFetcher::JabberAvatarVCardFetcher(const QString &id, XMPP::JabberVCardService *vCardService, QObject *parent) :
+		QObject(parent), Id(id), VCardService(vCardService)
 {
 }
 
@@ -53,15 +53,8 @@ void JabberAvatarVCardFetcher::failed()
 
 void JabberAvatarVCardFetcher::fetchAvatar()
 {
-	XMPP::JabberProtocol *jabberProtocol = qobject_cast<XMPP::JabberProtocol *>(MyContact.contactAccount().protocolHandler());
-	if (!jabberProtocol || !jabberProtocol->isConnected())
-	{
-		failed();
-		return;
-	}
-
 	if (VCardService)
-		VCardService.data()->fetch(MyContact.id(), this);
+		VCardService.data()->fetch(Id, this);
 	else
 		failed();
 }

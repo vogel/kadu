@@ -53,7 +53,7 @@ void JabberAvatarFetcher::fetchAvatarPEP()
 		return;
 	}
 
-	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact, protocol->pepService(), this);
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(MyContact.id(), protocol->pepService(), this);
 	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(pepAvatarFetched(bool,QPixmap)));
 	pepFetcher->fetchAvatar();
 }
@@ -67,7 +67,7 @@ void JabberAvatarFetcher::fetchAvatarVCard()
 		return;
 	}
 
-	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact, protocol->vcardService(), this);
+	JabberAvatarVCardFetcher *vcardFetcher = new JabberAvatarVCardFetcher(MyContact.id(), protocol->vcardService(), this);
 	connect(vcardFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(avatarFetchedSlot(bool,QPixmap)));
 	vcardFetcher->fetchAvatar();
 }

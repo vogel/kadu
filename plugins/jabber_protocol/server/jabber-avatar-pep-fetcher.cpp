@@ -34,8 +34,8 @@
 #define XMLNS_AVATAR_METADATA "urn:xmpp:avatar:metadata"
 #define NS_AVATAR_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 
-JabberAvatarPepFetcher::JabberAvatarPepFetcher(Contact contact, JabberPepService *pepService, QObject *parent) :
-		QObject(parent), PepService(pepService), MyContact(contact)
+JabberAvatarPepFetcher::JabberAvatarPepFetcher(const QString &id, JabberPepService *pepService, QObject *parent) :
+		QObject(parent), PepService(pepService), Id(id)
 {
 }
 
@@ -66,7 +66,7 @@ void JabberAvatarPepFetcher::fetchAvatar()
 	XMPP::JT_DiscoItems *discoItems = new XMPP::JT_DiscoItems(PepService.data()->xmppClient()->rootTask());
 	connect(discoItems, SIGNAL(finished()), this, SLOT(discoItemsFinished()));
 
-	discoItems->get(MyContact.id());
+	discoItems->get(Id);
 	discoItems->go(true);
 }
 
@@ -96,12 +96,12 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 	}
 
 	connect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	PepService.data()->get(MyContact.id(), XMLNS_AVATAR_METADATA, "");
+	PepService.data()->get(Id, XMLNS_AVATAR_METADATA, "");
 }
 
 void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
 {
-	if (jid.bare() != MyContact.id() || node != XMLNS_AVATAR_METADATA)
+	if (jid.bare() != Id || node != XMLNS_AVATAR_METADATA)
 		return; // not our data :(
 
 	AvatarId = item.id();
@@ -119,12 +119,12 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 
 	disconnect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarMetadataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
 	connect(PepService.data(), SIGNAL(itemPublished(XMPP::Jid,QString,XMPP::PubSubItem)), this, SLOT(avatarDataQueryFinished(XMPP::Jid,QString,XMPP::PubSubItem)));
-	PepService.data()->get(MyContact.id(), XMLNS_AVATAR_DATA, AvatarId);
+	PepService.data()->get(Id, XMLNS_AVATAR_DATA, AvatarId);
 }
 
 void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
 {
-	if (jid.bare() != MyContact.id() || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
+	if (jid.bare() != Id || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
 		return; // not our data :(
 
 	QByteArray imageData = XMPP::Base64::decode(item.payload().text());

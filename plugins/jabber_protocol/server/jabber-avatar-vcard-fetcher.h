@@ -31,8 +31,6 @@
 
 #include "services/jabber-vcard-fetch-callback.h"
 
-#include "contacts/contact.h"
-
 namespace XMPP
 {
 	class VCard;
@@ -44,7 +42,7 @@ class JabberAvatarVCardFetcher : public QObject, public XMPP::JabberVCardFetchCa
 {
 	Q_OBJECT
 
-	Contact MyContact;
+	QString Id;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	void done(QPixmap avatar);
@@ -54,7 +52,7 @@ protected:
 	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 
 public:
-	explicit JabberAvatarVCardFetcher(Contact contact, XMPP::JabberVCardService *vCardService, QObject *parent = 0);
+	explicit JabberAvatarVCardFetcher(const QString &id, XMPP::JabberVCardService *vCardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardFetcher();
 
 	void fetchAvatar();

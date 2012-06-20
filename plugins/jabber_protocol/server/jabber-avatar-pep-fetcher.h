@@ -30,8 +30,6 @@
 #include <QtCore/QWeakPointer>
 #include <QtGui/QPixmap>
 
-#include "contacts/contact.h"
-
 namespace XMPP
 {
 	class Jid;
@@ -45,7 +43,7 @@ class JabberAvatarPepFetcher : public QObject
 	Q_OBJECT
 
 	QWeakPointer<JabberPepService> PepService;
-	Contact MyContact;
+	QString Id;
 	QString AvatarId;
 
 	void done(QPixmap avatar);
@@ -57,7 +55,7 @@ private slots:
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarPepFetcher(Contact contact, JabberPepService *pepService, QObject *parent = 0);
+	explicit JabberAvatarPepFetcher(const QString &id, JabberPepService *pepService, QObject *parent = 0);
 	virtual ~JabberAvatarPepFetcher();
 
 	void fetchAvatar();
