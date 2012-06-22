@@ -30,6 +30,26 @@ namespace XMPP { class JabberVCardService; }
 
 class JabberPepService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberAvatarService
+ * @short Service for feteching and uploading avatars for XMPP/Jabber protocol.
+ * @see AvatarService
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * See documentation of AvatarService to get general information about this service.
+ *
+ * JabberAvatarService can use JabberPepService or XMPP::JabberVCardService to do its job depending on
+ * server capabilities. Usign PEP is preffered method, but VCard will be used if server does not provide
+ * this or if JabberPepService is not provided.
+ *
+ * When neither JabberPepService nor XMPP::JabberVCardService are provided this service will fail on
+ * every operation. Use setPepService() and/or setVCardService() to set these services.
+ */
 class JabberAvatarService : public AvatarService
 {
 	Q_OBJECT
@@ -38,15 +58,35 @@ class JabberAvatarService : public AvatarService
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 public:
+	/**
+	 * @short Create service instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param parent QObject parent of service
+	 */
 	explicit JabberAvatarService(QObject *parent = 0);
 	virtual ~JabberAvatarService();
 
+	/**
+	 * @short Set PEP service object to use in this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param pepService PEP service object to use
+	 */
 	void setPepService(JabberPepService *pepService);
+
+	/**
+	 * @short Set VCard service object to use in this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param vCardService VCard service object to use
+	 */
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
 	virtual void fetchAvatar(const QString &id, QObject *receiver);
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // JABBER_AVATAR_SERVICE_H

@@ -24,11 +24,33 @@
 
 #include "protocols/services/avatar-service.h"
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class GaduAvatarService
+ * @short Service for feteching and uploading avatars for Gadu-Gadu protocol.
+ * @see AvatarService
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * See documentation of AvatarService to get general information about this service.
+ *
+ * GaduAvatarService does not require any protocol data or session as uses HTTP communication channel instead
+ * of GaduGadu one. Fetching avatars is possible without any authorization. Uploading avatar is done with
+ * OAuth authorization on http://avatars.nowe.gg/upload webservice.
+ */
 class GaduAvatarService : public AvatarService
 {
 	Q_OBJECT
 
 public:
+	/**
+	 * @short Create service instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param parent QObject parent of service
+	 */
 	explicit GaduAvatarService(QObject *parent = 0);
 	virtual ~GaduAvatarService();
 
@@ -36,5 +58,9 @@ public:
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // GADU_AVATAR_SERVICE_H
