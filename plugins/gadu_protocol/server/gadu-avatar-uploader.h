@@ -28,8 +28,6 @@
 
 #include <QtGui/QImage>
 
-#include "accounts/account.h"
-
 #include "oauth/oauth-token.h"
 
 class QNetworkAccessManager;
@@ -39,10 +37,10 @@ class GaduAvatarUploader : public QObject
 {
 	Q_OBJECT
 
+	QString Id;
 	QNetworkAccessManager *NetworkAccessManager;
 	QNetworkReply *Reply;
 
-	Account MyAccount;
 	QImage Avatar;
 
 private slots:
@@ -50,10 +48,10 @@ private slots:
 	void transferFinished();
 
 public:
-	GaduAvatarUploader(Account account, QObject *parent);
+	explicit GaduAvatarUploader(QObject *parent = 0);
 	virtual ~GaduAvatarUploader();
 
-	void uploadAvatar(QImage avatar);
+	void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 signals:
 	void avatarUploaded(bool ok, QImage image);

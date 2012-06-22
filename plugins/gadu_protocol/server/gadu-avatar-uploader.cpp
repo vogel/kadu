@@ -34,8 +34,8 @@
 
 #include "gadu-avatar-uploader.h"
 
-GaduAvatarUploader::GaduAvatarUploader(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+GaduAvatarUploader::GaduAvatarUploader(QObject *parent) :
+		QObject(parent)
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
 	Reply = 0;
@@ -46,13 +46,14 @@ GaduAvatarUploader::~GaduAvatarUploader()
 
 }
 
-void GaduAvatarUploader::uploadAvatar(QImage avatar)
+void GaduAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
+	Id = id;
 	Avatar = avatar;
 
 	OAuthManager *authManager = new OAuthManager(this);
 	connect(authManager, SIGNAL(authorized(OAuthToken)), this, SLOT(authorized(OAuthToken)));
-	authManager->authorize(OAuthConsumer(MyAccount.id().toUtf8(), MyAccount.password().toUtf8()));
+	authManager->authorize(OAuthConsumer(id.toUtf8(), password.toUtf8()));
 }
 
 void GaduAvatarUploader::authorized(OAuthToken token)
@@ -73,7 +74,7 @@ void GaduAvatarUploader::authorized(OAuthToken token)
 	url += "http://avatars.nowe.gg/upload";
 
 	QByteArray payload;
-	payload += "uin=" + QUrl::toPercentEncoding(MyAccount.id());
+	payload += "uin=" + QUrl::toPercentEncoding(Id);
 	payload += "&photo=";
 	payload += QUrl::toPercentEncoding(avatarBuffer.buffer().toBase64());
 

@@ -50,7 +50,7 @@ void GaduAvatarService::uploadAvatar(QImage avatar)
 	if (account().accountContact().id().isEmpty())
 		return;
 
-	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(account(), this);
+	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(this);
 	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
-	avatarUploader->uploadAvatar(avatar);
+	avatarUploader->uploadAvatar(account().id(), account().password(), avatar);
 }
