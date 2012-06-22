@@ -32,7 +32,6 @@ class GaduAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	QString Id;
 	QNetworkAccessManager *NetworkAccessManager;
 	QNetworkReply *Reply;
 	int RedirectCount;
@@ -47,10 +46,10 @@ private slots:
 	void requestFinished();
 
 public:
-	explicit GaduAvatarFetcher(const QString &id, QObject *parent = 0);
+	explicit GaduAvatarFetcher(QObject *parent = 0);
 	virtual ~GaduAvatarFetcher();
 
-	void fetchAvatar();
+	void fetchAvatar(const QString &id);
 
 signals:
 	void avatarFetched(bool ok, QPixmap avatar);

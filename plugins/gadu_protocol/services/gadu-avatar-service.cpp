@@ -39,10 +39,10 @@ void GaduAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 	if (id.isEmpty() || !receiver)
 		return;
 
-	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(id, this);
+	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
 			receiver, SLOT(avatarFetched(bool,QPixmap)));
-	avatarFetcher->fetchAvatar();
+	avatarFetcher->fetchAvatar(id);
 }
 
 void GaduAvatarService::uploadAvatar(QImage avatar)

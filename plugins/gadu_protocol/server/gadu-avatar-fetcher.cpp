@@ -28,8 +28,8 @@
 
 #include "gadu-avatar-fetcher.h"
 
-GaduAvatarFetcher::GaduAvatarFetcher(const QString &id, QObject *parent) :
-		QObject(parent), Id(id), RedirectCount(0)
+GaduAvatarFetcher::GaduAvatarFetcher(QObject *parent) :
+		QObject(parent), RedirectCount(0)
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
 }
@@ -50,9 +50,9 @@ void GaduAvatarFetcher::failed()
 	deleteLater();
 }
 
-void GaduAvatarFetcher::fetchAvatar()
+void GaduAvatarFetcher::fetchAvatar(const QString &id)
 {
-	fetch(QString("http://avatars.gg.pl/%1").arg(Id));
+	fetch(QString("http://avatars.gg.pl/%1").arg(id));
 }
 
 void GaduAvatarFetcher::requestFinished()
