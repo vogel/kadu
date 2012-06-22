@@ -157,7 +157,7 @@ void AccountAvatarWidget::changeAvatar()
 	AvatarLabel->setMovie(WaitMovie);
 	WaitMovie->start();
 
-	Service->uploadAvatar(avatar);
+	Service->uploadAvatar(MyAccount.id(), MyAccount.password(), avatar);
 	ChangePhotoButton->setEnabled(false);
 }
 
@@ -167,7 +167,7 @@ void AccountAvatarWidget::removeAvatar()
 	AvatarLabel->setMovie(WaitMovie);
 	WaitMovie->start();
 
-	Service->uploadAvatar(QImage());
+	Service->uploadAvatar(MyAccount.id(), MyAccount.password(), QImage());
 	ChangePhotoButton->setEnabled(false);
 }
 

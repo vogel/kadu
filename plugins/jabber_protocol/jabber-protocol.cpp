@@ -84,7 +84,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	new PongServer(XmppClient->rootTask());
 
-	CurrentAvatarService = new JabberAvatarService(account, this);
+	CurrentAvatarService = new JabberAvatarService(this);
 	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(this);
 	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);

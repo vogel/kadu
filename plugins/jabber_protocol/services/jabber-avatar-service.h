@@ -38,14 +38,14 @@ class JabberAvatarService : public AvatarService
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 public:
-	explicit JabberAvatarService(Account account, QObject *parent = 0);
+	explicit JabberAvatarService(QObject *parent = 0);
 	virtual ~JabberAvatarService();
 
 	void setPepService(JabberPepService *pepService);
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
 	virtual void fetchAvatar(const QString &id, QObject *receiver);
-	virtual void uploadAvatar(QImage avatar);
+	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
 

@@ -26,28 +26,22 @@
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
-#include "accounts/account.h"
 #include "exports.h"
-#include <avatars/avatar.h>
 
-class Contact;
+class Account;
 
 class KADUAPI AvatarService : public QObject
 {
 	Q_OBJECT
 
-	Account MyAccount;
-
 public:
 	static AvatarService * fromAccount(Account account);
 
-	explicit AvatarService(Account account, QObject *parent = 0);
+	explicit AvatarService(QObject *parent = 0);
 	virtual ~AvatarService();
 
-	Account account() const;
-
 	virtual void fetchAvatar(const QString &id, QObject *receiver) = 0;
-	virtual void uploadAvatar(QImage avatar) = 0;
+	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar) = 0;
 
 signals:
 	void avatarUploaded(bool ok, QImage avatar);

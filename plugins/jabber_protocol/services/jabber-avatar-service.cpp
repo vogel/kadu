@@ -28,8 +28,8 @@
 
 #include "jabber-avatar-service.h"
 
-JabberAvatarService::JabberAvatarService(Account account, QObject *parent) :
-		AvatarService(account, parent)
+JabberAvatarService::JabberAvatarService(QObject *parent) :
+		AvatarService(parent)
 {
 }
 
@@ -58,12 +58,14 @@ void JabberAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 	avatarFetcher->fetchAvatar();
 }
 
-void JabberAvatarService::uploadAvatar(QImage avatar)
+void JabberAvatarService::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	if (account().id().isEmpty())
+	Q_UNUSED(password)
+
+	if (id.isEmpty())
 		return;
 
 	JabberAvatarUploader *avatarUploader = new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
 	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
-	avatarUploader->uploadAvatar(account().id(), avatar);
+	avatarUploader->uploadAvatar(id, avatar);
 }
