@@ -60,10 +60,10 @@ void JabberAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 
 void JabberAvatarService::uploadAvatar(QImage avatar)
 {
-	if (account().accountContact().id().isEmpty())
+	if (account().id().isEmpty())
 		return;
 
-	JabberAvatarUploader *avatarUploader = new JabberAvatarUploader(PepService.data(), VCardService.data(), account(), this);
+	JabberAvatarUploader *avatarUploader = new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
 	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
-	avatarUploader->uploadAvatar(avatar);
+	avatarUploader->uploadAvatar(account().id(), avatar);
 }

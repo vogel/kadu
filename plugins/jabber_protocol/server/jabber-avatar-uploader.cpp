@@ -45,8 +45,8 @@ QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
 	return data;
 }
 
-JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, Account account, QObject *parent) :
-		QObject(parent), PepService(pepService), VCardService(vCardService), MyAccount(account)
+JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
+		QObject(parent), PepService(pepService), VCardService(vCardService)
 {
 }
 
@@ -81,7 +81,7 @@ void JabberAvatarUploader::uploadAvatarVCard()
 		return;
 	}
 
-	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount.id(), VCardService.data(), this);
+	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(Id, VCardService.data(), this);
 	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
 	vcardUploader->uploadAvatar(UploadingAvatar);
 }
@@ -105,7 +105,7 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 	deleteLater();
 }
 
-void JabberAvatarUploader::uploadAvatar(QImage avatar)
+void JabberAvatarUploader::uploadAvatar(const QString &id, QImage avatar)
 {
 	if (!PepService && !VCardService)
 	{
@@ -114,6 +114,7 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 		return;
 	}
 
+	Id = id;
 	UploadingAvatar = createScaledAvatar(avatar);
 
 	if (PepService && PepService.data()->enabled())

@@ -23,9 +23,8 @@
 #ifndef JABBER_AVATAR_UPLOADER_H
 #define JABBER_AVATAR_UPLOADER_H
 
+#include <QtCore/QWeakPointer>
 #include <QtGui/QImage>
-
-#include "accounts/account.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -41,7 +40,7 @@ class JabberAvatarUploader : public QObject
 	QWeakPointer<JabberPepService> PepService;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
-	Account MyAccount;
+	QString Id;
 	QImage UploadingAvatar;
 
 	// http://xmpp.org/extensions/xep-0153.html
@@ -58,10 +57,10 @@ private slots:
 public:
 	static QByteArray avatarData(const QImage &avatar);
 
-	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, Account account, QObject *parent);
+	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
-	void uploadAvatar(QImage avatar);
+	void uploadAvatar(const QString &id, QImage avatar);
 
 signals:
 	void avatarUploaded(bool ok, QImage image);
