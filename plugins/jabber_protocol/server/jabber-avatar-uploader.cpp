@@ -28,7 +28,7 @@
 #include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-vcard-uploader.h"
 #include "services/jabber-pep-service.h"
-#include "jabber-protocol.h"
+#include "services/jabber-vcard-service.h"
 
 #include "jabber-avatar-uploader.h"
 
@@ -45,8 +45,8 @@ QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
 	return data;
 }
 
-JabberAvatarUploader::JabberAvatarUploader(Account account, QObject *parent) :
-		QObject(parent), MyAccount(account)
+JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, Account account, QObject *parent) :
+		QObject(parent), PepService(pepService), VCardService(vCardService), MyAccount(account)
 {
 }
 
@@ -64,25 +64,24 @@ QImage JabberAvatarUploader::createScaledAvatar(const QImage &avatarToScale)
 
 void JabberAvatarUploader::uploadAvatarPEP()
 {
-	JabberAvatarPepUploader *pepUploader = JabberAvatarPepUploader::createForAccount(MyAccount, this);
-	if (!pepUploader)
+	if (!PepService)
 		return;
 
+	JabberAvatarPepUploader *pepUploader = new JabberAvatarPepUploader(PepService.data(), this);
 	connect(pepUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(pepAvatarUploaded(bool)));
 	pepUploader->uploadAvatar(UploadingAvatar);
 }
 
 void JabberAvatarUploader::uploadAvatarVCard()
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
-	if (!protocol || !protocol->vcardService())
+	if (!VCardService)
 	{
 		deleteLater();
 		emit avatarUploaded(false, UploadingAvatar);
 		return;
 	}
 
-	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount.id(), protocol->vcardService(), this);
+	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(MyAccount.id(), VCardService.data(), this);
 	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
 	vcardUploader->uploadAvatar(UploadingAvatar);
 }
@@ -108,8 +107,7 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 
 void JabberAvatarUploader::uploadAvatar(QImage avatar)
 {
-	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(MyAccount.protocolHandler());
-	if (!protocol || !protocol->xmppClient() || !protocol->xmppClient()->rootTask())
+	if (!PepService && !VCardService)
 	{
 		deleteLater();
 		emit avatarUploaded(false, avatar);
@@ -118,7 +116,7 @@ void JabberAvatarUploader::uploadAvatar(QImage avatar)
 
 	UploadingAvatar = createScaledAvatar(avatar);
 
-	if (protocol->pepService()->enabled())
+	if (PepService && PepService.data()->enabled())
 		uploadAvatarPEP();
 	else
 		uploadAvatarVCard();

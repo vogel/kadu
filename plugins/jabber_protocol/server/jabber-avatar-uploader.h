@@ -30,9 +30,16 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+namespace XMPP { class JabberVCardService; }
+
+class JabberPepService;
+
 class JabberAvatarUploader : public QObject
 {
 	Q_OBJECT
+
+	QWeakPointer<JabberPepService> PepService;
+	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	Account MyAccount;
 	QImage UploadingAvatar;
@@ -51,7 +58,7 @@ private slots:
 public:
 	static QByteArray avatarData(const QImage &avatar);
 
-	JabberAvatarUploader(Account account, QObject *parent);
+	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, Account account, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
 	void uploadAvatar(QImage avatar);

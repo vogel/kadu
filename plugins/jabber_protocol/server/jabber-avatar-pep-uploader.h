@@ -75,19 +75,6 @@ private slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance with JabberPepService from given Account.
-	 * @param account account to assign this uploader to
-	 * @param parent QObject parent of new instance
-	 * @return instance with JabberPepService from given Account
-	 *
-	 * This static factory method creates new instance of JabberAvatarPepUploader using JabberPepService from
-	 * XMPP::JabberProtocol assigned to passed account. If account is invalid or does not have XMPP::JabberProtocol
-	 * assigned then null will be returned.
-	 */
-	static JabberAvatarPepUploader * createForAccount(const Account &account, QObject *parent);
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create instance attached to given JabberPepService.
 	 * @param pepService instance of JabberPepService
 	 * @return instance attached to given JabberPepService
