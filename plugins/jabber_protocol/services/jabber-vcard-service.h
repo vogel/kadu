@@ -41,8 +41,8 @@ class JabberVCardUpdateCallback;
 
 /**
  * @class JabberVCardService
- * @author Rafał 'Vogel' Malinowski
  * @short Service for feteching and updating VCard data.
+ * @author Rafał 'Vogel' Malinowski
  *
  * This service allows feteching and updating VCard data. Each fetch and update action require a callback object of
  * JabberVCardFetchCallback or JabberVCardUpdateCallback type. Do not destroy these objects before callback method
