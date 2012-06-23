@@ -29,6 +29,7 @@ set (protocols_MOC_SRCS
 	model/protocols-model.h
 	model/protocols-model-proxy.h
 
+	services/avatar-downloader.h
 	services/avatar-service.h
 	services/avatar-uploader.h
 	services/chat-image-service.h
