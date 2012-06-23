@@ -151,6 +151,7 @@ set (SOURCES
 	services/jabber-stream-debug-service.cpp
 	services/jabber-subscription-service.cpp
 	services/jabber-vcard-service.cpp
+	services/jabber-vcard-uploader.cpp
 
 	tasks/pep-get-task.cpp
 	tasks/pep-publish-task.cpp
@@ -220,6 +221,7 @@ set (MOC_SOURCES
 	services/jabber-stream-debug-service.h
 	services/jabber-subscription-service.h
 	services/jabber-vcard-service.h
+	services/jabber-vcard-uploader.h
 
 	tasks/pep-get-task.h
 	tasks/pep-publish-task.h
