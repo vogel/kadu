@@ -46,8 +46,11 @@ class JabberPepService;
 
 /**
  * @class JabberAvatarPepDownloader
- * @short Class for feteching one avatar for Jabber/XMPP protocol using PEP.
+ * @short Class for downloading one avatar for Jabber/XMPP protocol using PEP.
  * @author Rafał 'Vogel' Malinowski
+ *
+ * This class allows for easy download of avatar for given contact from XMPP server. New instance can be created by
+ * constructor that requires JabberPepService argument.
  */
 class JabberAvatarPepDownloader : public AvatarDownloader
 {
@@ -76,6 +79,7 @@ public:
 	virtual ~JabberAvatarPepDownloader();
 
 	virtual void downloadAvatar(const QString &id);
+
 };
 
 /**

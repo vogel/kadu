@@ -24,13 +24,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef JABBER_AVATAR_VCARD_FETCHER_H
-#define JABBER_AVATAR_VCARD_FETCHER_H
+#ifndef JABBER_AVATAR_VCARD_DOWNLOADER_H
+#define JABBER_AVATAR_VCARD_DOWNLOADER_H
 
 #include <QtGui/QPixmap>
 
 #include "protocols/services/avatar-downloader.h"
-#include <avatars/avatar.h>
 
 #include "services/jabber-vcard-fetch-callback.h"
 
@@ -41,6 +40,19 @@ namespace XMPP
 	class JabberVCardService;
 }
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberAvatarPepDownloader
+ * @short Class for downloading one avatar for Jabber/XMPP protocol using VCard.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class allows for easy download of avatar for given contact from XMPP server. New instance can be created by
+ * constructor that requires XMPP::JabberVCardService argument.
+ */
 class JabberAvatarVCardDownloader : public AvatarDownloader, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
@@ -54,6 +66,12 @@ protected:
 	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 
 public:
+	/**
+	 * @short Create new JabberAvatarVCardDownloader instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param vCardService vCard service to use in this class
+	 * @param parent QObject parent
+	 */
 	explicit JabberAvatarVCardDownloader(XMPP::JabberVCardService *vCardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardDownloader();
 
@@ -61,4 +79,8 @@ public:
 
 };
 
-#endif // JABBER_AVATAR_VCARD_FETCHER_H
+/**
+ * @}
+ */
+
+#endif // JABBER_AVATAR_VCARD_DOWNLOADER_H

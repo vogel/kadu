@@ -56,9 +56,6 @@ namespace XMPP
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * XMPP::JabberVCardService argument.
- *
- * After creating call uploadAvatar() to send new avatar and wait for avatarUploaded() signal to be emited. This class will
- * delete itself after emiting avatarUploaded() signal.
  */
 class JabberAvatarVCardUploader : public AvatarUploader, public XMPP::JabberVCardFetchCallback, public XMPP::JabberVCardUpdateCallback
 {

@@ -43,7 +43,7 @@ class JabberPepService;
 /**
  * @class JabberAvatarUploader
  * @author Rafał 'Vogel' Malinowski
- * @short Uploads avatar to XMPP server using VCard or Pep.
+ * @short Uploads avatar to XMPP server using PEP or VCard.
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
@@ -75,11 +75,17 @@ private slots:
 	void avatarUploadedSlot(bool ok);
 
 public:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Return image data as PNG byte array.
+	 * @param avatar avatar image to convert
+	 * @return image data as PNG byte array
+	 */
 	static QByteArray avatarData(const QImage &avatar);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given JabberAvatarUploader.
+	 * @short Create instance attached to given services.
 	 * @param pepService instance of JabberPepService
 	 * @param vCardService instance of XMPP::JabberVCardService
 	 * @param parent QObject parent

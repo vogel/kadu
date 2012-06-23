@@ -38,7 +38,7 @@ class AvatarUploader;
 
 /**
  * @class AvatarService
- * @short Service for feteching and uploading avatars.
+ * @short Service for downloading and uploading avatars.
  * @author Rafał 'Vogel' Malinowski
  *
  * This service can return AvatarDownloader and AvatarUploader instances that can be used to download and upload

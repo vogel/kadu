@@ -46,13 +46,10 @@ class JabberPepService;
 /**
  * @class JabberAvatarPepUploader
  * @author Rafał 'Vogel' Malinowski
- * @short Uploads avatar to XMPP server using Pep.
+ * @short Uploads avatar to XMPP server using PEP.
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * JabberPepService argument.
- *
- * After creating call uploadAvatar() to send new avatar and wait for avatarUploaded() signal to be emited. This class will
- * delete itself after emiting avatarUploaded() signal.
  */
 class JabberAvatarPepUploader : public AvatarUploader
 {
@@ -66,6 +63,9 @@ class JabberAvatarPepUploader : public AvatarUploader
 
 	void doUpload(const QByteArray &data);
 	void doRemove();
+
+	void done();
+	void failed();
 
 private slots:
 	void publishSuccess(const QString &ns, const XMPP::PubSubItem &item);
@@ -82,9 +82,6 @@ public:
 	virtual ~JabberAvatarPepUploader();
 
 	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
-
-signals:
-	void avatarUploaded(bool ok);
 
 };
 

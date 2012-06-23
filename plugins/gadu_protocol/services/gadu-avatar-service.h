@@ -31,15 +31,17 @@
 
 /**
  * @class GaduAvatarService
- * @short Service for feteching and uploading avatars for Gadu-Gadu protocol.
+ * @short Service for downloading and uploading avatars for Gadu-Gadu protocol.
  * @see AvatarService
  * @author Rafał 'Vogel' Malinowski
  *
  * See documentation of AvatarService to get general information about this service.
  *
- * GaduAvatarService does not require any protocol data or session as uses HTTP communication channel instead
- * of GaduGadu one. Fetching avatars is possible without any authorization. Uploading avatar is done with
+ * GaduAvatarService does not require any protocol data or session as it uses HTTP communication channel instead
+ * of Gadu Gadu one. Downloading avatars is possible without any authorization. Uploading avatar is done with
  * OAuth authorization on http://avatars.nowe.gg/upload webservice.
+ *
+ * Both AvatarDownloader and AvatarUploader instances are available at any time.
  */
 class GaduAvatarService : public AvatarService
 {

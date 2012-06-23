@@ -38,18 +38,21 @@ class JabberPepService;
 
 /**
  * @class JabberAvatarService
- * @short Service for feteching and uploading avatars for XMPP/Jabber protocol.
+ * @short Service for downloading and uploading avatars for XMPP/Jabber protocol.
  * @see AvatarService
  * @author Rafał 'Vogel' Malinowski
  *
  * See documentation of AvatarService to get general information about this service.
  *
- * JabberAvatarService can use JabberPepService or XMPP::JabberVCardService to do its job depending on
- * server capabilities. Usign PEP is preffered method, but VCard will be used if server does not provide
- * this or if JabberPepService is not provided.
+ * JabberAvatarService uses JabberPepService or XMPP::JabberVCardService to create AvatarDownloader and
+ * AvatarUploader instances.
  *
- * When neither JabberPepService nor XMPP::JabberVCardService are provided this service will fail on
- * every operation. Use setPepService() and/or setVCardService() to set these services.
+ * When neither JabberPepService nor XMPP::JabberVCardService are provided this service will return null
+ * AvatarDownloader and AvatarUploader instances. If only one service is available then proper downloader and
+ * uploader will be returned. In case both are available then returned instance will try to use PEP protocol
+ * first, then VCard in case PEP fails.
+ *
+ * Use setPepService() and/or setVCardService() to set these services.
  */
 class JabberAvatarService : public AvatarService
 {

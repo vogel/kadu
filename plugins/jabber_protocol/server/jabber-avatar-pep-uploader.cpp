@@ -48,6 +48,18 @@ JabberAvatarPepUploader::~JabberAvatarPepUploader()
 {
 }
 
+void JabberAvatarPepUploader::done()
+{
+	emit avatarUploaded(true, UploadedAvatar);
+	deleteLater();
+}
+
+void JabberAvatarPepUploader::failed()
+{
+	emit avatarUploaded(false, UploadedAvatar);
+	deleteLater();
+}
+
 void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubSubItem &item)
 {
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
@@ -55,17 +67,13 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 
 	if (!PepService || !PepService.data()->xmppClient())
 	{
-		emit avatarUploaded(false);
-
-		deleteLater();
+		failed();
 		return;
 	}
 
 	if (UploadedAvatar.isNull()) // avatar was removed
 	{
-		emit avatarUploaded(true);
-
-		deleteLater();
+		done();
 		return;
 	}
 
@@ -84,9 +92,7 @@ void JabberAvatarPepUploader::publishSuccess(const QString &ns, const XMPP::PubS
 
 	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaElement));
 
-	emit avatarUploaded(true);
-
-	deleteLater();
+	done();
 }
 
 void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSubItem &item)
@@ -94,9 +100,7 @@ void JabberAvatarPepUploader::publishError(const QString &ns, const XMPP::PubSub
 	if ((XMLNS_DATA != ns && XMLNS_METADATA != ns) || item.id() != ItemId)
 		return; // not our data
 
-	emit avatarUploaded(false);
-
-	deleteLater();
+	failed();
 }
 
 void JabberAvatarPepUploader::doUpload(const QByteArray &data)

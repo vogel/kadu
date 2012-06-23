@@ -45,8 +45,8 @@ class QNetworkReply;
  * @see AvatarUploader
  * @author Rafał 'Vogel' Malinowski
  *
- * Fetching avatars in Gadu Gadu protocol is done by sending seriees of HTTP requests that are authenticated without
- * OAuth protocol. Providing user id and password is required to do this operation.
+ * Uploading avatar in Gadu Gadu protocol is done by sending seriees of HTTP requests that are authenticated with
+ * OAuth protocol. User id and password are required to do this operation.
  */
 class GaduAvatarUploader : public AvatarUploader
 {
