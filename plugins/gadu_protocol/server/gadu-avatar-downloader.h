@@ -70,7 +70,7 @@ public:
 	explicit GaduAvatarDownloader(QObject *parent = 0);
 	virtual ~GaduAvatarDownloader();
 
-	void downloadAvatar(const QString &id);
+	virtual void downloadAvatar(const QString &id);
 
 };
 

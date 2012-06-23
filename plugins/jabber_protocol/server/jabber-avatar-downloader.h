@@ -23,14 +23,15 @@
 #ifndef JABBER_AVATAR_FETCHER_H
 #define JABBER_AVATAR_FETCHER_H
 
-#include <QtCore/QBuffer>
-#include <QtGui/QPixmap>
+#include <QtCore/QWeakPointer>
+
+#include "protocols/services/avatar-downloader.h"
 
 namespace XMPP { class JabberVCardService; }
 
 class JabberPepService;
 
-class JabberAvatarFetcher : public QObject
+class JabberAvatarDownloader : public AvatarDownloader
 {
 	Q_OBJECT
 
@@ -40,21 +41,18 @@ class JabberAvatarFetcher : public QObject
 
 	void failed();
 
-	void fetchAvatarPEP();
-	void fetchAvatarVCard();
+	void downloadAvatarPEP();
+	void downloadAvatarVCard();
 
 private slots:
-	void pepAvatarFetched(bool ok, QPixmap avatar);
-	void avatarFetchedSlot(bool ok, QPixmap avatar);
+	void pepAvatarDownloaded(bool ok, QImage avatar);
+	void vCardAvatarDownloaded(bool ok, QImage avatar);
 
 public:
-	explicit JabberAvatarFetcher(const QString &id, JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
-	virtual ~JabberAvatarFetcher();
+	explicit JabberAvatarDownloader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
+	virtual ~JabberAvatarDownloader();
 
-	void fetchAvatar();
-
-signals:
-	void avatarFetched(bool ok, QPixmap avatar);
+	virtual void downloadAvatar(const QString &id);
 
 };
 

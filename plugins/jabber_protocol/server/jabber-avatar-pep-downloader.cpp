@@ -28,34 +28,34 @@
 #include "services/jabber-pep-service.h"
 #include "base64.h"
 
-#include "jabber-avatar-pep-fetcher.h"
+#include "jabber-avatar-pep-downloader.h"
 
 #define XMLNS_AVATAR_DATA "urn:xmpp:avatar:data"
 #define XMLNS_AVATAR_METADATA "urn:xmpp:avatar:metadata"
 #define NS_AVATAR_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 
-JabberAvatarPepFetcher::JabberAvatarPepFetcher(JabberPepService *pepService, QObject *parent) :
-		QObject(parent), PepService(pepService)
+JabberAvatarPepDownloader::JabberAvatarPepDownloader(JabberPepService *pepService, QObject *parent) :
+		AvatarDownloader(parent), PepService(pepService)
 {
 }
 
-JabberAvatarPepFetcher::~JabberAvatarPepFetcher()
+JabberAvatarPepDownloader::~JabberAvatarPepDownloader()
 {
 }
 
-void JabberAvatarPepFetcher::done(QPixmap avatar)
+void JabberAvatarPepDownloader::done(QImage avatar)
 {
-	emit avatarFetched(true, avatar);
+	emit avatarDownloaded(true, avatar);
 	deleteLater();
 }
 
-void JabberAvatarPepFetcher::failed()
+void JabberAvatarPepDownloader::failed()
 {
-	emit avatarFetched(false, QPixmap());
+	emit avatarDownloaded(false, QImage());
 	deleteLater();
 }
 
-void JabberAvatarPepFetcher::fetchAvatar(const QString &id)
+void JabberAvatarPepDownloader::downloadAvatar(const QString &id)
 {
 	Id = id;
 
@@ -72,7 +72,7 @@ void JabberAvatarPepFetcher::fetchAvatar(const QString &id)
 	discoItems->go(true);
 }
 
-void JabberAvatarPepFetcher::discoItemsFinished()
+void JabberAvatarPepDownloader::discoItemsFinished()
 {
 	if (!PepService || !PepService.data()->xmppClient() || !PepService.data()->enabled())
 	{
@@ -101,7 +101,7 @@ void JabberAvatarPepFetcher::discoItemsFinished()
 	PepService.data()->get(Id, XMLNS_AVATAR_METADATA, "");
 }
 
-void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
+void JabberAvatarPepDownloader::avatarMetadataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
 {
 	if (jid.bare() != Id || node != XMLNS_AVATAR_METADATA)
 		return; // not our data :(
@@ -109,7 +109,7 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 	AvatarId = item.id();
 	if (AvatarId == "current") // removed
 	{
-		done(QPixmap());
+		done(QImage());
 		return;
 	}
 
@@ -124,17 +124,14 @@ void JabberAvatarPepFetcher::avatarMetadataQueryFinished(const XMPP::Jid &jid, c
 	PepService.data()->get(Id, XMLNS_AVATAR_DATA, AvatarId);
 }
 
-void JabberAvatarPepFetcher::avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
+void JabberAvatarPepDownloader::avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item)
 {
 	if (jid.bare() != Id || node != XMLNS_AVATAR_DATA || item.id() != AvatarId)
 		return; // not our data :(
 
 	QByteArray imageData = XMPP::Base64::decode(item.payload().text());
-
-	QPixmap pixmap;
-
 	if (!imageData.isEmpty())
-		pixmap.loadFromData(imageData);
-
-	done(pixmap);
+		done(QImage::fromData(imageData));
+	else
+		done(QImage());
 }

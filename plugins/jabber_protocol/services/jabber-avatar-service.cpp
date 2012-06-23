@@ -21,9 +21,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "server/jabber-avatar-fetcher.h"
+#include "server/jabber-avatar-downloader.h"
+#include "server/jabber-avatar-pep-downloader.h"
 #include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-uploader.h"
+#include "server/jabber-avatar-vcard-downloader.h"
 #include "server/jabber-avatar-vcard-uploader.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
@@ -51,7 +53,13 @@ void JabberAvatarService::setVCardService(XMPP::JabberVCardService *vCardService
 
 AvatarDownloader * JabberAvatarService::createAvatarDownloader()
 {
-	return 0;
+	if (!PepService.data() && !VCardService.data())
+		return 0;
+	if (PepService.data() && !VCardService.data())
+		return new JabberAvatarPepDownloader(PepService.data(), this);
+	if (!PepService.data() && VCardService.data())
+		return new JabberAvatarVCardDownloader(VCardService.data(), this);
+	return new JabberAvatarDownloader(PepService.data(), VCardService.data(), this);
 }
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()

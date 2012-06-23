@@ -28,38 +28,38 @@
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 
-#include "jabber-avatar-vcard-fetcher.h"
+#include "jabber-avatar-vcard-downloader.h"
 
-JabberAvatarVCardFetcher::JabberAvatarVCardFetcher(const QString &id, XMPP::JabberVCardService *vCardService, QObject *parent) :
-		QObject(parent), Id(id), VCardService(vCardService)
+JabberAvatarVCardDownloader::JabberAvatarVCardDownloader(XMPP::JabberVCardService *vCardService, QObject *parent) :
+		AvatarDownloader(parent), VCardService(vCardService)
 {
 }
 
-JabberAvatarVCardFetcher::~JabberAvatarVCardFetcher()
+JabberAvatarVCardDownloader::~JabberAvatarVCardDownloader()
 {
 }
 
-void JabberAvatarVCardFetcher::done(QPixmap avatar)
+void JabberAvatarVCardDownloader::done(QImage avatar)
 {
-	emit avatarFetched(true, avatar);
+	emit avatarDownloaded(true, avatar);
 	deleteLater();
 }
 
-void JabberAvatarVCardFetcher::failed()
+void JabberAvatarVCardDownloader::failed()
 {
-	emit avatarFetched(false, QPixmap());
+	emit avatarDownloaded(false, QImage());
 	deleteLater();
 }
 
-void JabberAvatarVCardFetcher::fetchAvatar()
+void JabberAvatarVCardDownloader::downloadAvatar(const QString &id)
 {
 	if (VCardService)
-		VCardService.data()->fetch(Id, this);
+		VCardService.data()->fetch(id, this);
 	else
 		failed();
 }
 
-void JabberAvatarVCardFetcher::vCardFetched(bool ok, const XMPP::VCard &vCard)
+void JabberAvatarVCardDownloader::vCardFetched(bool ok, const XMPP::VCard &vCard)
 {
 	if (!ok)
 	{
@@ -67,8 +67,5 @@ void JabberAvatarVCardFetcher::vCardFetched(bool ok, const XMPP::VCard &vCard)
 		return;
 	}
 
-	QPixmap pixmap;
-	pixmap.loadFromData(vCard.photo());
-
-	done(pixmap);
+	done(QImage::fromData(vCard.photo()));
 }

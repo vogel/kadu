@@ -29,6 +29,9 @@
 
 #include <QtGui/QPixmap>
 
+#include "protocols/services/avatar-downloader.h"
+#include <avatars/avatar.h>
+
 #include "services/jabber-vcard-fetch-callback.h"
 
 namespace XMPP
@@ -38,27 +41,23 @@ namespace XMPP
 	class JabberVCardService;
 }
 
-class JabberAvatarVCardFetcher : public QObject, public XMPP::JabberVCardFetchCallback
+class JabberAvatarVCardDownloader : public AvatarDownloader, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
 
-	QString Id;
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
-	void done(QPixmap avatar);
+	void done(QImage avatar);
 	void failed();
 
 protected:
 	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
 
 public:
-	explicit JabberAvatarVCardFetcher(const QString &id, XMPP::JabberVCardService *vCardService, QObject *parent = 0);
-	virtual ~JabberAvatarVCardFetcher();
+	explicit JabberAvatarVCardDownloader(XMPP::JabberVCardService *vCardService, QObject *parent = 0);
+	virtual ~JabberAvatarVCardDownloader();
 
-	void fetchAvatar();
-
-signals:
-	void avatarFetched(bool ok, QPixmap avatar);
+	virtual void downloadAvatar(const QString &id);
 
 };
 

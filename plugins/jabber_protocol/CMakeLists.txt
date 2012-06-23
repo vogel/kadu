@@ -128,11 +128,11 @@ set (SOURCES
 	resource/jabber-resource.cpp
 	resource/jabber-resource-pool.cpp
 
-	server/jabber-avatar-fetcher.cpp
-	server/jabber-avatar-pep-fetcher.cpp
+	server/jabber-avatar-downloader.cpp
+	server/jabber-avatar-pep-downloader.cpp
 	server/jabber-avatar-pep-uploader.cpp
 	server/jabber-avatar-uploader.cpp
-	server/jabber-avatar-vcard-fetcher.cpp
+	server/jabber-avatar-vcard-downloader.cpp
 	server/jabber-avatar-vcard-uploader.cpp
 	server/jabber-server-change-password.cpp
 	server/jabber-server-register-account.cpp
@@ -197,11 +197,11 @@ set (MOC_SOURCES
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h
 
-	server/jabber-avatar-fetcher.h
-	server/jabber-avatar-pep-fetcher.h
+	server/jabber-avatar-downloader.h
+	server/jabber-avatar-pep-downloader.h
 	server/jabber-avatar-pep-uploader.h
 	server/jabber-avatar-uploader.h
-	server/jabber-avatar-vcard-fetcher.h
+	server/jabber-avatar-vcard-downloader.h
 	server/jabber-avatar-vcard-uploader.h
 	server/jabber-server-change-password.h
 	server/jabber-server-register-account.h
