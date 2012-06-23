@@ -23,6 +23,7 @@
 #include <xmpp_vcard.h>
 
 #include "services/jabber-vcard-service.h"
+#include "services/jabber-vcard-uploader.h"
 #include "jabber-protocol.h"
 
 #include "jabber-personal-info-service.h"
@@ -102,10 +103,12 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 
 	vcard.setUrl(CurrentBuddy.website());
 
-	VCardService.data()->update(jid, vcard, this);
-}
+	JabberVCardUploader *vCardUploader = VCardService.data()->createVCardUploader();
+	if (!vCardUploader)
+	{
+		emit personalInfoUpdated(false);
+		return;
+	}
 
-void JabberPersonalInfoService::vcardUpdated(bool ok)
-{
-	emit personalInfoUpdated(ok);
+	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 }

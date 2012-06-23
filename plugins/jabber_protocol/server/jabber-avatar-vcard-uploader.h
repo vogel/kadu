@@ -36,7 +36,6 @@
 #include "protocols/services/avatar-uploader.h"
 
 #include "services/jabber-vcard-fetch-callback.h"
-#include "services/jabber-vcard-update-callback.h"
 
 namespace XMPP
 {
@@ -57,7 +56,7 @@ namespace XMPP
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * XMPP::JabberVCardService argument.
  */
-class JabberAvatarVCardUploader : public AvatarUploader, public XMPP::JabberVCardFetchCallback, public XMPP::JabberVCardUpdateCallback
+class JabberAvatarVCardUploader : public AvatarUploader, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
 
@@ -69,9 +68,11 @@ class JabberAvatarVCardUploader : public AvatarUploader, public XMPP::JabberVCar
 	void done();
 	void failed();
 
+private slots:
+	void vCardUploaded(bool ok);
+
 protected:
 	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
-	virtual void vcardUpdated(bool ok);
 
 public:
 	/**

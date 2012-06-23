@@ -28,7 +28,6 @@
 #include "protocols/services/personal-info-service.h"
 
 #include "services/jabber-vcard-fetch-callback.h"
-#include "services/jabber-vcard-update-callback.h"
 
 namespace XMPP
 {
@@ -36,7 +35,7 @@ namespace XMPP
 	class JabberVCardService;
 }
 
-class JabberPersonalInfoService : public PersonalInfoService, public XMPP::JabberVCardFetchCallback, public XMPP::JabberVCardUpdateCallback
+class JabberPersonalInfoService : public PersonalInfoService, public XMPP::JabberVCardFetchCallback
 {
 	Q_OBJECT
 
@@ -45,7 +44,6 @@ class JabberPersonalInfoService : public PersonalInfoService, public XMPP::Jabbe
 
 protected:
 	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
-	virtual void vcardUpdated(bool ok);
 
 public:
 	explicit JabberPersonalInfoService(QObject *parent = 0);

@@ -24,6 +24,7 @@
 
 #include "server/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-service.h"
+#include "services/jabber-vcard-uploader.h"
 #include "jabber-protocol.h"
 
 #include "jabber-avatar-vcard-uploader.h"
@@ -81,10 +82,18 @@ void JabberAvatarVCardUploader::vCardFetched(bool ok, const XMPP::VCard &vCard)
 	XMPP::VCard updatedVCard = vCard;
 	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
-	VCardService.data()->update(MyJid, updatedVCard, this);
+	JabberVCardUploader *vCardUploader = VCardService.data()->createVCardUploader();
+	if (!vCardUploader)
+	{
+		failed();
+		return;
+	}
+
+	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SLOT(vCardUploaded(bool)));
+	vCardUploader->uploadVCard(MyJid.bare(), updatedVCard);
 }
 
-void JabberAvatarVCardUploader::vcardUpdated(bool ok)
+void JabberAvatarVCardUploader::vCardUploaded(bool ok)
 {
 	if (ok)
 		done();

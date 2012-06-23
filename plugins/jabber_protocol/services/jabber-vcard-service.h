@@ -23,6 +23,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QWeakPointer>
 
+class JabberVCardUploader;
+
 namespace XMPP
 {
 
@@ -32,7 +34,6 @@ class JT_VCard;
 class VCard;
 
 class JabberVCardFetchCallback;
-class JabberVCardUpdateCallback;
 
 /**
  * @addtogroup Jabber
@@ -56,11 +57,9 @@ class JabberVCardService : public QObject
 
 	QWeakPointer<XMPP::Client> XmppClient;
 	QMap<JT_VCard *, JabberVCardFetchCallback *> FetchCallbacks;
-	QMap<JT_VCard *, JabberVCardUpdateCallback *> UpdateCallbacks;
 
 private slots:
 	void fetched();
-	void updated();
 
 public:
 	/**
@@ -102,18 +101,17 @@ public:
 	void fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *callback);
 
 	/**
+	 * @short Get JabberVCardUploader for this service.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Update VCard data for given jid.
-	 * @param jid jid to update data for
-	 * @param vCard new VCard data for given jid
-	 * @param callback callback object will receive finished notification
+	 * @return JabberVCardUploader for this service
 	 *
-	 * This method will do nothing if no callback object is provided. If no valid XMPP::Client is availabe
-	 * then this emthod will fail immediately and notify callback object.
+	 * This method will create and return JabberVCardUploader class that can be used to upload new VCard for account owner.
+	 * This method can return null if it is impossible to upload an VCard.
 	 *
-	 * In other cases a new task will be send to XMPP server and notification will be issued after it is finished.
+	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+	 * itself after one use, so next instance should be created in case first upload fails.
 	 */
-	void update(const XMPP::Jid &jid, XMPP::VCard vCard, JabberVCardUpdateCallback *callback);
+	JabberVCardUploader * createVCardUploader();
 
 };
 
