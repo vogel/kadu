@@ -38,8 +38,8 @@ class JabberPepService;
 
 /**
  * @class JabberAvatarDownloader
- * @author Rafał 'Vogel' Malinowski
  * @short Downloads avatar from XMPP server using PEP or VCard.
+ * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy download of avatar from XMPP server. New instance can be created by constructor that requires
  * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail

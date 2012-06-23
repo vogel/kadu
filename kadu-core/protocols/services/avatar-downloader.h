@@ -29,8 +29,8 @@
  */
 
 /**
- * @class AvatarUploader
- * @short Class for donwloading avatars.
+ * @class AvatarDownloader
+ * @short Class for downloading avatars.
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for downloading one avatar. To do that attach slot to avatarDownloaded() signal and call downloadAvatar()

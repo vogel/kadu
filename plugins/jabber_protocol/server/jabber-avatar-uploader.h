@@ -42,8 +42,8 @@ class JabberPepService;
 
 /**
  * @class JabberAvatarUploader
- * @author Rafał 'Vogel' Malinowski
  * @short Uploads avatar to XMPP server using PEP or VCard.
+ * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
