@@ -82,8 +82,8 @@ void JabberAvatarUploader::uploadAvatarVCard()
 	}
 
 	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(VCardService.data(), this);
-	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
-	vcardUploader->uploadAvatar(Id, UploadingAvatar);
+	connect(vcardUploader, SIGNAL(avatarUploaded(bool,QImage)), this, SLOT(avatarUploadedSlot(bool)));
+	vcardUploader->uploadAvatar(Id, Password, UploadingAvatar);
 }
 
 void JabberAvatarUploader::pepAvatarUploaded(bool ok)
@@ -107,8 +107,6 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 
 void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	Q_UNUSED(password)
-
 	if (!PepService && !VCardService)
 	{
 		deleteLater();
@@ -117,6 +115,7 @@ void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &passwo
 	}
 
 	Id = id;
+	Password = password;
 	UploadingAvatar = createScaledAvatar(avatar);
 
 	if (PepService && PepService.data()->enabled())

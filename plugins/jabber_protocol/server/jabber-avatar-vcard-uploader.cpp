@@ -34,7 +34,7 @@
 #define MAX_AVATAR_DIMENSION 96
 
 JabberAvatarVCardUploader::JabberAvatarVCardUploader(XMPP::JabberVCardService *vcardService, QObject *parent) :
-		QObject(parent), VCardService(vcardService)
+		AvatarUploader(parent), VCardService(vcardService)
 {
 }
 
@@ -44,19 +44,21 @@ JabberAvatarVCardUploader::~JabberAvatarVCardUploader()
 
 void JabberAvatarVCardUploader::done()
 {
-	emit avatarUploaded(true);
+	emit avatarUploaded(true, UploadedAvatar);
 	deleteLater();
 }
 
 void JabberAvatarVCardUploader::failed()
 {
-	emit avatarUploaded(false);
+	emit avatarUploaded(false, UploadedAvatar);
 	deleteLater();
 }
 
-void JabberAvatarVCardUploader::uploadAvatar(const XMPP::Jid &jid, const QImage &avatar)
+void JabberAvatarVCardUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	MyJid = jid;
+	Q_UNUSED(password)
+
+	MyJid = id;
 	UploadedAvatar = avatar;
 
 	if (!VCardService)

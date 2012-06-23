@@ -60,6 +60,7 @@ class JabberAvatarUploader : public AvatarUploader
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 
 	QString Id;
+	QString Password;
 	QImage UploadingAvatar;
 
 	// http://xmpp.org/extensions/xep-0153.html
