@@ -81,9 +81,9 @@ void JabberAvatarUploader::uploadAvatarVCard()
 		return;
 	}
 
-	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(Id, VCardService.data(), this);
+	JabberAvatarVCardUploader *vcardUploader = new JabberAvatarVCardUploader(VCardService.data(), this);
 	connect(vcardUploader, SIGNAL(avatarUploaded(bool)), this, SLOT(avatarUploadedSlot(bool)));
-	vcardUploader->uploadAvatar(UploadingAvatar);
+	vcardUploader->uploadAvatar(Id, UploadingAvatar);
 }
 
 void JabberAvatarUploader::pepAvatarUploaded(bool ok)

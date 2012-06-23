@@ -33,8 +33,8 @@
 #define NS_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 #define MAX_AVATAR_DIMENSION 96
 
-JabberAvatarVCardUploader::JabberAvatarVCardUploader(const XMPP::Jid &jid, XMPP::JabberVCardService *vcardService, QObject *parent) :
-		QObject(parent), MyJid(jid), VCardService(vcardService)
+JabberAvatarVCardUploader::JabberAvatarVCardUploader(XMPP::JabberVCardService *vcardService, QObject *parent) :
+		QObject(parent), VCardService(vcardService)
 {
 }
 
@@ -54,8 +54,9 @@ void JabberAvatarVCardUploader::failed()
 	deleteLater();
 }
 
-void JabberAvatarVCardUploader::uploadAvatar(const QImage &avatar)
+void JabberAvatarVCardUploader::uploadAvatar(const XMPP::Jid &jid, const QImage &avatar)
 {
+	MyJid = jid;
 	UploadedAvatar = avatar;
 
 	if (!VCardService)
