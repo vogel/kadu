@@ -23,7 +23,8 @@
 #ifndef JABBER_AVATAR_SERVICE_H
 #define JABBER_AVATAR_SERVICE_H
 
-#include "contacts/contact.h"
+#include <QtCore/QWeakPointer>
+
 #include "protocols/services/avatar-service.h"
 
 namespace XMPP { class JabberVCardService; }
@@ -80,7 +81,7 @@ public:
 	 */
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
-	virtual void fetchAvatar(const QString &id, QObject *receiver);
+	virtual AvatarDownloader * createAvatarDownloader();
 	virtual AvatarUploader * createAvatarUploader();
 
 };

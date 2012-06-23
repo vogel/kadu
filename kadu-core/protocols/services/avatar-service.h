@@ -24,11 +24,11 @@
 #define AVATAR_SERVICE_H
 
 #include <QtCore/QObject>
-#include <QtGui/QPixmap>
 
 #include "exports.h"
 
 class Account;
+class AvatarDownloader;
 class AvatarUploader;
 
 /**
@@ -41,14 +41,8 @@ class AvatarUploader;
  * @short Service for feteching and uploading avatars.
  * @author Rafał 'Vogel' Malinowski
  *
- * This service has two functions. It allows fetching avatars of known buddies and uploading own avatar.
- *
- * To fetch avatar of known buddy call fetchAvatar() method and pass an object that has avatarFetched(bool ok, QPixmap avatar)
- * slot. When fetching is done this slot will be called. First parameter is success state - if true, then fetching
- * was successfull. Second argument is fetched avatar data.
- *
- * To upload own avatar call uploadAvatar() method. It requires login id and login password parameters, as well as
- * avatar image data. When uploading is done avatarUploaded() signal will be emitted.
+ * This service can return AvatarDownloader and AvatarUploader instances that can be used to download and upload
+ * avatars. If for some reason these operations are not available, null values will be returned.
  */
 class KADUAPI AvatarService : public QObject
 {
@@ -68,22 +62,17 @@ public:
 	static AvatarService * fromAccount(Account account);
 
 	/**
-	 * @short Fetch avatar for buddy with given id.
+	 * @short Get AvatarDownloader for this service.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of buddy to get avatar for
-	 * @param receiver object with avatarFetched(bool ok,QPixmap avatar) that will be notified of finished task
+	 * @return AvatarDownloader for this service
 	 *
-	 * This method will start fetching avatar for buddy with given id. When this task is finished receiver object
-	 * will be informed of that by calling its avatarFetched(bool ok, QPixmap avatar). First parameter of this slot
-	 * is success state - if true, then fetching was successfull. Second argument is fetched avatar data.
+	 * This method will create and return AvatarDownloader class that can be used to download avatar for a contact.
+	 * This method can return null if it is impossible to download an avatar.
 	 *
-	 * Nothing will happen when receiver object is null or when id is empty. When given buddy does not have an
-	 * avatar then ok parameter will be true and avatar will be empty. If fetching fails for whatever reason
-	 * then ok parameter will be false.
-	 *
-	 * It is not possible for now to get reason of failure.
+	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+	 * itself after one use, so next instance should be created in case first upload fails.
 	 */
-	virtual void fetchAvatar(const QString &id, QObject *receiver) = 0;
+	virtual AvatarDownloader * createAvatarDownloader() = 0;
 
 	/**
 	 * @short Get AvatarUploader for this service.

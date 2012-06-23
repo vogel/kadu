@@ -21,7 +21,7 @@
 
 #include <QtXml/QDomDocument>
 
-#include "server/gadu-avatar-fetcher.h"
+#include "server/gadu-avatar-downloader.h"
 #include "server/gadu-avatar-uploader.h"
 
 #include "gadu-avatar-service.h"
@@ -35,15 +35,9 @@ GaduAvatarService::~GaduAvatarService()
 {
 }
 
-void GaduAvatarService::fetchAvatar(const QString &id, QObject *receiver)
+AvatarDownloader * GaduAvatarService::createAvatarDownloader()
 {
-	if (id.isEmpty() || !receiver)
-		return;
-
-	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(bool,QPixmap)),
-			receiver, SLOT(avatarFetched(bool,QPixmap)));
-	avatarFetcher->fetchAvatar(id);
+	return new GaduAvatarDownloader(this);
 }
 
 AvatarUploader * GaduAvatarService::createAvatarUploader()

@@ -22,8 +22,8 @@
 
 #include "avatars/avatar-manager.h"
 #include "avatars/avatar.h"
-#include "contacts/contact.h"
 #include "protocols/protocol.h"
+#include "protocols/services/avatar-downloader.h"
 #include "protocols/services/avatar-service.h"
 
 #include "avatar-job-runner.h"
@@ -48,14 +48,24 @@ void AvatarJobRunner::runJob()
 		return;
 	}
 
-	service->fetchAvatar(MyContact.id(), this);
+	AvatarDownloader *avatarDownloader = service->createAvatarDownloader();
+	if (!avatarDownloader)
+	{
+		emit jobFinished(false);
+		deleteLater();
+
+		return;
+	}
+
+	connect(avatarDownloader, SIGNAL(avatarDownloaded(bool,QImage)), this, SLOT(avatarDownloaded(bool,QImage)));
+	avatarDownloader->downloadAvatar(MyContact.id());
 
 	Timer = new QTimer(this);
 	connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
 	Timer->start(15000);
 }
 
-void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar)
+void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
 {
 	if (Timer)
 		Timer->stop();
@@ -63,7 +73,7 @@ void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar)
 	Avatar contactAvatar = AvatarManager::instance()->byContact(MyContact, ActionCreateAndAdd);
 	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
 	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-	contactAvatar.setPixmap(avatar);
+	contactAvatar.setPixmap(QPixmap::fromImage(avatar));
 
 	emit jobFinished(ok);
 	deleteLater();
@@ -71,10 +81,6 @@ void AvatarJobRunner::avatarFetched(bool ok, QPixmap avatar)
 
 void AvatarJobRunner::timeout()
 {
-	AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
-	if (service)
-		disconnect(service, 0, this, 0);
-
 	emit jobFinished(false);
 	deleteLater();
 }

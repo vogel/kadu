@@ -67,7 +67,7 @@ set (SOURCES
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
-	server/gadu-avatar-fetcher.cpp
+	server/gadu-avatar-downloader.cpp
 	server/gadu-avatar-uploader.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -128,7 +128,7 @@ set (MOC_SOURCES
 	oauth/oauth-manager.h
 	oauth/oauth-token-fetcher.h
 
-	server/gadu-avatar-fetcher.h
+	server/gadu-avatar-downloader.h
 	server/gadu-avatar-uploader.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h

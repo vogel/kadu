@@ -24,38 +24,36 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-#include "accounts/account.h"
+#include "gadu-avatar-downloader.h"
 
-#include "gadu-avatar-fetcher.h"
-
-GaduAvatarFetcher::GaduAvatarFetcher(QObject *parent) :
-		QObject(parent), RedirectCount(0)
+GaduAvatarDownloader::GaduAvatarDownloader(QObject *parent) :
+		AvatarDownloader(parent), RedirectCount(0)
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
 }
 
-GaduAvatarFetcher::~GaduAvatarFetcher()
+GaduAvatarDownloader::~GaduAvatarDownloader()
 {
 }
 
-void GaduAvatarFetcher::done(QPixmap avatar)
+void GaduAvatarDownloader::done(QImage avatar)
 {
-	emit avatarFetched(true, avatar);
+	emit avatarDownloaded(true, avatar);
 	deleteLater();
 }
 
-void GaduAvatarFetcher::failed()
+void GaduAvatarDownloader::failed()
 {
-	emit avatarFetched(false, QPixmap());
+	emit avatarDownloaded(false, QImage());
 	deleteLater();
 }
 
-void GaduAvatarFetcher::fetchAvatar(const QString &id)
+void GaduAvatarDownloader::downloadAvatar(const QString &id)
 {
 	fetch(QString("http://avatars.gg.pl/%1").arg(id));
 }
 
-void GaduAvatarFetcher::requestFinished()
+void GaduAvatarDownloader::requestFinished()
 {
 	QVariant redirect = Reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
 	Reply->deleteLater();
@@ -77,7 +75,7 @@ void GaduAvatarFetcher::requestFinished()
 	fetch(redirect.toString());
 }
 
-void GaduAvatarFetcher::fetch(const QString &url)
+void GaduAvatarDownloader::fetch(const QString &url)
 {
 	QNetworkRequest request;
 	request.setUrl(url);
@@ -86,13 +84,12 @@ void GaduAvatarFetcher::fetch(const QString &url)
 	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
-void GaduAvatarFetcher::parseReply()
+void GaduAvatarDownloader::parseReply()
 {
 	QByteArray data = Reply->readAll();
 
-	QPixmap pixmap;
 	if (!data.isEmpty())
-		pixmap.loadFromData(data);
-
-	done(pixmap);
+		done(QImage::fromData(data));
+	else
+		done(QImage());
 }

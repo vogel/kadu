@@ -54,7 +54,7 @@ public:
 	explicit GaduAvatarService(QObject *parent = 0);
 	virtual ~GaduAvatarService();
 
-	virtual void fetchAvatar(const QString &id, QObject *receiver);
+	virtual AvatarDownloader * createAvatarDownloader();
 	virtual AvatarUploader * createAvatarUploader();
 
 };

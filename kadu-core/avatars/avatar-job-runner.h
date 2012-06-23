@@ -44,6 +44,7 @@ class KADUAPI AvatarJobRunner : public QObject
 	QTimer *Timer;
 
 private slots:
+	void avatarDownloaded(bool ok , QImage avatar);
 	void timeout();
 
 public:
@@ -51,9 +52,6 @@ public:
 	virtual ~AvatarJobRunner();
 
 	void runJob();
-
-public slots:
-	void avatarFetched(bool ok, QPixmap avatar);
 
 signals:
 	void jobFinished(bool ok);
