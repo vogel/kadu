@@ -29,6 +29,7 @@
 #include <QtGui/QImage>
 
 #include "oauth/oauth-token.h"
+#include "protocols/services/avatar-uploader.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -41,18 +42,13 @@ class QNetworkReply;
 /**
  * @class GaduAvatarUploader
  * @short Class for uploading avatar for Gadu Gadu protocol.
+ * @see AvatarUploader
  * @author Rafał 'Vogel' Malinowski
- *
- * This class allows for uploading avatar for Gadu Gadu protocol. To do that attach slot to avatarUploaded()
- * signal and call uploadAvatar() method. After avatar is downloaded avatarUploaded() signal is emitted and this
- * object deletes itself.
  *
  * Fetching avatars in Gadu Gadu protocol is done by sending seriees of HTTP requests that are authenticated without
  * OAuth protocol. Providing user id and password is required to do this operation.
- *
- * Signal avatarUploaded() is emitted with success flag and uploaded avatar image.
  */
-class GaduAvatarUploader : public QObject
+class GaduAvatarUploader : public AvatarUploader
 {
 	Q_OBJECT
 
@@ -75,30 +71,7 @@ public:
 	explicit GaduAvatarUploader(QObject *parent = 0);
 	virtual ~GaduAvatarUploader();
 
-	/**
-	 * @short Uploads avatar with given authentication data.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of contact to upload avatar for
-	 * @param password password of contact to upload avatar for
-	 * @param avatar avatar to upload
-	 *
-	 * Before calling this method attach to avatarUploaded() signal to get informed about result. Please
-	 * note that this method can be only called once. After that this object emits avatarUploaded() and
-	 * deletes itself.
-	 */
-	void uploadAvatar(const QString &id, const QString &password, QImage avatar);
-
-signals:
-	/**
-	 * @short Signal emitted when job of this class is done.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param ok success flag
-	 * @param avatar uploaded avatar
-	 *
-	 * If ok is true then avatar uploading was successfull. If ok is false then operation failed.
-	 * Second parameter is always the same as avatar passed to uploadAvatar() method.
-	 */
-	void avatarUploaded(bool ok, QImage avatar);
+	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
 

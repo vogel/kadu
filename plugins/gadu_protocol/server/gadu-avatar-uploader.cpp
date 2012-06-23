@@ -35,7 +35,7 @@
 #include "gadu-avatar-uploader.h"
 
 GaduAvatarUploader::GaduAvatarUploader(QObject *parent) :
-		QObject(parent)
+		AvatarUploader(parent)
 {
 	NetworkAccessManager = new QNetworkAccessManager(this);
 	Reply = 0;
