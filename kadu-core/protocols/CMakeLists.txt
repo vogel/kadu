@@ -30,6 +30,7 @@ set (protocols_MOC_SRCS
 	model/protocols-model-proxy.h
 
 	services/avatar-service.h
+	services/avatar-uploader.h
 	services/chat-image-service.h
 	services/chat-service.h
 	services/chat-state-service.h
