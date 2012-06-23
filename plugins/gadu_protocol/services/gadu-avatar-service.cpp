@@ -46,12 +46,7 @@ void GaduAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 	avatarFetcher->fetchAvatar(id);
 }
 
-void GaduAvatarService::uploadAvatar(const QString &id, const QString &password, QImage avatar)
+AvatarUploader * GaduAvatarService::createAvatarUploader()
 {
-	if (id.isEmpty())
-		return;
-
-	GaduAvatarUploader *avatarUploader = new GaduAvatarUploader(this);
-	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
-	avatarUploader->uploadAvatar(id, password, avatar);
+	return new GaduAvatarUploader(this);
 }

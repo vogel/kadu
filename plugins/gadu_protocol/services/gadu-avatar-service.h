@@ -55,7 +55,7 @@ public:
 	virtual ~GaduAvatarService();
 
 	virtual void fetchAvatar(const QString &id, QObject *receiver);
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
+	virtual AvatarUploader * createAvatarUploader();
 
 };
 

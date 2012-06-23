@@ -58,12 +58,7 @@ void JabberAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 	avatarFetcher->fetchAvatar();
 }
 
-void JabberAvatarService::uploadAvatar(const QString &id, const QString &password, QImage avatar)
+AvatarUploader * JabberAvatarService::createAvatarUploader()
 {
-	if (id.isEmpty())
-		return;
-
-	JabberAvatarUploader *avatarUploader = new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
-	connect(avatarUploader, SIGNAL(avatarUploaded(bool, QImage)), this, SIGNAL(avatarUploaded(bool, QImage)));
-	avatarUploader->uploadAvatar(id, password, avatar);
+	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
 }

@@ -32,6 +32,7 @@
 #include "protocols/protocols-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
+#include "protocols/services/avatar-uploader.h"
 
 #include "account-avatar-widget.h"
 
@@ -111,10 +112,7 @@ void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 	setEnabled(0 != Service);
 
 	if (Service)
-	{
-		connect(Service, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
 		connect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
-	}
 }
 
 void AccountAvatarWidget::protocolUnregistered(ProtocolFactory *protocolFactory)
@@ -143,6 +141,25 @@ void AccountAvatarWidget::changeButtonClicked()
 		changeAvatar();
 }
 
+void AccountAvatarWidget::uploadAvatar(QImage avatar)
+{
+	AvatarLabel->setScaledContents(false);
+	AvatarLabel->setMovie(WaitMovie);
+	WaitMovie->start();
+
+	AvatarUploader *uploader = Service->createAvatarUploader();
+	if (!uploader)
+	{
+		avatarUploaded(false, QImage());
+		return;
+	}
+
+	connect(uploader, SIGNAL(avatarUploaded(bool,QImage)), this, SLOT(avatarUploaded(bool,QImage)));
+	uploader->uploadAvatar(MyAccount.id(), MyAccount.password(), avatar);
+
+	ChangePhotoButton->setEnabled(false);
+}
+
 void AccountAvatarWidget::changeAvatar()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"), QString(), tr("Images (*.jpeg *.jpg *.png);;All Files (*)"));
@@ -153,22 +170,12 @@ void AccountAvatarWidget::changeAvatar()
 	if (avatar.isNull())
 		return;
 
-	AvatarLabel->setScaledContents(false);
-	AvatarLabel->setMovie(WaitMovie);
-	WaitMovie->start();
-
-	Service->uploadAvatar(MyAccount.id(), MyAccount.password(), avatar);
-	ChangePhotoButton->setEnabled(false);
+	uploadAvatar(avatar);
 }
 
 void AccountAvatarWidget::removeAvatar()
 {
-	AvatarLabel->setScaledContents(false);
-	AvatarLabel->setMovie(WaitMovie);
-	WaitMovie->start();
-
-	Service->uploadAvatar(MyAccount.id(), MyAccount.password(), QImage());
-	ChangePhotoButton->setEnabled(false);
+	uploadAvatar(QImage());
 }
 
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)

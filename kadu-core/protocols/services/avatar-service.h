@@ -29,6 +29,7 @@
 #include "exports.h"
 
 class Account;
+class AvatarUploader;
 
 /**
  * @addtogroup Protocol
@@ -85,33 +86,17 @@ public:
 	virtual void fetchAvatar(const QString &id, QObject *receiver) = 0;
 
 	/**
-	 * @short Uploads avatar for self.
+	 * @short Get AvatarUploader for this service.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param id login id
-	 * @param password login password
-	 * @param avatar avatar to upload
+	 * @return AvatarUploader for this service
 	 *
-	 * This method will start uploading avatar for account owner. When this task is finished avatarUploaded() slot
-	 * will be emitted. If no id provided then nothing will happen.
+	 * This method will create and return AvatarUploader class that can be used to upload new avatar for account owner.
+	 * This method can return null if it is impossible to upload an avatar.
 	 *
-	 * When avatar is empty then it will be removed from server. In other cases, it will be updated. Some protocols
-	 * may resize or modify avatar in other way before uploading. Modified version will be returned in avatarUploaded()
-	 * signal.
+	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+	 * itself after one use, so next instance should be created in case first upload fails.
 	 */
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar) = 0;
-
-signals:
-	/**
-	 * @short Signal emitted when uploading of avatar has finished.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param ok success flag
-	 * @param avatar uploaded avatar
-	 *
-	 * This Signal emitted when uploading of avatar has finished. If ok parameter is true then uploading was successfull.
-	 * Uploaded image is passed back as avatar parameter. It can be different than avatar passed in uploadAvatar() method
-	 * if resizing or other modifications were required.
-	 */
-	void avatarUploaded(bool ok, QImage avatar);
+	virtual AvatarUploader * createAvatarUploader() = 0;
 
 };
 

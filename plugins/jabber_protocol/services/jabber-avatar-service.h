@@ -81,7 +81,7 @@ public:
 	void setVCardService(XMPP::JabberVCardService *vCardService);
 
 	virtual void fetchAvatar(const QString &id, QObject *receiver);
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
+	virtual AvatarUploader * createAvatarUploader();
 
 };
 

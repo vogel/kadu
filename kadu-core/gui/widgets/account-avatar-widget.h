@@ -57,6 +57,7 @@ class KADUAPI AccountAvatarWidget : public QWidget
 	void createGui();
 	void setupMode();
 
+	void uploadAvatar(QImage avatar);
 	void changeAvatar();
 	void removeAvatar();
 
