@@ -34,7 +34,7 @@
 #define XMLNS_DATA "urn:xmpp:avatar:data"
 
 JabberAvatarPepUploader::JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent) :
-		QObject(parent), PepService(pepService)
+		AvatarUploader(parent), PepService(pepService)
 {
 	Q_ASSERT(PepService.data());
 
@@ -131,8 +131,11 @@ void JabberAvatarPepUploader::doRemove()
 	PepService.data()->publish(XMLNS_METADATA, XMPP::PubSubItem(ItemId, metaDataElement));
 }
 
-void JabberAvatarPepUploader::uploadAvatar(const QImage &avatar)
+void JabberAvatarPepUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
+	Q_UNUSED(id)
+	Q_UNUSED(password)
+
 	UploadedAvatar = avatar;
 
 	if (!UploadedAvatar.isNull())
