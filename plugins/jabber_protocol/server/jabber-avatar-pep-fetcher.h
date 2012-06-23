@@ -38,6 +38,25 @@ namespace XMPP
 
 class JabberPepService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberAvatarPepFetcher
+ * @short Class for feteching one avatar for Jabber/XMPP protocol.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class allows for fetching one avatar for Jabber/XMPP protocol. To do that attach slot to avatarFetched()
+ * signal and call fetchAvatar() method. After avatar is downloaded avatarFetched() signal is emitted and this
+ * object deletes itself.
+ *
+ * Avatar is fetched using PEP protocol provyded by JabberPepService.
+ *
+ * If avatarFetched() is emitted with success flag and empty avatar then it is assumed that there is no avatar
+ * for given user id.
+ */
 class JabberAvatarPepFetcher : public QObject
 {
 	Q_OBJECT
@@ -55,14 +74,44 @@ private slots:
 	void avatarDataQueryFinished(const XMPP::Jid &jid, const QString &node, const XMPP::PubSubItem &item);
 
 public:
-	explicit JabberAvatarPepFetcher(const QString &id, JabberPepService *pepService, QObject *parent = 0);
+	/**
+	 * @short Create new GaduAvatarFetcher instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param pepService pep service to use in this class
+	 * @param parent QObject parent
+	 */
+	explicit JabberAvatarPepFetcher(JabberPepService *pepService, QObject *parent = 0);
 	virtual ~JabberAvatarPepFetcher();
 
-	void fetchAvatar();
+	/**
+	 * @short Fetch avatar for contact with given id.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id of contact to fetch avatar for
+	 *
+	 * Before calling this method attach to avatarFetched() signal to get informed about result. Please
+	 * note that this method can be only called once. After that this object emits avatarFetched() and
+	 * deletes itself.
+	 */
+	void fetchAvatar(const QString &id);
 
 signals:
+	/**
+	 * @short Signal emitted when job of this class is done.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param ok success flag
+	 * @param avatar downloaded avatar
+	 *
+	 * If ok is true then avatar is set to new avatar of given contact. If it is empty then contact does not
+	 * have an avatar.
+	 *
+	 * If ok is false then operation failed and passed avatar is empty.
+	 */
 	void avatarFetched(bool ok, QPixmap avatar);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // JABBER_AVATAR_PEP_FETCHER_H

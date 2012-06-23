@@ -34,8 +34,8 @@
 #define XMLNS_AVATAR_METADATA "urn:xmpp:avatar:metadata"
 #define NS_AVATAR_DATA "http://www.xmpp.org/extensions/xep-0084.html#ns-data"
 
-JabberAvatarPepFetcher::JabberAvatarPepFetcher(const QString &id, JabberPepService *pepService, QObject *parent) :
-		QObject(parent), PepService(pepService), Id(id)
+JabberAvatarPepFetcher::JabberAvatarPepFetcher(JabberPepService *pepService, QObject *parent) :
+		QObject(parent), PepService(pepService)
 {
 }
 
@@ -55,8 +55,10 @@ void JabberAvatarPepFetcher::failed()
 	deleteLater();
 }
 
-void JabberAvatarPepFetcher::fetchAvatar()
+void JabberAvatarPepFetcher::fetchAvatar(const QString &id)
 {
+	Id = id;
+
 	if (!PepService || !PepService.data()->xmppClient() || !PepService.data()->enabled())
 	{
 		failed();

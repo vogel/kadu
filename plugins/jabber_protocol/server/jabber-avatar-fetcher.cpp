@@ -52,9 +52,9 @@ void JabberAvatarFetcher::fetchAvatarPEP()
 		return;
 	}
 
-	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(Id, PepService.data(), this);
+	JabberAvatarPepFetcher *pepFetcher = new JabberAvatarPepFetcher(PepService.data(), this);
 	connect(pepFetcher, SIGNAL(avatarFetched(bool,QPixmap)), this, SLOT(pepAvatarFetched(bool,QPixmap)));
-	pepFetcher->fetchAvatar();
+	pepFetcher->fetchAvatar(Id);
 }
 
 void JabberAvatarFetcher::fetchAvatarVCard()
