@@ -22,7 +22,9 @@
  */
 
 #include "server/jabber-avatar-fetcher.h"
+#include "server/jabber-avatar-pep-uploader.h"
 #include "server/jabber-avatar-uploader.h"
+#include "server/jabber-avatar-vcard-uploader.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
 
@@ -60,5 +62,11 @@ void JabberAvatarService::fetchAvatar(const QString &id, QObject *receiver)
 
 AvatarUploader * JabberAvatarService::createAvatarUploader()
 {
+	if (!PepService.data() && !VCardService.data())
+		return 0;
+	if (PepService.data() && !VCardService.data())
+		return new JabberAvatarPepUploader(PepService.data(), this);
+	if (!PepService.data() && VCardService.data())
+		return new JabberAvatarVCardUploader(VCardService.data(), this);
 	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
 }
