@@ -76,6 +76,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create instance attached to given JabberPepService.
 	 * @param pepService instance of JabberPepService
+	 * @param parent QObject parent
 	 */
 	explicit JabberAvatarPepUploader(JabberPepService *pepService, QObject *parent);
 	virtual ~JabberAvatarPepUploader();

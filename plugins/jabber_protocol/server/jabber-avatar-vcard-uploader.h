@@ -80,6 +80,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create instance attached to given XMPP::JabberVCardService.
 	 * @param vcardService instance of XMPP::JabberVCardService
+	 * @param parent QObject parent
 	 */
 	explicit JabberAvatarVCardUploader(XMPP::JabberVCardService *vcardService, QObject *parent = 0);
 	virtual ~JabberAvatarVCardUploader();

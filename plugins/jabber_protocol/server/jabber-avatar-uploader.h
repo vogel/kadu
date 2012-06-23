@@ -33,6 +33,26 @@ namespace XMPP { class JabberVCardService; }
 
 class JabberPepService;
 
+/**
+ * @addtogroup Jabber
+ * @{
+ */
+
+/**
+ * @class JabberAvatarUploader
+ * @author Rafał 'Vogel' Malinowski
+ * @short Uploads avatar to XMPP server using VCard or Pep.
+ *
+ * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
+ * JabberPepService and XMPP::JabberVCardService arguments. If both services are null then this class will always fail
+ * to do it job. If one is provided then it will be used to upload avatar. If both are provided then PEP service will
+ * be used and VCard only when PEP service is not enabled or when it failed.
+ *
+ * This class internally used JabberAvatarPepUploader and JabberAvatarVCardUploader.
+ *
+ * After creating call uploadAvatar() to send new avatar and wait for avatarUploaded() signal to be emited. This class will
+ * delete itself after emiting avatarUploaded() signal.
+ */
 class JabberAvatarUploader : public QObject
 {
 	Q_OBJECT
@@ -57,14 +77,45 @@ private slots:
 public:
 	static QByteArray avatarData(const QImage &avatar);
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create instance attached to given JabberAvatarUploader.
+	 * @param pepService instance of JabberPepService
+	 * @param vCardService instance of XMPP::JabberVCardService
+	 * @param parent QObject parent
+	 */
 	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Uploads avatar to server.
+	 * @param jid jid of account owner
+	 * @param avatar avatar to upload
+	 *
+	 * Avatar can be null. In that case, avatar will be deleted from server.
+	 * After uploading avatarUploaded() signal is emited and this instance is destroyed.
+	 *
+	 * This method can be called only once per instance. Behaviour on second call is undefined.
+	 */
 	void uploadAvatar(const QString &id, QImage avatar);
 
 signals:
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emited after upload is finished.
+	 * @param ok result of upload
+	 *
+	 * If ok is true then uploading/deleting avatar was successfull. If not, then it failed.
+	 *
+	 * After this signal is emited instance is no longer available, as this class destroys itself.
+	 */
 	void avatarUploaded(bool ok, QImage image);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // JABBER_AVATAR_UPLOADER_H
