@@ -46,7 +46,7 @@ namespace XMPP
  */
 
 /**
- * @class JabberAvatarPepDownloader
+ * @class JabberAvatarVCardDownloader
  * @short Class for downloading one avatar for Jabber/XMPP protocol using VCard.
  * @author Rafał 'Vogel' Malinowski
  *
