@@ -24,7 +24,7 @@
 #include <QtGui/QImage>
 
 /**
- * @addtogroup Gadu
+ * @addtogroup Protocol
  * @{
  */
 
@@ -66,7 +66,8 @@ signals:
 	 * @param avatar uploaded avatar
 	 *
 	 * If ok is true then avatar uploading was successfull. If ok is false then operation failed.
-	 * Second parameter is always the same as avatar passed to uploadAvatar() method.
+	 * Second parameter is version of avatar that was uploaded. Some protocols may require resizing or
+	 * other operations that change avatar before uploading.
 	 */
 	void avatarUploaded(bool ok, QImage avatar);
 };
@@ -75,4 +76,4 @@ signals:
  * @}
  */
 
-#endif //  AVATAR_UPLOADER_H
+#endif // AVATAR_UPLOADER_H
