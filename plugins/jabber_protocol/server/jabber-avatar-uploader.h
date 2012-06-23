@@ -26,6 +26,8 @@
 #include <QtCore/QWeakPointer>
 #include <QtGui/QImage>
 
+#include "protocols/services/avatar-uploader.h"
+
 class QNetworkAccessManager;
 class QNetworkReply;
 
@@ -49,11 +51,8 @@ class JabberPepService;
  * be used and VCard only when PEP service is not enabled or when it failed.
  *
  * This class internally used JabberAvatarPepUploader and JabberAvatarVCardUploader.
- *
- * After creating call uploadAvatar() to send new avatar and wait for avatarUploaded() signal to be emited. This class will
- * delete itself after emiting avatarUploaded() signal.
  */
-class JabberAvatarUploader : public QObject
+class JabberAvatarUploader : public AvatarUploader
 {
 	Q_OBJECT
 
@@ -87,30 +86,7 @@ public:
 	JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent);
 	virtual ~JabberAvatarUploader();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Uploads avatar to server.
-	 * @param jid jid of account owner
-	 * @param avatar avatar to upload
-	 *
-	 * Avatar can be null. In that case, avatar will be deleted from server.
-	 * After uploading avatarUploaded() signal is emited and this instance is destroyed.
-	 *
-	 * This method can be called only once per instance. Behaviour on second call is undefined.
-	 */
-	void uploadAvatar(const QString &id, QImage avatar);
-
-signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited after upload is finished.
-	 * @param ok result of upload
-	 *
-	 * If ok is true then uploading/deleting avatar was successfull. If not, then it failed.
-	 *
-	 * After this signal is emited instance is no longer available, as this class destroys itself.
-	 */
-	void avatarUploaded(bool ok, QImage image);
+	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 
 };
 

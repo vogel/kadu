@@ -46,7 +46,7 @@ QByteArray JabberAvatarUploader::avatarData(const QImage &avatar)
 }
 
 JabberAvatarUploader::JabberAvatarUploader(JabberPepService *pepService, XMPP::JabberVCardService *vCardService, QObject *parent) :
-		QObject(parent), PepService(pepService), VCardService(vCardService)
+		AvatarUploader(parent), PepService(pepService), VCardService(vCardService)
 {
 }
 
@@ -105,8 +105,10 @@ void JabberAvatarUploader::avatarUploadedSlot(bool ok)
 	deleteLater();
 }
 
-void JabberAvatarUploader::uploadAvatar(const QString &id, QImage avatar)
+void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
+	Q_UNUSED(password)
+
 	if (!PepService && !VCardService)
 	{
 		deleteLater();
