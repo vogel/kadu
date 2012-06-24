@@ -37,12 +37,12 @@ class Client;
 
 /**
  * @class JabberVCardService
- * @short Service for feteching and updating VCard data.
+ * @short Service for downloading and uploading VCard data.
  * @author Rafał 'Vogel' Malinowski
  *
- * This service allows feteching and updating VCard data. Each fetch and update action require a callback object of
- * JabberVCardFetchCallback or JabberVCardUpdateCallback type. Do not destroy these objects before callback method
- * is executed.
+ * This service allows downloading and uploading VCard data. For each operation call createVCardDownloader() or
+ * createVCardUploader() and use returned object to do its job. Each returner object can be used only once. Service
+ * can return null values if given operation is not possible at time of call.
  *
  * This service requres XMPP::Client instance for connecting with server. Use setXmppClient() method to provide one.
  */
