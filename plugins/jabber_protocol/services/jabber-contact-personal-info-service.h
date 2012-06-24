@@ -46,7 +46,7 @@ public:
 	explicit JabberContactPersonalInfoService(QObject *parent = 0);
 	virtual ~JabberContactPersonalInfoService();
 
-	void setVCardService(XMPP::JabberVCardService *vcardService);
+	void setVCardService(XMPP::JabberVCardService *vCardService);
 
 	virtual void fetchPersonalInfo(Contact contact);
 

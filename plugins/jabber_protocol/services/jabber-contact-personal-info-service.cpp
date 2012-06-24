@@ -41,9 +41,9 @@ JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
 {
 }
 
-void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService *vcardService)
+void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardService)
 {
-	VCardService = vcardService;
+	VCardService = vCardService;
 }
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
@@ -53,7 +53,11 @@ void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 		return;
 
 	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	if (!vCardDownloader)
+		return;
+
 	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	vCardDownloader->downloadVCard(contact.id());
 }
 
 void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
