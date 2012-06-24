@@ -74,7 +74,7 @@ void JabberChatService::disconnectClient()
 	disconnect(XmppClient.data(), 0, this, 0);
 }
 
-void JabberChatService::setClient(Client *xmppClient)
+void JabberChatService::setXmppClient(Client *xmppClient)
 {
 	if (XmppClient)
 		disconnectClient();

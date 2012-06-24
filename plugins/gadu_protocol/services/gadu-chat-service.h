@@ -33,11 +33,14 @@
 
 class QTimer;
 
+class GaduProtocol;
+
 class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
 	gg_session *GaduSession;
+	QWeakPointer<GaduProtocol> CurrentProtocol;
 
 	QHash<int, Message> UndeliveredMessages;
 	bool ReceiveImagesDuringInvisibility;
@@ -61,6 +64,8 @@ private slots:
 public:
 	explicit GaduChatService(Protocol *protocol);
 	virtual ~GaduChatService();
+
+	void setGaduProtocol(GaduProtocol *protocol);
 
 	void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility);
 

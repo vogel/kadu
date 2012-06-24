@@ -72,6 +72,8 @@ class KADUAPI RosterService : public ProtocolService
 {
 	Q_OBJECT
 
+	QWeakPointer<Protocol> CurrentProtocol;
+
 public:
 	/**
 	 * @enum RosterState
@@ -221,6 +223,14 @@ public:
 	 */
 	explicit RosterService(Protocol *protocol);
 	virtual ~RosterService();
+
+	/**
+	 * @short Set protocol to use by this service.
+	 * @todo Switch to ConnectionService?
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param protocol protocol to bound this service to
+	 */
+	void setProtocol(Protocol *protocol);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

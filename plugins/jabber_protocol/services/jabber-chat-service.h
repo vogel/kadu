@@ -67,7 +67,7 @@ public:
 	explicit JabberChatService(JabberProtocol *protocol);
 	virtual ~JabberChatService();
 
-	void setClient(Client *xmppClient);
+	void setXmppClient(Client *xmppClient);
 
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);

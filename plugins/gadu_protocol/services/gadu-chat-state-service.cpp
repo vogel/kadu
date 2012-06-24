@@ -34,6 +34,11 @@ GaduChatStateService::~GaduChatStateService()
 {
 }
 
+void GaduChatStateService::setGaduProtocol(GaduProtocol *protocol)
+{
+	CurrentProtocol = protocol;
+}
+
 void GaduChatStateService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
@@ -70,7 +75,10 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!GaduSession)
 		return;
 
-	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
+	if (!CurrentProtocol)
+		return;
+
+	CurrentProtocol.data()->disableSocketNotifiers();
 	switch (state)
 	{
 		case StateComposing:
@@ -83,5 +91,5 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 		default:
 			break;
 	}
-	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
+	CurrentProtocol.data()->enableSocketNotifiers();
 }

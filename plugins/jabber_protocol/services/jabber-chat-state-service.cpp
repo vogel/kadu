@@ -128,7 +128,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 						? XMPP::StatePaused
 						: XMPP::StateActive);
 
-				if (protocol()->isConnected())
+				if (XmppClient.data()->isActive())
 					XmppClient.data()->sendMessage(tm);
 			}
 			m.setChatState(state);
@@ -139,7 +139,7 @@ void JabberChatStateService::setChatState(const Contact &contact, XMPP::ChatStat
 	if (m.containsEvents() || m.chatState() != XMPP::StateNone)
 	{
 		m.setType("chat");
-		if (protocol()->isConnected())
+		if (XmppClient.data()->isActive())
 			XmppClient.data()->sendMessage(m);
 	}
 

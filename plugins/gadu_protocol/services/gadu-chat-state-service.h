@@ -31,17 +31,22 @@
 
 #include "protocols/services/chat-state-service.h"
 
+class GaduProtocol;
+
 class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
 	gg_session *GaduSession;
+	QWeakPointer<GaduProtocol> CurrentProtocol;
 
 	bool SendTypingNotifications;
 
 public:
 	explicit GaduChatStateService(Protocol *parent);
 	virtual ~GaduChatStateService();
+
+	void setGaduProtocol(GaduProtocol *protocol);
 
 	virtual void sendState(const Contact &contact, State state);
 

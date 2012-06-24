@@ -58,6 +58,11 @@ GaduChatService::~GaduChatService()
 {
 }
 
+void GaduChatService::setGaduProtocol(GaduProtocol *protocol)
+{
+	CurrentProtocol = protocol;
+}
+
 void GaduChatService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
@@ -119,7 +124,9 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 	uinsCount = contacts.count();
 
-	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
+	if (CurrentProtocol)
+		CurrentProtocol.data()->disableSocketNotifiers();
+
 	int messageId = -1;
 	if (uinsCount > 1)
 	{
@@ -147,7 +154,9 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 			messageId = gg_send_message(
 					GaduSession, GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
 	}
-	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
+
+	if (CurrentProtocol)
+		CurrentProtocol.data()->enableSocketNotifiers();
 
 	if (-1 == messageId)
 		return false;
@@ -235,11 +244,14 @@ bool GaduChatService::ignoreRichText(Contact sender)
 
 bool GaduChatService::ignoreImages(Contact sender)
 {
+	if (!CurrentProtocol)
+		return true;
+
 	return sender.isAnonymous() ||
 		(
-			StatusTypeGroupOffline == protocol()->status().group() ||
+			StatusTypeGroupOffline == CurrentProtocol.data()->status().group() ||
 			(
-				(StatusTypeGroupInvisible == protocol()->status().group()) &&
+				(StatusTypeGroupInvisible == CurrentProtocol.data()->status().group()) &&
 				!ReceiveImagesDuringInvisibility
 			)
 		);

@@ -40,6 +40,11 @@ RosterService::~RosterService()
 {
 }
 
+void RosterService::setProtocol(Protocol *protocol)
+{
+	CurrentProtocol = protocol;
+}
+
 void RosterService::disconnected()
 {
 	setState(StateNonInitialized);
@@ -71,7 +76,10 @@ void RosterService::contactUpdated()
 
 bool RosterService::canPerformLocalUpdate() const
 {
-	return protocol()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
+	if (!CurrentProtocol)
+		return false;
+
+	return CurrentProtocol.data()->isConnected() && (StateInitializing != State && StateNonInitialized != State);
 }
 
 bool RosterService::canPerformRemoteUpdate(const Contact &contact) const

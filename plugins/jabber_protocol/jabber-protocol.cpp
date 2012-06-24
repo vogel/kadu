@@ -140,9 +140,10 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
 
-	chatService->setClient(XmppClient);
+	chatService->setXmppClient(XmppClient);
 	chatStateService->setClient(XmppClient);
 	rosterService->setClient(XmppClient);
+	rosterService->setProtocol(this);
 
 	connect(rosterService, SIGNAL(rosterReady(bool)),
 			this, SLOT(rosterReady(bool)));

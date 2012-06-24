@@ -28,11 +28,14 @@
 
 #include "protocols/services/roster-service.h"
 
+class GaduProtocol;
+
 class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
 	gg_session *GaduSession;
+	QWeakPointer<GaduProtocol> CurrentProtocol;
 
 	void updateFlag(int uin, int newFlags, int oldFlags, int flag) const;
 	void sendNewFlags(const Contact &contact, int newFlags) const;
@@ -45,6 +48,8 @@ public:
 
 	explicit GaduRosterService(Protocol *protocol);
 	virtual ~GaduRosterService();
+
+	void setGaduProtocol(GaduProtocol *protocol);
 
 	virtual void prepareRoster(const QVector<Contact> &contacts);
 
