@@ -23,6 +23,7 @@
 #include <xmpp_vcard.h>
 
 #include "server/jabber-avatar-uploader.h"
+#include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
 #include "jabber-protocol.h"
@@ -68,12 +69,20 @@ void JabberAvatarVCardUploader::uploadAvatar(const QString &id, const QString &p
 		return;
 	}
 
-	VCardService.data()->fetch(MyJid, this);
+	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	if (!vCardDownloader)
+	{
+		failed();
+		return;
+	}
+
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	vCardDownloader->downloadVCard(id);
 }
 
-void JabberAvatarVCardUploader::vCardFetched(bool ok, const XMPP::VCard &vCard)
+void JabberAvatarVCardUploader::vCardDownloaded(bool ok, XMPP::VCard vCard)
 {
-	if (!ok || !VCardService || !VCardService.data()->xmppClient())
+	if (!ok || !VCardService)
 	{
 		failed();
 		return;

@@ -22,6 +22,7 @@
 
 #include <xmpp_vcard.h>
 
+#include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
 #include "jabber-protocol.h"
@@ -45,11 +46,18 @@ void JabberPersonalInfoService::setVCardService(XMPP::JabberVCardService *vCardS
 void JabberPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
 	CurrentBuddy = Buddy::create();
-	if (VCardService)
-		VCardService.data()->fetch(id, this);
+	if (!VCardService)
+		return;
+
+	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	if (!vCardDownloader)
+		return;
+
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	vCardDownloader->downloadVCard(id);
 }
 
-void JabberPersonalInfoService::vCardFetched(bool ok, const XMPP::VCard &vCard)
+void JabberPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
 {
 	if (!ok)
 		return;

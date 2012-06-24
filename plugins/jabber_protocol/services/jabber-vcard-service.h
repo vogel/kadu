@@ -20,20 +20,15 @@
 #ifndef JABBER_VCARD_SERVICE_H
 #define JABBER_VCARD_SERVICE_H
 
-#include <QtCore/QMap>
 #include <QtCore/QWeakPointer>
 
+class JabberVCardDownloader;
 class JabberVCardUploader;
 
 namespace XMPP
 {
 
 class Client;
-class Jid;
-class JT_VCard;
-class VCard;
-
-class JabberVCardFetchCallback;
 
 /**
  * @addtogroup Jabber
@@ -56,10 +51,6 @@ class JabberVCardService : public QObject
 	Q_OBJECT
 
 	QWeakPointer<XMPP::Client> XmppClient;
-	QMap<JT_VCard *, JabberVCardFetchCallback *> FetchCallbacks;
-
-private slots:
-	void fetched();
 
 public:
 	/**
@@ -88,17 +79,17 @@ public:
 	XMPP::Client * xmppClient() const;
 
 	/**
+	 * @short Get JabberVCardDownloader for this service.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Fetch VCard data for given jid.
-	 * @param jid jid to fetch data for
-	 * @param callback callback object will receive finished notification
+	 * @return JabberVCardDownloader for this service
 	 *
-	 * This method will do nothing if no callback object is provided. If no valid XMPP::Client is availabe
-	 * then this emthod will fail immediately and notify callback object.
+	 * This method will create and return JabberVCardDownloader class that can be used to download VCard for any contact.
+	 * This method can return null if it is impossible to download a VCard.
 	 *
-	 * In other cases a new task will be send to XMPP server and notification will be issued after it is finished.
+	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+	 * itself after one use, so next instance should be created in case first upload fails.
 	 */
-	void fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *callback);
+	JabberVCardDownloader * createVCardDownloader();
 
 	/**
 	 * @short Get JabberVCardUploader for this service.
@@ -106,7 +97,7 @@ public:
 	 * @return JabberVCardUploader for this service
 	 *
 	 * This method will create and return JabberVCardUploader class that can be used to upload new VCard for account owner.
-	 * This method can return null if it is impossible to upload an VCard.
+	 * This method can return null if it is impossible to upload a VCard.
 	 *
 	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
 	 * itself after one use, so next instance should be created in case first upload fails.

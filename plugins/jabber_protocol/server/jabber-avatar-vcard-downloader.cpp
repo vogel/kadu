@@ -25,6 +25,7 @@
 
 #include <xmpp_vcard.h>
 
+#include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "jabber-protocol.h"
 
@@ -53,13 +54,24 @@ void JabberAvatarVCardDownloader::failed()
 
 void JabberAvatarVCardDownloader::downloadAvatar(const QString &id)
 {
-	if (VCardService)
-		VCardService.data()->fetch(id, this);
-	else
+	if (!VCardService || id.isEmpty())
+	{
 		failed();
+		return;
+	}
+
+	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	if (!vCardDownloader)
+	{
+		failed();
+		return;
+	}
+
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
+	vCardDownloader->downloadVCard(id);
 }
 
-void JabberAvatarVCardDownloader::vCardFetched(bool ok, const XMPP::VCard &vCard)
+void JabberAvatarVCardDownloader::vCardDownloaded(bool ok, XMPP::VCard vCard)
 {
 	if (!ok)
 	{

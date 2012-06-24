@@ -23,23 +23,24 @@
 #ifndef JABBER_CONTACT_PERSONAL_INFO_SERVICE_H
 #define JABBER_CONTACT_PERSONAL_INFO_SERVICE_H
 
-#include "buddies/buddy.h"
+#include <xmpp_vcard.h>
 
 #include "protocols/services/contact-personal-info-service.h"
 
-#include "services/jabber-vcard-fetch-callback.h"
+namespace XMPP
+{
+	class JabberVCardService;
+}
 
-namespace XMPP { class JabberProtocol; }
-
-class JabberContactPersonalInfoService : public ContactPersonalInfoService, public XMPP::JabberVCardFetchCallback
+class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
 	Q_OBJECT
 
 	QWeakPointer<XMPP::JabberVCardService> VCardService;
 	Buddy CurrentBuddy;
 
-protected:
-	virtual void vCardFetched(bool ok, const XMPP::VCard &vCard);
+private slots:
+	void vCardDownloaded(bool ok, XMPP::VCard vCard);
 
 public:
 	explicit JabberContactPersonalInfoService(QObject *parent = 0);

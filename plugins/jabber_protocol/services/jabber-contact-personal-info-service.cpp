@@ -27,8 +27,10 @@
 
 #include "buddies/buddy-manager.h"
 
-#include "jabber-contact-personal-info-service.h"
+#include "jabber-vcard-downloader.h"
 #include "jabber-vcard-service.h"
+
+#include "jabber-contact-personal-info-service.h"
 
 JabberContactPersonalInfoService::JabberContactPersonalInfoService(QObject *parent) :
 		ContactPersonalInfoService(parent)
@@ -47,11 +49,14 @@ void JabberContactPersonalInfoService::setVCardService(XMPP::JabberVCardService 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
 	CurrentBuddy = BuddyManager::instance()->byContact(contact, ActionCreateAndAdd);
-	if (VCardService)
-		VCardService.data()->fetch(contact.id(), this);
+	if (!VCardService)
+		return;
+
+	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,XMPP::VCard)), this, SLOT(vCardDownloaded(bool,XMPP::VCard)));
 }
 
-void JabberContactPersonalInfoService::vCardFetched(bool ok, const XMPP::VCard &vCard)
+void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCard)
 {
 	if (!ok)
 		return;

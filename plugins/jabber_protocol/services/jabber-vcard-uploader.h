@@ -41,7 +41,7 @@ namespace XMPP
  * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for uploading VCard. To do that attach slot to vCardUploaded() signal and call uploadVCard()
- * method. After VCard is downloaded vCardUploaded() signal is emitted and this object deletes itself.
+ * method. After VCard is uploaded vCardUploaded() signal is emitted and this object deletes itself.
  */
 class JabberVCardUploader : public QObject
 {
@@ -67,7 +67,7 @@ public:
 	virtual ~JabberVCardUploader();
 
 	/**
-	 * @short Uploads VCard for given id data.
+	 * @short Uploads VCard for given id.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param id id of contact to upload VCard for
 	 * @param vCard VCard to upload

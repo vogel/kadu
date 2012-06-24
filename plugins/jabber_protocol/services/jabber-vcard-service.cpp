@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <xmpp_tasks.h>
+#include <xmpp_client.h>
 
-#include "services/jabber-vcard-fetch-callback.h"
+#include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-uploader.h"
 
 #include "jabber-vcard-service.h"
@@ -46,38 +46,12 @@ Client * JabberVCardService::xmppClient() const
 	return XmppClient.data();
 }
 
-void JabberVCardService::fetch(const XMPP::Jid &jid, JabberVCardFetchCallback *callback)
+JabberVCardDownloader * JabberVCardService::createVCardDownloader()
 {
-	if (!callback)
-		return;
+	if (!XmppClient)
+		return 0;
 
-	if (!XmppClient || !XmppClient.data()->rootTask())
-	{
-		callback->vCardFetched(false, VCard());
-		return;
-	}
-
-	JT_VCard *task = new JT_VCard(XmppClient.data()->rootTask());
-	FetchCallbacks.insert(task, callback);
-
-	connect(task, SIGNAL(finished()), this, SLOT(fetched()));
-	task->get(jid);
-	task->go(true);
-}
-
-void JabberVCardService::fetched()
-{
-	JT_VCard *task = qobject_cast<JT_VCard *>(sender());
-	Q_ASSERT(task);
-	Q_ASSERT(FetchCallbacks.contains(task));
-
-	JabberVCardFetchCallback *callback = FetchCallbacks.value(task);
-	FetchCallbacks.remove(task);
-
-	if (task->success())
-		callback->vCardFetched(true, task->vcard());
-	else
-		callback->vCardFetched(false, VCard());
+	return new JabberVCardDownloader(XmppClient.data(), this);
 }
 
 JabberVCardUploader * JabberVCardService::createVCardUploader()
