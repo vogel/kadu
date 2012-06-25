@@ -26,8 +26,8 @@
 
 #include "gadu-avatar-service.h"
 
-GaduAvatarService::GaduAvatarService(QObject *parent) :
-		AvatarService(parent)
+GaduAvatarService::GaduAvatarService(Account account, QObject *parent) :
+		AvatarService(account, parent)
 {
 }
 

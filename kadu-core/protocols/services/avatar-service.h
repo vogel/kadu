@@ -23,8 +23,7 @@
 #ifndef AVATAR_SERVICE_H
 #define AVATAR_SERVICE_H
 
-#include <QtCore/QObject>
-
+#include "protocols/services/account-service.h"
 #include "exports.h"
 
 class Account;
@@ -44,12 +43,12 @@ class AvatarUploader;
  * This service can return AvatarDownloader and AvatarUploader instances that can be used to download and upload
  * avatars. If for some reason these operations are not available, null values will be returned.
  */
-class KADUAPI AvatarService : public QObject
+class KADUAPI AvatarService : public AccountService
 {
 	Q_OBJECT
 
 protected:
-	explicit AvatarService(QObject *parent = 0);
+	explicit AvatarService(Account account, QObject *parent = 0);
 	virtual ~AvatarService();
 
 public:

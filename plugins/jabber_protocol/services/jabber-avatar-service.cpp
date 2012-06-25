@@ -32,8 +32,8 @@
 
 #include "jabber-avatar-service.h"
 
-JabberAvatarService::JabberAvatarService(QObject *parent) :
-		AvatarService(parent)
+JabberAvatarService::JabberAvatarService(Account account, QObject *parent) :
+		AvatarService(account, parent)
 {
 }
 

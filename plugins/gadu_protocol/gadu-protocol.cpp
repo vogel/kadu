@@ -81,7 +81,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 {
 	kdebugf();
 
-	CurrentAvatarService = new GaduAvatarService(this);
+	CurrentAvatarService = new GaduAvatarService(account, this);
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setGaduProtocol(this);

@@ -51,9 +51,10 @@ public:
 	/**
 	 * @short Create service instance.
 	 * @author Rafał 'Vogel' Malinowski
+	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit GaduAvatarService(QObject *parent = 0);
+	explicit GaduAvatarService(Account account, QObject *parent = 0);
 	virtual ~GaduAvatarService();
 
 	virtual AvatarDownloader * createAvatarDownloader();

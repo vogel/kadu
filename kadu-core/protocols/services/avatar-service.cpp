@@ -36,8 +36,8 @@ AvatarService * AvatarService::fromAccount(Account account)
 	return protocol->avatarService();
 }
 
-AvatarService::AvatarService(QObject *parent) :
-		QObject(parent)
+AvatarService::AvatarService(Account account, QObject *parent) :
+		AccountService(account, parent)
 {
 }
 

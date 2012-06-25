@@ -65,9 +65,10 @@ public:
 	/**
 	 * @short Create service instance.
 	 * @author Rafał 'Vogel' Malinowski
+	 * @param account account of service
 	 * @param parent QObject parent of service
 	 */
-	explicit JabberAvatarService(QObject *parent = 0);
+	explicit JabberAvatarService(Account account, QObject *parent = 0);
 	virtual ~JabberAvatarService();
 
 	/**
