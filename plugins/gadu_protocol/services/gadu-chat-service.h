@@ -62,7 +62,7 @@ private slots:
 	void removeTimeoutUndeliveredMessages();
 
 public:
-	explicit GaduChatService(Protocol *protocol);
+	explicit GaduChatService(Account account, QObject *parent = 0);
 	virtual ~GaduChatService();
 
 	void setGaduProtocol(GaduProtocol *protocol);

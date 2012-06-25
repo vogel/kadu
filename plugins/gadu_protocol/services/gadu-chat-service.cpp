@@ -45,8 +45,8 @@
 #define MAX_DELIVERY_TIME 60 /*seconds*/
 #define REMOVE_TIMER_INTERVAL 1000
 
-GaduChatService::GaduChatService(Protocol *protocol) :
-		ChatService(protocol), GaduSession(0), ReceiveImagesDuringInvisibility(false)
+GaduChatService::GaduChatService(Account account, QObject *parent) :
+		ChatService(account, parent), GaduSession(0), ReceiveImagesDuringInvisibility(false)
 {
 	RemoveTimer = new QTimer(this);
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);

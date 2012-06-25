@@ -17,18 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PROTOCOL_SERVICE_H
-#define PROTOCOL_SERVICE_H
+#ifndef ACCOUNT_SERVICE_H
+#define ACCOUNT_SERVICE_H
 
 #include <QtCore/QObject>
 
-#include "buddies/buddy.h"
-#include "contacts/contact.h"
-
+#include "accounts/account.h"
 #include "exports.h"
 
-class Account;
-class Protocol;
 
 /**
  * @addtogroup Protocol
@@ -36,40 +32,27 @@ class Protocol;
  */
 
 /**
- * @class ProtocolService
+ * @class AccountService
  * @author Rafał 'Vogel' Malinowski
- * @short Generic protocol service.
+ * @short Generic account service.
  *
- * All protocol services should derive from this class.
+ * All account services should derive from this class.
  */
-class KADUAPI ProtocolService : public QObject
+class KADUAPI AccountService : public QObject
 {
 	Q_OBJECT
 
-	Protocol *CurrentProtocol;
+	Account ServiceAccount;
+
+protected:
+	explicit AccountService(Account account, QObject *parent = 0);
+	virtual ~AccountService();
 
 public:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of ProtocolService bound to given Protocol.
-	 * @param protocol protocol to bound this service to
-	 */
-	explicit ProtocolService(Protocol *protocol);
-	virtual ~ProtocolService();
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns protocol bounded with this service.
-	 * @return protocol bounded with this service
-	 */
-	Protocol * protocol() const { return CurrentProtocol; }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns account bounded with this service.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return account bounded with this service
-	 *
-	 * This is shortcut to calling protocol().account().
 	 */
 	Account account() const;
 };
@@ -78,4 +61,4 @@ public:
  * @}
  */
 
-#endif // PROTOCOL_SERVICE_H
+#endif // ACCOUNT_SERVICE_H

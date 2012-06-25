@@ -28,12 +28,10 @@
 
 #include "roster-service.h"
 
-RosterService::RosterService(Protocol *protocol) :
-		ProtocolService(protocol), State(StateNonInitialized)
+RosterService::RosterService(Account account, QObject *parent) :
+		AccountService(account, parent), State(StateNonInitialized)
 {
-	Q_ASSERT(protocol);
-
-	connect(protocol, SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
+	connect(account.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 }
 
 RosterService::~RosterService()

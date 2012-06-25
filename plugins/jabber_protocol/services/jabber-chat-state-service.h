@@ -68,7 +68,7 @@ class JabberChatStateService : public ChatStateService
 	static State xmppStateToContactState(ChatState state);
 
 public:
-	explicit JabberChatStateService(JabberProtocol *protocol);
+	explicit JabberChatStateService(Account account, QObject *parent = 0);
 	virtual ~JabberChatStateService();
 
 	virtual void sendState(const Contact &contact, State state);

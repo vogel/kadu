@@ -36,8 +36,8 @@
 namespace XMPP
 {
 
-JabberChatStateService::JabberChatStateService(JabberProtocol *protocol) :
-		ChatStateService(protocol)
+JabberChatStateService::JabberChatStateService(Account account, QObject *parent) :
+		ChatStateService(account, parent)
 {
 }
 

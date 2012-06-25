@@ -64,7 +64,7 @@ private slots:
 	void groupChatPresence(const Jid &jid, const Status &status);
 
 public:
-	explicit JabberChatService(JabberProtocol *protocol);
+	explicit JabberChatService(Account account, QObject *parent = 0);
 	virtual ~JabberChatService();
 
 	void setXmppClient(Client *xmppClient);

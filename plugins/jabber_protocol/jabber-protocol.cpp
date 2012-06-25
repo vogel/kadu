@@ -85,8 +85,8 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	new PongServer(XmppClient->rootTask());
 
 	CurrentAvatarService = new JabberAvatarService(this);
-	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(this);
-	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(this);
+	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(account, this);
+	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(account, this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 	CurrentPersonalInfoService = new JabberPersonalInfoService(this);
@@ -138,7 +138,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(chatService, SIGNAL(messageAboutToSend(Message&)),
 	        chatStateService, SLOT(handleMessageAboutToSend(Message&)));
 
-	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(this);
+	XMPP::JabberRosterService *rosterService = new XMPP::JabberRosterService(account, this);
 
 	chatService->setXmppClient(XmppClient);
 	chatStateService->setClient(XmppClient);

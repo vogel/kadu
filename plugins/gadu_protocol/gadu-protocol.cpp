@@ -83,7 +83,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentAvatarService = new GaduAvatarService(this);
 	CurrentChatImageService = new GaduChatImageService(this);
-	CurrentChatService = new GaduChatService(this);
+	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setGaduProtocol(this);
 
 	CurrentContactListService = new GaduContactListService(this);
@@ -92,13 +92,13 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 
-	CurrentChatStateService = new GaduChatStateService(this);
+	CurrentChatStateService = new GaduChatStateService(account, this);
 	CurrentChatStateService->setGaduProtocol(this);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
-	GaduRosterService *rosterService = new GaduRosterService(this);
+	GaduRosterService *rosterService = new GaduRosterService(account, this);
 	rosterService->setGaduProtocol(this);
 
 	setChatService(CurrentChatService);

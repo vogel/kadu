@@ -25,8 +25,8 @@
 
 #include "chat-service.h"
 
-ChatService::ChatService(Protocol *protocol) :
-		ProtocolService(protocol)
+ChatService::ChatService(Account account, QObject *parent) :
+		AccountService(account, parent)
 {
 }
 

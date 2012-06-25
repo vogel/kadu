@@ -25,8 +25,8 @@
 
 #include "gadu-chat-state-service.h"
 
-GaduChatStateService::GaduChatStateService(Protocol *parent) :
-		ChatStateService(parent), GaduSession(0), SendTypingNotifications(false)
+GaduChatStateService::GaduChatStateService(Account account, QObject *parent) :
+		ChatStateService(account, parent), GaduSession(0), SendTypingNotifications(false)
 {
 }
 

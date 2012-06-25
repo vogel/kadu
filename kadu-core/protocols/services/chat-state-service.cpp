@@ -19,8 +19,8 @@
 
 #include "chat-state-service.h"
 
-ChatStateService::ChatStateService(Protocol *protocol) :
-		ProtocolService(protocol)
+ChatStateService::ChatStateService(Account account, QObject *parent) :
+		AccountService(account, parent)
 {
 }
 

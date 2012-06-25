@@ -35,7 +35,7 @@
 
 #include "exports.h"
 
-#include "protocols/services/protocol-service.h"
+#include "protocols/services/account-service.h"
 
 /**
  * @addtogroup Protocol
@@ -68,7 +68,7 @@
  *
  * Signal rosterRead() is emitted after calling prepareRoster() when implementation decides that initialization was finished.
  */
-class KADUAPI RosterService : public ProtocolService
+class KADUAPI RosterService : public AccountService
 {
 	Q_OBJECT
 
@@ -218,10 +218,10 @@ protected slots:
 public:
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of RosterService bound to given Protocol.
-	 * @param protocol protocol to bound this service to
+	 * @short Create new instance of RosterService bound to given Account.
+	 * @param account to bound this service to
 	 */
-	explicit RosterService(Protocol *protocol);
+	explicit RosterService(Account account, QObject *parent = 0);
 	virtual ~RosterService();
 
 	/**

@@ -19,19 +19,19 @@
 
 #include "protocols/protocol.h"
 
-#include "protocol-service.h"
+#include "account-service.h"
 
-ProtocolService::ProtocolService(Protocol *protocol) :
-		QObject(protocol), CurrentProtocol(protocol)
+AccountService::AccountService(Account account, QObject *parent) :
+		QObject(parent), ServiceAccount(account)
 {
-	Q_ASSERT(CurrentProtocol);
+	Q_ASSERT(ServiceAccount);
 }
 
-ProtocolService::~ProtocolService()
+AccountService::~AccountService()
 {
 }
 
-Account ProtocolService::account() const
+Account AccountService::account() const
 {
-	return CurrentProtocol->account();
+	return ServiceAccount;
 }

@@ -46,7 +46,7 @@ protected:
 public:
 	static int notifyTypeFromContact(const Contact &contact);
 
-	explicit GaduRosterService(Protocol *protocol);
+	explicit GaduRosterService(Account account, QObject *parent = 0);
 	virtual ~GaduRosterService();
 
 	void setGaduProtocol(GaduProtocol *protocol);

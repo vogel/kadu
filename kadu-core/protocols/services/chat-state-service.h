@@ -25,7 +25,7 @@
 #ifndef CHAT_STATE_SERVICE_H
 #define CHAT_STATE_SERVICE_H
 
-#include "protocols/services/protocol-service.h"
+#include "protocols/services/account-service.h"
 
 #include "exports.h"
 
@@ -39,7 +39,7 @@ class Contact;
 
 /**
  * @class ChatStateService
- * @short ChatStateService protocol service allows sending and receiving information about composing state in chats.
+ * @short ChatStateService account service allows sending and receiving information about composing state in chats.
  *
  * This service allows sending and receiving information about composing state in chats. It supports several states
  * defined in ChatStateService::State enum.
@@ -47,7 +47,7 @@ class Contact;
  * One method should be overrided by subclasses: sendState(). It sends our chat state to peer. When peer changes its
  * chats state, peerStateChanged() signal is emited.
  */
-class KADUAPI ChatStateService : public ProtocolService
+class KADUAPI ChatStateService : public AccountService
 {
 	Q_OBJECT
 
@@ -86,10 +86,10 @@ public:
 	};
 
 	/**
-	 * @short Create new instance of ChatStateService bound to given Protocol.
-	 * @param protocol protocol to bound this service to
+	 * @short Create new instance of ChatStateService bound to given Account.
+	 * @param account account to bound this service to
 	 */
-	explicit ChatStateService(Protocol *protocol);
+	explicit ChatStateService(Account account, QObject *parent = 0);
 	virtual ~ChatStateService();
 
 	/**

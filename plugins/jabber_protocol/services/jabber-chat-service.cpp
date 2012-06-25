@@ -50,8 +50,8 @@
 namespace XMPP
 {
 
-JabberChatService::JabberChatService(JabberProtocol *protocol) :
-		ChatService(protocol)
+JabberChatService::JabberChatService(Account account, QObject *parent) :
+		ChatService(account, parent)
 {
 	connect(ChatManager::instance(), SIGNAL(chatOpened(Chat)), this, SLOT(chatOpened(Chat)));
 	connect(ChatManager::instance(), SIGNAL(chatClosed(Chat)), this, SLOT(chatClosed(Chat)));

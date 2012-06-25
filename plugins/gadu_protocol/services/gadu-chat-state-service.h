@@ -43,7 +43,7 @@ class GaduChatStateService : public ChatStateService
 	bool SendTypingNotifications;
 
 public:
-	explicit GaduChatStateService(Protocol *parent);
+	explicit GaduChatStateService(Account account, QObject *parent = 0);
 	virtual ~GaduChatStateService();
 
 	void setGaduProtocol(GaduProtocol *protocol);

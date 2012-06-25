@@ -4,12 +4,12 @@ set (protocols_SRCS
 	model/protocols-model.cpp
 	model/protocols-model-proxy.cpp
 
+	services/account-service.cpp
 	services/avatar-service.cpp
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp
 	services/contact-list-service.cpp
-	services/protocol-service.cpp
 	services/roster-service.cpp
 
 	services/roster/roster-entry.cpp
@@ -29,6 +29,7 @@ set (protocols_MOC_SRCS
 	model/protocols-model.h
 	model/protocols-model-proxy.h
 
+	services/account-service.h
 	services/avatar-downloader.h
 	services/avatar-service.h
 	services/avatar-uploader.h
@@ -40,7 +41,6 @@ set (protocols_MOC_SRCS
 	services/file-transfer-service.h
 	services/multilogon-service.h
 	services/personal-info-service.h
-	services/protocol-service.h
 	services/roster-service.h
 	services/search-service.h
 	services/subscription-service.h

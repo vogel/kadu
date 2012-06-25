@@ -32,7 +32,7 @@
 
 #include "exports.h"
 
-#include "protocols/services/protocol-service.h"
+#include "protocols/services/account-service.h"
 
 class Message;
 
@@ -50,7 +50,7 @@ class Message;
  *
  * One method must be reimplemented by derivered sevices: sendMessage().
  */
-class KADUAPI ChatService : public ProtocolService
+class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
@@ -58,8 +58,9 @@ public:
 	/**
 	 * @short Create new instance of ChatService bound to given Protocol.
 	 * @param protocol protocol to bound this service to
+	 * @param parent QObject parent
 	 */
-	explicit ChatService(Protocol *protocol);
+	explicit ChatService(Account account, QObject *parent = 0);
 	virtual ~ChatService();
 
 public slots:
