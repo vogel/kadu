@@ -193,9 +193,9 @@ qint64 GaduChatImageService::hardSizeLimit()
 	return ChatImageService::NoSizeLimit;
 }
 
-bool GaduChatImageService::showSoftSizeWarning(Account account)
+bool GaduChatImageService::showSoftSizeWarning()
 {
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
+	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!details)
 		return true;
 	return details->chatImageSizeWarning();

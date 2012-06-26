@@ -264,7 +264,7 @@ void ChatEditBox::openInsertImageDialog()
 			}
 			if (!chatImageService->fitsSoftSizeLimit(f.size()))
 			{
-				if (chatImageService->showSoftSizeWarning(CurrentChat.chatAccount()))
+				if (chatImageService->showSoftSizeWarning())
 				{
 					QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB.")
 							+ '\n' + tr("Do you really want to send this image?");

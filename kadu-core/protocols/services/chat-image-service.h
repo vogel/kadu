@@ -47,7 +47,7 @@ public:
 	virtual qint64 softSizeLimit() { return NoSizeLimit; }
 	bool fitsHardSizeLimit(qint64 size);
 	bool fitsSoftSizeLimit(qint64 size);
-	virtual bool showSoftSizeWarning(Account account) { Q_UNUSED(account); return true; }
+	virtual bool showSoftSizeWarning() { return true; }
 
 signals:
 	void imageReceived(const QString &id, const QString &fileName);

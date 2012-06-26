@@ -68,7 +68,7 @@ public:
 
 	virtual qint64 softSizeLimit();
 	virtual qint64 hardSizeLimit();
-	virtual bool showSoftSizeWarning(Account account);
+	virtual bool showSoftSizeWarning();
 
 };
 
