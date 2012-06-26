@@ -36,9 +36,18 @@
 
 #include "gadu-chat-image-service.h"
 
-GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
-	: ChatImageService(protocol), Protocol(protocol), CurrentMinuteSendImageRequests(0)
+GaduChatImageService::GaduChatImageService(Account account, QObject *parent) :
+		ChatImageService(account, parent), CurrentMinuteSendImageRequests(0)
 {
+}
+
+GaduChatImageService::~GaduChatImageService()
+{
+}
+
+void GaduChatImageService::setGaduProtocol(GaduProtocol *protocol)
+{
+	ServiceProtocol = protocol;
 }
 
 QString GaduChatImageService::saveImage(UinType sender, quint32 size, quint32 crc32, const char *data)
@@ -107,9 +116,12 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 			return;
 	}
 
-	Protocol->disableSocketNotifiers();
-	gg_image_reply(Protocol->gaduSession(), e->event.image_request.sender, image.fileName.toUtf8().constData(), image.content.constData(), image.content.length());
-	Protocol->enableSocketNotifiers();
+	if (ServiceProtocol)
+	{
+		ServiceProtocol.data()->disableSocketNotifiers();
+		gg_image_reply(ServiceProtocol.data()->gaduSession(), e->event.image_request.sender, image.fileName.toUtf8().constData(), image.content.constData(), image.content.length());
+		ServiceProtocol.data()->enableSocketNotifiers();
+	}
 
 	image.content.clear();
 	image.lastSent = QDateTime::currentDateTime();
@@ -134,17 +146,20 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 
 bool GaduChatImageService::sendImageRequest(Contact contact, int size, quint32 crc32)
 {
-	kdebugf();
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
+	if (!ServiceProtocol)
+		return false;
+
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
 	if (contact.isNull() ||
 			(CurrentMinuteSendImageRequests > (unsigned int)gaduAccountDetails->maximumImageRequests()))
 		return false;
 
 	CurrentMinuteSendImageRequests++;
-	Protocol->disableSocketNotifiers();
-	bool ret = (0 == gg_image_request(Protocol->gaduSession(), GaduProtocolHelper::uin(contact), size, crc32));
-	Protocol->enableSocketNotifiers();
+
+	ServiceProtocol.data()->disableSocketNotifiers();
+	bool ret = (0 == gg_image_request(ServiceProtocol.data()->gaduSession(), GaduProtocolHelper::uin(contact), size, crc32));
+	ServiceProtocol.data()->enableSocketNotifiers();
 
 	return ret;
 }

@@ -46,7 +46,7 @@ class GaduChatImageService : public ChatImageService
 	};
 	QMap<QPair<quint32, quint32>, ImageToSend> ImagesToSend;
 
-	GaduProtocol *Protocol;
+	QWeakPointer<GaduProtocol> ServiceProtocol;
 	unsigned int CurrentMinuteSendImageRequests;
 
 	QString saveImage(UinType sender, quint32 size, quint32 crc32, const char *data);
@@ -57,7 +57,10 @@ class GaduChatImageService : public ChatImageService
 	void handleEventImageReply(struct gg_event *e);
 
 public:
-	GaduChatImageService(GaduProtocol *protocol);
+	explicit GaduChatImageService(Account account, QObject *parent = 0);
+	virtual ~GaduChatImageService();
+
+	void setGaduProtocol(GaduProtocol *protocol);
 
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);

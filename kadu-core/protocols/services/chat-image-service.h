@@ -28,10 +28,10 @@
 
 #include <QtCore/QObject>
 
-#include "accounts/account.h"
+#include "protocols/services/account-service.h"
 #include "exports.h"
 
-class KADUAPI ChatImageService : public QObject
+class KADUAPI ChatImageService : public AccountService
 {
 	Q_OBJECT
 
@@ -40,7 +40,8 @@ public:
 
 	static QString imagesPath();
 
-	explicit ChatImageService(QObject *parent);
+	explicit ChatImageService(Account account, QObject *parent = 0);
+	virtual ~ChatImageService();
 
 	virtual qint64 hardSizeLimit() { return NoSizeLimit; }
 	virtual qint64 softSizeLimit() { return NoSizeLimit; }

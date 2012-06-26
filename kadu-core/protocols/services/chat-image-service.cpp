@@ -31,8 +31,12 @@ QString ChatImageService::imagesPath()
 	return KaduPaths::instance()->profilePath() + QLatin1String("images/");
 }
 
-ChatImageService::ChatImageService(QObject *parent) :
-		QObject(parent)
+ChatImageService::ChatImageService(Account account, QObject *parent) :
+		AccountService(account, parent)
+{
+}
+
+ChatImageService::~ChatImageService()
 {
 }
 

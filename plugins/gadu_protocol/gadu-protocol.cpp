@@ -79,10 +79,11 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), CurrentFileTransferService(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0)
 {
-	kdebugf();
-
 	CurrentAvatarService = new GaduAvatarService(account, this);
-	CurrentChatImageService = new GaduChatImageService(this);
+
+	CurrentChatImageService = new GaduChatImageService(account, this);
+	CurrentChatImageService->setGaduProtocol(this);
+
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setGaduProtocol(this);
 
