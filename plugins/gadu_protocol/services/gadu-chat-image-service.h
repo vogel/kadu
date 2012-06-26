@@ -31,7 +31,7 @@
 
 #include "protocols/services/chat-image-service.h"
 
-class GaduProtocol;
+class GaduConnection;
 
 class GaduChatImageService : public ChatImageService
 {
@@ -46,7 +46,7 @@ class GaduChatImageService : public ChatImageService
 	};
 	QMap<QPair<quint32, quint32>, ImageToSend> ImagesToSend;
 
-	QWeakPointer<GaduProtocol> ServiceProtocol;
+	QWeakPointer<GaduConnection> Connection;
 	unsigned int CurrentMinuteSendImageRequests;
 
 	QString saveImage(UinType sender, quint32 size, quint32 crc32, const char *data);
@@ -60,7 +60,7 @@ public:
 	explicit GaduChatImageService(Account account, QObject *parent = 0);
 	virtual ~GaduChatImageService();
 
-	void setGaduProtocol(GaduProtocol *protocol);
+	void setConnection(GaduConnection *connection);
 
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);

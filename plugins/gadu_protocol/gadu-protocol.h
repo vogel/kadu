@@ -60,6 +60,7 @@ class DccManager;
 class GaduContactDetails;
 class GaduContactListHandler;
 class GaduProtocolSocketNotifiers;
+class ProtocolGaduConnection;
 
 class GADUAPI GaduProtocol : public Protocol, public ConfigurationAwareObject
 {
@@ -87,6 +88,8 @@ public:
 	typedef unsigned int UinType;
 
 private:
+	ProtocolGaduConnection *Connection;
+
 	GaduAvatarService *CurrentAvatarService;
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;

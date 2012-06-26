@@ -64,6 +64,7 @@
 #include "debug.h"
 
 #include "server/gadu-servers-manager.h"
+#include "server/protocol-gadu-connection.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "helpers/gadu-importer.h"
@@ -79,10 +80,13 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), CurrentFileTransferService(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), SocketNotifiers(0), PingTimer(0)
 {
+	Connection = new ProtocolGaduConnection(this);
+	Connection->setConnectionProtocol(this);
+
 	CurrentAvatarService = new GaduAvatarService(account, this);
 
 	CurrentChatImageService = new GaduChatImageService(account, this);
-	CurrentChatImageService->setGaduProtocol(this);
+	CurrentChatImageService->setConnection(Connection);
 
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setGaduProtocol(this);
