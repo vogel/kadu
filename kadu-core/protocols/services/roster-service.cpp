@@ -31,7 +31,6 @@
 RosterService::RosterService(Account account, QObject *parent) :
 		AccountService(account, parent), State(StateNonInitialized)
 {
-	connect(account.protocolHandler(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 }
 
 RosterService::~RosterService()
@@ -40,7 +39,13 @@ RosterService::~RosterService()
 
 void RosterService::setProtocol(Protocol *protocol)
 {
+	if (CurrentProtocol)
+		disconnect(CurrentProtocol.data(), 0, this, 0);
+
 	CurrentProtocol = protocol;
+
+	if (CurrentProtocol)
+		connect(CurrentProtocol.data(), SIGNAL(disconnected(Account)), this, SLOT(disconnected()));
 }
 
 void RosterService::disconnected()
