@@ -33,23 +33,66 @@
 
 class Error;
 
+/**
+ * @addtogroup Protocol
+ * @{
+ */
+
+/**
+ * @class ChatImageService
+ * @short Service for handling images in chat window.
+ * @todo This is very very tightly tied to Gadu Gadu protocol. Refactor, maybe merge with ChatService.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This service supports handling images in chat window. Two main functions are: checking if image will fit
+ * in protocol - checkImageSize() and informing about received image - imageReceivedAndSaved().
+ */
 class KADUAPI ChatImageService : public AccountService
 {
 	Q_OBJECT
 
-public:
-	static const int NoSizeLimit = -1;
-
-	static QString imagesPath();
-
+protected:
 	explicit ChatImageService(Account account, QObject *parent = 0);
 	virtual ~ChatImageService();
 
+public:
+	/**
+	 * @short Return path to directory that will hold all images.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return path to directory that will hold all images
+	 */
+	static QString imagesPath();
+
+	/**
+	 * @short Check if image with given size can be sent.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param size size of image to send (in bytes)
+	 * @return information about if image with given size can be sent
+	 *
+	 * If returned Error object has severity NoError then image can be send without problems. If returned
+	 * Error object has severity ErrorLow then protocol can try to send image but it may not succeed at this.
+	 * In that case error's message should contain question to be asked to end-user. If returned Error object
+	 * has severity ErrorHigh then this image can not be send at all. It that case message should contain warning
+	 * to end-user.
+	 */
 	virtual Error checkImageSize(qint64 size) const = 0;
 
 signals:
+	/**
+	 * @short Signal emitted when image with given id was received and saved on disc.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id of received image
+	 * @param fileName file name of received image
+	 *
+	 * In Gadu-Gadu client receives information about image in form of id. It can then request other client for that
+	 * image and after it has been received it is stored on disk and then displayed in chat window.
+	 */
 	void imageReceivedAndSaved(const QString &id, const QString &fileName);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_IMAGE_SERVICE_H

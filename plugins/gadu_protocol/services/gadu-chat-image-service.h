@@ -33,6 +33,22 @@
 
 class GaduConnection;
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class GaduChatImageService
+ * @todo Refactor
+ * @short Service for downloading and uploading avatars in Gadu-Gadu protocol.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This service requries proper GaduConnection instance to work. Set it using setConnection() method.
+ *
+ * This service will only allow for some number of images sent by peers per minute to disable DOS attacks.
+ * To manually re-enable receiving images in given minute call resetSendImageRequests().
+ */
 class GaduChatImageService : public ChatImageService
 {
 	Q_OBJECT
@@ -59,17 +75,59 @@ class GaduChatImageService : public ChatImageService
 	void handleEventImageReply(struct gg_event *e);
 
 public:
+	/**
+	 * @short Create new instance of GaduChatImageService.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param account account bounded to this service
+	 * @param parent QObject parent
+	 */
 	explicit GaduChatImageService(Account account, QObject *parent = 0);
 	virtual ~GaduChatImageService();
 
+	/**
+	 * @short Set connection for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param connection connection for this service
+	 */
 	void setConnection(GaduConnection *connection);
 
+	/**
+	 * @short Reset count of received images.
+	 * @author Rafał 'Vogel' Malinowski
+	 *
+	 * Call this method to reset count of received images. This service only allows for a number of received images
+	 * in any minute to prevent DOS attacks. After reseting this value it allows for more received images.
+	 */
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
+
+	/**
+	 * @short Request for an image from contact that sent info about it before.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id id of contact that sent image info
+	 * @param size size of image received in info
+	 * @param crc32 crc32 of image received in info
+	 *
+	 * Call this method to request an image from given contact. After image is received imageReceivedAndSaved() signal is emitted.
+	 */
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);
+
+	/**
+	 * @short Caclulate size and crc32 for image with given file name.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageFileName image to calculate size and crc32 for
+	 * @param size output paramter, will contain size of provided image
+	 * @param crc32 output paramter, will contain crc32 of provided image
+	 *
+	 * Call this method to get information that need to be sent to peer in order to let him/her request real image.
+	 */
 	void prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32);
 
 	virtual Error checkImageSize(qint64 size) const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // GADU_CHAT_IMAGE_SERVICE
