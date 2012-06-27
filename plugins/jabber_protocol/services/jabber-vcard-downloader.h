@@ -36,7 +36,7 @@ namespace XMPP
  */
 
 /**
- * @class JabberVCardUploader
+ * @class JabberVCardDownaloder
  * @short Class for downloading VCard.
  * @author Rafał 'Vogel' Malinowski
  *
