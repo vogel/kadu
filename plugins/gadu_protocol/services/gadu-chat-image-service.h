@@ -53,7 +53,7 @@ class GaduChatImageService : public ChatImageService
 {
 	Q_OBJECT
 
-	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 104;
+	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 1024;
 
 	struct ImageToSend
 	{
