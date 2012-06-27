@@ -47,6 +47,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
+#include "misc/error.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "status/status-container-manager.h"
@@ -235,6 +236,10 @@ void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 
 void ChatEditBox::openInsertImageDialog()
 {
+	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
+	if (!chatImageService)
+		return;
+
 	// QTBUG-849
 	QString selectedFile = QFileDialog::getOpenFileName(this, tr("Insert image"), config_file.readEntry("Chat", "LastImagePath"),
 							tr("Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)"));
@@ -250,28 +255,22 @@ void ChatEditBox::openInsertImageDialog()
 			return;
 		}
 
-		ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
-		if (chatImageService)
+		Error imageSizeError = chatImageService->checkImageSize(f.size());
+		if (!imageSizeError.message().isEmpty())
 		{
-			if (!chatImageService->fitsHardSizeLimit(f.size()))
+			switch (imageSizeError.severity())
 			{
-				MessageDialog::show(
-						KaduIcon("dialog-error"), tr("Kadu"),
-						tr("This image has %1 KiB and exceeds the protocol limit of %2 KiB.")
-								.arg((f.size() + 1023) / 1024).arg(chatImageService->hardSizeLimit() / 1024),
-						QMessageBox::Ok, this);
-				return;
-			}
-			if (!chatImageService->fitsSoftSizeLimit(f.size()))
-			{
-				if (chatImageService->showSoftSizeWarning())
-				{
-					QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB.")
-							+ '\n' + tr("Do you really want to send this image?");
-					message = message.arg((f.size() + 1023) / 1024).arg(chatImageService->softSizeLimit() / 1024);
-					if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), message, this))
-						return;
-				}
+				case NoError:
+					break;
+				case ErrorLow:
+						if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), imageSizeError.message(), this))
+							return;
+					break;
+				case ErrorHigh:
+					MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), imageSizeError.message(), QMessageBox::Ok, this);
+					return;
+				default:
+					break;
 			}
 		}
 

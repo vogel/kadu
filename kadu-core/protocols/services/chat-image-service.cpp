@@ -39,19 +39,3 @@ ChatImageService::ChatImageService(Account account, QObject *parent) :
 ChatImageService::~ChatImageService()
 {
 }
-
-bool ChatImageService::fitsHardSizeLimit(qint64 size)
-{
-	if (NoSizeLimit == hardSizeLimit())
-		return true;
-	return size <= hardSizeLimit();
-}
-
-bool ChatImageService::fitsSoftSizeLimit(qint64 size)
-{
-	if (!fitsHardSizeLimit(size))
-		return false;
-	if (NoSizeLimit == softSizeLimit())
-		return true;
-	return size <= softSizeLimit();
-}

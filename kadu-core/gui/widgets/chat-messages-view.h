@@ -66,7 +66,7 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 private slots:
 	void repaintMessages();
-	void imageReceived(const QString &imageId, const QString &imageFileName);
+	void imageReceivedAndSaved(const QString &imageId, const QString &imageFileName);
 	void sentMessageStatusChanged(const Message &message);
 
 protected:

@@ -37,6 +37,8 @@ class GaduChatImageService : public ChatImageService
 {
 	Q_OBJECT
 
+	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 104;
+
 	struct ImageToSend
 	{
 		QString fileName;
@@ -66,9 +68,7 @@ public:
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);
 	void prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32);
 
-	virtual qint64 softSizeLimit();
-	virtual qint64 hardSizeLimit();
-	virtual bool showSoftSizeWarning();
+	virtual Error checkImageSize(qint64 size) const;
 
 };
 

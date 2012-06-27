@@ -27,6 +27,7 @@
 #include <QtCore/QFileInfo>
 
 #include "configuration/configuration-file.h"
+#include "misc/error.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -140,7 +141,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 	if (fileName.isEmpty())
 		return;
 
-	emit imageReceived(GaduFormatter::createImageId(e->event.image_reply.sender,
+	emit imageReceivedAndSaved(GaduFormatter::createImageId(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
 }
 
@@ -183,20 +184,15 @@ void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quin
 	ImagesToSend[qMakePair(size, crc32)] = imageToSend;
 }
 
-qint64 GaduChatImageService::softSizeLimit()
-{
-	return 255 * 1024;
-}
-
-qint64 GaduChatImageService::hardSizeLimit()
-{
-	return ChatImageService::NoSizeLimit;
-}
-
-bool GaduChatImageService::showSoftSizeWarning()
+Error GaduChatImageService::checkImageSize(qint64 size) const
 {
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
-	if (!details)
-		return true;
-	return details->chatImageSizeWarning();
+	if (!details || !details->chatImageSizeWarning() || size <= RECOMMENDED_MAXIMUM_SIZE)
+		return Error(NoError, QString());
+
+	QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB.") + '\n' + tr("Do you really want to send this image?");
+	message = message.arg((size + 1023) / 1024).arg(RECOMMENDED_MAXIMUM_SIZE / 1024);
+
+	return Error(ErrorLow, message);
 }
+

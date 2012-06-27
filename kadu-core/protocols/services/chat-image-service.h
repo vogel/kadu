@@ -31,6 +31,8 @@
 #include "protocols/services/account-service.h"
 #include "exports.h"
 
+class Error;
+
 class KADUAPI ChatImageService : public AccountService
 {
 	Q_OBJECT
@@ -43,18 +45,11 @@ public:
 	explicit ChatImageService(Account account, QObject *parent = 0);
 	virtual ~ChatImageService();
 
-	virtual qint64 hardSizeLimit() { return NoSizeLimit; }
-	virtual qint64 softSizeLimit() { return NoSizeLimit; }
-	bool fitsHardSizeLimit(qint64 size);
-	bool fitsSoftSizeLimit(qint64 size);
-	virtual bool showSoftSizeWarning() { return true; }
+	virtual Error checkImageSize(qint64 size) const = 0;
 
 signals:
-	void imageReceived(const QString &id, const QString &fileName);
+	void imageReceivedAndSaved(const QString &id, const QString &fileName);
 
 };
-
-// for MOC
-#include <QtCore/QString>
 
 #endif // CHAT_IMAGE_SERVICE_H
