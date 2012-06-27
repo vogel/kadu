@@ -17,47 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_SERVICE_H
-#define ACCOUNT_SERVICE_H
-
-#include <QtCore/QObject>
-
-#include "accounts/account.h"
-#include "exports.h"
+#ifndef ERROR_SEVERITY_H
+#define ERROR_SEVERITY_H
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Misc
  * @{
  */
 
 /**
- * @class AccountService
+ * @enum ErrorSeverity
+ * @short Error severity enum.
  * @author Rafał 'Vogel' Malinowski
- * @short Generic account service.
- *
- * All account services should derive from this class.
  */
-class KADUAPI AccountService : public QObject
+enum ErrorSeverity
 {
-	Q_OBJECT
-
-	Account ServiceAccount;
-
-protected:
-	explicit AccountService(Account account, QObject *parent = 0);
-	virtual ~AccountService();
-
-public:
 	/**
-	 * @short Returns account bounded with this service.
+	 * @short No error - everything is fine.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @return account bounded with this service
 	 */
-	Account account() const;
+	NoError,
+
+	/**
+	 * @short Low severity error - can be ignored.
+	 * @author Rafał 'Vogel' Malinowski
+	 */
+	ErrorLow,
+
+	/**
+	 * @short High severity error - should not be ignored.
+	 * @author Rafał 'Vogel' Malinowski
+	 */
+	ErrorHigh
 };
 
 /**
  * @}
  */
 
-#endif // ACCOUNT_SERVICE_H
+#endif // ERROR_SEVERITY_H

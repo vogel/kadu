@@ -17,47 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ACCOUNT_SERVICE_H
-#define ACCOUNT_SERVICE_H
+#include "error.h"
 
-#include <QtCore/QObject>
-
-#include "accounts/account.h"
-#include "exports.h"
-
-/**
- * @addtogroup Protocol
- * @{
- */
-
-/**
- * @class AccountService
- * @author Rafał 'Vogel' Malinowski
- * @short Generic account service.
- *
- * All account services should derive from this class.
- */
-class KADUAPI AccountService : public QObject
+Error::Error(ErrorSeverity severity, const QString &message) :
+		Severity(severity), Message(message)
 {
-	Q_OBJECT
+}
 
-	Account ServiceAccount;
+Error::Error(const Error &copyMe)
+{
+	Severity = copyMe.Severity;
+	Message = copyMe.Message;
+}
 
-protected:
-	explicit AccountService(Account account, QObject *parent = 0);
-	virtual ~AccountService();
+Error & Error::operator = (const Error &copyMe)
+{
+	Severity = copyMe.Severity;
+	Message = copyMe.Message;
 
-public:
-	/**
-	 * @short Returns account bounded with this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return account bounded with this service
-	 */
-	Account account() const;
-};
+	return *this;
+}
 
-/**
- * @}
- */
+ErrorSeverity Error::severity() const
+{
+	return Severity;
+}
 
-#endif // ACCOUNT_SERVICE_H
+QString Error::message() const
+{
+	return Message;
+}

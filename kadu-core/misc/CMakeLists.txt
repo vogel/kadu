@@ -3,6 +3,7 @@ set (misc_SRCS
 	coding-conversion.cpp
 	date-time.cpp
 	date-time-parser-tags.cpp
+	error.cpp
 	misc.cpp
 	kadu-paths.cpp
 	string-utils.cpp
