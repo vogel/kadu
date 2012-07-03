@@ -120,7 +120,7 @@ void AvatarShared::load()
 
 	if (avatarFile.exists() && avatarFile.isReadable() && avatarFile.isFile())
 	{
-		QImageReader imageReader(avatarFile.path());
+		QImageReader imageReader(avatarFile.filePath());
 		Pixmap = QPixmap::fromImageReader(&imageReader);
 	}
 
