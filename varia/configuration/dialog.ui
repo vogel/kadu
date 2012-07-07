@@ -92,7 +92,29 @@
 	</section>
 
 	<section name="Chat" icon="internet-group-chat">
-
+		<tab name="General">
+			<group-box name="Messages">
+				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
+					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Number of visible messages" />
+				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink" />
+			</group-box>
+			<group-box name="Events">
+				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
+					tool-tip="Block chat window when a new message arrives" />
+				<check-box caption="Show state notifications in chats" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
+				<check-box caption="Show state notifications in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
+				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
+				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
+				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
+					tool-tip="Display dates is descriptive format, like Today, Yesterday or Friday, 2:30PM" />
+			</group-box>
+		</tab>
+		<tab name="Look">
+			<group-box name="Style">
+				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
+				<action-button caption="Advanced..." id="lookChatAdvanced" />
+			</group-box>
+		</tab>
 	</section>
 
 	<section name="Buddies" icon="system-users">
