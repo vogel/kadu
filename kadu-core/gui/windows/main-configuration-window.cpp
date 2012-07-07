@@ -160,6 +160,7 @@ void MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler *uiHand
 
 void MainConfigurationWindow::instanceCreated()
 {
+ /*
 	// TODO: move this to separate class, like ChatStylesConfigurationUiHandler
 	// and just register it here
 	ChatStylesManager::instance()->mainConfigurationWindowCreated(Instance);
@@ -169,6 +170,7 @@ void MainConfigurationWindow::instanceCreated()
 	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
+*/
 }
 
 MainConfigurationWindow::MainConfigurationWindow() :
@@ -177,7 +179,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	setWindowRole("kadu-configuration");
 
 	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
-
+/*
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
 	widget()->widgetById("debug")->hide();
 #endif
@@ -268,8 +270,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxBlur"), SLOT(setEnabled(bool)));
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
-
-	triggerCompositingStateChanged();
+*/
+// 	triggerCompositingStateChanged();
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()

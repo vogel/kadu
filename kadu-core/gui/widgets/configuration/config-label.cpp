@@ -52,5 +52,5 @@ void ConfigLabel::createWidgets()
 
 void ConfigLabel::setText(const QString &text, bool defaultFormatting)
 {
-	QLabel::setText((defaultFormatting ? "<font size='-1'><i>" : "") + text + (defaultFormatting ? "</i></font>" : ""));
+	QLabel::setText((defaultFormatting ? "<i>" : "") + text + (defaultFormatting ? "</i>" : ""));
 }
