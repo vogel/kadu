@@ -9,6 +9,12 @@
 				<combo-box caption="Language" config-section="General" config-item="Language" id="languages" tool-tip="Choose your language" />
 				<label caption="Kadu needs to be restarted before changes to the language settings will take effect." />
 			</group-box>
+			<group-box name="Startup">
+				<check-box caption="Launch Kadu at startup" config-section="General" config-item="RunOnStartup"
+					tool-tip="Automatically open Kadu at startup" id="startup" />
+				<check-box caption="Inform about new versions of Kadu" config-section="General" config-item="CheckUpdates"
+					tool-tip="Check for updates when Kadu is opened" />
+			</group-box>
 		</tab>
 
 		<tab name="Look">
@@ -74,7 +80,6 @@
 					tool-tip="Show vertical scrollbar in information panel" />
 			</group-box>
 			<group-box name="Misc">
-				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
 				<check-box caption="Hide main window icon from taskbar" config-section="General" config-item="HideMainWindowFromTaskbar" id="hideMainWindowFromTaskbar" />
 				<combo-box caption="Select window activation method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
 					<item value="0" caption="Move the Window to the Active Desktop" />
@@ -82,11 +87,9 @@
 				</combo-box>
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" id="debug" />
 			</group-box>
-			<group-box name="Updates and Startup">
-				<check-box caption="Check for updates when Kadu is opened" config-section="General" config-item="CheckUpdates"
-					tool-tip="Check for updates when Kadu is opened" />
-				<check-box caption="Automatically open Kadu at startup" config-section="General" config-item="RunOnStartup"
-					tool-tip="Automatically open Kadu at startup" id="startup" />
+			<group-box name="Parser">
+				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
+				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" id="parseStatus" />
 			</group-box>
 		</tab>
 	</section>
@@ -117,9 +120,58 @@
 		</tab>
 	</section>
 
-	<section name="Buddies" icon="system-users">
+	<section name="Buddies list" icon="system-users">
+		<tab name="General">
+			<group-box name="Buddies window">
+				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
+					tool-tip="Displays information panel below the buddy list" />
+				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton" />
+			</group-box>
+			<group-box name="Buddy groups">
+				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
+					tool-tip="Displays group tabs on the buddy list" />
+				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
+			</group-box>
+			<group-box name="Filters">
+				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />
+				<check-box caption="Show buddies that are ignored" config-section="General" config-item="ShowBlocked" />
+				<check-box caption="Show buddies which are blocking me" config-section="General" config-item="ShowBlocking" />
+			</group-box>
+		</tab>
+		<tab name="Look">
+			<group-box name="Buddy Photos">
+				<check-box caption="Show buddies' photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
+				<check-box caption="Add border to buddies' photos" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
+				<check-box caption="Grey out offline buddies' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut"
+					tool-tip="Buddies who are offline will have their photos greyed out" />
+			</group-box>
+			<group-box name="Descriptions">
+				<check-box caption="Show buddies' descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
+					tool-tip="Displays descriptions in the buddy list" />
+				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
+					tool-tip="Dislpays multiline descriptions in the buddy list" />
+			</group-box>
+			<group-box name="Background">
+				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
+				<slider caption="Transparency level" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10"
+					id="userboxAlpha" />
+				<label caption="0" />
+				<check-box caption="Turn on blur" config-section="Look" config-item="UserboxBlur" id="userboxBlur" />
+				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
+				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
+					tool-tip="Define background file for the buddy list" id="userboxBackground" />
+				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
+					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
+					<item value="Tiled" caption="Tiled" />
+					<item value="TiledAndCentered" caption="Tiled and Centered" />
+					<item value="Centered" caption="Centered" />
+					<item value="Stretched" caption="Stretched" />
+				</combo-box>
+			</group-box>
+		</tab>
+		<tab name="Information">
+			<group-box name="Tooltip over buddy">
 
-<<<<<<< HEAD
 		<tab name="Messages">
 			<group-box name="Message Pruning">
 				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune"
@@ -141,16 +193,128 @@
 					id="linkFoldTreshold" />
 			</group-box>
 		</tab>
-=======
->>>>>>> Config window: 'general' tab reorganized
+		
 	</section>
 
 	<section name="Notifications" icon="kadu_icons/section-notifications">
-
+		<tab name="Options">
+			<group-box name="Chat">
+				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify"
+					config-item="NewMessageOnlyIfInactive" />
+			</group-box>
+			<group-box name="Silent Mode">
+				<check-box caption="Disable notifications when my status is set to 'Do not Disturb'" config-section="Notify"
+					config-item="AwaySilentMode" id="notify/awaySilentMode" />
+				<check-box caption="Disable notifications when a fullscreen application is active" config-section="Notify"
+					config-item="FullscreenSilentMode" id="notify/fullscreenSilentMode"
+					tool-tip="Disables notifications when running a fullscreen application: movie player, game, etc." />
+			</group-box>
+			<group-box name="Status Change">
+				<check-box caption="Ignore status changes available - busy" config-section="Notify"
+					config-item="IgnoreOnlineToOnline" />
+				<check-box caption="Ignore changes right after connection to the server" config-section="Notify"
+					config-item="NotifyIgnoreOnConnection"
+					tool-tip="This option will supersede tooltips with buddies' status\nchanges upon establishing connection to the server" />
+k			</group-box>
+		</tab>
+		<tab name="Events">
+			<group-box name="Lol dunno">
+				<label caption="..." />
+			</group-box>
+		</tab>
 	</section>
 
 	<section name="Behaviour" icon="preferences-desktop-peripherals">
-
+		<tab name="Chat">
+			<group-box name="Events">
+				<combo-box caption="On new chat" config-section="Look" config-item="OpenChatOnMessage"
+					tool-tip="Choose what to do when new chat begins">
+					<item value="0" caption="Show new message icon on buddies list" />
+					<item value="1" caption="Open chat window" />
+					<item value="2" caption="Open window only if I am available" />
+				</combo-box>
+				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
+					id="ignoreMessagesFromAnonymous" />
+				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." />
+			</group-box>
+			<group-box name="Misc">
+				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
+				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"
+					tool-tip="'Enter' in chat send message" />
+				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear"
+					tool-tip="Ask before clearing chat window" />
+				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
+					tool-tip="Save opened chat windows when exiting" />
+				<check-box caption="Clear recent chats list on exit" config-section="Chat" config-item="RecentChatsClear" id="recentChatsClear"
+					tool-tip="" />
+			</group-box>
+		</tab>
+		<tab name="Status">
+			<group-box name="Status">
+				<combo-box caption="Set status" config-section="General" config-item="StatusContainerType">
+					<item value="Account" caption="Per account separately" />
+					<item value="Identity" caption="Per identity separately" />
+					<item value="All" caption="For All Accounts" />
+				</combo-box>
+				<combo-box caption="On startup, set" config-section="General" config-item="StartupStatus" id="startupStatus"
+					tool-tip="Choose status which will be set on startup">
+					<item value="LastStatus" caption="Last Status" />
+					<item value="FreeForChat" caption="Free for Chat" />
+					<item value="Online" caption="Online" />
+					<item value="Busy" caption="Away" />
+					<item value="DoNotDisturb" caption="Do Not Disturb" />
+					<item value="Invisible" caption="Invisible" />
+					<item value="Offline" caption="Offline" />
+				</combo-box>
+				<check-box caption="Set invisible if last status was 'Offline'" config-section="General"
+					config-item="StartupStatusInvisibleWhenLastWasOffline" id="startupStatusInvisibleWhenLastWasOffline" />
+			</group-box>
+			<group-box name="Description">
+				<combo-box caption="On startup, set" config-section="General" config-item="StartupLastDescription" id="onStartupSetLastDescription"
+					tool-tip="Choose description which will be set on startup">
+					<item value="true" caption="Last Description" />
+					<item value="false" caption="New Description" />
+				</combo-box>
+				<line-edit caption="New Description" config-section="General" config-item="StartupDescription"
+					id="onStartupSetDescription" tool-tip="Define description which will be set on startup" />
+				<combo-box caption="On shutdown, set" config-section="General" config-item="DisconnectWithCurrentDescription" id="disconnectWithCurrentDescription"
+					tool-tip="Choose description which will be set on shutdown">
+					<item value="true" caption="Current Description" />
+					<item value="false" caption="New Description" />
+				</combo-box>
+				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription"
+					id="disconnectDescription" tool-tip="Define description which will be set on shutdown" />
+				<check-box caption="Store descriptions" config-section="General" config-item="StoreDescriptions"
+					id="storeDescriptions" tool-tip="Every description you set will be saved for further use." />
+				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1"
+					max-value="30" />
+			</group-box>
+		</tab>
+		<tab name="Shortcuts">
+			<group-box name="Kadu">
+				<hot-key-edit caption="Configuration" config-section="ShortCuts" config-item="kadu_configure" />
+				<hot-key-edit caption="Add buddy" config-section="ShortCuts" config-item="kadu_adduser" />
+				<hot-key-edit caption="Manage modules" config-section="ShortCuts" config-item="kadu_modulesmanager" />
+				<hot-key-edit caption="Open chat with..." config-section="ShortCuts" config-item="kadu_openchatwith" />
+				<hot-key-edit caption="Exit" config-section="ShortCuts" config-item="kadu_exit" />
+			</group-box>
+			<group-box name="Buddy List">
+				<hot-key-edit caption="Remove from buddy list" config-section="ShortCuts" config-item="kadu_deleteuser" />
+				<hot-key-edit caption="Properties" config-section="ShortCuts" config-item="kadu_persinfo" />
+				<hot-key-edit caption="Search this buddy in directory" config-section="ShortCuts" config-item="kadu_searchuser" />
+				<hot-key-edit caption="Show / hide offline buddies" config-section="ShortCuts" config-item="kadu_showoffline" />
+				<hot-key-edit caption="Show / hide buddies without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />
+			</group-box>
+			<group-box name="Chat Window">
+				<hot-key-edit caption="Clear chat" config-section="ShortCuts" config-item="chat_clear" />
+				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />
+				<hot-key-edit caption="Send message" config-section="ShortCuts" config-item="chat_sendmessage" />
+				<hot-key-edit caption="Bold text" config-section="ShortCuts" config-item="chat_bold" />
+				<hot-key-edit caption="Italic text" config-section="ShortCuts" config-item="chat_italic" />
+				<hot-key-edit caption="Underline text" config-section="ShortCuts" config-item="chat_underline" />
+			</group-box>
+		</tab>
 	</section>
 
 </configuration-ui>
