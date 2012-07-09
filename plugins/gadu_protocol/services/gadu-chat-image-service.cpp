@@ -28,6 +28,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/error.h"
+#include "protocols/services/chat-image.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -72,27 +73,25 @@ QString GaduChatImageService::saveImage(UinType sender, quint32 size, quint32 cr
 	return fileName;
 }
 
+QByteArray GaduChatImageService::loadFileContent(const QString &localFileName)
+{
+	QFile file(localFileName);
+
+	if (!file.open(QIODevice::ReadOnly))
+		return QByteArray();
+
+	QByteArray result = file.readAll();
+	file.close();
+
+	if (result.size() != file.size())
+		return QByteArray();
+
+	return result;
+}
+
 void GaduChatImageService::loadImageContent(ImageToSend &image)
 {
-	QFile imageFile(image.fileName);
-	if (!imageFile.open(QIODevice::ReadOnly))
-	{
-		image.content.clear();
-		kdebugm(KDEBUG_ERROR, "Error opening file\n");
-		return;
-	}
-
-	QByteArray data = imageFile.readAll();
-	imageFile.close();
-
-	if (data.length() != imageFile.size())
-	{
-		image.content.clear();
-		kdebugm(KDEBUG_ERROR, "Error reading file\n");
-		return;
-	}
-
-	image.content = data;
+	image.content = loadFileContent(image.fileName);
 }
 
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
@@ -165,18 +164,29 @@ bool GaduChatImageService::sendImageRequest(Contact contact, int size, quint32 c
 	return ret;
 }
 
+ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
+{
+	QByteArray content = loadFileContent(localFileName);
+
+	ChatImage result;
+
+	result.setLocalFileName(localFileName);
+	result.setContent(content);
+
+	if (!content.isEmpty())
+		result.setCrc32(gg_crc32(0, (const unsigned char*)content.constData(), content.length()));
+
+	return result;
+}
+
 void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32)
 {
-	kdebugmf(KDEBUG_INFO, "Using file \"%s\"\n", qPrintable(imageFileName));
+	ChatImage chatImage = createChatImage(imageFileName);
 
 	ImageToSend imageToSend;
-	imageToSend.fileName = imageFileName;
-	loadImageContent(imageToSend);
-
-	if (imageToSend.content.isNull())
-		return;
-
-	imageToSend.crc32 = gg_crc32(0, (const unsigned char*)imageToSend.content.constData(), imageToSend.content.length());
+	imageToSend.fileName = chatImage.localFileName();
+	imageToSend.content = chatImage.content();
+	imageToSend.crc32 = chatImage.crc32();
 
 	size = imageToSend.content.length();
 	crc32 = imageToSend.crc32;

@@ -31,6 +31,7 @@
 #include "protocols/services/account-service.h"
 #include "exports.h"
 
+class ChatImage;
 class Error;
 
 /**
@@ -76,6 +77,8 @@ public:
 	 * to end-user.
 	 */
 	virtual Error checkImageSize(qint64 size) const = 0;
+
+	virtual ChatImage createChatImage(const QString &localFileName) = 0;
 
 signals:
 	/**

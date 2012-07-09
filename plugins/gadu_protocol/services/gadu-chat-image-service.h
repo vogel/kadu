@@ -68,6 +68,7 @@ class GaduChatImageService : public ChatImageService
 	unsigned int CurrentMinuteSendImageRequests;
 
 	QString saveImage(UinType sender, quint32 size, quint32 crc32, const char *data);
+	QByteArray loadFileContent(const QString &localFileName);
 	void loadImageContent(ImageToSend &image);
 
 	friend class GaduProtocolSocketNotifiers;
@@ -110,6 +111,8 @@ public:
 	 * Call this method to request an image from given contact. After image is received imageReceivedAndSaved() signal is emitted.
 	 */
 	bool sendImageRequest(Contact contact, int size, quint32 crc32);
+
+	virtual ChatImage createChatImage(const QString &localFileName);
 
 	/**
 	 * @short Caclulate size and crc32 for image with given file name.
