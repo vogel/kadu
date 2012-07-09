@@ -6,6 +6,7 @@ set (protocols_SRCS
 
 	services/account-service.cpp
 	services/avatar-service.cpp
+	services/chat-image.cpp
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp
@@ -34,6 +35,7 @@ set (protocols_MOC_SRCS
 	services/avatar-downloader.h
 	services/avatar-service.h
 	services/avatar-uploader.h
+	services/chat-image.h
 	services/chat-image-service.h
 	services/chat-service.h
 	services/chat-state-service.h
