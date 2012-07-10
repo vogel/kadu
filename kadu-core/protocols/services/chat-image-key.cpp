@@ -33,3 +33,8 @@ quint32 ChatImageKey::crc32() const
 {
 	return second;
 }
+
+QString ChatImageKey::toString() const
+{
+	return QString("chat-image-%1-%2").arg(first).arg(second);
+}

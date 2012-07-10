@@ -30,6 +30,8 @@ public:
 	quint32 size() const;
 	quint32 crc32() const;
 
+	QString toString() const;
+
 };
 
 #endif // CHAT_IMAGE_KEY_H
