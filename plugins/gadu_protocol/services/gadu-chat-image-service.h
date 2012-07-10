@@ -56,21 +56,13 @@ class GaduChatImageService : public ChatImageService
 
 	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 1024;
 
-	struct ImageToSend
-	{
-		QString fileName;
-		QDateTime lastSent;
-		QByteArray content;
-		quint32 crc32;
-	};
-	QMap<ChatImageKey, ImageToSend> ImagesToSend;
+	QMap<ChatImageKey, ChatImage> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
 	unsigned int CurrentMinuteSendImageRequests;
 
 	QString saveImage(UinType sender, quint32 size, quint32 crc32, const char *data);
 	QByteArray loadFileContent(const QString &localFileName);
-	void loadImageContent(ImageToSend &image);
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);

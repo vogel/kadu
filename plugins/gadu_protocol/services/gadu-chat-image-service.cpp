@@ -89,42 +89,34 @@ QByteArray GaduChatImageService::loadFileContent(const QString &localFileName)
 	return result;
 }
 
-void GaduChatImageService::loadImageContent(ImageToSend &image)
-{
-	image.content = loadFileContent(image.fileName);
-}
-
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 {
 	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(e->event.image_request.sender).arg(e->event.image_request.size).arg(e->event.image_request.crc32)));
 
-	quint32 size = e->event.image_request.size;
-	quint32 crc32 = e->event.image_request.crc32;
-
-	if (!ImagesToSend.contains(ChatImageKey(size, crc32)))
-	{
-		kdebugm(KDEBUG_WARNING, "Image data not found\n");
+	ChatImageKey key(e->event.image_request.size, e->event.image_request.crc32);
+	if (!ChatImages.contains(key))
 		return;
-	}
 
-	ImageToSend &image = ImagesToSend[ChatImageKey(size, crc32)];
-	if (image.content.isNull())
+	ChatImage chatImage = ChatImages.value(key);
+	if (chatImage.content().isEmpty())
 	{
-		loadImageContent(image);
-		if (image.content.isNull())
+		chatImage.setContent(loadFileContent(chatImage.localFileName()));
+		if (chatImage.content().isEmpty())
 			return;
+		else
+			ChatImages.insert(key, chatImage);
 	}
 
 	if (Connection && Connection.data()->hasSession())
 	{
 		Connection.data()->beginWrite();
-		gg_image_reply(Connection.data()->session(), e->event.image_request.sender, image.fileName.toUtf8().constData(), image.content.constData(), image.content.length());
+		gg_image_reply(Connection.data()->session(), e->event.image_request.sender, chatImage.localFileName().toUtf8().constData(),
+				chatImage.content().constData(), chatImage.content().length());
 		Connection.data()->endWrite();
 	}
 
-	image.content.clear();
-	image.lastSent = QDateTime::currentDateTime();
+	chatImage.content().clear();
 }
 
 void GaduChatImageService::handleEventImageReply(struct gg_event *e)
@@ -176,12 +168,7 @@ ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
 	if (!content.isEmpty())
 		result.setCrc32(gg_crc32(0, (const unsigned char*)content.constData(), content.length()));
 
-	ImageToSend imageToSend;
-	imageToSend.fileName = result.localFileName();
-	imageToSend.content = result.content();
-	imageToSend.crc32 = result.crc32();
-
-	ImagesToSend[ChatImageKey(imageToSend.content.size(), imageToSend.crc32)] = imageToSend;
+	ChatImages.insert(ChatImageKey(result.content().size(), result.crc32()), result);
 
 	return result;
 }
