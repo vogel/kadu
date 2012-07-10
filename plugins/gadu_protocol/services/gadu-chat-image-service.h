@@ -28,6 +28,7 @@
 #define GADU_CHAT_IMAGE_SERVICE
 
 #include "protocols/protocol.h"
+#include "protocols/services/chat-image-key.h"
 
 #include "protocols/services/chat-image-service.h"
 
@@ -62,7 +63,7 @@ class GaduChatImageService : public ChatImageService
 		QByteArray content;
 		quint32 crc32;
 	};
-	QMap<QPair<quint32, quint32>, ImageToSend> ImagesToSend;
+	QMap<ChatImageKey, ImageToSend> ImagesToSend;
 
 	QWeakPointer<GaduConnection> Connection;
 	unsigned int CurrentMinuteSendImageRequests;

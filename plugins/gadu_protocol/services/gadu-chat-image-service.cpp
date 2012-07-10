@@ -102,13 +102,13 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	quint32 size = e->event.image_request.size;
 	quint32 crc32 = e->event.image_request.crc32;
 
-	if (!ImagesToSend.contains(qMakePair(size, crc32)))
+	if (!ImagesToSend.contains(ChatImageKey(size, crc32)))
 	{
 		kdebugm(KDEBUG_WARNING, "Image data not found\n");
 		return;
 	}
 
-	ImageToSend &image = ImagesToSend[qMakePair(size, crc32)];
+	ImageToSend &image = ImagesToSend[ChatImageKey(size, crc32)];
 	if (image.content.isNull())
 	{
 		loadImageContent(image);
@@ -181,7 +181,7 @@ ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
 	imageToSend.content = result.content();
 	imageToSend.crc32 = result.crc32();
 
-	ImagesToSend[qMakePair(quint32(imageToSend.content.size()), imageToSend.crc32)] = imageToSend;
+	ImagesToSend[ChatImageKey(imageToSend.content.size(), imageToSend.crc32)] = imageToSend;
 
 	return result;
 }
