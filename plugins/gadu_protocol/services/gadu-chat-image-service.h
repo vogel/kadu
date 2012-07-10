@@ -100,7 +100,7 @@ public:
 	 * @param id id of contact that sent image info
 	 * @param imageKey key of image to request
 	 *
-	 * Call this method to request an image from given contact. After image is received imageReceivedAndSaved() signal is emitted.
+	 * Call this method to request an image from given contact. After image is received chatImageAvailable() signal is emitted.
 	 */
 	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
 

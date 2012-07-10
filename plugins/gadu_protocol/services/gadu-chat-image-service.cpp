@@ -128,7 +128,7 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 	if (image.isNull())
 		return;
 
-	emit imageReceivedAndSaved(key.toString(), image.localFileName());
+	emit chatImageAvailable(key, image);
 }
 
 void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)

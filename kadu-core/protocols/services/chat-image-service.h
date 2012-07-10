@@ -29,10 +29,10 @@
 #include <QtCore/QObject>
 
 #include "protocols/services/account-service.h"
+#include "protocols/services/chat-image.h"
+#include "protocols/services/chat-image-key.h"
 #include "exports.h"
 
-class ChatImage;
-class ChatImageKey;
 class Error;
 
 /**
@@ -47,7 +47,7 @@ class Error;
  * @author Rafał 'Vogel' Malinowski
  *
  * This service supports handling images in chat window. Two main functions are: checking if image will fit
- * in protocol - checkImageSize() and informing about received image - imageReceivedAndSaved().
+ * in protocol - checkImageSize() and informing about received image - chatImageAvailable().
  */
 class KADUAPI ChatImageService : public AccountService
 {
@@ -85,15 +85,12 @@ public:
 
 signals:
 	/**
-	 * @short Signal emitted when image with given id was received and saved on disc.
+	 * @short Signal emitted when image with given key was received and saved on disc.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param id of received image
-	 * @param fileName file name of received image
-	 *
-	 * In Gadu-Gadu client receives information about image in form of id. It can then request other client for that
-	 * image and after it has been received it is stored on disk and then displayed in chat window.
+	 * @param imageKey key of received image
+	 * @param image received image
 	 */
-	void imageReceivedAndSaved(const QString &id, const QString &fileName);
+	void chatImageAvailable(const ChatImageKey &imageKey, const ChatImage &image);
 
 };
 

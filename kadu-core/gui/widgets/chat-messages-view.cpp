@@ -122,8 +122,7 @@ void ChatMessagesView::connectChat()
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
-		connect(chatImageService, SIGNAL(imageReceivedAndSaved(const QString &, const QString &)),
-				this, SLOT(imageReceivedAndSaved(const QString &, const QString &)));
+		connect(chatImageService, SIGNAL(chatImageAvailable(ChatImageKey,ChatImage)), this, SLOT(chatImageAvailable(ChatImageKey,ChatImage)));
 
 	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
@@ -182,9 +181,9 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::imageReceivedAndSaved(const QString &imageId, const QString &imageFileName)
+void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const ChatImage &image)
 {
-	Renderer->replaceLoadingImages(imageId, imageFileName);
+	Renderer->replaceLoadingImages(imageKey.toString(), image.localFileName());
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()
