@@ -114,17 +114,6 @@ public:
 
 	virtual ChatImage createChatImage(const QString &localFileName);
 
-	/**
-	 * @short Caclulate size and crc32 for image with given file name.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageFileName image to calculate size and crc32 for
-	 * @param size output paramter, will contain size of provided image
-	 * @param crc32 output paramter, will contain crc32 of provided image
-	 *
-	 * Call this method to get information that need to be sent to peer in order to let him/her request real image.
-	 */
-	void prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32);
-
 	virtual Error checkImageSize(qint64 size) const;
 
 };

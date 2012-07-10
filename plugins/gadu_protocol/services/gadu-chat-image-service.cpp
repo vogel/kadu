@@ -176,22 +176,14 @@ ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
 	if (!content.isEmpty())
 		result.setCrc32(gg_crc32(0, (const unsigned char*)content.constData(), content.length()));
 
-	return result;
-}
-
-void GaduChatImageService::prepareImageToSend(const QString &imageFileName, quint32 &size, quint32 &crc32)
-{
-	ChatImage chatImage = createChatImage(imageFileName);
-
 	ImageToSend imageToSend;
-	imageToSend.fileName = chatImage.localFileName();
-	imageToSend.content = chatImage.content();
-	imageToSend.crc32 = chatImage.crc32();
+	imageToSend.fileName = result.localFileName();
+	imageToSend.content = result.content();
+	imageToSend.crc32 = result.crc32();
 
-	size = imageToSend.content.length();
-	crc32 = imageToSend.crc32;
+	ImagesToSend[qMakePair(quint32(imageToSend.content.size()), imageToSend.crc32)] = imageToSend;
 
-	ImagesToSend[qMakePair(size, crc32)] = imageToSend;
+	return result;
 }
 
 Error GaduChatImageService::checkImageSize(qint64 size) const
