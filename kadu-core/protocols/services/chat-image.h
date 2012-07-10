@@ -34,6 +34,8 @@ public:
 
 	ChatImage & operator = (const ChatImage &copyMe);
 
+	bool isNull() const;
+
 	void setLocalFileName(const QString &localFileName);
 	QString localFileName() const;
 

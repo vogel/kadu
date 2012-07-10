@@ -40,6 +40,11 @@ ChatImage & ChatImage::operator = (const ChatImage &copyMe)
 	return *this;
 }
 
+bool ChatImage::isNull() const
+{
+	return LocalFileName.isEmpty();
+}
+
 void ChatImage::setLocalFileName(const QString &localFileName)
 {
 	LocalFileName = localFileName;
