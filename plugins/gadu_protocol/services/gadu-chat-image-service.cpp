@@ -52,7 +52,7 @@ void GaduChatImageService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-QString GaduChatImageService::saveImage(UinType sender, quint32 size, quint32 crc32, const char *data)
+QString GaduChatImageService::saveImage(quint32 size, quint32 crc32, const char *data)
 {
 	kdebugf();
 
@@ -63,7 +63,8 @@ QString GaduChatImageService::saveImage(UinType sender, quint32 size, quint32 cr
 		return QString();
 	}
 
-	QString fileName = GaduFormatter::createImageId(sender, size, crc32);
+	ChatImageKey key(size, crc32);
+	QString fileName = key.toString();
 	QFile file(path + fileName);
 	if (!file.open(QIODevice::WriteOnly))
 		return QString();
@@ -118,15 +119,14 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
-	QString fileName = saveImage(e->event.image_reply.sender,
-			e->event.image_reply.size, e->event.image_reply.crc32,
-			/*e->event.image_reply.filename, */e->event.image_reply.image);
+	QString fileName = saveImage(e->event.image_reply.size, e->event.image_reply.crc32, e->event.image_reply.image);
 
 	if (fileName.isEmpty())
 		return;
 
-	emit imageReceivedAndSaved(GaduFormatter::createImageId(e->event.image_reply.sender,
-			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
+	ChatImageKey key(e->event.image_reply.size, e->event.image_reply.crc32);
+
+	emit imageReceivedAndSaved(key.toString(), fileName);
 }
 
 void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)

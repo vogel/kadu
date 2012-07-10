@@ -158,14 +158,6 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	return result;
 }
 
-QString createImageId(unsigned int sender, unsigned int size, unsigned int crc32)
-{
-	return QString("gadu-%1-%2-%3")
-		.arg(sender)
-		.arg(size)
-		.arg(crc32);
-}
-
 static QList<FormatAttribute> createFormatList(const unsigned char *formats, unsigned int size)
 {
 	QList<FormatAttribute> formatList;
@@ -249,9 +241,10 @@ static FormattedMessagePart imagePart(Account account, Contact contact, const gg
 	if (!service)
 		return FormattedMessagePart();
 
-	service->requestChatImage(contact.id(), ChatImageKey(size, crc32));
+	ChatImageKey key(size, crc32);
+	service->requestChatImage(contact.id(), key);
 
-	return FormattedMessagePart(createImageId(contact.id().toUInt(), size, crc32));
+	return FormattedMessagePart(key.toString());
 }
 
 static FormattedMessagePart messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)

@@ -61,7 +61,7 @@ class GaduChatImageService : public ChatImageService
 	QWeakPointer<GaduConnection> Connection;
 	unsigned int CurrentMinuteSendImageRequests;
 
-	QString saveImage(UinType sender, quint32 size, quint32 crc32, const char *data);
+	QString saveImage(quint32 size, quint32 crc32, const char *data);
 	QByteArray loadFileContent(const QString &localFileName);
 
 	friend class GaduProtocolSocketNotifiers;

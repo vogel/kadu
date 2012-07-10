@@ -36,8 +36,6 @@ namespace GaduFormatter
 {
 	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
 
-	GADUAPI QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
-
 	GADUAPI FormattedMessage createMessage(Account account, Contact contact, const QString &content, const unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
