@@ -32,6 +32,7 @@
 #include "exports.h"
 
 class ChatImage;
+class ChatImageKey;
 class Error;
 
 /**
@@ -79,6 +80,8 @@ public:
 	virtual Error checkImageSize(qint64 size) const = 0;
 
 	virtual ChatImage createChatImage(const QString &localFileName) = 0;
+
+	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey) = 0;
 
 signals:
 	/**

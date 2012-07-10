@@ -249,7 +249,7 @@ static FormattedMessagePart imagePart(Account account, Contact contact, const gg
 	if (!service)
 		return FormattedMessagePart();
 
-	service->sendImageRequest(contact, size, crc32);
+	service->requestChatImage(contact.id(), ChatImageKey(size, crc32));
 
 	return FormattedMessagePart(createImageId(contact.id().toUInt(), size, crc32));
 }

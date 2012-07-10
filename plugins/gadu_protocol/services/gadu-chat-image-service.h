@@ -98,12 +98,11 @@ public:
 	 * @short Request for an image from contact that sent info about it before.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param id id of contact that sent image info
-	 * @param size size of image received in info
-	 * @param crc32 crc32 of image received in info
+	 * @param imageKey key of image to request
 	 *
 	 * Call this method to request an image from given contact. After image is received imageReceivedAndSaved() signal is emitted.
 	 */
-	bool sendImageRequest(Contact contact, int size, quint32 crc32);
+	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
 
 	virtual ChatImage createChatImage(const QString &localFileName);
 

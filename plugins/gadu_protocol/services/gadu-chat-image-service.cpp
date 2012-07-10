@@ -129,24 +129,21 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			e->event.image_reply.size, e->event.image_reply.crc32), fileName);
 }
 
-bool GaduChatImageService::sendImageRequest(Contact contact, int size, quint32 crc32)
+void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)
 {
 	if (!Connection || !Connection.data()->hasSession())
-		return false;
+		return;
 
 	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
-	if (contact.isNull() ||
-			(CurrentMinuteSendImageRequests > (unsigned int)gaduAccountDetails->maximumImageRequests()))
-		return false;
+	if (id.isEmpty() || (CurrentMinuteSendImageRequests > gaduAccountDetails->maximumImageRequests()))
+		return;
 
 	CurrentMinuteSendImageRequests++;
 
 	Connection.data()->beginWrite();
-	bool ret = (0 == gg_image_request(Connection.data()->session(), GaduProtocolHelper::uin(contact), size, crc32));
+	gg_image_request(Connection.data()->session(), id.toUInt(), imageKey.size(), imageKey.crc32());
 	Connection.data()->endWrite();
-
-	return ret;
 }
 
 ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
