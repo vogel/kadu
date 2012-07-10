@@ -94,29 +94,22 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(e->event.image_request.sender).arg(e->event.image_request.size).arg(e->event.image_request.crc32)));
 
+	if (!Connection || !Connection.data()->hasSession())
+		return;
+
 	ChatImageKey key(e->event.image_request.size, e->event.image_request.crc32);
 	if (!ChatImages.contains(key))
 		return;
 
 	ChatImage chatImage = ChatImages.value(key);
-	if (chatImage.content().isEmpty())
-	{
-		chatImage.setContent(loadFileContent(chatImage.localFileName()));
-		if (chatImage.content().isEmpty())
-			return;
-		else
-			ChatImages.insert(key, chatImage);
-	}
+	QByteArray content = loadFileContent(chatImage.localFileName());
+	if (content.isEmpty())
+		return;
 
-	if (Connection && Connection.data()->hasSession())
-	{
-		Connection.data()->beginWrite();
-		gg_image_reply(Connection.data()->session(), e->event.image_request.sender, chatImage.localFileName().toUtf8().constData(),
-				chatImage.content().constData(), chatImage.content().length());
-		Connection.data()->endWrite();
-	}
-
-	chatImage.content().clear();
+	Connection.data()->beginWrite();
+	gg_image_reply(Connection.data()->session(), e->event.image_request.sender, chatImage.localFileName().toUtf8().constData(),
+			content.constData(), content.length());
+	Connection.data()->endWrite();
 }
 
 void GaduChatImageService::handleEventImageReply(struct gg_event *e)
@@ -163,12 +156,12 @@ ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
 	ChatImage result;
 
 	result.setLocalFileName(localFileName);
-	result.setContent(content);
+	result.setSize(content.size());
 
 	if (!content.isEmpty())
 		result.setCrc32(gg_crc32(0, (const unsigned char*)content.constData(), content.length()));
 
-	ChatImages.insert(ChatImageKey(result.content().size(), result.crc32()), result);
+	ChatImages.insert(ChatImageKey(result.size(), result.crc32()), result);
 
 	return result;
 }

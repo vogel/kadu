@@ -135,7 +135,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 				const ChatImage &chatImage = account.protocolHandler()->chatImageService()->createChatImage(part.imagePath());
 
 				image.unknown1 = 0x0109;
-				image.size = gg_fix32(chatImage.content().size());
+				image.size = gg_fix32(chatImage.size());
 				image.crc32 = gg_fix32(chatImage.crc32());
 
 				memcpy(result + memoryPosition, &image, sizeof(image));

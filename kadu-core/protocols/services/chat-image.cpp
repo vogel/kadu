@@ -19,21 +19,22 @@
 
 #include "chat-image.h"
 
-ChatImage::ChatImage()
+ChatImage::ChatImage() :
+		Size(0), Crc32(0)
 {
 }
 
 ChatImage::ChatImage(const ChatImage &copyMe)
 {
 	LocalFileName = copyMe.LocalFileName;
-	Content = copyMe.Content;
+	Size = copyMe.Size;
 	Crc32 = copyMe.Crc32;
 }
 
 ChatImage & ChatImage::operator = (const ChatImage &copyMe)
 {
 	LocalFileName = copyMe.LocalFileName;
-	Content = copyMe.Content;
+	Size = copyMe.Size;
 	Crc32 = copyMe.Crc32;
 
 	return *this;
@@ -49,14 +50,14 @@ QString ChatImage::localFileName() const
 	return LocalFileName;
 }
 
-void ChatImage::setContent(const QByteArray &content)
+void ChatImage::setSize( quint32 size)
 {
-	Content = content;
+	Size = size;
 }
 
-QByteArray ChatImage::content() const
+quint32 ChatImage::size() const
 {
-	return Content;
+	return Size;
 }
 
 void ChatImage::setCrc32(quint32 crc32)

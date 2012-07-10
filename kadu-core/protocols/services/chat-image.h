@@ -25,7 +25,7 @@
 class ChatImage
 {
 	QString LocalFileName;
-	QByteArray Content;
+	quint32 Size;
 	quint32 Crc32;
 
 public:
@@ -37,8 +37,8 @@ public:
 	void setLocalFileName(const QString &localFileName);
 	QString localFileName() const;
 
-	void setContent(const QByteArray &content);
-	QByteArray content() const;
+	void setSize(quint32 size);
+	quint32 size() const;
 
 	void setCrc32(quint32 crc32);
 	quint32 crc32() const;
