@@ -64,6 +64,7 @@
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
+#include "protocols/connection-error-notification.h"
 #include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-type-data.h"
@@ -512,17 +513,32 @@ void NotificationManager::notify(Notification *notification)
 		return;
 	}
 
+	if (notifyType == "ConnectionError")
+	{
+		ErrorQueue.append(notification);
+
+		if (!ErrorsDelayTimer.isActive())
+		{
+			ErrorsDelayTimer.setInterval(20000);
+			connect(&ErrorsDelayTimer, SIGNAL(timeout()), this, SLOT(displayDelayedErrors()));
+			ErrorsDelayTimer.start();
+		}
+
+		return;
+	}
+
+
 	notification->acquire();
 
 	foreach (Notifier *notifier, Notifiers)
 	{
-		if (config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
-		{
-			notifier->notify(notification);
-			foundNotifier = true;
-			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported ||
-					(Notifier::CallbackSupported == notifier->callbackCapacity());
-		}
+		if (!config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+			continue;
+
+		notifier->notify(notification);
+		foundNotifier = true;
+		foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported ||
+				(Notifier::CallbackSupported == notifier->callbackCapacity());
 	}
 
 	if (!foundNotifierWithCallbackSupported)
@@ -546,6 +562,44 @@ void NotificationManager::notify(Notification *notification)
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to find notifier for %1 event").arg(notification->type()));
 
 	kdebugf2();
+}
+
+void NotificationManager::displayDelayedErrors()
+{
+	if (ErrorQueue.size() == 0)
+		return;
+
+	Notification *notification = ErrorQueue.first();
+
+	if (ignoreNotifications())
+	{
+		notification->callbackDiscard();
+		return;
+	}
+
+	QSet<Account> uniqueAccounts;
+	foreach (Notification *n, ErrorQueue)
+	{
+		ConnectionErrorNotification *e = qobject_cast<ConnectionErrorNotification *>(n);
+		if (e)
+			uniqueAccounts.insert(e->account());
+	}
+
+	notification->acquire();
+
+	foreach (Notifier *notifier, Notifiers)
+	{
+		if (!notifier->hasEnabled(notification))
+			continue;
+
+		QString title = "Account not connected (%1)";
+
+		notification->setText(title.arg(uniqueAccounts.size()));
+		notifier->notify(notification);
+	}
+
+	notification->release();
+	ErrorQueue.clear();
 }
 
 void NotificationManager::groupAdded(const Group &group)

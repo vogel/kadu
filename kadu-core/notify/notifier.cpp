@@ -20,6 +20,8 @@
  */
 
 #include "icons/kadu-icon.h"
+#include "configuration/configuration-file.h"
+#include "notify/notification.h"
 
 #include "notifier.h"
 
@@ -30,4 +32,9 @@ Notifier::Notifier(const QString& name, const QString& description, const KaduIc
 
 Notifier::~Notifier()
 {
+}
+
+const bool Notifier::hasEnabled(const Notification *notification)
+{
+	return config_file.readBoolEntry("Notify", notification->key() + '_' + Name);
 }
