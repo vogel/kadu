@@ -34,7 +34,7 @@ Notifier::~Notifier()
 {
 }
 
-const bool Notifier::hasEnabled(const Notification *notification)
+bool Notifier::hasEnabled(const Notification *notification)
 {
 	return config_file.readBoolEntry("Notify", notification->key() + '_' + Name);
 }
