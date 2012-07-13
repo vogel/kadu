@@ -35,7 +35,6 @@ class ConnectionErrorNotification : public AccountNotification
 	Q_OBJECT
 
 	static NotifyEvent *ConnectionErrorNotifyEvent;
-	static QMap<Account, QStringList> ActiveErrors;
 	QString ErrorServer;
 	QString ErrorMessage;
 

@@ -26,11 +26,11 @@
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
+#include "protocols/connection-error-notification-manager.h"
 
 #include "connection-error-notification.h"
 
 NotifyEvent *ConnectionErrorNotification::ConnectionErrorNotifyEvent = 0;
-QMap<Account, QStringList> ConnectionErrorNotification::ActiveErrors;
 
 static QString getErrorMessage(const QObject * const object)
 {
@@ -77,7 +77,7 @@ void ConnectionErrorNotification::unregisterEvent()
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-	if (ActiveErrors.value(account).contains(errorMessage))
+	if (ConnectionErrorNotificationManager::instance()->hasActiveError(account, errorMessage))
 		return;
 
 	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
@@ -99,13 +99,10 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 			setDetails(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer));
 	}
 
-	ActiveErrors[account].append(ErrorMessage);
+	ConnectionErrorNotificationManager::instance()->addActiveError(account, ErrorMessage);
 }
 
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
-	QStringList &list = ActiveErrors[account()];
-	list.removeOne(ErrorMessage);
-	if (list.isEmpty())
-		ActiveErrors.remove(account());
+	ConnectionErrorNotificationManager::instance()->removeActiveError(15000, account(), ErrorMessage);
 }

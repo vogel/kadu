@@ -16,6 +16,7 @@ set (protocols_SRCS
 	services/roster/roster-task.cpp
 
 	connection-error-notification.cpp
+	connection-error-notification-manager.cpp
 	protocol.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
@@ -48,6 +49,7 @@ set (protocols_MOC_SRCS
 	services/roster/roster-entry.h
 
 	connection-error-notification.h
+	connection-error-notification-manager.h
 	protocol.h
 	protocol-factory.h
 	protocols-manager.h
