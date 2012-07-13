@@ -113,7 +113,7 @@ void MultilogonNotification::notifyMultilogonSessionConnected(MultilogonSession 
 
 void MultilogonNotification::notifyMultilogonSessionDisonnected(MultilogonSession *session)
 {
-	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", false);
+	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionDisconnected", false);
 	notification->setTitle(tr("Multilogon"));
 	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
 			.arg(session->remoteAddress().toString())
