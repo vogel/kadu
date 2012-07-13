@@ -19,6 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QTextDocument>
+
 #include "icons/icons-manager.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
@@ -92,7 +94,7 @@ void EncryptionNgNotification::notifyPublicKeySent(Contact contact)
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySent");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Public key has been send to: %1 (%2)").arg(contact.display(true)).arg(contact.id()));
+	notification->setText(Qt::escape(tr("Public key has been send to: %1 (%2)").arg(contact.display(true)).arg(contact.id())));
 	NotificationManager::instance()->notify(notification);
 }
 
@@ -100,8 +102,8 @@ void EncryptionNgNotification::notifyPublicKeySendError(Contact contact, const Q
 {
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/publicKeySendError");
 	notification->setTitle(tr("Encryption"));
-	notification->setText(tr("Error sending public key to: %1 (%2)").arg(contact.display(true)).arg(contact.id()));
-	notification->setDetails(error);
+	notification->setText(Qt::escape(tr("Error sending public key to: %1 (%2)").arg(contact.display(true)).arg(contact.id())));
+	notification->setDetails(Qt::escape(error));
 	NotificationManager::instance()->notify(notification);
 }
 
@@ -110,7 +112,7 @@ void EncryptionNgNotification::notifyEncryptionError(const QString &error)
 	EncryptionNgNotification *notification = new EncryptionNgNotification("encryption-ng/encryptionError");
 	notification->setTitle(tr("Encryption"));
 	notification->setText(tr("Error occured during encryption"));
-	notification->setDetails(error);
+	notification->setDetails(Qt::escape(error));
 	NotificationManager::instance()->notify(notification);
 }
 

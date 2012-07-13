@@ -54,7 +54,7 @@ void FirewallNotification::notify(const Chat &chat, const Contact &sender, const
 	FirewallNotification *notification = new FirewallNotification(chat);
 	notification->setTitle(tr("Message was blocked"));
 	notification->setText(config_file.readEntry("Firewall", "notification_syntax",
-		tr("%u writes")).replace("%u", sender.display(true)).remove("%m"));
+		tr("%u writes")).replace("%u", Qt::escape(sender.display(true))).remove("%m"));
 	notification->setDetails(Qt::escape(message));
 	NotificationManager::instance()->notify(notification);
 }

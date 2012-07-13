@@ -113,7 +113,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 	Status status = contact.currentStatus();
 
 	setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(
-			Qt::escape(contact.display(true)), status.displayName()));
+			Qt::escape(contact.display(true)), Qt::escape(status.displayName())));
 
 	setDetails(Qt::escape(status.description()));
 
