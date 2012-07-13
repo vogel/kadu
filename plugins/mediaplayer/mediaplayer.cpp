@@ -30,6 +30,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
+#include <QtGui/QTextDocument>
 #include <QtGui/QTextEdit>
 #include <QtGui/QToolTip>
 
@@ -735,7 +736,7 @@ void MediaPlayer::putTitleHint(QString title)
 	kdebugf();
 
 	Notification *notification = new Notification(QString(mediaPlayerOsdHint), KaduIcon("external_modules/mediaplayer-media-playback-play"));
-	notification->setText(title);
+	notification->setText(Qt::escape(title));
 	NotificationManager::instance()->notify(notification);
 }
 

@@ -21,6 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QTextDocument>
+
 #include "icons/icons-manager.h"
 #include "identities/identity.h"
 #include "notify/notification-manager.h"
@@ -86,14 +88,14 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 {
 	setTitle(tr("Connection error"));
 
-	setText(tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name()));
+	setText(Qt::escape(tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name())));
 
 	if (!ErrorMessage.isEmpty())
 	{
 		if (ErrorServer.isEmpty())
-			setDetails(ErrorMessage);
+			setDetails(Qt::escape(ErrorMessage));
 		else
-			setDetails(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer));
+			setDetails(Qt::escape(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer)));
 	}
 
 	ActiveErrors[account].append(ErrorMessage);
