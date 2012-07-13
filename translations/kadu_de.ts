@@ -2179,22 +2179,12 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <translation>Eingehende Dateiübertragung</translation>
     </message>
     <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;
-of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.
-Accept transfer?</source>
-        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit 
-einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.
-Möchten Sie diese annehmen?</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Möchten Sie diese annehmen?</translation>
     </message>
     <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;
-of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.
-This is probably a next part of &lt;b&gt;%5&lt;/b&gt;
- What should I do?</source>
-        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit 
-einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.
-Dies scheint Teil von &lt;b&gt;%5&lt;/b&gt; zu sein.
-Was soll ich tun?</translation>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Dies scheint Teil von &lt;b&gt;%5&lt;/b&gt; zu sein.&lt;br/&gt;Was soll ich tun?</translation>
     </message>
 </context>
 <context>
