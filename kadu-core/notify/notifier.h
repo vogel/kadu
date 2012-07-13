@@ -67,7 +67,6 @@ public:
 	const QString & name() const { return Name; }
 	const QString & description() const { return Description; }
 	const KaduIcon & icon() const { return Icon; }
-	const bool hasEnabled(const Notification *notification);
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 

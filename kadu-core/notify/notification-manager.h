@@ -78,8 +78,6 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
-	QList<Notification *> ErrorQueue;
-	QTimer ErrorsDelayTimer;
 
 	QTimer FullScreenCheckTimer;
 	bool IsFullScreen;
@@ -114,7 +112,6 @@ private slots:
 
 	void checkFullScreen();
 	bool isScreenSaverRunning();
-	void displayDelayedErrors();
 
 protected:
 	virtual void accountRegistered(Account account);
