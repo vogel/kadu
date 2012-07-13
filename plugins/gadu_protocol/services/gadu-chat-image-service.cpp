@@ -70,7 +70,9 @@ ChatImage GaduChatImageService::saveImage(const ChatImageKey &key, const char *d
 	file.write(data, key.size());
 	file.close();
 
-	result.setLocalFileName(file.fileName());
+	QFileInfo fileInfo(file.fileName());
+
+	result.setLocalFileName(fileInfo.fileName());
 	result.setSize(key.size());
 	result.setCrc32(key.crc32());
 
