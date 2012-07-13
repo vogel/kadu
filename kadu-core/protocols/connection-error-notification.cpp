@@ -77,7 +77,7 @@ void ConnectionErrorNotification::unregisterEvent()
 
 bool ConnectionErrorNotification::activeError(Account account, const QString &errorMessage)
 {
-	return ActiveErrors.contains(account) && ActiveErrors[account].contains(errorMessage);
+	return ActiveErrors.value(account).contains(errorMessage);
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
@@ -85,7 +85,6 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
-
 	setText(tr("Connection error on account: %1 (%2)").arg(account.id()).arg(account.accountIdentity().name()));
 
 	if (!ErrorMessage.isEmpty())
@@ -101,7 +100,10 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
-	ActiveErrors[account()].removeAll(ErrorMessage);
+	QStringList &list = ActiveErrors[account()];
+	list.removeOne(ErrorMessage);
+	if (list.isEmpty())
+		ActiveErrors.remove(account());
 }
 
 QString ConnectionErrorNotification::errorMessage() const
