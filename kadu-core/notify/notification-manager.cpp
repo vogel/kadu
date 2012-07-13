@@ -513,7 +513,6 @@ void NotificationManager::notify(Notification *notification)
 		return;
 	}
 
-	//TODO 1.0 need cleaner way of queuing such notifications
 	if (notifyType == "ConnectionError")
 	{
 		ErrorQueue.append(notification);
