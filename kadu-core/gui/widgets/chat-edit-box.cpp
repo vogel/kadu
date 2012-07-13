@@ -309,7 +309,7 @@ void ChatEditBox::openInsertImageDialog()
 		if (!message.isEmpty() && !MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), message, this))
 			return;
 
-		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
+		InputBox->insertHtml(QString("<img src='%1' />").arg(selectedFile));
 	}
 }
 

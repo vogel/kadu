@@ -63,47 +63,6 @@ QString FormattedMessage::saveInImagesPath(const QString &filePath)
 	return filePath;
 }
 
-void FormattedMessage::parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color)
-{
-	static QRegExp imageRegExp("\\[IMAGE ([^\\]]+)\\]");
-
-	int lastPos = -1;
-	int pos = 0;
-
-	while ((pos = imageRegExp.indexIn(messageString, pos)) != -1)
-	{
-		if (lastPos != pos)
-		{
-			QString part;
-			if (lastPos == -1)
-				part = messageString.left(pos);
-			else
-				part = messageString.mid(lastPos, pos - lastPos);
-
-			if (!part.isEmpty())
-				message << FormattedMessagePart(part, b, i, u, color);
-		}
-
-		QString filePath = imageRegExp.cap(1);
-		QFileInfo fileInfo(filePath);
-		if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
-			message << FormattedMessagePart(saveInImagesPath(filePath));
-		else
-			message << FormattedMessagePart(messageString.mid(pos, imageRegExp.matchedLength()), b, i, u, color);
-
-		pos += imageRegExp.matchedLength();
-		lastPos = pos;
-	}
-
-	if (lastPos == -1)
-	{
-		if (!messageString.isEmpty())
-			message << FormattedMessagePart(messageString, b, i, u, color);
-	}
-	else if (lastPos != messageString.length())
-		message << FormattedMessagePart(messageString.mid(lastPos, messageString.length() - lastPos), b, i, u, color);
-}
-
 FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 {
 	FormattedMessage result;
@@ -127,17 +86,16 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 				text = fragment.text();
 
 			QTextCharFormat format = fragment.charFormat();
-			parseImages(result, text,
-				format.font().bold(),
-				format.font().italic(),
-				format.font().underline(),
-				format.foreground().color());
+			if (!format.isImageFormat())
+			{
+				if (!text.isEmpty())
+					result << FormattedMessagePart(text, format.font().bold(), format.font().italic(), format.font().underline(), format.foreground().color());
+			}
+			else
+				result << FormattedMessagePart(format.toImageFormat().name());
 
 			firstFragment = false;
 		}
-
-		if (firstFragment)
-			parseImages(result, "\n", false, false, false, QColor());
 
 		block = block.next();
 		firstParagraph = false;

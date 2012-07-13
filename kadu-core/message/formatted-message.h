@@ -48,7 +48,6 @@ class QTextDocument;
 class KADUAPI FormattedMessage
 {
 	static QString saveInImagesPath(const QString &filePath);
-	static void parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
 	QVector<FormattedMessagePart> Parts;
 

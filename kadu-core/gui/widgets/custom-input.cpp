@@ -279,7 +279,7 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 
 	if (!path.isEmpty())
 	{
-		insertPlainText(QString("[IMAGE %1]").arg(path));
+		insertHtml(QString("<img src='%1' />").arg(path));
 		return;
 	}
 

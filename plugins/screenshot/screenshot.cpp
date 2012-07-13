@@ -121,7 +121,7 @@ void ScreenShot::screenshotReady(QPixmap p)
 
 void ScreenShot::pasteImageClause(const QString &path)
 {
-	MyChatWidget->edit()->insertPlainText(QString("[IMAGE ") + path + ']');
+	MyChatWidget->edit()->insertHtml(QString("<img src='%1' />").arg(path));
 }
 
 bool ScreenShot::checkImageSize(long int size)
