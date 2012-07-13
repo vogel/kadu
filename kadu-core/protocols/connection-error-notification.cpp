@@ -26,7 +26,6 @@
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
-#include "debug.h"
 
 #include "connection-error-notification.h"
 
@@ -58,6 +57,7 @@ void ConnectionErrorNotification::registerEvent()
 
 	ConnectionErrorNotifyEvent = new NotifyEvent("ConnectionError", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Connection error"));
 	NotificationManager::instance()->registerNotifyEvent(ConnectionErrorNotifyEvent);
+
 	Parser::registerObjectTag("error", getErrorMessage);
 	Parser::registerObjectTag("errorServer", getErrorServer);
 }
@@ -75,9 +75,13 @@ void ConnectionErrorNotification::unregisterEvent()
 	ConnectionErrorNotifyEvent = 0;
 }
 
-bool ConnectionErrorNotification::activeError(Account account, const QString &errorMessage)
+void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-	return ActiveErrors.value(account).contains(errorMessage);
+	if (ActiveErrors.value(account).contains(errorMessage))
+		return;
+
+	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
+	NotificationManager::instance()->notify(connectionErrorNotification);
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
@@ -104,18 +108,4 @@ ConnectionErrorNotification::~ConnectionErrorNotification()
 	list.removeOne(ErrorMessage);
 	if (list.isEmpty())
 		ActiveErrors.remove(account());
-}
-
-QString ConnectionErrorNotification::errorMessage() const
-{
-	kdebugf();
-
-	return ErrorMessage;
-}
-
-QString ConnectionErrorNotification::errorServer() const
-{
-	kdebugf();
-
-	return ErrorServer;
 }

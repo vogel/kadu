@@ -23,6 +23,9 @@
 #ifndef CONNECTION_ERROR_NOTIFICATION_H
 #define CONNECTION_ERROR_NOTIFICATION_H
 
+#include <QtCore/QMap>
+#include <QtCore/QString>
+
 #include "notify/account-notification.h"
 
 class NotifyEvent;
@@ -40,13 +43,13 @@ public:
 	static void registerEvent();
 	static void unregisterEvent();
 
-	static bool activeError(Account account, const QString &errorMessage);
+	static void notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage);
 
 	ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();
 
-	QString errorMessage() const;
-	QString errorServer() const;
+	const QString & errorServer() const { return ErrorServer; }
+	const QString & errorMessage() const { return ErrorMessage; }
 
 };
 

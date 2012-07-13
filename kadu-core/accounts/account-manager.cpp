@@ -32,7 +32,6 @@
 #include "core/core.h"
 #include "gui/windows/password-window.h"
 #include "identities/identity.h"
-#include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -206,12 +205,7 @@ void AccountManager::connectionError(Account account, const QString &server, con
 {
 	QMutexLocker locker(&mutex());
 
-	if (!ConnectionErrorNotification::activeError(account, message))
-	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account,
-				server, message);
-		NotificationManager::instance()->notify(connectionErrorNotification);
-	}
+	ConnectionErrorNotification::notifyConnectionError(account, server, message);
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)
