@@ -34,7 +34,6 @@
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "message/formatted-message.h"
-#include "protocols/services/chat-image.h"
 
 #include "gadu-account-details.h"
 #include "gadu-protocol.h"
@@ -132,11 +131,11 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 
 			if (part.isImage())
 			{
-				const ChatImage &chatImage = account.protocolHandler()->chatImageService()->createChatImage(part.imagePath());
+				const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->createChatImageKey(part.imagePath());
 
 				image.unknown1 = 0x0109;
-				image.size = gg_fix32(chatImage.size());
-				image.crc32 = gg_fix32(chatImage.crc32());
+				image.size = gg_fix32(chatImageKey.size());
+				image.crc32 = gg_fix32(chatImageKey.crc32());
 
 				memcpy(result + memoryPosition, &image, sizeof(image));
 				memoryPosition += sizeof(image);

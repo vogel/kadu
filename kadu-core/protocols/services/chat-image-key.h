@@ -22,16 +22,62 @@
 
 #include <QtCore/QPair>
 
+/**
+ * @addtogroup Protocol
+ * @{
+ */
+
+/**
+ * @class ChatImageKey
+ * @short Simple class for storing key (id) of chat image.
+ * @todo Currently it has Gadu Gadu implementation, but it could be easily extended to support other protocols and methods too.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class stores information about chat image that is transferred between clients. For now it is only for Gadu Gadu, but this class could be
+ * abstracted and extended to support Gadu Gadu and others protocols.
+ *
+ * Method toString() is used to create string representation of key. It must be unique per image as it is used in HTML representation of messages
+ * to create placeholder for image that is not yet downloaded and to allow it to be replaced with real image after downloading.
+ */
 class ChatImageKey : public QPair<quint32, quint32>
 {
 public:
+	/**
+	 * @short Create new instance of ChatImageKey for given Gadu Gadu chat image.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param size size of Gadu Gadu image in bytes
+	 * @param crc32 CRC32 checksum of Gadu Gadu image
+	 */
 	ChatImageKey(quint32 size, quint32 crc32);
 
-	quint32 size() const;
-	quint32 crc32() const;
-
+	/**
+	 * @short Return string representation of key.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return string representation of key
+	 *
+	 * Returned value must be unique per image as it is used in HTML representation of messages to create placeholder for image that is not yet
+	 * downloaded and to allow it to be replaced with real image after downloading.
+	 */
 	QString toString() const;
 
+	/**
+	 * @short Return size of Gadu Gadu image in bytes.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return size of Gadu Gadu image in bytes
+	 */
+	quint32 size() const;
+
+	/**
+	 * @short Return CRC32 checksum of Gadu Gadu image.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return CRC32 checksum of Gadu Gadu image
+	 */
+	quint32 crc32() const;
+
 };
+
+/**
+ * @}
+ */
 
 #endif // CHAT_IMAGE_KEY_H

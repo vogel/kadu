@@ -28,7 +28,6 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/error.h"
-#include "protocols/services/chat-image.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -52,31 +51,24 @@ void GaduChatImageService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-ChatImage GaduChatImageService::saveImage(const ChatImageKey &key, const char *data)
+QString GaduChatImageService::saveImage(const ChatImageKey &key, const char *data)
 {
-	ChatImage result;
-
 	QString path = ChatImageService::imagesPath();
 	if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
 	{
 		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-		return result;
+		return QString();
 	}
 
 	QFile file(path + key.toString());
 	if (!file.open(QIODevice::WriteOnly))
-		return result;
+		return QString();
 
 	file.write(data, key.size());
 	file.close();
 
 	QFileInfo fileInfo(file.fileName());
-
-	result.setLocalFileName(fileInfo.fileName());
-	result.setSize(key.size());
-	result.setCrc32(key.crc32());
-
-	return result;
+	return fileInfo.fileName();
 }
 
 QByteArray GaduChatImageService::loadFileContent(const QString &localFileName)
@@ -107,13 +99,13 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	if (!ChatImages.contains(key))
 		return;
 
-	ChatImage chatImage = ChatImages.value(key);
-	QByteArray content = loadFileContent(chatImage.localFileName());
+	QString imageFileName = ChatImages.value(key);
+	QByteArray content = loadFileContent(imageFileName);
 	if (content.isEmpty())
 		return;
 
 	Connection.data()->beginWrite();
-	gg_image_reply(Connection.data()->session(), e->event.image_request.sender, chatImage.localFileName().toUtf8().constData(),
+	gg_image_reply(Connection.data()->session(), e->event.image_request.sender, imageFileName.toUtf8().constData(),
 			content.constData(), content.length());
 	Connection.data()->endWrite();
 }
@@ -125,12 +117,12 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
 	ChatImageKey key(e->event.image_reply.size, e->event.image_reply.crc32);
-	ChatImage image = saveImage(key, e->event.image_reply.image);
+	QString fileName = saveImage(key, e->event.image_reply.image);
 
-	if (image.isNull())
+	if (fileName.isEmpty())
 		return;
 
-	emit chatImageAvailable(key, image);
+	emit chatImageAvailable(key, fileName);
 }
 
 void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)
@@ -150,19 +142,14 @@ void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKe
 	Connection.data()->endWrite();
 }
 
-ChatImage GaduChatImageService::createChatImage(const QString &localFileName)
+ChatImageKey GaduChatImageService::createChatImageKey(const QString &localFileName)
 {
 	QByteArray content = loadFileContent(localFileName);
+	quint32 crc32 = content.isEmpty() ? 0 : gg_crc32(0, (const unsigned char*)content.constData(), content.length());
 
-	ChatImage result;
+	ChatImageKey result(content.size(), crc32);
 
-	result.setLocalFileName(localFileName);
-	result.setSize(content.size());
-
-	if (!content.isEmpty())
-		result.setCrc32(gg_crc32(0, (const unsigned char*)content.constData(), content.length()));
-
-	ChatImages.insert(ChatImageKey(result.size(), result.crc32()), result);
+	ChatImages.insert(result, localFileName);
 
 	return result;
 }

@@ -29,7 +29,6 @@
 #include <QtCore/QObject>
 
 #include "protocols/services/account-service.h"
-#include "protocols/services/chat-image.h"
 #include "protocols/services/chat-image-key.h"
 #include "exports.h"
 
@@ -43,11 +42,16 @@ class Error;
 /**
  * @class ChatImageService
  * @short Service for handling images in chat window.
- * @todo This is very very tightly tied to Gadu Gadu protocol. Refactor, maybe merge with ChatService.
  * @author Rafał 'Vogel' Malinowski
  *
- * This service supports handling images in chat window. Two main functions are: checking if image will fit
- * in protocol - checkImageSize() and informing about received image - chatImageAvailable().
+ * This service supports handling images in chat window.
+ *
+ * Before inserting image into chat a check should be made to see if this image can be received on the other end.
+ * To do that use checkImageSize() method.
+ *
+ * After that use createChatImageKey() to get ChatImageKey for image stored in given file. Thats will store information
+ * about image that will be send in this service. Resulting key object have toString() method that can be used to
+ * create placeholder in HTML version of message for given message.
  */
 class KADUAPI ChatImageService : public AccountService
 {
@@ -79,7 +83,7 @@ public:
 	 */
 	virtual Error checkImageSize(qint64 size) const = 0;
 
-	virtual ChatImage createChatImage(const QString &localFileName) = 0;
+	virtual ChatImageKey createChatImageKey(const QString &localFileName) = 0;
 
 	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey) = 0;
 
@@ -88,9 +92,9 @@ signals:
 	 * @short Signal emitted when image with given key was received and saved on disc.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imageKey key of received image
-	 * @param image received image
+	 * @param fileName file name of received image
 	 */
-	void chatImageAvailable(const ChatImageKey &imageKey, const ChatImage &image);
+	void chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName);
 
 };
 

@@ -56,12 +56,12 @@ class GaduChatImageService : public ChatImageService
 
 	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 1024;
 
-	QMap<ChatImageKey, ChatImage> ChatImages;
+	QMap<ChatImageKey, QString> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
 	unsigned int CurrentMinuteSendImageRequests;
 
-	ChatImage saveImage(const ChatImageKey &key, const char *data);
+	QString saveImage(const ChatImageKey &key, const char *data);
 	QByteArray loadFileContent(const QString &localFileName);
 
 	friend class GaduProtocolSocketNotifiers;
@@ -104,7 +104,7 @@ public:
 	 */
 	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
 
-	virtual ChatImage createChatImage(const QString &localFileName);
+	virtual ChatImageKey createChatImageKey(const QString &localFileName);
 
 	virtual Error checkImageSize(qint64 size) const;
 
