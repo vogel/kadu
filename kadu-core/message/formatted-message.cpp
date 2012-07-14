@@ -92,7 +92,12 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 					result << FormattedMessagePart(text, format.font().bold(), format.font().italic(), format.font().underline(), format.foreground().color());
 			}
 			else
-				result << FormattedMessagePart(format.toImageFormat().name());
+			{
+				QString filePath = format.toImageFormat().name();
+				QFileInfo fileInfo(filePath);
+				if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
+					result << FormattedMessagePart(saveInImagesPath(filePath));
+			};
 
 			firstFragment = false;
 		}
