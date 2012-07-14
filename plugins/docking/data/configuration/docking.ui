@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Kadu">
+	<section name="General">
 		<tab name="General">
 			<group-box name="Tray">
 				<check-box caption="Start docked" config-section="General" config-item="RunDocked" />

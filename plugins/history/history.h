@@ -88,7 +88,6 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	ShowHistoryActionDescription *ShowHistoryActionDescriptionInstance;
 	ActionDescription *ClearHistoryActionDescription;
 
-	QLabel *dontCiteOldMessagesLabel;
 	QListWidget *allStatusUsers;
 	QListWidget *selectedStatusUsers;
 	QListWidget *allChatsUsers;
@@ -125,8 +124,6 @@ private slots:
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
 
 	void chatCreated(ChatWidget *chatWidget);
-
-	void updateQuoteTimeLabel(int value);
 
 protected:
 	virtual void crash();

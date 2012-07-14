@@ -361,22 +361,11 @@ void History::stopSaveThread()
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	dontCiteOldMessagesLabel = static_cast<QLabel *>(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessagesLabel"));
-	QSlider *dontCiteOldMessagesSlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("history/dontCiteOldMessages"));
-	updateQuoteTimeLabel(dontCiteOldMessagesSlider->value());
-	connect(dontCiteOldMessagesSlider, SIGNAL(valueChanged(int)),
-		this, SLOT(updateQuoteTimeLabel(int)));
-
 	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("history/savechatswithanonymous"), SLOT(setEnabled(bool)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("history/saveonlystatuswithdescription"), SLOT(setEnabled(bool)));
-}
-
-void History::updateQuoteTimeLabel(int value)
-{
-	dontCiteOldMessagesLabel->setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 }
 
 void History::configurationUpdated()

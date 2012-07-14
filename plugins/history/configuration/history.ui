@@ -12,16 +12,20 @@
 					   tool-tip="Save status changes in history" id="history/savestatuschanges"/>
 				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" />
 			</group-box>
-			<group-box name="Quotation" id="history/citation">
-				<spin-box caption="Quote message in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" />
-				<slider caption="Do not quote messages older than" config-section="History" config-item="ChatHistoryQuotationTime" min-value="-744" max-value="-1" page-step="24" id="history/dontCiteOldMessages" />
-				<label caption="." id="history/dontCiteOldMessagesLabel" />
+			<group-box name="History in chat window" id="history/citation">
+				<combo-box caption="Show messages from history since" config-section="History" config-item="ChatHistoryQuotationTime"
+					tool-tip="Choose time period in which messages can be quoted in chat window" >
+					<item value="-24" caption="yesterday" />
+					<item value="-168" caption="last week" />
+					<item value="-744" caption="last month" />
+				</combo-box>
+				<spin-box caption="Limit number of messages from history" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" />
 			</group-box>
 		</tab>
 	</section>
-	<section name="Shortcuts">
-		<tab name="General">
-			<group-box name="Kadu">
+	<section name="Behaviour">
+		<tab name="Shortcuts">
+			<group-box name="Chat">
 				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewhistory" />
 			</group-box>
 		</tab>

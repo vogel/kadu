@@ -129,7 +129,8 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotifyEvents[eventName] = item;
 	}
-
+/*
+FIXME remove?
 	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status Change");
 
 	QWidget *notifyUsers = new QWidget(statusGroupBox->widget());
@@ -175,8 +176,8 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	connect(mainConfigurationWindow->widget()->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-
-	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "General", "Notifications");
+*/
+	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Events", "Notifications");
 
 	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
 	notificationsGroupBox->addWidget(notifyTreeWidget, true);

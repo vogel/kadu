@@ -218,8 +218,7 @@
 k			</group-box>
 		</tab>
 		<tab name="Events">
-			<group-box name="Lol dunno">
-				<label caption="..." />
+			<group-box name="Notifications">
 			</group-box>
 		</tab>
 	</section>

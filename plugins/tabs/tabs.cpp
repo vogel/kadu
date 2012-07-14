@@ -642,8 +642,7 @@ bool TabsManager::shouldStore()
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("tabs/DefaultTabs"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("tabs/MinTabs"), SLOT(setEnabled(bool)));
+	Q_UNUSED(mainConfigurationWindow)
 }
 
 void TabsManager::configurationUpdated()

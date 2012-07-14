@@ -336,7 +336,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	loadStyles(); // reload styles to allow style testing without application restart
 
-	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Look", "Chat Window", "Style");
+	ConfigGroupBox *groupBox = window->widget()->configGroupBox("Chat", "Look", "Style");
 //editor
 	QLabel *editorLabel = new QLabel(qApp->translate("@default", "Style") + ':');
 	editorLabel->setToolTip(qApp->translate("@default", "Choose style of chat window"));

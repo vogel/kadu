@@ -1,7 +1,7 @@
 <configuration-ui>
-	<section name="Status">
-		<tab name="Autoaway">
-			<group-box name="Autoaway">
+	<section name="Behaviour">
+		<tab name="Inactivity">
+			<group-box name="Status">
 				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="10000" step="5" suffix="[every] %n second(s)" />
 				<check-box caption="Enable autoaway" config-section="General" config-item="AutoAway"
 					id="autoaway/enableAutoAway" />

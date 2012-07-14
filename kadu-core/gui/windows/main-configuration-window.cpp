@@ -160,14 +160,13 @@ void MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler *uiHand
 
 void MainConfigurationWindow::instanceCreated()
 {
- /*
 	// TODO: move this to separate class, like ChatStylesConfigurationUiHandler
 	// and just register it here
 	ChatStylesManager::instance()->mainConfigurationWindowCreated(Instance);
 	foreach (const QString &uiFile, UiFiles)
 		Instance->widget()->appendUiFile(uiFile);
 
-	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
+/*	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
 */
@@ -179,7 +178,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	setWindowRole("kadu-configuration");
 
 	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
-/*
+
 #if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
 	widget()->widgetById("debug")->hide();
 #endif
@@ -222,14 +221,12 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	connect(widget()->widgetById("chatPrune"), SIGNAL(toggled(bool)), widget()->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widget()->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
-	connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
+// 	connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
+// 	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
+// 	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
+// 	connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
 	connect(widget()->widgetById("showDescription"), SIGNAL(toggled(bool)), widget()->widgetById("multilineDescription"), SLOT(setEnabled(bool)));
-//	connect(widget()->widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widget()->widgetById("serverList"), SLOT(setDisabled(bool)));
 	connect(widget()->widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widget()->widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
-
 	connect(widget()->widgetById("displayGroupTabs"), SIGNAL(toggled(bool)), widget()->widgetById("showGroupAll"), SLOT(setEnabled(bool)));
 
 	QWidget *showInformationPanel = widget()->widgetById("showInformationPanel");
@@ -269,9 +266,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	userboxBlur = static_cast<QCheckBox *>(widget()->widgetById("userboxBlur"));
 	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxBlur"), SLOT(setEnabled(bool)));
 
-	buddyColors = new BuddyListBackgroundColorsWidget(this);
-*/
-// 	triggerCompositingStateChanged();
+// 	buddyColors = new BuddyListBackgroundColorsWidget(this);
+
+	triggerCompositingStateChanged();
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
