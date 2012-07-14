@@ -14,12 +14,16 @@ kadu_api_directories (plugins/mediaplayer
 )
 
 set (SOURCES
+	notify/mediaplayer-notification.cpp
+
 	mediaplayer.cpp
 	mediaplayer-plugin.cpp
 	mp_status_changer.cpp
 )
 
 set (MOC_SOURCES
+	notify/mediaplayer-notification.h
+
 	mediaplayer.h
 	mediaplayer-plugin.h
 	mp_status_changer.h

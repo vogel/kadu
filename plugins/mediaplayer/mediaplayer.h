@@ -13,7 +13,6 @@ class ActionDescription;
 class ChatWidget;
 class CustomInput;
 class PlayerCommands;
-class NotifyEvent;
 class PlayerInfo;
 class ToolBar;
 class ToolButton;
@@ -36,8 +35,6 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
 
 	QAction *DockedMediaplayerStatus;
-
-	NotifyEvent *mediaPlayerEvent;
 
 	QTimer *timer;
 	int statusInterval;

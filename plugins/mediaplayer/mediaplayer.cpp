@@ -30,7 +30,6 @@
 #include <QtGui/QApplication>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
-#include <QtGui/QTextDocument>
 #include <QtGui/QTextEdit>
 #include <QtGui/QToolTip>
 
@@ -52,19 +51,16 @@
 
 #include "icons/kadu-icon.h"
 
-#include "notify/notification-manager.h"
-#include "notify/notification.h"
-#include "notify/notify-event.h"
-
 #include "status/status-changer-manager.h"
 
 #include "debug.h"
 
+#include "plugins/docking/docking.h"
+
 #include "mp_status_changer.h"
+#include "notify/mediaplayer-notification.h"
 #include "player_commands.h"
 #include "player_info.h"
-
-#include "plugins/docking/docking.h"
 
 #include "mediaplayer.h"
 
@@ -101,8 +97,6 @@ const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 
 // For ID3 tags signatures cutter
 const char DEFAULT_SIGNATURES[] = "! WWW.POLSKIE-MP3.TK ! \n! www.polskie-mp3.tk ! ";
-
-const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
 // Implementation of MediaPlayer class
 
@@ -211,8 +205,7 @@ MediaPlayer::MediaPlayer()
 	setControlsEnabled(false);
 	isPaused = true;
 
-	mediaPlayerEvent = new NotifyEvent(QString(mediaPlayerOsdHint), NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"));
-	NotificationManager::instance()->registerNotifyEvent(mediaPlayerEvent);
+	MediaPlayerNotification::registerNotifications();
 
 	configurationUpdated();
 }
@@ -221,9 +214,7 @@ MediaPlayer::~MediaPlayer()
 {
 	kdebugf();
 
-	NotificationManager::instance()->unregisterNotifyEvent(mediaPlayerEvent);
-	delete mediaPlayerEvent;
-	mediaPlayerEvent = 0;
+	MediaPlayerNotification::unregisterNotifications();
 
 	StatusChangerManager::instance()->unregisterStatusChanger(Changer);
 
@@ -726,18 +717,9 @@ void MediaPlayer::checkTitle()
 
 	// If OSD is enabled and current track position is betwean 0 and 1000 ms, then shows OSD
 	if (config_file.readBoolEntry("MediaPlayer", "osd", true) && pos < 1000 && pos > 0)
-		putTitleHint(getTitle());
+		MediaPlayerNotification::notifyTitleHint(getTitle());
 
 	Changer->setTitle(parse(config_file.readEntry("MediaPlayer", "statusTagString")));
-}
-
-void MediaPlayer::putTitleHint(QString title)
-{
-	kdebugf();
-
-	Notification *notification = new Notification(QString(mediaPlayerOsdHint), KaduIcon("external_modules/mediaplayer-media-playback-play"));
-	notification->setText(Qt::escape(title));
-	NotificationManager::instance()->notify(notification);
 }
 
 void MediaPlayer::configurationUpdated()
