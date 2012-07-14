@@ -25,7 +25,6 @@
 #include <QtCore/QFileInfo>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMessageBox>
-#include <QtGui/QTextDocument>
 
 #include "accounts/account.h"
 #include "activate.h"
@@ -44,8 +43,6 @@
 #include "gui/windows/file-transfer-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "identities/identity.h"
-#include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
@@ -276,38 +273,9 @@ void FileTransferManager::incomingFileTransfer(FileTransfer fileTransfer)
 			fileTransfer.setLocalFileName(alreadyTransferred.localFileName());
 	}
 
-	Chat chat = ChatTypeContact::findChat(fileTransfer.peer(), ActionCreateAndAdd);
-	NewFileTransferNotification *notification = new NewFileTransferNotification("FileTransfer/IncomingFile", fileTransfer,
-			chat, fileTransfer.localFileName().isEmpty() ? StartNew : StartRestore);
-	notification->setTitle(tr("Incoming transfer"));
-
 	fileTransfer.setTransferStatus(StatusWaitingForAccept);
 
-	QString textFileSize = QString("%1 kB");
-	double size = (double) fileTransfer.fileSize() / 1024;
-
-	if (size > 1024 )
-	{
-		size = size / 1024;
-		textFileSize = "%1 MB";
-	}
-
-	if (fileTransfer.localFileName().isEmpty())
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>Accept transfer?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(textFileSize.arg(size, 0, 'f', 2)))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name())));
-	else
-		notification->setText(tr("User <b>%1</b> wants to send you a file <b/>%2</b><br/>of size <b>%3</b> using account <b>%4</b>.<br/>"
-				"This is probably a next part of <b>%5</b><br/>What should I do?")
-				.arg(Qt::escape(fileTransfer.peer().display(true)))
-				.arg(Qt::escape(fileTransfer.remoteFileName()))
-				.arg(Qt::escape(textFileSize.arg(size, 0, 'f', 2)))
-				.arg(Qt::escape(chat.chatAccount().accountIdentity().name()))
-				.arg(Qt::escape(fileTransfer.localFileName())));
-
-	NotificationManager::instance()->notify(notification);
+	NewFileTransferNotification::notifyIncomingFileTransfer(fileTransfer);
 }
 
 void FileTransferManager::itemAboutToBeAdded(FileTransfer fileTransfer)

@@ -2177,18 +2177,6 @@ changes upon establishing connection to the server</source>
         <source>Could not open file. Select another one.</source>
         <translation>Нет возможности открыть файл. Выберите другой файл.</translation>
     </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Входящая передача</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Пользователь &lt;b&gt;%1&lt;/b&gt; желает передать файл &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;размером &lt;b&gt;%3&lt;/b&gt; используя аккаунт &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Подтвердить передачу?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Пользователь &lt;b&gt;%1&lt;/b&gt; желает передать файл &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;размером &lt;b&gt;%3&lt;/b&gt; используя аккаунт &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Вероятно это следующая часть из &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Что необходимо предпринять?</translation>
-    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2860,6 +2848,18 @@ from now on. Are you sure you want to leave this conference?</source>
 </context>
 <context>
     <name>NewFileTransferNotification</name>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Входящая передача</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation>Пользователь &lt;b&gt;%1&lt;/b&gt; желает передать файл &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;размером &lt;b&gt;%3&lt;/b&gt; используя аккаунт &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Подтвердить передачу?</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation>Пользователь &lt;b&gt;%1&lt;/b&gt; желает передать файл &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;размером &lt;b&gt;%3&lt;/b&gt; используя аккаунт &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Вероятно это следующая часть из &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Что необходимо предпринять?</translation>
+    </message>
     <message>
         <source>Continue</source>
         <translation>Продолжение</translation>

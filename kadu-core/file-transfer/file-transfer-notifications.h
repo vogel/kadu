@@ -55,6 +55,8 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
+	static void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
+
 	NewFileTransferNotification(const QString &type, FileTransfer ft, Chat chat, StartType startType);
 
 	virtual bool requireCallback() { return true; }

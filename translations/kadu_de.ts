@@ -2174,18 +2174,6 @@ wenn Kontakte sich mit dem Server verbinden</translation>
         <source>Could not open file. Select another one.</source>
         <translation>Konnte die Datei nicht öffnen. Wählen Sie bitte eine andere aus.</translation>
     </message>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Eingehende Dateiübertragung</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Möchten Sie diese annehmen?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Dies scheint Teil von &lt;b&gt;%5&lt;/b&gt; zu sein.&lt;br/&gt;Was soll ich tun?</translation>
-    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2858,6 +2846,18 @@ von nun an ignoriert. Wollen Sie diese Konferenz wirklich verlassen?</translatio
 </context>
 <context>
     <name>NewFileTransferNotification</name>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Eingehende Dateiübertragung</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Möchten Sie diese annehmen?</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation>Kontakt &lt;b&gt;%1&lt;/b&gt; will die Datei &lt;b&gt;%2&lt;/b&gt; mit&lt;br/&gt;einer Größe von &lt;b&gt;%3&lt;/b&gt; aus dem Konto &lt;b&gt;%4&lt;/b&gt; senden.&lt;br/&gt;Dies scheint Teil von &lt;b&gt;%5&lt;/b&gt; zu sein.&lt;br/&gt;Was soll ich tun?</translation>
+    </message>
     <message>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
