@@ -24,8 +24,10 @@
 
 #include "accounts/account.h"
 #include "protocols/services/chat-image-key.h"
+#include "protocols/services/chat-image-request-service-configuration.h"
 
 class AccountManager;
+class ContactManager;
 
 /**
  * @addtogroup Protocol
@@ -46,10 +48,15 @@ class ChatImageRequestService : public QObject
 {
 	Q_OBJECT
 
+	ChatImageRequestServiceConfiguration Configuration;
+
 	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
 	quint32 ReceivedImageKeysCount;
 
 	QWeakPointer<AccountManager> CurrentAccountManager;
+	QWeakPointer<ContactManager> CurrentContactManager;
+
+	bool acceptImage(const Account &account, const QString &id, const ChatImageKey &imageKey) const;
 
 private slots:
 	void accountRegistered(Account account);
@@ -77,6 +84,24 @@ public:
 	 * from these accounts.
 	 */
 	void setAccountManager(AccountManager *accountManager);
+
+	/**
+	 * @short Sets contact manager to use by this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param contactManager contact manager to use by this service
+	 *
+	 * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService signals.
+	 * Resolved names are used for asking end-user about images that are too big to be accepted without asking.
+	 * If no ContactManager is available then no asking will be done - too big images will be ignored.
+	 */
+	void setContactManager(ContactManager *contactManager);
+
+	/**
+	 * @short Sets configuration to use by this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param configuration configuration to use by this service
+	 */
+	void setConfiguration(ChatImageRequestServiceConfiguration configuration);
 
 };
 

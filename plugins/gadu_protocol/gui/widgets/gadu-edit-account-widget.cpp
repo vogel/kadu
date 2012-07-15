@@ -200,26 +200,6 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	QGroupBox *inclomingImages = new QGroupBox(tr("Incoming Images"), this);
 	QFormLayout *incomingImagesLayout = new QFormLayout(inclomingImages);
 
-	LimitImageSize = new QCheckBox(tr("Limit incoming images' size"), optionsTab);
-	connect(LimitImageSize, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	incomingImagesLayout->addRow(LimitImageSize);
-
-	MaximumImageSize = new QSpinBox(optionsTab);
-	MaximumImageSize->setMinimum(0);
-	MaximumImageSize->setMaximum(20*1024); // 20 MiB
-	MaximumImageSize->setSingleStep(10);
-	MaximumImageSize->setSuffix(" kB");
-	MaximumImageSize->setToolTip(tr("Maximum images' size that you accept"));
-	connect(MaximumImageSize, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
-	incomingImagesLayout->addRow(tr("Maximum incoming images' size") + ':', MaximumImageSize);
-
-	ImageSizeAsk = new QCheckBox(tr("Ask for confirmation if an image's size exceeds the limit"), optionsTab);
-	connect(ImageSizeAsk, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	incomingImagesLayout->addRow(ImageSizeAsk);
-
-	connect(LimitImageSize, SIGNAL(toggled(bool)), MaximumImageSize, SLOT(setEnabled(bool)));
-	connect(LimitImageSize, SIGNAL(toggled(bool)), ImageSizeAsk, SLOT(setEnabled(bool)));
-
 	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images also when Invisible"), optionsTab);
 	connect(ReceiveImagesDuringInvisibility, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	incomingImagesLayout->addRow(ReceiveImagesDuringInvisibility);
@@ -351,9 +331,6 @@ void GaduEditAccountWidget::apply()
 
 	if (Details)
 	{
-		Details->setLimitImageSize(LimitImageSize->isChecked());
-		Details->setMaximumImageSize(MaximumImageSize->value());
-		Details->setImageSizeAsk(ImageSizeAsk->isChecked());
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
 
 		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
@@ -411,9 +388,6 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().privateStatus() != ShowStatusToEveryone->isChecked()
 		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
 		&& account().proxy() == ProxyCombo->currentProxy()
-		&& Details->limitImageSize() == LimitImageSize->isChecked()
-		&& Details->maximumImageSize() == MaximumImageSize->value()
-		&& Details->imageSizeAsk() == ImageSizeAsk->isChecked()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
 
 		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
@@ -466,12 +440,7 @@ void GaduEditAccountWidget::loadAccountData()
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (details)
 	{
-		LimitImageSize->setChecked(details->limitImageSize());
-		MaximumImageSize->setValue(details->maximumImageSize());
-		ImageSizeAsk->setChecked(details->imageSizeAsk());
-		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
-		MaximumImageSize->setEnabled(details->limitImageSize());
-		ImageSizeAsk->setEnabled(details->limitImageSize());
+		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());;
 
 		ChatImageSizeWarning->setChecked(details->chatImageSizeWarning());
 

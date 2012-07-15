@@ -33,11 +33,7 @@
 class GaduAccountDetails : public AccountDetails
 {
 	PROPERTY_DEC(bool, AllowDcc)
-	PROPERTY_DEC(bool, LimitImageSize)
-	PROPERTY_DEC(int, MaximumImageSize)
-	PROPERTY_DEC(bool, ImageSizeAsk)
 	PROPERTY_DEC(bool, ReceiveImagesDuringInvisibility)
-	PROPERTY_DEC(unsigned short int, MaximumImageRequests)
 	PROPERTY_DEC(bool, ChatImageSizeWarning)
 	PROPERTY_DEC(bool, InitialRosterImport)
 	PROPERTY_DEC(bool, TlsEncryption)
@@ -60,9 +56,6 @@ public:
 	UinType uin();
 
 	PROPERTY_DEF(bool, allowDcc, setAllowDcc, AllowDcc)
-	PROPERTY_DEF(bool, limitImageSize, setLimitImageSize, LimitImageSize)
-	PROPERTY_DEF(int, maximumImageSize, setMaximumImageSize, MaximumImageSize)
-	PROPERTY_DEF(bool, imageSizeAsk, setImageSizeAsk, ImageSizeAsk)
 	PROPERTY_DEF(bool, receiveImagesDuringInvisibility, setReceiveImagesDuringInvisibility, ReceiveImagesDuringInvisibility)
 	PROPERTY_DEF(bool, chatImageSizeWarning, setChatImageSizeWarning, ChatImageSizeWarning)
 	PROPERTY_DEF(bool, initialRosterImport, setInitialRosterImport, InitialRosterImport)

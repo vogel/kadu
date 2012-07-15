@@ -250,6 +250,9 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	ConfigLineEdit *mailCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
 	connect(useDefaultEMailCheckbox, SIGNAL(toggled(bool)), mailCommandLineEdit, SLOT(setDisabled(bool)));
 
+	connect(widget()->widgetById("limitImageSize"), SIGNAL(toggled(bool)), widget()->widgetById("maximumImageSizeInKiloBytes"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("limitImageSize"), SIGNAL(toggled(bool)), widget()->widgetById("allowBiggerImagesAfterAsking"), SLOT(setEnabled(bool)));
+
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
 	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));

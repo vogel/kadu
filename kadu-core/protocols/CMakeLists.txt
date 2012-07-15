@@ -8,6 +8,8 @@ set (protocols_SRCS
 	services/avatar-service.cpp
 	services/chat-image-key.cpp
 	services/chat-image-request-service.cpp
+	services/chat-image-request-service-configuration.cpp
+	services/chat-image-request-service-configurator.cpp
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp

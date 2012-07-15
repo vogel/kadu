@@ -33,8 +33,7 @@
 #include "gadu-account-details.h"
 
 GaduAccountDetails::GaduAccountDetails(AccountShared *data) :
-		AccountDetails(data), AllowDcc(true), LimitImageSize(true), MaximumImageSize(255),
-		ImageSizeAsk(false), ReceiveImagesDuringInvisibility(true), MaximumImageRequests(10),
+		AccountDetails(data), AllowDcc(true), ReceiveImagesDuringInvisibility(true),
 		ChatImageSizeWarning(true), InitialRosterImport(true), TlsEncryption(false),
 		SendTypingNotification(true), ExternalPort(0), UserlistVersion(-1), ReceiveSpam(true)
 {
@@ -57,11 +56,7 @@ void GaduAccountDetails::load()
 	AccountDetails::load();
 
 	AllowDcc = loadValue<bool>("AllowDcc", true);
-	LimitImageSize = loadValue<bool>("LimitImageSize", true);
-	MaximumImageSize = loadValue<int>("MaximumImageSize", 255);
-	ImageSizeAsk = loadValue<bool>("ImageSizeAsk", false);
 	ReceiveImagesDuringInvisibility = loadValue<bool>("ReceiveImagesDuringInvisibility", true);
-	MaximumImageRequests = loadValue<short int>("MaximumImageRequests", 10);
 	ChatImageSizeWarning = loadValue<bool>("ChatImageSizeWarning", true);
 	InitialRosterImport = loadValue<bool>("InitialRosterImport", true);
 	TlsEncryption = loadValue<bool>("TlsEncryption", false);
@@ -78,11 +73,7 @@ void GaduAccountDetails::store()
 		return;
 
 	storeValue("AllowDcc", AllowDcc);
-	storeValue("LimitImageSize", LimitImageSize);
-	storeValue("MaximumImageSize", MaximumImageSize);
-	storeValue("ImageSizeAsk", ImageSizeAsk);
 	storeValue("ReceiveImagesDuringInvisibility", ReceiveImagesDuringInvisibility);
-	storeValue("MaximumImageRequests", MaximumImageRequests);
 	storeValue("ChatImageSizeWarning", ChatImageSizeWarning);
 	storeValue("InitialRosterImport", InitialRosterImport);
 	storeValue("TlsEncryption", TlsEncryption);

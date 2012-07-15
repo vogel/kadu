@@ -254,12 +254,12 @@ bool GaduChatService::ignoreImages(Contact sender)
 		);
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, bool richText)
 {
-	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content), 0, 0);
+	if (!richText)
+		return GaduFormatter::createMessage(QString::fromUtf8(content), 0, 0);
 	else
-		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content),
+		return GaduFormatter::createMessage(QString::fromUtf8(content),
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
 }
 
@@ -288,7 +288,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (account().accountContact() != sender)
 		emit filterRawIncomingMessage(chat, sender, content, ignore);
 
-	FormattedMessage message = createFormattedMessage(e, content, sender);
+	FormattedMessage message = createFormattedMessage(e, content, !ignoreRichText(sender));
 	if (message.isEmpty())
 		return;
 

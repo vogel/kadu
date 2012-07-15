@@ -61,6 +61,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-request-service.h"
+#include "protocols/services/chat-image-request-service-configurator.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "status/status-container-manager.h"
@@ -524,6 +525,12 @@ void Core::runServices()
 {
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
+	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+
+	// this instance lives forever
+	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
+	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
+	configurator->setChatImageRequestService(CurrentChatImageRequestService);
 }
 
 void Core::showMainWindow()

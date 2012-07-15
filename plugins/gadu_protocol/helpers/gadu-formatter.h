@@ -36,8 +36,7 @@ namespace GaduFormatter
 {
 	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
 
-	GADUAPI FormattedMessage createMessage(Account account, Contact contact, const QString &content, const unsigned char *formats,
-			unsigned int size);
+	GADUAPI FormattedMessage createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 
 }
 

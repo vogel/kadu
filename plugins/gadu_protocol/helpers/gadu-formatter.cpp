@@ -35,7 +35,6 @@
 #include "gui/windows/message-dialog.h"
 #include "message/formatted-message.h"
 
-#include "gadu-account-details.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -198,37 +197,13 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedMessagePart imagePart(Account account, Contact contact, const gg_msg_richtext_image &image)
+static FormattedMessagePart imagePart(const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
 
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 		return FormattedMessagePart();
-
-	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
-	if (!details)
-		return FormattedMessagePart();
-
-	if (details->limitImageSize() && size > (quint32)details->maximumImageSize() * 1024U)
-	{
-		bool allow = false;
-		if (details->imageSizeAsk())
-		{
-			QString question = qApp->translate("@default",
-					"Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
-					"This exceeds your configured limits.\n"
-					"Do you want to accept this image anyway?")
-					.arg(contact.display(true)).arg((size + 1023) / 1024);
-			allow = MessageDialog::ask(
-					KaduIcon("dialog-question"),
-					qApp->translate("@default", "Kadu") + " - " + qApp->translate("@default", "Incoming Image"),
-					question);
-		}
-
-		if (!allow)
-			return FormattedMessagePart(qApp->translate("@default", "THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED"), false, true, false, QColor());
-	}
 
 	ChatImageKey key(size, crc32);
 	return FormattedMessagePart(key);
@@ -247,8 +222,7 @@ static FormattedMessagePart messagePart(const QString &content, const gg_msg_ric
 	return FormattedMessagePart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-FormattedMessage createMessage(Account account, Contact contact, const QString &content,
-		const unsigned char *formats, unsigned int size)
+FormattedMessage createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
 	FormattedMessage result;
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
@@ -276,7 +250,7 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result << imagePart(account, contact, format.image);
+			result << imagePart(format.image);
 
 			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 			strayTextPosition = textPosition + 1;

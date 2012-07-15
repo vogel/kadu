@@ -20,6 +20,8 @@
 #include <QtCore/QTimer>
 
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
+#include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "chat-image-request-service.h"
@@ -51,6 +53,16 @@ void ChatImageRequestService::setAccountManager(AccountManager *accountManager)
 	connect(CurrentAccountManager.data(), SIGNAL(accountUnregistered(Account)), this, SLOT(accountUnregistered(Account)));
 }
 
+void ChatImageRequestService::setContactManager(ContactManager *contactManager)
+{
+	CurrentContactManager = contactManager;
+}
+
+void ChatImageRequestService::setConfiguration(ChatImageRequestServiceConfiguration configuration)
+{
+	Configuration = configuration;
+}
+
 void ChatImageRequestService::accountRegistered(Account account)
 {
 	if (!account || !account.protocolHandler() || !account.protocolHandler()->chatImageService())
@@ -69,6 +81,34 @@ void ChatImageRequestService::accountUnregistered(Account account)
 	           this, SLOT(chatImageKeyReceived(QString,ChatImageKey)));
 }
 
+bool ChatImageRequestService::acceptImage(const Account &account, const QString &id, const ChatImageKey &imageKey) const
+{
+	if (!Configuration.limitImageSize())
+		return true;
+
+	if (Configuration.maximumImageSizeInKiloBytes() >= imageKey.size() * 1024)
+		return true;
+
+	if (!CurrentContactManager)
+		return false;
+
+	if (!Configuration.allowBiggerImagesAfterAsking())
+		return false;
+
+	const Contact &contact = CurrentContactManager.data()->byId(account, id, ActionReturnNull);
+
+	QString question = tr(
+			"Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
+			"This exceeds your configured limits.\n"
+			"Do you want to accept this image anyway?")
+			.arg(contact.display(true)).arg((imageKey.size() + 1023) / 1024);
+
+	return MessageDialog::ask(
+			KaduIcon("dialog-question"),
+			tr("@default", "Kadu") + " - " + tr("@default", "Incoming Image"),
+			question);
+}
+
 void ChatImageRequestService::chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)
 {
 	if (ReceivedImageKeysCount >= ReceivedImageKeysPerMinuteLimit)
@@ -76,6 +116,9 @@ void ChatImageRequestService::chatImageKeyReceived(const QString &id, const Chat
 
 	ChatImageService *service = qobject_cast<ChatImageService *>(sender());
 	if (!service)
+		return;
+
+	if (!acceptImage(service->account(), id, imageKey))
 		return;
 
 	service->requestChatImage(id, imageKey);

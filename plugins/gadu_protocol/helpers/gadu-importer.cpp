@@ -103,7 +103,6 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 	result.setPrivateStatus(readEntry(xmlQuery, "General", "PrivateStatus").toBool());
 	accountDetails->setAllowDcc(readEntry(xmlQuery, "Network", "AllowDCC").toBool());
 
-	accountDetails->setMaximumImageSize(readEntry(xmlQuery, "Chat", "MaxImageSize", 255).toUInt());
 	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
 
 	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
@@ -173,7 +172,6 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu.setPrivateStatus(config_file.readBoolEntry("General", "PrivateStatus"));
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
-	accountDetails->setMaximumImageSize(config_file.readNumEntry("Chat", "MaxImageSize", 255));
 	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
 
 	QString address = config_file.readEntry("Network", "ProxyHost");

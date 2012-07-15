@@ -53,9 +53,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 
-	QCheckBox *LimitImageSize;
-	QSpinBox *MaximumImageSize;
-	QCheckBox *ImageSizeAsk;
 	QCheckBox *ReceiveImagesDuringInvisibility;
 
 	QCheckBox *ChatImageSizeWarning;
