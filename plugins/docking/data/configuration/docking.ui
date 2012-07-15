@@ -3,11 +3,11 @@
 	<section name="General">
 		<tab name="General">
 			<group-box name="Tray">
-				<check-box caption="Start docked" config-section="General" config-item="RunDocked" />
-				<check-box caption="Show tooltip in tray" config-section="General" config-item="ShowTooltipInTray" />
-				<combo-box caption="New chat tray icon" config-section="Look" config-item="NewMessageIcon">
-					<item value="0" caption="Blinking Envelope" />
+				<check-box caption="Hide Kadu in system tray on startup" config-section="General" config-item="RunDocked" />
+				<check-box caption="Show tooltip over tray icon" config-section="General" config-item="ShowTooltipInTray" />
+				<combo-box caption="Tray icon indicating new message" config-section="Look" config-item="NewMessageIcon">
 					<item value="1" caption="Static Envelope" />
+					<item value="0" caption="Blinking Envelope" />
 					<item value="2" caption="Animated Envelope" />
 				</combo-box>
 			</group-box>

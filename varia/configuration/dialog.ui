@@ -100,22 +100,25 @@
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
 					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Number of visible messages" />
 				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink" />
-			</group-box>
-			<group-box name="Events">
-				<check-box caption="Block window close on new message" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
-					tool-tip="Block chat window when a new message arrives" />
-				<check-box caption="Show state notifications in chats" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
-				<check-box caption="Show state notifications in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
-				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
-				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
 					tool-tip="Display dates is descriptive format, like Today, Yesterday or Friday, 2:30PM" />
+			</group-box>
+			<group-box name="Events">
+				<check-box caption="Inform about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
+				<check-box caption="Inform about chat events in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
+				<label caption="On new message:" />
+				<check-box caption="Block window close" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
+					tool-tip="Block chat window when a new message arrives" />
+				<check-box caption="Flash chat title" config-section="Chat" config-item="BlinkChatTitle" />
+				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
+			</group-box>
+			<group-box name="Syntax">
+				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
 		</tab>
 		<tab name="Look">
 			<group-box name="Style">
 				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
-				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
 		</tab>
 	</section>
@@ -187,6 +190,7 @@
 				<check-box caption="Allow bigger images after asking" config-section="Chat" config-item="AllowBiggerImagesAfterAsking" id="allowBiggerImagesAfterAsking"
 					tool-tip="Allows receiving bigger images but only after asking user" />
 			</group-box>
+
 			<group-box name="Link Folding">
 				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
 				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500"
@@ -215,7 +219,7 @@
 				<check-box caption="Ignore changes right after connection to the server" config-section="Notify"
 					config-item="NotifyIgnoreOnConnection"
 					tool-tip="This option will supersede tooltips with buddies' status\nchanges upon establishing connection to the server" />
-k			</group-box>
+			</group-box>
 		</tab>
 		<tab name="Events">
 			<group-box name="Notifications">

@@ -58,6 +58,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	static void instanceCreated();
 
 	QWeakPointer<ConfigurationWindow> lookChatAdvanced;
+	QWeakPointer<ConfigurationWindow> lookColorsAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
 	QCheckBox *userboxTransparency;
@@ -78,6 +79,7 @@ private slots:
 	void onChangeStartupStatus(int index);
 
 	void showLookChatAdvanced();
+	void showColorsAdvanced();
 
 	void setIconThemes();
 

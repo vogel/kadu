@@ -2,7 +2,7 @@
 	<section name="Chat">
 		<tab name="General">
 			<group-box name="Encryption">
-				<check-box caption="Encrypt after receiving encrypted message" config-section="Chat" config-item="EncryptAfterReceiveEncryptedMessage" />
+				<check-box caption="Enable encrytpion after receiving encrypted message" config-section="Chat" config-item="EncryptAfterReceiveEncryptedMessage" />
 			</group-box>
 		</tab>
 	</section>
