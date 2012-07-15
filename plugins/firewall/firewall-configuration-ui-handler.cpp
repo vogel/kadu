@@ -143,18 +143,10 @@ End creating Gui
 	connect(mainConfigurationWindow->widget()->widgetById("firewall/chats"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->configGroupBox("Firewall", "Unknown chats protection", "Automatic question")->widget(), SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("firewall/chats"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->configGroupBox("Firewall", "Unknown chats protection", "After right answer")->widget(), SLOT(setEnabled(bool)));
+		mainConfigurationWindow->widget()->configGroupBox("Firewall", "Unknown chats protection", "Reaction on right answer")->widget(), SLOT(setEnabled(bool)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("firewall/confirmation"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("firewall/confirmation_text"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("firewall/dos"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("firewall/dos_interval"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("firewall/dos_emoticons"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("firewall/emoticons_max"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("firewall/dos_emoticons"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("firewall/emoticons_allow_known"), SLOT(setEnabled(bool)));
 
 	QWidget *safeSending = mainConfigurationWindow->widget()->widgetById("firewall/safe_sending");
 	connect(safeSending, SIGNAL(toggled(bool)),

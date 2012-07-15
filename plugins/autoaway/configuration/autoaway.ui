@@ -24,11 +24,11 @@
 			</group-box>
 
 			<group-box name="Description">
-				<combo-box caption="Description when inactive" config-section="General" config-item="AutoChangeDescription" id="autoaway/descriptionChange">
+				<combo-box caption="Status description when inactive" config-section="General" config-item="AutoChangeDescription" id="autoaway/descriptionChange">
 					<item value="0" caption="Do Not Change" />
 					<item value="1" caption="Replace" />
-					<item value="2" caption="Add in the Front" />
-					<item value="3" caption="Add at the Back" />
+					<item value="2" caption="Prepend" />
+					<item value="3" caption="Append" />
 				</combo-box>
 				<line-edit caption="New description" config-section="General" config-item="AutoStatusText" id="autoaway/descriptionText" />
 			</group-box>

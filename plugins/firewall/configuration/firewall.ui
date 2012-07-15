@@ -1,15 +1,11 @@
 <configuration-ui>
 	<section name="Firewall" icon="security-high">
 		<tab name="General">
-			<group-box name="Notify">
+			<group-box name="Anonymous chat attempt">
 				<line-edit caption="Notification syntax" config-section="Firewall" config-item="notification_syntax" tool-tip="%u - uin, %m - message" id="firewall/notify_syntax"/>
-			</group-box>
-			<group-box name="Log">
-				<check-box caption="Write to history" config-section="Firewall" config-item="write_history" id="firewall/write_history" />
-				<check-box caption="Write log to file" config-section="Firewall" config-item="write_log" id="firewall/write_log" />
-				<line-edit caption="Log" config-section="Firewall" config-item="log_file" id="firewall/log_file" />
-			</group-box>
-			<group-box name="Search">
+				<check-box caption="Save anonymous chat attempt in history" config-section="Firewall" config-item="write_history" id="firewall/write_history" />
+				<check-box caption="Save anonymous chat attempt in log file" config-section="Firewall" config-item="write_log" id="firewall/write_log" />
+				<line-edit caption="Log file path" config-section="Firewall" config-item="log_file" id="firewall/log_file" />
 				<check-box caption="Search for unknown person in directory and show window with his personal data." config-section="Firewall" config-item="search" />
 			</group-box>
 		</tab>
@@ -17,29 +13,15 @@
 		<tab name="Unknown chats protection">
 			<group-box name="Unknown chats protection">
 				<check-box caption="Ignore conferences with all persons unknown" config-section="Firewall" config-item="ignore_conferences" />
-				<check-box caption="Protect against chats with unknown persons" config-section="Firewall" config-item="chats" tool-tip="Module will ask the question typed below, if someone wants talk to you and you do not have him on your list." id="firewall/chats" />
-				<!-- <check-box caption="Ignore chats with unknown invisible persons" config-section="Firewall" config-item="ignore_invisible" /> -->
-				<check-box caption="When invisible silently drop chats with unknown persons" config-section="Firewall" config-item="drop_anonymous_when_invisible" />
+				<check-box caption="Protect against chats with unknown persons" config-section="Firewall" config-item="chats" tool-tip="Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list." id="firewall/chats" />
+				<check-box caption="Drop chats with unknown person when I am invisible/unavailable" config-section="Firewall" config-item="drop_anonymous_when_invisible" />
 			</group-box>
 			<group-box name="Automatic question">
 
 			</group-box>
-			<group-box name="After right answer">
+			<group-box name="Reaction on right answer">
 				<check-box caption="Send confirmation" config-section="Firewall" config-item="confirmation" id="firewall/confirmation" />
 			<line-edit caption="Confirmation" config-section="Firewall" config-item="confirmation_text" id="firewall/confirmation_text" />
-			</group-box>
-		</tab>
-
-		<tab name="DoS attack">
-			<group-box name="General">
-				<check-box caption="Protect against flooding DoS attack" config-section="Firewall" config-item="dos" tool-tip="Attack caused by many messages, sent in short time." id="firewall/dos" />
-				<spin-box caption="Min delay between two messages" config-section="Firewall" config-item="dos_interval" min-value="100" max-value="1500" step="100" suffix="%n millisecond(s)" id="firewall/dos_interval" />
-			</group-box>
-
-			<group-box name="Emoticons DoS attack">
-				<check-box caption="Protect against emoticons DoS attack" config-section="Firewall" config-item="dos_emoticons" tool-tip="Attack caused by many emoticons, sent in short time." id="firewall/dos_emoticons"/>
-				<spin-box caption="Max number of emoticons in one message" config-section="Firewall" config-item="emoticons_max" min-value="1" max-value="100" id="firewall/emoticons_max" />
-				<check-box caption="Allow if known contact" config-section="Firewall" config-item="emoticons_allow_known" tool-tip="People from your list can send you unlimited number of emoticons" id="firewall/emoticons_allow_known" />
 			</group-box>
 		</tab>
 

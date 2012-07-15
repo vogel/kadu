@@ -9,7 +9,7 @@
 						   tool-tip="Forces to use short .jpg extension for files in JPEG format. Some other instant messagers needs it." />
 				<spin-box caption="Screenshots quality" config-section="ScreenShot" config-item="quality" min-value="-1" max-value="100"
 						  tool-tip="-1 for autodetection, 0 for best file compression, 100 for best image quality." />
-				<check-box caption="Paste [IMAGE] clause automatically" config-section="ScreenShot" config-item="paste_clause"
+				<check-box caption="Paste image to chat window automatically" config-section="ScreenShot" config-item="paste_clause"
 						   tool-tip="When enabled, module will automatically paste ready to send [IMAGE] clause in chat window." />
 			</group-box>
 			<group-box name="Directory">

@@ -3,7 +3,7 @@
 	<section name="MediaPlayer" icon="external_modules/mediaplayer-media-playback-play">
 		<tab name="General">
 			<group-box name="General Settings">
-				<line-edit caption="MediaPlayer message format for chat windows" config-section="MediaPlayer" config-item="chatString"
+				<line-edit caption="MediaPlayer message format in chat window" config-section="MediaPlayer" config-item="chatString"
 						   id="mediaplayer/syntax" />
 				<combo-box caption="MediaPlayer statuses in description" config-section="MediaPlayer" config-item="statusPosition" >
 					<item value="0" caption="Replace" />
@@ -15,8 +15,8 @@
 						   tool-tip="Here specify format which will replace '#{player}' tag when you will use it in description while setting status." />
 			</group-box>
 			<group-box name="Signature Cutting">
-				<check-box caption="Enable" config-section="MediaPlayer" config-item="signature" id="mediaplayer/signature"
-						   tool-tip="Shall I cut this crap?" />
+				<check-box caption="Enable signature cutting" config-section="MediaPlayer" config-item="signature" id="mediaplayer/signature"
+						   tool-tip="Enable removing non-essential stuff from audio file titles" />
 				<line-edit caption="Signatures to cut" config-section="MediaPlayer" config-item="signatures" id="mediaplayer/signatures"
 						   tool-tip="Crap to cut" />
 			</group-box>
