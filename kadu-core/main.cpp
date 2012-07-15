@@ -374,6 +374,7 @@ int main(int argc, char *argv[])
 	}
 
 	Core::instance()->createGui();
+	Core::instance()->runServices();
 	QObject::connect(peer, SIGNAL(messageReceived(const QString &)),
 			Core::instance(), SLOT(receivedSignal(const QString &)));
 

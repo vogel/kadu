@@ -49,6 +49,7 @@ namespace QCA
 	class Initializer;
 }
 
+class ChatImageRequestService;
 class KaduApplication;
 class KaduIcon;
 class KaduWindow;
@@ -63,6 +64,9 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	QSharedPointer<SimpleProvider<QWidget *> > KaduWindowProvider;
 	QSharedPointer<DefaultProvider<QWidget *> > MainWindowProvider;
+
+	ChatImageRequestService *CurrentChatImageRequestService;
+
 	KaduWindow *Window;
 
 	Buddy Myself;
@@ -110,6 +114,7 @@ public:
 	Buddy myself() { return Myself; }
 
 	void createGui();
+	void runServices();
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
 	void showMainWindow();

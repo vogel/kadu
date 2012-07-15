@@ -60,6 +60,7 @@
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/services/chat-image-request-service.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "status/status-container-manager.h"
@@ -116,6 +117,7 @@ KaduApplication * Core::application()
 Core::Core() :
 		KaduWindowProvider(new SimpleProvider<QWidget *>(0)),
 		MainWindowProvider(new DefaultProvider<QWidget *>(KaduWindowProvider)),
+		CurrentChatImageRequestService(0),
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
@@ -516,6 +518,12 @@ void Core::createGui()
 
 	// initialize file transfers
 	FileTransferManager::instance();
+}
+
+void Core::runServices()
+{
+	CurrentChatImageRequestService = new ChatImageRequestService(this);
+	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
 }
 
 void Core::showMainWindow()
