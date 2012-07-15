@@ -60,6 +60,7 @@
 AutoAway::AutoAway() :
 		StatusChanged(false)
 {
+	migrateConfiguration();
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);
@@ -165,8 +166,6 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 	descriptionTextLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
 
-	parseStatusCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/enableParseStatus"));
-
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoExtendedAway"), SIGNAL(toggled(bool)), autoExtendedAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
@@ -184,20 +183,19 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 void AutoAway::configurationUpdated()
 {
-	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime");
-
-	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime");
-	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTime");
-	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime");
-	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime");
+	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime", 10)*60;
+	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime")*60;
+	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime")*60;
+	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTime")*60;
+	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime")*60;
+	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime")*60;
 
 	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
 	autoExtendedAwayEnabled = config_file.readBoolEntry("General","AutoExtendedAway");
 	autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
 	autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
-	parseAutoStatus = config_file.readBoolEntry("General", "AutoParseStatus");
+	parseAutoStatus = config_file.readBoolEntry("General", "ParseStatus");
 
-	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
 	refreshStatusInterval = refreshStatusTime;
 
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
@@ -253,7 +251,6 @@ void AutoAway::descriptionChangeChanged(int index)
 {
 	descriptionTextLineEdit->setEnabled(index != 0);
 	autoRefreshSpinBox->setEnabled(index != 0);
-	parseStatusCheckBox->setEnabled(index != 0);
 }
 
 QString AutoAway::parseDescription(const QString &parseDescription)
@@ -267,19 +264,36 @@ QString AutoAway::parseDescription(const QString &parseDescription)
 void AutoAway::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "AutoAway", true);
-	config_file.addVariable("General", "AutoAwayCheckTime", 10);
-	config_file.addVariable("General", "AutoAwayTime", 300);
+	config_file.addVariable("General", "AutoAwayCheckTime", 1);
+	config_file.addVariable("General", "AutoAwayTime", 5);
 	config_file.addVariable("General", "AutoExtendedAway", true);
-	config_file.addVariable("General", "AutoExtendedAwayTime", 900);
+	config_file.addVariable("General", "AutoExtendedAwayTime", 15);
 	config_file.addVariable("General", "AutoChangeDescription", 0);
 	config_file.addVariable("General", "AutoDisconnect", false);
-	config_file.addVariable("General", "AutoDisconnectTime", 3600);
+	config_file.addVariable("General", "AutoDisconnectTime", 60);
 	config_file.addVariable("General", "AutoInvisible", false);
-	config_file.addVariable("General", "AutoInvisibleTime", 1800);
-	config_file.addVariable("General", "AutoParseStatus", false);
+	config_file.addVariable("General", "AutoInvisibleTime", 30);
 	config_file.addVariable("General", "AutoRefreshStatusTime", 0);
 	config_file.addVariable("General", "AutoStatusText", QString());
 }
+
+void AutoAway::migrateConfiguration()
+{
+	if (config_file.readBoolEntry("General", "AutoAwayTimesDenominated"))
+		return;
+
+	QStringList variables;
+	variables << "AutoAwayCheckTime" << "AutoAwayTime" << "AutoRefreshStatusTime" << "AutoExtendedAwayTime" << "AutoDisconnectTime" << "AutoInvisibleTime";
+
+	foreach (QString variable, variables)
+	{
+		int oldValue = config_file.readUnsignedNumEntry("General", variable);
+		config_file.writeEntry("General", variable, oldValue/60);
+	}
+
+	config_file.writeEntry("General", "AutoAwayTimesDenominated", true);
+}
+
 
 Q_EXPORT_PLUGIN2(autoaway, AutoAway)
 
