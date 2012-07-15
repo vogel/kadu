@@ -89,6 +89,17 @@ public:
 
 signals:
 	/**
+	 * @short Signal emitted when image key was received from a peer.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id sender id
+	 * @param imageKey received key
+	 *
+	 * After receiving this signal requestChatImage() may be called to request image data from a peer. If image data is not
+	 * needed then this signal can be safely ignored.
+	 */
+	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+
+	/**
 	 * @short Signal emitted when image with given key was received and saved on disc.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imageKey key of received image

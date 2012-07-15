@@ -63,6 +63,11 @@ void GaduChatService::setGaduProtocol(GaduProtocol *protocol)
 	CurrentProtocol = protocol;
 }
 
+void GaduChatService::setChatImageService(GaduChatImageService *imageService)
+{
+	CurrentChatImageService = imageService;
+}
+
 void GaduChatService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
@@ -317,7 +322,14 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
 	if (MessageTypeReceived == type)
+	{
 		emit messageReceived(msg);
+
+		if (CurrentChatImageService)
+			foreach (const FormattedMessagePart &part, message.parts())
+				if (part.isImage())
+					CurrentChatImageService.data()->gaduChatImageKeyReceived(sender.id(), part.imageKey());
+	}
 	else
 		emit messageSent(msg);
 }

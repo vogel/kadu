@@ -108,6 +108,8 @@ public:
 
 	virtual Error checkImageSize(qint64 size) const;
 
+	void gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+
 };
 
 /**

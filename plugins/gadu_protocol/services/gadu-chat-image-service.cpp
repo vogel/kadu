@@ -166,3 +166,7 @@ Error GaduChatImageService::checkImageSize(qint64 size) const
 	return Error(ErrorLow, message);
 }
 
+void GaduChatImageService::gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)
+{
+	emit chatImageKeyReceived(id, imageKey);
+}

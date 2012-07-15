@@ -28,6 +28,7 @@
 #include <QtGui/QColor>
 
 #include "protocols/protocol.h"
+#include "protocols/services/chat-image-key.h"
 
 #include "exports.h"
 
@@ -64,12 +65,13 @@ class KADUAPI FormattedMessagePart
 
 	bool IsImage;
 	QString ImagePath;
+	ChatImageKey ImageKey;
 
 public:
 	/**
 	 * Creates empty message part.
 	 */
-	FormattedMessagePart() : IsImage(false) {}
+	FormattedMessagePart() : IsImage(false), ImageKey(0, 0) {}
 
 	/**
 	 * Creates text message part with formatting.
@@ -86,6 +88,7 @@ public:
 	 * @arg imagePath local image path
 	 */
 	explicit FormattedMessagePart(const QString &imagePath);
+	explicit FormattedMessagePart(const ChatImageKey &chatImageKey);
 
 	virtual ~FormattedMessagePart();
 
@@ -99,6 +102,8 @@ public:
 	const QColor & color() const { return Color; }
 
 	QString imagePath() const;
+
+	ChatImageKey imageKey() const;
 
 	/**
 	 * Converts message part to HTML - either formatted text or image.

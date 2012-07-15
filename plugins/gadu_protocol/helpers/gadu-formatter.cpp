@@ -243,7 +243,7 @@ static FormattedMessagePart imagePart(Account account, Contact contact, const gg
 	ChatImageKey key(size, crc32);
 	service->requestChatImage(contact.id(), key);
 
-	return FormattedMessagePart(key.toString());
+	return FormattedMessagePart(key);
 }
 
 static FormattedMessagePart messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)

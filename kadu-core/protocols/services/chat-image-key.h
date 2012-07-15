@@ -51,6 +51,15 @@ public:
 	ChatImageKey(quint32 size, quint32 crc32);
 
 	/**
+	 * @short Return true if key is null.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if key is null
+	 *
+	 * Key is null when size and crc32 are both null.
+	 */
+	bool isNull() const;
+
+	/**
 	 * @short Return string representation of key.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return string representation of key

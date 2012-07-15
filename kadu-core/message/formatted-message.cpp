@@ -97,7 +97,7 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 				QFileInfo fileInfo(filePath);
 				if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
 					result << FormattedMessagePart(saveInImagesPath(filePath));
-			};
+			}
 
 			firstFragment = false;
 		}

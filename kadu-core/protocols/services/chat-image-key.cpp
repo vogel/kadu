@@ -24,6 +24,11 @@ ChatImageKey::ChatImageKey(quint32 size, quint32 crc32) :
 {
 }
 
+bool ChatImageKey::isNull() const
+{
+	return 0 == first && 0 == second;
+}
+
 QString ChatImageKey::toString() const
 {
 	return QString("chat-image-%1-%2").arg(first).arg(second);

@@ -31,15 +31,26 @@
 #include "formatted-message-part.h"
 
 FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
-		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false)
+		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false), ImageKey(0, 0)
 {
 }
 
 FormattedMessagePart::FormattedMessagePart(const QString &imagePath) :
-		IsImage(false), ImagePath(imagePath)
+		IsImage(false), ImagePath(imagePath), ImageKey(0, 0)
 {
 	if (!ImagePath.isEmpty())
 	{
+		Content = QChar(QChar::Nbsp);
+		IsImage = true;
+	}
+}
+
+FormattedMessagePart::FormattedMessagePart(const ChatImageKey &chatImageKey) :
+		IsImage(false), ImageKey(chatImageKey)
+{
+	if (!ImageKey.isNull())
+	{
+		ImagePath = ImageKey.toString();
 		Content = QChar(QChar::Nbsp);
 		IsImage = true;
 	}
@@ -53,10 +64,15 @@ QString FormattedMessagePart::imagePath() const
 {
 	if (!IsImage)
 		return QString();
-	
+
 	return QFileInfo(ImagePath).isAbsolute()
 			? ImagePath
 			: ChatImageService::imagesPath() + ImagePath;
+}
+
+ChatImageKey FormattedMessagePart::imageKey() const
+{
+	return ImageKey;
 }
 
 QString FormattedMessagePart::toHtml() const
