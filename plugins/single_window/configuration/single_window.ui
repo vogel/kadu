@@ -10,9 +10,9 @@
 			</group-box>
 		</tab>
 	</section>
-	<section name="Shortcuts">
-		<tab name="SingleWindow">
-			<group-box name="Tabs">
+	<section name="Behaviour">
+		<tab name="Shortcuts">
+			<group-box name="SingleWindow">
 				<hot-key-edit caption="Switch to previous tab" config-section="ShortCuts" config-item="SwitchTabLeft" />
 				<hot-key-edit caption="Switch to next tab" config-section="ShortCuts" config-item="SwitchTabRight" />
 				<hot-key-edit caption="Show/hide roster" config-section="ShortCuts" config-item="HideShowRoster" />

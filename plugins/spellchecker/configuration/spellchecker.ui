@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Chat">
-		<tab name="SpellChecker">
+		<tab name="Spelling">
 			<group-box name="Misspelled Words Marking Options">
 				<color-button caption="Color" config-section="ASpell" config-item="Color" />
 				<check-box caption="Bold" config-section="ASpell" config-item="Bold" />

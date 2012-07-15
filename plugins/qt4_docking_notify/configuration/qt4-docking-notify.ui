@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Notify">
+	<section name="Notifications">
 		<tab name="Notification">
 			<group-box name="Tray Icon Balloon">
 				<spin-box caption="Timeout" config-section="Qt4DockingNotify" config-item="_timeout" min-value="1" max-value="100" suffix="%n second(s)" />

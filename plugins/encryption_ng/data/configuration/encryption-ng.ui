@@ -1,6 +1,6 @@
 <configuration-ui>
 	<section name="Chat">
-		<tab name="Messages">
+		<tab name="General">
 			<group-box name="Encryption">
 				<check-box caption="Encrypt after receiving encrypted message" config-section="Chat" config-item="EncryptAfterReceiveEncryptedMessage" />
 			</group-box>

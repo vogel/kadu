@@ -1,9 +1,8 @@
 <configuration-ui>
 	<section name="Chat">
-		<tab name="Words fix">
+		<tab name="Spelling">
 			<group-box name="Words fix" id="word_fix/group_box">
 				<check-box caption="Enable word fix" config-section="PowerKadu" config-item="enable_word_fix" id="word_fix/enable_word_fix" />
-				
 			</group-box>
 		</tab>
 	</section>

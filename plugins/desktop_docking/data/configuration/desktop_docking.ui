@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="Kadu">
+	<section name="Buddies list">
 		<tab name="Tray">
 			<group-box name="Desktop Docking">
 				<spin-box caption="Horizontal position" config-section="Desktop Dock" config-item="PositionX" min-value="0" max-value="10240" step="0" id="desktop_docking/x" />

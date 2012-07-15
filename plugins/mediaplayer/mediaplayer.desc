@@ -8,3 +8,4 @@ Provides=descriptions
 Version=core
 Plugin=true
 Dependencies=docking
+Category=Media players

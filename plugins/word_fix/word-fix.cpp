@@ -301,7 +301,7 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	kdebugf();
 
 	ConfigGroupBox *groupBox = mainConfigurationWindow->widget()->
-		configGroupBox("Chat", "Words fix", "Words fix");
+		configGroupBox("Chat", "Spelling", "Words fix");
 
 	QWidget *widget = new QWidget(groupBox->widget());
 

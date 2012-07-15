@@ -166,10 +166,9 @@ void MainConfigurationWindow::instanceCreated()
 	foreach (const QString &uiFile, UiFiles)
 		Instance->widget()->appendUiFile(uiFile);
 
-/*	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
+	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
-*/
 }
 
 MainConfigurationWindow::MainConfigurationWindow() :

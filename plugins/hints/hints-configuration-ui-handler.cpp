@@ -83,7 +83,7 @@ void HintsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 
-	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Look", "Buddy List", "General");
+	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Buddies list", "Information", "Tooltip over buddy");
 
 	QWidget *configureHint = new QWidget(toolTipBox->widget());
 	overUserConfigurationPreview = new QFrame(configureHint);
