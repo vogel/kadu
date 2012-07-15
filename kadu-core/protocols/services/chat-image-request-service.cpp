@@ -64,6 +64,9 @@ void ChatImageRequestService::accountUnregistered(Account account)
 
 void ChatImageRequestService::chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)
 {
-	Q_UNUSED(id);
-	Q_UNUSED(imageKey);
+	ChatImageService *service = qobject_cast<ChatImageService *>(sender());
+	if (!service)
+		return;
+
+	service->requestChatImage(id, imageKey);
 }

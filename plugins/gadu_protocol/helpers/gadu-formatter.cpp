@@ -233,16 +233,7 @@ static FormattedMessagePart imagePart(Account account, Contact contact, const gg
 			return FormattedMessagePart(qApp->translate("@default", "THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED"), false, true, false, QColor());
 	}
 
-	GaduChatImageService *service = account.protocolHandler()
-			? qobject_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService())
-			: 0;
-
-	if (!service)
-		return FormattedMessagePart();
-
 	ChatImageKey key(size, crc32);
-	service->requestChatImage(contact.id(), key);
-
 	return FormattedMessagePart(key);
 }
 
