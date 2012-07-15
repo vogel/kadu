@@ -224,13 +224,6 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	connect(ReceiveImagesDuringInvisibility, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	incomingImagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
-	MaximumImageRequests = new QSpinBox(optionsTab);
-	MaximumImageRequests->setMinimum(1);
-	MaximumImageRequests->setMaximum(60);
-	MaximumImageRequests->setSingleStep(1);
-	connect(MaximumImageRequests, SIGNAL(valueChanged(int)), this, SLOT(dataChanged()));
-	incomingImagesLayout->addRow(tr("Limit numbers of images received per minute") + ':', MaximumImageRequests);
-
 	layout->addWidget(inclomingImages);
 
 	// outgoing images
@@ -362,7 +355,6 @@ void GaduEditAccountWidget::apply()
 		Details->setMaximumImageSize(MaximumImageSize->value());
 		Details->setImageSizeAsk(ImageSizeAsk->isChecked());
 		Details->setReceiveImagesDuringInvisibility(ReceiveImagesDuringInvisibility->isChecked());
-		Details->setMaximumImageRequests(MaximumImageRequests->value());
 
 		Details->setChatImageSizeWarning(ChatImageSizeWarning->isChecked());
 
@@ -423,7 +415,6 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->maximumImageSize() == MaximumImageSize->value()
 		&& Details->imageSizeAsk() == ImageSizeAsk->isChecked()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
-		&& Details->maximumImageRequests() == MaximumImageRequests->value()
 
 		&& Details->chatImageSizeWarning() == ChatImageSizeWarning->isChecked()
 
@@ -479,7 +470,6 @@ void GaduEditAccountWidget::loadAccountData()
 		MaximumImageSize->setValue(details->maximumImageSize());
 		ImageSizeAsk->setChecked(details->imageSizeAsk());
 		ReceiveImagesDuringInvisibility->setChecked(details->receiveImagesDuringInvisibility());
-		MaximumImageRequests->setValue(details->maximumImageRequests());
 		MaximumImageSize->setEnabled(details->limitImageSize());
 		ImageSizeAsk->setEnabled(details->limitImageSize());
 

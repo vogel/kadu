@@ -202,7 +202,6 @@ void GaduProtocol::everyMinuteActions()
 	disableSocketNotifiers();
 	gg_ping(GaduSession);
 	enableSocketNotifiers();
-	CurrentChatImageService->resetSendImageRequests();
 }
 
 void GaduProtocol::configureServices()

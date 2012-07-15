@@ -46,6 +46,9 @@ class ChatImageRequestService : public QObject
 {
 	Q_OBJECT
 
+	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
+	quint32 ReceivedImageKeysCount;
+
 	QWeakPointer<AccountManager> CurrentAccountManager;
 
 private slots:
@@ -53,6 +56,8 @@ private slots:
 	void accountUnregistered(Account account);
 
 	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+
+	void resetReceivedImageKeysCount();
 
 public:
 	/**

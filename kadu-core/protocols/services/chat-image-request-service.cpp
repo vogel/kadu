@@ -17,14 +17,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
+
 #include "accounts/account-manager.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "chat-image-request-service.h"
 
 ChatImageRequestService::ChatImageRequestService(QObject *parent) :
-		QObject(parent)
+		QObject(parent), ReceivedImageKeysCount(0)
 {
+	QTimer *everyMinuteTimer = new QTimer(this);
+	everyMinuteTimer->setInterval(60 * 1000);
+	everyMinuteTimer->setSingleShot(false);
+	connect(everyMinuteTimer, SIGNAL(timeout()), this, SLOT(resetReceivedImageKeysCount()));
+	everyMinuteTimer->start();
 }
 
 ChatImageRequestService::~ChatImageRequestService()
@@ -64,9 +71,18 @@ void ChatImageRequestService::accountUnregistered(Account account)
 
 void ChatImageRequestService::chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)
 {
+	if (ReceivedImageKeysCount >= ReceivedImageKeysPerMinuteLimit)
+		return;
+
 	ChatImageService *service = qobject_cast<ChatImageService *>(sender());
 	if (!service)
 		return;
 
 	service->requestChatImage(id, imageKey);
+	ReceivedImageKeysCount++;
+}
+
+void ChatImageRequestService::resetReceivedImageKeysCount()
+{
+	ReceivedImageKeysCount = 0;
 }

@@ -64,7 +64,6 @@ public:
 	PROPERTY_DEF(int, maximumImageSize, setMaximumImageSize, MaximumImageSize)
 	PROPERTY_DEF(bool, imageSizeAsk, setImageSizeAsk, ImageSizeAsk)
 	PROPERTY_DEF(bool, receiveImagesDuringInvisibility, setReceiveImagesDuringInvisibility, ReceiveImagesDuringInvisibility)
-	PROPERTY_DEF(unsigned short int, maximumImageRequests, setMaximumImageRequests, MaximumImageRequests)
 	PROPERTY_DEF(bool, chatImageSizeWarning, setChatImageSizeWarning, ChatImageSizeWarning)
 	PROPERTY_DEF(bool, initialRosterImport, setInitialRosterImport, InitialRosterImport)
 	PROPERTY_DEF(bool, tlsEncryption, setTlsEncryption, TlsEncryption)

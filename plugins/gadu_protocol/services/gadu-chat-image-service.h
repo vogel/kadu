@@ -59,7 +59,6 @@ class GaduChatImageService : public ChatImageService
 	QMap<ChatImageKey, QString> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
-	unsigned int CurrentMinuteSendImageRequests;
 
 	QString saveImage(const ChatImageKey &key, const char *data);
 	QByteArray loadFileContent(const QString &localFileName);
@@ -84,15 +83,6 @@ public:
 	 * @param connection connection for this service
 	 */
 	void setConnection(GaduConnection *connection);
-
-	/**
-	 * @short Reset count of received images.
-	 * @author Rafał 'Vogel' Malinowski
-	 *
-	 * Call this method to reset count of received images. This service only allows for a number of received images
-	 * in any minute to prevent DOS attacks. After reseting this value it allows for more received images.
-	 */
-	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
 
 	/**
 	 * @short Request for an image from contact that sent info about it before.

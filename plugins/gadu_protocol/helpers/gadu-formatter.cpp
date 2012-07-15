@@ -250,15 +250,12 @@ static FormattedMessagePart messagePart(const QString &content, const gg_msg_ric
 	return FormattedMessagePart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-#define MAX_NUMBER_OF_IMAGES 5
-
 FormattedMessage createMessage(Account account, Contact contact, const QString &content,
 		const unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	FormattedMessage result;
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
-	int imageCount = 0;
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.
 	quint16 strayTextPosition = 0;
 	bool hasStrayText = true;
@@ -282,12 +279,11 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result << imagePart(account, contact, format.image, receiveImages && imageCount < MAX_NUMBER_OF_IMAGES);
+			result << imagePart(account, contact, format.image, receiveImages);
 
 			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 			strayTextPosition = textPosition + 1;
 			hasStrayText = true;
-			imageCount++;
 		}
 		else if (textPosition < content.length())
 		{

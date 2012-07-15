@@ -38,7 +38,7 @@
 #include "gadu-chat-image-service.h"
 
 GaduChatImageService::GaduChatImageService(Account account, QObject *parent) :
-		ChatImageService(account, parent), CurrentMinuteSendImageRequests(0)
+		ChatImageService(account, parent)
 {
 }
 
@@ -130,12 +130,8 @@ void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKe
 	if (!Connection || !Connection.data()->hasSession())
 		return;
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
-
-	if (id.isEmpty() || (CurrentMinuteSendImageRequests > gaduAccountDetails->maximumImageRequests()))
+	if (id.isEmpty() || imageKey.isNull())
 		return;
-
-	CurrentMinuteSendImageRequests++;
 
 	Connection.data()->beginWrite();
 	gg_image_request(Connection.data()->session(), id.toUInt(), imageKey.size(), imageKey.crc32());

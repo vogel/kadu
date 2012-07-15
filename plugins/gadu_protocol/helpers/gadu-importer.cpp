@@ -105,7 +105,6 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 
 	accountDetails->setMaximumImageSize(readEntry(xmlQuery, "Chat", "MaxImageSize", 255).toUInt());
 	accountDetails->setReceiveImagesDuringInvisibility(readEntry(xmlQuery, "Chat", "ReceiveImagesDuringInvisibility").toBool());
-	accountDetails->setMaximumImageRequests(readEntry(xmlQuery, "Chat", "MaxImageRequests").toUInt());
 
 	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
 	if (!address.isEmpty())
@@ -176,7 +175,6 @@ void GaduImporter::importAccounts()
 
 	accountDetails->setMaximumImageSize(config_file.readNumEntry("Chat", "MaxImageSize", 255));
 	accountDetails->setReceiveImagesDuringInvisibility(config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility"));
-	accountDetails->setMaximumImageRequests(config_file.readNumEntry("Chat", "MaxImageRequests"));
 
 	QString address = config_file.readEntry("Network", "ProxyHost");
 	if (!address.isEmpty())
