@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 	<section name="Buddies list">
-		<tab name="Simple view">
-			<group-box name="General">
+		<tab name="Look">
+			<group-box name="Simple view">
 				<check-box caption="Keep contact list size" config-section="Look" config-item="SimpleViewKeepSize" id="simple_view/KeepSize" />
 				<check-box caption="Hide scroll bar" config-section="Look" config-item="SimpleViewNoScrollBar" id="simple_view/NoScrollBar" />
-				<check-box caption="Borderless" config-section="Look" config-item="SimpleViewBorderless" id="simple_view/Borderless" />
+				<check-box caption="Hide window borders" config-section="Look" config-item="SimpleViewBorderless" id="simple_view/Borderless" />
 			</group-box>
 		</tab>
 	</section>

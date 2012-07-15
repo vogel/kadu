@@ -98,10 +98,11 @@
 		<tab name="General">
 			<group-box name="Messages">
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
-					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Number of visible messages" />
-				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink" />
+					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
+				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
+					tool-tip="Shorten ugly, long links to save space in chat window" />
 				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
-					tool-tip="Display dates is descriptive format, like Today, Yesterday or Friday, 2:30PM" />
+					tool-tip="Display dates like Today, Yesterday or Friday, 2:30PM" />
 			</group-box>
 			<group-box name="Events">
 				<check-box caption="Inform about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
@@ -118,7 +119,7 @@
 		</tab>
 		<tab name="Look">
 			<group-box name="Style">
-				<check-box caption="Turn on transparency" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
+				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
 			</group-box>
 		</tab>
 	</section>
@@ -126,9 +127,10 @@
 	<section name="Buddies list" icon="system-users">
 		<tab name="General">
 			<group-box name="Buddies window">
-				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
-					tool-tip="Displays information panel below the buddy list" />
-				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton" />
+				<check-box caption="Show buddy information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
+					tool-tip="Displays buddy information panel below the buddy list" />
+				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton"
+					tool-tip="Displays status changing buttons below the buddy list" />
 			</group-box>
 			<group-box name="Buddy groups">
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
@@ -286,7 +288,7 @@
 					<item value="true" caption="Current Description" />
 					<item value="false" caption="New Description" />
 				</combo-box>
-				<line-edit caption="On shutdown, set description" config-section="General" config-item="DisconnectDescription"
+				<line-edit caption="New description" config-section="General" config-item="DisconnectDescription"
 					id="disconnectDescription" tool-tip="Define description which will be set on shutdown" />
 				<check-box caption="Store descriptions" config-section="General" config-item="StoreDescriptions"
 					id="storeDescriptions" tool-tip="Every description you set will be saved for further use." />

@@ -15,7 +15,7 @@
 				<spin-box caption="Border width" config-section="Hints" config-item="AllEvents_borderWidth" min-value="0" max-value="20" step="1" suffix=" px" />
 				<spin-box caption="Transparency" config-section="Hints" config-item="AllEvents_transparency"
 						min-value="0" max-value="100" step="1" suffix="%" />
-				<check-box caption="Show buttons only when necessary" config-section="Hints" config-item="ShowOnlyNecessaryButtons" />
+				<check-box caption="Show buttons only if notification requires user's action" config-section="Hints" config-item="ShowOnlyNecessaryButtons" />
 			</group-box>
 			<group-box name="New Chat/Message">
 				<check-box caption="Show message content in hint" config-section="Hints" config-item="ShowContentMessage" id="hints/showContent" />
@@ -23,7 +23,7 @@
 				<check-box caption="Delete pending message when user deletes hint" config-section="Hints" config-item="DeletePendingMsgWhenHintDeleted" />
 			</group-box>
 			<group-box name="Advanced">
-				<action-button caption="Advanced..." id="hints/advanced" />
+				<action-button caption="Hints size and position..." id="hints/advanced" />
 			</group-box>
 		</tab>
 	</section>

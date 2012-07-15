@@ -2,7 +2,7 @@
 	<section name="Buddies list">
 		<tab name="General">
 			<group-box name="Buddies window">
-				<check-box caption="Hide buddies list window when inactive" config-section="PowerKadu" config-item="auto_hide_use_auto_hide" id="auto_hide/use_auto_hide" />
+				<check-box caption="Hide buddy list window when unused" config-section="PowerKadu" config-item="auto_hide_use_auto_hide" id="auto_hide/use_auto_hide" />
 				<spin-box caption="Autohide idle time" config-section="PowerKadu" config-item="auto_hide_idle_time" id="auto_hide/idle_time"
 						 min-value="0" max-value="100" step="1" suffix="%n second(s)" default="10"/>
 			</group-box>
