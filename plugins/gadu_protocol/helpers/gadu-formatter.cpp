@@ -198,16 +198,13 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedMessagePart imagePart(Account account, Contact contact, const gg_msg_richtext_image &image, bool receiveImages)
+static FormattedMessagePart imagePart(Account account, Contact contact, const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
 
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 		return FormattedMessagePart();
-
-	if (!receiveImages)
-		return FormattedMessagePart(qApp->translate("@default", "IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED"), false, true, false, QColor());
 
 	GaduAccountDetails *details = dynamic_cast<GaduAccountDetails *>(account.details());
 	if (!details)
@@ -251,7 +248,7 @@ static FormattedMessagePart messagePart(const QString &content, const gg_msg_ric
 }
 
 FormattedMessage createMessage(Account account, Contact contact, const QString &content,
-		const unsigned char *formats, unsigned int size, bool receiveImages)
+		const unsigned char *formats, unsigned int size)
 {
 	FormattedMessage result;
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
@@ -279,7 +276,7 @@ FormattedMessage createMessage(Account account, Contact contact, const QString &
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result << imagePart(account, contact, format.image, receiveImages);
+			result << imagePart(account, contact, format.image);
 
 			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 			strayTextPosition = textPosition + 1;

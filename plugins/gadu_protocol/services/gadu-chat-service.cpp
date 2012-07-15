@@ -236,15 +236,7 @@ QByteArray GaduChatService::getContent(gg_event *e)
 
 bool GaduChatService::ignoreRichText(Contact sender)
 {
-	bool ignore = sender.isAnonymous() &&
-		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
-
-	if (ignore)
-	{
-		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
-	}
-
-	return ignore;
+	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
 bool GaduChatService::ignoreImages(Contact sender)
@@ -265,10 +257,10 @@ bool GaduChatService::ignoreImages(Contact sender)
 FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, Contact sender)
 {
 	if (ignoreRichText(sender))
-		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content), 0, 0, false);
+		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content), 0, 0);
 	else
 		return GaduFormatter::createMessage(account(), sender, QString::fromUtf8(content),
-				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(sender));
+				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)
@@ -325,7 +317,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		if (CurrentChatImageService)
+		if (!ignoreImages(sender) && CurrentChatImageService)
 			foreach (const FormattedMessagePart &part, message.parts())
 				if (part.isImage())
 					CurrentChatImageService.data()->gaduChatImageKeyReceived(sender.id(), part.imageKey());
