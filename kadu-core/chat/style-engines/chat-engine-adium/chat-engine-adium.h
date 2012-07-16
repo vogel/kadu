@@ -116,6 +116,7 @@ public:
 	virtual void refreshView(HtmlMessagesRenderer *renderer, bool useTransparency = false);
 	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, MessageStatus status);
 	virtual void contactActivityChanged(HtmlMessagesRenderer *renderer, ChatStateService::State state, const QString &message, const QString &name);
+	virtual void chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImageKey &imageKey, const QString &fileName);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 

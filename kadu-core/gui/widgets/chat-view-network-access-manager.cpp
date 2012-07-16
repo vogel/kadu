@@ -18,10 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
+#include "icons/kadu-icon.h"
 #include "protocols/services/chat-image-service.h"
 
 #include "chat-view-network-access-manager.h"
@@ -44,8 +46,15 @@ QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManage
 		return QNetworkAccessManager::createRequest(operation, request, device);
 
 	QUrl newUrl(request.url());
+
+	QString filePath = ChatImageService::imagesPath() + newUrl.path();
+	QFileInfo fileInfo(filePath);
+
+	if (!fileInfo.exists())
+		filePath = KaduIcon("kadu_icons/please-wait", "16x16").fullPath();
+
 	newUrl.setScheme("file");
-	newUrl.setPath(ChatImageService::imagesPath() + newUrl.path());
+	newUrl.setPath(filePath);
 
 	QNetworkRequest newRequest(request);
 	newRequest.setUrl(newUrl);

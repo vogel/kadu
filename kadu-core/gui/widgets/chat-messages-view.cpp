@@ -183,7 +183,7 @@ void ChatMessagesView::pageDown()
 
 void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName)
 {
-	Renderer->replaceLoadingImages(imageKey.toString(), fileName);
+	Renderer->chatImageAvailable(imageKey, ChatImageService::imagesPath() + fileName);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()

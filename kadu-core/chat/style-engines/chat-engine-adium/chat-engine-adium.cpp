@@ -586,3 +586,8 @@ void AdiumChatStyleEngine::contactActivityChanged(HtmlMessagesRenderer *renderer
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");").arg((int)state).arg(message).arg(name));
 }
+
+void AdiumChatStyleEngine::chatImageAvailable(HtmlMessagesRenderer *renderer, const ChatImageKey &imageKey, const QString &fileName)
+{
+	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");").arg(imageKey.toString()).arg(fileName));
+}

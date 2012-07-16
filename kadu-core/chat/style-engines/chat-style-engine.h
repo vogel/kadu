@@ -29,6 +29,7 @@
 #include "message/message.h"
 #include "protocols/services/chat-state-service.h"
 
+class ChatImageKey;
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
 class Preview;
@@ -58,6 +59,7 @@ public:
 	virtual void refreshView(HtmlMessagesRenderer *, bool useTransparency = false) = 0;
 	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, MessageStatus) = 0;
 	virtual void contactActivityChanged(HtmlMessagesRenderer *, ChatStateService::State, const QString &, const QString &) = 0;
+	virtual void chatImageAvailable(HtmlMessagesRenderer *, const ChatImageKey &imageKey, const QString &fileName) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 

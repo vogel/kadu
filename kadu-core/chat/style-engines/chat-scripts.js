@@ -35,6 +35,21 @@ function adium_contactActivityChanged(state, message, name)
 		contactActivityChanged(state, message, name);
 }
 
+function adium_chatImageAvailable(id, src)
+{
+	if (typeof(id) == 'undefined' || typeof(src) == 'undefined')
+		return;
+
+	var image = document.getElementById(id);
+	if (!image)
+		return;
+
+	if (image.tagName.toLowerCase() != 'img')
+		return;
+
+	image.src = src;
+}
+
 function kadu_clearMessages()
 {
 	// A style can place its own content before any messages with <kadu:top>,
@@ -124,6 +139,21 @@ function kadu_contactActivityChanged(state, message, name)
 {
 	if (typeof(contactActivityChanged) != 'undefined')
 		contactActivityChanged(state, message, name);
+}
+
+function kadu_chatImageAvailable(id, src)
+{
+	if (typeof(id) == 'undefined' || typeof(src) == 'undefined')
+		return;
+
+	var image = document.getElementById(id);
+	if (!image)
+		return;
+
+	if (image.tagName.toLowerCase() != 'img')
+		return;
+
+	image.src = src;
 }
 
 /* ]]> */

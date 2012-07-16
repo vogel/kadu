@@ -79,8 +79,8 @@ QString FormattedMessagePart::toHtml() const
 {
 	if (IsImage)
 		return QFileInfo(ImagePath).isAbsolute()
-				? QString("<img src=\"file://%1\" />").arg(ImagePath)
-				: QString("<img src=\"kaduimg:///%1\" />").arg(ImagePath);
+				? QString("<img src=\"file://%1\" id=\"%2\" />").arg(ImagePath).arg(ImageKey.toString())
+				: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(ImagePath).arg(ImageKey.toString());
 
 	QString result(replacedNewLine(Qt::escape(Content), QLatin1String("<br/>")));
 	result.replace(QChar::LineSeparator, QLatin1String("<br/>"));

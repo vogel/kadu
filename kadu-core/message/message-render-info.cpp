@@ -131,13 +131,6 @@ static QString getSeparator(const QObject * const object)
 		return QString();
 }
 
-static QString loadingImageHtml(const QString &imageId)
-{
-	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(KaduIcon("kadu_icons/please-wait", "16x16").fullPath())
-			.arg(imageId);
-}
-
 void MessageRenderInfo::registerParserTags()
 {
 	Parser::registerObjectTag("message", getMessage);
@@ -188,28 +181,10 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 
 	HtmlMessageContent = replacedNewLine(MyMessage.content(), QLatin1String("<br/>"));
 	HtmlMessageContent.replace(QChar::LineSeparator, QLatin1String("<br/>"));
-
-	// compare this regexp with FormattedMessagePart::toHtml()
-	QRegExp kaduimgRegExp("<img src=\"kaduimg:///([^\"]*)\" />");
-	int pos = 0;
-	while ((pos = kaduimgRegExp.indexIn(HtmlMessageContent, pos)) != -1)
-	{
-		QString imgId = kaduimgRegExp.cap(1);
-		if (!QFile(ChatImageService::imagesPath() + imgId).exists())
-			HtmlMessageContent.replace(kaduimgRegExp.cap(0), loadingImageHtml(imgId));
-		else
-			pos += kaduimgRegExp.matchedLength();
-	}
 }
 
 MessageRenderInfo::~MessageRenderInfo()
 {
-}
-
-void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imageFileName)
-{
-	QString img = QString("<img src=\"kaduimg:///%1\" />").arg(imageFileName);
-	HtmlMessageContent.replace(loadingImageHtml(imageId), img);
 }
 
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)

@@ -135,12 +135,9 @@ void HtmlMessagesRenderer::refresh()
 	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }
 
-void HtmlMessagesRenderer::replaceLoadingImages(const QString &imageId, const QString &imageFileName)
+void HtmlMessagesRenderer::chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName)
 {
-	foreach (MessageRenderInfo *message, MyChatMessages)
-		message->replaceLoadingImages(imageId, imageFileName);
-
-	refresh();
+	ChatStylesManager::instance()->currentEngine()->chatImageAvailable(this, imageKey, fileName);
 }
 
 void HtmlMessagesRenderer::updateBackgroundsAndColors()
@@ -171,7 +168,7 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 
 void HtmlMessagesRenderer::messageStatusChanged(Message message, MessageStatus status)
 {
-    	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
+	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
 }
 
 void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatStateService::State state)
