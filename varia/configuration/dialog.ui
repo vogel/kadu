@@ -317,6 +317,14 @@
 				<spin-box caption="Reduce the number of visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
 					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Number of visible messages" />
 			</group-box>
+			<group-box name="Images">
+				<check-box caption="Limit image size" config-section="Chat" config-item="LimitImageSize" id="limitImageSize"
+					tool-tip="Limit maximum size of images that can be received in chat window" />
+				<spin-box caption="Maximum image size" config-section="Chat" config-item="MaximumImageSizeInKiloBytes" id="maximumImageSizeInKiloBytes" min-value="0" max-value="65536" suffix="%n kB"
+					tool-tip="Set maximum size of images that can be received in chat window" />
+				<check-box caption="Allow bigger images after asking" config-section="Chat" config-item="AllowBiggerImagesAfterAsking" id="allowBiggerImagesAfterAsking"
+					tool-tip="Allows receiving bigger images but only after asking user" />
+			</group-box>
 			<group-box name="Link Folding">
 				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
 				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500"

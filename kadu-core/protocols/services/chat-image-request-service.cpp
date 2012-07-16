@@ -86,7 +86,7 @@ bool ChatImageRequestService::acceptImage(const Account &account, const QString 
 	if (!Configuration.limitImageSize())
 		return true;
 
-	if (Configuration.maximumImageSizeInKiloBytes() >= imageKey.size() * 1024)
+	if (Configuration.maximumImageSizeInKiloBytes() * 1024 >= imageKey.size())
 		return true;
 
 	if (!CurrentContactManager)
