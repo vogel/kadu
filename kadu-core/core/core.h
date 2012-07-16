@@ -50,6 +50,7 @@ namespace QCA
 }
 
 class ChatImageRequestService;
+class ImageStorageService;
 class KaduApplication;
 class KaduIcon;
 class KaduWindow;
@@ -66,6 +67,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	QSharedPointer<DefaultProvider<QWidget *> > MainWindowProvider;
 
 	ChatImageRequestService *CurrentChatImageRequestService;
+	ImageStorageService *CurrentImageStorageService;
 
 	KaduWindow *Window;
 
@@ -115,6 +117,9 @@ public:
 
 	void createGui();
 	void runServices();
+
+	ImageStorageService * imageStorageService() const;
+
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
 	void showMainWindow();

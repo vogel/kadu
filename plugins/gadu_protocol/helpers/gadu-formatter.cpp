@@ -34,6 +34,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "message/formatted-message.h"
+#include "services/image-storage-service.h"
 
 #include "gadu-protocol.h"
 
@@ -82,7 +83,7 @@ static unsigned int computeFormatsSize(const FormattedMessage &message)
 	return first ? 0 : size;
 }
 
-unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size)
+unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size, ImageStorageService *imageStorageService)
 {
 	size = computeFormatsSize(message);
 	if (!size)
@@ -130,7 +131,8 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 
 			if (part.isImage())
 			{
-				const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->createChatImageKey(part.imagePath());
+				QString imagePath = imageStorageService ? imageStorageService->fullPath(part.imagePath()) : part.imagePath();
+				const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->createChatImageKey(imagePath);
 
 				image.unknown1 = 0x0109;
 				image.size = gg_fix32(chatImageKey.size());

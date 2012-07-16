@@ -64,6 +64,7 @@
 #include "protocols/services/chat-image-request-service-configurator.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
+#include "services/image-storage-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
@@ -118,7 +119,7 @@ KaduApplication * Core::application()
 Core::Core() :
 		KaduWindowProvider(new SimpleProvider<QWidget *>(0)),
 		MainWindowProvider(new DefaultProvider<QWidget *>(KaduWindowProvider)),
-		CurrentChatImageRequestService(0),
+		CurrentChatImageRequestService(0), CurrentImageStorageService(0),
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
@@ -531,6 +532,13 @@ void Core::runServices()
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(CurrentChatImageRequestService);
+
+	CurrentImageStorageService = new ImageStorageService(this);
+}
+
+ImageStorageService * Core::imageStorageService() const
+{
+	return CurrentImageStorageService;
 }
 
 void Core::showMainWindow()

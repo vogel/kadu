@@ -32,6 +32,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "status/status-type.h"
 #include "debug.h"
@@ -96,14 +97,14 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 	else
 		document.setPlainText(message);
 
-	FormattedMessage formattedMessage = FormattedMessage::parse(&document);
+	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
 	QString plain = formattedMessage.toPlain();
 	QVector<Contact> contacts = chat.contacts().toContactVector();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize));
+	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize, Core::instance()->imageStorageService()));
 	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));

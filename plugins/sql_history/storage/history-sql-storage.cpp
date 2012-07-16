@@ -636,7 +636,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			// TODO: this should be done in different place
 			QTextDocument document;
 			document.setHtml(message);
-			FormattedMessage formatted = FormattedMessage::parse(&document);
+			FormattedMessage formatted = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
 			QString title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
 			if (title.length() > DATE_TITLE_LENGTH)

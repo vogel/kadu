@@ -18,13 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
 #include <QtNetwork/QNetworkProxy>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-#include "icons/kadu-icon.h"
-#include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 
 #include "chat-view-network-access-manager.h"
 
@@ -37,27 +35,25 @@ ChatViewNetworkAccessManager::ChatViewNetworkAccessManager(QNetworkAccessManager
 	setProxyFactory(manager->proxyFactory());
 }
 
+ChatViewNetworkAccessManager::~ChatViewNetworkAccessManager()
+{
+}
+
+void ChatViewNetworkAccessManager::setImageStorageService(ImageStorageService *imageStorageService)
+{
+	CurrentImageStorageService = imageStorageService;
+}
+
 QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *device)
 {
 	if (QNetworkAccessManager::GetOperation != operation && QNetworkAccessManager::HeadOperation != operation)
 		operation = QNetworkAccessManager::GetOperation;
 
-	if (request.url().scheme() != "kaduimg")
+	if (!CurrentImageStorageService)
 		return QNetworkAccessManager::createRequest(operation, request, device);
 
-	QUrl newUrl(request.url());
-
-	QString filePath = ChatImageService::imagesPath() + newUrl.path();
-	QFileInfo fileInfo(filePath);
-
-	if (!fileInfo.exists())
-		filePath = KaduIcon("kadu_icons/please-wait", "16x16").fullPath();
-
-	newUrl.setScheme("file");
-	newUrl.setPath(filePath);
-
 	QNetworkRequest newRequest(request);
-	newRequest.setUrl(newUrl);
+	newRequest.setUrl(CurrentImageStorageService.data()->toFileUrl(request.url()));
 
 	return QNetworkAccessManager::createRequest(operation, newRequest, device);
 }

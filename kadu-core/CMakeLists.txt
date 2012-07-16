@@ -105,6 +105,7 @@ set (kadu_SUBDIRS
 	plugins
 	protocols
 	qt
+	services
 	status
 	storage
 	talkable
@@ -370,6 +371,7 @@ kadu_api_directories (kadu-core
 	protocols
 	provider
 	qt
+	services
 	status
 	storage
 	talkable/filter

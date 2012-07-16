@@ -25,7 +25,10 @@
 #ifndef CHAT_VIEW_NETWORK_ACCESS_MANAGER
 #define CHAT_VIEW_NETWORK_ACCESS_MANAGER
 
+#include <QtCore/QWeakPointer>
 #include <QtNetwork/QNetworkAccessManager>
+
+class ImageStorageService;
 
 // taken from "Adding New Protocols to QtWebKit" article found in Qt Quarterly
 // http://doc.trolltech.com/qq/32/qq32-webkit-protocols.html
@@ -33,8 +36,13 @@ class ChatViewNetworkAccessManager : public QNetworkAccessManager
 {
 	Q_OBJECT
 
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+
 public:
 	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = 0);
+	virtual ~ChatViewNetworkAccessManager();
+
+	void setImageStorageService(ImageStorageService *imageStorageService);
 
 protected:
 	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);

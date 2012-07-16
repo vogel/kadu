@@ -57,6 +57,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
@@ -90,6 +91,16 @@ KaduWebView::KaduWebView(QWidget *parent) :
 
 KaduWebView::~KaduWebView()
 {
+}
+
+void KaduWebView::setImageStorageService(ImageStorageService *imageStorageService)
+{
+	CurrentImageStorageService = imageStorageService;
+}
+
+ImageStorageService * KaduWebView::imageStorageService() const
+{
+	return CurrentImageStorageService.data();
 }
 
 void KaduWebView::setPage(QWebPage *page)
@@ -258,9 +269,10 @@ void KaduWebView::saveImage()
 	kdebugf();
 
 	QUrl imageUrl = page()->currentFrame()->hitTestContent(ContextMenuPos).imageUrl();
-	QString imageFullPath = (imageUrl.scheme() == "kaduimg")
-			? ChatImageService::imagesPath() + imageUrl.path()
-			: imageUrl.toLocalFile();
+	if (CurrentImageStorageService)
+		imageUrl = CurrentImageStorageService.data()->toFileUrl(imageUrl);
+
+	QString imageFullPath = imageUrl.toLocalFile();
 	if (imageFullPath.isEmpty())
 		return;
 

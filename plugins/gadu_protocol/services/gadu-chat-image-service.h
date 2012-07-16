@@ -33,6 +33,7 @@
 #include "protocols/services/chat-image-service.h"
 
 class GaduConnection;
+class ImageStorageService;
 
 /**
  * @addtogroup Gadu
@@ -59,8 +60,8 @@ class GaduChatImageService : public ChatImageService
 	QMap<ChatImageKey, QString> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
+	QWeakPointer<ImageStorageService> ImageStorage;
 
-	QString saveImage(const ChatImageKey &key, const char *data);
 	QByteArray loadFileContent(const QString &localFileName);
 
 	friend class GaduProtocolSocketNotifiers;
@@ -83,6 +84,15 @@ public:
 	 * @param connection connection for this service
 	 */
 	void setConnection(GaduConnection *connection);
+
+	/**
+	 * @short Set image storage service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param ImageStorageService image storage services
+	 *
+	 * This service is used to store content of received images on disc.
+	 */
+	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Request for an image from contact that sent info about it before.

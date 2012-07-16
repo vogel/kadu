@@ -34,6 +34,8 @@
 
 class QTextDocument;
 
+class ImageStorageService;
+
 /**
  * \class FormattedMessage
  * \brief Rich message (incoming or outcoming).
@@ -47,8 +49,6 @@ class QTextDocument;
  */
 class KADUAPI FormattedMessage
 {
-	static QString saveInImagesPath(const QString &filePath);
-
 	QVector<FormattedMessagePart> Parts;
 
 public:
@@ -71,10 +71,11 @@ public:
 	 * color formatting are preserved and stored into result object.
 	 * It also extracts images and inserts in into message.
 	 *
-	 * @arg messageDocument HTML document to parse
+	 * @param messageDocument HTML document to parse
+	 * @param imageStorageService service used to store images in one place
 	 * @return FormattedMessage representation of HTML document
 	 */
-	static FormattedMessage parse(const QTextDocument *messageDocument);
+	static FormattedMessage parse(const QTextDocument *messageDocument, ImageStorageService *imageStorageService);
 
 	/**
 	 * Returns all parts that composes this message.

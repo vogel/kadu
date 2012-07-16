@@ -1,9 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
- * Copyright 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2010 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,15 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "debug.h"
+#ifndef IMAGE_STORAGE_SERVICE_H
+#define IMAGE_STORAGE_SERVICE_H
 
-#include "chat-image-service.h"
+#include <QtCore/QObject>
 
-ChatImageService::ChatImageService(Account account, QObject *parent) :
-		AccountService(account, parent)
+class QUrl;
+
+class ImageStorageService : public QObject
 {
-}
+	Q_OBJECT
 
-ChatImageService::~ChatImageService()
-{
-}
+	QString StoragePath;
+
+public:
+	explicit ImageStorageService(QObject *parent = 0);
+	virtual ~ImageStorageService();
+
+	QString storagePath() const;
+
+	QString fullPath(const QString &imageFilePath);
+
+	QString storeImage(const QString &imageFilePath);
+	QString storeImage(const QString &imageFileName, const QByteArray &content);
+
+	QUrl toFileUrl(const QUrl &url);
+
+};
+
+#endif // IMAGE_STORAGE_SERVICE_H

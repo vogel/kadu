@@ -22,6 +22,7 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "core/core.h"
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/search-bar.h"
@@ -76,6 +77,8 @@ void TimelineChatMessagesView::createGui()
 	frameLayout->setSpacing(0);
 
 	MessagesView = new ChatMessagesView(Chat::null, false, frame);
+	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
+
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);
 

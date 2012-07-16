@@ -30,40 +30,12 @@
 
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 #include "html_document.h"
 
 #include "formatted-message.h"
 
-QString FormattedMessage::saveInImagesPath(const QString &filePath)
-{
-	QFileInfo fileInfo(filePath);
-	if (!fileInfo.exists())
-		return filePath;
-
-	QFileInfo imagesPathInfo(ChatImageService::imagesPath());
-	if (!imagesPathInfo.isDir() && !QDir().mkdir(imagesPathInfo.absolutePath()))
-		return filePath;
-
-	// if already in imagesPath, it'd be a waste to copy it in the same dir
-	if (fileInfo.absolutePath() == imagesPathInfo.absolutePath())
-		return fileInfo.fileName();
-
-	QString copyFileName = QUuid::createUuid().toString();
-	// Make this file name less exotic. First, get rid of '{' and '}' on edges.
-	if (copyFileName.length() > 2)
-		copyFileName = copyFileName.mid(1, copyFileName.length() - 2);
-	// Second, try to add extension.
-	QString ext = fileInfo.completeSuffix();
-	if (!ext.isEmpty())
-		copyFileName += '.' + ext;
-
-	if (QFile::copy(filePath, imagesPathInfo.absolutePath() + '/' + copyFileName))
-		return copyFileName;
-
-	return filePath;
-}
-
-FormattedMessage FormattedMessage::parse(const QTextDocument *document)
+FormattedMessage FormattedMessage::parse(const QTextDocument *document, ImageStorageService *imageStorageService)
 {
 	FormattedMessage result;
 
@@ -96,7 +68,12 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 				QString filePath = format.toImageFormat().name();
 				QFileInfo fileInfo(filePath);
 				if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
-					result << FormattedMessagePart(saveInImagesPath(filePath));
+				{
+					if (imageStorageService)
+						result << FormattedMessagePart(imageStorageService->storeImage(filePath));
+					else
+						result << FormattedMessagePart(filePath);
+				}
 			}
 
 			firstFragment = false;

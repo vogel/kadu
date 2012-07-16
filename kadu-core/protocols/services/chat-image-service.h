@@ -63,13 +63,6 @@ protected:
 
 public:
 	/**
-	 * @short Return path to directory that will hold all images.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return path to directory that will hold all images
-	 */
-	static QString imagesPath();
-
-	/**
 	 * @short Check if image with given size can be sent.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param size size of image to send (in bytes)

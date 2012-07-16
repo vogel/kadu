@@ -38,6 +38,7 @@
 #include "gui/hot-key.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 #include "debug.h"
 
 #include "custom-input-menu-manager.h"
@@ -56,6 +57,11 @@ CustomInput::CustomInput(Chat chat, QWidget *parent) :
 	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
 
 	kdebugf2();
+}
+
+void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
+{
+	CurrentImageStorageService = imageStorageService;
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)
@@ -249,9 +255,10 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 	if (source->hasUrls() && !source->urls().isEmpty())
 	{
 		QUrl url = source->urls().first();
-		if (!url.isEmpty() && url.scheme() == "kaduimg")
-			path = QDir::cleanPath(ChatImageService::imagesPath() + url.path());
-		else if (!url.isEmpty() && url.scheme() == "file")
+		if (CurrentImageStorageService)
+			url = CurrentImageStorageService.data()->toFileUrl(url);
+
+		if (!url.isEmpty() && url.scheme() == "file")
 		{
 			path = QDir::cleanPath(url.path());
 			if (QImage(path).isNull())
@@ -266,7 +273,12 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 		buffer.open(QIODevice::ReadOnly);
 		QString ext = QImageReader(&buffer).format().toLower();
 		QString filename = "drop" + QString::number(QDateTime::currentDateTime().toTime_t()) + "." + ext;
-		path = QDir::cleanPath(ChatImageService::imagesPath() + filename);
+
+		if (CurrentImageStorageService)
+			path = CurrentImageStorageService.data()->fullPath(filename);
+		else
+			path = filename;
+
 		QFile file(path);
 		if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 		{

@@ -134,6 +134,7 @@ void KaduWindow::createGui()
 
 	Roster = new RosterWidget(Split);
 	InfoPanel = new BuddyInfoPanel(Split);
+	InfoPanel->setImageStorageService(Core::instance()->imageStorageService());
 
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
 	connect(Roster, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));

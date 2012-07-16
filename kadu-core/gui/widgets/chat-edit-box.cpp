@@ -37,6 +37,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
@@ -87,6 +88,8 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
 	InputBox = new CustomInput(CurrentChat, this);
+	InputBox->setImageStorageService(Core::instance()->imageStorageService());
+
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 #ifdef Q_WS_MAEMO_5
 	InputBox->setMinimumHeight(64);

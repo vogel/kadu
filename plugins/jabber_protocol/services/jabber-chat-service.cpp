@@ -221,7 +221,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 		document.setPlainText(message);
 
 
-	FormattedMessage formattedMessage = FormattedMessage::parse(&document);
+	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
 	QString plain = formattedMessage.toPlain();
 

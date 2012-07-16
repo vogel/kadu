@@ -25,6 +25,7 @@
 
 #include "chat/style-engines/chat-engine-kadu/kadu-chat-syntax.h"
 #include "configuration/chat-configuration-holder.h"
+#include "core/core.h"
 #include "gui/widgets/kadu-web-view.h"
 #include "message/message-render-info.h"
 #include "parser/parser.h"
@@ -42,6 +43,7 @@ Preview::Preview(QWidget *parent) :
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	WebView = new KaduWebView(this);
+	WebView->setImageStorageService(Core::instance()->imageStorageService());
 	layout->addWidget(WebView);
 
 	QPalette p = palette();

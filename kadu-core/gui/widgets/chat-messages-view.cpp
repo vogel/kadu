@@ -36,9 +36,11 @@
 #include "chat/style-engines/chat-style-engine.h"
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 
 #include "debug.h"
 
@@ -51,6 +53,7 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 
 	QNetworkAccessManager *oldManager = Renderer->webPage()->networkAccessManager();
 	ChatViewNetworkAccessManager *newManager = new ChatViewNetworkAccessManager(oldManager, this);
+	newManager->setImageStorageService(Core::instance()->imageStorageService());
 	Renderer->webPage()->setNetworkAccessManager(newManager);
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
@@ -183,7 +186,10 @@ void ChatMessagesView::pageDown()
 
 void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName)
 {
-	Renderer->chatImageAvailable(imageKey, ChatImageService::imagesPath() + fileName);
+	if (!imageStorageService())
+		Renderer->chatImageAvailable(imageKey, fileName);
+	else
+		Renderer->chatImageAvailable(imageKey, imageStorageService()->fullPath(fileName));
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()

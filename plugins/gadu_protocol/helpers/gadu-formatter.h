@@ -31,10 +31,11 @@
 
 class Account;
 class FormattedMessage;
+class ImageStorageService;
 
 namespace GaduFormatter
 {
-	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size);
+	GADUAPI unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size, ImageStorageService *imageStorageService);
 
 	GADUAPI FormattedMessage createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 

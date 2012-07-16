@@ -198,6 +198,8 @@ void ChatWidget::createGui()
 	frameLayout->setSpacing(0);
 
 	MessagesView = new ChatMessagesView(frame);
+	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
+
 	if (CurrentChat)
 	{
 		MessagesView->setChat(CurrentChat);

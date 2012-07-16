@@ -32,6 +32,8 @@
 
 #include "exports.h"
 
+class ImageStorageService;
+
 /**
 	\class CustomInput
 	\brief Klasa umo�liwiaj�ca wpisywanie wiadomo�ci
@@ -39,6 +41,8 @@
 class KADUAPI CustomInput : public QTextEdit
 {
 	Q_OBJECT
+
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	Chat CurrentChat;
 
@@ -92,6 +96,8 @@ public:
 	**/
 	CustomInput(Chat chat, QWidget *parent = 0);
 
+	void setImageStorageService(ImageStorageService *imageStorageService);
+
 public slots:
 	/**
 		\fn void setAutosend(bool on)
@@ -135,7 +141,7 @@ signals:
 		ze standardow� obs�ug� kontrolek Qt nie powinny by� podj�te.
 	**/
 	void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
-	
+
 	void fontChanged(QFont font);
 
 };

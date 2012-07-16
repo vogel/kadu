@@ -36,9 +36,13 @@ class QPoint;
 class QTimer;
 class QUrl;
 
+class ImageStorageService;
+
 class KADUAPI KaduWebView : public QWebView
 {
 	Q_OBJECT
+
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool DraggingPossible;
 	bool IsLoading;
@@ -69,6 +73,9 @@ protected:
 public:
 	explicit KaduWebView(QWidget *parent = 0);
 	virtual ~KaduWebView();
+
+	void setImageStorageService(ImageStorageService *imageStorageService);
+	ImageStorageService * imageStorageService() const;
 
 	// hides QWebPage::setPage() (non-virtual)
 	void setPage(QWebPage *page);

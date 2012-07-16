@@ -22,12 +22,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
 #include <QtCore/QFile>
-#include <QtCore/QFileInfo>
 
 #include "configuration/configuration-file.h"
 #include "misc/error.h"
+#include "services/image-storage-service.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -51,24 +50,9 @@ void GaduChatImageService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-QString GaduChatImageService::saveImage(const ChatImageKey &key, const char *data)
+void GaduChatImageService::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	QString path = ChatImageService::imagesPath();
-	if (!QFileInfo(path).isDir() && !QDir().mkdir(path))
-	{
-		kdebugm(KDEBUG_INFO, "Failed creating directory: %s\n", qPrintable(path));
-		return QString();
-	}
-
-	QFile file(path + key.toString());
-	if (!file.open(QIODevice::WriteOnly))
-		return QString();
-
-	file.write(data, key.size());
-	file.close();
-
-	QFileInfo fileInfo(file.fileName());
-	return fileInfo.fileName();
+	ImageStorage = imageStorageService;
 }
 
 QByteArray GaduChatImageService::loadFileContent(const QString &localFileName)
@@ -116,8 +100,12 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			.arg(e->event.image_reply.sender).arg(e->event.image_reply.size)
 			.arg(e->event.image_reply.crc32).arg(e->event.image_reply.filename)));
 
+	if (!ImageStorage)
+		return;
+
 	ChatImageKey key(e->event.image_reply.size, e->event.image_reply.crc32);
-	QString fileName = saveImage(key, e->event.image_reply.image);
+	QByteArray imageData(e->event.image_reply.image, e->event.image_reply.size);
+	QString fileName = ImageStorage.data()->storeImage(key.toString(), imageData);
 
 	if (fileName.isEmpty())
 		return;

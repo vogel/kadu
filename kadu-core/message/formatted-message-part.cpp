@@ -62,12 +62,7 @@ FormattedMessagePart::~FormattedMessagePart()
 
 QString FormattedMessagePart::imagePath() const
 {
-	if (!IsImage)
-		return QString();
-
-	return QFileInfo(ImagePath).isAbsolute()
-			? ImagePath
-			: ChatImageService::imagesPath() + ImagePath;
+	return ImagePath;
 }
 
 ChatImageKey FormattedMessagePart::imageKey() const
