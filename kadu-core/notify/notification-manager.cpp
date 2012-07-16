@@ -31,12 +31,6 @@
 
 #include <QtGui/QApplication>
 
-#ifdef Q_WS_X11
-#include <QtDBus/QDBusInterface>
-#include <QtDBus/QDBusReply>
-#include <QtGui/QX11Info>
-#endif
-
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
@@ -76,36 +70,12 @@
 #include "new-message-notification.h"
 #include "status-changed-notification.h"
 
-#ifdef Q_WS_X11
-#include "os/x11tools.h" // this should be included as last one,
-#undef KeyPress
-#undef Status            // and Status defined by Xlib.h must be undefined
-#include <storage/custom-properties.h>
-#endif
-
-#ifdef Q_WS_WIN
-#include <windows.h>
-
-static bool win32_checkFullScreen()
-{
-	HWND hWnd = GetForegroundWindow();
-	if (NULL == hWnd)
-		return false;
-
-	int cx = GetSystemMetrics(SM_CXSCREEN);
-	int cy = GetSystemMetrics(SM_CYSCREEN);
-	RECT r;
-	GetWindowRect(hWnd, &r);
-
-	return (r.right - r.left == cx && r.bottom - r.top == cy);
-}
-
-static bool win32_isScreenSaverRunning()
-{
-    BOOL ret;
-    SystemParametersInfo(SPI_GETSCREENSAVERRUNNING, 0, &ret, 0);
-    return (0 != ret);
-}
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#include "x11-screen-mode-checker.h"
+#elif defined(Q_WS_WIN)
+#include "windows-screen-mode-checker.h"
+#else
+#include "screen-mode-checker.h"
 #endif
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
@@ -129,9 +99,6 @@ NotificationManager * NotificationManager::instance()
 
 NotificationManager::NotificationManager()
 {
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
-	x11display = XOpenDisplay(0);
-#endif
 }
 
 void NotificationManager::init()
@@ -143,6 +110,14 @@ void NotificationManager::init()
 
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
+
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	FullscreenChecker = new X11ScreenModeChecker();
+#elif defined(Q_WS_WIN)
+	FullscreenChecker = new WindowsScreenModeChecker();
+#else
+	FullscreenChecker = new ScreenModeChecker();
+#endif
 
 	SilentMode = false;
 
@@ -202,10 +177,6 @@ NotificationManager::~NotificationManager()
 
 	AccountNotification::unregisterParserTags();
 	Notification::unregisterParserTags();
-
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
-	XCloseDisplay(x11display);
-#endif
 
 	kdebugf2();
 }
@@ -588,15 +559,14 @@ void NotificationManager::configurationUpdated()
 	SilentModeWhenDnD = config_file.readBoolEntry("Notify", "AwaySilentMode", false);
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
 	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
-#if (defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)) || defined(Q_WS_WIN)
-	if (SilentModeWhenFullscreen)
+
+	if (SilentModeWhenFullscreen && !FullscreenChecker->isDummy())
 		FullScreenCheckTimer.start();
 	else
 	{
 		FullScreenCheckTimer.stop();
 		IsFullScreen = false;
 	}
-#endif
 }
 
 void NotificationManager::createDefaultConfiguration()
@@ -633,60 +603,11 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 
 void NotificationManager::checkFullScreen()
 {
-#if (defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)) || defined(Q_WS_WIN)
 	bool wasSilent = silentMode();
 
-	IsFullScreen = 
-# if !defined(Q_WS_WIN)
-			X11_checkFullScreen(x11display)
-# else
-			win32_checkFullScreen()
-# endif
-			&& (!isScreenSaverRunning());
-
+	IsFullScreen = FullscreenChecker->isFullscreenAppActive() && !FullscreenChecker->isScreensaverActive();
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
-#endif
-}
-
-bool NotificationManager::isScreenSaverRunning()
-{
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
-	// org.freedesktop.ScreenSaver
-	{
-		QDBusInterface dbus("org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus());
-		if (dbus.isValid())
-		{
-			QDBusReply<bool> reply = dbus.call("GetActive");
-			if (reply.isValid() && reply.value())
-				return true;
-		}
-	}
-	// org.kde.screensaver
-	{
-		QDBusInterface dbus("org.kde.screensaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus());
-		if (dbus.isValid())
-		{
-			QDBusReply<bool> reply = dbus.call("GetActive");
-			if (reply.isValid() && reply.value())
-				return true;
-		}
-	}
-	// org.gnome.ScreenSaver
-	{
-		QDBusInterface dbus("org.gnome.ScreenSaver", "/", "org.gnome.ScreenSaver", QDBusConnection::sessionBus());
-		if (dbus.isValid())
-		{
-			QDBusReply<bool> reply = dbus.call("GetActive");
-			if (reply.isValid() && reply.value())
-				return true;
-		}
-	}
-#elif defined(Q_WS_WIN)
-	return win32_isScreenSaverRunning();
-#endif
-	// no screensaver
-	return false;
 }
 
 void checkNotify(Action *action)

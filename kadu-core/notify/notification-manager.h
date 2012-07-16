@@ -27,8 +27,6 @@
 #include <QtCore/QTimer>
 #include <QtGui/QGroupBox>
 
-#include <time.h>
-
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
@@ -47,6 +45,7 @@ class Notification;
 class Notifier;
 class NotifyConfigurationUiHandler;
 class NotifyEvent;
+class ScreenModeChecker;
 
 /**
  * @defgroup notify Notify
@@ -81,10 +80,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 	QTimer FullScreenCheckTimer;
 	bool IsFullScreen;
-
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
-	Display *x11display;
-#endif
+	ScreenModeChecker *FullscreenChecker;
 
 	NotificationManager();
 	virtual ~NotificationManager();
@@ -111,7 +107,6 @@ private slots:
 	void accountConnected();
 
 	void checkFullScreen();
-	bool isScreenSaverRunning();
 
 protected:
 	virtual void accountRegistered(Account account);
