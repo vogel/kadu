@@ -29,8 +29,8 @@ class KADUAPI ScreenModeChecker
 public:
 	ScreenModeChecker() {};
 
-	bool isFullscreenAppActive() { return false; }
-	bool isScreensaverActive() { return false; }
+	virtual bool isFullscreenAppActive() { return false; }
+	virtual bool isScreensaverActive() { return false; }
 	virtual bool isDummy() { return true; }
 };
 
