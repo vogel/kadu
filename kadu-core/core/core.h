@@ -122,6 +122,7 @@ public:
 
 	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;
+	NotificationService * notificationService() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

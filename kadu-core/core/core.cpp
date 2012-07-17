@@ -549,6 +549,11 @@ ImageStorageService * Core::imageStorageService() const
 	return CurrentImageStorageService;
 }
 
+NotificationService * Core::notificationService() const
+{
+	return CurrentNotificationService;
+}
+
 void Core::showMainWindow()
 {
 	if (ShowMainWindowOnStart)

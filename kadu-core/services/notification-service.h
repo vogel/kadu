@@ -20,15 +20,67 @@
 #ifndef NOTIFICATION_SERVICE_H
 #define NOTIFICATION_SERVICE_H
 
-#include <QtCore/QObject>
+#include <QtCore/QTimer>
 
-class NotificationService : public QObject
+#include "configuration/configuration-aware-object.h"
+
+class QAction;
+
+class Action;
+class ActionDescription;
+class NotifyConfigurationUiHandler;
+class ScreenModeChecker;
+
+class NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	bool NotifyAboutAll;
+	bool NewMessageOnlyIfInactive;
+	bool NotifyIgnoreOnConnection;
+	bool IgnoreOnlineToOnline;
+	bool SilentMode;
+	bool SilentModeWhenDnD;
+	bool SilentModeWhenFullscreen;
+	bool AutoSilentMode;
+
+	QTimer FullScreenCheckTimer;
+	bool IsFullScreen;
+	ScreenModeChecker *FullscreenChecker;
+
+	NotifyConfigurationUiHandler *NotifyUiHandler;
+
+	ActionDescription *notifyAboutUserActionDescription;
+	ActionDescription *SilentModeActionDescription;
+
+
+	void createDefaultConfiguration();
+	bool ignoreNotifications();
+	void createActionDescriptions();
+
+private slots:
+	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
+	void silentModeActionCreated(Action *action);
+	void silentModeActionActivated(QAction *sender, bool toggled);
+
+	void checkFullScreen();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	explicit NotificationService(QObject *parent = 0);
 	virtual ~NotificationService();
+
+	bool notifyAboutAll() { return NotifyAboutAll; }
+
+	void setSilentMode(bool silentMode);
+	bool silentMode();
+
+	ActionDescription * silentModeActionDescription() { return SilentModeActionDescription; }
+
+signals:
+	void silentModeToggled(bool);
 };
 
 #endif // NOTIFICATION_SERVICE_H

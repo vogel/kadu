@@ -52,7 +52,7 @@ class ScreenModeChecker;
  * @{
  */
 
-class KADUAPI NotificationManager : public QObject, AccountsAwareObject, ConfigurationAwareObject
+class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NotificationManager)
@@ -61,33 +61,11 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 
 	void init();
 
-	bool NotifyAboutAll;
-	bool NewMessageOnlyIfInactive;
-	bool NotifyIgnoreOnConnection;
-	bool IgnoreOnlineToOnline;
-	bool SilentMode;
-	bool SilentModeWhenDnD;
-	bool SilentModeWhenFullscreen;
-	bool AutoSilentMode;
-
-	ActionDescription *notifyAboutUserActionDescription;
-	ActionDescription *SilentModeActionDescription;
-
-	NotifyConfigurationUiHandler *UiHandler;
-
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
 
-	QTimer FullScreenCheckTimer;
-	bool IsFullScreen;
-	ScreenModeChecker *FullscreenChecker;
-
 	NotificationManager();
 	virtual ~NotificationManager();
-
-	void createDefaultConfiguration();
-
-	bool ignoreNotifications();
 
 private slots:
 	void messageReceived(const Message &message);
@@ -97,22 +75,14 @@ private slots:
 	void statusUpdated();
 	void contactStatusChanged(Contact contact, Status oldStatus);
 
-	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
-	void silentModeActionCreated(Action *action);
-	void silentModeActionActivated(QAction *sender, bool toggled);
-
 	void groupAdded(const Group &group);
 	void groupUpdated();
 
 	void accountConnected();
 
-	void checkFullScreen();
-
 protected:
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
-
-	virtual void configurationUpdated();
 
 public:
 	static NotificationManager * instance();
@@ -128,16 +98,7 @@ public:
 	const QList<Notifier *> & notifiers() const;
 	const QList<NotifyEvent *> & notifyEvents() const;
 
-	bool notifyAboutAll() { return NotifyAboutAll; }
-
-	void setSilentMode(bool silentMode);
-	bool silentMode();
-
 	QString notifyConfigurationKey(const QString &eventType);
-
-	ConfigurationUiHandler * configurationUiHandler();
-
-	ActionDescription * silentModeActionDescription() { return SilentModeActionDescription; }
 
 signals:
 	void notiferRegistered(Notifier *notifier);
@@ -145,8 +106,6 @@ signals:
 
 	void notifyEventRegistered(NotifyEvent *notifyEvent);
 	void notifyEventUnregistered(NotifyEvent *notifyEvent);
-
-	void silentModeToggled(bool);
 
 };
 

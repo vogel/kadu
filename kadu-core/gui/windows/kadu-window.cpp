@@ -62,6 +62,7 @@
 #include "gui/windows/proxy-action-context.h"
 #include "notify/notification-manager.h"
 #include "os/generic/url-opener.h"
+#include "services/notification-service.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "kadu-application.h"
@@ -195,7 +196,7 @@ void KaduWindow::createKaduMenu()
 
 	KaduMenu->addSeparator();
 
-	insertMenuActionDescription(NotificationManager::instance()->silentModeActionDescription(), MenuKadu);
+	insertMenuActionDescription(Core::instance()->notificationService()->silentModeActionDescription(), MenuKadu);
 	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);
