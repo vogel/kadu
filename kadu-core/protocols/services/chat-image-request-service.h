@@ -28,6 +28,7 @@
 
 class AccountManager;
 class ContactManager;
+class ImageStorageService;
 
 /**
  * @addtogroup Protocol
@@ -43,6 +44,8 @@ class ContactManager;
  * chatImageKeyReceived() signals from these services by either requesting full image data or ignoring it, depending
  * on configuration and number of images received during last few minutes - to avaid DOS attacks with too many
  * images.
+ *
+ * It also stores images received from peers in ImageStorageService,
  */
 class ChatImageRequestService : public QObject
 {
@@ -53,6 +56,7 @@ class ChatImageRequestService : public QObject
 	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
 	quint32 ReceivedImageKeysCount;
 
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 	QWeakPointer<AccountManager> CurrentAccountManager;
 	QWeakPointer<ContactManager> CurrentContactManager;
 
@@ -63,6 +67,7 @@ private slots:
 	void accountUnregistered(Account account);
 
 	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+    void chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData);
 
 	void resetReceivedImageKeysCount();
 
@@ -74,6 +79,15 @@ public:
 	 */
 	explicit ChatImageRequestService(QObject *parent = 0);
 	virtual ~ChatImageRequestService();
+
+	/**
+	 * @short Sets image storage to use by this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService image storage to use by this service
+	 *
+	 * This service is used to storing images received from peers.
+	 */
+	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Sets account manager to use by this service.
@@ -102,6 +116,15 @@ public:
 	 * @param configuration configuration to use by this service
 	 */
 	void setConfiguration(ChatImageRequestServiceConfiguration configuration);
+
+signals:
+	/**
+	 * @short Signal emitted when chat image was received and stored as file.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageKey key of stored image
+	 * @param fullFilePath full file path of stored image
+	 */
+	void chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath);
 
 };
 

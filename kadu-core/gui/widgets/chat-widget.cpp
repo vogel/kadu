@@ -199,6 +199,7 @@ void ChatWidget::createGui()
 
 	MessagesView = new ChatMessagesView(frame);
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
+	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 
 	if (CurrentChat)
 	{

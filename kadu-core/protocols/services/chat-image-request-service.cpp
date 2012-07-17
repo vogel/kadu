@@ -23,6 +23,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
+#include "services/image-storage-service.h"
 
 #include "chat-image-request-service.h"
 
@@ -38,6 +39,11 @@ ChatImageRequestService::ChatImageRequestService(QObject *parent) :
 
 ChatImageRequestService::~ChatImageRequestService()
 {
+}
+
+void ChatImageRequestService::setImageStorageService(ImageStorageService *imageStorageService)
+{
+	CurrentImageStorageService = imageStorageService;
 }
 
 void ChatImageRequestService::setAccountManager(AccountManager *accountManager)
@@ -70,6 +76,8 @@ void ChatImageRequestService::accountRegistered(Account account)
 
 	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
 	        this, SLOT(chatImageKeyReceived(QString,ChatImageKey)));
+	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImageKey,QByteArray)),
+	        this, SLOT(chatImageAvailable(ChatImageKey,QByteArray)));
 }
 
 void ChatImageRequestService::accountUnregistered(Account account)
@@ -79,6 +87,8 @@ void ChatImageRequestService::accountUnregistered(Account account)
 
 	disconnect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
 	           this, SLOT(chatImageKeyReceived(QString,ChatImageKey)));
+	disconnect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImageKey,QByteArray)),
+	          this, SLOT(chatImageAvailable(ChatImageKey,QByteArray)));
 }
 
 bool ChatImageRequestService::acceptImage(const Account &account, const QString &id, const ChatImageKey &imageKey) const
@@ -123,6 +133,15 @@ void ChatImageRequestService::chatImageKeyReceived(const QString &id, const Chat
 
 	service->requestChatImage(id, imageKey);
 	ReceivedImageKeysCount++;
+}
+
+void ChatImageRequestService::chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData)
+{
+	if (!CurrentImageStorageService)
+		return;
+
+	QString filePath = CurrentImageStorageService.data()->storeImage(imageKey.toString(), imageData);
+	emit chatImageStored(imageKey, CurrentImageStorageService.data()->fullPath(filePath));
 }
 
 void ChatImageRequestService::resetReceivedImageKeysCount()

@@ -40,6 +40,7 @@
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
+#include "protocols/services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
 
 #include "debug.h"
@@ -91,6 +92,17 @@ ChatMessagesView::~ChatMessagesView()
 	disconnectChat();
 }
 
+void ChatMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
+{
+	if (CurrentChatImageRequestService)
+		disconnect(CurrentChatImageRequestService.data(), 0, this, 0);
+
+	CurrentChatImageRequestService = chatImageRequestService;
+
+	if (CurrentChatImageRequestService)
+		connect(CurrentChatImageRequestService.data(), SIGNAL(chatImageStored(ChatImageKey,QString)), this, SLOT(chatImageStored(ChatImageKey,QString)));
+}
+
 void ChatMessagesView::mouseReleaseEvent(QMouseEvent *e)
 {
 	updateAtBottom();
@@ -122,10 +134,6 @@ void ChatMessagesView::connectChat()
 
 	foreach (const Contact &contact, CurrentChat.contacts())
 		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(repaintMessages()));
-
-	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
-	if (chatImageService)
-		connect(chatImageService, SIGNAL(chatImageAvailable(ChatImageKey,QByteArray)), this, SLOT(chatImageAvailable(ChatImageKey,QByteArray)));
 
 	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
@@ -184,13 +192,9 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData)
+void ChatMessagesView::chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath)
 {
-	if (imageStorageService())
-	{
-		QString imageFileName = imageStorageService()->storeImage(imageKey.toString(), imageData);
-		Renderer->chatImageAvailable(imageKey, imageStorageService()->fullPath(imageFileName));
-	}
+	Renderer->chatImageAvailable(imageKey, fullFilePath);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()

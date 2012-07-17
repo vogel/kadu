@@ -525,15 +525,21 @@ void Core::createGui()
 void Core::runServices()
 {
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
-	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
-	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+	CurrentImageStorageService = new ImageStorageService(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
 	configurator->setChatImageRequestService(CurrentChatImageRequestService);
 
-	CurrentImageStorageService = new ImageStorageService(this);
+	CurrentChatImageRequestService->setImageStorageService(CurrentImageStorageService);
+	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
+	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+}
+
+ChatImageRequestService * Core::chatImageRequestService() const
+{
+	return CurrentChatImageRequestService;
 }
 
 ImageStorageService * Core::imageStorageService() const

@@ -41,6 +41,7 @@
 class QResizeEvent;
 
 class Chat;
+class ChatImageRequestService;
 class ChatWidget;
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
@@ -48,6 +49,8 @@ class MessageRenderInfo;
 class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QWeakPointer<ChatImageRequestService> CurrentChatImageRequestService;
 
 	Chat CurrentChat;
 	HtmlMessagesRenderer *Renderer;
@@ -67,7 +70,7 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 
 private slots:
 	void repaintMessages();
-	void chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData);
+	void chatImageStored(const ChatImageKey &imageKey, const QString &fullFilePath);
 	void sentMessageStatusChanged(const Message &message);
 
 protected:
@@ -79,6 +82,8 @@ protected:
 public:
 	explicit ChatMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
+
+	void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
 

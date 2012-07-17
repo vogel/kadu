@@ -78,6 +78,7 @@ void TimelineChatMessagesView::createGui()
 
 	MessagesView = new ChatMessagesView(Chat::null, false, frame);
 	MessagesView->setImageStorageService(Core::instance()->imageStorageService());
+	MessagesView->setChatImageRequestService(Core::instance()->chatImageRequestService());
 
 	MessagesView->setFocusPolicy(Qt::StrongFocus);
 	MessagesView->setForcePruneDisabled(true);

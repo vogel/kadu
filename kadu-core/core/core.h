@@ -118,6 +118,7 @@ public:
 	void createGui();
 	void runServices();
 
+	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;
 
 	void setShowMainWindowOnStart(bool show);
