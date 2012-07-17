@@ -55,6 +55,7 @@ class KaduApplication;
 class KaduIcon;
 class KaduWindow;
 class Message;
+class NotificationService;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -68,6 +69,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	ChatImageRequestService *CurrentChatImageRequestService;
 	ImageStorageService *CurrentImageStorageService;
+	NotificationService *CurrentNotificationService;
 
 	KaduWindow *Window;
 

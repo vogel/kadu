@@ -65,6 +65,7 @@
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "services/image-storage-service.h"
+#include "services/notification-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
@@ -526,6 +527,7 @@ void Core::runServices()
 {
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
+	CurrentNotificationService = new NotificationService(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
