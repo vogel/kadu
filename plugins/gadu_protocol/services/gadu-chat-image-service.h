@@ -32,6 +32,7 @@
 
 #include "protocols/services/chat-image-service.h"
 
+class GaduChatService;
 class GaduConnection;
 
 /**
@@ -59,6 +60,7 @@ class GaduChatImageService : public ChatImageService
 	QMap<ChatImageKey, QByteArray> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
+	QWeakPointer<GaduChatService> CurrentChatService;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);
@@ -82,15 +84,13 @@ public:
 	void setConnection(GaduConnection *connection);
 
 	/**
-	 * @short Chat image key was received.
+	 * @short Set chat service for this service.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of source peer
-	 * @param imageKey received image key
-	 * @todo really needed?
+	 * @param gaduChatService chat service for this service
 	 *
-	 * Calling this method results in emitting chatImageKeyReceived() signal.
+	 * This service is used to get information about received image keys.
 	 */
-	void gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+	void setGaduChatService(GaduChatService *gaduChatService);
 
 	virtual Error checkImageSize(qint64 size) const;
 	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData);

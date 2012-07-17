@@ -44,6 +44,16 @@ void GaduChatImageService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
+void GaduChatImageService::setGaduChatService(GaduChatService *gaduChatService)
+{
+	if (CurrentChatService)
+		disconnect(CurrentChatService.data(), 0, this, 0);
+
+	CurrentChatService = gaduChatService;
+	if (CurrentChatService)
+		connect(CurrentChatService.data(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)), this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
+}
+
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 {
 	kdebugm(KDEBUG_INFO, "%s", qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
@@ -113,9 +123,4 @@ Error GaduChatImageService::checkImageSize(qint64 size) const
 	message = message.arg((size + 1023) / 1024).arg(RECOMMENDED_MAXIMUM_SIZE / 1024);
 
 	return Error(ErrorLow, message);
-}
-
-void GaduChatImageService::gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)
-{
-	emit chatImageKeyReceived(id, imageKey);
 }
