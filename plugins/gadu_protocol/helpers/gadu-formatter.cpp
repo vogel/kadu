@@ -25,6 +25,7 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
+#include <QtCore/QFile>
 #include <QtGui/QApplication>
 
 #include "accounts/account-manager.h"
@@ -132,11 +133,23 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 			if (part.isImage())
 			{
 				QString imagePath = imageStorageService ? imageStorageService->fullPath(part.imagePath()) : part.imagePath();
-				const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->createChatImageKey(imagePath);
+				QFile imageFile(imagePath);
+				if (imageFile.open(QFile::ReadOnly))
+				{
+					QByteArray content = imageFile.readAll();
+					const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->prepareImageToBeSent(content);
+					imageFile.close();
 
-				image.unknown1 = 0x0109;
-				image.size = gg_fix32(chatImageKey.size());
-				image.crc32 = gg_fix32(chatImageKey.crc32());
+					image.unknown1 = 0x0109;
+					image.size = gg_fix32(chatImageKey.size());
+					image.crc32 = gg_fix32(chatImageKey.crc32());
+				}
+				else
+				{
+					image.unknown1 = 0x0109;
+					image.size = gg_fix32(0);
+					image.crc32 = gg_fix32(0);
+				}
 
 				memcpy(result + memoryPosition, &image, sizeof(image));
 				memoryPosition += sizeof(image);

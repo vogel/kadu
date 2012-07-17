@@ -125,7 +125,7 @@ void ChatMessagesView::connectChat()
 
 	ChatImageService *chatImageService = CurrentChat.chatAccount().protocolHandler()->chatImageService();
 	if (chatImageService)
-		connect(chatImageService, SIGNAL(chatImageAvailable(ChatImageKey,QString)), this, SLOT(chatImageAvailable(ChatImageKey,QString)));
+		connect(chatImageService, SIGNAL(chatImageAvailable(ChatImageKey,QByteArray)), this, SLOT(chatImageAvailable(ChatImageKey,QByteArray)));
 
 	ChatService *chatService = CurrentChat.chatAccount().protocolHandler()->chatService();
 	if (chatService)
@@ -184,12 +184,13 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName)
+void ChatMessagesView::chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData)
 {
-	if (!imageStorageService())
-		Renderer->chatImageAvailable(imageKey, fileName);
-	else
-		Renderer->chatImageAvailable(imageKey, imageStorageService()->fullPath(fileName));
+	if (imageStorageService())
+	{
+		QString imageFileName = imageStorageService()->storeImage(imageKey.toString(), imageData);
+		Renderer->chatImageAvailable(imageKey, imageStorageService()->fullPath(imageFileName));
+	}
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()

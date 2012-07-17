@@ -33,7 +33,6 @@
 #include "protocols/services/chat-image-service.h"
 
 class GaduConnection;
-class ImageStorageService;
 
 /**
  * @addtogroup Gadu
@@ -57,12 +56,9 @@ class GaduChatImageService : public ChatImageService
 
 	static const qint64 RECOMMENDED_MAXIMUM_SIZE = 255 * 1024;
 
-	QMap<ChatImageKey, QString> ChatImages;
+	QMap<ChatImageKey, QByteArray> ChatImages;
 
 	QWeakPointer<GaduConnection> Connection;
-	QWeakPointer<ImageStorageService> ImageStorage;
-
-	QByteArray loadFileContent(const QString &localFileName);
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);
@@ -86,29 +82,19 @@ public:
 	void setConnection(GaduConnection *connection);
 
 	/**
-	 * @short Set image storage service.
+	 * @short Chat image key was received.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param ImageStorageService image storage services
+	 * @param id id of source peer
+	 * @param imageKey received image key
+	 * @todo really needed?
 	 *
-	 * This service is used to store content of received images on disc.
+	 * Calling this method results in emitting chatImageKeyReceived() signal.
 	 */
-	void setImageStorageService(ImageStorageService *imageStorageService);
-
-	/**
-	 * @short Request for an image from contact that sent info about it before.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of contact that sent image info
-	 * @param imageKey key of image to request
-	 *
-	 * Call this method to request an image from given contact. After image is received chatImageAvailable() signal is emitted.
-	 */
-	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
-
-	virtual ChatImageKey createChatImageKey(const QString &localFileName);
+	void gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
 
 	virtual Error checkImageSize(qint64 size) const;
-
-	void gaduChatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
+	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData);
+	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey);
 
 };
 

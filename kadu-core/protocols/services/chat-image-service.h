@@ -49,9 +49,12 @@ class Error;
  * Before inserting image into chat a check should be made to see if this image can be received on the other end.
  * To do that use checkImageSize() method.
  *
- * After that use createChatImageKey() to get ChatImageKey for image stored in given file. Thats will store information
+ * After that use createChatImageKey() to get ChatImageKey for given image contet. Thats will store information
  * about image that will be send in this service. Resulting key object have toString() method that can be used to
  * create placeholder in HTML version of message for given message.
+ *
+ * When peer has sent a message chatImageKeyReceived() signal is received. After accepting data about this new
+ * image call requestChatImage() to get image data from peer and wait for chatImageAvailable() to get image data.
  */
 class KADUAPI ChatImageService : public AccountService
 {
@@ -76,8 +79,25 @@ public:
 	 */
 	virtual Error checkImageSize(qint64 size) const = 0;
 
-	virtual ChatImageKey createChatImageKey(const QString &localFileName) = 0;
+	/**
+	 * @short Prepare image to be sent and create ChatImageKey for it.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageData content of image to be sent
+	 * @return ChatImageKey corresponding to given imageData
+	 *
+	 * Call this method to prepare image to be sent to a peer.
+	 */
+	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData) = 0;
 
+	/**
+	 * @short Request chat image from peer.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id id of peer to request image from
+	 * @param imageKey key of requested image
+	 *
+	 * Call this method after receiving chatImageKeyReceived() if given image is accepted by user. Then wait for
+	 * chatImageAvailable() signal to get image content.
+	 */
 	virtual void requestChatImage(const QString &id, const ChatImageKey &imageKey) = 0;
 
 signals:
@@ -96,9 +116,9 @@ signals:
 	 * @short Signal emitted when image with given key was received and saved on disc.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imageKey key of received image
-	 * @param fileName file name of received image
+	 * @param imageData data of received image
 	 */
-	void chatImageAvailable(const ChatImageKey &imageKey, const QString &fileName);
+	void chatImageAvailable(const ChatImageKey &imageKey, const QByteArray &imageData);
 
 };
 
