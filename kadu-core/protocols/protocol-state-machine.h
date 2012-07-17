@@ -28,7 +28,7 @@
 class Protocol;
 
 /**
- * @addtogroup Protocols
+ * @addtogroup Protocol
  * @{
  */
 
