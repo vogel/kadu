@@ -28,6 +28,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
+class Notification;
 class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
 
@@ -73,9 +74,12 @@ public:
 	virtual ~NotificationService();
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
+	bool newMessageOnlyIfInactive() { return NewMessageOnlyIfInactive; }
 
 	void setSilentMode(bool silentMode);
 	bool silentMode();
+
+	void notify(Notification *notification);
 
 	ActionDescription * silentModeActionDescription() { return SilentModeActionDescription; }
 

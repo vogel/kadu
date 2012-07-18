@@ -35,17 +35,12 @@
 #include "status/status.h"
 
 class Action;
-class ActionDescription;
-
-class ConfigurationUiHandler;
 class Group;
 class Message;
 class MultilogonSession;
 class Notification;
 class Notifier;
-class NotifyConfigurationUiHandler;
 class NotifyEvent;
-class ScreenModeChecker;
 
 /**
  * @defgroup notify Notify
@@ -68,7 +63,6 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 	virtual ~NotificationManager();
 
 private slots:
-	void messageReceived(const Message &message);
 	void multilogonSessionConnected(MultilogonSession *session);
 	void multilogonSessionDisconnected(MultilogonSession *session);
 

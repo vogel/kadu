@@ -41,7 +41,7 @@
 #include "notification-service.h"
 
 NotificationService::NotificationService(QObject *parent) :
-		QObject(parent), SilentMode(false), IsFullScreen(false), AutoSilentMode(false)
+		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false)
 {
 	Notification::registerParserTags();
 	AccountNotification::registerParserTags();
@@ -178,13 +178,7 @@ bool NotificationService::silentMode()
 
 bool NotificationService::ignoreNotifications()
 {
-	if (silentMode())
-		return true;
-
-	if (AutoSilentMode)
-		return true;
-
-	return false;
+	return AutoSilentMode || silentMode();
 }
 
 
@@ -223,4 +217,11 @@ void NotificationService::checkFullScreen()
 	if (silentMode() != wasSilent)
 		emit silentModeToggled(silentMode());
 }
+
+void NotificationService::notify ( Notification* notification )
+{
+	if (!silentMode())
+		NotificationManager::instance()->notify(notification);
+}
+
 

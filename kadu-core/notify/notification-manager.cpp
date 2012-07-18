@@ -94,7 +94,6 @@ void NotificationManager::init()
 	//TODO 0.10.0:
 	//triggerAllAccountsRegistered();
 
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
 	foreach (const Group &group, GroupManager::instance()->items())
@@ -227,19 +226,6 @@ void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus
 	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contact);
 
 	notify(statusChangedNotification);
-*/
-	kdebugf2();
-}
-
-void NotificationManager::messageReceived(const Message &message)
-{
-	kdebugf();
-/*
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
-	if (!chatWidget)
-		notify(new MessageNotification(MessageNotification::NewChat, message));
-	else if (!NewMessageOnlyIfInactive || !_isWindowActiveOrFullyVisible(chatWidget))
-		notify(new MessageNotification(MessageNotification::NewMessage, message));
 */
 	kdebugf2();
 }
