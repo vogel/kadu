@@ -114,8 +114,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	configureServices();
 
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
-	        CurrentChatService, SLOT(setGaduSession(gg_session*)));
-	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        CurrentChatStateService, SLOT(setGaduSession(gg_session*)));
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        rosterService, SLOT(setGaduSession(gg_session*)));
