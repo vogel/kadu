@@ -59,7 +59,7 @@
 #include "debug.h"
 
 #ifdef Q_OS_MAC
-#include "notify/notification-manager.h"
+#include "services/notification-service.h"
 #include "mac_docking_helper.h"
 extern void qt_mac_set_dock_menu(QMenu *);
 #endif
@@ -203,7 +203,7 @@ void DockingManager::unreadMessageAdded()
 	changeIcon();
 #ifdef Q_OS_MAC
 	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
-	if (!NotificationManager::instance()->silentMode())
+	if (!Core::instance()->notificationService()->silentMode())
 		MacDockingHelper::instance()->startBounce();
 #endif
 }

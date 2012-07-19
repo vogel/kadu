@@ -45,6 +45,7 @@
 #include "misc/kadu-paths.h"
 #include "notify/new-message-notification.h"
 #include "notify/notification-manager.h"
+#include "services/notification-service.h"
 
 #include "plugins/docking/docking.h"
 
@@ -80,7 +81,7 @@ IndicatorDocking::IndicatorDocking() :
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(NotificationManager::instance(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
+	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
 	createDefaultConfiguration();
 
@@ -117,7 +118,7 @@ IndicatorDocking::~IndicatorDocking()
 
 void IndicatorDocking::indicateUnreadMessages()
 {
-	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !NotificationManager::instance()->silentMode())
+	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
 		foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
