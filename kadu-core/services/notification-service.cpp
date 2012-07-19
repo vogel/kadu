@@ -199,18 +199,20 @@ void NotificationService::silentModeActionActivated(QAction *sender, bool toggle
 	setSilentMode(!toggled);
 }
 
-void NotificationService::setSilentMode(bool silentMode)
+void NotificationService::setSilentMode(bool newSilentMode)
 {
-	if (silentMode == SilentMode)
+	if (newSilentMode == SilentMode)
 		return;
 
-	SilentMode = silentMode;
+	bool wasSilent = silentMode();
+	SilentMode = newSilentMode;
 	foreach (Action *action, SilentModeActionDescription->actions())
-		action->setChecked(!silentMode);
+		action->setChecked(!SilentMode);
 
 	config_file.writeEntry("Notify", "SilentMode", SilentMode);
 
-	emit silentModeToggled(SilentMode);
+	if (silentMode() != wasSilent)
+		emit silentModeToggled(silentMode());
 }
 
 bool NotificationService::silentMode()
