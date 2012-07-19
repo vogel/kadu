@@ -33,7 +33,7 @@
 
 class QTimer;
 
-class GaduProtocol;
+class GaduConnection;
 
 /**
  * @addtogroup Gadu
@@ -52,8 +52,7 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
-	gg_session *GaduSession;
-	QWeakPointer<GaduProtocol> CurrentProtocol;
+	QWeakPointer<GaduConnection> Connection;
 
 	QHash<int, Message> UndeliveredMessages;
 
@@ -76,12 +75,15 @@ public:
 	explicit GaduChatService(Account account, QObject *parent = 0);
 	virtual ~GaduChatService();
 
-	void setGaduProtocol(GaduProtocol *protocol);
+	/**
+	 * @short Set connection for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param connection connection for this service
+	 */
+	void setConnection(GaduConnection *connection);
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
-
-	void setGaduSession(gg_session *gaduSession);
+	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

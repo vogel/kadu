@@ -39,6 +39,7 @@
 
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
+#include "server/gadu-connection.h"
 
 #include "gadu-chat-service.h"
 
@@ -47,7 +48,7 @@
 #define REMOVE_TIMER_INTERVAL 1000
 
 GaduChatService::GaduChatService(Account account, QObject *parent) :
-		ChatService(account, parent), GaduSession(0)
+		ChatService(account, parent)
 {
 	RemoveTimer = new QTimer(this);
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
@@ -59,21 +60,16 @@ GaduChatService::~GaduChatService()
 {
 }
 
-void GaduChatService::setGaduProtocol(GaduProtocol *protocol)
+void GaduChatService::setConnection(GaduConnection *connection)
 {
-	CurrentProtocol = protocol;
-}
-
-void GaduChatService::setGaduSession(gg_session *gaduSession)
-{
-	GaduSession = gaduSession;
+	Connection = connection;
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
 	kdebugf();
 
-	if (!GaduSession)
+	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
 	QTextDocument document;
@@ -120,8 +116,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 	uinsCount = contacts.count();
 
-	if (CurrentProtocol)
-		CurrentProtocol.data()->disableSocketNotifiers();
+	Connection.data()->beginWrite();
 
 	int messageId = -1;
 	if (uinsCount > 1)
@@ -134,29 +129,27 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 		if (formatsSize)
 			messageId = gg_send_message_confer_richtext(
-					GaduSession, GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
+					Connection.data()->session(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message_confer(
-					GaduSession, GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
+					Connection.data()->session(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		if (formatsSize)
 			messageId = gg_send_message_richtext(
-					GaduSession, GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
+					Connection.data()->session(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
 					formats.data(), formatsSize);
 		else
 			messageId = gg_send_message(
-					GaduSession, GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
+					Connection.data()->session(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
 	}
 
-	if (CurrentProtocol)
-		CurrentProtocol.data()->enableSocketNotifiers();
+	Connection.data()->endWrite();
 
 	if (-1 == messageId)
 		return false;
-
 
 	if (!silent)
 	{
@@ -174,17 +167,11 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 		emit messageSent(msg);
 	}
 
-	kdebugf2();
 	return true;
 }
 
 bool GaduChatService::isSystemMessage(gg_event *e)
 {
-	if (0 == e->event.msg.sender)
-	{
-		kdebugmf(KDEBUG_INFO, "Ignored system message.\n");
-	}
-
 	return 0 == e->event.msg.sender;
 }
 
@@ -202,11 +189,6 @@ bool GaduChatService::ignoreSender(gg_event *e, Buddy sender)
 				(e->event.msg.recipients_count == 0) ||
 				config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
 			);
-
-	if (ignore)
-	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %u is ignored\n", sender.id(account()).toUInt());
-	}
 
 	return ignore;
 }
