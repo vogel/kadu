@@ -64,6 +64,7 @@ NotificationService::NotificationService(QObject *parent) :
 
 	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
 
+	createEventListeners();
 	createActionDescriptions();
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
