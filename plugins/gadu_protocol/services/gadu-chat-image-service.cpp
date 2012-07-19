@@ -31,7 +31,7 @@
 #include "gadu-chat-image-service.h"
 
 GaduChatImageService::GaduChatImageService(Account account, QObject *parent) :
-		ChatImageService(account, parent)
+		ChatImageService(account, parent), ReceiveImages(false)
 {
 }
 
@@ -51,7 +51,13 @@ void GaduChatImageService::setGaduChatService(GaduChatService *gaduChatService)
 
 	CurrentChatService = gaduChatService;
 	if (CurrentChatService)
-		connect(CurrentChatService.data(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)), this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
+		connect(CurrentChatService.data(), SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
+		        this, SLOT(chatImageKeyReceivedSlot(QString,ChatImageKey)));
+}
+
+void GaduChatImageService::setReceiveImages(bool receiveImages)
+{
+	ReceiveImages = receiveImages;
 }
 
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
@@ -89,6 +95,12 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 		return;
 
 	emit chatImageAvailable(key, imageData);
+}
+
+void GaduChatImageService::chatImageKeyReceivedSlot(const QString &id, const ChatImageKey &imageKey)
+{
+	if (ReceiveImages)
+		emit chatImageKeyReceived(id, imageKey);
 }
 
 void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKey &imageKey)

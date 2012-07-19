@@ -35,6 +35,19 @@ class QTimer;
 
 class GaduProtocol;
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class GaduChatService
+ * @todo Refactor
+ * @short Service for sending and receiving messages in Gadu-Gadu protocol.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This service implements sending and receiving messages in Gadu-Gadu protocol.
+ */
 class GaduChatService : public ChatService
 {
 	Q_OBJECT
@@ -43,7 +56,6 @@ class GaduChatService : public ChatService
 	QWeakPointer<GaduProtocol> CurrentProtocol;
 
 	QHash<int, Message> UndeliveredMessages;
-	bool ReceiveImagesDuringInvisibility;
 
 	bool isSystemMessage(struct gg_event *e);
 	Contact getSender(struct gg_event *e);
@@ -51,7 +63,6 @@ class GaduChatService : public ChatService
 	ContactSet getRecipients(struct gg_event *e);
 	QByteArray getContent(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
-	bool ignoreImages(Contact sender);
 	FormattedMessage createFormattedMessage(struct gg_event *e, const QByteArray &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
@@ -67,8 +78,6 @@ public:
 
 	void setGaduProtocol(GaduProtocol *protocol);
 
-	void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility);
-
 public slots:
 	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
 
@@ -82,5 +91,9 @@ signals:
 	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // GADU_CHAT_SERVICE_H

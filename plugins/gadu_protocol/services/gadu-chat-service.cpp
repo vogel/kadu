@@ -47,7 +47,7 @@
 #define REMOVE_TIMER_INTERVAL 1000
 
 GaduChatService::GaduChatService(Account account, QObject *parent) :
-		ChatService(account, parent), GaduSession(0), ReceiveImagesDuringInvisibility(false)
+		ChatService(account, parent), GaduSession(0)
 {
 	RemoveTimer = new QTimer(this);
 	RemoveTimer->setInterval(REMOVE_TIMER_INTERVAL);
@@ -67,11 +67,6 @@ void GaduChatService::setGaduProtocol(GaduProtocol *protocol)
 void GaduChatService::setGaduSession(gg_session *gaduSession)
 {
 	GaduSession = gaduSession;
-}
-
-void GaduChatService::setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility)
-{
-	ReceiveImagesDuringInvisibility = receiveImagesDuringInvisibility;
 }
 
 bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
@@ -235,21 +230,6 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-bool GaduChatService::ignoreImages(Contact sender)
-{
-	if (!CurrentProtocol)
-		return true;
-
-	return sender.isAnonymous() ||
-		(
-			StatusTypeGroupOffline == CurrentProtocol.data()->status().group() ||
-			(
-				(StatusTypeGroupInvisible == CurrentProtocol.data()->status().group()) &&
-				!ReceiveImagesDuringInvisibility
-			)
-		);
-}
-
 FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, bool richText)
 {
 	if (!richText)
@@ -313,10 +293,9 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		if (!ignoreImages(sender))
-			foreach (const FormattedMessagePart &part, message.parts())
-				if (part.isImage())
-					emit chatImageKeyReceived(sender.id(), part.imageKey());
+		foreach (const FormattedMessagePart &part, message.parts())
+			if (part.isImage())
+				emit chatImageKeyReceived(sender.id(), part.imageKey());
 	}
 	else
 		emit messageSent(msg);

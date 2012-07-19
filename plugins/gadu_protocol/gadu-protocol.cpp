@@ -161,6 +161,9 @@ void GaduProtocol::sendStatusToServer()
 	if (!GaduSession)
 		return;
 
+	// some services have per-status configuration
+	configureServices();
+
 	Status newStatus = status();
 
 	int friends = account().privateStatus() ? GG_STATUS_FRIENDS_MASK : 0;
@@ -210,8 +213,19 @@ void GaduProtocol::configureServices()
 	if (!gaduAccountDetails)
 		return;
 
-	CurrentChatService->setReceiveImagesDuringInvisibility(gaduAccountDetails->receiveImagesDuringInvisibility());
 	CurrentChatStateService->setSendTypingNotifications(gaduAccountDetails->sendTypingNotification());
+
+	switch (status().group())
+	{
+		case StatusTypeGroupOffline:
+			CurrentChatImageService->setReceiveImages(false);
+			break;
+		case StatusTypeGroupInvisible:
+			CurrentChatImageService->setReceiveImages(gaduAccountDetails->receiveImagesDuringInvisibility());
+			break;
+		default:
+			CurrentChatImageService->setReceiveImages(true);
+	}
 }
 
 void GaduProtocol::accountUpdated()

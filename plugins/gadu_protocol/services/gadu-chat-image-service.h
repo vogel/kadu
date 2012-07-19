@@ -42,7 +42,6 @@ class GaduConnection;
 
 /**
  * @class GaduChatImageService
- * @todo Refactor
  * @short Service for downloading and uploading avatars in Gadu-Gadu protocol.
  * @author Rafał 'Vogel' Malinowski
  *
@@ -62,9 +61,14 @@ class GaduChatImageService : public ChatImageService
 	QWeakPointer<GaduConnection> Connection;
 	QWeakPointer<GaduChatService> CurrentChatService;
 
+	bool ReceiveImages;
+
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);
 	void handleEventImageReply(struct gg_event *e);
+
+private slots:
+	void chatImageKeyReceivedSlot(const QString &id, const ChatImageKey &imageKey);
 
 public:
 	/**
@@ -91,6 +95,15 @@ public:
 	 * This service is used to get information about received image keys.
 	 */
 	void setGaduChatService(GaduChatService *gaduChatService);
+
+	/**
+	 * @short Enable or disable receiving images.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param receiveImages new value of receiveImages property
+	 *
+	 * Default value of receiveImages is false. Set it to true to receive images.
+	 */
+	void setReceiveImages(bool receiveImages);
 
 	virtual Error checkImageSize(qint64 size) const;
 	virtual ChatImageKey prepareImageToBeSent(const QByteArray &imageData);

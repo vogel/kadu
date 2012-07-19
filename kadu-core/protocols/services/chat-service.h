@@ -44,6 +44,7 @@ class Message;
 /**
  * @class ChatService
  * @short Chat service allows sending and receiving messages.
+ * @author Rafał 'Vogel' Malinowski
  *
  * This service allows sending and receiving messages. Each message can be modified before sending or after
  * receiving to allow protocol-independent encryption and filtering.
@@ -54,12 +55,7 @@ class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
-public:
-	/**
-	 * @short Create new instance of ChatService bound to given Protocol.
-	 * @param protocol protocol to bound this service to
-	 * @param parent QObject parent
-	 */
+protected:
 	explicit ChatService(Account account, QObject *parent = 0);
 	virtual ~ChatService();
 
