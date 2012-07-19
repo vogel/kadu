@@ -40,7 +40,7 @@
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
-#include "protocols/services/chat-image-request-service.h"
+#include "services/chat-image-request-service.h"
 #include "services/image-storage-service.h"
 
 #include "debug.h"

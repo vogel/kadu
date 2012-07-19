@@ -27,7 +27,7 @@
 class ChatImageRequestService;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Services
  * @{
  */
 

@@ -25,7 +25,7 @@
 class QUrl;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Services
  * @{
  */
 

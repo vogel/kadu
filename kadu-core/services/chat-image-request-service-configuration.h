@@ -23,7 +23,7 @@
 #include <QtCore/QtGlobal>
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Services
  * @{
  */
 

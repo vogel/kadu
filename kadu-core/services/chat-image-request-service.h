@@ -24,14 +24,14 @@
 
 #include "accounts/account.h"
 #include "protocols/services/chat-image-key.h"
-#include "protocols/services/chat-image-request-service-configuration.h"
+#include "services/chat-image-request-service-configuration.h"
 
 class AccountManager;
 class ContactManager;
 class ImageStorageService;
 
 /**
- * @addtogroup Protocol
+ * @addtogroup Services
  * @{
  */
 
