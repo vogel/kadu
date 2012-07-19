@@ -26,8 +26,11 @@
 
 class QAction;
 
+class AccountEventListener;
 class Action;
 class ActionDescription;
+class ChatEventListener;
+class GroupEventListener;
 class Notification;
 class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
@@ -54,16 +57,21 @@ class NotificationService : public QObject, ConfigurationAwareObject
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *SilentModeActionDescription;
 
+	ChatEventListener *ChatListener;
+	AccountEventListener *AccountListener;
+	GroupEventListener *GroupListener;
 
 	void createDefaultConfiguration();
 	bool ignoreNotifications();
 	void createActionDescriptions();
+	void createEventListeners();
+
 
 private slots:
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);
-
+	void statusUpdated();
 	void checkFullScreen();
 
 protected:
@@ -74,17 +82,19 @@ public:
 	virtual ~NotificationService();
 
 	bool notifyAboutAll() { return NotifyAboutAll; }
+	void setNotifyAboutAll(bool notify) { NotifyAboutAll = notify; }
+	bool notifyIgnoreOnConnection() { return NotifyIgnoreOnConnection; }
+	bool ignoreOnlineToOnline() { return IgnoreOnlineToOnline; }
 	bool newMessageOnlyIfInactive() { return NewMessageOnlyIfInactive; }
-
 	void setSilentMode(bool silentMode);
 	bool silentMode();
 
 	void notify(Notification *notification);
 
-	ActionDescription * silentModeActionDescription() { return SilentModeActionDescription; }
-
 signals:
 	void silentModeToggled(bool);
 };
+
+void checkNotify(Action *);
 
 #endif // NOTIFICATION_SERVICE_H

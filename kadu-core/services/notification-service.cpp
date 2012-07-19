@@ -18,15 +18,24 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
+#include "gui/windows/kadu-window.h"
+#include "notify/account-event-listener.h"
 #include "notify/account-notification.h"
+#include "notify/chat-event-listener.h"
+#include "notify/group-event-listener.h"
 #include "notify/multilogon-notification.h"
 #include "notify/new-message-notification.h"
 #include "notify/notification.h"
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/status-changed-notification.h"
+#include "notify/window-notifier.h"
+#include "status/status-container-manager.h"
+#include "status/status-type-data.h"
+#include "status/status-type-manager.h"
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
 #include "notify/x11-screen-mode-checker.h"
@@ -53,6 +62,8 @@ NotificationService::NotificationService(QObject *parent) :
 	StatusChangedNotification::registerEvents();
 	MultilogonNotification::registerEvents();
 
+	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+
 	createActionDescriptions();
 
 #if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
@@ -68,6 +79,8 @@ NotificationService::NotificationService(QObject *parent) :
 
 	createDefaultConfiguration();
 	configurationUpdated();
+
+	new WindowNotifier(this);
 }
 
 NotificationService::~NotificationService()
@@ -99,7 +112,35 @@ void NotificationService::createActionDescriptions()
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
 		KaduIcon("kadu_icons/enable-notifications"), tr("Enable Notifications"), true
 	);
+
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
+
+	Core::instance()->kaduWindow()->insertMenuActionDescription(SilentModeActionDescription, KaduWindow::MenuKadu);
+}
+
+void NotificationService::createEventListeners()
+{
+	ChatListener = new ChatEventListener(this);
+	AccountListener = new AccountEventListener(this);
+	GroupListener = new GroupEventListener(this);
+}
+
+void NotificationService::statusUpdated()
+{
+	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == StatusTypeDoNotDisturb)
+	{
+		foreach (Action *action, SilentModeActionDescription->actions())
+			action->setChecked(false);
+
+		AutoSilentMode = true;
+	}
+	else if (!silentMode() && AutoSilentMode)
+	{
+		foreach (Action *action, SilentModeActionDescription->actions())
+			action->setChecked(true);
+
+		AutoSilentMode = false;
+	}
 }
 
 void NotificationService::notifyAboutUserActionActivated(QAction *sender, bool toggled)
@@ -159,16 +200,16 @@ void NotificationService::silentModeActionActivated(QAction *sender, bool toggle
 
 void NotificationService::setSilentMode(bool silentMode)
 {
-	if (silentMode != SilentMode)
-	{
-		SilentMode = silentMode;
-		foreach (Action *action, SilentModeActionDescription->actions())
-			action->setChecked(!silentMode);
+	if (silentMode == SilentMode)
+		return;
 
-		config_file.writeEntry("Notify", "SilentMode", SilentMode);
+	SilentMode = silentMode;
+	foreach (Action *action, SilentModeActionDescription->actions())
+		action->setChecked(!silentMode);
 
-		emit silentModeToggled(SilentMode);
-	}
+	config_file.writeEntry("Notify", "SilentMode", SilentMode);
+
+	emit silentModeToggled(SilentMode);
 }
 
 bool NotificationService::silentMode()
@@ -220,8 +261,28 @@ void NotificationService::checkFullScreen()
 
 void NotificationService::notify ( Notification* notification )
 {
-	if (!silentMode())
+	if (!ignoreNotifications())
 		NotificationManager::instance()->notify(notification);
+	else
+		notification->callbackDiscard();
+}
+
+void checkNotify(Action *action)
+{
+	action->setEnabled(!action->context()->buddies().isEmpty());
+
+	bool on = true;
+	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
+		if (buddy.data())
+		{
+			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
+			{
+				on = false;
+				break;
+			}
+		}
+
+	action->setChecked(on);
 }
 
 

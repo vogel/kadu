@@ -1,8 +1,10 @@
 set (notify_SRCS
+	account-event-listener.cpp
 	account-notification.cpp
 	chat-notification.cpp
 	chat-event-listener.cpp
 	event-listener.cpp
+	group-event-listener.cpp
 	new-message-notification.cpp
 	multilogon-notification.cpp
 	notification.cpp
@@ -15,10 +17,12 @@ set (notify_SRCS
 )
 
 set (notify_MOC_SRCS
+	account-event-listener.h
 	account-notification.h
 	chat-notification.h
 	chat-event-listener.h
 	event-listener.h
+	group-event-listener.h
 	new-message-notification.h
 	multilogon-notification.h
 	notification.h

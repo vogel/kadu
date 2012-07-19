@@ -21,34 +21,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "activate.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "message/message.h"
-#include "message/message-manager.h"
-#include "notify/new-message-notification.h"
+#include "buddies/group.h"
+#include "buddies/group-manager.h"
+#include "buddies/buddy-manager.h"
+#include "configuration/configuration-file.h"
 #include "services/notification-service.h"
 
-#include "chat-event-listener.h"
+#include "group-event-listener.h"
 
-ChatEventListener::ChatEventListener(NotificationService *service)
+GroupEventListener::GroupEventListener(NotificationService *service)
 		: EventListener(service)
 {
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+	foreach (const Group &group, GroupManager::instance()->items())
+		groupAdded(group);
 }
 
-ChatEventListener::~ChatEventListener()
+GroupEventListener::~GroupEventListener()
 {
-	disconnect(MessageManager::instance(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
 }
 
-void ChatEventListener::messageReceived(const Message &message)
+void GroupEventListener::groupAdded(const Group &group)
 {
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
+	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
+}
 
-	if (!chatWidget)
-		Service->notify(new MessageNotification(MessageNotification::NewChat, message));
-	else if (!Service->newMessageOnlyIfInactive() || !_isWindowActiveOrFullyVisible(chatWidget))
-		Service->notify(new MessageNotification(MessageNotification::NewMessage, message));
+void GroupEventListener::groupUpdated()
+{
+	Group group = sender();
+	if (group.isNull())
+		return;
+
+	bool notify = group.notifyAboutStatusChanges();
+
+	if (Service->notifyAboutAll() && !notify)
+	{
+		Service->setNotifyAboutAll(false);
+		config_file.writeEntry("Notify", "NotifyAboutAll", false);
+	}
+
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	{
+		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
+			continue;
+
+		if (notify)
+			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
+		else
+			buddy.removeProperty("notify:Notify");
+	}
 }
 

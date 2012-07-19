@@ -47,36 +47,18 @@ class NotifyEvent;
  * @{
  */
 
-class KADUAPI NotificationManager : public QObject, AccountsAwareObject
+class KADUAPI NotificationManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NotificationManager)
 
 	static NotificationManager *Instance;
 
-	void init();
-
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
 
 	NotificationManager();
 	virtual ~NotificationManager();
-
-private slots:
-	void multilogonSessionConnected(MultilogonSession *session);
-	void multilogonSessionDisconnected(MultilogonSession *session);
-
-	void statusUpdated();
-	void contactStatusChanged(Contact contact, Status oldStatus);
-
-	void groupAdded(const Group &group);
-	void groupUpdated();
-
-	void accountConnected();
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	static NotificationManager * instance();
@@ -102,8 +84,6 @@ signals:
 	void notifyEventUnregistered(NotifyEvent *notifyEvent);
 
 };
-
-void checkNotify(Action *);
 
 /** @} */
 

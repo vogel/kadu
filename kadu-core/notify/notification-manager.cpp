@@ -31,43 +31,14 @@
 
 #include <QtGui/QApplication>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "buddies/buddy-manager.h"
-#include "buddies/group-manager.h"
-#include "buddies/group.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact.h"
-#include "core/core.h"
-#include "gui/actions/action.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/custom-input.h"
-#include "gui/widgets/talkable-menu-manager.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/main-window.h"
+#include "debug.h"
 #include "gui/windows/message-dialog.h"
-#include "message/message-manager.h"
-#include "message/message.h"
-#include "multilogon/multilogon-session.h"
-#include "notify/account-notification.h"
 #include "notify/notification.h"
 #include "notify/notifier.h"
-#include "notify/multilogon-notification.h"
-#include "notify/new-message-notification.h"
-#include "notify/notify-configuration-ui-handler.h"
-#include "notify/status-changed-notification.h"
-#include "notify/window-notifier.h"
-#include "protocols/services/multilogon-service.h"
 #include "status/status-container-manager.h"
-#include "status/status-type-data.h"
-#include "status/status-type-manager.h"
 
-#include "misc/misc.h"
-#include "activate.h"
-#include "debug.h"
+#include "notify/notification-manager.h"
 
 
 NotificationManager *NotificationManager::Instance = 0;
@@ -77,7 +48,9 @@ NotificationManager * NotificationManager::instance()
 	if (!Instance)
 	{
 		Instance = new NotificationManager();
-		Instance->init();
+
+		//HACK force creating StatusContainerManager instance so Kadu won't crash at startup
+		StatusContainerManager::instance();
 	}
 
 	return Instance;
@@ -87,157 +60,13 @@ NotificationManager::NotificationManager()
 {
 }
 
-void NotificationManager::init()
-{
-	kdebugf();
-
-	//TODO 0.10.0:
-	//triggerAllAccountsRegistered();
-
-	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
-
-	foreach (const Group &group, GroupManager::instance()->items())
-		groupAdded(group);
-
-	new WindowNotifier(this);
-	kdebugf2();
-}
-
 NotificationManager::~NotificationManager()
 {
-	kdebugf();
-
-	triggerAllAccountsUnregistered();
-
 	while (!Notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
 		unregisterNotifier(Notifiers.at(0));
 	}
-
-	kdebugf2();
-}
-
-void NotificationManager::statusUpdated()
-{
-/*	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == StatusTypeDoNotDisturb)
-	{
-		foreach (Action *action, SilentModeActionDescription->actions())
-			action->setChecked(false);
-
-		AutoSilentMode = true;
-	}
-	else if (!silentMode() && AutoSilentMode)
-	{
-		foreach (Action *action, SilentModeActionDescription->actions())
-			action->setChecked(true);
-
-		AutoSilentMode = false;
-	}*/
-}
-
-void NotificationManager::accountRegistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
-	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
-
-	MultilogonService *multilogonService = protocol->multilogonService();
-	if (multilogonService)
-	{
-		connect(multilogonService, SIGNAL(multilogonSessionConnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionConnected(MultilogonSession*)));
-		connect(multilogonService, SIGNAL(multilogonSessionDisconnected(MultilogonSession*)),
-				this, SLOT(multilogonSessionDisconnected(MultilogonSession*)));
-	}
-}
-
-void NotificationManager::accountUnregistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-
-	if (!protocol)
-		return;
-
-	disconnect(account, 0, this, 0);
-
-	MultilogonService *multilogonService = protocol->multilogonService();
-	if (multilogonService)
-		disconnect(multilogonService, 0, this, 0);
-}
-
-void NotificationManager::accountConnected()
-{
-/*	Account account(sender());
-	if (!account)
-		return;
-
-	if (NotifyIgnoreOnConnection)
-		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);*/
-}
-
-void NotificationManager::contactStatusChanged(Contact contact, Status oldStatus)
-{
-	kdebugf();
-/*
-	if (contact.isAnonymous() || !contact.contactAccount())
-		return;
-
-	Protocol *protocol = contact.contactAccount().protocolHandler();
-	if (!protocol || !protocol->isConnected())
-		return;
-
-	if (NotifyIgnoreOnConnection)
-	{
-		QDateTime dateTime = contact.contactAccount().property("notify:notify-account-connected", QDateTime()).toDateTime();
-		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
-			return;
-	}
-
-	bool notify_contact = true;
-	if (!contact.ownerBuddy().property("notify:Notify", false).toBool())
-		notify_contact = false;
-
-	if (!notify_contact && !NotifyAboutAll)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
-		return;
-	}
-
-	if (contact == contact.contactAccount().accountContact()) // myself
-		return;
-
-	Status status = contact.currentStatus();
-	if (oldStatus == status)
-		return;
-
-	if (IgnoreOnlineToOnline &&
-			!status.isDisconnected() &&
-			!oldStatus.isDisconnected())
-		return;
-
-	const StatusTypeData &typeData = StatusTypeManager::instance()->statusTypeData(status.type());
-	QString changedTo = "/To" + typeData.name();
-
-	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contact);
-
-	notify(statusChangedNotification);
-*/
-	kdebugf2();
-}
-
-void NotificationManager::multilogonSessionConnected(MultilogonSession *session)
-{
-	MultilogonNotification::notifyMultilogonSessionConnected(session);
-}
-
-void NotificationManager::multilogonSessionDisconnected(MultilogonSession *session)
-{
-	MultilogonNotification::notifyMultilogonSessionDisonnected(session);
 }
 
 void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
@@ -312,12 +141,6 @@ void NotificationManager::notify(Notification *notification)
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
 
-// 	if (ignoreNotifications())
-// 	{
-// 		notification->callbackDiscard();
-// 		return;
-// 	}
-
 	notification->acquire();
 
 	foreach (Notifier *notifier, Notifiers)
@@ -354,36 +177,6 @@ void NotificationManager::notify(Notification *notification)
 	kdebugf2();
 }
 
-void NotificationManager::groupAdded(const Group &group)
-{
-	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
-}
-
-void NotificationManager::groupUpdated()
-{
-/*	Group group = sender();
-	if (group.isNull())
-		return;
-
-	bool notify = group.notifyAboutStatusChanges();
-
-	if (NotifyAboutAll && !notify)
-	{
-		NotifyAboutAll = false;
-		config_file.writeEntry("Notify", "NotifyAboutAll", false);
-	}
-
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
-	{
-		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
-			continue;
-
-		if (notify)
-			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
-		else
-			buddy.removeProperty("notify:Notify");
-	}*/
-}
 
 QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 {
@@ -402,26 +195,4 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 	}
 
 	Q_ASSERT(false);
-}
-
-void checkNotify(Action *action)
-{
-	kdebugf();
-
-	action->setEnabled(!action->context()->buddies().isEmpty());
-
-	bool on = true;
-	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
-		if (buddy.data())
-		{
-			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
-			{
-				on = false;
-				break;
-			}
-		}
-
-	action->setChecked(on);
-
-	kdebugf2();
 }
