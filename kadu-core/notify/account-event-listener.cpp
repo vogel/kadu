@@ -80,6 +80,17 @@ void AccountEventListener::accountUnregistered(Account account)
 		disconnect(multilogonService, 0, this, 0);
 }
 
+void AccountEventListener::accountConnected()
+{
+	Account account(sender());
+
+	if (!account)
+		return;
+
+	if (Service->notifyIgnoreOnConnection())
+		account.addProperty("notify:notify-account-connected", QDateTime::currentDateTime().addSecs(10), CustomProperties::NonStorable);
+}
+
 void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatus)
 {
 	if (contact.isAnonymous() || !contact.contactAccount())

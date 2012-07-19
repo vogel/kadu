@@ -44,6 +44,7 @@ private slots:
 	void multilogonSessionConnected(MultilogonSession *session);
 	void multilogonSessionDisconnected(MultilogonSession *session);
 	void contactStatusChanged(Contact contact, Status oldStatus);
+	void accountConnected();
 	
 public:
 	AccountEventListener(NotificationService *service);
