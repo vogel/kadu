@@ -55,6 +55,7 @@ class KaduApplication;
 class KaduIcon;
 class KaduWindow;
 class Message;
+class MessageTransformerService;
 class NotificationService;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
@@ -69,6 +70,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 
 	ChatImageRequestService *CurrentChatImageRequestService;
 	ImageStorageService *CurrentImageStorageService;
+	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
 
 	KaduWindow *Window;
@@ -122,6 +124,7 @@ public:
 
 	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;
+	MessageTransformerService * messageTransformerService() const;
 	NotificationService * notificationService() const;
 
 	void setShowMainWindowOnStart(bool show);
