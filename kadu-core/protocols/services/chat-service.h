@@ -35,6 +35,7 @@
 #include "protocols/services/account-service.h"
 
 class Message;
+class MessageTransformerService;
 
 /**
  * @addtogroup Protocol
@@ -55,9 +56,26 @@ class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
+	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
+
 protected:
 	explicit ChatService(Account account, QObject *parent = 0);
 	virtual ~ChatService();
+
+public:
+	/**
+	 * @short Set message transformer service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageTransformerService message transformer service for this service
+	 */
+	void setMessageTransformerService(MessageTransformerService *messageTransformerService);
+
+	/**
+	 * @short Return message transformer service of this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return message transformer service of this service
+	 */
+	MessageTransformerService *messageTransformerService() const;
 
 public slots:
 	/**

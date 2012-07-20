@@ -21,7 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
+#include "services/message-transformer-service.h"
 
 #include "chat-service.h"
 
@@ -32,4 +32,14 @@ ChatService::ChatService(Account account, QObject *parent) :
 
 ChatService::~ChatService()
 {
+}
+
+void ChatService::setMessageTransformerService(MessageTransformerService *messageTransformerService)
+{
+	CurrentMessageTransformerService = messageTransformerService;
+}
+
+MessageTransformerService* ChatService::messageTransformerService() const
+{
+	return CurrentMessageTransformerService.data();
 }
