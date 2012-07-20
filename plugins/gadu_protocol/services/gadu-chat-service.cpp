@@ -96,10 +96,10 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 	bool stop = false;
 
-	QByteArray data = plain.toUtf8();
-	emit filterRawOutgoingMessage(chat, data, stop);
-	plain = QString::fromUtf8(data);
+	emit filterRawOutgoingMessage(chat, plain, stop);
 	emit filterOutgoingMessage(chat, plain, stop);
+
+	QByteArray data = plain.toUtf8();
 
 	if (stop)
 		return false;

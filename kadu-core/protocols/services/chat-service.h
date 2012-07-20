@@ -88,7 +88,7 @@ signals:
 	 *
 	 * If sending is stopped, no messageSent() signal can be emitted.
 	 */
-	void filterRawOutgoingMessage(Chat chat, QByteArray &message, bool &stop);
+	void filterRawOutgoingMessage(Chat chat, QString &message, bool &stop);
 
 	/**
 	 * @short Signal emitted before message is sent to peer.
