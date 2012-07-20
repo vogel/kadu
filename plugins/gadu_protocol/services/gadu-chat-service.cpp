@@ -91,21 +91,18 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
 	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize, Core::instance()->imageStorageService()));
-	bool stop = false;
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
 
-	QByteArray data = plain.toUtf8();
+	bool stop = false;
 
+	QByteArray data = plain.toUtf8();
 	emit filterRawOutgoingMessage(chat, data, stop);
 	plain = QString::fromUtf8(data);
 	emit filterOutgoingMessage(chat, plain, stop);
 
 	if (stop)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
-	}
 
 	if (data.length() >= 10000)
 	{

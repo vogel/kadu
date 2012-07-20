@@ -237,11 +237,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	emit filterOutgoingMessage(chat, plain, stop);
 
 	if (stop)
-	{
-		// TODO: implement formats
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
-	}
 
 	QString messageType = chatType->name() == "Room"
 			? "groupchat"
