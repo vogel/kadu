@@ -5,12 +5,14 @@ set (message_SRCS
 	message-manager.cpp
 	message-render-info.cpp
 	message-shared.cpp
+	message-transformer.cpp
 )
 
 set (message_MOC_SRCS
 	message-manager.h
 	message-render-info.h
 	message-shared.h
+	message-transformer.h
 )
 
 kadu_subdirectory (message "${message_SRCS}" "${message_MOC_SRCS}" "")
