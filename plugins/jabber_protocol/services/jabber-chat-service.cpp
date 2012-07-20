@@ -36,6 +36,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "services/message-transformer-service.h"
 #include "message/message.h"
 #include "misc/misc.h"
 
@@ -231,7 +232,8 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 
 	bool stop = false;
 
-	emit filterRawOutgoingMessage(chat, plain, stop);
+	if (messageTransformerService())
+		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
 	emit filterOutgoingMessage(chat, plain, stop);
 
 	if (stop)

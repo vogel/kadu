@@ -92,8 +92,6 @@ void EncryptionManager::accountRegistered(Account account)
 	{
 		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
 				this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
-		connect(chatService, SIGNAL(filterRawOutgoingMessage(Chat,QString&,bool&)),
-				this, SLOT(filterRawOutgoingMessage(Chat,QString&,bool&)));
 	}
 }
 
@@ -174,18 +172,6 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 
 	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
 		setEncryptionEnabled(chat, true);
-}
-
-void EncryptionManager::filterRawOutgoingMessage(Chat chat, QString &message, bool &stop)
-{
-	Q_UNUSED(stop)
-
-	if (!chat)
-		return;
-
-	EncryptionChatData *encryptionChatData = chatEncryption(chat);
-	if (encryptionChatData && encryptionChatData->encryptor())
-		message = QString::fromUtf8(encryptionChatData->encryptor()->encrypt(message.toUtf8()));
 }
 
 void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
