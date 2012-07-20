@@ -51,7 +51,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param chat chat of message
 	 * @param message content of message
-	 * @return tranformed message
+	 * @return transformed message
 	 */
 	virtual QString transformMessage(const Chat &chat, const QString &message) = 0;
 
