@@ -19,10 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-transformer-service.h"
 
 #include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"
@@ -30,6 +32,7 @@
 #include "encryption-chat-data.h"
 #include "encryption-provider-manager.h"
 #include "encryptor.h"
+#include "outgoing-encryption-message-transformer.h"
 
 #include "encryption-manager.h"
 
@@ -59,12 +62,17 @@ EncryptionManager::EncryptionManager() :
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 
+	CurrentOutgoingEncryptionMessageTransformer = new OutgoingEncryptionMessageTransformer(this);
+	Core::instance()->messageTransformerService()->registerOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
+
 	triggerAllAccountsRegistered();
 }
 
 EncryptionManager::~EncryptionManager()
 {
 	triggerAllAccountsUnregistered();
+
+	Core::instance()->messageTransformerService()->unregisterOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 

@@ -37,6 +37,7 @@ class ChatWidget;
 class Contact;
 class EncryptionChatData;
 class KeyGenerator;
+class OutgoingEncryptionMessageTransformer;
 
 class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 {
@@ -47,6 +48,8 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 
 	QMap<Chat, EncryptionChatData *> ChatEnryptions;
 	KeyGenerator *Generator;
+
+	OutgoingEncryptionMessageTransformer *CurrentOutgoingEncryptionMessageTransformer;
 
 	EncryptionManager();
 	virtual ~EncryptionManager();
