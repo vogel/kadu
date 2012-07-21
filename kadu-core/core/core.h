@@ -121,6 +121,7 @@ public:
 
 	void createGui();
 	void runServices();
+	void runGuiServices();
 
 	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;

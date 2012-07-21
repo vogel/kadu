@@ -395,6 +395,8 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
+	runServices();
+
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	PluginsManager::instance()->activateProtocolPlugins();
@@ -530,7 +532,6 @@ void Core::runServices()
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
-	CurrentNotificationService = new NotificationService(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -540,6 +541,11 @@ void Core::runServices()
 	CurrentChatImageRequestService->setImageStorageService(CurrentImageStorageService);
 	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
 	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+}
+
+void Core::runGuiServices()
+{
+	CurrentNotificationService = new NotificationService(this);
 }
 
 ChatImageRequestService * Core::chatImageRequestService() const
