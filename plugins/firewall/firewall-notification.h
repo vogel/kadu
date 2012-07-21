@@ -25,7 +25,7 @@
 #ifndef FIREWALL_NOTIFICATION_H
 #define FIREWALL_NOTIFICATION_H
 
-#include "notify/chat-notification.h"
+#include "notify/notification/chat-notification.h"
 
 class NotifyEvent;
 

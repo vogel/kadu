@@ -25,7 +25,7 @@
 #define FILE_TRANSFER_NOTIFICATION_H
 
 #include "file-transfer/file-transfer.h"
-#include "notify/chat-notification.h"
+#include "notify/notification/chat-notification.h"
 
 class FileTransferManager;
 class DccSocket;

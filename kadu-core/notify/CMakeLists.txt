@@ -1,37 +1,37 @@
 set (notify_SRCS
-	account-event-listener.cpp
-	account-notification.cpp
-	chat-notification.cpp
-	chat-event-listener.cpp
-	event-listener.cpp
-	group-event-listener.cpp
-	new-message-notification.cpp
-	multilogon-notification.cpp
-	notification.cpp
+	listener/account-event-listener.cpp
+	notification/account-notification.cpp
+	notification/chat-notification.cpp
+	listener/chat-event-listener.cpp
+	listener/event-listener.cpp
+	listener/group-event-listener.cpp
+	notification/new-message-notification.cpp
+	notification/multilogon-notification.cpp
+	notification/notification.cpp
 	notification-manager.cpp
 	notifier.cpp
 	notify-configuration-ui-handler.cpp
 	notify-event.cpp
 	screen-mode-checker.cpp
-	status-changed-notification.cpp
+	notification/status-changed-notification.cpp
 	window-notifier.cpp
 )
 
 set (notify_MOC_SRCS
-	account-event-listener.h
-	account-notification.h
-	chat-notification.h
-	chat-event-listener.h
-	event-listener.h
-	group-event-listener.h
-	new-message-notification.h
-	multilogon-notification.h
-	notification.h
+	listener/account-event-listener.h
+	notification/account-notification.h
+	notification/chat-notification.h
+	listener/chat-event-listener.h
+	listener/event-listener.h
+	listener/group-event-listener.h
+	notification/new-message-notification.h
+	notification/multilogon-notification.h
+	notification/notification.h
 	notification-manager.h
 	notifier.h
 	notify-configuration-ui-handler.h
 	screen-mode-checker.h
-	status-changed-notification.h
+	notification/status-changed-notification.h
 	window-notifier.h
 )
 

@@ -22,9 +22,9 @@
 #include <QtCore/QProcess>
 
 #include "configuration/configuration-file.h"
-#include "notify/chat-notification.h"
+#include "notify/notification/chat-notification.h"
 #include "notify/notification-manager.h"
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "speech-configuration-widget.h"

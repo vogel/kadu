@@ -51,6 +51,10 @@
 
 #include "icons/kadu-icon.h"
 
+#include "notify/notification-manager.h"
+#include "notify/notification/notification.h"
+#include "notify/notify-event.h"
+
 #include "status/status-changer-manager.h"
 
 #include "debug.h"

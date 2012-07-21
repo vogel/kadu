@@ -25,7 +25,7 @@
 #ifndef ANTISTRING_NOTIFICATION_H
 #define ANTISTRING_NOTIFICATION_H
 
-#include "notify/chat-notification.h"
+#include "notify/notification/chat-notification.h"
 
 class NotifyEvent;
 

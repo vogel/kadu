@@ -43,10 +43,10 @@
 
 #include "misc/misc.h"
 
-#include "notify/account-notification.h"
-#include "notify/chat-notification.h"
+#include "notify/notification/account-notification.h"
+#include "notify/notification/chat-notification.h"
 #include "notify/notification-manager.h"
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 
 #include "icons/icons-manager.h"
 #include "parser/parser.h"

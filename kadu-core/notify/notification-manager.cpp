@@ -34,7 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "gui/windows/message-dialog.h"
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 #include "notify/notifier.h"
 #include "status/status-container-manager.h"
 

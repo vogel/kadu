@@ -26,7 +26,7 @@
 #ifndef ENCRYPTION_NG_NOTIFICATION_H
 #define ENCRYPTION_NG_NOTIFICATION_H
 
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 
 #include "../encryption_exports.h"
 

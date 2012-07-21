@@ -26,7 +26,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "icons/icons-manager.h"
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 #include "debug.h"
 
 #include "window-notifier-window.h"

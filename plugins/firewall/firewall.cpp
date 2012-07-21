@@ -58,7 +58,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 #include "protocols/services/chat-service.h"
 #include "services/message-filter-service.h"
 #include "status/status-container.h"

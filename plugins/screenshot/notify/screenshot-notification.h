@@ -25,7 +25,7 @@
 #ifndef SCREENSHOT_NOTIFICATION_H
 #define SCREENSHOT_NOTIFICATION_H
 
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 
 class NotifyEvent;
 

@@ -23,7 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notify/notification.h"
+#include "notify/notification/notification.h"
 
 #include "configuration/gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"

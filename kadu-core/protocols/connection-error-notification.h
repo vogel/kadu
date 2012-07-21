@@ -26,7 +26,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#include "notify/account-notification.h"
+#include "notify/notification/account-notification.h"
 
 class NotifyEvent;
 
