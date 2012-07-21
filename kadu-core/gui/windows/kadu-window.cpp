@@ -124,7 +124,7 @@ KaduWindow::~KaduWindow()
 
 void KaduWindow::createGui()
 {
-	MainWidget = new QWidget();
+	MainWidget = new QWidget(this);
 	MainLayout = new QVBoxLayout(MainWidget);
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
@@ -138,7 +138,7 @@ void KaduWindow::createGui()
 	connect(Roster, SIGNAL(currentChanged(Talkable)), InfoPanel, SLOT(displayItem(Talkable)));
 	connect(Roster, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivatedSlot(Talkable)));
 
-	ChangeStatusButtons = new StatusButtons(this);
+	ChangeStatusButtons = new StatusButtons(MainWidget);
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->setVisible(false);
