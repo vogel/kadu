@@ -139,11 +139,27 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 
 void AccountEventListener::multilogonSessionConnected(MultilogonSession *session)
 {
-	MultilogonNotification::notifyMultilogonSessionConnected(session);
+	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", true);
+	notification->setTitle(tr("Multilogon"));
+	notification->setText(tr("Multilogon session connected from %1 at %2 with %3 for %4 account")
+			.arg(session->remoteAddress().toString())
+			.arg(session->logonTime().toString())
+			.arg(session->name())
+			.arg(session->account().id()));
+
+	Service->notify(notification);
 }
 
 void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *session)
 {
-	MultilogonNotification::notifyMultilogonSessionDisonnected(session);
+	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionDisconnected", false);
+	notification->setTitle(tr("Multilogon"));
+	notification->setText(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
+			.arg(session->remoteAddress().toString())
+			.arg(session->logonTime().toString())
+			.arg(session->name())
+			.arg(session->account().id()));
+
+	Service->notify(notification);
 }
 

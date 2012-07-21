@@ -21,35 +21,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCREEN_MODE_CHECKER_H
-#define SCREEN_MODE_CHECKER_H
+#include "screen-mode-checker.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QTimer>
+#define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
-class ScreenModeChecker : public QObject
+ScreenModeChecker::ScreenModeChecker()
+		: InFullScreen(false)
 {
-	Q_OBJECT
+	if (isDummy())
+		return;
 
-	QTimer FullScreenCheckTimer;
-	bool InFullScreen;
+	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
+	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
+}
 
-private slots:
-	void checkFullScreen();
+ScreenModeChecker::~ScreenModeChecker()
+{
+	disable();
+}
 
-public:
-	ScreenModeChecker();
-	virtual ~ScreenModeChecker();
+void ScreenModeChecker::enable()
+{
+	if (!isDummy())
+		FullScreenCheckTimer.start();
+}
 
-	void enable();
-	void disable();
+void ScreenModeChecker::disable()
+{
+	FullScreenCheckTimer.stop();
+}
 
-	virtual bool isFullscreenAppActive() { return false; }
-	virtual bool isScreensaverActive() { return false; }
-	virtual bool isDummy() { return true; }
+void ScreenModeChecker::checkFullScreen()
+{
+	bool inFullScreenNow = isFullscreenAppActive() && !isScreensaverActive();
 
-signals:
-	void fullscreenToggled(bool inFullscreen);
-};
+	if (InFullScreen != inFullScreenNow)
+	{
+		InFullScreen = inFullScreenNow;
+		emit fullscreenToggled(InFullScreen);
+	}
+}
 
-#endif // SCREEN_MODE_CHECKER_H

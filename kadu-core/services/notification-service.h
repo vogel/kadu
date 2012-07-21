@@ -48,7 +48,6 @@ class NotificationService : public QObject, ConfigurationAwareObject
 	bool SilentModeWhenFullscreen;
 	bool AutoSilentMode;
 
-	QTimer FullScreenCheckTimer;
 	bool IsFullScreen;
 	ScreenModeChecker *FullscreenChecker;
 
@@ -72,7 +71,9 @@ private slots:
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);
 	void statusUpdated();
-	void checkFullScreen();
+	void fullscreenToggled(bool inFullscreen);
+	void startScreenModeChecker();
+	void stopScreenModeChecker();
 
 protected:
 	virtual void configurationUpdated();

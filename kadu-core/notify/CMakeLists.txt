@@ -12,6 +12,7 @@ set (notify_SRCS
 	notifier.cpp
 	notify-configuration-ui-handler.cpp
 	notify-event.cpp
+	screen-mode-checker.cpp
 	status-changed-notification.cpp
 	window-notifier.cpp
 )
@@ -29,6 +30,7 @@ set (notify_MOC_SRCS
 	notification-manager.h
 	notifier.h
 	notify-configuration-ui-handler.h
+	screen-mode-checker.h
 	status-changed-notification.h
 	window-notifier.h
 )

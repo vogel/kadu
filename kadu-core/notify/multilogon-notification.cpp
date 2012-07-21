@@ -100,28 +100,3 @@ void MultilogonNotification::killSession()
 	multilogonService->killSession(Session);
 }
 
-void MultilogonNotification::notifyMultilogonSessionConnected(MultilogonSession *session)
-{
-	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionConnected", true);
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(Qt::escape(tr("Multilogon session connected from %1 at %2 with %3 for %4 account")
-			.arg(session->remoteAddress().toString())
-			.arg(session->logonTime().toString())
-			.arg(session->name())
-			.arg(session->account().id())));
-
-	NotificationManager::instance()->notify(notification);
-}
-
-void MultilogonNotification::notifyMultilogonSessionDisonnected(MultilogonSession *session)
-{
-	MultilogonNotification *notification = new MultilogonNotification(session, "multilogon/sessionDisconnected", false);
-	notification->setTitle(tr("Multilogon"));
-	notification->setText(Qt::escape(tr("Multilogon session disconnected from %1 at %2 with %3 for %4 account")
-			.arg(session->remoteAddress().toString())
-			.arg(session->logonTime().toString())
-			.arg(session->name())
-			.arg(session->account().id())));
-
-	NotificationManager::instance()->notify(notification);
-}

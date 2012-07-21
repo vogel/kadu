@@ -45,8 +45,6 @@
 #include "notify/screen-mode-checker.h"
 #endif
 
-#define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
-
 #include "notification-service.h"
 
 NotificationService::NotificationService(QObject *parent) :
@@ -67,17 +65,6 @@ NotificationService::NotificationService(QObject *parent) :
 	createEventListeners();
 	createActionDescriptions();
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
-	FullscreenChecker = new X11ScreenModeChecker();
-#elif defined(Q_WS_WIN)
-	FullscreenChecker = new WindowsScreenModeChecker();
-#else
-	FullscreenChecker = new ScreenModeChecker();
-#endif
-
-	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
-	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
-
 	createDefaultConfiguration();
 	configurationUpdated();
 
@@ -95,8 +82,6 @@ NotificationService::~NotificationService()
 	StatusChangedNotification::unregisterEvents();
 	MessageNotification::unregisterEvents();
 	MultilogonNotification::unregisterEvents();
-
-	FullScreenCheckTimer.stop();
 }
 
 void NotificationService::createActionDescriptions()
@@ -225,7 +210,6 @@ bool NotificationService::ignoreNotifications()
 	return AutoSilentMode || silentMode();
 }
 
-
 void NotificationService::configurationUpdated()
 {
 	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
@@ -236,13 +220,46 @@ void NotificationService::configurationUpdated()
 	SilentModeWhenFullscreen = config_file.readBoolEntry("Notify", "FullscreenSilentMode", false);
 	setSilentMode(config_file.readBoolEntry("Notify", "SilentMode", false));
 
-	if (SilentModeWhenFullscreen && !FullscreenChecker->isDummy())
-		FullScreenCheckTimer.start();
+	if (SilentModeWhenFullscreen)
+		startScreenModeChecker();
 	else
-	{
-		FullScreenCheckTimer.stop();
-		IsFullScreen = false;
-	}
+		stopScreenModeChecker();
+}
+
+void NotificationService::startScreenModeChecker()
+{
+	if (FullscreenChecker)
+		return;
+
+#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+	FullscreenChecker = new X11ScreenModeChecker();
+#elif defined(Q_WS_WIN)
+	FullscreenChecker = new WindowsScreenModeChecker();
+#else
+	FullscreenChecker = new ScreenModeChecker();
+#endif
+	connect(FullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
+
+	FullscreenChecker->enable();
+}
+
+void NotificationService::stopScreenModeChecker()
+{
+	if (!FullscreenChecker)
+		return;
+
+	disconnect(FullscreenChecker, SIGNAL(fullscreenToggled(bool)), this, SLOT(fullscreenToggled(bool)));
+
+	FullscreenChecker->disable();
+}
+
+void NotificationService::fullscreenToggled(bool inFullscreen)
+{
+	bool wasSilent = silentMode();
+	IsFullScreen = inFullscreen;
+
+	if (silentMode() != wasSilent)
+		emit silentModeToggled(silentMode());
 }
 
 void NotificationService::createDefaultConfiguration()
@@ -253,16 +270,7 @@ void NotificationService::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
-void NotificationService::checkFullScreen()
-{
-	bool wasSilent = silentMode();
-
-	IsFullScreen = FullscreenChecker->isFullscreenAppActive() && !FullscreenChecker->isScreensaverActive();
-	if (silentMode() != wasSilent)
-		emit silentModeToggled(silentMode());
-}
-
-void NotificationService::notify ( Notification* notification )
+void NotificationService::notify(Notification* notification)
 {
 	if (!ignoreNotifications())
 		NotificationManager::instance()->notify(notification);
