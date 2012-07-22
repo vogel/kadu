@@ -23,17 +23,16 @@
 #ifndef ANTISTRING_H
 #define ANTISTRING_H
 
-#include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
+#include "message/message-filter.h"
 
 #include "antistring-configuration.h"
 
-class Chat;
+class Account;
 class ChatService;
-class Contact;
 
-class Antistring : public QObject, public AccountsAwareObject
+class Antistring : public MessageFilter
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Antistring)
@@ -50,13 +49,6 @@ class Antistring : public QObject, public AccountsAwareObject
 
 	ChatService * chatService(Account account) const;
 
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	static void createInstance();
 	static void destroyInstance();
@@ -64,6 +56,8 @@ public:
 	static Antistring * instance() { return Instance; }
 
 	AntistringConfiguration & configuration() { return Configuration; }
+
+	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
 
 };
 

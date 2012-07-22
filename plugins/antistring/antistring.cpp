@@ -23,9 +23,9 @@
 
 #include <QtCore/QFile>
 
-#include "accounts/account.h"
-#include "protocols/protocol.h"
+#include "core/core.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
 
 #include "antistring-notification.h"
 
@@ -47,12 +47,12 @@ void Antistring::destroyInstance()
 
 Antistring::Antistring()
 {
-	triggerAllAccountsRegistered();
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
 }
 
 Antistring::~Antistring()
 {
-	triggerAllAccountsUnregistered();
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
 ChatService * Antistring::chatService(Account account) const
@@ -63,32 +63,13 @@ ChatService * Antistring::chatService(Account account) const
 	return account.protocolHandler()->chatService();
 }
 
-void Antistring::accountRegistered(Account account)
-{
-	ChatService *accountChatService = chatService(account);
-	if (!accountChatService)
-		return;
-
-	connect(accountChatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-}
-
-void Antistring::accountUnregistered(Account account)
-{
-	ChatService *accountChatService = chatService(account);
-	if (!accountChatService)
-		return;
-
-	disconnect(accountChatService, 0, this, 0);
-}
-
-void Antistring::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
+bool Antistring::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
 	if (!Configuration.enabled())
-		return;
+		return true;
 
 	if (points(message) < 3)
-		return;
+		return true;
 
 	AntistringNotification::notifyStringReceived(chat);
 
@@ -96,11 +77,10 @@ void Antistring::filterIncomingMessage(Chat chat, Contact sender, QString &messa
 	if (accountChatService)
 		accountChatService->sendMessage(chat, Configuration.returnMessage(), true);
 
-	if (Configuration.messageStop())
-		ignore = true;
-
 	if (Configuration.logMessage())
 		writeLog(sender, message);
+
+	return !Configuration.messageStop();
 }
 
 void Antistring::writeLog(Contact sender, const QString &message)

@@ -107,6 +107,8 @@ void AntistringConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	        mainConfigurationWindow->widget()->widgetById("antistring/log_file"), SLOT(setEnabled(bool)));
 
 	updateConditionList();
+
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(applyConfiguration()));
 }
 
 void AntistringConfigurationUiHandler::updateConditionList()
@@ -163,6 +165,11 @@ void AntistringConfigurationUiHandler::deleteCondition()
 	Antistring::instance()->configuration().conditions().removeAt(index);
 
 	updateConditionList();
+}
+
+void AntistringConfigurationUiHandler::applyConfiguration()
+{
+	Antistring::instance()->configuration().storeConditions();
 }
 
 void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)

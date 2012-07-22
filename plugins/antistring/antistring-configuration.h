@@ -42,8 +42,6 @@ class AntistringConfiguration : public ConfigurationAwareObject
 	void createDefaultConfiguration();
 	void addCondition(const QString &conditionString);
 	void readDefaultConditions();
-	void readConditions();
-	void storeConditions();
 
 protected:
 	virtual void configurationUpdated();
@@ -51,6 +49,9 @@ protected:
 public:
 	AntistringConfiguration();
 	virtual ~AntistringConfiguration();
+
+	void readConditions();
+	void storeConditions();
 
 	QList<QPair<QString, int> > & conditions() { return Conditions; }
 

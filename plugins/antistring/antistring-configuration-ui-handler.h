@@ -51,6 +51,8 @@ private slots:
 	void changeCondition();
 	void deleteCondition();
 
+	void applyConfiguration();
+
 	void wordSelected(QListWidgetItem *item);
 
 public:
