@@ -243,7 +243,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	bool ignore = false;
 	if (account().accountContact() != sender)
-		emit filterRawIncomingMessage(chat, sender, content, ignore);
+		emit filterRawIncomingMessage(chat, sender, content);
 
 	FormattedMessage message = createFormattedMessage(e, content, !ignoreRichText(sender));
 	if (message.isEmpty())

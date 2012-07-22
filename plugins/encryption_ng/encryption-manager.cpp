@@ -90,8 +90,8 @@ void EncryptionManager::accountRegistered(Account account)
 	ChatService *chatService = account.protocolHandler()->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QString&,bool&)),
-				this, SLOT(filterRawIncomingMessage(Chat,Contact,QString&,bool&)));
+		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QString&)),
+				this, SLOT(filterRawIncomingMessage(Chat,Contact,QString&)));
 	}
 }
 
@@ -152,10 +152,9 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enabled)
 	}
 }
 
-void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
+void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QString &message)
 {
 	Q_UNUSED(sender)
-	Q_UNUSED(ignore)
 
 	if (!chat)
 		return;

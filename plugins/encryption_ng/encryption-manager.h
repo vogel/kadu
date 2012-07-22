@@ -55,7 +55,7 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 	virtual ~EncryptionManager();
 
 private slots:
-	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message);
 
 	void chatWidgetCreated(ChatWidget *chatWidget);
 	void chatWidgetDestroying(ChatWidget *chatWidget);
