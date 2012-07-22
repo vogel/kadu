@@ -31,16 +31,12 @@
 #include <QtGui/QApplication>
 #include <QtGui/QLineEdit>
 
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "configuration/configuration-file.h"
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/main-configuration-window.h"
-#include "misc/kadu-paths.h"
 #include "parser/parser.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "services/message-filter-service.h"
 #include "status/status-type-group.h"
@@ -51,10 +47,6 @@
 
 #include "autoresponder.h"
 
-/**
- * @ingroup autoresponder
- * @{
- */
 AutoResponder::AutoResponder(QObject *parent) :
 		MessageFilter(parent)
 {
@@ -64,7 +56,6 @@ AutoResponder::AutoResponder(QObject *parent) :
 	UiHandler = new AutoresponderConfigurationUiHolder(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
-	createDefaultConfiguration();
 	Configurator = new AutoresponderConfigurator();
 	Configurator->setAutoresponder(this);
 
@@ -86,15 +77,11 @@ AutoResponder::~AutoResponder()
 int AutoResponder::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
-
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
-
 	return 0;
 }
 
 void AutoResponder::done()
 {
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
 bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
@@ -105,7 +92,7 @@ bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const
 	if (!Configuration.respondConferences() && (chat.contacts().count() > 1))
 		return true;
 
-	if (Configuration.respondOnlyFirst() && repliedUsers.contains(sender))
+	if (Configuration.respondOnlyFirst() && RepliedChats.contains(chat))
 		return true;
 
 	Protocol *protocol = chat.chatAccount().protocolHandler();
@@ -124,8 +111,7 @@ bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(Configuration.autoRespondText(), Talkable(sender)), true);
 
-		foreach (const Contact &contact, chat.contacts())
-			repliedUsers.insert(contact);
+		RepliedChats.insert(chat);
 	}
 
 	return true;
@@ -133,24 +119,12 @@ bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const
 
 void AutoResponder::chatWidgetClosed(ChatWidget *chatWidget)
 {
-	Chat chat = chatWidget->chat();
-	foreach (const Contact &contact, chat.contacts())
-		repliedUsers.remove(contact);
+	RepliedChats.remove(chatWidget->chat());
 }
 
 void AutoResponder::setConfiguration(const AutoresponderConfiguration &configuration)
 {
 	Configuration = configuration;
-}
-
-void AutoResponder::createDefaultConfiguration()
-{
-	config_file.addVariable("Autoresponder", "Autotext", tr("I am busy."));
-	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
-	config_file.addVariable("Autoresponder", "RespondConf", true);
-	config_file.addVariable("Autoresponder", "StatusAvailable", false);
-	config_file.addVariable("Autoresponder", "StatusBusy", true);
-	config_file.addVariable("Autoresponder", "StatusInvisible", false);
 }
 
 Q_EXPORT_PLUGIN2(autoresponder, AutoResponder)

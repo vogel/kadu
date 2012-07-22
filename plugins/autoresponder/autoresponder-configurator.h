@@ -43,6 +43,8 @@ class AutoresponderConfigurator : private ConfigurationAwareObject
 {
 	QWeakPointer<AutoResponder> ConfigurableAutoresponder;
 
+	void createDefaultConfiguration();
+
 protected:
 	virtual void configurationUpdated();
 

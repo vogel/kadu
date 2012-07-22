@@ -34,17 +34,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 
-#include "contacts/contact-set.h"
 #include "message/message-filter.h"
 #include "plugins/generic-plugin.h"
 
 #include "autoresponder-configuration.h"
 
-/**
- * @defgroup autoresponder Autoresponder
- * @todo find a better interface than MessageFilter for this class
- * @{
- */
+// TODOfind a better interface than MessageFilter for this class
 
 class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
@@ -56,12 +51,10 @@ class AutoResponder : public MessageFilter, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	AutoresponderConfigurationUiHolder *UiHandler;
-	ContactSet repliedUsers;
-
 	AutoresponderConfigurator *Configurator;
 	AutoresponderConfiguration Configuration;
 
-	void createDefaultConfiguration();
+	QSet<Chat> RepliedChats;
 
 public:
 	explicit AutoResponder(QObject *parent = 0);
@@ -78,7 +71,5 @@ public slots:
 	void chatWidgetClosed(ChatWidget *chat);
 
 };
-
-/** @} */
 
 #endif // AUTORESPONDER_H
