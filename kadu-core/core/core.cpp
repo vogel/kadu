@@ -65,6 +65,7 @@
 #include "services/chat-image-request-service.h"
 #include "services/chat-image-request-service-configurator.h"
 #include "services/image-storage-service.h"
+#include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "services/notification-service.h"
 #include "status/status-container-manager.h"
@@ -122,7 +123,8 @@ Core::Core() :
 		KaduWindowProvider(new SimpleProvider<QWidget *>(0)),
 		MainWindowProvider(new DefaultProvider<QWidget *>(KaduWindowProvider)),
 		CurrentChatImageRequestService(0), CurrentImageStorageService(0),
-		CurrentMessageTransformerService(0), CurrentNotificationService(0),
+		CurrentMessageFilterService(0), CurrentMessageTransformerService(0),
+		CurrentNotificationService(0),
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
@@ -531,6 +533,7 @@ void Core::runServices()
 {
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
+	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 
 	// this instance lives forever
@@ -556,6 +559,11 @@ ChatImageRequestService * Core::chatImageRequestService() const
 ImageStorageService * Core::imageStorageService() const
 {
 	return CurrentImageStorageService;
+}
+
+MessageFilterService * Core::messageFilterService() const
+{
+	return CurrentMessageFilterService;
 }
 
 MessageTransformerService * Core::messageTransformerService() const
