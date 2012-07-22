@@ -24,12 +24,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/encryption-provider-manager.h"
+#include "services/message-filter-service.h"
 #include "exports.h"
 
 #include "encryption-ng-simlite-key-generator.h"
 #include "encryption-ng-simlite-key-importer.h"
+#include "encryption-ng-simlite-message-filter.h"
 #include "encryption-ng-simlite-provider.h"
 
 #include "encryption-ng-simlite-plugin.h"
@@ -47,6 +50,10 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 	EncryptionManager::instance()->setGenerator(EncryptioNgSimliteKeyGenerator::instance());
 
 	EncryptioNgSimliteProvider::createInstance();
+	MessageFilter = new EncryptionNgSimliteMessageFilter(this);
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(MessageFilter);
+	EncryptioNgSimliteProvider::instance()->setMessageFilter(MessageFilter);
+
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
 
 	return 0;
@@ -54,6 +61,8 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 
 void EngryptionNgSimlitePlugin::done()
 {
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(MessageFilter);
+
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
 	EncryptioNgSimliteProvider::destroyInstance();
 

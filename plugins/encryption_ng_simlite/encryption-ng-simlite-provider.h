@@ -32,6 +32,7 @@
 #include "plugins/encryption_ng/encryption-provider.h"
 
 class EncryptioNgSimliteDecryptor;
+class EncryptionNgSimliteMessageFilter;
 
 class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObject
 {
@@ -41,14 +42,13 @@ class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObjec
 	static EncryptioNgSimliteProvider *Instance;
 
 	QMap<Account, EncryptioNgSimliteDecryptor *> Decryptors;
+	QWeakPointer<EncryptionNgSimliteMessageFilter> MessageFilter;
 
 	EncryptioNgSimliteProvider();
 	virtual ~EncryptioNgSimliteProvider();
 
 private slots:
 	void keyUpdated(Key key);
-
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);
@@ -59,6 +59,8 @@ public:
 	static void destroyInstance();
 
 	static EncryptioNgSimliteProvider * instance() { return Instance; }
+
+	void setMessageFilter(EncryptionNgSimliteMessageFilter *messageFilter);
 
 	virtual bool canDecrypt(const Chat &chat);
 	virtual bool canEncrypt(const Chat &chat);

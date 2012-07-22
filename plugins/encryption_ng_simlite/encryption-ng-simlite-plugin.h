@@ -32,10 +32,14 @@
 
 #include "plugins/generic-plugin.h"
 
+class EncryptionNgSimliteMessageFilter;
+
 class EngryptionNgSimlitePlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	EncryptionNgSimliteMessageFilter *MessageFilter;
 
 public:
 	virtual ~EngryptionNgSimlitePlugin();

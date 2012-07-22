@@ -15,6 +15,7 @@ set (SOURCES
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-generator.cpp
 	encryption-ng-simlite-key-importer.cpp
+	encryption-ng-simlite-message-filter.cpp
 	encryption-ng-simlite-plugin.cpp
 	encryption-ng-simlite-provider.cpp
 
@@ -25,6 +26,7 @@ set (MOC_SOURCES
 	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
+	encryption-ng-simlite-message-filter.h
 	encryption-ng-simlite-plugin.h
 	encryption-ng-simlite-provider.h
 )

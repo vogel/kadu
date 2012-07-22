@@ -22,17 +22,14 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-set.h"
-#include "protocols/protocol.h"
-#include "protocols/services/chat-service.h"
 
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
 #include "encryption-ng-simlite-decryptor.h"
 #include "encryption-ng-simlite-encryptor.h"
+#include "encryption-ng-simlite-message-filter.h"
 
 #include "encryption-ng-simlite-provider.h"
-
-#define RSA_PUBLIC_KEY_BEGIN "-----BEGIN RSA PUBLIC KEY-----"
 
 EncryptioNgSimliteProvider * EncryptioNgSimliteProvider::Instance = 0;
 
@@ -61,21 +58,21 @@ EncryptioNgSimliteProvider::~EncryptioNgSimliteProvider()
 	triggerAllAccountsUnregistered();
 }
 
+void EncryptioNgSimliteProvider::setMessageFilter(EncryptionNgSimliteMessageFilter *messageFilter)
+{
+	if (MessageFilter)
+		disconnect(MessageFilter.data(), 0, this, 0);
+
+	MessageFilter = messageFilter;
+
+	if (MessageFilter)
+		connect(MessageFilter.data(), SIGNAL(keyReceived(Contact,QString,QByteArray)), this, SIGNAL(keyReceived(Contact,QString,QByteArray)));
+}
+
 void EncryptioNgSimliteProvider::accountRegistered(Account account)
 {
 	EncryptioNgSimliteDecryptor *accountDecryptor = new EncryptioNgSimliteDecryptor(account, this, this);
 	Decryptors.insert(account, accountDecryptor);
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString&,bool&)),
-			this, SLOT(filterIncomingMessage(Chat,Contact,QString&,bool&)));
 }
 
 void EncryptioNgSimliteProvider::accountUnregistered(Account account)
@@ -85,26 +82,6 @@ void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 		EncryptioNgSimliteDecryptor *decryptor = Decryptors.take(account);
 		delete decryptor;
 	}
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	disconnect(chatService, 0, this, 0);
-}
-
-void EncryptioNgSimliteProvider::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
-{
-	Q_UNUSED(chat)
-	if (!message.startsWith(RSA_PUBLIC_KEY_BEGIN))
-		return;
-
-	emit keyReceived(sender, "simlite", message.toUtf8());
-	ignore = true;
 }
 
 bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
