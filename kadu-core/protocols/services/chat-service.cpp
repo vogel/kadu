@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 
 #include "chat-service.h"
@@ -34,12 +35,22 @@ ChatService::~ChatService()
 {
 }
 
+void ChatService::setMessageFilterService(MessageFilterService *messageFilterService)
+{
+	CurrentMessageFilterService = messageFilterService;
+}
+
+MessageFilterService * ChatService::messageFilterService() const
+{
+	return CurrentMessageFilterService.data();
+}
+
 void ChatService::setMessageTransformerService(MessageTransformerService *messageTransformerService)
 {
 	CurrentMessageTransformerService = messageTransformerService;
 }
 
-MessageTransformerService* ChatService::messageTransformerService() const
+MessageTransformerService * ChatService::messageTransformerService() const
 {
 	return CurrentMessageTransformerService.data();
 }

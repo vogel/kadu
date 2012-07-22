@@ -86,6 +86,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(account, this);
+	chatService->setMessageFilterService(Core::instance()->messageFilterService());
 	chatService->setMessageTransformerService(Core::instance()->messageTransformerService());
 
 	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(account, this);

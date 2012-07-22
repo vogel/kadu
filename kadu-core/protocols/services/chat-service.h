@@ -35,6 +35,7 @@
 #include "protocols/services/account-service.h"
 
 class Message;
+class MessageFilterService;
 class MessageTransformerService;
 
 /**
@@ -56,6 +57,7 @@ class KADUAPI ChatService : public AccountService
 {
 	Q_OBJECT
 
+	QWeakPointer<MessageFilterService> CurrentMessageFilterService;
 	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
 
 protected:
@@ -63,6 +65,20 @@ protected:
 	virtual ~ChatService();
 
 public:
+	/**
+	 * @short Set message filter service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageFilterService message filter service for this service
+	 */
+	void setMessageFilterService(MessageFilterService *messageFilterService);
+
+	/**
+	 * @short Return message filter service of this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return message filter service of this service
+	 */
+	MessageFilterService * messageFilterService() const;
+
 	/**
 	 * @short Set message transformer service for this service.
 	 * @author Rafał 'Vogel' Malinowski
@@ -75,7 +91,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return message transformer service of this service
 	 */
-	MessageTransformerService *messageTransformerService() const;
+	MessageTransformerService * messageTransformerService() const;
 
 public slots:
 	/**

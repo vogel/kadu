@@ -90,6 +90,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setConnection(Connection);
+	CurrentChatService->setMessageFilterService(Core::instance()->messageFilterService());
 	CurrentChatService->setMessageTransformerService(Core::instance()->messageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
