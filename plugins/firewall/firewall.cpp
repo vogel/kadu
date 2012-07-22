@@ -60,10 +60,12 @@ Nowa funkcjonalnosc - Dorregaray
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
 #include "status/status-container.h"
 #include "debug.h"
 
 #include "firewall-notification.h"
+#include "outgoing-message-firewall-filter.h"
 
 #include "firewall.h"
 
@@ -97,6 +99,9 @@ Firewall::Firewall() :
 	LastMsg.start();
 	LastNotify.start();
 
+	OutgoingMessageFilter = new OutgoingMessageFirewallFilter(this);
+	Core::instance()->messageFilterService()->registerOutgoingMessageFilter(OutgoingMessageFilter);
+
 	triggerAllAccountsRegistered();
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
@@ -110,6 +115,8 @@ Firewall::~Firewall()
 	kdebugf();
 
 	triggerAllAccountsUnregistered();
+
+	Core::instance()->messageFilterService()->unregisterOutgoingMessageFilter(OutgoingMessageFilter);
 
 	kdebugf2();
 }
@@ -126,8 +133,6 @@ void Firewall::accountRegistered(Account account)
 
 	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
 			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-	connect(chatService, SIGNAL(filterOutgoingMessage(Chat, QString &, bool &)),
-			this, SLOT(filterOutgoingMessage(Chat, QString &, bool &)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
@@ -443,10 +448,9 @@ void Firewall::chatDestroyed(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
+bool Firewall::acceptOutgoingMessage(const Chat &chat, const QString &message)
 {
-	Q_UNUSED(msg)
-	kdebugf();
+	Q_UNUSED(message)
 
 	foreach (const Contact &contact, chat.contacts())
 	{
@@ -467,7 +471,7 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 			if (buddy)
 			{
 				if (!buddy.property("firewall-secured-sending:FirewallSecuredSending", false).toBool())
-					return;
+					return true;
 			}
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
@@ -476,19 +480,18 @@ void Firewall::filterOutgoingMessage(Chat chat, QString &msg, bool &stop)
 						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:
-							stop = true;
-							return;
+							return false;
 						case 0:
-							return;
+							return true;
 						case 1:
 							SecuredTemporaryAllowed.insert(buddy);
-							return;
+							return true;
 				}
 			}
 		}
 	}
 
-	kdebugf2();
+	return true;
 }
 
 void Firewall::writeLog(const Contact &contact, const QString &message)

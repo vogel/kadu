@@ -37,6 +37,7 @@
 class Account;
 class ChatWidget;
 class Contact;
+class OutgoingMessageFirewallFilter;
 
 class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 {
@@ -46,6 +47,8 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 
 	explicit Firewall();
 	virtual ~Firewall();
+
+	OutgoingMessageFirewallFilter *OutgoingMessageFilter;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -87,7 +90,6 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 
 private slots:
 	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-	void filterOutgoingMessage(Chat chat, QString &msg, bool &stop);
 
 	void accountConnected();
 
@@ -103,6 +105,9 @@ public:
 	static void destroyInstance();
 
 	static Firewall * instance() { return Instance; }
+
+	bool acceptOutgoingMessage(const Chat &chat, const QString &message);
+
 };
 
 #endif // KADU_FIREWALL_H
