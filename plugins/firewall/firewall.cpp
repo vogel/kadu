@@ -179,7 +179,7 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 			LastNotify.restart();
 		}
 		kdebugf2();
-		return ignore;
+		return !ignore;
 	}
 
 // ochrona przed anonimami
