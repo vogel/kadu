@@ -65,6 +65,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "debug.h"
 
 #include "firewall-notification.h"
+#include "incoming-message-firewall-filter.h"
 #include "outgoing-message-firewall-filter.h"
 
 #include "firewall.h"
@@ -99,6 +100,9 @@ Firewall::Firewall() :
 	LastMsg.start();
 	LastNotify.start();
 
+	IncomingMessageFilter = new IncomingMessageFirewallFilter(this);
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(IncomingMessageFilter);
+
 	OutgoingMessageFilter = new OutgoingMessageFirewallFilter(this);
 	Core::instance()->messageFilterService()->registerOutgoingMessageFilter(OutgoingMessageFilter);
 
@@ -116,6 +120,7 @@ Firewall::~Firewall()
 
 	triggerAllAccountsUnregistered();
 
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(IncomingMessageFilter);
 	Core::instance()->messageFilterService()->unregisterOutgoingMessageFilter(OutgoingMessageFilter);
 
 	kdebugf2();
@@ -123,39 +128,22 @@ Firewall::~Firewall()
 
 void Firewall::accountRegistered(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-			this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
 }
 
 void Firewall::accountUnregistered(Account account)
 {
 	disconnect(account, 0, this, 0);
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		disconnect(chatService, 0, this, 0);
 }
 
-void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
+/**
+ * @todo split into several incoming filers
+ * @todo extract storing to log files to method method
+ * @todo extract notification to separate method
+ */
+bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
-	Account account = chat.chatAccount();
-
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
+	bool ignore = false;
 
 // emotikony s� sprawdzane nawet przy ��czeniu
 	const int min_interval_notify = 2000;
@@ -174,7 +162,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 				LastNotify.restart();
 			}
 			kdebugf2();
-			return;
+			return !ignore;
 		}
 	}
 
@@ -191,7 +179,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 			LastNotify.restart();
 		}
 		kdebugf2();
-		return;
+		return ignore;
 	}
 
 // ochrona przed anonimami
@@ -226,7 +214,7 @@ void Firewall::filterIncomingMessage(Chat chat, Contact sender, QString &message
 		}
 	}
 
-	kdebugf2();
+	return !ignore;
 }
 
 bool Firewall::checkConference(const Chat &chat)

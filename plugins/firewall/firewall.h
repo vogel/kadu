@@ -37,6 +37,7 @@
 class Account;
 class ChatWidget;
 class Contact;
+class IncomingMessageFirewallFilter;
 class OutgoingMessageFirewallFilter;
 
 class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
@@ -48,6 +49,7 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 	explicit Firewall();
 	virtual ~Firewall();
 
+	IncomingMessageFirewallFilter *IncomingMessageFilter;
 	OutgoingMessageFirewallFilter *OutgoingMessageFilter;
 
 	BuddySet SecuredTemporaryAllowed;
@@ -89,8 +91,6 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 	void createDefaultConfiguration();
 
 private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-
 	void accountConnected();
 
 	void chatDestroyed(ChatWidget *);
@@ -106,6 +106,7 @@ public:
 
 	static Firewall * instance() { return Instance; }
 
+	bool acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message);
 	bool acceptOutgoingMessage(const Chat &chat, const QString &message);
 
 };
