@@ -3,6 +3,7 @@ set (services_SRCS
 	chat-image-request-service-configuration.cpp
 	chat-image-request-service-configurator.cpp
 	image-storage-service.cpp
+	message-filter-service.cpp
 	message-transformer-service.cpp
 	notification-service.cpp
 )
@@ -10,6 +11,7 @@ set (services_SRCS
 set (services_MOC_SRCS
 	chat-image-request-service.h
 	image-storage-service.h
+	message-filter-service.h
 	message-transformer-service.h
 	notification-service.h
 )
