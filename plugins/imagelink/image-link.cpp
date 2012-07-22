@@ -24,12 +24,13 @@
 
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
-#include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
 #include "debug.h"
 
 #include "image-link.h"
@@ -53,43 +54,16 @@ ImageLink::ImageLink()
 	ImageRegExp = QRegExp("http://.*(.gif|.*.jpg|.*.png)");
 	YouTubeRegExp = QRegExp("http://www.youtube.com/watch(.*)&?");
 
-	triggerAllAccountsRegistered();
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
 }
 
 ImageLink::~ImageLink()
 {
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
-void ImageLink::accountRegistered(Account account)
+bool ImageLink::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
-	Protocol *protocol = account.protocolHandler();
-
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-
-	if (chatService)
-		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-		        this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-}
-
-void ImageLink::accountUnregistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-
-	if (chatService)
-		disconnect(chatService, 0, this, 0);
-}
-
-void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
-{
-	Q_UNUSED(ignore)
 	Q_UNUSED(sender)
 
 	if (Configuration.showImages())
@@ -110,7 +84,7 @@ void ImageLink::filterIncomingMessage(Chat chat, Contact sender, QString &messag
 			insertCodeIntoChatWindow(chat, sender, getVideoCode(list[1]));
 	}
 
-	kdebugf2();
+	return true;
 }
 
 QString ImageLink::getImageCode(const QString &image)

@@ -26,15 +26,13 @@
 #include <QtCore/QObject>
 #include <QtCore/QRegExp>
 
-#include "accounts/accounts-aware-object.h"
-#include "chat/chat.h"
-#include "contacts/contact.h"
+#include "message/message-filter.h"
 
 #include "configuration/image-link-configuration.h"
 
 class ChatWidget;
 
-class ImageLink : public QObject, AccountsAwareObject
+class ImageLink : public MessageFilter
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ImageLink)
@@ -53,17 +51,12 @@ class ImageLink : public QObject, AccountsAwareObject
 
 	void insertCodeIntoChatWindow(Chat chat, Contact sender, const QString& code);
 
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &msg, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	static void createInstance();
 	static void destroyInstance();
 	static ImageLink * instance() { return Instance; }
+
+	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
 
 };
 
