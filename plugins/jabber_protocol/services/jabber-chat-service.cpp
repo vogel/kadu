@@ -232,7 +232,7 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	XMPP::Message msg = XMPP::Message(jus);
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
+		if (!messageFilterService()->acceptOutgoingMessage(chat, account().accountContact(), plain))
 			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
@@ -313,7 +313,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	QString plain = formattedMessage.toPlain();
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(chat, plain))
+		if (!messageFilterService()->acceptIncomingMessage(chat, sender(), plain))
 			return;
 
 	emit filterIncomingMessage(chat, contact, plain, ignore);

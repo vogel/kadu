@@ -97,7 +97,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
+		if (!messageFilterService()->acceptOutgoingMessage(chat, account().accountContact(), plain))
 			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
@@ -252,7 +252,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(chat, messageString))
+		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
 			return;
 
 	if (account().accountContact() != sender)

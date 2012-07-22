@@ -23,6 +23,7 @@
 #include <QtCore/QObject>
 
 class Chat;
+class Contact;
 
 /**
  * @addtogroup Message
@@ -49,10 +50,11 @@ public:
 	 * @short Filter message.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param chat chat of message
+	 * @param sender sender of message
 	 * @param message content of message
 	 * @return true if message can be accepted, false otherwise
 	 */
-	virtual bool acceptMessage(const Chat &chat, const QString &message) = 0;
+	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message) = 0;
 
 };
 
