@@ -48,19 +48,17 @@
  * @{
  */
 
-class QLineEdit;
-
+class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public ConfigurationUiHandler, AccountsAwareObject, public GenericPlugin
+class AutoResponder : public QObject, AccountsAwareObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
+	AutoresponderConfigurationUiHolder *UiHandler;
 	ContactSet repliedUsers;
-
-	QLineEdit *autoRespondTextLineEdit;
 
 	AutoresponderConfigurator *Configurator;
 	AutoresponderConfiguration Configuration;
@@ -76,8 +74,6 @@ public:
 	virtual ~AutoResponder();
 
 	void setConfiguration(const AutoresponderConfiguration &configuration);
-
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	virtual int init(bool firstLoad);
 	virtual void done();

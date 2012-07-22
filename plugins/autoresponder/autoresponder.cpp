@@ -44,6 +44,7 @@
 #include "status/status-type-group.h"
 #include "debug.h"
 
+#include "autoresponder-configuration-ui-handler.h"
 #include "autoresponder-configurator.h"
 
 #include "autoresponder.h"
@@ -53,7 +54,7 @@
  * @{
  */
 AutoResponder::AutoResponder(QObject *parent) :
-		ConfigurationUiHandler(parent)
+		QObject(parent)
 {
 	kdebugf();
 
@@ -61,6 +62,9 @@ AutoResponder::AutoResponder(QObject *parent) :
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
+
+	UiHandler = new AutoresponderConfigurationUiHolder(this);
+	MainConfigurationWindow::registerUiHandler(UiHandler);
 
 	createDefaultConfiguration();
 	Configurator = new AutoresponderConfigurator();
@@ -71,6 +75,8 @@ AutoResponder::AutoResponder(QObject *parent) :
 
 AutoResponder::~AutoResponder()
 {
+	MainConfigurationWindow::unregisterUiHandler(UiHandler);
+
 	delete Configurator;
 	Configurator = 0;
 
@@ -82,14 +88,12 @@ int AutoResponder::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
-	MainConfigurationWindow::registerUiHandler(this);
 
 	return 0;
 }
 
 void AutoResponder::done()
 {
-	MainConfigurationWindow::unregisterUiHandler(this);
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
@@ -176,12 +180,6 @@ void AutoResponder::chatWidgetClosed(ChatWidget *chatWidget)
 	Chat chat = chatWidget->chat();
 	foreach (const Contact &contact, chat.contacts())
 		repliedUsers.remove(contact);
-}
-
-void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
-	autoRespondTextLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
-	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
 void AutoResponder::setConfiguration(const AutoresponderConfiguration &configuration)

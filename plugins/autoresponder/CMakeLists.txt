@@ -11,11 +11,13 @@ include (FindKadu)
 set (SOURCES
 	autoresponder.cpp
 	autoresponder-configuration.cpp
+	autoresponder-configuration-ui-handler.cpp
 	autoresponder-configurator.cpp
 )
 
 set (MOC_SOURCES
 	autoresponder.h
+	autoresponder-configuration-ui-handler.h
 )
 
 set (TRANSLATION_SOURCES
