@@ -201,9 +201,9 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	return recipients;
 }
 
-QByteArray GaduChatService::getContent(gg_event *e)
+QString GaduChatService::getContent(gg_event *e)
 {
-	return QByteArray((const char *)e->event.msg.message);
+	return QString::fromUtf8((const char *)e->event.msg.message);
 }
 
 bool GaduChatService::ignoreRichText(Contact sender)
@@ -211,12 +211,12 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QByteArray &content, bool richText)
+FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QString &content, bool richText)
 {
 	if (!richText)
-		return GaduFormatter::createMessage(QString::fromUtf8(content), 0, 0);
+		return GaduFormatter::createMessage(content, 0, 0);
 	else
-		return GaduFormatter::createMessage(QString::fromUtf8(content),
+		return GaduFormatter::createMessage(content,
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
 }
 
@@ -239,7 +239,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (!chat || chat.isIgnoreAllMessages())
 		return;
 
-	QByteArray content = getContent(e);
+	QString content = getContent(e);
 
 	bool ignore = false;
 	if (account().accountContact() != sender)

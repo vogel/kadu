@@ -90,8 +90,8 @@ void EncryptionManager::accountRegistered(Account account)
 	ChatService *chatService = account.protocolHandler()->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)),
-				this, SLOT(filterRawIncomingMessage(Chat,Contact,QByteArray&,bool&)));
+		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QString&,bool&)),
+				this, SLOT(filterRawIncomingMessage(Chat,Contact,QString&,bool&)));
 	}
 }
 
@@ -152,7 +152,7 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enabled)
 	}
 }
 
-void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore)
+void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
 	Q_UNUSED(sender)
 	Q_UNUSED(ignore)
@@ -168,7 +168,7 @@ void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QByt
 		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(chat));
 
 	bool decrypted;
-	message = encryptionChatData->decryptor()->decrypt(message, chat, &decrypted);
+	message = QString::fromUtf8(encryptionChatData->decryptor()->decrypt(message.toUtf8(), chat, &decrypted));
 
 	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
 		setEncryptionEnabled(chat, true);

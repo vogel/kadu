@@ -60,9 +60,9 @@ class GaduChatService : public ChatService
 	Contact getSender(struct gg_event *e);
 	bool ignoreSender(gg_event *e, Buddy sender);
 	ContactSet getRecipients(struct gg_event *e);
-	QByteArray getContent(struct gg_event *e);
+	QString getContent(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, const QByteArray &content, bool richText);
+	FormattedMessage createFormattedMessage(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
 

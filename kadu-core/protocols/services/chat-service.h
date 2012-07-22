@@ -122,7 +122,7 @@ signals:
 	 *
 	 * If ignore is set to true, no messageReceived() signal will be emitted.
 	 */
-	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 	/**
 	 * @short Signal emitted after message is received from peer.

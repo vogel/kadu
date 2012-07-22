@@ -306,10 +306,10 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 
 	bool ignore = false;
 
-	QByteArray body = msg.body().toUtf8();
+	QString body = msg.body();
 	emit filterRawIncomingMessage(chat, contact, body, ignore);
 
-	FormattedMessage formattedMessage(QString::fromUtf8(body));
+	FormattedMessage formattedMessage(body);
 
 	QString plain = formattedMessage.toPlain();
 

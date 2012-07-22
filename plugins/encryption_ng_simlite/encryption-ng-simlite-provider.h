@@ -48,7 +48,7 @@ class EncryptioNgSimliteProvider : public EncryptionProvider, AccountsAwareObjec
 private slots:
 	void keyUpdated(Key key);
 
-	void filterRawIncomingMessage(Chat chat, Contact sender, QByteArray &message, bool &ignore);
+	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 
 protected:
 	virtual void accountRegistered(Account account);
