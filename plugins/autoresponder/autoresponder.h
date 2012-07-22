@@ -1,3 +1,33 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2008, 2010, 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2008 Tomasz Rostański (rozteck@interia.pl)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2010 Dariusz Markowicz (darom@alari.pl)
+ * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)
+ * Copyright 2003, 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2004 Tomasz Chiliński (chilek@chilan.com)
+ * Copyright 2007, 2008, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2007 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2004, 2005, 2006 Marcin Ślusarz (joi@kadu.net)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef AUTORESPONDER_H
 #define AUTORESPONDER_H
 
@@ -5,12 +35,13 @@
 #include <QtCore/QSet>
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/configuration-aware-object.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugins/generic-plugin.h"
 #include "protocols/protocol.h"
+
+#include "autoresponder-configuration.h"
 
 /**
  * @defgroup autoresponder Autoresponder
@@ -18,58 +49,45 @@
  */
 
 class QLineEdit;
+
+class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject, public GenericPlugin
+class AutoResponder : public ConfigurationUiHandler, AccountsAwareObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
-	private:
-		ContactSet repliedUsers; /*!< kontakty, którym już odpowiedziano */
+	ContactSet repliedUsers;
 
-		QString autoRespondText; /*!< treść automatycznej odpowiedzi */
+	QLineEdit *autoRespondTextLineEdit;
 
-		QLineEdit *autoRespondTextLineEdit;
+	AutoresponderConfigurator *Configurator;
+	AutoresponderConfiguration Configuration;
 
-		bool respondConferences; /*!< czy odpowiadać na konkerencje */
-		bool respondOnlyFirst; /*!< czy odpowiadać tylko na pierwszą wiadomość */
+	void createDefaultConfiguration();
 
-		bool statusAvailable; /*!< czy odpowiadamy, gdy jesteśmy dostępni */
-		bool statusBusy; /*!< czy odpowiadamy, gdy jesteśmy zajęci */
-		bool statusInvisible; /*!< czy odpowiadamy, gdy jesteśmy niewidoczni */
+protected:
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
-		void createDefaultConfiguration();
+public:
+	explicit AutoResponder(QObject *parent = 0);
+	virtual ~AutoResponder();
 
-	protected:
-		virtual void accountRegistered(Account account);
-		virtual void accountUnregistered(Account account);
+	void setConfiguration(const AutoresponderConfiguration &configuration);
 
-		/**
-			\fn void configurationUpdated()
-			Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
-		**/
-		virtual void configurationUpdated();
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	public:
-		/**
-			\fn AutoResponder(QObject *parent=0)
-			Standardowy konstruktor
-			\param parent rodzic - domyślnie 0
-		**/
-		AutoResponder(QObject *parent=0);
-		virtual ~AutoResponder();
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual int init(bool firstLoad);
+	virtual void done();
 
-		virtual int init(bool firstLoad);
-		virtual void done();
+public slots:
+	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
+	void chatWidgetClosed(ChatWidget *chat);
 
-	public slots:
-		void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-
-		void chatWidgetClosed(ChatWidget *chat);
 };
 
 /** @} */
 
-#endif
+#endif // AUTORESPONDER_H

@@ -44,6 +44,8 @@
 #include "status/status-type-group.h"
 #include "debug.h"
 
+#include "autoresponder-configurator.h"
+
 #include "autoresponder.h"
 
 /**
@@ -61,18 +63,18 @@ AutoResponder::AutoResponder(QObject *parent) :
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	createDefaultConfiguration();
-	configurationUpdated();
+	Configurator = new AutoresponderConfigurator();
+	Configurator->setAutoresponder(this);
 
 	kdebugf2();
 }
 
 AutoResponder::~AutoResponder()
 {
-	kdebugf();
+	delete Configurator;
+	Configurator = 0;
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
-
-	kdebugf2();
 }
 
 int AutoResponder::init(bool firstLoad)
@@ -128,13 +130,13 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 		return;
 	}
 
-	if (!respondConferences && (chat.contacts().count() > 1))
+	if (!Configuration.respondConferences() && (chat.contacts().count() > 1))
 	{
 		kdebugf2();
 		return;
 	}
 
-	if (respondOnlyFirst && repliedUsers.contains(sender))
+	if (Configuration.respondOnlyFirst() && repliedUsers.contains(sender))
 	{
 		kdebugf2();
 		return;
@@ -148,9 +150,9 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 	}
 
 	// Na chwilę obecną busy == away
-	if ((statusAvailable && protocol->status().group() == StatusTypeGroupOnline)
-			|| (statusInvisible && protocol->status().group() == StatusTypeGroupInvisible)
-			|| (statusBusy && protocol->status().group() == StatusTypeGroupAway))
+	if ((Configuration.statusAvailable() && protocol->status().group() == StatusTypeGroupOnline)
+			|| (Configuration.statusInvisible() && protocol->status().group() == StatusTypeGroupInvisible)
+			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
 		ChatService *chatService = protocol->chatService();
 		if (!chatService)
@@ -160,7 +162,7 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 		}
 
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
-				+ Parser::parse(autoRespondText, Talkable(sender)), true);
+				+ Parser::parse(Configuration.autoRespondText(), Talkable(sender)), true);
 		// dołączamy użytkowników, którym odpowiedziano
 		foreach (const Contact &contact, chat.contacts())
 			repliedUsers.insert(contact);
@@ -182,20 +184,9 @@ void AutoResponder::mainConfigurationWindowCreated(MainConfigurationWindow *main
 	autoRespondTextLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
-void AutoResponder::configurationUpdated()
+void AutoResponder::setConfiguration(const AutoresponderConfiguration &configuration)
 {
-	kdebugf();
-
-	autoRespondText = config_file.readEntry("Autoresponder", "Autotext");
-
-	respondConferences = config_file.readBoolEntry("Autoresponder", "RespondConf");
-	respondOnlyFirst = config_file.readBoolEntry("Autoresponder", "OnlyFirstTime");
-
-	statusAvailable = config_file.readBoolEntry("Autoresponder", "StatusAvailable");
-	statusBusy = config_file.readBoolEntry("Autoresponder", "StatusBusy");
-	statusInvisible = config_file.readBoolEntry("Autoresponder", "StatusInvisible");
-
-	kdebugf2();
+	Configuration = configuration;
 }
 
 void AutoResponder::createDefaultConfiguration()

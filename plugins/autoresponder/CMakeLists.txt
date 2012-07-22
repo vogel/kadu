@@ -10,6 +10,8 @@ include (FindKadu)
 
 set (SOURCES
 	autoresponder.cpp
+	autoresponder-configuration.cpp
+	autoresponder-configurator.cpp
 )
 
 set (MOC_SOURCES
