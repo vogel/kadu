@@ -22,7 +22,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
 
 #include "notify/cenzor-notification.h"
 
@@ -42,69 +44,41 @@ void Cenzor::destroyInstance()
 	Instance = 0;
 }
 
-
 Cenzor::Cenzor()
 {
-	triggerAllAccountsRegistered();
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
 }
 
 Cenzor::~Cenzor()
 {
-	triggerAllAccountsUnregistered();
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
-void Cenzor::accountRegistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString &,bool&)),
-			this, SLOT(filterIncomingMessage(Chat,Contact,QString &,bool&)));
-}
-
-void Cenzor::accountUnregistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	disconnect(chatService, 0, this, 0);
-}
-
-void Cenzor::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
+bool Cenzor::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
 	Q_UNUSED(sender)
 
 	if (!Configuration.enabled())
-		return;
+		return true;
 
 	if (!shouldIgnore(message))
-		return;
-
-	ignore = true;
+		return true;
 
 	Account account = chat.chatAccount();
 
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
-		return;
+		return false;
 
 	ChatService *chatService = protocol->chatService();
 	if (!chatService)
-		return;
+		return false;
 
 	chatService->sendMessage(chat, Configuration.admonition(), true);
 
 	CenzorNotification::notifyCenzored(chat);
+
+	return false;
 }
 
 bool Cenzor::shouldIgnore(const QString &message)
@@ -118,7 +92,6 @@ bool Cenzor::shouldIgnore(const QString &message)
 			if ((swear.indexIn(lowerWord) >= 0) && (!isExclusion(lowerWord)))
 				return true;
 	}
-
 
 	return false;
 }

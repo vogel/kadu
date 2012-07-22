@@ -25,14 +25,14 @@
 
 #include <QtCore/QObject>
 
-#include "accounts/accounts-aware-object.h"
+#include "message/message-filter.h"
 
 #include "configuration/cenzor-configuration.h"
 
 class Chat;
 class Contact;
 
-class Cenzor : public QObject, AccountsAwareObject
+class Cenzor : public MessageFilter
 {
 	Q_OBJECT
 
@@ -46,13 +46,6 @@ class Cenzor : public QObject, AccountsAwareObject
 	bool shouldIgnore(const QString &message);
 	bool isExclusion(const QString &word);
 
-private slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	static void createInstance();
 	static void destroyInstance();
@@ -61,12 +54,8 @@ public:
 
 	CenzorConfiguration & configuration() { return Configuration; }
 
+	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+
 };
 
-extern Cenzor *cenzor;
-
-// for MOC
-#include "chat/chat.h"
-#include "contacts/contact.h"
-
-#endif
+#endif // CENZOR_H
