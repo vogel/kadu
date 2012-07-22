@@ -40,6 +40,7 @@ set (SOURCES
 	encryption-ng-plugin.cpp
 	encryption-provider-manager.cpp
 	encryptor.cpp
+	incoming-encryption-message-transformer.cpp
 	outgoing-encryption-message-transformer.cpp
 )
 
@@ -63,6 +64,7 @@ set (MOC_SOURCES
 	encryption-provider.h
 	encryption-provider-manager.h
 	encryptor.h
+	incoming-encryption-message-transformer.h
 	outgoing-encryption-message-transformer.h
 )
 

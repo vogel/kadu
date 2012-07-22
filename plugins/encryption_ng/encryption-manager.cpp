@@ -32,6 +32,7 @@
 #include "encryption-chat-data.h"
 #include "encryption-provider-manager.h"
 #include "encryptor.h"
+#include "incoming-encryption-message-transformer.h"
 #include "outgoing-encryption-message-transformer.h"
 
 #include "encryption-manager.h"
@@ -65,13 +66,12 @@ EncryptionManager::EncryptionManager() :
 	CurrentOutgoingEncryptionMessageTransformer = new OutgoingEncryptionMessageTransformer(this);
 	Core::instance()->messageTransformerService()->registerOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
 
-	triggerAllAccountsRegistered();
+	CurrentIncomingEncryptionMessageTransformer = new IncomingEncryptionMessageTransformer(this);
+	Core::instance()->messageTransformerService()->registerIncomingMessageTransformer(CurrentIncomingEncryptionMessageTransformer);
 }
 
 EncryptionManager::~EncryptionManager()
 {
-	triggerAllAccountsUnregistered();
-
 	Core::instance()->messageTransformerService()->unregisterOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
@@ -80,29 +80,6 @@ EncryptionManager::~EncryptionManager()
 		chatWidgetDestroying(chatWidget);
 
 	Instance = 0;
-}
-
-void EncryptionManager::accountRegistered(Account account)
-{
-	if (!account.protocolHandler())
-		return;
-
-	ChatService *chatService = account.protocolHandler()->chatService();
-	if (chatService)
-	{
-		connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QString&)),
-				this, SLOT(filterRawIncomingMessage(Chat,Contact,QString&)));
-	}
-}
-
-void EncryptionManager::accountUnregistered(Account account)
-{
-	if (!account.protocolHandler())
-		return;
-
-	ChatService *chatService = account.protocolHandler()->chatService();
-	if (chatService)
-		disconnect(chatService, 0, this, 0);
 }
 
 EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)
@@ -150,27 +127,6 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enabled)
 
 		return true; // we can always disable
 	}
-}
-
-void EncryptionManager::filterRawIncomingMessage(Chat chat, Contact sender, QString &message)
-{
-	Q_UNUSED(sender)
-
-	if (!chat)
-		return;
-
-	if (!EncryptionProviderManager::instance()->canDecrypt(chat))
-		return;
-
-	EncryptionChatData *encryptionChatData = chatEncryption(chat);
-	if (!encryptionChatData->decryptor())
-		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(chat));
-
-	bool decrypted;
-	message = QString::fromUtf8(encryptionChatData->decryptor()->decrypt(message.toUtf8(), chat, &decrypted));
-
-	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
-		setEncryptionEnabled(chat, true);
 }
 
 void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)

@@ -242,8 +242,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	QString content = getContent(e);
 
 	bool ignore = false;
-	if (account().accountContact() != sender)
-		emit filterRawIncomingMessage(chat, sender, content);
+	if (messageTransformerService())
+		content = messageTransformerService()->transformIncomingMessage(chat, content);
 
 	FormattedMessage message = createFormattedMessage(e, content, !ignoreRichText(sender));
 	if (message.isEmpty())

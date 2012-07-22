@@ -27,8 +27,6 @@
 #include <QtCore/QObject>
 #include <QtGui/QAction>
 
-#include "accounts/accounts-aware-object.h"
-
 #include "encryption_exports.h"
 
 class ActionDescription;
@@ -36,10 +34,11 @@ class Chat;
 class ChatWidget;
 class Contact;
 class EncryptionChatData;
+class IncomingEncryptionMessageTransformer;
 class KeyGenerator;
 class OutgoingEncryptionMessageTransformer;
 
-class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
+class ENCRYPTIONAPI EncryptionManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionManager)
@@ -50,19 +49,14 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, AccountsAwareObject
 	KeyGenerator *Generator;
 
 	OutgoingEncryptionMessageTransformer *CurrentOutgoingEncryptionMessageTransformer;
+	IncomingEncryptionMessageTransformer *CurrentIncomingEncryptionMessageTransformer;
 
 	EncryptionManager();
 	virtual ~EncryptionManager();
 
 private slots:
-	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message);
-
 	void chatWidgetCreated(ChatWidget *chatWidget);
 	void chatWidgetDestroying(ChatWidget *chatWidget);
-
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
 
 public:
 	static void createInstance();

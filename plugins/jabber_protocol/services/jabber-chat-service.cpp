@@ -307,7 +307,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	bool ignore = false;
 
 	QString body = msg.body();
-	emit filterRawIncomingMessage(chat, contact, body);
+	if (messageTransformerService())
+		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
 	FormattedMessage formattedMessage(body);
 

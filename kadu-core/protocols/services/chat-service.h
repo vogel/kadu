@@ -112,19 +112,6 @@ signals:
 	 * @short Signal emitted after message is received from peer.
 	 * @param chat chat that sent this message
 	 * @param sender contact that sent this message
-	 * @param message message in raw format
-	 *
-	 * This signal must be emitted by any implementation of ChatService after message is received from peer but before
-	 * it is converted to UTF8 form and delivered to other parts of application. Objects connected to this signal can
-	 * modify message in any way (for example, decrypt it) or ignore it by setting ignore flag to true. This signal is
-	 * emitted before filterIncomingMessage().
-	 */
-	void filterRawIncomingMessage(Chat chat, Contact sender, QString &message);
-
-	/**
-	 * @short Signal emitted after message is received from peer.
-	 * @param chat chat that sent this message
-	 * @param sender contact that sent this message
 	 * @param message message in UTF8 format
 	 * @param ignore flag used to prevent messageReceived signal from being emitted
 	 *
