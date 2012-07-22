@@ -231,17 +231,11 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
 
-	bool stop = false;
-
 	if (messageFilterService())
 		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
 			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
-	emit filterOutgoingMessage(chat, plain, stop);
-
-	if (stop)
-		return false;
 
 	QString messageType = chatType->name() == "Room"
 			? "groupchat"

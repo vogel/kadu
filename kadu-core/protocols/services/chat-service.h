@@ -111,20 +111,6 @@ public slots:
 
 signals:
 	/**
-	 * @short Signal emitted before message is sent to peer.
-	 * @param chat chat that will receive this message
-	 * @param message message in UTF8 format
-	 * @param stop flag used to stop sending a message
-	 *
-	 * This signal must be emitted by any implementation of ChatService after message is converted to UTF8 form and
-	 * before it is sent. Objects connected to this signal can modify message in any way or stop sending
-	 * by setting stop flag to true. This signal is emitted after filterRawOutgoingMessage().
-	 *
-	 * If sending is stopped, no messageSent() signal can be emitted.
-	 */
-	void filterOutgoingMessage(Chat chat, QString &message, bool &stop);
-
-	/**
 	 * @short Signal emitted after message is received from peer.
 	 * @param chat chat that sent this message
 	 * @param sender contact that sent this message

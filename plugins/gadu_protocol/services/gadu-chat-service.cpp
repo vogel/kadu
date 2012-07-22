@@ -96,19 +96,13 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
 
-	bool stop = false;
-
 	if (messageFilterService())
 		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
 			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
-	emit filterOutgoingMessage(chat, plain, stop);
 
 	QByteArray data = plain.toUtf8();
-
-	if (stop)
-		return false;
 
 	if (data.length() >= 10000)
 	{
