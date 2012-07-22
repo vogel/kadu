@@ -34,6 +34,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "status/status-type.h"
 #include "debug.h"
@@ -97,6 +98,9 @@ bool GaduChatService::sendMessage(const Chat &chat, const QString &message, bool
 
 	bool stop = false;
 
+	if (messageFilterService())
+		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
+			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
 	emit filterOutgoingMessage(chat, plain, stop);
@@ -249,14 +253,16 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (message.isEmpty())
 		return;
 
+	QString messageString = message.toPlain();
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(message.toPlain()));
 
+	if (messageFilterService())
+		if (!messageFilterService()->acceptIncomingMessage(chat, messageString))
+			return;
+
 	if (account().accountContact() != sender)
-	{
-		QString messageString = message.toPlain();
 		emit filterIncomingMessage(chat, sender, messageString, ignore);
-	}
 
 	if (ignore)
 		return;

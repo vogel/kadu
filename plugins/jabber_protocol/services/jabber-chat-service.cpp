@@ -37,6 +37,7 @@
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
 #include "services/message-transformer-service.h"
+#include <services/message-filter-service.h>
 #include "message/message.h"
 #include "misc/misc.h"
 
@@ -232,6 +233,9 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 
 	bool stop = false;
 
+	if (messageFilterService())
+		if (!messageFilterService()->acceptOutgoingMessage(chat, plain))
+			return false;
 	if (messageTransformerService())
 		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
 	emit filterOutgoingMessage(chat, plain, stop);
@@ -313,6 +317,10 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	FormattedMessage formattedMessage(body);
 
 	QString plain = formattedMessage.toPlain();
+
+	if (messageFilterService())
+		if (!messageFilterService()->acceptIncomingMessage(chat, plain))
+			return;
 
 	emit filterIncomingMessage(chat, contact, plain, ignore);
 	if (ignore)
