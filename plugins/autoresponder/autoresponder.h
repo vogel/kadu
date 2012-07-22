@@ -34,17 +34,15 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 
-#include "accounts/accounts-aware-object.h"
 #include "contacts/contact-set.h"
-#include "contacts/contact.h"
-#include "gui/windows/main-configuration-window.h"
+#include "message/message-filter.h"
 #include "plugins/generic-plugin.h"
-#include "protocols/protocol.h"
 
 #include "autoresponder-configuration.h"
 
 /**
  * @defgroup autoresponder Autoresponder
+ * @todo find a better interface than MessageFilter for this class
  * @{
  */
 
@@ -52,7 +50,7 @@ class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public QObject, AccountsAwareObject, public GenericPlugin
+class AutoResponder : public MessageFilter, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
@@ -65,21 +63,18 @@ class AutoResponder : public QObject, AccountsAwareObject, public GenericPlugin
 
 	void createDefaultConfiguration();
 
-protected:
-	virtual void accountRegistered(Account account);
-	virtual void accountUnregistered(Account account);
-
 public:
 	explicit AutoResponder(QObject *parent = 0);
 	virtual ~AutoResponder();
 
 	void setConfiguration(const AutoresponderConfiguration &configuration);
 
+	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+
 	virtual int init(bool firstLoad);
 	virtual void done();
 
 public slots:
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
 	void chatWidgetClosed(ChatWidget *chat);
 
 };

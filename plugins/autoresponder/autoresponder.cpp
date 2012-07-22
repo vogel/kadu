@@ -34,6 +34,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -41,6 +42,7 @@
 #include "misc/kadu-paths.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
 #include "status/status-type-group.h"
 #include "debug.h"
 
@@ -54,12 +56,8 @@
  * @{
  */
 AutoResponder::AutoResponder(QObject *parent) :
-		QObject(parent)
+		MessageFilter(parent)
 {
-	kdebugf();
-
-	triggerAllAccountsRegistered();
-
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
@@ -70,11 +68,13 @@ AutoResponder::AutoResponder(QObject *parent) :
 	Configurator = new AutoresponderConfigurator();
 	Configurator->setAutoresponder(this);
 
-	kdebugf2();
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
 }
 
 AutoResponder::~AutoResponder()
 {
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
+
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
 	delete Configurator;
@@ -97,61 +97,20 @@ void AutoResponder::done()
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/autoresponder.ui"));
 }
 
-void AutoResponder::accountRegistered(Account account)
+bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-	{
-		connect(chatService, SIGNAL(filterIncomingMessage(Chat, Contact, QString &, bool &)),
-				this, SLOT(filterIncomingMessage(Chat, Contact, QString &, bool &)));
-	}
-}
-
-void AutoResponder::accountUnregistered(Account account)
-{
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		disconnect(chatService, 0, this, 0);
-}
-
-void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
-{
-	Q_UNUSED(ignore)
-
-	kdebugf();
-	//kdebugm(KDEBUG_INFO, "Autoresponder received: [%s]\n", qPrintable(message));
-	if (message.left(5) == "KADU ")
-	{
-		kdebugf2();
-		return;
-	}
+	if (message.left(5) == "KADU ") // ignore other kadu autoresponses
+		return true;
 
 	if (!Configuration.respondConferences() && (chat.contacts().count() > 1))
-	{
-		kdebugf2();
-		return;
-	}
+		return true;
 
 	if (Configuration.respondOnlyFirst() && repliedUsers.contains(sender))
-	{
-		kdebugf2();
-		return;
-	}
+		return true;
 
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol)
-	{
-		kdebugf2();
-		return;
-	}
+		return true;
 
 	// Na chwilę obecną busy == away
 	if ((Configuration.statusAvailable() && protocol->status().group() == StatusTypeGroupOnline)
@@ -160,19 +119,16 @@ void AutoResponder::filterIncomingMessage(Chat chat, Contact sender, QString &me
 	{
 		ChatService *chatService = protocol->chatService();
 		if (!chatService)
-		{
-			kdebugf2();
-			return;
-		}
+			return true;
 
 		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(Configuration.autoRespondText(), Talkable(sender)), true);
-		// dołączamy użytkowników, którym odpowiedziano
+
 		foreach (const Contact &contact, chat.contacts())
 			repliedUsers.insert(contact);
 	}
 
-	kdebugf2();
+	return true;
 }
 
 void AutoResponder::chatWidgetClosed(ChatWidget *chatWidget)
