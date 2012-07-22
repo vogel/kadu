@@ -74,8 +74,8 @@ void EncryptioNgSimliteProvider::accountRegistered(Account account)
 	if (!chatService)
 		return;
 
-	connect(chatService, SIGNAL(filterRawIncomingMessage(Chat,Contact,QString&,bool&)),
-			this, SLOT(filterRawIncomingMessage(Chat,Contact,QString&,bool&)));
+	connect(chatService, SIGNAL(filterIncomingMessage(Chat,Contact,QString&,bool&)),
+			this, SLOT(filterIncomingMessage(Chat,Contact,QString&,bool&)));
 }
 
 void EncryptioNgSimliteProvider::accountUnregistered(Account account)
@@ -97,7 +97,7 @@ void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 	disconnect(chatService, 0, this, 0);
 }
 
-void EncryptioNgSimliteProvider::filterRawIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
+void EncryptioNgSimliteProvider::filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore)
 {
 	Q_UNUSED(chat)
 	if (!message.startsWith(RSA_PUBLIC_KEY_BEGIN))
