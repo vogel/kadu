@@ -239,7 +239,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 
 	QString content = getContent(e);
 
-	bool ignore = false;
 	if (messageTransformerService())
 		content = messageTransformerService()->transformIncomingMessage(chat, content);
 
@@ -254,12 +253,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
 			return;
-
-	if (account().accountContact() != sender)
-		emit filterIncomingMessage(chat, sender, messageString, ignore);
-
-	if (ignore)
-		return;
 
 	Message msg = Message::create();
 	msg.setMessageChat(chat);

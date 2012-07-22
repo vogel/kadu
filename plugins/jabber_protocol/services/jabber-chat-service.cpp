@@ -302,8 +302,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	}
 
-	bool ignore = false;
-
 	QString body = msg.body();
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
@@ -315,10 +313,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender(), plain))
 			return;
-
-	emit filterIncomingMessage(chat, contact, plain, ignore);
-	if (ignore)
-		return;
 
 	QString messageType = msg.type().isEmpty()
 	        ? "message"

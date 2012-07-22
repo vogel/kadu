@@ -111,22 +111,6 @@ public slots:
 
 signals:
 	/**
-	 * @short Signal emitted after message is received from peer.
-	 * @param chat chat that sent this message
-	 * @param sender contact that sent this message
-	 * @param message message in UTF8 format
-	 * @param ignore flag used to prevent messageReceived signal from being emitted
-	 *
-	 * This signal must be emitted by any implementation of ChatService after message is received from peer and after
-	 * it is converted to UTF8 form but before it is delivered to other parts of application. Objects connected to this
-	 * ignal can modify message in any way  or ignore it by setting ignore flag to true. This signal is emitted after
-	 * filterRawIncomingMessage().
-	 *
-	 * If ignore is set to true, no messageReceived() signal will be emitted.
-	 */
-	void filterIncomingMessage(Chat chat, Contact sender, QString &message, bool &ignore);
-
-	/**
 	 * @short Signal emitted when sent message status has changed.
 	 * @param message message with changed status
 	 *
