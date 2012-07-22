@@ -48,7 +48,7 @@
 #include "notification-service.h"
 
 NotificationService::NotificationService(QObject *parent) :
-		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false)
+		QObject(parent), SilentMode(false), AutoSilentMode(false), IsFullScreen(false), FullscreenChecker(0)
 {
 	Notification::registerParserTags();
 	AccountNotification::registerParserTags();
