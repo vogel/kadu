@@ -27,7 +27,7 @@
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/talkable-menu-manager.h"
-#include "protocols/services/chat-service.h"
+#include "message/message-manager.h"
 
 #include "keys/keys-manager.h"
 #include "notify/encryption-ng-notification.h"
@@ -92,16 +92,7 @@ void SendPublicKeyActionDescription::updateActionState(Action *action)
 
 void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 {
-	Account account = contact.contactAccount();
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return;
-
-	Key key = KeysManager::instance()->byContactAndType(account.accountContact(), "simlite", ActionReturnNull);
+	Key key = KeysManager::instance()->byContactAndType(contact.contactAccount().accountContact(), "simlite", ActionReturnNull);
 	if (!key)
 	{
 		EncryptionNgNotification::notifyPublicKeySendError(contact, tr("No public key available"));
@@ -109,7 +100,6 @@ void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 	}
 
 	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	chatService->sendMessage(chat, QString::fromUtf8(key.key().data()), true);
-
-	EncryptionNgNotification::notifyPublicKeySent(contact);
+	if (MessageManager::instance()->sendMessage(chat, QString::fromUtf8(key.key().data()), true))
+		EncryptionNgNotification::notifyPublicKeySent(contact);
 }

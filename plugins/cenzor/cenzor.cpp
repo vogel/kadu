@@ -23,7 +23,7 @@
  */
 
 #include "core/core.h"
-#include "protocols/services/chat-service.h"
+#include "message/message-manager.h"
 #include "services/message-filter-service.h"
 
 #include "notify/cenzor-notification.h"
@@ -70,13 +70,9 @@ bool Cenzor::acceptMessage(const Chat &chat, const Contact &sender, const QStrin
 	if (!protocol)
 		return false;
 
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return false;
 
-	chatService->sendMessage(chat, Configuration.admonition(), true);
-
-	CenzorNotification::notifyCenzored(chat);
+	if (MessageManager::instance()->sendMessage(chat, Configuration.admonition(), true))
+		CenzorNotification::notifyCenzored(chat);
 
 	return false;
 }

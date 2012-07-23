@@ -56,10 +56,10 @@ Nowa funkcjonalnosc - Dorregaray
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
+#include "message/message-manager.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
-#include "protocols/services/chat-service.h"
 #include "services/message-filter-service.h"
 #include "status/status-container.h"
 #include "debug.h"
@@ -282,14 +282,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 					return false;
 				}
 
-				ChatService *chatService = protocol->chatService();
-				if (!chatService)
-				{
-					kdebugf2();
-					return false;
-				}
-
-				chatService->sendMessage(chat, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."), true);
+				MessageManager::instance()->sendMessage(chat, tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't have time for stupid chats with the persons hiding itself. If you want to talk with me change the status to Online or Busy first."), true);
 			}
 
 			writeLog(sender, tr("Chat with invisible anonim ignored.\n") + "----------------------------------------------------\n");
@@ -312,14 +305,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 				return false;
 			}
 
-			ChatService *chatService = protocol->chatService();
-			if (!chatService)
-			{
-				kdebugf2();
-				return false;
-			}
-
-			chatService->sendMessage(chat, ConfirmationText, true);
+			MessageManager::instance()->sendMessage(chat, ConfirmationText, true);
 		}
 
 		writeLog(sender, tr("User wrote right answer!\n") + "----------------------------------------------------\n");
@@ -353,14 +339,7 @@ bool Firewall::checkChat(const Chat &chat, const Contact &sender, const QString 
 				return false;
 			}
 
-			ChatService *chatService = protocol->chatService();
-			if (!chatService)
-			{
-				kdebugf2();
-				return false;
-			}
-
-			chatService->sendMessage(chat, ConfirmationQuestion, true);
+			MessageManager::instance()->sendMessage(chat, ConfirmationQuestion, true);
 		}
 
 		kdebugf2();

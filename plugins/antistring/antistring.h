@@ -30,7 +30,6 @@
 #include "antistring-configuration.h"
 
 class Account;
-class ChatService;
 
 class Antistring : public MessageFilter
 {
@@ -46,8 +45,6 @@ class Antistring : public MessageFilter
 
 	int points(const QString &message);
 	void writeLog(Contact sender, const QString &message);
-
-	ChatService * chatService(Account account) const;
 
 public:
 	static void createInstance();

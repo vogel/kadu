@@ -35,9 +35,9 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "message/message-manager.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"
-#include "protocols/services/chat-service.h"
 #include "services/message-filter-service.h"
 #include "status/status-type-group.h"
 #include "debug.h"
@@ -104,11 +104,7 @@ bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const
 			|| (Configuration.statusInvisible() && protocol->status().group() == StatusTypeGroupInvisible)
 			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
-		ChatService *chatService = protocol->chatService();
-		if (!chatService)
-			return true;
-
-		chatService->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
+		MessageManager::instance()->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
 				+ Parser::parse(Configuration.autoRespondText(), Talkable(sender)), true);
 
 		RepliedChats.insert(chat);

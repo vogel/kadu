@@ -24,7 +24,7 @@
 #include <QtCore/QFile>
 
 #include "core/core.h"
-#include "protocols/services/chat-service.h"
+#include "message/message-manager.h"
 #include "services/message-filter-service.h"
 
 #include "antistring-notification.h"
@@ -55,14 +55,6 @@ Antistring::~Antistring()
 	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
-ChatService * Antistring::chatService(Account account) const
-{
-	if (!account.protocolHandler())
-		return 0;
-
-	return account.protocolHandler()->chatService();
-}
-
 bool Antistring::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
 	if (!Configuration.enabled())
@@ -72,10 +64,7 @@ bool Antistring::acceptMessage(const Chat &chat, const Contact &sender, const QS
 		return true;
 
 	AntistringNotification::notifyStringReceived(chat);
-
-	ChatService *accountChatService = chatService(chat.chatAccount());
-	if (accountChatService)
-		accountChatService->sendMessage(chat, Configuration.returnMessage(), true);
+	MessageManager::instance()->sendMessage(chat, Configuration.returnMessage(), true);
 
 	if (Configuration.logMessage())
 		writeLog(sender, message);
