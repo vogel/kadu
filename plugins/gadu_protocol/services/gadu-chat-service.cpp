@@ -66,14 +66,11 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent)
+bool GaduChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent)
 {
-	kdebugf();
-
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
-	QString plain = formattedMessage.toPlain();
 	QVector<Contact> contacts = chat.contacts().toContactVector();
 
 	unsigned int uinsCount = 0;
@@ -81,12 +78,6 @@ bool GaduChatService::sendMessage(const Chat &chat, const FormattedMessage &form
 	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize, Core::instance()->imageStorageService()));
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
-
-	if (messageFilterService())
-		if (!messageFilterService()->acceptOutgoingMessage(chat, account().accountContact(), plain))
-			return false;
-	if (messageTransformerService())
-		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
 
 	QByteArray data = plain.toUtf8();
 

@@ -107,7 +107,7 @@ public slots:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent = false) = 0;
+	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent = false) = 0;
 
 signals:
 	/**

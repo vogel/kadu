@@ -544,6 +544,9 @@ void Core::runServices()
 	CurrentChatImageRequestService->setImageStorageService(CurrentImageStorageService);
 	CurrentChatImageRequestService->setAccountManager(AccountManager::instance());
 	CurrentChatImageRequestService->setContactManager(ContactManager::instance());
+
+	MessageManager::instance()->setMessageFilterService(CurrentMessageFilterService);
+	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
 }
 
 void Core::runGuiServices()

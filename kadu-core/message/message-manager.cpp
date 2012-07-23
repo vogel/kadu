@@ -28,6 +28,8 @@
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
+#include "services/message-filter-service.h"
+#include "services/message-transformer-service.h"
 
 #include "message-manager.h"
 
@@ -166,6 +168,16 @@ void MessageManager::messageReceivedSlot(const Message &message)
 	emit messageReceived(message);
 }
 
+void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
+{
+	CurrentMessageFilterService = messageFilterService;
+}
+
+void MessageManager::setMessageTransformerService(MessageTransformerService *messageTransformerService)
+{
+	CurrentMessageTransformerService = messageTransformerService;
+}
+
 bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool silent)
 {
 	Protocol *protocol = chat.chatAccount().protocolHandler();
@@ -189,7 +201,14 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool 
 
 	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
-	return chatService->sendMessage(chat, formattedMessage, silent);
+	QString plain = formattedMessage.toPlain();
+	if (CurrentMessageFilterService)
+		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
+			return false;
+	if (CurrentMessageTransformerService)
+		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
+
+	return chatService->sendMessage(chat, formattedMessage, plain, silent);
 }
 
 void MessageManager::addUnreadMessage(const Message &message)

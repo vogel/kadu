@@ -30,6 +30,8 @@
 #include "exports.h"
 
 class Buddy;
+class MessageFilterService;
+class MessageTransformerService;
 
 /**
  * @addtogroup Message
@@ -50,6 +52,9 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 	Q_DISABLE_COPY(MessageManager)
 
 	static MessageManager * Instance;
+
+	QWeakPointer<MessageFilterService> CurrentMessageFilterService;
+	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
 
 	QList<Message> UnreadMessages;
 
@@ -94,6 +99,20 @@ public:
 
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("Messages"); }
+
+	/**
+	 * @short Set message filter service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageFilterService message filter service for this service
+	 */
+	void setMessageFilterService(MessageFilterService *messageFilterService);
+
+	/**
+	 * @short Set message transformer service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param messageTransformerService message transformer service for this service
+	 */
+	void setMessageTransformerService(MessageTransformerService *messageTransformerService);
 
 	/**
 	 * @short Send new message to given chat.

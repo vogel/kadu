@@ -34,10 +34,10 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "services/message-transformer-service.h"
-#include <services/message-filter-service.h>
 #include "message/message.h"
 #include "misc/misc.h"
+#include "services/message-filter-service.h"
+#include "services/message-transformer-service.h"
 
 #include "debug.h"
 #include "html_document.h"
@@ -181,7 +181,7 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 		chatDetails->addContact(contact);
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent)
 {
 	if (!XmppClient)
 		return false;
@@ -209,17 +209,9 @@ bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &fo
 	else
 		return false;
 
-	QString plain = formattedMessage.toPlain();
-
 	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
 	const XMPP::Jid jus = jid;
 	XMPP::Message msg = XMPP::Message(jus);
-
-	if (messageFilterService())
-		if (!messageFilterService()->acceptOutgoingMessage(chat, account().accountContact(), plain))
-			return false;
-	if (messageTransformerService())
-		plain = messageTransformerService()->transformOutgoingMessage(chat, plain);
 
 	QString messageType = chatType->name() == "Room"
 			? "groupchat"
