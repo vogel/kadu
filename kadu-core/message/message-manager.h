@@ -117,7 +117,7 @@ public:
 	/**
 	 * @short Send new message to given chat.
 	 * @param chat chat to send message to
-	 * @param message message to be sent
+	 * @param messageContent message to be sent
 	 * @param silent if true, no messageSent signal will be emitted
 	 *
 	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are

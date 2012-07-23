@@ -34,6 +34,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "message/formatted-message.h"
 #include "message/message.h"
 #include "misc/misc.h"
 #include "services/message-filter-service.h"
@@ -181,8 +182,11 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 		chatDetails->addContact(contact);
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, const FormattedMessage &formattedMessage, const QString &plain)
 {
+	Q_UNUSED(message)
+	Q_UNUSED(formattedMessage)
+
 	if (!XmppClient)
 		return false;
 
@@ -227,19 +231,6 @@ bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &fo
 	emit messageAboutToSend(msg);
 	XmppClient.data()->sendMessage(msg);
 
-	if (!silent)
-	{
-		::Message msg = ::Message::create();
-		msg.setMessageChat(chat);
-		msg.setType(MessageTypeSent);
-		msg.setMessageSender(account().accountContact());
-		msg.setContent(formattedMessage.toHtml()); // do not add encrypted message here
-		msg.setSendDate(QDateTime::currentDateTime());
-		msg.setReceiveDate(QDateTime::currentDateTime());
-
-		emit messageSent(msg);
-	}
-
 	return true;
 }
 
@@ -283,7 +274,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
 	FormattedMessage formattedMessage(body);
-
 	QString plain = formattedMessage.toPlain();
 
 	if (messageFilterService())

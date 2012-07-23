@@ -33,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
+#include "message/formatted-message.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "status/status-type.h"
@@ -66,7 +67,7 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent)
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -125,21 +126,8 @@ bool GaduChatService::sendMessage(const Chat &chat, const FormattedMessage &form
 	if (-1 == messageId)
 		return false;
 
-	if (!silent)
-	{
-		Message msg = Message::create();
-		msg.setMessageChat(chat);
-		msg.setType(MessageTypeSent);
-		msg.setMessageSender(account().accountContact());
-		msg.setStatus(MessageStatusSent);
-		msg.setContent(formattedMessage.toHtml());
-		msg.setSendDate(QDateTime::currentDateTime());
-		msg.setReceiveDate(QDateTime::currentDateTime());
-		msg.setId(QString::number(messageId));
-
-		UndeliveredMessages.insert(messageId, msg);
-		emit messageSent(msg);
-	}
+	message.setId(QString::number(messageId));
+	UndeliveredMessages.insert(messageId, message);
 
 	return true;
 }

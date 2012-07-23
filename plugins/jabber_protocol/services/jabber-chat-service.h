@@ -70,7 +70,7 @@ public:
 	void setXmppClient(Client *xmppClient);
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent = false);
+	virtual bool sendMessage(const Chat &chat, const ::Message &message, const FormattedMessage &formattedMessage, const QString &plain);
 
 	void handleReceivedMessage(const Message &msg);
 

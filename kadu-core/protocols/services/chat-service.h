@@ -28,12 +28,12 @@
 #include "buddies/buddy-list.h"
 
 #include "chat/chat.h"
-#include "message/formatted-message.h"
 
 #include "exports.h"
 
 #include "protocols/services/account-service.h"
 
+class FormattedMessage;
 class Message;
 class MessageFilterService;
 class MessageTransformerService;
@@ -97,8 +97,7 @@ public slots:
 	/**
 	 * @short Send new message to given chat.
 	 * @param chat chat to send message to
-	 * @param formattedMessage message to be sent
-	 * @param silent if true, no messageSent signal will be emitted
+	 * @param message message to be sent
 	 *
 	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
 	 * free to ignore any HTML formatting.
@@ -107,7 +106,7 @@ public slots:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent = false) = 0;
+	virtual bool sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain) = 0;
 
 signals:
 	/**
@@ -119,11 +118,11 @@ signals:
 	void sentMessageStatusChanged(const Message &message);
 
 	/**
-	 * @short Signal emitted when message is sent.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Signal emitted when message was sent.
 	 * @param message sent message
 	 *
-	 * This signal is emitted every message is sent (in non-silent mode). This message can be marked as
-	 * delivered or pending, depending on protocol.
+	 * This signal is emited every time a message is sent trought one of registered acocunts.
 	 */
 	void messageSent(const Message &message);
 

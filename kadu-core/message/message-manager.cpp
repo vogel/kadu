@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
+#include "message/formatted-message.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "services/message-filter-service.h"
@@ -178,7 +179,7 @@ void MessageManager::setMessageTransformerService(MessageTransformerService *mes
 	CurrentMessageTransformerService = messageTransformerService;
 }
 
-bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool silent)
+bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
 {
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol)
@@ -194,10 +195,10 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool 
 	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
 	 * these messages to have proper lines and paragraphs.
 	 */
-	if (message.contains('<'))
-		document.setHtml(message);
+	if (messageContent.contains('<'))
+		document.setHtml(messageContent);
 	else
-		document.setPlainText(message);
+		document.setPlainText(messageContent);
 
 	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
@@ -208,7 +209,20 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool 
 	if (CurrentMessageTransformerService)
 		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
 
-	return chatService->sendMessage(chat, formattedMessage, plain, silent);
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(MessageTypeSent);
+	message.setMessageSender(chat.chatAccount().accountContact());
+	message.setStatus(MessageStatusSent);
+	message.setContent(formattedMessage.toHtml());
+	message.setSendDate(QDateTime::currentDateTime());
+	message.setReceiveDate(QDateTime::currentDateTime());
+
+	bool sent = chatService->sendMessage(chat, message, formattedMessage, plain);
+	if (sent && !silent)
+		emit messageSent(message);
+
+	return sent;
 }
 
 void MessageManager::addUnreadMessage(const Message &message)

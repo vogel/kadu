@@ -28,6 +28,7 @@
 #include <libgadu.h>
 
 #include "message/message-common.h"
+#include "protocols/services/chat-image-key.h"
 
 #include "protocols/services/chat-service.h"
 
@@ -83,7 +84,7 @@ public:
 	void setConnection(GaduConnection *connection);
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, const QString &plain, bool silent);
+	virtual bool sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
