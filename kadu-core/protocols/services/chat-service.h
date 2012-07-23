@@ -97,7 +97,7 @@ public slots:
 	/**
 	 * @short Send new message to given chat.
 	 * @param chat chat to send message to
-	 * @param message message to be sent
+	 * @param formattedMessage message to be sent
 	 * @param silent if true, no messageSent signal will be emitted
 	 *
 	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
@@ -107,7 +107,7 @@ public slots:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent = false) = 0;
+	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent = false) = 0;
 
 signals:
 	/**

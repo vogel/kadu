@@ -22,8 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
-
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
@@ -183,7 +181,7 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 		chatDetails->addContact(contact);
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bool silent)
+bool JabberChatService::sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent)
 {
 	if (!XmppClient)
 		return false;
@@ -210,20 +208,6 @@ bool JabberChatService::sendMessage(const Chat &chat, const QString &message, bo
 	}
 	else
 		return false;
-
-	QTextDocument document;
-	/*
-	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
-	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
-	 * these messages to have proper lines and paragraphs.
-	 */
-	if (message.contains('<'))
-		document.setHtml(message);
-	else
-		document.setPlainText(message);
-
-
-	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
 	QString plain = formattedMessage.toPlain();
 

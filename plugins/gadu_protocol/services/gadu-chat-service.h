@@ -83,7 +83,7 @@ public:
 	void setConnection(GaduConnection *connection);
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const QString &message, bool silent);
+	virtual bool sendMessage(const Chat &chat, const FormattedMessage &formattedMessage, bool silent);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
