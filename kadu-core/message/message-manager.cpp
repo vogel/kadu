@@ -163,6 +163,19 @@ void MessageManager::messageReceivedSlot(const Message &message)
 	emit messageReceived(message);
 }
 
+bool MessageManager::sendMessage(const Chat &chat, const QString &message, bool silent)
+{
+	Protocol *protocol = chat.chatAccount().protocolHandler();
+	if (!protocol)
+		return false;
+
+	ChatService *chatService = protocol->chatService();
+	if (!chatService)
+		return false;
+
+	return chatService->sendMessage(chat, message, silent);
+}
+
 void MessageManager::addUnreadMessage(const Message &message)
 {
 	// just ensure that owner buddy is managed - we need it to be shown on contact list

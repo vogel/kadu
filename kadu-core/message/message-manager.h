@@ -96,6 +96,21 @@ public:
 	virtual QString storageNodeName() { return QLatin1String("Messages"); }
 
 	/**
+	 * @short Send new message to given chat.
+	 * @param chat chat to send message to
+	 * @param message message to be sent
+	 * @param silent if true, no messageSent signal will be emitted
+	 *
+	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
+	 * free to ignore any HTML formatting.
+	 *
+	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
+	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
+	 * chat view.
+	 */
+	bool sendMessage(const Chat &chat, const QString &message, bool silent = false);
+
+	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Adds new unread message to the list.
 	 * @param message new unread message
