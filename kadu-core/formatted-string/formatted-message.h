@@ -57,6 +57,10 @@ public:
 	 */
 	FormattedMessage();
 
+	FormattedMessage(const FormattedMessage &copyMe);
+
+	FormattedMessage & operator = (const FormattedMessage &copyMe);
+
 	/**
 	 * Creates a message with one, non-formatted text part.
 	 *

@@ -56,8 +56,35 @@ FormattedMessagePart::FormattedMessagePart(const ChatImageKey &chatImageKey) :
 	}
 }
 
+FormattedMessagePart::FormattedMessagePart(const FormattedMessagePart &copyMe) :
+		ImageKey(0, 0)
+{
+	Content = copyMe.Content;
+	Bold = copyMe.Bold;
+	Italic = copyMe.Italic;
+	Underline = copyMe.Underline;
+	Color = copyMe.Color;
+	IsImage = copyMe.IsImage;
+	ImagePath = copyMe.ImagePath;
+	ImageKey = copyMe.ImageKey;
+}
+
 FormattedMessagePart::~FormattedMessagePart()
 {
+}
+
+FormattedMessagePart & FormattedMessagePart::operator = (const FormattedMessagePart &copyMe)
+{
+	Content = copyMe.Content;
+	Bold = copyMe.Bold;
+	Italic = copyMe.Italic;
+	Underline = copyMe.Underline;
+	Color = copyMe.Color;
+	IsImage = copyMe.IsImage;
+	ImagePath = copyMe.ImagePath;
+	ImageKey = copyMe.ImageKey;
+
+	return *this;
 }
 
 QString FormattedMessagePart::imagePath() const

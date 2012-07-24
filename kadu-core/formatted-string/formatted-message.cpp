@@ -90,6 +90,17 @@ FormattedMessage::FormattedMessage()
 {
 }
 
+FormattedMessage::FormattedMessage(const FormattedMessage &copyMe)
+{
+	Parts = copyMe.Parts;
+}
+
+FormattedMessage & FormattedMessage::operator = (const FormattedMessage &copyMe)
+{
+	Parts = copyMe.Parts;
+	return *this;
+}
+
 FormattedMessage::FormattedMessage(const QString &messageString)
 {
 	if (!messageString.isEmpty())

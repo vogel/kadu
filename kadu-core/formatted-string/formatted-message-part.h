@@ -89,8 +89,11 @@ public:
 	 */
 	explicit FormattedMessagePart(const QString &imagePath);
 	explicit FormattedMessagePart(const ChatImageKey &chatImageKey);
+	FormattedMessagePart(const FormattedMessagePart &copyMe);
 
 	virtual ~FormattedMessagePart();
+
+	FormattedMessagePart & operator = (const FormattedMessagePart &copyMe);
 
 	bool isImage() const { return IsImage; }
 	bool isEmpty() const { return !IsImage && Content.isEmpty(); }
