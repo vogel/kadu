@@ -34,6 +34,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
@@ -286,7 +287,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	FormattedMessage formattedMessage(body);
+	QScopedPointer<FormattedStringFactory> formattedStringFactory(new FormattedStringFactory());
+	FormattedMessage formattedMessage = formattedStringFactory.data()->fromPlainText(body);
 	QString plain = formattedMessage.toPlain();
 
 	if (messageFilterService())

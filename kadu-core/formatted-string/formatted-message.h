@@ -61,13 +61,6 @@ public:
 
 	FormattedMessage & operator = (const FormattedMessage &copyMe);
 
-	/**
-	 * Creates a message with one, non-formatted text part.
-	 *
-	 * @arg messageString content of new message
-	 */
-	FormattedMessage(const QString &messageString);
-
 	virtual ~FormattedMessage();
 
 	/**

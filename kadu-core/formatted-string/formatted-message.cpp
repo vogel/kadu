@@ -101,12 +101,6 @@ FormattedMessage & FormattedMessage::operator = (const FormattedMessage &copyMe)
 	return *this;
 }
 
-FormattedMessage::FormattedMessage(const QString &messageString)
-{
-	if (!messageString.isEmpty())
-		Parts.append(FormattedMessagePart(messageString, false, false, false, QColor()));
-}
-
 FormattedMessage::~FormattedMessage()
 {
 }
