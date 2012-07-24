@@ -253,7 +253,7 @@ FormattedMessage createMessage(const QString &content, const unsigned char *form
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result << FormattedMessagePart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor());
+			result.append(FormattedMessagePart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)
@@ -265,7 +265,7 @@ FormattedMessage createMessage(const QString &content, const unsigned char *form
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result << imagePart(format.image);
+			result.append(imagePart(format.image));
 
 			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 			strayTextPosition = textPosition + 1;
@@ -277,7 +277,7 @@ FormattedMessage createMessage(const QString &content, const unsigned char *form
 					? formatList.at(i + 1).format.position
 					: content.length();
 
-			result << messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color);
+			result.append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
 		}
 	}
 

@@ -90,12 +90,6 @@ public:
 	void append(const FormattedMessagePart &part);
 
 	/**
-	 * Append a new part to message.
-	 * @arg part New part to append.
-	 */
-	FormattedMessage & operator << (const FormattedMessagePart &part);
-
-	/**
 	 * Returns true if message does not have any parts or if all parts are empty.
 	 * @return True if message is empty.
 	 */

@@ -61,7 +61,7 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document, ImageSto
 			if (!format.isImageFormat())
 			{
 				if (!text.isEmpty())
-					result << FormattedMessagePart(text, format.font().bold(), format.font().italic(), format.font().underline(), format.foreground().color());
+					result.append(FormattedMessagePart(text, format.font().bold(), format.font().italic(), format.font().underline(), format.foreground().color()));
 			}
 			else
 			{
@@ -70,9 +70,9 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document, ImageSto
 				if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
 				{
 					if (imageStorageService)
-						result << FormattedMessagePart(imageStorageService->storeImage(filePath));
+						result.append(FormattedMessagePart(imageStorageService->storeImage(filePath)));
 					else
-						result << FormattedMessagePart(filePath);
+						result.append(FormattedMessagePart(filePath));
 				}
 			}
 
@@ -108,12 +108,6 @@ const QVector<FormattedMessagePart> & FormattedMessage::parts() const
 void FormattedMessage::append(const FormattedMessagePart &part)
 {
 	Parts.append(part);
-}
-
-FormattedMessage & FormattedMessage::operator << (const FormattedMessagePart &part)
-{
-	Parts << part;
-	return *this;
 }
 
 bool FormattedMessage::isEmpty() const
