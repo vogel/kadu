@@ -66,6 +66,7 @@ class GaduChatService : public ChatService
 	FormattedMessage createFormattedMessage(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
+	int sendRawMessage(const FormattedMessage &formattedMessage, const QVector<Contact> &contacts, const unsigned char *rawMessage);
 
 	QTimer *RemoveTimer;
 

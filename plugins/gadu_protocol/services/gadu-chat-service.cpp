@@ -67,33 +67,19 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain)
+int GaduChatService::sendRawMessage(const FormattedMessage &formattedMessage, const QVector<Contact> &contacts, const unsigned char *rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
-		return false;
+		return -1;
 
-	QVector<Contact> contacts = chat.contacts().toContactVector();
+	Connection.data()->beginWrite();
+	gg_session *session = Connection.data()->session();
 
-	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
 	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize, Core::instance()->imageStorageService()));
 
-	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
-
-	QByteArray data = plain.toUtf8();
-
-	if (data.length() >= 10000)
-	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(10000));
-		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return false;
-	}
-
-	uinsCount = contacts.count();
-
-	Connection.data()->beginWrite();
-
 	int messageId = -1;
+	unsigned int uinsCount = contacts.count();
 	if (uinsCount > 1)
 	{
 		QScopedArrayPointer<UinType> uins(new UinType[uinsCount]);
@@ -103,25 +89,41 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, cons
 			uins[i++] = GaduProtocolHelper::uin(contact);
 
 		if (formatsSize)
-			messageId = gg_send_message_confer_richtext(
-					Connection.data()->session(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData(),
-					formats.data(), formatsSize);
+			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage, formats.data(), formatsSize);
 		else
-			messageId = gg_send_message_confer(
-					Connection.data()->session(), GG_CLASS_CHAT, uinsCount, uins.data(), (const unsigned char *)data.constData());
+			messageId = gg_send_message_confer(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage);
 	}
 	else if (uinsCount == 1)
 	{
+		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
 		if (formatsSize)
-			messageId = gg_send_message_richtext(
-					Connection.data()->session(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData(),
-					formats.data(), formatsSize);
+			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin, rawMessage, formats.data(), formatsSize);
 		else
-			messageId = gg_send_message(
-					Connection.data()->session(), GG_CLASS_CHAT, GaduProtocolHelper::uin(contacts.at(0)), (const unsigned char *)data.constData());
+			messageId = gg_send_message(session, GG_CLASS_CHAT, uin, rawMessage);
 	}
 
 	Connection.data()->endWrite();
+
+	return messageId;
+}
+
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain)
+{
+	if (!Connection || !Connection.data()->hasSession())
+		return false;
+
+	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
+
+	QByteArray data = plain.toUtf8();
+
+	if (data.length() >= 10000)
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(data.length()).arg(10000));
+		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
+		return false;
+	}
+
+	int messageId = sendRawMessage(formattedMessage, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
