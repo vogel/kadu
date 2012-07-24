@@ -91,6 +91,7 @@ set (kadu_SUBDIRS
 	core
 	emoticons
 	file-transfer
+	formatted-string
 	gui
 	icons
 	identities
@@ -341,6 +342,7 @@ kadu_api_directories (kadu-core
 	core
 	emoticons
 	file-transfer
+	formatted-string
 	gui/actions/chat
 	gui/actions
 	gui/widgets/configuration

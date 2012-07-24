@@ -33,8 +33,8 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
+#include "formatted-string/formatted-message.h"
 #include "gui/windows/message-dialog.h"
-#include "message/formatted-message.h"
 #include "services/image-storage-service.h"
 
 #include "gadu-protocol.h"

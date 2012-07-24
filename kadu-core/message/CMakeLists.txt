@@ -1,6 +1,4 @@
 set (message_SRCS
-	formatted-message.cpp
-	formatted-message-part.cpp
 	message.cpp
 	message-filter.cpp
 	message-manager.cpp
