@@ -54,6 +54,8 @@ class JabberChatService : public ChatService
 	void disconnectClient();
 
 	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
+	XMPP::Jid chatJid(const Chat &chat);
+	QString chatMessageType(const Chat &chat, const XMPP::Jid &jid);
 
 private slots:
 	void chatOpened(const Chat &chat);

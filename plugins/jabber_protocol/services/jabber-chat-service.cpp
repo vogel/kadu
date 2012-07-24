@@ -182,6 +182,46 @@ void JabberChatService::groupChatPresence(const Jid &jid, const Status &status)
 		chatDetails->addContact(contact);
 }
 
+XMPP::Jid JabberChatService::chatJid(const Chat &chat)
+{
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return XMPP::Jid();
+
+	if (chatType->name() == "Contact")
+	{
+		ContactSet contacts = chat.contacts();
+		Q_ASSERT(1 == contacts.size());
+
+		return contacts.toContact().id();
+	}
+
+	if (chatType->name() == "Room")
+	{
+		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
+		Q_ASSERT(details);
+
+		return details->room();
+	}
+
+	return XMPP::Jid();
+}
+
+QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &jid)
+{
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (!chatType)
+		return QString();
+
+	if (chatType->name() == "Room")
+		return "groupchat";
+
+	if (ContactMessageTypes.value(jid.bare()).isEmpty())
+		return "chat";
+	else
+		return ContactMessageTypes.value(jid.bare());
+}
+
 bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, const FormattedMessage &formattedMessage, const QString &plain)
 {
 	Q_UNUSED(message)
@@ -190,40 +230,13 @@ bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, 
 	if (!XmppClient)
 		return false;
 
-	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
-	if (!chatType)
+	XMPP::Jid jid = chatJid(chat);
+	if (jid.isEmpty())
 		return false;
 
-	QString jid;
+	XMPP::Message msg = XMPP::Message(jid);
 
-	if (chatType->name() == "Contact")
-	{
-		ContactSet contacts = chat.contacts();
-		Q_ASSERT(1 == contacts.size());
-
-		jid = contacts.toContact().id();
-	}
-	else if (chatType->name() == "Room")
-	{
-		ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
-		Q_ASSERT(details);
-
-		jid = details->room();
-	}
-	else
-		return false;
-
-	kdebugmf(KDEBUG_INFO, "jabber: chat msg to %s body %s\n", qPrintable(jid), qPrintable(plain));
-	const XMPP::Jid jus = jid;
-	XMPP::Message msg = XMPP::Message(jus);
-
-	QString messageType = chatType->name() == "Room"
-			? "groupchat"
-			: !ContactMessageTypes.value(jus.bare()).isEmpty()
-					? ContactMessageTypes.value(jus.bare())
-					: "chat";
-
-	msg.setType(messageType);
+	msg.setType(chatMessageType(chat, jid));
 	msg.setBody(plain);
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	//msg.setFrom(jabberID);
