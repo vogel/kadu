@@ -35,6 +35,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
@@ -296,7 +297,10 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
 	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
-	QString plain = formattedString->toPlain();
+
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	formattedString->accept(&plainTextVisitor);
+	QString plain = plainTextVisitor.result();
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender(), plain))

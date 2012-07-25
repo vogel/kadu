@@ -33,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
@@ -213,9 +214,11 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (formattedString->isEmpty())
 		return;
 
-	QString messageString = formattedString->toPlain();
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	formattedString->accept(&plainTextVisitor);
+	QString messageString = plainTextVisitor.result();
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
-			sender.id().toUInt(), qPrintable(formattedString->toPlain()));
+			sender.id().toUInt(), qPrintable(messageString));
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))

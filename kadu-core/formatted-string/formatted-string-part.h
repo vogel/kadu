@@ -118,8 +118,6 @@ public:
 	 */
 	virtual QString toHtml() const;
 
-	virtual QString toPlain() const;
-
 };
 
 #endif // FORMATTED_STRING_PART_H

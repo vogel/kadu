@@ -131,8 +131,3 @@ QString FormattedStringPart::toHtml() const
 
 	return span + result + "</span>";
 }
-
-QString FormattedStringPart::toPlain() const
-{
-	return Content;
-}

@@ -44,6 +44,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include <formatted-string/formatted-string-plain-text-visitor.h>
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
@@ -644,8 +645,12 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			QString title;
 			if (CurrentFormattedStringFactory)
 			{
-				QScopedPointer<CompositeFormattedString> formatted(CurrentFormattedStringFactory.data()->fromHTML(message));
-				title = formatted->toPlain().replace('\n', ' ').replace('\r', ' ');
+				QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(message));
+
+				FormattedStringPlainTextVisitor plainTextVisitor;
+				formattedString->accept(&plainTextVisitor);
+
+				title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
 			}
 			else
 				title = message.replace('\n', ' ').replace('\r', ' ');

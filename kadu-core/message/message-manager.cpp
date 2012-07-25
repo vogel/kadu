@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
@@ -211,7 +212,10 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 
 	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
 
-	QString plain = formattedString->toPlain();
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	formattedString->accept(&plainTextVisitor);
+
+	QString plain = plainTextVisitor.result();
 	if (CurrentMessageFilterService)
 		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
 			return false;

@@ -84,12 +84,6 @@ public:
 	virtual bool isEmpty() const;
 
 	/**
-	 * Returns message content, without formatting or images.
-	 * @return Plain message content.
-	 */
-	virtual QString toPlain() const;
-
-	/**
 	 * Converts message to HTML, with formatting and images. Resulting code is
 	 * not a full HTML page - only the content.
 	 * @return HTML representation of message.

@@ -2,6 +2,7 @@ set (formatted-string_SRCS
 	composite-formatted-string.cpp
 	formatted-string-factory.cpp
 	formatted-string-part.cpp
+	formatted-string-plain-text-visitor.cpp
 )
 
 set (formatted-string_MOC_SRCS

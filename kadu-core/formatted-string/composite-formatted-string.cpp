@@ -71,16 +71,6 @@ bool CompositeFormattedString::isEmpty() const
 	return true;
 }
 
-QString CompositeFormattedString::toPlain() const
-{
-	QString result;
-	foreach (const FormattedStringPart &part, Parts)
-		result += part.toPlain();
-
-	result.replace(QChar::LineSeparator, "\n");
-	return result;
-}
-
 QString CompositeFormattedString::toHtml() const
 {
 	QString result;

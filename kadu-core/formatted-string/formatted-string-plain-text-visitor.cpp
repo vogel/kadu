@@ -17,25 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_H
-#define FORMATTED_STRING_H
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 
-class FormattedStringVisitor;
+#include "formatted-string-part.h"
 
-class FormattedString
+FormattedStringPlainTextVisitor::FormattedStringPlainTextVisitor()
 {
-	Q_DISABLE_COPY(FormattedString);
+}
 
-protected:
-	FormattedString() {}
-	virtual ~FormattedString() {}
+FormattedStringPlainTextVisitor::~FormattedStringPlainTextVisitor()
+{
+}
 
-public:
-	virtual void accept(FormattedStringVisitor *visitor) const = 0;
+void FormattedStringPlainTextVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
 
-	virtual bool isEmpty() const = 0;
-	virtual QString toHtml() const = 0;
+void FormattedStringPlainTextVisitor::visit(const FormattedStringPart * const formattedStringPart)
+{
+	Result.append(formattedStringPart->content());
+}
 
-};
-
-#endif // FORMATTED_STRING_H
+QString FormattedStringPlainTextVisitor::result() const
+{
+	QString fixedResult = Result;
+	return fixedResult.replace(QChar::LineSeparator, "\n");
+}
