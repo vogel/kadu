@@ -37,6 +37,7 @@
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
 
+#include "helpers/formatted-string-formats-size-visitor.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -61,32 +62,12 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 namespace GaduFormatter
 {
 
-static unsigned int computeFormatsSize(CompositeFormattedString *formattedString)
-{
-	unsigned int size = sizeof(struct gg_msg_richtext);
-	bool first = true;
-
-	foreach (FormattedStringPart *part, formattedString->parts())
-	{
-		if (!first || part->isImage() || part->bold() || part->italic() || part->underline() || part->color().isValid())
-		{
-			first = false;
-
-			size += sizeof(struct gg_msg_richtext_format);
-
-			if (part->isImage())
-				size += sizeof(struct gg_msg_richtext_image);
-			else if (part->color().isValid())
-				size += sizeof(struct gg_msg_richtext_color);
-		}
-	}
-
-	return first ? 0 : size;
-}
-
 unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService)
 {
-	size = computeFormatsSize(formattedString);
+	FormattedStringFormatsSizeVisitor formatsSizeVisitor;
+	formattedString->accept(&formatsSizeVisitor);
+
+	size = formatsSizeVisitor.result();
 	if (!size)
 		return 0;
 

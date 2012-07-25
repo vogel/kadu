@@ -50,6 +50,7 @@ set (SOURCES
 	gui/windows/gadu-unregister-account-window.cpp
 	gui/windows/gadu-wait-for-account-register-window.cpp
 
+	helpers/formatted-string-formats-size-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.cpp
 	helpers/gadu-formatter.cpp
 	helpers/gadu-imported-contact-xml-receiver.cpp
@@ -123,6 +124,7 @@ set (MOC_SOURCES
 	gui/windows/gadu-unregister-account-window.h
 	gui/windows/gadu-wait-for-account-register-window.h
 
+	helpers/formatted-string-formats-size-visitor.cpp
 	helpers/formatted-string-image-key-received-visitor.h
 	helpers/gadu-importer.h
 
