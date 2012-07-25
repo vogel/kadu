@@ -49,6 +49,8 @@ class ImageStorageService;
  */
 class KADUAPI FormattedString
 {
+	Q_DISABLE_COPY(FormattedString)
+
 	QVector<FormattedStringPart> Parts;
 
 public:
@@ -56,10 +58,6 @@ public:
 	 * Creates an empty message.
 	 */
 	FormattedString();
-
-	FormattedString(const FormattedString &copyMe);
-
-	FormattedString & operator = (const FormattedString &copyMe);
 
 	virtual ~FormattedString();
 

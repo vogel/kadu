@@ -39,17 +39,6 @@ FormattedString::FormattedString()
 {
 }
 
-FormattedString::FormattedString(const FormattedString &copyMe)
-{
-	Parts = copyMe.Parts;
-}
-
-FormattedString & FormattedString::operator = (const FormattedString &copyMe)
-{
-	Parts = copyMe.Parts;
-	return *this;
-}
-
 FormattedString::~FormattedString()
 {
 }
