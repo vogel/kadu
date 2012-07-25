@@ -17,28 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_HTML_VISITOR_H
-#define FORMATTED_STRING_HTML_VISITOR_H
+#ifndef FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H
+#define FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H
 
-#include <QtCore/QString>
+#include <QtCore/QObject>
+
+#include "protocols/services/chat-image-key.h"
 
 #include "formatted-string/formatted-string-visitor.h"
 
-class FormattedStringHtmlVisitor : public FormattedStringVisitor
+class FormattedStringImageKeyReceivedVisitor : public QObject, public FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
+	Q_OBJECT
+	Q_DISABLE_COPY(FormattedStringImageKeyReceivedVisitor);
 
-	QString Result;
+	QString Id;
 
 public:
-	FormattedStringHtmlVisitor();
-	virtual ~FormattedStringHtmlVisitor();
+	explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = 0);
+	virtual ~FormattedStringImageKeyReceivedVisitor();
 
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
 	virtual void visit(const FormattedStringPart * const formattedStringPart);
 
-	QString result() const;
+signals:
+	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
 
 };
 
-#endif // FORMATTED_STRING_HTML_VISITOR_H
+#endif // FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H

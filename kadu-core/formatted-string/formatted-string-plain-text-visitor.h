@@ -22,7 +22,7 @@
 
 #include <QtCore/QString>
 
-#include "formatted-string-visitor.h"
+#include "formatted-string/formatted-string-visitor.h"
 
 class FormattedStringPlainTextVisitor : public FormattedStringVisitor
 {

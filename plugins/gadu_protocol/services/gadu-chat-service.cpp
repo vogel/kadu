@@ -41,6 +41,7 @@
 #include "status/status-type.h"
 #include "debug.h"
 
+#include "helpers/formatted-string-image-key-received-visitor.h"
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
@@ -241,9 +242,11 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		foreach (FormattedStringPart *part, ((CompositeFormattedString *) formattedString.data())->parts())
-			if (part->isImage())
-				emit chatImageKeyReceived(sender.id(), part->imageKey());
+		FormattedStringImageKeyReceivedVisitor imageKeyReceivedVisitor(sender.id());
+		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
+		        this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
+
+		formattedString->accept(&imageKeyReceivedVisitor);
 	}
 	else
 		emit messageSent(msg);

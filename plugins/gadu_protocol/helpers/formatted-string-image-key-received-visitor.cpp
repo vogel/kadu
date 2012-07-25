@@ -17,28 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_HTML_VISITOR_H
-#define FORMATTED_STRING_HTML_VISITOR_H
+#include "formatted-string/formatted-string-part.h"
 
-#include <QtCore/QString>
+#include "formatted-string-image-key-received-visitor.h"
 
-#include "formatted-string/formatted-string-visitor.h"
-
-class FormattedStringHtmlVisitor : public FormattedStringVisitor
+FormattedStringImageKeyReceivedVisitor::FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent) :
+		QObject(parent), Id(id)
 {
-	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
+}
 
-	QString Result;
+FormattedStringImageKeyReceivedVisitor::~FormattedStringImageKeyReceivedVisitor()
+{
+}
 
-public:
-	FormattedStringHtmlVisitor();
-	virtual ~FormattedStringHtmlVisitor();
+void FormattedStringImageKeyReceivedVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
 
-	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringPart * const formattedStringPart);
-
-	QString result() const;
-
-};
-
-#endif // FORMATTED_STRING_HTML_VISITOR_H
+void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringPart * const formattedStringPart)
+{
+	if (formattedStringPart->isImage())
+		emit chatImageKeyReceived(Id, formattedStringPart->imageKey());
+}
