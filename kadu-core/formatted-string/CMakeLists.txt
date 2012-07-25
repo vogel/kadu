@@ -1,7 +1,7 @@
 set (formatted-string_SRCS
-	formatted-message.cpp
-	formatted-message-part.cpp
+	formatted-string.cpp
 	formatted-string-factory.cpp
+	formatted-string-part.cpp
 )
 
 set (formatted-string_MOC_SRCS

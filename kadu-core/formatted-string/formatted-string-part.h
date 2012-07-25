@@ -21,8 +21,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_MESSAGE_PART_H
-#define FORMATTED_MESSAGE_PART_H
+#ifndef FORMATTED_STRING_PART_H
+#define FORMATTED_STRING_PART_H
 
 #include <QtCore/QString>
 #include <QtGui/QColor>
@@ -35,7 +35,7 @@
 class QTextDocument;
 
 /**
- * \class FormattedMessagePart
+ * \class FormattedStringPart
  * \brief Part of message that has text and formatting (or an image)
  *
  * This class represents a part of message - text with formatting or an image.
@@ -55,7 +55,7 @@ class QTextDocument;
  * </ul>
  * @TODO: refactor
  */
-class KADUAPI FormattedMessagePart
+class KADUAPI FormattedStringPart
 {
 	QString Content;
 	bool Bold;
@@ -71,7 +71,7 @@ public:
 	/**
 	 * Creates empty message part.
 	 */
-	FormattedMessagePart() : IsImage(false), ImageKey(0, 0) {}
+	FormattedStringPart() : IsImage(false), ImageKey(0, 0) {}
 
 	/**
 	 * Creates text message part with formatting.
@@ -81,19 +81,19 @@ public:
 	 * @arg underline if true, the whole part is presented with underline font
 	 * @arg color color of whole part
 	 */
-	FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color);
+	FormattedStringPart(const QString &content, bool bold, bool italic, bool underline, QColor color);
 
 	/**
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	explicit FormattedMessagePart(const QString &imagePath);
-	explicit FormattedMessagePart(const ChatImageKey &chatImageKey);
-	FormattedMessagePart(const FormattedMessagePart &copyMe);
+	explicit FormattedStringPart(const QString &imagePath);
+	explicit FormattedStringPart(const ChatImageKey &chatImageKey);
+	FormattedStringPart(const FormattedStringPart &copyMe);
 
-	virtual ~FormattedMessagePart();
+	virtual ~FormattedStringPart();
 
-	FormattedMessagePart & operator = (const FormattedMessagePart &copyMe);
+	FormattedStringPart & operator = (const FormattedStringPart &copyMe);
 
 	bool isImage() const { return IsImage; }
 	bool isEmpty() const { return !IsImage && Content.isEmpty(); }
@@ -116,4 +116,4 @@ public:
 
 };
 
-#endif // FORMATTED_MESSAGE_PART_H
+#endif // FORMATTED_STRING_PART_H

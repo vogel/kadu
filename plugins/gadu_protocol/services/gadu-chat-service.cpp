@@ -32,7 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
@@ -67,7 +67,7 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-int GaduChatService::sendRawMessage(const FormattedMessage &formattedMessage, const QVector<Contact> &contacts, const unsigned char *rawMessage)
+int GaduChatService::sendRawMessage(const FormattedString &formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -76,7 +76,7 @@ int GaduChatService::sendRawMessage(const FormattedMessage &formattedMessage, co
 	gg_session *session = Connection.data()->session();
 
 	unsigned int formatsSize = 0;
-	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedMessage, formatsSize, Core::instance()->imageStorageService()));
+	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedString, formatsSize, Core::instance()->imageStorageService()));
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
@@ -107,7 +107,7 @@ int GaduChatService::sendRawMessage(const FormattedMessage &formattedMessage, co
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain)
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const FormattedString &formattedString, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -123,7 +123,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, cons
 		return false;
 	}
 
-	int messageId = sendRawMessage(formattedMessage, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage(formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
@@ -176,7 +176,7 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-FormattedMessage GaduChatService::createFormattedMessage(struct gg_event *e, const QString &content, bool richText)
+FormattedString GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
 	if (!richText)
 		return GaduFormatter::createMessage(content, 0, 0);
@@ -209,13 +209,13 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (messageTransformerService())
 		content = messageTransformerService()->transformIncomingMessage(chat, content);
 
-	FormattedMessage message = createFormattedMessage(e, content, !ignoreRichText(sender));
-	if (message.isEmpty())
+	FormattedString formattedString = createFormattedString(e, content, !ignoreRichText(sender));
+	if (formattedString.isEmpty())
 		return;
 
-	QString messageString = message.toPlain();
+	QString messageString = formattedString.toPlain();
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
-			sender.id().toUInt(), qPrintable(message.toPlain()));
+			sender.id().toUInt(), qPrintable(formattedString.toPlain()));
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
@@ -226,7 +226,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setContent(message.toHtml());
+	msg.setContent(formattedString.toHtml());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
@@ -234,7 +234,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		foreach (const FormattedMessagePart &part, message.parts())
+		foreach (const FormattedStringPart &part, formattedString.parts())
 			if (part.isImage())
 				emit chatImageKeyReceived(sender.id(), part.imageKey());
 	}

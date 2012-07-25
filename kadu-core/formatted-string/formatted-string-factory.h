@@ -27,13 +27,13 @@ class QTextCharFormat;
 class QTextFragment;
 class QTextImageFormat;
 
-class FormattedMessage;
-class FormattedMessagePart;
+class FormattedString;
+class FormattedStringPart;
 class ImageStorageService;
 
 /**
  * @class FormattedStringFactory
- * @short Class for creating FormattedMessage instances from different sources.
+ * @short Class for creating FormattedString instances from different sources.
  * @author Rafał 'Vogel' Malinowski
  */
 class FormattedStringFactory : public QObject
@@ -42,10 +42,10 @@ class FormattedStringFactory : public QObject
 
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
-	FormattedMessagePart partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
-	FormattedMessagePart partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
-	FormattedMessagePart partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
-	QList<FormattedMessagePart> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
+	FormattedStringPart partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
+	FormattedStringPart partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
+	FormattedStringPart partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
+	QList<FormattedStringPart> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
 
 public:
 	/**
@@ -53,30 +53,30 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param imageStorageService ImageStorageService to use by this factory
 	 *
-	 * ImageStorageService will be used to store images and change path to them to make FormattedMessage working even when Kadu instance
+	 * ImageStorageService will be used to store images and change path to them to make FormattedString working even when Kadu instance
 	 * is moved to new location.
 	 */
 	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
-	 * @short Create FormattedMessage instance from plain text.
+	 * @short Create FormattedString instance from plain text.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param plainText plain content of new FormattedMessage
+	 * @param plainText plain content of new FormattedString
 	 *
-	 * This method will create empty FormattedMessage if plainText is empty. If plainText is not empty then returned FormattedMessage
+	 * This method will create empty FormattedString if plainText is empty. If plainText is not empty then returned FormattedString
 	 * will contain one text part.
 	 */
-	FormattedMessage fromPlainText(const QString &plainText);
+	FormattedString fromPlainText(const QString &plainText);
 
 	/**
-	 * @short Create FormattedMessage instance from HTML.
+	 * @short Create FormattedString instance from HTML.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param html HTML content of new FormattedMessage
+	 * @param html HTML content of new FormattedString
 	 *
-	 * Thie method will extract basic information about formatting from HTML content and create instance of FormattedMessage with
+	 * Thie method will extract basic information about formatting from HTML content and create instance of FormattedString with
 	 * this data.
 	 */
-	FormattedMessage fromHTML(const QString &html);
+	FormattedString fromHTML(const QString &html);
 
 };
 

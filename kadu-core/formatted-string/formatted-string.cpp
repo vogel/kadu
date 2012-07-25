@@ -33,60 +33,60 @@
 #include "services/image-storage-service.h"
 #include "html_document.h"
 
-#include "formatted-message.h"
+#include "formatted-string.h"
 
-FormattedMessage::FormattedMessage()
+FormattedString::FormattedString()
 {
 }
 
-FormattedMessage::FormattedMessage(const FormattedMessage &copyMe)
+FormattedString::FormattedString(const FormattedString &copyMe)
 {
 	Parts = copyMe.Parts;
 }
 
-FormattedMessage & FormattedMessage::operator = (const FormattedMessage &copyMe)
+FormattedString & FormattedString::operator = (const FormattedString &copyMe)
 {
 	Parts = copyMe.Parts;
 	return *this;
 }
 
-FormattedMessage::~FormattedMessage()
+FormattedString::~FormattedString()
 {
 }
 
-const QVector<FormattedMessagePart> & FormattedMessage::parts() const
+const QVector<FormattedStringPart> & FormattedString::parts() const
 {
 	return Parts;
 }
 
-void FormattedMessage::append(const FormattedMessagePart &part)
+void FormattedString::append(const FormattedStringPart &part)
 {
 	Parts.append(part);
 }
 
-bool FormattedMessage::isEmpty() const
+bool FormattedString::isEmpty() const
 {
-	foreach (const FormattedMessagePart &part, Parts)
+	foreach (const FormattedStringPart &part, Parts)
 		if (!part.isEmpty())
 			return false;
 
 	return true;
 }
 
-QString FormattedMessage::toPlain() const
+QString FormattedString::toPlain() const
 {
 	QString result;
-	foreach (const FormattedMessagePart &part, Parts)
+	foreach (const FormattedStringPart &part, Parts)
 		result += part.content();
 
 	result.replace(QChar::LineSeparator, "\n");
 	return result;
 }
 
-QString FormattedMessage::toHtml() const
+QString FormattedString::toHtml() const
 {
 	QString result;
-	foreach (const FormattedMessagePart &part, Parts)
+	foreach (const FormattedStringPart &part, Parts)
 		result += part.toHtml();
 
 	return result;

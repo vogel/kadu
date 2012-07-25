@@ -28,14 +28,14 @@
 #include "misc/misc.h"
 #include "protocols/services/chat-image-service.h"
 
-#include "formatted-message-part.h"
+#include "formatted-string-part.h"
 
-FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
+FormattedStringPart::FormattedStringPart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
 		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false), ImageKey(0, 0)
 {
 }
 
-FormattedMessagePart::FormattedMessagePart(const QString &imagePath) :
+FormattedStringPart::FormattedStringPart(const QString &imagePath) :
 		IsImage(false), ImagePath(imagePath), ImageKey(0, 0)
 {
 	if (!ImagePath.isEmpty())
@@ -45,7 +45,7 @@ FormattedMessagePart::FormattedMessagePart(const QString &imagePath) :
 	}
 }
 
-FormattedMessagePart::FormattedMessagePart(const ChatImageKey &chatImageKey) :
+FormattedStringPart::FormattedStringPart(const ChatImageKey &chatImageKey) :
 		IsImage(false), ImageKey(chatImageKey)
 {
 	if (!ImageKey.isNull())
@@ -56,7 +56,7 @@ FormattedMessagePart::FormattedMessagePart(const ChatImageKey &chatImageKey) :
 	}
 }
 
-FormattedMessagePart::FormattedMessagePart(const FormattedMessagePart &copyMe) :
+FormattedStringPart::FormattedStringPart(const FormattedStringPart &copyMe) :
 		ImageKey(0, 0)
 {
 	Content = copyMe.Content;
@@ -69,11 +69,11 @@ FormattedMessagePart::FormattedMessagePart(const FormattedMessagePart &copyMe) :
 	ImageKey = copyMe.ImageKey;
 }
 
-FormattedMessagePart::~FormattedMessagePart()
+FormattedStringPart::~FormattedStringPart()
 {
 }
 
-FormattedMessagePart & FormattedMessagePart::operator = (const FormattedMessagePart &copyMe)
+FormattedStringPart & FormattedStringPart::operator = (const FormattedStringPart &copyMe)
 {
 	Content = copyMe.Content;
 	Bold = copyMe.Bold;
@@ -87,17 +87,17 @@ FormattedMessagePart & FormattedMessagePart::operator = (const FormattedMessageP
 	return *this;
 }
 
-QString FormattedMessagePart::imagePath() const
+QString FormattedStringPart::imagePath() const
 {
 	return ImagePath;
 }
 
-ChatImageKey FormattedMessagePart::imageKey() const
+ChatImageKey FormattedStringPart::imageKey() const
 {
 	return ImageKey;
 }
 
-QString FormattedMessagePart::toHtml() const
+QString FormattedStringPart::toHtml() const
 {
 	if (IsImage)
 		return QFileInfo(ImagePath).isAbsolute()

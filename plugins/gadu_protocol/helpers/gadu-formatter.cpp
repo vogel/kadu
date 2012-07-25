@@ -33,7 +33,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-#include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
 
@@ -61,12 +61,12 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 namespace GaduFormatter
 {
 
-static unsigned int computeFormatsSize(const FormattedMessage &message)
+static unsigned int computeFormatsSize(const FormattedString &formattedString)
 {
 	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
 
-	foreach (const FormattedMessagePart &part, message.parts())
+	foreach (const FormattedStringPart &part, formattedString.parts())
 	{
 		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
@@ -84,7 +84,7 @@ static unsigned int computeFormatsSize(const FormattedMessage &message)
 	return first ? 0 : size;
 }
 
-unsigned char * createFormats(Account account, const FormattedMessage &message, unsigned int &size, ImageStorageService *imageStorageService)
+unsigned char * createFormats(Account account, const FormattedString &message, unsigned int &size, ImageStorageService *imageStorageService)
 {
 	size = computeFormatsSize(message);
 	if (!size)
@@ -104,7 +104,7 @@ unsigned char * createFormats(Account account, const FormattedMessage &message, 
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
-	foreach (const FormattedMessagePart &part, message.parts())
+	foreach (const FormattedStringPart &part, message.parts())
 	{
 		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
@@ -212,19 +212,19 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedMessagePart imagePart(const gg_msg_richtext_image &image)
+static FormattedStringPart imagePart(const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
 
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
-		return FormattedMessagePart();
+		return FormattedStringPart();
 
 	ChatImageKey key(size, crc32);
-	return FormattedMessagePart(key);
+	return FormattedStringPart(key);
 }
 
-static FormattedMessagePart messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
+static FormattedStringPart messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
 {
 	QColor textColor;
 	if (format.font & GG_FONT_COLOR)
@@ -234,12 +234,12 @@ static FormattedMessagePart messagePart(const QString &content, const gg_msg_ric
 		textColor.setBlue(color.blue);
 	}
 
-	return FormattedMessagePart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+	return FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-FormattedMessage createMessage(const QString &content, const unsigned char *formats, unsigned int size)
+FormattedString createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
-	FormattedMessage result;
+	FormattedString result;
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.
@@ -253,7 +253,7 @@ FormattedMessage createMessage(const QString &content, const unsigned char *form
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result.append(FormattedMessagePart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			result.append(FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)

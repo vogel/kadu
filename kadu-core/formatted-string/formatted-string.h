@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_MESSAGE_H
-#define FORMATTED_MESSAGE_H
+#ifndef FORMATTED_STRING_H
+#define FORMATTED_STRING_H
 
 #include <QtCore/QList>
 #include <QtGui/QColor>
@@ -30,50 +30,50 @@
 
 #include "exports.h"
 
-#include "formatted-message-part.h"
+#include "formatted-string-part.h"
 
 class QTextDocument;
 
 class ImageStorageService;
 
 /**
- * \class FormattedMessage
+ * \class FormattedString
  * \brief Rich message (incoming or outcoming).
  *
  * This class represens incoming or outgoing message. Some protocols (like GG) uses its own
  * formatting, so this class acts like abstraction over all used formatting methods in Kadu.
  *
- * FormattedMessage is splited into parts (\see FormattedMessagePart) - each part can contain text and formatting or an image.
+ * FormattedString is splited into parts (\see FormattedStringPart) - each part can contain text and formatting or an image.
  *
  * Each message has an <code>id</code> field that is used by protocols to store its message sequental number.
  */
-class KADUAPI FormattedMessage
+class KADUAPI FormattedString
 {
-	QVector<FormattedMessagePart> Parts;
+	QVector<FormattedStringPart> Parts;
 
 public:
 	/**
 	 * Creates an empty message.
 	 */
-	FormattedMessage();
+	FormattedString();
 
-	FormattedMessage(const FormattedMessage &copyMe);
+	FormattedString(const FormattedString &copyMe);
 
-	FormattedMessage & operator = (const FormattedMessage &copyMe);
+	FormattedString & operator = (const FormattedString &copyMe);
 
-	virtual ~FormattedMessage();
+	virtual ~FormattedString();
 
 	/**
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */
-	const QVector<FormattedMessagePart> & parts() const;
+	const QVector<FormattedStringPart> & parts() const;
 
 	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */
-	void append(const FormattedMessagePart &part);
+	void append(const FormattedStringPart &part);
 
 	/**
 	 * Returns true if message does not have any parts or if all parts are empty.
@@ -96,4 +96,4 @@ public:
 
 };
 
-#endif // FORMATTED_MESSAGE_H
+#endif // FORMATTED_STRING_H

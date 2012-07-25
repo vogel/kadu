@@ -33,7 +33,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
@@ -228,10 +228,10 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 		return ContactMessageTypes.value(jid.bare());
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, const FormattedMessage &formattedMessage, const QString &plain)
+bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, const FormattedString &formattedString, const QString &plain)
 {
 	Q_UNUSED(message)
-	Q_UNUSED(formattedMessage)
+	Q_UNUSED(formattedString)
 
 	if (!XmppClient)
 		return false;
@@ -295,8 +295,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	FormattedMessage formattedMessage = CurrentFormattedStringFactory.data()->fromPlainText(body);
-	QString plain = formattedMessage.toPlain();
+	FormattedString formattedString = CurrentFormattedStringFactory.data()->fromPlainText(body);
+	QString plain = formattedString.toPlain();
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender(), plain))

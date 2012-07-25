@@ -21,7 +21,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
@@ -31,41 +31,41 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 	CurrentImageStorageService = imageStorageService;
 }
 
-FormattedMessage FormattedStringFactory::fromPlainText(const QString& plainText)
+FormattedString FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	FormattedMessage result;
+	FormattedString result;
 	if (!plainText.isEmpty())
-		result.append(FormattedMessagePart(plainText, false, false, false, QColor()));
+		result.append(FormattedStringPart(plainText, false, false, false, QColor()));
 
 	return result;
 }
 
-FormattedMessagePart FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
+FormattedStringPart FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
 	if (text.isEmpty())
-		return FormattedMessagePart();
+		return FormattedStringPart();
 	else
-		return FormattedMessagePart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+		return FormattedStringPart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
-FormattedMessagePart FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
+FormattedStringPart FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
 {
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
 
 	if (!fileInfo.isAbsolute() || !fileInfo.exists() || !fileInfo.isFile())
-		return FormattedMessagePart();
+		return FormattedStringPart();
 
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 
-	return FormattedMessagePart(filePath);
+	return FormattedStringPart(filePath);
 }
 
-FormattedMessagePart FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
+FormattedStringPart FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
 	if (!textFragment.isValid())
-		return FormattedMessagePart();
+		return FormattedStringPart();
 
 	QTextCharFormat format = textFragment.charFormat();
 	if (!format.isImageFormat())
@@ -74,14 +74,14 @@ FormattedMessagePart FormattedStringFactory::partFromQTextFragment(const QTextFr
 		return partFromQTextImageFormat(format.toImageFormat());
 }
 
-QList<FormattedMessagePart> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
+QList<FormattedStringPart> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
-	QList<FormattedMessagePart> result;
+	QList<FormattedStringPart> result;
 
 	bool firstFragment = true;
 	for (QTextBlock::iterator it = textBlock.begin(); !it.atEnd(); ++it)
 	{
-		FormattedMessagePart part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
+		FormattedStringPart part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
 		if (!part.isEmpty())
 		{
 			result.append(part);
@@ -92,9 +92,9 @@ QList<FormattedMessagePart> FormattedStringFactory::partsFromQTextBlock(const QT
 	return result;
 }
 
-FormattedMessage FormattedStringFactory::fromHTML(const QString &html)
+FormattedString FormattedStringFactory::fromHTML(const QString &html)
 {
-	FormattedMessage result;
+	FormattedString result;
 
 	QTextDocument document;
 	document.setHtml(html);
@@ -104,8 +104,8 @@ FormattedMessage FormattedStringFactory::fromHTML(const QString &html)
 	QTextBlock block = document.firstBlock();
 	while (block.isValid())
 	{
-		QList<FormattedMessagePart> parts = partsFromQTextBlock(block, firstBlock);
-		foreach (const FormattedMessagePart &part, parts)
+		QList<FormattedStringPart> parts = partsFromQTextBlock(block, firstBlock);
+		foreach (const FormattedStringPart &part, parts)
 			result.append(part);
 
 		block = block.next();

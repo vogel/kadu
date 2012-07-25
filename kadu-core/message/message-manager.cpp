@@ -24,7 +24,7 @@
 #include "chat/chat-details-buddy.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
-#include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -209,9 +209,9 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	FormattedMessage formattedMessage = CurrentFormattedStringFactory.data()->fromHTML(document.toHtml());
+	FormattedString formattedString = CurrentFormattedStringFactory.data()->fromHTML(document.toHtml());
 
-	QString plain = formattedMessage.toPlain();
+	QString plain = formattedString.toPlain();
 	if (CurrentMessageFilterService)
 		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
 			return false;
@@ -223,11 +223,11 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(formattedMessage.toHtml());
+	message.setContent(formattedString.toHtml());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	bool sent = chatService->sendMessage(chat, message, formattedMessage, plain);
+	bool sent = chatService->sendMessage(chat, message, formattedString, plain);
 	if (sent && !silent)
 		emit messageSent(message);
 

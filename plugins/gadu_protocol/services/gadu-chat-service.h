@@ -63,10 +63,10 @@ class GaduChatService : public ChatService
 	ContactSet getRecipients(struct gg_event *e);
 	QString getContent(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
-	FormattedMessage createFormattedMessage(struct gg_event *e, const QString &content, bool richText);
+	FormattedString createFormattedString(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(const FormattedMessage &formattedMessage, const QVector<Contact> &contacts, const unsigned char *rawMessage);
+	int sendRawMessage(const FormattedString &formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage);
 
 	QTimer *RemoveTimer;
 
@@ -85,7 +85,7 @@ public:
 	void setConnection(GaduConnection *connection);
 
 public slots:
-	virtual bool sendMessage(const Chat &chat, const Message &message, const FormattedMessage &formattedMessage, const QString &plain);
+	virtual bool sendMessage(const Chat &chat, const Message &message, const FormattedString &FormattedString, const QString &plain);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);
