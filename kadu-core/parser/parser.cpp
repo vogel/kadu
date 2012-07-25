@@ -52,9 +52,29 @@
 
 #include "parser.h"
 
+#define SEARCH_CHARS "%[{\\$@#}]"
+#define EXEC_SEARCH_CHARS "`\'"
+
 // PT_CHECK_FILE_EXISTS and PT_CHECK_FILE_NOT_EXISTS checks need space to be encoded,
-// and encoding searchChars shouldn't hurt also
-#define ENCODE_INCLUDE_CHARS " %[{\\$@#}]`\'"
+// and encoding search chars shouldn't hurt also
+#define ENCODE_INCLUDE_CHARS " " SEARCH_CHARS EXEC_SEARCH_CHARS
+
+Q_GLOBAL_STATIC(QSet<QChar>, searchChars)
+
+static void prepareSearchChars(bool forceExecSeachChars = false)
+{
+	QSet<QChar> &chars = *searchChars();
+	if (chars.isEmpty())
+		foreach (QChar c, QString(SEARCH_CHARS))
+			chars.insert(c);
+
+	bool allowExec = forceExecSeachChars || config_file.readBoolEntry("General", "AllowExecutingFromParser", false);
+	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
+		if (allowExec)
+			chars.insert(c);
+		else
+			chars.remove(c);
+}
 
 QMap<QString, QString> Parser::GlobalVariables;
 QMap<QString, Parser::TalkableTagCallback> Parser::RegisteredTalkableTags;
@@ -456,24 +476,7 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 
-	static QHash<QChar, bool> searchChars;
-
-	if (!searchChars.value('%', false))
-	{
-		searchChars['%'] = true;
-		searchChars['['] = true;
-		searchChars['{'] = true;
-		searchChars['\\'] = true;
-		searchChars['$'] = true;
-		searchChars['@'] = true;
-		searchChars['#'] = true;
-		searchChars['}'] = true;
-		searchChars[']'] = true;
-	}
-
-	bool allowExec = config_file.readBoolEntry("General", "AllowExecutingFromParser", false);
-	searchChars['`'] = allowExec;
-	searchChars['\''] = allowExec;
+	prepareSearchChars();
 
 	QStack<ParserToken> parseStack;
 	int idx = 0, len = s.length();
@@ -483,7 +486,7 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 
 		int prevIdx = idx;
 		for (; idx < len; ++idx)
-			if (searchChars.value(s.at(idx), false))
+			if (searchChars()->contains(s.at(idx)))
 				break;
 
 		if (idx != prevIdx)
