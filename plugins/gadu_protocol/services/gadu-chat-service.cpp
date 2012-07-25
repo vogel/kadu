@@ -241,9 +241,9 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		foreach (const FormattedStringPart &part, formattedString->parts())
-			if (part.isImage())
-				emit chatImageKeyReceived(sender.id(), part.imageKey());
+		foreach (FormattedStringPart *part, formattedString->parts())
+			if (part->isImage())
+				emit chatImageKeyReceived(sender.id(), part->imageKey());
 	}
 	else
 		emit messageSent(msg);

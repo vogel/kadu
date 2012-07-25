@@ -42,30 +42,31 @@ CompositeFormattedString::CompositeFormattedString()
 
 CompositeFormattedString::~CompositeFormattedString()
 {
+	qDeleteAll(Parts);
 }
 
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
-	foreach (const FormattedStringPart &part, Parts)
-		part.accept(visitor);
+	foreach (FormattedStringPart *part, Parts)
+		part->accept(visitor);
 
 	visitor->visit(this);
 }
 
-const QVector<FormattedStringPart> & CompositeFormattedString::parts() const
+const QVector<FormattedStringPart *> & CompositeFormattedString::parts() const
 {
 	return Parts;
 }
 
-void CompositeFormattedString::append(const FormattedStringPart &part)
+void CompositeFormattedString::append(FormattedStringPart *part)
 {
 	Parts.append(part);
 }
 
 bool CompositeFormattedString::isEmpty() const
 {
-	foreach (const FormattedStringPart &part, Parts)
-		if (!part.isEmpty())
+	foreach (FormattedStringPart *part, Parts)
+		if (!part->isEmpty())
 			return false;
 
 	return true;

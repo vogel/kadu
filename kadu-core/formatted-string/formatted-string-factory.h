@@ -42,10 +42,10 @@ class FormattedStringFactory : public QObject
 
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
-	FormattedStringPart partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
-	FormattedStringPart partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
-	FormattedStringPart partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
-	QList<FormattedStringPart> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
+	FormattedStringPart * partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
+	FormattedStringPart * partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
+	FormattedStringPart * partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
+	QList<FormattedStringPart *> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
 
 public:
 	/**

@@ -66,17 +66,17 @@ static unsigned int computeFormatsSize(CompositeFormattedString *formattedString
 	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
 
-	foreach (const FormattedStringPart &part, formattedString->parts())
+	foreach (FormattedStringPart *part, formattedString->parts())
 	{
-		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
+		if (!first || part->isImage() || part->bold() || part->italic() || part->underline() || part->color().isValid())
 		{
 			first = false;
 
 			size += sizeof(struct gg_msg_richtext_format);
 
-			if (part.isImage())
+			if (part->isImage())
 				size += sizeof(struct gg_msg_richtext_image);
-			else if (part.color().isValid())
+			else if (part->color().isValid())
 				size += sizeof(struct gg_msg_richtext_color);
 		}
 	}
@@ -104,35 +104,35 @@ unsigned char * createFormats(Account account, CompositeFormattedString *formatt
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
-	foreach (const FormattedStringPart &part, formattedString->parts())
+	foreach (FormattedStringPart *part, formattedString->parts())
 	{
-		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
+		if (!first || part->isImage() || part->bold() || part->italic() || part->underline() || part->color().isValid())
 		{
 			first = false;
 
 			format.position = gg_fix16(textPosition);
 			format.font = 0;
 
-			if (part.isImage())
+			if (part->isImage())
 				format.font |= GG_FONT_IMAGE;
 			else
 			{
-				if (part.bold())
+				if (part->bold())
 					format.font |= GG_FONT_BOLD;
-				if (part.italic())
+				if (part->italic())
 					format.font |= GG_FONT_ITALIC;
-				if (part.underline())
+				if (part->underline())
 					format.font |= GG_FONT_UNDERLINE;
-				if (part.color().isValid())
+				if (part->color().isValid())
 					format.font |= GG_FONT_COLOR;
 			}
 
 			memcpy(result + memoryPosition, &format, sizeof(format));
 			memoryPosition += sizeof(format);
 
-			if (part.isImage())
+			if (part->isImage())
 			{
-				QString imagePath = imageStorageService ? imageStorageService->fullPath(part.imagePath()) : part.imagePath();
+				QString imagePath = imageStorageService ? imageStorageService->fullPath(part->imagePath()) : part->imagePath();
 				QFile imageFile(imagePath);
 				if (imageFile.open(QFile::ReadOnly))
 				{
@@ -154,18 +154,18 @@ unsigned char * createFormats(Account account, CompositeFormattedString *formatt
 				memcpy(result + memoryPosition, &image, sizeof(image));
 				memoryPosition += sizeof(image);
 			}
-			else if (part.color().isValid())
+			else if (part->color().isValid())
 			{
-				color.red = part.color().red();
-				color.green = part.color().green();
-				color.blue = part.color().blue();
+				color.red = part->color().red();
+				color.green = part->color().green();
+				color.blue = part->color().blue();
 
 				memcpy(result + memoryPosition, &color, sizeof(color));
 				memoryPosition += sizeof(color);
 			}
 		}
 
-		textPosition += part.content().length();
+		textPosition += part->content().length();
 	}
 
 	return result;
@@ -212,19 +212,19 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedStringPart imagePart(const gg_msg_richtext_image &image)
+static FormattedStringPart * imagePart(const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
 
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
-		return FormattedStringPart();
+		return new FormattedStringPart();
 
 	ChatImageKey key(size, crc32);
-	return FormattedStringPart(key);
+	return new FormattedStringPart(key);
 }
 
-static FormattedStringPart messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
+static FormattedStringPart * messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
 {
 	QColor textColor;
 	if (format.font & GG_FONT_COLOR)
@@ -234,7 +234,7 @@ static FormattedStringPart messagePart(const QString &content, const gg_msg_rich
 		textColor.setBlue(color.blue);
 	}
 
-	return FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+	return new FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
 CompositeFormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
@@ -253,7 +253,7 @@ CompositeFormattedString * createMessage(const QString &content, const unsigned 
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result->append(FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			result->append(new FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)

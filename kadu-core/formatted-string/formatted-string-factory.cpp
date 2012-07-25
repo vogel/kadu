@@ -35,37 +35,37 @@ CompositeFormattedString * FormattedStringFactory::fromPlainText(const QString& 
 {
 	CompositeFormattedString *result = new CompositeFormattedString();
 	if (!plainText.isEmpty())
-		result->append(FormattedStringPart(plainText, false, false, false, QColor()));
+		result->append(new FormattedStringPart(plainText, false, false, false, QColor()));
 
 	return result;
 }
 
-FormattedStringPart FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
+FormattedStringPart * FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
 	if (text.isEmpty())
-		return FormattedStringPart();
+		return 0;
 	else
-		return FormattedStringPart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+		return new FormattedStringPart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
-FormattedStringPart FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
+FormattedStringPart * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
 {
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
 
 	if (!fileInfo.isAbsolute() || !fileInfo.exists() || !fileInfo.isFile())
-		return FormattedStringPart();
+		return 0;
 
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 
-	return FormattedStringPart(filePath);
+	return new FormattedStringPart(filePath);
 }
 
-FormattedStringPart FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
+FormattedStringPart * FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
 	if (!textFragment.isValid())
-		return FormattedStringPart();
+		return 0;
 
 	QTextCharFormat format = textFragment.charFormat();
 	if (!format.isImageFormat())
@@ -74,15 +74,15 @@ FormattedStringPart FormattedStringFactory::partFromQTextFragment(const QTextFra
 		return partFromQTextImageFormat(format.toImageFormat());
 }
 
-QList<FormattedStringPart> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
+QList<FormattedStringPart *> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
-	QList<FormattedStringPart> result;
+	QList<FormattedStringPart *> result;
 
 	bool firstFragment = true;
 	for (QTextBlock::iterator it = textBlock.begin(); !it.atEnd(); ++it)
 	{
-		FormattedStringPart part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
-		if (!part.isEmpty())
+		FormattedStringPart *part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
+		if (part && !part->isEmpty())
 		{
 			result.append(part);
 			firstFragment = false;
@@ -104,8 +104,8 @@ CompositeFormattedString * FormattedStringFactory::fromHTML(const QString &html)
 	QTextBlock block = document.firstBlock();
 	while (block.isValid())
 	{
-		QList<FormattedStringPart> parts = partsFromQTextBlock(block, firstBlock);
-		foreach (const FormattedStringPart &part, parts)
+		QList<FormattedStringPart *> parts = partsFromQTextBlock(block, firstBlock);
+		foreach (FormattedStringPart *part, parts)
 			result->append(part);
 
 		block = block.next();

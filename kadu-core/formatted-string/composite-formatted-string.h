@@ -53,7 +53,7 @@ class KADUAPI CompositeFormattedString : public FormattedString
 {
 	Q_DISABLE_COPY(CompositeFormattedString)
 
-	QVector<FormattedStringPart> Parts;
+	QVector<FormattedStringPart *> Parts;
 
 public:
 	/**
@@ -69,13 +69,13 @@ public:
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */
-	const QVector<FormattedStringPart> & parts() const;
+	const QVector<FormattedStringPart *> & parts() const;
 
 	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */
-	void append(const FormattedStringPart &part);
+	void append(FormattedStringPart *part);
 
 	/**
 	 * Returns true if message does not have any parts or if all parts are empty.
