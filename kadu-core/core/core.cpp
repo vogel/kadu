@@ -46,6 +46,7 @@
 #include "contacts/contact-manager.h"
 #include "emoticons/emoticons.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -124,7 +125,7 @@ Core::Core() :
 		MainWindowProvider(new DefaultProvider<QWidget *>(KaduWindowProvider)),
 		CurrentChatImageRequestService(0), CurrentImageStorageService(0),
 		CurrentMessageFilterService(0), CurrentMessageTransformerService(0),
-		CurrentNotificationService(0),
+		CurrentNotificationService(0), CurrentFormattedStringFactory(0),
 		Window(0),
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
@@ -535,6 +536,7 @@ void Core::runServices()
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
+	CurrentFormattedStringFactory = new FormattedStringFactory();
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -547,6 +549,9 @@ void Core::runServices()
 
 	MessageManager::instance()->setMessageFilterService(CurrentMessageFilterService);
 	MessageManager::instance()->setMessageTransformerService(CurrentMessageTransformerService);
+	MessageManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
+
+	CurrentFormattedStringFactory->setImageStorageService(CurrentImageStorageService);
 }
 
 void Core::runGuiServices()
@@ -577,6 +582,11 @@ MessageTransformerService * Core::messageTransformerService() const
 NotificationService * Core::notificationService() const
 {
 	return CurrentNotificationService;
+}
+
+FormattedStringFactory * Core::formattedStringFactory() const
+{
+	return CurrentFormattedStringFactory;
 }
 
 void Core::showMainWindow()

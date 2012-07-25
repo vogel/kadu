@@ -180,8 +180,16 @@ void MessageManager::setMessageTransformerService(MessageTransformerService *mes
 	CurrentMessageTransformerService = messageTransformerService;
 }
 
+void MessageManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
 {
+	if (!CurrentFormattedStringFactory)
+		return false;
+
 	Protocol *protocol = chat.chatAccount().protocolHandler();
 	if (!protocol)
 		return false;
@@ -201,9 +209,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	FormattedStringFactory factory;
-	factory.setImageStorageService(Core::instance()->imageStorageService());
-	FormattedMessage formattedMessage = factory.fromHTML(document.toHtml());
+	FormattedMessage formattedMessage = CurrentFormattedStringFactory.data()->fromHTML(document.toHtml());
 
 	QString plain = formattedMessage.toPlain();
 	if (CurrentMessageFilterService)

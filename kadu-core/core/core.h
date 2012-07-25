@@ -50,6 +50,7 @@ namespace QCA
 }
 
 class ChatImageRequestService;
+class FormattedStringFactory;
 class ImageStorageService;
 class KaduApplication;
 class KaduIcon;
@@ -74,6 +75,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	MessageFilterService *CurrentMessageFilterService;
 	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
+	FormattedStringFactory *CurrentFormattedStringFactory;
 
 	KaduWindow *Window;
 
@@ -130,6 +132,7 @@ public:
 	MessageFilterService * messageFilterService() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationService * notificationService() const;
+	FormattedStringFactory * formattedStringFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

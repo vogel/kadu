@@ -31,6 +31,7 @@
 
 class QSqlError;
 
+class FormattedStringFactory;
 class HistoryQuery;
 class ProgressWindow;
 
@@ -46,6 +47,8 @@ class SqlContactsMapping;
 class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	QThread *InitializerThread;
 	ProgressWindow *ImportProgressWindow;
@@ -112,6 +115,8 @@ private slots:
 public:
 	explicit HistorySqlStorage(QObject *parent = 0);
 	virtual ~HistorySqlStorage();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual QFuture<QVector<Talkable> > chats();
 	virtual QFuture<QVector<Talkable> > statusBuddies();

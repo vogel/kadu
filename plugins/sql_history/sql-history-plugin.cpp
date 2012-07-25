@@ -23,6 +23,8 @@
 
 #include <QtSql/QSqlDatabase>
 
+#include "core/core.h"
+
 #include "plugins/history/history.h"
 
 #include "storage/history-sql-storage.h"
@@ -38,6 +40,7 @@ int SqlHistoryPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	Storage = new HistorySqlStorage();
+	Storage.data()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
 	return 0;
 }

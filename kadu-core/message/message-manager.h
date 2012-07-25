@@ -30,6 +30,7 @@
 #include "exports.h"
 
 class Buddy;
+class FormattedStringFactory;
 class MessageFilterService;
 class MessageTransformerService;
 
@@ -55,6 +56,7 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 
 	QWeakPointer<MessageFilterService> CurrentMessageFilterService;
 	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	QList<Message> UnreadMessages;
 
@@ -113,6 +115,13 @@ public:
 	 * @param messageTransformerService message transformer service for this service
 	 */
 	void setMessageTransformerService(MessageTransformerService *messageTransformerService);
+
+	/**
+	 * @short Set formatted string factory for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param formattedStringFactory formatted string factory for this service
+	 */
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	/**
 	 * @short Send new message to given chat.

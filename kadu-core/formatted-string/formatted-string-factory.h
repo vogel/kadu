@@ -36,8 +36,10 @@ class ImageStorageService;
  * @short Class for creating FormattedMessage instances from different sources.
  * @author Rafał 'Vogel' Malinowski
  */
-class FormattedStringFactory
+class FormattedStringFactory : public QObject
 {
+	Q_OBJECT
+
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	FormattedMessagePart partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);

@@ -33,6 +33,7 @@
 
 class Chat;
 class ChatDetailsRoom;
+class FormattedStringFactory;
 class JabberProtocol;
 
 namespace XMPP
@@ -44,6 +45,7 @@ class JabberChatService : public ChatService
 {
 	Q_OBJECT
 
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 	QWeakPointer<Client> XmppClient;
 
 	QMap<QString, QString> ContactMessageTypes;
@@ -68,6 +70,8 @@ private slots:
 public:
 	explicit JabberChatService(Account account, QObject *parent = 0);
 	virtual ~JabberChatService();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void setXmppClient(Client *xmppClient);
 

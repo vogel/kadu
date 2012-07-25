@@ -43,6 +43,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
@@ -124,6 +125,11 @@ HistorySqlStorage::~HistorySqlStorage()
 
 	if (Database.isOpen())
 		Database.commit();
+}
+
+void HistorySqlStorage::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void HistorySqlStorage::ensureProgressWindowReady()
@@ -634,11 +640,16 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			}
 
 			// TODO: this should be done in different place
-			QTextDocument document;
-			document.setHtml(message);
-			FormattedMessage formatted = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
 
-			QString title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
+			QString title;
+			if (CurrentFormattedStringFactory)
+			{
+				FormattedMessage formatted = CurrentFormattedStringFactory.data()->fromHTML(message);
+				title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
+			}
+			else
+				title = message.replace('\n', ' ').replace('\r', ' ');
+
 			if (title.length() > DATE_TITLE_LENGTH)
 			{
 				title.truncate(DATE_TITLE_LENGTH);

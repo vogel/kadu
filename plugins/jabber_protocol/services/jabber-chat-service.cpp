@@ -76,6 +76,11 @@ void JabberChatService::disconnectClient()
 	disconnect(XmppClient.data(), 0, this, 0);
 }
 
+void JabberChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 void JabberChatService::setXmppClient(Client *xmppClient)
 {
 	if (XmppClient)
@@ -250,6 +255,9 @@ bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, 
 
 void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	// skip empty messages
 	if (msg.body().isEmpty())
 		return;
@@ -287,9 +295,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	FormattedStringFactory formattedStringFactory;
-	formattedStringFactory.setImageStorageService(Core::instance()->imageStorageService());
-	FormattedMessage formattedMessage = formattedStringFactory.fromPlainText(body);
+	FormattedMessage formattedMessage = CurrentFormattedStringFactory.data()->fromPlainText(body);
 	QString plain = formattedMessage.toPlain();
 
 	if (messageFilterService())
