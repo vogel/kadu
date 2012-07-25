@@ -26,6 +26,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -215,6 +216,9 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedString->accept(&plainTextVisitor);
 
+	FormattedStringHtmlVisitor htmlVisitor;
+	formattedString->accept(&htmlVisitor);
+
 	QString plain = plainTextVisitor.result();
 	if (CurrentMessageFilterService)
 		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
@@ -227,7 +231,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(formattedString->toHtml());
+	message.setContent(htmlVisitor.result());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 

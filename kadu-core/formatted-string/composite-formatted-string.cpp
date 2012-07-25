@@ -70,12 +70,3 @@ bool CompositeFormattedString::isEmpty() const
 
 	return true;
 }
-
-QString CompositeFormattedString::toHtml() const
-{
-	QString result;
-	foreach (const FormattedStringPart &part, Parts)
-		result += part.toHtml();
-
-	return result;
-}

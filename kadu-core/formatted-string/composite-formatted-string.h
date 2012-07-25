@@ -83,13 +83,6 @@ public:
 	 */
 	virtual bool isEmpty() const;
 
-	/**
-	 * Converts message to HTML, with formatting and images. Resulting code is
-	 * not a full HTML page - only the content.
-	 * @return HTML representation of message.
-	 */
-	virtual QString toHtml() const;
-
 };
 
 #endif // COMPOSITE_FORMATTED_STRING_H

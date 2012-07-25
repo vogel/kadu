@@ -33,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/message-filter-service.h"
@@ -224,12 +225,15 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
 			return;
 
+	FormattedStringHtmlVisitor htmlVisitor;
+	formattedString->accept(&htmlVisitor);
+
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setContent(formattedString->toHtml());
+	msg.setContent(htmlVisitor.result());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 

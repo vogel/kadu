@@ -17,24 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_H
-#define FORMATTED_STRING_H
+#ifndef FORMATTED_STRING_HTML_VISITOR_H
+#define FORMATTED_STRING_HTML_VISITOR_H
 
-class FormattedStringVisitor;
+#include <QtCore/QString>
 
-class FormattedString
+#include "formatted-string-visitor.h"
+
+class FormattedStringHtmlVisitor : public FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedString);
+	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
 
-protected:
-	FormattedString() {}
-	virtual ~FormattedString() {}
+	QString Result;
 
 public:
-	virtual void accept(FormattedStringVisitor *visitor) const = 0;
+	FormattedStringHtmlVisitor();
+	virtual ~FormattedStringHtmlVisitor();
 
-	virtual bool isEmpty() const = 0;
+	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
+	virtual void visit(const FormattedStringPart * const formattedStringPart);
+
+	QString result() const;
 
 };
 
-#endif // FORMATTED_STRING_H
+#endif // FORMATTED_STRING_HTML_VISITOR_H

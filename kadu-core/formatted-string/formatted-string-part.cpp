@@ -102,32 +102,3 @@ ChatImageKey FormattedStringPart::imageKey() const
 {
 	return ImageKey;
 }
-
-QString FormattedStringPart::toHtml() const
-{
-	if (IsImage)
-		return QFileInfo(ImagePath).isAbsolute()
-				? QString("<img src=\"file://%1\" id=\"%2\" />").arg(ImagePath).arg(ImageKey.toString())
-				: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(ImagePath).arg(ImageKey.toString());
-
-	QString result(replacedNewLine(Qt::escape(Content), QLatin1String("<br/>")));
-	result.replace(QChar::LineSeparator, QLatin1String("<br/>"));
-
-	if (!Bold && !Italic && !Underline && !Color.isValid())
-		return result;
-
-	QString span = "<span style=\"";
-	if (Bold)
-		span += "font-weight:600;";
-	if (Italic)
-		span += "font-style:italic;";
-	if (Underline)
-		span += "text-decoration:underline;";
-//  TODO: Ignore colors settings for now. Many clients send black as default color.
-//	This breaks all dark chat themes. We have to find better solution for post 0.9.0 versions
-//	if (Color.isValid())
-//		span += QString("color:%1;").arg(Color.name());
-	span += "\">";
-
-	return span + result + "</span>";
-}

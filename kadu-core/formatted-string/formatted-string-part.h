@@ -112,12 +112,6 @@ public:
 
 	ChatImageKey imageKey() const;
 
-	/**
-	 * Converts message part to HTML - either formatted text or image.
-	 * @return HTML representation of message parh.
-	 */
-	virtual QString toHtml() const;
-
 };
 
 #endif // FORMATTED_STRING_PART_H
