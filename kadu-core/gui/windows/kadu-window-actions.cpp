@@ -767,7 +767,11 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	ContactSet contacts = action->context()->contacts();
 
 	QStringList infoList;
-	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
+	QString defaultSyntax = Parser::escape(tr("Contact:")) + " %a[ (%u)]\n["
+			+ Parser::escape(tr("First name:")) + " %f\n]["
+			+ Parser::escape(tr("Last name:")) + " %r\n]["
+			+ Parser::escape(tr("Mobile:")) + " %m\n]";
+	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
 	foreach (Contact contact, contacts)
 		infoList.append(Parser::parse(copyPersonalDataSyntax, Talkable(contact), false));
 

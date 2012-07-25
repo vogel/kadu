@@ -234,7 +234,7 @@ void ExecNotify::notify(Notification *notification)
 
 		QStringList sendersList;
 		foreach (const Contact &contact, contacts)
-			sendersList.append(contact.id());
+			sendersList.append(Parser::escape(contact.id()));
 		QString sendersString = sendersList.join(",");
 
 		Contact contact = *contacts.constBegin();

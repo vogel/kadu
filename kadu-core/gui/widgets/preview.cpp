@@ -90,7 +90,7 @@ void Preview::syntaxChanged(const QString &content)
 		text = Parser::parse(syntax.top(), Talkable(), true);
 
 		foreach (MessageRenderInfo *message, Messages)
-			text += Parser::parse(syntax.withHeader(), message->message().messageSender(), message);
+			text += Parser::parse(syntax.withHeader(), Talkable(message->message().messageSender()), message);
 	}
 	else
 		text = Parser::parse(syntax, Talkable(Buddy::dummy()));
