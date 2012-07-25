@@ -35,7 +35,9 @@
 class QTimer;
 
 class CompositeFormattedString;
+class GaduChatImageService;
 class GaduConnection;
+class ImageStorageService;
 
 /**
  * @addtogroup Gadu
@@ -53,6 +55,9 @@ class GaduConnection;
 class GaduChatService : public ChatService
 {
 	Q_OBJECT
+
+	QWeakPointer<GaduChatImageService> CurrentGaduChatImageService;
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	QWeakPointer<GaduConnection> Connection;
 
@@ -77,6 +82,22 @@ private slots:
 public:
 	explicit GaduChatService(Account account, QObject *parent = 0);
 	virtual ~GaduChatService();
+
+	/**
+	 * @short Set gadu chat image service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param gaduChatImageService chat image service for this service
+	 */
+	void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
+
+	/**
+	 * @short Set image storage service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService image storage service for this service
+	 *
+	 * This service is used to get full file paths of chat images.
+	 */
+	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	/**
 	 * @short Set connection for this service.

@@ -36,11 +36,14 @@
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
+#include "services/image-storage-service.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "status/status-type.h"
 #include "debug.h"
 
+#include "helpers/formatted-string-formats-visitor.h"
+#include "helpers/formatted-string-formats-size-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
@@ -65,6 +68,16 @@ GaduChatService::~GaduChatService()
 {
 }
 
+void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImageService)
+{
+	CurrentGaduChatImageService = gaduChatImageService;
+}
+
+void GaduChatService::setImageStorageService(ImageStorageService *imageStorageService)
+{
+	CurrentImageStorageService = imageStorageService;
+}
+
 void GaduChatService::setConnection(GaduConnection *connection)
 {
 	Connection = connection;
@@ -78,7 +91,15 @@ int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, c
 	Connection.data()->beginWrite();
 	gg_session *session = Connection.data()->session();
 
-	QByteArray formats(GaduFormatter::createFormats(account(), formattedString, Core::instance()->imageStorageService()));
+	FormattedStringFormatsSizeVisitor formatsSizeVisitor(!CurrentGaduChatImageService.isNull());
+	formattedString->accept(&formatsSizeVisitor);
+
+	FormattedStringFormatsVisitor formatsVisitor(formatsSizeVisitor.result());
+	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
+	formatsVisitor.setImageStorageService(CurrentImageStorageService.data());
+	formattedString->accept(&formatsVisitor);
+
+	QByteArray formats = formatsVisitor.result();
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();

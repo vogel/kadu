@@ -25,21 +25,7 @@
 #define GG_IGNORE_DEPRECATED
 #include <libgadu.h>
 
-#include <QtCore/QFile>
-#include <QtGui/QApplication>
-
-#include "accounts/account-manager.h"
-#include "accounts/account.h"
-#include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact-manager.h"
 #include "formatted-string/composite-formatted-string.h"
-#include "gui/windows/message-dialog.h"
-#include "services/image-storage-service.h"
-
-#include "helpers/formatted-string-formats-size-visitor.h"
-#include "helpers/formatted-string-formats-visitor.h"
-#include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
 
@@ -62,23 +48,6 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 
 namespace GaduFormatter
 {
-
-QByteArray createFormats(Account account, FormattedString *formattedString, ImageStorageService *imageStorageService)
-{
-	if (!account.protocolHandler())
-		return QByteArray();
-
-	bool allowImages = account.protocolHandler()->chatImageService();
-	FormattedStringFormatsSizeVisitor formatsSizeVisitor(allowImages);
-	formattedString->accept(&formatsSizeVisitor);
-
-	FormattedStringFormatsVisitor formatsVisitor(formatsSizeVisitor.result());
-	formatsVisitor.setChatImageService(account.protocolHandler()->chatImageService());
-	formatsVisitor.setImageStorageService(imageStorageService);
-	formattedString->accept(&formatsVisitor);
-
-	return formatsVisitor.result();
-}
 
 static QList<FormatAttribute> createFormatList(const unsigned char *formats, unsigned int size)
 {
