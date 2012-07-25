@@ -287,8 +287,9 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	QScopedPointer<FormattedStringFactory> formattedStringFactory(new FormattedStringFactory());
-	FormattedMessage formattedMessage = formattedStringFactory.data()->fromPlainText(body);
+	FormattedStringFactory formattedStringFactory;
+	formattedStringFactory.setImageStorageService(Core::instance()->imageStorageService());
+	FormattedMessage formattedMessage = formattedStringFactory.fromPlainText(body);
 	QString plain = formattedMessage.toPlain();
 
 	if (messageFilterService())
