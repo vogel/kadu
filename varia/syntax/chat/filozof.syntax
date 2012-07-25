@@ -15,7 +15,7 @@
 				document.getElementById("composing").style.display = "none";
 		\}
 	</script>
-	<div id="composing" style="display:none; position:fixed; z-index:1; top:0px; right:0px; cursor:default; -webkit-user-select:none;" onclick="this.style.display='none';">
+	<div id="composing" style="display:none; position:fixed; z-index:1; top:0px; right:0px; cursor:default; -webkit-user-select:none;" onclick="this.style.display=\'none\';">
 		<div style="position:relative; top:2px; right:2px; padding:3px 8px; -webkit-border-radius:10px; background:rgba(255,255,255,0.7);">
 			<img id="composingicon" src="@{kadu_icons/composing:svg}" alt="" style="max-width:32px; max-height:32px; vertical-align:middle;">
 		</div>
