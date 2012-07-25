@@ -109,7 +109,7 @@ int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, c
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, CompositeFormattedString *formattedString, const QString &plain)
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, FormattedString *formattedString, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -125,7 +125,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, Comp
 		return false;
 	}
 
-	int messageId = sendRawMessage(formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage((CompositeFormattedString *) formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
@@ -178,7 +178,7 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-CompositeFormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
+FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
 	if (!richText)
 		return GaduFormatter::createMessage(content, 0, 0);
@@ -211,7 +211,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (messageTransformerService())
 		content = messageTransformerService()->transformIncomingMessage(chat, content);
 
-	QScopedPointer<CompositeFormattedString> formattedString(createFormattedString(e, content, !ignoreRichText(sender)));
+	QScopedPointer<FormattedString> formattedString(createFormattedString(e, content, !ignoreRichText(sender)));
 	if (formattedString->isEmpty())
 		return;
 
@@ -241,7 +241,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	{
 		emit messageReceived(msg);
 
-		foreach (FormattedStringPart *part, formattedString->parts())
+		foreach (FormattedStringPart *part, ((CompositeFormattedString *) formattedString.data())->parts())
 			if (part->isImage())
 				emit chatImageKeyReceived(sender.id(), part->imageKey());
 	}

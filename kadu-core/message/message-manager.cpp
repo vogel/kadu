@@ -211,7 +211,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
+	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedString->accept(&plainTextVisitor);

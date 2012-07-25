@@ -237,7 +237,7 @@ static FormattedStringPart * messagePart(const QString &content, const gg_msg_ri
 	return new FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-CompositeFormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
+FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
 	CompositeFormattedString *result = new CompositeFormattedString();
 	QList<FormatAttribute> formatList = createFormatList(formats, size);

@@ -31,13 +31,14 @@
 
 class Account;
 class CompositeFormattedString;
+class FormattedString;
 class ImageStorageService;
 
 namespace GaduFormatter
 {
 	GADUAPI unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService);
 
-	GADUAPI CompositeFormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
+	GADUAPI FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 
 }
 

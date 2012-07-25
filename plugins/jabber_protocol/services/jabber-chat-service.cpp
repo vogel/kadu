@@ -229,7 +229,7 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 		return ContactMessageTypes.value(jid.bare());
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, CompositeFormattedString *formattedString, const QString &plain)
+bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, FormattedString *formattedString, const QString &plain)
 {
 	Q_UNUSED(message)
 	Q_UNUSED(formattedString)
@@ -296,7 +296,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
+	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedString->accept(&plainTextVisitor);

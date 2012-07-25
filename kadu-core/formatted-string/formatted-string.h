@@ -28,9 +28,10 @@ class FormattedString
 
 protected:
 	FormattedString() {}
-	virtual ~FormattedString() {}
 
 public:
+	virtual ~FormattedString() {}
+
 	virtual void accept(FormattedStringVisitor *visitor) const = 0;
 
 	virtual bool isEmpty() const = 0;
