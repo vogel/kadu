@@ -20,9 +20,16 @@
 #ifndef FORMATTED_STRING_FACTORY_H
 #define FORMATTED_STRING_FACTORY_H
 
-class QString;
+#include <QtCore/QWeakPointer>
+
+class QTextBlock;
+class QTextCharFormat;
+class QTextFragment;
+class QTextImageFormat;
 
 class FormattedMessage;
+class FormattedMessagePart;
+class ImageStorageService;
 
 /**
  * @class FormattedStringFactory
@@ -31,9 +38,26 @@ class FormattedMessage;
  */
 class FormattedStringFactory
 {
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+
+	FormattedMessagePart partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
+	FormattedMessagePart partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
+	FormattedMessagePart partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
+	QList<FormattedMessagePart> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
+
 public:
 	/**
-	 * @short Create FormattedMessage instance with plain text.
+	 * @short Set ImageStorageService to use by this factory.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService ImageStorageService to use by this factory
+	 *
+	 * ImageStorageService will be used to store images and change path to them to make FormattedMessage working even when Kadu instance
+	 * is moved to new location.
+	 */
+	void setImageStorageService(ImageStorageService *imageStorageService);
+
+	/**
+	 * @short Create FormattedMessage instance from plain text.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param plainText plain content of new FormattedMessage
 	 *
@@ -41,6 +65,16 @@ public:
 	 * will contain one text part.
 	 */
 	FormattedMessage fromPlainText(const QString &plainText);
+
+	/**
+	 * @short Create FormattedMessage instance from HTML.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param html HTML content of new FormattedMessage
+	 *
+	 * Thie method will extract basic information about formatting from HTML content and create instance of FormattedMessage with
+	 * this data.
+	 */
+	FormattedMessage fromHTML(const QString &html);
 
 };
 

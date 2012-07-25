@@ -64,17 +64,6 @@ public:
 	virtual ~FormattedMessage();
 
 	/**
-	 * Creates a message from given HTML document. The bold, italic, underline and
-	 * color formatting are preserved and stored into result object.
-	 * It also extracts images and inserts in into message.
-	 *
-	 * @param messageDocument HTML document to parse
-	 * @param imageStorageService service used to store images in one place
-	 * @return FormattedMessage representation of HTML document
-	 */
-	static FormattedMessage parse(const QTextDocument *messageDocument, ImageStorageService *imageStorageService);
-
-	/**
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */

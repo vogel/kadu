@@ -25,6 +25,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "formatted-string/formatted-message.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
@@ -200,7 +201,9 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	FormattedMessage formattedMessage = FormattedMessage::parse(&document, Core::instance()->imageStorageService());
+	FormattedStringFactory factory;
+	factory.setImageStorageService(Core::instance()->imageStorageService());
+	FormattedMessage formattedMessage = factory.fromHTML(document.toHtml());
 
 	QString plain = formattedMessage.toPlain();
 	if (CurrentMessageFilterService)

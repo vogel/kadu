@@ -35,57 +35,6 @@
 
 #include "formatted-message.h"
 
-FormattedMessage FormattedMessage::parse(const QTextDocument *document, ImageStorageService *imageStorageService)
-{
-	FormattedMessage result;
-
-	QString text;
-
-	QTextBlock block = document->firstBlock();
-	bool firstParagraph = true;
-	while (block.isValid())
-	{
-		bool firstFragment = true;
-		for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it)
-		{
-			QTextFragment fragment = it.fragment();
-			if (!fragment.isValid())
-				continue;
-
-			if (!firstParagraph && firstFragment)
-				text = '\n' + fragment.text();
-			else
-				text = fragment.text();
-
-			QTextCharFormat format = fragment.charFormat();
-			if (!format.isImageFormat())
-			{
-				if (!text.isEmpty())
-					result.append(FormattedMessagePart(text, format.font().bold(), format.font().italic(), format.font().underline(), format.foreground().color()));
-			}
-			else
-			{
-				QString filePath = format.toImageFormat().name();
-				QFileInfo fileInfo(filePath);
-				if (fileInfo.isAbsolute() && fileInfo.exists() && fileInfo.isFile())
-				{
-					if (imageStorageService)
-						result.append(FormattedMessagePart(imageStorageService->storeImage(filePath)));
-					else
-						result.append(FormattedMessagePart(filePath));
-				}
-			}
-
-			firstFragment = false;
-		}
-
-		block = block.next();
-		firstParagraph = false;
-	}
-
-	return result;
-}
-
 FormattedMessage::FormattedMessage()
 {
 }
