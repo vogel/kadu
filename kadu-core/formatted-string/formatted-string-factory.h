@@ -27,7 +27,7 @@ class QTextCharFormat;
 class QTextFragment;
 class QTextImageFormat;
 
-class FormattedString;
+class CompositeFormattedString;
 class FormattedStringPart;
 class ImageStorageService;
 
@@ -68,7 +68,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromPlainText(const QString &plainText);
+	CompositeFormattedString * fromPlainText(const QString &plainText);
 
 	/**
 	 * @short Create FormattedString instance from HTML.
@@ -80,7 +80,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromHTML(const QString &html);
+	CompositeFormattedString * fromHTML(const QString &html);
 
 };
 

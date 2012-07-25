@@ -33,7 +33,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
@@ -228,7 +228,7 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 		return ContactMessageTypes.value(jid.bare());
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, FormattedString *formattedString, const QString &plain)
+bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, CompositeFormattedString *formattedString, const QString &plain)
 {
 	Q_UNUSED(message)
 	Q_UNUSED(formattedString)
@@ -295,7 +295,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (messageTransformerService())
 		body = messageTransformerService()->transformIncomingMessage(chat, body);
 
-	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
+	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
 	QString plain = formattedString->toPlain();
 
 	if (messageFilterService())

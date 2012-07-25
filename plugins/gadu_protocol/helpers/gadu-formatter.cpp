@@ -33,7 +33,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
 
@@ -61,7 +61,7 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 namespace GaduFormatter
 {
 
-static unsigned int computeFormatsSize(FormattedString *formattedString)
+static unsigned int computeFormatsSize(CompositeFormattedString *formattedString)
 {
 	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
@@ -84,7 +84,7 @@ static unsigned int computeFormatsSize(FormattedString *formattedString)
 	return first ? 0 : size;
 }
 
-unsigned char * createFormats(Account account, FormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService)
+unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService)
 {
 	size = computeFormatsSize(formattedString);
 	if (!size)
@@ -237,9 +237,9 @@ static FormattedStringPart messagePart(const QString &content, const gg_msg_rich
 	return FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
+CompositeFormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
-	FormattedString *result = new FormattedString();
+	CompositeFormattedString *result = new CompositeFormattedString();
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.

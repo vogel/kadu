@@ -21,7 +21,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
@@ -31,9 +31,9 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 	CurrentImageStorageService = imageStorageService;
 }
 
-FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
+CompositeFormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	FormattedString *result = new FormattedString();
+	CompositeFormattedString *result = new CompositeFormattedString();
 	if (!plainText.isEmpty())
 		result->append(FormattedStringPart(plainText, false, false, false, QColor()));
 
@@ -92,9 +92,9 @@ QList<FormattedStringPart> FormattedStringFactory::partsFromQTextBlock(const QTe
 	return result;
 }
 
-FormattedString * FormattedStringFactory::fromHTML(const QString &html)
+CompositeFormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
-	FormattedString *result = new FormattedString();
+	CompositeFormattedString *result = new CompositeFormattedString();
 
 	QTextDocument document;
 	document.setHtml(html);

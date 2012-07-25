@@ -24,7 +24,7 @@
 #include "chat/chat-details-buddy.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -209,7 +209,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
+	QScopedPointer<CompositeFormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
 
 	QString plain = formattedString->toPlain();
 	if (CurrentMessageFilterService)

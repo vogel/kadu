@@ -33,7 +33,7 @@
 
 #include "protocols/services/account-service.h"
 
-class FormattedString;
+class CompositeFormattedString;
 class Message;
 class MessageFilterService;
 class MessageTransformerService;
@@ -106,7 +106,7 @@ public slots:
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
 	 */
-	virtual bool sendMessage(const Chat &chat, const Message &message, FormattedString *formattedString, const QString &plain) = 0;
+	virtual bool sendMessage(const Chat &chat, const Message &message, CompositeFormattedString *formattedString, const QString &plain) = 0;
 
 signals:
 	/**

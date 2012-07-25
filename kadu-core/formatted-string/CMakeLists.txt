@@ -1,5 +1,5 @@
 set (formatted-string_SRCS
-	formatted-string.cpp
+	composite-formatted-string.cpp
 	formatted-string-factory.cpp
 	formatted-string-part.cpp
 )

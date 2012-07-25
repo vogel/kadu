@@ -32,7 +32,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
@@ -67,7 +67,7 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
+int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -107,7 +107,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, FormattedString *formattedString, const QString &plain)
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, CompositeFormattedString *formattedString, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -176,7 +176,7 @@ bool GaduChatService::ignoreRichText(Contact sender)
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
-FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
+CompositeFormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
 	if (!richText)
 		return GaduFormatter::createMessage(content, 0, 0);
@@ -209,7 +209,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (messageTransformerService())
 		content = messageTransformerService()->transformIncomingMessage(chat, content);
 
-	QScopedPointer<FormattedString> formattedString(createFormattedString(e, content, !ignoreRichText(sender)));
+	QScopedPointer<CompositeFormattedString> formattedString(createFormattedString(e, content, !ignoreRichText(sender)));
 	if (formattedString->isEmpty())
 		return;
 

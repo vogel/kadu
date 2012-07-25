@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_H
-#define FORMATTED_STRING_H
+#ifndef COMPOSITE_FORMATTED_STRING_H
+#define COMPOSITE_FORMATTED_STRING_H
 
 #include <QtCore/QList>
 #include <QtGui/QColor>
@@ -37,7 +37,7 @@ class QTextDocument;
 class ImageStorageService;
 
 /**
- * \class FormattedString
+ * \class CompositeFormattedString
  * \brief Rich message (incoming or outcoming).
  *
  * This class represens incoming or outgoing message. Some protocols (like GG) uses its own
@@ -47,9 +47,9 @@ class ImageStorageService;
  *
  * Each message has an <code>id</code> field that is used by protocols to store its message sequental number.
  */
-class KADUAPI FormattedString
+class KADUAPI CompositeFormattedString
 {
-	Q_DISABLE_COPY(FormattedString)
+	Q_DISABLE_COPY(CompositeFormattedString)
 
 	QVector<FormattedStringPart> Parts;
 
@@ -57,9 +57,9 @@ public:
 	/**
 	 * Creates an empty message.
 	 */
-	FormattedString();
+	CompositeFormattedString();
 
-	virtual ~FormattedString();
+	virtual ~CompositeFormattedString();
 
 	/**
 	 * Returns all parts that composes this message.
@@ -94,4 +94,4 @@ public:
 
 };
 
-#endif // FORMATTED_STRING_H
+#endif // COMPOSITE_FORMATTED_STRING_H

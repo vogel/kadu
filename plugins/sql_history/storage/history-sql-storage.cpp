@@ -42,7 +42,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
@@ -644,7 +644,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			QString title;
 			if (CurrentFormattedStringFactory)
 			{
-				QScopedPointer<FormattedString> formatted(CurrentFormattedStringFactory.data()->fromHTML(message));
+				QScopedPointer<CompositeFormattedString> formatted(CurrentFormattedStringFactory.data()->fromHTML(message));
 				title = formatted->toPlain().replace('\n', ' ').replace('\r', ' ');
 			}
 			else

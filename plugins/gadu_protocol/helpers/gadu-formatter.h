@@ -30,14 +30,14 @@
 #include "../gadu-protocol.h"
 
 class Account;
-class FormattedString;
+class CompositeFormattedString;
 class ImageStorageService;
 
 namespace GaduFormatter
 {
-	GADUAPI unsigned char * createFormats(Account account, FormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService);
+	GADUAPI unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService);
 
-	GADUAPI FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
+	GADUAPI CompositeFormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 
 }
 

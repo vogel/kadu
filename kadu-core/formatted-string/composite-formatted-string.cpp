@@ -33,27 +33,27 @@
 #include "services/image-storage-service.h"
 #include "html_document.h"
 
-#include "formatted-string.h"
+#include "composite-formatted-string.h"
 
-FormattedString::FormattedString()
+CompositeFormattedString::CompositeFormattedString()
 {
 }
 
-FormattedString::~FormattedString()
+CompositeFormattedString::~CompositeFormattedString()
 {
 }
 
-const QVector<FormattedStringPart> & FormattedString::parts() const
+const QVector<FormattedStringPart> & CompositeFormattedString::parts() const
 {
 	return Parts;
 }
 
-void FormattedString::append(const FormattedStringPart &part)
+void CompositeFormattedString::append(const FormattedStringPart &part)
 {
 	Parts.append(part);
 }
 
-bool FormattedString::isEmpty() const
+bool CompositeFormattedString::isEmpty() const
 {
 	foreach (const FormattedStringPart &part, Parts)
 		if (!part.isEmpty())
@@ -62,7 +62,7 @@ bool FormattedString::isEmpty() const
 	return true;
 }
 
-QString FormattedString::toPlain() const
+QString CompositeFormattedString::toPlain() const
 {
 	QString result;
 	foreach (const FormattedStringPart &part, Parts)
@@ -72,7 +72,7 @@ QString FormattedString::toPlain() const
 	return result;
 }
 
-QString FormattedString::toHtml() const
+QString CompositeFormattedString::toHtml() const
 {
 	QString result;
 	foreach (const FormattedStringPart &part, Parts)

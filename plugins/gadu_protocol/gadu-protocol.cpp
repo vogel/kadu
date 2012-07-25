@@ -50,7 +50,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "formatted-string/formatted-string.h"
+#include "formatted-string/composite-formatted-string.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/password-window.h"
 #include "network/proxy/network-proxy-manager.h"
