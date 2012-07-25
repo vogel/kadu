@@ -28,6 +28,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
+#include "formatted-string/formatted-string-visitor.h"
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
@@ -41,6 +42,14 @@ CompositeFormattedString::CompositeFormattedString()
 
 CompositeFormattedString::~CompositeFormattedString()
 {
+}
+
+void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
+{
+	foreach (const FormattedStringPart &part, Parts)
+		part.accept(visitor);
+
+	visitor->visit(this);
 }
 
 const QVector<FormattedStringPart> & CompositeFormattedString::parts() const

@@ -63,6 +63,8 @@ public:
 
 	virtual ~CompositeFormattedString();
 
+	virtual void accept(FormattedStringVisitor *visitor) const;
+
 	/**
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.

@@ -97,6 +97,8 @@ public:
 
 	FormattedStringPart & operator = (const FormattedStringPart &copyMe);
 
+	virtual void accept(FormattedStringVisitor *visitor) const;
+
 	bool isImage() const { return IsImage; }
 	virtual bool isEmpty() const { return !IsImage && Content.isEmpty(); }
 

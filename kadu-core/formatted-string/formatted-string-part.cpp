@@ -25,6 +25,7 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
+#include "formatted-string/formatted-string-visitor.h"
 #include "misc/misc.h"
 #include "protocols/services/chat-image-service.h"
 
@@ -85,6 +86,11 @@ FormattedStringPart & FormattedStringPart::operator = (const FormattedStringPart
 	ImageKey = copyMe.ImageKey;
 
 	return *this;
+}
+
+void FormattedStringPart::accept(FormattedStringVisitor *visitor) const
+{
+	visitor->visit(this);
 }
 
 QString FormattedStringPart::imagePath() const

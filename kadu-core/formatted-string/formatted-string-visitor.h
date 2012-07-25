@@ -17,26 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_H
-#define FORMATTED_STRING_H
+#ifndef FORMATTED_STRING_VISITOR_H
+#define FORMATTED_STRING_VISITOR_H
 
-class FormattedStringVisitor;
+class CompositeFormattedString;
+class FormattedStringPart;
 
-class FormattedString
+class FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedString);
+	Q_DISABLE_COPY(FormattedStringVisitor);
 
 protected:
-	FormattedString() {}
-	virtual ~FormattedString() {}
+	FormattedStringVisitor() {}
+	virtual ~FormattedStringVisitor() {}
 
 public:
-	virtual void accept(FormattedStringVisitor *visitor) const = 0;
-
-	virtual bool isEmpty() const = 0;
-	virtual QString toPlain() const = 0;
-	virtual QString toHtml() const = 0;
+	virtual void visit(const CompositeFormattedString * const compositeFormattedString) = 0;
+	virtual void visit(const FormattedStringPart * const formattedStringPart) = 0;
 
 };
 
-#endif // FORMATTED_STRING_H
+#endif // FORMATTED_STRING_VISITOR_H
