@@ -38,6 +38,7 @@
 #include "services/image-storage-service.h"
 
 #include "helpers/formatted-string-formats-size-visitor.h"
+#include "helpers/formatted-string-formats-visitor.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -62,94 +63,21 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 namespace GaduFormatter
 {
 
-unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService)
+QByteArray createFormats(Account account, FormattedString *formattedString, ImageStorageService *imageStorageService)
 {
-	FormattedStringFormatsSizeVisitor formatsSizeVisitor;
+	if (!account.protocolHandler())
+		return QByteArray();
+
+	bool allowImages = account.protocolHandler()->chatImageService();
+	FormattedStringFormatsSizeVisitor formatsSizeVisitor(allowImages);
 	formattedString->accept(&formatsSizeVisitor);
 
-	size = formatsSizeVisitor.result();
-	if (!size)
-		return 0;
+	FormattedStringFormatsVisitor formatsVisitor(formatsSizeVisitor.result());
+	formatsVisitor.setChatImageService(account.protocolHandler()->chatImageService());
+	formatsVisitor.setImageStorageService(imageStorageService);
+	formattedString->accept(&formatsVisitor);
 
-	unsigned char *result = new unsigned char[size];
-	bool first = true;
-	unsigned int memoryPosition = sizeof(struct gg_msg_richtext);
-	unsigned int textPosition = 0;
-
-	struct gg_msg_richtext header;
-	struct gg_msg_richtext_format format;
-	struct gg_msg_richtext_color color;
-	struct gg_msg_richtext_image image;
-
-	header.flag = 2;
-	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
-	memcpy(result, &header, sizeof(header));
-
-	foreach (FormattedStringPart *part, formattedString->parts())
-	{
-		if (!first || part->isImage() || part->bold() || part->italic() || part->underline() || part->color().isValid())
-		{
-			first = false;
-
-			format.position = gg_fix16(textPosition);
-			format.font = 0;
-
-			if (part->isImage())
-				format.font |= GG_FONT_IMAGE;
-			else
-			{
-				if (part->bold())
-					format.font |= GG_FONT_BOLD;
-				if (part->italic())
-					format.font |= GG_FONT_ITALIC;
-				if (part->underline())
-					format.font |= GG_FONT_UNDERLINE;
-				if (part->color().isValid())
-					format.font |= GG_FONT_COLOR;
-			}
-
-			memcpy(result + memoryPosition, &format, sizeof(format));
-			memoryPosition += sizeof(format);
-
-			if (part->isImage())
-			{
-				QString imagePath = imageStorageService ? imageStorageService->fullPath(part->imagePath()) : part->imagePath();
-				QFile imageFile(imagePath);
-				if (imageFile.open(QFile::ReadOnly))
-				{
-					QByteArray content = imageFile.readAll();
-					const ChatImageKey &chatImageKey = account.protocolHandler()->chatImageService()->prepareImageToBeSent(content);
-					imageFile.close();
-
-					image.unknown1 = 0x0109;
-					image.size = gg_fix32(chatImageKey.size());
-					image.crc32 = gg_fix32(chatImageKey.crc32());
-				}
-				else
-				{
-					image.unknown1 = 0x0109;
-					image.size = gg_fix32(0);
-					image.crc32 = gg_fix32(0);
-				}
-
-				memcpy(result + memoryPosition, &image, sizeof(image));
-				memoryPosition += sizeof(image);
-			}
-			else if (part->color().isValid())
-			{
-				color.red = part->color().red();
-				color.green = part->color().green();
-				color.blue = part->color().blue();
-
-				memcpy(result + memoryPosition, &color, sizeof(color));
-				memoryPosition += sizeof(color);
-			}
-		}
-
-		textPosition += part->content().length();
-	}
-
-	return result;
+	return formatsVisitor.result();
 }
 
 static QList<FormatAttribute> createFormatList(const unsigned char *formats, unsigned int size)

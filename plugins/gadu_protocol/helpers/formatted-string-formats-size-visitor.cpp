@@ -23,8 +23,8 @@
 
 #include "formatted-string-formats-size-visitor.h"
 
-FormattedStringFormatsSizeVisitor::FormattedStringFormatsSizeVisitor() :
-		First(true), Result(sizeof(struct gg_msg_richtext))
+FormattedStringFormatsSizeVisitor::FormattedStringFormatsSizeVisitor(bool allowImages) :
+		AllowImages(allowImages), First(true), Result(sizeof(struct gg_msg_richtext))
 {
 }
 
@@ -39,6 +39,9 @@ void FormattedStringFormatsSizeVisitor::visit(const CompositeFormattedString * c
 
 void FormattedStringFormatsSizeVisitor::visit(const FormattedStringPart * const formattedStringPart)
 {
+	if (!AllowImages && formattedStringPart->isImage())
+		return;
+
 	if (!First && !formattedStringPart->isImage() && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
 		return;
 

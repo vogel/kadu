@@ -27,16 +27,16 @@
 #define GADU_FORMATTER_H
 
 #include "../gadu-exports.h"
-#include "../gadu-protocol.h"
+
+class QByteArray;
 
 class Account;
-class CompositeFormattedString;
 class FormattedString;
 class ImageStorageService;
 
 namespace GaduFormatter
 {
-	GADUAPI unsigned char * createFormats(Account account, CompositeFormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService);
+	GADUAPI QByteArray createFormats(Account account, FormattedString *formattedString, ImageStorageService *imageStorageService);
 
 	GADUAPI FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 

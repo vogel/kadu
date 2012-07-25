@@ -78,8 +78,7 @@ int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, c
 	Connection.data()->beginWrite();
 	gg_session *session = Connection.data()->session();
 
-	unsigned int formatsSize = 0;
-	QScopedArrayPointer<unsigned char> formats(GaduFormatter::createFormats(account(), formattedString, formatsSize, Core::instance()->imageStorageService()));
+	QByteArray formats(GaduFormatter::createFormats(account(), formattedString, Core::instance()->imageStorageService()));
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
@@ -91,16 +90,16 @@ int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, c
 		foreach (const Contact &contact, contacts)
 			uins[i++] = GaduProtocolHelper::uin(contact);
 
-		if (formatsSize)
-			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage, formats.data(), formatsSize);
+		if (!formats.isEmpty())
+			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage, (const unsigned char *) formats.constData(), formats.size());
 		else
 			messageId = gg_send_message_confer(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage);
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
-		if (formatsSize)
-			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin, rawMessage, formats.data(), formatsSize);
+		if (!formats.isEmpty())
+			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin, rawMessage, (const unsigned char *) formats.constData(), formats.size());
 		else
 			messageId = gg_send_message(session, GG_CLASS_CHAT, uin, rawMessage);
 	}

@@ -17,28 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
-#define FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
+#ifndef FORMATTED_STRING_FORMATS_VISITOR_H
+#define FORMATTED_STRING_FORMATS_VISITOR_H
+
+#include <QtCore/QWeakPointer>
 
 #include "formatted-string/formatted-string-visitor.h"
 
-class FormattedStringFormatsSizeVisitor : public FormattedStringVisitor
-{
-	Q_DISABLE_COPY(FormattedStringFormatsSizeVisitor);
+class ChatImageService;
+class ImageStorageService;
 
-	bool AllowImages;
+class FormattedStringFormatsVisitor : public FormattedStringVisitor
+{
+	Q_DISABLE_COPY(FormattedStringFormatsVisitor);
+
+	QWeakPointer<ChatImageService> CurrentChatImageService;
+	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+
 	bool First;
-	unsigned int Result;
+	unsigned int MemoryPosition;
+	unsigned int TextPosition;
+	int Size;
+	QScopedArrayPointer<char> Result;
+
+	void append(void *data, unsigned int size);
 
 public:
-	explicit FormattedStringFormatsSizeVisitor(bool allowImages);
-	virtual ~FormattedStringFormatsSizeVisitor();
+	explicit FormattedStringFormatsVisitor(int size);
+	virtual ~FormattedStringFormatsVisitor();
+
+	void setChatImageService(ChatImageService *chatImageService);
+	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
 	virtual void visit(const FormattedStringPart * const formattedStringPart);
 
-	unsigned int result() const;
+	QByteArray result() const;
 
 };
 
-#endif // FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
+#endif // FORMATTED_STRING_FORMATS_VISITOR_H
