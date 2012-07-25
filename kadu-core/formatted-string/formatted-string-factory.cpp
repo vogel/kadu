@@ -31,11 +31,11 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 	CurrentImageStorageService = imageStorageService;
 }
 
-FormattedString FormattedStringFactory::fromPlainText(const QString& plainText)
+FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	FormattedString result;
+	FormattedString *result = new FormattedString();
 	if (!plainText.isEmpty())
-		result.append(FormattedStringPart(plainText, false, false, false, QColor()));
+		result->append(FormattedStringPart(plainText, false, false, false, QColor()));
 
 	return result;
 }
@@ -92,9 +92,9 @@ QList<FormattedStringPart> FormattedStringFactory::partsFromQTextBlock(const QTe
 	return result;
 }
 
-FormattedString FormattedStringFactory::fromHTML(const QString &html)
+FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
-	FormattedString result;
+	FormattedString *result = new FormattedString();
 
 	QTextDocument document;
 	document.setHtml(html);
@@ -106,7 +106,7 @@ FormattedString FormattedStringFactory::fromHTML(const QString &html)
 	{
 		QList<FormattedStringPart> parts = partsFromQTextBlock(block, firstBlock);
 		foreach (const FormattedStringPart &part, parts)
-			result.append(part);
+			result->append(part);
 
 		block = block.next();
 		firstBlock = false;

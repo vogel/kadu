@@ -65,8 +65,10 @@ public:
 	 *
 	 * This method will create empty FormattedString if plainText is empty. If plainText is not empty then returned FormattedString
 	 * will contain one text part.
+	 *
+	 * This method never returns null.
 	 */
-	FormattedString fromPlainText(const QString &plainText);
+	FormattedString * fromPlainText(const QString &plainText);
 
 	/**
 	 * @short Create FormattedString instance from HTML.
@@ -75,8 +77,10 @@ public:
 	 *
 	 * Thie method will extract basic information about formatting from HTML content and create instance of FormattedString with
 	 * this data.
+	 *
+	 * This method never returns null.
 	 */
-	FormattedString fromHTML(const QString &html);
+	FormattedString * fromHTML(const QString &html);
 
 };
 

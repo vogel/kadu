@@ -209,9 +209,9 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	else
 		document.setPlainText(messageContent);
 
-	FormattedString formattedString = CurrentFormattedStringFactory.data()->fromHTML(document.toHtml());
+	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
 
-	QString plain = formattedString.toPlain();
+	QString plain = formattedString->toPlain();
 	if (CurrentMessageFilterService)
 		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
 			return false;
@@ -223,11 +223,11 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(formattedString.toHtml());
+	message.setContent(formattedString->toHtml());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	bool sent = chatService->sendMessage(chat, message, formattedString, plain);
+	bool sent = chatService->sendMessage(chat, message, formattedString.data(), plain);
 	if (sent && !silent)
 		emit messageSent(message);
 

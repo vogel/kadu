@@ -61,12 +61,12 @@ Q_DECLARE_TYPEINFO(FormatAttribute, Q_PRIMITIVE_TYPE);
 namespace GaduFormatter
 {
 
-static unsigned int computeFormatsSize(const FormattedString &formattedString)
+static unsigned int computeFormatsSize(FormattedString *formattedString)
 {
 	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
 
-	foreach (const FormattedStringPart &part, formattedString.parts())
+	foreach (const FormattedStringPart &part, formattedString->parts())
 	{
 		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
@@ -84,9 +84,9 @@ static unsigned int computeFormatsSize(const FormattedString &formattedString)
 	return first ? 0 : size;
 }
 
-unsigned char * createFormats(Account account, const FormattedString &message, unsigned int &size, ImageStorageService *imageStorageService)
+unsigned char * createFormats(Account account, FormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService)
 {
-	size = computeFormatsSize(message);
+	size = computeFormatsSize(formattedString);
 	if (!size)
 		return 0;
 
@@ -104,7 +104,7 @@ unsigned char * createFormats(Account account, const FormattedString &message, u
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
-	foreach (const FormattedStringPart &part, message.parts())
+	foreach (const FormattedStringPart &part, formattedString->parts())
 	{
 		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
@@ -237,9 +237,9 @@ static FormattedStringPart messagePart(const QString &content, const gg_msg_rich
 	return FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
-FormattedString createMessage(const QString &content, const unsigned char *formats, unsigned int size)
+FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
-	FormattedString result;
+	FormattedString *result = new FormattedString();
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.
@@ -253,7 +253,7 @@ FormattedString createMessage(const QString &content, const unsigned char *forma
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result.append(FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			result->append(FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)
@@ -265,7 +265,7 @@ FormattedString createMessage(const QString &content, const unsigned char *forma
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result.append(imagePart(format.image));
+			result->append(imagePart(format.image));
 
 			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 			strayTextPosition = textPosition + 1;
@@ -277,7 +277,7 @@ FormattedString createMessage(const QString &content, const unsigned char *forma
 					? formatList.at(i + 1).format.position
 					: content.length();
 
-			result.append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
+			result->append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
 		}
 	}
 

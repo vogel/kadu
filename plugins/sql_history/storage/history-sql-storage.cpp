@@ -644,8 +644,8 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			QString title;
 			if (CurrentFormattedStringFactory)
 			{
-				FormattedString formatted = CurrentFormattedStringFactory.data()->fromHTML(message);
-				title = formatted.toPlain().replace('\n', ' ').replace('\r', ' ');
+				QScopedPointer<FormattedString> formatted(CurrentFormattedStringFactory.data()->fromHTML(message));
+				title = formatted->toPlain().replace('\n', ' ').replace('\r', ' ');
 			}
 			else
 				title = message.replace('\n', ' ').replace('\r', ' ');

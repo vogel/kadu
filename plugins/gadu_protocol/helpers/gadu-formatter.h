@@ -35,9 +35,9 @@ class ImageStorageService;
 
 namespace GaduFormatter
 {
-	GADUAPI unsigned char * createFormats(Account account, const FormattedString &FormattedString, unsigned int &size, ImageStorageService *imageStorageService);
+	GADUAPI unsigned char * createFormats(Account account, FormattedString *formattedString, unsigned int &size, ImageStorageService *imageStorageService);
 
-	GADUAPI FormattedString createMessage(const QString &content, const unsigned char *formats, unsigned int size);
+	GADUAPI FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size);
 
 }
 
