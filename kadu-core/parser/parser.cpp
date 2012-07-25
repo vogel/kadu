@@ -80,6 +80,23 @@ QMap<QString, QString> Parser::GlobalVariables;
 QMap<QString, Parser::TalkableTagCallback> Parser::RegisteredTalkableTags;
 QMap<QString, Parser::ObjectTagCallback> Parser::RegisteredObjectTags;
 
+QString Parser::escape(const QString &string)
+{
+	prepareSearchChars(true);
+
+	QString escaped;
+	escaped.reserve(string.size() * 2);
+	QSet<QChar> &chars = *searchChars();
+	foreach (QChar c, string)
+	{
+		if (chars.contains(c))
+			escaped.append('\'');
+		escaped.append(c);
+	}
+
+	return escaped;
+}
+
 bool Parser::registerTag(const QString &name, TalkableTagCallback func)
 {
 	kdebugf();
@@ -202,7 +219,7 @@ bool Parser::isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, con
 	return found;
 }
 
-ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, bool escape)
+ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, bool htmlEscape)
 {
 	ParserToken pe;
 	pe.setType(PT_STRING);
@@ -269,7 +286,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			if (contact)
 			{
 				QString description = contact.currentStatus().description();
-				if (escape)
+				if (htmlEscape)
 					HtmlDocument::escapeText(description);
 
 				pe.setContent(description);
@@ -326,7 +343,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			QString nickName = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.nickName();
-			if (escape)
+			if (htmlEscape)
 				HtmlDocument::escapeText(nickName);
 
 			pe.setContent(nickName);
@@ -338,7 +355,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			QString display = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.display();
-			if (escape)
+			if (htmlEscape)
 				HtmlDocument::escapeText(display);
 
 			pe.setContent(display);
@@ -350,7 +367,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			QString firstName = buddy.firstName();
-			if (escape)
+			if (htmlEscape)
 				HtmlDocument::escapeText(firstName);
 
 			pe.setContent(firstName);
@@ -362,7 +379,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			++idx;
 
 			QString lastName = buddy.lastName();
-			if (escape)
+			if (htmlEscape)
 				HtmlDocument::escapeText(lastName);
 
 			pe.setContent(lastName);
@@ -472,9 +489,9 @@ QString Parser::joinParserTokens(const ContainerClass &parseStack)
 	return joined;
 }
 
-QString Parser::parse(const QString &s, Talkable talkable, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Talkable talkable, const QObject * const object, bool htmlEscape)
 {
-	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
+	kdebugmf(KDEBUG_DUMP, "%s htmlEscape=%i\n", qPrintable(s), htmlEscape);
 
 	prepareSearchChars();
 
@@ -506,7 +523,7 @@ QString Parser::parse(const QString &s, Talkable talkable, const QObject * const
 			if (idx == len)
 				break;
 
-			pe = parsePercentSyntax(s, idx, talkable, escape);
+			pe = parsePercentSyntax(s, idx, talkable, htmlEscape);
 			pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 
 			parseStack.push(pe);

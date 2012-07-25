@@ -55,13 +55,15 @@ class KADUAPI Parser
 public:
 	static QMap<QString, QString> GlobalVariables;
 
-	static QString parse(const QString &s, const QObject * const object, bool escape = true)
+	static QString escape(const QString &string);
+
+	static QString parse(const QString &s, const QObject * const object, bool htmlEscape = true)
 	{
-		return parse(s, Talkable(), object, escape);
+		return parse(s, Talkable(), object, htmlEscape);
 	}
-	static QString parse(const QString &s, Talkable talkable, bool escape = true)
+	static QString parse(const QString &s, Talkable talkable, bool htmlEscape = true)
 	{
-		return parse(s, talkable, 0, escape);
+		return parse(s, talkable, 0, htmlEscape);
 	}
 	static QString parse(const QString &s, Talkable talkable, const QObject * const object, bool escape = true);
 
