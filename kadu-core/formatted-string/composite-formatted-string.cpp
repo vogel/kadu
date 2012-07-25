@@ -66,7 +66,7 @@ QString CompositeFormattedString::toPlain() const
 {
 	QString result;
 	foreach (const FormattedStringPart &part, Parts)
-		result += part.content();
+		result += part.toPlain();
 
 	result.replace(QChar::LineSeparator, "\n");
 	return result;

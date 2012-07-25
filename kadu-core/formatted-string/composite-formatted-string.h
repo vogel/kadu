@@ -30,7 +30,9 @@
 
 #include "exports.h"
 
-#include "formatted-string-part.h"
+#include "formatted-string/formatted-string-part.h"
+
+#include "formatted-string.h"
 
 class QTextDocument;
 
@@ -47,7 +49,7 @@ class ImageStorageService;
  *
  * Each message has an <code>id</code> field that is used by protocols to store its message sequental number.
  */
-class KADUAPI CompositeFormattedString
+class KADUAPI CompositeFormattedString : public FormattedString
 {
 	Q_DISABLE_COPY(CompositeFormattedString)
 
@@ -77,20 +79,20 @@ public:
 	 * Returns true if message does not have any parts or if all parts are empty.
 	 * @return True if message is empty.
 	 */
-	bool isEmpty() const;
+	virtual bool isEmpty() const;
 
 	/**
 	 * Returns message content, without formatting or images.
 	 * @return Plain message content.
 	 */
-	QString toPlain() const;
+	virtual QString toPlain() const;
 
 	/**
 	 * Converts message to HTML, with formatting and images. Resulting code is
 	 * not a full HTML page - only the content.
 	 * @return HTML representation of message.
 	 */
-	QString toHtml() const;
+	virtual QString toHtml() const;
 
 };
 

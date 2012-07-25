@@ -32,6 +32,8 @@
 
 #include "exports.h"
 
+#include "formatted-string.h"
+
 class QTextDocument;
 
 /**
@@ -55,7 +57,7 @@ class QTextDocument;
  * </ul>
  * @TODO: refactor
  */
-class KADUAPI FormattedStringPart
+class KADUAPI FormattedStringPart : public FormattedString
 {
 	QString Content;
 	bool Bold;
@@ -96,7 +98,7 @@ public:
 	FormattedStringPart & operator = (const FormattedStringPart &copyMe);
 
 	bool isImage() const { return IsImage; }
-	bool isEmpty() const { return !IsImage && Content.isEmpty(); }
+	virtual bool isEmpty() const { return !IsImage && Content.isEmpty(); }
 
 	const QString & content() const { return Content; }
 	bool bold() const { return Bold; }
@@ -112,7 +114,9 @@ public:
 	 * Converts message part to HTML - either formatted text or image.
 	 * @return HTML representation of message parh.
 	 */
-	QString toHtml() const;
+	virtual QString toHtml() const;
+
+	virtual QString toPlain() const;
 
 };
 

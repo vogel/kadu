@@ -57,7 +57,7 @@ FormattedStringPart::FormattedStringPart(const ChatImageKey &chatImageKey) :
 }
 
 FormattedStringPart::FormattedStringPart(const FormattedStringPart &copyMe) :
-		ImageKey(0, 0)
+		FormattedString(), ImageKey(0, 0)
 {
 	Content = copyMe.Content;
 	Bold = copyMe.Bold;
@@ -124,4 +124,9 @@ QString FormattedStringPart::toHtml() const
 	span += "\">";
 
 	return span + result + "</span>";
+}
+
+QString FormattedStringPart::toPlain() const
+{
+	return Content;
 }
