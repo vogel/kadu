@@ -43,7 +43,6 @@
 #include "debug.h"
 
 #include "helpers/formatted-string-formats-visitor.h"
-#include "helpers/formatted-string-formats-size-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
@@ -90,9 +89,6 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 
 	Connection.data()->beginWrite();
 	gg_session *session = Connection.data()->session();
-
-	FormattedStringFormatsSizeVisitor formatsSizeVisitor(!CurrentGaduChatImageService.isNull());
-	formattedString->accept(&formatsSizeVisitor);
 
 	FormattedStringFormatsVisitor formatsVisitor;
 	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
