@@ -92,14 +92,19 @@ QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QText
 
 FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
-	QTextDocument document;
-	document.setHtml(html);
+	QScopedPointer<QTextDocument> document(new QTextDocument());
+	document->setHtml(html);
 
+	return fromTextDocument(document.data());
+}
+
+FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)
+{
 	bool firstBlock = true;
 
 	QVector<FormattedString *> items;
 
-	QTextBlock block = document.firstBlock();
+	QTextBlock block = textDocument->firstBlock();
 	while (block.isValid())
 	{
 		QList<FormattedString *> parts = partsFromQTextBlock(block, firstBlock);
@@ -111,4 +116,15 @@ FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 	}
 
 	return new CompositeFormattedString(items);
+}
+
+FormattedString * FormattedStringFactory::fromText(const QString &text)
+{
+	QScopedPointer<QTextDocument> document(new QTextDocument());
+	if (text.contains('<'))
+		document->setHtml(text);
+	else
+		document->setPlainText(text);
+
+	return fromTextDocument(document.data());
 }

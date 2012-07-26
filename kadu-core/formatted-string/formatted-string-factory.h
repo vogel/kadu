@@ -26,6 +26,7 @@
 
 class QTextBlock;
 class QTextCharFormat;
+class QTextDocument;
 class QTextFragment;
 class QTextImageFormat;
 
@@ -70,7 +71,7 @@ public:
 	 * @param plainText plain content of new FormattedString
 	 *
 	 * This method will create empty FormattedString if plainText is empty. If plainText is not empty then returned FormattedString
-	 * will contain one text part.
+	 * will contain just this text.
 	 *
 	 * This method never returns null.
 	 */
@@ -87,6 +88,29 @@ public:
 	 * This method never returns null.
 	 */
 	FormattedString * fromHTML(const QString &html);
+
+	/**
+	 * @short Create FormattedString instance from text document.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param textDocument text document to be converted to FormattedString
+	 *
+	 * This method will create empty FormattedString if text document is empty.
+	 *
+	 * This method never returns null.
+	 */
+	FormattedString * fromTextDocument(QTextDocument *textDocument);
+
+	/**
+	 * @short Create FormattedString instance from HTML or plain text.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param text HTML or plain text to be converted to FormattedString
+	 *
+	 * This method will create empty FormattedString if text is empty. If text contains '<' character then it is assumed that
+	 * it is HTML, else it is assumed to be plain text.
+	 *
+	 * This method never returns null.
+	 */
+	FormattedString * fromText(const QString &text);
 
 };
 

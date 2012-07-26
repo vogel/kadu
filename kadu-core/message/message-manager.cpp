@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
-
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
@@ -200,18 +198,7 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	if (!chatService)
 		return false;
 
-	QTextDocument document;
-	/*
-	 * If message does not contain < then we can assume that this is plain text. Some plugins, like
-	 * encryption_ng, are using sendMessage() method to pass messages (like public keys). We want
-	 * these messages to have proper lines and paragraphs.
-	 */
-	if (messageContent.contains('<'))
-		document.setHtml(messageContent);
-	else
-		document.setPlainText(messageContent);
-
-	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(document.toHtml()));
+	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromText(messageContent));
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	formattedString->accept(&plainTextVisitor);
