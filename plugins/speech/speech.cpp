@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QProcess>
+#include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
 #include "notify/notification/chat-notification.h"
@@ -256,12 +257,9 @@ void Speech::notify(Notification *notification)
 			text= Parser::parse(syntax, notification);
 	}
 
-	text.replace("&nbsp;", " ");
-	text.replace("&lt;", "<");
-	text.replace("&gt;", ">");
-	text.replace("&amp;", "&");
-
-	say(text);
+	QTextDocument document;
+	document.setHtml(text);
+	say(document.toPlainText());
 	lastSpeech.restart();
 
 	kdebugf2();
