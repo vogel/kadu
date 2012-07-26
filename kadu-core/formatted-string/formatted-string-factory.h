@@ -27,8 +27,7 @@ class QTextCharFormat;
 class QTextFragment;
 class QTextImageFormat;
 
-class CompositeFormattedString;
-class FormattedStringPart;
+class FormattedString;
 class ImageStorageService;
 
 /**
@@ -42,10 +41,10 @@ class FormattedStringFactory : public QObject
 
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
-	FormattedStringPart * partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
-	FormattedStringPart * partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
-	FormattedStringPart * partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
-	QList<FormattedStringPart *> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
+	FormattedString * partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text);
+	FormattedString * partFromQTextImageFormat(const QTextImageFormat &textImageFormat);
+	FormattedString * partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine);
+	QList<FormattedString *> partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock);
 
 public:
 	/**
@@ -68,7 +67,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	CompositeFormattedString * fromPlainText(const QString &plainText);
+	FormattedString * fromPlainText(const QString &plainText);
 
 	/**
 	 * @short Create FormattedString instance from HTML.
@@ -80,7 +79,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	CompositeFormattedString * fromHTML(const QString &html);
+	FormattedString * fromHTML(const QString &html);
 
 };
 

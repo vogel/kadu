@@ -19,6 +19,7 @@
 
 #include <libgadu.h>
 
+#include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-part.h"
 
 #include "formatted-string-formats-size-visitor.h"
@@ -37,20 +38,26 @@ void FormattedStringFormatsSizeVisitor::visit(const CompositeFormattedString * c
 	Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringFormatsSizeVisitor::visit(const FormattedStringPart * const formattedStringPart)
+void FormattedStringFormatsSizeVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
 {
-	if (!AllowImages && formattedStringPart->isImage())
-		return;
+	Q_UNUSED(formattedStringImageBlock);
 
-	if (!First && !formattedStringPart->isImage() && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+	if (!AllowImages)
 		return;
 
 	First = false;
 	Result += sizeof(struct gg_msg_richtext_format);
+	Result += sizeof(struct gg_msg_richtext_image);
+}
 
-	if (formattedStringPart->isImage())
-		Result += sizeof(struct gg_msg_richtext_image);
-	else if (formattedStringPart->color().isValid())
+void FormattedStringFormatsSizeVisitor::visit(const FormattedStringPart * const formattedStringPart)
+{
+	if (!First && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+		return;
+
+	First = false;
+	Result += sizeof(struct gg_msg_richtext_format);
+	if (formattedStringPart->color().isValid())
 		Result += sizeof(struct gg_msg_richtext_color);
 }
 

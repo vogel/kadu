@@ -47,25 +47,25 @@ CompositeFormattedString::~CompositeFormattedString()
 
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
-	foreach (FormattedStringPart *part, Parts)
+	foreach (FormattedString *part, Parts)
 		part->accept(visitor);
 
 	visitor->visit(this);
 }
 
-const QVector<FormattedStringPart *> & CompositeFormattedString::parts() const
+const QVector<FormattedString *> & CompositeFormattedString::parts() const
 {
 	return Parts;
 }
 
-void CompositeFormattedString::append(FormattedStringPart *part)
+void CompositeFormattedString::append(FormattedString *part)
 {
 	Parts.append(part);
 }
 
 bool CompositeFormattedString::isEmpty() const
 {
-	foreach (FormattedStringPart *part, Parts)
+	foreach (FormattedString *part, Parts)
 		if (!part->isEmpty())
 			return false;
 

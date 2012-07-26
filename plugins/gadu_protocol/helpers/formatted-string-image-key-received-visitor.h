@@ -38,6 +38,7 @@ public:
 	virtual ~FormattedStringImageKeyReceivedVisitor();
 
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
+	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
 	virtual void visit(const FormattedStringPart * const formattedStringPart);
 
 signals:

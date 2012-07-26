@@ -21,6 +21,7 @@
 #include <QtGui/QTextDocument>
 
 #include "formatted-string/formatted-string-html-visitor.h"
+#include "formatted-string/formatted-string-image-block.h"
 #include "misc/misc.h"
 
 #include "formatted-string-part.h"
@@ -38,18 +39,17 @@ void FormattedStringHtmlVisitor::visit(const CompositeFormattedString * const co
 	Q_UNUSED(compositeFormattedString);
 }
 
+void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+{
+	QString imagePath = formattedStringImageBlock->imagePath();
+	ChatImageKey imageKey = formattedStringImageBlock->imageKey();
+	Result.append(QFileInfo(imagePath).isAbsolute()
+			? QString("<img src=\"file://%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
+			: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString()));
+}
+
 void FormattedStringHtmlVisitor::visit(const FormattedStringPart * const formattedStringPart)
 {
-	if (formattedStringPart->isImage())
-	{
-		QString imagePath = formattedStringPart->imagePath();
-		ChatImageKey imageKey = formattedStringPart->imageKey();
-		Result.append(QFileInfo(imagePath).isAbsolute()
-				? QString("<img src=\"file://%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString())
-				: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString()));
-		return;
-	}
-
 	QString content(replacedNewLine(Qt::escape(formattedStringPart->content()), QLatin1String("<br/>")));
 	content.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 

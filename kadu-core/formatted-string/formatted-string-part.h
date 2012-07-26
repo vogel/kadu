@@ -65,15 +65,11 @@ class KADUAPI FormattedStringPart : public FormattedString
 	bool Underline;
 	QColor Color;
 
-	bool IsImage;
-	QString ImagePath;
-	ChatImageKey ImageKey;
-
 public:
 	/**
 	 * Creates empty message part.
 	 */
-	FormattedStringPart() : IsImage(false), ImageKey(0, 0) {}
+	FormattedStringPart() {}
 
 	/**
 	 * Creates text message part with formatting.
@@ -85,12 +81,6 @@ public:
 	 */
 	FormattedStringPart(const QString &content, bool bold, bool italic, bool underline, QColor color);
 
-	/**
-	 * Creates image message part (ready or to-be-received).
-	 * @arg imagePath local image path
-	 */
-	explicit FormattedStringPart(const QString &imagePath);
-	explicit FormattedStringPart(const ChatImageKey &chatImageKey);
 	FormattedStringPart(const FormattedStringPart &copyMe);
 
 	virtual ~FormattedStringPart();
@@ -99,18 +89,13 @@ public:
 
 	virtual void accept(FormattedStringVisitor *visitor) const;
 
-	bool isImage() const { return IsImage; }
-	virtual bool isEmpty() const { return !IsImage && Content.isEmpty(); }
+	virtual bool isEmpty() const { return Content.isEmpty(); }
 
 	const QString & content() const { return Content; }
 	bool bold() const { return Bold; }
 	bool italic() const { return Italic; }
 	bool underline() const { return Underline; }
 	const QColor & color() const { return Color; }
-
-	QString imagePath() const;
-
-	ChatImageKey imageKey() const;
 
 };
 

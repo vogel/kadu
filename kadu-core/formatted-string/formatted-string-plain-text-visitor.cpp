@@ -34,6 +34,13 @@ void FormattedStringPlainTextVisitor::visit(const CompositeFormattedString * con
 	Q_UNUSED(compositeFormattedString);
 }
 
+void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+{
+	Q_UNUSED(formattedStringImageBlock);
+
+	Result.append(QChar(QChar::Nbsp));
+}
+
 void FormattedStringPlainTextVisitor::visit(const FormattedStringPart * const formattedStringPart)
 {
 	Result.append(formattedStringPart->content());

@@ -26,6 +26,8 @@
 #include <libgadu.h>
 
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/formatted-string-image-block.h"
+#include "formatted-string/formatted-string-part.h"
 
 #include "gadu-formatter.h"
 
@@ -90,7 +92,7 @@ static QList<FormatAttribute> createFormatList(const unsigned char *formats, uns
 	return formatList;
 }
 
-static FormattedStringPart * imagePart(const gg_msg_richtext_image &image)
+static FormattedString * imagePart(const gg_msg_richtext_image &image)
 {
 	quint32 size = gg_fix32(image.size);
 	quint32 crc32 = gg_fix32(image.crc32);
@@ -99,10 +101,10 @@ static FormattedStringPart * imagePart(const gg_msg_richtext_image &image)
 		return new FormattedStringPart();
 
 	ChatImageKey key(size, crc32);
-	return new FormattedStringPart(key);
+	return new FormattedStringImageBlock(key);
 }
 
-static FormattedStringPart * messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
+static FormattedString * messagePart(const QString &content, const gg_msg_richtext_format &format, const gg_msg_richtext_color &color)
 {
 	QColor textColor;
 	if (format.font & GG_FONT_COLOR)

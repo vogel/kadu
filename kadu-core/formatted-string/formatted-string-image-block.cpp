@@ -17,29 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
-#define FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
-
 #include "formatted-string/formatted-string-visitor.h"
 
-class FormattedStringFormatsSizeVisitor : public FormattedStringVisitor
+#include "formatted-string-image-block.h"
+
+FormattedStringImageBlock::FormattedStringImageBlock(const QString &imagePath) :
+		ImagePath(imagePath), ImageKey(0, 0)
 {
-	Q_DISABLE_COPY(FormattedStringFormatsSizeVisitor);
+}
 
-	bool AllowImages;
-	bool First;
-	unsigned int Result;
+FormattedStringImageBlock::FormattedStringImageBlock(const ChatImageKey &chatImageKey) :
+		ImageKey(chatImageKey)
+{
+	if (!ImageKey.isNull())
+		ImagePath = ImageKey.toString();
+}
 
-public:
-	explicit FormattedStringFormatsSizeVisitor(bool allowImages);
-	virtual ~FormattedStringFormatsSizeVisitor();
+FormattedStringImageBlock::~FormattedStringImageBlock()
+{
+}
 
-	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringPart * const formattedStringPart);
+void FormattedStringImageBlock::accept(FormattedStringVisitor *visitor) const
+{
+	visitor->visit(this);
+}
 
-	unsigned int result() const;
+bool FormattedStringImageBlock::isEmpty() const
+{
+	return ImagePath.isEmpty() && ImageKey.isNull();
+}
 
-};
+QString FormattedStringImageBlock::imagePath() const
+{
+	return ImagePath;
+}
 
-#endif // FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
+ChatImageKey FormattedStringImageBlock::imageKey() const
+{
+	return ImageKey;
+}

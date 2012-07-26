@@ -22,6 +22,8 @@
 #include <QtGui/QTextDocument>
 
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/formatted-string-image-block.h"
+#include "formatted-string/formatted-string-part.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
@@ -31,7 +33,7 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 	CurrentImageStorageService = imageStorageService;
 }
 
-CompositeFormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
+FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
 {
 	CompositeFormattedString *result = new CompositeFormattedString();
 	if (!plainText.isEmpty())
@@ -40,7 +42,7 @@ CompositeFormattedString * FormattedStringFactory::fromPlainText(const QString& 
 	return result;
 }
 
-FormattedStringPart * FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
+FormattedString * FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
 	if (text.isEmpty())
 		return 0;
@@ -48,7 +50,7 @@ FormattedStringPart * FormattedStringFactory::partFromQTextCharFormat(const QTex
 		return new FormattedStringPart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
-FormattedStringPart * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
+FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
 {
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
@@ -59,10 +61,10 @@ FormattedStringPart * FormattedStringFactory::partFromQTextImageFormat(const QTe
 	if (CurrentImageStorageService)
 		filePath = CurrentImageStorageService.data()->storeImage(filePath);
 
-	return new FormattedStringPart(filePath);
+	return new FormattedStringImageBlock(filePath);
 }
 
-FormattedStringPart * FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
+FormattedString * FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
 	if (!textFragment.isValid())
 		return 0;
@@ -74,14 +76,14 @@ FormattedStringPart * FormattedStringFactory::partFromQTextFragment(const QTextF
 		return partFromQTextImageFormat(format.toImageFormat());
 }
 
-QList<FormattedStringPart *> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
+QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
-	QList<FormattedStringPart *> result;
+	QList<FormattedString *> result;
 
 	bool firstFragment = true;
 	for (QTextBlock::iterator it = textBlock.begin(); !it.atEnd(); ++it)
 	{
-		FormattedStringPart *part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
+		FormattedString *part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
 		if (part && !part->isEmpty())
 		{
 			result.append(part);
@@ -92,7 +94,7 @@ QList<FormattedStringPart *> FormattedStringFactory::partsFromQTextBlock(const Q
 	return result;
 }
 
-CompositeFormattedString * FormattedStringFactory::fromHTML(const QString &html)
+FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
 	CompositeFormattedString *result = new CompositeFormattedString();
 
@@ -104,8 +106,8 @@ CompositeFormattedString * FormattedStringFactory::fromHTML(const QString &html)
 	QTextBlock block = document.firstBlock();
 	while (block.isValid())
 	{
-		QList<FormattedStringPart *> parts = partsFromQTextBlock(block, firstBlock);
-		foreach (FormattedStringPart *part, parts)
+		QList<FormattedString *> parts = partsFromQTextBlock(block, firstBlock);
+		foreach (FormattedString *part, parts)
 			result->append(part);
 
 		block = block.next();

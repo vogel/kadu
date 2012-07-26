@@ -32,42 +32,18 @@
 #include "formatted-string-part.h"
 
 FormattedStringPart::FormattedStringPart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
-		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color), IsImage(false), ImageKey(0, 0)
+		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
 {
-}
-
-FormattedStringPart::FormattedStringPart(const QString &imagePath) :
-		IsImage(false), ImagePath(imagePath), ImageKey(0, 0)
-{
-	if (!ImagePath.isEmpty())
-	{
-		Content = QChar(QChar::Nbsp);
-		IsImage = true;
-	}
-}
-
-FormattedStringPart::FormattedStringPart(const ChatImageKey &chatImageKey) :
-		IsImage(false), ImageKey(chatImageKey)
-{
-	if (!ImageKey.isNull())
-	{
-		ImagePath = ImageKey.toString();
-		Content = QChar(QChar::Nbsp);
-		IsImage = true;
-	}
 }
 
 FormattedStringPart::FormattedStringPart(const FormattedStringPart &copyMe) :
-		FormattedString(), ImageKey(0, 0)
+		FormattedString()
 {
 	Content = copyMe.Content;
 	Bold = copyMe.Bold;
 	Italic = copyMe.Italic;
 	Underline = copyMe.Underline;
 	Color = copyMe.Color;
-	IsImage = copyMe.IsImage;
-	ImagePath = copyMe.ImagePath;
-	ImageKey = copyMe.ImageKey;
 }
 
 FormattedStringPart::~FormattedStringPart()
@@ -81,9 +57,6 @@ FormattedStringPart & FormattedStringPart::operator = (const FormattedStringPart
 	Italic = copyMe.Italic;
 	Underline = copyMe.Underline;
 	Color = copyMe.Color;
-	IsImage = copyMe.IsImage;
-	ImagePath = copyMe.ImagePath;
-	ImageKey = copyMe.ImageKey;
 
 	return *this;
 }
@@ -91,14 +64,4 @@ FormattedStringPart & FormattedStringPart::operator = (const FormattedStringPart
 void FormattedStringPart::accept(FormattedStringVisitor *visitor) const
 {
 	visitor->visit(this);
-}
-
-QString FormattedStringPart::imagePath() const
-{
-	return ImagePath;
-}
-
-ChatImageKey FormattedStringPart::imageKey() const
-{
-	return ImageKey;
 }

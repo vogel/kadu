@@ -30,8 +30,6 @@
 
 #include "exports.h"
 
-#include "formatted-string/formatted-string-part.h"
-
 #include "formatted-string.h"
 
 class QTextDocument;
@@ -53,7 +51,7 @@ class KADUAPI CompositeFormattedString : public FormattedString
 {
 	Q_DISABLE_COPY(CompositeFormattedString)
 
-	QVector<FormattedStringPart *> Parts;
+	QVector<FormattedString *> Parts;
 
 public:
 	/**
@@ -69,13 +67,13 @@ public:
 	 * Returns all parts that composes this message.
 	 * @return All parts that composes this message.
 	 */
-	const QVector<FormattedStringPart *> & parts() const;
+	const QVector<FormattedString *> & parts() const;
 
 	/**
 	 * Append a new part to message.
 	 * @arg part New part to append.
 	 */
-	void append(FormattedStringPart *part);
+	void append(FormattedString *part);
 
 	/**
 	 * Returns true if message does not have any parts or if all parts are empty.

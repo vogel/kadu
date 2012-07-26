@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string/formatted-string-part.h"
+#include "formatted-string/formatted-string-image-block.h"
 
 #include "formatted-string-image-key-received-visitor.h"
 
@@ -35,8 +35,12 @@ void FormattedStringImageKeyReceivedVisitor::visit(const CompositeFormattedStrin
 	Q_UNUSED(compositeFormattedString);
 }
 
+void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+{
+	emit chatImageKeyReceived(Id, formattedStringImageBlock->imageKey());
+}
+
 void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringPart * const formattedStringPart)
 {
-	if (formattedStringPart->isImage())
-		emit chatImageKeyReceived(Id, formattedStringPart->imageKey());
+	Q_UNUSED(formattedStringPart);
 }

@@ -17,29 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
-#define FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
+#ifndef FORMATTED_STRING_IMAGE_BLOCK_H
+#define FORMATTED_STRING_IMAGE_BLOCK_H
 
-#include "formatted-string/formatted-string-visitor.h"
+#include <QtCore/QString>
+#include <QtGui/QColor>
 
-class FormattedStringFormatsSizeVisitor : public FormattedStringVisitor
+#include "protocols/protocol.h"
+#include "protocols/services/chat-image-key.h"
+
+#include "exports.h"
+
+#include "formatted-string.h"
+
+class KADUAPI FormattedStringImageBlock : public FormattedString
 {
-	Q_DISABLE_COPY(FormattedStringFormatsSizeVisitor);
+	Q_DISABLE_COPY(FormattedStringImageBlock);
 
-	bool AllowImages;
-	bool First;
-	unsigned int Result;
+	QString ImagePath;
+	ChatImageKey ImageKey;
 
 public:
-	explicit FormattedStringFormatsSizeVisitor(bool allowImages);
-	virtual ~FormattedStringFormatsSizeVisitor();
+	explicit FormattedStringImageBlock(const QString &imagePath);
+	explicit FormattedStringImageBlock(const ChatImageKey &chatImageKey);
+	virtual ~FormattedStringImageBlock();
 
-	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringPart * const formattedStringPart);
+	virtual void accept(FormattedStringVisitor *visitor) const;
 
-	unsigned int result() const;
+	virtual bool isEmpty() const;
+
+	QString imagePath() const;
+
+	ChatImageKey imageKey() const;
 
 };
 
-#endif // FORMATTED_STRING_FORMATS_SIZE_VISITOR_H
+#endif // FORMATTED_STRING_IMAGE_BLOCK_H

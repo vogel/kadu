@@ -21,11 +21,11 @@
 #define FORMATTED_STRING_VISITOR_H
 
 class CompositeFormattedString;
+class FormattedStringImageBlock;
 class FormattedStringPart;
 
 class FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedStringVisitor);
 
 protected:
 	FormattedStringVisitor() {}
@@ -33,6 +33,7 @@ protected:
 
 public:
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString) = 0;
+	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) = 0;
 	virtual void visit(const FormattedStringPart * const formattedStringPart) = 0;
 
 };

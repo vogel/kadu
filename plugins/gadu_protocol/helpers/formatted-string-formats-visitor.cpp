@@ -23,9 +23,10 @@
 
 #include <libgadu.h>
 
+#include "formatted-string/formatted-string-image-block.h"
 #include "formatted-string/formatted-string-part.h"
+#include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
-#include <protocols/services/chat-image-service.h>
 
 #include "formatted-string-formats-visitor.h"
 
@@ -64,9 +65,50 @@ void FormattedStringFormatsVisitor::visit(const CompositeFormattedString * const
 	Q_UNUSED(compositeFormattedString);
 }
 
+void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+{
+	First = false;
+
+	struct gg_msg_richtext_format format;
+
+	format.position = gg_fix16(TextPosition);
+	format.font = GG_FONT_IMAGE;
+
+	append(&format, sizeof(format));
+
+	if (!CurrentChatImageService)
+		return;
+
+	struct gg_msg_richtext_image image;
+
+	QString imagePath = CurrentImageStorageService
+			? CurrentImageStorageService.data()->fullPath(formattedStringImageBlock->imagePath())
+			: formattedStringImageBlock->imagePath();
+	QFile imageFile(imagePath);
+
+	if (imageFile.open(QFile::ReadOnly))
+	{
+		QByteArray content = imageFile.readAll();
+		const ChatImageKey &chatImageKey = CurrentChatImageService.data()->prepareImageToBeSent(content);
+		imageFile.close();
+
+		image.unknown1 = 0x0109;
+		image.size = gg_fix32(chatImageKey.size());
+		image.crc32 = gg_fix32(chatImageKey.crc32());
+	}
+	else
+	{
+		image.unknown1 = 0x0109;
+		image.size = gg_fix32(0);
+		image.crc32 = gg_fix32(0);
+	}
+
+	append(&image, sizeof(image));
+}
+
 void FormattedStringFormatsVisitor::visit(const FormattedStringPart * const formattedStringPart)
 {
-	if (First && !formattedStringPart->isImage() && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+	if (First && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
 		return;
 
 	First = false;
@@ -76,54 +118,18 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringPart * const form
 	format.position = gg_fix16(TextPosition);
 	format.font = 0;
 
-	if (formattedStringPart->isImage())
-		format.font |= GG_FONT_IMAGE;
-	else
-	{
-		if (formattedStringPart->bold())
-			format.font |= GG_FONT_BOLD;
-		if (formattedStringPart->italic())
-			format.font |= GG_FONT_ITALIC;
-		if (formattedStringPart->underline())
-			format.font |= GG_FONT_UNDERLINE;
-		if (formattedStringPart->color().isValid())
-			format.font |= GG_FONT_COLOR;
-	}
+	if (formattedStringPart->bold())
+		format.font |= GG_FONT_BOLD;
+	if (formattedStringPart->italic())
+		format.font |= GG_FONT_ITALIC;
+	if (formattedStringPart->underline())
+		format.font |= GG_FONT_UNDERLINE;
+	if (formattedStringPart->color().isValid())
+		format.font |= GG_FONT_COLOR;
 
 	append(&format, sizeof(format));
 
-	if (formattedStringPart->isImage())
-	{
-		if (CurrentChatImageService)
-		{
-			struct gg_msg_richtext_image image;
-
-			QString imagePath = CurrentImageStorageService
-					? CurrentImageStorageService.data()->fullPath(formattedStringPart->imagePath())
-					: formattedStringPart->imagePath();
-			QFile imageFile(imagePath);
-
-			if (imageFile.open(QFile::ReadOnly))
-			{
-				QByteArray content = imageFile.readAll();
-				const ChatImageKey &chatImageKey = CurrentChatImageService.data()->prepareImageToBeSent(content);
-				imageFile.close();
-
-				image.unknown1 = 0x0109;
-				image.size = gg_fix32(chatImageKey.size());
-				image.crc32 = gg_fix32(chatImageKey.crc32());
-			}
-			else
-			{
-				image.unknown1 = 0x0109;
-				image.size = gg_fix32(0);
-				image.crc32 = gg_fix32(0);
-			}
-
-			append(&image, sizeof(image));
-		}
-	}
-	else if (formattedStringPart->color().isValid())
+	if (formattedStringPart->color().isValid())
 	{
 		struct gg_msg_richtext_color color;
 
