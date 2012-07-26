@@ -47,22 +47,15 @@ class FormattedStringFormatsVisitor : public FormattedStringVisitor
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool First;
-	unsigned int MemoryPosition;
 	unsigned int TextPosition;
-	int Size;
-	QScopedArrayPointer<char> Result;
-
-	void append(void *data, unsigned int size);
+	QByteArray Result;
 
 public:
 	/**
 	 * @short Create new instance of FormattedStringFormatsVisitor.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param size size requires to create libgadu formats structure
-	 *
-	 * Obtain size parameter value from FormattedStringFormatsSizeVisitor.
 	 */
-	explicit FormattedStringFormatsVisitor(int size);
+	FormattedStringFormatsVisitor();
 	virtual ~FormattedStringFormatsVisitor();
 
 	/**
@@ -92,7 +85,7 @@ public:
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return libgadu formats structure
 	 */
-	QByteArray result() const;
+	QByteArray result();
 
 };
 

@@ -30,14 +30,14 @@
 
 #include "formatted-string-formats-visitor.h"
 
-FormattedStringFormatsVisitor::FormattedStringFormatsVisitor(int size) :
-		First(false), MemoryPosition(0), TextPosition(0), Size(size), Result(new char[Size])
+FormattedStringFormatsVisitor::FormattedStringFormatsVisitor() :
+		First(false), TextPosition(0)
 {
 	struct gg_msg_richtext header;
 	header.flag = 2;
-	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
+	header.length = 0;
 
-	append(&header, sizeof(header));
+	Result.append((const char *)&header, sizeof(header));
 }
 
 FormattedStringFormatsVisitor::~FormattedStringFormatsVisitor()
@@ -54,12 +54,6 @@ void FormattedStringFormatsVisitor::setImageStorageService(ImageStorageService *
 	CurrentImageStorageService = imageStorageService;
 }
 
-void FormattedStringFormatsVisitor::append(void *data, unsigned int size)
-{
-	memcpy(Result.data() + MemoryPosition, data, size);
-	MemoryPosition += size;
-}
-
 void FormattedStringFormatsVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
@@ -74,7 +68,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 	format.position = gg_fix16(TextPosition);
 	format.font = GG_FONT_IMAGE;
 
-	append(&format, sizeof(format));
+	Result.append((const char *)&format, sizeof(format));
 
 	struct gg_msg_richtext_image image;
 
@@ -100,7 +94,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 		image.crc32 = gg_fix32(0);
 	}
 
-	append(&image, sizeof(image));
+	Result.append((const char *)&image, sizeof(image));
 }
 
 void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
@@ -124,7 +118,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const
 	if (formattedStringTextBlock->color().isValid())
 		format.font |= GG_FONT_COLOR;
 
-	append(&format, sizeof(format));
+	Result.append((const char *)&format, sizeof(format));
 
 	if (formattedStringTextBlock->color().isValid())
 	{
@@ -134,13 +128,19 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const
 		color.green = formattedStringTextBlock->color().green();
 		color.blue = formattedStringTextBlock->color().blue();
 
-		append(&color, sizeof(color));
+		Result.append((const char *)&color, sizeof(color));
 	}
 
 	TextPosition += formattedStringTextBlock->content().length();
 }
 
-QByteArray FormattedStringFormatsVisitor::result() const
+QByteArray FormattedStringFormatsVisitor::result()
 {
-	return QByteArray(Result.data(), Size);
+	struct gg_msg_richtext header;
+	header.flag = 2;
+	header.length = gg_fix16(Result.size() - sizeof(struct gg_msg_richtext));
+
+	Result.replace(0, sizeof(header), (const char *)&header, sizeof(header));
+
+	return Result;
 }

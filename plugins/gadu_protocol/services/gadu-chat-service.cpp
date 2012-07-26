@@ -94,7 +94,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	FormattedStringFormatsSizeVisitor formatsSizeVisitor(!CurrentGaduChatImageService.isNull());
 	formattedString->accept(&formatsSizeVisitor);
 
-	FormattedStringFormatsVisitor formatsVisitor(formatsSizeVisitor.result());
+	FormattedStringFormatsVisitor formatsVisitor;
 	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
 	formatsVisitor.setImageStorageService(CurrentImageStorageService.data());
 	formattedString->accept(&formatsVisitor);
