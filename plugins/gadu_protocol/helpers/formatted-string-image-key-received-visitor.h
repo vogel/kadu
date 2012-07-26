@@ -26,6 +26,19 @@
 
 #include "formatted-string/formatted-string-visitor.h"
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class FormattedStringImageKeyReceivedVisitor
+ * @short Visitor that emits chatImageKeyReceived() signal each time it visits FormattedStringImageBlock instance.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This visitor emits chatImageKeyReceived() signal each time it visits FormattedStringImageBlock instance.
+ * Use this visitor to inform ChatImageService instances about received image keys.
+ */
 class FormattedStringImageKeyReceivedVisitor : public QObject, public FormattedStringVisitor
 {
 	Q_OBJECT
@@ -34,6 +47,12 @@ class FormattedStringImageKeyReceivedVisitor : public QObject, public FormattedS
 	QString Id;
 
 public:
+	/**
+	 * @short Create new instance of FormattedStringImageKeyReceivedVisitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id id that will be emitted in chatImageKeyReceived() signal
+	 * @param parent QObject parent
+	 */
 	explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = 0);
 	virtual ~FormattedStringImageKeyReceivedVisitor();
 
@@ -42,8 +61,18 @@ public:
 	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 
 signals:
+	/**
+	 * @short Signal emitted each time this object visits FormattedStringImageBlock instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param id id passed in constructor
+	 * @param imageKey imageKey from visited FormattedStringImageBlock
+	 */
 	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H

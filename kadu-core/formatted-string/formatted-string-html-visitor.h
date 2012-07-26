@@ -24,6 +24,18 @@
 
 #include "formatted-string/formatted-string-visitor.h"
 
+/**
+ * @addtogroup FormattedString
+ * @{
+ */
+
+/**
+ * @class FormattedStringHtmlVisitor
+ * @short This visitor creates HTML view of visited FormattedString.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * After being accepted by a FormattedString this visitor returns HTML view of this FormattedString as result() getter.
+ */
 class FormattedStringHtmlVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
@@ -38,8 +50,17 @@ public:
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
 	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 
+	/**
+	* @short Returns HTML view of visited FormattedString.
+	* @author Rafał 'Vogel' Malinowski
+	* @return HTML view of visited FormattedString
+	*/
 	QString result() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_HTML_VISITOR_H

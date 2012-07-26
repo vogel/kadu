@@ -119,7 +119,7 @@ static FormattedString * messagePart(const QString &content, const gg_msg_richte
 
 FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
 {
-	CompositeFormattedString *result = new CompositeFormattedString();
+	QVector<FormattedString *> items;
 	QList<FormatAttribute> formatList = createFormatList(formats, size);
 
 	// Initial value is 0 so that we will not loose any text potentially not covered by any formats.
@@ -133,7 +133,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result->append(new FormattedStringTextBlock(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			items.append(new FormattedStringTextBlock(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)
@@ -148,7 +148,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 			FormattedString *formattedImage = imagePart(format.image);
 			if (formattedImage)
 			{
-				result->append(formattedImage);
+				items.append(formattedImage);
 
 				// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
 				strayTextPosition = textPosition + 1;
@@ -161,11 +161,11 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 					? formatList.at(i + 1).format.position
 					: content.length();
 
-			result->append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
+			items.append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
 		}
 	}
 
-	return result;
+	return new CompositeFormattedString(items);
 }
 
 } // namespace

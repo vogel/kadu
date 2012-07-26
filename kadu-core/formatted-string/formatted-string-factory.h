@@ -31,6 +31,11 @@ class FormattedString;
 class ImageStorageService;
 
 /**
+ * @addtogroup FormattedString
+ * @{
+ */
+
+/**
  * @class FormattedStringFactory
  * @short Class for creating FormattedString instances from different sources.
  * @author Rafał 'Vogel' Malinowski
@@ -82,5 +87,9 @@ public:
 	FormattedString * fromHTML(const QString &html);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_FACTORY_H

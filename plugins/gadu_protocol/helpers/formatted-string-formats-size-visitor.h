@@ -22,6 +22,19 @@
 
 #include "formatted-string/formatted-string-visitor.h"
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class FormattedStringFormatsSizeVisitor
+ * @short Visitor that couns size of libgadu formats structure required to describe visited FormattedString.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This visitor couns size of libgadu formats structure required to describe visited FormattedString. This size can be
+ * then passed to FormattedStringFormatsVisitor contructor.
+ */
 class FormattedStringFormatsSizeVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringFormatsSizeVisitor);
@@ -31,6 +44,11 @@ class FormattedStringFormatsSizeVisitor : public FormattedStringVisitor
 	unsigned int Result;
 
 public:
+	/**
+	 * @short Create new instance of FormattedStringFormatsSizeVisitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param allowImages if false then image formats from FormattedString will not be counted
+	 */
 	explicit FormattedStringFormatsSizeVisitor(bool allowImages);
 	virtual ~FormattedStringFormatsSizeVisitor();
 
@@ -38,8 +56,17 @@ public:
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
 	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 
+	/**
+	 * @short Return computed formats structure size.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param computed formats structure size
+	 */
 	unsigned int result() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_FORMATS_SIZE_VISITOR_H

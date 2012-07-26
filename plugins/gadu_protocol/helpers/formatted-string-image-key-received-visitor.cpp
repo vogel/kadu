@@ -42,5 +42,5 @@ void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlo
 
 void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	Q_UNUSED(FormattedStringTextBlock);
+	Q_UNUSED(formattedStringTextBlock);
 }

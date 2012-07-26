@@ -21,15 +21,25 @@
 #define FORMATTED_STRING_IMAGE_BLOCK_H
 
 #include <QtCore/QString>
-#include <QtGui/QColor>
 
-#include "protocols/protocol.h"
 #include "protocols/services/chat-image-key.h"
 
 #include "exports.h"
 
 #include "formatted-string.h"
 
+/**
+ * @addtogroup FormattedString
+ * @{
+ */
+
+/**
+ * @class FormattedStringImageBlock
+ * @short FormattedString subclass that contains information about one image.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class contains information about one image that can be a part of FormattedString.
+ */
 class KADUAPI FormattedStringImageBlock : public FormattedString
 {
 	Q_DISABLE_COPY(FormattedStringImageBlock);
@@ -38,18 +48,56 @@ class KADUAPI FormattedStringImageBlock : public FormattedString
 	ChatImageKey ImageKey;
 
 public:
+	/**
+	 * @short Create FormattedStringImageBlock with image with given path.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imagePath path to image
+	 */
 	explicit FormattedStringImageBlock(const QString &imagePath);
+
+	/**
+	 * @short Create FormattedStringImageBlock with image with given chat image key.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param chatImageKey chat image get of image
+	 *
+	 * Relative path of image will be generatted automatically from toString() method of passed ChatImageKey instance. This path can be invalid
+	 * if image was not downloaded from peer.
+	 */
 	explicit FormattedStringImageBlock(const ChatImageKey &chatImageKey);
+
 	virtual ~FormattedStringImageBlock();
 
 	virtual void accept(FormattedStringVisitor *visitor) const;
 
+	/**
+	 * @short Return true if neither image path nor image key are provided.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if neither image path nor image key are provided
+	 */
 	virtual bool isEmpty() const;
 
+	/**
+	 * @short Return provided image path.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return provided image path
+	 *
+	 * If image path was not provided at construction time then it will be constructed from available chat image key.
+	 */
 	QString imagePath() const;
 
+	/**
+	 * @short Return provided chat image key.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return provided chat image key
+	 *
+	 * If chat image key was not provided at construction time then empty chat image key will be returned.
+	 */
 	ChatImageKey imageKey() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_IMAGE_BLOCK_H

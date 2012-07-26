@@ -43,7 +43,7 @@ void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock * co
 
 void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	Result.append(FormattedStringTextBlock->content());
+	Result.append(formattedStringTextBlock->content());
 }
 
 QString FormattedStringPlainTextVisitor::result() const

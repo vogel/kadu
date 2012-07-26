@@ -76,9 +76,6 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 
 	append(&format, sizeof(format));
 
-	if (!CurrentChatImageService)
-		return;
-
 	struct gg_msg_richtext_image image;
 
 	QString imagePath = CurrentImageStorageService
@@ -86,7 +83,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 			: formattedStringImageBlock->imagePath();
 	QFile imageFile(imagePath);
 
-	if (imageFile.open(QFile::ReadOnly))
+	if (CurrentChatImageService && imageFile.open(QFile::ReadOnly))
 	{
 		QByteArray content = imageFile.readAll();
 		const ChatImageKey &chatImageKey = CurrentChatImageService.data()->prepareImageToBeSent(content);
@@ -108,7 +105,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 
 void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	if (First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
+	if (First && !formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
 		return;
 
 	First = false;
@@ -118,29 +115,29 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const
 	format.position = gg_fix16(TextPosition);
 	format.font = 0;
 
-	if (FormattedStringTextBlock->bold())
+	if (formattedStringTextBlock->bold())
 		format.font |= GG_FONT_BOLD;
-	if (FormattedStringTextBlock->italic())
+	if (formattedStringTextBlock->italic())
 		format.font |= GG_FONT_ITALIC;
-	if (FormattedStringTextBlock->underline())
+	if (formattedStringTextBlock->underline())
 		format.font |= GG_FONT_UNDERLINE;
-	if (FormattedStringTextBlock->color().isValid())
+	if (formattedStringTextBlock->color().isValid())
 		format.font |= GG_FONT_COLOR;
 
 	append(&format, sizeof(format));
 
-	if (FormattedStringTextBlock->color().isValid())
+	if (formattedStringTextBlock->color().isValid())
 	{
 		struct gg_msg_richtext_color color;
 
-		color.red = FormattedStringTextBlock->color().red();
-		color.green = FormattedStringTextBlock->color().green();
-		color.blue = FormattedStringTextBlock->color().blue();
+		color.red = formattedStringTextBlock->color().red();
+		color.green = formattedStringTextBlock->color().green();
+		color.blue = formattedStringTextBlock->color().blue();
 
 		append(&color, sizeof(color));
 	}
 
-	TextPosition += FormattedStringTextBlock->content().length();
+	TextPosition += formattedStringTextBlock->content().length();
 }
 
 QByteArray FormattedStringFormatsVisitor::result() const

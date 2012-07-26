@@ -50,21 +50,21 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 
 void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	QString content(replacedNewLine(Qt::escape(FormattedStringTextBlock->content()), QLatin1String("<br/>")));
+	QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QLatin1String("<br/>")));
 	content.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
-	if (!FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
+	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
 	{
 		Result.append(content);
 		return;
 	}
 
 	QString span = "<span style=\"";
-	if (FormattedStringTextBlock->bold())
+	if (formattedStringTextBlock->bold())
 		span += "font-weight:600;";
-	if (FormattedStringTextBlock->italic())
+	if (formattedStringTextBlock->italic())
 		span += "font-style:italic;";
-	if (FormattedStringTextBlock->underline())
+	if (formattedStringTextBlock->underline())
 		span += "text-decoration:underline;";
 
 //  TODO: Ignore colors settings for now. Many clients send black as default color.

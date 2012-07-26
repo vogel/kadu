@@ -92,23 +92,23 @@ QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QText
 
 FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
-	CompositeFormattedString *result = new CompositeFormattedString();
-
 	QTextDocument document;
 	document.setHtml(html);
 
 	bool firstBlock = true;
+
+	QVector<FormattedString *> items;
 
 	QTextBlock block = document.firstBlock();
 	while (block.isValid())
 	{
 		QList<FormattedString *> parts = partsFromQTextBlock(block, firstBlock);
 		foreach (FormattedString *part, parts)
-			result->append(part);
+			items.append(part);
 
 		block = block.next();
 		firstBlock = false;
 	}
 
-	return result;
+	return new CompositeFormattedString(items);
 }

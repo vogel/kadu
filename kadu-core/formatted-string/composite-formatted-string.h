@@ -23,63 +23,60 @@
 #ifndef COMPOSITE_FORMATTED_STRING_H
 #define COMPOSITE_FORMATTED_STRING_H
 
-#include <QtCore/QList>
+#include <QtCore/QVector>
 #include <QtGui/QColor>
-
-#include "protocols/protocol.h"
 
 #include "exports.h"
 
 #include "formatted-string.h"
 
-class QTextDocument;
-
-class ImageStorageService;
+/**
+ * @addtogroup FormattedString
+ * @{
+ */
 
 /**
- * \class CompositeFormattedString
- * \brief Rich message (incoming or outcoming).
- *
- * This class represens incoming or outgoing message. Some protocols (like GG) uses its own
- * formatting, so this class acts like abstraction over all used formatting methods in Kadu.
- *
- * FormattedString is splited into parts (\see FormattedStringTextBlock) - each part can contain text and formatting or an image.
- *
- * Each message has an <code>id</code> field that is used by protocols to store its message sequental number.
+ * @class CompositeFormattedString
+ * @short This class represents FormattedString that is composed of other FormattedString instances.
+ * @author Rafał 'Vogel' Malinowski
  */
 class KADUAPI CompositeFormattedString : public FormattedString
 {
 	Q_DISABLE_COPY(CompositeFormattedString)
 
-	QVector<FormattedString *> Parts;
+	QVector<FormattedString *> Items;
 
 public:
 	/**
-	 * Creates an empty message.
+	 * @short Create new instance of CompositeFormattedString.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param items items of composite FormattedString
 	 */
-	CompositeFormattedString();
-
+	explicit CompositeFormattedString(QVector<FormattedString *> items);
 	virtual ~CompositeFormattedString();
 
+	/**
+	 * @short Accept a visitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitor visitor to accept
+	 *
+	 * This method executes visit() method of passed visitor on itself and then on all items.
+	 */
 	virtual void accept(FormattedStringVisitor *visitor) const;
 
 	/**
-	 * Returns all parts that composes this message.
-	 * @return All parts that composes this message.
-	 */
-	const QVector<FormattedString *> & parts() const;
-
-	/**
-	 * Append a new part to message.
-	 * @arg part New part to append.
-	 */
-	void append(FormattedString *part);
-
-	/**
-	 * Returns true if message does not have any parts or if all parts are empty.
-	 * @return True if message is empty.
+	 * @short Return true if his FormattedString is empty or consists only of empty items.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if his FormattedString is empty or consists only of empty items
 	 */
 	virtual bool isEmpty() const;
+
+	/**
+	 * @short Return all items that compose this CompositeFormattedString.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return all items that compose this CompositeFormattedString
+	 */
+	QVector<FormattedString *> items() const;
 
 };
 

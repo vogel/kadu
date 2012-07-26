@@ -36,37 +36,33 @@
 
 #include "composite-formatted-string.h"
 
-CompositeFormattedString::CompositeFormattedString()
+CompositeFormattedString::CompositeFormattedString(QVector<FormattedString *> items) :
+		Items(items)
 {
 }
 
 CompositeFormattedString::~CompositeFormattedString()
 {
-	qDeleteAll(Parts);
+	qDeleteAll(Items);
 }
 
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
-	foreach (FormattedString *part, Parts)
-		part->accept(visitor);
+	foreach (FormattedString *item, Items)
+		item->accept(visitor);
 
 	visitor->visit(this);
 }
 
-const QVector<FormattedString *> & CompositeFormattedString::parts() const
+QVector<FormattedString *> CompositeFormattedString::items() const
 {
-	return Parts;
-}
-
-void CompositeFormattedString::append(FormattedString *part)
-{
-	Parts.append(part);
+	return Items;
 }
 
 bool CompositeFormattedString::isEmpty() const
 {
-	foreach (FormattedString *part, Parts)
-		if (!part->isEmpty())
+	foreach (FormattedString *item, Items)
+		if (!item->isEmpty())
 			return false;
 
 	return true;

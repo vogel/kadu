@@ -27,6 +27,18 @@
 class ChatImageService;
 class ImageStorageService;
 
+/**
+ * @addtogroup Gadu
+ * @{
+ */
+
+/**
+ * @class FormattedStringFormatsVisitor
+ * @short Visitor that creates formats libgadu structure to describe visited FormattedString.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This visitor creates formats libgadu structure to describe visited FormattedString.
+ */
 class FormattedStringFormatsVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringFormatsVisitor);
@@ -43,18 +55,49 @@ class FormattedStringFormatsVisitor : public FormattedStringVisitor
 	void append(void *data, unsigned int size);
 
 public:
+	/**
+	 * @short Create new instance of FormattedStringFormatsVisitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param size size requires to create libgadu formats structure
+	 *
+	 * Obtain size parameter value from FormattedStringFormatsSizeVisitor.
+	 */
 	explicit FormattedStringFormatsVisitor(int size);
 	virtual ~FormattedStringFormatsVisitor();
 
+	/**
+	 * @short Set ChatImageService to use by this visitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param chatImageService ChatImageService to use by this visitor
+	 *
+	 * If no ChatImageService is provided then empty images will be inserted into resulting libgadu formats structure.
+	 */
 	void setChatImageService(ChatImageService *chatImageService);
+
+	/**
+	 * @short Set ImageStorageService to use by this visitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param imageStorageService ImageStorageService to use by this visitor
+	 *
+	 * If no ImageStorageService is provided then all images will use full path instead of relative one.
+	 */
 	void setImageStorageService(ImageStorageService *imageStorageService);
 
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
 	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 
+	/**
+	 * @short Return libgadu formats structure that matches visited FormattedString.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return libgadu formats structure
+	 */
 	QByteArray result() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_FORMATS_VISITOR_H

@@ -52,12 +52,12 @@ void FormattedStringFormatsSizeVisitor::visit(const FormattedStringImageBlock * 
 
 void FormattedStringFormatsSizeVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
-	if (!First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
+	if (!First && !formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline() && !formattedStringTextBlock->color().isValid())
 		return;
 
 	First = false;
 	Result += sizeof(struct gg_msg_richtext_format);
-	if (FormattedStringTextBlock->color().isValid())
+	if (formattedStringTextBlock->color().isValid())
 		Result += sizeof(struct gg_msg_richtext_color);
 }
 
