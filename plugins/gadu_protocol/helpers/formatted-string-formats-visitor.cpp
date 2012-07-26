@@ -106,7 +106,7 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 	append(&image, sizeof(image));
 }
 
-void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
+void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
 	if (First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
 		return;

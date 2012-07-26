@@ -39,7 +39,7 @@ public:
 
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringTextBlock * const FormattedStringTextBlock);
+	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 
 signals:
 	void chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey);

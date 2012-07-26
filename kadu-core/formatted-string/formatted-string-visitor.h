@@ -34,7 +34,7 @@ protected:
 public:
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString) = 0;
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) = 0;
-	virtual void visit(const FormattedStringTextBlock * const FormattedStringTextBlock) = 0;
+	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) = 0;
 
 };
 

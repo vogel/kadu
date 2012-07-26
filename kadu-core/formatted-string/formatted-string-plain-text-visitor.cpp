@@ -41,7 +41,7 @@ void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock * co
 	Result.append(QChar(QChar::Nbsp));
 }
 
-void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
+void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
 	Result.append(FormattedStringTextBlock->content());
 }

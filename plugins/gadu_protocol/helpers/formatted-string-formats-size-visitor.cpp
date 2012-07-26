@@ -50,7 +50,7 @@ void FormattedStringFormatsSizeVisitor::visit(const FormattedStringImageBlock * 
 	Result += sizeof(struct gg_msg_richtext_image);
 }
 
-void FormattedStringFormatsSizeVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
+void FormattedStringFormatsSizeVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
 	if (!First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
 		return;

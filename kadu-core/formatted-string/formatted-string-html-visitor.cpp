@@ -48,7 +48,7 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 			: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString()));
 }
 
-void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
+void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
 	QString content(replacedNewLine(Qt::escape(FormattedStringTextBlock->content()), QLatin1String("<br/>")));
 	content.replace(QChar::LineSeparator, QLatin1String("<br/>"));

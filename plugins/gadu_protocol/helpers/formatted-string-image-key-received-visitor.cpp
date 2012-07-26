@@ -40,7 +40,7 @@ void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlo
 	emit chatImageKeyReceived(Id, formattedStringImageBlock->imageKey());
 }
 
-void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
+void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
 {
 	Q_UNUSED(FormattedStringTextBlock);
 }
