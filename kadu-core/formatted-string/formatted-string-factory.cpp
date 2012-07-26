@@ -23,7 +23,7 @@
 
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-image-block.h"
-#include "formatted-string/formatted-string-part.h"
+#include "formatted-string/formatted-string-text-block.h"
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
@@ -35,11 +35,7 @@ void FormattedStringFactory::setImageStorageService(ImageStorageService *imageSt
 
 FormattedString * FormattedStringFactory::fromPlainText(const QString& plainText)
 {
-	CompositeFormattedString *result = new CompositeFormattedString();
-	if (!plainText.isEmpty())
-		result->append(new FormattedStringPart(plainText, false, false, false, QColor()));
-
-	return result;
+	return new FormattedStringTextBlock(plainText, false, false, false, QColor());
 }
 
 FormattedString * FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
@@ -47,7 +43,7 @@ FormattedString * FormattedStringFactory::partFromQTextCharFormat(const QTextCha
 	if (text.isEmpty())
 		return 0;
 	else
-		return new FormattedStringPart(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+		return new FormattedStringTextBlock(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
 FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)

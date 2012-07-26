@@ -21,47 +21,50 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtGui/QTextBlock>
-#include <QtGui/QTextDocument>
-
 #include "formatted-string/formatted-string-visitor.h"
-#include "misc/misc.h"
-#include "protocols/services/chat-image-service.h"
 
-#include "formatted-string-part.h"
+#include "formatted-string-text-block.h"
 
-FormattedStringPart::FormattedStringPart(const QString &content, bool bold, bool italic, bool underline, QColor color) :
+FormattedStringTextBlock::FormattedStringTextBlock(const QString &content, bool bold, bool italic, bool underline, QColor color) :
 		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
 {
 }
 
-FormattedStringPart::FormattedStringPart(const FormattedStringPart &copyMe) :
-		FormattedString()
-{
-	Content = copyMe.Content;
-	Bold = copyMe.Bold;
-	Italic = copyMe.Italic;
-	Underline = copyMe.Underline;
-	Color = copyMe.Color;
-}
-
-FormattedStringPart::~FormattedStringPart()
+FormattedStringTextBlock::~FormattedStringTextBlock()
 {
 }
 
-FormattedStringPart & FormattedStringPart::operator = (const FormattedStringPart &copyMe)
-{
-	Content = copyMe.Content;
-	Bold = copyMe.Bold;
-	Italic = copyMe.Italic;
-	Underline = copyMe.Underline;
-	Color = copyMe.Color;
-
-	return *this;
-}
-
-void FormattedStringPart::accept(FormattedStringVisitor *visitor) const
+void FormattedStringTextBlock::accept(FormattedStringVisitor *visitor) const
 {
 	visitor->visit(this);
+}
+
+bool FormattedStringTextBlock::isEmpty() const
+{
+	return Content.isEmpty();
+}
+
+QString FormattedStringTextBlock::content() const
+{
+	return Content;
+}
+
+bool FormattedStringTextBlock::bold() const
+{
+	return Bold;
+}
+
+bool FormattedStringTextBlock::italic() const
+{
+	return Italic;
+}
+
+bool FormattedStringTextBlock::underline() const
+{
+	return Underline;
+}
+
+QColor FormattedStringTextBlock::color() const
+{
+	return Color;
 }

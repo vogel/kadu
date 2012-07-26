@@ -22,7 +22,7 @@
 
 class CompositeFormattedString;
 class FormattedStringImageBlock;
-class FormattedStringPart;
+class FormattedStringTextBlock;
 
 class FormattedStringVisitor
 {
@@ -34,7 +34,7 @@ protected:
 public:
 	virtual void visit(const CompositeFormattedString * const compositeFormattedString) = 0;
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) = 0;
-	virtual void visit(const FormattedStringPart * const formattedStringPart) = 0;
+	virtual void visit(const FormattedStringTextBlock * const FormattedStringTextBlock) = 0;
 
 };
 

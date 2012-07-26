@@ -27,7 +27,7 @@
 
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-image-block.h"
-#include "formatted-string/formatted-string-part.h"
+#include "formatted-string/formatted-string-text-block.h"
 
 #include "gadu-formatter.h"
 
@@ -98,7 +98,7 @@ static FormattedString * imagePart(const gg_msg_richtext_image &image)
 	quint32 crc32 = gg_fix32(image.crc32);
 
 	if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
-		return new FormattedStringPart();
+		return 0;
 
 	ChatImageKey key(size, crc32);
 	return new FormattedStringImageBlock(key);
@@ -114,7 +114,7 @@ static FormattedString * messagePart(const QString &content, const gg_msg_richte
 		textColor.setBlue(color.blue);
 	}
 
-	return new FormattedStringPart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+	return new FormattedStringTextBlock(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
 }
 
 FormattedString * createMessage(const QString &content, const unsigned char *formats, unsigned int size)
@@ -133,7 +133,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 				: content.length();
 
 		if (hasStrayText && strayTextPosition < textPosition)
-			result->append(new FormattedStringPart(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
+			result->append(new FormattedStringTextBlock(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
 		hasStrayText = false;
 
 		if (i >= len)
@@ -145,11 +145,15 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 
 		if (format.format.font & GG_FONT_IMAGE)
 		{
-			result->append(imagePart(format.image));
+			FormattedString *formattedImage = imagePart(format.image);
+			if (formattedImage)
+			{
+				result->append(formattedImage);
 
-			// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
-			strayTextPosition = textPosition + 1;
-			hasStrayText = true;
+				// Assume only one character can represent GG_FONT_IMAGE and never loose the rest of the text.
+				strayTextPosition = textPosition + 1;
+				hasStrayText = true;
+			}
 		}
 		else if (textPosition < content.length())
 		{

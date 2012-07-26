@@ -24,7 +24,7 @@
 #include <libgadu.h>
 
 #include "formatted-string/formatted-string-image-block.h"
-#include "formatted-string/formatted-string-part.h"
+#include "formatted-string/formatted-string-text-block.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
 
@@ -106,9 +106,9 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringImageBlock * cons
 	append(&image, sizeof(image));
 }
 
-void FormattedStringFormatsVisitor::visit(const FormattedStringPart * const formattedStringPart)
+void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
 {
-	if (First && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+	if (First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
 		return;
 
 	First = false;
@@ -118,29 +118,29 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringPart * const form
 	format.position = gg_fix16(TextPosition);
 	format.font = 0;
 
-	if (formattedStringPart->bold())
+	if (FormattedStringTextBlock->bold())
 		format.font |= GG_FONT_BOLD;
-	if (formattedStringPart->italic())
+	if (FormattedStringTextBlock->italic())
 		format.font |= GG_FONT_ITALIC;
-	if (formattedStringPart->underline())
+	if (FormattedStringTextBlock->underline())
 		format.font |= GG_FONT_UNDERLINE;
-	if (formattedStringPart->color().isValid())
+	if (FormattedStringTextBlock->color().isValid())
 		format.font |= GG_FONT_COLOR;
 
 	append(&format, sizeof(format));
 
-	if (formattedStringPart->color().isValid())
+	if (FormattedStringTextBlock->color().isValid())
 	{
 		struct gg_msg_richtext_color color;
 
-		color.red = formattedStringPart->color().red();
-		color.green = formattedStringPart->color().green();
-		color.blue = formattedStringPart->color().blue();
+		color.red = FormattedStringTextBlock->color().red();
+		color.green = FormattedStringTextBlock->color().green();
+		color.blue = FormattedStringTextBlock->color().blue();
 
 		append(&color, sizeof(color));
 	}
 
-	TextPosition += formattedStringPart->content().length();
+	TextPosition += FormattedStringTextBlock->content().length();
 }
 
 QByteArray FormattedStringFormatsVisitor::result() const

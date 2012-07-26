@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string/formatted-string-plain-text-visitor.h"
+#include "formatted-string/formatted-string-text-block.h"
 
-#include "formatted-string-part.h"
+#include "formatted-string-plain-text-visitor.h"
 
 FormattedStringPlainTextVisitor::FormattedStringPlainTextVisitor()
 {
@@ -41,9 +41,9 @@ void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock * co
 	Result.append(QChar(QChar::Nbsp));
 }
 
-void FormattedStringPlainTextVisitor::visit(const FormattedStringPart * const formattedStringPart)
+void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
 {
-	Result.append(formattedStringPart->content());
+	Result.append(FormattedStringTextBlock->content());
 }
 
 QString FormattedStringPlainTextVisitor::result() const

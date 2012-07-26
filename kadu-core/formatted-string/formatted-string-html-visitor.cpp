@@ -20,11 +20,11 @@
 #include <QtCore/QFileInfo>
 #include <QtGui/QTextDocument>
 
-#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-image-block.h"
+#include "formatted-string/formatted-string-text-block.h"
 #include "misc/misc.h"
 
-#include "formatted-string-part.h"
+#include "formatted-string-html-visitor.h"
 
 FormattedStringHtmlVisitor::FormattedStringHtmlVisitor()
 {
@@ -48,23 +48,23 @@ void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const f
 			: QString("<img src=\"kaduimg:///%1\" id=\"%2\" />").arg(imagePath).arg(imageKey.toString()));
 }
 
-void FormattedStringHtmlVisitor::visit(const FormattedStringPart * const formattedStringPart)
+void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
 {
-	QString content(replacedNewLine(Qt::escape(formattedStringPart->content()), QLatin1String("<br/>")));
+	QString content(replacedNewLine(Qt::escape(FormattedStringTextBlock->content()), QLatin1String("<br/>")));
 	content.replace(QChar::LineSeparator, QLatin1String("<br/>"));
 
-	if (!formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+	if (!FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
 	{
 		Result.append(content);
 		return;
 	}
 
 	QString span = "<span style=\"";
-	if (formattedStringPart->bold())
+	if (FormattedStringTextBlock->bold())
 		span += "font-weight:600;";
-	if (formattedStringPart->italic())
+	if (FormattedStringTextBlock->italic())
 		span += "font-style:italic;";
-	if (formattedStringPart->underline())
+	if (FormattedStringTextBlock->underline())
 		span += "text-decoration:underline;";
 
 //  TODO: Ignore colors settings for now. Many clients send black as default color.

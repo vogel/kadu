@@ -20,7 +20,7 @@
 #include <libgadu.h>
 
 #include "formatted-string/formatted-string-image-block.h"
-#include "formatted-string/formatted-string-part.h"
+#include "formatted-string/formatted-string-text-block.h"
 
 #include "formatted-string-formats-size-visitor.h"
 
@@ -50,14 +50,14 @@ void FormattedStringFormatsSizeVisitor::visit(const FormattedStringImageBlock * 
 	Result += sizeof(struct gg_msg_richtext_image);
 }
 
-void FormattedStringFormatsSizeVisitor::visit(const FormattedStringPart * const formattedStringPart)
+void FormattedStringFormatsSizeVisitor::visit(const FormattedStringTextBlock * const FormattedStringTextBlock)
 {
-	if (!First && !formattedStringPart->bold() && !formattedStringPart->italic() && !formattedStringPart->underline() && !formattedStringPart->color().isValid())
+	if (!First && !FormattedStringTextBlock->bold() && !FormattedStringTextBlock->italic() && !FormattedStringTextBlock->underline() && !FormattedStringTextBlock->color().isValid())
 		return;
 
 	First = false;
 	Result += sizeof(struct gg_msg_richtext_format);
-	if (formattedStringPart->color().isValid())
+	if (FormattedStringTextBlock->color().isValid())
 		Result += sizeof(struct gg_msg_richtext_color);
 }
 

@@ -43,7 +43,7 @@ class ImageStorageService;
  * This class represens incoming or outgoing message. Some protocols (like GG) uses its own
  * formatting, so this class acts like abstraction over all used formatting methods in Kadu.
  *
- * FormattedString is splited into parts (\see FormattedStringPart) - each part can contain text and formatting or an image.
+ * FormattedString is splited into parts (\see FormattedStringTextBlock) - each part can contain text and formatting or an image.
  *
  * Each message has an <code>id</code> field that is used by protocols to store its message sequental number.
  */
