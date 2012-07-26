@@ -34,7 +34,6 @@
 
 class QTimer;
 
-class CompositeFormattedString;
 class GaduChatImageService;
 class GaduConnection;
 class ImageStorageService;
@@ -72,7 +71,7 @@ class GaduChatService : public ChatService
 	FormattedString * createFormattedString(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(CompositeFormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage);
+	int sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage);
 
 	QTimer *RemoveTimer;
 

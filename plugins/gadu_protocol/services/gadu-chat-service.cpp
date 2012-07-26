@@ -83,7 +83,7 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
-int GaduChatService::sendRawMessage(CompositeFormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
+int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -146,7 +146,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, Form
 		return false;
 	}
 
-	int messageId = sendRawMessage((CompositeFormattedString *) formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage(formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
