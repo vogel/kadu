@@ -205,7 +205,8 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setContent(message);
+				msg.setHtmlContent(message);
+				msg.setPlainTextContent(message);
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());

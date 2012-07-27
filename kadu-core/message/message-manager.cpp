@@ -218,7 +218,8 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(htmlVisitor.result());
+	message.setHtmlContent(htmlVisitor.result());
+	message.setPlainTextContent(plainTextVisitor.result());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 

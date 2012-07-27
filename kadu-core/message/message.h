@@ -54,7 +54,9 @@ public:
 
 	KaduSharedBase_PropertyCRW(Chat, messageChat, MessageChat)
 	KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
-	KaduSharedBase_PropertyCRW(QString, content, Content)
+	// KaduSharedBase_PropertyCRW(QString, content, Content)
+	KaduSharedBase_PropertyCRW(QString, plainTextContent, PlainTextContent)
+	KaduSharedBase_PropertyCRW(QString, htmlContent, HtmlContent)
 	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
 	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
 	KaduSharedBase_Property(MessageStatus, status, Status)

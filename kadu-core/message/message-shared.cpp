@@ -83,7 +83,8 @@ void MessageShared::load()
 
 	*MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
-	Content = loadValue<QString>("Content");
+	HtmlContent = loadValue<QString>("Content");
+	PlainTextContent = HtmlContent;
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
@@ -101,7 +102,7 @@ void MessageShared::store()
 
 	storeValue("Chat", MessageChat->uuid().toString());
 	storeValue("Sender", MessageSender->uuid().toString());
-	storeValue("Content", Content);
+	storeValue("Content", HtmlContent);
 	storeValue("ReceiveDate", ReceiveDate);
 	storeValue("SendDate", SendDate);
 	storeValue("Status", (int)Status);

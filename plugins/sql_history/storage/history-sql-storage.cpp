@@ -318,7 +318,7 @@ int HistorySqlStorage::saveMessageContent(const Message& message)
 	QSqlQuery saveMessageQuery = QSqlQuery(Database);
 	saveMessageQuery.prepare("INSERT INTO kadu_message_contents (content) VALUES (:content)");
 
-	saveMessageQuery.bindValue(":content", message.content());
+	saveMessageQuery.bindValue(":content", message.htmlContent());
 
 	executeQuery(saveMessageQuery);
 	int contentId = saveMessageQuery.lastInsertId().toInt();
@@ -1046,7 +1046,8 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(stripAllScriptTags(query.value(2).toString()));
+		message.setHtmlContent(stripAllScriptTags(query.value(2).toString()));
+		message.setPlainTextContent(stripAllScriptTags(query.value(2).toString()));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
@@ -1070,11 +1071,13 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 
 		const QString description = query.value(2).toString();
 		if (description.isEmpty())
-			message.setContent(Qt::escape(typeData.name()));
+			message.setHtmlContent(Qt::escape(typeData.name()));
 		else
-			message.setContent(Qt::escape(QString("%1 with description: %2")
+			message.setHtmlContent(Qt::escape(QString("%1 with description: %2")
 					.arg(typeData.name())
 					.arg(description)));
+
+		message.setPlainTextContent(message.htmlContent());
 
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
@@ -1099,7 +1102,8 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(Qt::escape(query.value(0).toString()));
+		message.setHtmlContent(Qt::escape(query.value(0).toString()));
+		message.setPlainTextContent(Qt::escape(query.value(0).toString()));
 
 		messages.append(message);
 	}

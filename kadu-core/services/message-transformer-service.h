@@ -43,6 +43,8 @@ class MessageTransformer;
  */
 class KADUAPI MessageTransformerService : public QObject
 {
+	Q_OBJECT
+
 	QList<MessageTransformer *> OutgoingMessageTransformers;
 	QList<MessageTransformer *> IncomingMessageTransformers;
 

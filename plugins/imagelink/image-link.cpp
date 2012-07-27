@@ -115,7 +115,8 @@ void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QStrin
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(sender);
-	message.setContent(code);
+	message.setHtmlContent(code);
+	message.setPlainTextContent(code);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 

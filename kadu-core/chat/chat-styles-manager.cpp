@@ -400,7 +400,8 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(chat.chatAccount().accountContact());
-	sentMessage.setContent(tr("Your message"));
+	sentMessage.setHtmlContent(tr("Your message"));
+	sentMessage.setPlainTextContent(tr("Your message"));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -412,7 +413,8 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	receivedMessage.setContent(tr("Message from Your friend"));
+	receivedMessage.setHtmlContent(tr("Message from Your friend"));
+	receivedMessage.setPlainTextContent(tr("Message from Your friend"));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 

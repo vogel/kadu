@@ -318,7 +318,8 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
-	message.setContent(plain);
+	message.setHtmlContent(plain);
+	message.setPlainTextContent(plain);
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 

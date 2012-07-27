@@ -250,7 +250,8 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setContent(htmlVisitor.result());
+	msg.setHtmlContent(htmlVisitor.result());
+	msg.setPlainTextContent(plainTextVisitor.result());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 

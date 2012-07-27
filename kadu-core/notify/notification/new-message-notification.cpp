@@ -80,6 +80,6 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 	}
 
 	setText(syntax.arg(Qt::escape(message.messageSender().display(true))));
-	setDetails(message.content());
+	setDetails(message.htmlContent());
 }
 

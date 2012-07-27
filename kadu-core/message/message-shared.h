@@ -40,7 +40,9 @@ class MessageShared : public QObject, public Shared
 
 	Chat *MessageChat;
 	Contact *MessageSender;
-	QString Content;
+	//QString Content;
+	QString PlainTextContent;
+	QString HtmlContent;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
 	MessageStatus Status;
@@ -67,7 +69,9 @@ public:
 
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	KaduShared_Property(const QString &, content, Content)
+	// KaduShared_Property(const QString &, content, Content)
+	KaduShared_Property(const QString &, plainTextContent, PlainTextContent)
+	KaduShared_Property(const QString &, htmlContent, HtmlContent)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(MessageStatus, status, Status)

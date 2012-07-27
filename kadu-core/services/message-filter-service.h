@@ -44,6 +44,8 @@ class MessageFilter;
  */
 class KADUAPI MessageFilterService : public QObject
 {
+	Q_OBJECT
+
 	QList<MessageFilter *> OutgoingMessageFilters;
 	QList<MessageFilter *> IncomingMessageFilters;
 

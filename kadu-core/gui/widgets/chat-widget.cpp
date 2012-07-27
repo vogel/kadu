@@ -500,7 +500,8 @@ void ChatWidget::appendSystemMessage(const QString &content)
 	Message message = Message::create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setContent(content);
+	message.setHtmlContent(content);
+	message.setPlainTextContent(content);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
@@ -818,7 +819,8 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setStatus(MessageStatusReceived);
-		message.setContent(msg);
+		message.setHtmlContent(msg);
+		message.setPlainTextContent(msg);
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 
