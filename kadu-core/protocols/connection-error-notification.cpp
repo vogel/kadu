@@ -78,7 +78,6 @@ void ConnectionErrorNotification::unregisterEvent()
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-
 	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
 	NotificationManager::instance()->notify(connectionErrorNotification);
 }
@@ -97,6 +96,14 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 		else
 			setDetails(Qt::escape(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer)));
 	}
+
+	addCallback(tr("Ignore"), SLOT(ignoreErrors()), "ignoreErrors()");
+}
+
+void ConnectionErrorNotification::ignoreErrors()
+{
+	NotificationManager::instance()->ignoreConnectionErrors(account());
+	emit closed(this);
 }
 
 ConnectionErrorNotification::~ConnectionErrorNotification()

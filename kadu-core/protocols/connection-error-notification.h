@@ -38,6 +38,9 @@ class ConnectionErrorNotification : public AccountNotification
 	QString ErrorServer;
 	QString ErrorMessage;
 
+private slots:
+	void ignoreErrors();
+
 public:
 	static void registerEvent();
 	static void unregisterEvent();

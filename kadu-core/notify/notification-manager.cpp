@@ -36,6 +36,8 @@
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"
+#include "protocols/protocol.h"
+#include "protocols/connection-error-notification.h"
 #include "status/status-container-manager.h"
 
 #include "notify/notification-manager.h"
@@ -133,9 +135,32 @@ const QList<NotifyEvent *> & NotificationManager::notifyEvents() const
 	return NotifyEvents;
 }
 
+void NotificationManager::ignoreConnectionErrors(Account account)
+{
+	IgnoredAccounts.append(account.id());
+	connect(account.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(unignoreConnectionErrors(Account)));
+}
+
+void NotificationManager::unignoreConnectionErrors(Account account)
+{
+	IgnoredAccounts.removeAll(account.id());
+}
+
 void NotificationManager::notify(Notification *rawNotification)
 {
 	kdebugf();
+
+	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(rawNotification);
+	if (connectionErrorNotification)
+	{
+		Account account = connectionErrorNotification->account();
+
+		if (IgnoredAccounts.contains(account.id()))
+		{
+			rawNotification->close();
+			return;
+		}
+	}
 
 	if (rawNotification->isPeriodic())
 	{
@@ -219,7 +244,7 @@ void NotificationManager::removeGrouped(Notification *notification)
 	{
 		QTimer *timer = new QTimer();
 		timer->setInterval(notification->period()*1000);
-		connect(timer, SIGNAL(timeout()), this, SLOT(removePeriodic()));
+		connect(timer, SIGNAL(timeout()), this, SLOT(removePeriodicEntries()));
 		timer->start();
 		PeriodicNotifications.insert(notification->identifier(), timer);
 	}

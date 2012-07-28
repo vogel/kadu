@@ -58,6 +58,7 @@ class KADUAPI NotificationManager : public QObject
 
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
+	QStringList IgnoredAccounts;
 
 	QHash<QString, AggregateNotification*> ActiveNotifications;
 	QHash<QString, QTimer*> PeriodicNotifications;
@@ -86,6 +87,10 @@ public:
 	const QList<NotifyEvent *> & notifyEvents() const;
 
 	QString notifyConfigurationKey(const QString &eventType);
+	void ignoreConnectionErrors(Account account);
+
+public slots:
+	void unignoreConnectionErrors(Account account);
 
 signals:
 	void notiferRegistered(Notifier *notifier);
