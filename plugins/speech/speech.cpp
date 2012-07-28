@@ -241,7 +241,7 @@ void Speech::notify(Notification *notification)
 		text = notification->text();
 	else
 	{
-		QString details = notification->details();
+		QString details = notification->details().join(QLatin1String("\n"));
 		if (details.length() > config_file.readNumEntry("Speech", "MaxLength"))
 			syntax = config_file.readEntry("Speech", "MsgTooLong" + sex);
 

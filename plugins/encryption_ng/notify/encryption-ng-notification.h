@@ -42,6 +42,8 @@ class ENCRYPTIONAPI EncryptionNgNotification : public Notification
 	static NotifyEvent *PublicKeySendErrorNotification;
 	static NotifyEvent *EncryptionErrorNotification;
 
+	QString Name;
+
 public:
 	static void registerNotifications();
 	static void unregisterNotifications();
@@ -49,6 +51,8 @@ public:
 	static void notifyPublicKeySent(Contact contact);
 	static void notifyPublicKeySendError(Contact contact, const QString &error);
 	static void notifyEncryptionError(const QString &error);
+
+	virtual QString groupKey() const { return Name; }
 
 	explicit EncryptionNgNotification(const QString &name);
 	virtual ~EncryptionNgNotification();

@@ -83,12 +83,11 @@ public:
 
 	void mouseOver();
 	void mouseOut();
+	void notificationUpdated();
 
 	void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 	bool requireManualClosing();
 	bool isDeprecated();
-
-	void addDetail(const QString &detail);
 
 	Chat  chat() { return CurrentChat; }
 

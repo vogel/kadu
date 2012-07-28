@@ -23,9 +23,9 @@
 #ifndef NEW_MESSAGE_NOTIFICATION_H
 #define NEW_MESSAGE_NOTIFICATION_H
 
+#include "message/message.h"
 #include "chat-notification.h"
 
-class Message;
 class NotifyEvent;
 
 class MessageNotification : public ChatNotification
@@ -35,11 +35,15 @@ class MessageNotification : public ChatNotification
 	static NotifyEvent *NewChatNotifyEvent;
 	static NotifyEvent *NewMessageNotifyEvent;
 
+	Message CurrentMessage;
+
 public:
 	enum MessageType {
 		NewChat,
 		NewMessage
 	};
+
+	virtual QString groupKey() const { return CurrentMessage.messageSender().id(); }
 
 	static void registerEvents();
 	static void unregisterEvents();

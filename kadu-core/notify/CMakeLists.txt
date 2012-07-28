@@ -5,6 +5,7 @@ set (notify_SRCS
 	listener/chat-event-listener.cpp
 	listener/event-listener.cpp
 	listener/group-event-listener.cpp
+	notification/aggregate-notification.cpp
 	notification/new-message-notification.cpp
 	notification/multilogon-notification.cpp
 	notification/notification.cpp
@@ -24,6 +25,7 @@ set (notify_MOC_SRCS
 	listener/chat-event-listener.h
 	listener/event-listener.h
 	listener/group-event-listener.h
+	notification/aggregate-notification.h
 	notification/new-message-notification.h
 	notification/multilogon-notification.h
 	notification/notification.h

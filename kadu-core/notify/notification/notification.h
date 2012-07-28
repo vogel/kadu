@@ -116,7 +116,7 @@ private:
 
 	QString Title;
 	QString Text;
-	QString Details;
+	QStringList Details;
 	KaduIcon Icon;
 
 	QList<Callback> Callbacks;
@@ -143,19 +143,19 @@ public:
 	/**
 		Wywo�ywane przez notyfikator, kt�ry zajmuje si� danym zdarzeniem.
 	 **/
-	void acquire();
+	virtual void acquire();
 	/**
 		Wywo�ywane przez notyfikator, kt�ry przestaje zajmowa� si� danym zdarzeniem.
 		Gdy �aden notyfikator nie zajmuje si� danym zdarzeniem, zdarzenie jest zwalniane.
 		Wyst�puje to na przyk�ad w przypadku modu��w d�wi�kowych czy modu�u hints, gdy
 		dymek zniknie po up�ywie okre�lonego czasu a nie przez zdarzenie wywo�ane przez u�ytkownika.
 	 **/
-	void release();
+	virtual void release();
 
 	/**
 		Zamyka zdarzenie. Wywo�uje sygna� closed() i usuwa obiekt.
 	 **/
-	void close();
+	virtual void close();
 
 	/**
 		Usuwa akcje u�ytkownika
@@ -184,10 +184,13 @@ public:
 
 		@return typ zdarzenia
 	 **/
-	const QString & type() const { return Type; }
+	virtual const QString & type() const { return Type; }
 
-	QString key() const;
+	virtual QString key() const;
 
+	virtual QString groupKey() const { return Title; }
+
+	virtual QString identifier() { return Type + "_" + groupKey(); }
 	/**
 		Ustawia tytu� zdarzenia.
 	 **/
@@ -197,45 +200,46 @@ public:
 
 		@return tytu� zdarzenia
 	 **/
-	const QString & title() const { return Title; }
+	virtual const QString title() const { return Title; }
 
 	/**
 		Ustawia tre�� zdarzenia.
 	 **/
-	void setText(const QString &text);
+	virtual void setText(const QString &text);
 	/**
 		Tre�� zdarzenia.
 
 		@return tre�� zdarzenia
 	 **/
-	const QString & text() const { return Text; }
+	virtual const QString text() const { return Text; }
 
 	/**
 		Ustawia szczeg��y zdarzenia (jak na przyk�ad tekst wiadomo�ci).
 	 **/
-	void setDetails(const QString &details);
+	virtual void setDetails(const QStringList &details);
+	virtual void setDetails(const QString &details);
 	/**
 		Szczeg��y zdarzenia
 	 **/
-	const QString & details() const { return Details; }
+	virtual const QStringList details() const { return Details; }
 
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/
-	void setIcon(const KaduIcon &icon);
+	virtual void setIcon(const KaduIcon &icon);
 	/**
 		Ikona zdarzenia.
 
 		@return ikona zdarzenia
 	 **/
-	const KaduIcon & icon() const { return Icon; }
+	virtual const KaduIcon & icon() const { return Icon; }
 	
 	/**
 		Lista akcji.
 
 		@return lista akcji
 	 **/
-	const QList<Callback> & getCallbacks() { return Callbacks; }
+	virtual const QList<Callback> & getCallbacks() { return Callbacks; }
 
 public slots:
 	/**
@@ -250,13 +254,13 @@ public slots:
 	/**
 		Slot anuluj�cy domy�ln� akcj� - wywo�ywany r�cznie przy wyborze dowolnej innej akcji.
 	 **/
-	void clearDefaultCallback();
+	virtual void clearDefaultCallback();
 
 signals:
-	/**
-		Sygna� wysylany przy zamykaniu zdarzenia, po wyborze przez u�ytkownika dowolnej akcji.
-	 **/
+	void updated(Notification *);
+
 	void closed(Notification *);
+
 
 };
 

@@ -110,6 +110,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 		ChatNotification(ChatTypeContact::findChat(contact, ActionCreateAndAdd),
 		QString("StatusChanged") + toStatus, contact.contactAccount().protocolHandler()->statusIcon(contact.currentStatus().type()))
 {
+	CurrentContact = contact;
 	Status status = contact.currentStatus();
 
 	setText(tr("<b>%1</b> changed status to <i>%2</i>").arg(

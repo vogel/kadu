@@ -145,9 +145,14 @@ void Notification::setText(const QString &text)
 	Text = text;
 }
 
-void Notification::setDetails(const QString &details)
+void Notification::setDetails(const QStringList &details)
 {
 	Details = details;
+}
+
+void Notification::setDetails(const QString &details)
+{
+	Details = QStringList(details);
 }
 
 void Notification::setIcon(const KaduIcon &icon)

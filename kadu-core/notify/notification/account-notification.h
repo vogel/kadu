@@ -46,6 +46,7 @@ public:
 	virtual ~AccountNotification();
 
 	Account account() const { return CurrentAccount; }
+	virtual QString groupKey() const { return CurrentAccount.id(); }
 
 };
 

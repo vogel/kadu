@@ -42,13 +42,15 @@ class StatusChangedNotification : public ChatNotification
 	static NotifyEvent *StatusChangedToDoNotDisturbNotifyEvent;
 	static NotifyEvent *StatusChangedToOfflineNotifyEvent;
 
+	Contact CurrentContact;
 public:
 	static void registerEvents();
 	static void unregisterEvents();
 
+	virtual QString groupKey() const { return CurrentContact.id(); }
+
 	StatusChangedNotification(const QString &toStatus, const Contact &contact);
 	virtual ~StatusChangedNotification() {}
-
 };
 
 #endif // STATUS_CHANGED_NOTIFICATION_H

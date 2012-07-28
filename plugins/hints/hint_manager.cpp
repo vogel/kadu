@@ -261,14 +261,8 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
+	DisplayedNotifications.removeAll(hint->getNotification()->identifier());
 	hints.removeAll(hint);
-	for (QMap<QPair<Chat, QString>, Hint *>::iterator it = linkedHints.begin(); it != linkedHints.end(); )
-	{
-		if (it.value() == hint)
-			it = linkedHints.erase(it);
-		else
-			it++;
-	}
 
 	layout->removeWidget(hint);
 	hint->deleteLater();
@@ -323,7 +317,6 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 	switch (config_file.readNumEntry("Hints", buttonName))
 	{
 		case 1:
-			openChat(hint);
 			hint->acceptNotification();
 			break;
 
@@ -391,20 +384,6 @@ void HintManager::chatUpdated(const Chat &chat)
 	if (chat.unreadMessagesCount() > 0)
 		return;
 
-	QPair<Chat, QString> newChat = qMakePair(chat, QString("NewChat"));
-	QPair<Chat, QString> newMessage = qMakePair(chat, QString("NewMessage"));
-
-	if (linkedHints.contains(newChat))
-	{
-		Hint *linkedHint = linkedHints.take(newChat);
-		linkedHint->close();
-	}
-	if (linkedHints.contains(newMessage))
-	{
-		Hint *linkedHint = linkedHints.take(newMessage);
-		linkedHint->close();
-	}
-
 	foreach (Hint *h, hints)
 	{
 		if (h->chat() == chat && !h->requireManualClosing())
@@ -438,23 +417,41 @@ Hint *HintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
-	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
+	Hint *hint;
 
-	Hint *hint = new Hint(frame, notification);
-	hints.append(hint);
+	if (DisplayedNotifications.contains(notification->identifier()))
+	{
+		foreach (Hint *h, hints)
+			if (h->getNotification()->identifier() == notification->identifier())
+			{
+				hint = h;
+				//hope this refreshes this hint
+				hint->notificationUpdated();
+				break;
+			}
+	}
+	else
+	{
+		connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
-	setLayoutDirection();
-	layout->addWidget(hint);
+		hint = new Hint(frame, notification);
+		hints.append(hint);
 
-	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
-	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
-	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
-	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
-	connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
-	setHint();
+		setLayoutDirection();
+		layout->addWidget(hint);
 
-	if (!hint_timer->isActive())
-		hint_timer->start(1000);
+		connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
+		connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
+		connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
+		connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
+		connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
+		setHint();
+
+		if (!hint_timer->isActive())
+			hint_timer->start(1000);
+
+		DisplayedNotifications.append(notification->identifier());
+	}
 
 	kdebugf2();
 
@@ -584,38 +581,14 @@ void HintManager::notify(Notification *notification)
 {
 	kdebugf();
 
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	//TODO hack
-	if (!chatNotification || notification->type().contains("StatusChanged"))
-	{
-		addHint(notification);
-
-		kdebugf2();
-		return;
-	}
-
-	if (linkedHints.contains(qMakePair(chatNotification->chat(), notification->type())))
-	{
-		Hint *linkedHint = linkedHints.value(qMakePair(chatNotification->chat(), notification->type()));
-		linkedHint->addDetail(notification->details());
-	}
-	else
-	{
-		Hint *linkedHint = addHint(notification);
-		linkedHints.insert(qMakePair(chatNotification->chat(), notification->type()), linkedHint);
-	}
+	addHint(notification);
 
 	kdebugf2();
 }
 
 void HintManager::notificationClosed(Notification *notification)
 {
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
-	if (!chatNotification)
-		return;
-
-	if (linkedHints.contains(qMakePair(chatNotification->chat(), notification->type())))
-		linkedHints.remove(qMakePair(chatNotification->chat(), notification->type()));
+	Q_UNUSED(notification)
 }
 
 void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)

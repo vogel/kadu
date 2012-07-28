@@ -41,8 +41,12 @@ public:
 
 	Chat chat() { return CurrentChat; }
 
+	virtual QString groupKey() const { return CurrentChat.uuid(); }
+
 public slots:
 	void openChat();
+
+	virtual void callbackAccept();
 
 };
 

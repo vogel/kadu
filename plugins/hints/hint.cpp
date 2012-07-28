@@ -35,6 +35,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "icons/icons-manager.h"
+#include "notify/notification/aggregate-notification.h"
 #include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
@@ -57,11 +58,14 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	notification->acquire();
 
+	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
+	if (aggregateNotification)
+	{
+		notification = aggregateNotification->notifications().first();
+	}
+
 	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
-
-	if (!notification->details().isEmpty())
-		details.append(notification->details());
 
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->key() + "_timeout", 10);
 
@@ -185,6 +189,9 @@ void Hint::updateText()
 
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
 	{
+		QStringList details;
+		if (!notification->details().isEmpty())
+			details = notification->details();
 		int count = details.count();
 
 		if (count)
@@ -261,12 +268,8 @@ bool Hint::isDeprecated()
 	return (!requireCallbacks) && startSecs != 0 && secs == 0;
 }
 
-void Hint::addDetail(const QString &detail)
+void Hint::notificationUpdated()
 {
-	details.append(detail);
-	if (details.count() > 5)
-		details.pop_front();
-
 	resetTimeout();
 	updateText();
 }

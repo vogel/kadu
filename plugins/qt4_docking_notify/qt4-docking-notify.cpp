@@ -100,7 +100,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
-		ret = ret.replace("%&d", notification->details());
+		ret = ret.replace("%&d", notification->details().join(QLatin1String("\n")));
 	}
 	else
 		ret = def;
@@ -123,7 +123,7 @@ void Qt4Notify::notify(Notification *notification)
 		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_syntax");
 
 		Qt4TrayIcon::instance()->showMessage(parseText(title, notification, notification->text()),
-			parseText(syntax, notification, notification->details()),
+			parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
 			(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
 		notification->release();

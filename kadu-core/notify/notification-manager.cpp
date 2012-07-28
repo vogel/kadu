@@ -34,7 +34,7 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "gui/windows/message-dialog.h"
-#include "notify/notification/notification.h"
+#include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"
 #include "status/status-container-manager.h"
 
@@ -133,13 +133,15 @@ const QList<NotifyEvent *> & NotificationManager::notifyEvents() const
 	return NotifyEvents;
 }
 
-void NotificationManager::notify(Notification *notification)
+void NotificationManager::notify(Notification *rawNotification)
 {
 	kdebugf();
 
-	QString notifyType = notification->key();
+	Notification *notification = findGroup(rawNotification);
+
+	QString notifyType = rawNotification->key();
 	bool foundNotifier = false;
-	bool foundNotifierWithCallbackSupported = !notification->requireCallback();
+	bool foundNotifierWithCallbackSupported = !rawNotification->requireCallback();
 
 	notification->acquire();
 
@@ -172,11 +174,34 @@ void NotificationManager::notify(Notification *notification)
 	notification->release();
 
 	if (!foundNotifierWithCallbackSupported)
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to find notifier for %1 event").arg(notification->type()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to find notifier for %1 event").arg(rawNotification->type()));
 
 	kdebugf2();
 }
 
+Notification * NotificationManager::findGroup(Notification *rawNotification)
+{
+	AggregateNotification *aggregate = ActiveNotifications.value(rawNotification->identifier());
+
+	if (aggregate)
+	{
+		aggregate->addNotification(rawNotification);
+	}
+	else
+	{
+		aggregate = new AggregateNotification(rawNotification);
+		connect(aggregate, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
+	}
+
+	ActiveNotifications.insert(rawNotification->identifier(), aggregate);
+
+	return aggregate;
+}
+
+void NotificationManager::removeGrouped ( Notification* notification )
+{
+	ActiveNotifications.remove(notification->identifier());
+}
 
 QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 {

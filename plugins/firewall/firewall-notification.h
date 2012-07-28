@@ -27,6 +27,7 @@
 
 #include "notify/notification/chat-notification.h"
 
+class Chat;
 class NotifyEvent;
 
 class FirewallNotification : public ChatNotification
@@ -43,6 +44,8 @@ public:
 
 	explicit FirewallNotification(const Chat &chat);
 	virtual ~FirewallNotification();
+
+	virtual QString groupKey() const { return "firewall"; }
 
 };
 

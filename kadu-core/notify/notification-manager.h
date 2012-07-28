@@ -24,6 +24,7 @@
 #ifndef NOTIFICATION_MANAGER_H
 #define NOTIFICATION_MANAGER_H
 
+#include <QtCore/QHash>
 #include <QtCore/QTimer>
 #include <QtGui/QGroupBox>
 
@@ -35,6 +36,7 @@
 #include "status/status.h"
 
 class Action;
+class AggregateNotification;
 class Group;
 class Message;
 class MultilogonSession;
@@ -57,8 +59,15 @@ class KADUAPI NotificationManager : public QObject
 	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
 
+	QHash<QString, AggregateNotification*> ActiveNotifications;
+
 	NotificationManager();
 	virtual ~NotificationManager();
+
+	Notification * findGroup(Notification *notification);
+
+private slots:
+	void removeGrouped(Notification *notification);
 
 public:
 	static NotificationManager * instance();

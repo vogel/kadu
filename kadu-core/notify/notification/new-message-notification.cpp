@@ -64,7 +64,7 @@ void MessageNotification::unregisterEvents()
 
 MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
 		ChatNotification(message.messageChat(), messageType == NewChat ? "NewChat" : "NewMessage",
-		KaduIcon("protocols/common/message"))
+		KaduIcon("protocols/common/message")), CurrentMessage(message)
 {
 	QString syntax;
 

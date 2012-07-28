@@ -43,3 +43,8 @@ void ChatNotification::openChat()
 	if (chatWidget)
 		chatWidget->activate();
 }
+
+void ChatNotification::callbackAccept()
+{
+	openChat();
+}

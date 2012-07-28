@@ -26,6 +26,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
+#include "notify/notification/aggregate-notification.h"
 #include "notify/notification/chat-notification.h"
 
 #include "chat-notifier.h"
@@ -49,15 +50,21 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 {
 	QString content = notification->text();
 	if (!notification->details().isEmpty())
-		content += "<br/> <small>" + notification->details() + "</small>";
+		content += "<br/> <small>" + notification->details().join("<br/>") + "</small>";
 
 	chatWidget->appendSystemMessage(content);
 }
 
 void ChatNotifier::notify(Notification *notification)
 {
+	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
+	if (!aggregateNotification)
+		return;
+
+	Notification *latestNotification = aggregateNotification->notifications().last();
+
 	BuddySet buddies;
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
+	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(latestNotification);
 	if (chatNotification)
 		buddies = chatNotification->chat().contacts().toBuddySet();
 
@@ -68,7 +75,7 @@ void ChatNotifier::notify(Notification *notification)
 	{
 		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
 		if (buddies.isEmpty() || !i.key().contacts().toBuddySet().intersect(buddies).isEmpty())
-			sendNotificationToChatWidget(notification, i.value());
+			sendNotificationToChatWidget(latestNotification, i.value());
 
 		i++;
 	}

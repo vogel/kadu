@@ -195,7 +195,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	{
 		if (!msgRcv || ShowContentMessage)
 		{
-			body = notification->details();
+			body = notification->details().join(QLatin1String("\n"));
 			body.replace(StripBr, QLatin1String("\n"));
 			if (ServerSupportsMarkup)
 				body.remove(StripUnsupportedHtml);
