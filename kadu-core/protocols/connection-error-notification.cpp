@@ -28,7 +28,6 @@
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "parser/parser.h"
-#include "protocols/connection-error-notification-manager.h"
 
 #include "connection-error-notification.h"
 
@@ -79,8 +78,6 @@ void ConnectionErrorNotification::unregisterEvent()
 
 void ConnectionErrorNotification::notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage)
 {
-	if (ConnectionErrorNotificationManager::instance()->hasActiveError(account, errorMessage))
-		return;
 
 	ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account, errorServer, errorMessage);
 	NotificationManager::instance()->notify(connectionErrorNotification);
@@ -100,11 +97,8 @@ ConnectionErrorNotification::ConnectionErrorNotification(Account account, const 
 		else
 			setDetails(Qt::escape(QString("%1 (%2)").arg(ErrorMessage).arg(ErrorServer)));
 	}
-
-	ConnectionErrorNotificationManager::instance()->addActiveError(account, ErrorMessage);
 }
 
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
-	ConnectionErrorNotificationManager::instance()->removeActiveError(15000, account(), ErrorMessage);
 }

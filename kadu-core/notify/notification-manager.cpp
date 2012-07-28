@@ -137,6 +137,19 @@ void NotificationManager::notify(Notification *rawNotification)
 {
 	kdebugf();
 
+	if (rawNotification->isPeriodic())
+	{
+		if (PeriodicNotifications.contains(rawNotification->identifier()))
+		{
+			rawNotification->close();
+			return;
+		}
+		else
+		{
+			PeriodicNotifications.insert(rawNotification->identifier(), 0);
+		}
+	}
+
 	Notification *notification = findGroup(rawNotification);
 
 	QString notifyType = rawNotification->key();
@@ -198,9 +211,24 @@ Notification * NotificationManager::findGroup(Notification *rawNotification)
 	return aggregate;
 }
 
-void NotificationManager::removeGrouped ( Notification* notification )
+void NotificationManager::removeGrouped(Notification *notification)
 {
 	ActiveNotifications.remove(notification->identifier());
+
+	if (notification->isPeriodic())
+	{
+		QTimer *timer = new QTimer();
+		timer->setInterval(notification->period()*1000);
+		connect(timer, SIGNAL(timeout()), this, SLOT(removePeriodic()));
+		timer->start();
+		PeriodicNotifications.insert(notification->identifier(), timer);
+	}
+}
+
+void NotificationManager::removePeriodicEntries()
+{
+	QTimer *t = qobject_cast<QTimer*>(sender());
+	PeriodicNotifications.remove(PeriodicNotifications.key(t));
 }
 
 QString NotificationManager::notifyConfigurationKey(const QString &eventType)

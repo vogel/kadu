@@ -223,6 +223,9 @@ public:
 	 **/
 	virtual const QStringList details() const { return Details; }
 
+	virtual bool isPeriodic() { return false; }
+	virtual int period() { return 0; }
+
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/

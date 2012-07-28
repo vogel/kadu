@@ -60,6 +60,7 @@ class KADUAPI NotificationManager : public QObject
 	QList<NotifyEvent *> NotifyEvents;
 
 	QHash<QString, AggregateNotification*> ActiveNotifications;
+	QHash<QString, QTimer*> PeriodicNotifications;
 
 	NotificationManager();
 	virtual ~NotificationManager();
@@ -68,6 +69,7 @@ class KADUAPI NotificationManager : public QObject
 
 private slots:
 	void removeGrouped(Notification *notification);
+	void removePeriodicEntries();
 
 public:
 	static NotificationManager * instance();
