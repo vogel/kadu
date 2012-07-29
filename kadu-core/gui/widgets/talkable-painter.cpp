@@ -86,8 +86,8 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 
 	Style = Widget->style();
 
-	int minHFrameMargin = 2;
-	int minVFrameMargin = 2;
+	int minHFrameMargin = 6;
+	int minVFrameMargin = 3;
 
 	int qStyleHFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
 	int qStyleVFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameVMargin, 0, Widget);
@@ -497,7 +497,10 @@ void TalkablePainter::paintIcon(QPainter *painter)
 
 void TalkablePainter::paintAvatar(QPainter *painter)
 {
-	const QRect &rect = AvatarRect.adjusted(VFrameMargin, HFrameMargin, -VFrameMargin, -HFrameMargin);
+	int avatarHFrameMargin = 2;
+	int avatarVFrameMargin = 2;
+
+	const QRect &rect = AvatarRect.adjusted(avatarVFrameMargin, avatarHFrameMargin, -avatarVFrameMargin, -avatarHFrameMargin);
 
 	AvatarPainter avatarPainter(Configuration, Option, rect, Index);
 	avatarPainter.paint(painter);
@@ -567,7 +570,7 @@ void TalkablePainter::paint(QPainter *painter)
 	paintDebugRect(painter, ItemRect, QColor(255, 0, 0));
 	paintDebugRect(painter, IconRect, QColor(0, 255, 0));
 	paintDebugRect(painter, AvatarRect, QColor(0, 0, 255));
-	paintDebugRect(painter, AccountNameRect, QColor(255, 0, 255));
+	paintDebugRect(painter, IdentityNameRect, QColor(255, 0, 255));
 	paintDebugRect(painter, NameRect, QColor(0, 255, 255));
 	paintDebugRect(painter, DescriptionRect, QColor(0, 0, 0));
 	*/
