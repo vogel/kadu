@@ -31,13 +31,6 @@ AggregateNotification::AggregateNotification(Notification *firstNotification)
 
 void AggregateNotification::addNotification(Notification* notification)
 {
-	const ConnectionErrorNotification * const connectionErrorNotification = qobject_cast<const ConnectionErrorNotification * const>(notification);
-	if (connectionErrorNotification && Notifications.size() > 0)
-	{
-		notification->close();
-		return;
-	}
-
 	Notifications.append(notification);
 
 	emit updated(this);
@@ -50,12 +43,16 @@ void AggregateNotification::close()
 
 const QString AggregateNotification::title() const
 {
-	return QString("%1 (%2)").arg(Notifications.first()->title()).arg(Notifications.size());
+	return Notifications.size() > 1
+			? QString("%1 (%2)").arg(Notifications.first()->title()).arg(Notifications.size())
+			: Notifications.first()->title();
 }
 
 const QString AggregateNotification::text() const
 {
-	return QString("%1 (%2)").arg(Notifications.first()->text()).arg(Notifications.size());
+	return Notifications.size() > 1
+			? QString("%1 (%2)").arg(Notifications.first()->text()).arg(Notifications.size())
+			: Notifications.first()->text();
 }
 
 const QStringList AggregateNotification::details() const

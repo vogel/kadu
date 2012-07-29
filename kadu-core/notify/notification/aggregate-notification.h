@@ -61,18 +61,8 @@ public:
 	virtual int period() { return Notifications.first()->period(); }
 
 public slots:
-	/**
-		Domy�lny slot wywo�ywany w przypadku zaakceptowania zdarzenia.
-	 **/
 	virtual void callbackAccept();
-	/**
-		Domy�lny slot wywo�ywany w przypadku odrzucenia zdarzenia.
-	 **/
 	virtual void callbackDiscard();
-
-	/**
-		Slot anuluj�cy domy�ln� akcj� - wywo�ywany r�cznie przy wyborze dowolnej innej akcji.
-	 **/
 	virtual void clearDefaultCallback();
 };
 
