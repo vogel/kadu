@@ -24,8 +24,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QEvent>
 #include <QtCore/QTimer>
 #include <QtGui/QMenu>
+#include <QtGui/QWidgetAction>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -58,10 +60,45 @@ StatusButton::~StatusButton()
 void StatusButton::createGui()
 {
 	QMenu *menu = new QMenu(this);
+	addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
 	new StatusMenu(MyStatusContainer, false, menu);
 
 	setMenu(menu);
 	setIcon(Icon->icon().icon());
+}
+
+void StatusButton::addTitleToMenu(const QString &title, QMenu *menu)
+{
+	MenuTitleAction = new QAction(menu);
+	QFont font = MenuTitleAction->font();
+	font.setBold(true);
+
+	MenuTitleAction->setFont(font);
+	MenuTitleAction->setText(title);
+	MenuTitleAction->setIcon(MyStatusContainer->statusIcon().icon());
+
+	QWidgetAction *action = new QWidgetAction(this);
+	action->setObjectName("status_menu_title");
+	QToolButton *titleButton = new QToolButton(this);
+	titleButton->installEventFilter(this); // prevent clicks on the title of the menu
+	titleButton->setDefaultAction(MenuTitleAction);
+	titleButton->setDown(true); // prevent hover style changes in some styles
+	titleButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	action->setDefaultWidget(titleButton);
+
+	menu->addAction(action);
+}
+
+bool StatusButton::eventFilter(QObject *object, QEvent *event)
+{
+	Q_UNUSED(object);
+
+	if (event->type() == QEvent::ActionChanged || event->type() == QEvent::Paint || event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
+		return false;
+
+	event->accept();
+
+	return true;
 }
 
 void StatusButton::updateStatus()
@@ -111,4 +148,5 @@ void StatusButton::setDisplayStatusName(bool displayStatusName)
 void StatusButton::iconUpdated(const KaduIcon &icon)
 {
 	setIcon(icon.icon());
+	MenuTitleAction->setIcon(icon.icon());
 }

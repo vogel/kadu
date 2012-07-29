@@ -39,6 +39,7 @@ class StatusButton : public QToolButton, private ConfigurationAwareObject
 	StatusContainer *MyStatusContainer;
 	bool DisplayStatusName;
 	StatusIcon *Icon;
+	QAction *MenuTitleAction;
 
 	void createGui();
 	void updateStatus();
@@ -46,6 +47,7 @@ class StatusButton : public QToolButton, private ConfigurationAwareObject
 private slots:
 	void iconUpdated(const KaduIcon &icon);
 	void statusUpdated();
+	void addTitleToMenu(const QString &title, QMenu *menu);
 
 protected:
 	virtual void configurationUpdated();
@@ -55,6 +57,7 @@ public:
 	virtual ~StatusButton();
 
 	void setDisplayStatusName(bool displayStatusName);
+	bool eventFilter(QObject *object, QEvent *event);
 
 };
 
