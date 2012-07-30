@@ -337,8 +337,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	updateTabName(chatWidget);
 
-	_activateWindow(TabDialog);
-
 	TargetTabs = -1;
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)),

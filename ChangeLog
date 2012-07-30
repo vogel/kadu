@@ -1,6 +1,7 @@
 ﻿+++ version 0.12.1
 * jabber: reconnect after waking up from suspend (Juzef)
 * chat styles: #2601 fixed: fix old styles when AllowExecutingFromParser option is enabled (Mikołaj Milej, beevvy)
+* tabs: do not automatically activate chat widget when receiving new messages (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
