@@ -45,7 +45,7 @@ class AvatarPainter
 	QPixmap getOrCreateCacheItem();
 	void paintFromCache(QPainter *painter);
 
-	void doPaint(QPainter *painter, const QRect &rect);
+	void doPaint(QPainter *painter, const QSize &size);
 
 public:
 	AvatarPainter(const TalkableDelegateConfiguration &configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
