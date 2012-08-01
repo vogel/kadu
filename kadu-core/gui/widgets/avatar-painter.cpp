@@ -88,13 +88,13 @@ void AvatarPainter::doPaint(QPainter *painter, const QSize &size)
 {
 	QPixmap displayAvatar;
 
-	if (Avatar.size() != size)
+	if (Avatar.height() > size.height() || Avatar.width() > size.width())
 		displayAvatar = Avatar.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	else
 		displayAvatar = Avatar;
 
 	QRect displayRect = displayAvatar.rect();
-	displayRect.moveTop(0);
+	displayRect.moveTop((size.height() - displayRect.height()) / 2);
 	displayRect.moveLeft((size.width() - displayRect.width()) / 2);
 
 	// grey out offline contacts' avatar

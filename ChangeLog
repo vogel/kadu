@@ -6,6 +6,7 @@
 +++ version 0.12.1
 * chat styles: #2601 fixed: fix old styles when AllowExecutingFromParser option is enabled (Mikołaj Milej, beevvy)
 * gui: display 32x32 avatars on buddy list instead of 31x31 (beevvy)
+* gui: do not scale up avatars smaller than 32x32 on buddy list (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
