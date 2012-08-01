@@ -86,7 +86,7 @@ TalkablePainter::TalkablePainter(const TalkableDelegateConfiguration &configurat
 
 	Style = Widget->style();
 
-	int minHFrameMargin = 6;
+	int minHFrameMargin = 4;
 	int minVFrameMargin = 3;
 
 	int qStyleHFrameMargin = Style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, Widget);
@@ -204,13 +204,10 @@ bool TalkablePainter::showDescription() const
 
 void TalkablePainter::computeCheckboxRect()
 {
-	CheckboxRect = QRect(0, 0, 0, 0);
+	CheckboxRect = QRect(ItemRect.topLeft(), QSize(0, 0));
 
 	if (!showCheckbox())
 		return;
-
-	CheckboxRect.setTop(ItemRect.top());
-	CheckboxRect.setLeft(ItemRect.left());
 
 	QStyleOptionButton option;
 	option.rect = CheckboxRect;
@@ -225,46 +222,33 @@ void TalkablePainter::computeCheckboxRect()
 
 void TalkablePainter::computeIconRect()
 {
-	IconRect = QRect(0, 0, 0, 0);
+	QPoint topLeft(CheckboxRect.x() + CheckboxRect.width(), ItemRect.y());
+	IconRect = QRect(topLeft, QSize(0, 0));
 
 	const QPixmap &paintedIcon = icon();
 	if (paintedIcon.isNull())
 		return;
 
-	QPoint topLeft;
-
-	if (CheckboxRect.isEmpty())
-		topLeft.setX(ItemRect.left());
-	else
-		topLeft.setX(CheckboxRect.right());
-
-	IconRect = paintedIcon.rect();
+	IconRect.setSize(paintedIcon.size() + QSize(HFrameMargin, 0));
 
 	if (!Configuration.alignTop())
-		topLeft.setY(ItemRect.top() + (ItemRect.height() - paintedIcon.height()) / 2);
+		IconRect.moveTop(ItemRect.top() + (ItemRect.height() - paintedIcon.height()) / 2);
 	else if (fontMetrics().lineSpacing() > paintedIcon.height())
-		topLeft.setY(ItemRect.top() + (fontMetrics().lineSpacing() - paintedIcon.height()) / 2);
-	else
-		topLeft.setY(ItemRect.top());
-
-	IconRect.moveTo(topLeft);
+		IconRect.moveTop(ItemRect.top() + (fontMetrics().lineSpacing() - paintedIcon.height()) / 2);
 }
 
 void TalkablePainter::computeAvatarRect()
 {
-	AvatarRect = QRect(0, 0, 0, 0);
+	AvatarRect = QRect(ItemRect.x() + ItemRect.width(), ItemRect.y(), 0, 0);
 	if (!Configuration.showAvatars())
 		return;
 
-	AvatarRect.setWidth(Configuration.defaultAvatarSize().width() + 2 * HFrameMargin);
+	int width = Configuration.defaultAvatarSize().width() + HFrameMargin;
+	AvatarRect.setWidth(width);
+	AvatarRect.moveLeft(AvatarRect.left() - width);
 
 	if (!avatar().isNull())
 		AvatarRect.setHeight(Configuration.defaultAvatarSize().height() + 2 * VFrameMargin);
-	else
-		AvatarRect.setHeight(1); // just a placeholder
-
-	AvatarRect.moveRight(ItemRect.right());
-	AvatarRect.moveTop(ItemRect.top());
 }
 
 QString TalkablePainter::getIdentityName()
@@ -330,66 +314,42 @@ QTextDocument * TalkablePainter::getDescriptionDocument(int width)
 
 void TalkablePainter::computeIdentityNameRect()
 {
-	IdentityNameRect = QRect(0, 0, 0, 0);
+	IdentityNameRect = QRect(AvatarRect.topLeft(), QSize(0, 0));
 	if (!showIdentityName())
 		return;
 
-	const QString &accountDisplay = getIdentityName();
-
-	const int accountDisplayWidth = DescriptionFontMetrics.width(accountDisplay);
-
-	IdentityNameRect.setWidth(accountDisplayWidth);
-	IdentityNameRect.setHeight(DescriptionFontMetrics.height());
-
-	IdentityNameRect.moveRight(ItemRect.right() - AvatarRect.width() - HFrameMargin);
-	IdentityNameRect.moveTop(ItemRect.top());
+	IdentityNameRect.setSize(DescriptionFontMetrics.size(0, getIdentityName()) + QSize(2 * HFrameMargin, 0));
+	IdentityNameRect.moveRight(AvatarRect.left() - 1);
 }
 
 void TalkablePainter::computeNameRect()
 {
-	NameRect = QRect(0, 0, 0, 0);
-
-	int left = IconRect.right();
-	if (!IconRect.isEmpty())
-		left += HFrameMargin;
-	else
-		left = ItemRect.left();
-
-	int right;
-	if (!IdentityNameRect.isEmpty())
-		right = IdentityNameRect.left() - HFrameMargin;
-	else if (!AvatarRect.isEmpty())
-		right = AvatarRect.left() - HFrameMargin;
-	else
-		right = ItemRect.right() - HFrameMargin;
-
+	int left = IconRect.x() + IconRect.width();
+	int right = IdentityNameRect.left() - 1;
+	int width = right - left + 1;
+	int height = fontMetrics().height();
 	int top = ItemRect.top();
 	if (Configuration.alignTop())
 		if (fontMetrics().lineSpacing() < IconRect.height())
 			top += (IconRect.height() - fontMetrics().lineSpacing()) / 2;
 
-	NameRect.moveTop(top);
-	NameRect.setLeft(left);
-	NameRect.setRight(right);
-	NameRect.setHeight(fontMetrics().height());
+	NameRect = QRect(left, top, width, height);
 }
 
 void TalkablePainter::computeDescriptionRect()
 {
-	DescriptionRect = QRect(0, 0, 0, 0);
+	DescriptionRect = QRect();
 
 	if (!showDescription())
 		return;
 
-	DescriptionRect.setTop(NameRect.bottom() + VFrameMargin);
-	DescriptionRect.setLeft(NameRect.left());
+	int left = NameRect.left();
+	int right = AvatarRect.left() - 1;
+	int width = right - left + 1;
+	int height = int(getDescriptionDocument(width - HFrameMargin)->size().height() + qreal(0.5)) + VFrameMargin;
+	int top = NameRect.y() + NameRect.height();
 
-	if (!AvatarRect.isEmpty())
-		DescriptionRect.setRight(AvatarRect.left() - HFrameMargin);
-	else
-		DescriptionRect.setRight(ItemRect.right() - HFrameMargin);
-
-	DescriptionRect.setHeight((int)getDescriptionDocument(DescriptionRect.width())->size().height());
+	DescriptionRect = QRect(left, top, width, height);
 }
 
 void TalkablePainter::computeLayout()
@@ -445,7 +405,8 @@ int TalkablePainter::height()
 
 	computeLayout();
 
-	QRect wholeRect = IconRect;
+	QRect wholeRect = CheckboxRect;
+	wholeRect |= IconRect;
 	wholeRect |= AvatarRect;
 	wholeRect |= IdentityNameRect;
 	wholeRect |= NameRect;
@@ -456,6 +417,9 @@ int TalkablePainter::height()
 
 void TalkablePainter::paintDebugRect(QPainter *painter, QRect rect, QColor color) const
 {
+	if (rect.isValid())
+		rect.adjust(0, 0, -1, -1);
+
 	painter->save();
 	painter->setPen(color);
 	painter->drawRect(rect);
@@ -482,9 +446,11 @@ void TalkablePainter::paintCheckbox(QPainter *painter)
 
 void TalkablePainter::paintIcon(QPainter *painter)
 {
+	QRect rect = IconRect.adjusted(0, 0, -HFrameMargin, 0);
+
 	if (showMessagePixmap())
 	{
-		painter->drawPixmap(IconRect, Configuration.messagePixmap());
+		painter->drawPixmap(rect, Configuration.messagePixmap());
 		return;
 	}
 
@@ -492,13 +458,15 @@ void TalkablePainter::paintIcon(QPainter *painter)
 	if (paintedIcon.isNull())
 		return;
 
-	painter->drawPixmap(IconRect, paintedIcon);
+	painter->drawPixmap(rect, paintedIcon);
 }
 
 void TalkablePainter::paintAvatar(QPainter *painter)
 {
-	const QRect &rect = AvatarRect.adjusted(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
+	if (!AvatarRect.isValid())
+		return;
 
+	QRect rect = AvatarRect.adjusted(HFrameMargin, VFrameMargin, 0, -VFrameMargin);
 	AvatarPainter avatarPainter(Configuration, Option, rect, Index);
 	avatarPainter.paint(painter);
 }
@@ -508,8 +476,9 @@ void TalkablePainter::paintIdentityName(QPainter *painter)
 	if (!showIdentityName())
 		return;
 
+	QRect rect = IdentityNameRect.adjusted(HFrameMargin, 0, -HFrameMargin, 0);
 	painter->setFont(Configuration.descriptionFont());
-	painter->drawText(IdentityNameRect, getIdentityName());
+	painter->drawText(rect, getIdentityName());
 }
 
 void TalkablePainter::paintName(QPainter *painter)
@@ -527,10 +496,11 @@ void TalkablePainter::paintDescription(QPainter *painter)
 	if (!showDescription())
 		return;
 
+	QRect rect = DescriptionRect.adjusted(0, VFrameMargin, -HFrameMargin, 0);
 	painter->setFont(Configuration.descriptionFont());
 	painter->save();
-	painter->translate(DescriptionRect.topLeft());
-	getDescriptionDocument(DescriptionRect.width())->drawContents(painter);
+	painter->translate(rect.topLeft());
+	getDescriptionDocument(rect.width())->drawContents(painter);
 	painter->restore();
 }
 
@@ -565,6 +535,7 @@ void TalkablePainter::paint(QPainter *painter)
 
 	/*
 	paintDebugRect(painter, ItemRect, QColor(255, 0, 0));
+	paintDebugRect(painter, CheckboxRect, QColor(255, 255, 0));
 	paintDebugRect(painter, IconRect, QColor(0, 255, 0));
 	paintDebugRect(painter, AvatarRect, QColor(0, 0, 255));
 	paintDebugRect(painter, IdentityNameRect, QColor(255, 0, 255));
