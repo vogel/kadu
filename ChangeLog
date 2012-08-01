@@ -3,6 +3,7 @@
 * chat styles: #2601 fixed: fix old styles when AllowExecutingFromParser option is enabled (Mikołaj Milej, beevvy)
 * tabs: do not automatically activate chat widget when receiving new messages (beevvy)
 * gui: display 32x32 avatars on buddy list instead of 31x31 (beevvy)
+* parser: #2612 fixed: restored DATA_PATH, HOME, KADU_CONFIG Parser variables (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)

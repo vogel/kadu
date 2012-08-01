@@ -57,6 +57,7 @@
 #include "misc/date-time-parser-tags.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
+#include "parser/parser.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -128,6 +129,9 @@ Core::Core() :
 
 	MainConfigurationHolder::createInstance();
 
+	Parser::GlobalVariables.insert(QLatin1String("DATA_PATH"), KaduPaths::instance()->dataPath());
+	Parser::GlobalVariables.insert(QLatin1String("HOME"), KaduPaths::homePath());
+	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), KaduPaths::instance()->profilePath());
 	DateTimeParserTags::registerParserTags();
 }
 
