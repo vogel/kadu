@@ -67,10 +67,9 @@ QPixmap AvatarPainter::getOrCreateCacheItem()
 	QPixmap item = QPixmap(AvatarRect.size());
 	item.fill(QColor(0, 0, 0, 0));
 
-	QRect rect = QRect(0, 0, AvatarRect.width() - 1, AvatarRect.height() - 1);
 	QPainter cachePainter;
 	cachePainter.begin(&item);
-	doPaint(&cachePainter, rect);
+	doPaint(&cachePainter, item.size());
 	cachePainter.end();
 
 	QPixmapCache::insert(key, item);
@@ -85,18 +84,18 @@ void AvatarPainter::paintFromCache(QPainter *painter)
 	painter->drawPixmap(AvatarRect, cached);
 }
 
-void AvatarPainter::doPaint(QPainter *painter, const QRect &rect)
+void AvatarPainter::doPaint(QPainter *painter, const QSize &size)
 {
 	QPixmap displayAvatar;
 
-	if (Avatar.size() != rect.size())
-		displayAvatar = Avatar.scaled(rect.size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+	if (Avatar.size() != size)
+		displayAvatar = Avatar.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	else
 		displayAvatar = Avatar;
 
 	QRect displayRect = displayAvatar.rect();
-	displayRect.moveTop(rect.top());
-	displayRect.moveLeft(rect.left() + (rect.width() - displayRect.width()) / 2);
+	displayRect.moveTop(0);
+	displayRect.moveLeft((size.width() - displayRect.width()) / 2);
 
 	// grey out offline contacts' avatar
 	if (greyOut())
@@ -106,7 +105,7 @@ void AvatarPainter::doPaint(QPainter *painter, const QRect &rect)
 
 	// draw avatar border
 	if (Configuration.avatarBorder())
-		painter->drawRect(displayRect);
+		painter->drawRect(displayRect.adjusted(0, 0, -1, -1));
 }
 
 void AvatarPainter::paint(QPainter *painter)
