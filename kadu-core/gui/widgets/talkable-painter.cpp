@@ -497,10 +497,7 @@ void TalkablePainter::paintIcon(QPainter *painter)
 
 void TalkablePainter::paintAvatar(QPainter *painter)
 {
-	int avatarHFrameMargin = 2;
-	int avatarVFrameMargin = 2;
-
-	const QRect &rect = AvatarRect.adjusted(avatarVFrameMargin, avatarHFrameMargin, -avatarVFrameMargin, -avatarHFrameMargin);
+	const QRect &rect = AvatarRect.adjusted(HFrameMargin, VFrameMargin, -HFrameMargin, -VFrameMargin);
 
 	AvatarPainter avatarPainter(Configuration, Option, rect, Index);
 	avatarPainter.paint(painter);
