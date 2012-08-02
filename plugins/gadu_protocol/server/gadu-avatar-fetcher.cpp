@@ -50,7 +50,7 @@ void GaduAvatarFetcher::failed()
 
 void GaduAvatarFetcher::fetchAvatar()
 {
-	fetch(QString("http://avatars.gg.pl/%1").arg(MyContact.id()));
+	fetch(QString("http://avatars.gg.pl/%1/s,big").arg(MyContact.id()));
 }
 
 void GaduAvatarFetcher::requestFinished()
