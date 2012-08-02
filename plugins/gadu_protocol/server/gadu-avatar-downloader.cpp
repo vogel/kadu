@@ -50,7 +50,7 @@ void GaduAvatarDownloader::failed()
 
 void GaduAvatarDownloader::downloadAvatar(const QString &id)
 {
-	fetch(QString("http://avatars.gg.pl/%1").arg(id));
+	fetch(QString("http://avatars.gg.pl/%1/s,big").arg(id));
 }
 
 void GaduAvatarDownloader::requestFinished()
