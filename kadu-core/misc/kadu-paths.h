@@ -89,7 +89,7 @@ public:
 	 * First desktop file path relative to the binary is taken from the configuration
 	 * written at compilation time, and then absolute canonical path is constructed from it.
 	 *
-	 * Default desktop file path is $CMAKE_INSTALL_PREFIX/share/applications/kadu.desktop.
+	 * Default desktop file path is $CMAKE_INSTALL_FULL_DATADIR/applications/kadu.desktop.
 	 * It can be overwritten by KADU_DESKTOP_FILE_DIR and KADU_DESKTOP_FILE_NAME CMake
 	 * arguments.
 	 */
@@ -106,7 +106,7 @@ public:
 	 * First Kadu data path relative to the binary is taken from the configuration
 	 * written at compilation time, and then absolute canonical path is constructed from it.
 	 *
-	 * Default data path is $CMAKE_INSTALL_PREFIX/share/kadu on X11 and
+	 * Default data path is $CMAKE_INSTALL_FULL_DATADIR/kadu on X11 and
 	 * $CMAKE_INSTALL_PREFIX on Windows. It can be overwritten by
 	 * KADU_DATADIR CMake argument.
 	 */
@@ -122,7 +122,7 @@ public:
 	 * First plugins library path relative to the binary is taken from the configuration
 	 * written at compilation time, and then absolute canonical path is constructed from it.
 	 *
-	 * Default library path for plugins is $CMAKE_INSTALL_PREFIX/lib$LIB_SUFFIX/kadu/plugins
+	 * Default library path for plugins is $CMAKE_INSTALL_FULL_LIBDIR/kadu/plugins
 	 * on X11 and $CMAKE_INSTALL_PREFIX/plugins on Windows. It can be overwritten by
 	 * KADU_PLUGINS_LIBDIR CMake argument.
 	 */ 

@@ -9,6 +9,7 @@
 * gui: do not scale up avatars smaller than 32x32 on buddy list (beevvy)
 * parser: #2612 fixed: restored DATA_PATH, HOME, KADU_CONFIG Parser variables (beevvy)
 * gadu: #2620 fixed: restored downloading big avatars (beevvy)
+* build: migrated to GNUInstallDirs CMake module which should fix installation paths on Debian multiarch (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
