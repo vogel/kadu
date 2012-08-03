@@ -31,6 +31,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtGui/QTextDocument>
 
@@ -135,7 +136,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		return false;
 	}
 	QTextStream theme_stream(&theme_file);
-	theme_stream.setCodec(codec_cp1250);
+	theme_stream.setCodec(QTextCodec::codecForName("CP1250"));
 	while (!theme_stream.atEnd())
 	{
 		EmoticonsListItem item;

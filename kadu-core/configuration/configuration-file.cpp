@@ -124,7 +124,7 @@ void PlainConfigFile::write() const
 	{
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
-		stream.setCodec(codec_latin2);
+		stream.setCodec(QTextCodec::codecForName("ISO8859-2"));
 		for (QMap<QString, QMap<QString, QString> >::const_iterator i = groups.constBegin(); i != groups.constEnd(); ++i)
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (i.key()));

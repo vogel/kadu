@@ -25,6 +25,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QRegExp>
 #include <QtCore/QStringList>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtCore/QtAlgorithms>
 
@@ -140,7 +141,7 @@ namespace HistoryMigrationHelper
 		}
 
 		QTextStream stream(&f);
-		stream.setCodec(codec_latin2);
+		stream.setCodec(QTextCodec::codecForName("ISO8859-2"));
 		while (!(line = stream.readLine()).isNull())
 		{
 			HistoryEntry entry;

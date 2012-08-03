@@ -125,7 +125,7 @@ BuddyList GaduListHelper::streamPre70ToBuddyList(const QString &firstLine, Accou
 {
 	BuddyList result;
 
-	content.setCodec(codec_cp1250);
+	content.setCodec(QTextCodec::codecForName("CP1250"));
 
 	if (firstLine.isEmpty())
 		return result;
