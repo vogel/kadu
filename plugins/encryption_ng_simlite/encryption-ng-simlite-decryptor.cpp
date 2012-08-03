@@ -20,9 +20,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
-#include "misc/coding-conversion.h"
+#include <QtCore/QTextCodec>
 
+#include "chat/chat.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
@@ -169,10 +169,22 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 	//the message has been decrypted! :D
 	//put it into the input/output byte array
 	QByteArray result;
-	if (head.flags & SIM_FLAG_UTF8_MESSAGE)
+	QTextCodec *cp1250Codec;
+	bool useUtf8 = (head.flags & SIM_FLAG_UTF8_MESSAGE);
+	if (!useUtf8)
+	{
+		cp1250Codec = QTextCodec::codecForName("CP1250");
+		if (!cp1250Codec)
+		{
+			qWarning("Missing codec for \"CP1250\". Fix your system.");
+			useUtf8 = true;
+		}
+	}
+
+	if (useUtf8)
 		result = plainText.constData() + sizeof(sim_message_header);
 	else
-		result = cp2unicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
+		result = cp1250Codec->toUnicode(plainText.constData() + sizeof(sim_message_header)).toUtf8();
 
 	if (chat)
 	{

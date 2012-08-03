@@ -20,10 +20,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTextCodec>
+
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
-#include "misc/coding-conversion.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
@@ -171,8 +172,15 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	else
 	{
 		// we have to replace each Line Separator (U+2028) with Line Feed (\n)
-		QString cp1250String = QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n'));
-		encryptedData += unicode2cp(cp1250String);
+		QString dataString = QString::fromUtf8(data).replace(QChar::LineSeparator, QLatin1Char('\n'));
+		QTextCodec *cp1250Codec = QTextCodec::codecForName("CP1250");
+		if (cp1250Codec)
+			encryptedData += cp1250Codec->fromUnicode(dataString);
+		else
+		{
+			qWarning("Missing codec for \"CP1250\". Fix your system.");
+			encryptedData += dataString.toUtf8();
+		}
 	}
 
 	QCA::SecureArray encrypted = cipher.process(encryptedData);
