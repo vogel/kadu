@@ -45,9 +45,6 @@ KADUAPI QString pwHash(const QString &text);
 
 KADUAPI QRect properGeometry(const QRect &rect);
 
-KADUAPI QRect windowGeometry(const QWidget *w);
-void KADUAPI setWindowGeometry(QWidget *w, const QRect &geometry);
-
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
 void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 

@@ -45,7 +45,6 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "misc/kadu-paths.h"
-#include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"
 #include "talkable/model/talkable-proxy-model.h"
@@ -80,8 +79,7 @@ OpenChatWith::OpenChatWith() :
 
 	int width = QDesktopWidget().availableGeometry().width()*0.25;
 	int height = QDesktopWidget().availableGeometry().height()*0.6;
-	QRect rect(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
-	setWindowGeometry(this, rect);
+	setGeometry(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
 
 	MainLayout = new QVBoxLayout(this);
 

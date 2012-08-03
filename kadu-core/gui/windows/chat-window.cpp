@@ -149,7 +149,7 @@ void ChatWindow::kaduRestoreGeometry()
 
 	if (windowGeometry.isValid())
 	{
-		setWindowGeometry(this, windowGeometry);
+		setGeometry(windowGeometry);
 		currentChatWidget->setGeometry(windowGeometry);
 		currentChatWidget->kaduRestoreGeometry();
 	}

@@ -34,7 +34,6 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-window.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
 #include "misc/kadu-paths.h"
 
 #include "plugins/docking/docking.h"
@@ -122,7 +121,7 @@ void SimpleView::simpleViewToggle(bool activate)
 		SimpleViewActive = activate;
 
 		flags = MainWindowHandle->windowFlags();
-		mr = windowGeometry(MainWindowHandle);
+		mr = MainWindowHandle->geometry();
 
 		if (SimpleViewActive)
 		{
@@ -177,7 +176,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 			MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
 
-			setWindowGeometry(MainWindowHandle, r);
+			MainWindowHandle->setGeometry(r);
 
 			if (Borderless)
 				TalkableTreeViewHandle->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
@@ -193,7 +192,7 @@ void SimpleView::simpleViewToggle(bool activate)
 
 			MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
 
-			setWindowGeometry(MainWindowHandle, r);
+			MainWindowHandle->setGeometry(r);
 
 			/* Status button */
 			StatusButtonsHandle->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));

@@ -82,7 +82,7 @@ Talkable SelectTalkableComboBox::currentTalkable() const
 void SelectTalkableComboBox::showPopup()
 {
 	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
-	setWindowGeometry(Popup, geom);
+	Popup->setGeometry(properGeometry(geom));
 
 	Popup->show(currentTalkable());
 }
