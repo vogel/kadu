@@ -1,9 +1,9 @@
 include (FindPkgConfig)
 
-if (NOT MSVC AND NOT APPLE)
-	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" ON)
+if (ENABLE_DEVELOPER_BUILD AND NOT MSVC AND NOT APPLE)
+	option (FAST_LINKING "Enable for linking optimized for low RAM (works best with GCC and GNU ld)" ON)
 else ()
-	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" OFF)
+	option (FAST_LINKING "Enable for linking optimized for low RAM (works best with GCC and GNU ld)" OFF)
 endif ()
 
 if (FAST_LINKING)
