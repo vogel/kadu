@@ -8,6 +8,10 @@
 # Copyright (c) 2009, Ruslan Nigmatullin, <euroelessar@gmail.com>
 # Copyrignt (c) 2011, Rafał 'Vogel' Malinowski <vogel@kadu.im>
 
+# Do not require plugins to specify minimum version.
+cmake_minimum_required (VERSION 2.8.5)
+cmake_policy (SET CMP0000 OLD)
+
 # libraries
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)

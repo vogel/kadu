@@ -1,18 +1,9 @@
 project (kadu)
 
-# minimal required versions
-set (QT_MIN_VERSION "4.8.0")
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-cmake_minimum_required (VERSION 2.8.0 FATAL_ERROR)
-
-if (COMMAND cmake_policy)
-	cmake_policy (SET CMP0003 NEW)
-
-	if (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-		cmake_policy (SET CMP0015 OLD)
-	endif (${CMAKE_VERSION} VERSION_GREATER 2.8.0)
-endif (COMMAND cmake_policy)
+set (KADU_INSTALLS_SDK TRUE)
+include (FindKadu)
 
 if (NOT KADU_VERSION)
 	if (WIN32)
@@ -72,8 +63,6 @@ if (NOT WIN32)
 	endif (SIG_HANDLING_ENABLED)
 endif (NOT WIN32)
 
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)

@@ -1,10 +1,5 @@
 project (sms)
 
-# minimal required versions
-cmake_minimum_required (VERSION 2.8)
-set (QT_MIN_VERSION "4.7.0")
-set (CMAKE_MIN_VERSION "2.8.0")
-
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
