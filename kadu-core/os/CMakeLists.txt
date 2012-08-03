@@ -15,6 +15,6 @@ if (MINGW)
 	set_source_files_properties (generic/system-info.cpp PROPERTIES
 		COMPILE_FLAGS -fno-strict-aliasing
 	)
-endif (MINGW)
+endif ()
 
 kadu_subdirectory (os "${os_SRCS}" "${os_MOC_SRCS}" "")

@@ -17,7 +17,7 @@ if (MINGW)
 	set_source_files_properties (winamp.cpp PROPERTIES
 		COMPILE_FLAGS -fno-strict-aliasing
 	)
-endif (MINGW)
+endif ()
 
 kadu_plugin (winamp_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}

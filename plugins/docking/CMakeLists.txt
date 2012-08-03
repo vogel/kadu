@@ -22,7 +22,7 @@ if (APPLE)
 	list (APPEND SOURCES mac_docking_helper.cpp)
 	list (APPEND MOC_SOURCES mac_docking_helper.h)
 	SET_SOURCE_FILES_PROPERTIES(mac_docking_helper.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
-endif (APPLE)
+endif ()
 
 set (TRANSLATION_SOURCES
 	translations/docking_de.ts

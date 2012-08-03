@@ -12,9 +12,9 @@ if (ICON_THEMES)
 	
 	if (UNIX AND NOT APPLE)
 		option (COMPRESS_SVG "Compress SVG files when installing (will break freedesktop_notify on notification-daemon, notify-osd and possibly other daemons, though will work on KDE)" OFF)
-	else (UNIX AND NOT APPLE)
+	else ()
 		option (COMPRESS_SVG "Compress SVG files when installing" ON)
-	endif (UNIX AND NOT APPLE)
+	endif ()
 
 	if (COMPRESS_SVG)
 		message (STATUS "SVG icons compressing enabled")
@@ -24,7 +24,7 @@ if (ICON_THEMES)
 				"${CMAKE_CURRENT_SOURCE_DIR}/${ICON_THEME}/*.svg"
 			)
 			list (APPEND inFiles ${tmp})
-		endforeach (ICON_THEME)
+		endforeach ()
 
 		if (inFiles)
 			if (WIN32)
@@ -34,7 +34,7 @@ if (ICON_THEMES)
 					"C:/Program Files/GnuWin32/bin"
 					"C:/Program Files (x86)/GnuWin32/bin"
 				)
-			endif (WIN32)
+			endif ()
 
 			find_program (GZIP_EXECUTABLE gzip
 				PATHS ${guessed_paths}
@@ -42,7 +42,7 @@ if (ICON_THEMES)
 			)
 			if (NOT GZIP_EXECUTABLE)
 				message (STATUS "Could not compress SVG files: gzip not found")
-			else (NOT GZIP_EXECUTABLE)
+			else ()
 				foreach (inFile ${inFiles})
 					set (outFile "${CMAKE_CURRENT_BINARY_DIR}/svgzs/${inFile}z")
 					list (APPEND outFiles "${outFile}")
@@ -53,19 +53,19 @@ if (ICON_THEMES)
 						COMMAND "${GZIP_EXECUTABLE}" --best -c "${CMAKE_CURRENT_SOURCE_DIR}/${inFile}" > "${outFile}"
 						VERBATIM
 					)
-				endforeach (inFile)
+				endforeach ()
 
 				add_custom_target (compress_svgs ALL DEPENDS ${outFiles})
 				add_dependencies (icon_themes compress_svgs)
-			endif (NOT GZIP_EXECUTABLE)
-		endif (inFiles)
-	else (COMPRESS_SVG)
+			endif ()
+		endif ()
+	else ()
 		message (STATUS "SVG icons compressing disabled")
-	endif (COMPRESS_SVG)
+	endif ()
 
 	foreach (ICON_THEME ${ICON_THEMES})
 		message (STATUS "Icon theme: " ${ICON_THEME})
-	endforeach (ICON_THEME)
+	endforeach ()
 
 	install (DIRECTORY ${ICON_THEMES}
 		DESTINATION "${KADU_DATADIR}/themes/icons"
@@ -83,12 +83,12 @@ if (ICON_THEMES)
 			FILES_MATCHING
 			PATTERN "*.svgz"
 		)
-	else (TARGET compress_svgs)
+	else ()
 		install (DIRECTORY ${ICON_THEMES}
 			DESTINATION "${KADU_DATADIR}/themes/icons"
 			FILES_MATCHING
 			PATTERN "*.svg"
 			PATTERN "src" EXCLUDE
 		)
-	endif (TARGET compress_svgs)
-endif (ICON_THEMES)
+	endif ()
+endif ()

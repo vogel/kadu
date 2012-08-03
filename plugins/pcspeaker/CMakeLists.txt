@@ -31,11 +31,11 @@ if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (NOT X11_FOUND)
 		message (SEND_ERROR "X11 NOT FOUD")
-	endif (NOT X11_FOUND)
+	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
 	set (LIBRARIES ${X11_X11_LIB})
-endif (UNIX AND NOT APPLE)
+endif ()
 
 kadu_plugin (pcspeaker
 	PLUGIN_SOURCES ${SOURCES}

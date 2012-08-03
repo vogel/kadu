@@ -11,9 +11,9 @@ if (NOT KADU_VERSION)
 			"C:/Program Files/Git/bin"
 			"C:/Program Files (x86)/Git/bin"
 		)
-	else (WIN32)
+	else ()
 		set (guessed_paths)
-	endif (WIN32)
+	endif ()
 
 	find_program (GIT_EXECUTABLE git
 		PATHS ${guessed_paths}
@@ -25,13 +25,13 @@ if (NOT KADU_VERSION)
 			OUTPUT_VARIABLE KADU_VERSION
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
-	endif (GIT_EXECUTABLE)
+	endif ()
 
 	if (NOT KADU_VERSION)
 		file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
 		string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
-	endif (NOT KADU_VERSION)
-endif (NOT KADU_VERSION)
+	endif ()
+endif ()
 
 if (WIN32)
 	# Add more version info to files
@@ -39,13 +39,13 @@ if (WIN32)
 	set (PACKAGE_VERSION ${KADU_VERSION})
 	if (KADU_VERSION MATCHES ".*-.*")
 		set (KADU_PRERELEASE 1)
-	endif (KADU_VERSION MATCHES ".*-.*")
+	endif ()
 
 	# package
 	set (CPACK_GENERATOR "ZIP")
 	set (CPACK_PACKAGE_VERSION ${PACKAGE_VERSION})
 	include (CPack)
-endif (WIN32)
+endif ()
 
 if (NOT WIN32)
 	include (CheckIncludeFiles)
@@ -56,12 +56,12 @@ if (NOT WIN32)
 		include (CheckFunctionExists)
 
 		check_function_exists ("backtrace" HAVE_EXECINFO)
-	endif (HAVE_EXECINFO)
+	endif ()
 
 	if (SIG_HANDLING_ENABLED)
 		set (SIG_HANDLING_ENABLED 1)
-	endif (SIG_HANDLING_ENABLED)
-endif (NOT WIN32)
+	endif ()
+endif ()
 
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
@@ -70,7 +70,7 @@ configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu
 if (INSTALL_SDK)
 	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
 	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_SDK_DIR})
-endif (INSTALL_SDK)
+endif ()
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
 
@@ -92,4 +92,4 @@ install (FILES AUTHORS HISTORY README THANKS ChangeLog ChangeLog.OLD-PL DESTINAT
 # For Win32 we use GPL3, and this COPYING is GPL2
 if (NOT WIN32)
 	install (FILES COPYING DESTINATION "${KADU_DATADIR}")
-endif (NOT WIN32)
+endif ()

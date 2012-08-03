@@ -12,9 +12,9 @@ if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (X11_Xscreensaver_FOUND)
 		message (STATUS "Found X11 Screen Saver extension: ${X11_Xscreensaver_LIB}")
-	else (X11_Xscreensaver_FOUND)
+	else ()
 		message (FATAL_ERROR "Could not find X11 Screen Saver extension")
-	endif (X11_Xscreensaver_FOUND)
+	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
 	set (LIBRARIES ${X11_Xscreensaver_LIB})
@@ -23,21 +23,21 @@ if (UNIX AND NOT APPLE)
 		idle-plugin.cpp
 		idle_x11.cpp
 	)
-endif (UNIX AND NOT APPLE)
+endif ()
 
 if (APPLE)
 	set (SOURCES
 		idle-plugin.cpp
 		idle_mac.cpp
 	)
-endif (APPLE)
+endif ()
 
 if (WIN32)
 	set (SOURCES
 		idle-plugin.cpp
 		idle_win.cpp
 	)
-endif (WIN32)
+endif ()
 
 set (MOC_SOURCES
 	idle.h

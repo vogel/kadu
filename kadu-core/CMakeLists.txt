@@ -2,13 +2,13 @@ include (FindPkgConfig)
 
 if (NOT MSVC AND NOT APPLE)
 	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" ON)
-else (NOT MSVC AND NOT APPLE)
+else ()
 	option (FAST_LINKING "Enable for faster linking, optimized for low RAM (works best with GCC and GNU ld)" OFF)
-endif (NOT MSVC AND NOT APPLE)
+endif ()
 
 if (FAST_LINKING)
 	message (STATUS "Fast linking enabled")
-endif (FAST_LINKING)
+endif ()
 
 if (NOT WIN32)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
@@ -20,25 +20,25 @@ if (NOT WIN32)
 		if (INDICATEQT_FOUND)
 			message (STATUS "libindicate-qt devel found. Enabling Ayatana support")
 			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" ON)
-		else (INDICATEQT_FOUND)
+		else ()
 			message (STATUS "libindicate-qt devel NOT FOUND. Disabling Ayatana support")
 			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
-		endif (INDICATEQT_FOUND)
-	endif (UNIX AND NOT APPLE)
-endif (NOT WIN32)
+		endif ()
+	endif ()
+endif ()
 
 if (NOT NETWORK_IMPLEMENTATION)
 	find_package (QNtrack 010)
 	if (QNTRACK_FOUND)
 		set (NETWORK_IMPLEMENTATION "ntrack" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
 		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
-	else (QNTRACK_FOUND)
+	else ()
 		set (NETWORK_IMPLEMENTATION "Qt" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
 		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
-	endif (QNTRACK_FOUND)
+	endif ()
 elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 	find_package (QNtrack 010 REQUIRED)
-endif (NOT NETWORK_IMPLEMENTATION)
+endif ()
 
 set (kadu_SRCS
 	activate.cpp
@@ -59,20 +59,20 @@ if (WIN32)
 
 		os/qtsingleapplication/qtlockedfile_win.cpp
 	)
-else (WIN32)
+else ()
 	list (APPEND kadu_SRCS
 		main.cpp
 		main_unix.cpp
 
 		os/qtsingleapplication/qtlockedfile_unix.cpp
 	)
-endif (WIN32)
+endif ()
 
 if (UNIX AND NOT APPLE)
 	list (APPEND kadu_SRCS
 		os/x11tools.cpp
 	)
-endif (UNIX AND NOT APPLE)
+endif ()
 
 set (kadu_MOC_SRCS
 	kadu-application.h
@@ -120,24 +120,24 @@ set (ADDITIONAL_LIBRARIES "")
 if (WIN32)
 	if (NOT WIN_QCA_DIR)
 		message (SEND_ERROR "Pass path to libqca2 -DWIN_QCA_DIR=path")
-	else (NOT WIN_QCA_DIR)
+	else ()
 		set (QCA2_INCLUDE_DIRS ${WIN_QCA_DIR}/include/QtCrypto)
 
 		if (MSVC)
 			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/lib)
-		else (MSVC)
+		else ()
 			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/bin)
-		endif (MSVC)
+		endif ()
 
 		if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 			set (QCA2_LIBRARIES qcad2)
-		else (CMAKE_BUILD_TYPE STREQUAL "Debug")
+		else ()
 			set (QCA2_LIBRARIES qca2)
-		endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
-	endif (NOT WIN_QCA_DIR)
-else (WIN32)
+		endif ()
+	endif ()
+else ()
 	pkg_search_module (QCA2 REQUIRED qca2)
-endif (WIN32)
+endif ()
 
 link_directories (${QCA2_LIBRARY_DIRS})
 add_definitions (${QCA2_CFLAGS_OTHER})
@@ -152,18 +152,18 @@ if (UNIX AND NOT APPLE)
 		add_definitions (${INDICATEQT_CFLAGS_OTHER})
 		include_directories (${INDICATEQT_INCLUDE_DIRS})
 		list (APPEND ADDITIONAL_LIBRARIES ${INDICATEQT_LIBRARIES})
-	endif (WITH_LIBINDICATE_QT)
+	endif ()
 
 	if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 		list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
-	endif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+	endif ()
 
 	include (FindX11)
 	if (X11_FOUND)
 		message (STATUS "Found X11 libraries: ${X11_X11_LIB}")
-	else (X11_FOUND)
+	else ()
 		message (FATAL_ERROR "Could not find X11 libraries")
-	endif (X11_FOUND)
+	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
 	list (APPEND ADDITIONAL_LIBRARIES ${X11_X11_LIB})
@@ -172,14 +172,14 @@ if (UNIX AND NOT APPLE)
 		if (X11_Xfixes_FOUND)
 			message (STATUS "Found X11 Xfixes extension: ${X11_Xfixes_LIB}")
 			list (APPEND ADDITIONAL_LIBRARIES ${X11_Xfixes_LIB})
-		else (X11_Xfixes_FOUND)
+		else ()
 			message (FATAL_ERROR "Could not find X11 Xfixes extension")
-		endif (X11_Xfixes_FOUND)
-	endif (USE_X11_XFIXES)
+		endif ()
+	endif ()
 
 	if (NOT DESKTOP_ENTRY)
 		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
-	endif (NOT DESKTOP_ENTRY)
+	endif ()
 	add_custom_command (OUTPUT ${DESKTOP_ENTRY}
 		COMMAND touch ${DESKTOP_ENTRY}
 		COMMAND sh ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
@@ -189,18 +189,18 @@ if (UNIX AND NOT APPLE)
 	add_custom_target (DESKTOP_ENTRY_FILE ALL
 		DEPENDS ${DESKTOP_ENTRY}
 	)
-endif (UNIX AND NOT APPLE)
+endif ()
 
 if (APPLE)
 	list (APPEND ADDITIONAL_LIBRARIES "-framework carbon")
-endif (APPLE)
+endif ()
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 	if (FAST_LINKING)
 		set (${SUBDIR}_MOC_FILES "")
 		if (NOT "${MOC_SRCS}" STREQUAL "")
 			qt4_wrap_cpp (${SUBDIR}_MOC_FILES ${MOC_SRCS})
-		endif (NOT "${MOC_SRCS}" STREQUAL "")
+		endif ()
 
 		add_library (${SUBDIR}
 			STATIC
@@ -208,22 +208,22 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			${${SUBDIR}_MOC_FILES}
 		)
 		set_target_properties (${SUBDIR} PROPERTIES COMPILE_DEFINITIONS KADULIB)
-	else (FAST_LINKING)
+	else ()
 		set (tmp "")
 		foreach (SRC ${SRCS})
 			list (APPEND tmp "${SUBDIR}/${SRC}")
-		endforeach (SRC)
+		endforeach ()
 
 		set (tmp_moc "")
 		foreach (MOC_SRC ${MOC_SRCS})
 			list (APPEND tmp_moc "${SUBDIR}/${MOC_SRC}")
-		endforeach (MOC_SRC)
+		endforeach ()
 
 		set (${SUBDIR}_SRCS "${tmp}" PARENT_SCOPE)
 		set (${SUBDIR}_MOC_SRCS "${tmp_moc}" PARENT_SCOPE)
 		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" PARENT_SCOPE)
-	endif (FAST_LINKING)
-endmacro (kadu_subdirectory)
+	endif ()
+endmacro ()
 
 macro (kadu_source_subdirectories CURRENT_TARGET)
 	foreach (ARG ${ARGN})
@@ -234,39 +234,39 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 			add_dependencies (${CURRENT_TARGET}
 				${ARG}
 			)
-		else (FAST_LINKING)
+		else ()
 			list (APPEND kadu_SUBDIRS_SRCS "${${ARG}_SRCS}")
 			qt4_wrap_cpp (MOC_FILES "${${ARG}_MOC_SRCS}")
 			include_directories (${${ARG}_INCLUDES})
-		endif (FAST_LINKING)
-	endforeach (ARG)
+		endif ()
+	endforeach ()
 
 	if (FAST_LINKING)
 		if (APPLE)
 			target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
-		else (APPLE)
+		else ()
 			target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
-		endif (APPLE)
-	endif (FAST_LINKING)
-endmacro (kadu_source_subdirectories)
+		endif ()
+	endif ()
+endmacro ()
 
 if (WIN32)
 	set (KADU_MAIN_SOURCES_TARGET kadu_core)
-else (WIN32)
+else ()
 	set (KADU_MAIN_SOURCES_TARGET kadu)
-endif (WIN32)
+endif ()
 
 if (NOT FAST_LINKING)
 	kadu_source_subdirectories (${KADU_MAIN_SOURCES_TARGET} ${kadu_SUBDIRS})
-endif (NOT FAST_LINKING)
+endif ()
 if (WIN32)
 	add_library (${KADU_MAIN_SOURCES_TARGET} SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
-else (WIN32)
+else ()
 	add_executable (${KADU_MAIN_SOURCES_TARGET} ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
-endif (WIN32)
+endif ()
 if (FAST_LINKING)
 	kadu_source_subdirectories (${KADU_MAIN_SOURCES_TARGET} ${kadu_SUBDIRS})
-endif (FAST_LINKING)
+endif ()
 
 set_target_properties (${KADU_MAIN_SOURCES_TARGET} PROPERTIES
 	ENABLE_EXPORTS ON
@@ -290,14 +290,14 @@ if (WIN32)
 			ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib
 			LIBRARY DESTINATION ${KADU_SDK_DIR}/lib
 		)
-	endif (INSTALL_SDK)
+	endif ()
 
 	install (TARGETS ${KADU_MAIN_SOURCES_TARGET} RUNTIME DESTINATION ${KADU_BINDIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
 
 	file (WRITE "${CMAKE_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
 	install (FILES "${CMAKE_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
-endif (WIN32)
+endif ()
 
 install (TARGETS kadu DESTINATION ${KADU_BINDIR})
 
@@ -315,7 +315,7 @@ if (UNIX AND NOT APPLE)
 	install (FILES hi128-app-kadu.png DESTINATION "share/icons/hicolor/128x128/apps" RENAME kadu.png)
 	# As of icon-theme-0.5 maximum supported pixmap size is 192, for anything larger one should use SVG.
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
-endif (UNIX AND NOT APPLE)
+endif ()
 
 install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_DATADIR}/scripts")
 

@@ -41,6 +41,6 @@ if (WIN32)
     list (APPEND notify_SRCS "windows-screen-mode-checker.cpp")
 elseif (UNIX AND NOT APPLE)
     list (APPEND notify_SRCS "x11-screen-mode-checker.cpp")
-endif()
+endif ()
 
 kadu_subdirectory (notify "${notify_SRCS}" "${notify_MOC_SRCS}" "")

@@ -52,11 +52,11 @@ if (UNIX AND NOT APPLE)
 	include (FindX11)
 	if (NOT X11_Xshape_FOUND)
 		message (SEND_ERROR "X11 Xshape extension NOT FOUND")
-	endif (NOT X11_Xshape_FOUND)
+	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
 	list (APPEND LIBRARIES ${X11_X11_LIB} ${X11_Xext_LIB})
-endif (UNIX AND NOT APPLE)
+endif ()
 
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}

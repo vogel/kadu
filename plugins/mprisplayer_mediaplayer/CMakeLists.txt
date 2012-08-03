@@ -34,7 +34,7 @@ if (UNIX AND NOT APPLE)
 	set (DBUS_LIBS
 		${QT_QTDBUS_LIBRARY}
 	)
-endif (UNIX AND NOT APPLE)
+endif ()
 
 set (TRANSLATION_SOURCES
 	translations/mprisplayer_mediaplayer_en.ts

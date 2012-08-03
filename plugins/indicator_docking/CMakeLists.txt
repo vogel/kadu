@@ -16,7 +16,7 @@ set (MOC_SOURCES
 
 if (NOT WITH_LIBINDICATE_QT)
 	message (SEND_ERROR "You need to compile core with -DWITH_LIBINDICATE_QT=ON. Aborting. If you are compiling outside of Kadu core sources, make sure it is compiled with libindicate-qt support and redefine the required macro here.")
-endif (NOT WITH_LIBINDICATE_QT)
+endif ()
 
 pkg_search_module (INDICATEQT REQUIRED indicate-qt)
 
@@ -34,7 +34,7 @@ kadu_plugin (indicator_docking
 if (NOT INDICATORS_DIR)
 	set (INDICATORS_DIR "${CMAKE_INSTALL_PREFIX}/share/indicators/messages/applications")
 	message (STATUS "INDICATORS_DIR not specified. Using default: ${INDICATORS_DIR}")
-endif (NOT INDICATORS_DIR)
+endif ()
 
 # Pin Kadu to Messaging Menu
 file (WRITE ${CMAKE_BINARY_DIR}/kadu "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}\n") 

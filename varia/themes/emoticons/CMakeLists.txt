@@ -11,7 +11,7 @@ if (EMOTICON_THEMES)
 
 	foreach (EMOTICON_THEME ${EMOTICON_THEMES})
 		message (STATUS "Emoticon theme: " ${EMOTICON_THEME})
-	endforeach (EMOTICON_THEME)
+	endforeach ()
 
 	install (DIRECTORY ${EMOTICON_THEMES}
 		DESTINATION "${KADU_DATADIR}/themes/emoticons"
@@ -22,4 +22,4 @@ if (EMOTICON_THEMES)
 		PATTERN "readme.txt"
 		PATTERN "licence.txt"
 	)
-endif (EMOTICON_THEMES)
+endif ()

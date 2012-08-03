@@ -7,7 +7,7 @@ if (BUILD_PLUGINS)
 			set (_COMPILE_PLUGINS "")
 			foreach (ARG ${COMPILE_PLUGINS})
 				set (_COMPILE_PLUGINS "${_COMPILE_PLUGINS} ${ARG}")
-			endforeach (ARG)
+			endforeach ()
 
 			exec_program (${CMAKE_CURRENT_SOURCE_DIR}/check-deps.sh ${CMAKE_CURRENT_SOURCE_DIR}
 				ARGS ${AWK} ${_COMPILE_PLUGINS}
@@ -17,17 +17,17 @@ if (BUILD_PLUGINS)
 
 			if (DEPS_STATUS EQUAL 1)
 				message (FATAL_ERROR ${DEPS_MESSAGE})
-			endif (DEPS_STATUS EQUAL 1)
-		endif (AWK)
-	endif (NOT WIN32)
+			endif ()
+		endif ()
+	endif ()
 
 	foreach (PLUGIN ${COMPILE_PLUGINS})
 		message (STATUS "Plugin: " ${PLUGIN})
 		add_subdirectory (${PLUGIN})
-	endforeach (PLUGIN)
-endif (BUILD_PLUGINS)
+	endforeach ()
+endif ()
 
 if (WIN32 AND INSTALL_SDK)
 	install (PROGRAMS pluginrcgen.bat DESTINATION "${KADU_SDK_DIR}/plugins")
 	install (FILES pluginbase.rc DESTINATION "${KADU_SDK_DIR}/plugins")
-endif (WIN32 AND INSTALL_SDK)
+endif ()

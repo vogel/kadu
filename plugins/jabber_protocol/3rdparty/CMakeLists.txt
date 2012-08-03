@@ -28,11 +28,11 @@ macro (kadu_jabber_automoc)
 					set (_moc ${_abs_PATH}/${_current_MOC})
 					QT4_CREATE_MOC_COMMAND (${_header} ${_moc} "${_moc_INCS}" "")
 					MACRO_ADD_FILE_DEPENDENCIES (${_abs_FILE} ${_moc})
-				endforeach (_current_MOC_INC)
-			endif (_match)
-		endif (NOT _skip AND EXISTS ${_abs_FILE})
-	endforeach (_current_FILE)
-endmacro (kadu_jabber_automoc)
+				endforeach ()
+			endif ()
+		endif ()
+	endforeach ()
+endmacro ()
 
 set (SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
@@ -112,14 +112,14 @@ set (SOURCES_IRIS
 
 if (WIN32)
 	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
-else (WIN32)
+else ()
 	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
-endif (WIN32)
+endif ()
 
 if (NOT MSVC)
 	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
-endif (NOT MSVC)
+endif ()
 
 set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/bytestream.h
@@ -199,9 +199,9 @@ set (MOC_SOURCES2_IRIS
 
 if (WIN32)
 	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
-else (WIN32)
+else ()
 	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
-endif (WIN32)
+endif ()
 
 include_directories (
 	${IDN_INCLUDE_DIRS}
@@ -220,4 +220,4 @@ kadu_jabber_automoc (${MOC_SOURCES2_IRIS})
 add_library (3rdparty STATIC ${SOURCES_IRIS} ${MOC_SOURCES2_IRIS} ${MOC_SOURCES_FILES})
 if (NOT WIN32)
 	set_target_properties (3rdparty PROPERTIES COMPILE_FLAGS -fPIC)
-endif (NOT WIN32)
+endif ()
