@@ -1,6 +1,5 @@
 set (misc_SRCS
 	change-notifier.cpp
-	coding-conversion.cpp
 	date-time.cpp
 	date-time-parser-tags.cpp
 	error.cpp

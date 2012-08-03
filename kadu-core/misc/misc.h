@@ -34,7 +34,6 @@
 
 #include <QtGui/QApplication>
 
-#include "coding-conversion.h"
 #include "date-time.h"
 #include "kadu-paths.h"
 
