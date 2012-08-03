@@ -209,8 +209,6 @@ static void printQtOptions()
 
 int main(int argc, char *argv[])
 {
-	QT_REQUIRE_VERSION(argc, argv, "4.7.0")
-
 	bool ok;
 	int msec;
 	time_t sec;
