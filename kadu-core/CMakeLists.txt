@@ -28,7 +28,7 @@ if (NOT WIN32)
 endif (NOT WIN32)
 
 if (NOT NETWORK_IMPLEMENTATION)
-	include (FindQNtrack)
+	find_package (QNtrack 010)
 	if (QNTRACK_FOUND)
 		set (NETWORK_IMPLEMENTATION "ntrack" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
 		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
@@ -37,8 +37,7 @@ if (NOT NETWORK_IMPLEMENTATION)
 		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
 	endif (QNTRACK_FOUND)
 elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
-	set (QNtrack_FIND_REQUIRED true)
-	include (FindQNtrack)
+	find_package (QNtrack 010 REQUIRED)
 endif (NOT NETWORK_IMPLEMENTATION)
 
 set (kadu_SRCS
