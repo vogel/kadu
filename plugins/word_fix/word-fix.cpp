@@ -41,7 +41,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "debug.h"
 #include "html_document.h"
 

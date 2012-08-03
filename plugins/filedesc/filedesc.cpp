@@ -29,7 +29,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "status/status-changer-manager.h"
 #include "debug.h"
 

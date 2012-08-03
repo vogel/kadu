@@ -24,6 +24,7 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtGui/QApplication>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>

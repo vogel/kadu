@@ -57,7 +57,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
 #include "services/message-filter-service.h"

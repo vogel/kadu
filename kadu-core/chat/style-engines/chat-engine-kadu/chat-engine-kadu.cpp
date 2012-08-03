@@ -31,6 +31,7 @@
 #include "gui/widgets/preview.h"
 #include "icons/kadu-icon.h"
 #include "message/message-render-info.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"

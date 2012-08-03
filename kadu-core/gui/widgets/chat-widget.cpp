@@ -34,6 +34,7 @@
  */
 
 #include <QtCore/QFileInfo>
+#include <QtGui/QApplication>
 #include <QtGui/QIcon>
 #include <QtGui/QInputDialog>
 #include <QtGui/QKeyEvent>

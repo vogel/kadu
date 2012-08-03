@@ -23,6 +23,7 @@
 
 #include <QtDeclarative/QDeclarativeContext>
 #include <QtDeclarative/QDeclarativeView>
+#include <QtGui/QApplication>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGraphicsObject>
@@ -43,6 +44,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "model/model-chain.h"
 #include "model/roles.h"

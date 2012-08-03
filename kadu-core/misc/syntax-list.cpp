@@ -27,7 +27,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include "syntax-list.h"
 

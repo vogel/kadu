@@ -41,7 +41,7 @@
 #include "gui/widgets/configuration/config-spin-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/main-configuration-window.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "parser/parser.h"
 
 #include "hint_manager.h"

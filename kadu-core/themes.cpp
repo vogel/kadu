@@ -28,6 +28,7 @@
 #include "configuration/configuration-file.h"
 
 #include "gui/windows/message-dialog.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "debug.h"
 

@@ -33,7 +33,7 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "plugins/history/history.h"
 #include "debug.h"
 

@@ -47,7 +47,7 @@
 #include "gui/widgets/preview.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-render-info.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "protocols/protocols-manager.h"
 
 #include "chat-styles-manager.h"

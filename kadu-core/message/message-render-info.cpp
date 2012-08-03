@@ -30,6 +30,7 @@
 #include "configuration/configuration-file.h"
 #include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
+#include "misc/date-time.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/services/chat-image-service.h"

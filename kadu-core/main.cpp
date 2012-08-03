@@ -61,7 +61,8 @@
 #include "protocols/protocols-manager.h"
 
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
+#include "misc/date-time.h"
+#include "misc/kadu-paths.h"
 #include "debug.h"
 #include "kadu-application.h"
 #include "kadu-config.h"

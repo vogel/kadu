@@ -23,7 +23,7 @@
 
 #include <QtCore/QDir>
 
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include "languages-manager.h"
 

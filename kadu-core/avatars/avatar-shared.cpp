@@ -28,7 +28,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 #include "misc/change-notifier.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include "avatar-shared.h"
 

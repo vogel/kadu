@@ -42,6 +42,8 @@
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "message/message-render-info.h"
+#include "misc/date-time.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"

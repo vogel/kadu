@@ -56,7 +56,7 @@
 #include "kadu-application.h"
 #include "message/message-manager.h"
 #include "misc/date-time-parser-tags.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugins/plugins-manager.h"

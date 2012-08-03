@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDesktopWidget>
@@ -40,7 +41,7 @@
 #include "hint-over-user-configuration-window.h"
 #include "hints-plugin.h"
 
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "activate.h"
 
 #include "hints-configuration-ui-handler.h"

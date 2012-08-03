@@ -36,6 +36,7 @@
 #include <QtCore/QString>
 #include <QtCore/QTextStream>
 #include <QtCore/QUrl>
+#include <QtGui/QApplication>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
@@ -48,6 +49,7 @@
 
 #include "core/core.h"
 #include "icons/kadu-icon.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"

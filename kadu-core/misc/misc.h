@@ -32,13 +32,12 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-#include <QtGui/QApplication>
-
-#include "date-time.h"
-#include "kadu-paths.h"
+#include "exports.h"
 
 class QRect;
+class QString;
 class QWidget;
+template<typename T> class QList;
 
 KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
@@ -52,7 +51,7 @@ void KADUAPI setWindowGeometry(QWidget *w, const QRect &geometry);
 void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
 void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
-QRect stringToRect(const QString &value, const QRect *def = NULL);
+QRect stringToRect(const QString &value, const QRect *def = 0);
 QString rectToString(const QRect& rect);
 
 QList<int> stringToIntList(const QString &in);

@@ -32,6 +32,7 @@
  */
 
 #include <QtCore/QTimer>
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>

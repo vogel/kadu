@@ -25,7 +25,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "misc/change-notifier.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include "keys/keys-manager.h"
 

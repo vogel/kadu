@@ -27,7 +27,7 @@
 #include <QtGui/QPushButton>
 
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "misc/syntax-list.h"
 
 #include "syntax-editor.h"

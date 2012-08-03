@@ -33,7 +33,7 @@
 #include <errno.h>
 
 #include "core/core.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 #include "debug.h"
 #include "kadu-config.h"
 
