@@ -1,5 +1,6 @@
 set (storage_SRCS
 	custom-properties.cpp
+	custom-properties-variant-wrapper.cpp
 	named-storable-object.cpp
 	shared.cpp
 	storable-object.cpp

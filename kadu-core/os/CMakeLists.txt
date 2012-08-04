@@ -4,10 +4,12 @@ set (os_SRCS
 	generic/desktop-aware-object-helper.cpp
 	generic/system-info.cpp
 	generic/url-opener.cpp
+	generic/window-geometry-manager.cpp
 )
 
 set (os_MOC_SRCS
 	generic/desktop-aware-object-helper.h
+	generic/window-geometry-manager.h
 	qtsingleapplication/qtlocalpeer.h
 )
 

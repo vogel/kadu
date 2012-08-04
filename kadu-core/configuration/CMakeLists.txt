@@ -1,6 +1,7 @@
 set (configuration_SRCS
 	chat-configuration-holder.cpp
 	config-file-data-manager.cpp
+	config-file-variant-wrapper.cpp
 	configuration-aware-object.cpp
 	configuration-file.cpp
 	configuration-holder.cpp
