@@ -53,6 +53,8 @@ public:
 	explicit SelectTalkablePopup(QWidget *parent = 0);
 	virtual ~SelectTalkablePopup();
 
+	virtual QSize sizeHint() const;
+
 	void setBaseModel(QAbstractItemModel *model);
 	void setShowAnonymous(bool showAnonymous);
 

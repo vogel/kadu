@@ -35,6 +35,9 @@
 SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 		FilteredTreeView(FilterAtBottom, parent, Qt::Popup)
 {
+	setAttribute(Qt::WA_WindowPropagation);
+	setAttribute(Qt::WA_X11NetWmWindowTypeCombo);
+
 	View = new TalkableTreeView(this);
 	setView(View);
 
@@ -64,6 +67,13 @@ SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
 
 SelectTalkablePopup::~SelectTalkablePopup()
 {
+}
+
+QSize SelectTalkablePopup::sizeHint() const
+{
+	QSize newSizeHint = FilteredTreeView::sizeHint();
+	newSizeHint.setHeight(2 * newSizeHint.height());
+	return newSizeHint;
 }
 
 void SelectTalkablePopup::setBaseModel(QAbstractItemModel *model)

@@ -41,7 +41,7 @@ SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 	Chain->addProxyModel(ProxyModel);
 	setUpModel(TalkableRole, Chain);
 
-	Popup = new SelectTalkablePopup();
+	Popup = new SelectTalkablePopup(this);
 
 	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
 	addFilter(HideAnonymousFilter);
@@ -51,8 +51,6 @@ SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
 
 SelectTalkableComboBox::~SelectTalkableComboBox()
 {
-	delete Popup;
-	Popup = 0;
 }
 
 void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)
@@ -81,7 +79,7 @@ Talkable SelectTalkableComboBox::currentTalkable() const
 
 void SelectTalkableComboBox::showPopup()
 {
-	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->height()));
+	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->sizeHint().height()));
 	Popup->setGeometry(properGeometry(geom));
 
 	Popup->show(currentTalkable());
