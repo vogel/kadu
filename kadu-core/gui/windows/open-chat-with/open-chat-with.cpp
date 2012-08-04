@@ -77,9 +77,10 @@ OpenChatWith::OpenChatWith() :
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	int width = QDesktopWidget().availableGeometry().width()*0.25;
-	int height = QDesktopWidget().availableGeometry().height()*0.6;
-	setGeometry(QDesktopWidget().availableGeometry().center().x()-width/2, QDesktopWidget().availableGeometry().center().y()-height/2, width, height);
+	QRect availableGeometry = qApp->desktop()->availableGeometry(this);
+	int width = 0.25f * availableGeometry.width();
+	int height = 0.6f * availableGeometry.height();
+	setGeometry(availableGeometry.center().x() - width / 2, availableGeometry.center().y() - height / 2, width, height);
 
 	MainLayout = new QVBoxLayout(this);
 
