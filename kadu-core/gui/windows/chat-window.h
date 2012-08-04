@@ -21,14 +21,11 @@ private:
 	ChatWidget *currentChatWidget;
 	QTimer *title_timer;  /*!< zmienna przechowująca czas od ostatniego odświeżenia tytułu okna */
 
-	void kaduStoreGeometry();
-	void kaduRestoreGeometry();
-
 	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyjęciu nowej wiadomości */
 	bool showNewMessagesNum; /*!< czy pokazujemy liczbę nowych wiadomości w tytule nieaktywnego okna */
 	bool blinkChatTitle; /*!< czy tytuł nieaktywnego okna z nieprzeczytanymi wiadomościami powinien mrugać */
 
-	void setDefaultGeometry();
+	QRect defaultGeometry() const;
 
 private slots:
 	void updateIcon();

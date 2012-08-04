@@ -41,8 +41,9 @@
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
+#include "os/generic/window-geometry-manager.h"
+#include "storage/custom-properties-variant-wrapper.h"
 
-#include "misc/misc.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -66,17 +67,22 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	currentChatWidget->setParent(this);
 	currentChatWidget->show();
 	currentChatWidget->edit()->setFocus();
+	currentChatWidget->kaduRestoreGeometry();
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->addWidget(currentChatWidget);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	kaduRestoreGeometry();
 	updateTitle();
 	updateIcon();
 
 	configurationUpdated();
+
+	CustomPropertiesVariantWrapper *variantWrapper = new CustomPropertiesVariantWrapper(
+			currentChatWidget->chat().data()->customProperties(),
+			"chat-geometry:WindowGeometry", CustomProperties::Storable);
+	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
@@ -86,7 +92,7 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 
 ChatWindow::~ChatWindow()
 {
-	kaduStoreGeometry();
+	currentChatWidget->kaduStoreGeometry();
 }
 
 void ChatWindow::configurationUpdated()
@@ -118,7 +124,7 @@ void ChatWindow::compositingDisabled()
 	setAutoFillBackground(true);
 }
 
-void ChatWindow::setDefaultGeometry()
+QRect ChatWindow::defaultGeometry() const
 {
 	QSize size(0, 400);
 	int x, y;
@@ -139,29 +145,7 @@ void ChatWindow::setDefaultGeometry()
 	if (x < 50) x = 50;
 	if (y < 50) y = 50;
 
-	move(x, y);
-	resize(size);
-}
-
-void ChatWindow::kaduRestoreGeometry()
-{
-	QRect windowGeometry = stringToRect(currentChatWidget->chat().property("chat-geometry:WindowGeometry", QString()).toString());
-
-	if (windowGeometry.isValid())
-	{
-		setGeometry(windowGeometry);
-		currentChatWidget->setGeometry(windowGeometry);
-		currentChatWidget->kaduRestoreGeometry();
-	}
-	else
-		setDefaultGeometry();
-}
-
-void ChatWindow::kaduStoreGeometry()
-{
-	currentChatWidget->kaduStoreGeometry();
-
-	currentChatWidget->chat().addProperty("chat-geometry:WindowGeometry", rectToString(geometry()), CustomProperties::Storable);
+	return QRect(QPoint(x, y), size);
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)
