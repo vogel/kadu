@@ -18,9 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "desktop-aware-object.h"
+#include <QtGui/QWidget>
 
 #include "misc/misc.h"
+#include "os/generic/desktop-aware-object-helper.h"
+
+#include "desktop-aware-object.h"
 
 KADU_AWARE_CLASS(DesktopAwareObject)
 

@@ -20,11 +20,12 @@
 #ifndef DESKTOP_AWARE_OBJECT
 #define DESKTOP_AWARE_OBJECT
 
-#include <QtCore/QObject>
-#include <QtGui/QWidget>
-
-#include "os/generic/desktop-aware-object-helper.h"
 #include "aware-object.h"
+#include "exports.h"
+
+class QWidget;
+
+class DesktopAwareObjectHelper;
 
 /**
  * @class DesktopAwareObject
