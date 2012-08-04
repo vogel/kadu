@@ -238,8 +238,7 @@ void PlainConfigFile::writeEntry(const QString &group,const QString &name, const
 
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QRect &value)
 {
-	changeEntry(group, name, QString("%1,%2,%3,%4").arg(value.left()).arg(value.top()).
-				arg(value.width()).arg(value.height()));
+	changeEntry(group, name, rectToString(value));
 }
 
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QSize &value)
@@ -325,12 +324,7 @@ bool PlainConfigFile::readBoolEntry(const QString &group,const QString &name, bo
 
 QRect PlainConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def)
 {
-	QString string = getEntry(group, name);
-
-	if (string.isNull())
-		return def ? *def : QRect(0, 0, 0, 0);
-
-	return stringToRect(string, def);
+	return stringToRect(getEntry(group, name), def);
 }
 
 QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def)
@@ -633,31 +627,7 @@ bool ConfigFile::readBoolEntry(const QString &group,const QString &name, bool de
 
 QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const QRect *def) const
 {
-	QString string = getEntry(group, name);
-	QStringList stringlist;
-	QRect rect(0,0,0,0);
-	int l, t, w, h;
-	bool ok;
-
-	if (string.isNull())
-		return def ? *def : rect;
-	stringlist = string.split(',', QString::SkipEmptyParts);
-	if (stringlist.count() != 4)
-		return def ? *def : rect;
-	l = stringlist.at(0).toInt(&ok);
-	if (!ok)
-		return def ? *def : rect;
-	t = stringlist.at(1).toInt(&ok);
-	if (!ok)
-		return def ? *def : rect;
-	w = stringlist.at(2).toInt(&ok);
-	if (!ok)
-		return def ? *def : rect;
-	h = stringlist.at(3).toInt(&ok);
-	if (!ok)
-		return def ? *def : rect;
-	rect.setRect(l, t, w, h);
-	return rect;
+	return stringToRect(getEntry(group, name), def);
 }
 
 QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const QSize *def) const

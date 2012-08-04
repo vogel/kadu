@@ -153,25 +153,25 @@ QString intListToString(const QList<int> &in)
 QRect stringToRect(const QString &value, const QRect *def)
 {
 	QStringList stringlist;
-	QRect rect(0,0,0,0);
+	QRect rect = def ? *def : QRect(0, 0, 0, 0);
 	int l, t, w, h;
 	bool ok;
 
 	stringlist = value.split(',', QString::SkipEmptyParts);
 	if (stringlist.count() != 4)
-		return def ? *def : rect;
+		return rect;
 	l = stringlist.at(0).toInt(&ok);
 	if (!ok)
-		return def ? *def : rect;
+		return rect;
 	t = stringlist.at(1).toInt(&ok);
 	if (!ok)
-		return def ? *def : rect;
+		return rect;
 	w = stringlist.at(2).toInt(&ok);
 	if (!ok)
-		return def ? *def : rect;
+		return rect;
 	h = stringlist.at(3).toInt(&ok);
 	if (!ok)
-		return def ? *def : rect;
+		return rect;
 	rect.setRect(l, t, w, h);
 
 	return rect;
