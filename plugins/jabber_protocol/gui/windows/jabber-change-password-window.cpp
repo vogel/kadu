@@ -31,9 +31,10 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 
 #include "server/jabber-server-change-password.h"
 
@@ -49,12 +50,11 @@ JabberChangePasswordWindow::JabberChangePasswordWindow(Account account, QWidget 
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "JabberChangePasswordGeometry", 50, 50, 550, 200);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "JabberChangePasswordGeometry"), QRect(50, 50, 550, 200), this);
 }
 
 JabberChangePasswordWindow::~JabberChangePasswordWindow()
 {
-	saveWindowGeometry(this, "General", "JabberChangePasswordGeometry");
 }
 
 void JabberChangePasswordWindow::createGui()

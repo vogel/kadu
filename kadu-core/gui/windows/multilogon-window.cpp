@@ -30,12 +30,13 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/filter/have-multilogon-filter.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
 #include "model/roles.h"
 #include "multilogon/model/multilogon-model.h"
 #include "multilogon/multilogon-session.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 #include "activate.h"
@@ -54,13 +55,11 @@ MultilogonWindow::MultilogonWindow(QWidget *parent) :
 
 	createGui();
 
-	loadWindowGeometry(this, "General", "MultilogonWindowGeometry", 0, 50, 450, 300);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "MultilogonWindowGeometry"), QRect(0, 50, 450, 300), this);
 }
 
 MultilogonWindow::~MultilogonWindow()
 {
-	saveWindowGeometry(this, "General", "MultilogonWindowGeometry");
-
 	Instance = 0;
 }
 

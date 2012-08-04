@@ -44,6 +44,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
 #include "gui/widgets/account-add-widget.h"
 #include "gui/widgets/account-create-widget.h"
@@ -52,11 +53,11 @@
 #include "gui/widgets/protocols-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
 #include "model/roles.h"
 #include "model/merged-proxy-model-factory.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/filter/can-register-protocol-filter.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -80,13 +81,11 @@ YourAccounts::YourAccounts(QWidget *parent) :
 	createGui();
 	AccountsView->selectionModel()->select(AccountsView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
-	loadWindowGeometry(this, "General", "YourAccountsWindowGeometry", 0, 50, 700, 500);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "YourAccountsWindowGeometry"), QRect(0, 50, 700, 500), this);
 }
 
 YourAccounts::~YourAccounts()
 {
-	saveWindowGeometry(this, "General", "YourAccountsWindowGeometry");
-
 	Instance = 0;
 }
 

@@ -29,6 +29,7 @@
 #include "buddies/model/buddy-manager-adapter.h"
 // will be used when Qt 4.8 .is required
 // #include "buddies/model/checkable-buddies-proxy-model.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "gui/widgets/accounts-combo-box.h"
@@ -38,8 +39,8 @@
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
 #include "model/model-chain.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
 #include "talkable/filter/account-talkable-filter.h"
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
@@ -60,12 +61,11 @@ AddConferenceWindow::AddConferenceWindow(QWidget *parent) :
 	accountChanged();
 	validateData();
 
-	loadWindowGeometry(this, "General", "AddConferenceWindowGeometry", 0, 50, 430, 400);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddConferenceWindowGeometry"), QRect(0, 50, 430, 400), this);
 }
 
 AddConferenceWindow::~AddConferenceWindow()
 {
-	saveWindowGeometry(this, "General", "AddConferenceWindowGeometry");
 }
 
 void AddConferenceWindow::createGui()

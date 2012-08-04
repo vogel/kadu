@@ -33,11 +33,12 @@
 #include <QtNetwork/QHostAddress>
 
 #include "chat/type/chat-type-contact.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/talkable-menu-manager.h"
-#include "misc/misc.h"
 #include "model/roles.h"
+#include "os/generic/window-geometry-manager.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 #include "debug.h"
@@ -118,7 +119,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	loadWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry", 0, 0, 800, 300);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("LastSeen", "LastSeenWidgetGeometry"), QRect(0, 0, 800, 300), this);
 
 	kdebugf2();
 }
@@ -126,8 +127,6 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent) :
 InfosDialog::~InfosDialog()
 {
 	kdebugf();
-
-	saveWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry");
 
 	kdebugf2();
 }

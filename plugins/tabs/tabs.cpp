@@ -40,6 +40,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
 #include "buddies/buddy.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
@@ -55,6 +56,7 @@
 #include "gui/widgets/toolbar.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
@@ -98,7 +100,7 @@ TabsManager::TabsManager(QObject *parent) :
 	connect(TabDialog, SIGNAL(contextMenu(QWidget *, const QPoint &)),
 			this, SLOT(onContextMenu(QWidget *, const QPoint &)));
 
-	loadWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry", 30, 30, 550, 400);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("Chat", "TabWindowsGeometry"), QRect(30, 30, 550, 400), TabDialog);
 
 	makePopupMenu();
 
@@ -133,8 +135,6 @@ TabsManager::~TabsManager()
 
 	Timer.stop();
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
-
-	saveWindowGeometry(TabDialog, "Chat", "TabWindowsGeometry");
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	if (!Core::instance()->isClosing())

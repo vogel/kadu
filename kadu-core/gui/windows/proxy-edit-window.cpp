@@ -31,7 +31,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "misc/misc.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "model/action-list-model.h"
 #include "model/action-filter-proxy-model.h"
 #include "model/roles.h"
@@ -39,6 +39,7 @@
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 #include "network/proxy/network-proxy-manager.h"
+#include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
 #include "proxy-edit-window.h"
@@ -65,13 +66,11 @@ ProxyEditWindow::ProxyEditWindow(QWidget *parent) :
 	createGui();
 	ProxyView->selectionModel()->select(ProxyView->model()->index(0, 0), QItemSelectionModel::ClearAndSelect);
 
-	loadWindowGeometry(this, "General", "ProxyEditWindowGeometry", 200, 200, 750, 500);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ProxyEditWindowGeometry"), QRect(200, 200, 750, 500), this);
 }
 
 ProxyEditWindow::~ProxyEditWindow()
 {
-	saveWindowGeometry(this, "General", "ProxyEditWindowGeometry");
-
 	Instance = 0;
 }
 

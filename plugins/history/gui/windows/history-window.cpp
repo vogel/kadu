@@ -29,9 +29,10 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/buddy-chat-manager.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
@@ -75,7 +76,7 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 	createGui();
 
-	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 750, 500);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
 
 	connect(History::instance(), SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
 }
@@ -83,8 +84,6 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 HistoryWindow::~HistoryWindow()
 {
 	disconnect(History::instance(), 0, this, 0);
-
-	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 
 	Instance = 0;
 }

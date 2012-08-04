@@ -28,12 +28,13 @@
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
-#include <chat/type/chat-type-room.h>
+#include "chat/type/chat-type-room.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
 
 #include "add-room-chat-window.h"
@@ -49,12 +50,11 @@ AddRoomChatWindow::AddRoomChatWindow(QWidget *parent) :
 
 	validateData();
 
-	loadWindowGeometry(this, "General", "AddRoomChatWindowGeometry", 0, 50, 430, 250);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddRoomChatWindowGeometry"), QRect(0, 50, 430, 250), this);
 }
 
 AddRoomChatWindow::~AddRoomChatWindow()
 {
-	saveWindowGeometry(this, "General", "AddRoomChatWindowGeometry");
 }
 
 void AddRoomChatWindow::createGui()

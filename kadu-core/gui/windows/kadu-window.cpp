@@ -42,6 +42,7 @@
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
@@ -61,13 +62,13 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/proxy-action-context.h"
 #include "os/generic/url-opener.h"
+#include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
 #include "kadu-application.h"
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
 #include "debug.h"
 
 #include "kadu-window.h"
@@ -88,8 +89,6 @@ KaduWindow::KaduWindow() :
 #endif
 
 #ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	setUnifiedTitleAndToolBarOnMac(false);
 	// Create global menu for OS X.
 	MenuBar = new QMenuBar(0);
 #endif
@@ -109,12 +108,7 @@ KaduWindow::KaduWindow() :
 
 	configurationUpdated();
 
-	loadWindowGeometry(this, "General", "Geometry", 0, 50, 350, 650);
-
-#if defined(Q_OS_MAC)
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	setUnifiedTitleAndToolBarOnMac(true);
-#endif
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "Geometry"), QRect(0, 50, 350, 650), this);
 }
 
 KaduWindow::~KaduWindow()
@@ -346,16 +340,6 @@ void KaduWindow::openRecentChats(QAction *action)
 
 void KaduWindow::storeConfiguration()
 {
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	setUnifiedTitleAndToolBarOnMac(false);
-#endif
-	saveWindowGeometry(this, "General", "Geometry");
-#ifdef Q_OS_MAC
-	/* Dorr: workaround for Qt window geometry bug when unified toolbars enabled */
-	setUnifiedTitleAndToolBarOnMac(true);
-#endif
-
 	// see bug 1948 - this is a hack to get real values of info panel height
 	if (!isVisible())
 	{

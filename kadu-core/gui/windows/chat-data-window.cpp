@@ -34,12 +34,13 @@
 #include "buddies/group.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/group-list.h"
 #include "gui/windows/chat-data-window-aware-object.h"
 #include "icons/icons-manager.h"
 #include "misc/change-notifier.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
 #include "chat-data-window.h"
@@ -67,7 +68,7 @@ ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
 	createGui();
 	updateButtons();
 
-	loadWindowGeometry(this, "General", "ChatDataWindowGeometry", 0, 50, 425, 500);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
 
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
@@ -80,8 +81,6 @@ ChatDataWindow::~ChatDataWindow()
 	ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(this);
 
 	Instances.remove(MyChat);
-
-	saveWindowGeometry(this, "General", "ChatDataWindowGeometry");
 }
 
 void ChatDataWindow::show()

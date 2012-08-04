@@ -29,9 +29,10 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "gui/widgets/token-widget.h"
@@ -49,12 +50,11 @@ GaduRemindPasswordWindow::GaduRemindPasswordWindow(UinType uin, QWidget *parent)
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "GaduRemindPasswordGeometry", 0, 50, 500, 100);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "GaduRemindPasswordGeometry"), QRect(0, 50, 500, 100), this);
 }
 
 GaduRemindPasswordWindow::~GaduRemindPasswordWindow()
 {
-	saveWindowGeometry(this, "General", "GaduRemindPasswordGeometry");
 }
 
 void GaduRemindPasswordWindow::createGui()

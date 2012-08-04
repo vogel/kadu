@@ -29,10 +29,11 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "file-transfer/file-transfer.h"
+#include "os/generic/window-geometry-manager.h"
 
-#include "misc/misc.h"
 #include "debug.h"
 
 #include "gui/widgets/file-transfer-widget.h"
@@ -47,7 +48,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 	setWindowRole("kadu-file-transfer");
 
 	createGui();
-	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "TransferWindowGeometry"), QRect(200, 200, 500, 300), this);
 
 	foreach (FileTransfer fileTransfer, FileTransferManager::instance()->items())
 			fileTransferAdded(fileTransfer);
@@ -66,8 +67,6 @@ FileTransferWindow::~FileTransferWindow()
 	kdebugf();
 
 	disconnect(FileTransferManager::instance(), 0, this, 0);
-
-	saveWindowGeometry(this, "General", "TransferWindowGeometry");
 
 	kdebugf2();
 }

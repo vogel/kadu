@@ -36,12 +36,13 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "plugins/plugins-manager.h"
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
@@ -67,7 +68,7 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 	configurationUpdated();
 
-	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
 
 	RecipientEdit->setFocus();
 
@@ -77,8 +78,6 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 SmsDialog::~SmsDialog()
 {
-	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
-
 	PluginsManager::instance()->releasePlugin("sms");
 }
 

@@ -43,6 +43,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -57,7 +58,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/search-window-actions.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/search-service.h"
@@ -141,12 +142,11 @@ SearchWindow::SearchWindow(QWidget *parent, Buddy buddy) :
 	if (UinEdit->text().isEmpty())
 		personalDataTyped();
 
-	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "SearchWindowGeometry"), QRect(0, 50, 800, 350), this);
 }
 
 SearchWindow::~SearchWindow()
 {
-	saveWindowGeometry(this, "General", "SearchWindowGeometry");
 }
 
 void SearchWindow::createGui()

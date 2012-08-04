@@ -136,7 +136,6 @@ OpenChatWith::OpenChatWith() :
 
 OpenChatWith::~OpenChatWith()
 {
-	//saveWindowGeometry(this, "General", "OpenChatWith");
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	Instance = 0;
 

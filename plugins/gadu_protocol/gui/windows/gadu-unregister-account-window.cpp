@@ -30,9 +30,10 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 
 #include "gui/widgets/token-widget.h"
 #include "server/gadu-server-unregister-account.h"
@@ -50,12 +51,11 @@ GaduUnregisterAccountWindow::GaduUnregisterAccountWindow(Account account, QWidge
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "GaduUnregisterAccountGeometry", 0, 50, 500, 350);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "GaduUnregisterAccountGeometry"), QRect(0, 50, 500, 350), this);
 }
 
 GaduUnregisterAccountWindow::~GaduUnregisterAccountWindow()
 {
-	saveWindowGeometry(this, "General", "GaduUnregisterAccountGeometry");
 }
 
 void GaduUnregisterAccountWindow::createGui()

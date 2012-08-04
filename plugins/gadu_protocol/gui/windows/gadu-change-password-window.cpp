@@ -31,9 +31,10 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "gui/widgets/token-widget.h"
@@ -51,12 +52,11 @@ GaduChangePasswordWindow::GaduChangePasswordWindow(UinType uin, Account account,
 
 	dataChanged();
 
-	loadWindowGeometry(this, "General", "GaduChangePasswordGeometry", 0, 50, 550, 200);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "GaduChangePasswordGeometry"), QRect(0, 50, 550, 200), this);
 }
 
 GaduChangePasswordWindow::~GaduChangePasswordWindow()
 {
-	saveWindowGeometry(this, "General", "GaduChangePasswordGeometry");
 }
 
 void GaduChangePasswordWindow::createGui()

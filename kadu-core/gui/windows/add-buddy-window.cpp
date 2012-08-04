@@ -47,6 +47,7 @@
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "buddies/model/groups-model.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -55,8 +56,8 @@
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
-#include "misc/misc.h"
 #include "model/roles.h"
+#include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/roster.h"
@@ -88,17 +89,16 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent, const Buddy &buddy, bool forceBu
 	createGui();
 	if (!MyBuddy)
 		addFakeAccountsToComboBox();
+
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AddBuddyWindowGeometry"), QRect(0, 50, 425, 430), this);
 }
 
 AddBuddyWindow::~AddBuddyWindow()
 {
-	saveWindowGeometry(this, "General", "AddBuddyWindowGeometry");
 }
 
 void AddBuddyWindow::createGui()
 {
-	loadWindowGeometry(this, "General", "AddBuddyWindowGeometry", 0, 50, 425, 430);
-
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
 	QWidget *mainWidget = new QWidget(this);

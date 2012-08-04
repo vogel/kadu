@@ -47,10 +47,11 @@
 #include <QtGui/QTextEdit>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"
 #include "debug.h"
@@ -211,7 +212,7 @@ About::About(QWidget *parent) :
 	//slayout->addWidget(left);
 	layout->addWidget(center);
 
-	loadWindowGeometry(this, "General", "AboutGeometry", 0, 50, 480, 380);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "AboutGeometry"), QRect(0, 50, 480, 380), this);
 
 	kdebugf2();
 }
@@ -219,8 +220,6 @@ About::About(QWidget *parent) :
 About::~About()
 {
 	kdebugf();
-
- 	saveWindowGeometry(this, "General", "AboutGeometry");
 
 	kdebugf2();
 }

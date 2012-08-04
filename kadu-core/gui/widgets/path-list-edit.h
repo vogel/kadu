@@ -70,7 +70,6 @@ private slots:
 
 	void okClicked();
 
-	void closeEvent(QCloseEvent *e);
 	void keyPressEvent(QKeyEvent *e);
 
 public:

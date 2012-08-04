@@ -32,6 +32,7 @@
 #include <QtGui/QWidget>
 #include <QtXml/QDomElement>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-action-button.h"
@@ -57,8 +58,8 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/kadu-window.h"
+#include "os/generic/window-geometry-manager.h"
 
-#include "misc/misc.h"
 #include "activate.h"
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager)
@@ -91,12 +92,11 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	main_layout->addSpacing(16);
 	main_layout->addWidget(buttons_layout);
 
-	loadWindowGeometry(this, section, name + "_Geometry", 0, 50, 790, 580);
+	new WindowGeometryManager(new ConfigFileVariantWrapper(section, name + "_Geometry"), QRect(0, 50, 790, 580), this);
 }
 
 ConfigurationWindow::~ConfigurationWindow()
 {
-	saveWindowGeometry(this, this->section(), this->name() + "_Geometry");
 }
 
 void ConfigurationWindow::show()

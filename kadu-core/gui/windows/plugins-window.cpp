@@ -46,10 +46,11 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QScrollBar>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "debug.h"
 #include "gui/widgets/plugin-list-widget.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
 #include "plugins-window.h"
@@ -107,7 +108,7 @@ PluginsWindow::PluginsWindow()
 	layout->addWidget(buttons);
 
 	setLayout(layout);
-	loadWindowGeometry(this, "General", "PluginsWindowGeometry", 0, 50, 600, 620);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "PluginsWindowGeometry"), QRect(0, 50, 600, 620), this);
 
 	kdebugf2();
 }
@@ -116,7 +117,6 @@ PluginsWindow::~PluginsWindow()
 {
 	kdebugf();
 	Instance = 0;
- 	saveWindowGeometry(this, "General", "PluginsWindowGeometry");
 	kdebugf2();
 }
 

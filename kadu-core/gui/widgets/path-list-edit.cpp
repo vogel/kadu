@@ -31,8 +31,9 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QListWidget>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "icons/kadu-icon.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "debug.h"
 
 #include "path-list-edit.h"
@@ -113,8 +114,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	loadWindowGeometry(this, "General", "SelectPathDialogGeometry", 0, 50, 330, 330);
 	setPathList(pathList);
+
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330), this);
 }
 
 PathListEditWindow::~PathListEditWindow()
@@ -195,12 +197,6 @@ void PathListEditWindow::okClicked()
 
 	emit changed(result);
 	close();
-}
-
-void PathListEditWindow::closeEvent(QCloseEvent *e)
-{
- 	saveWindowGeometry(this, "General", "SelectPathDialogGeometry");
-	QWidget::closeEvent(e);
 }
 
 void PathListEditWindow::keyPressEvent(QKeyEvent *e)

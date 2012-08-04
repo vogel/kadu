@@ -52,6 +52,7 @@
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
@@ -62,10 +63,10 @@
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
 #include "icons/icons-manager.h"
@@ -98,7 +99,7 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
 	createGui();
 	updateButtons();
 
-	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(this);
 
@@ -109,7 +110,6 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
 BuddyDataWindow::~BuddyDataWindow()
 {
 	kdebugf();
-	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
 	Instances.remove(MyBuddy);
 	kdebugf2();

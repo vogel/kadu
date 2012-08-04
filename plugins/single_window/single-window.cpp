@@ -11,6 +11,7 @@
 #include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
 
+#include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -21,7 +22,7 @@
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
-#include "misc/misc.h"
+#include "os/generic/window-geometry-manager.h"
 #include "provider/default-provider.h"
 #include "activate.h"
 #include "debug.h"
@@ -90,7 +91,7 @@ SingleWindow::SingleWindow()
 	kadu->setMinimumWidth(170);
 	tabs->setMinimumWidth(200);
 
-	loadWindowGeometry(this, "SingleWindow", "WindowGeometry", 0, 0, 800, 440);
+	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
 	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
@@ -147,7 +148,6 @@ SingleWindow::~SingleWindow()
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	bool visible = isVisible();
 
-	saveWindowGeometry(this, "SingleWindow", "WindowGeometry");
 	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
@@ -167,7 +167,6 @@ SingleWindow::~SingleWindow()
 	}
 
 	kadu->setParent(0);
-	loadWindowGeometry(kadu, "General", "Geometry", 0, 50, 205, 465);
 	if (!Core::instance()->isClosing())
 		kadu->setVisible(visible);
 }
