@@ -40,13 +40,12 @@
 #include "screenshot-widget.h"
 
 ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
-		QWidget(parent), ButtonPressed(false), ShotMode(ShotModeStandard)
+		QWidget(parent, Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
+		ButtonPressed(false), ShotMode(ShotModeStandard)
 {
 	setWindowRole("kadu-screenshot");
 
 	setFocusPolicy(Qt::StrongFocus);
-
-	setWindowFlags(windowFlags() | Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 #ifdef Q_WS_X11
 	// set always-on-top and force taskbar and pager skipping
 	Atom win_state = XInternAtom( QX11Info::display(), "_NET_WM_STATE", False );

@@ -55,7 +55,7 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent = 0);
+	explicit ScreenshotTaker(ChatWidget *chatWidget);
 	virtual ~ScreenshotTaker();
 
 public slots:

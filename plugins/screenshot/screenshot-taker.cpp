@@ -36,14 +36,12 @@
 
 #include "screenshot-taker.h"
 
-ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), CurrentChatWidget(chatWidget), Dragging(false)
+ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget) :
+		QWidget(chatWidget->window(), Qt::Window), CurrentChatWidget(chatWidget), Dragging(false)
 {
 	setWindowRole("kadu-screenshot-taker");
 
 	setWindowModality(Qt::WindowModal);
-	setParent(CurrentChatWidget->window());
-	setWindowFlags(windowFlags() | Qt::Window);
 
 	setAttribute(Qt::WA_DeleteOnClose);
 

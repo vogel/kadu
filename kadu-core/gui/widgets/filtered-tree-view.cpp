@@ -39,8 +39,8 @@ bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 	return !event->text().trimmed().isEmpty() && event->text().at(0).isPrint();
 }
 
-FilteredTreeView::FilteredTreeView(FilterPosition filterPosition, QWidget *parent) :
-		QWidget(parent), CurrentFilterPosition(filterPosition), View(0)
+FilteredTreeView::FilteredTreeView(FilteredTreeView::FilterPosition filterPosition, QWidget *parent, Qt::WindowFlags f) :
+		QWidget(parent, f), CurrentFilterPosition(filterPosition), View(0)
 {
 	Layout = new QVBoxLayout(this);
 	Layout->setMargin(0);

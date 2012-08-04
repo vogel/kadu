@@ -33,10 +33,8 @@
 #include "select-talkable-popup.h"
 
 SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
-		FilteredTreeView(FilterAtBottom, parent)
+		FilteredTreeView(FilterAtBottom, parent, Qt::Popup)
 {
-	setWindowFlags(Qt::Popup);
-
 	View = new TalkableTreeView(this);
 	setView(View);
 

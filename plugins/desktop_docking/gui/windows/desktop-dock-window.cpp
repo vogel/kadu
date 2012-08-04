@@ -30,13 +30,13 @@
 #include "desktop-dock-window.h"
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent) :
-		QLabel(parent), IsMoving(false)
+		QLabel(parent, Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
+		IsMoving(false)
 {
 	setAttribute(Qt::WA_NoBackground);
 	setAttribute(Qt::WA_MouseNoMask);
 	setAutoFillBackground(true);
 	setMouseTracking(true);
-	setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
 
 	setPixmap(DockingManager::instance()->defaultIcon().icon().pixmap(128, 128));
 	resize(pixmap()->size());
