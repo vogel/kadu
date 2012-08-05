@@ -61,10 +61,11 @@ static const int MaximizedIndex = 3;
 static const int FullscreenIndex = 4;
 static const int IndexCount = 5;
 
-WindowGeometryManager::WindowGeometryManager(VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *parent) :
-		QObject(parent), MyVariantWrapper(variantWrapper), DefaultGeometry(defaultGeometry)
+WindowGeometryManager::WindowGeometryManager(VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *window) :
+		QObject(window), MyVariantWrapper(variantWrapper), DefaultGeometry(defaultGeometry)
 {
-	Q_ASSERT(parent);
+	Q_ASSERT(window);
+	Q_ASSERT(window->isWindow());
 	Q_ASSERT(MyVariantWrapper);
 
 	Timer.setInterval(100);
@@ -72,7 +73,7 @@ WindowGeometryManager::WindowGeometryManager(VariantWrapper *variantWrapper, con
 	connect(&Timer, SIGNAL(timeout()), SLOT(saveGeometry()));
 
 	restoreGeometry();
-	parent->installEventFilter(this);
+	window->installEventFilter(this);
 }
 
 WindowGeometryManager::~WindowGeometryManager()

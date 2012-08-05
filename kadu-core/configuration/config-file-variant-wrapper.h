@@ -25,18 +25,41 @@
 #include "exports.h"
 #include "misc/variant-wrapper.h"
 
+/**
+ * @addtogroup Configuration
+ * @{
+ */
+
+/**
+ * @class ConfigFileVariantWrapper
+ * @short Class implementing a single ConfigFile entry access with VariantWrapper interface.
+ * @author Bartosz 'beevvy' Brachaczek
+ *
+ * This class uses ConfigFile::readEntry() as VariantWrapper::get() implementation
+ * and ConfigFile::writeEntry() as VariantWrapper::set() implementation.
+ */
 class KADUAPI ConfigFileVariantWrapper : public VariantWrapper
 {
-	QString Section;
+	QString Group;
 	QString Name;
 
 public:
-	ConfigFileVariantWrapper(const QString &section, const QString &name);
+	/**
+	 * @short Constructs object wrapping a single ConfigFile entry.
+	 * @author Bartosz 'beevvy' Brachaczek
+	 * @param group name of ConfigFile group
+	 * @param name name of ConfigFile field in @p group
+	 */
+	ConfigFileVariantWrapper(const QString &group, const QString &name);
 	virtual ~ConfigFileVariantWrapper();
 
 	virtual QVariant get(const QVariant &defaultValue = QVariant()) const;
 	virtual void set(const QVariant &value);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CONFIG_FILE_VARIANT_WRAPPER_H
