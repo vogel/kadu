@@ -2,9 +2,7 @@
 #define SINGLE_WINDOW_H
 
 #include <QtCore/QList>
-#include <QtGui/QMainWindow>
-#include <QtGui/QSplitter>
-#include <QtGui/QTabWidget>
+#include <QtGui/QWidget>
 
 #include "chat/chat-manager.h"
 #include "configuration/configuration-aware-object.h"
@@ -14,7 +12,10 @@
 #include "os/generic/compositing-aware-object.h"
 #include "provider/simple-provider.h"
 
-class SingleWindow : public QMainWindow, public ChatWidgetContainer
+class QSplitter;
+class QTabWidget;
+
+class SingleWindow : public QWidget, public ChatWidgetContainer
 {
 	Q_OBJECT
 

@@ -10,6 +10,8 @@
 #include <QtCore/QStringList>
 #include <QtGui/QCloseEvent>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QSplitter>
+#include <QtGui/QTabWidget>
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
@@ -173,7 +175,7 @@ SingleWindow::~SingleWindow()
 
 void SingleWindow::changeEvent(QEvent *event)
 {
-	QMainWindow::changeEvent(event);
+	QWidget::changeEvent(event);
 	if (event->type() == QEvent::ActivationChange)
 	{
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
@@ -270,7 +272,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 	// do not block window closing when session is about to close
 	if (Core::instance()->application()->sessionClosing())
 	{
-		QMainWindow::closeEvent(event);
+		QWidget::closeEvent(event);
 		return;
 	}
 
@@ -281,7 +283,7 @@ void SingleWindow::closeEvent(QCloseEvent *event)
 	}
 	else
 	{
-		QMainWindow::closeEvent(event);
+		QWidget::closeEvent(event);
 		Core::instance()->application()->quit();
 	}
 }
@@ -294,7 +296,7 @@ void SingleWindow::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 
-	QMainWindow::keyPressEvent(event);
+	QWidget::keyPressEvent(event);
 }
 
 void SingleWindow::resizeEvent(QResizeEvent *event)
