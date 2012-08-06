@@ -176,19 +176,6 @@ if (UNIX AND NOT APPLE)
 			message (FATAL_ERROR "Could not find X11 Xfixes extension")
 		endif ()
 	endif ()
-
-	if (NOT DESKTOP_ENTRY)
-		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
-	endif ()
-	add_custom_command (OUTPUT ${DESKTOP_ENTRY}
-		COMMAND touch ${DESKTOP_ENTRY}
-		COMMAND sh ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh ${CMAKE_INSTALL_PREFIX} > ${DESKTOP_ENTRY}
-		DEPENDS ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh
-		COMMENT "Generating desktop entry file"
-	)
-	add_custom_target (DESKTOP_ENTRY_FILE ALL
-		DEPENDS ${DESKTOP_ENTRY}
-	)
 endif ()
 
 if (APPLE)
@@ -301,9 +288,9 @@ endif ()
 
 install (TARGETS kadu DESTINATION ${KADU_BINDIR})
 
-# install desktop file
 if (UNIX AND NOT APPLE)
-	install (FILES ${DESKTOP_ENTRY} DESTINATION ${KADU_DESKTOP_FILE_DIR} RENAME ${KADU_DESKTOP_FILE_NAME})
+	configure_file (kadu.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/${KADU_DESKTOP_FILE_NAME}")
+	install (FILES "${CMAKE_CURRENT_BINARY_DIR}/${KADU_DESKTOP_FILE_NAME}" DESTINATION "${KADU_DESKTOP_FILE_DIR}")
 
 	install (FILES hi16-app-kadu.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/16x16/apps" RENAME kadu.png)
 	install (FILES hi22-app-kadu.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/22x22/apps" RENAME kadu.png)
