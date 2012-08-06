@@ -295,8 +295,8 @@ if (WIN32)
 	install (TARGETS ${KADU_MAIN_SOURCES_TARGET} RUNTIME DESTINATION ${KADU_BINDIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
 
-	file (WRITE "${CMAKE_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
-	install (FILES "${CMAKE_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
+	file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
+	install (FILES "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
 endif ()
 
 install (TARGETS kadu DESTINATION ${KADU_BINDIR})
