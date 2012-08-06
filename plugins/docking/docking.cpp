@@ -143,6 +143,14 @@ DockingManager::DockingManager() :
 
 	configurationUpdated();
 
+#ifdef Q_WS_X11
+	/* Fill context menu for the first time. It seems that Ubuntu panels, when at bottom
+	 * of the screen, set maximum height for menus to what their height was when they
+	 * were clicked for the first time. And normally we fill the menu in response to
+	 * click. See Kadu bug #2627. */
+	doUpdateContextMenu();
+#endif
+
 	kdebugf2();
 }
 
