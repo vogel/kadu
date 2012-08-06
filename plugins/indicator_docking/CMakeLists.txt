@@ -37,7 +37,7 @@ kadu_plugin (indicator_docking
 )
 
 if (NOT INDICATORS_DIR)
-	set (INDICATORS_DIR "${CMAKE_INSTALL_PREFIX}/share/indicators/messages/applications")
+	set (INDICATORS_DIR "${CMAKE_INSTALL_FULL_DATADIR}/indicators/messages/applications")
 	message (STATUS "INDICATORS_DIR not specified. Using default: ${INDICATORS_DIR}")
 endif (NOT INDICATORS_DIR)
 
