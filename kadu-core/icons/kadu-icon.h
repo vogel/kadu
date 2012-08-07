@@ -116,11 +116,8 @@ public:
 	 * @param path path to this icon
 	 *
 	 * Sets path to this icon and resets its size.
-	 *
-	 * @note It resets size and name because new path may contain them.
-	 * @todo Resetting size and name could be avoided if one fixed IconsManager::iconPath() method. (Isn't IconsManager fixed already?)
 	 */
-	void setPath(const QString &path) { Path = path; IconSize.clear(); }
+	void setPath(const QString &path) { Path = path; }
 
 	/**
 	 * @author Bartosz 'beevvy' Brachaczek
