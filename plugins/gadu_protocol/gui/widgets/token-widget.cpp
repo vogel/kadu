@@ -35,7 +35,7 @@
 
 TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 {
-	WaitMovie = new QMovie(KaduIcon("kadu_icons/16x16/please-wait.gif").fullPath(),
+	WaitMovie = new QMovie(KaduIcon("kadu_icons/please-wait", "16x16").fullPath(),
 			QByteArray(), this);
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
