@@ -101,7 +101,7 @@ void NotificationService::createActionDescriptions()
 
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(SilentModeActionDescription, KaduWindow::MenuKadu);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(SilentModeActionDescription, KaduWindow::MenuKadu, 6);
 }
 
 void NotificationService::createEventListeners()
