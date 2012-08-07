@@ -11,6 +11,7 @@
 * parser: #2612 fixed: restored DATA_PATH, HOME, KADU_CONFIG Parser variables (beevvy)
 * gadu: #2620 fixed: restored downloading big avatars (beevvy)
 * qt4_docking: #2627 fixed: fixed context menu in bottom panel in Ubuntu 12.04 GNOME Classic session (beevvy)
+* icons: #2629 fixed: fixed tray icon size in some cases (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
