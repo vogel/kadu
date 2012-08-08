@@ -31,9 +31,13 @@
 #include "dcc-socket-notifiers.h"
 
 #ifndef Q_OS_WIN
-#include <unistd.h>
+# include <unistd.h>
 #else
-#define dup(x) x
+# include <io.h>
+# ifdef dup
+#  undef dup
+# endif
+# define dup _dup
 #endif
 
 DccSocketNotifiers::DccSocketNotifiers(struct gg_dcc7 *socket, QObject *parent) :
