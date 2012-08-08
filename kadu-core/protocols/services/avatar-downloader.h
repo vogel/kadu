@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtGui/QImage>
 
+#include "exports.h"
+
 /**
  * @addtogroup Protocol
  * @{
@@ -36,7 +38,7 @@
  * This class allows for downloading one avatar. To do that attach slot to avatarDownloaded() signal and call downloadAvatar()
  * method. After avatar is downloaded avatarDownloaded() signal is emitted and this object deletes itself.
  */
-class AvatarDownloader : public QObject
+class KADUAPI AvatarDownloader : public QObject
 {
 	Q_OBJECT
 

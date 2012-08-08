@@ -28,7 +28,7 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include <windows.h>
 #ifdef _MSC_VER

@@ -22,6 +22,7 @@
 
 #include <QtCore/QString>
 
+#include "exports.h"
 #include "formatted-string/formatted-string-visitor.h"
 
 /**
@@ -36,7 +37,7 @@
  *
  * After being accepted by a FormattedString this visitor returns plain text view of this FormattedString as result() getter.
  */
-class FormattedStringPlainTextVisitor : public FormattedStringVisitor
+class KADUAPI FormattedStringPlainTextVisitor : public FormattedStringVisitor
 {
 	Q_DISABLE_COPY(FormattedStringPlainTextVisitor);
 

@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 class MessageTransformer;
 
@@ -39,7 +41,7 @@ class MessageTransformer;
  * as outgoing or incoming transformers. Calling transformOutgoingMessage() or transformIncomingMessage() will call
  * all transformations for given type of message and return combined result of all transformations.
  */
-class MessageTransformerService : public QObject
+class KADUAPI MessageTransformerService : public QObject
 {
 	QList<MessageTransformer *> OutgoingMessageTransformers;
 	QList<MessageTransformer *> IncomingMessageTransformers;

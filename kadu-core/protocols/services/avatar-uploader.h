@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtGui/QImage>
 
+#include "exports.h"
+
 /**
  * @addtogroup Protocol
  * @{
@@ -36,7 +38,7 @@
  * This class allows for uploading avatar. To do that attach slot to avatarUploaded() signal and call uploadAvatar()
  * method. After avatar is downloaded avatarUploaded() signal is emitted and this object deletes itself.
  */
-class AvatarUploader : public QObject
+class KADUAPI AvatarUploader : public QObject
 {
 	Q_OBJECT
 

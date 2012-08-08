@@ -24,8 +24,8 @@
 #ifndef WINDOWS_SCREEN_MODE_CHECKER_H
 #define WINDOWS_SCREEN_MODE_CHECKER_H
 
+#include "exports.h"
 #include "screen-mode-checker.h"
-
 
 class KADUAPI WindowsScreenModeChecker : public ScreenModeChecker
 {

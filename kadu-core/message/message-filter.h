@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 class Contact;
 
@@ -37,7 +39,7 @@ class Contact;
  *
  * This interface allows filtering messages.
  */
-class MessageFilter : public QObject
+class KADUAPI MessageFilter : public QObject
 {
 	Q_OBJECT
 

@@ -25,7 +25,8 @@
 
 #include "jabber-client-info-service.h"
 
-using namespace XMPP;
+namespace XMPP
+{
 
 JabberClientInfoService::JabberClientInfoService(JabberProtocol *protocol) :
 		QObject(protocol), XmppClient(protocol->xmppClient())
@@ -121,4 +122,6 @@ void JabberClientInfoService::setFeatures(const Features &features)
 		XmppClient.data()->setFeatures(features);
 		XmppClient.data()->setCapsVersion(calculateCapsVersion());
 	}
+}
+
 }

@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class QUrl;
 
 /**
@@ -38,7 +40,7 @@ class QUrl;
  * available even after moving profile to another computer or another drive. This service allows storing images in this
  * directory and supports kaduimg:// scheme for WebKit views to enable access to these images.
  */
-class ImageStorageService : public QObject
+class KADUAPI ImageStorageService : public QObject
 {
 	Q_OBJECT
 

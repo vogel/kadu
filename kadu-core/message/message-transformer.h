@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 
 /**
@@ -37,7 +39,7 @@ class Chat;
  * This interface allows arbitraty tranformations of message content. It can be used to encypt/decrypt messages, cenzor them
  * or change language to 1337.
  */
-class MessageTransformer : public QObject
+class KADUAPI MessageTransformer : public QObject
 {
 	Q_OBJECT
 

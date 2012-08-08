@@ -22,6 +22,8 @@
 
 #include <QtCore/QPair>
 
+#include "exports.h"
+
 /**
  * @addtogroup Protocol
  * @{
@@ -39,7 +41,7 @@
  * Method toString() is used to create string representation of key. It must be unique per image as it is used in HTML representation of messages
  * to create placeholder for image that is not yet downloaded and to allow it to be replaced with real image after downloading.
  */
-class ChatImageKey : public QPair<quint32, quint32>
+class KADUAPI ChatImageKey : public QPair<quint32, quint32>
 {
 public:
 	/**

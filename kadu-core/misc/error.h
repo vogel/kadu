@@ -22,6 +22,7 @@
 
 #include <QtCore/QString>
 
+#include "exports.h"
 #include "misc/error-severity.h"
 
 /**
@@ -36,7 +37,7 @@
  *
  * Erro contains severity info and error message string.
  */
-class Error
+class KADUAPI Error
 {
 	ErrorSeverity Severity;
 	QString Message;

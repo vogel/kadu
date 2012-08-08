@@ -22,6 +22,8 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class Chat;
 class Contact;
 class MessageFilter;
@@ -40,7 +42,7 @@ class MessageFilter;
  * as outgoing or incoming filters. Calling acceptOutgoingMessage() or acceptIncomingMessage() will call
  * all transformations for given type of message and return true only if all filters accepts given message.
  */
-class MessageFilterService : public QObject
+class KADUAPI MessageFilterService : public QObject
 {
 	QList<MessageFilter *> OutgoingMessageFilters;
 	QList<MessageFilter *> IncomingMessageFilters;

@@ -53,7 +53,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
-#include "misc/misc.h"
+#include "misc/kadu-paths.h"
 
 #include "highlighter.h"
 #include "suggester.h"

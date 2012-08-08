@@ -22,7 +22,9 @@
 
 #include <QtGui/QMenu>
 
-class RecentChatsMenu : public QMenu
+#include "exports.h"
+
+class KADUAPI RecentChatsMenu : public QMenu
 {
 	Q_OBJECT
 

@@ -20,9 +20,11 @@
 #ifndef FORMATTED_STRING_H
 #define FORMATTED_STRING_H
 
+#include "exports.h"
+
 class FormattedStringVisitor;
 
-class FormattedString
+class KADUAPI FormattedString
 {
 	Q_DISABLE_COPY(FormattedString);
 

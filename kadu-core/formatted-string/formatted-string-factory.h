@@ -22,6 +22,8 @@
 
 #include <QtCore/QWeakPointer>
 
+#include "exports.h"
+
 class QTextBlock;
 class QTextCharFormat;
 class QTextFragment;
@@ -40,7 +42,7 @@ class ImageStorageService;
  * @short Class for creating FormattedString instances from different sources.
  * @author Rafał 'Vogel' Malinowski
  */
-class FormattedStringFactory : public QObject
+class KADUAPI FormattedStringFactory : public QObject
 {
 	Q_OBJECT
 

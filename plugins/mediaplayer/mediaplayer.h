@@ -194,11 +194,6 @@ public:
 
 public slots:
 	/**
-		Shows currently played title in hint (Pseudo-OSD).
-	*/
-	void putTitleHint(QString title);
-
-	/**
 	    Helper slots
 	*/
 	void insertFormattedSong();
