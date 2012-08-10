@@ -24,6 +24,18 @@
 
 class FormattedStringVisitor;
 
+/**
+ * @addtogroup FormattedString
+ * @{
+ */
+
+/**
+ * @class FormattedString
+ * @short Generic FormattedString item.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class contains FormattedString item. It can be either formatted text block, image, item composed of other items.
+ */
 class KADUAPI FormattedString
 {
 
@@ -36,10 +48,24 @@ public:
 	virtual bool operator == (const FormattedString &compareTo) = 0;
 	bool operator != (const FormattedString &compareTo);
 
+	/**
+	 * @short Accept given visitor on current item.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitor visitor to accept
+	 */
 	virtual void accept(FormattedStringVisitor *visitor) const = 0;
 
+	/**
+	 * @short Return true if item is empty.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if item is empty
+	 */
 	virtual bool isEmpty() const = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // FORMATTED_STRING_H
