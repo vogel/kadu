@@ -1,5 +1,6 @@
 set (formatted-string_SRCS
 	composite-formatted-string.cpp
+	formatted-string.cpp
 	formatted-string-factory.cpp
 	formatted-string-html-visitor.cpp
 	formatted-string-image-block.cpp

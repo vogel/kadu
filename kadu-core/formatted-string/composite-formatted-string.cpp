@@ -46,6 +46,23 @@ CompositeFormattedString::~CompositeFormattedString()
 	qDeleteAll(Items);
 }
 
+bool CompositeFormattedString::operator == (const FormattedString &compareTo)
+{
+	const CompositeFormattedString *compareToPointer = dynamic_cast<const CompositeFormattedString *>(&compareTo);
+	if (!compareToPointer)
+		return false;
+
+	if (Items.size() != compareToPointer->Items.size())
+		return false;
+
+	int size = Items.size();
+	for (int i = 0; i < size; i++)
+		if (*Items.at(i) != *compareToPointer->Items.at(i))
+			return false;
+
+	return true;
+}
+
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
 	foreach (FormattedString *item, Items)

@@ -67,6 +67,8 @@ public:
 
 	virtual ~FormattedStringImageBlock();
 
+	virtual bool operator == (const FormattedString &compareTo);
+
 	virtual void accept(FormattedStringVisitor *visitor) const;
 
 	/**

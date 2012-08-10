@@ -236,10 +236,7 @@ bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 	if (left.messageSender() != right.messageSender())
 		return false;
 
-	if (left.htmlContent() != right.htmlContent())
-		return false;
-
-	if (left.plainTextContent() != right.plainTextContent())
+	if (left.content() != right.content())
 		return false;
 
 	return true;

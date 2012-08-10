@@ -64,6 +64,8 @@ public:
 	FormattedStringTextBlock(const QString &content, bool bold, bool italic, bool underline, QColor color);
 	virtual ~FormattedStringTextBlock();
 
+	virtual bool operator == (const FormattedString &compareTo);
+
 	virtual void accept(FormattedStringVisitor *visitor) const;
 
 	/**

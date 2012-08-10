@@ -37,6 +37,16 @@ FormattedStringImageBlock::~FormattedStringImageBlock()
 {
 }
 
+bool FormattedStringImageBlock::operator == (const FormattedString &compareTo)
+{
+	const FormattedStringImageBlock *compareToPointer = dynamic_cast<const FormattedStringImageBlock *>(&compareTo);
+	if (!compareToPointer)
+		return false;
+
+	return ImagePath == compareToPointer->ImagePath
+	    && ImageKey == compareToPointer->ImageKey;
+}
+
 void FormattedStringImageBlock::accept(FormattedStringVisitor *visitor) const
 {
 	visitor->visit(this);

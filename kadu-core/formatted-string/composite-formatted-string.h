@@ -55,6 +55,8 @@ public:
 	explicit CompositeFormattedString(QVector<FormattedString *> items);
 	virtual ~CompositeFormattedString();
 
+	virtual bool operator == (const FormattedString &compareTo);
+
 	/**
 	 * @short Accept a visitor.
 	 * @author Rafał 'Vogel' Malinowski

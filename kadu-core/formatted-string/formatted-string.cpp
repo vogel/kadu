@@ -17,29 +17,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef FORMATTED_STRING_H
-#define FORMATTED_STRING_H
+#include "formatted-string.h"
 
-#include "exports.h"
-
-class FormattedStringVisitor;
-
-class KADUAPI FormattedString
+FormattedString::FormattedString()
 {
+}
 
-protected:
-	FormattedString();
+FormattedString::~FormattedString()
+{
+}
 
-public:
-	virtual ~FormattedString();
-
-	virtual bool operator == (const FormattedString &compareTo) = 0;
-	bool operator != (const FormattedString &compareTo);
-
-	virtual void accept(FormattedStringVisitor *visitor) const = 0;
-
-	virtual bool isEmpty() const = 0;
-
-};
-
-#endif // FORMATTED_STRING_H
+bool FormattedString::operator != (const FormattedString &compareTo)
+{
+	return !(*this == compareTo);
+}

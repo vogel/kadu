@@ -34,6 +34,20 @@ FormattedStringTextBlock::~FormattedStringTextBlock()
 {
 }
 
+
+bool FormattedStringTextBlock::operator == (const FormattedString &compareTo)
+{
+	const FormattedStringTextBlock *compareToPointer = dynamic_cast<const FormattedStringTextBlock *>(&compareTo);
+	if (!compareToPointer)
+		return false;
+
+	return Content == compareToPointer->Content
+	    && Bold == compareToPointer->Bold
+	    && Italic == compareToPointer->Italic
+	    && Underline == compareToPointer->Underline
+	    && Color == compareToPointer->Color;
+}
+
 void FormattedStringTextBlock::accept(FormattedStringVisitor *visitor) const
 {
 	visitor->visit(this);
