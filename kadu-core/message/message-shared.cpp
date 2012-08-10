@@ -27,6 +27,11 @@
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "formatted-string/formatted-string.h"
+#include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-html-visitor.h"
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "message/message-manager.h"
 #include "message/message.h"
 #include "misc/change-notifier.h"
@@ -83,8 +88,9 @@ void MessageShared::load()
 
 	*MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
-	HtmlContent = loadValue<QString>("Content");
-	PlainTextContent = HtmlContent;
+
+	setContent(Core::instance()->formattedStringFactory()->fromHTML(loadValue<QString>("Content")));
+
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
@@ -134,6 +140,33 @@ void MessageShared::setStatus(MessageStatus status)
 		changeNotifier()->notify();
 		emit statusChanged(oldStatus);
 	}
+}
+
+void MessageShared::setContent(FormattedString *content)
+{
+	Content.reset(content);
+
+	if (!Content)
+	{
+		PlainTextContent.clear();
+		HtmlContent.clear();
+	}
+	else
+	{
+		QScopedPointer<FormattedStringPlainTextVisitor> plainTextVisitor(new FormattedStringPlainTextVisitor());
+		QScopedPointer<FormattedStringHtmlVisitor> htmlVisitor(new FormattedStringHtmlVisitor());
+
+		Content->accept(plainTextVisitor.data());
+		Content->accept(htmlVisitor.data());
+
+		PlainTextContent = plainTextVisitor->result();
+		HtmlContent = htmlVisitor->result();
+	}
+}
+
+FormattedString * MessageShared::content() const
+{
+	return Content.data();
 }
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)

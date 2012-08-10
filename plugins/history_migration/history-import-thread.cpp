@@ -30,6 +30,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "message/message.h"
 #include "plugins/history/history.h"
 #include "status/status.h"
@@ -150,8 +152,7 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 			msg.setMessageSender(outgoing
 					? GaduAccount.accountContact()
 					: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
-			msg.setHtmlContent(entry.Content);
-			msg.setPlainTextContent(entry.Content);
+			msg.setContent(Core::instance()->formattedStringFactory()->fromHTML(entry.Content));
 			msg.setSendDate(entry.SendDate);
 			msg.setReceiveDate(entry.Date);
 			msg.setType(outgoing ? MessageTypeSent : MessageTypeReceived);

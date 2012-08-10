@@ -1046,8 +1046,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setHtmlContent(stripAllScriptTags(query.value(2).toString()));
-		message.setPlainTextContent(stripAllScriptTags(query.value(2).toString()));
+		message.setContent(Core::instance()->formattedStringFactory()->fromHTML(stripAllScriptTags(query.value(2).toString())));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
@@ -1070,15 +1069,11 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 		Message message = Message::create();
 
 		const QString description = query.value(2).toString();
-		if (description.isEmpty())
-			message.setHtmlContent(Qt::escape(typeData.name()));
-		else
-			message.setHtmlContent(Qt::escape(QString("%1 with description: %2")
-					.arg(typeData.name())
-					.arg(description)));
+		const QString htmlContent = description.isEmpty()
+				? Qt::escape(typeData.name())
+				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
 
-		message.setPlainTextContent(message.htmlContent());
-
+		message.setContent(Core::instance()->formattedStringFactory()->fromHTML(htmlContent));
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
@@ -1102,8 +1097,7 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setHtmlContent(Qt::escape(query.value(0).toString()));
-		message.setPlainTextContent(Qt::escape(query.value(0).toString()));
+		message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(Qt::escape(query.value(0).toString())));
 
 		messages.append(message);
 	}

@@ -25,6 +25,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -115,8 +116,7 @@ void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QStrin
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(sender);
-	message.setHtmlContent(code);
-	message.setPlainTextContent(code);
+	message.setContent(Core::instance()->formattedStringFactory()->fromHTML(code));
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 

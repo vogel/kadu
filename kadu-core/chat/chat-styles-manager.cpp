@@ -41,6 +41,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "emoticons/emoticons-manager.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -400,8 +401,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(chat.chatAccount().accountContact());
-	sentMessage.setHtmlContent(tr("Your message"));
-	sentMessage.setPlainTextContent(tr("Your message"));
+	sentMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Your message")));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -413,8 +413,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	receivedMessage.setHtmlContent(tr("Message from Your friend"));
-	receivedMessage.setPlainTextContent(tr("Message from Your friend"));
+	receivedMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Message from Your friend")));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 

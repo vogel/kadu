@@ -58,6 +58,7 @@
 #include "contacts/model/contact-data-extractor.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/hot-key.h"
@@ -495,13 +496,12 @@ void ChatWidget::appendMessage(const Message &message)
 		Container->alertChatWidget(this);
 }
 
-void ChatWidget::appendSystemMessage(const QString &content)
+void ChatWidget::appendSystemMessage(FormattedString *content)
 {
 	Message message = Message::create();
 	message.setMessageChat(CurrentChat);
 	message.setType(MessageTypeSystem);
-	message.setHtmlContent(content);
-	message.setPlainTextContent(content);
+	message.setContent(content);
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setStatus(MessageStatusReceived);
@@ -562,7 +562,7 @@ void ChatWidget::sendMessage()
 		return;
 	}
 
-	if (!MessageManager::instance()->sendMessage(CurrentChat, InputBox->inputBox()->document()->toHtml()))
+	if (!MessageManager::instance()->sendMessage(CurrentChat, InputBox->inputBox()->formattedString()))
 		return;
 
 	resetEditBox();
@@ -819,8 +819,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setStatus(MessageStatusReceived);
-		message.setHtmlContent(msg);
-		message.setPlainTextContent(msg);
+		message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(msg));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 

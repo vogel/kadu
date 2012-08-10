@@ -33,7 +33,6 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
-#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
@@ -126,7 +125,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, FormattedString *formattedString, const QString &plain)
+bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -142,7 +141,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, Form
 		return false;
 	}
 
-	int messageId = sendRawMessage(formattedString, chat.contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage(message.content(), chat.contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
@@ -242,16 +241,12 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
 			return;
 
-	FormattedStringHtmlVisitor htmlVisitor;
-	formattedString->accept(&htmlVisitor);
-
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setHtmlContent(htmlVisitor.result());
-	msg.setPlainTextContent(plainTextVisitor.result());
+	msg.setContent(formattedString.data());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 

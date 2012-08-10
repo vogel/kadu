@@ -32,6 +32,7 @@
 
 #include "exports.h"
 
+class FormattedString;
 class ImageStorageService;
 
 /**
@@ -97,6 +98,8 @@ public:
 	CustomInput(Chat chat, QWidget *parent = 0);
 
 	void setImageStorageService(ImageStorageService *imageStorageService);
+
+	FormattedString * formattedString() const;
 
 public slots:
 	/**

@@ -22,6 +22,8 @@
  */
 
 #include "contacts/contact-set.h"
+#include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
@@ -52,7 +54,7 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	if (!notification->details().isEmpty())
 		content += "<br/> <small>" + notification->details().join("<br/>") + "</small>";
 
-	chatWidget->appendSystemMessage(content);
+	chatWidget->appendSystemMessage(Core::instance()->formattedStringFactory()->fromHTML(content));
 }
 
 void ChatNotifier::notify(Notification *notification)

@@ -229,10 +229,9 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 		return ContactMessageTypes.value(jid.bare());
 }
 
-bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, FormattedString *formattedString, const QString &plain)
+bool JabberChatService::sendMessage(const Chat &chat, const ::Message &message, const QString &plain)
 {
 	Q_UNUSED(message)
-	Q_UNUSED(formattedString)
 
 	if (!XmppClient)
 		return false;
@@ -318,8 +317,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
-	message.setHtmlContent(plain);
-	message.setPlainTextContent(plain);
+	message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(plain));
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 

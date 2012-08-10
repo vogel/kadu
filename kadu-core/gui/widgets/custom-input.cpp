@@ -35,6 +35,8 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
 
+#include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/hot-key.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
@@ -62,6 +64,11 @@ CustomInput::CustomInput(Chat chat, QWidget *parent) :
 void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
+}
+
+FormattedString * CustomInput::formattedString() const
+{
+	return Core::instance()->formattedStringFactory()->fromTextDocument(document());
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)

@@ -32,6 +32,7 @@
 
 class Chat;
 class Contact;
+class FormattedString;
 
 class MessageShared : public QObject, public Shared
 {
@@ -40,7 +41,7 @@ class MessageShared : public QObject, public Shared
 
 	Chat *MessageChat;
 	Contact *MessageSender;
-	//QString Content;
+	QScopedPointer<FormattedString> Content;
 	QString PlainTextContent;
 	QString HtmlContent;
 	QDateTime ReceiveDate;
@@ -67,11 +68,13 @@ public:
 
 	void setStatus(MessageStatus status);
 
+	void setContent(FormattedString *content);
+	FormattedString * content() const;
+
 	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
 	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	// KaduShared_Property(const QString &, content, Content)
-	KaduShared_Property(const QString &, plainTextContent, PlainTextContent)
-	KaduShared_Property(const QString &, htmlContent, HtmlContent)
+	KaduShared_PropertyRead(QString, plainTextContent, PlainTextContent)
+	KaduShared_PropertyRead(QString, htmlContent, HtmlContent)
 	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
 	KaduShared_Property(const QDateTime &, sendDate, SendDate)
 	KaduShared_PropertyRead(MessageStatus, status, Status)

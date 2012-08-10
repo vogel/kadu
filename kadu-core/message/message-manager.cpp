@@ -185,8 +185,18 @@ void MessageManager::setFormattedStringFactory(FormattedStringFactory *formatted
 	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
-bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent, bool silent)
+bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool silent)
 {
+	if (!CurrentFormattedStringFactory)
+		return false;
+
+	return sendMessage(chat, CurrentFormattedStringFactory.data()->fromText(content), silent);
+}
+
+bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, bool silent)
+{
+	QScopedPointer<FormattedString> scopedContent(content);
+
 	if (!CurrentFormattedStringFactory)
 		return false;
 
@@ -198,13 +208,11 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	if (!chatService)
 		return false;
 
-	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromText(messageContent));
-
 	FormattedStringPlainTextVisitor plainTextVisitor;
-	formattedString->accept(&plainTextVisitor);
+	content->accept(&plainTextVisitor);
 
 	FormattedStringHtmlVisitor htmlVisitor;
-	formattedString->accept(&htmlVisitor);
+	content->accept(&htmlVisitor);
 
 	QString plain = plainTextVisitor.result();
 	if (CurrentMessageFilterService)
@@ -218,12 +226,11 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &messageContent
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setHtmlContent(htmlVisitor.result());
-	message.setPlainTextContent(plainTextVisitor.result());
+	message.setContent(scopedContent.take());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	bool sent = chatService->sendMessage(chat, message, formattedString.data(), plain);
+	bool sent = chatService->sendMessage(chat, message,  plain);
 	if (sent && !silent)
 		emit messageSent(message);
 

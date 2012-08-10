@@ -51,6 +51,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/kadu-window.h"
@@ -205,8 +206,7 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setHtmlContent(message);
-				msg.setPlainTextContent(message);
+				msg.setContent(Core::instance()->formattedStringFactory()->fromHTML(message));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
