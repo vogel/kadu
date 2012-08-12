@@ -63,8 +63,6 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	setMovable(true);
 
 	setDocumentMode(true);
-	setElideMode(Qt::ElideRight);
-
 
 #ifdef Q_OS_MAC
 	/* Dorr: on Mac make the tabs look like the ones from terminal or safari */
@@ -78,6 +76,8 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 			SLOT(onDeleteTab(int)));
 	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent *)),
 			SLOT(mouseDoubleClickEvent(QMouseEvent *)));
+	connect(tabbar, SIGNAL(currentChanged(int)),
+			SLOT(currentTabChanged(int)));
 
 	//widget (container) for buttons with opening conversations
 	//both buttons are displayed when checking Show "New Tab" button in configurations
@@ -112,6 +112,24 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	OpenChatButtonsWidget->setLayout(horizontalLayout);
 	OpenChatButtonsWidget->setVisible(false);
 
+	RightCornerWidget = new QWidget(this);
+	QHBoxLayout *rightCornerWidgetLayout = new QHBoxLayout;
+
+	rightCornerWidgetLayout->setSpacing(2);
+	rightCornerWidgetLayout->setContentsMargins(3, 0, 2, 3);
+
+	TabsMenu = new QMenu();
+	connect(TabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(tabsMenuSelected(QAction *)));
+	TabsListButton = new QToolButton(RightCornerWidget);
+	TabsListButton->setIcon(KaduIcon("internet-group-chat").icon());
+	TabsListButton->setToolTip(tr("Tabs"));
+	TabsListButton->setAutoRaise(true);
+	TabsListButton->setVisible(false);
+	TabsListButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	TabsListButton->setMenu(TabsMenu);
+	connect(TabsListButton, SIGNAL(clicked()), SLOT(openTabsList()));
+	rightCornerWidgetLayout->addWidget(TabsListButton);
+
 	//przycisk zamkniecia aktywnej karty znajdujacy sie w prawym gornym rogu
 	CloseChatButton = new QToolButton(this);
 	CloseChatButton->setIcon(KaduIcon("kadu_icons/tab-remove").icon());
@@ -119,10 +137,53 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	CloseChatButton->setAutoRaise(true);
 	CloseChatButton->setVisible(false);
 	connect(CloseChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
+	rightCornerWidgetLayout->addWidget(CloseChatButton);
+
+	RightCornerWidget->setLayout(rightCornerWidgetLayout);
+	setCornerWidget(RightCornerWidget, Qt::TopRightCorner);
 }
 
 TabWidget::~TabWidget()
 {
+}
+
+void TabWidget::updateTabsMenu()
+{
+	TabsMenu->clear();
+
+	for (int i = 0; i < count(); i++)
+	{
+		QAction *action = new QAction(QIcon(), tabText(i), this);
+		action->setData(QVariant(i));
+
+		if (tabBar()->rect().contains(tabBar()->tabRect(i)/*, true*/))
+		{
+			QFont font = action->font();
+			font.setBold(true);
+			action->setFont(font);
+		}
+
+		if (i == tabBar()->currentIndex())
+		{
+			action->setCheckable(true);
+			action->setChecked(true);
+		}
+
+		TabsMenu->addAction(action);
+	}
+}
+
+void TabWidget::currentTabChanged(int index)
+{
+	Q_UNUSED(index);
+
+	updateTabsMenu();
+}
+
+void TabWidget::tabsMenuSelected(QAction *action)
+{
+	setCurrentIndex(action->data().toInt());
+	tabBar()->setCurrentIndex(action->data().toInt());
 }
 
 void TabWidget::activateChatWidget(ChatWidget *chatWidget)
@@ -382,6 +443,12 @@ void TabWidget::openRecentChatsMenu()
 	RecentChatsMenuWidget->popup(OpenChatButtonsWidget->mapToGlobal(QPoint(0, OpenChatButtonsWidget->height())));
 }
 
+void TabWidget::openTabsList()
+{
+	//show last conversations menu under widget with buttons for opening chats
+	TabsMenu->popup(RightCornerWidget->mapToGlobal(QPoint(0, RightCornerWidget->height())));
+}
+
 void TabWidget::openRecentChat(QAction *action)
 {
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
@@ -398,12 +465,18 @@ void TabWidget::tabInserted(int index)
 {
 	Q_UNUSED(index)
 
+	TabsListButton->setText(QString::number(count()));
+	updateTabsMenu();
+
 	show();
 }
 
 void TabWidget::tabRemoved(int index)
 {
 	Q_UNUSED(index)
+
+	TabsListButton->setText(QString::number(count()));
+	updateTabsMenu();
 
 	if (count() == 0)
 		hide();
@@ -450,8 +523,27 @@ void TabWidget::configurationUpdated()
 	if (isCloseButtonEnabled != shouldEnableCloseButton)
 	{
 		CloseChatButton->setVisible(shouldEnableCloseButton);
-		setCornerWidget(shouldEnableCloseButton ? CloseChatButton : 0, Qt::TopRightCorner);
 	}
+}
+
+void TabWidget::resizeEvent(QResizeEvent *e)
+{
+	bool allTabsVisible = true;
+
+	for (int i = 0; i < tabBar()->count(); i++)
+	{
+		if (!tabBar()->rect().contains(tabBar()->tabRect(i)/*, true*/))
+		{
+			allTabsVisible = false;
+			break;
+		}
+	}
+
+	TabsListButton->setVisible(!allTabsVisible || tabBar()->count() <= 1);
+
+	updateTabsMenu();
+
+	QTabWidget::resizeEvent(e);
 }
 
 TabBar::TabBar(QWidget *parent) :

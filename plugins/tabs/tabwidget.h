@@ -83,8 +83,11 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	Q_OBJECT
 
 	QToolButton *CloseChatButton;
+	QToolButton *TabsListButton;
 	QWidget *OpenChatButtonsWidget;
+	QWidget *RightCornerWidget;
 	RecentChatsMenu *RecentChatsMenuWidget;
+	QMenu *TabsMenu;
 	QToolButton *OpenRecentChatButton;
 
 	TabsManager *Manager;
@@ -95,6 +98,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	bool config_oldStyleClosing;
 
 	void closeTab(QWidget *tabWidget);
+	void updateTabsMenu();
 
 private slots:
 	void onContextMenu(int id, const QPoint &pos);
@@ -138,6 +142,9 @@ private slots:
 	*/
 	void deleteTab();
 
+	void openTabsList();
+	void currentTabChanged(int index);
+	void tabsMenuSelected(QAction *action);
 protected:
 	/**
 	* Metoda wywoływana w chwili naciśnięcia x na ?pasku dekoracji?
@@ -145,7 +152,7 @@ protected:
 	* w zależności od konfiguracji
 	*/
 	virtual void closeEvent(QCloseEvent *e);
-
+	virtual void resizeEvent(QResizeEvent *e);
 	/**
 	* Metoda wywoływana w chwili przeciągnięcia obiektu na pasek kart
 	* metodą dnd
