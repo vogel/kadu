@@ -246,7 +246,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setContent(formattedString.data());
+	msg.setContent(formattedString.take());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
@@ -258,7 +258,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
 		        this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
 
-		formattedString->accept(&imageKeyReceivedVisitor);
+		msg.content()->accept(&imageKeyReceivedVisitor);
 	}
 	else
 		emit messageSent(msg);
