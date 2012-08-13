@@ -30,7 +30,7 @@ IncomingMessageFirewallFilter::~IncomingMessageFirewallFilter()
 {
 }
 
-bool IncomingMessageFirewallFilter::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool IncomingMessageFirewallFilter::acceptMessage(const Message &message)
 {
-	return CurrentFirewall->acceptIncomingMessage(chat, sender, message);
+	return CurrentFirewall->acceptIncomingMessage(message);
 }

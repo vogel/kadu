@@ -39,6 +39,7 @@ class ChatWidget;
 class Contact;
 class FormattedStringFactory;
 class IncomingMessageFirewallFilter;
+class Message;
 class OutgoingMessageFirewallFilter;
 
 class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
@@ -111,8 +112,8 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	bool acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message);
-	bool acceptOutgoingMessage(const Chat &chat, const QString &message);
+	bool acceptIncomingMessage(const Message &message);
+	bool acceptOutgoingMessage(const Message &message);
 
 };
 

@@ -55,19 +55,19 @@ Antistring::~Antistring()
 	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
-bool Antistring::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool Antistring::acceptMessage(const Message &message)
 {
 	if (!Configuration.enabled())
 		return true;
 
-	if (points(message) < 3)
+	if (points(message.plainTextContent()) < 3)
 		return true;
 
-	AntistringNotification::notifyStringReceived(chat);
-	MessageManager::instance()->sendMessage(chat, Configuration.returnMessage(), true);
+	AntistringNotification::notifyStringReceived(message.messageChat());
+	MessageManager::instance()->sendMessage(message.messageChat(), Configuration.returnMessage(), true);
 
 	if (Configuration.logMessage())
-		writeLog(sender, message);
+		writeLog(message.messageSender(), message.htmlContent());
 
 	return !Configuration.messageStop();
 }

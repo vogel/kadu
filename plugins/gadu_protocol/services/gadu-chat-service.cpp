@@ -237,10 +237,6 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
 			sender.id().toUInt(), qPrintable(messageString));
 
-	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(chat, sender, messageString))
-			return;
-
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setType(type);
@@ -249,6 +245,10 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setContent(formattedString.take());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
+
+	if (messageFilterService())
+		if (!messageFilterService()->acceptIncomingMessage(msg))
+			return;
 
 	if (MessageTypeReceived == type)
 	{

@@ -31,7 +31,9 @@
 
 #include "configuration/image-link-configuration.h"
 
+class Chat;
 class ChatWidget;
+class Contact;
 class FormattedStringFactory;
 
 class ImageLink : public MessageFilter
@@ -63,7 +65,7 @@ public:
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 };
 

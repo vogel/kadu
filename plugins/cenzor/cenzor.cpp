@@ -54,25 +54,23 @@ Cenzor::~Cenzor()
 	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
 }
 
-bool Cenzor::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool Cenzor::acceptMessage(const Message &message)
 {
-	Q_UNUSED(sender)
-
 	if (!Configuration.enabled())
 		return true;
 
-	if (!shouldIgnore(message))
+	if (!shouldIgnore(message.plainTextContent()))
 		return true;
 
-	Account account = chat.chatAccount();
+	Account account = message.messageChat().chatAccount();
 
 	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return false;
 
 
-	if (MessageManager::instance()->sendMessage(chat, Configuration.admonition(), true))
-		CenzorNotification::notifyCenzored(chat);
+	if (MessageManager::instance()->sendMessage(message.messageChat(), Configuration.admonition(), true))
+		CenzorNotification::notifyCenzored(message.messageChat());
 
 	return false;
 }

@@ -24,8 +24,7 @@
 
 #include "exports.h"
 
-class Chat;
-class Contact;
+class Message;
 class MessageFilter;
 
 /**
@@ -81,15 +80,13 @@ public:
 	/**
 	 * @short Execute all registered outgoing filters on given message.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param sender sender of message
-	 * @param message content of message
+	 * @param message message to filter
 	 * @return true if all registered outgoing filters accepts given message
 	 *
 	 * This method executes all outgoing filters on given message and returns true if all registered outgoing
 	 * filters accepts given message.
 	 */
-	bool acceptOutgoingMessage(const Chat &chat, const Contact &sender, const QString &message);
+	bool acceptOutgoingMessage(const Message &message);
 
 	/**
 	 * @short Register instance of MessageFilter as incoming filter.
@@ -114,15 +111,13 @@ public:
 	/**
 	 * @short Execute all registered incoming filters on given message.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param sender sender fo message
-	 * @param message content of message
+	 * @param message message to filter
 	 * @return true if all registered incoming filters accepts given message
 	 *
 	 * This method executes all incoming filters on given message and returns true if all registered incoming
 	 * filters accepts given message.
 	 */
-	bool acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message);
+	bool acceptIncomingMessage(const Message &message);
 
 };
 

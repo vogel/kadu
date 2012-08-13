@@ -214,13 +214,6 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 	FormattedStringHtmlVisitor htmlVisitor;
 	content->accept(&htmlVisitor);
 
-	QString plain = plainTextVisitor.result();
-	if (CurrentMessageFilterService)
-		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(chat, chat.chatAccount().accountContact(), plain))
-			return false;
-	if (CurrentMessageTransformerService)
-		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
-
 	Message message = Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
@@ -229,6 +222,13 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 	message.setContent(scopedContent.take());
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
+
+	QString plain = plainTextVisitor.result();
+	if (CurrentMessageFilterService)
+		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(message))
+			return false;
+	if (CurrentMessageTransformerService)
+		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
 
 	bool sent = chatService->sendMessage(chat, message,  plain);
 	if (sent && !silent)

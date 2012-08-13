@@ -43,10 +43,10 @@ void MessageFilterService::unregisterOutgoingMessageFilter(MessageFilter *filter
 	OutgoingMessageFilters.removeAll(filter);
 }
 
-bool MessageFilterService::acceptOutgoingMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool MessageFilterService::acceptOutgoingMessage(const Message &message)
 {
 	foreach (MessageFilter *filter, OutgoingMessageFilters)
-		if (!filter->acceptMessage(chat, sender, message))
+		if (!filter->acceptMessage(message))
 			return false;
 	return true;
 }
@@ -64,10 +64,10 @@ void MessageFilterService::unregisterIncomingMessageFilter(MessageFilter *filter
 	IncomingMessageFilters.removeAll(filter);
 }
 
-bool MessageFilterService::acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool MessageFilterService::acceptIncomingMessage(const Message &message)
 {
 	foreach (MessageFilter *filter, IncomingMessageFilters)
-		if (!filter->acceptMessage(chat, sender, message))
+		if (!filter->acceptMessage(message))
 			return false;
 	return true;
 }

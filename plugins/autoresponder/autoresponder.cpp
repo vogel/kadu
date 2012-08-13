@@ -84,18 +84,18 @@ void AutoResponder::done()
 {
 }
 
-bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool AutoResponder::acceptMessage(const Message &message)
 {
-	if (message.left(5) == "KADU ") // ignore other kadu autoresponses
+	if (message.plainTextContent().left(5) == "KADU ") // ignore other kadu autoresponses
 		return true;
 
-	if (!Configuration.respondConferences() && (chat.contacts().count() > 1))
+	if (!Configuration.respondConferences() && (message.messageChat().contacts().count() > 1))
 		return true;
 
-	if (Configuration.respondOnlyFirst() && RepliedChats.contains(chat))
+	if (Configuration.respondOnlyFirst() && RepliedChats.contains(message.messageChat()))
 		return true;
 
-	Protocol *protocol = chat.chatAccount().protocolHandler();
+	Protocol *protocol = message.messageChat().chatAccount().protocolHandler();
 	if (!protocol)
 		return true;
 
@@ -104,10 +104,10 @@ bool AutoResponder::acceptMessage(const Chat &chat, const Contact &sender, const
 			|| (Configuration.statusInvisible() && protocol->status().group() == StatusTypeGroupInvisible)
 			|| (Configuration.statusBusy() && protocol->status().group() == StatusTypeGroupAway))
 	{
-		MessageManager::instance()->sendMessage(chat, tr("KADU AUTORESPONDER:") + '\n'
-				+ Parser::parse(Configuration.autoRespondText(), Talkable(sender)), true);
+		MessageManager::instance()->sendMessage(message.messageChat(), tr("KADU AUTORESPONDER:") + '\n'
+				+ Parser::parse(Configuration.autoRespondText(), Talkable(message.messageSender())), true);
 
-		RepliedChats.insert(chat);
+		RepliedChats.insert(message.messageChat());
 	}
 
 	return true;

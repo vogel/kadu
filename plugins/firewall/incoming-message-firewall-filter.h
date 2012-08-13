@@ -34,7 +34,7 @@ public:
 	explicit IncomingMessageFirewallFilter(Firewall *firewall);
 	virtual ~IncomingMessageFirewallFilter();
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 };
 

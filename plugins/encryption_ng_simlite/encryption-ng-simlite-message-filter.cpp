@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "chat/chat.h"
+
+#include "message/message.h"
 
 #include "encryption-ng-simlite-message-filter.h"
 
@@ -32,12 +32,11 @@ EncryptionNgSimliteMessageFilter::~EncryptionNgSimliteMessageFilter()
 {
 }
 
-bool EncryptionNgSimliteMessageFilter::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool EncryptionNgSimliteMessageFilter::acceptMessage(const Message &message)
 {
-	Q_UNUSED(chat)
-	if (!message.startsWith(RSA_PUBLIC_KEY_BEGIN))
+	if (!message.plainTextContent().startsWith(RSA_PUBLIC_KEY_BEGIN))
 		return true;
 
-	emit keyReceived(sender, "simlite", message.toUtf8());
+	emit keyReceived(message.messageSender(), "simlite", message.plainTextContent().toUtf8());
 	return false;
 }

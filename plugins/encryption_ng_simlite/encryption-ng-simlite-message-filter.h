@@ -20,6 +20,7 @@
 #ifndef ENCRYPTION_NG_SIMLITE_MESSAGE_FILTER_H
 #define ENCRYPTION_NG_SIMLITE_MESSAGE_FILTER_H
 
+#include "contacts/contact.h"
 #include "message/message-filter.h"
 
 class EncryptionNgSimliteMessageFilter : public MessageFilter
@@ -30,7 +31,7 @@ public:
 	explicit EncryptionNgSimliteMessageFilter(QObject *parent = 0);
 	virtual ~EncryptionNgSimliteMessageFilter();
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 signals:
 	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &key);

@@ -301,16 +301,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	formattedString->accept(&plainTextVisitor);
 	QString plain = plainTextVisitor.result();
 
-	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(chat, sender(), plain))
-			return;
-
-	QString messageType = msg.type().isEmpty()
-	        ? "message"
-	        : msg.type();
-
-	ContactMessageTypes.insert(msg.from().bare(), messageType);
-
 	HtmlDocument::escapeText(plain);
 
 	::Message message = ::Message::create();
@@ -320,6 +310,16 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(plain));
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
+
+	if (messageFilterService())
+		if (!messageFilterService()->acceptIncomingMessage(message))
+			return;
+
+	QString messageType = msg.type().isEmpty()
+	        ? "message"
+	        : msg.type();
+
+	ContactMessageTypes.insert(msg.from().bare(), messageType);
 
 	emit messageReceived(message);
 }

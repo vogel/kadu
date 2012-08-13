@@ -24,8 +24,7 @@
 
 #include "exports.h"
 
-class Chat;
-class Contact;
+class Message;
 
 /**
  * @addtogroup Message
@@ -51,12 +50,10 @@ public:
 	/**
 	 * @short Filter message.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param sender sender of message
-	 * @param message content of message
+	 * @param message message to accept (or not)
 	 * @return true if message can be accepted, false otherwise
 	 */
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message) = 0;
+	virtual bool acceptMessage(const Message &message) = 0;
 
 };
 

@@ -147,7 +147,7 @@ void Firewall::accountUnregistered(Account account)
  * @todo extract storing to log files to method method
  * @todo extract notification to separate method
  */
-bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool Firewall::acceptIncomingMessage(const Message &message)
 {
 	bool ignore = false;
 
@@ -156,14 +156,14 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 
 	if (CheckFloodingEmoticons)
 	{
-		if ((!EmoticonsAllowKnown || sender.isAnonymous()) && checkEmoticons(message))
+		if ((!EmoticonsAllowKnown || message.messageSender().isAnonymous()) && checkEmoticons(message.plainTextContent()))
 		{
 			ignore = true;
 			if (LastNotify.elapsed() > min_interval_notify)
 			{
-				FirewallNotification::notify(chat, sender, tr("flooding DoS attack with emoticons!"));
+				FirewallNotification::notify(message.messageChat(), message.messageSender(), tr("flooding DoS attack with emoticons!"));
 
-				writeLog(sender, message);
+				writeLog(message.messageSender(), message.plainTextContent());
 
 				LastNotify.restart();
 			}
@@ -178,9 +178,9 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 		ignore = true;
 		if (LastNotify.elapsed() > min_interval_notify)
 		{
-			FirewallNotification::notify(chat, sender, tr("flooding DoS attack!"));
+			FirewallNotification::notify(message.messageChat(), message.messageSender(), tr("flooding DoS attack!"));
 
-			writeLog(sender, message);
+			writeLog(message.messageSender(), message.plainTextContent());
 
 			LastNotify.restart();
 		}
@@ -189,29 +189,29 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 	}
 
 // ochrona przed anonimami
-	if (checkChat(chat, sender, message, ignore))
+	if (checkChat(message.messageChat(), message.messageSender(), message.plainTextContent(), ignore))
 		ignore = true;
 
 // ochrona przed konferencjami
-	if (checkConference(chat))
+	if (checkConference(message.messageChat()))
 		ignore = true;
 
 // wiadomosc zatrzymana. zapisz do loga i wyswietl dymek
 	if (ignore)
 	{
-		if (message.length() > 50)
-			FirewallNotification::notify(chat, sender, message.left(50).append("..."));
+		if (message.plainTextContent().length() > 50)
+			FirewallNotification::notify(message.messageChat(), message.messageSender(), message.plainTextContent().left(50).append("..."));
 		else
-			FirewallNotification::notify(chat, sender, message);
+			FirewallNotification::notify(message.messageChat(), message.messageSender(), message.plainTextContent());
 
-		writeLog(sender, message);
+		writeLog(message.messageSender(), message.plainTextContent());
 
 		if (WriteInHistory && CurrentFormattedStringFactory)
 		{
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(message));
+				msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());
@@ -421,11 +421,9 @@ void Firewall::chatDestroyed(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-bool Firewall::acceptOutgoingMessage(const Chat &chat, const QString &message)
+bool Firewall::acceptOutgoingMessage(const Message &message)
 {
-	Q_UNUSED(message)
-
-	foreach (const Contact &contact, chat.contacts())
+	foreach (const Contact &contact, message.messageChat().contacts())
 	{
 		Chat chat = ChatTypeContact::findChat(contact, ActionReturnNull);
 		if (!chat)
@@ -437,7 +435,7 @@ bool Firewall::acceptOutgoingMessage(const Chat &chat, const QString &message)
 
 	if (SafeSending)
 	{
-		foreach (const Contact &contact, chat.contacts())
+		foreach (const Contact &contact, message.messageChat().contacts())
 		{
 			Buddy buddy = contact.ownerBuddy();
 
@@ -449,7 +447,7 @@ bool Firewall::acceptOutgoingMessage(const Chat &chat, const QString &message)
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
-				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(chat, false), "Kadu",
+				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(message.messageChat(), false), "Kadu",
 						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:

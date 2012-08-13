@@ -63,26 +63,24 @@ void ImageLink::setFormattedStringFactory(FormattedStringFactory *formattedStrin
 	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
-bool ImageLink::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
+bool ImageLink::acceptMessage(const Message &message)
 {
-	Q_UNUSED(sender)
-
 	if (Configuration.showImages())
 	{
-		ImageRegExp.indexIn(message);
+		ImageRegExp.indexIn(message.htmlContent());
 		QStringList list = ImageRegExp.capturedTexts();
 
 		if (ImageRegExp.matchedLength() > 0 && !list.isEmpty())
-			insertCodeIntoChatWindow(chat, sender, getImageCode(list[0]));
+			insertCodeIntoChatWindow(message.messageChat(), message.messageSender(), getImageCode(list[0]));
 	}
 
 	if (Configuration.showVideos())
 	{
-		YouTubeRegExp.indexIn(message);
+		YouTubeRegExp.indexIn(message.htmlContent());
 		QStringList list = YouTubeRegExp.capturedTexts();
 
 		if (YouTubeRegExp.matchedLength() > 0 && list.size() > 1)
-			insertCodeIntoChatWindow(chat, sender, getVideoCode(list[1]));
+			insertCodeIntoChatWindow(message.messageChat(), message.messageSender(), getVideoCode(list[1]));
 	}
 
 	return true;

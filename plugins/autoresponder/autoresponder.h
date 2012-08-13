@@ -34,6 +34,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QSet>
 
+#include "chat/chat.h"
 #include "message/message-filter.h"
 #include "plugins/generic-plugin.h"
 
@@ -62,7 +63,7 @@ public:
 
 	void setConfiguration(const AutoresponderConfiguration &configuration);
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 	virtual int init(bool firstLoad);
 	virtual void done();

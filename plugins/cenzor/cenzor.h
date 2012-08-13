@@ -54,7 +54,7 @@ public:
 
 	CenzorConfiguration & configuration() { return Configuration; }
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 };
 

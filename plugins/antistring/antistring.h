@@ -30,6 +30,7 @@
 #include "antistring-configuration.h"
 
 class Account;
+class Contact;
 
 class Antistring : public MessageFilter
 {
@@ -54,7 +55,7 @@ public:
 
 	AntistringConfiguration & configuration() { return Configuration; }
 
-	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
+	virtual bool acceptMessage(const Message &message);
 
 };
 
