@@ -127,6 +127,11 @@ Firewall::~Firewall()
 	kdebugf2();
 }
 
+void Firewall::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 void Firewall::accountRegistered(Account account)
 {
 	connect(account, SIGNAL(connected()), this, SLOT(accountConnected()));
@@ -201,12 +206,12 @@ bool Firewall::acceptIncomingMessage(const Chat &chat, const Contact &sender, co
 
 		writeLog(sender, message);
 
-		if (WriteInHistory)
+		if (WriteInHistory && CurrentFormattedStringFactory)
 		{
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setContent(Core::instance()->formattedStringFactory()->fromHTML(message));
+				msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(message));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());

@@ -40,6 +40,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/chat-styles-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
@@ -556,6 +557,8 @@ void Core::runServices()
 	MessageManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentFormattedStringFactory->setImageStorageService(CurrentImageStorageService);
+
+	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 }
 
 void Core::runGuiServices()

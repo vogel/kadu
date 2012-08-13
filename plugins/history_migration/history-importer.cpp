@@ -96,6 +96,7 @@ void HistoryImporter::run()
 	}
 
 	HistoryImport = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
+	HistoryImport->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	HistoryImport->prepareChats();
 
 	Thread = new QThread();

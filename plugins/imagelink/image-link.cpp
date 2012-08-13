@@ -24,14 +24,12 @@
 
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
-#include "services/message-filter-service.h"
 #include "debug.h"
 
 #include "image-link.h"
@@ -54,13 +52,15 @@ ImageLink::ImageLink()
 {
 	ImageRegExp = QRegExp("http://.*(.gif|.*.jpg|.*.png)");
 	YouTubeRegExp = QRegExp("http://www.youtube.com/watch(.*)&?");
-
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
 }
 
 ImageLink::~ImageLink()
 {
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
+}
+
+void ImageLink::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 bool ImageLink::acceptMessage(const Chat &chat, const Contact &sender, const QString &message)
@@ -112,11 +112,14 @@ QString ImageLink::getVideoCode(const QString &video)
 
 void ImageLink::insertCodeIntoChatWindow(Chat chat, Contact sender, const QString &code)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	Message message = Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(sender);
-	message.setContent(Core::instance()->formattedStringFactory()->fromHTML(code));
+	message.setContent(CurrentFormattedStringFactory.data()->fromHTML(code));
 	message.setReceiveDate(QDateTime::currentDateTime());
 	message.setSendDate(QDateTime::currentDateTime());
 

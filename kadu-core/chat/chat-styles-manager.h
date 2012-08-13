@@ -38,6 +38,7 @@ class QPushButton;
 class AdiumChatStyleEngine;
 class ChatMessagesView;
 class ChatStyleEngine;
+class FormattedStringFactory;
 class KaduChatStyleEngine;
 class Preview;
 
@@ -55,6 +56,9 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	Q_OBJECT
 
 	static ChatStylesManager *Instance;
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
+
 	ChatStylesManager();
 
 	void init();
@@ -108,6 +112,8 @@ public:
 	static ChatStylesManager * instance();
 
 	~ChatStylesManager();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void chatViewCreated(ChatMessagesView * view);
 	void chatViewDestroyed(ChatMessagesView * view);

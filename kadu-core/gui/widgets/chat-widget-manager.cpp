@@ -187,6 +187,8 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		return 0;
 
 	ChatWidget *chatWidget = new ChatWidget(chat);
+	chatWidget->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+
 	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 	Chats.insert(chat, chatWidget);
 

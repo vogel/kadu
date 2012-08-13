@@ -47,6 +47,7 @@ class ChatWidget;
 class ChatWidgetContainer;
 class CustomInput;
 class FilteredTreeView;
+class FormattedStringFactory;
 class MessageRenderInfo;
 class Protocol;
 class TalkableProxyModel;
@@ -56,6 +57,8 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	Q_OBJECT
 
 	friend class ChatWidgetManager;
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
 
@@ -110,6 +113,8 @@ protected:
 public:
 	explicit ChatWidget(const Chat &chat, QWidget *parent = 0);
 	virtual ~ChatWidget();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	Chat chat() const { return CurrentChat; }
 

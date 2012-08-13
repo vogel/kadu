@@ -25,12 +25,14 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QRegExp>
+#include <QtCore/QWeakPointer>
 
 #include "message/message-filter.h"
 
 #include "configuration/image-link-configuration.h"
 
 class ChatWidget;
+class FormattedStringFactory;
 
 class ImageLink : public MessageFilter
 {
@@ -38,6 +40,8 @@ class ImageLink : public MessageFilter
 	Q_DISABLE_COPY(ImageLink)
 
 	static ImageLink *Instance;
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	ImageLinkConfiguration Configuration;
 	QRegExp ImageRegExp;
@@ -54,7 +58,10 @@ class ImageLink : public MessageFilter
 public:
 	static void createInstance();
 	static void destroyInstance();
+
 	static ImageLink * instance() { return Instance; }
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual bool acceptMessage(const Chat &chat, const Contact &sender, const QString &message);
 

@@ -66,9 +66,17 @@ void CustomInput::setImageStorageService(ImageStorageService *imageStorageServic
 	CurrentImageStorageService = imageStorageService;
 }
 
+void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 FormattedString * CustomInput::formattedString() const
 {
-	return Core::instance()->formattedStringFactory()->fromTextDocument(document());
+	if (CurrentFormattedStringFactory)
+		return CurrentFormattedStringFactory.data()->fromTextDocument(document());
+	else
+		return 0;
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)

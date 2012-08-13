@@ -23,19 +23,26 @@
 #ifndef CHAT_NOTIFIER_H
 #define CHAT_NOTIFIER_H
 
+#include <QtCore/QWeakPointer>
+
 #include "notify/notifier.h"
 
 class ChatWidget;
+class FormattedStringFactory;
 
 class ChatNotifier : public Notifier
 {
 	Q_OBJECT
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
 
 public:
 	explicit ChatNotifier(QObject *parent = 0);
 	virtual ~ChatNotifier();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 

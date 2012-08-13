@@ -89,6 +89,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 	InputBox = new CustomInput(CurrentChat, this);
 	InputBox->setImageStorageService(Core::instance()->imageStorageService());
+	InputBox->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 #ifdef Q_WS_MAEMO_5

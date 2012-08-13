@@ -41,6 +41,7 @@
 MessageShared * MessageShared::loadStubFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = loadFromStorage(messageStoragePoint);
+	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	result->loadStub();
 	return result;
 }
@@ -48,6 +49,7 @@ MessageShared * MessageShared::loadStubFromStorage(const QSharedPointer<StorageP
 MessageShared * MessageShared::loadFromStorage(const QSharedPointer<StoragePoint> &messageStoragePoint)
 {
 	MessageShared *result = new MessageShared();
+	result->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	result->setStorage(messageStoragePoint);
 	return result;
 }
@@ -67,6 +69,11 @@ MessageShared::~MessageShared()
 
 	delete MessageSender;
 	delete MessageChat;
+}
+
+void MessageShared::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 StorableObject * MessageShared::storageParent()
@@ -89,7 +96,8 @@ void MessageShared::load()
 	*MessageChat = ChatManager::instance()->byUuid(loadValue<QString>("Chat"));
 	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
 
-	setContent(Core::instance()->formattedStringFactory()->fromHTML(loadValue<QString>("Content")));
+	if (CurrentFormattedStringFactory)
+		setContent(CurrentFormattedStringFactory.data()->fromHTML(loadValue<QString>("Content")));
 
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
@@ -153,14 +161,14 @@ void MessageShared::setContent(FormattedString *content)
 	}
 	else
 	{
-		QScopedPointer<FormattedStringPlainTextVisitor> plainTextVisitor(new FormattedStringPlainTextVisitor());
-		QScopedPointer<FormattedStringHtmlVisitor> htmlVisitor(new FormattedStringHtmlVisitor());
+		FormattedStringPlainTextVisitor plainTextVisitor;
+		FormattedStringHtmlVisitor htmlVisitor;
 
-		Content->accept(plainTextVisitor.data());
-		Content->accept(htmlVisitor.data());
+		Content->accept(&plainTextVisitor);
+		Content->accept(&htmlVisitor);
 
-		PlainTextContent = plainTextVisitor->result();
-		HtmlContent = htmlVisitor->result();
+		PlainTextContent = plainTextVisitor.result();
+		HtmlContent = htmlVisitor.result();
 	}
 }
 

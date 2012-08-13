@@ -92,10 +92,10 @@ QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QText
 
 FormattedString * FormattedStringFactory::fromHTML(const QString &html)
 {
-	QScopedPointer<QTextDocument> document(new QTextDocument());
-	document->setHtml(html);
+	QTextDocument document;
+	document.setHtml(html);
 
-	return fromTextDocument(document.data());
+	return fromTextDocument(&document);
 }
 
 FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDocument)

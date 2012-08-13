@@ -37,6 +37,7 @@
 class Account;
 class ChatWidget;
 class Contact;
+class FormattedStringFactory;
 class IncomingMessageFirewallFilter;
 class OutgoingMessageFirewallFilter;
 
@@ -48,6 +49,8 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 
 	explicit Firewall();
 	virtual ~Firewall();
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	IncomingMessageFirewallFilter *IncomingMessageFilter;
 	OutgoingMessageFirewallFilter *OutgoingMessageFilter;
@@ -105,6 +108,8 @@ public:
 	static void destroyInstance();
 
 	static Firewall * instance() { return Instance; }
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	bool acceptIncomingMessage(const Chat &chat, const Contact &sender, const QString &message);
 	bool acceptOutgoingMessage(const Chat &chat, const QString &message);

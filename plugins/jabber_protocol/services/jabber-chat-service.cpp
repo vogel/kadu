@@ -317,7 +317,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
-	message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(plain));
+	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(plain));
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
 

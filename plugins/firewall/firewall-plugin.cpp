@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "exports.h"
 
 #include "firewall-configuration-ui-handler.h"
@@ -37,6 +38,7 @@ int FirewallPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	Firewall::createInstance();
+	Firewall::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	FirewallNotification::registerNotifications();
 	FirewallConfigurationUiHandler::registerUiHandler();
 

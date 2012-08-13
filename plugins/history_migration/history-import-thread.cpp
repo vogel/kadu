@@ -30,7 +30,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "message/message.h"
 #include "plugins/history/history.h"
@@ -49,6 +48,11 @@ HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &pat
 
 HistoryImportThread::~HistoryImportThread()
 {
+}
+
+void HistoryImportThread::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void HistoryImportThread::prepareChats()
@@ -134,6 +138,9 @@ Chat HistoryImportThread::chatFromUinsList(const UinsList &uinsList) const
 
 void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entry)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	switch (entry.Type)
 	{
 		case HistoryEntry::ChatSend:
@@ -152,7 +159,7 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 			msg.setMessageSender(outgoing
 					? GaduAccount.accountContact()
 					: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
-			msg.setContent(Core::instance()->formattedStringFactory()->fromHTML(entry.Content));
+			msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(entry.Content));
 			msg.setSendDate(entry.SendDate);
 			msg.setReceiveDate(entry.Date);
 			msg.setType(outgoing ? MessageTypeSent : MessageTypeReceived);

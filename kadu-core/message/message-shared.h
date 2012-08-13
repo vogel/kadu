@@ -33,11 +33,14 @@
 class Chat;
 class Contact;
 class FormattedString;
+class FormattedStringFactory;
 
 class MessageShared : public QObject, public Shared
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageShared)
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat *MessageChat;
 	Contact *MessageSender;
@@ -62,6 +65,8 @@ public:
 
 	explicit MessageShared(const QUuid &uuid = QUuid());
 	virtual ~MessageShared();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

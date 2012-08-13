@@ -150,6 +150,8 @@ public:
 	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
 	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
 	 * chat view.
+	 *
+	 * This method takes ownership of content parameter and deletes it at the end.
 	 */
 	bool sendMessage(const Chat &chat, FormattedString *content, bool silent = false);
 

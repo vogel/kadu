@@ -22,7 +22,6 @@
  */
 
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -42,6 +41,11 @@ ChatNotifier::~ChatNotifier()
 {
 }
 
+void ChatNotifier::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* parent)
 {
 	Q_UNUSED(parent);
@@ -50,11 +54,14 @@ NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* p
 
 void ChatNotifier::sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	QString content = notification->text();
 	if (!notification->details().isEmpty())
 		content += "<br/> <small>" + notification->details().join("<br/>") + "</small>";
 
-	chatWidget->appendSystemMessage(Core::instance()->formattedStringFactory()->fromHTML(content));
+	chatWidget->appendSystemMessage(CurrentFormattedStringFactory.data()->fromHTML(content));
 }
 
 void ChatNotifier::notify(Notification *notification)

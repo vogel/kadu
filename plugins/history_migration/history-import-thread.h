@@ -30,11 +30,14 @@
 #include "history-migration-helper.h"
 
 class Chat;
+class FormattedStringFactory;
 struct HistoryEntry;
 
 class HistoryImportThread : public QObject
 {
 	Q_OBJECT
+
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Account GaduAccount;
 	QString Path;
@@ -55,6 +58,8 @@ class HistoryImportThread : public QObject
 public:
 	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
+
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	void prepareChats();
 

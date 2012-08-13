@@ -19,8 +19,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
+#include "services/message-filter-service.h"
 
 #include "image-link.h"
 
@@ -35,6 +37,9 @@ int ImageLinkPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	ImageLink::createInstance();
+	ImageLink::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+	Core::instance()->messageFilterService()->registerIncomingMessageFilter(ImageLink::instance());
+
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 
 	return 0;
@@ -43,6 +48,8 @@ int ImageLinkPlugin::init(bool firstLoad)
 void ImageLinkPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+
+	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(ImageLink::instance());
 	ImageLink::destroyInstance();
 }
 

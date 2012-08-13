@@ -21,6 +21,7 @@
  */
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "notify/notification-manager.h"
 
 #include "chat-notifier.h"
@@ -37,6 +38,8 @@ int ChatNotifyPlugin::init(bool firstLoad)
 		createDefaultConfiguration();
 
 	NotifierInstance = new ChatNotifier(this);
+	NotifierInstance->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+
 	NotificationManager::instance()->registerNotifier(NotifierInstance);
 
 	return 0;

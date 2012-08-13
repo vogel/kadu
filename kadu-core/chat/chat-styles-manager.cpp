@@ -39,7 +39,6 @@
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "emoticons/emoticons-manager.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
@@ -81,6 +80,11 @@ ChatStylesManager::~ChatStylesManager()
 {
 	unregisterChatStyleEngine("Kadu");
 	unregisterChatStyleEngine("Adium");
+}
+
+void ChatStylesManager::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void ChatStylesManager::init()
@@ -385,6 +389,9 @@ void ChatStylesManager::configurationApplied()
 
 void ChatStylesManager::preparePreview(Preview *preview)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	Buddy example = Buddy::dummy();
 	if (example.isNull())
 		return;
@@ -401,7 +408,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	sentMessage.setMessageChat(chat);
 	sentMessage.setType(MessageTypeSent);
 	sentMessage.setMessageSender(chat.chatAccount().accountContact());
-	sentMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Your message")));
+	sentMessage.setContent(CurrentFormattedStringFactory.data()->fromPlainText(tr("Your message")));
 	sentMessage.setReceiveDate(QDateTime::currentDateTime());
 	sentMessage.setSendDate(QDateTime::currentDateTime());
 
@@ -413,7 +420,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	receivedMessage.setMessageChat(chat);
 	receivedMessage.setType(MessageTypeReceived);
 	receivedMessage.setMessageSender(BuddyPreferredManager::instance()->preferredContact(example));
-	receivedMessage.setContent(Core::instance()->formattedStringFactory()->fromPlainText(tr("Message from Your friend")));
+	receivedMessage.setContent(CurrentFormattedStringFactory.data()->fromPlainText(tr("Message from Your friend")));
 	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
 	receivedMessage.setSendDate(QDateTime::currentDateTime());
 

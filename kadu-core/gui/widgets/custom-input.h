@@ -33,6 +33,7 @@
 #include "exports.h"
 
 class FormattedString;
+class FormattedStringFactory;
 class ImageStorageService;
 
 /**
@@ -44,6 +45,7 @@ class KADUAPI CustomInput : public QTextEdit
 	Q_OBJECT
 
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
 
@@ -98,6 +100,7 @@ public:
 	CustomInput(Chat chat, QWidget *parent = 0);
 
 	void setImageStorageService(ImageStorageService *imageStorageService);
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	FormattedString * formattedString() const;
 

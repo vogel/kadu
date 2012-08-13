@@ -163,6 +163,11 @@ ChatWidget::~ChatWidget()
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
+void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
+}
+
 void ChatWidget::setContainer(ChatWidgetContainer *container)
 {
 	Container = container;
@@ -797,6 +802,9 @@ void ChatWidget::updateComposing()
 
 void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService::State state)
 {
+	if (!CurrentFormattedStringFactory)
+		return;
+
 	if (CurrentContactActivity == state)
 		return;
 
@@ -819,7 +827,7 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
 		message.setStatus(MessageStatusReceived);
-		message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(msg));
+		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(msg));
 		message.setSendDate(QDateTime::currentDateTime());
 		message.setReceiveDate(QDateTime::currentDateTime());
 

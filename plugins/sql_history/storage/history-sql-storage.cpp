@@ -1026,6 +1026,9 @@ QString HistorySqlStorage::stripAllScriptTags(const QString &string)
 QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 {
 	QVector<Message> messages;
+	if (!CurrentFormattedStringFactory)
+		return messages;
+
 	while (query.next())
 	{
 		bool outgoing = query.value(5).toBool();
@@ -1046,7 +1049,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(Core::instance()->formattedStringFactory()->fromHTML(stripAllScriptTags(query.value(2).toString())));
+		message.setContent(CurrentFormattedStringFactory.data()->fromHTML(stripAllScriptTags(query.value(2).toString())));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
@@ -1060,6 +1063,8 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QSqlQuery &query)
 {
 	QVector<Message> statuses;
+	if (!CurrentFormattedStringFactory)
+		return statuses;
 
 	while (query.next())
 	{
@@ -1073,7 +1078,7 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 				? Qt::escape(typeData.name())
 				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
 
-		message.setContent(Core::instance()->formattedStringFactory()->fromHTML(htmlContent));
+		message.setContent(CurrentFormattedStringFactory.data()->fromHTML(htmlContent));
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);
@@ -1089,6 +1094,8 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 {
 	QVector<Message> messages;
+	if (!CurrentFormattedStringFactory)
+		return messages;
 
 	while (query.next())
 	{
@@ -1097,7 +1104,7 @@ QVector<Message> HistorySqlStorage::smsFromQuery(QSqlQuery &query)
 		message.setType(MessageTypeSystem);
 		message.setReceiveDate(query.value(1).toDateTime());
 		message.setSendDate(query.value(1).toDateTime());
-		message.setContent(Core::instance()->formattedStringFactory()->fromPlainText(Qt::escape(query.value(0).toString())));
+		message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(Qt::escape(query.value(0).toString())));
 
 		messages.append(message);
 	}
