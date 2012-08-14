@@ -193,33 +193,31 @@ bool MessageManager::sendMessage(const Chat &chat, const QString &content, bool 
 	return sendMessage(chat, CurrentFormattedStringFactory.data()->fromText(content), silent);
 }
 
-bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, bool silent)
+Message MessageManager::createOutgoingMessage(const Chat &chat, FormattedString *content)
 {
-	QScopedPointer<FormattedString> scopedContent(content);
-
-	if (!CurrentFormattedStringFactory)
-		return false;
-
-	Protocol *protocol = chat.chatAccount().protocolHandler();
-	if (!protocol)
-		return false;
-
-	ChatService *chatService = protocol->chatService();
-	if (!chatService)
-		return false;
-
 	Message message = Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeSent);
 	message.setMessageSender(chat.chatAccount().accountContact());
 	message.setStatus(MessageStatusSent);
-	message.setContent(scopedContent.take());
+	message.setContent(content);
 	message.setSendDate(QDateTime::currentDateTime());
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	if (CurrentMessageFilterService)
-		if (!CurrentMessageFilterService.data()->acceptMessage(message))
-			return false;
+	return message;
+}
+
+bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, bool silent)
+{
+	QScopedPointer<FormattedString> scopedContent(content);
+
+	Protocol *protocol = chat.chatAccount().protocolHandler();
+	if (!protocol || !protocol->chatService())
+		return false;
+
+	Message message = createOutgoingMessage(chat, scopedContent.take());
+	if (CurrentMessageFilterService && !CurrentMessageFilterService.data()->acceptMessage(message))
+		return false;
 
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	content->accept(&plainTextVisitor);
@@ -227,7 +225,7 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 	if (CurrentMessageTransformerService)
 		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
 
-	bool sent = chatService->sendMessage(message, plain);
+	bool sent = protocol->chatService()->sendMessage(message, plain);
 	if (sent && !silent)
 		emit messageSent(message);
 

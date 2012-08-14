@@ -67,6 +67,14 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Create outoing message for given chat and given content.
+	 * @param chat chat of outgoing message
+	 * @param content content of outgoing message
+	 */
+	Message createOutgoingMessage(const Chat &chat, FormattedString *content);
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Imports list of pending messages from < 0.10.0 configurations.
 	 * @return true if there was something to import
 	 *
