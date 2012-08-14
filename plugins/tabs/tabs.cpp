@@ -678,30 +678,6 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 {
 	Q_UNUSED(altnicks)
 	Q_UNUSED(index)
-
-	/*
-	ContactList contacts;
-	//foreach(QString altnick, altnicks)
-	//	contacts.append(userlist->byAltNick(altnick).toContact());
-	ChatWidget *chatWidget=ChatWidgetManager::instance()->findChatWidget(contacts);
-	if (chatWidget)
-		if(tabdialog->indexOf(chatWidget)!=-1)
-		// Jesli chat istnieje i jest dodany do kart, to czynimy go aktywnym
-			onOpenChat(chatWidget);
-		else
-		{
-		// Jesli chat istnieje i nie jest w kartach to dodajemy go do kart na pozycji index
-			target_tabs=index;
-			insertTab(chatWidget);
-		}
-	else
-	{
-	// Jeśli chat nie istnieje to go tworzymy z wymuszonym dodaniem go do kart
-		force_tabs=true;
-		target_tabs=index;
-		ChatWidgetManager::instance()->openChat(contacts);
-	}
-	*/
 }
 
 void TabsManager::setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip)
@@ -731,6 +707,11 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 		else
 			baseTabName = chat.name();
 	}
+
+	int tabTextLimit = 15;
+	baseTabName = baseTabName.length() > tabTextLimit
+			? baseTabName.left(tabTextLimit) + "..."
+			: baseTabName;
 
 	if (chat.unreadMessagesCount() > 0)
 		setTabTextAndTooltipIfDiffer(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),

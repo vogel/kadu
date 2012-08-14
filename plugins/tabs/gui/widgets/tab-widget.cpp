@@ -157,7 +157,7 @@ void TabWidget::updateTabsMenu()
 		QAction *action = new QAction(QIcon(), tabText(i), this);
 		action->setData(QVariant(i));
 
-		if (tabBar()->rect().contains(tabBar()->tabRect(i)/*, true*/))
+		if (tabBar()->rect().contains(tabBar()->tabRect(i)))
 		{
 			QFont font = action->font();
 			font.setBold(true);
@@ -466,7 +466,7 @@ void TabWidget::tabInserted(int index)
 {
 	Q_UNUSED(index)
 
-	TabsListButton->setText(QString::number(count()));
+	updateTabsListButton();
 	updateTabsMenu();
 
 	show();
@@ -476,7 +476,7 @@ void TabWidget::tabRemoved(int index)
 {
 	Q_UNUSED(index)
 
-	TabsListButton->setText(QString::number(count()));
+	updateTabsListButton();
 	updateTabsMenu();
 
 	if (count() == 0)
@@ -529,20 +529,25 @@ void TabWidget::configurationUpdated()
 
 void TabWidget::resizeEvent(QResizeEvent *e)
 {
+	updateTabsListButton();
+	updateTabsMenu();
+
+	QTabWidget::resizeEvent(e);
+}
+
+void TabWidget::updateTabsListButton()
+{
 	bool allTabsVisible = true;
 
 	for (int i = 0; i < tabBar()->count(); i++)
 	{
-		if (!tabBar()->rect().contains(tabBar()->tabRect(i)/*, true*/))
+		if (!tabBar()->rect().contains(tabBar()->tabRect(i)))
 		{
 			allTabsVisible = false;
 			break;
 		}
 	}
 
-	TabsListButton->setVisible(!allTabsVisible || tabBar()->count() <= 1);
-
-	updateTabsMenu();
-
-	QTabWidget::resizeEvent(e);
+	TabsListButton->setVisible(!allTabsVisible);
+	TabsListButton->setText(QString::number(count()));
 }
