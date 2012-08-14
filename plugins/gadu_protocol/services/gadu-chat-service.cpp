@@ -125,7 +125,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Chat &chat, const Message &message, const QString &plain)
+bool GaduChatService::sendMessage(const Message &message, const QString &plain)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
@@ -141,7 +141,7 @@ bool GaduChatService::sendMessage(const Chat &chat, const Message &message, cons
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.content(), chat.contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), (const unsigned char *)data.constData());
 
 	if (-1 == messageId)
 		return false;
