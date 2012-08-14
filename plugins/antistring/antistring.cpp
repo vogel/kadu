@@ -47,17 +47,20 @@ void Antistring::destroyInstance()
 
 Antistring::Antistring()
 {
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->registerMessageFilter(this);
 }
 
 Antistring::~Antistring()
 {
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 }
 
 bool Antistring::acceptMessage(const Message &message)
 {
 	if (!Configuration.enabled())
+		return true;
+
+	if (MessageTypeSent == message.type())
 		return true;
 
 	if (points(message.plainTextContent()) < 3)

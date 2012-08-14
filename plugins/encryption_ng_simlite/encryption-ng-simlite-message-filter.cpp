@@ -34,6 +34,9 @@ EncryptionNgSimliteMessageFilter::~EncryptionNgSimliteMessageFilter()
 
 bool EncryptionNgSimliteMessageFilter::acceptMessage(const Message &message)
 {
+	if (MessageTypeSent == message.type())
+		return true;
+
 	if (!message.plainTextContent().startsWith(RSA_PUBLIC_KEY_BEGIN))
 		return true;
 

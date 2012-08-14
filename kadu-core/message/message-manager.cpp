@@ -225,7 +225,7 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 
 	QString plain = plainTextVisitor.result();
 	if (CurrentMessageFilterService)
-		if (!CurrentMessageFilterService.data()->acceptOutgoingMessage(message))
+		if (!CurrentMessageFilterService.data()->acceptMessage(message))
 			return false;
 	if (CurrentMessageTransformerService)
 		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);

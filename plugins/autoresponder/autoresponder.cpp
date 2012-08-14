@@ -59,12 +59,12 @@ AutoResponder::AutoResponder(QObject *parent) :
 	Configurator = new AutoresponderConfigurator();
 	Configurator->setAutoresponder(this);
 
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->registerMessageFilter(this);
 }
 
 AutoResponder::~AutoResponder()
 {
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
@@ -86,6 +86,9 @@ void AutoResponder::done()
 
 bool AutoResponder::acceptMessage(const Message &message)
 {
+	if (MessageTypeSent == message.type())
+		return true;
+
 	if (message.plainTextContent().left(5) == "KADU ") // ignore other kadu autoresponses
 		return true;
 

@@ -66,8 +66,6 @@ Nowa funkcjonalnosc - Dorregaray
 #include "debug.h"
 
 #include "firewall-notification.h"
-#include "incoming-message-firewall-filter.h"
-#include "outgoing-message-firewall-filter.h"
 
 #include "firewall.h"
 
@@ -101,11 +99,7 @@ Firewall::Firewall() :
 	LastMsg.start();
 	LastNotify.start();
 
-	IncomingMessageFilter = new IncomingMessageFirewallFilter(this);
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(IncomingMessageFilter);
-
-	OutgoingMessageFilter = new OutgoingMessageFirewallFilter(this);
-	Core::instance()->messageFilterService()->registerOutgoingMessageFilter(OutgoingMessageFilter);
+	Core::instance()->messageFilterService()->registerMessageFilter(this);
 
 	triggerAllAccountsRegistered();
 
@@ -121,8 +115,7 @@ Firewall::~Firewall()
 
 	triggerAllAccountsUnregistered();
 
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(IncomingMessageFilter);
-	Core::instance()->messageFilterService()->unregisterOutgoingMessageFilter(OutgoingMessageFilter);
+	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 
 	kdebugf2();
 }
@@ -140,6 +133,19 @@ void Firewall::accountRegistered(Account account)
 void Firewall::accountUnregistered(Account account)
 {
 	disconnect(account, 0, this, 0);
+}
+
+bool Firewall::acceptMessage(const Message &message)
+{
+	switch (message.type())
+	{
+		case MessageTypeReceived:
+			return acceptIncomingMessage(message);
+		case MessageTypeSent:
+			return acceptOutgoingMessage(message);
+		default:
+			return true;
+	}
 }
 
 /**

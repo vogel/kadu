@@ -37,16 +37,14 @@ class MessageFilter;
  * @short Service for handling filtering of messages.
  * @author Rafał 'Vogel' Malinowski
  *
- * This service is used to handle filtering of messages. It is possible to register MessageFilter instances
- * as outgoing or incoming filters. Calling acceptOutgoingMessage() or acceptIncomingMessage() will call
- * all transformations for given type of message and return true only if all filters accepts given message.
+ * This service is used to handle filtering of messages. Calling acceptMessage() to check all installed
+ * filters - true will be returned only if all filters accepts given message.
  */
 class KADUAPI MessageFilterService : public QObject
 {
 	Q_OBJECT
 
-	QList<MessageFilter *> OutgoingMessageFilters;
-	QList<MessageFilter *> IncomingMessageFilters;
+	QList<MessageFilter *> MessageFilters;
 
 public:
 	/**
@@ -58,66 +56,34 @@ public:
 	virtual ~MessageFilterService();
 
 	/**
-	 * @short Register instance of MessageFilter as outgoing filter.
+	 * @short Register new filter.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param filter filter to register
 	 *
-	 * This method adds given filter to list of filters that will be executed on acceptOutgoingMessage() call.
+	 * This method adds given filter to list of filters that will be executed on acceptMessage() call.
 	 * If filter is already on list then this method will do nothing.
 	 */
-	void registerOutgoingMessageFilter(MessageFilter *filter);
+	void registerMessageFilter(MessageFilter *filter);
 
 	/**
-	 * @short Unregister instance of MessageFilter as outgoing filter.
+	 * @short Unregister filter.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param filter filter to unregister
 	 *
-	 * This method removes given filter from list of filters that will be executed on acceptOutgoingMessage() call.
+	 * This method removes given filter from list of filters that will be executed on acceptMessage() call.
 	 * If filter was not on list then this method will do nothing.
 	 */
-	void unregisterOutgoingMessageFilter(MessageFilter *filter);
+	void unregisterMessageFilter(MessageFilter *filter);
 
 	/**
-	 * @short Execute all registered outgoing filters on given message.
+	 * @short Execute all registered filters on given message.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param message message to filter
-	 * @return true if all registered outgoing filters accepts given message
+	 * @return true if all registered filters accepts given message
 	 *
-	 * This method executes all outgoing filters on given message and returns true if all registered outgoing
-	 * filters accepts given message.
+	 * This method executes all filters on given message and returns true if all of them accepts given message.
 	 */
-	bool acceptOutgoingMessage(const Message &message);
-
-	/**
-	 * @short Register instance of MessageFilter as incoming filter.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param filter filter to register
-	 *
-	 * This method adds given filter to list of filters that will be executed on acceptIncomingMessage() call.
-	 * If filter is already on list then this method will do nothing.
-	 */
-	void registerIncomingMessageFilter(MessageFilter *filter);
-
-	/**
-	 * @short Unregister instance of MessageFilter as incoming filter.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param filter filter to unregister
-	 *
-	 * This method removes given filter from list of filters that will be executed on acceptIncomingMessage() call.
-	 * If filter was not on list then this method will do nothing.
-	 */
-	void unregisterIncomingMessageFilter(MessageFilter *filter);
-
-	/**
-	 * @short Execute all registered incoming filters on given message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message message to filter
-	 * @return true if all registered incoming filters accepts given message
-	 *
-	 * This method executes all incoming filters on given message and returns true if all registered incoming
-	 * filters accepts given message.
-	 */
-	bool acceptIncomingMessage(const Message &message);
+	bool acceptMessage(const Message &message);
 
 };
 

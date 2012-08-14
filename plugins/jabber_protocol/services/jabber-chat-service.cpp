@@ -312,7 +312,7 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	message.setReceiveDate(QDateTime::currentDateTime());
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(message))
+		if (!messageFilterService()->acceptMessage(message))
 			return;
 
 	QString messageType = msg.type().isEmpty()

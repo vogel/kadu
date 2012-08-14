@@ -46,16 +46,19 @@ void Cenzor::destroyInstance()
 
 Cenzor::Cenzor()
 {
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->registerMessageFilter(this);
 }
 
 Cenzor::~Cenzor()
 {
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(this);
+	Core::instance()->messageFilterService()->unregisterMessageFilter(this);
 }
 
 bool Cenzor::acceptMessage(const Message &message)
 {
+	if (MessageTypeSent == message.type())
+		return true;
+
 	if (!Configuration.enabled())
 		return true;
 

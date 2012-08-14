@@ -30,43 +30,22 @@ MessageFilterService::~MessageFilterService()
 {
 }
 
-void MessageFilterService::registerOutgoingMessageFilter(MessageFilter *filter)
+void MessageFilterService::registerMessageFilter(MessageFilter *filter)
 {
-	if (!filter || OutgoingMessageFilters.contains(filter))
+	if (!filter || MessageFilters.contains(filter))
 		return;
 
-	OutgoingMessageFilters.append(filter);
+	MessageFilters.append(filter);
 }
 
-void MessageFilterService::unregisterOutgoingMessageFilter(MessageFilter *filter)
+void MessageFilterService::unregisterMessageFilter(MessageFilter *filter)
 {
-	OutgoingMessageFilters.removeAll(filter);
+	MessageFilters.removeAll(filter);
 }
 
-bool MessageFilterService::acceptOutgoingMessage(const Message &message)
+bool MessageFilterService::acceptMessage(const Message &message)
 {
-	foreach (MessageFilter *filter, OutgoingMessageFilters)
-		if (!filter->acceptMessage(message))
-			return false;
-	return true;
-}
-
-void MessageFilterService::registerIncomingMessageFilter(MessageFilter *filter)
-{
-	if (!filter || IncomingMessageFilters.contains(filter))
-		return;
-
-	IncomingMessageFilters.append(filter);
-}
-
-void MessageFilterService::unregisterIncomingMessageFilter(MessageFilter *filter)
-{
-	IncomingMessageFilters.removeAll(filter);
-}
-
-bool MessageFilterService::acceptIncomingMessage(const Message &message)
-{
-	foreach (MessageFilter *filter, IncomingMessageFilters)
+	foreach (MessageFilter *filter, MessageFilters)
 		if (!filter->acceptMessage(message))
 			return false;
 	return true;

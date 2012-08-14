@@ -247,7 +247,7 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	msg.setReceiveDate(QDateTime::currentDateTime());
 
 	if (messageFilterService())
-		if (!messageFilterService()->acceptIncomingMessage(msg))
+		if (!messageFilterService()->acceptMessage(msg))
 			return;
 
 	if (MessageTypeReceived == type)

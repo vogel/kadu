@@ -65,6 +65,9 @@ void ImageLink::setFormattedStringFactory(FormattedStringFactory *formattedStrin
 
 bool ImageLink::acceptMessage(const Message &message)
 {
+	if (MessageTypeSent == message.type())
+		return true;
+
 	if (Configuration.showImages())
 	{
 		ImageRegExp.indexIn(message.htmlContent());

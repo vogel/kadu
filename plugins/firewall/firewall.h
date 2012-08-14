@@ -33,6 +33,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
+#include "message/message-filter.h"
 
 class Account;
 class ChatWidget;
@@ -42,7 +43,7 @@ class IncomingMessageFirewallFilter;
 class Message;
 class OutgoingMessageFirewallFilter;
 
-class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
+class Firewall : public MessageFilter, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -52,9 +53,6 @@ class Firewall : public QObject, ConfigurationAwareObject, AccountsAwareObject
 	virtual ~Firewall();
 
 	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-
-	IncomingMessageFirewallFilter *IncomingMessageFilter;
-	OutgoingMessageFirewallFilter *OutgoingMessageFilter;
 
 	BuddySet SecuredTemporaryAllowed;
 	ContactSet Passed;
@@ -111,6 +109,8 @@ public:
 	static Firewall * instance() { return Instance; }
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+
+	virtual bool acceptMessage(const Message& message);
 
 	bool acceptIncomingMessage(const Message &message);
 	bool acceptOutgoingMessage(const Message &message);

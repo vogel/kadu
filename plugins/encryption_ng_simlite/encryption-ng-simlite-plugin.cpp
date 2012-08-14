@@ -51,7 +51,7 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 
 	EncryptioNgSimliteProvider::createInstance();
 	MessageFilter = new EncryptionNgSimliteMessageFilter(this);
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(MessageFilter);
+	Core::instance()->messageFilterService()->registerMessageFilter(MessageFilter);
 	EncryptioNgSimliteProvider::instance()->setMessageFilter(MessageFilter);
 
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
@@ -61,7 +61,7 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 
 void EngryptionNgSimlitePlugin::done()
 {
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(MessageFilter);
+	Core::instance()->messageFilterService()->unregisterMessageFilter(MessageFilter);
 
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
 	EncryptioNgSimliteProvider::destroyInstance();

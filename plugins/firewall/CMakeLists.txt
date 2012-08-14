@@ -8,8 +8,6 @@ set (SOURCES
 	firewall-notification.cpp
 	firewall-plugin.cpp
 	firewall.cpp
-	incoming-message-firewall-filter.cpp
-	outgoing-message-firewall-filter.cpp
 )
 
 set (MOC_SOURCES
@@ -17,8 +15,6 @@ set (MOC_SOURCES
 	firewall-notification.h
 	firewall-plugin.h
 	firewall.h
-	incoming-message-firewall-filter.h
-	outgoing-message-firewall-filter.h
 )
 
 set (TRANSLATION_SOURCES

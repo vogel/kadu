@@ -38,7 +38,7 @@ int ImageLinkPlugin::init(bool firstLoad)
 
 	ImageLink::createInstance();
 	ImageLink::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-	Core::instance()->messageFilterService()->registerIncomingMessageFilter(ImageLink::instance());
+	Core::instance()->messageFilterService()->registerMessageFilter(ImageLink::instance());
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 
@@ -49,7 +49,7 @@ void ImageLinkPlugin::done()
 {
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 
-	Core::instance()->messageFilterService()->unregisterIncomingMessageFilter(ImageLink::instance());
+	Core::instance()->messageFilterService()->unregisterMessageFilter(ImageLink::instance());
 	ImageLink::destroyInstance();
 }
 
