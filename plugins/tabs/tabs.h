@@ -40,7 +40,7 @@
 #include "misc/misc.h"
 #include "storage/storable-object.h"
 
-#include "tabwidget.h"
+#include "gui/widgets/tab-widget.h"
 
 class QAction;
 class QMenu;
