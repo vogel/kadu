@@ -118,7 +118,7 @@ TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 	rightCornerWidgetLayout->setSpacing(2);
 	rightCornerWidgetLayout->setContentsMargins(3, 0, 2, 3);
 
-	TabsMenu = new QMenu();
+	TabsMenu = new QMenu(this);
 	connect(TabsMenu, SIGNAL(triggered(QAction *)), this, SLOT(tabsMenuSelected(QAction *)));
 	TabsListButton = new QToolButton(RightCornerWidget);
 	TabsListButton->setIcon(KaduIcon("internet-group-chat").icon());
