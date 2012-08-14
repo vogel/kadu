@@ -43,41 +43,6 @@
 class RecentChatsMenu;
 class TabsManager;
 
-class TabBar: public QTabBar
-{
-	Q_OBJECT
-
-protected:
-	/**
-	* Metoda wywoływana w momencie kliknięcia na tabbarze
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mousePressEvent(QMouseEvent *e);
-
-	/**
-	* Metoda wywoływana w momencie puszczenia przycisku myszy
-	* po kliknięciu
-	* Tu odpowiada za zamknięcie karty środokowym przyciskiem myszy
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-
-	/**
-	* Metoda wywoływana w momencie dwukliku myszy
-	* Tu powoduje otwarcie okna openChatWith;
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mouseDoubleClickEvent(QMouseEvent *e);
-
-public:
-	explicit TabBar(QWidget *parent = 0);
-
-signals:
-	void contextMenu(int id, const QPoint &pos);
-	void mouseDoubleClickEventSignal(QMouseEvent *e);
-
-};
-
 class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAwareObject
 {
 	Q_OBJECT

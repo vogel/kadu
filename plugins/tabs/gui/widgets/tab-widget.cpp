@@ -48,9 +48,10 @@
 #include "activate.h"
 #include "kadu-application.h"
 
+#include "tab-bar.h"
 #include "tabs.h"
 
-#include "tabwidget.h"
+#include "tab-widget.h"
 
 TabWidget::TabWidget(TabsManager *manager) : Manager(manager)
 {
@@ -544,32 +545,4 @@ void TabWidget::resizeEvent(QResizeEvent *e)
 	updateTabsMenu();
 
 	QTabWidget::resizeEvent(e);
-}
-
-TabBar::TabBar(QWidget *parent) :
-		QTabBar(parent)
-{
-}
-
-void TabBar::mousePressEvent(QMouseEvent *e)
-{
-	if (tabAt(e->pos()) != -1 && e->button() == Qt::RightButton)
-		emit contextMenu(tabAt(e->pos()), mapToGlobal(e->pos()));
-
-	QTabBar::mousePressEvent(e);
-}
-
-void TabBar::mouseReleaseEvent(QMouseEvent *e)
-{
-	if (tabAt(e->pos()) != -1 && e->button() == Qt::MidButton)
-		emit tabCloseRequested(tabAt(e->pos()));
-	QTabBar::mouseReleaseEvent(e);
-}
-
-void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
-{
-	kdebugf();
-	// w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
-	emit mouseDoubleClickEventSignal(e);
-	kdebugf2();
 }

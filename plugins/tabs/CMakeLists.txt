@@ -6,13 +6,15 @@ include (FindKadu)
 set (SOURCES
 	tabs.cpp
 	tabs-plugin.cpp
-	tabwidget.cpp
+	gui/widgets/tab-bar.cpp
+	gui/widgets/tab-widget.cpp
 )
 
 set (MOC_SOURCES
 	tabs.h
 	tabs-plugin.h
-	tabwidget.h
+	gui/widgets/tab-bar.h
+	gui/widgets/tab-widget.h
 )
 
 set (TRANSLATION_SOURCES
