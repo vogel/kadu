@@ -21,12 +21,36 @@
 #ifndef ADAPTER_H
 #define ADAPTER_H
 
+/**
+ * @addtogroup Core
+ * @{
+ */
+
+/**
+ * @class Adapter
+ * @short Interface for adapting one type to another.
+ * @author Rafał 'Vogel' Malinowski
+ * @author Piotr Dąbrowski
+ * @param T_dest type of result class
+ * @param T_src type of class to adapt
+ */
 template <typename T_dest, typename T_src>
 class Adapter
 {
 public:
-	virtual T_dest adapt(const T_src &) = 0;
+	/**
+	 * @short Adapt instance of class from one type to another.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @author Piotr Dąbrowski
+	 * @param object object to adapt
+	 * @return object adapted to type T_dest
+	 */
+	virtual T_dest adapt(const T_src &object) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // ADAPTER_H

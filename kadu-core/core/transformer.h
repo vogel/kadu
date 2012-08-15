@@ -20,12 +20,37 @@
 #ifndef TRANSFORMER_H
 #define TRANSFORMER_H
 
+/**
+ * @addtogroup Core
+ * @{
+ */
+
+/**
+ * @class Transformer
+ * @short Interface for transforming instances of one type.
+ * @author Rafał 'Vogel' Malinowski
+ * @param T type to transform
+ *
+ * Implementations of this interface are used to transform object - like updating data or removing some items from list.
+ */
 template <typename T>
 class Transformer
 {
 public:
-	virtual T transform(const T &) = 0;
+	/**
+	 * @short Transform instance of class.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param object object to transform
+	 * @return transformed object
+	 *
+	 * This method returns new object. Original one is untouched.
+	 */
+	virtual T transform(const T &object) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // TRANSFORMER_H
