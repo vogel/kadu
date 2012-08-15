@@ -38,6 +38,7 @@
 #include "services/image-storage-service.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
+#include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
 #include "debug.h"
 
@@ -134,6 +135,8 @@ bool GaduChatService::sendMessage(const Message &message)
 	message.content()->accept(&plainTextVisitor);
 
 	QByteArray rawMessage = plainTextVisitor.result().toUtf8();
+	if (rawMessageTransformerService())
+		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
 	if (rawMessage.length() >= 10000)
 	{
@@ -185,9 +188,9 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	return recipients;
 }
 
-QString GaduChatService::getContent(gg_event *e)
+QByteArray GaduChatService::getRawContent(gg_event *e)
 {
-	return QString::fromUtf8((const char *)e->event.msg.message);
+	return (const char *)e->event.msg.message;
 }
 
 bool GaduChatService::ignoreRichText(Contact sender)
@@ -223,29 +226,23 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (!chat || chat.isIgnoreAllMessages())
 		return;
 
-	QString content = getContent(e);
-
-	if (messageTransformerService())
-		content = messageTransformerService()->transformIncomingMessage(chat, content);
-
-	QScopedPointer<FormattedString> formattedString(createFormattedString(e, content, !ignoreRichText(sender)));
-	if (formattedString->isEmpty())
-		return;
-
-	FormattedStringPlainTextVisitor plainTextVisitor;
-	formattedString->accept(&plainTextVisitor);
-	QString messageString = plainTextVisitor.result();
-	kdebugmf(KDEBUG_INFO, "Got message from %u saying \"%s\"\n",
-			sender.id().toUInt(), qPrintable(messageString));
-
 	Message msg = Message::create();
 	msg.setMessageChat(chat);
 	msg.setType(type);
 	msg.setMessageSender(sender);
 	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setContent(formattedString.take());
 	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	msg.setReceiveDate(QDateTime::currentDateTime());
+
+	QByteArray rawContent = getRawContent(e);
+	if (rawMessageTransformerService())
+		rawContent = rawMessageTransformerService()->transform(rawContent, msg);
+
+	QScopedPointer<FormattedString> formattedString(createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender)));
+	if (formattedString->isEmpty())
+		return;
+
+	msg.setContent(formattedString.take());
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptMessage(msg))

@@ -41,6 +41,7 @@
 #include "misc/misc.h"
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
+#include "services/raw-message-transformer-service.h"
 
 #include "debug.h"
 #include "html_document.h"
@@ -245,8 +246,12 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	FormattedStringPlainTextVisitor plainTextVisitor;
 	message.content()->accept(&plainTextVisitor);
 
+	QString plain = plainTextVisitor.result();
+	if (rawMessageTransformerService())
+		plain = QString::fromUtf8(rawMessageTransformerService()->transform(plain.toUtf8(), message));
+
 	msg.setType(chatMessageType(message.messageChat(), jid));
-	msg.setBody(plainTextVisitor.result());
+	msg.setBody(plain);
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	//msg.setFrom(jabberID);
 
@@ -294,25 +299,21 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	}
 
-	QString body = msg.body();
-	if (messageTransformerService())
-		body = messageTransformerService()->transformIncomingMessage(chat, body);
-
-	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
-
-	FormattedStringPlainTextVisitor plainTextVisitor;
-	formattedString->accept(&plainTextVisitor);
-	QString plain = plainTextVisitor.result();
-
-	HtmlDocument::escapeText(plain);
-
 	::Message message = ::Message::create();
 	message.setMessageChat(chat);
 	message.setType(MessageTypeReceived);
 	message.setMessageSender(contact);
-	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(plain));
 	message.setSendDate(msg.timeStamp());
 	message.setReceiveDate(QDateTime::currentDateTime());
+
+	QString body = msg.body();
+	if (rawMessageTransformerService())
+		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message));
+
+	if (messageTransformerService())
+		body = messageTransformerService()->transformIncomingMessage(chat, body);
+
+	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(body));
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptMessage(message))
