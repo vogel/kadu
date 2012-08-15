@@ -148,6 +148,13 @@ TabWidget::~TabWidget()
 {
 }
 
+bool TabWidget::isTabVisible(int index)
+{
+	QRect visibleTabRect = tabBar()->rect().intersected(tabBar()->tabRect(index));
+
+	return visibleTabRect.width() > 20;
+}
+
 void TabWidget::updateTabsMenu()
 {
 	TabsMenu->clear();
@@ -157,7 +164,7 @@ void TabWidget::updateTabsMenu()
 		QAction *action = new QAction(QIcon(), tabText(i), this);
 		action->setData(QVariant(i));
 
-		if (tabBar()->rect().contains(tabBar()->tabRect(i)))
+		if (isTabVisible(i))
 		{
 			QFont font = action->font();
 			font.setBold(true);
@@ -541,7 +548,7 @@ void TabWidget::updateTabsListButton()
 
 	for (int i = 0; i < tabBar()->count(); i++)
 	{
-		if (!tabBar()->rect().contains(tabBar()->tabRect(i)))
+		if (!isTabVisible(i))
 		{
 			allTabsVisible = false;
 			break;

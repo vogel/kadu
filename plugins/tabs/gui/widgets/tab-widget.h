@@ -65,6 +65,7 @@ class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAware
 	void closeTab(QWidget *tabWidget);
 	void updateTabsMenu();
 	void updateTabsListButton();
+	bool isTabVisible(int index);
 
 private slots:
 	void onContextMenu(int id, const QPoint &pos);
