@@ -24,7 +24,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
-#include "services/message-transformer-service.h"
+#include "services/raw-message-transformer-service.h"
 
 #include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"
@@ -32,8 +32,6 @@
 #include "encryption-chat-data.h"
 #include "encryption-provider-manager.h"
 #include "encryptor.h"
-#include "incoming-encryption-message-transformer.h"
-#include "outgoing-encryption-message-transformer.h"
 
 #include "encryption-manager.h"
 
@@ -63,16 +61,12 @@ EncryptionManager::EncryptionManager() :
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
 			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 
-	CurrentOutgoingEncryptionMessageTransformer = new OutgoingEncryptionMessageTransformer(this);
-	Core::instance()->messageTransformerService()->registerOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
-
-	CurrentIncomingEncryptionMessageTransformer = new IncomingEncryptionMessageTransformer(this);
-	Core::instance()->messageTransformerService()->registerIncomingMessageTransformer(CurrentIncomingEncryptionMessageTransformer);
+	Core::instance()->rawMessageTransformerService()->registerTransformer(this);
 }
 
 EncryptionManager::~EncryptionManager()
 {
-	Core::instance()->messageTransformerService()->unregisterOutgoingMessageTransformer(CurrentOutgoingEncryptionMessageTransformer);
+	Core::instance()->rawMessageTransformerService()->unregisterTransformer(this);
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
@@ -170,4 +164,50 @@ void EncryptionManager::setGenerator(KeyGenerator *generator)
 KeyGenerator * EncryptionManager::generator()
 {
 	return Generator;
+}
+
+QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMessage, const Message &message)
+{
+	if (!message.messageChat())
+		return rawMessage;
+
+	if (!EncryptionProviderManager::instance()->canDecrypt(message.messageChat()))
+		return rawMessage;
+
+	EncryptionChatData *encryptionChatData = chatEncryption(message.messageChat());
+	if (!encryptionChatData->decryptor())
+		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(message.messageChat()));
+
+	bool decrypted;
+	QByteArray result = encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
+
+	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
+		setEncryptionEnabled(message.messageChat(), true);
+
+	return result;
+}
+
+QByteArray EncryptionManager::transformOutgoingMessage(const QByteArray &rawMessage, const Message &message)
+{
+	if (!message.messageChat())
+		return rawMessage;
+
+	EncryptionChatData *encryptionChatData = chatEncryption(message.messageChat());
+	if (encryptionChatData && encryptionChatData->encryptor())
+		return encryptionChatData->encryptor()->encrypt(rawMessage);
+
+	return rawMessage;
+}
+
+QByteArray EncryptionManager::transform(const QByteArray &rawMessage, const Message& message)
+{
+	switch (message.type())
+	{
+		case MessageTypeSent:
+			return transformOutgoingMessage(rawMessage, message);
+		case MessageTypeReceived:
+			return transformIncomingMessage(rawMessage, message);
+		default:
+			return rawMessage;
+	}
 }

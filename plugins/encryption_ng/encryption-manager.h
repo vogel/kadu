@@ -27,6 +27,8 @@
 #include <QtCore/QObject>
 #include <QtGui/QAction>
 
+#include "protocols/services/raw-message-transformer.h"
+
 #include "encryption_exports.h"
 
 class ActionDescription;
@@ -34,11 +36,9 @@ class Chat;
 class ChatWidget;
 class Contact;
 class EncryptionChatData;
-class IncomingEncryptionMessageTransformer;
 class KeyGenerator;
-class OutgoingEncryptionMessageTransformer;
 
-class ENCRYPTIONAPI EncryptionManager : public QObject
+class ENCRYPTIONAPI EncryptionManager : public QObject, public RawMessageTransformer
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionManager)
@@ -47,9 +47,6 @@ class ENCRYPTIONAPI EncryptionManager : public QObject
 
 	QMap<Chat, EncryptionChatData *> ChatEnryptions;
 	KeyGenerator *Generator;
-
-	OutgoingEncryptionMessageTransformer *CurrentOutgoingEncryptionMessageTransformer;
-	IncomingEncryptionMessageTransformer *CurrentIncomingEncryptionMessageTransformer;
 
 	EncryptionManager();
 	virtual ~EncryptionManager();
@@ -70,6 +67,11 @@ public:
 	EncryptionChatData * chatEncryption(const Chat &chat);
 
 	bool setEncryptionEnabled(const Chat &chat, bool enabled);
+
+	QByteArray transformIncomingMessage(const QByteArray &rawMessage, const Message &message);
+	QByteArray transformOutgoingMessage(const QByteArray &rawMessage, const Message &message);
+
+	virtual QByteArray transform(const QByteArray &rawMessage, const Message &message);
 
 };
 
