@@ -89,6 +89,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	chatService->setMessageFilterService(Core::instance()->messageFilterService());
 	chatService->setMessageTransformerService(Core::instance()->messageTransformerService());
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+	chatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 
 	XMPP::JabberChatStateService *chatStateService = new XMPP::JabberChatStateService(account, this);
 	CurrentContactPersonalInfoService = new JabberContactPersonalInfoService(this);

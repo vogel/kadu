@@ -23,6 +23,7 @@
 
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
+#include "services/raw-message-transformer-service.h"
 
 #include "chat-service.h"
 
@@ -53,4 +54,14 @@ void ChatService::setMessageTransformerService(MessageTransformerService *messag
 MessageTransformerService * ChatService::messageTransformerService() const
 {
 	return CurrentMessageTransformerService.data();
+}
+
+void ChatService::setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService)
+{
+	CurrentRawMessageTransformerService = rawMessageTransformerService;
+}
+
+RawMessageTransformerService * ChatService::rawMessageTransformerService() const
+{
+	return CurrentRawMessageTransformerService.data();
 }

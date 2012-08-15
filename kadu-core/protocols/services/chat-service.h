@@ -37,6 +37,7 @@ class FormattedString;
 class Message;
 class MessageFilterService;
 class MessageTransformerService;
+class RawMessageTransformerService;
 
 /**
  * @addtogroup Protocol
@@ -59,6 +60,7 @@ class KADUAPI ChatService : public AccountService
 
 	QWeakPointer<MessageFilterService> CurrentMessageFilterService;
 	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
+	QWeakPointer<RawMessageTransformerService> CurrentRawMessageTransformerService;
 
 protected:
 	explicit ChatService(Account account, QObject *parent = 0);
@@ -92,6 +94,20 @@ public:
 	 * @return message transformer service of this service
 	 */
 	MessageTransformerService * messageTransformerService() const;
+
+	/**
+	 * @short Set raw message transformer service for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param rawMessageTransformerService raw message transformer service for this service
+	 */
+	void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
+
+	/**
+	 * @short Return raw message transformer service of this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return raw message transformer service of this service
+	 */
+	RawMessageTransformerService * rawMessageTransformerService() const;
 
 public slots:
 	/**
