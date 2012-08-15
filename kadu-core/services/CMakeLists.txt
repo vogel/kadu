@@ -6,6 +6,7 @@ set (services_SRCS
 	message-filter-service.cpp
 	message-transformer-service.cpp
 	notification-service.cpp
+	raw-message-transformer-service.cpp
 )
 
 set (services_MOC_SRCS
@@ -14,6 +15,7 @@ set (services_MOC_SRCS
 	message-filter-service.h
 	message-transformer-service.h
 	notification-service.h
+	raw-message-transformer-service.h
 )
 
 kadu_subdirectory (services "${services_SRCS}" "${services_MOC_SRCS}" "")
