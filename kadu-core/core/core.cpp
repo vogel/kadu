@@ -71,6 +71,7 @@
 #include "services/message-filter-service.h"
 #include "services/message-transformer-service.h"
 #include "services/notification-service.h"
+#include "services/raw-message-transformer-service.h"
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
@@ -542,6 +543,7 @@ void Core::runServices()
 	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentFormattedStringFactory = new FormattedStringFactory();
+	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -594,6 +596,11 @@ NotificationService * Core::notificationService() const
 FormattedStringFactory * Core::formattedStringFactory() const
 {
 	return CurrentFormattedStringFactory;
+}
+
+RawMessageTransformerService * Core::rawMessageTransformerService() const
+{
+	return CurrentRawMessageTransformerService;
 }
 
 void Core::showMainWindow()

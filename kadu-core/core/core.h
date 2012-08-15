@@ -59,6 +59,7 @@ class Message;
 class MessageFilterService;
 class MessageTransformerService;
 class NotificationService;
+class RawMessageTransformerService;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
@@ -76,6 +77,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
 	FormattedStringFactory *CurrentFormattedStringFactory;
+	RawMessageTransformerService *CurrentRawMessageTransformerService;
 
 	KaduWindow *Window;
 
@@ -133,6 +135,7 @@ public:
 	MessageTransformerService * messageTransformerService() const;
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;
+	RawMessageTransformerService * rawMessageTransformerService() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
