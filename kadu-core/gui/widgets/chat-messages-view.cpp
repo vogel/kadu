@@ -37,6 +37,7 @@
 #include "configuration/chat-configuration-holder.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "formatted-string/formatted-string.h"
 #include "gui/widgets/chat-view-network-access-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/services/chat-image-service.h"
@@ -236,7 +237,7 @@ bool ChatMessagesView::sameMessage(const Message &left, const Message &right)
 	if (left.messageSender() != right.messageSender())
 		return false;
 
-	if (left.content() != right.content())
+	if (*left.content() != *right.content())
 		return false;
 
 	return true;
