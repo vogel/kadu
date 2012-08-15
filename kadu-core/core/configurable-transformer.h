@@ -1,0 +1,58 @@
+/*
+ * %kadu copyright begin%
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * %kadu copyright end%
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef CONFIGURABLE_TRANSFORMER_H
+#define CONFIGURABLE_TRANSFORMER_H
+
+/**
+ * @addtogroup Core
+ * @{
+ */
+
+/**
+ * @class ConfigurableTransformer
+ * @short Interface for transforming instances of one type.
+ * @author Rafał 'Vogel' Malinowski
+ * @param T type to transform
+ * @param T_config type of configuration object
+ *
+ * Implementations of this interface are used to transform object - like updating data or removing some items from list.
+ */
+template <typename T, typename T_config>
+class ConfigurableTransformer
+{
+public:
+	/**
+	 * @short Transform instance of class.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param object object to transform
+	 * @param configurationObject object use to configure transformation parameters
+	 * @return transformed object
+	 *
+	 * This method returns new object. Original one is untouched.
+	 */
+	virtual T transform(const T &object, const T_config &configurationObject) = 0;
+
+};
+
+/**
+ * @}
+ */
+
+#endif // CONFIGURABLE_TRANSFORMER_H
