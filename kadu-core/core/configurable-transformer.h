@@ -37,7 +37,11 @@
 template <typename T, typename T_config>
 class ConfigurableTransformer
 {
+
 public:
+	typedef T object_type;
+	typedef T_config config_type;
+
 	/**
 	 * @short Transform instance of class.
 	 * @author Rafał 'Vogel' Malinowski
