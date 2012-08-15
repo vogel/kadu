@@ -106,7 +106,7 @@ public:
 	void setConnection(GaduConnection *connection);
 
 public slots:
-	virtual bool sendMessage(const Message &message, const QString &plain);
+	virtual bool sendMessage(const Message &message);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

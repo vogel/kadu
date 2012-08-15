@@ -125,23 +125,24 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	return messageId;
 }
 
-bool GaduChatService::sendMessage(const Message &message, const QString &plain)
+bool GaduChatService::sendMessage(const Message &message)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
-	kdebugmf(KDEBUG_INFO, "\n%s\n", qPrintable(plain));
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	message.content()->accept(&plainTextVisitor);
 
-	QByteArray data = plain.toUtf8();
+	QByteArray rawMessage = plainTextVisitor.result().toUtf8();
 
-	if (data.length() >= 10000)
+	if (rawMessage.length() >= 10000)
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(data.length()).arg(10000));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.length()).arg(10000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), (const unsigned char *)data.constData());
+	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), (const unsigned char *)rawMessage.constData());
 
 	if (-1 == messageId)
 		return false;

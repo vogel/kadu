@@ -229,7 +229,7 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 		return ContactMessageTypes.value(jid.bare());
 }
 
-bool JabberChatService::sendMessage(const ::Message &message, const QString &plain)
+bool JabberChatService::sendMessage(const ::Message &message)
 {
 	Q_UNUSED(message)
 
@@ -242,8 +242,11 @@ bool JabberChatService::sendMessage(const ::Message &message, const QString &pla
 
 	XMPP::Message msg = XMPP::Message(jid);
 
+	FormattedStringPlainTextVisitor plainTextVisitor;
+	message.content()->accept(&plainTextVisitor);
+
 	msg.setType(chatMessageType(message.messageChat(), jid));
-	msg.setBody(plain);
+	msg.setBody(plainTextVisitor.result());
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	//msg.setFrom(jabberID);
 

@@ -24,8 +24,6 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "formatted-string/formatted-string-html-visitor.h"
-#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "protocols/protocol.h"
@@ -219,13 +217,7 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 	if (CurrentMessageFilterService && !CurrentMessageFilterService.data()->acceptMessage(message))
 		return false;
 
-	FormattedStringPlainTextVisitor plainTextVisitor;
-	content->accept(&plainTextVisitor);
-	QString plain = plainTextVisitor.result();
-	if (CurrentMessageTransformerService)
-		plain = CurrentMessageTransformerService.data()->transformOutgoingMessage(chat, plain);
-
-	bool sent = protocol->chatService()->sendMessage(message, plain);
+	bool sent = protocol->chatService()->sendMessage(message);
 	if (sent && !silent)
 		emit messageSent(message);
 

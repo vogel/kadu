@@ -112,17 +112,14 @@ public:
 public slots:
 	/**
 	 * @short Send new message to given chat.
-	 * @param chat chat to send message to
 	 * @param message message to be sent
 	 *
-	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
-	 * free to ignore any HTML formatting.
+	 * This methods sends a message. Service is allowed to ignore this requst and to ignore any formatting
+	 * that is present in message.
 	 *
-	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
-	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
-	 * chat view.
+	 * Message can be altered by RawMessageTransformerService to allow any encryption on any protocol.
 	 */
-	virtual bool sendMessage(const Message &message, const QString &plain) = 0;
+	virtual bool sendMessage(const Message &message) = 0;
 
 signals:
 	/**
