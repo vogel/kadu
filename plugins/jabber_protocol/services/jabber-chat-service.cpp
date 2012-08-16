@@ -39,8 +39,6 @@
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
-#include "services/message-filter-service.h"
-#include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "debug.h"
@@ -311,13 +309,6 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message));
 
 	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(body));
-
-	if (messageTransformerService())
-		message = messageTransformerService()->transform(message);
-
-	if (messageFilterService())
-		if (!messageFilterService()->acceptMessage(message))
-			return;
 
 	QString messageType = msg.type().isEmpty()
 	        ? "message"

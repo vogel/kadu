@@ -163,9 +163,16 @@ void MessageManager::accountUnregistered(Account account)
 
 void MessageManager::messageReceivedSlot(const Message &message)
 {
-	addUnreadMessage(message);
+	Message transformedMessage = CurrentMessageTransformerService
+			? CurrentMessageTransformerService.data()->transform(message)
+			: message;
 
-	emit messageReceived(message);
+	if (CurrentMessageFilterService)
+		if (!CurrentMessageFilterService.data()->acceptMessage(transformedMessage))
+			return;
+
+	addUnreadMessage(transformedMessage);
+	emit messageReceived(transformedMessage);
 }
 
 void MessageManager::setMessageFilterService(MessageFilterService *messageFilterService)
@@ -217,9 +224,13 @@ bool MessageManager::sendMessage(const Chat &chat, FormattedString *content, boo
 	if (CurrentMessageFilterService && !CurrentMessageFilterService.data()->acceptMessage(message))
 		return false;
 
-	bool sent = protocol->chatService()->sendMessage(message);
+	Message transformedMessage = CurrentMessageTransformerService
+			? CurrentMessageTransformerService.data()->transform(message)
+			: message;
+
+	bool sent = protocol->chatService()->sendMessage(transformedMessage);
 	if (sent && !silent)
-		emit messageSent(message);
+		emit messageSent(transformedMessage);
 
 	return sent;
 }

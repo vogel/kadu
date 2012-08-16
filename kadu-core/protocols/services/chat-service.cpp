@@ -36,26 +36,6 @@ ChatService::~ChatService()
 {
 }
 
-void ChatService::setMessageFilterService(MessageFilterService *messageFilterService)
-{
-	CurrentMessageFilterService = messageFilterService;
-}
-
-MessageFilterService * ChatService::messageFilterService() const
-{
-	return CurrentMessageFilterService.data();
-}
-
-void ChatService::setMessageTransformerService(MessageTransformerService *messageTransformerService)
-{
-	CurrentMessageTransformerService = messageTransformerService;
-}
-
-MessageTransformerService * ChatService::messageTransformerService() const
-{
-	return CurrentMessageTransformerService.data();
-}
-
 void ChatService::setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService)
 {
 	CurrentRawMessageTransformerService = rawMessageTransformerService;

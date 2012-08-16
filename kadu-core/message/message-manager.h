@@ -40,9 +40,9 @@ class MessageTransformerService;
  */
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @class MessageManager
  * @short Manager of messages used in Kadu.
+ * @author Rafał 'Vogel' Malinowski
  *
  * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permament storage.
  * Pending message is an incoming message that have not ever been displayed to user.
@@ -66,16 +66,16 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 	void init();
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Create outoing message for given chat and given content.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param chat chat of outgoing message
 	 * @param content content of outgoing message
 	 */
 	Message createOutgoingMessage(const Chat &chat, FormattedString *content);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Imports list of pending messages from < 0.10.0 configurations.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return true if there was something to import
 	 *
 	 * This methods import list of pending messages from < 0.10.0 configurations. If there was no such
@@ -85,8 +85,8 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 
 private slots:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Slot called every time a new message was received from any of registered accounts.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message received message
 	 *
 	 * This slot is called every time a new message was received from any of registered accounts.
@@ -164,8 +164,8 @@ public:
 	bool sendMessage(const Chat &chat, FormattedString *content, bool silent = false);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Adds new unread message to the list.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message new unread message
 	 *
 	 * Adds new unread message to the list. Message's pending status is set to true if no applicable
@@ -174,8 +174,8 @@ public:
 	void addUnreadMessage(const Message &message);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Remove unread message to the list.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message unread message to remove
 	 *
 	 * Removes unread message to the list. Message's pending status is set to false.
@@ -184,8 +184,8 @@ public:
 	void removeUnreadMessage(const Message &message);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of all unread messages.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return list of all unread messages
 	 *
 	 * Returns list of all unread messages.
@@ -193,8 +193,8 @@ public:
 	const QList<Message> & allUnreadMessages() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of all unread messages for given chat.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param chat chat to get unread messages for
 	 * @return list of all unread messages for given chat
 	 *
@@ -203,8 +203,8 @@ public:
 	QList<Message> chatUnreadMessages(const Chat &chat) const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns true if there is any unread message in manager.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return true if there is any unread message in manager
 	 *
 	 * Returns true if there is any unread message in manager.
@@ -212,8 +212,8 @@ public:
 	bool hasUnreadMessages() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns count of unread messages in manager.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return count of unread messages in manager
 	 *
 	 * Returns count of unread messages in manager.
@@ -221,8 +221,8 @@ public:
 	quint16 unreadMessagesCount() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Marks all unread messages of given chat as read.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param chat chat to operate on
 	 *
 	 * Marks all unread messages of given chat as read. Messages are removed from unread list, its statuses
@@ -232,8 +232,8 @@ public:
 	void markAllMessagesAsRead(const Chat &chat);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns one of unread messages.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @return one of unread messages
 	 *
 	 * Returns one of unread messages. If no unread messages are available, returns null message.
@@ -241,8 +241,8 @@ public:
 	Message unreadMessage() const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns one of unread messages sent by given buddy.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param buddy sender of message
 	 * @return one of unread messages sent by given buddy
 	 *
@@ -251,8 +251,8 @@ public:
 	Message unreadMessageForBuddy(const Buddy &buddy) const;
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns one of unread messages sent by given contact.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param contact sender of message
 	 * @return one of unread messages sent by given contact
 	 *
@@ -262,8 +262,8 @@ public:
 
 signals:
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited every time a message is received from one of registered acocunts.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message received message
 	 *
 	 * This signal is emited every time a message is received from one of registered acocunts. It is not emited
@@ -272,8 +272,8 @@ signals:
 	void messageReceived(const Message &message);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited every time a message is sent trought one of registered acocunts.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message sent message
 	 *
 	 * This signal is emited every time a message is sent trought one of registered acocunts.
@@ -281,8 +281,8 @@ signals:
 	void messageSent(const Message &message);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited every time an unread message is added to manager.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message added unread message
 	 *
 	 * This signal is emited every time an unread message is added to manager.
@@ -290,8 +290,8 @@ signals:
 	void unreadMessageAdded(const Message &message);
 
 	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Signal emited every time an unread message is removed from manager.
+	 * @author Rafał 'Vogel' Malinowski
 	 * @param message removed unread message
 	 *
 	 * This signal is emited every time an unread message is removed from manager.

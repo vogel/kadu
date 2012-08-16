@@ -36,8 +36,6 @@
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
-#include "services/message-filter-service.h"
-#include "services/message-transformer-service.h"
 #include "services/raw-message-transformer-service.h"
 #include "status/status-type.h"
 #include "debug.h"
@@ -226,40 +224,36 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (!chat || chat.isIgnoreAllMessages())
 		return;
 
-	Message msg = Message::create();
-	msg.setMessageChat(chat);
-	msg.setType(type);
-	msg.setMessageSender(sender);
-	msg.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
-	msg.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
-	msg.setReceiveDate(QDateTime::currentDateTime());
+	Message message = Message::create();
+	message.setMessageChat(chat);
+	message.setType(type);
+	message.setMessageSender(sender);
+	message.setStatus(MessageTypeReceived == type ? MessageStatusReceived : MessageStatusSent);
+	message.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
+	message.setReceiveDate(QDateTime::currentDateTime());
 
 	QByteArray rawContent = getRawContent(e);
 	if (rawMessageTransformerService())
-		rawContent = rawMessageTransformerService()->transform(rawContent, msg);
+		rawContent = rawMessageTransformerService()->transform(rawContent, message);
 
 	QScopedPointer<FormattedString> formattedString(createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender)));
 	if (formattedString->isEmpty())
 		return;
 
-	msg.setContent(formattedString.take());
-
-	if (messageFilterService())
-		if (!messageFilterService()->acceptMessage(msg))
-			return;
+	message.setContent(formattedString.take());
 
 	if (MessageTypeReceived == type)
 	{
-		emit messageReceived(msg);
+		emit messageReceived(message);
 
 		FormattedStringImageKeyReceivedVisitor imageKeyReceivedVisitor(sender.id());
 		connect(&imageKeyReceivedVisitor, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)),
 		        this, SIGNAL(chatImageKeyReceived(QString,ChatImageKey)));
 
-		msg.content()->accept(&imageKeyReceivedVisitor);
+		message.content()->accept(&imageKeyReceivedVisitor);
 	}
 	else
-		emit messageSent(msg);
+		emit messageSent(message);
 }
 
 void GaduChatService::handleEventMsg(struct gg_event *e)
