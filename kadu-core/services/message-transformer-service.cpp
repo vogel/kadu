@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message/message-transformer.h"
-
 #include "message-transformer-service.h"
 
 MessageTransformerService::MessageTransformerService(QObject *parent) :
@@ -28,46 +26,4 @@ MessageTransformerService::MessageTransformerService(QObject *parent) :
 
 MessageTransformerService::~MessageTransformerService()
 {
-}
-
-void MessageTransformerService::registerOutgoingMessageTransformer(MessageTransformer *transformer)
-{
-	if (!transformer || OutgoingMessageTransformers.contains(transformer))
-		return;
-
-	OutgoingMessageTransformers.append(transformer);
-}
-
-void MessageTransformerService::unregisterOutgoingMessageTransformer(MessageTransformer *transformer)
-{
-	OutgoingMessageTransformers.removeAll(transformer);
-}
-
-QString MessageTransformerService::transformOutgoingMessage(const Chat &chat, const QString &message)
-{
-	QString result = message;
-	foreach (MessageTransformer *transformer, OutgoingMessageTransformers)
-		result = transformer->transformMessage(chat, result);
-	return result;
-}
-
-void MessageTransformerService::registerIncomingMessageTransformer(MessageTransformer *transformer)
-{
-	if (!transformer || IncomingMessageTransformers.contains(transformer))
-		return;
-
-	IncomingMessageTransformers.append(transformer);
-}
-
-void MessageTransformerService::unregisterIncomingMessageTransformer(MessageTransformer *transformer)
-{
-	IncomingMessageTransformers.removeAll(transformer);
-}
-
-QString MessageTransformerService::transformIncomingMessage(const Chat &chat, const QString &message)
-{
-	QString result = message;
-	foreach (MessageTransformer *transformer, IncomingMessageTransformers)
-		result = transformer->transformMessage(chat, result);
-	return result;
 }

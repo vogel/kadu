@@ -24,8 +24,10 @@
 
 #include "exports.h"
 
+#include "message/message-transformer.h"
+#include "services/transformer-service.h"
+
 class Chat;
-class MessageTransformer;
 
 /**
  * @addtogroup Services
@@ -41,12 +43,9 @@ class MessageTransformer;
  * as outgoing or incoming transformers. Calling transformOutgoingMessage() or transformIncomingMessage() will call
  * all transformations for given type of message and return combined result of all transformations.
  */
-class KADUAPI MessageTransformerService : public QObject
+class KADUAPI MessageTransformerService : public QObject, public TransformerService<MessageTransformer>
 {
 	Q_OBJECT
-
-	QList<MessageTransformer *> OutgoingMessageTransformers;
-	QList<MessageTransformer *> IncomingMessageTransformers;
 
 public:
 	/**
@@ -56,68 +55,6 @@ public:
 	 */
 	explicit MessageTransformerService(QObject *parent = 0);
 	virtual ~MessageTransformerService();
-
-	/**
-	 * @short Register instance of MessageTransformer as outgoing transformer.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param transformer transformer to register
-	 *
-	 * This method adds given transformer to list of transformers that will be executed on transformOutgoingMessage() call.
-	 * If transformer is already on list then this method will do nothing.
-	 */
-	void registerOutgoingMessageTransformer(MessageTransformer *transformer);
-
-	/**
-	 * @short Unregister instance of MessageTransformer as outgoing transformer.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param transformer transformer to unregister
-	 *
-	 * This method removes given transformer from list of transformers that will be executed on transformOutgoingMessage() call.
-	 * If transformer was not on list then this method will do nothing.
-	 */
-	void unregisterOutgoingMessageTransformer(MessageTransformer *transformer);
-
-	/**
-	 * @short Execute all registered outgoing transformers on given message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param message content of message
-	 * @return transformed message
-	 *
-	 * This method executes all outgoing transformers on given message and returns combined result of these transformations.
-	 */
-	QString transformOutgoingMessage(const Chat &chat, const QString &message);
-
-	/**
-	 * @short Register instance of MessageTransformer as incoming transformer.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param transformer transformer to register
-	 *
-	 * This method adds given transformer to list of transformers that will be executed on transformIncomingMessage() call.
-	 * If transformer is already on list then this method will do nothing.
-	 */
-	void registerIncomingMessageTransformer(MessageTransformer *transformer);
-
-	/**
-	 * @short Unregister instance of MessageTransformer as incoming transformer.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param transformer transformer to unregister
-	 *
-	 * This method removes given transformer from list of transformers that will be executed on transformIncomingMessage() call.
-	 * If transformer was not on list then this method will do nothing.
-	 */
-	void unregisterIncomingMessageTransformer(MessageTransformer *transformer);
-
-	/**
-	 * @short Execute all registered incoming transformers on given message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param message content of message
-	 * @return transformed message
-	 *
-	 * This method executes all incoming transformers on given message and returns combined result of these transformations.
-	 */
-	QString transformIncomingMessage(const Chat &chat, const QString &message);
 
 };
 

@@ -20,11 +20,11 @@
 #ifndef MESSAGE_TRANSFORMER_H
 #define MESSAGE_TRANSFORMER_H
 
-#include <QtCore/QObject>
+#include "core/transformer.h"
 
 #include "exports.h"
 
-class Chat;
+class Message;
 
 /**
  * @addtogroup Message
@@ -33,29 +33,23 @@ class Chat;
 
 /**
  * @class MessageTransformer
- * @short Interface to transform content of message.
+ * @short Interface to transform messages.
  * @author Rafał 'Vogel' Malinowski
  *
- * This interface allows arbitraty tranformations of message content. It can be used to encypt/decrypt messages, cenzor them
- * or change language to 1337.
+ * This interface allows arbitraty tranformations of messages. It can be used to cenzor them, change language to 1337,
+ * remove formatting or anything else.
  */
-class KADUAPI MessageTransformer : public QObject
+class KADUAPI MessageTransformer : public Transformer<Message>
 {
-	Q_OBJECT
-
-protected:
-	explicit MessageTransformer(QObject *parent = 0);
-	virtual ~MessageTransformer();
 
 public:
 	/**
 	 * @short Transform content of message.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of message
-	 * @param message content of message
+	 * @param message message to transform
 	 * @return transformed message
 	 */
-	virtual QString transformMessage(const Chat &chat, const QString &message) = 0;
+	virtual Message transform(const Message &message) = 0;
 
 };
 

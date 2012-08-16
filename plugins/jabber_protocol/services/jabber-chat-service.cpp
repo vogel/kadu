@@ -310,10 +310,10 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message));
 
-	if (messageTransformerService())
-		body = messageTransformerService()->transformIncomingMessage(chat, body);
-
 	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(body));
+
+	if (messageTransformerService())
+		message = messageTransformerService()->transform(message);
 
 	if (messageFilterService())
 		if (!messageFilterService()->acceptMessage(message))

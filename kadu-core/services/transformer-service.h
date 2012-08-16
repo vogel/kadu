@@ -17,41 +17,49 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RAW_MESSAGE_TRANSFORMER_H
-#define RAW_MESSAGE_TRANSFORMER_H
+#ifndef TRANSFORMER_SERVICE_H
+#define TRANSFORMER_SERVICE_H
 
-#include "core/configurable-transformer.h"
+#include <QtCore/QList>
+
 #include "exports.h"
 
-class QByteArray;
-
-class Chat;
-class Message;
-
 /**
- * @addtogroup Protocol
+ * @addtogroup Services
  * @{
  */
 
 /**
- * @class RawMessageTransformer
- * @short Interface to transform raw content of messages.
+ * @class TransformerService
+ * @short Template for services that registers list of Transformer instances.
  * @author Rafał 'Vogel' Malinowski
- *
- * This interface allows arbitraty tranformations of raw content of messages - the one that is directly sent or received.
  */
-class KADUAPI RawMessageTransformer : public ConfigurableTransformer<QByteArray, Message>
+template<typename T>
+class KADUAPI TransformerService
 {
+	QList<T *> Transformers;
 
 public:
-	/**
-	 * @short Transform raw content of message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param rawMessage raw content of message
-	 * @param memssage message that corresponds to rawMessage
-	 * @return transformed raw message content
-	 */
-	virtual QByteArray transform(const QByteArray &rawMessage, const Message &message) = 0;
+	void registerTransformer(T *transformer)
+	{
+		if (!transformer || Transformers.contains(transformer))
+			return;
+
+		Transformers.append(transformer);
+	}
+
+	void unregisterTransformer(T *transformer)
+	{
+		Transformers.removeAll(transformer);
+	}
+
+	typename T::object_type transform(const typename T::object_type &object)
+	{
+		typename T::object_type result = object;
+		foreach (T *transformer, Transformers)
+			result = transformer->transform(result);
+		return result;
+	}
 
 };
 
@@ -59,4 +67,4 @@ public:
  * @}
  */
 
-#endif // RAW_MESSAGE_TRANSFORMER_H
+#endif // TRANSFORMER_SERVICE_H

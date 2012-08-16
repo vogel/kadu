@@ -37,6 +37,8 @@ template <typename T>
 class Transformer
 {
 public:
+	typedef T object_type;
+
 	/**
 	 * @short Transform instance of class.
 	 * @author Rafał 'Vogel' Malinowski
