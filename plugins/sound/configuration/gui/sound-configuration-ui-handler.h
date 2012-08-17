@@ -51,7 +51,7 @@ private slots:
 	void soundFileEdited();
 
 	void configurationWindowApplied();
-    void configurationWindowDestroyed();
+	void configurationWindowDestroyed();
 
 public:
 	static void registerConfigurationUi();

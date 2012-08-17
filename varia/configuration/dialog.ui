@@ -79,6 +79,10 @@
 				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
 					tool-tip="Show vertical scrollbar in information panel" />
 			</group-box>
+			<group-box name="Parser">
+				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
+				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" id="parseStatus" />
+			</group-box>
 			<group-box name="Misc">
 				<check-box caption="Hide main window icon from taskbar" config-section="General" config-item="HideMainWindowFromTaskbar" id="hideMainWindowFromTaskbar" />
 				<combo-box caption="Select window activation method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
@@ -86,10 +90,6 @@
 					<item value="1" caption="Switch Desktop Making the Window Visible" />
 				</combo-box>
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" id="debug" />
-			</group-box>
-			<group-box name="Parser">
-				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
-				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" id="parseStatus" />
 			</group-box>
 		</tab>
 	</section>
@@ -113,7 +113,7 @@
 				<check-box caption="Flash chat title" config-section="Chat" config-item="BlinkChatTitle" />
 				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 			</group-box>
-			<group-box name="Syntax">
+			<group-box name="Chat syntax">
 				<action-button caption="Advanced..." id="lookChatAdvanced" />
 			</group-box>
 		</tab>

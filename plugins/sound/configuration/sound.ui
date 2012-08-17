@@ -3,10 +3,8 @@
 	<section name="Notifications">
 		<tab name="Sound">
 			<group-box name="General">
-				<check-box caption="Use sounds" config-section="Sounds" config-item="PlaySound" id="sound/use" />
+				<check-box caption="Enable sound notifications" config-section="Sounds" config-item="PlaySound" id="sound/use" />
 				<action-button caption="Test sound playing" id="sound/testPlay" />
-			</group-box>
-			<group-box name="Theme" id="sound/theme">
 				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
 				<path-list-edit caption="Sound paths" config-section="Sounds" config-item="SoundPaths" id="soundPaths" />
 			</group-box>

@@ -1,7 +1,7 @@
 <configuration-ui>
 	<section name="Behaviour">
-		<tab name="Autostatus">
-			<group-box name="General">
+		<tab name="Description">
+			<group-box name="AutoStatus">
 				<line-edit caption="Autostatus file" config-section="PowerKadu" config-item="status_file_path" id="autostatus/status_file_path" />
 				<spin-box caption="Time" config-section="PowerKadu" config-item="autostatus_time" min-value="1" max-value="3600" suffix="%n second(s)" id="autostatus/autostatus_time" />
 				<combo-box caption="Status" config-section="PowerKadu" config-item="autoStatus"

@@ -106,9 +106,11 @@ void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurati
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("sound/theme"), SLOT(setEnabled(bool)));
-	//connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
-	//	mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
+		mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("sound/themes"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("soundPaths"), SLOT(setEnabled(bool)));
 
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), SoundManager::instance(), SLOT(testSoundPlaying()));
 

@@ -2,8 +2,10 @@
 <configuration-ui>
 	<section name="General">
 		<tab name="General">
+			<group-box name="Startup">
+				<check-box caption="Start minimized" config-section="General" config-item="RunDocked" />
+			</group-box>
 			<group-box name="Tray">
-				<check-box caption="Hide Kadu in system tray on startup" config-section="General" config-item="RunDocked" />
 				<check-box caption="Show tooltip over tray icon" config-section="General" config-item="ShowTooltipInTray" />
 				<combo-box caption="Tray icon indicating new message" config-section="Look" config-item="NewMessageIcon">
 					<item value="1" caption="Static Envelope" />
