@@ -179,8 +179,7 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			break;
 	}
 
-	HtmlMessageContent = replacedNewLine(MyMessage.htmlContent(), QLatin1String("<br/>"));
-	HtmlMessageContent.replace(QChar::LineSeparator, QLatin1String("<br/>"));
+	HtmlMessageContent = MyMessage.htmlContent();
 }
 
 MessageRenderInfo::~MessageRenderInfo()
