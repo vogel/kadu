@@ -170,22 +170,10 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			// do nothing
 			break;
 	}
-
-	HtmlMessageContent = MyMessage.htmlContent();
 }
 
 MessageRenderInfo::~MessageRenderInfo()
 {
-}
-
-void MessageRenderInfo::setHtmlMessageContent(const QString &htmlMessageContent)
-{
-	HtmlMessageContent = htmlMessageContent;
-}
-
-QString MessageRenderInfo::htmlMessageContent() const
-{
-	return HtmlMessageContent;
 }
 
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)

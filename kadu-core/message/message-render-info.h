@@ -41,7 +41,6 @@ class KADUAPI MessageRenderInfo : public QObject
 	Q_OBJECT
 
 	Message MyMessage;
-	QString HtmlMessageContent;
 
 	QString BackgroundColor;
 	QString FontColor;
@@ -59,9 +58,6 @@ public:
 
 	const Message & message() const { return MyMessage; }
 	Message & message() { return MyMessage; }
-
-	void setHtmlMessageContent(const QString &htmlMessageContent);
-	QString htmlMessageContent() const;
 
 	MessageRenderInfo & setSeparatorSize(int separatorSize);
 	int separatorSize() const { return SeparatorSize; }
