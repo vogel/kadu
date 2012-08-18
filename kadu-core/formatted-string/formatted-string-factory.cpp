@@ -42,8 +42,10 @@ FormattedString * FormattedStringFactory::partFromQTextCharFormat(const QTextCha
 {
 	if (text.isEmpty())
 		return 0;
-	else
-		return new FormattedStringTextBlock(text, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+
+	QString replacedNewLine = text;
+	replacedNewLine.replace(QChar::LineSeparator, '\n');
+	return new FormattedStringTextBlock(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
 FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
