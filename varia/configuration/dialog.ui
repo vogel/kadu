@@ -104,17 +104,8 @@
 				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
 					tool-tip="Display dates like Today, Yesterday or Friday, 2:30PM" />
 			</group-box>
-			<group-box name="Events">
-				<check-box caption="Inform about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
-				<check-box caption="Inform about chat events in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
-				<label caption="On new message:" />
-				<check-box caption="Block window close" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
-					tool-tip="Block chat window when a new message arrives" />
-				<check-box caption="Flash chat title" config-section="Chat" config-item="BlinkChatTitle" />
-				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
-			</group-box>
 			<group-box name="Chat syntax">
-				<action-button caption="Advanced..." id="lookChatAdvanced" />
+				<action-button caption="Configure..." id="lookChatAdvanced" />
 			</group-box>
 		</tab>
 		<tab name="Look">
@@ -205,8 +196,15 @@
 	<section name="Notifications" icon="kadu_icons/section-notifications">
 		<tab name="Options">
 			<group-box name="Chat">
+				<check-box caption="Notify about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
+				<check-box caption="Notify about chat events in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify"
 					config-item="NewMessageOnlyIfInactive" />
+				<label caption="On new message:" />
+				<check-box caption="Block window close" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
+					tool-tip="Block chat window when a new message arrives" />
+				<check-box caption="Flash chat title" config-section="Chat" config-item="BlinkChatTitle" />
+				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 			</group-box>
 			<group-box name="Silent Mode">
 				<check-box caption="Disable notifications when my status is set to 'Do not Disturb'" config-section="Notify"
@@ -231,26 +229,22 @@
 
 	<section name="Behaviour" icon="preferences-desktop-peripherals">
 		<tab name="Chat">
-			<group-box name="Events">
-				<combo-box caption="On new chat" config-section="Look" config-item="OpenChatOnMessage"
-					tool-tip="Choose what to do when new chat begins">
-					<item value="0" caption="Show new message icon on buddies list" />
-					<item value="1" caption="Open chat window" />
-					<item value="2" caption="Open window only if I am available" />
-				</combo-box>
+			<group-box name="Chat Window">
+				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" id="openChatOnMessage"
+						tool-tip="Open chat window when a new message arrives" />
+				<check-box caption="Open chat window only when I am online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
+						id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" />
 				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
 					id="ignoreMessagesFromAnonymous" />
 				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
-					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." />
-			</group-box>
-			<group-box name="Misc">
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
-				<check-box caption="'Enter' in chat send message" config-section="Chat" config-item="AutoSend"
-					tool-tip="'Enter' in chat send message" />
-				<check-box caption="Confirm clearing chat window" config-section="Chat" config-item="ConfirmChatClear"
-					tool-tip="Ask before clearing chat window" />
-				<check-box caption="Save opened windows on exit" config-section="Chat" config-item="SaveOpenedWindows"
-					tool-tip="Save opened chat windows when exiting" />
+				<check-box caption="Remember opened chats" config-section="Chat" config-item="SaveOpenedWindows"
+					tool-tip="Save opened chat windows when exiting and restore them on next statup" />
+				<check-box caption="Enable sending message by hitting 'Enter'" config-section="Chat" config-item="AutoSend"
+					tool-tip="Hitting 'Enter' while typing in chat window sends message" />
+				<check-box caption="Ask before clearing messages in chat window" config-section="Chat" config-item="ConfirmChatClear"
+					tool-tip="Ask for confirmation before clearing chat window" />
 				<check-box caption="Clear recent chats list on exit" config-section="Chat" config-item="RecentChatsClear" id="recentChatsClear"
 					tool-tip="" />
 			</group-box>

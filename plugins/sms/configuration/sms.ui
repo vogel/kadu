@@ -2,10 +2,8 @@
 <configuration-ui>
 	<section name="SMS" icon="phone">
 		<tab name="General">
-			<group-box name="General">
-				<line-edit caption="Your nick for SMS" config-section="SMS" config-item="SmsNick" />
-			</group-box>
 			<group-box name="Application">
+				<line-edit caption="Your nick for SMS" config-section="SMS" config-item="SmsNick" />
 				<check-box caption="Use built-in SMS application" config-section="SMS" config-item="BuiltInApp" id="sms/useBuildInApp" />
 				<proxy-combo-box caption="SMS proxy for built-in application" config-section="SMS" config-item="Proxy" config-item-default="DefaultProxy" show-default="true" id="sms/proxy" />
 				<line-edit caption="Custom SMS application" config-section="SMS" config-item="SmsApp" id="sms/customApp" />

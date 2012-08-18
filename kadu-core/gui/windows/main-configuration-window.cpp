@@ -246,7 +246,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
  	connect(widget()->widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
-	connect(widget()->widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widget()->widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widget()->widgetById("ignoreFormattingFromAnonymous"), SLOT(setDisabled(bool)));
 
 	QWidget *useUserboxBackground = widget()->widgetById("useUserboxBackground");
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackground"), SLOT(setEnabled(bool)));

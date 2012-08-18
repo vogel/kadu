@@ -3,22 +3,22 @@
 	<section name="Screenshot" icon="external_modules/screenshot-camera-photo">
 		<tab name="General">
 			<group-box name="General Settings">
-				<combo-box caption="File format" config-section="ScreenShot" config-item="fileFormat" id="screenshot/formats"
+				<combo-box caption="Screenshot file format" config-section="ScreenShot" config-item="fileFormat" id="screenshot/formats"
 						   tool-tip="Select image format, which screenshots will be stored and sent in." />
 				<check-box caption="Force .jpg extension for JPEG format" config-section="ScreenShot" config-item="use_short_jpg"
 						   tool-tip="Forces to use short .jpg extension for files in JPEG format. Some other instant messagers needs it." />
 				<spin-box caption="Screenshots quality" config-section="ScreenShot" config-item="quality" min-value="-1" max-value="100"
 						  tool-tip="-1 for autodetection, 0 for best file compression, 100 for best image quality." />
 				<check-box caption="Paste image to chat window automatically" config-section="ScreenShot" config-item="paste_clause"
-						   tool-tip="When enabled, module will automatically paste ready to send [IMAGE] clause in chat window." />
+						   tool-tip="When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window." />
 			</group-box>
 			<group-box name="Directory">
 				<select-file caption="Screenshots directory path" config-section="ScreenShot" config-item="path" type="directory" />
 				<line-edit caption="Screenshots filename prefix" config-section="ScreenShot" config-item="filenamePrefix" />
 				<check-box caption="Enable directory size control" config-section="ScreenShot" config-item="dir_size_warns" id="screenshot/enableSizeLimit"
-						   tool-tip="When enabled, module will check for shots directory size and warn you if it gets size specified below." />
+						   tool-tip="When enabled, plugin will check for shots directory size and warn you if it gets size specified below." />
 				<spin-box caption="Maximum directory size" config-section="ScreenShot" config-item="dir_size_limit" min-value="10" max-value="500000" step="50" suffix=" kB" id="screenshot/sizeLimit"
-						  tool-tip="Define, how many kbytes can shots take in the directory before module will warn you." />
+						  tool-tip="Define, how many kbytes can shots take in the directory before plugin will warn you." />
 			</group-box>
 		</tab>
 	</section>
