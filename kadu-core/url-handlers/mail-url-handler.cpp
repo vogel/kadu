@@ -22,6 +22,7 @@
 #include <QtGui/QTextDocument>
 
 #include "os/generic/url-opener.h"
+#include "html_document.h"
 
 #include "mail-url-handler.h"
 

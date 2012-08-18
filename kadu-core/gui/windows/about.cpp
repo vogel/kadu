@@ -55,7 +55,6 @@
 #include "os/generic/url-opener.h"
 #include "url-handlers/mail-url-handler.h"
 #include "debug.h"
-#include "html_document.h"
 
 #include "about.h"
 

@@ -36,7 +36,6 @@
 #include "url-handlers/url-handler-manager.h"
 
 #include "debug.h"
-#include "html_document.h"
 
 #include "buddy-info-panel.h"
 
@@ -205,15 +204,13 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	}
 
 	QString html = UrlHandlerManager::instance()->convertAllUrls(Parser::parse(Syntax, item), false);
-	HtmlDocument doc;
-	doc.parseHtml(html);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
-		EmoticonsManager::instance()->expandEmoticons(doc,
+		html = EmoticonsManager::instance()->expandEmoticons(html,
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
-	setHtml(Template.arg(doc.generateHtml()));
+	setHtml(Template.arg(html));
 }
 
 void BuddyInfoPanel::setVisible(bool visible)

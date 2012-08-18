@@ -23,6 +23,7 @@
 
 #include "configuration/configuration-file.h"
 #include "os/generic/url-opener.h"
+#include "html_document.h"
 
 #include "standard-url-handler.h"
 

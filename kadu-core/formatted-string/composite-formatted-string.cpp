@@ -32,7 +32,6 @@
 #include "icons/icons-manager.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
-#include "html_document.h"
 
 #include "composite-formatted-string.h"
 

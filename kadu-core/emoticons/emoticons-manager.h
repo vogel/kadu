@@ -39,7 +39,6 @@
 
 class EmoticonThemeManager;
 class EmotsWalker;
-class HtmlDocument;
 
 /**
 	Menad�er emotikon�w
@@ -89,7 +88,7 @@ public:
 		\param style styl emotikonki jaki ma by� wstawiony - domy�lnie jest do
 		 aktualny zestaw
 	**/
-	void expandEmoticons(HtmlDocument &text, EmoticonsStyle style);
+	QString expandEmoticons(const QString &html, EmoticonsStyle style);
 
 	/**
 		Funkcja zwraca ilo�� emotikonek w zestawie

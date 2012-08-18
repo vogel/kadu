@@ -225,20 +225,23 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	return something_loaded;
 }
 
-void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
+QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle style)
 {
 	kdebugf();
+
+	HtmlDocument doc;
+	doc.parseHtml(html);
 
 	// prepare string for KaduWebView::convertClipboardHtml()
 	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" alt=\"%1\" src=\"file:///%2\" />");
 
 	if (EmoticonsStyleNone == style)
-		return;
+		return html;
 
 	if (!walker)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
-		return;
+		return html;
 	}
 
 	// check in config if user wants animated emots
@@ -302,6 +305,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument &doc, EmoticonsStyle style)
 	}
 	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n", qPrintable(doc.generateHtml()));
 	kdebugf2();
+
+	return doc.generateHtml();
 }
 
 int EmoticonsManager::selectorCount() const

@@ -36,6 +36,7 @@
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
+#include "html_document.h"
 
 #include "jabber-url-handler.h"
 

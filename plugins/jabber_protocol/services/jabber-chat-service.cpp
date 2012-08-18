@@ -42,7 +42,6 @@
 #include "services/raw-message-transformer-service.h"
 
 #include "debug.h"
-#include "html_document.h"
 
 #include "iris-status-adapter.h"
 #include "jabber-protocol.h"

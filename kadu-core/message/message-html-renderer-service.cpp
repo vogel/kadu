@@ -21,7 +21,6 @@
 #include "emoticons/emoticons-manager.h"
 #include "message/message.h"
 #include "url-handlers/url-handler-manager.h"
-#include "html_document.h"
 
 #include "message-html-renderer-service.h"
 
@@ -39,10 +38,7 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	QString htmlContent = message.htmlContent();
 
 	htmlContent = UrlHandlerManager::instance()->convertAllUrls(htmlContent, false);
+	htmlContent = EmoticonsManager::instance()->expandEmoticons(htmlContent, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
-	HtmlDocument htmlDocument;
-	htmlDocument.parseHtml(htmlContent);
-	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
-
-	return htmlDocument.generateHtml();
+	return htmlContent;
 }

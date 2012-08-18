@@ -23,8 +23,6 @@
 #ifndef URL_HANDLER_H
 #define URL_HANDLER_H
 
-#include "html_document.h"
-
 class UrlHandler
 {
 public:

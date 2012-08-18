@@ -47,7 +47,6 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
-#include "html_document.h"
 
 #include "misc.h"
 

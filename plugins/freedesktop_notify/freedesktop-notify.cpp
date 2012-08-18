@@ -36,7 +36,6 @@
 #include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
-#include "html_document.h"
 
 #include "freedesktop-notify.h"
 

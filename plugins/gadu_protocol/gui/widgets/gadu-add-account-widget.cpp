@@ -37,7 +37,6 @@
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
-#include "html_document.h"
 
 #include "gui/windows/gadu-remind-password-window.h"
 #include "server/gadu-server-register-account.h"
