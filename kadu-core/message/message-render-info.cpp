@@ -28,8 +28,10 @@
 
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
+#include "message/message-html-renderer-service.h"
 #include "misc/date-time.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
@@ -38,21 +40,11 @@
 
 #include "message-render-info.h"
 
-QString formatMessage(const QString& text)
-{
-	HtmlDocument htmlDocument;
-	htmlDocument.parseHtml(text);
-	UrlHandlerManager::instance()->convertAllUrls(htmlDocument, false);
-	EmoticonsManager::instance()->expandEmoticons(htmlDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
-
-	return htmlDocument.generateHtml();
-}
-
 static QString getMessage(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = qobject_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return formatMessage(messageRenderInfo->htmlMessageContent());
+		return Core::instance()->messageHtmlRendererService()->renderMessage(messageRenderInfo->message());
 	else
 		return QString();
 }

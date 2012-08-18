@@ -57,6 +57,7 @@ class KaduIcon;
 class KaduWindow;
 class Message;
 class MessageFilterService;
+class MessageHtmlRendererService;
 class MessageTransformerService;
 class NotificationService;
 class RawMessageTransformerService;
@@ -74,6 +75,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatImageRequestService *CurrentChatImageRequestService;
 	ImageStorageService *CurrentImageStorageService;
 	MessageFilterService *CurrentMessageFilterService;
+	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
 	MessageTransformerService *CurrentMessageTransformerService;
 	NotificationService *CurrentNotificationService;
 	FormattedStringFactory *CurrentFormattedStringFactory;
@@ -132,6 +134,7 @@ public:
 	ChatImageRequestService * chatImageRequestService() const;
 	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
+	MessageHtmlRendererService * messageHtmlRendererService() const;
 	MessageTransformerService * messageTransformerService() const;
 	NotificationService * notificationService() const;
 	FormattedStringFactory * formattedStringFactory() const;

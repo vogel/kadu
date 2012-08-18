@@ -30,6 +30,7 @@
 
 class AdiumChatStyleEngine;
 class Chat;
+class MessageHtmlRendererService;
 class Preview;
 
 // What a ugly hack!
@@ -83,6 +84,8 @@ class AdiumChatStyleEngine : public QObject, public ChatStyleEngine
 	friend class RefreshViewHack;
 	friend class PreviewHack;
 
+	QWeakPointer<MessageHtmlRendererService> CurrentMessageHtmlRendererService;
+
 	AdiumStyle CurrentStyle;
 	QMap<HtmlMessagesRenderer *, RefreshViewHack *> CurrentRefreshHacks;
 	QWeakPointer<PreviewHack> CurrentPreviewHack;
@@ -100,6 +103,8 @@ private slots:
 public:
 	explicit AdiumChatStyleEngine(QObject *parent = 0);
 	virtual ~AdiumChatStyleEngine();
+
+	void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
 
 	virtual bool supportVariants() { return true; }
 	virtual QString isStyleValid(QString styleName);

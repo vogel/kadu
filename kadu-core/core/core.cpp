@@ -55,6 +55,7 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "kadu-application.h"
+#include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/kadu-paths.h"
@@ -541,6 +542,7 @@ void Core::runServices()
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageFilterService = new MessageFilterService(this);
+	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentFormattedStringFactory = new FormattedStringFactory();
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
@@ -581,6 +583,11 @@ ImageStorageService * Core::imageStorageService() const
 MessageFilterService * Core::messageFilterService() const
 {
 	return CurrentMessageFilterService;
+}
+
+MessageHtmlRendererService * Core::messageHtmlRendererService() const
+{
+	return CurrentMessageHtmlRendererService;
 }
 
 MessageTransformerService * Core::messageTransformerService() const

@@ -80,6 +80,4 @@ public:
 
 };
 
-QString formatMessage(const QString &text);
-
 #endif // MESSAGE_RENDER_INFO

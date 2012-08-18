@@ -39,6 +39,7 @@
 #include "chat/style-engines/chat-engine-kadu/chat-engine-kadu.h"
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "emoticons/emoticons-manager.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
@@ -94,6 +95,7 @@ void ChatStylesManager::init()
 	registerChatStyleEngine("Kadu", KaduEngine);
 
 	AdiumEngine = new AdiumChatStyleEngine(this);
+	AdiumEngine->setMessageHtmlRendererService(Core::instance()->messageHtmlRendererService());
 	registerChatStyleEngine("Adium", AdiumEngine);
 
 	loadStyles();

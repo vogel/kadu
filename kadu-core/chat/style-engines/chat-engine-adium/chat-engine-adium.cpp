@@ -41,6 +41,7 @@
 #include "gui/widgets/preview.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "message/message-html-renderer-service.h"
 #include "message/message-render-info.h"
 #include "misc/date-time.h"
 #include "misc/kadu-paths.h"
@@ -158,6 +159,11 @@ AdiumChatStyleEngine::AdiumChatStyleEngine(QObject *parent) :
 
 AdiumChatStyleEngine::~AdiumChatStyleEngine()
 {
+}
+
+void AdiumChatStyleEngine::setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService)
+{
+	CurrentMessageHtmlRendererService = messageHtmlRendererService;
 }
 
 void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
@@ -562,8 +568,9 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		result.replace(textPos, senderColorRegExp.cap(0).length(), doLight ? lightColorName : colorName);
 	}
 
-// Replace message TODO: do sth with formatMessage
-	QString messageText = formatMessage(message->htmlMessageContent());
+	QString messageText = CurrentMessageHtmlRendererService
+			? CurrentMessageHtmlRendererService.data()->renderMessage(message->message())
+			: message->message().htmlContent();
 
 	if (!message->message().id().isEmpty())
 		messageText.prepend(QString("<span id=\"message_%1\">").arg(message->message().id()));
