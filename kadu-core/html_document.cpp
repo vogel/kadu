@@ -65,39 +65,6 @@ void HtmlDocument::addElement(Element e)
 	Elements.append(e);
 }
 
-void HtmlDocument::addTag(const QString &text)
-{
-	Element e;
-	e.text = text;
-	e.tag = true;
-	Elements.append(e);
-}
-
-void HtmlDocument::addText(const QString &text)
-{
-	Element e;
-	e.text = text;
-	e.tag = false;
-	Elements.append(e);
-}
-
-void HtmlDocument::insertTag(const int pos, const QString &text)
-{
-	Element e;
-	e.text = text;
-	e.tag = true;
-	Elements.insert(pos,e);
-}
-
-void HtmlDocument::insertText(const int pos, const QString &text)
-{
-	Element e;
-	e.text = text;
-	e.tag = false;
-	Elements.append(e);
-	Elements.insert(pos,e);
-}
-
 void HtmlDocument::parseHtml(const QString &html)
 {
 //	kdebugm(KDEBUG_FUNCTION_START | KDEBUG_INFO, "%s\n", qPrintable(html));
