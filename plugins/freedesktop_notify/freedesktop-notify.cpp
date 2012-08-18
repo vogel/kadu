@@ -218,13 +218,7 @@ void FreedesktopNotify::notify(Notification *notification)
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())
-		{
-			HtmlDocument doc;
-			doc.parseHtml(body);
-			UrlHandlerManager::instance()->convertAllUrls(doc, true);
-
-			body = doc.generateHtml();
-		}
+			body = UrlHandlerManager::instance()->convertAllUrls(body, true);
 	}
 
 	args.append(body);

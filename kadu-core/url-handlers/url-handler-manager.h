@@ -53,7 +53,7 @@ public:
 	void registerUrlHandler(const QString &name, UrlHandler *handler);
 	void unregisterUrlHandler(const QString &name);
 
-	void convertAllUrls(HtmlDocument &document, bool generateOnlyHrefAttr);
+	QString convertAllUrls(const QString &string, bool generateOnlyHrefAttr);
 
 	void openUrl(const QByteArray &url, bool disableMenu = false);
 

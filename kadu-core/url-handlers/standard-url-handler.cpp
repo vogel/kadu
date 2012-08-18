@@ -38,8 +38,11 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
+QString StandardUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
 {
+	HtmlDocument document;
+	document.parseHtml(string);
+
 	for (int i = 0; i < document.countElements(); ++i)
 	{
 		if (document.isTagElement(i))
@@ -81,6 +84,8 @@ void StandardUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generate
 		document.splitElement(i, index, length);
 		document.setElementValue(i, link, true);
 	}
+
+	return document.generateHtml();
 }
 
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

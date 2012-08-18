@@ -32,9 +32,10 @@ public:
 
 	virtual bool isUrlValid(const QByteArray &url) = 0;
 
-	virtual void convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr) = 0;
+	virtual QString convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr) = 0;
 
 	virtual void openUrl(const QByteArray &url, bool disableMenu = false) = 0;
+
 };
 
 #endif // URL_HANDLER_H

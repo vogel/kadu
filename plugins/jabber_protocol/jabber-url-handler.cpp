@@ -65,9 +65,12 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
+QString JabberUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
 {
 	Q_UNUSED(generateOnlyHrefAttr)
+
+	HtmlDocument document;
+	document.parseHtml(string);
 
 	for (int i = 0; i < document.countElements(); ++i)
 	{
@@ -85,6 +88,8 @@ void JabberUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOn
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"" + jid + "\">" + jid + "</a>", true);
 	}
+
+	return document.generateHtml();
 }
 
 void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

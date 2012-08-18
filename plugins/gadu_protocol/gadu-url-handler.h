@@ -47,9 +47,10 @@ public:
 
 	bool isUrlValid(const QByteArray &url);
 
-	void convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr);
+	QString convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr);
 
 	void openUrl(const QByteArray &url, bool disableMenu);
+
 };
 
 #endif // GADU_URL_HANDLER_H

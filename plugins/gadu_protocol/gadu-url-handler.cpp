@@ -49,9 +49,12 @@ bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
+QString GaduUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
 {
 	Q_UNUSED(generateOnlyHrefAttr)
+
+	HtmlDocument document;
+	document.parseHtml(string);
 
 	for (int i = 0; i < document.countElements(); ++i)
 	{
@@ -69,6 +72,8 @@ void GaduUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnly
 		document.splitElement(i, index, length);
 		document.setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);
 	}
+
+	return string;
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

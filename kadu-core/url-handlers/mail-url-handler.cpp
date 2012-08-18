@@ -35,8 +35,11 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnlyHrefAttr)
+QString MailUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
 {
+	HtmlDocument document;
+	document.parseHtml(string);
+
 	for (int i = 0; i < document.countElements(); ++i)
 	{
 		if (document.isTagElement(i))
@@ -60,6 +63,8 @@ void MailUrlHandler::convertUrlsToHtml(HtmlDocument &document, bool generateOnly
 
 		document.setElementValue(i, anchor, true);
 	}
+
+	return document.generateHtml();
 }
 
 void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

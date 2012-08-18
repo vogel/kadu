@@ -204,9 +204,9 @@ void BuddyInfoPanel::displayItem(Talkable item)
 		return;
 	}
 
+	QString html = UrlHandlerManager::instance()->convertAllUrls(Parser::parse(Syntax, item), false);
 	HtmlDocument doc;
-	doc.parseHtml(Parser::parse(Syntax, item));
-	UrlHandlerManager::instance()->convertAllUrls(doc, false);
+	doc.parseHtml(html);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))

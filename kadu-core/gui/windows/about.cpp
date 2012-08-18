@@ -127,12 +127,9 @@ About::About(QWidget *parent) :
 	authors.prepend("<b>");
 	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
 	authors.replace('\n', QLatin1String("</b><br/><b>"));
-	HtmlDocument authors_html;
-	authors_html.parseHtml(authors);
-	MailUrlHandler *handler = new MailUrlHandler;
-	handler->convertUrlsToHtml(authors_html, true);
-	delete handler;
-	tb_authors->setHtml(authors_html.generateHtml());
+	MailUrlHandler handler;
+	authors = handler.convertUrlsToHtml(authors, true);
+	tb_authors->setHtml(authors);
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
