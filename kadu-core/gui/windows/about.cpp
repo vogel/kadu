@@ -143,9 +143,7 @@ About::About(QWidget *parent) :
 	thanks.prepend("<b>");
 	thanks.replace("\n\n", QLatin1String("</b><br/><br/>"));
 	thanks.replace("\n   ", "<br/>&nbsp;&nbsp;&nbsp;");
-	HtmlDocument thanks_html;
-	thanks_html.parseHtml(thanks);
-	tb_thanks->setHtml(thanks_html.generateHtml());
+	tb_thanks->setHtml(thanks);
 
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
@@ -163,9 +161,6 @@ About::About(QWidget *parent) :
 	tb_changelog->viewport()->setAutoFillBackground(false);
 	QString changelog = Qt::escape(loadFile("ChangeLog"));
 	changelog.replace('\n', "<br/>");
-	HtmlDocument changelog_html;
-	changelog_html.parseHtml(changelog);
-	changelog = changelog_html.generateHtml();
 	// #bug_no -> Redmine URL
 	changelog.replace(QRegExp("#(\\d+)"), "<a href=\"http://www.kadu.im/redmine/issues/\\1\">#\\1</a>");
 	// bold headers with green "+++"
