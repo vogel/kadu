@@ -97,6 +97,10 @@
 	<section name="Chat" icon="internet-group-chat">
 		<tab name="General">
 			<group-box name="Messages">
+				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
+					id="ignoreMessagesFromAnonymous" />
+				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
 					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
 				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
@@ -198,20 +202,21 @@
 			<group-box name="Chat">
 				<check-box caption="Notify about chat events in chat window" config-section="Chat" config-item="ContactStateChats" id="contactStateChats" />
 				<check-box caption="Notify about chat events in windows' titles" config-section="Chat" config-item="ContactStateWindowTitle" id="contactStateWindowTitle" />
+			</group-box>
+			<group-box name="New Message">
 				<check-box caption="Notify about new messages only when window is inactive" config-section="Notify"
 					config-item="NewMessageOnlyIfInactive" />
-				<label caption="On new message:" />
 				<check-box caption="Block window close" config-section="Chat" config-item="ChatCloseTimer" id="chatCloseTimer"
 					tool-tip="Block chat window when a new message arrives" />
 				<check-box caption="Flash chat title" config-section="Chat" config-item="BlinkChatTitle" />
 				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
 			</group-box>
 			<group-box name="Silent Mode">
-				<check-box caption="Disable notifications when my status is set to 'Do not Disturb'" config-section="Notify"
-					config-item="AwaySilentMode" id="notify/awaySilentMode" />
 				<check-box caption="Disable notifications when a fullscreen application is active" config-section="Notify"
 					config-item="FullscreenSilentMode" id="notify/fullscreenSilentMode"
 					tool-tip="Disables notifications when running a fullscreen application: movie player, game, etc." />
+				<check-box caption="Disable notifications when my status is set to 'Do not Disturb'" config-section="Notify"
+					config-item="AwaySilentMode" id="notify/awaySilentMode" />
 			</group-box>
 			<group-box name="Status Change">
 				<check-box caption="Ignore status changes available - busy" config-section="Notify"
@@ -234,10 +239,6 @@
 						tool-tip="Open chat window when a new message arrives" />
 				<check-box caption="Open chat window only when I am online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
 						id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" />
-				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
-					id="ignoreMessagesFromAnonymous" />
-				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
-					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
 				<check-box caption="Remember opened chats" config-section="Chat" config-item="SaveOpenedWindows"
 					tool-tip="Save opened chat windows when exiting and restore them on next statup" />

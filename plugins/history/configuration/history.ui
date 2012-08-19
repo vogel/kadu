@@ -3,7 +3,7 @@
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="Chats History" id="history/chats">
-				<check-box caption="Save messages in history" config-section="History" config-item="SaveChats" id="history/save"
+				<check-box caption="Save chats in history" config-section="History" config-item="SaveChats" id="history/save"
 						tool-tip="Save messages in history" />
 				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" />
 			</group-box>
