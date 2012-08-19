@@ -88,6 +88,7 @@ set (kadu_SUBDIRS
 	configuration
 	contacts
 	core
+	dom
 	emoticons
 	file-transfer
 	formatted-string

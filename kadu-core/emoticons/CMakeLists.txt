@@ -1,9 +1,12 @@
 set (emoticons_SRCS
+	animated-emoticon-path-provider.cpp
+	emoticon-expander.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
 	emoticons-manager.cpp
 	emots-walker.cpp
 	prefix-node.cpp
+	static-emoticon-path-provider.cpp
 )
 
 set (emoticons_MOC_SRCS

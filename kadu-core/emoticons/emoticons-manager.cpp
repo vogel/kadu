@@ -37,12 +37,17 @@
 #include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
+#include "dom/dom-processor.h"
+#include "dom/dom-text-callback.h"
+#include "emoticons/animated-emoticon-path-provider.h"
 #include "emoticons/emots-walker.h"
+#include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
 #include "themes/emoticon-theme-manager.h"
 #include "debug.h"
 
 #include "emoticons-manager.h"
+#include "emoticon-expander.h"
 
 EmoticonsManager * EmoticonsManager::Instance = 0;
 
@@ -225,68 +230,6 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	return something_loaded;
 }
 
-QDomText EmoticonsManager::insertEmoticon(QDomDocument domDocument, QDomText textNode, const EmoticonsManager::EmoticonsListItem &emoticon, int index, bool animated)
-{
-	int emoticonLength = emoticon.alias.length();
-
-	QDomText afterEmoticon = textNode.splitText(index + emoticonLength);
-	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
-
-	QDomElement emoticonElement = domDocument.createElement("img");
-	emoticonElement.setAttribute("emoticon", emoticon.alias);
-	emoticonElement.setAttribute("title", emoticon.alias);
-	emoticonElement.setAttribute("alt", emoticon.alias);
-	emoticonElement.setAttribute("src", "file:///" + animated ? emoticon.anim : emoticon.stat);
-	textNode.parentNode().insertBefore(emoticonElement, afterEmoticon);
-
-	return afterEmoticon;
-}
-
-QDomText EmoticonsManager::expandFirstEmoticon(QDomDocument domDocument, QDomText textNode, bool animated)
-{
-	QString text = textNode.nodeValue().toLower();
-	int textLength = text.length();
-
-	if (0 == textLength)
-		return QDomText();
-
-	int currentEmoticonStart = -1;
-	int currentEmoticonIndex = -1;
-
-	walker->initWalking();
-	for (int i = 0; i < textLength; i++)
-	{
-		int emoticonIndex = walker->checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
-		if (emoticonIndex < 0)
-			continue;
-
-		int emoticonStart = i - Aliases.at(emoticonIndex).alias.length() + 1;
-		if (currentEmoticonIndex < 0 || currentEmoticonStart >= emoticonStart)
-		{
-			currentEmoticonIndex = emoticonIndex;
-			currentEmoticonStart = emoticonStart;
-			continue;
-		}
-
-		const EmoticonsListItem &emoticon = Aliases.at(currentEmoticonIndex);
-		return insertEmoticon(domDocument, textNode, emoticon, currentEmoticonStart, animated);
-	}
-
-	if (currentEmoticonIndex >= 0)
-	{
-		const EmoticonsListItem &emoticon = Aliases.at(currentEmoticonIndex);
-		insertEmoticon(domDocument, textNode, emoticon, currentEmoticonStart, animated);
-	}
-
-	return QDomText();
-}
-
-void EmoticonsManager::expandEmoticons(QDomDocument domDocument, QDomText textNode, bool animated)
-{
-	while (!textNode.isNull())
-		textNode = expandFirstEmoticon(domDocument, textNode, animated);
-}
-
 QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle style)
 {
 	kdebugf();
@@ -303,31 +246,18 @@ QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle st
 		return html;
 	}
 
-	// check in config if user wants animated emots
-	bool animated = style == EmoticonsStyleAnimated;
+	QScopedPointer<EmoticonPathProvider> emoticonPathProvider(style == EmoticonsStyleAnimated
+			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
+			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider()));
+	EmoticonExpander emoticonExpander(walker, emoticonPathProvider.data());
 
 	QDomDocument domDocument;
 	// force content to be valid HTML with only one root
 	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	QStack<QDomNode> nodes;
-	nodes.push(domDocument.documentElement());
-
-	while (!nodes.isEmpty())
-	{
-		QDomNode node = nodes.pop();
-
-		QDomNodeList childNodes = node.childNodes();
-		uint childNodesLength = childNodes.length();
-		for (uint i = 0; i < childNodesLength; i++)
-			nodes.append(childNodes.at(i));
-
-		if (!node.isText())
-			continue;
-
-		expandEmoticons(domDocument, node.toText(), animated);
-	}
-
+	DomProcessor domProcessor;
+	domProcessor.setDomTextCallback(&emoticonExpander);
+	domProcessor.processDomDocument(domDocument);
 
 	QString result = domDocument.toString(0);
 	// remove <div></div>
