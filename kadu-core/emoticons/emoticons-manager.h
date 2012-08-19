@@ -37,6 +37,9 @@
 #include "emoticons/emoticons.h"
 #include "themes.h"
 
+class QDomDocument;
+class QDomText;
+
 class EmoticonThemeManager;
 class EmotsWalker;
 
@@ -74,6 +77,10 @@ class KADUAPI EmoticonsManager : public QObject
 	bool loadGGEmoticonThemePart(const QString &themeSubDirPath);
 	bool loadGGEmoticonTheme(const QString &themeDirPath);
 	void loadTheme();
+
+	QDomText insertEmoticon(QDomDocument domDocument, QDomText textNode, const EmoticonsListItem &emoticon, int index, bool animated);
+	QDomText expandFirstEmoticon(QDomDocument domDocument, QDomText textNode, bool animated);
+	void expandEmoticons(QDomDocument domDocument, QDomText textNode, bool animated);
 
 public:
 	static EmoticonsManager * instance();

@@ -31,6 +31,7 @@
 
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QStack>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtGui/QTextDocument>
@@ -40,7 +41,6 @@
 #include "misc/misc.h"
 #include "themes/emoticon-theme-manager.h"
 #include "debug.h"
-#include "html_document.h"
 
 #include "emoticons-manager.h"
 
@@ -225,12 +225,71 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	return something_loaded;
 }
 
+QDomText EmoticonsManager::insertEmoticon(QDomDocument domDocument, QDomText textNode, const EmoticonsManager::EmoticonsListItem &emoticon, int index, bool animated)
+{
+	int emoticonLength = emoticon.alias.length();
+
+	QDomText afterEmoticon = textNode.splitText(index + emoticonLength);
+	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
+
+	QDomElement emoticonElement = domDocument.createElement("img");
+	emoticonElement.setAttribute("emoticon", emoticon.alias);
+	emoticonElement.setAttribute("title", emoticon.alias);
+	emoticonElement.setAttribute("alt", emoticon.alias);
+	emoticonElement.setAttribute("src", "file:///" + animated ? emoticon.anim : emoticon.stat);
+	textNode.parentNode().insertBefore(emoticonElement, afterEmoticon);
+
+	return afterEmoticon;
+}
+
+QDomText EmoticonsManager::expandFirstEmoticon(QDomDocument domDocument, QDomText textNode, bool animated)
+{
+	QString text = textNode.nodeValue().toLower();
+	int textLength = text.length();
+
+	if (0 == textLength)
+		return QDomText();
+
+	int currentEmoticonStart = -1;
+	int currentEmoticonIndex = -1;
+
+	walker->initWalking();
+	for (int i = 0; i < textLength; i++)
+	{
+		int emoticonIndex = walker->checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
+		if (emoticonIndex < 0)
+			continue;
+
+		int emoticonStart = i - Aliases.at(emoticonIndex).alias.length() + 1;
+		if (currentEmoticonIndex < 0 || currentEmoticonStart >= emoticonStart)
+		{
+			currentEmoticonIndex = emoticonIndex;
+			currentEmoticonStart = emoticonStart;
+			continue;
+		}
+
+		const EmoticonsListItem &emoticon = Aliases.at(currentEmoticonIndex);
+		return insertEmoticon(domDocument, textNode, emoticon, currentEmoticonStart, animated);
+	}
+
+	if (currentEmoticonIndex >= 0)
+	{
+		const EmoticonsListItem &emoticon = Aliases.at(currentEmoticonIndex);
+		insertEmoticon(domDocument, textNode, emoticon, currentEmoticonStart, animated);
+	}
+
+	return QDomText();
+}
+
+void EmoticonsManager::expandEmoticons(QDomDocument domDocument, QDomText textNode, bool animated)
+{
+	while (!textNode.isNull())
+		textNode = expandFirstEmoticon(domDocument, textNode, animated);
+}
+
 QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle style)
 {
 	kdebugf();
-
-	HtmlDocument doc;
-	doc.parseHtml(html);
 
 	// prepare string for KaduWebView::convertClipboardHtml()
 	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" alt=\"%1\" src=\"file:///%2\" />");
@@ -247,66 +306,32 @@ QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle st
 	// check in config if user wants animated emots
 	bool animated = style == EmoticonsStyleAnimated;
 
-	kdebugm(KDEBUG_INFO, "Expanding emoticons...\n");
-	// iterate through parsed html parts of message
-	for (int e_i = 0; e_i < doc.countElements(); ++e_i)
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
+
+	QStack<QDomNode> nodes;
+	nodes.push(domDocument.documentElement());
+
+	while (!nodes.isEmpty())
 	{
-		// emots are not expanded in html tags
-		if (doc.isTagElement(e_i))
+		QDomNode node = nodes.pop();
+
+		QDomNodeList childNodes = node.childNodes();
+		uint childNodesLength = childNodes.length();
+		for (uint i = 0; i < childNodesLength; i++)
+			nodes.append(childNodes.at(i));
+
+		if (!node.isText())
 			continue;
 
-		// analyze text of this text part
-		QString text = doc.elementText(e_i).toLower();
-		// variables storing position of last occurrence
-		// of emot matching current emots dictionary
-		int lastBegin = -1;
-		int lastEmot = -1;
-		// intitialize automata for checking occurrences
-		// of emots in text
-		walker->initWalking();
-		for (int j = 0, textlength = text.length(); j < textlength; ++j)
-		{
-			// find out if there is some emot occurrence when we
-			// add current character
-			int idx = walker->checkEmotOccurrence(text.at(j), (j < textlength - 1) && text.at(j + 1).isLetter());
-			// when some emot from dictionary is ending at current character
-			if (idx >= 0)
-			{
-				// check if there already was some occurrence, whose
-				// beginning is before beginning of currently found one
-				if (lastEmot >= 0 && lastBegin >= 0 && lastBegin < j - Aliases.at(idx).alias.length() + 1)
-				{
-					// if so, then replace that previous occurrence
-					// with html tag
-					doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
-					QString new_text = emotTemplate.arg(Qt::escape(doc.elementText(e_i)), animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
-					doc.setElementValue(e_i, new_text, true);
-
-					// our analysis will begin directly after
-					// occurrence of previous emot
-					lastEmot = -1;
-					break;
-				}
-				else
-				{
-					// this is first occurrence in current text part
-					lastEmot = idx;
-					lastBegin = j - Aliases.at(lastEmot).alias.length() + 1;
-				}
-			}
-		}
-		// this is the case, when only one emot was found in current text part
-		if (lastEmot >= 0)
-		{
-			doc.splitElement(e_i, lastBegin, Aliases.at(lastEmot).alias.length());
-			QString new_text = emotTemplate.arg(Qt::escape(doc.elementText(e_i)), animated ? Aliases.at(lastEmot).anim : Aliases.at(lastEmot).stat);
-			doc.setElementValue(e_i, new_text, true);
-		}
+		expandEmoticons(domDocument, node.toText(), animated);
 	}
-	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n", qPrintable(doc.generateHtml()));
-	kdebugf2();
 
-	return doc.generateHtml();
+
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }
 
 int EmoticonsManager::selectorCount() const
