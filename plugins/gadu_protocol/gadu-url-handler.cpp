@@ -74,7 +74,7 @@ QString GaduUrlHandler::convertUrlsToHtml(const QString &string, bool generateOn
 		document.setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);
 	}
 
-	return string;
+	return document.generateHtml();
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
