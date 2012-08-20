@@ -21,18 +21,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QTimer>
+
 #include "screen-mode-checker.h"
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
 ScreenModeChecker::ScreenModeChecker()
-		: InFullScreen(false)
+		: FullScreenCheckTimer(0), InFullScreen(false)
 {
-	if (isDummy())
-		return;
-
-	FullScreenCheckTimer.setInterval(FULLSCREENCHECKTIMER_INTERVAL);
-	connect(&FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
 }
 
 ScreenModeChecker::~ScreenModeChecker()
@@ -42,13 +39,26 @@ ScreenModeChecker::~ScreenModeChecker()
 
 void ScreenModeChecker::enable()
 {
-	if (!isDummy())
-		FullScreenCheckTimer.start();
+	if (isDummy())
+		return;
+
+	if (!FullScreenCheckTimer)
+		FullScreenCheckTimer = new QTimer(this);
+
+	FullScreenCheckTimer->setInterval(FULLSCREENCHECKTIMER_INTERVAL);
+	connect(FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
+	FullScreenCheckTimer->start();
 }
 
 void ScreenModeChecker::disable()
 {
-	FullScreenCheckTimer.stop();
+	if (!FullScreenCheckTimer)
+		return;
+
+	FullScreenCheckTimer->stop();
+	disconnect(FullScreenCheckTimer, 0, this, 0);
+	FullScreenCheckTimer->deleteLater();
+	FullScreenCheckTimer = 0;
 }
 
 void ScreenModeChecker::checkFullScreen()

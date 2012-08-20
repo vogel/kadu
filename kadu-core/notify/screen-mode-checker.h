@@ -25,13 +25,14 @@
 #define SCREEN_MODE_CHECKER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QTimer>
+
+class QTimer;
 
 class ScreenModeChecker : public QObject
 {
 	Q_OBJECT
 
-	QTimer FullScreenCheckTimer;
+	QTimer *FullScreenCheckTimer;
 	bool InFullScreen;
 
 private slots:
@@ -44,6 +45,7 @@ public:
 	void enable();
 	void disable();
 
+	// Do not call these methods in c-tor/d-tor!
 	virtual bool isFullscreenAppActive() { return false; }
 	virtual bool isScreensaverActive() { return false; }
 	virtual bool isDummy() { return true; }
