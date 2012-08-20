@@ -164,17 +164,11 @@ void TabWidget::updateTabsMenu()
 		QAction *action = new QAction(QIcon(), tabText(i), this);
 		action->setData(QVariant(i));
 
-		if (isTabVisible(i))
+		if (i == tabBar()->currentIndex())
 		{
 			QFont font = action->font();
 			font.setBold(true);
 			action->setFont(font);
-		}
-
-		if (i == tabBar()->currentIndex())
-		{
-			action->setCheckable(true);
-			action->setChecked(true);
 		}
 
 		TabsMenu->addAction(action);
