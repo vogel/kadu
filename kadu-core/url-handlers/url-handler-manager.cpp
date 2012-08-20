@@ -75,9 +75,9 @@ QString UrlHandlerManager::convertAllUrls(const QString &string, bool generateOn
 {
 	QString result = string;
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-		result = handler->convertUrlsToHtml(result, generateOnlyHrefAttr);
+		return handler->convertUrlsToHtml(result, generateOnlyHrefAttr);
 
-	return result;
+	// return result;
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)

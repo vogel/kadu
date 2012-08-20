@@ -17,27 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/chat-configuration-holder.h"
-#include "emoticons/emoticons-manager.h"
-#include "message/message.h"
-#include "url-handlers/url-handler-manager.h"
+#ifndef STANDARD_URL_EXPANDER_H
+#define STANDARD_URL_EXPANDER_H
 
-#include "message-html-renderer-service.h"
+#include "dom/dom-text-regexp-callback.h"
 
-MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
-		QObject(parent)
+class StandardUrlExpander : public DomTextRegexpCallback
 {
-}
+	bool OnlyHref;
+	bool FoldLink;
+	int FoldLinkThreshold;
 
-MessageHtmlRendererService::~MessageHtmlRendererService()
-{
-}
-QString MessageHtmlRendererService::renderMessage(const Message &message)
-{
-	QString htmlContent = message.htmlContent();
+	bool shouldFold(int length);
+	QString displayLink(const QString &link);
 
-	htmlContent = UrlHandlerManager::instance()->convertAllUrls(htmlContent, false);
-	htmlContent = EmoticonsManager::instance()->expandEmoticons(htmlContent, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
+public:
+	explicit StandardUrlExpander(const QRegExp &regExp, bool onlyHref, bool foldLink, int foldLinkThreshold);
+	virtual ~StandardUrlExpander();
 
-	return htmlContent;
-}
+	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp);
+
+};
+
+#endif // STANDARD_URL_EXPANDER_H

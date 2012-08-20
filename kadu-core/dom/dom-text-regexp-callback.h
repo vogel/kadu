@@ -17,27 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "configuration/chat-configuration-holder.h"
-#include "emoticons/emoticons-manager.h"
-#include "message/message.h"
-#include "url-handlers/url-handler-manager.h"
+#ifndef DOM_TEXT_REGEXP_CALLBACK_H
+#define DOM_TEXT_REGEXP_CALLBACK_H
 
-#include "message-html-renderer-service.h"
+#include <QtCore/QRegExp>
 
-MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
-		QObject(parent)
+#include "dom/dom-text-callback.h"
+
+class QDomDocument;
+class QDomNode;
+
+class DomTextRegexpCallback : public DomTextCallback
 {
-}
+	QRegExp RegExp;
 
-MessageHtmlRendererService::~MessageHtmlRendererService()
-{
-}
-QString MessageHtmlRendererService::renderMessage(const Message &message)
-{
-	QString htmlContent = message.htmlContent();
+	QDomText expandFirstMatch(QDomText textNode);
 
-	htmlContent = UrlHandlerManager::instance()->convertAllUrls(htmlContent, false);
-	htmlContent = EmoticonsManager::instance()->expandEmoticons(htmlContent, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
+public:
+	explicit DomTextRegexpCallback(const QRegExp &regExp);
+	virtual ~DomTextRegexpCallback();
 
-	return htmlContent;
-}
+	virtual void processDomText(QDomText textNode);
+
+	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp) = 0;
+
+};
+
+#endif // DOM_TEXT_REGEXP_CALLBACK_H

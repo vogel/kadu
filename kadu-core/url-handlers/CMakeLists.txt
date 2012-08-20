@@ -1,5 +1,6 @@
 set (url-handlers_SRCS
 	mail-url-handler.cpp
+	standard-url-expander.cpp
 	standard-url-handler.cpp
 	url-handler-manager.cpp
 )

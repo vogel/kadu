@@ -22,10 +22,11 @@
 #include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
+#include "dom/dom-processor.h"
 #include "os/generic/url-opener.h"
-#include "html_document.h"
 
 #include "standard-url-handler.h"
+#include "standard-url-expander.h"
 
 StandardUrlHandler::StandardUrlHandler()
 {
@@ -39,54 +40,21 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString StandardUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
+QString StandardUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
 {
-	HtmlDocument document;
-	document.parseHtml(string);
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	for (int i = 0; i < document.countElements(); ++i)
-	{
-		if (document.isTagElement(i))
-			continue;
+	StandardUrlExpander urlExpander(UrlRegExp, generateOnlyHrefAttr, FoldLink, LinkFoldTreshold);
 
-		QString text = document.elementText(i);
-		int index = UrlRegExp.indexIn(text);
-		if (index < 0)
-			continue;
+	DomProcessor domProcessor;
+	domProcessor.setDomTextCallback(&urlExpander);
+	domProcessor.processDomDocument(domDocument);
 
-		int length = UrlRegExp.matchedLength();
-
-		QString link;
-		QString displayLink = Qt::escape(text.mid(index, length));
-		QString aLink = displayLink;
-
-		if (!aLink.contains("://"))
-			aLink.prepend("http://");
-
-		if (FoldLink && (length - index > LinkFoldTreshold))
-		{
-			displayLink = Qt::escape(text.mid(index, index + (LinkFoldTreshold / 2)) + "..."
-					+ text.mid(length - (LinkFoldTreshold / 2), LinkFoldTreshold / 2));
-
-			if (generateOnlyHrefAttr)
-				link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
-			else
-				// prepare string for KaduWebView::convertClipboardHtml()
-				link = "<a folded=\"1\" displaystr=\"" + displayLink + "\" href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
-		}
-		else
-		{
-			if (generateOnlyHrefAttr)
-				link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
-			else
-				link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
-		}
-
-		document.splitElement(i, index, length);
-		document.setElementValue(i, link, true);
-	}
-
-	return document.generateHtml();
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }
 
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
