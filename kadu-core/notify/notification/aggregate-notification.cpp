@@ -67,11 +67,6 @@ const QStringList AggregateNotification::details() const
 	return details;
 }
 
-void AggregateNotification::clearCallbacks()
-{
-	Notifications.first()->clearCallbacks();
-}
-
 void AggregateNotification::addCallback ( const QString& caption, const char* slot, const char* signature )
 {
 	Notifications.first()->addCallback(caption, slot, signature);

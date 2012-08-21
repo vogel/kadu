@@ -49,8 +49,6 @@ public:
 
 	const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
 
-	void clearCallbacks();
-
 	void addCallback(const QString &caption, const char *slot, const char *signature);
 
 	void setDefaultCallback(int timeout, const char *slot);

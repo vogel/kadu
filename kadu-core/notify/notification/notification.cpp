@@ -88,11 +88,6 @@ void Notification::close()
 	}
 }
 
-void Notification::clearCallbacks()
-{
-	Callbacks.clear();
-}
-
 void Notification::addCallback(const QString &caption, const char *slot, const char *signature)
 {
 	Callback callback;
@@ -148,11 +143,6 @@ void Notification::setText(const QString &text)
 void Notification::setDetails(const QStringList &details)
 {
 	Details = details;
-}
-
-void Notification::setDetails(const QString &details)
-{
-	Details = QStringList(details);
 }
 
 void Notification::setIcon(const KaduIcon &icon)

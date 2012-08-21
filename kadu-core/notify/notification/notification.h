@@ -157,11 +157,6 @@ public:
 		Zamyka zdarzenie. Wywo�uje sygna� closed() i usuwa obiekt.
 	 **/
 	virtual void close();
-
-	/**
-		Usuwa akcje u�ytkownika
-	 **/
-	void clearCallbacks();
 	/**
 		Dodaje akcje u�ytkownika.
 
@@ -218,7 +213,6 @@ public:
 		Ustawia szczeg��y zdarzenia (jak na przyk�ad tekst wiadomo�ci).
 	 **/
 	virtual void setDetails(const QStringList &details);
-	virtual void setDetails(const QString &details);
 	/**
 		Szczeg��y zdarzenia
 	 **/
