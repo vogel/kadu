@@ -257,6 +257,7 @@ public slots:
 	/**
 		Slot anuluj�cy domy�ln� akcj� - wywo�ywany r�cznie przy wyborze dowolnej innej akcji.
 	 **/
+	/// @todo API users can easily forget to call it. We should probably clear default callback automatically.
 	virtual void clearDefaultCallback();
 
 signals:
