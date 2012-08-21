@@ -31,6 +31,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "dom/dom-processor.h"
+#include "dom/ignore-links-dom-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "icons/kadu-icon.h"
@@ -55,9 +56,10 @@ void GaduUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefA
 	Q_UNUSED(generateOnlyHrefAttr)
 
 	SimpleUrlExpander urlExpander(GaduRegExp);
+	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
 
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&urlExpander);
+	domProcessor.accept(&ignoreLinksDomVisitor);
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

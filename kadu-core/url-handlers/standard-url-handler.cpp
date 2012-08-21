@@ -21,10 +21,11 @@
 
 #include "configuration/configuration-file.h"
 #include "dom/dom-processor.h"
+#include "dom/ignore-links-dom-visitor.h"
 #include "os/generic/url-opener.h"
+#include "url-handlers/standard-url-expander.h"
 
 #include "standard-url-handler.h"
-#include "standard-url-expander.h"
 
 StandardUrlHandler::StandardUrlHandler()
 {
@@ -41,9 +42,10 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 void StandardUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
 	StandardUrlExpander urlExpander(UrlRegExp, generateOnlyHrefAttr, FoldLink, LinkFoldTreshold);
+	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
 
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&urlExpander);
+	domProcessor.accept(&ignoreLinksDomVisitor);
 }
 
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

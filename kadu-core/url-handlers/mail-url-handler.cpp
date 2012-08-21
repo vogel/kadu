@@ -22,6 +22,7 @@
 #include <QtXml/QDomDocument>
 
 #include "dom/dom-processor.h"
+#include "dom/ignore-links-dom-visitor.h"
 #include "url-handlers/mail-url-expander.h"
 #include "os/generic/url-opener.h"
 
@@ -40,9 +41,10 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 void MailUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
 	MailUrlExpander urlExpander(MailRegExp, generateOnlyHrefAttr);
+	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
 
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&urlExpander);
+	domProcessor.accept(&ignoreLinksDomVisitor);
 }
 
 void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
