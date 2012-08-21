@@ -28,6 +28,8 @@
 
 #include "exports.h"
 
+class QDomDocument;
+
 class MailUrlHandler;
 class StandardUrlHandler;
 class UrlHandler;
@@ -52,7 +54,8 @@ public:
 	void registerUrlHandler(const QString &name, UrlHandler *handler);
 	void unregisterUrlHandler(const QString &name);
 
-	QString convertAllUrls(const QString &string, bool generateOnlyHrefAttr);
+	void expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr);
+	QString expandUrls(const QString &html, bool generateOnlyHrefAttr);
 
 	void openUrl(const QByteArray &url, bool disableMenu = false);
 

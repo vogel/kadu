@@ -36,7 +36,7 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
 	QString htmlContent = message.htmlContent();
 
-	htmlContent = UrlHandlerManager::instance()->convertAllUrls(htmlContent, false);
+	htmlContent = UrlHandlerManager::instance()->expandUrls(htmlContent, false);
 	htmlContent = EmoticonsManager::instance()->expandEmoticons(htmlContent, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
 	return htmlContent;

@@ -42,11 +42,9 @@ protected:
 public:
 	StandardUrlHandler();
 
-	bool isUrlValid(const QByteArray &url);
-
-	QString convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr);
-
-	void openUrl(const QByteArray &url, bool disableMenu = false);
+	virtual bool isUrlValid(const QByteArray &url);
+	virtual void expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr);
+	virtual void openUrl(const QByteArray &url, bool disableMenu = false);
 
 	const QRegExp &urlRegExp() { return UrlRegExp; }
 

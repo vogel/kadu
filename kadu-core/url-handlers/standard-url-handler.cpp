@@ -19,8 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
-
 #include "configuration/configuration-file.h"
 #include "dom/dom-processor.h"
 #include "os/generic/url-opener.h"
@@ -40,20 +38,12 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString StandardUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
+void StandardUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
-
 	StandardUrlExpander urlExpander(UrlRegExp, generateOnlyHrefAttr, FoldLink, LinkFoldTreshold);
 
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(&urlExpander);
-
-	QString result = domDocument.toString(0);
-	// remove <div></div>
-	return result.mid(5, result.length() - 12);
 }
 
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

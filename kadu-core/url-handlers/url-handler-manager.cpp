@@ -18,6 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtXml/QDomDocument>
+
 #include "mail-url-handler.h"
 #include "standard-url-handler.h"
 #include "url-handler.h"
@@ -71,13 +73,23 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 	}
 }
 
-QString UrlHandlerManager::convertAllUrls(const QString &string, bool generateOnlyHrefAttr)
+void UrlHandlerManager::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
-	QString result = string;
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-		result = handler->convertUrlsToHtml(result, generateOnlyHrefAttr);
+		handler->expandUrls(domDocument, generateOnlyHrefAttr);
+}
 
-	return result;
+QString UrlHandlerManager::expandUrls(const QString &html, bool generateOnlyHrefAttr)
+{
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
+
+	expandUrls(domDocument, generateOnlyHrefAttr);
+
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)

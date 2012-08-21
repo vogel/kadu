@@ -66,22 +66,14 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString JabberUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
+void JabberUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
 	Q_UNUSED(generateOnlyHrefAttr)
-
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
 	SimpleUrlExpander urlExpander(JabberRegExp);
 
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(&urlExpander);
-
-	QString result = domDocument.toString(0);
-	// remove <div></div>
-	return result.mid(5, result.length() - 12);
 }
 
 void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

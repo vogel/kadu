@@ -217,7 +217,7 @@ void FreedesktopNotify::notify(Notification *notification)
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())
-			body = UrlHandlerManager::instance()->convertAllUrls(body, true);
+			body = UrlHandlerManager::instance()->expandUrls(body, true);
 	}
 
 	args.append(body);

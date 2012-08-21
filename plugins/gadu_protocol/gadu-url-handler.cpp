@@ -36,6 +36,7 @@
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
+#include "url-handlers/simple-url-expander.h"
 
 #include "gadu-url-handler.h"
 
@@ -49,22 +50,14 @@ bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString GaduUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
+void GaduUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
 	Q_UNUSED(generateOnlyHrefAttr)
-
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
 	SimpleUrlExpander urlExpander(GaduRegExp);
 
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(&urlExpander);
-
-	QString result = domDocument.toString(0);
-	// remove <div></div>
-	return result.mid(5, result.length() - 12);
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

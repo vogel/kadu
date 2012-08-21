@@ -53,7 +53,7 @@
 #include "misc/kadu-paths.h"
 #include "os/generic/window-geometry-manager.h"
 #include "os/generic/url-opener.h"
-#include "url-handlers/mail-url-handler.h"
+#include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 
 #include "about.h"
@@ -126,8 +126,7 @@ About::About(QWidget *parent) :
 	authors.prepend("<b>");
 	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
 	authors.replace('\n', QLatin1String("</b><br/><b>"));
-	MailUrlHandler handler;
-	authors = handler.convertUrlsToHtml(authors, true);
+	authors = UrlHandlerManager::instance()->expandUrls(authors, false);
 	tb_authors->setHtml(authors);
 
 	// people to thank
