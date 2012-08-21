@@ -306,14 +306,13 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 
 void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 {
-	if (!NotificationMap.contains(id))
-		return;
-
 	Notification *notification = NotificationMap.value(id);
 	if (!notification)
 		return;
 
-	const QMetaObject *metaObject = notification->metaObject();
+	QObject *callbackObject = notification->callbackObject();
+
+	const QMetaObject *metaObject = callbackObject->metaObject();
 	int slotIndex = -1;
 
 	while (metaObject)
@@ -328,9 +327,8 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 	if (-1 == slotIndex)
 		return;
 
-	QMetaMethod slot = notification->metaObject()->method(slotIndex);
-	slot.invoke(notification, Qt::DirectConnection);
-	notification->clearDefaultCallback();
+	QMetaMethod slot = callbackObject->metaObject()->method(slotIndex);
+	slot.invoke(callbackObject);
 
 	QList<QVariant> args;
 	args.append(id);

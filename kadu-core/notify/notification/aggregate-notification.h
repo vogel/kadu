@@ -56,6 +56,7 @@ public:
 	void setDefaultCallback(int timeout, const char *slot);
 
 	virtual bool requireCallback();
+	virtual QObject * callbackObject() { return Notifications.first(); }
 
 	virtual bool isPeriodic() { return Notifications.first()->isPeriodic(); }
 	virtual int period() { return Notifications.first()->period(); }

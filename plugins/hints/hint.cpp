@@ -35,7 +35,6 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "icons/icons-manager.h"
-#include "notify/notification/aggregate-notification.h"
 #include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 #include "parser/parser.h"
@@ -57,12 +56,6 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		requireCallbacks = true;
 
 	notification->acquire();
-
-	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
-	if (aggregateNotification)
-	{
-		notification = aggregateNotification->notifications().first();
-	}
 
 	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(notification);
 	CurrentChat = chatNotification ? chatNotification->chat() : Chat::null;
@@ -86,7 +79,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		foreach (const Notification::Callback &i, callbacks)
 		{
 			QPushButton *button = new QPushButton(i.Caption, this);
-			connect(button, SIGNAL(clicked(bool)), notification, i.Slot);
+			connect(button, SIGNAL(clicked(bool)), notification->callbackObject(), i.Slot);
 			connect(button, SIGNAL(clicked(bool)), notification, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);

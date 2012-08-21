@@ -103,6 +103,6 @@ void WindowNotifierWindow::addButton(QWidget *parent, const QString &caption, co
 	QPushButton *button = new QPushButton();
 	parent->layout()->addWidget(button);
 	button->setText(caption);
-	connect(button, SIGNAL(clicked()), CurrentNotification, slot);
+	connect(button, SIGNAL(clicked()), CurrentNotification->callbackObject(), slot);
 	connect(button, SIGNAL(clicked()), CurrentNotification, SLOT(clearDefaultCallback()));
 }

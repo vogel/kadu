@@ -89,6 +89,7 @@ public:
 	{
 		QString Caption;
 		const char *Slot;
+		// TODO Qt5: think about removing Signature (freedesktop_notify needs it) in a way that doesn't depend on Qt implementation details
 		const char *Signature;
 
 		Callback() : Slot(0), Signature(0) {}
@@ -243,6 +244,8 @@ public:
 		@return lista akcji
 	 **/
 	virtual const QList<Callback> & getCallbacks() { return Callbacks; }
+
+	virtual QObject * callbackObject() { return this; }
 
 public slots:
 	/**
