@@ -19,6 +19,8 @@
 
 #include "configuration/chat-configuration-holder.h"
 #include "emoticons/emoticons-manager.h"
+#include "formatted-string/formatted-string.h"
+#include "formatted-string/formatted-string-dom-visitor.h"
 #include "message/message.h"
 #include "url-handlers/url-handler-manager.h"
 
@@ -35,16 +37,17 @@ MessageHtmlRendererService::~MessageHtmlRendererService()
 
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(message.htmlContent()));
+	FormattedStringDomVisitor formattedStringDomVisitor;
+	message.content()->accept(&formattedStringDomVisitor);
+
+	QDomDocument domDocument = formattedStringDomVisitor.result();
 
 	UrlHandlerManager::instance()->expandUrls(domDocument, false);
 	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
 	QString result = domDocument.toString(0).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
-	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
-	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
+	// remove <message></message>
+	Q_ASSERT(result.startsWith(QLatin1String("<message>")));
+	Q_ASSERT(result.endsWith(QLatin1String("</message>")));
+	return result.mid(qstrlen("<message>"), result.length() - qstrlen("<message></message>"));
 }
