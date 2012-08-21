@@ -230,20 +230,15 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	return something_loaded;
 }
 
-QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle style)
+void EmoticonsManager::expandEmoticons(QDomDocument domDocument, EmoticonsStyle style)
 {
-	kdebugf();
-
-	// prepare string for KaduWebView::convertClipboardHtml()
-	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" alt=\"%1\" src=\"file:///%2\" />");
-
 	if (EmoticonsStyleNone == style)
-		return html;
+		return;
 
 	if (!walker)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
-		return html;
+		return;
 	}
 
 	QScopedPointer<EmoticonPathProvider> emoticonPathProvider(style == EmoticonsStyleAnimated
@@ -252,16 +247,8 @@ QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle st
 	EmoticonExpander emoticonExpander(walker, emoticonPathProvider.data());
 	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&emoticonExpander);
 
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
-
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(&ignoreLinksDomVisitor);
-
-	QString result = domDocument.toString(0);
-	// remove <div></div>
-	return result.mid(5, result.length() - 12);
 }
 
 int EmoticonsManager::selectorCount() const

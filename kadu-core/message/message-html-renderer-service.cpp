@@ -32,12 +32,17 @@ MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
 MessageHtmlRendererService::~MessageHtmlRendererService()
 {
 }
+
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
-	QString htmlContent = message.htmlContent();
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(message.htmlContent()));
 
-	htmlContent = UrlHandlerManager::instance()->expandUrls(htmlContent, false);
-	htmlContent = EmoticonsManager::instance()->expandEmoticons(htmlContent, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
+	UrlHandlerManager::instance()->expandUrls(domDocument, false);
+	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
-	return htmlContent;
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }

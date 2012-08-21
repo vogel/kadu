@@ -203,14 +203,17 @@ void BuddyInfoPanel::displayItem(Talkable item)
 		return;
 	}
 
-	QString html = UrlHandlerManager::instance()->expandUrls(Parser::parse(Syntax, item), false);
+	QDomDocument domDocument;
+	domDocument.setContent(Template.arg(Parser::parse(Syntax, item)));
+
+	UrlHandlerManager::instance()->expandUrls(domDocument, false);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
-		html = EmoticonsManager::instance()->expandEmoticons(html,
+		EmoticonsManager::instance()->expandEmoticons(domDocument,
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
-	setHtml(Template.arg(html));
+	setHtml(domDocument.toString(0));
 }
 
 void BuddyInfoPanel::setVisible(bool visible)

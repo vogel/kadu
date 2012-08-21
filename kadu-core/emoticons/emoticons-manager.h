@@ -96,7 +96,7 @@ public:
 		\param style styl emotikonki jaki ma by� wstawiony - domy�lnie jest do
 		 aktualny zestaw
 	**/
-	QString expandEmoticons(const QString &html, EmoticonsStyle style);
+	void expandEmoticons(QDomDocument domDocument, EmoticonsStyle style);
 
 	/**
 		Funkcja zwraca ilo�� emotikonek w zestawie
