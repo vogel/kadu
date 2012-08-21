@@ -337,6 +337,7 @@ void FreedesktopNotify::actionInvoked(unsigned int id, QString action)
 
 	QMetaMethod slot = notification->metaObject()->method(slotIndex);
 	slot.invoke(notification, Qt::DirectConnection);
+	notification->clearDefaultCallback();
 
 	QList<QVariant> args;
 	args.append(id);
