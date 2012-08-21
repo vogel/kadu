@@ -22,7 +22,6 @@
 
 #include <QtGui/QCursor>
 #include <QtGui/QMenu>
-#include <QtGui/QTextDocument>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -31,18 +30,18 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "dom/dom-processor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
-#include "html_document.h"
 
 #include "gadu-url-handler.h"
 
 GaduUrlHandler::GaduUrlHandler()
 {
-	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,8}\\b");
+	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
 }
 
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
@@ -50,31 +49,22 @@ bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString GaduUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
+QString GaduUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
 {
 	Q_UNUSED(generateOnlyHrefAttr)
 
-	HtmlDocument document;
-	document.parseHtml(string);
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	for (int i = 0; i < document.countElements(); ++i)
-	{
-		if (document.isTagElement(i))
-			continue;
+	SimpleUrlExpander urlExpander(GaduRegExp);
 
-		QString text = document.elementText(i);
-		int index = GaduRegExp.indexIn(text);
-		if (index < 0)
-			continue;
+	DomProcessor domProcessor(domDocument);
+	domProcessor.accept(&urlExpander);
 
-		unsigned int length = GaduRegExp.matchedLength();
-		QString gg = Qt::escape(text.mid(index, length));
-
-		document.splitElement(i, index, length);
-		document.setElementValue(i, "<a href=\"" + gg + "\">" + gg + "</a>", true);
-	}
-
-	return document.generateHtml();
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)

@@ -73,16 +73,9 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 
 QString UrlHandlerManager::convertAllUrls(const QString &string, bool generateOnlyHrefAttr)
 {
-	int i = 0;
-
 	QString result = string;
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-	{
 		result = handler->convertUrlsToHtml(result, generateOnlyHrefAttr);
-		i++;
-		if (i == 2)
-			break;
-	}
 
 	return result;
 }

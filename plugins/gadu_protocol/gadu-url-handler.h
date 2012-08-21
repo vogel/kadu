@@ -47,7 +47,7 @@ public:
 
 	bool isUrlValid(const QByteArray &url);
 
-	QString convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr);
+	QString convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr);
 
 	void openUrl(const QByteArray &url, bool disableMenu);
 
