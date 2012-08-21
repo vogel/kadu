@@ -21,6 +21,7 @@
 #define DOM_PROCESSOR_H
 
 class QDomDocument;
+class QDomNode;
 
 class DomVisitor;
 
@@ -40,6 +41,8 @@ class DomVisitor;
 class DomProcessor
 {
 	QDomDocument &DomDocument;
+
+	void acceptNode(DomVisitor *visitor, QDomNode node);
 
 public:
 	/**
