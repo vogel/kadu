@@ -45,9 +45,8 @@ QString MailUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnly
 
 	MailUrlExpander urlExpander(MailRegExp, generateOnlyHrefAttr);
 
-	DomProcessor domProcessor;
-	domProcessor.setDomTextCallback(&urlExpander);
-	domProcessor.processDomDocument(domDocument);
+	DomProcessor domProcessor(domDocument);
+	domProcessor.accept(&urlExpander);
 
 	QString result = domDocument.toString(0);
 	// remove <div></div>

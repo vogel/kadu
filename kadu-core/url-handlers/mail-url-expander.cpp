@@ -22,7 +22,7 @@
 #include "mail-url-expander.h"
 
 MailUrlExpander::MailUrlExpander(const QRegExp &regExp, bool onlyHref) :
-		DomTextRegexpCallback(regExp), OnlyHref(onlyHref)
+		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
 {
 }
 

@@ -19,18 +19,18 @@
 
 #include <QtXml/QDomText>
 
-#include "dom-text-regexp-callback.h"
+#include "dom-text-regexp-visitor.h"
 
-DomTextRegexpCallback::DomTextRegexpCallback(const QRegExp &regExp) :
+DomTextRegexpVisitor::DomTextRegexpVisitor(const QRegExp &regExp) :
 		RegExp(regExp)
 {
 }
 
-DomTextRegexpCallback::~DomTextRegexpCallback()
+DomTextRegexpVisitor::~DomTextRegexpVisitor()
 {
 }
 
-QDomText DomTextRegexpCallback::expandFirstMatch(QDomText textNode)
+QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode)
 {
 	QString text = textNode.nodeValue();
 	int index = RegExp.indexIn(text);
@@ -48,7 +48,7 @@ QDomText DomTextRegexpCallback::expandFirstMatch(QDomText textNode)
 	return afterMatch;
 }
 
-void DomTextRegexpCallback::processDomText(QDomText textNode)
+void DomTextRegexpVisitor::visit(QDomText textNode)
 {
 	while (!textNode.isNull())
 		textNode = expandFirstMatch(textNode);

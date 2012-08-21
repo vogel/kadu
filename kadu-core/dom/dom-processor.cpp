@@ -20,24 +20,21 @@
 #include <QtCore/QStack>
 #include <QtXml/QDomNode>
 
-#include "dom/dom-text-callback.h"
+#include "dom/dom-visitor.h"
 
 #include "dom-processor.h"
 
-DomProcessor::DomProcessor() :
-		TextCallback(0)
+DomProcessor::DomProcessor(QDomDocument &domDocument) :
+		DomDocument(domDocument)
 {
 }
 
-void DomProcessor::setDomTextCallback(DomTextCallback *textCallback)
+void DomProcessor::accept(DomVisitor *visitor)
 {
-	TextCallback = textCallback;
-}
+	Q_ASSERT(visitor);
 
-void DomProcessor::processDomDocument(QDomDocument domDocument)
-{
 	QStack<QDomNode> nodes;
-	nodes.push(domDocument.documentElement());
+	nodes.push(DomDocument.documentElement());
 
 	while (!nodes.isEmpty())
 	{
@@ -51,8 +48,7 @@ void DomProcessor::processDomDocument(QDomDocument domDocument)
 		switch (node.nodeType())
 		{
 			case QDomNode::TextNode:
-				if (TextCallback)
-					TextCallback->processDomText(node.toText());
+				visitor->visit(node.toText());
 				break;
 			default:
 				break;

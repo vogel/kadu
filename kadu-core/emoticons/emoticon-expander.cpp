@@ -94,7 +94,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	return QDomText();
 }
 
-void EmoticonExpander::processDomText(QDomText textNode)
+void EmoticonExpander::visit(QDomText textNode)
 {
 	while (!textNode.isNull())
 		textNode = expandFirstEmoticon(textNode);

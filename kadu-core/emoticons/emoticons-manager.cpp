@@ -38,7 +38,6 @@
 
 #include "configuration/configuration-file.h"
 #include "dom/dom-processor.h"
-#include "dom/dom-text-callback.h"
 #include "emoticons/animated-emoticon-path-provider.h"
 #include "emoticons/emots-walker.h"
 #include "emoticons/static-emoticon-path-provider.h"
@@ -255,9 +254,8 @@ QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle st
 	// force content to be valid HTML with only one root
 	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	DomProcessor domProcessor;
-	domProcessor.setDomTextCallback(&emoticonExpander);
-	domProcessor.processDomDocument(domDocument);
+	DomProcessor domProcessor(domDocument);
+	domProcessor.accept(&emoticonExpander);
 
 	QString result = domDocument.toString(0);
 	// remove <div></div>

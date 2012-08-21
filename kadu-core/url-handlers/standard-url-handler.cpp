@@ -48,9 +48,8 @@ QString StandardUrlHandler::convertUrlsToHtml(const QString &html, bool generate
 
 	StandardUrlExpander urlExpander(UrlRegExp, generateOnlyHrefAttr, FoldLink, LinkFoldTreshold);
 
-	DomProcessor domProcessor;
-	domProcessor.setDomTextCallback(&urlExpander);
-	domProcessor.processDomDocument(domDocument);
+	DomProcessor domProcessor(domDocument);
+	domProcessor.accept(&urlExpander);
 
 	QString result = domDocument.toString(0);
 	// remove <div></div>

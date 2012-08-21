@@ -22,7 +22,7 @@
 
 class QDomDocument;
 
-class DomTextCallback;
+class DomVisitor;
 
 /**
  * @addtogroup Dom
@@ -34,38 +34,29 @@ class DomTextCallback;
  * @short Helper class for processing DOM documents.
  * @author Rafał 'Vogel' Malinowski
  *
- * This class can be used to process DOM documents in easy way. To use this class set callbacks for different node types
- * using setXXXCallback methods (fro example use setDomTextCallback to set callback for handling text nodes) and call
- * processDomDocument().
- *
- * Callback objects are allowed to modify DOM tree in any way.
+ * This class can be used to process DOM documents using visitor pattern.
+ * Visitor object is allowed to modify DOM tree in any way.
  */
 class DomProcessor
 {
-	DomTextCallback *TextCallback;
+	QDomDocument &DomDocument;
 
 public:
 	/**
 	 * @short Create new instance of DomProcessor.
 	 * @author Rafał 'Vogel' Malinowski
+	 * @param domDocument DOM document to process
 	 */
-	DomProcessor();
+	DomProcessor(QDomDocument &domDocument);
 
 	/**
-	 * @short Set callback class for handling text nodes.
+	 * @short Accept a visitor.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short textCallback callback for handling text nodes
-	 */
-	void setDomTextCallback(DomTextCallback *textCallback);
-
-	/**
-	 * @short Process document using set callbacks.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domDocument document to process
+	 * @param visitor to accept
 	 *
 	 * Processing is not read-only, so domDocument can be changed after calling this method.
 	 */
-	void processDomDocument(QDomDocument domDocument);
+	void accept(DomVisitor *visitor);
 
 };
 

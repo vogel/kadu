@@ -20,9 +20,9 @@
 #ifndef STANDARD_URL_EXPANDER_H
 #define STANDARD_URL_EXPANDER_H
 
-#include "dom/dom-text-regexp-callback.h"
+#include "dom/dom-text-regexp-visitor.h"
 
-class StandardUrlExpander : public DomTextRegexpCallback
+class StandardUrlExpander : public DomTextRegexpVisitor
 {
 	bool OnlyHref;
 	bool FoldLink;

@@ -22,7 +22,7 @@
 
 #include "emoticons/emoticons-manager.h"
 
-#include "dom/dom-text-callback.h"
+#include "dom/dom-visitor.h"
 
 class EmoticonPathProvider;
 class EmotsWalker;
@@ -34,10 +34,10 @@ class EmotsWalker;
 
 /**
  * @class EmoticonExpander
- * @short This DomTextCallback expands emoticons in all text nodes in processed DOM document.
+ * @short This DomVisitor expands emoticons in all text nodes in processed DOM document.
  * @author Rafał 'Vogel' Malinowski
  */
-class EmoticonExpander : public DomTextCallback
+class EmoticonExpander : public DomVisitor
 {
 	EmotsWalker *EmoticonWalker;
 	EmoticonPathProvider *PathProvider;
@@ -81,7 +81,7 @@ public:
 	 * This method expands emoticons in given text node. After that new text nodes and elements with img tag names will
 	 * be inserted after given textNode. Also text content of current textNode will be cut to first emoticon occurence.
 	 */
-	virtual void processDomText(QDomText textNode);
+	virtual void visit(QDomText textNode);
 
 };
 

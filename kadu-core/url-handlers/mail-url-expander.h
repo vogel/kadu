@@ -20,9 +20,9 @@
 #ifndef MAIL_URL_EXPANDER_H
 #define MAIL_URL_EXPANDER_H
 
-#include "dom/dom-text-regexp-callback.h"
+#include "dom/dom-text-regexp-visitor.h"
 
-class MailUrlExpander : public DomTextRegexpCallback
+class MailUrlExpander : public DomTextRegexpVisitor
 {
 	bool OnlyHref;
 

@@ -22,7 +22,7 @@
 #include "standard-url-expander.h"
 
 StandardUrlExpander::StandardUrlExpander(const QRegExp &regExp, bool onlyHref, bool foldLink, int foldLinkThreshold) :
-		DomTextRegexpCallback(regExp),
+		DomTextRegexpVisitor(regExp),
 		OnlyHref(onlyHref), FoldLink(foldLink), FoldLinkThreshold(foldLinkThreshold)
 {
 }

@@ -17,39 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOM_TEXT_CALLBACK_H
-#define DOM_TEXT_CALLBACK_H
+#ifndef DOM_TEXT_REGEXP_VISITOR_H
+#define DOM_TEXT_REGEXP_VISITOR_H
 
-class QDomText;
+#include <QtCore/QRegExp>
 
-/**
- * @addtogroup Dom
- * @{
- */
+#include "dom/dom-visitor.h"
 
-/**
- * @class DomTextCallback
- * @short Callback for processing text node.
- * @author Rafał 'Vogel' Malinowski
- *
- * Implementations of this interface can be set in DomProcessor to handle processing of text DOM nodes.
- */
-class DomTextCallback
+class QDomDocument;
+class QDomNode;
+
+class DomTextRegexpVisitor : public DomVisitor
 {
+	QRegExp RegExp;
+
+	QDomText expandFirstMatch(QDomText textNode);
+
 public:
-	/**
-	 * @short Process current text node.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param textNode text node to process
-	 *
-	 * This method can change textNode and/or document that this node belongs to.
-	 */
-	virtual void processDomText(QDomText textNode) = 0;
+	explicit DomTextRegexpVisitor(const QRegExp &regExp);
+	virtual ~DomTextRegexpVisitor();
+
+	virtual void visit(QDomText textNode);
+
+	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp) = 0;
 
 };
 
-/**
- * @}
- */
-
-#endif // DOM_TEXT_CALLBACK_H
+#endif // DOM_TEXT_REGEXP_VISITOR_H
