@@ -27,10 +27,10 @@ class MailUrlExpander : public DomTextRegexpVisitor
 	bool OnlyHref;
 
 public:
-	explicit MailUrlExpander(const QRegExp &regExp, bool onlyHref);
+	explicit MailUrlExpander(QRegExp regExp, bool onlyHref);
 	virtual ~MailUrlExpander();
 
-	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp);
+	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp);
 
 };
 

@@ -38,6 +38,7 @@
 
 #include "configuration/configuration-file.h"
 #include "dom/dom-processor.h"
+#include "dom/ignore-links-dom-visitor.h"
 #include "emoticons/animated-emoticon-path-provider.h"
 #include "emoticons/emots-walker.h"
 #include "emoticons/static-emoticon-path-provider.h"
@@ -249,13 +250,14 @@ QString EmoticonsManager::expandEmoticons(const QString &html, EmoticonsStyle st
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider()));
 	EmoticonExpander emoticonExpander(walker, emoticonPathProvider.data());
+	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&emoticonExpander);
 
 	QDomDocument domDocument;
 	// force content to be valid HTML with only one root
 	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&emoticonExpander);
+	domProcessor.accept(&ignoreLinksDomVisitor);
 
 	QString result = domDocument.toString(0);
 	// remove <div></div>

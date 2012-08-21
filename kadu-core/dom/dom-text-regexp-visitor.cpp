@@ -21,7 +21,7 @@
 
 #include "dom-text-regexp-visitor.h"
 
-DomTextRegexpVisitor::DomTextRegexpVisitor(const QRegExp &regExp) :
+DomTextRegexpVisitor::DomTextRegexpVisitor(QRegExp regExp) :
 		RegExp(regExp)
 {
 }
@@ -52,4 +52,14 @@ void DomTextRegexpVisitor::visit(QDomText textNode)
 {
 	while (!textNode.isNull())
 		textNode = expandFirstMatch(textNode);
+}
+
+void DomTextRegexpVisitor::beginVisit(QDomElement elementNode)
+{
+	Q_UNUSED(elementNode)
+}
+
+void DomTextRegexpVisitor::endVisit(QDomElement elementNode)
+{
+	Q_UNUSED(elementNode)
 }

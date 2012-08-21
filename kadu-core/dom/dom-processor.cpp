@@ -36,6 +36,9 @@ void DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
 		case QDomNode::TextNode:
 			visitor->visit(node.toText());
 			break;
+		case QDomNode::ElementNode:
+			visitor->beginVisit(node.toElement());
+			break;
 		default:
 			break;
 	}
@@ -44,6 +47,15 @@ void DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
 	uint childNodesLength = childNodes.length();
 	for (uint i = 0; i < childNodesLength; i++)
 		acceptNode(visitor, childNodes.at(i));
+
+	switch (node.nodeType())
+	{
+		case QDomNode::ElementNode:
+			visitor->endVisit(node.toElement());
+			break;
+		default:
+			break;
+	}
 }
 
 void DomProcessor::accept(DomVisitor *visitor)

@@ -17,29 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 
-#include "mail-url-expander.h"
+#include "ignore-links-dom-visitor.h"
 
-MailUrlExpander::MailUrlExpander(QRegExp regExp, bool onlyHref) :
-		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
+IgnoreLinksDomVisitor::IgnoreLinksDomVisitor(DomVisitor *visitor) :
+		Visitor(visitor), LinksDepth(0)
+{
+	Q_ASSERT(Visitor);
+}
+
+IgnoreLinksDomVisitor::~IgnoreLinksDomVisitor()
 {
 }
 
-MailUrlExpander::~MailUrlExpander()
+void IgnoreLinksDomVisitor::visit(QDomText textNode)
 {
+	if (0 == LinksDepth)
+		Visitor->visit(textNode);
 }
 
-QDomNode MailUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
+void IgnoreLinksDomVisitor::beginVisit(QDomElement elementNode)
 {
-	QDomElement linkElement = document.createElement("a");
-	QString mail = regExp.cap();
+	if (elementNode.tagName().toLower() == "a")
+		LinksDepth++;
+	else if (0 == LinksDepth)
+		Visitor->beginVisit(elementNode);
+}
 
-	linkElement.setAttribute("href", "mailto:" + mail);
-
-	if (!OnlyHref)
-		linkElement.setAttribute("title", mail);
-
-	linkElement.appendChild(document.createTextNode(mail));
-	return linkElement;
+void IgnoreLinksDomVisitor::endVisit(QDomElement elementNode)
+{
+	if (elementNode.tagName().toLower() == "a")
+		LinksDepth--;
+	else if (0 == LinksDepth)
+		Visitor->beginVisit(elementNode);
 }

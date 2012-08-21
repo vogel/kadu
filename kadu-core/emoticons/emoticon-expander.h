@@ -69,6 +69,9 @@ class EmoticonExpander : public DomVisitor
 	 */
 	QDomText expandFirstEmoticon(QDomText textNode);
 
+	virtual void beginVisit(QDomElement elementNode);
+	virtual void endVisit(QDomElement elementNode);
+
 public:
 	explicit EmoticonExpander(EmotsWalker *emoticonWalker, EmoticonPathProvider *pathProvider);
 	virtual ~EmoticonExpander();

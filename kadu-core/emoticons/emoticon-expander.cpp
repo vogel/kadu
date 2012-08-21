@@ -99,3 +99,13 @@ void EmoticonExpander::visit(QDomText textNode)
 	while (!textNode.isNull())
 		textNode = expandFirstEmoticon(textNode);
 }
+
+void EmoticonExpander::beginVisit(QDomElement elementNode)
+{
+	Q_UNUSED(elementNode);
+}
+
+void EmoticonExpander::endVisit(QDomElement elementNode)
+{
+	Q_UNUSED(elementNode);
+}

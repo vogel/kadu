@@ -34,12 +34,14 @@ class DomTextRegexpVisitor : public DomVisitor
 	QDomText expandFirstMatch(QDomText textNode);
 
 public:
-	explicit DomTextRegexpVisitor(const QRegExp &regExp);
+	explicit DomTextRegexpVisitor(QRegExp regExp);
 	virtual ~DomTextRegexpVisitor();
 
 	virtual void visit(QDomText textNode);
+	virtual void beginVisit(QDomElement elementNode);
+	virtual void endVisit(QDomElement elementNode);
 
-	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp) = 0;
+	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp) = 0;
 
 };
 

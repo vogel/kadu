@@ -17,29 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtXml/QDomDocument>
+#ifndef IGNORE_LINKS_DOM_VISITOR
+#define IGNORE_LINKS_DOM_VISITOR
 
-#include "mail-url-expander.h"
+#include "dom/dom-visitor.h"
 
-MailUrlExpander::MailUrlExpander(QRegExp regExp, bool onlyHref) :
-		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
+class IgnoreLinksDomVisitor : public DomVisitor
 {
-}
+	DomVisitor *Visitor;
+	int LinksDepth;
 
-MailUrlExpander::~MailUrlExpander()
-{
-}
+public:
+	explicit IgnoreLinksDomVisitor(DomVisitor *visitor);
+	virtual ~IgnoreLinksDomVisitor();
 
-QDomNode MailUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
-{
-	QDomElement linkElement = document.createElement("a");
-	QString mail = regExp.cap();
+	virtual void visit(QDomText textNode);
+	virtual void beginVisit(QDomElement elementNode);
+	virtual void endVisit(QDomElement elementNode);
 
-	linkElement.setAttribute("href", "mailto:" + mail);
+};
 
-	if (!OnlyHref)
-		linkElement.setAttribute("title", mail);
-
-	linkElement.appendChild(document.createTextNode(mail));
-	return linkElement;
-}
+#endif // IGNORE_LINKS_DOM_VISITOR

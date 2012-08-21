@@ -20,6 +20,7 @@
 #ifndef DOM_VISITOR_H
 #define DOM_VISITOR_H
 
+class QDomElement;
 class QDomText;
 
 /**
@@ -45,6 +46,9 @@ public:
 	 * This method can change textNode and/or document that this node belongs to.
 	 */
 	virtual void visit(QDomText textNode) = 0;
+
+	virtual void beginVisit(QDomElement elementNode) = 0;
+	virtual void endVisit(QDomElement elementNode) = 0;
 
 };
 

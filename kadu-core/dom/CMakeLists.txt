@@ -1,6 +1,7 @@
 set (dom_SRCS
 	dom-processor.cpp
 	dom-text-regexp-visitor.cpp
+	ignore-links-dom-visitor.cpp
 )
 
 set (dom_MOC_SRCS

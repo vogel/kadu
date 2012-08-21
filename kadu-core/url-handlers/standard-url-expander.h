@@ -32,10 +32,10 @@ class StandardUrlExpander : public DomTextRegexpVisitor
 	QString displayLink(const QString &link);
 
 public:
-	explicit StandardUrlExpander(const QRegExp &regExp, bool onlyHref, bool foldLink, int foldLinkThreshold);
+	explicit StandardUrlExpander(QRegExp regExp, bool onlyHref, bool foldLink, int foldLinkThreshold);
 	virtual ~StandardUrlExpander();
 
-	virtual QDomNode matchToDomNode(QDomDocument document, const QRegExp &regExp);
+	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp);
 
 };
 
