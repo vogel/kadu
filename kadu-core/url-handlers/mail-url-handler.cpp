@@ -19,10 +19,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QTextDocument>
+#include <QtXml/QDomDocument>
 
+#include "dom/dom-processor.h"
+#include "url-handlers/mail-url-expander.h"
 #include "os/generic/url-opener.h"
-#include "html_document.h"
 
 #include "mail-url-handler.h"
 
@@ -36,36 +37,21 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-QString MailUrlHandler::convertUrlsToHtml(const QString &string, bool generateOnlyHrefAttr)
+QString MailUrlHandler::convertUrlsToHtml(const QString &html, bool generateOnlyHrefAttr)
 {
-	HtmlDocument document;
-	document.parseHtml(string);
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	for (int i = 0; i < document.countElements(); ++i)
-	{
-		if (document.isTagElement(i))
-			continue;
+	MailUrlExpander urlExpander(MailRegExp, generateOnlyHrefAttr);
 
-		QString text = document.elementText(i);
-		int index = MailRegExp.indexIn(text);
-		if (index < 0)
-			continue;
+	DomProcessor domProcessor;
+	domProcessor.setDomTextCallback(&urlExpander);
+	domProcessor.processDomDocument(domDocument);
 
-		unsigned int length = MailRegExp.matchedLength();
-		QString mail = Qt::escape(text.mid(index, length));
-
-		document.splitElement(i, index, length);
-
-		QString anchor;
-		if (generateOnlyHrefAttr)
-			anchor = "<a href=\"mailto:" + mail + "\">" + mail + "</a>";
-		else
-			anchor = "<a href=\"mailto:" + mail + "\" title=\"" + mail +"\">" + mail + "</a>";
-
-		document.setElementValue(i, anchor, true);
-	}
-
-	return document.generateHtml();
+	QString result = domDocument.toString(0);
+	// remove <div></div>
+	return result.mid(5, result.length() - 12);
 }
 
 void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
