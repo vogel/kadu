@@ -137,6 +137,9 @@ const QList<NotifyEvent *> & NotificationManager::notifyEvents() const
 
 void NotificationManager::ignoreConnectionErrors(Account account)
 {
+	if (!account || !account.protocolHandler() || account.protocolHandler()->isConnected())
+		return;
+
 	IgnoredAccounts.append(account.id());
 	connect(account.protocolHandler(), SIGNAL(connected(Account)), this, SLOT(unignoreConnectionErrors(Account)));
 }
