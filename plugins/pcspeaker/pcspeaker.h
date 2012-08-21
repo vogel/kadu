@@ -24,7 +24,6 @@ class PCSpeaker : public Notifier, public GenericPlugin
 		virtual void done();
 
 		virtual void notify(Notification *notification);
-		virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 		void createDefaultConfiguration();
