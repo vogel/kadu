@@ -27,7 +27,6 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
-#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
@@ -56,12 +55,10 @@ GroupManager::GroupManager()
 
 GroupManager::~GroupManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void GroupManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
 }
 
 void GroupManager::importConfiguration()

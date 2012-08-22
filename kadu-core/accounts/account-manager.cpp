@@ -26,7 +26,6 @@
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -60,13 +59,10 @@ AccountManager::AccountManager()
 
 AccountManager::~AccountManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void AccountManager::init()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
-
 	// needed for QueuedConnection
 	qRegisterMetaType<Account>("Account");
 }

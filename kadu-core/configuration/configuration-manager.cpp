@@ -80,6 +80,12 @@ void ConfigurationManager::flush()
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)
 {
+	if (RegisteredStorableObjects.contains(object))
+	{
+		qWarning("Someone tried to register already registered storable object.");
+		return;
+	}
+
 	RegisteredStorableObjects.append(object);
 }
 
@@ -87,7 +93,8 @@ void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 {
 	object->ensureStored();
 
-	RegisteredStorableObjects.removeAll(object);
+	if (RegisteredStorableObjects.removeAll(object) <= 0)
+		qWarning("Someone tried to unregister unregistered storable object.");
 }
 
 void ConfigurationManager::importConfiguration()

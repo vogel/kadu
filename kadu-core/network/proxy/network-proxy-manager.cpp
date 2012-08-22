@@ -19,7 +19,6 @@
 
 #include <QtXml/QDomElement>
 
-#include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "storage/storage-point.h"
@@ -38,14 +37,11 @@ NetworkProxyManager * NetworkProxyManager::instance()
 
 NetworkProxyManager::NetworkProxyManager()
 {
-	ConfigurationManager::instance()->registerStorableObject(this);
-
 	configurationUpdated();
 }
 
 NetworkProxyManager::~NetworkProxyManager()
 {
-	ConfigurationManager::instance()->unregisterStorableObject(this);
 }
 
 void NetworkProxyManager::load()
