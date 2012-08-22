@@ -84,6 +84,7 @@ TabsManager::TabsManager(QObject *parent) :
 	kdebugf();
 
 	setState(StateNotLoaded);
+	ConfigurationManager::instance()->registerStorableObject(this);
 
 	createDefaultConfiguration();
 
@@ -136,12 +137,13 @@ TabsManager::~TabsManager()
 	Timer.stop();
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
+	// Call it before we close tab window.
+	ConfigurationManager::instance()->unregisterStorableObject(this);
+
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	if (!Core::instance()->isClosing())
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
 			detachChat(static_cast<ChatWidget *>(TabDialog->widget(i)));
-	else
-		ensureStored();
 
 	delete TabDialog;
 	TabDialog = 0;
