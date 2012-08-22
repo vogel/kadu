@@ -87,9 +87,11 @@ QString UrlHandlerManager::expandUrls(const QString &html, bool generateOnlyHref
 
 	expandUrls(domDocument, generateOnlyHrefAttr);
 
-	QString result = domDocument.toString(0);
+	QString result = domDocument.toString(0).trimmed();
 	// remove <div></div>
-	return result.mid(5, result.length() - 12);
+	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
+	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
+	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)

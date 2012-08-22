@@ -42,7 +42,9 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	UrlHandlerManager::instance()->expandUrls(domDocument, false);
 	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
-	QString result = domDocument.toString(0);
+	QString result = domDocument.toString(0).trimmed();
 	// remove <div></div>
-	return result.mid(5, result.length() - 12);
+	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
+	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
+	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
 }
