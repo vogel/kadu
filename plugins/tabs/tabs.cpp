@@ -156,6 +156,9 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 {
 	kdebugf();
 
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
+
 	if (NoTabs)
 	{
 		NoTabs = false;
@@ -201,6 +204,8 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 {
 	kdebugf();
+
+	chatWidget->chat().removeProperty("tabs:fix2626");
 
 	if (TabDialog->indexOf(chatWidget) != -1)
 	{
