@@ -86,7 +86,11 @@ void ConfigurationManager::registerStorableObject(StorableObject *object)
 		return;
 	}
 
-	RegisteredStorableObjects.append(object);
+	// Prepend so that store() method calls ensureStored() on objects in reverse order (LIFO).
+	// This way if object A is registered and then object B which depends on A and can
+	// change A's properties is registered, we first call ensureStored() on B, which can
+	// safely change A's properties and they will be stored.
+	RegisteredStorableObjects.prepend(object);
 }
 
 void ConfigurationManager::unregisterStorableObject(StorableObject *object)
