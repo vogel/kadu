@@ -187,6 +187,7 @@ void RecentChatManager::addRecentChat(Chat chat, QDateTime datetime)
 	ensureLoaded();
 
 	chat.addProperty("recent-chat:dateTime", datetime, CustomProperties::NonStorable);
+	chat.addProperty("recent-chat:fix2626", true, CustomProperties::Storable);
 
 	if (!RecentChats.isEmpty() && RecentChats.at(0) == chat)
 		return;
@@ -217,6 +218,7 @@ void RecentChatManager::removeRecentChat(Chat chat)
 		return;
 
 	emit recentChatAboutToBeRemoved(chat);
+	chat.removeProperty("recent-chat:fix2626");
 	RecentChats.removeAll(chat);
 	emit recentChatRemoved(chat);
 }
