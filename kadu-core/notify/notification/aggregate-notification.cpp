@@ -27,18 +27,30 @@ AggregateNotification::AggregateNotification(Notification *firstNotification)
 {
 	Notifications = QList<Notification *>();
 	Notifications.append(firstNotification);
+	firstNotification->acquire();
+}
+
+AggregateNotification::~AggregateNotification()
+{
+	foreach (Notification *notification, Notifications)
+		notification->release();
 }
 
 void AggregateNotification::addNotification(Notification* notification)
 {
 	Notifications.append(notification);
+	notification->acquire();
 
 	emit updated(this);
 }
 
 void AggregateNotification::close()
 {
-	emit closed(this);
+	foreach (Notification *notification, Notifications)
+		notification->release();
+	Notifications.clear();
+
+	Notification::close();
 }
 
 const QString AggregateNotification::title() const
@@ -60,44 +72,7 @@ const QStringList AggregateNotification::details() const
 	QStringList details;
 
 	foreach (Notification *n, Notifications)
-	{
 		details += n->details();
-	}
 
 	return details;
 }
-
-void AggregateNotification::addCallback ( const QString& caption, const char* slot, const char* signature )
-{
-	Notifications.first()->addCallback(caption, slot, signature);
-}
-
-void AggregateNotification::setDefaultCallback ( int timeout, const char* slot )
-{
-	Notifications.first()->setDefaultCallback(timeout, slot);
-}
-
-bool AggregateNotification::requireCallback()
-{
-	return Notifications.first()->requireCallback();
-}
-
-void AggregateNotification::callbackAccept()
-{
-	close();
-
-	Notifications.first()->callbackAccept();
-}
-
-void AggregateNotification::callbackDiscard()
-{
-	close();
-
-	Notifications.first()->callbackDiscard();
-}
-
-void AggregateNotification::clearDefaultCallback()
-{
-	Notifications.first()->clearDefaultCallback();
-}
-

@@ -144,14 +144,14 @@ public:
 	/**
 		Wywo�ywane przez notyfikator, kt�ry zajmuje si� danym zdarzeniem.
 	 **/
-	virtual void acquire();
+	void acquire();
 	/**
 		Wywo�ywane przez notyfikator, kt�ry przestaje zajmowa� si� danym zdarzeniem.
 		Gdy �aden notyfikator nie zajmuje si� danym zdarzeniem, zdarzenie jest zwalniane.
 		Wyst�puje to na przyk�ad w przypadku modu��w d�wi�kowych czy modu�u hints, gdy
 		dymek zniknie po up�ywie okre�lonego czasu a nie przez zdarzenie wywo�ane przez u�ytkownika.
 	 **/
-	virtual void release();
+	void release();
 
 	/**
 		Zamyka zdarzenie. Wywo�uje sygna� closed() i usuwa obiekt.
@@ -201,7 +201,7 @@ public:
 	/**
 		Ustawia tre�� zdarzenia.
 	 **/
-	virtual void setText(const QString &text);
+	void setText(const QString &text);
 	/**
 		Tre�� zdarzenia.
 
@@ -212,7 +212,7 @@ public:
 	/**
 		Ustawia szczeg��y zdarzenia (jak na przyk�ad tekst wiadomo�ci).
 	 **/
-	virtual void setDetails(const QStringList &details);
+	void setDetails(const QStringList &details);
 	/**
 		Szczeg��y zdarzenia
 	 **/
@@ -224,7 +224,7 @@ public:
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/
-	virtual void setIcon(const KaduIcon &icon);
+	void setIcon(const KaduIcon &icon);
 	/**
 		Ikona zdarzenia.
 

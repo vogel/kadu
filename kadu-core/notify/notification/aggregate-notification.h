@@ -29,40 +29,42 @@ class KADUAPI AggregateNotification : public Notification
 	QString GroupKey;
 	QList<Notification *> Notifications;
 
+// deleted:
+// TODO: we should probably define a simple read-only interface for notification objects and inherit only it in this class
+	void addCallback(const QString &caption, const char *slot, const char *signature);
+	void setDefaultCallback(int timeout, const char *slot);
+	void setTitle(const QString &title);
+	void setText(const QString &text);
+	void setDetails(const QStringList &details);
+	void setIcon(const KaduIcon &icon);
+
 public:
-	void addNotification(Notification * notification);
-	AggregateNotification(Notification *firstNotification);
+	explicit AggregateNotification(Notification *firstNotification);
+	virtual ~AggregateNotification();
 
-	QString identifier() { return Notifications.first()->identifier(); }
-
-	virtual const QString title() const;
-
-	virtual const QString text() const;
-
-	virtual const QStringList details() const;
-
-	virtual const KaduIcon & icon() const { return Notifications.first()->icon(); }
-
+	void addNotification(Notification *notification);
 	QList<Notification *> & notifications() { return Notifications; }
 
 	virtual void close();
-
-	const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
-
-	void addCallback(const QString &caption, const char *slot, const char *signature);
-
-	void setDefaultCallback(int timeout, const char *slot);
-
-	virtual bool requireCallback();
-	virtual QObject * callbackObject() { return Notifications.first(); }
-
+	virtual bool requireCallback() { return Notifications.first()->requireCallback(); }
+	// type?
+	// key?
+	// groupkey?
+	virtual QString identifier() { return Notifications.first()->identifier(); }
+	virtual const QString title() const;
+	virtual const QString text() const;
+	virtual const QStringList details() const;
 	virtual bool isPeriodic() { return Notifications.first()->isPeriodic(); }
 	virtual int period() { return Notifications.first()->period(); }
+	virtual const KaduIcon & icon() const { return Notifications.first()->icon(); }
+	virtual const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
+	virtual QObject * callbackObject() { return Notifications.first(); }
 
 public slots:
-	virtual void callbackAccept();
-	virtual void callbackDiscard();
-	virtual void clearDefaultCallback();
+	virtual void callbackAccept() { Notifications.first()->callbackAccept(); }
+	virtual void callbackDiscard() { Notifications.first()->callbackDiscard(); }
+	virtual void clearDefaultCallback() { Notifications.first()->clearDefaultCallback(); }
+
 };
 
 #endif // AGGREGATE_NOTIFICATION_H
