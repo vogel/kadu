@@ -30,7 +30,9 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "dom/dom-processor.h"
+#include "dom/dom-processor-service.h"
 #include "dom/ignore-links-dom-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -44,6 +46,22 @@
 GaduUrlHandler::GaduUrlHandler()
 {
 	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
+
+	UrlExpander = new SimpleUrlExpander(GaduRegExp);
+	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(UrlExpander);
+
+	Core::instance()->domProcessorService()->registerVisitor(IgnoreLinksVisitor, 1000);
+}
+
+GaduUrlHandler::~GaduUrlHandler()
+{
+	Core::instance()->domProcessorService()->unregisterVisitor(IgnoreLinksVisitor);
+
+	delete IgnoreLinksVisitor;
+	IgnoreLinksVisitor = 0;
+
+	delete UrlExpander;
+	UrlExpander = 0;
 }
 
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
@@ -55,11 +73,8 @@ void GaduUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefA
 {
 	Q_UNUSED(generateOnlyHrefAttr)
 
-	SimpleUrlExpander urlExpander(GaduRegExp);
-	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
-
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&ignoreLinksDomVisitor);
+	domProcessor.accept(IgnoreLinksVisitor);
 }
 
 void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
