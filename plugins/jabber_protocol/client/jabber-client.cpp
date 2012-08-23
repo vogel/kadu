@@ -413,7 +413,7 @@ void JabberClient::slotTLSHandshaken()
 		QString("%1: ").arg(Protocol->account().accountIdentity().name()) + tr("security problem"), host, Protocol))
 		JabberTLSHandler->continueAfterHandshake();
 	else
-		Protocol->logout();
+		Protocol->connectionClosed();
 }
 
 void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)
