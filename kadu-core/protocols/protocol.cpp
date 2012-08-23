@@ -186,6 +186,11 @@ void Protocol::connectionClosed()
 	emit stateMachineConnectionClosed();
 }
 
+void Protocol::reconnect()
+{
+	setStatus(loginStatus(), SourceUser);
+}
+
 void Protocol::statusChanged(Status status)
 {
 	CurrentStatus = status;

@@ -183,7 +183,8 @@ void JabberConnectionService::tlsHandshaken()
 
 	// TODO: use signal for checking certificates
 	if (CertificateHelpers::checkCertificate(TLSHandler.data()->tls(), TLSHandler.data(), domain,
-		QString("%1: ").arg(ParentProtocol->account().accountIdentity().name()) + tr("security problem"), host, ParentProtocol))
+			QString("%1: ").arg(ParentProtocol->account().accountIdentity().name()) + tr("security problem"), host,
+			false, this, SIGNAL(tlsCertificateAccepted())))
 		TLSHandler.data()->continueAfterHandshake();
 	else
 	{

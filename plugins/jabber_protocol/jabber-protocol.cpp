@@ -107,6 +107,7 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(CurrentConnectionService, SIGNAL(connectionClosed(QString)), this, SLOT(connectionClosedSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(connectionError(QString)), this, SLOT(connectionErrorSlot(QString)));
 	connect(CurrentConnectionService, SIGNAL(invalidPassword()), this, SLOT(passwordRequired()));
+	connect(CurrentConnectionService, SIGNAL(tlsCertificateAccepted()), this, SLOT(reconnect()));
 
 	CurrentStreamDebugService = new XMPP::JabberStreamDebugService(this);
 

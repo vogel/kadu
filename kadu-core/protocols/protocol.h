@@ -119,6 +119,7 @@ protected slots:
 	void passwordRequired();
 	void connectionError();
 	void connectionClosed();
+	void reconnect();
 
 public:
 	Protocol(Account account, ProtocolFactory *factory);

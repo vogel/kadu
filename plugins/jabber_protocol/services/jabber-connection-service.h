@@ -96,6 +96,8 @@ signals:
 
 	void invalidPassword();
 
+	void tlsCertificateAccepted();
+
 };
 
 }

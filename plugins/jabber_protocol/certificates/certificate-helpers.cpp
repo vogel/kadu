@@ -188,7 +188,7 @@ QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 	return s;
 }
 
-bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, QObject *parent)
+bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot)
 {
 	if (!tlsHandler || !tls || tls->peerCertificateChain().isEmpty())
 		return false;
@@ -213,12 +213,20 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 			result = QCA::TLS::HostMismatch;
 	}
 
+	if (blocking)
+		Q_ASSERT(!receiver && !slot);
+	else
+		Q_ASSERT(receiver && slot);
+
 	CertificateErrorWindow *errorDialog = new CertificateErrorWindow(
 			title, host, certificate,
 			result, tls->peerCertificateValidity(),
-			overridenHostname, tlsOverrideDomain, parent, SLOT(reconnect()));
-	errorDialog->show();
+			overridenHostname, tlsOverrideDomain, receiver, slot);
 
+	if (blocking)
+		return QDialog::Accepted == errorDialog->exec();
+
+	errorDialog->show();
 	return false;
 }
 
