@@ -168,7 +168,11 @@ void MiniClient::setErrorOnDisconnect(bool b)
 
 void MiniClient::tls_handshaken()
 {
-	if (CertificateHelpers::checkCertificate(tls, tlsHandler, TlsOverrideDomain, tr("Server Authentication"), j.domain(), this))
+	// TODO: This (blocking=true) is probably not a very good idea. If the response from the user
+	// is delayed, the connection will timeout and we will receive an error. JabberConnectionService
+	// handles this by reporting error, stopping connection, and automatically redoing everything
+	// again if the user decided to accept the certificate.
+	if (CertificateHelpers::checkCertificate(tls, tlsHandler, TlsOverrideDomain, tr("Server Authentication"), j.domain(), true, 0, 0))
 		tlsHandler->continueAfterHandshake();
 	else {
 		close();

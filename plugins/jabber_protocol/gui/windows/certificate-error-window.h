@@ -52,15 +52,16 @@ class CertificateErrorWindow : public QDialog
 	QObject *Parent;
 	QString &TlsOverrideDomain;
 
+private slots:
+	void showCertificate();
+
 public:
 	CertificateErrorWindow(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity,
 			       const QString &domainOverride, QString &tlsOverrideDomain_, QObject *receiver, const char *slot);
 	virtual ~CertificateErrorWindow();
 
-private slots:
-        void showCertificate();
-	void accepted();
-	void rejected();
+public slots:
+	virtual void accept();
 
 signals:
 	void certificateAccepted();

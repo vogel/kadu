@@ -70,8 +70,8 @@ CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QStri
 	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
 
 	connect(ShowButton, SIGNAL(clicked(bool)), this, SLOT(showCertificate()));
-	connect(ConnectButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
-	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(rejected()));
+	connect(ConnectButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	layout->addWidget(firstLabel, 0, 0, 1, 4);
 	layout->addWidget(messageLabel, 1, 0, 1, 4);
@@ -82,7 +82,8 @@ CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QStri
 
 	CancelButton->setFocus();
 
-	connect(this, SIGNAL(certificateAccepted()), receiver, slot);
+	if (receiver && slot)
+		connect(this, SIGNAL(certificateAccepted()), receiver, slot);
 }
 
 CertificateErrorWindow::~CertificateErrorWindow()
@@ -95,14 +96,9 @@ void CertificateErrorWindow::showCertificate()
 	dlg.exec();
 }
 
-void CertificateErrorWindow::accepted()
+void CertificateErrorWindow::accept()
 {
 	TrustedCertificatesManager::instance()->addTrustedCertificate(CurrentCertificate.toDER().toBase64(), RememberCheckbox->isChecked());
 	emit certificateAccepted();
-	close();
-}
-
-void CertificateErrorWindow::rejected()
-{
-	close();
+	QDialog::accept();
 }

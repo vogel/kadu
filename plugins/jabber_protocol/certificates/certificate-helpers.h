@@ -47,7 +47,7 @@ class CertificateHelpers
 	public:
 		static QCA::CertificateCollection allCertificates(const QStringList& dirs);
 		static QString resultToString(int result, QCA::Validity);
-		static bool checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, QObject *parent);
+		static bool checkCertificate(QCA::TLS *tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, const QString &title, const QString &host, bool blocking, QObject *receiver, const char *slot);
 		static QStringList getCertificateStoreDirs();
 		static QString getCertificateStoreSaveDir();
 
