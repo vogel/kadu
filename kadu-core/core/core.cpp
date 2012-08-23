@@ -209,8 +209,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
 	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
 	config_file.addVariable("Chat", "EmoticonsTheme", EmoticonThemeManager::defaultTheme());
-	config_file.addVariable("Chat", "FoldLink", true);
-	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);

@@ -26,21 +26,22 @@
 
 #include <QtCore/QRegExp>
 
-#include "configuration/configuration-aware-object.h"
-#include "configuration/configuration-holder.h"
 #include "url-handler.h"
 
-class StandardUrlHandler : public UrlHandler, public ConfigurationHolder
+class IgnoreLinksDomVisitor;
+class StandardUrlExpander;
+class StandardUrlExpanderConfigurator;
+
+class StandardUrlHandler : public UrlHandler
 {
 	QRegExp UrlRegExp;
-	int LinkFoldTreshold;
-	bool FoldLink;
-
-protected:
-	void configurationUpdated();
+	IgnoreLinksDomVisitor *IgnoreLinksVisitor;
+	StandardUrlExpander *Expander;
+	StandardUrlExpanderConfigurator *Configurator;
 
 public:
 	StandardUrlHandler();
+	virtual ~StandardUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);
 	virtual void expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr);

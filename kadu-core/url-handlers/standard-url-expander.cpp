@@ -21,9 +21,8 @@
 
 #include "standard-url-expander.h"
 
-StandardUrlExpander::StandardUrlExpander(QRegExp regExp, bool onlyHref, bool foldLink, int foldLinkThreshold) :
-		DomTextRegexpVisitor(regExp),
-		OnlyHref(onlyHref), FoldLink(foldLink), FoldLinkThreshold(foldLinkThreshold)
+StandardUrlExpander::StandardUrlExpander(QRegExp regExp, bool onlyHref) :
+		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
 {
 }
 
@@ -33,17 +32,22 @@ StandardUrlExpander::~StandardUrlExpander()
 
 bool StandardUrlExpander::shouldFold(int length)
 {
-	return FoldLink && (length > FoldLinkThreshold);
+	return Configuration.foldLink() && (length > Configuration.foldLinkThreshold());
 }
 
 QString StandardUrlExpander::displayLink(const QString &link)
 {
-	int partLength = FoldLinkThreshold / 2;
+	int partLength = Configuration.foldLinkThreshold() / 2;
 
 	if (shouldFold(link.length()))
 		return QString("%1...%2").arg(link.mid(0, partLength)).arg(link.mid(link.length() - partLength, partLength));
 	else
 		return link;
+}
+
+void StandardUrlExpander::setConfiguration(const StandardUrlExpanderConfiguration &configuration)
+{
+	Configuration = configuration;
 }
 
 QDomNode StandardUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)

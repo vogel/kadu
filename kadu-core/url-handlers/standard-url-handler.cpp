@@ -24,15 +24,31 @@
 #include "dom/ignore-links-dom-visitor.h"
 #include "os/generic/url-opener.h"
 #include "url-handlers/standard-url-expander.h"
+#include "url-handlers/standard-url-expander-configurator.h"
 
 #include "standard-url-handler.h"
 
 StandardUrlHandler::StandardUrlHandler()
 {
 	UrlRegExp = QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)");
-
-	configurationUpdated();
+	Expander = new StandardUrlExpander(UrlRegExp, true);
+	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(Expander);
+	Configurator = new StandardUrlExpanderConfigurator();
+	Configurator->setStandardUrlExpander(Expander);
 }
+
+StandardUrlHandler::~StandardUrlHandler()
+{
+	delete Configurator;
+	Configurator = 0;
+
+	delete IgnoreLinksVisitor;
+	IgnoreLinksVisitor = 0;
+
+	delete Expander;
+	Expander = 0;
+}
+
 
 bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 {
@@ -41,11 +57,8 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 
 void StandardUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
 {
-	StandardUrlExpander urlExpander(UrlRegExp, generateOnlyHrefAttr, FoldLink, LinkFoldTreshold);
-	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
-
 	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&ignoreLinksDomVisitor);
+	domProcessor.accept(IgnoreLinksVisitor);
 }
 
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
@@ -56,10 +69,4 @@ void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		UrlOpener::openUrl("http://" + url);
 	else
 		UrlOpener::openUrl(url);
-}
-
-void StandardUrlHandler::configurationUpdated()
-{
-	LinkFoldTreshold = config_file.readNumEntry("Chat", "LinkFoldTreshold");
-	FoldLink = config_file.readBoolEntry("Chat", "FoldLink");
 }

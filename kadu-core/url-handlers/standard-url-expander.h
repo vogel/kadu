@@ -20,20 +20,28 @@
 #ifndef STANDARD_URL_EXPANDER_H
 #define STANDARD_URL_EXPANDER_H
 
+#include <QtCore/QObject>
+
+#include "url-handlers/standard-url-expander-configuration.h"
+
 #include "dom/dom-text-regexp-visitor.h"
 
-class StandardUrlExpander : public DomTextRegexpVisitor
+class StandardUrlExpander : public QObject, public DomTextRegexpVisitor
 {
+	Q_OBJECT
+
+	StandardUrlExpanderConfiguration Configuration;
+
 	bool OnlyHref;
-	bool FoldLink;
-	int FoldLinkThreshold;
 
 	bool shouldFold(int length);
 	QString displayLink(const QString &link);
 
 public:
-	explicit StandardUrlExpander(QRegExp regExp, bool onlyHref, bool foldLink, int foldLinkThreshold);
+	explicit StandardUrlExpander(QRegExp regExp, bool onlyHref);
 	virtual ~StandardUrlExpander();
+
+	void setConfiguration(const StandardUrlExpanderConfiguration &configuration);
 
 	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp);
 
