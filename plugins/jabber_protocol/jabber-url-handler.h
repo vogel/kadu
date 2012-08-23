@@ -34,9 +34,15 @@
 
 class QAction;
 
+class IgnoreLinksDomVisitor;
+class SimpleUrlExpander;
+
 class JabberUrlHandler : public QObject, public UrlHandler
 {
 	Q_OBJECT
+
+	SimpleUrlExpander *UrlExpander;
+	IgnoreLinksDomVisitor *IgnoreLinksVisitor;
 
 	QRegExp JabberRegExp;
 
@@ -45,6 +51,7 @@ private slots:
 
 public:
 	JabberUrlHandler();
+	virtual ~JabberUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);
 	virtual void expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr);
