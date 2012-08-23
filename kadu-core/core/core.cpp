@@ -45,6 +45,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/main-configuration-holder.h"
 #include "contacts/contact-manager.h"
+#include "dom/dom-processor-service.h"
 #include "emoticons/emoticons.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -540,6 +541,7 @@ void Core::createGui()
 void Core::runServices()
 {
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
+	CurrentDomProcessorService = new DomProcessorService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
 	CurrentMessageFilterService = new MessageFilterService(this);
 	CurrentMessageHtmlRendererService = new MessageHtmlRendererService(this);
@@ -573,6 +575,11 @@ void Core::runGuiServices()
 ChatImageRequestService * Core::chatImageRequestService() const
 {
 	return CurrentChatImageRequestService;
+}
+
+DomProcessorService * Core::domProcessorService() const
+{
+	return CurrentDomProcessorService;
 }
 
 ImageStorageService * Core::imageStorageService() const

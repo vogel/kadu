@@ -50,6 +50,7 @@ namespace QCA
 }
 
 class ChatImageRequestService;
+class DomProcessorService;
 class FormattedStringFactory;
 class ImageStorageService;
 class KaduApplication;
@@ -73,6 +74,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	QSharedPointer<DefaultProvider<QWidget *> > MainWindowProvider;
 
 	ChatImageRequestService *CurrentChatImageRequestService;
+	DomProcessorService *CurrentDomProcessorService;
 	ImageStorageService *CurrentImageStorageService;
 	MessageFilterService *CurrentMessageFilterService;
 	MessageHtmlRendererService *CurrentMessageHtmlRendererService;
@@ -132,6 +134,7 @@ public:
 	void runGuiServices();
 
 	ChatImageRequestService * chatImageRequestService() const;
+	DomProcessorService * domProcessorService() const;
 	ImageStorageService * imageStorageService() const;
 	MessageFilterService * messageFilterService() const;
 	MessageHtmlRendererService * messageHtmlRendererService() const;
