@@ -21,7 +21,9 @@
 #define MESSAGE_HTML_RENDERER_SERVICE_H
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
+class DomProcessorService;
 class Message;
 
 /**
@@ -40,9 +42,20 @@ class MessageHtmlRendererService : public QObject
 {
 	Q_OBJECT
 
+	QWeakPointer<DomProcessorService> CurrentDomProcessorService;
+
 public:
 	explicit MessageHtmlRendererService(QObject *parent = 0);
 	virtual ~MessageHtmlRendererService();
+
+	/**
+	 * @short Set domProcessorService,
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param domProcessorService domProcessorService
+	 *
+	 * This service will be used to process DOM representation of HTML version of messages.
+	 */
+	void setDomProcessorService(DomProcessorService *domProcessorService);
 
 	/**
 	 * @short Render Message into HTML fragment,

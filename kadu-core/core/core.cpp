@@ -565,6 +565,8 @@ void Core::runServices()
 	CurrentFormattedStringFactory->setImageStorageService(CurrentImageStorageService);
 
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
+
+	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 }
 
 void Core::runGuiServices()

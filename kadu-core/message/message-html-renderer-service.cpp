@@ -18,6 +18,7 @@
  */
 
 #include "configuration/chat-configuration-holder.h"
+#include "dom/dom-processor-service.h"
 #include "emoticons/emoticons-manager.h"
 #include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
@@ -35,12 +36,20 @@ MessageHtmlRendererService::~MessageHtmlRendererService()
 {
 }
 
+void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *domProcessorService)
+{
+	CurrentDomProcessorService = domProcessorService;
+}
+
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
 	FormattedStringDomVisitor formattedStringDomVisitor;
 	message.content()->accept(&formattedStringDomVisitor);
 
 	QDomDocument domDocument = formattedStringDomVisitor.result();
+
+	if (CurrentDomProcessorService)
+		CurrentDomProcessorService.data()->process(domDocument);
 
 	UrlHandlerManager::instance()->expandUrls(domDocument, false);
 	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
