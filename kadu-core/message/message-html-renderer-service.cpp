@@ -23,7 +23,6 @@
 #include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
 #include "message/message.h"
-#include "url-handlers/url-handler-manager.h"
 
 #include "message-html-renderer-service.h"
 
@@ -51,7 +50,6 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	if (CurrentDomProcessorService)
 		CurrentDomProcessorService.data()->process(domDocument);
 
-	UrlHandlerManager::instance()->expandUrls(domDocument, false);
 	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
 	QString result = domDocument.toString(0).trimmed();
