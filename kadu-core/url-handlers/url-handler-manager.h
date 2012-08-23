@@ -30,7 +30,11 @@
 
 class QDomDocument;
 
+class IgnoreLinksDomVisitor;
+class MailUrlExpander;
 class MailUrlHandler;
+class StandardUrlExpander;
+class StandardUrlExpanderConfigurator;
 class StandardUrlHandler;
 class UrlHandler;
 
@@ -46,6 +50,13 @@ class KADUAPI UrlHandlerManager
 
 	MailUrlHandler *mailUrlHandler;
 	StandardUrlHandler *standardUrlHandler;
+
+	IgnoreLinksDomVisitor *StandardIgnoreLinksVisitor;
+	StandardUrlExpander *StandardExpander;
+	StandardUrlExpanderConfigurator *StandardConfigurator;
+
+	IgnoreLinksDomVisitor *MailIgnoreLinksVisitor;
+	MailUrlExpander *MailExpander;
 
 public:
 	static UrlHandlerManager * instance();

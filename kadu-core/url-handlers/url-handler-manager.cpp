@@ -20,11 +20,18 @@
 
 #include <QtXml/QDomDocument>
 
-#include "mail-url-handler.h"
-#include "standard-url-handler.h"
-#include "url-handler.h"
+
+#include "core/core.h"
+
+#include "dom/dom-processor-service.h"
+#include "dom/ignore-links-dom-visitor.h"
+#include "url-handlers/mail-url-handler.h"
+#include "url-handlers/standard-url-expander.h"
+#include "url-handlers/standard-url-expander-configurator.h"
+#include "url-handlers/standard-url-handler.h"
 
 #include "url-handler-manager.h"
+#include "mail-url-expander.h"
 
 UrlHandlerManager * UrlHandlerManager::Instance = 0;
 
@@ -38,6 +45,18 @@ UrlHandlerManager * UrlHandlerManager::instance()
 
 UrlHandlerManager::UrlHandlerManager()
 {
+	StandardExpander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"), false);
+	StandardIgnoreLinksVisitor = new IgnoreLinksDomVisitor(StandardExpander);
+	StandardConfigurator = new StandardUrlExpanderConfigurator();
+	StandardConfigurator->setStandardUrlExpander(StandardExpander);
+
+	Core::instance()->domProcessorService()->registerVisitor(StandardIgnoreLinksVisitor, 0);
+
+	MailExpander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"), false);
+	MailIgnoreLinksVisitor = new IgnoreLinksDomVisitor(MailExpander);
+
+	Core::instance()->domProcessorService()->registerVisitor(MailIgnoreLinksVisitor, 500);
+
 	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
 	standardUrlHandler = new StandardUrlHandler();
 	registerUrlHandler("Standard", standardUrlHandler);
@@ -48,6 +67,25 @@ UrlHandlerManager::UrlHandlerManager()
 
 UrlHandlerManager::~UrlHandlerManager()
 {
+	Core::instance()->domProcessorService()->unregisterVisitor(StandardIgnoreLinksVisitor);
+
+	delete StandardConfigurator;
+	StandardConfigurator = 0;
+
+	delete StandardIgnoreLinksVisitor;
+	StandardIgnoreLinksVisitor = 0;
+
+	delete StandardExpander;
+	StandardExpander = 0;
+
+	Core::instance()->domProcessorService()->unregisterVisitor(MailIgnoreLinksVisitor);
+
+	delete MailIgnoreLinksVisitor;
+	MailIgnoreLinksVisitor = 0;
+
+	delete MailExpander;
+	MailExpander = 0;
+
 	qDeleteAll(RegisteredHandlersByPriority);
 	RegisteredHandlersByPriority.clear();
 	RegisteredHandlers.clear();
