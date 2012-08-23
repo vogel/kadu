@@ -117,15 +117,11 @@ About::About(QWidget *parent) :
 	tb_authors->setFrameStyle(QFrame::NoFrame);
 	tb_authors->viewport()->setAutoFillBackground(false);
 	tb_authors->setTextInteractionFlags(Qt::TextBrowserInteraction);
-	QString authors = loadFile("AUTHORS");
-	authors.remove(QRegExp("[<>]"));
-	authors = Qt::escape(authors);
+	QString authors = loadFile("AUTHORS.html");
+	authors.remove(QRegExp("[\\[\\]]"));
 	// convert the email addresses
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
-	authors.prepend("<b>");
-	authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
-	authors.replace('\n', QLatin1String("</b><br/><b>"));
 	authors = UrlHandlerManager::instance()->expandUrls(authors, false);
 	tb_authors->setHtml(authors);
 
