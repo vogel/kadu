@@ -21,8 +21,8 @@
 
 #include "mail-url-expander.h"
 
-MailUrlExpander::MailUrlExpander(QRegExp regExp, bool onlyHref) :
-		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
+MailUrlExpander::MailUrlExpander(QRegExp regExp) :
+		DomTextRegexpVisitor(regExp)
 {
 }
 
@@ -36,9 +36,7 @@ QDomNode MailUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
 	QString mail = regExp.cap();
 
 	linkElement.setAttribute("href", "mailto:" + mail);
-
-	if (!OnlyHref)
-		linkElement.setAttribute("title", mail);
+	linkElement.setAttribute("title", mail);
 
 	linkElement.appendChild(document.createTextNode(mail));
 	return linkElement;

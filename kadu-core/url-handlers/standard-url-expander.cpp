@@ -21,8 +21,8 @@
 
 #include "standard-url-expander.h"
 
-StandardUrlExpander::StandardUrlExpander(QRegExp regExp, bool onlyHref) :
-		DomTextRegexpVisitor(regExp), OnlyHref(onlyHref)
+StandardUrlExpander::StandardUrlExpander(QRegExp regExp) :
+		DomTextRegexpVisitor(regExp)
 {
 }
 
@@ -62,14 +62,11 @@ QDomNode StandardUrlExpander::matchToDomNode(QDomDocument document, QRegExp regE
 	else
 		linkElement.setAttribute("href", QString("http://%1").arg(link));
 
-	if (!OnlyHref)
+	linkElement.setAttribute("title", link);
+	if (shouldFold(link.length()))
 	{
-		linkElement.setAttribute("title", link);
-		if (shouldFold(link.length()))
-		{
-			linkElement.setAttribute("folded", "1");
-			linkElement.setAttribute("displaystr", display);
-		}
+		linkElement.setAttribute("folded", "1");
+		linkElement.setAttribute("displaystr", display);
 	}
 
 	linkElement.appendChild(document.createTextNode(display));

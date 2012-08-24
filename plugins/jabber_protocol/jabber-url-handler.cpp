@@ -86,10 +86,8 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void JabberUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
+void JabberUrlHandler::expandUrls(QDomDocument domDocument)
 {
-	Q_UNUSED(generateOnlyHrefAttr)
-
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(IgnoreLinksVisitor);
 }

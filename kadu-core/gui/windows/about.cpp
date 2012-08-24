@@ -122,7 +122,7 @@ About::About(QWidget *parent) :
 	// convert the email addresses
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
-	authors = UrlHandlerManager::instance()->expandUrls(authors, false);
+	authors = UrlHandlerManager::instance()->expandUrls(authors);
 	tb_authors->setHtml(authors);
 
 	// people to thank

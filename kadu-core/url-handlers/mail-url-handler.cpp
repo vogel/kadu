@@ -38,9 +38,9 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void MailUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
+void MailUrlHandler::expandUrls(QDomDocument domDocument)
 {
-	MailUrlExpander urlExpander(MailRegExp, generateOnlyHrefAttr);
+	MailUrlExpander urlExpander(MailRegExp);
 	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
 
 	DomProcessor domProcessor(domDocument);

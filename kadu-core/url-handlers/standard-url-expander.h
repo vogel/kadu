@@ -32,13 +32,11 @@ class StandardUrlExpander : public QObject, public DomTextRegexpVisitor
 
 	StandardUrlExpanderConfiguration Configuration;
 
-	bool OnlyHref;
-
 	bool shouldFold(int length);
 	QString displayLink(const QString &link);
 
 public:
-	explicit StandardUrlExpander(QRegExp regExp, bool onlyHref);
+	explicit StandardUrlExpander(QRegExp regExp);
 	virtual ~StandardUrlExpander();
 
 	void setConfiguration(const StandardUrlExpanderConfiguration &configuration);

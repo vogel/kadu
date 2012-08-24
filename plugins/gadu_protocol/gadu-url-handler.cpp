@@ -69,10 +69,8 @@ bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 	return GaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void GaduUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
+void GaduUrlHandler::expandUrls(QDomDocument domDocument)
 {
-	Q_UNUSED(generateOnlyHrefAttr)
-
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(IgnoreLinksVisitor);
 }

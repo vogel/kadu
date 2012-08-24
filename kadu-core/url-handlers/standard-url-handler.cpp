@@ -31,7 +31,7 @@
 StandardUrlHandler::StandardUrlHandler()
 {
 	UrlRegExp = QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)");
-	Expander = new StandardUrlExpander(UrlRegExp, true);
+	Expander = new StandardUrlExpander(UrlRegExp);
 	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(Expander);
 	Configurator = new StandardUrlExpanderConfigurator();
 	Configurator->setStandardUrlExpander(Expander);
@@ -55,7 +55,7 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void StandardUrlHandler::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
+void StandardUrlHandler::expandUrls(QDomDocument domDocument)
 {
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(IgnoreLinksVisitor);

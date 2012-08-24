@@ -45,14 +45,14 @@ UrlHandlerManager * UrlHandlerManager::instance()
 
 UrlHandlerManager::UrlHandlerManager()
 {
-	StandardExpander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"), false);
+	StandardExpander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
 	StandardIgnoreLinksVisitor = new IgnoreLinksDomVisitor(StandardExpander);
 	StandardConfigurator = new StandardUrlExpanderConfigurator();
 	StandardConfigurator->setStandardUrlExpander(StandardExpander);
 
 	Core::instance()->domProcessorService()->registerVisitor(StandardIgnoreLinksVisitor, 0);
 
-	MailExpander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"), false);
+	MailExpander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"));
 	MailIgnoreLinksVisitor = new IgnoreLinksDomVisitor(MailExpander);
 
 	Core::instance()->domProcessorService()->registerVisitor(MailIgnoreLinksVisitor, 500);
@@ -111,19 +111,19 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 	}
 }
 
-void UrlHandlerManager::expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr)
+void UrlHandlerManager::expandUrls(QDomDocument domDocument)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-		handler->expandUrls(domDocument, generateOnlyHrefAttr);
+		handler->expandUrls(domDocument);
 }
 
-QString UrlHandlerManager::expandUrls(const QString &html, bool generateOnlyHrefAttr)
+QString UrlHandlerManager::expandUrls(const QString &html)
 {
 	QDomDocument domDocument;
 	// force content to be valid HTML with only one root
 	domDocument.setContent(QString("<div>%1</div>").arg(html));
 
-	expandUrls(domDocument, generateOnlyHrefAttr);
+	expandUrls(domDocument);
 
 	QString result = domDocument.toString(0).trimmed();
 	// remove <div></div>

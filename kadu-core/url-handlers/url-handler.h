@@ -32,7 +32,7 @@ public:
 	virtual ~UrlHandler() {}
 
 	virtual bool isUrlValid(const QByteArray &url) = 0;
-	virtual void expandUrls(QDomDocument domDocument, bool generateOnlyHrefAttr) = 0;
+	virtual void expandUrls(QDomDocument domDocument) = 0;
 	virtual void openUrl(const QByteArray &url, bool disableMenu = false) = 0;
 
 };

@@ -206,7 +206,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	QDomDocument domDocument;
 	domDocument.setContent(Template.arg(Parser::parse(Syntax, item)));
 
-	UrlHandlerManager::instance()->expandUrls(domDocument, false);
+	UrlHandlerManager::instance()->expandUrls(domDocument);
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
