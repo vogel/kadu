@@ -52,6 +52,9 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 
 	EmoticonsManager::instance()->expandEmoticons(domDocument, (EmoticonsStyle)ChatConfigurationHolder::instance()->emoticonsStyle());
 
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return QString();
+
 	QString result = domDocument.toString(0).trimmed();
 	// remove <message></message>
 	Q_ASSERT(result.startsWith(QLatin1String("<message>")));

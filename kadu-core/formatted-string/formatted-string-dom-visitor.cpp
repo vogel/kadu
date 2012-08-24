@@ -93,9 +93,11 @@ void FormattedStringDomVisitor::visit(const FormattedStringTextBlock * const for
 	for (int i = 0; i < size; i++)
 	{
 		if (i > 0)
-			Result.documentElement().appendChild(Result.createElement("br"));
-		Result.documentElement().appendChild(Result.createTextNode(lines.at(i)));
+			span.appendChild(Result.createElement("br"));
+		span.appendChild(Result.createTextNode(lines.at(i)));
 	}
+
+	Result.documentElement().appendChild(span);
 }
 
 QDomDocument FormattedStringDomVisitor::result() const
