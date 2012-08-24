@@ -21,8 +21,9 @@
 #define IGNORE_LINKS_DOM_VISITOR
 
 #include "dom/dom-visitor.h"
+#include "exports.h"
 
-class IgnoreLinksDomVisitor : public DomVisitor
+class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 {
 	DomVisitor *Visitor;
 	int LinksDepth;

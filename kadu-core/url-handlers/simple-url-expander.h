@@ -21,8 +21,9 @@
 #define SIMPLE_URL_EXPANDER_H
 
 #include "dom/dom-text-regexp-visitor.h"
+#include "exports.h"
 
-class SimpleUrlExpander : public DomTextRegexpVisitor
+class KADUAPI SimpleUrlExpander : public DomTextRegexpVisitor
 {
 
 public:

@@ -20,6 +20,8 @@
 #ifndef DOM_PROCESSOR_H
 #define DOM_PROCESSOR_H
 
+#include "exports.h"
+
 class QDomDocument;
 class QDomNode;
 
@@ -38,7 +40,7 @@ class DomVisitor;
  * This class can be used to process DOM documents using visitor pattern.
  * Visitor object is allowed to modify DOM tree in any way.
  */
-class DomProcessor
+class KADUAPI DomProcessor
 {
 	QDomDocument &DomDocument;
 

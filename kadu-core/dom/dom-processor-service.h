@@ -23,11 +23,13 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "exports.h"
+
 class QDomDocument;
 
 class DomVisitor;
 
-class DomProcessorService: public QObject
+class KADUAPI DomProcessorService: public QObject
 {
 	Q_OBJECT
 

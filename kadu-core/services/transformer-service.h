@@ -22,8 +22,6 @@
 
 #include <QtCore/QList>
 
-#include "exports.h"
-
 /**
  * @addtogroup Services
  * @{
@@ -35,7 +33,7 @@
  * @author Rafał 'Vogel' Malinowski
  */
 template<typename T>
-class KADUAPI TransformerService
+class TransformerService
 {
 	QList<T *> Transformers;
 

@@ -22,10 +22,11 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "protocols/services/raw-message-transformer.h"
 #include "services/configurable-transformer-service.h"
 
-class RawMessageTransformerService : public QObject, public ConfigurableTransformerService<RawMessageTransformer>
+class KADUAPI RawMessageTransformerService : public QObject, public ConfigurableTransformerService<RawMessageTransformer>
 {
 	Q_OBJECT
 

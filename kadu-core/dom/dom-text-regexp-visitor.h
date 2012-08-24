@@ -23,11 +23,12 @@
 #include <QtCore/QRegExp>
 
 #include "dom/dom-visitor.h"
+#include "exports.h"
 
 class QDomDocument;
 class QDomNode;
 
-class DomTextRegexpVisitor : public DomVisitor
+class KADUAPI DomTextRegexpVisitor : public DomVisitor
 {
 	QRegExp RegExp;
 
