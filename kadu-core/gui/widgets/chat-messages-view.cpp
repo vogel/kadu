@@ -63,8 +63,16 @@ ChatMessagesView::ChatMessagesView(const Chat &chat, bool supportTransparency, Q
 	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
 	QPalette p = palette();
+
+	// This widget never has focus anyway, so there's no need for distinction
+	// between active and inactive, and active highlight colors have way better
+	// contrast, especially on Windows. See Kadu bug #2605.
+	p.setBrush(QPalette::Inactive, QPalette::Highlight, p.brush(QPalette::Active, QPalette::Highlight));
+	p.setBrush(QPalette::Inactive, QPalette::HighlightedText, p.brush(QPalette::Active, QPalette::HighlightedText));
+
 	p.setBrush(QPalette::Base, Qt::transparent);
-	page()->setPalette(p);
+	setPalette(p);
+
 	setAttribute(Qt::WA_OpaquePaintEvent, false);
 
 	page()->currentFrame()->evaluateJavaScript(
