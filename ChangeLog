@@ -14,6 +14,7 @@
 * icons: #2629 fixed: fixed tray icon size in some cases (beevvy)
 * chat, tabs: #2626 fixed: fixed storing opened tabs and recent tabs in some circumstances (beevvy)
 * jabber: fixed handling of untrusted server certificates (beevvy)
+* gui: #2605 fixed: fixed low contrast highlight colors in messages view, especially on Windows (beevvy)
 
 +++ version 0.12.0
 * gui: better preview in configuration window (Vogel)
