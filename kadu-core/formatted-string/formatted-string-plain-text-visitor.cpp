@@ -29,7 +29,12 @@ FormattedStringPlainTextVisitor::~FormattedStringPlainTextVisitor()
 {
 }
 
-void FormattedStringPlainTextVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringPlainTextVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
+
+void FormattedStringPlainTextVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 }

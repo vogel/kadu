@@ -64,10 +64,12 @@ bool CompositeFormattedString::operator == (const FormattedString &compareTo)
 
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
+	visitor->beginVisit(this);
+
 	foreach (FormattedString *item, Items)
 		item->accept(visitor);
 
-	visitor->visit(this);
+	visitor->endVisit(this);
 }
 
 QVector<FormattedString *> CompositeFormattedString::items() const

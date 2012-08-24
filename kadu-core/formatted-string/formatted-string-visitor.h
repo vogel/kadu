@@ -45,11 +45,18 @@ protected:
 
 public:
 	/**
-	 * @short Visit CompositeFormattedString instance.
+	 * @short Visit CompositeFormattedString instance before visiting sub-FormattedString.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param compositeFormattedString CompositeFormattedString instance to visit
 	 */
-	virtual void visit(const CompositeFormattedString * const compositeFormattedString) = 0;
+	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString) = 0;
+
+	/**
+	 * @short Visit CompositeFormattedString instance after visiting sub-FormattedString.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param compositeFormattedString CompositeFormattedString instance to visit
+	 */
+	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString) = 0;
 
 	/**
 	 * @short Visit FormattedStringImageBlock instance.

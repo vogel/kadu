@@ -30,7 +30,12 @@ FormattedStringImageKeyReceivedVisitor::~FormattedStringImageKeyReceivedVisitor(
 {
 }
 
-void FormattedStringImageKeyReceivedVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringImageKeyReceivedVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
+
+void FormattedStringImageKeyReceivedVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 }

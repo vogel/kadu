@@ -54,7 +54,12 @@ void FormattedStringFormatsVisitor::setImageStorageService(ImageStorageService *
 	CurrentImageStorageService = imageStorageService;
 }
 
-void FormattedStringFormatsVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringFormatsVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
+
+void FormattedStringFormatsVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 }

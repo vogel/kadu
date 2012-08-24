@@ -35,7 +35,12 @@ FormattedStringDomVisitor::~FormattedStringDomVisitor()
 {
 }
 
-void FormattedStringDomVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringDomVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
+
+void FormattedStringDomVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 }

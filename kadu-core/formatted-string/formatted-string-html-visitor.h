@@ -47,7 +47,8 @@ public:
 	FormattedStringHtmlVisitor();
 	virtual ~FormattedStringHtmlVisitor();
 
-	virtual void visit(const CompositeFormattedString * const compositeFormattedString);
+	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString);
+	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString);
 	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
 	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
 

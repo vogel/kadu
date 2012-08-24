@@ -34,7 +34,12 @@ FormattedStringHtmlVisitor::~FormattedStringHtmlVisitor()
 {
 }
 
-void FormattedStringHtmlVisitor::visit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringHtmlVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+{
+	Q_UNUSED(compositeFormattedString);
+}
+
+void FormattedStringHtmlVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
 	Q_UNUSED(compositeFormattedString);
 }
