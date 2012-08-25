@@ -3,6 +3,7 @@
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)
 * tabs: do not automatically activate chat widget when receiving new messages (beevvy)
 * build: migrated to GNUInstallDirs CMake module which should fix installation paths on Debian multiarch (beevvy)
+* gui: square, rounded avatars on buddy list (Juzef)
 
 +++ version 0.12.1
 * chat styles: #2601 fixed: fix old styles when AllowExecutingFromParser option is enabled (Mikołaj Milej, beevvy)

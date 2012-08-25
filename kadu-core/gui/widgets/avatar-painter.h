@@ -40,7 +40,7 @@ class AvatarPainter
 	QPixmap Avatar;
 
 	bool greyOut();
-
+	QPixmap cropped();
 	QString cacheKey();
 	QPixmap getOrCreateCacheItem();
 	void paintFromCache(QPainter *painter);
