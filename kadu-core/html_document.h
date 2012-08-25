@@ -24,86 +24,12 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
-#include <QtCore/QList>
 #include <QtCore/QString>
 
-#include "exports.h"
-
-/**
-	TODO: replace, refactor, remove or something
-
-	Klasa reprezentuj�ca dokument html. Przechowuje
-	list� element�w. Element mo�e by� tagiem html
-	albo kawa�kiem tekstu.
-**/
-class KADUAPI HtmlDocument
+namespace HtmlDocument
 {
-	struct Element
-	{
-		QString text;
-		bool tag;
-		Element() : text(), tag(false) {}
-	};
-	QList<Element> Elements;
-	void addElement(Element e);
-
-public:
-	static void escapeText(QString &text);
-	static void unescapeText(QString &text);
-
-	HtmlDocument();
-
-	/**
-		Parsuje podany napis zgodny ze struktur� html
-		i otrzymane dane przypisuje do dokumentu.
-		@param html napis do skonwertowania
-	**/
-	void parseHtml(const QString &html);
-
-	/**
-		Na podstawie zawarto�ci dokumentu generuje
-		napis zgodny ze struktur� html. Znaki specjalne
-		wchodz�ce w sk�ad element�w nie b�d�cych tagami
-		html s� escapowane.
-	**/
-	QString generateHtml() const;
-
-	/**
-		Zwraca ilo�� element�w wchodz�cych w sk�ad
-		dokumentu.
-	**/
-	int countElements() const;
-
-	/**
-		Sprawdza czy element o podanym indeksie jest
-		tagiem html czy zwyk�ym tekstem.
-	**/
-	bool isTagElement(int index) const;
-
-	/**
-		Zwraca tekst elementu o podanym indeksie.
-	**/
-	const QString & elementText(int index) const;
-
-	/**
-		Zwraca tekst elementu o podanym indeksie.
-	**/
-	QString & elementText(int index);
-
-	/**
-		Ustawia tekst i typ elementu o podanym indeksie.
-	**/
-	void setElementValue(int index, const QString &text, bool tag = false);
-
-	/**
-		Wydziela z elementu podany fragment tekstu.
-		Element mo�e pozosta� jeden albo
-		ulec podzieleniu na dwa lub nawet trzy elementy.
-		Funkcja zmienia warto�� argumentu index, aby
-		indeks wydzielonego elementu by� aktualny.
-	**/
-	void splitElement(int &index, int start, int length);
-
+	void escapeText(QString &text);
+	void unescapeText(QString &text);
 };
 
 #endif // KADU_HTML_DOCUMENT_H
