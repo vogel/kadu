@@ -5,6 +5,7 @@ include (FindKadu)
 
 set (SOURCES
 	word-fix.cpp
+	word-fix-formatted-string-visitor.cpp
 )
 
 set (MOC_SOURCES

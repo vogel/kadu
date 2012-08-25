@@ -36,6 +36,8 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "configuration/configuration-file.h"
+#include "formatted-string/formatted-string.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -43,9 +45,9 @@
 #include "gui/widgets/custom-input.h"
 #include "misc/kadu-paths.h"
 #include "debug.h"
-#include "html_document.h"
 
 #include "word-fix.h"
+#include "word-fix-formatted-string-visitor.h"
 
 
 WordFix::WordFix(QObject *parent) :
@@ -160,82 +162,18 @@ void WordFix::disconnectFromChat(const ChatWidget *chat)
 
 void WordFix::sendRequest(ChatWidget* chat)
 {
-	kdebugf();
-
 	if (!config_file.readBoolEntry("PowerKadu", "enable_word_fix", false))
 		return;
 
-	// Reading chat input to html document.
-	QString html = chat->edit()->toHtml();
-	QString body;
+	QScopedPointer<FormattedString> formattedString(chat->edit()->formattedString());
+	WordFixFormattedStringVisitor fixVisitor(wordsList);
+	formattedString->accept(&fixVisitor);
 
-	int pos = ExtractBody.indexIn(html);
-	if (pos >= 0)
-		body = ExtractBody.cap();
-	else
-		body = html;
+	QScopedPointer<FormattedString> fixedString(fixVisitor.result());
+	FormattedStringHtmlVisitor htmlVisitor;
+	fixedString->accept(&htmlVisitor);
 
-	HtmlDocument doc;
-	doc.parseHtml(body);
-
-	// Parsing and replacing.
-	for (int i = 0; i < doc.countElements(); i++)
-	{
-		if (!doc.isTagElement(i))
-			doReplace(doc.elementText(i));
-	}
-
-	// Putting back corrected text.
-	if (pos >= 0)
-		chat->edit()->setText(html.replace(pos, body.length(), doc.generateHtml()));
-	else
-		chat->edit()->setText(doc.generateHtml());
-
-	kdebugf2();
-}
-
-void WordFix::doReplace(QString &text)
-{
-	kdebugf();
-
-	for (QMap<QString, QString>::const_iterator i = wordsList.constBegin(); i != wordsList.constEnd(); ++i)
-	{
-		const int keyLength = i.key().length();
-		int pos = 0;
-		while ((pos = text.indexOf(i.key(), pos)) != -1)
-		{
-			bool beginsWord = (pos == 0);
-			if (!beginsWord)
-			{
-				const QChar ch(text.at(pos - 1));
-				beginsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
-
-				if (!beginsWord)
-				{
-					pos += keyLength;
-					continue;
-				}
-			}
-
-			bool endsWord = (pos + keyLength == text.length());
-			if (!endsWord)
-			{
-				const QChar ch(text.at(pos + keyLength));
-				endsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
-
-				if (!endsWord)
-				{
-					pos += keyLength;
-					continue;
-				}
-			}
-
-			text.replace(pos, keyLength, i.value());
-			pos += i.value().length();
-		}
-	}
-
-	kdebugf2();
+	chat->edit()->setHtml(htmlVisitor.result());
 }
 
 void WordFix::wordSelected()

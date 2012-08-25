@@ -102,13 +102,6 @@ public:
 	 */
 	void disconnectFromChat(const ChatWidget* chat);
 
-	/*!
-	 * \fn void doReplace(QString &text)
-	 * Does the whole job - replaces wrong words with the right ones.
-	 * \param text To replace. After processing it will contain corrected text.
-	 */
-	void doReplace(QString &text);
-
 public slots:
 	/*!
 	 * \fn void wordSelected(QTreeWidgetItem* item)
