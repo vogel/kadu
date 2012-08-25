@@ -1,13 +1,13 @@
 <table>
 <tr>
-<td align="left" valign="top"><img width="64" height="64" align="left" src="{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}"></td>
+<td align="left" valign="top"><img width="64" height="64" align="left" src="{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}"/></td>
 <td width="100%">
-<div>[<font color="red"><b>%a</b></font>][&nbsp;<b>(%g)</b>]</div>
-[<div><img align="left" valign="middle" height="16" width="16" src="#{statusIconPath}">&nbsp;&nbsp;%u</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{phone:16x16}">&nbsp;&nbsp;%m</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{mail-message-new:16x16}">&nbsp;&nbsp;%e</div>]
-[<div><img align="left" valign="middle" height="16" width="16" src="@{dialog-apply:16x16}">&nbsp;&nbsp;%i</div>]
+<div>[<span style="color: red; font-weight: bold;">%a</span>][&nbsp;<b>(%g)</b>]</div>
+[<div><img align="left" valign="middle" height="16" width="16" src="#{statusIconPath}"/>&nbsp;&nbsp;%u</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{phone:16x16}"/>&nbsp;&nbsp;%m</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{mail-message-new:16x16}"/>&nbsp;&nbsp;%e</div>]
+[<div><img align="left" valign="middle" height="16" width="16" src="@{dialog-apply:16x16}"/>&nbsp;&nbsp;%i</div>]
 </td>
 </tr>
 </table>
-[<hr><font color="red"><b>%s</b></font>][<font color="red"><b>:</b></font><br>%d]
+[<hr/><span style="color: red; font-weight: bold;">%s</span>][<span style="color: red; font-weight: bold;">:</span><br/>%d]

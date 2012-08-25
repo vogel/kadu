@@ -1,35 +1,35 @@
-<table cellspacing=\'0\' cellpadding=\'0\' border=\'0\' style=\'margin-right:16px;\'><tr>
-<td style=\'vertical-align:top;\'>
+<table cellspacing="0" cellpadding="0" border="0" style="margin-right:16px;"><tr>
+<td style="vertical-align:top;">
 
 <img
-	style=\'position:absolute; right:6px; margin-left:10px;\'
-	src=\'@{kadu_icons/gender%z:16x16}\'
->
+	style="position:absolute; right:6px; margin-left:10px;"
+	src="@{kadu_icons/gender%z:16x16}"
+/>
 
 <img
-	style=\'max-width:64px; max-height:64px;\'
-	[ src=\'#{avatarPath}\' ]
-	src=\'@{kadu_icons/buddy%z:96x96}\'
->
+	style="max-width:64px; max-height:64px;"
+	src="@{kadu_icons/buddy%z:96x96}"
+	[ src="#{avatarPath}" ]
+/>
 
 </td>
-<td style=\'vertical-align:top; padding-left:6px;\'>
+<td style="vertical-align:top; padding-left:6px;">
 
-<b>%a</b><br>
+<b>%a</b><br/>
 <div>[%f ]["%n" ][%r]</div>
-[%u<br>]
-[<br>
-	[%m<br>]
+[%u<br/>]
+[<br/>
+	[%m<br/>]
 	[<a href="mailto:%e">%e</a><br>]
 ]
-[<br>IP: %i]
+[<br/>IP: %i]
 
 </td>
 </tr></table>
 
 
-<hr style=\'border:0px; border-top:1px dotted #999999; height:1px; margin:8px 0 6px 0\'>
+<hr style="border:0px; border-top:1px dotted #999999; height:1px; margin:8px 0 6px 0"/>
 
 
-[<img valign=\'middle\' height=\'16\' width=\'16\' src="#{statusIconPath}"> ]<b>%s</b>
-[<br><br>%d]
+[<img valign="middle" height="16" width="16" src="#{statusIconPath}"/> ]<b>%s</b>
+[<br/><br/>%d]

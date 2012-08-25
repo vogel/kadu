@@ -2,16 +2,16 @@
 <td style=\'vertical-align:top;\'>
 <img
 style=\'max-width:64px; max-height:64px;\'
-[#{avatarPath} src=\'#{avatarPath}\' ]
 src=\'@{kadu_icons/buddy%z:96x96}\'
->
+[ src=\'#{avatarPath}\' ]
+/>
 </td>
 <td style=\'vertical-align:top; padding-left:6px;\'>
-<b>%a</b><br>
-[%u<br>]
+<b>%a</b><br/>
+[%u<br/>]
 [<br>IP: %i]
 </td>
 </tr></table>
-<hr style=\'border:0px; border-top:1px dotted #999999; height:1px;\'>
-[<img valign=\'middle\' height=\'16\' width=\'16\' src="#{statusIconPath}"> ]<b>%s</b>
-[<br><br>%d]
+<hr style=\'border:0px; border-top:1px dotted #999999; height:1px;\' />
+[<img valign=\'middle\' height=\'16\' width=\'16\' src="#{statusIconPath}"/> ]<b>%s</b>
+[<br/><br/>%d]
