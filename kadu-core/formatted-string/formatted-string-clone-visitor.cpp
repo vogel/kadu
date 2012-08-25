@@ -43,11 +43,15 @@ void FormattedStringCloneVisitor::cloned(FormattedString *clonedFormattedString)
 
 void FormattedStringCloneVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
 {
+	Q_UNUSED(compositeFormattedString);
+
 	ItemsStack.push(0); // mark composite begin
 }
 
 void FormattedStringCloneVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
 {
+	Q_UNUSED(compositeFormattedString);
+
 	QList<FormattedString *> items;
 	while (!ItemsStack.isEmpty())
 	{
