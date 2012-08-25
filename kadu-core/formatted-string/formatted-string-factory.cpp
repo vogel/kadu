@@ -53,7 +53,7 @@ FormattedString * FormattedStringFactory::partFromQTextImageFormat(const QTextIm
 	QString filePath = textImageFormat.name();
 	QFileInfo fileInfo(filePath);
 
-	if (!fileInfo.isAbsolute() || !fileInfo.exists() || !fileInfo.isFile())
+	if (!filePath.startsWith("kaduimg:///") && (!fileInfo.isAbsolute() || !fileInfo.exists() || !fileInfo.isFile()))
 		return 0;
 
 	if (CurrentImageStorageService)
