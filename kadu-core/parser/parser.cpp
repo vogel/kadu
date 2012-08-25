@@ -31,6 +31,7 @@
 #include <QtCore/QStack>
 #include <QtCore/QVariant>
 #include <QtGui/QApplication>
+#include <QtGui/QTextDocument>
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-manager.h"
@@ -48,7 +49,6 @@
 
 #include "icons/icons-manager.h"
 #include "debug.h"
-#include "html_document.h"
 
 #include "parser.h"
 
@@ -287,7 +287,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 			{
 				QString description = contact.currentStatus().description();
 				if (htmlEscape)
-					HtmlDocument::escapeText(description);
+					Qt::escape(description);
 
 				pe.setContent(description);
 
@@ -344,7 +344,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 			QString nickName = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.nickName();
 			if (htmlEscape)
-				HtmlDocument::escapeText(nickName);
+				Qt::escape(nickName);
 
 			pe.setContent(nickName);
 
@@ -356,7 +356,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 			QString display = chat ? ChatDataExtractor::data(chat, Qt::DisplayRole).toString() : buddy.display();
 			if (htmlEscape)
-				HtmlDocument::escapeText(display);
+				Qt::escape(display);
 
 			pe.setContent(display);
 
@@ -368,7 +368,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 			QString firstName = buddy.firstName();
 			if (htmlEscape)
-				HtmlDocument::escapeText(firstName);
+				Qt::escape(firstName);
 
 			pe.setContent(firstName);
 
@@ -380,7 +380,7 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
 			QString lastName = buddy.lastName();
 			if (htmlEscape)
-				HtmlDocument::escapeText(lastName);
+				Qt::escape(lastName);
 
 			pe.setContent(lastName);
 

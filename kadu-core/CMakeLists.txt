@@ -43,7 +43,6 @@ endif ()
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp
-	html_document.cpp
 	kadu-application.cpp
 	languages-manager.cpp
 	themes.cpp
