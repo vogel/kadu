@@ -107,7 +107,7 @@ Emoticon EmoticonWalker::findLongestCandidate() const
 	return result;
 }
 
-Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
+Emoticon EmoticonWalker::matchEmoticon(QChar c, bool nextIsLetter)
 {
 	c = extractLetter(c);
 

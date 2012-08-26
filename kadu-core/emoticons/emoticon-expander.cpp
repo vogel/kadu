@@ -68,7 +68,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 
 	for (int i = 0; i < textLength; i++)
 	{
-		Emoticon emoticon = walker.checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
+		Emoticon emoticon = walker.matchEmoticon(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
 		if (emoticon.isNull())
 			continue;
 

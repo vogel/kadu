@@ -65,7 +65,7 @@ public:
 	explicit EmoticonWalker(EmoticonPrefixTree *tree);
 	~EmoticonWalker();
 
-	Emoticon checkEmotOccurrence(QChar c, bool nextIsLetter);
+	Emoticon matchEmoticon(QChar c, bool nextIsLetter);
 
 };
 
