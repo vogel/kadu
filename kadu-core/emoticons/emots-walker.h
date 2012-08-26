@@ -33,6 +33,7 @@
 
 #include <QtCore/QPair>
 
+class Emoticon;
 struct PrefixNode;
 
 /**
@@ -62,12 +63,7 @@ public:
 	EmotsWalker();
 	~EmotsWalker();
 
-	/**
-		adds given string (emot) to dictionary of emots, giving it
-		number, which will be used later to notify occurrences of
-		emot in analyzed text
-	*/
-	void insertString(const QString &str, int num);
+	void addEmoticon(const Emoticon &emoticon);
 
 	/**
 		return number of emot, which occurre in analyzed text just
@@ -75,7 +71,7 @@ public:
 		beginning of text analysis is turned on by 'initWalking()'
 		if no emot occures, -1 is returned
 	*/
-	int checkEmotOccurrence(QChar c, bool nextIsLetter);
+	Emoticon checkEmotOccurrence(QChar c, bool nextIsLetter);
 
 	/**
 		clear internal structures responsible for analyzing text, it allows

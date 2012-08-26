@@ -93,27 +93,25 @@ void EmotsWalker::removeChilds(PrefixNode *node)
 	}
 }
 
-/** adds given string (emot) to dictionary of emots, giving it
-    number, which will be used later to notify occurrences of
-    emot in analyzed text
-*/
-void EmotsWalker::insertString(const QString &str, int num)
+void EmotsWalker::addEmoticon(const Emoticon &emoticon)
 {
+	QString text = emoticon.text().toLower();
+
 	PrefixNode *child, *node = root;
-	unsigned int len = str.length();
+	unsigned int len = text.length();
 	unsigned int pos = 0;
 
 	// it adds string to prefix tree character after character
 	while (pos < len) {
-		child = findChild(node, extractLetter(str.at(pos)));
+		child = findChild(node, extractLetter(text.at(pos)));
 		if (child == NULL)
-			child = insertChild(node, extractLetter(str.at(pos)));
+			child = insertChild(node, extractLetter(text.at(pos)));
 		node = child;
 		++pos;
 	}
 
-	if (node -> emotIndex == -1)
-		node -> emotIndex = num;
+	if (node->emoticon.isNull())
+		node->emoticon = emoticon;
 }
 
 QChar EmotsWalker::extractLetter(QChar c)
@@ -135,12 +133,13 @@ QChar EmotsWalker::extractLetter(QChar c)
     beginning of text analysis is turned on by 'initWalking()'
     if no emot occurrs, -1 is returned
 */
-int EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
+Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 {
 	c = extractLetter(c);
 
 	const PrefixNode* next;
-	int result = -1, resultLen = -1;
+	Emoticon result;
+	int resultLen = -1;
 
 	if (amountPositions < positions.size())
 	{
@@ -166,12 +165,10 @@ int EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 			else {
 				positions[i] = next;
 				++lengths[i];
-				if (result == -1 ||
-					(next -> emotIndex >= 0 &&
-					(next -> emotIndex < result || resultLen < lengths.at(i))))
+				if (result.isNull() || !next->emoticon.isNull() || resultLen < lengths.at(i))
 				{
 					resultLen = lengths.at(i);
-					result = next -> emotIndex;
+					result = next->emoticon;
 				}
 			}
 		}
@@ -181,7 +178,7 @@ int EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 	previousWasLetter = c.isLetter();
 
 	if (c.isLetter() && nextIsLetter)
-		return -1;
+		return Emoticon();
 	else
 		return result;
 }

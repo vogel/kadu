@@ -35,12 +35,14 @@
 
 #include <QtCore/QPair>
 
+#include "emoticons/emoticon.h"
+
 struct PrefixNode;
 typedef QPair<QChar, PrefixNode *> Prefix;
 
 struct PrefixNode
 {
-	int emotIndex;
+	Emoticon emoticon;
 	QList<Prefix> children;
 	PrefixNode();
 };

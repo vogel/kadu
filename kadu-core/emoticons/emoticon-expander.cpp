@@ -20,7 +20,6 @@
 #include <QtXml/QDomText>
 
 #include "emoticons/emoticon.h"
-#include "emoticons/emoticons-manager.h"
 #include "emoticons/emoticon-path-provider.h"
 #include "emoticons/emots-walker.h"
 
@@ -63,34 +62,29 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 		return QDomText();
 
 	int currentEmoticonStart = -1;
-	int currentEmoticonIndex = -1;
+	Emoticon currentEmoticon;
 
 	EmoticonWalker->initWalking();
 	for (int i = 0; i < textLength; i++)
 	{
-		int emoticonIndex = EmoticonWalker->checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
-		if (emoticonIndex < 0)
+		Emoticon emoticon = EmoticonWalker->checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
+		if (emoticon.isNull())
 			continue;
 
 		// TODO: remove this dependency
-		int emoticonStart = i - EmoticonsManager::instance()->aliases().at(emoticonIndex).text().length() + 1;
-		if (currentEmoticonIndex < 0 || currentEmoticonStart >= emoticonStart)
+		int emoticonStart = i - emoticon.text().length() + 1;
+		if (currentEmoticon.isNull() || currentEmoticonStart >= emoticonStart)
 		{
-			currentEmoticonIndex = emoticonIndex;
+			currentEmoticon = emoticon;
 			currentEmoticonStart = emoticonStart;
 			continue;
 		}
 
-		const Emoticon &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
-		return insertEmoticon(textNode, emoticon, currentEmoticonStart);
+		return insertEmoticon(textNode, currentEmoticon, currentEmoticonStart);
 	}
 
-	if (currentEmoticonIndex >= 0)
-	{
-		// TODO: remove this dependency
-		const Emoticon &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
-		insertEmoticon(textNode, emoticon, currentEmoticonStart);
-	}
+	if (!currentEmoticon.isNull())
+		insertEmoticon(textNode, currentEmoticon, currentEmoticonStart);
 
 	return QDomText();
 }

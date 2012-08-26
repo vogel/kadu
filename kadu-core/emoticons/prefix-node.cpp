@@ -33,6 +33,6 @@
 #include "prefix-node.h"
 
 PrefixNode::PrefixNode() :
-		emotIndex(-1), children()
+		emoticon(), children()
 {
 }

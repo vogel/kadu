@@ -213,12 +213,11 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 		// delete previous dictionary of emots
 		delete walker;
 		walker = new EmotsWalker();
-		int i = 0;
 
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
 		foreach (const Emoticon &item, Aliases)
-			walker->insertString(item.text().toLower(), i++);
+			walker->addEmoticon(item);
 	}
 
 	return something_loaded;
