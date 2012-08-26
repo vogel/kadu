@@ -3,6 +3,7 @@ set (emoticons_SRCS
 	emoticon.cpp
 	emoticon-expander.cpp
 	emoticon-prefix-tree.cpp
+	emoticon-prefix-tree-builder.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
 	emoticons-manager.cpp

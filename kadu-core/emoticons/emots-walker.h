@@ -44,8 +44,7 @@ class EmoticonPrefixTree;
 */
 class EmotsWalker
 {
-	/** dictionary is based on prefix tree */
-	EmoticonPrefixTree *root;
+	QScopedPointer<EmoticonPrefixTree> Tree;
 	QPair<QChar, EmoticonPrefixTree *> myPair;
 	/** positions in prefix tree, representing current analysis of text */
 	QList<EmoticonPrefixTree *> positions;
@@ -56,10 +55,8 @@ class EmotsWalker
 	QChar extractLetter(QChar c);
 
 public:
-	EmotsWalker();
+	explicit EmotsWalker(EmoticonPrefixTree *tree);
 	~EmotsWalker();
-
-	void addEmoticon(const Emoticon &emoticon);
 
 	/**
 		return number of emot, which occurre in analyzed text just

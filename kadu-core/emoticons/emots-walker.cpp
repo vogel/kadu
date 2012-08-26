@@ -35,41 +35,14 @@
 
 #include "emots-walker.h"
 
-/** create fresh emoticons dictionary, which will allow easy finding of occurrences
-    of stored emots in text
-*/
-EmotsWalker::EmotsWalker() :
-		root(new EmoticonPrefixTree()), myPair(), positions(), lengths(), amountPositions(0)
+EmotsWalker::EmotsWalker(EmoticonPrefixTree *tree) :
+		Tree(tree), myPair(), positions(), lengths(), amountPositions(0)
 {
 	myPair.second = NULL;
 }
 
-/** deletes entire dictionary of emots */
 EmotsWalker::~EmotsWalker()
 {
-	delete root;
-	root = 0;
-}
-
-void EmotsWalker::addEmoticon(const Emoticon &emoticon)
-{
-	QString text = emoticon.text().toLower();
-
-	EmoticonPrefixTree *child, *node = root;
-	unsigned int len = text.length();
-	unsigned int pos = 0;
-
-	// it adds string to prefix tree character after character
-	while (pos < len) {
-		child = node->child(extractLetter(text.at(pos)));
-		if (!child)
-			child = node->createChild(extractLetter(text.at(pos)));
-		node = child;
-		++pos;
-	}
-
-	if (node->nodeEmoticon().isNull())
-		node->setNodeEmoticon(emoticon);
 }
 
 QChar EmotsWalker::extractLetter(QChar c)
@@ -102,11 +75,11 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 	if (amountPositions < positions.size())
 	{
 		lengths[amountPositions] = 0;
-		positions[amountPositions] = root;
+		positions[amountPositions] = Tree.data();
 	}
 	else
 	{
-		positions.push_back(root);
+		positions.push_back(Tree.data());
 		lengths.push_back(0);
 	}
 

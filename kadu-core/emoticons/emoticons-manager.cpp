@@ -42,6 +42,7 @@
 #include "emoticons/animated-emoticon-path-provider.h"
 #include "emoticons/emoticon.h"
 #include "emoticons/emoticon-expander.h"
+#include "emoticons/emoticon-prefix-tree-builder.h"
 #include "emoticons/emots-walker.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
@@ -212,12 +213,13 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	{
 		// delete previous dictionary of emots
 		delete walker;
-		walker = new EmotsWalker();
 
-		// put all emots into dictionary, to allow easy finding
-		// their occurrences in text
-		foreach (const Emoticon &item, Aliases)
-			walker->addEmoticon(item);
+		EmoticonPrefixTreeBuilder builder;
+		foreach (const Emoticon &emoticon, Aliases)
+			builder.addEmoticon(emoticon);
+
+		walker = new EmotsWalker(builder.tree());
+
 	}
 
 	return something_loaded;
