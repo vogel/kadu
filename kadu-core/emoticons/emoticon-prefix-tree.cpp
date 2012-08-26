@@ -30,14 +30,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "prefix-node.h"
+#include "emoticon-prefix-tree.h"
 
-PrefixNode::PrefixNode()
+EmoticonPrefixTree::EmoticonPrefixTree()
 {
 }
 
-PrefixNode::~PrefixNode()
+EmoticonPrefixTree::~EmoticonPrefixTree()
 {
-	foreach (PrefixNode *node, children)
-		delete node;
+	qDeleteAll(Children);
+}
+
+Emoticon EmoticonPrefixTree::nodeEmoticon() const
+{
+	return NodeEmoticon;
+}
+
+void EmoticonPrefixTree::setNodeEmoticon(const Emoticon &emoticon)
+{
+	NodeEmoticon = emoticon;
+}
+
+QMap<QChar, EmoticonPrefixTree *> & EmoticonPrefixTree::children()
+{
+	return Children;
 }

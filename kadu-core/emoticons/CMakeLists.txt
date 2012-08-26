@@ -2,11 +2,11 @@ set (emoticons_SRCS
 	animated-emoticon-path-provider.cpp
 	emoticon.cpp
 	emoticon-expander.cpp
+	emoticon-prefix-tree.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
 	emoticons-manager.cpp
 	emots-walker.cpp
-	prefix-node.cpp
 	static-emoticon-path-provider.cpp
 )
 

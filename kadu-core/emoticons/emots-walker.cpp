@@ -31,7 +31,7 @@
 
 #include <algorithm>
 
-#include "emoticons/prefix-node.h"
+#include "emoticons/emoticon-prefix-tree.h"
 
 #include "emots-walker.h"
 
@@ -39,7 +39,7 @@
     of stored emots in text
 */
 EmotsWalker::EmotsWalker() :
-		root(new PrefixNode()), myPair(), positions(), lengths(), amountPositions(0)
+		root(new EmoticonPrefixTree()), myPair(), positions(), lengths(), amountPositions(0)
 {
 	myPair.second = NULL;
 }
@@ -55,20 +55,20 @@ EmotsWalker::~EmotsWalker()
     edge marked by given character
     return NULL if there is none
 */
-PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar &c)
+EmoticonPrefixTree* EmotsWalker::findChild(EmoticonPrefixTree* node, const QChar &c)
 {
-	return node->children.value(c);
+	return node->children().value(c);
 }
 
 /** add successor to given node with edge marked by given characted
     (building of prefix tree)
 */
-PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
+EmoticonPrefixTree* EmotsWalker::insertChild(EmoticonPrefixTree* node, const QChar &c)
 {
-	PrefixNode* newNode = new PrefixNode();
+	EmoticonPrefixTree* newNode = new EmoticonPrefixTree();
 
 	// create child with new node
-	node->children.insert(c, newNode);
+	node->children().insert(c, newNode);
 	return newNode;
 }
 
@@ -76,7 +76,7 @@ void EmotsWalker::addEmoticon(const Emoticon &emoticon)
 {
 	QString text = emoticon.text().toLower();
 
-	PrefixNode *child, *node = root;
+	EmoticonPrefixTree *child, *node = root;
 	unsigned int len = text.length();
 	unsigned int pos = 0;
 
@@ -89,8 +89,8 @@ void EmotsWalker::addEmoticon(const Emoticon &emoticon)
 		++pos;
 	}
 
-	if (node->emoticon.isNull())
-		node->emoticon = emoticon;
+	if (node->nodeEmoticon().isNull())
+		node->setNodeEmoticon(emoticon);
 }
 
 QChar EmotsWalker::extractLetter(QChar c)
@@ -116,7 +116,7 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 {
 	c = extractLetter(c);
 
-	const PrefixNode* next;
+	EmoticonPrefixTree *next;
 	Emoticon result;
 	int resultLen = -1;
 
@@ -144,10 +144,10 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 			else {
 				positions[i] = next;
 				++lengths[i];
-				if (result.isNull() || !next->emoticon.isNull() || resultLen < lengths.at(i))
+				if (result.isNull() || !next->nodeEmoticon().isNull() || resultLen < lengths.at(i))
 				{
 					resultLen = lengths.at(i);
-					result = next->emoticon;
+					result = next->nodeEmoticon();
 				}
 			}
 		}

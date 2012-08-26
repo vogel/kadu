@@ -30,19 +30,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PREFIX_NODE_H
-#define PREFIX_NODE_H
+#ifndef EMOTICON_PREFIX_TREE_H
+#define EMOTICON_PREFIX_TREE_H
 
 #include <QtCore/QMap>
 
 #include "emoticons/emoticon.h"
 
-struct PrefixNode
+class EmoticonPrefixTree
 {
-	Emoticon emoticon;
-	QMap<QChar, PrefixNode *> children;
-	PrefixNode();
-	~PrefixNode();
+	Emoticon NodeEmoticon;
+	QMap<QChar, EmoticonPrefixTree *> Children;
+
+public:
+	EmoticonPrefixTree();
+	~EmoticonPrefixTree();
+
+	Emoticon nodeEmoticon() const;
+	void setNodeEmoticon(const Emoticon &emoticon);
+
+	QMap<QChar, EmoticonPrefixTree *> & children();
+
 };
 
-#endif // PREFIX_NODE_H
+#endif // EMOTICON_PREFIX_TREE_H

@@ -34,7 +34,7 @@
 #include <QtCore/QPair>
 
 class Emoticon;
-struct PrefixNode;
+class EmoticonPrefixTree;
 
 /**
 	this class serves as dictionary of emots, allowing easy
@@ -45,16 +45,16 @@ struct PrefixNode;
 class EmotsWalker
 {
 	/** dictionary is based on prefix tree */
-	PrefixNode *root;
-	QPair<QChar, PrefixNode *> myPair;
+	EmoticonPrefixTree *root;
+	QPair<QChar, EmoticonPrefixTree *> myPair;
 	/** positions in prefix tree, representing current analysis of text */
-	QList<const PrefixNode *> positions;
+	QList<EmoticonPrefixTree *> positions;
 	QList<int> lengths;
 	int amountPositions;
 	bool previousWasLetter;
 
-	PrefixNode * findChild(const PrefixNode *node, const QChar &c);
-	PrefixNode * insertChild(PrefixNode *node, const QChar &c);
+	EmoticonPrefixTree * findChild(EmoticonPrefixTree *node, const QChar &c);
+	EmoticonPrefixTree * insertChild(EmoticonPrefixTree *node, const QChar &c);
 
 	QChar extractLetter(QChar c);
 
