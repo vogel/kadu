@@ -29,34 +29,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <algorithm>
-
 #include "emoticons/emoticon-prefix-tree.h"
+#include "misc/misc.h"
 
 #include "emots-walker.h"
 
 EmotsWalker::EmotsWalker(EmoticonPrefixTree *tree) :
-		Tree(tree), myPair(), positions(), lengths(), amountPositions(0)
+		Tree(tree), positions(), lengths(), amountPositions(0)
 {
-	myPair.second = NULL;
 }
 
 EmotsWalker::~EmotsWalker()
 {
-}
-
-QChar EmotsWalker::extractLetter(QChar c)
-{
-	QString decomposition = c.decomposition();
-	if (decomposition.isEmpty())
-		return c;
-
-	int length = decomposition.length();
-	for (int i = 0; i < length; i++)
-		if (decomposition.at(i).isLetter())
-			return decomposition.at(i);
-
-	return c;
 }
 
 /** return number of emot, which occurre in analyzed text just
@@ -114,9 +98,6 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 		return result;
 }
 
-/** clear internal structures responsible for analyzing text, it allows
-    begin of new text analysis
-*/
 void EmotsWalker::initWalking()
 {
 	amountPositions = 0;

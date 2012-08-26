@@ -45,14 +45,11 @@ class EmoticonPrefixTree;
 class EmotsWalker
 {
 	QScopedPointer<EmoticonPrefixTree> Tree;
-	QPair<QChar, EmoticonPrefixTree *> myPair;
 	/** positions in prefix tree, representing current analysis of text */
 	QList<EmoticonPrefixTree *> positions;
 	QList<int> lengths;
 	int amountPositions;
 	bool previousWasLetter;
-
-	QChar extractLetter(QChar c);
 
 public:
 	explicit EmotsWalker(EmoticonPrefixTree *tree);

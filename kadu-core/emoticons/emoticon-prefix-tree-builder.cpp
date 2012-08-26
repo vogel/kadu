@@ -18,26 +18,13 @@
  */
 
 #include "emoticons/emoticon-prefix-tree.h"
+#include "misc/misc.h"
 
 #include "emoticon-prefix-tree-builder.h"
 
 EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() :
 		Root(new EmoticonPrefixTree())
 {
-}
-
-QChar EmoticonPrefixTreeBuilder::extractLetter(QChar c)
-{
-	QString decomposition = c.decomposition();
-	if (decomposition.isEmpty())
-		return c;
-
-	int length = decomposition.length();
-	for (int i = 0; i < length; i++)
-		if (decomposition.at(i).isLetter())
-			return decomposition.at(i);
-
-	return c;
 }
 
 void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)

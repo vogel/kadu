@@ -30,8 +30,6 @@ class EmoticonPrefixTreeBuilder
 {
 	QScopedPointer<EmoticonPrefixTree> Root;
 
-	QChar extractLetter(QChar c);
-
 public:
 	EmoticonPrefixTreeBuilder();
 

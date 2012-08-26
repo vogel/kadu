@@ -178,3 +178,17 @@ QString fixFileName(const QString &path, const QString &fn)
 	// we cannot fix it, return original
 	return fn;
 }
+
+QChar extractLetter(QChar c)
+{
+	QString decomposition = c.decomposition();
+	if (decomposition.isEmpty())
+		return c;
+
+	int length = decomposition.length();
+	for (int i = 0; i < length; i++)
+		if (decomposition.at(i).isLetter())
+			return decomposition.at(i);
+
+	return c;
+}
