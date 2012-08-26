@@ -254,7 +254,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector.at(emot_num).text();
+		return Selector.at(emot_num).animatedFilePath();
 	else
 		return QString();
 }
@@ -262,7 +262,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
-		return Selector.at(emot_num).text();
+		return Selector.at(emot_num).staticFilePath();
 	else
 		return QString();
 }
