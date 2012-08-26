@@ -33,17 +33,14 @@
 #ifndef PREFIX_NODE_H
 #define PREFIX_NODE_H
 
-#include <QtCore/QPair>
+#include <QtCore/QMap>
 
 #include "emoticons/emoticon.h"
-
-struct PrefixNode;
-typedef QPair<QChar, PrefixNode *> Prefix;
 
 struct PrefixNode
 {
 	Emoticon emoticon;
-	QList<Prefix> children;
+	QMap<QChar, PrefixNode *> children;
 	PrefixNode();
 	~PrefixNode();
 };

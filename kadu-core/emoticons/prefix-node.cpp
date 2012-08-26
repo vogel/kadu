@@ -38,6 +38,6 @@ PrefixNode::PrefixNode()
 
 PrefixNode::~PrefixNode()
 {
-	foreach (Prefix prefix, children)
-		delete prefix.second;
+	foreach (PrefixNode *node, children)
+		delete node;
 }

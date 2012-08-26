@@ -57,15 +57,7 @@ EmotsWalker::~EmotsWalker()
 */
 PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar &c)
 {
-	myPair.first = c;
-	// create variable 'position' with result of binary search in childs
-	// of given node
-	QList<Prefix>::const_iterator position = std::upper_bound (node -> children.constBegin(), node -> children.constEnd(), myPair);
-
-	if (position != node -> children.constEnd() && position -> first == c)
-		return position -> second;
-	else
-		return NULL;
+	return node->children.value(c);
 }
 
 /** add successor to given node with edge marked by given characted
@@ -76,10 +68,7 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
 	PrefixNode* newNode = new PrefixNode();
 
 	// create child with new node
-	Prefix newPair = qMakePair(c, newNode);
-	// insert new child into childs of current node, performing binary
-	// search to find correct position for it
-	node->children.insert(std::upper_bound(node -> children.begin(), node -> children.end(), newPair), newPair);
+	node->children.insert(c, newNode);
 	return newNode;
 }
 
