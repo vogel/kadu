@@ -51,27 +51,6 @@ EmotsWalker::~EmotsWalker()
 	root = 0;
 }
 
-/** find node in prefix tree, which is direct successor of given node with
-    edge marked by given character
-    return NULL if there is none
-*/
-EmoticonPrefixTree* EmotsWalker::findChild(EmoticonPrefixTree* node, const QChar &c)
-{
-	return node->children().value(c);
-}
-
-/** add successor to given node with edge marked by given characted
-    (building of prefix tree)
-*/
-EmoticonPrefixTree* EmotsWalker::insertChild(EmoticonPrefixTree* node, const QChar &c)
-{
-	EmoticonPrefixTree* newNode = new EmoticonPrefixTree();
-
-	// create child with new node
-	node->children().insert(c, newNode);
-	return newNode;
-}
-
 void EmotsWalker::addEmoticon(const Emoticon &emoticon)
 {
 	QString text = emoticon.text().toLower();
@@ -82,9 +61,9 @@ void EmotsWalker::addEmoticon(const Emoticon &emoticon)
 
 	// it adds string to prefix tree character after character
 	while (pos < len) {
-		child = findChild(node, extractLetter(text.at(pos)));
-		if (child == NULL)
-			child = insertChild(node, extractLetter(text.at(pos)));
+		child = node->child(extractLetter(text.at(pos)));
+		if (!child)
+			child = node->createChild(extractLetter(text.at(pos)));
 		node = child;
 		++pos;
 	}
@@ -135,8 +114,8 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 
 	if (!previousWasLetter || !c.isLetter() || amountPositions > 1)
 		for (int i = amountPositions - 1; i >= 0; --i) {
-			next = findChild(positions.at(i), c);
-			if (next == NULL) {
+			next = positions.at(i)->child(c);
+			if (!next) {
 				--amountPositions;
 				lengths[i] = lengths.at(amountPositions);
 				positions[i] = positions.at(amountPositions);

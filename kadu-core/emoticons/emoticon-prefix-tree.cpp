@@ -51,7 +51,20 @@ void EmoticonPrefixTree::setNodeEmoticon(const Emoticon &emoticon)
 	NodeEmoticon = emoticon;
 }
 
-QMap<QChar, EmoticonPrefixTree *> & EmoticonPrefixTree::children()
+QMap<QChar, EmoticonPrefixTree *> EmoticonPrefixTree::children() const
 {
 	return Children;
+}
+
+EmoticonPrefixTree * EmoticonPrefixTree::child(QChar c)
+{
+	return Children.value(c);
+}
+
+EmoticonPrefixTree * EmoticonPrefixTree::createChild(QChar c)
+{
+	if (!Children.contains(c))
+		Children.insert(c, new EmoticonPrefixTree());
+
+	return child(c);
 }

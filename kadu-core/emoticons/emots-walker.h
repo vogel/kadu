@@ -53,9 +53,6 @@ class EmotsWalker
 	int amountPositions;
 	bool previousWasLetter;
 
-	EmoticonPrefixTree * findChild(EmoticonPrefixTree *node, const QChar &c);
-	EmoticonPrefixTree * insertChild(EmoticonPrefixTree *node, const QChar &c);
-
 	QChar extractLetter(QChar c);
 
 public:

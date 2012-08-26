@@ -49,7 +49,10 @@ public:
 	Emoticon nodeEmoticon() const;
 	void setNodeEmoticon(const Emoticon &emoticon);
 
-	QMap<QChar, EmoticonPrefixTree *> & children();
+	QMap<QChar, EmoticonPrefixTree *> children() const;
+
+	EmoticonPrefixTree * child(QChar c);
+	EmoticonPrefixTree * createChild(QChar c);
 
 };
 
