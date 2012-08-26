@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "emoticons/emoticon.h"
 #include "emoticons/emoticons-manager.h"
 
 #include "static-emoticon-path-provider.h"
@@ -25,7 +26,7 @@ StaticEmoticonPathProvider::~StaticEmoticonPathProvider()
 {
 }
 
-QString StaticEmoticonPathProvider::emoticonPath(const EmoticonsManager::EmoticonsListItem &emoticon)
+QString StaticEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
 {
-	return emoticon.stat;
+	return emoticon.staticFilePath();
 }

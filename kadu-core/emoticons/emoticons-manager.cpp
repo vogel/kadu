@@ -40,6 +40,8 @@
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
 #include "emoticons/animated-emoticon-path-provider.h"
+#include "emoticons/emoticon.h"
+#include "emoticons/emoticon-expander.h"
 #include "emoticons/emots-walker.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
@@ -47,7 +49,6 @@
 #include "debug.h"
 
 #include "emoticons-manager.h"
-#include "emoticon-expander.h"
 
 EmoticonsManager * EmoticonsManager::Instance = 0;
 
@@ -56,10 +57,6 @@ EmoticonsManager * EmoticonsManager::instance()
 	if (Instance == 0)
 		Instance = new EmoticonsManager();
 	return Instance;
-}
-
-EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
-{
 }
 
 EmoticonsManager::EmoticonsManager() :
@@ -144,7 +141,6 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 	theme_stream.setCodec(QTextCodec::codecForName("CP1250"));
 	while (!theme_stream.atEnd())
 	{
-		EmoticonsListItem item;
 		QString line = theme_stream.readLine();
 		kdebugm(KDEBUG_DUMP, "> %s\n", qPrintable(line));
 		unsigned int lineLength = line.length();
@@ -168,23 +164,21 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
 		if (multi)
 			++i; // eat ')'
 		++i; // eat ','
-		item.anim = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
+
+		QString animatedPath = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
+		QString staticPath;
 		if (i < lineLength && line.at(i) == ',')
 		{
 			++i; // eat ','
-			item.stat = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
+			staticPath = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
 		}
 		else
-			item.stat = item.anim;
+			staticPath = animatedPath;
 
 		foreach (const QString &alias, aliases)
-		{
-			item.alias = alias;
-			Aliases.push_back(item);
-		}
+			Aliases.push_back(Emoticon(alias, staticPath, animatedPath));
 
-		item.alias = aliases.at(0);
-		Selector.append(item);
+		Selector.append(Emoticon(aliases.at(0), staticPath, animatedPath));
 	}
 	theme_file.close();
 	kdebugf2();
@@ -223,8 +217,8 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		foreach (const EmoticonsListItem &item, Aliases)
-			walker->insertString(item.alias.toLower(), i++);
+		foreach (const Emoticon &item, Aliases)
+			walker->insertString(item.text().toLower(), i++);
 	}
 
 	return something_loaded;
@@ -259,7 +253,7 @@ int EmoticonsManager::selectorCount() const
 QString EmoticonsManager::selectorString(int emot_num) const
 {
 	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector.at(emot_num).alias;
+		return Selector.at(emot_num).text();
 	else
 		return QString();
 }
@@ -267,7 +261,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector.at(emot_num).anim;
+		return Selector.at(emot_num).text();
 	else
 		return QString();
 }
@@ -275,7 +269,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
-		return Selector.at(emot_num).stat;
+		return Selector.at(emot_num).text();
 	else
 		return QString();
 }

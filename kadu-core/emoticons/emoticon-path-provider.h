@@ -31,7 +31,7 @@
 
 /**
  * @class EmoticonPathProvider
- * @short Interface to get path of emoticon file from EmoticonsManager::EmoticonsListItem instance.
+ * @short Interface to get path of emoticon file from Emoticon instance.
  * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonPathProvider
@@ -43,7 +43,7 @@ public:
 	 * @param emoticon emoticon to get path for
 	 * @return path to file of emoticon
 	 */
-	virtual QString emoticonPath(const EmoticonsManager::EmoticonsListItem &emoticon) = 0;
+	virtual QString emoticonPath(const Emoticon &emoticon) = 0;
 
 };
 

@@ -55,7 +55,7 @@ class EmoticonExpander : public DomVisitor
 	 *
 	 * New text node is returned. Searching for emoticons can be started again for this node.
 	 */
-	QDomText insertEmoticon(QDomText textNode, const EmoticonsManager::EmoticonsListItem &emoticon, int index);
+	QDomText insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index);
 
 	/**
 	 * @short Expands first found emoticon.

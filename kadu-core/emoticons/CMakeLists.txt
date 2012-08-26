@@ -1,5 +1,6 @@
 set (emoticons_SRCS
 	animated-emoticon-path-provider.cpp
+	emoticon.cpp
 	emoticon-expander.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp

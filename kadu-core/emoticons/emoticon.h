@@ -17,38 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATIC_EMOTICON_PATH_PROVIDER_H
-#define STATIC_EMOTICON_PATH_PROVIDER_H
+#ifndef EMOTICON_H
+#define EMOTICON_H
 
-#include "emoticon-path-provider.h"
+#include <QtCore/QString>
 
-/**
- * @addtogroup Emoticons
- * @{
- */
-
-/**
- * @class StaticEmoticonPathProvider
- * @short EmoticonPathProvider that returns path to static version of emoticon.
- * @author Rafał 'Vogel' Malinowski
- */
-class StaticEmoticonPathProvider : public EmoticonPathProvider
+class Emoticon
 {
-public:
-	virtual ~StaticEmoticonPathProvider();
+	QString Text;
+	QString StaticFilePath;
+	QString AnimatedFilePath;
 
-	/**
-	 * @short Return path to static version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticon emoticon to get path for
-	 * @return path to static file of emoticon
-	 */
-	virtual QString emoticonPath(const Emoticon &emoticon);
+public:
+	Emoticon();
+	Emoticon(const QString &text, const QString &staticFilePath, const QString &animatedFilePath);
+	Emoticon(const Emoticon &copyMe);
+
+	Emoticon & operator = (const Emoticon &copyMe);
+
+	bool isNull() const;
+
+	QString text() const;
+	QString staticFilePath() const;
+	QString animatedFilePath() const;
 
 };
 
-/**
- * @}
- */
-
-#endif // STATIC_EMOTICON_PATH_PROVIDER_H
+#endif //EMOTICON_H

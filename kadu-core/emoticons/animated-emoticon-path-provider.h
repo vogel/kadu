@@ -43,7 +43,7 @@ public:
 	 * @param emoticon emoticon to get path for
 	 * @return path to animated file of emoticon
 	 */
-	virtual QString emoticonPath(const EmoticonsManager::EmoticonsListItem &emoticon);
+	virtual QString emoticonPath(const Emoticon &emoticon);
 
 };
 

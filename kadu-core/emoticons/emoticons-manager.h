@@ -40,6 +40,7 @@
 class QDomDocument;
 class QDomText;
 
+class Emoticon;
 class EmoticonThemeManager;
 class EmotsWalker;
 
@@ -51,16 +52,6 @@ class KADUAPI EmoticonsManager : public QObject
 	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)
 
-public:
-	struct EmoticonsListItem
-	{
-		QString alias;
-		QString anim;
-		QString stat;
-		EmoticonsListItem();
-	};
-
-private:
 	/**
 		Konstruktor tworzy obiekt oraz wyszukuje list� zestaw�w w katalogu
 		$KADU_DATADIR/kadu/themes/emoticons
@@ -71,8 +62,8 @@ private:
 
 	EmoticonThemeManager *ThemeManager;
 
-	QVector<EmoticonsListItem> Aliases;
-	QVector<EmoticonsListItem> Selector;
+	QVector<Emoticon> Aliases;
+	QVector<Emoticon> Selector;
 	EmotsWalker *walker;
 
 	static QString getQuoted(const QString &s, unsigned int &pos);
@@ -88,7 +79,7 @@ public:
 
 	~EmoticonsManager();
 
-	const QVector<EmoticonsListItem> & aliases() { return Aliases; }
+	const QVector<Emoticon> & aliases() { return Aliases; }
 
 	/**
 		Funkcja wstawia w text zamiast tag�w emotikonek odpowiednie emotikonki

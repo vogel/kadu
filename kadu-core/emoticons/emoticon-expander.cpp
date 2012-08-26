@@ -19,6 +19,7 @@
 
 #include <QtXml/QDomText>
 
+#include "emoticons/emoticon.h"
 #include "emoticons/emoticons-manager.h"
 #include "emoticons/emoticon-path-provider.h"
 #include "emoticons/emots-walker.h"
@@ -36,17 +37,17 @@ EmoticonExpander::~EmoticonExpander()
 {
 }
 
-QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const EmoticonsManager::EmoticonsListItem &emoticon, int index)
+QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index)
 {
-	int emoticonLength = emoticon.alias.length();
+	int emoticonLength = emoticon.text().length();
 
 	QDomText afterEmoticon = textNode.splitText(index + emoticonLength);
 	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
 
 	QDomElement emoticonElement = textNode.ownerDocument().createElement("img");
-	emoticonElement.setAttribute("emoticon", emoticon.alias);
-	emoticonElement.setAttribute("title", emoticon.alias);
-	emoticonElement.setAttribute("alt", emoticon.alias);
+	emoticonElement.setAttribute("emoticon", emoticon.text());
+	emoticonElement.setAttribute("title", emoticon.text());
+	emoticonElement.setAttribute("alt", emoticon.text());
 	emoticonElement.setAttribute("src", "file:///" + PathProvider->emoticonPath(emoticon));
 	textNode.parentNode().insertBefore(emoticonElement, afterEmoticon);
 
@@ -72,7 +73,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 			continue;
 
 		// TODO: remove this dependency
-		int emoticonStart = i - EmoticonsManager::instance()->aliases().at(emoticonIndex).alias.length() + 1;
+		int emoticonStart = i - EmoticonsManager::instance()->aliases().at(emoticonIndex).text().length() + 1;
 		if (currentEmoticonIndex < 0 || currentEmoticonStart >= emoticonStart)
 		{
 			currentEmoticonIndex = emoticonIndex;
@@ -80,14 +81,14 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 			continue;
 		}
 
-		const EmoticonsManager::EmoticonsListItem &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
+		const Emoticon &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
 		return insertEmoticon(textNode, emoticon, currentEmoticonStart);
 	}
 
 	if (currentEmoticonIndex >= 0)
 	{
 		// TODO: remove this dependency
-		const EmoticonsManager::EmoticonsListItem &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
+		const Emoticon &emoticon = EmoticonsManager::instance()->aliases().at(currentEmoticonIndex);
 		insertEmoticon(textNode, emoticon, currentEmoticonStart);
 	}
 
