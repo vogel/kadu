@@ -31,17 +31,23 @@
 #ifndef EMOTICON_WALKER_H
 #define EMOTICON_WALKER_H
 
+#include <QtCore/QList>
+
 class Emoticon;
 class EmoticonPrefixTree;
 
 class EmoticonWalker
 {
 	EmoticonPrefixTree *Tree;
-	/** positions in prefix tree, representing current analysis of text */
-	QList<EmoticonPrefixTree *> positions;
-	QList<int> lengths;
-	int amountPositions;
-	bool previousWasLetter;
+
+	struct EmoticonCandidate
+	{
+		EmoticonPrefixTree *EmoticonNode;
+		int EmoticonLength;
+	};
+
+	QList<EmoticonCandidate> Candidates;
+	bool PreviousWasLetter;
 
 public:
 	explicit EmoticonWalker(EmoticonPrefixTree *tree);

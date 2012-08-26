@@ -35,7 +35,7 @@
 #include "emoticon-walker.h"
 
 EmoticonWalker::EmoticonWalker(EmoticonPrefixTree *tree) :
-		Tree(tree), positions(), lengths(), amountPositions(0), previousWasLetter(false)
+		Tree(tree), PreviousWasLetter(false)
 {
 }
 
@@ -43,11 +43,6 @@ EmoticonWalker::~EmoticonWalker()
 {
 }
 
-/** return number of emot, which occurre in analyzed text just
-    after adding given character (thus ending on this character)
-    beginning of text analysis is turned on by 'initWalking()'
-    if no emot occurrs, -1 is returned
-*/
 Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 {
 	c = extractLetter(c);
@@ -56,41 +51,32 @@ Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 	Emoticon result;
 	int resultLen = -1;
 
-	if (amountPositions < positions.size())
-	{
-		lengths[amountPositions] = 0;
-		positions[amountPositions] = Tree;
-	}
-	else
-	{
-		positions.push_back(Tree);
-		lengths.push_back(0);
-	}
+	EmoticonCandidate emptyCandidate;
+	emptyCandidate.EmoticonNode = Tree;
 
-	amountPositions++;
+	Candidates.append(emptyCandidate);
 
-	if (!previousWasLetter || !c.isLetter() || amountPositions > 1)
-		for (int i = amountPositions - 1; i >= 0; --i) {
-			next = positions.at(i)->child(c);
+	if (!PreviousWasLetter || !c.isLetter() || Candidates.count() > 1)
+		for (int i = Candidates.count() - 1; i >= 0; --i) {
+			next = Candidates.at(i).EmoticonNode->child(c);
 			if (!next) {
-				--amountPositions;
-				lengths[i] = lengths.at(amountPositions);
-				positions[i] = positions.at(amountPositions);
+				Candidates.replace(i, Candidates.at(Candidates.count() - 1));
+				Candidates.removeLast();
 			}
 			else {
-				positions[i] = next;
-				++lengths[i];
-				if (result.isNull() || !next->nodeEmoticon().isNull() || resultLen < lengths.at(i))
+				Candidates[i].EmoticonNode = next;
+				Candidates[i].EmoticonLength++;
+				if (result.isNull() || !next->nodeEmoticon().isNull() || resultLen < Candidates[i].EmoticonLength)
 				{
-					resultLen = lengths.at(i);
+					resultLen = Candidates[i].EmoticonLength;
 					result = next->nodeEmoticon();
 				}
 			}
 		}
 	else
-		amountPositions = 0;
+		Candidates.clear();
 
-	previousWasLetter = c.isLetter();
+	PreviousWasLetter = c.isLetter();
 
 	if (c.isLetter() && nextIsLetter)
 		return Emoticon();
