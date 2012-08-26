@@ -6,8 +6,8 @@ set (emoticons_SRCS
 	emoticon-prefix-tree-builder.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
+	emoticon-walker.cpp
 	emoticons-manager.cpp
-	emots-walker.cpp
 	static-emoticon-path-provider.cpp
 )
 

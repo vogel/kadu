@@ -21,7 +21,7 @@
 
 #include "emoticons/emoticon.h"
 #include "emoticons/emoticon-path-provider.h"
-#include "emoticons/emots-walker.h"
+#include "emoticons/emoticon-walker.h"
 
 #include "emoticon-expander.h"
 
@@ -64,7 +64,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	int currentEmoticonStart = -1;
 	Emoticon currentEmoticon;
 
-	EmotsWalker walker(Tree);
+	EmoticonWalker walker(Tree);
 
 	for (int i = 0; i < textLength; i++)
 	{

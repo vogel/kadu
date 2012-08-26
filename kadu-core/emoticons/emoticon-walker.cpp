@@ -32,14 +32,14 @@
 #include "emoticons/emoticon-prefix-tree.h"
 #include "misc/misc.h"
 
-#include "emots-walker.h"
+#include "emoticon-walker.h"
 
-EmotsWalker::EmotsWalker(EmoticonPrefixTree *tree) :
+EmoticonWalker::EmoticonWalker(EmoticonPrefixTree *tree) :
 		Tree(tree), positions(), lengths(), amountPositions(0), previousWasLetter(false)
 {
 }
 
-EmotsWalker::~EmotsWalker()
+EmoticonWalker::~EmoticonWalker()
 {
 }
 
@@ -48,7 +48,7 @@ EmotsWalker::~EmotsWalker()
     beginning of text analysis is turned on by 'initWalking()'
     if no emot occurrs, -1 is returned
 */
-Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
+Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 {
 	c = extractLetter(c);
 

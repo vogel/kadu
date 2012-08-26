@@ -28,21 +28,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTS_WALKER_H
-#define EMOTS_WALKER_H
-
-#include <QtCore/QPair>
+#ifndef EMOTICON_WALKER_H
+#define EMOTICON_WALKER_H
 
 class Emoticon;
 class EmoticonPrefixTree;
 
-/**
-	this class serves as dictionary of emots, allowing easy
-	finding of their occurrences in text;
-	new search is initialized by calling 'initWalking()'
-	then characters are put into analysis by 'checkEmotOccurrence(c)'
-*/
-class EmotsWalker
+class EmoticonWalker
 {
 	EmoticonPrefixTree *Tree;
 	/** positions in prefix tree, representing current analysis of text */
@@ -52,17 +44,11 @@ class EmotsWalker
 	bool previousWasLetter;
 
 public:
-	explicit EmotsWalker(EmoticonPrefixTree *tree);
-	~EmotsWalker();
+	explicit EmoticonWalker(EmoticonPrefixTree *tree);
+	~EmoticonWalker();
 
-	/**
-		return number of emot, which occurre in analyzed text just
-		after adding given character (thus ending on this character)
-		beginning of text analysis is turned on by 'initWalking()'
-		if no emot occures, -1 is returned
-	*/
 	Emoticon checkEmotOccurrence(QChar c, bool nextIsLetter);
 
 };
 
-#endif // EMOTS_WALKER_H
+#endif // EMOTICON_WALKER_Hs

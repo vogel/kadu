@@ -43,7 +43,6 @@
 #include "emoticons/emoticon.h"
 #include "emoticons/emoticon-expander.h"
 #include "emoticons/emoticon-prefix-tree-builder.h"
-#include "emoticons/emots-walker.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
 #include "themes/emoticon-theme-manager.h"
