@@ -25,7 +25,6 @@
 #include "dom/dom-visitor.h"
 
 class EmoticonPathProvider;
-class EmotsWalker;
 
 /**
  * @addtogroup Emoticons
@@ -39,7 +38,7 @@ class EmotsWalker;
  */
 class EmoticonExpander : public DomVisitor
 {
-	EmotsWalker *EmoticonWalker;
+	EmoticonPrefixTree *Tree;
 	EmoticonPathProvider *PathProvider;
 
 	/**
@@ -73,7 +72,7 @@ class EmoticonExpander : public DomVisitor
 	virtual void endVisit(QDomElement elementNode);
 
 public:
-	explicit EmoticonExpander(EmotsWalker *emoticonWalker, EmoticonPathProvider *pathProvider);
+	explicit EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider);
 	virtual ~EmoticonExpander();
 
 	/**

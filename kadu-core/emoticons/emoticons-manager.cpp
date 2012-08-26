@@ -61,7 +61,7 @@ EmoticonsManager * EmoticonsManager::instance()
 }
 
 EmoticonsManager::EmoticonsManager() :
-		Aliases(), Selector(), walker(0)
+		Aliases(), Selector()
 {
 	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts);
 
@@ -72,8 +72,6 @@ EmoticonsManager::EmoticonsManager() :
 
 EmoticonsManager::~EmoticonsManager()
 {
-	if (walker)
-		delete walker;
 }
 
 EmoticonThemeManager * EmoticonsManager::themeManager() const
@@ -97,8 +95,6 @@ void EmoticonsManager::loadTheme()
 {
 	Aliases.clear();
 	Selector.clear();
-	delete walker;
-	walker = 0;
 
 	Theme theme = ThemeManager->currentTheme();
 	if (theme.isValid())
@@ -211,14 +207,11 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 
 	if (something_loaded)
 	{
-		// delete previous dictionary of emots
-		delete walker;
-
 		EmoticonPrefixTreeBuilder builder;
 		foreach (const Emoticon &emoticon, Aliases)
 			builder.addEmoticon(emoticon);
 
-		walker = new EmotsWalker(builder.tree());
+		Tree.reset(builder.tree());
 
 	}
 
@@ -230,7 +223,7 @@ void EmoticonsManager::expandEmoticons(QDomDocument domDocument, EmoticonsStyle 
 	if (EmoticonsStyleNone == style)
 		return;
 
-	if (!walker)
+	if (!Tree)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
 		return;
@@ -239,7 +232,7 @@ void EmoticonsManager::expandEmoticons(QDomDocument domDocument, EmoticonsStyle 
 	QScopedPointer<EmoticonPathProvider> emoticonPathProvider(style == EmoticonsStyleAnimated
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider()));
-	EmoticonExpander emoticonExpander(walker, emoticonPathProvider.data());
+	EmoticonExpander emoticonExpander(Tree.data(), emoticonPathProvider.data());
 	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&emoticonExpander);
 
 	DomProcessor domProcessor(domDocument);

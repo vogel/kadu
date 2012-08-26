@@ -25,10 +25,10 @@
 
 #include "emoticon-expander.h"
 
-EmoticonExpander::EmoticonExpander(EmotsWalker* emoticonWalker, EmoticonPathProvider *pathProvider) :
-		EmoticonWalker(emoticonWalker), PathProvider(pathProvider)
+EmoticonExpander::EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider) :
+		Tree(tree), PathProvider(pathProvider)
 {
-	Q_ASSERT(EmoticonWalker);
+	Q_ASSERT(Tree);
 	Q_ASSERT(PathProvider);
 }
 
@@ -64,10 +64,11 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	int currentEmoticonStart = -1;
 	Emoticon currentEmoticon;
 
-	EmoticonWalker->initWalking();
+	EmotsWalker walker(Tree);
+
 	for (int i = 0; i < textLength; i++)
 	{
-		Emoticon emoticon = EmoticonWalker->checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
+		Emoticon emoticon = walker.checkEmotOccurrence(text.at(i), (i < textLength - 1) && text.at(i + 1).isLetter());
 		if (emoticon.isNull())
 			continue;
 

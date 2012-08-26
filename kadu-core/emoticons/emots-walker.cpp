@@ -35,7 +35,7 @@
 #include "emots-walker.h"
 
 EmotsWalker::EmotsWalker(EmoticonPrefixTree *tree) :
-		Tree(tree), positions(), lengths(), amountPositions(0)
+		Tree(tree), positions(), lengths(), amountPositions(0), previousWasLetter(false)
 {
 }
 
@@ -59,11 +59,11 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 	if (amountPositions < positions.size())
 	{
 		lengths[amountPositions] = 0;
-		positions[amountPositions] = Tree.data();
+		positions[amountPositions] = Tree;
 	}
 	else
 	{
-		positions.push_back(Tree.data());
+		positions.push_back(Tree);
 		lengths.push_back(0);
 	}
 
@@ -96,10 +96,4 @@ Emoticon EmotsWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
 		return Emoticon();
 	else
 		return result;
-}
-
-void EmotsWalker::initWalking()
-{
-	amountPositions = 0;
-	previousWasLetter = false;
 }

@@ -35,6 +35,7 @@
 #include <QtCore/QVector>
 
 #include "emoticons/emoticons.h"
+#include "emoticons/emoticon-prefix-tree.h"
 #include "themes.h"
 
 class QDomDocument;
@@ -42,7 +43,6 @@ class QDomText;
 
 class Emoticon;
 class EmoticonThemeManager;
-class EmotsWalker;
 
 /**
 	Menad�er emotikon�w
@@ -64,7 +64,7 @@ class KADUAPI EmoticonsManager : public QObject
 
 	QVector<Emoticon> Aliases;
 	QVector<Emoticon> Selector;
-	EmotsWalker *walker;
+	QScopedPointer<EmoticonPrefixTree> Tree;
 
 	static QString getQuoted(const QString &s, unsigned int &pos);
 

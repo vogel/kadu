@@ -44,7 +44,7 @@ class EmoticonPrefixTree;
 */
 class EmotsWalker
 {
-	QScopedPointer<EmoticonPrefixTree> Tree;
+	EmoticonPrefixTree *Tree;
 	/** positions in prefix tree, representing current analysis of text */
 	QList<EmoticonPrefixTree *> positions;
 	QList<int> lengths;
@@ -62,12 +62,6 @@ public:
 		if no emot occures, -1 is returned
 	*/
 	Emoticon checkEmotOccurrence(QChar c, bool nextIsLetter);
-
-	/**
-		clear internal structures responsible for analyzing text, it allows
-		begin of new text analysis
-	*/
-	void initWalking();
 
 };
 
