@@ -45,6 +45,7 @@ struct PrefixNode
 	Emoticon emoticon;
 	QList<Prefix> children;
 	PrefixNode();
+	~PrefixNode();
 };
 
 #endif // PREFIX_NODE_H

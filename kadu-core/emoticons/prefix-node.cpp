@@ -32,7 +32,12 @@
 
 #include "prefix-node.h"
 
-PrefixNode::PrefixNode() :
-		emoticon(), children()
+PrefixNode::PrefixNode()
 {
+}
+
+PrefixNode::~PrefixNode()
+{
+	foreach (Prefix prefix, children)
+		delete prefix.second;
 }

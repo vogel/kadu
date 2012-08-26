@@ -47,8 +47,8 @@ EmotsWalker::EmotsWalker() :
 /** deletes entire dictionary of emots */
 EmotsWalker::~EmotsWalker()
 {
-	removeChilds(root);
 	delete root;
+	root = 0;
 }
 
 /** find node in prefix tree, which is direct successor of given node with
@@ -81,16 +81,6 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar &c)
 	// search to find correct position for it
 	node->children.insert(std::upper_bound(node -> children.begin(), node -> children.end(), newPair), newPair);
 	return newNode;
-}
-
-/** recursively delete all childs of given node */
-void EmotsWalker::removeChilds(PrefixNode *node)
-{
-	foreach (const Prefix &ch, node->children)
-	{
-		removeChilds(ch.second);
-		delete ch.second;
-	}
 }
 
 void EmotsWalker::addEmoticon(const Emoticon &emoticon)

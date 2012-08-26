@@ -55,7 +55,6 @@ class EmotsWalker
 
 	PrefixNode * findChild(const PrefixNode *node, const QChar &c);
 	PrefixNode * insertChild(PrefixNode *node, const QChar &c);
-	void removeChilds(PrefixNode *node);
 
 	QChar extractLetter(QChar c);
 
