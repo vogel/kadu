@@ -81,6 +81,8 @@ public:
 
 	const QVector<Emoticon> & aliases() { return Aliases; }
 
+	const QVector<Emoticon> & selectors() { return Selector; }
+
 	/**
 		Funkcja wstawia w text zamiast tag�w emotikonek odpowiednie emotikonki
 		\param text dokument w kt�rym maj� by� zamienione tagi
@@ -89,33 +91,8 @@ public:
 	**/
 	void expandEmoticons(QDomDocument domDocument, EmoticonsStyle style);
 
-	/**
-		Funkcja zwraca ilo�� emotikonek w zestawie
-	**/
-	int selectorCount() const;
-
-	/**
-		Funkcja zwraca alias odpowiedniej emotikonki
-		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci�g je�li nie znaleziono emotikonki w przeciwnym razie zwracany jest alias.
-	**/
-	QString selectorString(int emot_num) const;
-
-	/**
-		Funkcja zwraca �cie�k� do odpowiedniej animowanej emotikonki
-		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci�g je�li nie znaleziono emotikonki w przeciwnym razie zwracana jest �cie�ka do emotikonki
-	**/
-	QString selectorAnimPath(int emot_num) const;
-
-	/**
-		Funkcja zwraca �cie�k� do odpowiedniej statycznej emotikonki
-		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci�g je�li nie znaleziono emotikonki w przeciwnym razie zwracana jest �cie�ka do emotikonki
-	**/
-	QString selectorStaticPath(int emot_num) const;
-
 	void configurationUpdated();
+
 };
 
 #endif // EMOTICONS_MANAGER_H

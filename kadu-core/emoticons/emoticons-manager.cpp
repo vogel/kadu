@@ -237,32 +237,3 @@ void EmoticonsManager::expandEmoticons(QDomDocument domDocument, EmoticonsStyle 
 	DomProcessor domProcessor(domDocument);
 	domProcessor.accept(&ignoreLinksDomVisitor);
 }
-
-int EmoticonsManager::selectorCount() const
-{
-	return Selector.count();
-}
-
-QString EmoticonsManager::selectorString(int emot_num) const
-{
-	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector.at(emot_num).text();
-	else
-		return QString();
-}
-
-QString EmoticonsManager::selectorAnimPath(int emot_num) const
-{
-	if ((emot_num >= 0) && (emot_num < Selector.count()))
-		return Selector.at(emot_num).animatedFilePath();
-	else
-		return QString();
-}
-
-QString EmoticonsManager::selectorStaticPath(int emot_num) const
-{
-	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
-		return Selector.at(emot_num).staticFilePath();
-	else
-		return QString();
-}

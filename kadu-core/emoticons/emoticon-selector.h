@@ -41,7 +41,7 @@ class EmoticonSelector : public QScrollArea
 {
 	Q_OBJECT
 
-	void addEmoticonButtons(int num_emoticons, QWidget *mainwidget);
+	void addEmoticonButtons(QWidget *mainwidget);
 	void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
 
 private slots:

@@ -51,8 +51,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 	setWindowFlags(Qt::Popup);
 	setFrameStyle(QFrame::NoFrame);
 
-	int selector_count = EmoticonsManager::instance()->selectorCount();
-	if (selector_count == 0)
+	if (EmoticonsManager::instance()->selectors().isEmpty())
 	{
 		close();
 		return;
@@ -60,27 +59,26 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 
 	QWidget *mainwidget = new QWidget(this);
 
-	addEmoticonButtons(selector_count, mainwidget);
+	addEmoticonButtons(mainwidget);
 	setWidget(mainwidget);
 	calculatePositionAndSize(activatingWidget, mainwidget);
 }
 
-void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget)
+void EmoticonSelector::addEmoticonButtons(QWidget *mainwidget)
 {
 	int selector_width = 460;
 	int total_height = 0, cur_width = 0, btn_width = 0;
-	QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[num_emoticons]);
+	int count = EmoticonsManager::instance()->selectors().count();
+	QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[count]);
 	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
 	QHBoxLayout *row = 0;
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	for (int i = 0; i < num_emoticons; ++i)
+	for (int i = 0; i < count; ++i)
 	{
-		btns[i] = new EmoticonSelectorButton(
-			EmoticonsManager::instance()->selectorString(i),
-			EmoticonsManager::instance()->selectorAnimPath(i),
-			EmoticonsManager::instance()->selectorStaticPath(i),
+		const Emoticon &emoticon = EmoticonsManager::instance()->selectors().at(i);
+		btns[i] = new EmoticonSelectorButton(emoticon.text(), emoticon.animatedFilePath(), emoticon.staticFilePath(),
 			mainwidget);
 		btn_width = btns[i]->sizeHint().width();
 
@@ -100,7 +98,7 @@ void EmoticonSelector::addEmoticonButtons(int num_emoticons, QWidget *mainwidget
 		selector_width += 40;
 
 	cur_width = 0;
-	for (int i = 0; i < num_emoticons; ++i)
+	for (int i = 0; i < count; ++i)
 	{
 		btn_width = btns[i]->sizeHint().width();
 
