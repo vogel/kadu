@@ -43,43 +43,82 @@ EmoticonWalker::~EmoticonWalker()
 {
 }
 
-Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
+bool EmoticonWalker::possibleEmoticonStart(QChar c) const
 {
-	c = extractLetter(c);
+	return !(PreviousWasLetter && c.isLetter());
+}
 
-	EmoticonPrefixTree *next;
-	Emoticon result;
-	int resultLen = -1;
+bool EmoticonWalker::possibleEmoticonEnd(QChar c, bool nextIsLetter) const
+{
+	return !(c.isLetter() && nextIsLetter);
+}
 
+void EmoticonWalker::addEmptyCandidate()
+{
 	EmoticonCandidate emptyCandidate;
 	emptyCandidate.EmoticonNode = Tree;
 
 	Candidates.append(emptyCandidate);
+}
 
-	if (!PreviousWasLetter || !c.isLetter() || Candidates.count() > 1)
-		for (int i = Candidates.count() - 1; i >= 0; --i) {
-			next = Candidates.at(i).EmoticonNode->child(c);
-			if (!next) {
-				Candidates.replace(i, Candidates.at(Candidates.count() - 1));
-				Candidates.removeLast();
-			}
-			else {
-				Candidates[i].EmoticonNode = next;
-				Candidates[i].EmoticonLength++;
-				if (result.isNull() || !next->nodeEmoticon().isNull() || resultLen < Candidates[i].EmoticonLength)
-				{
-					resultLen = Candidates[i].EmoticonLength;
-					result = next->nodeEmoticon();
-				}
-			}
+EmoticonPrefixTree * EmoticonWalker::findCandidateExpansion(int i, QChar c)
+{
+	return Candidates.at(i).EmoticonNode->child(c);
+}
+
+void EmoticonWalker::expandCandidate(int i, EmoticonPrefixTree *expansion)
+{
+	Candidates[i].EmoticonNode = expansion;
+	Candidates[i].EmoticonLength++;
+}
+
+void EmoticonWalker::removeCandidate(int i)
+{
+	if (i != Candidates.count() - 1)
+		Candidates.replace(i, Candidates.at(Candidates.count() - 1));
+	Candidates.removeLast();
+}
+
+void EmoticonWalker::tryExpandAllCandidates(QChar c)
+{
+	// iterate backward because removeCandidate can switch elements after current one
+	for (int i = Candidates.count() - 1; i >= 0; --i)
+	{
+		EmoticonPrefixTree *expansion = findCandidateExpansion(i, c);
+		if (expansion)
+			expandCandidate(i, expansion);
+		else
+			removeCandidate(i);
+	}
+}
+
+Emoticon EmoticonWalker::findLongestCandidate() const
+{
+	Emoticon result;
+	int resultLength = -1;
+
+	foreach (const EmoticonCandidate &candidate, Candidates)
+		if (result.isNull() || (!candidate.EmoticonNode->nodeEmoticon().isNull() && resultLength < candidate.EmoticonLength))
+		{
+			result = candidate.EmoticonNode->nodeEmoticon();
+			resultLength = candidate.EmoticonLength;
 		}
-	else
-		Candidates.clear();
 
-	PreviousWasLetter = c.isLetter();
+	return result;
+}
 
-	if (c.isLetter() && nextIsLetter)
+Emoticon EmoticonWalker::checkEmotOccurrence(QChar c, bool nextIsLetter)
+{
+	c = extractLetter(c);
+
+	if (Candidates.isEmpty() && !possibleEmoticonStart(c))
 		return Emoticon();
-	else
-		return result;
+
+	addEmptyCandidate();
+	tryExpandAllCandidates(c);
+
+	if (!possibleEmoticonEnd(c, nextIsLetter))
+		return Emoticon();
+
+	return findLongestCandidate();
 }

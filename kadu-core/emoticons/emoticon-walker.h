@@ -33,6 +33,8 @@
 
 #include <QtCore/QList>
 
+class QChar;
+
 class Emoticon;
 class EmoticonPrefixTree;
 
@@ -48,6 +50,16 @@ class EmoticonWalker
 
 	QList<EmoticonCandidate> Candidates;
 	bool PreviousWasLetter;
+
+	bool possibleEmoticonStart(QChar c) const;
+	bool possibleEmoticonEnd(QChar c, bool nextIsLetter) const;
+
+	void addEmptyCandidate();
+	EmoticonPrefixTree * findCandidateExpansion(int i, QChar c);
+	void expandCandidate(int i, EmoticonPrefixTree *expansion);
+	void removeCandidate(int i);
+	void tryExpandAllCandidates(QChar c);
+	Emoticon findLongestCandidate() const;
 
 public:
 	explicit EmoticonWalker(EmoticonPrefixTree *tree);
