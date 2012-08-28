@@ -83,13 +83,7 @@ public:
 
 	const QVector<Emoticon> & selectors() { return Selector; }
 
-	/**
-		Funkcja wstawia w text zamiast tag�w emotikonek odpowiednie emotikonki
-		\param text dokument w kt�rym maj� by� zamienione tagi
-		\param style styl emotikonki jaki ma by� wstawiony - domy�lnie jest do
-		 aktualny zestaw
-	**/
-	void expandEmoticons(QDomDocument domDocument, EmoticonsStyle style);
+	void expandEmoticons(QDomDocument domDocument);
 
 	void configurationUpdated();
 

@@ -210,8 +210,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 
 	if (EmoticonsStyleNone != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
-		EmoticonsManager::instance()->expandEmoticons(domDocument,
-				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+		EmoticonsManager::instance()->expandEmoticons(domDocument);
 
 	setHtml(domDocument.toString(0));
 }

@@ -58,8 +58,6 @@ void ChatConfigurationHolder::configurationUpdated()
 	ForceCustomChatFont = config_file.readBoolEntry("Look", "ForceCustomChatFont");
 	ChatFont = config_file.readFontEntry("Look", "ChatFont");
 
-	EmoticonsStyle = config_file.readNumEntry("Chat", "EmoticonsStyle");
-
 	ChatContents = config_file.readEntry("Look", "ChatContents");
 	ConferenceContents = config_file.readEntry("Look", "ConferenceContents");
 	ConferencePrefix = config_file.readEntry("Look", "ConferencePrefix");

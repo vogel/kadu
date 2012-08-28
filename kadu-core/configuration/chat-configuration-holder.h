@@ -40,7 +40,6 @@ class ChatConfigurationHolder : public ConfigurationHolder
 
 	bool AutoSend;
 	bool NiceDateFormat;
-	int EmoticonsStyle;
 	bool ChatTextCustomColors;
 	QColor ChatTextBgColor;
 	QColor ChatTextFontColor;
@@ -70,7 +69,6 @@ public:
 
 	bool autoSend() const { return AutoSend; }
 	bool niceDateFormat() const { return NiceDateFormat; }
-	int emoticonsStyle() const { return EmoticonsStyle; }
 	bool chatTextCustomColors() const { return ChatTextCustomColors; }
 	const QColor &chatTextBgColor() const { return ChatTextBgColor; }
 	const QColor &chatTextFontColor() const { return ChatTextFontColor; }

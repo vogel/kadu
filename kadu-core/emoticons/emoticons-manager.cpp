@@ -217,8 +217,10 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 	return something_loaded;
 }
 
-void EmoticonsManager::expandEmoticons(QDomDocument domDocument, EmoticonsStyle style)
+void EmoticonsManager::expandEmoticons(QDomDocument domDocument)
 {
+	EmoticonsStyle style = (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle");
+
 	if (EmoticonsStyleNone == style)
 		return;
 
