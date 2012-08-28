@@ -39,6 +39,7 @@
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
 
 #include <errno.h>
 #include <time.h>
@@ -322,6 +323,14 @@ int main(int argc, char *argv[])
 #endif
 
 	xml_config_file = new XmlConfigFile();
+	if (!xml_config_file->isUsable())
+	{
+		QString errorMessage = qApp->translate("@default", "We're sorry, but Kadu cannot be loaded. "
+				"Profile is inaccessible. Please check permissions in the '%1' directory.")
+				.arg(KaduPaths::instance()->profilePath().left(KaduPaths::instance()->profilePath().length() - 1));
+		QMessageBox::critical(0, qApp->translate("@default", "Profile Inaccessible"), errorMessage, QMessageBox::Abort);
+		qFatal("%s", qPrintable(errorMessage));
+	}
 	config_file_ptr = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
 
 #ifdef DEBUG_ENABLED

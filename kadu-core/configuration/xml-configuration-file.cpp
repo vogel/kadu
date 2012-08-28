@@ -44,6 +44,11 @@ XmlConfigFile::XmlConfigFile() : DomDocument()
 	read();
 }
 
+bool XmlConfigFile::isUsable() const
+{
+	return QFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
+}
+
 void XmlConfigFile::read()
 {
 	kdebugf();

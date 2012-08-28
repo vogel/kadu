@@ -59,6 +59,8 @@ public:
 	**/
 	XmlConfigFile();
 
+	bool isUsable() const;
+
 	/**
 		Wczytuje plik konfiguracyjny z dysku
 	**/
