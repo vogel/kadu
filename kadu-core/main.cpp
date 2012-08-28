@@ -339,22 +339,6 @@ int main(int argc, char *argv[])
 
 	enableSignalHandling();
 
-	if (!QDir(KaduPaths::instance()->dataPath()).isReadable())
-	{
-		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(KaduPaths::instance()->dataPath()));
-		fprintf(stderr, "look at: http://www.kadu.im/w/Uprawnienia_do_katalogu_z_danymi\n");
-		fflush(stderr);
-
-		delete xml_config_file;
-		delete config_file_ptr;
-		delete qApp;
-#ifdef Q_WS_WIN
-		WSACleanup();
-#endif
-
-		return 10;
-	}
-
 	const QString lang = config_file.readEntry("General", "Language", QLocale::system().name().left(2));
 	QTranslator qt_qm, kadu_qm;
 	qt_qm.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
