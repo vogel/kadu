@@ -67,7 +67,6 @@ static void kadu_signal_handler(int signal)
 
 		CrashAwareObject::notifyCrash();
 
-		QString backupFileName = QLatin1String("kadu.conf.xml.backup.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
 		QString backtraceFileName = QLatin1String("kadu.backtrace.") + QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss");
 
 #if HAVE_EXECINFO
@@ -121,7 +120,7 @@ static void kadu_signal_handler(int signal)
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif // HAVE_EXECINFO
 
-		xml_config_file->saveTo(KaduPaths::instance()->profilePath() + backupFileName);
+		xml_config_file->makeBackup();
 		abort();
 	}
 	else if (signal == SIGUSR1)

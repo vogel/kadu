@@ -153,11 +153,6 @@ void XmlConfigFile::sync()
 	write();
 }
 
-void XmlConfigFile::saveTo(const QString &f)
-{
-	write(f);
-}
-
 void XmlConfigFile::makeBackup()
 {
 	QString f = QString("kadu-0.12.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));

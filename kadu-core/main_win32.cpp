@@ -28,7 +28,6 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "misc/kadu-paths.h"
 
 #include <windows.h>
 #ifdef _MSC_VER
@@ -91,8 +90,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS *e)
 	}
 
 	// if we cannot make crash dump only save config file to backup
-	QString f = QString("kadu.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
-	xml_config_file->saveTo(KaduPaths::instance()->profilePath() + f);
+	xml_config_file->makeBackup();
 	return ret;
 #else
 	MessageBoxW(NULL, L"Mini dumps are not available in this build.", L"Kadu crashed", MB_OK | MB_ICONERROR);

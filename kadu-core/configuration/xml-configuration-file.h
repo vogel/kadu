@@ -69,11 +69,6 @@ public:
 	**/
 	void sync();
 
-	/**
-		Zapisuje do wybranego pliku kopi� konfiguracji
-	**/
-	void saveTo(const QString &filename);
-
 	void makeBackup();
 
 	/**
