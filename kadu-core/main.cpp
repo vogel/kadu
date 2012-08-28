@@ -372,14 +372,6 @@ int main(int argc, char *argv[])
 
 	PluginsManager::instance()->activatePlugins();
 
-#ifndef Q_WS_WIN
-	// if someone is running Kadu from root account, let's remind him
-	// that it's a "bad thing"(tm) ;) (usually for win32 users)
-	if (geteuid() == 0)
-		MessageDialog::show(KaduIcon("dialog-warning"), qApp->translate("@default", "Kadu"), qApp->translate("@default", "Please do not run Kadu as a root!\n"
-				"It's a high security risk!"));
-#endif
-
 	foreach (const QString &id, ids)
 		Core::instance()->receivedSignal(id);
 
