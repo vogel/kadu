@@ -125,6 +125,9 @@ QString UrlHandlerManager::expandUrls(const QString &html)
 
 	expandUrls(domDocument);
 
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return QString();
+
 	QString result = domDocument.toString(0).trimmed();
 	// remove <div></div>
 	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
