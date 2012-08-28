@@ -65,8 +65,6 @@ public:
 	void registerUrlHandler(const QString &name, UrlHandler *handler);
 	void unregisterUrlHandler(const QString &name);
 
-	void expandUrls(QDomDocument domDocument);
-
 	void openUrl(const QByteArray &url, bool disableMenu = false);
 
 	// TODO:

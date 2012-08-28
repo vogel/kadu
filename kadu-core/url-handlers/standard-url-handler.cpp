@@ -55,12 +55,6 @@ bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 	return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void StandardUrlHandler::expandUrls(QDomDocument domDocument)
-{
-	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(IgnoreLinksVisitor);
-}
-
 void StandardUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)

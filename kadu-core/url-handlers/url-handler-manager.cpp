@@ -111,12 +111,6 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 	}
 }
 
-void UrlHandlerManager::expandUrls(QDomDocument domDocument)
-{
-	foreach (UrlHandler *handler, RegisteredHandlersByPriority)
-		handler->expandUrls(domDocument);
-}
-
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)

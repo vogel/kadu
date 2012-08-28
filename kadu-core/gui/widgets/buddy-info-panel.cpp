@@ -30,6 +30,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "emoticons/emoticons-manager.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
@@ -206,7 +207,7 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	QDomDocument domDocument;
 	domDocument.setContent(Template.arg(Parser::parse(Syntax, item)));
 
-	UrlHandlerManager::instance()->expandUrls(domDocument);
+	Core::instance()->domProcessorService()->process(domDocument);
 	EmoticonsManager::instance()->expandEmoticons(domDocument);
 
 	setHtml(domDocument.toString(0));

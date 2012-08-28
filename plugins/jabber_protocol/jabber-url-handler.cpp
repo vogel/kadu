@@ -86,12 +86,6 @@ bool JabberUrlHandler::isUrlValid(const QByteArray &url)
 	return JabberRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void JabberUrlHandler::expandUrls(QDomDocument domDocument)
-{
-	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(IgnoreLinksVisitor);
-}
-
 void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	QVector<Account> jabberAccounts = AccountManager::instance()->byProtocolName("jabber");

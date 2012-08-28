@@ -38,15 +38,6 @@ bool MailUrlHandler::isUrlValid(const QByteArray &url)
 	return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
-void MailUrlHandler::expandUrls(QDomDocument domDocument)
-{
-	MailUrlExpander urlExpander(MailRegExp);
-	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&urlExpander);
-
-	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&ignoreLinksDomVisitor);
-}
-
 void MailUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 {
 	Q_UNUSED(disableMenu)

@@ -38,7 +38,6 @@ public:
 	MailUrlHandler();
 
 	virtual bool isUrlValid(const QByteArray &url);
-	virtual void expandUrls(QDomDocument domDocument);
 	virtual void openUrl(const QByteArray &url, bool disableMenu = false);
 
 	const QRegExp & mailRegExp() { return MailRegExp; }
