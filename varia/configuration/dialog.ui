@@ -235,8 +235,6 @@
 					tool-tip="Displays information panel below the buddy list" />
 				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
 					tool-tip="Show vertical scrollbar in information panel" />
-				<check-box caption="Show emoticons in panel" config-section="General" config-item="ShowEmotPanel" id="showEmoticonsInPanel"
-					tool-tip="Show emoticons in information panel" />
 			</group-box>
 			<group-box name="Style">
 				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="InfoPanel" id="infoPanelSyntax"

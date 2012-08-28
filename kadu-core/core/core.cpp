@@ -239,7 +239,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("General", "ShowBlocked", true);
 	config_file.addVariable("General", "ShowBlocking", true);
 	config_file.addVariable("General", "ShowMyself", false);
-	config_file.addVariable("General", "ShowEmotPanel", true);
 	config_file.addVariable("General", "ShowOffline", true);
 	config_file.addVariable("General", "ShowOnlineAndDescription", false);
 	config_file.addVariable("General", "ShowWithoutDescription", true);
