@@ -27,6 +27,8 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
+#include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "file-transfer/s5b-server-manager.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
@@ -34,6 +36,7 @@
 #include "gtalk-protocol-factory.h"
 #include "jabber-id-validator.h"
 #include "jabber-protocol-factory.h"
+#include "jabber-url-dom-visitor-provider.h"
 #include "jabber-url-handler.h"
 
 #include "jabber-protocol-plugin.h"
@@ -68,6 +71,10 @@ int JabberProtocolPlugin::init(bool firstLoad)
 
 	UrlHandlerManager::instance()->registerUrlHandler("Jabber", new JabberUrlHandler());
 
+	// install before mail handler
+	UrlDomVisitorProvider = new JabberUrlDomVisitorProvider();
+	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 200);
+
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	return 0;
@@ -78,6 +85,10 @@ void JabberProtocolPlugin::done()
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/jabber_protocol.ui"));
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Jabber");
+
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(UrlDomVisitorProvider);
+	delete UrlDomVisitorProvider;
+	UrlDomVisitorProvider = 0;
 
 	ProtocolsManager::instance()->unregisterProtocolFactory(JabberProtocolFactory::instance());
 	ProtocolsManager::instance()->unregisterProtocolFactory(GTalkProtocolFactory::instance());

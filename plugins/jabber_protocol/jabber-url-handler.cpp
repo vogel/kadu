@@ -30,7 +30,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
-#include "core/core.h"
 #include "dom/dom-processor.h"
 #include "dom/dom-processor-service.h"
 #include "dom/ignore-links-dom-visitor.h"
@@ -59,23 +58,10 @@ JabberUrlHandler::JabberUrlHandler()
 	                       "\\b"
 	);
 	// Reparse pair with: "&([^=]+)=([^&]+)"
-
-	UrlExpander = new SimpleUrlExpander(JabberRegExp);
-	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(UrlExpander);
-
-	// install it before mail
-	Core::instance()->domProcessorService()->registerVisitor(IgnoreLinksVisitor, 200);
 }
 
 JabberUrlHandler::~JabberUrlHandler()
 {
-	Core::instance()->domProcessorService()->unregisterVisitor(IgnoreLinksVisitor);
-
-	delete IgnoreLinksVisitor;
-	IgnoreLinksVisitor = 0;
-
-	delete UrlExpander;
-	UrlExpander = 0;
 }
 
 bool JabberUrlHandler::isUrlValid(const QByteArray &url)

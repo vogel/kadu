@@ -30,10 +30,14 @@
 
 #include "plugins/generic-plugin.h"
 
+class JabberUrlDomVisitorProvider;
+
 class JabberProtocolPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	JabberUrlDomVisitorProvider *UrlDomVisitorProvider;
 
 public:
 	virtual ~JabberProtocolPlugin();

@@ -26,6 +26,8 @@
 #include <libgadu.h>
 
 #include "accounts/account-manager.h"
+#include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
@@ -35,6 +37,7 @@
 #include "server/gadu-servers-manager.h"
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
+#include "gadu-url-dom-visitor-provider.h"
 #include "gadu-url-handler.h"
 
 #include "gadu-protocol-plugin.h"
@@ -78,6 +81,9 @@ int GaduProtocolPlugin::init(bool firstLoad)
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 	UrlHandlerManager::instance()->registerUrlHandler("Gadu", new GaduUrlHandler());
 
+	UrlDomVisitorProvider = new GaduUrlDomVisitorProvider();
+	Core::instance()->domProcessorService()->registerVisitorProvider(UrlDomVisitorProvider, 1000);
+
 	GaduImporter::createInstance();
 
 	if (AccountManager::instance()->allItems().isEmpty())
@@ -90,6 +96,10 @@ int GaduProtocolPlugin::init(bool firstLoad)
 void GaduProtocolPlugin::done()
 {
 	GaduImporter::destroyInstance();
+
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(UrlDomVisitorProvider);
+	delete UrlDomVisitorProvider;
+	UrlDomVisitorProvider = 0;
 
 	UrlHandlerManager::instance()->unregisterUrlHandler("Gadu");
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());

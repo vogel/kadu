@@ -30,11 +30,9 @@
 
 class QDomDocument;
 
-class IgnoreLinksDomVisitor;
-class MailUrlExpander;
+class MailUrlDomVisitorProvider;
 class MailUrlHandler;
-class StandardUrlExpander;
-class StandardUrlExpanderConfigurator;
+class StandardUrlDomVisitorProvider;
 class StandardUrlHandler;
 class UrlHandler;
 
@@ -48,15 +46,11 @@ class KADUAPI UrlHandlerManager
 	QMap<QString, UrlHandler *> RegisteredHandlers;
 	QList<UrlHandler *> RegisteredHandlersByPriority;
 
-	MailUrlHandler *mailUrlHandler;
+	StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
+	MailUrlDomVisitorProvider *MailUrlVisitorProvider;
+
 	StandardUrlHandler *standardUrlHandler;
-
-	IgnoreLinksDomVisitor *StandardIgnoreLinksVisitor;
-	StandardUrlExpander *StandardExpander;
-	StandardUrlExpanderConfigurator *StandardConfigurator;
-
-	IgnoreLinksDomVisitor *MailIgnoreLinksVisitor;
-	MailUrlExpander *MailExpander;
+	MailUrlHandler *mailUrlHandler;
 
 public:
 	static UrlHandlerManager * instance();

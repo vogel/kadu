@@ -20,18 +20,15 @@
 
 #include <QtXml/QDomDocument>
 
-
 #include "core/core.h"
 
 #include "dom/dom-processor-service.h"
-#include "dom/ignore-links-dom-visitor.h"
+#include "url-handlers/mail-url-dom-visitor-provider.h"
 #include "url-handlers/mail-url-handler.h"
-#include "url-handlers/standard-url-expander.h"
-#include "url-handlers/standard-url-expander-configurator.h"
+#include "url-handlers/standard-url-dom-visitor-provider.h"
 #include "url-handlers/standard-url-handler.h"
 
 #include "url-handler-manager.h"
-#include "mail-url-expander.h"
 
 UrlHandlerManager * UrlHandlerManager::Instance = 0;
 
@@ -45,17 +42,11 @@ UrlHandlerManager * UrlHandlerManager::instance()
 
 UrlHandlerManager::UrlHandlerManager()
 {
-	StandardExpander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
-	StandardIgnoreLinksVisitor = new IgnoreLinksDomVisitor(StandardExpander);
-	StandardConfigurator = new StandardUrlExpanderConfigurator();
-	StandardConfigurator->setStandardUrlExpander(StandardExpander);
+	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider();
+	Core::instance()->domProcessorService()->registerVisitorProvider(StandardUrlVisitorProvider, 0);
 
-	Core::instance()->domProcessorService()->registerVisitor(StandardIgnoreLinksVisitor, 0);
-
-	MailExpander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"));
-	MailIgnoreLinksVisitor = new IgnoreLinksDomVisitor(MailExpander);
-
-	Core::instance()->domProcessorService()->registerVisitor(MailIgnoreLinksVisitor, 500);
+	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
+	Core::instance()->domProcessorService()->registerVisitorProvider(MailUrlVisitorProvider, 500);
 
 	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
 	standardUrlHandler = new StandardUrlHandler();
@@ -67,24 +58,13 @@ UrlHandlerManager::UrlHandlerManager()
 
 UrlHandlerManager::~UrlHandlerManager()
 {
-	Core::instance()->domProcessorService()->unregisterVisitor(StandardIgnoreLinksVisitor);
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(StandardUrlVisitorProvider);
+	delete StandardUrlVisitorProvider;
+	StandardUrlVisitorProvider = 0;
 
-	delete StandardConfigurator;
-	StandardConfigurator = 0;
-
-	delete StandardIgnoreLinksVisitor;
-	StandardIgnoreLinksVisitor = 0;
-
-	delete StandardExpander;
-	StandardExpander = 0;
-
-	Core::instance()->domProcessorService()->unregisterVisitor(MailIgnoreLinksVisitor);
-
-	delete MailIgnoreLinksVisitor;
-	MailIgnoreLinksVisitor = 0;
-
-	delete MailExpander;
-	MailExpander = 0;
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(MailUrlVisitorProvider);
+	delete MailUrlVisitorProvider;
+	MailUrlVisitorProvider = 0;
 
 	qDeleteAll(RegisteredHandlersByPriority);
 	RegisteredHandlersByPriority.clear();

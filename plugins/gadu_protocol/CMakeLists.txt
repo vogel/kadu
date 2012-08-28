@@ -100,6 +100,7 @@ set (SOURCES
 	gadu-protocol-factory.cpp
 	gadu-protocol-plugin.cpp
 	gadu-status-adapter.cpp
+	gadu-url-dom-visitor-provider.cpp
 	gadu-url-handler.cpp
 )
 

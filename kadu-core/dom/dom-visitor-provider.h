@@ -17,40 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOM_PROCESSOR_SERVICE_H
-#define DOM_PROCESSOR_SERVICE_H
+#ifndef DOM_VISITOR_PROVIDER_H
+#define DOM_VISITOR_PROVIDER_H
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#include "provider/provider.h"
 
-#include "exports.h"
+class DomVisitor;
 
-class QDomDocument;
-
-class DomVisitorProvider;
-
-class KADUAPI DomProcessorService: public QObject
+class DomVisitorProvider : public Provider<DomVisitor *>
 {
-	Q_OBJECT
-
-	QMap<DomVisitorProvider *, int> Priorities;
-	QList<DomVisitorProvider *> VisitorProviders;
-	bool VisitorProvidersDirty;
-
-	QList<DomVisitorProvider *> getVisitorProviders();
-
 public:
-	explicit DomProcessorService(QObject *parent = 0);
-	virtual ~DomProcessorService();
-
-	void registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
-	void unregisterVisitorProvider(DomVisitorProvider *visitorProvider);
-
-	void process(QDomDocument &domDocument);
-
-	// TODO: remove
-	QString process(const QString &html);
+	virtual ~DomVisitorProvider() {}
 
 };
 
-#endif // DOM_PROCESSOR_SERVICE_H
+#endif // DOM_VISITOR_PROVIDER_H

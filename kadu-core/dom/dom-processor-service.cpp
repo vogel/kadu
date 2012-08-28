@@ -21,11 +21,12 @@
 
 #include "dom/dom-processor.h"
 #include "dom/dom-visitor.h"
+#include "dom/dom-visitor-provider.h"
 
 #include "dom-processor-service.h"
 
 DomProcessorService::DomProcessorService(QObject *parent) :
-		QObject(parent), VisitorsDirty(false)
+		QObject(parent), VisitorProvidersDirty(false)
 {
 }
 
@@ -33,48 +34,52 @@ DomProcessorService::~DomProcessorService()
 {
 }
 
-QList<DomVisitor *> DomProcessorService::getVisitors()
+QList<DomVisitorProvider *> DomProcessorService::getVisitorProviders()
 {
-	if (!VisitorsDirty)
-		return Visitors;
+	if (!VisitorProvidersDirty)
+		return VisitorProviders;
 
-	Visitors.clear();
+	VisitorProviders.clear();
 
-	QMultiMap<int, DomVisitor *> inverted;
-	foreach (DomVisitor *visitor, Priorities.keys())
-		inverted.insert(Priorities.value(visitor), visitor);
+	QMultiMap<int, DomVisitorProvider *> inverted;
+	foreach (DomVisitorProvider *visitorProvider, Priorities.keys())
+		inverted.insert(Priorities.value(visitorProvider), visitorProvider);
 
 	foreach (int priority, inverted.keys())
-		Visitors.append(inverted.values(priority));
+		VisitorProviders.append(inverted.values(priority));
 
-	return Visitors;
+	return VisitorProviders;
 }
 
-void DomProcessorService::registerVisitor(DomVisitor *visitor, int priority)
+void DomProcessorService::registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority)
 {
-	if (Priorities.contains(visitor))
+	if (Priorities.contains(visitorProvider))
 		return;
 
-	Priorities.insert(visitor, priority);
-	VisitorsDirty = true;
+	Priorities.insert(visitorProvider, priority);
+	VisitorProvidersDirty = true;
 }
 
-void DomProcessorService::unregisterVisitor(DomVisitor *visitor)
+void DomProcessorService::unregisterVisitorProvider(DomVisitorProvider *visitorProvider)
 {
-	if (0 < Priorities.remove(visitor))
-		VisitorsDirty = true;
+	if (0 < Priorities.remove(visitorProvider))
+		VisitorProvidersDirty = true;
 }
 
 
 void DomProcessorService::process(QDomDocument &domDocument)
 {
-	QList<DomVisitor *> visitors = getVisitors();
-	if (visitors.isEmpty())
+	QList<DomVisitorProvider *> visitorProviders = getVisitorProviders();
+	if (visitorProviders.isEmpty())
 		return;
 
 	DomProcessor domProcessor(domDocument);
-	foreach (DomVisitor *visitor, visitors)
-		domProcessor.accept(visitor);
+	foreach (DomVisitorProvider *visitorProvider, visitorProviders)
+	{
+		DomVisitor *visitor = visitorProvider->provide();
+		if (visitor)
+			domProcessor.accept(visitor);
+	}
 }
 
 QString DomProcessorService::process(const QString &html)

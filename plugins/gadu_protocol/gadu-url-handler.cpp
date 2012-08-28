@@ -46,22 +46,10 @@
 GaduUrlHandler::GaduUrlHandler()
 {
 	GaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
-
-	UrlExpander = new SimpleUrlExpander(GaduRegExp);
-	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(UrlExpander);
-
-	Core::instance()->domProcessorService()->registerVisitor(IgnoreLinksVisitor, 1000);
 }
 
 GaduUrlHandler::~GaduUrlHandler()
 {
-	Core::instance()->domProcessorService()->unregisterVisitor(IgnoreLinksVisitor);
-
-	delete IgnoreLinksVisitor;
-	IgnoreLinksVisitor = 0;
-
-	delete UrlExpander;
-	UrlExpander = 0;
 }
 
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)

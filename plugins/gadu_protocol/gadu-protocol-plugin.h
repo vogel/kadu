@@ -30,10 +30,14 @@
 
 #include "plugins/generic-plugin.h"
 
+class GaduUrlDomVisitorProvider;
+
 class GaduProtocolPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	GaduUrlDomVisitorProvider *UrlDomVisitorProvider;
 
 public:
 	virtual ~GaduProtocolPlugin();

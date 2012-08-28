@@ -17,40 +17,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef DOM_PROCESSOR_SERVICE_H
-#define DOM_PROCESSOR_SERVICE_H
+#ifndef JABBER_URL_DOM_VISITOR_PROVIDER_H
+#define JABBER_URL_DOM_VISITOR_PROVIDER_H
 
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#include "dom/dom-visitor-provider.h"
 
-#include "exports.h"
+class IgnoreLinksDomVisitor;
+class SimpleUrlExpander;
 
-class QDomDocument;
-
-class DomVisitorProvider;
-
-class KADUAPI DomProcessorService: public QObject
+class JabberUrlDomVisitorProvider : public DomVisitorProvider
 {
-	Q_OBJECT
-
-	QMap<DomVisitorProvider *, int> Priorities;
-	QList<DomVisitorProvider *> VisitorProviders;
-	bool VisitorProvidersDirty;
-
-	QList<DomVisitorProvider *> getVisitorProviders();
+	SimpleUrlExpander *Expander;
+	IgnoreLinksDomVisitor *IgnoreLinks;
 
 public:
-	explicit DomProcessorService(QObject *parent = 0);
-	virtual ~DomProcessorService();
+	JabberUrlDomVisitorProvider();
+	virtual ~JabberUrlDomVisitorProvider();
 
-	void registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
-	void unregisterVisitorProvider(DomVisitorProvider *visitorProvider);
-
-	void process(QDomDocument &domDocument);
-
-	// TODO: remove
-	QString process(const QString &html);
+	virtual DomVisitor * provide() const;
 
 };
 
-#endif // DOM_PROCESSOR_SERVICE_H
+#endif // JABBER_URL_DOM_VISITOR_PROVIDER_H
