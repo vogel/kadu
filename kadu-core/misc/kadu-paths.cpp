@@ -142,8 +142,6 @@ void KaduPaths::initProfilePath()
 	}
 	else
 	{
-		customProfileDir += '/';
-
 		if (customProfileDir.startsWith(QLatin1String("./"))
 #ifdef Q_OS_WIN
 				|| customProfileDir.startsWith(QLatin1String(".\\"))
@@ -158,19 +156,25 @@ void KaduPaths::initProfilePath()
 			ProfilePath = homePath() + '/' + customProfileDir;
 
 		// compatibility with 0.6.5 and older versions
-		if (QDir(ProfilePath + oldMidConfigDir).exists())
-			ProfilePath += oldMidConfigDir;
+		if (QDir(ProfilePath + '/' + oldMidConfigDir).exists())
+			ProfilePath += '/' + oldMidConfigDir;
 	}
 
-	QDir profileDir(ProfilePath);
-	if (!profileDir.exists())
+	// Do not cache QDir objects here unless you know what you are doing and
+	// you have tested your changes thoroughly under Windows. Using official
+	// Qt 4.8.1 MSVC 2010 build QDir thinks the dir does not exist if initially
+	// it did not exist, even though we successfully call QDir::mkpath(). Hence
+	// QDir::canonicalPath() returs empty string.
+	if (!QDir(ProfilePath).exists())
 	{
-		profileDir.mkpath(QLatin1String("."));
+		QDir().mkpath(ProfilePath);
 		// This equals to 0700 on Unix-like.
 		QFile(ProfilePath).setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::WriteUser | QFile::ExeUser);
 	}
 
-	QString canonicalPath = profileDir.canonicalPath();
+	QString canonicalPath = QDir(ProfilePath).canonicalPath();
 	if (!canonicalPath.isEmpty())
-		ProfilePath = canonicalPath + '/';
+		ProfilePath = canonicalPath;
+	if (!ProfilePath.isEmpty() && !ProfilePath.endsWith(QLatin1String("/")))
+		ProfilePath += '/';
 }
