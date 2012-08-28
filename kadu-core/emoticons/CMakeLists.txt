@@ -2,6 +2,7 @@ set (emoticons_SRCS
 	animated-emoticon-path-provider.cpp
 	emoticon.cpp
 	emoticon-expander.cpp
+	emoticon-expander-dom-visitor-provider.cpp
 	emoticon-prefix-tree.cpp
 	emoticon-prefix-tree-builder.cpp
 	emoticon-selector-button.cpp

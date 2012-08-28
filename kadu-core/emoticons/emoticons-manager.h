@@ -35,13 +35,13 @@
 #include <QtCore/QVector>
 
 #include "emoticons/emoticons.h"
-#include "emoticons/emoticon-prefix-tree.h"
 #include "themes.h"
 
 class QDomDocument;
 class QDomText;
 
 class Emoticon;
+class EmoticonExpanderDomVisitorProvider;
 class EmoticonThemeManager;
 
 /**
@@ -60,11 +60,11 @@ class KADUAPI EmoticonsManager : public QObject
 
 	static EmoticonsManager *Instance;
 
+	EmoticonExpanderDomVisitorProvider *ExpanderDomVisitorProvider;
 	EmoticonThemeManager *ThemeManager;
 
 	QVector<Emoticon> Aliases;
 	QVector<Emoticon> Selector;
-	QScopedPointer<EmoticonPrefixTree> Tree;
 
 	static QString getQuoted(const QString &s, unsigned int &pos);
 
@@ -80,10 +80,7 @@ public:
 	~EmoticonsManager();
 
 	const QVector<Emoticon> & aliases() { return Aliases; }
-
 	const QVector<Emoticon> & selectors() { return Selector; }
-
-	void expandEmoticons(QDomDocument domDocument);
 
 	void configurationUpdated();
 

@@ -50,8 +50,6 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	if (CurrentDomProcessorService)
 		CurrentDomProcessorService.data()->process(domDocument);
 
-	EmoticonsManager::instance()->expandEmoticons(domDocument);
-
 	if (domDocument.documentElement().childNodes().isEmpty())
 		return QString();
 

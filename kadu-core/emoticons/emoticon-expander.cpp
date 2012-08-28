@@ -20,7 +20,6 @@
 #include <QtXml/QDomText>
 
 #include "emoticons/emoticon.h"
-#include "emoticons/emoticon-path-provider.h"
 #include "emoticons/emoticon-walker.h"
 
 #include "emoticon-expander.h"

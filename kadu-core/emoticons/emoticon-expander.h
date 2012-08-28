@@ -20,11 +20,12 @@
 #ifndef EMOTICON_EXPANDER_H
 #define EMOTICON_EXPANDER_H
 
+#include "emoticons/emoticon-path-provider.h"
 #include "emoticons/emoticons-manager.h"
 
 #include "dom/dom-visitor.h"
 
-class EmoticonPathProvider;
+class EmoticonPrefixTree;
 
 /**
  * @addtogroup Emoticons
@@ -39,7 +40,7 @@ class EmoticonPathProvider;
 class EmoticonExpander : public DomVisitor
 {
 	EmoticonPrefixTree *Tree;
-	EmoticonPathProvider *PathProvider;
+	QScopedPointer<EmoticonPathProvider> PathProvider;
 
 	/**
 	 * @short Insertes emoticon img element at index.
@@ -72,6 +73,15 @@ class EmoticonExpander : public DomVisitor
 	virtual void endVisit(QDomElement elementNode);
 
 public:
+	/**
+	 * @short Create new EmoticonExpander instance.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param tree emoticon prefix tree used to expand emoticons
+	 * @param pathProvider provider that changed emoticon instances into paths to emoticon files
+	 *
+	 * New object takes ownership of pathProvider object but not on tree object. Tree object must not be destroyes
+	 * during EmoticonExpander lifetime.
+	 */
 	explicit EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider);
 	virtual ~EmoticonExpander();
 

@@ -37,11 +37,14 @@
 #include <QtGui/QTextDocument>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "dom/dom-processor.h"
+#include "dom/dom-processor-service.h"
 #include "dom/ignore-links-dom-visitor.h"
 #include "emoticons/animated-emoticon-path-provider.h"
 #include "emoticons/emoticon.h"
 #include "emoticons/emoticon-expander.h"
+#include "emoticons/emoticon-expander-dom-visitor-provider.h"
 #include "emoticons/emoticon-prefix-tree-builder.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
@@ -66,11 +69,16 @@ EmoticonsManager::EmoticonsManager() :
 
 	ThemeManager = new EmoticonThemeManager(this);
 	ThemeManager->loadThemes(iconPaths);
+	ExpanderDomVisitorProvider = new EmoticonExpanderDomVisitorProvider();
+	Core::instance()->domProcessorService()->registerVisitorProvider(ExpanderDomVisitorProvider, 2000);
 	configurationUpdated();
 }
 
 EmoticonsManager::~EmoticonsManager()
 {
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(ExpanderDomVisitorProvider);
+	delete ExpanderDomVisitorProvider;
+	ExpanderDomVisitorProvider = 0;
 }
 
 EmoticonThemeManager * EmoticonsManager::themeManager() const
@@ -88,6 +96,8 @@ void EmoticonsManager::configurationUpdated()
 
 		loadTheme();
 	}
+
+	ExpanderDomVisitorProvider->setStyle((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
 void EmoticonsManager::loadTheme()
@@ -210,32 +220,8 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 		foreach (const Emoticon &emoticon, Aliases)
 			builder.addEmoticon(emoticon);
 
-		Tree.reset(builder.tree());
-
+		ExpanderDomVisitorProvider->setEmoticonTree(builder.tree());
 	}
 
 	return something_loaded;
-}
-
-void EmoticonsManager::expandEmoticons(QDomDocument domDocument)
-{
-	EmoticonsStyle style = (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle");
-
-	if (EmoticonsStyleNone == style)
-		return;
-
-	if (!Tree)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: EMOTICONS NOT LOADED!\n");
-		return;
-	}
-
-	QScopedPointer<EmoticonPathProvider> emoticonPathProvider(style == EmoticonsStyleAnimated
-			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
-			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider()));
-	EmoticonExpander emoticonExpander(Tree.data(), emoticonPathProvider.data());
-	IgnoreLinksDomVisitor ignoreLinksDomVisitor(&emoticonExpander);
-
-	DomProcessor domProcessor(domDocument);
-	domProcessor.accept(&ignoreLinksDomVisitor);
 }

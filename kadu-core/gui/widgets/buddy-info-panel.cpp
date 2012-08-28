@@ -208,7 +208,6 @@ void BuddyInfoPanel::displayItem(Talkable item)
 	domDocument.setContent(Template.arg(Parser::parse(Syntax, item)));
 
 	Core::instance()->domProcessorService()->process(domDocument);
-	EmoticonsManager::instance()->expandEmoticons(domDocument);
 
 	setHtml(domDocument.toString(0));
 }
