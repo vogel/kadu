@@ -30,6 +30,8 @@
 #include <QtDBus/QDBusServiceWatcher>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
@@ -217,7 +219,7 @@ void FreedesktopNotify::notify(Notification *notification)
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())
-			body = UrlHandlerManager::instance()->expandUrls(body);
+			body = Core::instance()->domProcessorService()->process(body);
 	}
 
 	args.append(body);

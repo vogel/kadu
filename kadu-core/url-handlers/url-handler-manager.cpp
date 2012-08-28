@@ -117,24 +117,6 @@ void UrlHandlerManager::expandUrls(QDomDocument domDocument)
 		handler->expandUrls(domDocument);
 }
 
-QString UrlHandlerManager::expandUrls(const QString &html)
-{
-	QDomDocument domDocument;
-	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
-
-	expandUrls(domDocument);
-
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString();
-
-	QString result = domDocument.toString(0).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
-	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
-	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
-}
-
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
 	foreach (UrlHandler *handler, RegisteredHandlersByPriority)

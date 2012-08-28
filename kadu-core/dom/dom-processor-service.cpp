@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtXml/QDomDocument>
+
 #include "dom/dom-processor.h"
 #include "dom/dom-visitor.h"
 
@@ -73,4 +75,22 @@ void DomProcessorService::process(QDomDocument &domDocument)
 	DomProcessor domProcessor(domDocument);
 	foreach (DomVisitor *visitor, visitors)
 		domProcessor.accept(visitor);
+}
+
+QString DomProcessorService::process(const QString &html)
+{
+	QDomDocument domDocument;
+	// force content to be valid HTML with only one root
+	domDocument.setContent(QString("<div>%1</div>").arg(html));
+
+	process(domDocument);
+
+	if (domDocument.documentElement().childNodes().isEmpty())
+		return QString();
+
+	QString result = domDocument.toString(0).trimmed();
+	// remove <div></div>
+	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
+	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
+	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
 }

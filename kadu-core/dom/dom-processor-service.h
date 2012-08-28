@@ -48,6 +48,9 @@ public:
 
 	void process(QDomDocument &domDocument);
 
+	// TODO: remove
+	QString process(const QString &html);
+
 };
 
 #endif // DOM_PROCESSOR_SERVICE_H

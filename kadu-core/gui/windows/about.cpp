@@ -49,6 +49,7 @@
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
 #include "os/generic/window-geometry-manager.h"
@@ -122,7 +123,7 @@ About::About(QWidget *parent) :
 	// convert the email addresses
 	authors.replace(" (at) ", "@");
 	authors.replace(" (dot) ", ".");
-	authors = UrlHandlerManager::instance()->expandUrls(authors);
+	authors = Core::instance()->domProcessorService()->process(authors);
 	tb_authors->setHtml(authors);
 
 	// people to thank

@@ -66,7 +66,6 @@ public:
 	void unregisterUrlHandler(const QString &name);
 
 	void expandUrls(QDomDocument domDocument);
-	QString expandUrls(const QString &html);
 
 	void openUrl(const QByteArray &url, bool disableMenu = false);
 
