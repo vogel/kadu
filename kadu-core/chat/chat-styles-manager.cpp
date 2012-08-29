@@ -136,7 +136,6 @@ void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
 
 void ChatStylesManager::configurationUpdated()
 {
-	EmoticonsManager::instance()->configurationUpdated();
 	if (config_file.readBoolEntry("Chat", "ChatPrune"))
 		Prune = config_file.readUnsignedNumEntry("Chat", "ChatPruneLen");
 	else

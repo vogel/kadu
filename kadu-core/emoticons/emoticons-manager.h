@@ -34,6 +34,7 @@
 
 #include <QtCore/QVector>
 
+#include "configuration/configuration-holder.h"
 #include "emoticons/emoticons.h"
 #include "themes.h"
 
@@ -47,7 +48,7 @@ class EmoticonThemeManager;
 /**
 	Menad�er emotikon�w
 **/
-class KADUAPI EmoticonsManager : public QObject
+class KADUAPI EmoticonsManager : public ConfigurationHolder
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)

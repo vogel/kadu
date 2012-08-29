@@ -39,8 +39,6 @@ class KADUAPI Themes : public QObject
 {
 	Q_OBJECT
 
-	friend class EmoticonsManager;
-
 	QStringList ThemesList; //!< lista z nazwami dost�pnych zestaw�w
 	QStringList ThemesPaths; //!< lista �cie�ek w kt�rych szukamy zestaw�w
 	QStringList additional;

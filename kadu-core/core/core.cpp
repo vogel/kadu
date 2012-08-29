@@ -47,6 +47,7 @@
 #include "contacts/contact-manager.h"
 #include "dom/dom-processor-service.h"
 #include "emoticons/emoticons.h"
+#include "emoticons/emoticons-manager.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-edit-box.h"
@@ -420,6 +421,7 @@ void Core::init()
 
 	// TODO: add some life-cycle management
 	NotificationManager::instance();
+	EmoticonsManager::instance();
 
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
