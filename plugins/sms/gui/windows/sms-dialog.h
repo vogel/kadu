@@ -68,6 +68,8 @@ private slots:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
 	void sendSms();
 
+	void saveSmsInHistory(const QString &number, const QString &message);
+
 	void clear();
 
 protected:

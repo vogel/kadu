@@ -78,7 +78,10 @@ void SmsExternalSender::sendMessage(const QString &message)
 void SmsExternalSender::processFinished()
 {
 	if (QProcess::NormalExit == Process->exitStatus())
+	{
+		emit smsSent(number(), Message);
 		emit finished(true, "dialog-information", tr("SMS sent"));
+	}
 	else
 		emit finished(false, "dialog-error", tr("The process exited abnormally. The SMS may not be sent"));
 

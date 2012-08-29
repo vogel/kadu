@@ -58,6 +58,8 @@ public slots:
 signals:
 	void gatewayAssigned(const QString &number, const QString &gatewayId);
 
+	void smsSent(const QString &number, const QString &message);
+
 	void progress(const QString &entryIcon, const QString &entryMessage);
 	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
 	void canceled();

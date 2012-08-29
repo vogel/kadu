@@ -46,10 +46,10 @@ private slots:
 	void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 public:
-	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway = SmsGateway(), QObject *parent = 0);
+	explicit SmsInternalSender(const QString &number, const SmsGateway &gateway, QObject *parent = 0);
 	virtual ~SmsInternalSender();
 
-	virtual void sendMessage(const QString& message);
+	virtual void sendMessage(const QString &message);
 
 	void findGatewayForNumber(const QString &number);
 
