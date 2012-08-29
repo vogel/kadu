@@ -45,6 +45,8 @@
 #include "talkable/filter/mobile-talkable-filter.h"
 #include "debug.h"
 
+#include "plugins/history/history.h"
+
 #include "mobile-number-manager.h"
 #include "sms-external-sender.h"
 #include "sms-gateway.h"
@@ -301,6 +303,9 @@ void SmsDialog::sendSms()
 	connect(sender, SIGNAL(progress(QString,QString)), window, SLOT(addProgressEntry(QString,QString)));
 	connect(sender, SIGNAL(finished(bool,QString,QString)), window, SLOT(progressFinished(bool,QString,QString)));
 
+	if (SaveInHistoryCheckBox->isChecked())
+		connect(sender, SIGNAL(smsSent(QString,QString)), this, SLOT(saveSmsInHistory(QString,QString)));
+
 	sender->sendMessage(ContentEdit->toPlainText());
 
 	kdebugf2();
@@ -311,6 +316,12 @@ void SmsDialog::updateCounter()
 	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()) + MaxLengthSuffixText);
 
 	validate();
+}
+
+void SmsDialog::saveSmsInHistory(const QString &number, const QString &message)
+{
+	if (History::instance()->currentStorage())
+		History::instance()->currentStorage()->appendSms(number, message);
 }
 
 void SmsDialog::clear()

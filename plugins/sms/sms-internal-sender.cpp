@@ -153,6 +153,7 @@ void SmsInternalSender::cancel()
 
 void SmsInternalSender::result()
 {
+	emit smsSent(number(), Message);
 	emit finished(true, "dialog-information", tr("SMS sent"));
 
 	deleteLater();
