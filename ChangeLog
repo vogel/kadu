@@ -2,6 +2,7 @@
 * core: fixed every new profile of Kadu being lost on Windows (regression since 0.11.x) (beevvy)
 * qt: ship more stable version of Qt on Windows (beevvy)
 * icons: removed lots of unused status icons (beevvy)
+* icons: fixed xmpp status icons in freedesktop notifications on GTK+-based platforms (beevvy)
 
 +++ version 0.12.1
 * jabber: reconnect after waking up from suspend (Juzef)
