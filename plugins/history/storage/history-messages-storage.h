@@ -27,8 +27,8 @@
 #include "message/message.h"
 #include "talkable/talkable.h"
 
-#include "plugins/history/history_exports.h"
-#include "plugins/history/history-query-result.h"
+#include "../history_exports.h"
+#include "../history-query-result.h"
 
 class HistoryQuery;
 

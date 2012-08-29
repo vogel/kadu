@@ -311,63 +311,66 @@ endif (UNIX AND NOT APPLE)
 install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_DATADIR}/scripts")
 
 # install api headers
+# how to get list: find . -name '*.h' -exec dirname {} +|sort|uniq|sed -e 's|\./||' -e 's|^|\t|'
+# TODO: consider using file (GLOB_RECURSE) command here
 kadu_api_directories (kadu-core
+	.
+	accounts
 	accounts/filter
 	accounts/model
-	accounts
 	avatars
-	buddies/filter
-	buddies/model
 	buddies
-	chat/model
-	chat/style-engines/style-engine-adium
-	chat/style-engines/style-engine-kadu
-	chat/style-engines
-	chat/type
+	buddies/model
 	chat
+	chat/model
+	chat/style-engines
+	chat/style-engines/chat-engine-adium
+	chat/style-engines/chat-engine-kadu
+	chat/type
 	configuration
-	contacts/filter
-	contacts/model
 	contacts
+	contacts/model
 	core
 	emoticons
 	file-transfer
-	gui/actions/chat
-	gui/actions
-	gui/widgets/configuration
-	gui/widgets
-	gui/windows/open-chat-with
-	gui/windows
 	gui
+	gui/actions
+	gui/actions/chat
+	gui/model
+	gui/widgets
+	gui/widgets/configuration
+	gui/windows
+	gui/windows/open-chat-with
 	icons
-	identities/model
 	identities
+	identities/model
 	message
 	misc
 	model
-	multilogon/model
 	multilogon
-	network/proxy/model
-	network/proxy
+	multilogon/model
 	network
+	network/proxy
+	network/proxy/model
 	notify
+	os
 	os/generic
 	os/qtsingleapplication
-	os
 	parser
 	plugins
+	plugins/model
+	protocols
 	protocols/filter
 	protocols/model
 	protocols/services
-	protocols
+	protocols/services/roster
 	provider
 	qt
 	status
 	storage
+	talkable
 	talkable/filter
 	talkable/model
-	talkable
 	themes
 	url-handlers
-	.
 )
