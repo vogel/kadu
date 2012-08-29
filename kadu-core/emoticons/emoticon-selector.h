@@ -57,7 +57,7 @@ public:
 		\param activatingWidget okno wywo�uj�ce
 		\param parent rodzic na kt�rym ma by� wy�wietlona lista
 	**/
-	EmoticonSelector(const QWidget *activatingWidget, QWidget *parent);
+	EmoticonSelector(QWidget *parent);
 
 signals:
 	// TODO: rename

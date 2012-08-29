@@ -72,15 +72,14 @@ public:
 
 	ChatWidget * chatWidget();
 
-	void openEmoticonSelector(const QWidget *activatingWidget);
 	void openColorSelector(const QWidget *activatingWidget);
 	void openInsertImageDialog();
 
 	void setAutoSend(bool autoSend);
 
 public slots:
-	void addEmoticon(const QString &emoticon);
 	void changeColor(const QColor &newColor);
+	void insertPlainText(const QString &plainText);
 
 signals:
 	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);

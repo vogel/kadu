@@ -38,7 +38,6 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
@@ -221,15 +220,6 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 
-void ChatEditBox::openEmoticonSelector(const QWidget *activatingWidget)
-{
-	//emoticons_selector zawsze b�dzie NULLem gdy wchodzimy do tej funkcji
-	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(activatingWidget, this);
-	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), this, SLOT(addEmoticon(const QString &)));
-	emoticonSelector->show();
-}
-
 void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
@@ -317,17 +307,6 @@ void ChatEditBox::openInsertImageDialog()
 	}
 }
 
-void ChatEditBox::addEmoticon(const QString &emot)
-{
-	if (!emot.isEmpty())
-	{
-		QString escaped = emot;
-		escaped = escaped.replace("&lt;", "<");
-		escaped = escaped.replace("&gt;", ">");
-		InputBox->insertPlainText(escaped);
-	}
-}
-
 void ChatEditBox::changeColor(const QColor &newColor)
 {
 	CurrentColor = newColor;
@@ -364,4 +343,9 @@ void ChatEditBox::setColorFromCurrentText(bool force)
 	p.fill(CurrentColor);
 
 	action->QAction::setIcon(p);
+}
+
+void ChatEditBox::insertPlainText(const QString &plainText)
+{
+	InputBox->insertPlainText( plainText);
 }

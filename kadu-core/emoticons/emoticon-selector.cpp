@@ -45,7 +45,7 @@
 
 #include "emoticon-selector.h"
 
-EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *parent) :
+EmoticonSelector::EmoticonSelector(QWidget *parent) :
 		QScrollArea(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -62,7 +62,7 @@ EmoticonSelector::EmoticonSelector(const QWidget *activatingWidget, QWidget *par
 
 	addEmoticonButtons(mainwidget);
 	setWidget(mainwidget);
-	calculatePositionAndSize(activatingWidget, mainwidget);
+	calculatePositionAndSize(parent, mainwidget);
 }
 
 void EmoticonSelector::addEmoticonButtons(QWidget *mainwidget)
