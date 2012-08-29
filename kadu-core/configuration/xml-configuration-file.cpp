@@ -46,7 +46,10 @@ XmlConfigFile::XmlConfigFile() : DomDocument()
 
 bool XmlConfigFile::isUsable() const
 {
-	return QFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
+	const QString &profilePath = KaduPaths::instance()->profilePath();
+	return !profilePath.isEmpty() &&
+			QDir(profilePath).isReadable() &&
+			QFile(profilePath + QLatin1String("kadu-0.12.conf.xml")).open(QIODevice::ReadWrite);
 }
 
 void XmlConfigFile::read()
