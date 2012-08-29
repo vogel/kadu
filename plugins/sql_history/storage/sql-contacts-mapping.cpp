@@ -78,14 +78,11 @@ void SqlContactsMapping::loadMappingsFromDatabase()
 		if (id <= 0)
 			continue;
 
-		Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
-		if (!contact)
-		{
-			contact = Contact::create();
-			contact.setId(QString::number(id));
-		}
-
-		addMapping(id, contact);
+		// This contact needs to be known to the manager even if it's not on our roster,
+		// in case we want to add him later or even talk to her without adding.
+		Contact contact = ContactManager::instance()->byId(account, contactId, ActionCreateAndAdd);
+		if (contact)
+			addMapping(id, contact);
 	}
 }
 
