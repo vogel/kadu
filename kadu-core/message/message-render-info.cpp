@@ -29,7 +29,6 @@
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "emoticons/emoticons-manager.h"
 #include "icons/kadu-icon.h"
 #include "message/message-html-renderer-service.h"
 #include "misc/date-time.h"

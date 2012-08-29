@@ -31,7 +31,6 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
-#include "emoticons/emoticons-manager.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 #include "url-handlers/url-handler-manager.h"

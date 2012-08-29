@@ -19,7 +19,6 @@
 
 #include "configuration/chat-configuration-holder.h"
 #include "dom/dom-processor-service.h"
-#include "emoticons/emoticons-manager.h"
 #include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
 #include "message/message.h"

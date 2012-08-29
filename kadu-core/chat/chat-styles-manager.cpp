@@ -40,7 +40,6 @@
 #include "configuration/chat-configuration-holder.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "emoticons/emoticons-manager.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/configuration/config-group-box.h"
