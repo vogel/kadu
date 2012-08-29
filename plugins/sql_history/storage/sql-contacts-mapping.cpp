@@ -43,15 +43,16 @@ SqlContactsMapping::~SqlContactsMapping()
 
 void SqlContactsMapping::contactUpdated(const Contact &contact)
 {
+	int id = idByContact(contact, false);
 	// not all contacts are mapped
-	if (idByContact(contact, false) <= 0)
+	if (id <= 0)
 		return;
 
 	QSqlQuery query(Database);
 	query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
 	query.bindValue(":account_id", SqlAccountsMapping::idByAccount(contact.contactAccount()));
 	query.bindValue(":contact", contact.id());
-	query.bindValue(":id", idByContact(contact, false));
+	query.bindValue(":id", id);
 	query.exec();
 }
 
