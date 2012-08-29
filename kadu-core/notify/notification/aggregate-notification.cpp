@@ -36,9 +36,24 @@ void AggregateNotification::addNotification(Notification* notification)
 	emit updated(this);
 }
 
+void AggregateNotification::acquire()
+{
+	Notification::acquire();
+
+	foreach (Notification *n, Notifications)
+	{
+		n->acquire();
+	}
+}
+
 void AggregateNotification::close()
 {
-	emit closed(this);
+	foreach (Notification *n, Notifications)
+	{
+		n->close();
+	}
+
+	Notification::close();
 }
 
 const QString AggregateNotification::title() const

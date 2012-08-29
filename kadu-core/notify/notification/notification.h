@@ -191,6 +191,7 @@ public:
 	virtual QString groupKey() const { return Title; }
 
 	virtual QString identifier() { return Type + "_" + groupKey(); }
+
 	/**
 		Ustawia tytu� zdarzenia.
 	 **/

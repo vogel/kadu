@@ -45,6 +45,7 @@ public:
 
 	QList<Notification *> & notifications() { return Notifications; }
 
+	virtual void acquire();
 	virtual void close();
 
 	const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
