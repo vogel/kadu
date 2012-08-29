@@ -9,6 +9,7 @@ set (emoticons_SRCS
 	emoticon-selector.cpp
 	emoticon-walker.cpp
 	emoticons-manager.cpp
+	insert-emoticon-action.cpp
 	static-emoticon-path-provider.cpp
 )
 
@@ -16,6 +17,7 @@ set (emoticons_MOC_SRCS
 	emoticon-selector-button.h
 	emoticon-selector.h
 	emoticons-manager.h
+	insert-emoticon-action.h
 )
 
 kadu_subdirectory (emoticons "${emoticons_SRCS}" "${emoticons_MOC_SRCS}" "")

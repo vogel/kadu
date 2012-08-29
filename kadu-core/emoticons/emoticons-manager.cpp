@@ -46,6 +46,7 @@
 #include "emoticons/emoticon-expander.h"
 #include "emoticons/emoticon-expander-dom-visitor-provider.h"
 #include "emoticons/emoticon-prefix-tree-builder.h"
+#include "emoticons/insert-emoticon-action.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "misc/misc.h"
 #include "themes/emoticon-theme-manager.h"
@@ -72,6 +73,8 @@ EmoticonsManager::EmoticonsManager() :
 	ExpanderDomVisitorProvider = new EmoticonExpanderDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(ExpanderDomVisitorProvider, 2000);
 	configurationUpdated();
+
+	new InsertEmoticonAction(this);
 }
 
 EmoticonsManager::~EmoticonsManager()

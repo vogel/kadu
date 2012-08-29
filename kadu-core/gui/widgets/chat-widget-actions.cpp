@@ -33,7 +33,6 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "emoticons/emoticons.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/chat/leave-chat-action.h"
@@ -224,13 +223,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("Open Chat with...")
 	);
 	OpenWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
-
-	InsertEmoticon = new ActionDescription(0,
-		ActionDescription::TypeChat, "insertEmoticonAction",
-		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
-		KaduIcon("face-smile"), tr("Insert Emoticon")
-	);
-	connect(InsertEmoticon, SIGNAL(actionCreated(Action *)), this, SLOT(insertEmoticonActionCreated(Action *)));
 /*
 	ColorSelector = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",
@@ -249,7 +241,6 @@ ChatWidgetActions::~ChatWidgetActions()
 void ChatWidgetActions::configurationUpdated()
 {
 	autoSendActionCheck();
-	insertEmoticonsActionCheck();
 }
 
 void ChatWidgetActions::autoSendActionCreated(Action *action)
@@ -279,38 +270,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-}
-
-void ChatWidgetActions::insertEmoticonActionCreated(Action *action)
-{
-	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
-	{
-		action->setToolTip(tr("Insert emoticon - enable in configuration"));
-		action->setEnabled(false);
-	}
-}
-
-void ChatWidgetActions::insertEmoticonsActionCheck()
-{
-	QString toolTip;
-	bool enabled;
-
-	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
-	{
-		toolTip =  tr("Insert emoticon - enable in configuration");
-		enabled = false;
-	}
-	else
-	{
-		toolTip = tr("Insert emoticon");
-		enabled = true;
-	}
-
- 	foreach (Action *action, InsertEmoticon->actions())
-	{
-		action->setToolTip(toolTip);
-		action->setEnabled(enabled);
-	}
 }
 
 void ChatWidgetActions::autoSendActionCheck()
@@ -562,19 +521,4 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 		return;
 
 	chatEditBox->openColorSelector(widgets.at(widgets.size() - 1));
-}
-
-void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(toggled)
-
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-
-	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.isEmpty())
-		return;
-
-	chatEditBox->openEmoticonSelector(widgets.at(widgets.size() - 1));
 }
