@@ -25,12 +25,10 @@ for protocol in "common" "gadu-gadu" "xmpp"; do
 	mkdir -p ../protocols/${protocol}/64x64
 	for status in "offline" "invisible" "do_not_disturb" "not_available" "away" "online" "free_for_chat"; do
 		for desc in "" "_d"; do
-			for mobile in "" "_m"; do
-				xcf2png statuses.xcf ${status}_ ${mobile} ${desc} _${protocol} > ../protocols/${protocol}/64x64/${status}${desc}${mobile}.png
-				for size in "16x16" "22x22" "32x32" "48x48"; do
-					mkdir -p ../protocols/${protocol}/${size}
-					convert ../protocols/${protocol}/64x64/${status}${desc}${mobile}.png -resize ${size} -filter ${FILTER} ../protocols/${protocol}/${size}/${status}${desc}${mobile}.png
-				done
+			xcf2png statuses.xcf ${status}_ ${desc} _${protocol} > ../protocols/${protocol}/64x64/${status}${desc}.png
+			for size in "16x16" "22x22" "32x32" "48x48"; do
+				mkdir -p ../protocols/${protocol}/${size}
+				convert ../protocols/${protocol}/64x64/${status}${desc}.png -resize ${size} -filter ${FILTER} ../protocols/${protocol}/${size}/${status}${desc}.png
 			done
 		done
 	done
