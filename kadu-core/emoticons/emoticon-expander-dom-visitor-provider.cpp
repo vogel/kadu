@@ -39,7 +39,6 @@ void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
 {
 	if (EmoticonsStyleNone == Style || !Tree)
 	{
-		Expander.reset(0);
 		LinksVisitor.reset(0);
 		return;
 	}
@@ -47,8 +46,7 @@ void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
 	EmoticonPathProvider *emoticonPathProvider = Style == EmoticonsStyleAnimated
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
-	Expander.reset(new EmoticonExpander(Tree.data(), emoticonPathProvider));
-	LinksVisitor.reset(new IgnoreLinksDomVisitor(Expander.data()));
+	LinksVisitor.reset(new IgnoreLinksDomVisitor(new EmoticonExpander(Tree.data(), emoticonPathProvider)));
 }
 
 DomVisitor * EmoticonExpanderDomVisitorProvider::provide() const

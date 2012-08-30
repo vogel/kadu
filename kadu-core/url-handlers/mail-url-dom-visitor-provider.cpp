@@ -24,17 +24,15 @@
 
 MailUrlDomVisitorProvider::MailUrlDomVisitorProvider()
 {
-	Expander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"));
-	IgnoreLinks = new IgnoreLinksDomVisitor(Expander);
+	MailUrlExpander *expander = new MailUrlExpander(QRegExp("\\b[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b"));
+	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 MailUrlDomVisitorProvider::~MailUrlDomVisitorProvider()
 {
-	delete IgnoreLinks;
-	delete Expander;
 }
 
 DomVisitor * MailUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks;
+	return IgnoreLinks.data();
 }

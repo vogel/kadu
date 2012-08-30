@@ -25,13 +25,11 @@
 #include "dom/ignore-links-dom-visitor.h"
 #include "emoticons/emoticon-prefix-tree.h"
 #include "emoticons/emoticons.h"
-#include "emoticons/emoticon-expander.h"
 
 #include "dom/dom-visitor-provider.h"
 
 class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
 {
-	QScopedPointer<EmoticonExpander> Expander;
 	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
 
 	QScopedPointer<EmoticonPrefixTree> Tree;

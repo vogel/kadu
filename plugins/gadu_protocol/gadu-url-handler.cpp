@@ -31,15 +31,11 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "dom/dom-processor.h"
-#include "dom/dom-processor-service.h"
-#include "dom/ignore-links-dom-visitor.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
-#include "url-handlers/simple-url-expander.h"
 
 #include "gadu-url-handler.h"
 

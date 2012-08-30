@@ -25,20 +25,17 @@
 
 StandardUrlDomVisitorProvider::StandardUrlDomVisitorProvider()
 {
-	Expander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
-	IgnoreLinks = new IgnoreLinksDomVisitor(Expander);
-	Configurator = new StandardUrlExpanderConfigurator();
-	Configurator->setStandardUrlExpander(Expander);
+	StandardUrlExpander *expander = new StandardUrlExpander(QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)"));
+	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
+	Configurator.reset(new StandardUrlExpanderConfigurator());
+	Configurator->setStandardUrlExpander(expander);
 }
 
 StandardUrlDomVisitorProvider::~StandardUrlDomVisitorProvider()
 {
-	delete Configurator;
-	delete IgnoreLinks;
-	delete Expander;
 }
 
 DomVisitor * StandardUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks;
+	return IgnoreLinks.data();
 }

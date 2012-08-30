@@ -24,17 +24,15 @@
 
 GaduUrlDomVisitorProvider::GaduUrlDomVisitorProvider()
 {
-	Expander = new SimpleUrlExpander(QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b"));
-	IgnoreLinks = new IgnoreLinksDomVisitor(Expander);
+	SimpleUrlExpander *expander = new SimpleUrlExpander(QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b"));
+	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 GaduUrlDomVisitorProvider::~GaduUrlDomVisitorProvider()
 {
-	delete IgnoreLinks;
-	delete Expander;
 }
 
 DomVisitor * GaduUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks;
+	return IgnoreLinks.data();
 }

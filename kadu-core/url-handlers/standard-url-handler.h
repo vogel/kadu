@@ -28,16 +28,9 @@
 
 #include "url-handler.h"
 
-class IgnoreLinksDomVisitor;
-class StandardUrlExpander;
-class StandardUrlExpanderConfigurator;
-
 class StandardUrlHandler : public UrlHandler
 {
 	QRegExp UrlRegExp;
-	IgnoreLinksDomVisitor *IgnoreLinksVisitor;
-	StandardUrlExpander *Expander;
-	StandardUrlExpanderConfigurator *Configurator;
 
 public:
 	StandardUrlHandler();

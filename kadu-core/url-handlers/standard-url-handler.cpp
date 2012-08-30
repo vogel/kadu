@@ -23,30 +23,16 @@
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
 #include "os/generic/url-opener.h"
-#include "url-handlers/standard-url-expander.h"
-#include "url-handlers/standard-url-expander-configurator.h"
 
 #include "standard-url-handler.h"
 
 StandardUrlHandler::StandardUrlHandler()
 {
 	UrlRegExp = QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)");
-	Expander = new StandardUrlExpander(UrlRegExp);
-	IgnoreLinksVisitor = new IgnoreLinksDomVisitor(Expander);
-	Configurator = new StandardUrlExpanderConfigurator();
-	Configurator->setStandardUrlExpander(Expander);
 }
 
 StandardUrlHandler::~StandardUrlHandler()
 {
-	delete Configurator;
-	Configurator = 0;
-
-	delete IgnoreLinksVisitor;
-	IgnoreLinksVisitor = 0;
-
-	delete Expander;
-	Expander = 0;
 }
 
 

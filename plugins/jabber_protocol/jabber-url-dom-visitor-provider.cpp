@@ -24,7 +24,7 @@
 
 JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider()
 {
-	Expander = new SimpleUrlExpander(
+	SimpleUrlExpander *expander = new SimpleUrlExpander(
 		QRegExp("\\b"
 	            "xmpp:"
 	            "(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
@@ -34,16 +34,14 @@ JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider()
 	            "(?:#(\\S*))?"                                 // fragment
 	            "\\b")
 	);
-	IgnoreLinks = new IgnoreLinksDomVisitor(Expander);
+	IgnoreLinks.reset(new IgnoreLinksDomVisitor(expander));
 }
 
 JabberUrlDomVisitorProvider::~JabberUrlDomVisitorProvider()
 {
-	delete IgnoreLinks;
-	delete Expander;
 }
 
 DomVisitor * JabberUrlDomVisitorProvider::provide() const
 {
-	return IgnoreLinks;
+	return IgnoreLinks.data();
 }

@@ -20,12 +20,14 @@
 #ifndef IGNORE_LINKS_DOM_VISITOR
 #define IGNORE_LINKS_DOM_VISITOR
 
+#include <QtCore/QScopedPointer>
+
 #include "dom/dom-visitor.h"
 #include "exports.h"
 
 class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 {
-	DomVisitor *Visitor;
+	QScopedPointer<DomVisitor> Visitor;
 	int LinksDepth;
 
 public:

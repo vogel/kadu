@@ -33,15 +33,9 @@
 
 class QAction;
 
-class IgnoreLinksDomVisitor;
-class SimpleUrlExpander;
-
 class GaduUrlHandler : public QObject, public UrlHandler
 {
 	Q_OBJECT
-
-	SimpleUrlExpander *UrlExpander;
-	IgnoreLinksDomVisitor *IgnoreLinksVisitor;
 
 	QRegExp GaduRegExp;
 

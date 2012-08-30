@@ -20,6 +20,8 @@
 #ifndef MAIL_URL_DOM_VISITOR_PROVIDER
 #define MAIL_URL_DOM_VISITOR_PROVIDER
 
+#include <QtCore/QScopedPointer>
+
 #include "dom/dom-visitor-provider.h"
 
 class IgnoreLinksDomVisitor;
@@ -27,8 +29,7 @@ class MailUrlExpander;
 
 class MailUrlDomVisitorProvider : public DomVisitorProvider
 {
-	IgnoreLinksDomVisitor *IgnoreLinks;
-	MailUrlExpander *Expander;
+	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
 
 public:
 	MailUrlDomVisitorProvider();

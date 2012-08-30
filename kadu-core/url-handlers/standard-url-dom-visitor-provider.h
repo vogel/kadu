@@ -20,17 +20,17 @@
 #ifndef STANDARD_URL_DOM_VISITOR_PROVIDER_H
 #define STANDARD_URL_DOM_VISITOR_PROVIDER_H
 
+#include <QtCore/QScopedPointer>
+
 #include "dom/dom-visitor-provider.h"
 
 class IgnoreLinksDomVisitor;
-class StandardUrlExpander;
 class StandardUrlExpanderConfigurator;
 
 class StandardUrlDomVisitorProvider : public DomVisitorProvider
 {
-	IgnoreLinksDomVisitor *IgnoreLinks;
-	StandardUrlExpander *Expander;
-	StandardUrlExpanderConfigurator *Configurator;
+	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
+	QScopedPointer<StandardUrlExpanderConfigurator> Configurator;
 
 public:
 	StandardUrlDomVisitorProvider();

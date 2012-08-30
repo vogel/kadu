@@ -20,15 +20,15 @@
 #ifndef JABBER_URL_DOM_VISITOR_PROVIDER_H
 #define JABBER_URL_DOM_VISITOR_PROVIDER_H
 
+#include <QtCore/QScopedPointer>
+
 #include "dom/dom-visitor-provider.h"
 
 class IgnoreLinksDomVisitor;
-class SimpleUrlExpander;
 
 class JabberUrlDomVisitorProvider : public DomVisitorProvider
 {
-	SimpleUrlExpander *Expander;
-	IgnoreLinksDomVisitor *IgnoreLinks;
+	QScopedPointer<IgnoreLinksDomVisitor> IgnoreLinks;
 
 public:
 	JabberUrlDomVisitorProvider();
