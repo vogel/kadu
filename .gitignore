@@ -3,3 +3,4 @@
 build*
 .configuration-ui-translations.cpp
 docs
+/.tx/
