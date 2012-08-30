@@ -45,7 +45,6 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
-#include "emoticons/emoticons-manager.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
 #include "gui/widgets/configuration/config-check-box.h"
@@ -65,7 +64,6 @@
 #include "network/proxy/network-proxy.h"
 #include "status/status-container.h"
 #include "status/status.h"
-#include "themes/emoticon-theme-manager.h"
 #include "themes/icon-theme-manager.h"
 
 #include "icons/icons-manager.h"
@@ -232,15 +230,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	connect(widget()->widgetById("displayGroupTabs"), SIGNAL(toggled(bool)), widget()->widgetById("showGroupAll"), SLOT(setEnabled(bool)));
 
-	emoticonsStyleComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
-	emoticonsThemeComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	emoticonsScalingComboBox = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsScaling"));
-	connect(emoticonsThemeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onChangeEmoticonsTheme(int)));
-	connect(widget()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
-
 	QWidget *showInformationPanel = widget()->widgetById("showInformationPanel");
 	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
-	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
 
 	ConfigCheckBox *useDefaultBrowserCheckbox = static_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultBrowser"));
 	ConfigLineEdit *browserCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("browserPath"));
@@ -308,7 +299,6 @@ void MainConfigurationWindow::show()
 	{
 		setLanguages();
 		setIconThemes();
-		setEmoticonThemes();
 		setToolTipClasses();
 	}
 
@@ -377,25 +367,6 @@ void MainConfigurationWindow::setIconThemes()
 	iconThemes->setIcons(icons);
 }
 
-void MainConfigurationWindow::setEmoticonThemes()
-{
-	ConfigComboBox *emoticonsThemes = static_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	EmoticonsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
-
-	(void)QT_TRANSLATE_NOOP("@default", "default");
-
-	QStringList values;
-	QStringList captions;
-	foreach (const Theme &theme, EmoticonsManager::instance()->themeManager()->themes())
-	{
-		values.append(theme.name());
-		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
-	}
-
-	emoticonsThemes->setItems(values, captions);
-	emoticonsThemes->setCurrentItem(EmoticonsManager::instance()->themeManager()->currentTheme().name());
-}
-
 void MainConfigurationWindow::setToolTipClasses()
 {
 	QStringList captions;
@@ -411,12 +382,6 @@ void MainConfigurationWindow::setToolTipClasses()
 	}
 
 	static_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
-}
-
-void MainConfigurationWindow::onChangeEmoticonsTheme(int index)
-{
-	emoticonsStyleComboBox->setEnabled(index != 0);
-	emoticonsScalingComboBox->setEnabled(index != 0);
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

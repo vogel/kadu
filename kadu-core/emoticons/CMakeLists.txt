@@ -8,6 +8,7 @@ set (emoticons_SRCS
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
 	emoticon-walker.cpp
+	emoticons-configuration-ui-handler.cpp
 	emoticons-manager.cpp
 	insert-emoticon-action.cpp
 	static-emoticon-path-provider.cpp
@@ -16,6 +17,7 @@ set (emoticons_SRCS
 set (emoticons_MOC_SRCS
 	emoticon-selector-button.h
 	emoticon-selector.h
+	emoticons-configuration-ui-handler.h
 	emoticons-manager.h
 	insert-emoticon-action.h
 )

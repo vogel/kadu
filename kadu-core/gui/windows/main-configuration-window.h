@@ -63,9 +63,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QCheckBox *userboxTransparency;
 	QSlider *userboxAlpha;
 	QCheckBox *userboxBlur;
-	ConfigComboBox *emoticonsStyleComboBox;
-	ConfigComboBox *emoticonsThemeComboBox;
-	ConfigComboBox *emoticonsScalingComboBox;
 	BuddyListBackgroundColorsWidget *buddyColors;
 
 	explicit MainConfigurationWindow();
@@ -78,14 +75,11 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	virtual void compositingDisabled();
 
 private slots:
-	void onChangeEmoticonsTheme(int index);
-
 	void onChangeStartupStatus(int index);
 
 	void showLookChatAdvanced();
 
 	void setIconThemes();
-	void setEmoticonThemes();
 
 	void chatPreviewSyntaxChanged(const QString &syntaxName);
 

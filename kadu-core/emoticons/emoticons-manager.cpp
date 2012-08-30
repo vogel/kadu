@@ -46,8 +46,10 @@
 #include "emoticons/emoticon-expander.h"
 #include "emoticons/emoticon-expander-dom-visitor-provider.h"
 #include "emoticons/emoticon-prefix-tree-builder.h"
+#include "emoticons/emoticons-configuration-ui-handler.h"
 #include "emoticons/insert-emoticon-action.h"
 #include "emoticons/static-emoticon-path-provider.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 #include "themes/emoticon-theme-manager.h"
 #include "debug.h"
@@ -73,12 +75,15 @@ EmoticonsManager::EmoticonsManager() :
 	ExpanderDomVisitorProvider = new EmoticonExpanderDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(ExpanderDomVisitorProvider, 2000);
 	configurationUpdated();
+	ConfigurationUiHandler = new EmoticonsConfigurationUiHandler(this);
+	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler);
 
 	new InsertEmoticonAction(this);
 }
 
 EmoticonsManager::~EmoticonsManager()
 {
+	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler);
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(ExpanderDomVisitorProvider);
 	delete ExpanderDomVisitorProvider;
 	ExpanderDomVisitorProvider = 0;

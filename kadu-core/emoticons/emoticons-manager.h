@@ -43,6 +43,7 @@ class QDomText;
 
 class Emoticon;
 class EmoticonExpanderDomVisitorProvider;
+class EmoticonsConfigurationUiHandler;
 class EmoticonThemeManager;
 
 /**
@@ -63,6 +64,7 @@ class KADUAPI EmoticonsManager : public ConfigurationHolder
 
 	EmoticonExpanderDomVisitorProvider *ExpanderDomVisitorProvider;
 	EmoticonThemeManager *ThemeManager;
+	EmoticonsConfigurationUiHandler *ConfigurationUiHandler;
 
 	QVector<Emoticon> Aliases;
 	QVector<Emoticon> Selector;
