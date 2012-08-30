@@ -5,7 +5,7 @@
 * icons: fixed xmpp status icons in freedesktop notifications on GTK+-based platforms (beevvy)
 * sql_history: fixed chat history with anonymous contacts not being displayed (beevvy)
 * sms: fixed saving sent SMS'es in history (beevvy)
-* translations: updated Polish and Czech translations
+* translations: updated Polish and Czech translations, added French translation
 
 +++ version 0.12.1
 * jabber: reconnect after waking up from suspend (Juzef)
