@@ -2175,6 +2175,18 @@ ihned po zřízení spojení se serverem</translation>
         <source>Could not open file. Select another one.</source>
         <translation>Nepodařilo se otevřít soubor. Vyberte jiný.</translation>
     </message>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Příchozí přenos</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účetu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Přijmout přenos?</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účetu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Je to pravděpodobně další díl &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co mám dělat?</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2848,18 +2860,6 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
 </context>
 <context>
     <name>NewFileTransferNotification</name>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Příchozí přenos</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účetu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Přijmout přenos?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Uživatel &lt;b&gt;%1&lt;/b&gt; vám chce poslat soubor &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;velikosti &lt;b&gt;%3&lt;/b&gt; pomocí účetu &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Je to pravděpodobně další díl &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co mám dělat?</translation>
-    </message>
     <message>
         <source>Continue</source>
         <translation>Pokračovat</translation>

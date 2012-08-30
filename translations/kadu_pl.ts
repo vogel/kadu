@@ -2171,6 +2171,18 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Could not open file. Select another one.</source>
         <translation>Nie można otworzyć pliku. Wybierz inny.</translation>
     </message>
+    <message>
+        <source>Incoming transfer</source>
+        <translation>Przychodzące połączenie</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
+        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać Ci plik &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Akceptujesz transfer?</translation>
+    </message>
+    <message>
+        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
+        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
+    </message>
 </context>
 <context>
     <name>FileTransferWidget</name>
@@ -2856,18 +2868,6 @@ Klient: %3</translation>
 </context>
 <context>
     <name>NewFileTransferNotification</name>
-    <message>
-        <source>Incoming transfer</source>
-        <translation>Przychodzące połączenie</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać Ci plik &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Akceptujesz transfer?</translation>
-    </message>
-    <message>
-        <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
-    </message>
     <message>
         <source>Continue</source>
         <translation>Kontynuuj</translation>
