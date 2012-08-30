@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -25,19 +23,19 @@
     </message>
     <message>
         <source>New chat tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikona v panelu pro nový rozhovor</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Blikající obálka</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Nehybná obálka</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Pohybující se obálka</translation>
     </message>
 </context>
 <context>
@@ -59,16 +57,16 @@ Popis:
 %2</translation>
     </message>
     <message>
-        <source>&amp;Exit Kadu</source>
-        <translation>&amp;Ukončit Kadu</translation>
-    </message>
-    <message>
         <source>&amp;Restore</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Obnovit</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zmenšit</translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation>&amp;Ukončit Kadu</translation>
     </message>
 </context>
 </TS>

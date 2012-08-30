@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -754,10 +752,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Włącz przezroczystość</translation>
     </message>
     <message>
-        <source>Turn on blur</source>
-        <translation>Włącz rozmycie tła</translation>
-    </message>
-    <message>
         <source>Displays group tabs on the buddy list</source>
         <translation>Wyświetlaj zakładki grup</translation>
     </message>
@@ -870,7 +864,7 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies&apos; status
+        <source>This option will supersede tooltips with buddies' status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
@@ -909,27 +903,15 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n minuta</numerusform>
-            <numerusform>%n minuty</numerusform>
-            <numerusform>%n minut</numerusform>
-        </translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>[for] %n minute(s)</source>
-        <translation>
-            <numerusform>[przez] %n minutę</numerusform>
-            <numerusform>[przez] %n minuty</numerusform>
-            <numerusform>[przez] %n minut</numerusform>
-        </translation>
+        <translation><numerusform>[przez] %n minutę</numerusform><numerusform>[przez] %n minuty</numerusform><numerusform>[przez] %n minut</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1091,7 +1073,7 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Syntax:
 %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
 #{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in &apos;Remove repeated headers&apos; mode,
+&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in 'Remove repeated headers' mode,
 &lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
         <translation>Składnia:
 %s - status, %d - opis, %i - adres IP, %n - nick, %a - nazwa na liście kontaktów, %f - imię, %r - nazwisko, %m - numer telefonu komórkowego, %u - identyfikator użytkownika w sieci, %g - grupa, %e - adres e-mail, %z - płeć (0/1/2),
@@ -1134,6 +1116,10 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Select window activation method</source>
         <translation>Metoda aktywacji okna</translation>
+    </message>
+    <message>
+        <source>Turn on blur</source>
+        <translation>Włącz rozmycie tła</translation>
     </message>
     <message>
         <source>None</source>
@@ -1314,14 +1300,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Musisz być połączony, aby dodawać kontakty dla tego konta</translation>
     </message>
     <message>
-        <source>Entered user identification is invalid</source>
-        <translation>Podany identyfikator jest nieprawidłowy</translation>
-    </message>
-    <message>
-        <source>No user identification entered</source>
-        <translation>Nie wpisano identyfikatora</translation>
-    </message>
-    <message>
         <source>This contact is already available as &lt;i&gt;%1&lt;/i&gt;</source>
         <translation>Ten kontakt już istnieje pod nazwą &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
@@ -1338,12 +1316,20 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Wpisany numer telefonu jest nieprawidłowy</translation>
     </message>
     <message>
-        <source>No mobile number entered</source>
-        <translation>Nie wpisano numeru telefonu</translation>
-    </message>
-    <message>
         <source>Entered e-mail is invalid</source>
         <translation>Wprowadzony e-mail jest nieprawidłowy</translation>
+    </message>
+    <message>
+        <source>Entered user identification is invalid</source>
+        <translation>Podany identyfikator jest nieprawidłowy</translation>
+    </message>
+    <message>
+        <source>No user identification entered</source>
+        <translation>Nie wpisano identyfikatora</translation>
+    </message>
+    <message>
+        <source>No mobile number entered</source>
+        <translation>Nie wpisano numeru telefonu</translation>
     </message>
     <message>
         <source>No e-mail entered</source>
@@ -1795,6 +1781,18 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Nie da się odczytać pliku</translation>
     </message>
     <message>
+        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
+        <translation>Ten obrazek ma %1 KiB i przekracza limit protokołu wynoszący %2 KiB.</translation>
+    </message>
+    <message>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
+        <translation>Ten obrazek ma %1 KiB i przekracza zalecany maksymalny rozmiar %2 KiB.</translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation>Czy na pewno chcesz wysłać ten obrazek?</translation>
+    </message>
+    <message>
         <source>This image has %1 KiB and may be too big for %2.</source>
         <translation>Ten obrazek ma %1 KiB i może być za duży dla %2.</translation>
     </message>
@@ -1809,18 +1807,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>%1 of %2 contacts appear to be offline and may not receive images.</source>
         <translation>%1 z %2 kontaktów mają status niedostępny i mogą nie odebrać obrazka.</translation>
-    </message>
-    <message>
-        <source>Do you really want to send this image?</source>
-        <translation>Czy na pewno chcesz wysłać ten obrazek?</translation>
-    </message>
-    <message>
-        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
-        <translation>Ten obrazek ma %1 KiB i przekracza limit protokołu wynoszący %2 KiB.</translation>
-    </message>
-    <message>
-        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
-        <translation>Ten obrazek ma %1 KiB i przekracza zalecany maksymalny rozmiar %2 KiB.</translation>
     </message>
     <message>
         <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
@@ -2037,6 +2023,10 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Kadu</translation>
     </message>
     <message>
+        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
+        <translation>Następujące kontakty z listy nie zostały odnalezione w pliku:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Czy chcesz usunąć je z listy kontaktów?</translation>
+    </message>
+    <message>
         <source>Kadu since version 0.10.0 automatically synchronizes Gadu-Gadu contact list with server. Now the first synchronization will be performed.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Kadu od wersji 0.10.0 automatycznie synchronizuje listę kontaktów Gadu-Gadu z serwerem. Teraz nastąpi pierwsza synchronizacja.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
@@ -2055,10 +2045,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
         <translation>Czy chcesz wprowadzić powyższe zmiany do lokalnej listy kontaków? Niezależnie od wyboru, zostanie ona po dokonaniu ewentualnych zmian wysłana na serwer.</translation>
-    </message>
-    <message>
-        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation>Następujące kontakty z listy nie zostały odnalezione w pliku:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Czy chcesz usunąć je z listy kontaktów?</translation>
     </message>
 </context>
 <context>
@@ -2520,10 +2506,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Kopiuj</translation>
     </message>
     <message>
-        <source>Copy Link Address</source>
-        <translation>Kopiuj adres linku</translation>
-    </message>
-    <message>
         <source>Copy Image</source>
         <translation>Kopiuj obrazek</translation>
     </message>
@@ -2542,6 +2524,10 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Cannot save image</source>
         <translation>Nie można zapisać obrazka</translation>
+    </message>
+    <message>
+        <source>Copy Link Address</source>
+        <translation>Kopiuj adres linku</translation>
     </message>
 </context>
 <context>
@@ -2565,13 +2551,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>&amp;Help</source>
         <translation>&amp;Pomoc</translation>
-    </message>
-</context>
-<context>
-    <name>RecentChatsMenu</name>
-    <message>
-        <source>Recent chats</source>
-        <translation>Ostatnie rozmowy</translation>
     </message>
 </context>
 <context>
@@ -2872,15 +2851,15 @@ Klient: %3</translation>
     <name>NewFileTransferNotification</name>
     <message>
         <source>Incoming transfer</source>
-        <translation>Transfer przychodzący</translation>
+        <translation>Przychodzące połączenie</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Accept transfer?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; próbuje wysłać Ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Zaakceptować transfer?</translation>
+        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce wysłać Ci plik &lt;b&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Akceptujesz transfer?</translation>
     </message>
     <message>
         <source>User &lt;b&gt;%1&lt;/b&gt; wants to send you a file &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;of size &lt;b&gt;%3&lt;/b&gt; using account &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;This is probably a next part of &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;What should I do?</source>
-        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; próbuje wysłać Ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie dalsza część pliku &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
+        <translation>Użytkownik &lt;b&gt;%1&lt;/b&gt; chce przesłać ci plik &lt;b/&gt;%2&lt;/b&gt;&lt;br/&gt;o rozmiarze &lt;b&gt;%3&lt;/b&gt; używając konta &lt;b&gt;%4&lt;/b&gt;.&lt;br/&gt;Jest to prawdopodobnie kolejna część  &lt;b&gt;%5&lt;/b&gt;&lt;br/&gt;Co powinienem zrobić?</translation>
     </message>
     <message>
         <source>Continue</source>

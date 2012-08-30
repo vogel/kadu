@@ -1,81 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Unable to connect, server has not been found</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, server nebyl nalezen</translation>
+        <translation>Nepodařilo se navázat spojení, server nebyl nalezen</translation>
     </message>
     <message>
         <source>Unable to connect</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení</translation>
+        <translation>Nepodařilo se navázat spojení</translation>
     </message>
     <message>
         <source>Please change your email in &quot;Change password / email&quot; window. Leave new password field blank.</source>
-        <translation type="unfinished">Změňte, prosím, svoji adresu elektronické pošty v okně &quot;Změnit heslo / E-mail&quot;. Pole pro nové heslo ponechejte prázdné.</translation>
+        <translation>Změňte, prosím, svoji adresu elektronické pošty v okně &quot;Změnit heslo / E-mail&quot;. Pole pro nové heslo ponechejte prázdné.</translation>
     </message>
     <message>
         <source>Unable to connect, server has returned unknown data</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, server vrátil neznámá data</translation>
+        <translation>Nepodařilo se navázat spojení, server vrátil neznámá data</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during reading</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, přerušení spojení během čtení</translation>
+        <translation>Nepodařilo se navázat spojení, přerušení spojení během čtení</translation>
     </message>
     <message>
         <source>Unable to connect, connection break during writing</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, přerušení spojení během zápisu</translation>
+        <translation>Nepodařilo se navázat spojení, přerušení spojení během zápisu</translation>
     </message>
     <message>
         <source>Unable to connect, invalid password</source>
-        <translation type="unfinished"></translation>
+        <translation>Nepodařilo se navázat spojení, neplatné heslo</translation>
     </message>
     <message>
         <source>Unable to connect, error of negotiation TLS</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, chyba ve vyjednání TLS</translation>
+        <translation>Nepodařilo se navázat spojení, chyba ve vyjednání TLS</translation>
     </message>
     <message>
         <source>Too many connection attempts with bad password!</source>
-        <translation type="unfinished">Příliš mnoho pokusů o spojení se špatným heslem!</translation>
+        <translation>Příliš mnoho pokusů o spojení se špatným heslem!</translation>
     </message>
     <message>
         <source>Unable to connect, servers are down</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení, servery spadly</translation>
+        <translation>Nepodařilo se navázat spojení, servery spadly</translation>
     </message>
     <message>
         <source>Connection broken</source>
-        <translation type="unfinished">Připojení přerušeno</translation>
+        <translation>Připojení přerušeno</translation>
     </message>
     <message>
         <source>Connection timeout!</source>
-        <translation type="unfinished">Časové omezení pro spojení. Spojení vypršelo!</translation>
+        <translation>Časové omezení pro spojení. Spojení vypršelo!</translation>
     </message>
     <message>
         <source>Disconnection has occurred</source>
-        <translation type="unfinished">Vyskytlo se odpojení</translation>
+        <translation>Vyskytlo se odpojení</translation>
     </message>
     <message>
         <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
-        <translation type="unfinished"></translation>
+        <translation>OBRÁZEK POSLANÝ TÍMTO KAMARÁDEM BYL ZABLOKOVÁN</translation>
     </message>
     <message>
         <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
 This exceeds your configured limits.
 Do you want to accept this image anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamarád %1 se vám pokouší poslat obrázek o velikosti %2 KiB.
+Tento překračuje vámi nastavená omezení.
+Přesto tento obrázek chcete přijmout?</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Incoming Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Příchozí obrázek</translation>
     </message>
     <message>
         <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
-        <translation type="unfinished"></translation>
+        <translation>KAMARÁD VÁM POSLAL OBRÁZEK, KTERÝ JE PŘÍLIŠ VELKÝ NA TO, ABY BYL PŘIJAT</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,9 @@ Do you want to accept this image anyway?</source>
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Do požadovaných polí byla zapsána chybná data.
+
+Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&quot;) musí být stejná!</translation>
     </message>
 </context>
 <context>
@@ -294,7 +296,9 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <source>Error data typed in required fields.
 
 Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Do požadovaných polí byla zapsána chybná data.
+
+Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&quot;) musí být stejná!</translation>
     </message>
 </context>
 <context>
@@ -405,73 +409,75 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     </message>
     <message>
         <source>Incoming Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Příchozí obrázky</translation>
     </message>
     <message>
         <source>Limit incoming images&apos; size</source>
-        <translation type="unfinished"></translation>
+        <translation>Omezení pro velikost příchozího obrázku</translation>
     </message>
     <message>
         <source>Maximum images&apos; size that you accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Největší velikost obrázku, kterou přijímáte</translation>
     </message>
     <message>
         <source>Maximum incoming images&apos; size</source>
-        <translation type="unfinished"></translation>
+        <translation>Největší velikost příchozího obrázku</translation>
     </message>
     <message>
         <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Zažádat o potvrzení, překročí-li velikost obrázku omezení</translation>
     </message>
     <message>
         <source>Receive images also when Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Přijímat obrázky i ve stavu neviditelnosti</translation>
     </message>
     <message>
         <source>Limit numbers of images received per minute</source>
-        <translation type="unfinished"></translation>
+        <translation>Omezit počet obrázků přijatých za minutu</translation>
     </message>
     <message>
         <source>Outgoing Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Odchozí obrázky</translation>
     </message>
     <message>
         <source>Show a warning when the image is larger then 256 KiB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat varování, když je obrázek větší než 256 KiB</translation>
     </message>
     <message>
         <source>External ip</source>
-        <translation type="unfinished"></translation>
+        <translation>Vnější IP</translation>
     </message>
     <message>
         <source>External port</source>
-        <translation type="unfinished"></translation>
+        <translation>Vnější přípojka</translation>
+    </message>
+    <message>
+        <source>You have to compile libgadu with SSL support to be able to enable encrypted connection</source>
+        <translation>Musíte libgadu sestavit s podporou pro SSL, abyste mohl povolit zašifrované spojení</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Jiné</translation>
     </message>
     <message>
         <source>Receive URLs from anonymous buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Přijímat adresy (URL) od nepodepsaných kamarádů</translation>
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení proxy</translation>
     </message>
     <message>
         <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
-        <translation type="unfinished"></translation>
+        <translation>Potvrdit zaškrtnutí volby &quot;Ukázat můj stav každému&quot;</translation>
     </message>
     <message>
         <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
 You have several buddies which are not allowed to see your status.
 Enabling this option will allow them to know you are available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jste si jistý, že chcete zaškrtnout volbu &quot;Ukázat můj stav každému&quot;?
+Máte několik kamarádů, kterým není povoleno vidět váš stav.
+Povolením této volby jim umožníte vědět, že jste dostupný.</translation>
     </message>
 </context>
 <context>
@@ -539,11 +545,11 @@ Enabling this option will allow them to know you are available.</source>
     <name>GaduProtocolPlugin</name>
     <message>
         <source>Gadu-Gadu Protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Protokol Gadu-Gadu</translation>
     </message>
     <message>
         <source>Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze nahrát přídavný modul pro protokol Gadu-Gadu. Sestavte, prosím, libgadu s podporou pro zlib.</translation>
     </message>
 </context>
 <context>

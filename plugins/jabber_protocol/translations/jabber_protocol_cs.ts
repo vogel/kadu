@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Jabber/XMPP</source>
-        <translation type="unfinished"></translation>
+        <translation>Jabber/XMPP</translation>
     </message>
     <message>
         <source>Connection</source>
-        <translation type="unfinished">Připojení</translation>
+        <translation>Spojení</translation>
     </message>
     <message>
         <source>Data transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Přenosy dat</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished">Přípojka</translation>
+        <translation>Přípojka</translation>
     </message>
     <message>
         <source>External address</source>
-        <translation type="unfinished"></translation>
+        <translation>Vnější adresa</translation>
     </message>
 </context>
 <context>
@@ -111,27 +109,27 @@
     <name>CertificateErrorWindow</name>
     <message>
         <source>Cannot establish secure connection with server &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze zřídit bezpečné spojení se serverem &lt;i&gt;%1&lt;/i&gt;</translation>
     </message>
     <message>
         <source>Show certificate...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat osvědčení...</translation>
     </message>
     <message>
         <source>If you do not trust &lt;i&gt;%1&lt;/i&gt;, cancel the connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud nedůvěřujete &lt;i&gt;%1&lt;/i&gt;, zrušte spojení.</translation>
     </message>
     <message>
         <source>Remember my choice for this certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapamatovat si moji volbu pro toto osvědčení</translation>
     </message>
     <message>
         <source>Connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojit</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Zrušit</translation>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
@@ -317,7 +315,9 @@
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;Password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Do požadovaných polí byla zadána neplatná data.
+
+Heslo zadané do obou polí (heslo a nové zadání hesla) se musí shodovat!</translation>
     </message>
 </context>
 <context>
@@ -441,7 +441,9 @@ Password entered in both fields (&quot;Password&quot; and &quot;Retype password&
         <source>Invalid data entered in required fields.
 
 Password entered in both fields (&quot;New password&quot; and &quot;Retype password&quot;) must be the same!</source>
-        <translation type="unfinished"></translation>
+        <translation>Do požadovaných polí byla zadána neplatná data.
+
+Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodovat!</translation>
     </message>
 </context>
 <context>
@@ -596,15 +598,15 @@ Password entered in both fields (&quot;New password&quot; and &quot;Retype passw
     </message>
     <message>
         <source>Proxy configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení proxy</translation>
     </message>
     <message>
         <source>Privacy</source>
-        <translation type="unfinished"></translation>
+        <translation>Soukromí</translation>
     </message>
     <message>
         <source>Publish system information</source>
-        <translation type="unfinished"></translation>
+        <translation>veřejnit informace o systému</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1142,7 @@ Podrobnosti: %1</translation>
     </message>
     <message>
         <source>security problem</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezpečnostní problém</translation>
     </message>
 </context>
 <context>

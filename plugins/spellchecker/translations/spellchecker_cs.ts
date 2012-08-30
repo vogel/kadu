@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -41,15 +39,15 @@
     </message>
     <message>
         <source>Spelling Suggestions Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Volby pro návrhy pravopisu</translation>
     </message>
     <message>
         <source>Show suggestions</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat návrhy</translation>
     </message>
     <message>
         <source>Maximum number of suggested words</source>
-        <translation type="unfinished"></translation>
+        <translation>Nejvyšší počet navržených slov</translation>
     </message>
 </context>
 <context>
@@ -57,6 +55,10 @@
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Could not find dictionary for %1 language.</source>
+        <translation>Nepodařilo se najít slovník pro %1 jazyk.</translation>
     </message>
     <message>
         <source>Move to &apos;Checked&apos;</source>
@@ -75,12 +77,8 @@
         <translation>Ověřeno</translation>
     </message>
     <message>
-        <source>Could not find dictionary for %1 language.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Podrobnosti</translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -137,11 +135,11 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source> - Select recipient - </source>
-        <translation> - Wybierz odbiorcę - </translation>
+        <translation>- Wybierz odbiorcę -</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation>Wysyłanie wiadomości SMS...</translation>
+        <translation>Wysyłanie SMSa...</translation>
     </message>
 </context>
 <context>
@@ -156,7 +154,7 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>SMS sent</source>
-        <translation>SMS wysłany</translation>
+        <translation>SMS został wysłany</translation>
     </message>
 </context>
 <context>
@@ -175,46 +173,46 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>Detected gateway: %1.</source>
-        <translation>Wykryto bramknę: %1.</translation>
+        <translation>Wykryto bramkę: %1.</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation>Wysyłanie wiadomości SMS...</translation>
+        <translation>Wysyłanie SMSa...</translation>
     </message>
     <message>
         <source>SMS sent</source>
-        <translation>SMS wysłany</translation>
+        <translation>SMS został wysłany</translation>
     </message>
 </context>
 <context>
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation>Niepoprawny parametr dla zadania odczytu tokena.</translation>
+        <translation>Błędnie przepisany token.</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation>Pobieranie obrazka tokena...</translation>
+        <translation>Pobieranie obrazka z tekstem...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation>Nie można pobrać obrazka tokena.</translation>
+        <translation>Nie można pobrać obrazka z tekstem.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation>Nie można przeczytać obrazka tokena.</translation>
+        <translation>Nie można odczytać tekstu z obrazka.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation>Oczekiwanie na wporwadzenie wartości tokena...</translation>
+        <translation>Oczekiwanie na przepisanie tekstu z obrazka...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation>Wartość tokena nie została wprowadzona.</translation>
+        <translation>Błędna wartość.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation>Otrzymano wartość tokena.</translation>
+        <translation>Otrzymano wartość token&apos;a.</translation>
     </message>
 </context>
 </TS>

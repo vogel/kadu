@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -81,7 +79,7 @@
     </message>
     <message>
         <source>ScreenShot images size limit</source>
-        <translation type="unfinished"></translation>
+        <translation>Omezení velikosti obrázku se snímkem obrazovky</translation>
     </message>
 </context>
 <context>
@@ -106,7 +104,7 @@
         <translation>Nelze vytvořit adresář %1 pro ukládání snímků obrazovky!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>Nelze zapsat soubor %1.
 Přístup odepřen, nebo jde o jiné potíže!</translation>
@@ -152,15 +150,15 @@ Měl by být větší.</translation>
     <name>ScreenshotTaker</name>
     <message>
         <source>Drag this icon onto the desired window</source>
-        <translation type="unfinished">Přetáhněte ikonu do některého z oken</translation>
+        <translation>Přetáhněte tuto ikonu do požadovaného okna</translation>
     </message>
     <message>
         <source>Window Shot</source>
-        <translation type="unfinished">Snímek okna</translation>
+        <translation>Snímek okna</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Zrušit</translation>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
