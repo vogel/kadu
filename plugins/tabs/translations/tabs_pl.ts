@@ -80,6 +80,18 @@
         <source>New message received, close window anyway?</source>
         <translation>Otrzymano nową wiadomość, zamknąć mimo to?</translation>
     </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation>Rozpocznij rozmowę z ...</translation>
+    </message>
+    <message>
+        <source>Recent Chats</source>
+        <translation>Ostatnie rozmowy</translation>
+    </message>
+    <message>
+        <source>Close Tab</source>
+        <translation>Zamknij kartę</translation>
+    </message>
 </context>
 <context>
     <name>TabsManager</name>
