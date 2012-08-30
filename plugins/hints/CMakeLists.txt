@@ -28,14 +28,6 @@ set (MOC_SOURCES
 	hints-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/hints_cs.ts
-	translations/hints_de.ts
-	translations/hints_en.ts
-	translations/hints_it.ts
-	translations/hints_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/hint-over-user.ui
 	configuration/hints.ui
@@ -46,6 +38,5 @@ set (CONFIGURATION_FILES
 kadu_plugin (hints
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

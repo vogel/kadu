@@ -24,16 +24,8 @@ set (CONFIGURATION_FILES
 	data/configuration/image-link.ui
 )
 
-set (TRANSLATION_SOURCES
-	translations/imagelink_cs.ts
-	translations/imagelink_en.ts
-	translations/imagelink_it.ts
-	translations/imagelink_pl.ts
-)
-
 kadu_plugin (imagelink
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

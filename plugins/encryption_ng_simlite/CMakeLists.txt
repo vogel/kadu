@@ -29,14 +29,6 @@ set (MOC_SOURCES
 	encryption-ng-simlite-provider.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/encryption_ng_simlite_cs.ts
-	translations/encryption_ng_simlite_de.ts
-	translations/encryption_ng_simlite_en.ts
-	translations/encryption_ng_simlite_it.ts
-	translations/encryption_ng_simlite_pl.ts
-)
-
 set (CONFIGURATION_FILES
 )
 
@@ -72,7 +64,6 @@ include_directories (${QCA2_INCLUDE_DIRS})
 kadu_plugin (encryption_ng_simlite
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QCA2_LIBRARIES}
 	PLUGIN_DEPENDENCIES encryption_ng

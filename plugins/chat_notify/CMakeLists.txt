@@ -21,15 +21,8 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-set (TRANSLATION_SOURCES
-	translations/chat_notify_en.ts
-	translations/chat_notify_de.ts
-	translations/chat_notify_pl.ts
-)
-
 kadu_plugin (chat_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

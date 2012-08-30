@@ -78,13 +78,6 @@ set (MOC_SOURCES
 	history-save-thread.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/history_cs.ts
-	translations/history_de.ts
-	translations/history_en.ts
-	translations/history_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/history.ui
 )
@@ -92,7 +85,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (history
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_BUILDDEF HISTORY_BUILD
 )

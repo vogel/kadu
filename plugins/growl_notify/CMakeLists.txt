@@ -20,18 +20,10 @@ set (MOC_SOURCES
 	growlnotifier.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/growl_notify_cs.ts
-	translations/growl_notify_de.ts
-	translations/growl_notify_en.ts
-	translations/growl_notify_pl.ts
-)
-
 set (GROWL_LIBRARIES "-framework Growl -framework CoreFoundation")
 
 kadu_plugin (growl_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_LIBRARIES ${GROWL_LIBRARIES}
 )

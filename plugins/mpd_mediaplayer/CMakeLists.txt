@@ -19,12 +19,6 @@ set (MOC_SOURCES
 	mpd-mediaplayer.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/mpd_mediaplayer_cs.ts
-	translations/mpd_mediaplayer_en.ts
-	translations/mpd_mediaplayer_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/mpd_config.ui
 )

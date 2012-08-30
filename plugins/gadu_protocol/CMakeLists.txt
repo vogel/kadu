@@ -163,12 +163,6 @@ set (MOC_SOURCES
 	gadu-url-handler.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/gadu_protocol_cs.ts
-	translations/gadu_protocol_en.ts
-	translations/gadu_protocol_pl.ts
-)
-
 set (CONFIGURATION_FILES
 )
 
@@ -235,7 +229,6 @@ endif (WIN32)
 kadu_plugin (gadu_protocol
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 	PLUGIN_DATA_FILES ${SERVERS_FILE}

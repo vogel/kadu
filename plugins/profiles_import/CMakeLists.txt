@@ -27,19 +27,12 @@ set(MOC_SOURCES
 	profiles-import-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/profiles_import_cs.ts
-	translations/profiles_import_en.ts
-	translations/profiles_import_pl.ts
-)
-
 set (CONFIGURATION_FILES
 )
 
 kadu_plugin (profiles_import
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES gadu_protocol history_migration
 )

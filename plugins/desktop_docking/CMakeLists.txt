@@ -22,15 +22,6 @@ set (MOC_SOURCES
 	desktop-dock.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/desktop_docking_cs.ts
-	translations/desktop_docking_de.ts
-	translations/desktop_docking_en.ts
-	translations/desktop_docking_es_ES.ts
-	translations/desktop_docking_it.ts
-	translations/desktop_docking_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	data/configuration/desktop_docking.ui
 )
@@ -38,7 +29,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (desktop_docking
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES docking
 )

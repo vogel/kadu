@@ -39,16 +39,9 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-set (TRANSLATION_SOURCES
-	translations/history_migration_cs.ts
-	translations/history_migration_en.ts
-	translations/history_migration_pl.ts
-)
-
 kadu_plugin (history_migration
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	# TODO: make it more general, eg. gadu_protocol,history_storage
 	PLUGIN_DEPENDENCIES gadu_protocol sql_history history

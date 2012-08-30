@@ -16,15 +16,6 @@ set (MOC_SOURCES
 	auto_hide.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/auto_hide_cs.ts
-	translations/auto_hide_de.ts
-	translations/auto_hide_en.ts
-	translations/auto_hide_es_ES.ts
-	translations/auto_hide_it.ts
-	translations/auto_hide_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/auto_hide.ui
 )
@@ -32,7 +23,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (auto_hide
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES idle
 )

@@ -22,13 +22,6 @@ set (MOC_SOURCES
 	firewall.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/firewall_cs.ts
-	translations/firewall_de.ts
-	translations/firewall_en.ts
-	translations/firewall_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/firewall.ui
 )
@@ -36,7 +29,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (firewall
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES history
 )

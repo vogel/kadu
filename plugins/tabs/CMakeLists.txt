@@ -20,13 +20,6 @@ set (MOC_SOURCES
 	tabwidget.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/tabs_cs.ts
-	translations/tabs_de.ts
-	translations/tabs_en.ts
-	translations/tabs_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/tabs.ui
 )
@@ -34,6 +27,5 @@ set (CONFIGURATION_FILES
 kadu_plugin (tabs
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

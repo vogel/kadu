@@ -57,14 +57,6 @@ set (DATA_DIRECTORY
 	data/scripts
 )
 
-set (TRANSLATION_SOURCES
-	translations/sms_cs.ts
-	translations/sms_de.ts
-	translations/sms_en.ts
-	translations/sms_it.ts
-	translations/sms_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/sms.ui
 )
@@ -73,7 +65,6 @@ kadu_plugin (sms
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_DATA_DIRECTORY ${DATA_DIRECTORY}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QT_LIBRARIES}
 	PLUGIN_BUILDDEF SMS_BUILD

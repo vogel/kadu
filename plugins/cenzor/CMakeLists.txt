@@ -27,14 +27,6 @@ set (MOC_SOURCES
 	cenzor-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/cenzor_cs.ts
-	translations/cenzor_de.ts
-	translations/cenzor_en.ts
-	translations/cenzor_pl.ts
-	translations/cenzor_tr.ts
-)
-
 set (CONFIGURATION_FILES
 	data/configuration/cenzor.ui
 )
@@ -47,7 +39,6 @@ set (DATA_FILES
 kadu_plugin (cenzor
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 )

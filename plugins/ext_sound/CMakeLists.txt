@@ -18,14 +18,6 @@ set (MOC_SOURCES
 	ext-sound-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/ext_sound_cs.ts
-	translations/ext_sound_de.ts
-	translations/ext_sound_en.ts
-	translations/ext_sound_it.ts
-	translations/ext_sound_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/ext_sound.ui
 )
@@ -33,7 +25,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (ext_sound
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES sound
 )

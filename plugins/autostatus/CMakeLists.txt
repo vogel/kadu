@@ -24,13 +24,6 @@ set (MOC_SOURCES
 	autostatus-status-changer.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/autostatus_cs.ts
-	translations/autostatus_en.ts
-	translations/autostatus_it.ts
-	translations/autostatus_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	data/configuration/autostatus.ui
 )
@@ -38,6 +31,5 @@ set (CONFIGURATION_FILES
 kadu_plugin (autostatus
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

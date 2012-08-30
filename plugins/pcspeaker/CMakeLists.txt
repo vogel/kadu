@@ -18,14 +18,6 @@ set (MOC_SOURCES
 	pcspeaker_configuration_widget.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/pcspeaker_cs.ts
-	translations/pcspeaker_de.ts
-	translations/pcspeaker_en.ts
-	translations/pcspeaker_it.ts
-	translations/pcspeaker_pl.ts
-)
-
 #set (CONFIGURATION_FILES
 #	configuration/pcspeaker.ui
 #)
@@ -45,7 +37,6 @@ endif (UNIX AND NOT APPLE)
 kadu_plugin (pcspeaker
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

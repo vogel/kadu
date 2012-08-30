@@ -39,14 +39,6 @@ set (MOC_SOURCES
 	sound-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/sound_cs.ts
-	translations/sound_de.ts
-	translations/sound_en.ts
-	translations/sound_it.ts
-	translations/sound_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/sound.ui
 )
@@ -54,7 +46,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (sound
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_BUILDDEF SOUND_BUILD
 )

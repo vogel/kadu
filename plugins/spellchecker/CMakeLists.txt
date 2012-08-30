@@ -23,13 +23,6 @@ set (MOC_SOURCES
 	suggester.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/spellchecker_cs.ts
-	translations/spellchecker_de.ts
-	translations/spellchecker_en.ts
-	translations/spellchecker_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/spellchecker.ui
 )
@@ -114,7 +107,6 @@ endif (APPLE)
 kadu_plugin (spellchecker
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )
