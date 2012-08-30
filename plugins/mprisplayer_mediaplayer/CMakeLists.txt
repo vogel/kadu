@@ -36,11 +36,6 @@ if (UNIX AND NOT APPLE)
 	)
 endif ()
 
-set (TRANSLATION_SOURCES
-	translations/mprisplayer_mediaplayer_en.ts
-	translations/mprisplayer_mediaplayer_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/mprisplayer_mediaplayer.ui
 )
@@ -52,7 +47,6 @@ set (DATA_FILES
 kadu_plugin (mprisplayer_mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
 )

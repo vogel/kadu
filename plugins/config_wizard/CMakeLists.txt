@@ -1,4 +1,4 @@
-project (gadu_protocol)
+project (config_wizard)
 
 set (KADU_FIND_REQUIRED true)
 include (FindKadu)
@@ -30,17 +30,9 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-set (TRANSLATION_SOURCES
-	translations/config_wizard_cs.ts
-	translations/config_wizard_en.ts
-	translations/config_wizard_it.ts
-	translations/config_wizard_pl.ts
-)
-
 kadu_plugin (config_wizard
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

@@ -36,12 +36,6 @@ set (MOC_SOURCES
 	screenshot-taker.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/screenshot_cs.ts
-	translations/screenshot_en.ts
-	translations/screenshot_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
@@ -61,7 +55,6 @@ endif ()
 kadu_plugin (screenshot
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
 )

@@ -13,15 +13,6 @@ set (MOC_SOURCES
 	autoaway-status-changer.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/autoaway_cs.ts
-	translations/autoaway_de.ts
-	translations/autoaway_en.ts
-	translations/autoaway_es_ES.ts
-	translations/autoaway_it.ts
-	translations/autoaway_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/autoaway.ui
 )
@@ -29,7 +20,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (autoaway
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES idle
 )

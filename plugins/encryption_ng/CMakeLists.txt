@@ -59,13 +59,6 @@ set (MOC_SOURCES
 	encryptor.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/encryption_ng_cs.ts
-	translations/encryption_ng_en.ts
-	translations/encryption_ng_it.ts
-	translations/encryption_ng_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	data/configuration/encryption-ng.ui
 )
@@ -102,7 +95,6 @@ include_directories (${QCA2_INCLUDE_DIRS})
 kadu_plugin (encryption_ng
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QCA2_LIBRARIES}
 	PLUGIN_BUILDDEF ENCRYPTION_BUILD

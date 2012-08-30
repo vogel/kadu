@@ -223,13 +223,6 @@ set (MOC_SOURCES
 	jabber-url-handler.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/jabber_protocol_cs.ts
-	translations/jabber_protocol_de.ts
-	translations/jabber_protocol_en.ts
-	translations/jabber_protocol_pl.ts
-)
-
 add_definitions (${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} ${ZLIB_CFLAGS_OTHER} -DIRISNET_STATIC)
 add_subdirectory (3rdparty)
 
@@ -260,7 +253,6 @@ kadu_plugin (jabber_protocol
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 

@@ -25,13 +25,6 @@ set (MOC_SOURCES
 	player_commands.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/mediaplayer_cs.ts
-	translations/mediaplayer_de.ts
-	translations/mediaplayer_en.ts
-	translations/mediaplayer_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/mediaplayer.ui
 )
@@ -43,7 +36,6 @@ set (DATA_FILES
 kadu_plugin (mediaplayer
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DEPENDENCIES docking
 	PLUGIN_LIBRARIES ${DBUS_LIBS}

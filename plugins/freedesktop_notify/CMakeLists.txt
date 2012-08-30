@@ -16,13 +16,6 @@ set (MOC_SOURCES
 	freedesktop-notify-plugin.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/freedesktop_notify_cs.ts
-	translations/freedesktop_notify_de.ts
-	translations/freedesktop_notify_en.ts
-	translations/freedesktop_notify_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/freedesktop_notify.ui
 )
@@ -30,7 +23,6 @@ set (CONFIGURATION_FILES
 kadu_plugin (freedesktop_notify
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QT_QTDBUS_LIBRARY}
 )
