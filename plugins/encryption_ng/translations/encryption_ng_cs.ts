@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -13,23 +11,23 @@
     </message>
     <message>
         <source>Public key has been sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Veřejný klíč byl poslán</translation>
     </message>
     <message>
         <source>Error during sending public key</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba při posílání veřejného klíče</translation>
     </message>
     <message>
         <source>Encryption error has occured</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyskytla se chyba v šifrování</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Zprávy</translation>
     </message>
     <message>
         <source>Encrypt after receiving encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Zašifrovat po obdržení šifrované zprávy</translation>
     </message>
 </context>
 <context>
@@ -51,22 +49,22 @@
     </message>
     <message>
         <source>Error sending public key to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba při posílání veřejného klíče: %1 (%2)</translation>
     </message>
     <message>
         <source>Error occured during encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Během šifrování se vyskytla chyba</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgPlugin</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished">Šifrování</translation>
+        <translation>Šifrování</translation>
     </message>
     <message>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished">Přídavný modul QCA OSSL pro libqca2 není přítomen!</translation>
+        <translation>Přídavný modul QCA OSSL pro libqca2 není přítomen!</translation>
     </message>
 </context>
 <context>
@@ -86,27 +84,27 @@ Chcete jej uložit?</translation>
     <name>GenerateKeysActionDescription</name>
     <message>
         <source>Generate Encryption Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Vytvořit šifrovací klíče</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished">Šifrování</translation>
+        <translation>Šifrování</translation>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation type="unfinished">Nelze vytvořit klíče. Prověřte, zda je nahrán modul encryption_simlite</translation>
+        <translation>Nelze vytvořit klíče. Prověřte, zda je nahrán modul encryption_simlite</translation>
     </message>
     <message>
         <source>Keys exist. Do you want to overwrite them?</source>
-        <translation type="unfinished">Klíč existuje. Chcete jej přepsat?</translation>
+        <translation>Klíče existují. Chcete je přepsat?</translation>
     </message>
     <message>
         <source>Keys have been generated</source>
-        <translation type="unfinished">Klíče byly vytvořeny</translation>
+        <translation>Klíče byly vytvořeny</translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished">Chyba při vytváření klíčů</translation>
+        <translation>Chyba při vytváření klíčů</translation>
     </message>
 </context>
 <context>

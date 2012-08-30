@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -129,11 +127,7 @@
     </message>
     <message numerus="yes">
         <source>%n millisecond(s)</source>
-        <translation>
-            <numerusform>%n milisekunda</numerusform>
-            <numerusform>%n milisekundy</numerusform>
-            <numerusform>%n milisekund</numerusform>
-        </translation>
+        <translation><numerusform>%n milisekunda</numerusform><numerusform>%n milisekundy</numerusform><numerusform>%n milisekund</numerusform></translation>
     </message>
     <message>
         <source>Message was firewalled</source>
@@ -170,7 +164,8 @@
     <message>
         <source>User wrote right answer!
 </source>
-        <translation>Użytkownik udzielił prawidłowej odpowiedzi!</translation>
+        <translation>Użytkownik udzielił prawidłowej odpowiedzi
+</translation>
     </message>
     <message>
         <source>This message has been generated AUTOMATICALLY!

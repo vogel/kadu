@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
-        <source>Chat</source>
-        <translation>Rozhovor</translation>
+        <source>Chat Window</source>
+        <translation>Okno pro rozhovor</translation>
     </message>
     <message>
         <source>Tabs</source>
@@ -68,19 +66,19 @@
         <translation>Přepnout na další kartu</translation>
     </message>
     <message>
-        <source>Chat Window</source>
-        <translation type="unfinished"></translation>
+        <source>Chat</source>
+        <translation>Rozhovor</translation>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Přijata nová zpráva, přesto okno zavřít?</translation>
     </message>
 </context>
 <context>
@@ -123,7 +121,7 @@
     </message>
     <message>
         <source>Close all but active</source>
-        <translation type="unfinished"></translation>
+        <translation>Zavřít vše kromě činného</translation>
     </message>
 </context>
 </TS>

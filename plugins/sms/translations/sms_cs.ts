@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -70,18 +68,19 @@
     <message>
         <source>Check this box if your sms application does not understand arguments: number &amp;message&amp;
 Arguments should be separated with spaces. %k argument is converted to number, %m to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaškrtněte toto políčko, pokud váš program na práci s sms nepodporuje argumenty: number &amp;message&amp;
+Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m na zprávu</translation>
     </message>
     <message>
         <source>SMS proxy for built-in application</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS proxy pro vestavěný program</translation>
     </message>
 </context>
 <context>
     <name>SmsActions</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Sende SMS...</translation>
+        <translation>Poslat SMS...</translation>
     </message>
 </context>
 <context>
@@ -136,11 +135,11 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source> - Select recipient - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Vybrat příjemce - </translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"></translation>
+        <translation>Posílá se SMS...</translation>
     </message>
 </context>
 <context>
@@ -155,7 +154,7 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS poslána</translation>
     </message>
 </context>
 <context>
@@ -166,54 +165,54 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>Signature can&apos;t be empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Podpis nemůže být prázdný</translation>
     </message>
     <message>
         <source>Detecting gateway...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zjišťuje se brána...</translation>
     </message>
     <message>
         <source>Detected gateway: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zjištěna brána: %1.</translation>
     </message>
     <message>
         <source>Sending SMS...</source>
-        <translation type="unfinished"></translation>
+        <translation>Posílá se SMS...</translation>
     </message>
     <message>
         <source>SMS sent</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS poslána</translation>
     </message>
 </context>
 <context>
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatné parametry pro práci čtení symbolu</translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Stahuje se obraz symbolu...</translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze natáhnout obraz symbolu.</translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze přečíst obraz symbolu.</translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"></translation>
+        <translation>Čeká se na záznam hodnoty symbolu...</translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neposkytnuta žádná hodnota symbolu.</translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"></translation>
+        <translation>Přijata hodnota symbolu.</translation>
     </message>
 </context>
 </TS>

@@ -1,43 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Zone de notification</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
         <source>Start docked</source>
-        <translation type="unfinished"></translation>
+        <translation>Amarré au lancement</translation>
     </message>
     <message>
         <source>Show tooltip in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l&apos;astuce dans la zone de notification</translation>
     </message>
     <message>
         <source>New chat tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvel icône de la zone de notification de chat</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Enveloppe clignotante</translation>
     </message>
     <message>
         <source>Static Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Enveloppe statique</translation>
     </message>
     <message>
         <source>Animated Envelope</source>
-        <translation type="unfinished"></translation>
+        <translation>Enveloppe d&apos;animation</translation>
     </message>
 </context>
 <context>
@@ -45,7 +43,8 @@
     <message>
         <source>Current status:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>État actuel :
+%1</translation>
     </message>
     <message>
         <source>
@@ -54,20 +53,20 @@ Description:
 %2</source>
         <translation>
 
-Description:
+Description :
 %2</translation>
     </message>
     <message>
-        <source>&amp;Exit Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Restore</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Restaurer</translation>
     </message>
     <message>
         <source>&amp;Minimize</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Réduire</translation>
+    </message>
+    <message>
+        <source>&amp;Exit Kadu</source>
+        <translation>&amp;Quitter Kadu</translation>
     </message>
 </context>
 </TS>

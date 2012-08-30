@@ -1,32 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
-    <message>
-        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
-        <translation>OBRAZEK WYSŁANY PRZEZ ZNAJOMEGO ZOSTAŁ ZABLOKOWANY</translation>
-    </message>
-    <message>
-        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
-This exceeds your configured limits.
-Do you want to accept this image anyway?</source>
-        <translation>Znajomy %1 chce wysłać ci obrazek o rozmiarze %2 KiB.
-To więcej niż limit ustawiony w konfiguracji
-Czy chcesz mimo to odebrać ten obrazek?</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Incoming Image</source>
-        <translation>Przychodzący obrazek</translation>
-    </message>
-    <message>
-        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
-        <translation>ZNAJOMY WYSŁAŁ CI OBRAZEK, KTÓRY JEST ZBYT DUŻY BY GO ODEBRAĆ</translation>
-    </message>
     <message>
         <source>Unable to connect, server has not been found</source>
         <translation>Połączenie niemożliwe, serwer nie został znaleziony</translation>
@@ -78,6 +52,30 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Disconnection has occurred</source>
         <translation>Nastąpiło rozłączenie</translation>
+    </message>
+    <message>
+        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
+        <translation>OBRAZEK WYSŁANY PRZEZ ZNAJOMEGO ZOSTAŁ ZABLOKOWANY</translation>
+    </message>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation>Znajomy %1 chce wysłać ci obrazek o rozmiarze %2 KiB.
+To więcej niż limit ustawiony w konfiguracji
+Czy chcesz mimo to odebrać ten obrazek?</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation>Przychodzący obrazek</translation>
+    </message>
+    <message>
+        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
+        <translation>ZNAJOMY WYSŁAŁ CI OBRAZEK, KTÓRY JEST ZBYT DUŻY BY GO ODEBRAĆ</translation>
     </message>
 </context>
 <context>
@@ -418,18 +416,6 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
         <translation>Ograniczaj rozmiar przychodzących obrazków</translation>
     </message>
     <message>
-        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
-        <translation>Pytaj o potwierdzenie, gdy rozmiar obrazka przekracza limit</translation>
-    </message>
-    <message>
-        <source>Limit numbers of images received per minute</source>
-        <translation>Ograniczaj ilość odbieranych obrazków na minutę</translation>
-    </message>
-    <message>
-        <source>Outgoing Images</source>
-        <translation>Wysyłanie obrazków</translation>
-    </message>
-    <message>
         <source>Maximum images&apos; size that you accept</source>
         <translation>Maksymalny rozmiar obrazków, jaki akceptujesz</translation>
     </message>
@@ -438,8 +424,20 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
         <translation>Maksymalny rozmiar obrazków przychodzących</translation>
     </message>
     <message>
+        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
+        <translation>Pytaj o potwierdzenie, gdy rozmiar obrazka przekracza limit</translation>
+    </message>
+    <message>
         <source>Receive images also when Invisible</source>
         <translation>Odbieraj obrazki także gdy jesteś niewidoczny</translation>
+    </message>
+    <message>
+        <source>Limit numbers of images received per minute</source>
+        <translation>Ograniczaj ilość odbieranych obrazków na minutę</translation>
+    </message>
+    <message>
+        <source>Outgoing Images</source>
+        <translation>Wysyłanie obrazków</translation>
     </message>
     <message>
         <source>Show a warning when the image is larger then 256 KiB</source>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -13,15 +11,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>Show message content</source>
-        <translation>Pokaż treść wiadomości</translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -38,6 +28,10 @@
     <message>
         <source>Expiration timeout</source>
         <translation>Czas zanikania</translation>
+    </message>
+    <message>
+        <source>Show message content</source>
+        <translation>Pokaż treść wiadomości</translation>
     </message>
     <message>
         <source>Never</source>

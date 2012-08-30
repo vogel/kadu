@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -65,18 +63,18 @@
     </message>
     <message>
         <source>Do not quote messages older than</source>
-        <translation type="unfinished"></translation>
+        <translation>Necitovat zprávy starší než</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
 </context>
 <context>
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished">&amp;Smazat historii rozhovoru</translation>
+        <translation>&amp;Smazat historii rozhovoru</translation>
     </message>
 </context>
 <context>
@@ -87,59 +85,59 @@
     </message>
     <message>
         <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 den(y) %2 hodina(y)</translation>
+        <translation>%1 den/dny/dnů %2 hodinu/hodiny/hodin</translation>
     </message>
 </context>
 <context>
     <name>HistoryBuddyDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Uchovávat historii</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Uchovávat historii</translation>
     </message>
 </context>
 <context>
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished">&amp;Odstranit záznamy</translation>
+        <translation>&amp;Odstranit záznamy</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished">Kadu</translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"></translation>
+        <translation>Opravdu chcete smazat historii</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozhovor</translation>
+        <translation>Rozhovor</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Délka</translation>
+        <translation>Délka</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished">Datum</translation>
+        <translation>Datum</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished">Název</translation>
+        <translation>Název</translation>
     </message>
 </context>
 <context>
@@ -162,15 +160,15 @@
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozhovory</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished">Stavy</translation>
+        <translation>Stavy</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
 </context>
 <context>
@@ -184,59 +182,59 @@
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hledat:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozhovory</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Všechny rozhovory - </translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished">Stavy</translation>
+        <translation>Stavy</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Všichni kamarádi - </translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"></translation>
+        <translation> - Všichni příjemci - </translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"></translation>
+        <translation>Podle data</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>do</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Hledat</translation>
+        <translation>Hledání</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nalezeno</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished">Rozhovor</translation>
+        <translation>Rozhovor</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamarád</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"></translation>
+        <translation>Příjemce</translation>
     </message>
 </context>
 <context>

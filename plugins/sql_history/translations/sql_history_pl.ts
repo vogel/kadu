@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>HistorySqlStorage</name>
     <message>
@@ -13,7 +11,7 @@
     </message>
     <message>
         <source>Preparing history database...</source>
-        <translation>Przygotowywanie bazy danych historii...</translation>
+        <translation>Przygotowywanie histori bazy danych...</translation>
     </message>
     <message>
         <source>History</source>
@@ -22,7 +20,7 @@
     <message>
         <source>Opening database failed. Error message:
 %1</source>
-        <translation>Otwarcie bazy danych nieudane. Błąd:
+        <translation>Otwieranie bazy danych zakończone niepowodzeniem. Numer błędu:
 %1</translation>
     </message>
 </context>
@@ -30,11 +28,11 @@
     <name>SqlInitializer</name>
     <message>
         <source>Copying history file to new location: %1 ...</source>
-        <translation>Kopiowanie historii do nowego miejsca: %1...</translation>
+        <translation>Kopiowanie plików zawierających historię rozmów do nowej lokalizacji: %1 ...</translation>
     </message>
     <message>
         <source>Unable to copy history file to new location. Check if disk is full.</source>
-        <translation>Nie można skopiować historii do nowego miejsca. Sprawdź, czy dysk jest pełen.</translation>
+        <translation>Kopiowanie plików historii do nowej lokalizacji nie może zostać wykonane. Sprawdź, czy na dysku jest odpowiednia ilość wolnego miejsca.</translation>
     </message>
     <message>
         <source>Unable to open database: %1</source>
@@ -42,58 +40,58 @@
     </message>
     <message>
         <source>History file is corrupted, performing recovery...</source>
-        <translation>Plik historii jest uszkodzony, trwa naprawianie...</translation>
+        <translation>Pliki historii są uszkodzone, trwa odzyskiwanie...</translation>
     </message>
     <message>
         <source>Recovery completed.</source>
-        <translation>Naprawianie ukończone.</translation>
+        <translation>Odzyskiwanie zakończone sukcesem.</translation>
     </message>
     <message>
         <source>Recovery failed: %s</source>
-        <translation>Naprawianie nieudane: %s</translation>
+        <translation>Odzyskiwanie zakończone niepowodzeniem: %s</translation>
     </message>
     <message>
         <source>History file is outdated, performing import...</source>
-        <translation>Plik historii jest przestarzały, aktualizowanie...</translation>
+        <translation>Pliki historii są przestarzałe, zaimportuj nowe...</translation>
     </message>
     <message>
         <source>Import completed.</source>
-        <translation>Aktualizacja ukończona.</translation>
+        <translation>Zakończono import.</translation>
     </message>
     <message>
         <source>Copying completed.</source>
-        <translation>Kopiowanie ukończone.</translation>
+        <translation>Zakończono kopiowanie.</translation>
     </message>
 </context>
 <context>
     <name>SqlRestore</name>
     <message>
         <source>No error.</source>
-        <translation>Brak błędu.</translation>
+        <translation>Brak błędów.</translation>
     </message>
     <message>
         <source>sqlite3 executable not found.</source>
-        <translation>Nie znaleziono programu sqlite3.</translation>
+        <translation>Nie znaleziono sqlite3.exe</translation>
     </message>
     <message>
         <source>Invalid invocation of recovery script.</source>
-        <translation>Niepoprawne wywołanie skryptu naprawiającego.</translation>
+        <translation>Nieprawidłowe wywołanie skryptu odzyskiwania.</translation>
     </message>
     <message>
         <source>Unable to read corrupted database.</source>
-        <translation>Nie można odczytać uszkodzonej bazy danych.</translation>
+        <translation>Nie można przeglądać uszkodzonej bazy danych.</translation>
     </message>
     <message>
         <source>Unable to create backup file. Disc may be full.</source>
-        <translation>Nie można utworzyć pliku zapasowego. Być może dysk jest pełen.</translation>
+        <translation>Nie można wykonać backup&apos;u. Dysk może być pełny.</translation>
     </message>
     <message>
         <source>Recovery script not found or not executable.</source>
-        <translation>Skrypt naprawiający nie został odnaleziony lub nie jest wykonywalny.</translation>
+        <translation>Nie znaleziono skryptu odzyskiwania lub nie może on zostać uruchomiony.</translation>
     </message>
     <message>
         <source>Unknown error during database recovery.</source>
-        <translation>Nieznany błąd podczas naprawiania bazy danych.</translation>
+        <translation>Nieznany błąd podczas przywracania baza.</translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -13,11 +11,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>1 sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
@@ -25,23 +19,23 @@
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Systémová oznámení</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít vlastní omezení pro překročení času</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Omezení pro překročení času</translation>
     </message>
     <message>
         <source>Show message content</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat obsah zprávy</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nikdy</translation>
     </message>
 </context>
 </TS>

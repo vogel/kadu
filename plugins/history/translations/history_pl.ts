@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -94,14 +92,14 @@
     <name>HistoryBuddyDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation>Zapisuj historię</translation>
+        <translation>Przechowywanie historii rozmów</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation>Zapisuj historię</translation>
+        <translation>Przechowywanie historii rozmów</translation>
     </message>
 </context>
 <context>
@@ -112,7 +110,7 @@
     </message>
     <message>
         <source>Filter</source>
-        <translation>Filtruj</translation>
+        <translation>Filtr</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -120,14 +118,14 @@
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation>Na prawdę chcesz usunąć historię?</translation>
+        <translation>Czy na pewno chcesz usunąć historię?</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation>Czat</translation>
     </message>
     <message>
         <source>Length</source>
@@ -162,7 +160,7 @@
     </message>
     <message>
         <source>Chats</source>
-        <translation>Rozmowy</translation>
+        <translation>Czaty</translation>
     </message>
     <message>
         <source>Statuses</source>
@@ -184,15 +182,15 @@
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation>Szukaj:</translation>
+        <translation>Szukaj: </translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation>Rozmowy</translation>
+        <translation>Czaty</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation> - Wszystkie rozmowy - </translation>
+        <translation>- Wszystkie rozmowy -</translation>
     </message>
     <message>
         <source>Statuses</source>
@@ -200,19 +198,19 @@
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation> - Wszyscy znajomi - </translation>
+        <translation>- Wszyscy znajomi -</translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation>Smsy</translation>
+        <translation>Sms-y</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation> - Wszyscy odbiorcy - </translation>
+        <translation>- Wszyscy odbiorcy -</translation>
     </message>
     <message>
         <source>By date</source>
-        <translation>Wg. daty</translation>
+        <translation>Wg daty</translation>
     </message>
     <message>
         <source>to</source>
@@ -224,11 +222,11 @@
     </message>
     <message>
         <source>Found</source>
-        <translation>Znaleziono</translation>
+        <translation>Znaleziony</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation>Czat</translation>
     </message>
     <message>
         <source>Buddy</source>

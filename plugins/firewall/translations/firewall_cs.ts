@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -85,7 +83,7 @@
     </message>
     <message>
         <source>Attack caused by many messages, sent in short time.</source>
-        <translation>Ǔtok zapříčiněný posíláním nespočetných zpráv po krátkou dobu.</translation>
+        <translation>Útok zapříčiněný posíláním nespočetných zpráv po krátkou dobu.</translation>
     </message>
     <message>
         <source>Min delay between two messages</source>
@@ -101,7 +99,7 @@
     </message>
     <message>
         <source>Attack caused by many emoticons, sent in short time.</source>
-        <translation>Ǔtok zapříčiněný posíláním nespočetných ksichtů po krátkou dobu.</translation>
+        <translation>Útok zapříčiněný posíláním nespočetných ksichtů po krátkou dobu.</translation>
     </message>
     <message>
         <source>Max number of emoticons in one message</source>
@@ -129,11 +127,7 @@
     </message>
     <message numerus="yes">
         <source>%n millisecond(s)</source>
-        <translation>
-            <numerusform>1 milisekunda</numerusform>
-            <numerusform>%n milisekundy</numerusform>
-            <numerusform>%n milisekund</numerusform>
-        </translation>
+        <translation><numerusform>1 milisekunda</numerusform><numerusform>%n milisekundy</numerusform><numerusform>%n milisekund</numerusform></translation>
     </message>
     <message>
         <source>Message was firewalled</source>
@@ -152,7 +146,7 @@
     </message>
     <message>
         <source>flooding DoS attack with emoticons!</source>
-        <translation>Ǔtok ksichty hrozící způsobit přetečení, typ DoS!</translation>
+        <translation>Útok ksichty hrozící způsobit přetečení, typ DoS!</translation>
     </message>
     <message>
         <source>flooding DoS attack!</source>
@@ -225,7 +219,7 @@ Jsem velmi zaměstnán a nemám čas na kecání s lidmi, co sami sebe skrývaj�
     <name>FirewallConfigurationUiHandler</name>
     <message>
         <source>Move to &apos;Secured&apos;</source>
-        <translation>Přesunout do &apos;Bezpečných&apos;</translation>
+        <translation>Přesunout do bezpečných</translation>
     </message>
     <message>
         <source>All</source>
@@ -233,7 +227,7 @@ Jsem velmi zaměstnán a nemám čas na kecání s lidmi, co sami sebe skrývaj�
     </message>
     <message>
         <source>Move to &apos;All&apos;</source>
-        <translation>Přesunout do &apos;Vše&apos;</translation>
+        <translation>Přesunout do Vše</translation>
     </message>
     <message>
         <source>Secured</source>

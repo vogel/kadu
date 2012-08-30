@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -80,7 +78,19 @@
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation>Otrzymano nową wiadomość. Zamknąć okno?</translation>
+        <translation>Otrzymano nową wiadomość, zamknąć mimo to?</translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation>Rozpocznij rozmowę z ...</translation>
+    </message>
+    <message>
+        <source>Recent Chats</source>
+        <translation>Ostatnie rozmowy</translation>
+    </message>
+    <message>
+        <source>Close Tab</source>
+        <translation>Zamknij kartę</translation>
     </message>
 </context>
 <context>
@@ -118,12 +128,12 @@
         <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-        <source>Close all but active</source>
-        <translation>Zamknij wszystkie oprócz aktywnej</translation>
-    </message>
-    <message>
         <source>Conference [%1]</source>
         <translation>Konferencja [%1]</translation>
+    </message>
+    <message>
+        <source>Close all but active</source>
+        <translation>Zamknij wszystkie poza aktywną</translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -48,7 +46,7 @@
     </message>
     <message>
         <source>Close</source>
-        <translation>Zamknij</translation>
+        <translation>Zamknij_Się</translation>
     </message>
     <message>
         <source>The certificate is valid.</source>
@@ -111,7 +109,7 @@
     <name>CertificateErrorWindow</name>
     <message>
         <source>Cannot establish secure connection with server &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>Nie można otworzyć bezpiecznego połączenia z serwerem &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>Nie można ustanowić bezpiecznego połączenia z serwerem &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <source>Show certificate...</source>
@@ -119,11 +117,11 @@
     </message>
     <message>
         <source>If you do not trust &lt;i&gt;%1&lt;/i&gt;, cancel the connection.</source>
-        <translation>Anuluj połączenie, jeżeli nie ufasz &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>Jeśli nie ufasz &lt;i&gt;%1&lt;/i&gt;, zakończ połączenie.</translation>
     </message>
     <message>
         <source>Remember my choice for this certificate</source>
-        <translation>Zapamiętaj wybór dla tego certyfikatu</translation>
+        <translation>Pamiętaj mój wybór dla tego certyfikatu</translation>
     </message>
     <message>
         <source>Connect</source>
@@ -1144,7 +1142,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>security problem</source>
-        <translation>problem bezpieczeństwa</translation>
+        <translation>Problem bezpieczeństwa</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1225,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The recipient or server does not allow any entity to perform the action.</source>
-        <translation>Odbiorca lub serwer nie zezwala na wykonanie akcji.</translation>
+        <translation>Odbiorca lub serwer nie pozwala jednostce na wykonanie akcji.</translation>
     </message>
     <message>
         <source>Not authorized</source>
@@ -1235,7 +1233,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The sender must provide proper credentials before being allowed to perform the action, or has provided improper credentials.</source>
-        <translation>Nadawca musi się poprawnie uwierzytelnić przed wykonaniem akcji.</translation>
+        <translation>Nadawca musi zapewnić odpowiednie uprawnienia przed dopuszczeniem do wykonywania czynności, lub dostarczył niewłaściwych poświadczeń.</translation>
     </message>
     <message>
         <source>Payment required</source>
@@ -1243,7 +1241,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because payment is required.</source>
-        <translation>Opłata jest wymagana dla skorzystania z tego serwisu.</translation>
+        <translation>Dostęp nie jest dany do wybranej usługi, ponieważ wymaga płatności.</translation>
     </message>
     <message>
         <source>Recipient unavailable</source>
@@ -1259,7 +1257,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The recipient or server is redirecting requests for this information to another entity, usually temporarily.</source>
-        <translation>Odbiorca lub serwer przekierowuje żądanie (prawdopodobnie tymczasowo).</translation>
+        <translation>Odbiorca lub serwer przekierowuje żądanie informacji innej usłudze, zazwyczaj tymczasowej.</translation>
     </message>
     <message>
         <source>Registration required</source>
@@ -1267,7 +1265,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because registration is required.</source>
-        <translation>Brak upowaznienia do wykonania akcji - wymagana rejestracja.</translation>
+        <translation>Żądanie do usługi nie może być ukończone, ponieważ wymagana jest rejestracja.</translation>
     </message>
     <message>
         <source>Remote server not found</source>
@@ -1275,23 +1273,23 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient does not exist.</source>
-        <translation>Serwer lub serwis podany jako część JID nie istnieje.</translation>
+        <translation>Zdalny serwer lub usługa określona jako część lub całość JID nie istnieje.</translation>
     </message>
     <message>
         <source>Remote server timeout</source>
-        <translation>Przekroczenie czasu</translation>
+        <translation>Limit czasu serwera zdalnego przekroczony</translation>
     </message>
     <message>
         <source>A remote server or service specified as part or all of the JID of the intended recipient (or required to fulfill a request) could not be contacted within a reasonable amount of time.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zdalny serwer lub usługa określona jako część lub całość JID nie mógł nawiązać kontaktu, w danym czasie.</translation>
     </message>
     <message>
         <source>Resource constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Ograniczenie zasobów</translation>
     </message>
     <message>
         <source>The server or recipient lacks the system resources necessary to service the request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer lub odbiorca posiada za mało zasobów systemowych niezbędnych do obsługi żądania.</translation>
     </message>
     <message>
         <source>Service unavailable</source>
@@ -1299,7 +1297,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The server or recipient does not currently provide the requested service.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer lub odbiorca obecnie nie zapewnia żądanej usługi.</translation>
     </message>
     <message>
         <source>Subscription required</source>
@@ -1307,7 +1305,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The requesting entity is not authorized to access the requested service because a subscription is required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Żądana jednostka nie jest upoważniona do dostępu do wybranej usługi, ponieważ wymagane jest zalogowanie się do usługi.</translation>
     </message>
     <message>
         <source>Undefined condition</source>
@@ -1315,7 +1313,7 @@ Szczegóły: %1</translation>
     </message>
     <message>
         <source>The error condition is not one of those defined by the other conditions in this list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kod błędu nie znajduje się na liście kodów błędu programu.</translation>
     </message>
     <message>
         <source>Unexpected request</source>

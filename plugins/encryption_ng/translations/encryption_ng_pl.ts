@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -29,7 +27,7 @@
     </message>
     <message>
         <source>Encrypt after receiving encrypted message</source>
-        <translation>Szyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
+        <translation>Odszyfruj po otrzymaniu zaszyfrowanej wiadomości</translation>
     </message>
 </context>
 <context>
@@ -85,6 +83,10 @@ Chcesz go zapisać?</translation>
 <context>
     <name>GenerateKeysActionDescription</name>
     <message>
+        <source>Generate Encryption Keys</source>
+        <translation>Wygeneruj klucze szyfrowania</translation>
+    </message>
+    <message>
         <source>Encryption</source>
         <translation>Szyfrowanie</translation>
     </message>
@@ -103,10 +105,6 @@ Chcesz go zapisać?</translation>
     <message>
         <source>Error generating keys</source>
         <translation>Błąd generowania kluczy</translation>
-    </message>
-    <message>
-        <source>Generate Encryption Keys</source>
-        <translation>Wygeneruj klucze szyfrowania</translation>
     </message>
 </context>
 <context>
