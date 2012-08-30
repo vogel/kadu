@@ -19,10 +19,11 @@
 
 #include <QtGui/QApplication>
 
+#include "configuration/configuration-file.h"
+#include "emoticons/emoticon-theme-manager.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
-#include "themes/emoticon-theme-manager.h"
 
 #include "emoticons/emoticons-manager.h"
 
@@ -31,6 +32,10 @@
 EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
 		ConfigurationUiHandler(parent)
 {
+	config_file.addVariable("Chat", "EmoticonsPaths", QString());
+	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
+	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
+	config_file.addVariable("Chat", "EmoticonsTheme", EmoticonThemeManager::defaultTheme());
 }
 
 EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()

@@ -79,7 +79,6 @@
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
-#include "themes/emoticon-theme-manager.h"
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -206,10 +205,6 @@ void Core::createDefaultConfiguration()
 #endif
 	config_file.addVariable("Chat", "ChatPruneLen", 20);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
-	config_file.addVariable("Chat", "EmoticonsPaths", QString());
-	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
-	config_file.addVariable("Chat", "EmoticonsScaling", EmoticonsScalingStatic);
-	config_file.addVariable("Chat", "EmoticonsTheme", EmoticonThemeManager::defaultTheme());
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
 	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);

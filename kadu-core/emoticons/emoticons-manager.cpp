@@ -46,12 +46,12 @@
 #include "emoticons/emoticon-expander.h"
 #include "emoticons/emoticon-expander-dom-visitor-provider.h"
 #include "emoticons/emoticon-prefix-tree-builder.h"
+#include "emoticons/emoticon-theme-manager.h"
 #include "emoticons/emoticons-configuration-ui-handler.h"
 #include "emoticons/insert-emoticon-action.h"
 #include "emoticons/static-emoticon-path-provider.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
-#include "themes/emoticon-theme-manager.h"
 #include "debug.h"
 
 #include "emoticons-manager.h"
