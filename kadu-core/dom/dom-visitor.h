@@ -47,7 +47,24 @@ public:
 	 */
 	virtual void visit(QDomText textNode) = 0;
 
+	/**
+	 * @short Visit current element before visiting all its subnodes.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param elementNode element node to process
+	 *
+	 * This method can change elementNode and/or document that this node belongs to. This method is called
+	 * before subnodes of elementNode are processed.
+	 */
 	virtual void beginVisit(QDomElement elementNode) = 0;
+
+	/**
+	 * @short Visit current element after visiting all its subnodes.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param elementNode element node to process
+	 *
+	 * This method can change elementNode and/or document that this node belongs to. This method is called
+	 * after subnodes of elementNode are processed.
+	 */
 	virtual void endVisit(QDomElement elementNode) = 0;
 
 };

@@ -24,11 +24,35 @@
 
 class DomVisitor;
 
+/**
+ * @addtogroup Dom
+ * @{
+ */
+
+/**
+ * @class DomVisitorProvider
+ * @short Provider that returns DomVisitor instances.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * Register DomVisitorProvider in DomProcessorService to make them accessible everywhere.
+ */
 class DomVisitorProvider : public Provider<DomVisitor *>
 {
 public:
 	virtual ~DomVisitorProvider() {}
 
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Provide DomVisitor.
+	 *
+	 * This method can return null value.
+	 */
+	virtual DomVisitor * provide() const = 0;
+
 };
+
+/**
+ * @}
+ */
 
 #endif // DOM_VISITOR_PROVIDER_H

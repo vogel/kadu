@@ -29,6 +29,23 @@ class QDomDocument;
 
 class DomVisitorProvider;
 
+/**
+ * @addtogroup Dom
+ * @{
+ */
+
+/**
+ * @class DomProcessorService
+ * @short Service for processing DOM documents.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * Use this service to process DOM documents that are about to be displayed - like messages.
+ * Plugins like emoticons or imagelink can register it this class to allow for processing emoticons, urls and other
+ * stuff to make messages more pleasant for users.
+ *
+ * DomVisitorProvider objects are asked for DomVisitor object in order of increasing priorities - that means
+ * DomVisitorProvider with smallest priority will be called first.
+ */
 class KADUAPI DomProcessorService: public QObject
 {
 	Q_OBJECT
@@ -40,17 +57,61 @@ class KADUAPI DomProcessorService: public QObject
 	QList<DomVisitorProvider *> getVisitorProviders();
 
 public:
+	/**
+	 * @short Create new instance of DomProcessorService.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param parent QObject parent of new instance
+	 */
 	explicit DomProcessorService(QObject *parent = 0);
 	virtual ~DomProcessorService();
 
+	/**
+	 * @short Register new DomVisitorProvider with given priority.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitorProvider visitor provider to register
+	 * @param priority priority of new provider, smaller priorities are called first
+	 *
+	 * If given DomVisitorProvider is already registered, nothing will happen.
+	 */
 	void registerVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
+
+	/**
+	 * @short Unegister new DomVisitorProvider with given priority.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitorProvider visitor provider to unregister
+	 *
+	 * If given DomVisitorProvider is not registered, nothing will happen.
+	 */
 	void unregisterVisitorProvider(DomVisitorProvider *visitorProvider);
 
+	/**
+	 * @short Process domDocument with all available DomVisitor instances.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param domDocument to process
+	 *
+	 * This method will ask all registered DomVisitorProvider for DomVisitor instances. All non-null
+	 * instances will be called in order of increasing priority on given domDocument and will be allowed to
+	 * modify it.
+	 */
 	void process(QDomDocument &domDocument);
 
-	// TODO: remove
-	QString process(const QString &html);
+	/**
+	 * @short Process xml with all available DomVisitor instances.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param domDocument to process
+	 * @todo remove
+	 *
+	 * This method will convert xml string to domDocument and call other process() method. Result of that
+	 * will be again serialized to string and returned.
+	 *
+	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
+	 */
+	QString process(const QString &xml);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // DOM_PROCESSOR_SERVICE_H

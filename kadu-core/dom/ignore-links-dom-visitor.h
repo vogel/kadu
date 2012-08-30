@@ -25,12 +25,32 @@
 #include "dom/dom-visitor.h"
 #include "exports.h"
 
+/**
+ * @addtogroup Dom
+ * @{
+ */
+
+/**
+ * @class IgnoreLinksDomVisitor
+ * @short Proxy visitor that hides all content inside A elements.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This visitor acts like proxy on top of other visitor. It hides content of A elements before proxied visitor.
+ * It also takes care of deleting proxied visitor.
+ */
 class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 {
 	QScopedPointer<DomVisitor> Visitor;
 	int LinksDepth;
 
 public:
+	/**
+	 * @short Create new IgnoreLinksDomVisitor over visitor.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param visitor this visitor will get all data about processed DOM document with exception of content of A elements
+	 *
+	 * IgnoreLinksDomVisitor takes care of deleting visitor instance when not needed anymore. Do not delete it manually.
+	 */
 	explicit IgnoreLinksDomVisitor(DomVisitor *visitor);
 	virtual ~IgnoreLinksDomVisitor();
 
@@ -39,5 +59,9 @@ public:
 	virtual void endVisit(QDomElement elementNode);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // IGNORE_LINKS_DOM_VISITOR

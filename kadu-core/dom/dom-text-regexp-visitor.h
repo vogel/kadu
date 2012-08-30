@@ -28,6 +28,21 @@
 class QDomDocument;
 class QDomNode;
 
+/**
+ * @addtogroup Dom
+ * @{
+ */
+
+/**
+ * @class DomTextRegexpVisitor
+ * @short Visitor that splits text nodes by given regexp and inserts new node in place of matched strings.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This visitor is used to find regexp matches in text nodes and insert new nodes in place of them.
+ * Override matchToDomNode() to get each regexp match and create DOM node for it.
+ *
+ * This visitor is subclassed by emoticon and link expanders.
+ */
 class KADUAPI DomTextRegexpVisitor : public DomVisitor
 {
 	QRegExp RegExp;
@@ -35,6 +50,11 @@ class KADUAPI DomTextRegexpVisitor : public DomVisitor
 	QDomText expandFirstMatch(QDomText textNode);
 
 public:
+	/**
+	 * @short Create new DomTextRegexpVisitor that splits text nodes on matches of regExp.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param regExp regular expression to match on text nodes
+	 */
 	explicit DomTextRegexpVisitor(QRegExp regExp);
 	virtual ~DomTextRegexpVisitor();
 
@@ -42,8 +62,18 @@ public:
 	virtual void beginVisit(QDomElement elementNode);
 	virtual void endVisit(QDomElement elementNode);
 
+	/**
+	 * @short Replace matched regular expression with DOM node.
+	 * @param document searched DOM document
+	 * @param regExp object containing match information
+	 * @return DOM node replacing matched text
+	 */
 	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // DOM_TEXT_REGEXP_VISITOR_H

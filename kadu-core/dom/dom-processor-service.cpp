@@ -82,11 +82,11 @@ void DomProcessorService::process(QDomDocument &domDocument)
 	}
 }
 
-QString DomProcessorService::process(const QString &html)
+QString DomProcessorService::process(const QString &xml)
 {
 	QDomDocument domDocument;
 	// force content to be valid HTML with only one root
-	domDocument.setContent(QString("<div>%1</div>").arg(html));
+	domDocument.setContent(QString("<div>%1</div>").arg(xml));
 
 	process(domDocument);
 
