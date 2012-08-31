@@ -17,35 +17,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
-#define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+#include "emoticons-manager.h"
 
-#include <QtCore/QScopedPointer>
+#include "emoticons-plugin.h"
 
-#include "dom/ignore-links-dom-visitor.h"
-#include "emoticons/emoticon-prefix-tree.h"
-#include "emoticons/emoticons.h"
-
-#include "dom/dom-visitor-provider.h"
-
-class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
+EmoticonsPlugin::EmoticonsPlugin(QObject *parent) :
+		QObject(parent)
 {
-	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
+}
 
-	QScopedPointer<EmoticonPrefixTree> Tree;
-	EmoticonsStyle Style;
+EmoticonsPlugin::~EmoticonsPlugin()
+{
+}
 
-	void rebuildVisitor();
+int EmoticonsPlugin::init(bool firstLoad)
+{
+	Q_UNUSED(firstLoad)
 
-public:
-	EmoticonExpanderDomVisitorProvider();
-	virtual ~EmoticonExpanderDomVisitorProvider();
+	Manager.reset(new EmoticonsManager());
 
-	virtual DomVisitor * provide() const;
+	return 0;
+}
 
-	void setEmoticonTree(EmoticonPrefixTree *);
-	void setStyle(EmoticonsStyle style);
+void EmoticonsPlugin::done()
+{
+	Manager.reset(0);
+}
 
-};
-
-#endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+Q_EXPORT_PLUGIN2(emoticons, EmoticonsPlugin)

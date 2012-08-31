@@ -20,8 +20,8 @@
 #ifndef EMOTICON_EXPANDER_H
 #define EMOTICON_EXPANDER_H
 
-#include "emoticons/emoticon-path-provider.h"
-#include "emoticons/emoticons-manager.h"
+#include "emoticon-path-provider.h"
+#include "emoticons-manager.h"
 
 #include "dom/dom-visitor.h"
 

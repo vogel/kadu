@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "dom/ignore-links-dom-visitor.h"
 #include "debug.h"
 
 #include "emoticon-expander-dom-visitor-provider.h"
@@ -24,7 +25,6 @@
 #include "animated-emoticon-path-provider.h"
 #include "static-emoticon-path-provider.h"
 #include "emoticon-expander.h"
-#include <dom/ignore-links-dom-visitor.h>
 
 EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider() :
 		Style(EmoticonsStyleNone)

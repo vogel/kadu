@@ -17,16 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoticons/emoticon.h"
-#include "emoticons/emoticons-manager.h"
+#ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+#define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
 
-#include "static-emoticon-path-provider.h"
+#include <QtCore/QScopedPointer>
 
-StaticEmoticonPathProvider::~StaticEmoticonPathProvider()
+#include "dom/ignore-links-dom-visitor.h"
+
+#include "emoticon-prefix-tree.h"
+#include "emoticons.h"
+
+#include "dom/dom-visitor-provider.h"
+
+class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
 {
-}
+	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
 
-QString StaticEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
-{
-	return emoticon.staticFilePath();
-}
+	QScopedPointer<EmoticonPrefixTree> Tree;
+	EmoticonsStyle Style;
+
+	void rebuildVisitor();
+
+public:
+	EmoticonExpanderDomVisitorProvider();
+	virtual ~EmoticonExpanderDomVisitorProvider();
+
+	virtual DomVisitor * provide() const;
+
+	void setEmoticonTree(EmoticonPrefixTree *);
+	void setStyle(EmoticonsStyle style);
+
+};
+
+#endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER

@@ -17,38 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANIMATED_EMOTICON_PATH_PROVIDER_H
-#define ANIMATED_EMOTICON_PATH_PROVIDER_H
+#include "emoticon.h"
+#include "emoticons-manager.h"
 
-#include "emoticons/emoticon-path-provider.h"
+#include "animated-emoticon-path-provider.h"
 
-/**
- * @addtogroup Emoticons
- * @{
- */
-
-/**
- * @class AnimatedEmoticonPathProvider
- * @short EmoticonPathProvider that returns path to animated version of emoticon.
- * @author Rafał 'Vogel' Malinowski
- */
-class AnimatedEmoticonPathProvider : public EmoticonPathProvider
+AnimatedEmoticonPathProvider::~AnimatedEmoticonPathProvider()
 {
-public:
-	virtual ~AnimatedEmoticonPathProvider();
+}
 
-	/**
-	 * @short Return path to animated version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticon emoticon to get path for
-	 * @return path to animated file of emoticon
-	 */
-	virtual QString emoticonPath(const Emoticon &emoticon);
-
-};
-
-/**
- * @}
- */
-
-#endif // ANIMATED_EMOTICON_PATH_PROVIDER_H
+QString AnimatedEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
+{
+	return emoticon.animatedFilePath();
+}

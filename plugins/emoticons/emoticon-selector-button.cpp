@@ -32,7 +32,8 @@
 #include <QtGui/QMovie>
 
 #include "configuration/configuration-file.h"
-#include "emoticons/emoticons.h"
+
+#include "emoticons.h"
 
 #include "emoticon-selector-button.h"
 

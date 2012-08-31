@@ -29,8 +29,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoticons/emoticon-prefix-tree.h"
 #include "misc/misc.h"
+
+#include "emoticon-prefix-tree.h"
 
 #include "emoticon-walker.h"
 

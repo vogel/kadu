@@ -39,37 +39,30 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QScrollBar>
 
-#include "emoticons/emoticon.h"
-#include "emoticons/emoticon-selector-button.h"
-#include "emoticons/emoticons-manager.h"
+#include "emoticon.h"
+#include "emoticon-selector-button.h"
 
 #include "emoticon-selector.h"
 
-EmoticonSelector::EmoticonSelector(QWidget *parent) :
+EmoticonSelector::EmoticonSelector(const QVector<Emoticon> &emoticons, QWidget *parent) :
 		QScrollArea(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(Qt::Popup);
 	setFrameStyle(QFrame::NoFrame);
 
-	if (EmoticonsManager::instance()->selectors().isEmpty())
-	{
-		close();
-		return;
-	}
-
 	QWidget *mainwidget = new QWidget(this);
 
-	addEmoticonButtons(mainwidget);
+	addEmoticonButtons(emoticons, mainwidget);
 	setWidget(mainwidget);
 	calculatePositionAndSize(parent, mainwidget);
 }
 
-void EmoticonSelector::addEmoticonButtons(QWidget *mainwidget)
+void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainwidget)
 {
 	int selector_width = 460;
 	int total_height = 0, cur_width = 0, btn_width = 0;
-	int count = EmoticonsManager::instance()->selectors().count();
+	int count = emoticons.count();
 	QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[count]);
 	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
 	QHBoxLayout *row = 0;
@@ -78,7 +71,7 @@ void EmoticonSelector::addEmoticonButtons(QWidget *mainwidget)
 
 	for (int i = 0; i < count; ++i)
 	{
-		const Emoticon &emoticon = EmoticonsManager::instance()->selectors().at(i);
+		const Emoticon &emoticon = emoticons.at(i);
 		btns[i] = new EmoticonSelectorButton(emoticon.text(), emoticon.animatedFilePath(), emoticon.staticFilePath(),
 			mainwidget);
 		btn_width = btns[i]->sizeHint().width();

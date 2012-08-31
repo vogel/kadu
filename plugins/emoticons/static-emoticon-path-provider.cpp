@@ -17,26 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef INSERT_EMOTICON_ACTION_H
-#define INSERT_EMOTICON_ACTION_H
+#include "emoticon.h"
+#include "emoticons-manager.h"
 
-#include "gui/actions/action-description.h"
+#include "static-emoticon-path-provider.h"
 
-class InsertEmoticonAction : public ActionDescription
+StaticEmoticonPathProvider::~StaticEmoticonPathProvider()
 {
-	Q_OBJECT
+}
 
-protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void configurationUpdated();
-
-public:
-	explicit InsertEmoticonAction(QObject *parent = 0);
-	virtual ~InsertEmoticonAction();
-
-	virtual void actionTriggered(QAction *sender, bool toggled);
-
-};
-
-
-#endif // INSERT_EMOTICON_ACTION_H
+QString StaticEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
+{
+	return emoticon.staticFilePath();
+}

@@ -22,10 +22,13 @@
 
 #include "gui/windows/main-configuration-window.h"
 
+class EmoticonThemeManager;
+
 class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+	QWeakPointer<EmoticonThemeManager> ThemeManager;
 	QWeakPointer<ConfigurationWidget> Widget;
 	QWeakPointer<ConfigComboBox> EmoticonsStyleComboBox;
 	QWeakPointer<ConfigComboBox> EmoticonsThemeComboBox;
@@ -36,7 +39,7 @@ private slots:
 	void emoticonThemeSelected(int index);
 
 public:
-	explicit EmoticonsConfigurationUiHandler(QObject *parent = 0);
+	explicit EmoticonsConfigurationUiHandler(EmoticonThemeManager *themeManager, QObject *parent = 0);
 	virtual ~EmoticonsConfigurationUiHandler();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

@@ -41,49 +41,46 @@
 #include "dom/dom-processor.h"
 #include "dom/dom-processor-service.h"
 #include "dom/ignore-links-dom-visitor.h"
-#include "emoticons/animated-emoticon-path-provider.h"
-#include "emoticons/emoticon.h"
-#include "emoticons/emoticon-expander.h"
-#include "emoticons/emoticon-expander-dom-visitor-provider.h"
-#include "emoticons/emoticon-prefix-tree-builder.h"
-#include "emoticons/emoticon-theme-manager.h"
-#include "emoticons/emoticons-configuration-ui-handler.h"
-#include "emoticons/insert-emoticon-action.h"
-#include "emoticons/static-emoticon-path-provider.h"
 #include "gui/windows/main-configuration-window.h"
+#include "misc/kadu-paths.h"
 #include "misc/misc.h"
 #include "debug.h"
 
+#include "animated-emoticon-path-provider.h"
+#include "emoticon.h"
+#include "emoticon-expander.h"
+#include "emoticon-expander-dom-visitor-provider.h"
+#include "emoticon-prefix-tree-builder.h"
+#include "emoticon-theme-manager.h"
+#include "emoticons-configuration-ui-handler.h"
+#include "insert-emoticon-action.h"
+#include "static-emoticon-path-provider.h"
+
 #include "emoticons-manager.h"
 
-EmoticonsManager * EmoticonsManager::Instance = 0;
-
-EmoticonsManager * EmoticonsManager::instance()
-{
-	if (Instance == 0)
-		Instance = new EmoticonsManager();
-	return Instance;
-}
-
-EmoticonsManager::EmoticonsManager() :
+EmoticonsManager::EmoticonsManager(QObject *parent) :
 		Aliases(), Selector()
 {
+	Q_UNUSED(parent)
+
 	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts);
 
 	ThemeManager = new EmoticonThemeManager(this);
 	ThemeManager->loadThemes(iconPaths);
 	ExpanderDomVisitorProvider = new EmoticonExpanderDomVisitorProvider();
 	Core::instance()->domProcessorService()->registerVisitorProvider(ExpanderDomVisitorProvider, 2000);
-	configurationUpdated();
-	ConfigurationUiHandler = new EmoticonsConfigurationUiHandler(this);
+	ConfigurationUiHandler = new EmoticonsConfigurationUiHandler(ThemeManager, this);
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler);
 
-	new InsertEmoticonAction(this);
+	InsertAction = new InsertEmoticonAction(this);
+	configurationUpdated();
 }
 
 EmoticonsManager::~EmoticonsManager()
 {
 	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler);
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(ExpanderDomVisitorProvider);
 	delete ExpanderDomVisitorProvider;
 	ExpanderDomVisitorProvider = 0;
@@ -230,6 +227,8 @@ bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 
 		ExpanderDomVisitorProvider->setEmoticonTree(builder.tree());
 	}
+
+	InsertAction->setEmoticons(Selector);
 
 	return something_loaded;
 }

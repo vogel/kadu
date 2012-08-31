@@ -20,17 +20,17 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
-#include "emoticons/emoticon-theme-manager.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 
-#include "emoticons/emoticons-manager.h"
+#include "emoticon-theme-manager.h"
+#include "emoticons-manager.h"
 
 #include "emoticons-configuration-ui-handler.h"
 
-EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
-		ConfigurationUiHandler(parent)
+EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(EmoticonThemeManager *themeManager, QObject *parent) :
+		ConfigurationUiHandler(parent), ThemeManager(themeManager)
 {
 	config_file.addVariable("Chat", "EmoticonsPaths", QString());
 	config_file.addVariable("Chat", "EmoticonsStyle", EmoticonsStyleAnimated);
@@ -44,24 +44,24 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!Widget)
+	if (!Widget || !ThemeManager)
 		return;
 
 	ConfigComboBox *emoticonsThemes = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
-	EmoticonsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(Widget.data()->widgetById("emoticonsPaths")))->pathList());
+	ThemeManager.data()->loadThemes((static_cast<PathListEdit *>(Widget.data()->widgetById("emoticonsPaths")))->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
 	QStringList values;
 	QStringList captions;
-	foreach (const Theme &theme, EmoticonsManager::instance()->themeManager()->themes())
+	foreach (const Theme &theme, ThemeManager.data()->themes())
 	{
 		values.append(theme.name());
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
 	emoticonsThemes->setItems(values, captions);
-	emoticonsThemes->setCurrentItem(EmoticonsManager::instance()->themeManager()->currentTheme().name());
+	emoticonsThemes->setCurrentItem(ThemeManager.data()->currentTheme().name());
 }
 
 void EmoticonsConfigurationUiHandler::emoticonThemeSelected(int index)

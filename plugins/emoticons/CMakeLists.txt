@@ -1,4 +1,10 @@
-set (emoticons_SRCS
+project (emoticons)
+
+set (KADU_FIND_REQUIRED true)
+set (KADU_INSTALLS_SDK TRUE)
+include (FindKadu)
+
+set (SOURCES
 	animated-emoticon-path-provider.cpp
 	emoticon.cpp
 	emoticon-expander.cpp
@@ -11,17 +17,29 @@ set (emoticons_SRCS
 	emoticon-walker.cpp
 	emoticons-configuration-ui-handler.cpp
 	emoticons-manager.cpp
+	emoticons-plugin.cpp
 	insert-emoticon-action.cpp
 	static-emoticon-path-provider.cpp
 )
 
-set (emoticons_MOC_SRCS
+set (MOC_SOURCES
 	emoticon-selector-button.h
 	emoticon-selector.h
 	emoticon-theme-manager.h
 	emoticons-configuration-ui-handler.h
 	emoticons-manager.h
+	emoticons-plugin.h
 	insert-emoticon-action.h
 )
 
-kadu_subdirectory (emoticons "${emoticons_SRCS}" "${emoticons_MOC_SRCS}" "")
+set (CONFIGURATION_FILES
+	data/configuration/emoticons.ui
+)
+
+kadu_plugin (emoticons
+	PLUGIN_SOURCES ${SOURCES}
+	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
+	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)
+
+add_subdirectory (data/themes)

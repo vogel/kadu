@@ -7,7 +7,7 @@ if (EMOTICON_THEMES)
 	add_custom_target (emoticons_themes
 		DEPENDS ${EMOTICON_THEMES}
 	)
-	add_dependencies (kadu emoticons_themes)
+	add_dependencies (emoticons emoticons_themes)
 
 	foreach (EMOTICON_THEME ${EMOTICON_THEMES})
 		message (STATUS "Emoticon theme: " ${EMOTICON_THEME})

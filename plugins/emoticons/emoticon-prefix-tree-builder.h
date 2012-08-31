@@ -17,16 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoticons/emoticon.h"
-#include "emoticons/emoticons-manager.h"
+#ifndef EMOTICON_PREFIX_TREE_BUILDER_H
+#define EMOTICON_PREFIX_TREE_BUILDER_H
 
-#include "animated-emoticon-path-provider.h"
+#include <QtCore/QScopedPointer>
 
-AnimatedEmoticonPathProvider::~AnimatedEmoticonPathProvider()
+#include "emoticon-prefix-tree.h"
+
+class QChar;
+
+class EmoticonPrefixTreeBuilder
 {
-}
+	QScopedPointer<EmoticonPrefixTree> Root;
 
-QString AnimatedEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
-{
-	return emoticon.animatedFilePath();
-}
+public:
+	EmoticonPrefixTreeBuilder();
+
+	void addEmoticon(const Emoticon &emoticon);
+
+	EmoticonPrefixTree * tree();
+
+};
+
+#endif // EMOTICON_PREFIX_TREE_BUILDER_H

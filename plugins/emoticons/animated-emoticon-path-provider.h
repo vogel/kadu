@@ -17,26 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_PREFIX_TREE_BUILDER_H
-#define EMOTICON_PREFIX_TREE_BUILDER_H
+#ifndef ANIMATED_EMOTICON_PATH_PROVIDER_H
+#define ANIMATED_EMOTICON_PATH_PROVIDER_H
 
-#include <QtCore/QScopedPointer>
+#include "emoticon-path-provider.h"
 
-#include "emoticons/emoticon-prefix-tree.h"
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
 
-class QChar;
-
-class EmoticonPrefixTreeBuilder
+/**
+ * @class AnimatedEmoticonPathProvider
+ * @short EmoticonPathProvider that returns path to animated version of emoticon.
+ * @author Rafał 'Vogel' Malinowski
+ */
+class AnimatedEmoticonPathProvider : public EmoticonPathProvider
 {
-	QScopedPointer<EmoticonPrefixTree> Root;
-
 public:
-	EmoticonPrefixTreeBuilder();
+	virtual ~AnimatedEmoticonPathProvider();
 
-	void addEmoticon(const Emoticon &emoticon);
-
-	EmoticonPrefixTree * tree();
+	/**
+	 * @short Return path to animated version of emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param emoticon emoticon to get path for
+	 * @return path to animated file of emoticon
+	 */
+	virtual QString emoticonPath(const Emoticon &emoticon);
 
 };
 
-#endif // EMOTICON_PREFIX_TREE_BUILDER_H
+/**
+ * @}
+ */
+
+#endif // ANIMATED_EMOTICON_PATH_PROVIDER_H

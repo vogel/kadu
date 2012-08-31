@@ -19,8 +19,8 @@
 
 #include <QtXml/QDomText>
 
-#include "emoticons/emoticon.h"
-#include "emoticons/emoticon-walker.h"
+#include "emoticon.h"
+#include "emoticon-walker.h"
 
 #include "emoticon-expander.h"
 

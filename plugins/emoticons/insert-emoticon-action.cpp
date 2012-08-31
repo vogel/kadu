@@ -18,9 +18,10 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "emoticons/emoticon-selector.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
+
+#include "emoticon-selector.h"
 
 #include "insert-emoticon-action.h"
 
@@ -88,7 +89,15 @@ void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 	if (widgets.isEmpty())
 		return;
 
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(widgets.at(widgets.size() - 1));
+	if (Emoticons.isEmpty())
+		return;
+
+	EmoticonSelector *emoticonSelector = new EmoticonSelector(Emoticons, widgets.at(widgets.size() - 1));
 	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), chatEditBox, SLOT(insertPlainText(QString)));
 	emoticonSelector->show();
+}
+
+void InsertEmoticonAction::setEmoticons(const QVector<Emoticon> &emoticons)
+{
+	Emoticons = emoticons;
 }

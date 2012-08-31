@@ -17,39 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoticons/emoticon-prefix-tree.h"
-#include "misc/misc.h"
+#ifndef INSERT_EMOTICON_ACTION_H
+#define INSERT_EMOTICON_ACTION_H
 
-#include "emoticon-prefix-tree-builder.h"
+#include "gui/actions/action-description.h"
 
-EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() :
-		Root(new EmoticonPrefixTree())
+#include "emoticon.h"
+
+class InsertEmoticonAction : public ActionDescription
 {
-}
+	Q_OBJECT
 
-void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
-{
-	Q_ASSERT(Root);
+	QVector<Emoticon> Emoticons;
 
-	QString text = emoticon.text().toLower();
-	unsigned int length = text.length();
+protected:
+	virtual void actionInstanceCreated(Action *action);
+	virtual void configurationUpdated();
 
-	EmoticonPrefixTree *node = Root.data();
-	for (unsigned int i = 0; i < length; i++)
-	{
-		QChar c = extractLetter(text.at(i));
+public:
+	explicit InsertEmoticonAction(QObject *parent = 0);
+	virtual ~InsertEmoticonAction();
 
-		EmoticonPrefixTree *child = node->child(c);
-		if (!child)
-			child = node->createChild(c);
-		node = child;
-	}
+	virtual void actionTriggered(QAction *sender, bool toggled);
 
-	if (node->nodeEmoticon().isNull())
-		node->setNodeEmoticon(emoticon);
-}
+	void setEmoticons(const QVector<Emoticon> &emoticons);
 
-EmoticonPrefixTree * EmoticonPrefixTreeBuilder::tree()
-{
-	return Root.take();
-}
+};
+
+
+#endif // INSERT_EMOTICON_ACTION_H

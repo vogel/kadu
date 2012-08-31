@@ -1,0 +1,12 @@
+[Module]
+DisplayName=Emoticons
+DisplayName[pl]=Emotikony
+Description=Displays emoticons in chat winow and information panelw
+Description[pl]=Wyświetla emotikony w oknie rozmowy i panelu informacyjnym
+Author=Kadu Team
+LoadByDefault=true
+Version=core
+Dependencies=
+Type=
+Category=Chat
+Plugin=true

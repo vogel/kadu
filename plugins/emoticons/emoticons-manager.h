@@ -10,7 +10,7 @@
  * Copyright 2003, 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2003, 2004 Dariusz Jagodzik (mast3r@kadu.net)
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2010, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
@@ -29,40 +29,58 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_SELECTOR_H
-#define EMOTICON_SELECTOR_H
+#ifndef EMOTICONS_MANAGER_H
+#define EMOTICONS_MANAGER_H
 
-#include <QtGui/QScrollArea>
+#include <QtCore/QVector>
+
+#include "configuration/configuration-holder.h"
+#include "themes.h"
+
+#include "emoticons.h"
+
+class QDomDocument;
+class QDomText;
+
+class Emoticon;
+class EmoticonExpanderDomVisitorProvider;
+class EmoticonsConfigurationUiHandler;
+class EmoticonThemeManager;
+class InsertEmoticonAction;
 
 /**
-	Klasa wy�wietlaj�ca list� emotikonek z aktualnego zestawu.
+	Menad�er emotikon�w
 **/
-class EmoticonSelector : public QScrollArea
+class KADUAPI EmoticonsManager : public ConfigurationHolder
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(EmoticonsManager)
 
-	void addEmoticonButtons(QWidget *mainwidget);
-	void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
+	EmoticonExpanderDomVisitorProvider *ExpanderDomVisitorProvider;
+	EmoticonThemeManager *ThemeManager;
+	EmoticonsConfigurationUiHandler *ConfigurationUiHandler;
+	InsertEmoticonAction *InsertAction;
 
-private slots:
-	void iconClicked(const QString &emoticon_string);
+	QVector<Emoticon> Aliases;
+	QVector<Emoticon> Selector;
 
-protected:
-	virtual bool event(QEvent *e);
-	virtual void keyPressEvent(QKeyEvent *e);
+	static QString getQuoted(const QString &s, unsigned int &pos);
+
+	bool loadGGEmoticonThemePart(const QString &themeSubDirPath);
+	bool loadGGEmoticonTheme(const QString &themeDirPath);
+	void loadTheme();
 
 public:
-	/**
-		Konstruktor tworz�cy list� emotikonek.
-		\param activatingWidget okno wywo�uj�ce
-		\param parent rodzic na kt�rym ma by� wy�wietlona lista
-	**/
-	EmoticonSelector(QWidget *parent);
+	explicit EmoticonsManager(QObject *parent = 0);
+	virtual ~EmoticonsManager();
 
-signals:
-	// TODO: rename
-	void emoticonSelect(const QString &);
+	EmoticonThemeManager * themeManager() const;
+
+	const QVector<Emoticon> & aliases() { return Aliases; }
+	const QVector<Emoticon> & selectors() { return Selector; }
+
+	void configurationUpdated();
 
 };
 
-#endif // EMOTICON_SELECTOR_H
+#endif // EMOTICONS_MANAGER_H
