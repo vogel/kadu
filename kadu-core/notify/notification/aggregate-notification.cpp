@@ -26,34 +26,32 @@ AggregateNotification::AggregateNotification(Notification *firstNotification)
 		: Notification("aggregate", firstNotification->icon()), GroupKey(firstNotification->groupKey())
 {
 	Notifications = QList<Notification *>();
-	Notifications.append(firstNotification);
+	addNotification(firstNotification);
 }
 
 void AggregateNotification::addNotification(Notification* notification)
 {
 	Notifications.append(notification);
 
+	connect(notification, SIGNAL(partialClosed(Notification *)), this, SLOT(partialNotificationClosed(Notification *)));
+
 	emit updated(this);
-}
-
-void AggregateNotification::acquire()
-{
-	Notification::acquire();
-
-	foreach (Notification *n, Notifications)
-	{
-		n->acquire();
-	}
 }
 
 void AggregateNotification::close()
 {
-	foreach (Notification *n, Notifications)
+	if (!Closing)
 	{
-		n->close();
-	}
+		Closing = true;
 
-	Notification::close();
+		foreach (Notification *n, Notifications)
+		{
+			n->partialClose();
+		}
+
+		emit closed(this);
+		deleteLater();
+	}
 }
 
 const QString AggregateNotification::title() const
@@ -104,20 +102,23 @@ bool AggregateNotification::requireCallback()
 
 void AggregateNotification::callbackAccept()
 {
-	close();
-
 	Notifications.first()->callbackAccept();
 }
 
 void AggregateNotification::callbackDiscard()
 {
-	close();
-
 	Notifications.first()->callbackDiscard();
 }
 
 void AggregateNotification::clearDefaultCallback()
 {
 	Notifications.first()->clearDefaultCallback();
+}
+
+void AggregateNotification::partialNotificationClosed(Notification *notification)
+{
+	Notifications.removeAll(notification);
+
+	close();
 }
 

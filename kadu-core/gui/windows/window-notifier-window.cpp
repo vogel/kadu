@@ -39,8 +39,6 @@ WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *
 
 	setWindowRole("kadu-window-notifier");
 
-	CurrentNotification->acquire();
-
 	setWindowTitle(CurrentNotification->title());
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -49,7 +47,7 @@ WindowNotifierWindow::WindowNotifierWindow(Notification *notification, QWidget *
 
 WindowNotifierWindow::~WindowNotifierWindow()
 {
-	CurrentNotification->release();
+	emit closed(CurrentNotification);
 }
 
 void WindowNotifierWindow::createGui()

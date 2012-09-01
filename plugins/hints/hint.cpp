@@ -56,8 +56,6 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	if (notification->type() == "Preview")
 		requireCallbacks = true;
 
-	notification->acquire();
-
 	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
 	if (aggregateNotification)
 	{
@@ -112,7 +110,6 @@ Hint::~Hint()
 	kdebugf();
 
 	disconnect(notification, 0, this, 0);
-	notification->release();
 
 	kdebugf2();
 }

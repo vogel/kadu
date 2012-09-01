@@ -45,7 +45,6 @@ public:
 
 	QList<Notification *> & notifications() { return Notifications; }
 
-	virtual void acquire();
 	virtual void close();
 
 	const QList<Callback> & getCallbacks() { return Notifications.first()->getCallbacks(); }
@@ -60,6 +59,9 @@ public:
 
 	virtual bool isPeriodic() { return Notifications.first()->isPeriodic(); }
 	virtual int period() { return Notifications.first()->period(); }
+
+protected slots:
+	void partialNotificationClosed(Notification *notification);
 
 public slots:
 	virtual void callbackAccept();

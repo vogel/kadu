@@ -145,13 +145,13 @@ NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *paren
 void PCSpeaker::notify(Notification *notification)
 {
 	kdebugf();
-	notification->acquire();
+	notification->acquire(this);
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else
 	parseAndPlay(config_file.readEntry("PC Speaker", notification->type() + "_Sound"));
 #endif
-	notification->release();
+	notification->release(this);
 	kdebugf2();
 }
 

@@ -32,6 +32,8 @@
 
 class QTimer;
 
+class Notifier;
+
 /**
 	@class Notification
 	@author Rafa� 'Vogel' Malinowski
@@ -122,7 +124,8 @@ private:
 	QList<Callback> Callbacks;
 	QTimer *DefaultCallbackTimer;
 
-	int ReferencesCount;
+protected:
+	QSet<Notifier *> Notifiers;
 	bool Closing;
 
 public:
@@ -143,19 +146,21 @@ public:
 	/**
 		Wywo�ywane przez notyfikator, kt�ry zajmuje si� danym zdarzeniem.
 	 **/
-	virtual void acquire();
+	virtual void acquire(Notifier *notifier);
 	/**
 		Wywo�ywane przez notyfikator, kt�ry przestaje zajmowa� si� danym zdarzeniem.
 		Gdy �aden notyfikator nie zajmuje si� danym zdarzeniem, zdarzenie jest zwalniane.
 		Wyst�puje to na przyk�ad w przypadku modu��w d�wi�kowych czy modu�u hints, gdy
 		dymek zniknie po up�ywie okre�lonego czasu a nie przez zdarzenie wywo�ane przez u�ytkownika.
 	 **/
-	virtual void release();
+	virtual void release(Notifier *notifier);
 
 	/**
 		Zamyka zdarzenie. Wywo�uje sygna� closed() i usuwa obiekt.
 	 **/
 	virtual void close();
+
+	void partialClose();
 
 	/**
 		Usuwa akcje u�ytkownika
@@ -263,7 +268,7 @@ public slots:
 
 signals:
 	void updated(Notification *);
-
+	void partialClosed(Notification *);
 	void closed(Notification *);
 
 

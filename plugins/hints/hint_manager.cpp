@@ -262,11 +262,15 @@ void HintManager::deleteHint(Hint *hint)
 {
 	kdebugf();
 
+	Notification *notification = hint->getNotification();
+
 	DisplayedNotifications.removeAll(hint->getNotification()->identifier());
 	hints.removeAll(hint);
 
 	layout->removeWidget(hint);
+
 	hint->deleteLater();
+	notification->release(this);
 
 	if (hints.isEmpty())
 	{
@@ -433,6 +437,8 @@ Hint *HintManager::addHint(Notification *notification)
 	}
 	else
 	{
+		notification->acquire(this);
+
 		connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
 		hint = new Hint(frame, notification);

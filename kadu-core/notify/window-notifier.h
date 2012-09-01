@@ -37,6 +37,9 @@ class WindowNotifier : public Notifier
 	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
+private slots:
+	void notificationClosed(Notification *notification);
+
 public:
 	explicit WindowNotifier(QObject *parent = 0);
 	virtual ~WindowNotifier();

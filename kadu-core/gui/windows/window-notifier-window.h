@@ -42,6 +42,9 @@ public:
 	explicit WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
 	virtual ~WindowNotifierWindow();
 
+signals:
+	void closed(Notification *notification);
+
 };
 
 #endif // WINDOW_NOTIFIER_WINDOW_H

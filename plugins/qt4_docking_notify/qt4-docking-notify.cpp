@@ -115,7 +115,7 @@ void Qt4Notify::notify(Notification *notification)
 
 	if (Qt4TrayIcon::instance())
 	{
-		notification->acquire();
+		notification->acquire(this);
 
 		unsigned int timeout = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_timeout");
 		unsigned int icon = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->key() + "_icon");
@@ -126,7 +126,7 @@ void Qt4Notify::notify(Notification *notification)
 			parseText(syntax, notification, notification->details().join(QLatin1String("\n"))),
 			(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
-		notification->release();
+		notification->release(this);
 	}
 
 	kdebugf2();

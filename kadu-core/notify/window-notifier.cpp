@@ -22,6 +22,7 @@
  */
 
 #include "gui/windows/window-notifier-window.h"
+#include "notify/notification/notification.h"
 #include "notify/notification-manager.h"
 
 #include "configuration/configuration-file.h"
@@ -60,11 +61,19 @@ void WindowNotifier::notify(Notification *notification)
 {
 	kdebugf();
 
+	notification->acquire(this);
+
 	WindowNotifierWindow *window = new WindowNotifierWindow(notification);
+	connect(window, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 	window->show();
 	_activateWindow(window);
 
 	kdebugf2();
+}
+
+void WindowNotifier::notificationClosed(Notification *notification)
+{
+	notification->release(this);
 }
 
 void WindowNotifier::import_0_6_5_configuration()

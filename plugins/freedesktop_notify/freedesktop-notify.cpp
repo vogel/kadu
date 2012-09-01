@@ -35,6 +35,7 @@
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
+#include "notify/notification/aggregate-notification.h"
 #include "notify/notification/notification.h"
 #include "notify/notify-event.h"
 #include "url-handlers/url-handler-manager.h"
@@ -162,7 +163,17 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	QList<QVariant> args;
 	args.append("Kadu");
-	args.append(0U);
+
+	unsigned int replacedNotificationId = 0U;
+	unsigned int notificationUid = NotificationMap.key(notification);
+
+	if (notificationUid)
+	{
+		notificationClosed(notification);
+		replacedNotificationId = notificationUid;
+	}
+
+	args.append(replacedNotificationId);
 
 	KaduIcon icon(notification->icon());
 	if (icon.isNull())
@@ -227,7 +238,15 @@ void FreedesktopNotify::notify(Notification *notification)
 	QStringList actions;
 	if (ServerSupportsActions)
 	{
-		foreach (const Notification::Callback &callback, notification->getCallbacks())
+		Notification *firstNotification = notification;
+
+		AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
+		if (aggregateNotification)
+		{
+			firstNotification = aggregateNotification->notifications().first();
+		}
+
+		foreach (const Notification::Callback &callback, firstNotification->getCallbacks())
 		{
 			actions << callback.Signature;
 			actions << callback.Caption;
@@ -248,7 +267,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	QDBusReply<unsigned int> reply = KNotify->callWithArgumentList(QDBus::Block, "Notify", args);
 	if (reply.isValid())
 	{
-		notification->acquire(); // do not remove now
+		notification->acquire(this); // do not remove now
 
 		connect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 
@@ -284,7 +303,7 @@ void FreedesktopNotify::notificationClosed(unsigned int id, unsigned int reason)
 
 	Notification *notification = NotificationMap.take(id);
 	disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-	notification->release();
+	notification->release(this);
 }
 
 void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
@@ -298,7 +317,7 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 	{
 		Notification *notification = i.value();
 		disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
-		notification->release();
+		notification->release(this);
 	}
 
 	NotificationMap.clear();

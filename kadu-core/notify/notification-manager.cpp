@@ -181,8 +181,6 @@ void NotificationManager::notify(Notification *rawNotification)
 	bool foundNotifier = false;
 	bool foundNotifierWithCallbackSupported = !rawNotification->requireCallback();
 
-	notification->acquire();
-
 	foreach (Notifier *notifier, Notifiers)
 	{
 		if (config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
@@ -209,8 +207,6 @@ void NotificationManager::notify(Notification *rawNotification)
 	if (!foundNotifier)
 		notification->callbackDiscard();
 
-	notification->release();
-
 	if (!foundNotifierWithCallbackSupported)
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Unable to find notifier for %1 event").arg(rawNotification->type()));
 
@@ -231,7 +227,7 @@ Notification * NotificationManager::findGroup(Notification *rawNotification)
 		connect(aggregate, SIGNAL(closed(Notification*)), this, SLOT(removeGrouped(Notification*)));
 	}
 
-	ActiveNotifications.insert(rawNotification->identifier(), aggregate);
+	ActiveNotifications.insert(aggregate->identifier(), aggregate);
 
 	return aggregate;
 }

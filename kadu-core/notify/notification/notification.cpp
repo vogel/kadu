@@ -23,6 +23,7 @@
 
 #include "icons/kadu-icon.h"
 #include "notify/notification-manager.h"
+#include "notify/notifier.h"
 #include "parser/parser.h"
 #include "debug.h"
 
@@ -50,8 +51,7 @@ void Notification::unregisterParserTags()
 }
 
 Notification::Notification(const QString &type, const KaduIcon &icon) :
-	Type(type), Icon(icon), DefaultCallbackTimer(0),
-	ReferencesCount(0), Closing(false)
+	Type(type), Icon(icon), DefaultCallbackTimer(0), Closing(false)
 {
 }
 
@@ -59,24 +59,31 @@ Notification::~Notification()
 {
 }
 
-void Notification::acquire()
+void Notification::acquire(Notifier *notifier)
 {
 	kdebugf();
 
-	ReferencesCount++;
+	Notifiers.insert(notifier);
 }
 
-void Notification::release()
+void Notification::release(Notifier *notifier)
 {
 	kdebugf();
 
-	ReferencesCount--;
+	Notifiers.remove(notifier);
 
-	if (ReferencesCount <= 0)
+	if (Notifiers.size() <= 0)
 		close();
 }
 
 void Notification::close()
+{
+	kdebugf();
+
+	emit closed(this);
+}
+
+void Notification::partialClose()
 {
 	kdebugf();
 
