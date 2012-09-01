@@ -96,7 +96,7 @@ namespace HistoryMigrationHelper
 			uins.clear();
 
 			QStringList struins = entry.split('_', QString::SkipEmptyParts);
-			bool ok;
+			bool ok = false;
 			foreach (const QString &struin, struins)
 			{
 				uins.append(struin.toUInt(&ok));
