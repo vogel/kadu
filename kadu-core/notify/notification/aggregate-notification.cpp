@@ -23,7 +23,7 @@
 
 
 AggregateNotification::AggregateNotification(Notification *firstNotification)
-		: Notification("aggregate", firstNotification->icon()), GroupKey(firstNotification->groupKey())
+		: Notification(firstNotification->type(), firstNotification->icon()), GroupKey(firstNotification->groupKey())
 {
 	Notifications = QList<Notification *>();
 	addNotification(firstNotification);

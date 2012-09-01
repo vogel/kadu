@@ -205,7 +205,8 @@ void Hint::updateText()
 			QString itemSyntax = config_file.readEntry("Hints", "Event_" + notification->key() + "_detailSyntax", defaultSyntax);
 			for (; i < count; i++)
 			{
-				const QString &message = details[i];
+				const QString &message = details[i].replace("<br/>", QLatin1String(""));
+
 				if (message.length() > citeSign)
 					text += itemSyntax.arg(details[i].left(citeSign) + "...");
 				else

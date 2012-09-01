@@ -201,13 +201,13 @@ void FreedesktopNotify::notify(Notification *notification)
 
 	args.append(summary);
 
-	bool msgRcv = (notification->type() == "NewMessage" || notification->type() == "NewChat");
+	bool typeNewMessage = (notification->type() == "NewMessage" || notification->type() == "NewChat");
 	QString body;
 	if (ServerSupportsBody)
 	{
-		if (!msgRcv || ShowContentMessage)
+		if (!typeNewMessage || ShowContentMessage)
 		{
-			body = notification->details().join(QLatin1String("\n"));
+			body = notification->details().last();
 			body.replace(StripBr, QLatin1String("\n"));
 			if (ServerSupportsMarkup)
 				body.remove(StripUnsupportedHtml);
@@ -227,6 +227,9 @@ void FreedesktopNotify::notify(Notification *notification)
 				body.prepend(notification->text() + "\n<small>");
 				body.append("</small>");
 			}
+
+			if (body.length() > CiteSign)
+				body = body.left(CiteSign) + QLatin1String("...");
 		}
 
 		if (ServerSupportsHyperlinks && !body.isEmpty())
@@ -255,7 +258,7 @@ void FreedesktopNotify::notify(Notification *notification)
 	args.append(actions);
 
 	QVariantMap hints;
-	hints.insert("category", msgRcv ? "im.received" : "im");
+	hints.insert("category", typeNewMessage ? "im.received" : "im");
 	hints.insert("desktop-entry", DesktopEntry);
 	if (IsXCanonicalAppendSupported && !useKdeStyle)
 		hints.insert("x-canonical-append", "allowed");
