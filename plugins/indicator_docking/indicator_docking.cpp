@@ -105,7 +105,7 @@ IndicatorDocking::~IndicatorDocking()
 	for (IndMMap::const_iterator it = IndicatorsMap.constBegin(); it != end; ++it)
 	{
 		disconnect(it.value(), 0, this, 0);
-		it.value()->release();
+		it.value()->release(this);
 		// because it is a multimap, keys may repeat
 		indicatorsToDelete.insert(it.key());
 	}
@@ -152,7 +152,7 @@ void IndicatorDocking::notify(Notification *notification)
 		return;
 
 	chatNotification->clearDefaultCallback();
-	chatNotification->acquire();
+	chatNotification->acquire(this);
 
 	// First we need to search for exactly the same chat.
 	QIndicate::Indicator *indicator = 0;
@@ -160,7 +160,7 @@ void IndicatorDocking::notify(Notification *notification)
 	if (it != IndicatorsMap.end())
 	{
 		disconnect(it.value(), 0, this, 0);
-		it.value()->release();
+		it.value()->release(this);
 		it.value() = chatNotification;
 		indicator = it.key();
 	}
@@ -273,7 +273,7 @@ void IndicatorDocking::removeNotification(ChatNotification *chatNotification)
 
 	QIndicate::Indicator *indicator = it.key();
 	disconnect(it.value(), 0, this, 0);
-	it.value()->release();
+	it.value()->release(this);
 	IndicatorsMap.erase(it);
 
 	if (!IndicatorsMap.contains(indicator))
