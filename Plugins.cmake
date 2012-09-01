@@ -71,6 +71,8 @@ set (DEFAULT_PLUGINS
 	cenzor
 	# Configuration wizard
 	config_wizard
+	# Displays graphical emoticons in chat window
+	emoticons
 	# Loads presence status messages from file
 	filedesc
 	# Protection against unwanted chats
