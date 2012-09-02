@@ -28,7 +28,7 @@
 #include "recent-chats-menu.h"
 
 
-RecentChatsMenu::RecentChatsMenu(QWidget *parent = 0) :
+RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
 		QMenu(parent)
 {
 	setIcon(KaduIcon("internet-group-chat").icon());

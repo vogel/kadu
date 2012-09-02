@@ -37,6 +37,8 @@
 class EmoticonPathProvider
 {
 public:
+	virtual ~EmoticonPathProvider() {}
+
 	/**
 	 * @short Return path of emoticon file for given emoticon.
 	 * @author Rafał 'Vogel' Malinowski

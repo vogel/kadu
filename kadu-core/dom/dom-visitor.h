@@ -38,6 +38,8 @@ class QDomText;
 class DomVisitor
 {
 public:
+	virtual ~DomVisitor() {}
+
 	/**
 	 * @short Visit current text node.
 	 * @author Rafał 'Vogel' Malinowski

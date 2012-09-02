@@ -31,7 +31,7 @@ class KADUAPI RecentChatsMenu : public QMenu
 	bool RecentChatsMenuNeedsUpdate;
 
 public:
-	RecentChatsMenu(QWidget *parent);
+	explicit RecentChatsMenu(QWidget *parent = 0);
 	virtual ~RecentChatsMenu();
 
 private slots:
@@ -42,6 +42,7 @@ private slots:
 
 signals:
 	void chatsListAvailable(bool available);
+
 };
 
 #endif // RECENT_CHATS_MENU_H
