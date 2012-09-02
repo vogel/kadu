@@ -110,7 +110,7 @@ if (NOT MSVC)
 	endif ()
 
 	set (CMAKE_C_FLAGS "-Wall -Wextra ${CMAKE_C_FLAGS}")
-	set (CMAKE_CXX_FLAGS "-Wall -Wextra -Woverloaded-virtual -Wnon-virtual-dtor ${CMAKE_CXX_FLAGS}")
+	set (CMAKE_CXX_FLAGS "-Wall -Wextra -Woverloaded-virtual -Wnon-virtual-dtor -fno-exceptions ${CMAKE_CXX_FLAGS}")
 	if (MINGW)
 		set (CMAKE_C_FLAGS "-mtune=i686 -pipe ${CMAKE_C_FLAGS}")
 		set (CMAKE_CXX_FLAGS "-mtune=i686 -pipe ${CMAKE_CXX_FLAGS}")
