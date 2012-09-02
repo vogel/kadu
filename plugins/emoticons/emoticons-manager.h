@@ -37,6 +37,8 @@
 #include "configuration/configuration-holder.h"
 #include "themes.h"
 
+#include "emoticon-theme.h"
+
 #include "emoticons.h"
 
 class QDomDocument;
@@ -61,13 +63,9 @@ class KADUAPI EmoticonsManager : public ConfigurationHolder
 	EmoticonsConfigurationUiHandler *ConfigurationUiHandler;
 	InsertEmoticonAction *InsertAction;
 
-	QVector<Emoticon> Aliases;
-	QVector<Emoticon> Selector;
+	EmoticonTheme Emoticons;
 
-	static QString getQuoted(const QString &s, unsigned int &pos);
-
-	bool loadGGEmoticonThemePart(const QString &themeSubDirPath);
-	bool loadGGEmoticonTheme(const QString &themeDirPath);
+	void loadGGEmoticonTheme(const QString &themeDirPath);
 	void loadTheme();
 
 public:
@@ -76,8 +74,7 @@ public:
 
 	EmoticonThemeManager * themeManager() const;
 
-	const QVector<Emoticon> & aliases() { return Aliases; }
-	const QVector<Emoticon> & selectors() { return Selector; }
+	EmoticonTheme emoticons() { return Emoticons; }
 
 	void configurationUpdated();
 

@@ -51,15 +51,16 @@
 #include "emoticon-expander.h"
 #include "emoticon-expander-dom-visitor-provider.h"
 #include "emoticon-prefix-tree-builder.h"
+#include "emoticon-theme.h"
 #include "emoticon-theme-manager.h"
 #include "emoticons-configuration-ui-handler.h"
+#include "gadu-emoticon-theme-loader.h"
 #include "insert-emoticon-action.h"
 #include "static-emoticon-path-provider.h"
 
 #include "emoticons-manager.h"
 
-EmoticonsManager::EmoticonsManager(QObject *parent) :
-		Aliases(), Selector()
+EmoticonsManager::EmoticonsManager(QObject *parent)
 {
 	Q_UNUSED(parent)
 
@@ -107,128 +108,26 @@ void EmoticonsManager::configurationUpdated()
 
 void EmoticonsManager::loadTheme()
 {
-	Aliases.clear();
-	Selector.clear();
-
 	Theme theme = ThemeManager->currentTheme();
 	if (theme.isValid())
 		loadGGEmoticonTheme(theme.path());
 }
 
-QString EmoticonsManager::getQuoted(const QString &s, unsigned int &pos)
+void EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
 {
-	QString r;
-	++pos; // eat '"'
+	GaduEmoticonThemeLoader loader;
+	Emoticons = loader.loadEmoticonTheme(themeDirPath);
 
-	int pos2 = s.indexOf('"', pos);
-	if (pos2 >= 0)
-	{
-		r = s.mid(pos, uint(pos2) - pos);
-		pos = uint(pos2) + 1;// eat '"'
-	}
-	else
-	{
-		r = s.mid(pos);
-		pos = s.length();
-	}
-	return r;
-}
-
-bool EmoticonsManager::loadGGEmoticonThemePart(const QString &themeSubDirPath)
-{
-	QString dir = themeSubDirPath;
-
-	if (!dir.isEmpty() && !dir.endsWith('/'))
-		dir += '/';
-
-	QFile theme_file(dir + "emots.txt");
-	if (!theme_file.open(QIODevice::ReadOnly))
-	{
-		kdebugm(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "Error opening %s file\n",
-			qPrintable(theme_file.fileName()));
-		return false;
-	}
-	QTextStream theme_stream(&theme_file);
-	theme_stream.setCodec(QTextCodec::codecForName("CP1250"));
-	while (!theme_stream.atEnd())
-	{
-		QString line = theme_stream.readLine();
-		kdebugm(KDEBUG_DUMP, "> %s\n", qPrintable(line));
-		unsigned int lineLength = line.length();
-		unsigned int i = 0;
-		bool multi = false;
-		QStringList aliases;
-		if (i < lineLength && line.at(i) == '*')
-			++i; // eat '*'
-		if (i < lineLength && line.at(i) == '(')
-		{
-			multi = true;
-			++i;
-		}
-		for (;;)
-		{
-			aliases.append(getQuoted(line, i));
-			if (!multi || i >= lineLength || line.at(i) == ')')
-				break;
-			++i; // eat ','
-		}
-		if (multi)
-			++i; // eat ')'
-		++i; // eat ','
-
-		QString animatedPath = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
-		QString staticPath;
-		if (i < lineLength && line.at(i) == ',')
-		{
-			++i; // eat ','
-			staticPath = themeSubDirPath + '/' + fixFileName(themeSubDirPath, getQuoted(line, i));
-		}
-		else
-			staticPath = animatedPath;
-
-		foreach (const QString &alias, aliases)
-			Aliases.push_back(Emoticon(alias, staticPath, animatedPath));
-
-		Selector.append(Emoticon(aliases.at(0), staticPath, animatedPath));
-	}
-	theme_file.close();
-	kdebugf2();
-	return true;
-}
-
-bool EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)
-{
-	Aliases.clear();
-	Selector.clear();
-
-	bool something_loaded = false;
-	if (loadGGEmoticonThemePart(themeDirPath))
-		something_loaded = true;
-
-	QDir themeDir(ThemeManager->currentTheme().path());
-	QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
-
-	foreach (const QFileInfo &subDirInfo, subDirs)
-	{
-		if (subDirInfo.fileName().startsWith('.'))
-			continue;
-
-		QString subDir = subDirInfo.canonicalFilePath();
-		if (EmoticonThemeManager::containsEmotsTxt(subDir))
-			if (loadGGEmoticonThemePart(subDir))
-				something_loaded = true;
-	}
-
-	if (something_loaded)
+	if (!Emoticons.aliases().isEmpty())
 	{
 		EmoticonPrefixTreeBuilder builder;
-		foreach (const Emoticon &emoticon, Aliases)
+		foreach (const Emoticon &emoticon, Emoticons.aliases())
 			builder.addEmoticon(emoticon);
 
 		ExpanderDomVisitorProvider->setEmoticonTree(builder.tree());
 	}
+	else
+		ExpanderDomVisitorProvider->setEmoticonTree(0);
 
-	InsertAction->setEmoticons(Selector);
-
-	return something_loaded;
+	InsertAction->setEmoticons(Emoticons.emoticons());
 }

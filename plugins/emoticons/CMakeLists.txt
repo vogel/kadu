@@ -13,11 +13,14 @@ set (SOURCES
 	emoticon-prefix-tree-builder.cpp
 	emoticon-selector-button.cpp
 	emoticon-selector.cpp
+	emoticon-theme.cpp
 	emoticon-theme-manager.cpp
 	emoticon-walker.cpp
 	emoticons-configuration-ui-handler.cpp
 	emoticons-manager.cpp
 	emoticons-plugin.cpp
+	gadu-emoticon-parser.cpp
+	gadu-emoticon-theme-loader.cpp
 	insert-emoticon-action.cpp
 	static-emoticon-path-provider.cpp
 )
