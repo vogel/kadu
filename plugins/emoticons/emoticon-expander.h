@@ -79,7 +79,7 @@ public:
 	 * @param tree emoticon prefix tree used to expand emoticons
 	 * @param pathProvider provider that changed emoticon instances into paths to emoticon files
 	 *
-	 * New object takes ownership of pathProvider object but not on tree object. Tree object must not be destroyes
+	 * New object takes ownership of pathProvider object but not on tree object. Tree object must not be destroyed
 	 * during EmoticonExpander lifetime.
 	 */
 	explicit EmoticonExpander(EmoticonPrefixTree *tree, EmoticonPathProvider *pathProvider);
