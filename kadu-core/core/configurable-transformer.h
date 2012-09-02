@@ -42,6 +42,8 @@ public:
 	typedef T object_type;
 	typedef T_config config_type;
 
+	virtual ~ConfigurableTransformer<T, T_config>() {}
+
 	/**
 	 * @short Transform instance of class.
 	 * @author Rafał 'Vogel' Malinowski

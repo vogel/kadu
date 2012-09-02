@@ -44,6 +44,8 @@ class ActionContext;
 class ActionContextProvider
 {
 public:
+	virtual ~ActionContextProvider() {}
+
 	virtual ActionContext * actionContext() = 0;
 
 };

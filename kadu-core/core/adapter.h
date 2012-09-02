@@ -38,6 +38,8 @@ template <typename T_dest, typename T_src>
 class Adapter
 {
 public:
+	virtual ~Adapter<T_dest, T_src>() {}
+
 	/**
 	 * @short Adapt instance of class from one type to another.
 	 * @author Rafał 'Vogel' Malinowski

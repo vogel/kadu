@@ -39,16 +39,6 @@
  */
 class KADUAPI MessageTransformer : public Transformer<Message>
 {
-
-public:
-	/**
-	 * @short Transform content of message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message message to transform
-	 * @return transformed message
-	 */
-	virtual Message transform(const Message &message) = 0;
-
 };
 
 /**

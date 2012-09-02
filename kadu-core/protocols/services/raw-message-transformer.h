@@ -42,17 +42,6 @@ class Message;
  */
 class KADUAPI RawMessageTransformer : public ConfigurableTransformer<QByteArray, Message>
 {
-
-public:
-	/**
-	 * @short Transform raw content of message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param rawMessage raw content of message
-	 * @param memssage message that corresponds to rawMessage
-	 * @return transformed raw message content
-	 */
-	virtual QByteArray transform(const QByteArray &rawMessage, const Message &message) = 0;
-
 };
 
 /**

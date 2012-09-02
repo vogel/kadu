@@ -31,6 +31,8 @@ class AbstractToolTip
 {
 
 public:
+	virtual ~AbstractToolTip() {}
+
 	virtual void showToolTip(const QPoint &point, Talkable talkable) = 0;
 	virtual void hideToolTip() = 0;
 

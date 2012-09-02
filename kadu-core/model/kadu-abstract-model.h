@@ -32,6 +32,8 @@ class QVariant;
 class KaduAbstractModel
 {
 public:
+	virtual ~KaduAbstractModel() {}
+
 	virtual QModelIndexList indexListForValue(const QVariant &value) const = 0;
 
 };

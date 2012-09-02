@@ -39,6 +39,8 @@ class Transformer
 public:
 	typedef T object_type;
 
+	virtual ~Transformer<T>() {}
+
 	/**
 	 * @short Transform instance of class.
 	 * @author Rafał 'Vogel' Malinowski

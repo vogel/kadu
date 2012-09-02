@@ -31,6 +31,8 @@ class ActionDescription;
 class KADUAPI ProtocolMenuManager
 {
 public:
+	virtual ~ProtocolMenuManager() {}
+
 	virtual const QList<ActionDescription *> & protocolActions() const = 0;
 
 };

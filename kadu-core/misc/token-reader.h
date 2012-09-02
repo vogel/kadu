@@ -30,6 +30,8 @@ class TokenAcceptor;
 class TokenReader
 {
 public:
+	virtual ~TokenReader() {}
+
 	virtual QString readToken(const QPixmap &tokenPixmap) = 0;
 	virtual void readTokenAsync(const QPixmap &tokenPixmap, TokenAcceptor *acceptor) = 0;
 

@@ -30,6 +30,8 @@ class KeyGenerator
 {
 
 public:
+	virtual ~KeyGenerator() {}
+
 	virtual bool hasKeys(const Account &account) = 0;
 	virtual bool generateKeys(const Account &account) = 0;
 
