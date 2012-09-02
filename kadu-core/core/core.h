@@ -105,8 +105,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	void init();
 	void loadDefaultStatus();
 
-	void storeConfiguration();
-
 private slots:
 	void updateIcon();
 
