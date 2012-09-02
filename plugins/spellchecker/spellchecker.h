@@ -40,7 +40,8 @@ class ChatWidget;
 struct AspellSpeller;
 struct AspellConfig;
 #elif defined(HAVE_ENCHANT)
-namespace enchant { class Dict; }
+typedef struct str_enchant_broker EnchantBroker;
+typedef struct str_enchant_dict EnchantDict;
 #elif defined(Q_WS_MAC)
 class MacSpellChecker;
 #endif
@@ -53,7 +54,7 @@ public:
 #if defined(HAVE_ASPELL)
 	typedef QMap<QString, AspellSpeller *> Checkers;
 #elif defined(HAVE_ENCHANT)
-	typedef QMap<QString, enchant::Dict *> Checkers;
+	typedef QMap<QString, EnchantDict *> Checkers;
 #elif defined(Q_WS_MAC)
 	typedef QMap<QString, MacSpellChecker *> Checkers;
 #endif // Q_WS_MAC
@@ -61,6 +62,8 @@ public:
 private:
 #if defined(HAVE_ASPELL)
 	AspellConfig *SpellConfig;
+#elif defined(HAVE_ENCHANT)
+	EnchantBroker *Broker;
 #elif defined(Q_WS_MAC)
 	MacSpellChecker *MacSpellCheck;
 #endif
