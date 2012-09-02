@@ -25,16 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(HAVE_ASPELL)
-#define ASPELL_STATIC
-#include <aspell.h>
-#elif defined(HAVE_ENCHANT)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Woverloaded-virtual"
-#include <enchant++.h>
- #pragma GCC diagnostic pop
-#endif
-
 #include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
@@ -42,7 +32,15 @@
 #include <QtGui/QListWidget>
 #include <QtGui/QPushButton>
 
-#if defined(Q_WS_MAC)
+#if defined(HAVE_ASPELL)
+#define ASPELL_STATIC
+#include <aspell.h>
+#elif defined(HAVE_ENCHANT)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
+#include <enchant++.h>
+#pragma GCC diagnostic pop
+#elif defined(Q_WS_MAC)
 #include "macspellchecker.h"
 #endif
 

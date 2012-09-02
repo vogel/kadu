@@ -29,10 +29,6 @@
 #include <QtCore/QMap>
 #include <QtCore/QString>
 
-#ifdef Q_WS_MAC
-#include "macspellchecker.h"
-#endif
-
 #include "gui/windows/main-configuration-window.h"
 
 class QListWidget;
@@ -40,14 +36,13 @@ class QListWidgetItem;
 
 class ChatWidget;
 
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 struct AspellSpeller;
 struct AspellConfig;
-#else
-namespace enchant
-{
-	class Dict;
-}
+#elif defined(HAVE_ENCHANT)
+namespace enchant { class Dict; }
+#elif defined(Q_WS_MAC)
+class MacSpellChecker;
 #endif
 
 class SpellChecker : public ConfigurationUiHandler
@@ -55,22 +50,18 @@ class SpellChecker : public ConfigurationUiHandler
 	Q_OBJECT
 
 public:
-#ifdef Q_WS_MAC
-	typedef QMap<QString, MacSpellChecker *> Checkers;
-#else
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	typedef QMap<QString, AspellSpeller *> Checkers;
-#else
+#elif defined(HAVE_ENCHANT)
 	typedef QMap<QString, enchant::Dict *> Checkers;
-#endif
+#elif defined(Q_WS_MAC)
+	typedef QMap<QString, MacSpellChecker *> Checkers;
 #endif // Q_WS_MAC
 
 private:
-#ifdef HAVE_ASPELL
+#if defined(HAVE_ASPELL)
 	AspellConfig *SpellConfig;
-#endif
-
-#ifdef Q_WS_MAC
+#elif defined(Q_WS_MAC)
 	MacSpellChecker *MacSpellCheck;
 #endif
 
