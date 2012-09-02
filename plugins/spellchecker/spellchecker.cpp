@@ -25,7 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
@@ -383,10 +382,6 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 {
 	QStringList suggestWordList;
 
-#if defined(HAVE_ASPELL)
-	QTextCodec *codec = QTextCodec::codecForName("utf-8");
-#endif
-
 	int suggesterWordCount = SpellcheckerConfiguration::instance()->suggesterWordCount();
 	if (MyCheckers.size() > suggesterWordCount)
 		suggesterWordCount = 1;
@@ -407,9 +402,9 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && wordsForLanguage)
 			{
 				if (MyCheckers.size() > 1)
-					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
+					suggestWordList.append(QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
 				else
-					suggestWordList.append(codec->toUnicode(aspell_string_enumeration_next(aspellStringEnum)));
+					suggestWordList.append(QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)));
 
 				--wordsForLanguage;
 			}
