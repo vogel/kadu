@@ -44,7 +44,7 @@ namespace XMPP
 {
 
 JabberConnectionService::JabberConnectionService(JabberProtocol *protocol) :
-		QObject(protocol), ParentProtocol(protocol),
+		QObject(protocol), CleanUpTimer(0), ParentProtocol(protocol),
 		XmppClient(protocol->xmppClient())
 {
 }
@@ -56,16 +56,33 @@ JabberConnectionService::~JabberConnectionService()
 
 void JabberConnectionService::cleanUp()
 {
-	Connector.clear();
-	Stream.clear();
+	// Destroy in order opposite to creation. Expect crashes otherwise.
+	if (Stream)
+	{
+		Stream.data()->deleteLater();
+		Stream.clear();
+	}
 	if (TLSHandler)
 	{
 		Q_ASSERT(TLSHandler.data()->parent());
-		delete TLSHandler.data()->parent();
+		Q_ASSERT(this != TLSHandler.data()->parent());
+		TLSHandler.data()->parent()->deleteLater();
 		TLSHandler.clear();
+	}
+	if (Connector)
+	{
+		Connector.data()->deleteLater();
+		Connector.clear();
 	}
 
 	LocalAddress.clear();
+
+	if (CleanUpTimer)
+	{
+		CleanUpTimer->stop();
+		CleanUpTimer->deleteLater();
+		CleanUpTimer = 0;
+	}
 }
 
 bool JabberConnectionService::forceTLS() const
@@ -164,7 +181,7 @@ ClientStream * JabberConnectionService::createClientStream(AdvancedConnector *co
 	if (!details)
 		return 0;
 
-	ClientStream *result = new XMPP::ClientStream(connector, tlsHandler);
+	ClientStream *result = new XMPP::ClientStream(connector, tlsHandler, 0 /* this -- not really needed and would require const_cast */);
 	result->setNoopTime(55000); // send noop every 55 seconds
 	result->setAllowPlain(plainAuthToXMPP(details->plainAuthMode()));
 
@@ -299,6 +316,8 @@ void JabberConnectionService::connectToServer()
 		return;
 	}
 
+	cleanUp();
+
 	MyJid = XMPP::Jid(ParentProtocol->account().id()).withResource(details->resource());
 	Password = ParentProtocol->account().password();
 
@@ -329,8 +348,14 @@ void JabberConnectionService::disconnectFromServer(const ::Status &status)
 	XMPP::Status presence = IrisStatusAdapter::toIrisStatus(status);
 	XmppClient.data()->setPresence(presence);
 
+	if (!CleanUpTimer)
+	{
+		CleanUpTimer = new QTimer(this);
+		CleanUpTimer->setSingleShot(true);
+		connect(CleanUpTimer, SIGNAL(timeout()), this, SLOT(cleanUp()));
+	}
 	// server needs some time to close connection
-	QTimer::singleShot(500, this, SLOT(cleanUp()));
+	CleanUpTimer->start(500);
 }
 
 Jid JabberConnectionService::jid() const

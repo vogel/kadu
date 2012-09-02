@@ -33,6 +33,8 @@
 
 #include "jabber-account-details.h"
 
+class QTimer;
+
 class JabberProtocol;
 class NetworkProxy;
 
@@ -45,6 +47,7 @@ class JabberConnectionService : public QObject
 {
 	Q_OBJECT
 
+	QTimer *CleanUpTimer;
 	JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 
