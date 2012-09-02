@@ -31,6 +31,7 @@ class SpellcheckerConfiguration : private ConfigurationAwareObject
 
 	static SpellcheckerConfiguration *Instance;
 
+	bool FullyLoaded;
 	bool Bold;
 	bool Italic;
 	bool Underline;

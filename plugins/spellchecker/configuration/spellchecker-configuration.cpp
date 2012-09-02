@@ -35,10 +35,12 @@ SpellcheckerConfiguration *SpellcheckerConfiguration::instance()
 
 void SpellcheckerConfiguration::createInstance()
 {
-	if (!Instance)
-		Instance = new SpellcheckerConfiguration();
+	if (Instance)
+		return;
 
+	Instance = new SpellcheckerConfiguration();
 	Instance->configurationUpdated();
+	Instance->FullyLoaded = true;
 }
 
 void SpellcheckerConfiguration::destroyInstance()
@@ -47,7 +49,8 @@ void SpellcheckerConfiguration::destroyInstance()
 	Instance = 0;
 }
 
-SpellcheckerConfiguration::SpellcheckerConfiguration()
+SpellcheckerConfiguration::SpellcheckerConfiguration() :
+		FullyLoaded(false)
 {
 	createDefaultConfiguration();
 }
@@ -83,7 +86,7 @@ void SpellcheckerConfiguration::configurationUpdated()
 	QStringList checked = config_file.readEntry("ASpell", "Checked", config_file.readEntry("General", "Language")).split(',', QString::SkipEmptyParts);
 	int suggesterWordCount = config_file.readNumEntry("ASpell", "SuggesterWordCount");
 
-	if (bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
+	if (FullyLoaded && bold == Bold && italic == Italic && underline == Underline && accents == Accents &&
 			caseSensivity == Case && suggester == Suggester && color == Color &&
 			checked == Checked && suggesterWordCount == SuggesterWordCount)
 		return;
