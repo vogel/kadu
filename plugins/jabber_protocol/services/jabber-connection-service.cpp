@@ -57,21 +57,30 @@ JabberConnectionService::~JabberConnectionService()
 void JabberConnectionService::cleanUp()
 {
 	// Destroy in order opposite to creation. Expect crashes otherwise.
+
+	// Just deinit. JabberProtocols owns it.
+	if (XmppClient)
+		XmppClient.data()->close();
+
+	// We need to delete iris objects immediately (normally we would do that
+	// with deleteLater()) because deferred deletion apparently does not
+	// guarantee to preserve order of deleteLater() calls. This can be changed
+	// if Qt starts to guarantee that at some point.
 	if (Stream)
 	{
-		Stream.data()->deleteLater();
+		delete Stream.data();
 		Stream.clear();
 	}
 	if (TLSHandler)
 	{
 		Q_ASSERT(TLSHandler.data()->parent());
 		Q_ASSERT(this != TLSHandler.data()->parent());
-		TLSHandler.data()->parent()->deleteLater();
+		delete TLSHandler.data()->parent();
 		TLSHandler.clear();
 	}
 	if (Connector)
 	{
-		Connector.data()->deleteLater();
+		delete Connector.data();
 		Connector.clear();
 	}
 
@@ -345,6 +354,10 @@ void JabberConnectionService::connectToServer()
 
 void JabberConnectionService::disconnectFromServer(const ::Status &status)
 {
+	// XmppClient depends on Stream
+	if (!Stream)
+		return;
+
 	XMPP::Status presence = IrisStatusAdapter::toIrisStatus(status);
 	XmppClient.data()->setPresence(presence);
 

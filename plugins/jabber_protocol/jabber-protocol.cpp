@@ -260,9 +260,6 @@ void JabberProtocol::logout()
 	CurrentConnectionService->disconnectFromServer(status());
 
 	loggedOut();
-
-	if (XmppClient)
-		XmppClient->close();
 }
 
 void JabberProtocol::sendStatusToServer()
