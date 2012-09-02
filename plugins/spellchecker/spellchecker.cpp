@@ -102,10 +102,9 @@ SpellChecker::~SpellChecker()
 	Highlighter::removeAll();
 
 #if defined(HAVE_ASPELL)
-	delete_aspell_config(SpellConfig);
-
 	foreach (AspellSpeller *speller, MyCheckers)
 		delete_aspell_speller(speller);
+	delete_aspell_config(SpellConfig);
 #elif defined(HAVE_ENCHANT)
 	foreach (EnchantDict *dict, MyCheckers)
 		enchant_broker_free_dict(Broker, dict);
