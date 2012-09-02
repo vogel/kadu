@@ -97,12 +97,16 @@ endif ()
 if (NOT MSVC)
 	if (ENABLE_DEVELOPER_BUILD)
 		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+			# -fcatch-undefined-behavior generates trap on every undefined behavior by C/C++
 			set (CMAKE_C_FLAGS "-fcatch-undefined-behavior ${CMAKE_C_FLAGS}")
 			set (CMAKE_CXX_FLAGS "-fcatch-undefined-behavior ${CMAKE_CXX_FLAGS}")
 		endif ()
 
-		set (CMAKE_C_FLAGS "-Werror ${CMAKE_C_FLAGS}")
-		set (CMAKE_CXX_FLAGS "-Werror ${CMAKE_CXX_FLAGS}")
+		# -pipe can speed up the build
+		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
+		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
+		set (CMAKE_C_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_C_FLAGS}")
+		set (CMAKE_CXX_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_CXX_FLAGS}")
 	endif ()
 
 	set (CMAKE_C_FLAGS "-Wall -Wextra ${CMAKE_C_FLAGS}")
