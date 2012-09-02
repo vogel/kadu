@@ -50,7 +50,6 @@ public:
 	static ConfigurationManager * instance();
 
 	void load();
-	void store();
 	void flush();
 
 	const QUuid & uuid() const { return Uuid; }

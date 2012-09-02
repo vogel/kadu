@@ -142,11 +142,11 @@ Core::~Core()
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
 	ChatWidgetManager::instance()->closeAllWindows();
-	ConfigurationManager::instance()->store();
+	ConfigurationManager::instance()->flush();
 // 	delete Configuration;
 // 	Configuration = 0;
 
-	storeConfiguration();
+	xml_config_file->makeBackup();
 
 	PluginsManager::instance()->deactivatePlugins();
 
@@ -426,11 +426,6 @@ void Core::init()
 void Core::initialized()
 {
 	StatusSetter::instance()->coreInitialized();
-}
-
-void Core::storeConfiguration()
-{
-	xml_config_file->makeBackup();
 }
 
 void Core::deleteOldConfigurationFiles()

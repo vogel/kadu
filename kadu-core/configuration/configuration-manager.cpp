@@ -64,17 +64,12 @@ void ConfigurationManager::load()
 		Uuid = QUuid::createUuid();
 }
 
-void ConfigurationManager::store()
+void ConfigurationManager::flush()
 {
 	foreach (StorableObject *object, RegisteredStorableObjects)
 		object->ensureStored();
 
 	xml_config_file->rootElement().setAttribute("uuid", Uuid.toString());
-}
-
-void ConfigurationManager::flush()
-{
-	store();
 	xml_config_file->sync();
 }
 
