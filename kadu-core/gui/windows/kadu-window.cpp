@@ -179,7 +179,6 @@ void KaduWindow::createKaduMenu()
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
 	insertMenuActionDescription(Actions->ShowYourAccounts, MenuKadu);
-	insertMenuActionDescription(Actions->ManageModules, MenuKadu);
 
 	KaduMenu->addSeparator();
 

@@ -317,4 +317,7 @@
 		</tab>
 	</section>
 
+	<section name="Plugins" icon="kadu_icons/plugins">
+	</section>
+
 </configuration-ui>

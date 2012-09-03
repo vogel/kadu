@@ -109,7 +109,6 @@ class KADUAPI ConfigurationWidget : public QWidget
 	void loadConfiguration(QObject *object);
 	void saveConfiguration(QObject *object);
 
-	ConfigSection * configSection(const QString &name);
 	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create);
 
 	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
@@ -143,7 +142,7 @@ public:
 
 		Jeżeli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
 		Dla create == false zostanie zwrócony NULL.
-		
+
 		@note Stringi należy podawać w formie oryginalnej, nie przetłumaczonej.
 	 **/
 	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = false);
@@ -164,6 +163,8 @@ public:
 		dowolne widgety konfiguracyjne i elementy group-box.
 	 **/
 	QWidget * widgetById(const QString &id);
+
+	ConfigSection * configSection(const QString &name);
 
 	void init();
 

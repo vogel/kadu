@@ -38,6 +38,9 @@
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget-item-delegate.h"
+#include "gui/widgets/configuration/config-section.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
@@ -50,8 +53,8 @@
 #include "plugin-list-widget.h"
 
 
-PluginListWidget::PluginListWidget(QWidget *parent) :
-		QWidget(parent), ListView(0), ShowIcons(false)
+PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
+		QWidget(window), ListView(0), ShowIcons(false)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setMargin(0);
@@ -86,6 +89,11 @@ PluginListWidget::PluginListWidget(QWidget *parent) :
 
 	layout->addWidget(LineEdit);
 	layout->addWidget(ListView);
+
+	ConfigSection *pluginsSection = window->widget()->configSection("Plugins");
+	pluginsSection->addFullPageWidget("Plugins", this);
+
+	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 PluginListWidget::~PluginListWidget()
@@ -140,4 +148,9 @@ void PluginListWidget::applyChanges()
 		ConfigurationManager::instance()->flush();
 
 	emit changed(false);
+}
+
+void PluginListWidget::configurationApplied()
+{
+	applyChanges();
 }

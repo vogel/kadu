@@ -524,3 +524,4 @@ void ConfigurationWidget::configSectionDestroyed(QObject *obj)
 	if (CurrentSection == obj)
 		CurrentSection = 0;
 }
+

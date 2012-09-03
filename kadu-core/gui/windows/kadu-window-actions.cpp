@@ -60,7 +60,6 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/plugins-window.h"
 #include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
@@ -185,13 +184,6 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		hideNoMultilogonAccounts
 	);
 	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
-
-	ManageModules = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "manageModulesAction",
-		this, SLOT(manageModulesActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/plugins"), tr("Plugins...")
-	);
-	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
 
 	ExitKadu = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "exitKaduAction",
@@ -518,14 +510,6 @@ void KaduWindowActions::showMultilogonsActionActivated(QAction *sender, bool tog
 	Q_UNUSED(toggled)
 
 	MultilogonWindow::instance()->show();
-}
-
-void KaduWindowActions::manageModulesActionActivated(QAction *sender, bool toggled)
-{
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
-
-	PluginsWindow::show();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

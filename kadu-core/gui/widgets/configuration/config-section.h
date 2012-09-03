@@ -72,6 +72,8 @@ public:
 	void show() { TabWidget->show(); }
 	void hide() { TabWidget->hide(); }
 
+	void addFullPageWidget(const QString &name, QWidget *widget);
+
 	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create);
 
 };

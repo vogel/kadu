@@ -27,7 +27,7 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
-#include "gui/windows/plugins-window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
@@ -393,7 +393,7 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 {
 	bool offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
 
-	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, PluginsWindow::instance());
+	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, MainConfigurationWindow::instance());
 	if (offerLoadInFutureChoice)
 		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
 

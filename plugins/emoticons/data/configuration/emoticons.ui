@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 
-	<section name="Look" icon="preferences-desktop-theme">
+	<section name="General" icon="x-office-address-book">
 
-		<tab name="Emoticons">
+		<tab name="Look">
 			<group-box name="Emoticons">
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					tool-tip="Choose emoticons theme" />
-				<combo-box caption="Emoticons" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
+				<combo-box caption="Version" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
 					tool-tip="Choose emoticons style" >
 					<item value="2" caption="Animated" />
 					<item value="1" caption="Static" />
 				</combo-box>
-				<combo-box caption="Selector behavior" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
-					tool-tip="Choose the way emoticons are scaled in the selector" >
-					<item value="3" caption="Scale All Emoticons" />
-					<item value="1" caption="Scale Only Static Emoticons" />
-					<item value="0" caption="Do Not Scale Emoticons" />
+				<combo-box caption="Emoticons window style" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
+					tool-tip="Choose the way emoticons are displayed in the emoticons window" >
+					<item value="3" caption="All Emoticons Of The Same Size" />
+					<item value="1" caption="Only Static Emoticons Of The Same Size" />
+					<item value="0" caption="Every Emoticon Of Original Size" />
 				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />

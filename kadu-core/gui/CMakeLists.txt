@@ -140,7 +140,6 @@ set (gui_SRCS
 	windows/main-window.cpp
 	windows/merge-buddies-window.cpp
 	windows/message-dialog.cpp
-	windows/plugins-window.cpp
 	windows/multilogon-window.cpp
 	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
@@ -305,7 +304,6 @@ set (gui_MOC_SRCS
 	windows/main-configuration-window.h
 	windows/main-window.h
 	windows/merge-buddies-window.h
-	windows/plugins-window.h
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h

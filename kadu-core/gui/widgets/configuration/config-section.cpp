@@ -134,3 +134,8 @@ void ConfigSection::iconThemeChanged()
 {
 	ListWidgetItem->setIcon(Icon.icon());
 }
+
+void ConfigSection::addFullPageWidget(const QString &name, QWidget *widget)
+{
+	TabWidget->addTab(widget, name);
+}

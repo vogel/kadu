@@ -13,6 +13,7 @@ class QSlider;
 class BuddyListBackgroundColorsWidget;
 class ConfigComboBox;
 class ConfigLineEdit;
+class PluginListWidget;
 class Preview;
 class SyntaxEditorWindow;
 
@@ -65,6 +66,7 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QSlider *userboxAlpha;
 	QCheckBox *userboxBlur;
 	BuddyListBackgroundColorsWidget *buddyColors;
+	PluginListWidget *PluginList;
 
 	explicit MainConfigurationWindow();
 

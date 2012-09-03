@@ -31,6 +31,7 @@ class QLineEdit;
 class CategorizedListView;
 class CategorizedListViewPainter;
 class FilterWidget;
+class MainConfigurationWindow;
 class PluginModel;
 class PluginListWidgetItemDelegate;
 class PluginProxyModel;
@@ -59,8 +60,11 @@ class PluginListWidget : public QWidget
 	PluginListWidgetItemDelegate *Delegate;
 	bool ShowIcons;
 
+private slots:
+	void configurationApplied();
+
 public:
-	explicit PluginListWidget(QWidget *parent = 0);
+	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
 	virtual ~PluginListWidget();
 
 	void applyChanges();

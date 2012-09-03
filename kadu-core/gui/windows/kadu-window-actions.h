@@ -57,7 +57,6 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *MergeContact;
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
-	ActionDescription *ManageModules;
 	ActionDescription *Help;
 	ActionDescription *Bugs;
 	ActionDescription *Support;
@@ -99,7 +98,6 @@ private slots:
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
 	void showMultilogonsActionActivated(QAction *sender, bool toggled);
-	void manageModulesActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void mergeContactActionActivated(QAction *sender, bool toggled);
