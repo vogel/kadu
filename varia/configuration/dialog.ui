@@ -24,60 +24,43 @@
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
 					tool-tip="Definie icons paths" />
 			</group-box>
-		</tab>
-
-		<tab name="Buddy List">
-			<group-box name="General">
-				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
-					tool-tip="Displays group tabs on the buddy list" />
-				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
-				<check-box caption="Show expanding control" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl" />
-				<check-box caption="Show connected buddies in bold" config-section="Look" config-item="ShowBold"
-					tool-tip="Displays buddies that are not offline using a bold font" />
-				<combo-box caption="Align buddy icon to" config-section="Look" config-item="AlignUserboxIconsTop"
-					tool-tip="Align icon next to buddy's name">
-					<item value="true" caption="Top" />
-					<item value="false" caption="Center" />
+			<group-box name="Emoticons">
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
+					tool-tip="Choose emoticons theme" />
+				<combo-box caption="Version" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
+					tool-tip="Choose emoticons style" >
+					<item value="2" caption="Animated" />
+					<item value="1" caption="Static" />
 				</combo-box>
-				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
-					tool-tip="Choose buddy list tool-tip style" />
-			</group-box>
-			<group-box name="Buddy Photos">
-				<check-box caption="Show photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
-				<check-box caption="Add border" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
-				<check-box caption="Grey out offline buddies' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut"
-					tool-tip="Buddies who are offline will have their photos greyed out" />
-			</group-box>
-			<group-box name="Descriptions">
-				<check-box caption="Show descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
-					tool-tip="Displays descriptions in the buddy list" />
-				<check-box caption="Allow multiline descriptions" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
-					tool-tip="Dislpays multiline descriptions in the buddy list" />
-			</group-box>
-			<group-box name="Background">
-				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
-				<slider caption="Alpha" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10"
-					id="userboxAlpha" />
-				<check-box caption="Turn on blur" config-section="Look" config-item="UserboxBlur" id="userboxBlur" />
-				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
-				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
-					tool-tip="Define background file for the buddy list" id="userboxBackground" />
-				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
-					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
-					<item value="Tiled" caption="Tiled" />
-					<item value="TiledAndCentered" caption="Tiled and Centered" />
-					<item value="Centered" caption="Centered" />
-					<item value="Stretched" caption="Stretched" />
+				<combo-box caption="Emoticons window style" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
+					tool-tip="Choose the way emoticons are displayed in the emoticons window" >
+					<item value="3" caption="All Emoticons Of The Same Size" />
+					<item value="1" caption="Only Static Emoticons Of The Same Size" />
+					<item value="0" caption="Every Emoticon Of Original Size" />
 				</combo-box>
+				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
+					tool-tip="Define emoticons paths" />
+			</group-box>
+			<group-box name="Colors and fonts">
+				<action-button caption="Advanced..." id="colorsAdvanced" />
 			</group-box>
 		</tab>
 
-		<tab name="Information Panel">
-			<group-box name="General">
-				<check-box caption="Show information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
-					tool-tip="Displays information panel below the buddy list" />
-				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="PanelVerticalScrollbar" id="showVerticalScrollbar"
-					tool-tip="Show vertical scrollbar in information panel" />
+		<tab name="Applications">
+			<group-box name="Web and E-Mail">
+				<label caption="Kadu will use default applications to open links from chat messages and buddy descriptions." />
+				<check-box caption="Use System Web Browser" config-section="Chat" config-item="UseDefaultWebBrowser" id="useDefaultBrowser" />
+				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
+					tool-tip="Write specific path to your browser" />
+				<check-box caption="Use System E-Mail Client" config-section="Chat" config-item="UseDefaultEMailClient" id="useDefaultEMail" />
+				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
+					tool-tip="Write specific path to your email client" />
+			</group-box>
+		</tab>
+
+		<tab name="Advanced">
+			<group-box name="Connection">
+				<proxy-combo-box caption="Default proxy" config-section="Network" config-item="DefaultProxy" />
 			</group-box>
 			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
@@ -172,29 +155,28 @@
 		<tab name="Information">
 			<group-box name="Tooltip over buddy">
 
-		<tab name="Messages">
-			<group-box name="Message Pruning">
-				<check-box caption="Automatically prune chat messages" config-section="Chat" config-item="ChatPrune" id="chatPrune"
-					tool-tip="If enabled, messages are pruning" />
-				<spin-box caption="Reduce the number of visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
-					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Number of visible messages" />
 			</group-box>
-			<group-box name="Images">
-				<check-box caption="Limit image size" config-section="Chat" config-item="LimitImageSize" id="limitImageSize"
-					tool-tip="Limit maximum size of images that can be received in chat window" />
-				<spin-box caption="Maximum image size" config-section="Chat" config-item="MaximumImageSizeInKiloBytes" id="maximumImageSizeInKiloBytes" min-value="0" max-value="65536" suffix="%n kB"
-					tool-tip="Set maximum size of images that can be received in chat window" />
-				<check-box caption="Allow bigger images after asking" config-section="Chat" config-item="AllowBiggerImagesAfterAsking" id="allowBiggerImagesAfterAsking"
-					tool-tip="Allows receiving bigger images but only after asking user" />
-			</group-box>
-
-			<group-box name="Link Folding">
-				<check-box caption="Automatically fold links" config-section="Chat" config-item="FoldLink" id="foldLink" />
-				<spin-box caption="Fold links longer than" config-section="Chat" config-item="LinkFoldTreshold" min-value="1" max-value="500"
-					id="linkFoldTreshold" />
+			<group-box name="Information Panel">
+				<syntax-editor caption="Style" config-section="Look" config-item="InfoPanelSyntaxFile" category="InfoPanel" id="infoPanelSyntax"
+					tool-tip="Choose information panel style" />
+				<preview caption="Preview" id="infoPanelSyntaxPreview" height="190" />
 			</group-box>
 		</tab>
-		
+		<tab name="Advanced">
+			<group-box name="Contact">
+				<check-box caption="Show buddy expanding button" config-section="Look" config-item="ShowExpandingControl" id="showExpandingControl"
+					tool-tip="Show an icon at each buddy that allows viewing contacts attached to this buddy" />
+				<check-box caption="Show connected buddies in bold" config-section="Look" config-item="ShowBold"
+					tool-tip="Displays buddies that are online using a bold font" />
+				<combo-box caption="Buddy icon position" config-section="Look" config-item="AlignUserboxIconsTop"
+					tool-tip="Choose buddy icon alignment">
+					<item value="true" caption="At the buddy's name" />
+					<item value="false" caption="Centered" />
+				</combo-box>
+				<combo-box caption="Buddy list information style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"
+					tool-tip="Choose how buddy information is presented when cursor is hovering over buddy list" />
+			</group-box>
+		</tab>
 	</section>
 
 	<section name="Notifications" icon="kadu_icons/section-notifications">

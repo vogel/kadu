@@ -310,7 +310,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	mainConfigurationWindow->widget()->widgetById("spellchecker/ignoreCase")->hide();
 #endif
 
-	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "SpellChecker", "Spell Checker Options");
+	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Spelling", "Spell Checker Options");
 
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 	QGridLayout *optionsLayout = new QGridLayout(options);
