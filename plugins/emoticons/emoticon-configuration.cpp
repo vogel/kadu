@@ -17,36 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
-#define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+#include "emoticon-configuration.h"
 
-#include <QtCore/QScopedPointer>
-
-#include "dom/ignore-links-dom-visitor.h"
-
-#include "emoticon-prefix-tree.h"
-#include "emoticons.h"
-
-#include "dom/dom-visitor-provider.h"
-
-class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
+EmoticonConfiguration::EmoticonConfiguration() :
+		Animated(true)
 {
-	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
+}
 
-	QScopedPointer<EmoticonPrefixTree> Tree;
-	bool Animated;
+EmoticonConfiguration::EmoticonConfiguration(const EmoticonConfiguration &copyMe)
+{
+	EmoticonTheme = copyMe.EmoticonTheme;
+	Animated = copyMe.Animated;
+}
 
-	void rebuildVisitor();
+EmoticonConfiguration & EmoticonConfiguration::operator = (const EmoticonConfiguration &copyMe)
+{
+	EmoticonTheme = copyMe.EmoticonTheme;
+	Animated = copyMe.Animated;
 
-public:
-	EmoticonExpanderDomVisitorProvider();
-	virtual ~EmoticonExpanderDomVisitorProvider();
+	return *this;
+}
 
-	virtual DomVisitor * provide() const;
+void EmoticonConfiguration::setEmoticonTheme(const Theme &emoticonTheme)
+{
+	EmoticonTheme = emoticonTheme;
+}
 
-	void setEmoticonTree(EmoticonPrefixTree *);
-	void setAnimated(bool animated);
+Theme EmoticonConfiguration::emoticonTheme() const
+{
+	return EmoticonTheme;
+}
 
-};
+void EmoticonConfiguration::setAnimated(bool animated)
+{
+	Animated = animated;
+}
 
-#endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+bool EmoticonConfiguration::animated() const
+{
+	return Animated;
+}

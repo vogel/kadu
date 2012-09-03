@@ -17,36 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
-#define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+#ifndef EMOTICON_CONFIGURATOR
+#define EMOTICON_CONFIGURATOR
 
-#include <QtCore/QScopedPointer>
+#include <QtCore/QWeakPointer>
 
-#include "dom/ignore-links-dom-visitor.h"
+#include "configuration/configuration-holder.h"
 
-#include "emoticon-prefix-tree.h"
-#include "emoticons.h"
+class EmoticonsManager;
+class EmoticonThemeManager;
 
-#include "dom/dom-visitor-provider.h"
-
-class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
+class EmoticonConfigurator : public ConfigurationHolder
 {
-	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
+	Q_OBJECT
 
-	QScopedPointer<EmoticonPrefixTree> Tree;
-	bool Animated;
+	QWeakPointer<EmoticonsManager> Manager;
+	EmoticonThemeManager *ThemeManager;
 
-	void rebuildVisitor();
+	void createDefaultConfiguration();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
-	EmoticonExpanderDomVisitorProvider();
-	virtual ~EmoticonExpanderDomVisitorProvider();
+	EmoticonConfigurator(EmoticonThemeManager *themeManager);
 
-	virtual DomVisitor * provide() const;
-
-	void setEmoticonTree(EmoticonPrefixTree *);
-	void setAnimated(bool animated);
+	void setEmoticonsManager(EmoticonsManager *emoticonsManager);
 
 };
 
-#endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
+#endif // EMOTICON_CONFIGURATOR
+

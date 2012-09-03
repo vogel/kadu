@@ -27,7 +27,7 @@
 #include "emoticon-expander.h"
 
 EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider() :
-		Style(EmoticonsStyleNone)
+		Animated(true)
 {
 }
 
@@ -37,13 +37,7 @@ EmoticonExpanderDomVisitorProvider::~EmoticonExpanderDomVisitorProvider()
 
 void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
 {
-	if (EmoticonsStyleNone == Style || !Tree)
-	{
-		LinksVisitor.reset(0);
-		return;
-	}
-
-	EmoticonPathProvider *emoticonPathProvider = Style == EmoticonsStyleAnimated
+	EmoticonPathProvider *emoticonPathProvider = Animated
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
 	LinksVisitor.reset(new IgnoreLinksDomVisitor(new EmoticonExpander(Tree.data(), emoticonPathProvider)));
@@ -60,8 +54,11 @@ void EmoticonExpanderDomVisitorProvider::setEmoticonTree(EmoticonPrefixTree *tre
 	rebuildVisitor();
 }
 
-void EmoticonExpanderDomVisitorProvider::setStyle(EmoticonsStyle style)
+void EmoticonExpanderDomVisitorProvider::setAnimated(bool animated)
 {
-	Style = style;
+	if (Animated == animated)
+		return;
+
+	Animated = animated;
 	rebuildVisitor();
 }

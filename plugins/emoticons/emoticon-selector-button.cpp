@@ -40,7 +40,7 @@
 EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, const QString &anim_path, const QString &static_path, QWidget *parent) :
 		QLabel(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path)
 {
-	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EmoticonsStyleAnimated)
+	if (config_file.readNumEntry("Chat","EmoticonsStyle") != 2) // TODO: use some providers
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);

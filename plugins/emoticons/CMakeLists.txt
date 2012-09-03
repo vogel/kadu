@@ -7,6 +7,8 @@ include (FindKadu)
 set (SOURCES
 	animated-emoticon-path-provider.cpp
 	emoticon.cpp
+	emoticon-configuration.cpp
+	emoticon-configurator.cpp
 	emoticon-expander.cpp
 	emoticon-expander-dom-visitor-provider.cpp
 	emoticon-prefix-tree.cpp
@@ -26,6 +28,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	emoticon-configurator.h
 	emoticon-selector-button.h
 	emoticon-selector.h
 	emoticon-theme-manager.h

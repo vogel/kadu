@@ -34,13 +34,6 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
-enum EmoticonsStyle
-{
-	EmoticonsStyleNone,
-	EmoticonsStyleStatic,
-	EmoticonsStyleAnimated
-};
-
 // flag
 enum EmoticonsScaling
 {

@@ -34,49 +34,45 @@
 
 #include <QtCore/QVector>
 
-#include "configuration/configuration-holder.h"
 #include "themes.h"
 
+#include "emoticon.h"
+#include "emoticon-configuration.h"
 #include "emoticon-theme.h"
 
 #include "emoticons.h"
 
-class QDomDocument;
-class QDomText;
-
 class Emoticon;
+class EmoticonConfigurator;
 class EmoticonExpanderDomVisitorProvider;
 class EmoticonsConfigurationUiHandler;
 class EmoticonThemeManager;
 class InsertEmoticonAction;
 
-/**
-	Menad�er emotikon�w
-**/
-class KADUAPI EmoticonsManager : public ConfigurationHolder
+class KADUAPI EmoticonsManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(EmoticonsManager)
+
+	EmoticonConfiguration Configuration;
 
 	EmoticonExpanderDomVisitorProvider *ExpanderDomVisitorProvider;
 	EmoticonThemeManager *ThemeManager;
 	EmoticonsConfigurationUiHandler *ConfigurationUiHandler;
 	InsertEmoticonAction *InsertAction;
+	QScopedPointer<EmoticonConfigurator> Configurator;
 
 	EmoticonTheme Emoticons;
 
 	void loadGGEmoticonTheme(const QString &themeDirPath);
-	void loadTheme();
 
 public:
 	explicit EmoticonsManager(QObject *parent = 0);
 	virtual ~EmoticonsManager();
 
-	EmoticonThemeManager * themeManager() const;
+	void setConfiguration(const EmoticonConfiguration &configuration);
 
 	EmoticonTheme emoticons() { return Emoticons; }
-
-	void configurationUpdated();
 
 };
 

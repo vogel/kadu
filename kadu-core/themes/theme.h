@@ -39,6 +39,8 @@ public:
 	Theme(const Theme &copyMe);
 
 	Theme & operator = (const Theme &copyMe);
+	bool operator == (const Theme &compareTo);
+	bool operator != (const Theme &compareTo);
 
 	const QString & path() const { return Path; }
 	const QString & name() const { return Name; }

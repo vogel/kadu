@@ -29,26 +29,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QStack>
-#include <QtCore/QTextCodec>
-#include <QtCore/QTextStream>
-#include <QtGui/QTextDocument>
-
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "dom/dom-processor.h"
 #include "dom/dom-processor-service.h"
-#include "dom/ignore-links-dom-visitor.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
-#include "misc/misc.h"
-#include "debug.h"
 
-#include "animated-emoticon-path-provider.h"
-#include "emoticon.h"
-#include "emoticon-expander.h"
+#include "emoticon-configurator.h"
 #include "emoticon-expander-dom-visitor-provider.h"
 #include "emoticon-prefix-tree-builder.h"
 #include "emoticon-theme.h"
@@ -56,14 +43,12 @@
 #include "emoticons-configuration-ui-handler.h"
 #include "gadu-emoticon-theme-loader.h"
 #include "insert-emoticon-action.h"
-#include "static-emoticon-path-provider.h"
 
 #include "emoticons-manager.h"
 
-EmoticonsManager::EmoticonsManager(QObject *parent)
+EmoticonsManager::EmoticonsManager(QObject *parent) :
+		QObject(parent)
 {
-	Q_UNUSED(parent)
-
 	QStringList iconPaths = config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts);
 
 	ThemeManager = new EmoticonThemeManager(this);
@@ -75,7 +60,8 @@ EmoticonsManager::EmoticonsManager(QObject *parent)
 	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler);
 
 	InsertAction = new InsertEmoticonAction(this);
-	configurationUpdated();
+	Configurator.reset(new EmoticonConfigurator(ThemeManager));
+	Configurator.data()->setEmoticonsManager(this);
 }
 
 EmoticonsManager::~EmoticonsManager()
@@ -87,30 +73,13 @@ EmoticonsManager::~EmoticonsManager()
 	ExpanderDomVisitorProvider = 0;
 }
 
-EmoticonThemeManager * EmoticonsManager::themeManager() const
+void EmoticonsManager::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	return ThemeManager;
-}
+	bool themeChanged = Configuration.emoticonTheme() != configuration.emoticonTheme();
+	Configuration = configuration;
 
-void EmoticonsManager::configurationUpdated()
-{
-	bool themeWasChanged = config_file.readEntry("Chat", "EmoticonsTheme") != ThemeManager->currentTheme().name();
-	if (themeWasChanged)
-	{
-		ThemeManager->setCurrentTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-		config_file.writeEntry("Chat", "EmoticonsTheme", ThemeManager->currentTheme().name());
-
-		loadTheme();
-	}
-
-	ExpanderDomVisitorProvider->setStyle((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-}
-
-void EmoticonsManager::loadTheme()
-{
-	Theme theme = ThemeManager->currentTheme();
-	if (theme.isValid())
-		loadGGEmoticonTheme(theme.path());
+	if (themeChanged)
+		loadGGEmoticonTheme(Configuration.emoticonTheme().path());
 }
 
 void EmoticonsManager::loadGGEmoticonTheme(const QString &themeDirPath)

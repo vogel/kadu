@@ -44,6 +44,16 @@ Theme & Theme::operator = (const Theme &copyMe)
 	return *this;
 }
 
+bool Theme::operator == (const Theme &compareTo)
+{
+	return Path == compareTo.Path && Name == compareTo.Name;
+}
+
+bool Theme::operator != (const Theme &compareTo)
+{
+	return !(*this == compareTo);
+}
+
 bool Theme::isValid() const
 {
 	return !Path.isEmpty() && !Name.isEmpty();
