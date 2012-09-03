@@ -58,6 +58,7 @@ void EmoticonWalker::addEmptyCandidate()
 {
 	EmoticonCandidate emptyCandidate;
 	emptyCandidate.EmoticonNode = Tree;
+	emptyCandidate.EmoticonLength = 0;
 
 	Candidates.append(emptyCandidate);
 }
