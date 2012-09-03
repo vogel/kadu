@@ -60,7 +60,9 @@ void GaduEmoticonParser::parse()
 		eat();
 
 	QStringList aliases = parseAliases();
+	eat(); // ,
 	QString animatedPath = parseQuoted();
+	eat(); // ,
 	QString staticPath = parseQuoted();
 
 	if (aliases.isEmpty() || animatedPath.isEmpty())
@@ -99,20 +101,14 @@ QStringList GaduEmoticonParser::parseAliases()
 			result.append(alias);
 
 		if (!multiple)
-		{
-			eat(); // ,
 			return result;
-		}
 
 		c = get();
-		if (c.isNull())
+		if (c.isNull() || c == ')')
 			return result;
 
-		if (c == ')')
-		{
-			eat(); // ,
+		if (c != ',') // some kind of error
 			return result;
-		}
 	}
 
 	Q_ASSERT(false);
