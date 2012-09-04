@@ -24,12 +24,11 @@
 #include "gui/widgets/path-list-edit.h"
 
 #include "emoticon-theme-manager.h"
-#include "emoticons-manager.h"
 
 #include "emoticons-configuration-ui-handler.h"
 
-EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(EmoticonThemeManager *themeManager, QObject *parent) :
-		ConfigurationUiHandler(parent), ThemeManager(themeManager)
+EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
+		ConfigurationUiHandler(parent), ThemeManager(new EmoticonThemeManager())
 {
 }
 
@@ -39,7 +38,7 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!Widget || !ThemeManager)
+	if (!Widget)
 		return;
 
 	ConfigComboBox *emoticonsThemes = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));

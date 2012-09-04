@@ -20,21 +20,24 @@
 #ifndef EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
 #define EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER
 
+#include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
 #include "dom/ignore-links-dom-visitor.h"
 
+#include "emoticon-configuration.h"
 #include "emoticon-prefix-tree.h"
 #include "emoticons.h"
 
 #include "dom/dom-visitor-provider.h"
 
-class EmoticonExpanderDomVisitorProvider : public DomVisitorProvider
+class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
-	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
+	Q_OBJECT
 
+	EmoticonConfiguration Configuration;
+	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
 	QScopedPointer<EmoticonPrefixTree> Tree;
-	bool Animated;
 
 	void rebuildVisitor();
 
@@ -44,8 +47,7 @@ public:
 
 	virtual DomVisitor * provide() const;
 
-	void setEmoticonTree(EmoticonPrefixTree *);
-	void setAnimated(bool animated);
+	void setConfiguration(const EmoticonConfiguration &configuration);
 
 };
 

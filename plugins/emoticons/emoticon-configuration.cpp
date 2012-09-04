@@ -26,26 +26,26 @@ EmoticonConfiguration::EmoticonConfiguration() :
 
 EmoticonConfiguration::EmoticonConfiguration(const EmoticonConfiguration &copyMe)
 {
-	EmoticonTheme = copyMe.EmoticonTheme;
+	Emoticons = copyMe.Emoticons;
 	Animated = copyMe.Animated;
 }
 
 EmoticonConfiguration & EmoticonConfiguration::operator = (const EmoticonConfiguration &copyMe)
 {
-	EmoticonTheme = copyMe.EmoticonTheme;
+	Emoticons = copyMe.Emoticons;
 	Animated = copyMe.Animated;
 
 	return *this;
 }
 
-void EmoticonConfiguration::setEmoticonTheme(const Theme &emoticonTheme)
+void EmoticonConfiguration::setEmoticonTheme(const EmoticonTheme &emoticonTheme)
 {
-	EmoticonTheme = emoticonTheme;
+	Emoticons = emoticonTheme;
 }
 
-Theme EmoticonConfiguration::emoticonTheme() const
+EmoticonTheme EmoticonConfiguration::emoticonTheme() const
 {
-	return EmoticonTheme;
+	return Emoticons;
 }
 
 void EmoticonConfiguration::setAnimated(bool animated)

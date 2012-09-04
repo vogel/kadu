@@ -20,21 +20,31 @@
 #include "configuration/configuration-file.h"
 
 #include "emoticon-configuration.h"
-#include "emoticons-manager.h"
+#include "emoticon-expander-dom-visitor-provider.h"
 #include "emoticon-theme-manager.h"
+#include "gadu-emoticon-theme-loader.h"
+#include "insert-emoticon-action.h"
 
 #include "emoticon-configurator.h"
 
-EmoticonConfigurator::EmoticonConfigurator(EmoticonThemeManager *themeManager) :
-		ThemeManager(themeManager)
+EmoticonConfigurator::EmoticonConfigurator() :
+		ThemeManager(new EmoticonThemeManager())
 {
-	Q_ASSERT(ThemeManager);
+	createDefaultConfiguration();
 }
 
-void EmoticonConfigurator::setEmoticonsManager(EmoticonsManager *emoticonsManager)
+void EmoticonConfigurator::setInsertAction(InsertEmoticonAction *insertAction)
 {
-	Manager = emoticonsManager;
+	InsertAction = insertAction;
+}
 
+void EmoticonConfigurator::setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider)
+{
+	EmoticonExpanderProvider = emoticonExpanderProvider;
+}
+
+void EmoticonConfigurator::configure()
+{
 	configurationUpdated();
 }
 
@@ -47,14 +57,25 @@ void EmoticonConfigurator::createDefaultConfiguration()
 
 void EmoticonConfigurator::configurationUpdated()
 {
-	if (!Manager)
+	if (!EmoticonExpanderProvider && !InsertAction)
 		return;
 
-	EmoticonConfiguration configuration;
-	ThemeManager->setCurrentTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	ThemeManager->loadThemes(config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts));
 
-	configuration.setAnimated(1 != config_file.readNumEntry("Chat", "EmoticonsStyle", 2));
-	configuration.setEmoticonTheme(ThemeManager->currentTheme());
+	if (LastLoadedThemeName == config_file.readEntry("Chat", "EmoticonsTheme"))
+		return;
 
-	Manager.data()->setConfiguration(configuration);
+	LastLoadedThemeName = config_file.readEntry("Chat", "EmoticonsTheme");
+	ThemeManager->setCurrentTheme(LastLoadedThemeName);
+
+	GaduEmoticonThemeLoader loader;
+	EmoticonTheme theme = loader.loadEmoticonTheme(ThemeManager->currentTheme().path());
+
+	Configuration.setAnimated(1 != config_file.readNumEntry("Chat", "EmoticonsStyle", 2));
+	Configuration.setEmoticonTheme(theme);
+
+	if (InsertAction)
+		InsertAction.data()->setConfiguration(Configuration);
+	if (EmoticonExpanderProvider)
+		EmoticonExpanderProvider.data()->setConfiguration(Configuration);
 }

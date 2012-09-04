@@ -24,14 +24,35 @@
 
 #include "plugins/generic-plugin.h"
 
-class EmoticonsManager;
+class EmoticonsConfigurationUiHandler;
+class EmoticonConfigurator;
+class EmoticonExpanderDomVisitorProvider;
+class InsertEmoticonAction;
 
 class EmoticonsPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
-	QScopedPointer<EmoticonsManager> Manager;
+	QScopedPointer<EmoticonsConfigurationUiHandler> ConfigurationUiHandler;
+
+	QScopedPointer<EmoticonExpanderDomVisitorProvider> ExpanderDomVisitorProvider;
+
+	QScopedPointer<InsertEmoticonAction> InsertAction;
+
+	QScopedPointer<EmoticonConfigurator> Configurator;
+
+	void registerConfigurationUi();
+	void unregisterConfigurationUi();
+
+	void registerEmoticonExpander();
+	void unregisterEmoticonExpander();
+
+	void registerActions();
+	void unregisterActions();
+
+	void startConfigurator();
+	void stopConfigurator();
 
 public:
 	explicit EmoticonsPlugin(QObject *parent = 0);

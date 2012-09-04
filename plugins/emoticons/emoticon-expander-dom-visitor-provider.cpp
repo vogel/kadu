@@ -20,14 +20,14 @@
 #include "dom/ignore-links-dom-visitor.h"
 #include "debug.h"
 
-#include "emoticon-expander-dom-visitor-provider.h"
-#include "emoticon-path-provider.h"
 #include "animated-emoticon-path-provider.h"
-#include "static-emoticon-path-provider.h"
 #include "emoticon-expander.h"
+#include "emoticon-prefix-tree-builder.h"
+#include "static-emoticon-path-provider.h"
 
-EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider() :
-		Animated(true)
+#include "emoticon-expander-dom-visitor-provider.h"
+
+EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider()
 {
 }
 
@@ -37,7 +37,13 @@ EmoticonExpanderDomVisitorProvider::~EmoticonExpanderDomVisitorProvider()
 
 void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
 {
-	EmoticonPathProvider *emoticonPathProvider = Animated
+	if (!Tree)
+	{
+		LinksVisitor.reset();
+		return;
+	}
+
+	EmoticonPathProvider *emoticonPathProvider = Configuration.animated()
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
 	LinksVisitor.reset(new IgnoreLinksDomVisitor(new EmoticonExpander(Tree.data(), emoticonPathProvider)));
@@ -48,17 +54,20 @@ DomVisitor * EmoticonExpanderDomVisitorProvider::provide() const
 	return LinksVisitor.data();
 }
 
-void EmoticonExpanderDomVisitorProvider::setEmoticonTree(EmoticonPrefixTree *tree)
+void EmoticonExpanderDomVisitorProvider::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	Tree.reset(tree);
-	rebuildVisitor();
-}
+	Configuration = configuration;
 
-void EmoticonExpanderDomVisitorProvider::setAnimated(bool animated)
-{
-	if (Animated == animated)
-		return;
+	if (!Configuration.emoticonTheme().aliases().isEmpty())
+	{
+		EmoticonPrefixTreeBuilder builder;
+		foreach (const Emoticon &emoticon, Configuration.emoticonTheme().aliases())
+			builder.addEmoticon(emoticon);
 
-	Animated = animated;
+		Tree.reset(builder.tree());
+	}
+	else
+		Tree.reset(0);
+
 	rebuildVisitor();
 }

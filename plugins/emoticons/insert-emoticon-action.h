@@ -24,6 +24,8 @@
 
 #include "emoticon.h"
 
+class EmoticonConfiguration;
+
 class InsertEmoticonAction : public ActionDescription
 {
 	Q_OBJECT
@@ -40,7 +42,7 @@ public:
 
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
-	void setEmoticons(const QVector<Emoticon> &emoticons);
+	void setConfiguration(const EmoticonConfiguration &configuration);
 
 };
 

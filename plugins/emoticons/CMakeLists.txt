@@ -19,7 +19,6 @@ set (SOURCES
 	emoticon-theme-manager.cpp
 	emoticon-walker.cpp
 	emoticons-configuration-ui-handler.cpp
-	emoticons-manager.cpp
 	emoticons-plugin.cpp
 	gadu-emoticon-parser.cpp
 	gadu-emoticon-theme-loader.cpp
@@ -29,11 +28,11 @@ set (SOURCES
 
 set (MOC_SOURCES
 	emoticon-configurator.h
+	emoticon-expander-dom-visitor-provider.h
 	emoticon-selector-button.h
 	emoticon-selector.h
 	emoticon-theme-manager.h
 	emoticons-configuration-ui-handler.h
-	emoticons-manager.h
 	emoticons-plugin.h
 	insert-emoticon-action.h
 )

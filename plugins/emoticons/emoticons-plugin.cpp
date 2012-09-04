@@ -17,9 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "emoticons-manager.h"
+#include "core/core.h"
+#include "dom/dom-processor-service.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/kadu-paths.h"
+
+#include "emoticon-configurator.h"
+#include "emoticon-expander-dom-visitor-provider.h"
+#include "emoticon-theme-manager.h"
+#include "emoticons-configuration-ui-handler.h"
 
 #include "emoticons-plugin.h"
+#include "insert-emoticon-action.h"
 
 EmoticonsPlugin::EmoticonsPlugin(QObject *parent) :
 		QObject(parent)
@@ -30,18 +39,75 @@ EmoticonsPlugin::~EmoticonsPlugin()
 {
 }
 
+void EmoticonsPlugin::registerConfigurationUi()
+{
+	ConfigurationUiHandler.reset(new EmoticonsConfigurationUiHandler(this));
+
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+	MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler.data());
+}
+
+void EmoticonsPlugin::unregisterConfigurationUi()
+{
+	MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler.data());
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/emoticons.ui"));
+
+	ConfigurationUiHandler.reset();
+}
+
+void EmoticonsPlugin::registerEmoticonExpander()
+{
+	ExpanderDomVisitorProvider.reset(new EmoticonExpanderDomVisitorProvider());
+	Core::instance()->domProcessorService()->registerVisitorProvider(ExpanderDomVisitorProvider.data(), 2000);
+}
+
+void EmoticonsPlugin::unregisterEmoticonExpander()
+{
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(ExpanderDomVisitorProvider.data());
+	ExpanderDomVisitorProvider.reset();
+}
+
+void EmoticonsPlugin::registerActions()
+{
+	InsertAction.reset(new InsertEmoticonAction(this));
+}
+
+void EmoticonsPlugin::unregisterActions()
+{
+	InsertAction.reset();
+}
+
+void EmoticonsPlugin::startConfigurator()
+{
+	Configurator.reset(new EmoticonConfigurator());
+	Configurator->setEmoticonExpanderProvider(ExpanderDomVisitorProvider.data());
+	Configurator->setInsertAction(InsertAction.data());
+	Configurator->configure();
+}
+
+void EmoticonsPlugin::stopConfigurator()
+{
+	Configurator.reset();
+}
+
 int EmoticonsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	Manager.reset(new EmoticonsManager());
+	registerConfigurationUi();
+	registerEmoticonExpander();
+	registerActions();
+	startConfigurator();
 
 	return 0;
 }
 
 void EmoticonsPlugin::done()
 {
-	Manager.reset(0);
+	stopConfigurator();
+	unregisterActions();
+	unregisterEmoticonExpander();
+	unregisterConfigurationUi();
 }
 
 Q_EXPORT_PLUGIN2(emoticons, EmoticonsPlugin)

@@ -18,7 +18,6 @@
  */
 
 #include "emoticon.h"
-#include "emoticons-manager.h"
 
 #include "static-emoticon-path-provider.h"
 

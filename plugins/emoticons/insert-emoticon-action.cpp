@@ -21,6 +21,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 
+#include "emoticon-configuration.h"
 #include "emoticon-selector.h"
 
 #include "insert-emoticon-action.h"
@@ -97,7 +98,7 @@ void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 	emoticonSelector->show();
 }
 
-void InsertEmoticonAction::setEmoticons(const QVector<Emoticon> &emoticons)
+void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	Emoticons = emoticons;
+	Emoticons = configuration.emoticonTheme().emoticons();
 }

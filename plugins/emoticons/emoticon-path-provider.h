@@ -22,7 +22,7 @@
 
 #include <QtCore/QString>
 
-#include "emoticons-manager.h"
+#include "emoticon.h"
 
 /**
  * @addtogroup Emoticons

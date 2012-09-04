@@ -22,9 +22,11 @@
 
 #include "themes/theme.h"
 
+#include "emoticon-theme.h"
+
 class EmoticonConfiguration
 {
-	Theme EmoticonTheme;
+	EmoticonTheme Emoticons;
 	bool Animated;
 
 public:
@@ -33,8 +35,8 @@ public:
 
 	EmoticonConfiguration & operator = (const EmoticonConfiguration &copyMe);
 
-	void setEmoticonTheme(const Theme &emoticonTheme);
-	Theme emoticonTheme() const;
+	void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
+	EmoticonTheme emoticonTheme() const;
 
 	void setAnimated(bool animated);
 	bool animated() const;
