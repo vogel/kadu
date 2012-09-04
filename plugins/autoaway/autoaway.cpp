@@ -183,8 +183,8 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 
 void AutoAway::configurationUpdated()
 {
-	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime", 10)*60;
-	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime")*60;
+	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime");
+	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
 	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime")*60;
 	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTime")*60;
 	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime")*60;
@@ -207,7 +207,7 @@ void AutoAway::configurationUpdated()
 
 	if (autoAwayEnabled || autoExtendedAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled)
 	{
-		timer->setInterval(config_file.readNumEntry("General", "AutoAwayCheckTime", 5) * 1000);
+		timer->setInterval(checkInterval * 1000);
 		timer->setSingleShot(true);
 		timer->start();
 	}
@@ -264,7 +264,7 @@ QString AutoAway::parseDescription(const QString &parseDescription)
 void AutoAway::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "AutoAway", true);
-	config_file.addVariable("General", "AutoAwayCheckTime", 1);
+	config_file.addVariable("General", "AutoAwayCheckTime", 10);
 	config_file.addVariable("General", "AutoAwayTime", 5);
 	config_file.addVariable("General", "AutoExtendedAway", true);
 	config_file.addVariable("General", "AutoExtendedAwayTime", 15);
@@ -279,11 +279,15 @@ void AutoAway::createDefaultConfiguration()
 
 void AutoAway::migrateConfiguration()
 {
+	// AutoAwayCheckTime has been mistakenly denominated in 1.0-git.
+	if (0 == config_file.readUnsignedNumEntry("General", "AutoAwayCheckTime"))
+		config_file.writeEntry("General", "AutoAwayCheckTime", 10);
+
 	if (config_file.readBoolEntry("General", "AutoAwayTimesDenominated"))
 		return;
 
 	QStringList variables;
-	variables << "AutoAwayCheckTime" << "AutoAwayTime" << "AutoRefreshStatusTime" << "AutoExtendedAwayTime" << "AutoDisconnectTime" << "AutoInvisibleTime";
+	variables << "AutoAwayTime" << "AutoExtendedAwayTime" << "AutoDisconnectTime" << "AutoInvisibleTime";
 
 	foreach (QString variable, variables)
 	{

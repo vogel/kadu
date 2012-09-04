@@ -2,8 +2,8 @@
 	<section name="Behaviour">
 		<tab name="Inactivity">
 			<group-box name="Status">
-				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="600" suffix="%n minute(s)" />
-				<spin-box caption="Refresh status every" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="600" suffix="%n minute(s)"
+				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="600" suffix="%n second(s)" />
+				<spin-box caption="Refresh status every" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="600" suffix="%n second(s)"
 					id="autoaway/autoRefresh" />
 				<check-box caption="Switch to 'away'" config-section="General" config-item="AutoAway"
 					id="autoaway/enableAutoAway" />
