@@ -289,10 +289,10 @@ void AutoAway::migrateConfiguration()
 	QStringList variables;
 	variables << "AutoAwayTime" << "AutoExtendedAwayTime" << "AutoDisconnectTime" << "AutoInvisibleTime";
 
-	foreach (QString variable, variables)
+	foreach (const QString &variable, variables)
 	{
 		int oldValue = config_file.readUnsignedNumEntry("General", variable);
-		config_file.writeEntry("General", variable, oldValue/60);
+		config_file.writeEntry("General", variable, (oldValue + 59) / 60);
 	}
 
 	config_file.writeEntry("General", "AutoAwayTimesDenominated", true);
