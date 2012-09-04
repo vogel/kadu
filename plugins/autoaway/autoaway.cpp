@@ -60,7 +60,6 @@
 AutoAway::AutoAway() :
 		StatusChanged(false)
 {
-	migrateConfiguration();
 	autoAwayStatusChanger = new AutoAwayStatusChanger(this, this);
 
 	timer = new QTimer(this);
@@ -185,10 +184,10 @@ void AutoAway::configurationUpdated()
 {
 	checkInterval = config_file.readUnsignedNumEntry("General","AutoAwayCheckTime");
 	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
-	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime")*60;
-	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTime")*60;
-	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime")*60;
-	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime")*60;
+	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTimeMinutes")*60;
+	autoExtendedAwayTime = config_file.readUnsignedNumEntry("General","AutoExtendedAwayTimeMinutes")*60;
+	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTimeMinutes")*60;
+	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTimeMinutes")*60;
 
 	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
 	autoExtendedAwayEnabled = config_file.readBoolEntry("General","AutoExtendedAway");
@@ -261,41 +260,33 @@ QString AutoAway::parseDescription(const QString &parseDescription)
 		return parseDescription;
 }
 
+static int denominatedInverval(const QString &name, unsigned int def)
+{
+	int ret = config_file.readUnsignedNumEntry("General", name, def * 60);
+	// This AutoAwayTimesDenominated thing was living shortly in 1.0-git.
+	return config_file.readBoolEntry("General", "AutoAwayTimesDenominated", false)
+			? ret
+			: (ret + 59) / 60;
+}
+
 void AutoAway::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "AutoAway", true);
 	config_file.addVariable("General", "AutoAwayCheckTime", 10);
-	config_file.addVariable("General", "AutoAwayTime", 5);
+	config_file.addVariable("General", "AutoAwayTimeMinutes", denominatedInverval("AutoAwayTime", 5));
 	config_file.addVariable("General", "AutoExtendedAway", true);
-	config_file.addVariable("General", "AutoExtendedAwayTime", 15);
+	config_file.addVariable("General", "AutoExtendedAwayTimeMinutes", denominatedInverval("AutoExtendedAwayTime", 15));
 	config_file.addVariable("General", "AutoChangeDescription", 0);
 	config_file.addVariable("General", "AutoDisconnect", false);
-	config_file.addVariable("General", "AutoDisconnectTime", 60);
+	config_file.addVariable("General", "AutoDisconnectTimeMinutes", denominatedInverval("AutoDisconnectTime", 60));
 	config_file.addVariable("General", "AutoInvisible", false);
-	config_file.addVariable("General", "AutoInvisibleTime", 30);
+	config_file.addVariable("General", "AutoInvisibleTimeMinutes", denominatedInverval("AutoInvisibleTime", 30));
 	config_file.addVariable("General", "AutoRefreshStatusTime", 0);
 	config_file.addVariable("General", "AutoStatusText", QString());
-}
 
-void AutoAway::migrateConfiguration()
-{
 	// AutoAwayCheckTime has been mistakenly denominated in 1.0-git.
 	if (0 == config_file.readUnsignedNumEntry("General", "AutoAwayCheckTime"))
 		config_file.writeEntry("General", "AutoAwayCheckTime", 10);
-
-	if (config_file.readBoolEntry("General", "AutoAwayTimesDenominated"))
-		return;
-
-	QStringList variables;
-	variables << "AutoAwayTime" << "AutoExtendedAwayTime" << "AutoDisconnectTime" << "AutoInvisibleTime";
-
-	foreach (const QString &variable, variables)
-	{
-		int oldValue = config_file.readUnsignedNumEntry("General", variable);
-		config_file.writeEntry("General", variable, (oldValue + 59) / 60);
-	}
-
-	config_file.writeEntry("General", "AutoAwayTimesDenominated", true);
 }
 
 
