@@ -17,26 +17,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_PREFIX_TREE_BUILDER_H
-#define EMOTICON_PREFIX_TREE_BUILDER_H
+#ifndef EMOTICON_CONFIGURATION_H
+#define EMOTICON_CONFIGURATION_H
 
-#include <QtCore/QScopedPointer>
+#include "themes/theme.h"
 
-#include "emoticon-prefix-tree.h"
+#include "theme/emoticon-theme.h"
 
-class QChar;
-
-class EmoticonPrefixTreeBuilder
+class EmoticonConfiguration
 {
-	QScopedPointer<EmoticonPrefixTree> Root;
+	EmoticonTheme Emoticons;
+	bool Animated;
 
 public:
-	EmoticonPrefixTreeBuilder();
+	EmoticonConfiguration();
+	EmoticonConfiguration(const EmoticonConfiguration &copyMe);
 
-	void addEmoticon(const Emoticon &emoticon);
+	EmoticonConfiguration & operator = (const EmoticonConfiguration &copyMe);
 
-	EmoticonPrefixTree * tree();
+	void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
+	EmoticonTheme emoticonTheme() const;
+
+	void setAnimated(bool animated);
+	bool animated() const;
 
 };
 
-#endif // EMOTICON_PREFIX_TREE_BUILDER_H
+#endif // EMOTICON_CONFIGURATION_H

@@ -39,8 +39,8 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QScrollBar>
 
+#include "gui/emoticon-selector-button.h"
 #include "emoticon.h"
-#include "emoticon-selector-button.h"
 
 #include "emoticon-selector.h"
 

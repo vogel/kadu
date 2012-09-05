@@ -20,10 +20,10 @@
 #include "dom/ignore-links-dom-visitor.h"
 #include "debug.h"
 
-#include "animated-emoticon-path-provider.h"
-#include "emoticon-expander.h"
-#include "emoticon-prefix-tree-builder.h"
-#include "static-emoticon-path-provider.h"
+#include "expander/animated-emoticon-path-provider.h"
+#include "expander/emoticon-expander.h"
+#include "expander/static-emoticon-path-provider.h"
+#include "walker/emoticon-prefix-tree-builder.h"
 
 #include "emoticon-expander-dom-visitor-provider.h"
 

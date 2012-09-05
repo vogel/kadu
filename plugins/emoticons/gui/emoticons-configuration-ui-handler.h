@@ -20,7 +20,7 @@
 #ifndef EMOTICONS_CONFIGURATION_UI_HANDLER_H
 #define EMOTICONS_CONFIGURATION_UI_HANDLER_H
 
-#include "emoticon-theme-manager.h"
+#include "theme/emoticon-theme-manager.h"
 
 #include "gui/windows/main-configuration-window.h"
 

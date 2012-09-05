@@ -22,7 +22,7 @@
 
 #include <QtCore/QScopedPointer>
 
-#include "emoticon-path-provider.h"
+#include "expander/emoticon-path-provider.h"
 
 #include "dom/dom-visitor.h"
 

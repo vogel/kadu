@@ -17,28 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_EMOTICON_THEME_LOADER_H
-#define GADU_EMOTICON_THEME_LOADER_H
+#ifndef STATIC_EMOTICON_PATH_PROVIDER_H
+#define STATIC_EMOTICON_PATH_PROVIDER_H
 
-#include <QtCore/QVector>
+#include "expander/emoticon-path-provider.h"
 
-#include "emoticon.h"
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
 
-#include "emoticon-theme-loader.h"
-
-class GaduEmoticonThemeLoader : public EmoticonThemeLoader
+/**
+ * @class StaticEmoticonPathProvider
+ * @short EmoticonPathProvider that returns path to static version of emoticon.
+ * @author Rafał 'Vogel' Malinowski
+ */
+class StaticEmoticonPathProvider : public EmoticonPathProvider
 {
-	QVector<Emoticon> Emoticons;
-	QVector<Emoticon> Aliases;
-
-	bool validGaduGaduEmoticonDirectory(const QString &dir);
-	void loadEmoticons(const QString &path);
-
 public:
-	virtual ~GaduEmoticonThemeLoader() {}
+	virtual ~StaticEmoticonPathProvider();
 
-	virtual EmoticonTheme loadEmoticonTheme(const QString &path);
+	/**
+	 * @short Return path to static version of emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param emoticon emoticon to get path for
+	 * @return path to static file of emoticon
+	 */
+	virtual QString emoticonPath(const Emoticon &emoticon);
 
 };
 
-#endif // GADU_EMOTICON_THEME_LOADER_H
+/**
+ * @}
+ */
+
+#endif // STATIC_EMOTICON_PATH_PROVIDER_H

@@ -17,30 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICON_CONFIGURATION_H
-#define EMOTICON_CONFIGURATION_H
+#include "misc/misc.h"
 
-#include "themes/theme.h"
+#include "walker/emoticon-prefix-tree.h"
 
-#include "emoticon-theme.h"
+#include "emoticon-prefix-tree-builder.h"
 
-class EmoticonConfiguration
+EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() :
+		Root(new EmoticonPrefixTree())
 {
-	EmoticonTheme Emoticons;
-	bool Animated;
+}
 
-public:
-	EmoticonConfiguration();
-	EmoticonConfiguration(const EmoticonConfiguration &copyMe);
+void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
+{
+	Q_ASSERT(Root);
 
-	EmoticonConfiguration & operator = (const EmoticonConfiguration &copyMe);
+	QString text = emoticon.text().toLower();
+	unsigned int length = text.length();
 
-	void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
-	EmoticonTheme emoticonTheme() const;
+	EmoticonPrefixTree *node = Root.data();
+	for (unsigned int i = 0; i < length; i++)
+	{
+		QChar c = extractLetter(text.at(i));
 
-	void setAnimated(bool animated);
-	bool animated() const;
+		EmoticonPrefixTree *child = node->child(c);
+		if (!child)
+			child = node->createChild(c);
+		node = child;
+	}
 
-};
+	if (node->nodeEmoticon().isNull())
+		node->setNodeEmoticon(emoticon);
+}
 
-#endif // EMOTICON_CONFIGURATION_H
+EmoticonPrefixTree * EmoticonPrefixTreeBuilder::tree()
+{
+	return Root.take();
+}

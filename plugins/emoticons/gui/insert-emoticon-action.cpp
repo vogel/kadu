@@ -21,8 +21,8 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 
-#include "emoticon-configuration.h"
-#include "emoticon-selector.h"
+#include "configuration/emoticon-configuration.h"
+#include "gui/emoticon-selector.h"
 
 #include "insert-emoticon-action.h"
 

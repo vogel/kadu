@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef STATIC_EMOTICON_PATH_PROVIDER_H
-#define STATIC_EMOTICON_PATH_PROVIDER_H
+#ifndef ANIMATED_EMOTICON_PATH_PROVIDER_H
+#define ANIMATED_EMOTICON_PATH_PROVIDER_H
 
-#include "emoticon-path-provider.h"
+#include "expander/emoticon-path-provider.h"
 
 /**
  * @addtogroup Emoticons
@@ -28,20 +28,20 @@
  */
 
 /**
- * @class StaticEmoticonPathProvider
- * @short EmoticonPathProvider that returns path to static version of emoticon.
+ * @class AnimatedEmoticonPathProvider
+ * @short EmoticonPathProvider that returns path to animated version of emoticon.
  * @author Rafał 'Vogel' Malinowski
  */
-class StaticEmoticonPathProvider : public EmoticonPathProvider
+class AnimatedEmoticonPathProvider : public EmoticonPathProvider
 {
 public:
-	virtual ~StaticEmoticonPathProvider();
+	virtual ~AnimatedEmoticonPathProvider();
 
 	/**
-	 * @short Return path to static version of emoticon.
+	 * @short Return path to animated version of emoticon.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param emoticon emoticon to get path for
-	 * @return path to static file of emoticon
+	 * @return path to animated file of emoticon
 	 */
 	virtual QString emoticonPath(const Emoticon &emoticon);
 
@@ -51,4 +51,4 @@ public:
  * @}
  */
 
-#endif // STATIC_EMOTICON_PATH_PROVIDER_H
+#endif // ANIMATED_EMOTICON_PATH_PROVIDER_H

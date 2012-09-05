@@ -17,38 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ANIMATED_EMOTICON_PATH_PROVIDER_H
-#define ANIMATED_EMOTICON_PATH_PROVIDER_H
+#ifndef GADU_EMOTICON_THEME_LOADER_H
+#define GADU_EMOTICON_THEME_LOADER_H
 
-#include "emoticon-path-provider.h"
+#include <QtCore/QVector>
 
-/**
- * @addtogroup Emoticons
- * @{
- */
+#include "emoticon.h"
 
-/**
- * @class AnimatedEmoticonPathProvider
- * @short EmoticonPathProvider that returns path to animated version of emoticon.
- * @author Rafał 'Vogel' Malinowski
- */
-class AnimatedEmoticonPathProvider : public EmoticonPathProvider
+#include "theme/emoticon-theme-loader.h"
+
+class GaduEmoticonThemeLoader : public EmoticonThemeLoader
 {
-public:
-	virtual ~AnimatedEmoticonPathProvider();
+	QVector<Emoticon> Emoticons;
+	QVector<Emoticon> Aliases;
 
-	/**
-	 * @short Return path to animated version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticon emoticon to get path for
-	 * @return path to animated file of emoticon
-	 */
-	virtual QString emoticonPath(const Emoticon &emoticon);
+	bool validGaduGaduEmoticonDirectory(const QString &dir);
+	void loadEmoticons(const QString &path);
+
+public:
+	virtual ~GaduEmoticonThemeLoader() {}
+
+	virtual EmoticonTheme loadEmoticonTheme(const QString &path);
 
 };
 
-/**
- * @}
- */
-
-#endif // ANIMATED_EMOTICON_PATH_PROVIDER_H
+#endif // GADU_EMOTICON_THEME_LOADER_H

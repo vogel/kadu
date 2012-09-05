@@ -31,7 +31,7 @@
 
 #include "misc/misc.h"
 
-#include "emoticon-prefix-tree.h"
+#include "walker/emoticon-prefix-tree.h"
 
 #include "emoticon-walker.h"
 

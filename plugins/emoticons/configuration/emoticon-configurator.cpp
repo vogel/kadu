@@ -19,11 +19,11 @@
 
 #include "configuration/configuration-file.h"
 
-#include "emoticon-configuration.h"
-#include "emoticon-expander-dom-visitor-provider.h"
-#include "emoticon-theme-manager.h"
-#include "gadu-emoticon-theme-loader.h"
-#include "insert-emoticon-action.h"
+#include "configuration/emoticon-configuration.h"
+#include "expander/emoticon-expander-dom-visitor-provider.h"
+#include "gui/insert-emoticon-action.h"
+#include "theme/emoticon-theme-manager.h"
+#include "theme/gadu-emoticon-theme-loader.h"
 
 #include "emoticon-configurator.h"
 

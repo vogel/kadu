@@ -24,8 +24,8 @@
 
 #include "themes/theme.h"
 
-#include "emoticon-theme.h"
-#include "gadu-emoticon-parser.h"
+#include "theme/emoticon-theme.h"
+#include "theme/gadu-emoticon-parser.h"
 
 #include "gadu-emoticon-theme-loader.h"
 

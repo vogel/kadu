@@ -23,8 +23,6 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 
-#include "emoticon-theme-manager.h"
-
 #include "emoticons-configuration-ui-handler.h"
 
 EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :

@@ -22,13 +22,13 @@
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 
-#include "emoticon-configurator.h"
-#include "emoticon-expander-dom-visitor-provider.h"
-#include "emoticon-theme-manager.h"
-#include "emoticons-configuration-ui-handler.h"
+#include "configuration/emoticon-configurator.h"
+#include "expander/emoticon-expander-dom-visitor-provider.h"
+#include "theme/emoticon-theme-manager.h"
+#include "gui/emoticons-configuration-ui-handler.h"
+#include "gui/insert-emoticon-action.h"
 
 #include "emoticons-plugin.h"
-#include "insert-emoticon-action.h"
 
 EmoticonsPlugin::EmoticonsPlugin(QObject *parent) :
 		QObject(parent)

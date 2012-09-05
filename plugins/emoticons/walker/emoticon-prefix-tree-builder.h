@@ -17,40 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc.h"
+#ifndef EMOTICON_PREFIX_TREE_BUILDER_H
+#define EMOTICON_PREFIX_TREE_BUILDER_H
 
-#include "emoticon-prefix-tree.h"
+#include <QtCore/QScopedPointer>
 
-#include "emoticon-prefix-tree-builder.h"
+#include "walker/emoticon-prefix-tree.h"
 
-EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() :
-		Root(new EmoticonPrefixTree())
+class QChar;
+
+class EmoticonPrefixTreeBuilder
 {
-}
+	QScopedPointer<EmoticonPrefixTree> Root;
 
-void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
-{
-	Q_ASSERT(Root);
+public:
+	EmoticonPrefixTreeBuilder();
 
-	QString text = emoticon.text().toLower();
-	unsigned int length = text.length();
+	void addEmoticon(const Emoticon &emoticon);
 
-	EmoticonPrefixTree *node = Root.data();
-	for (unsigned int i = 0; i < length; i++)
-	{
-		QChar c = extractLetter(text.at(i));
+	EmoticonPrefixTree * tree();
 
-		EmoticonPrefixTree *child = node->child(c);
-		if (!child)
-			child = node->createChild(c);
-		node = child;
-	}
+};
 
-	if (node->nodeEmoticon().isNull())
-		node->setNodeEmoticon(emoticon);
-}
-
-EmoticonPrefixTree * EmoticonPrefixTreeBuilder::tree()
-{
-	return Root.take();
-}
+#endif // EMOTICON_PREFIX_TREE_BUILDER_H

@@ -23,8 +23,8 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QWeakPointer>
 
-#include "emoticon-theme-manager.h"
-#include "emoticon-configuration.h"
+#include "theme/emoticon-theme-manager.h"
+#include "configuration/emoticon-configuration.h"
 
 #include "configuration/configuration-holder.h"
 
