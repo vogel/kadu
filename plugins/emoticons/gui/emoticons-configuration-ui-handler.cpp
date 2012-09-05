@@ -59,7 +59,6 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 void EmoticonsConfigurationUiHandler::emoticonThemeSelected(int index)
 {
 	EmoticonsStyleComboBox.data()->setEnabled(index != 0);
-	EmoticonsScalingComboBox.data()->setEnabled(index != 0);
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -69,7 +68,6 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 
 	EmoticonsStyleComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsStyle"));
 	EmoticonsThemeComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
-	EmoticonsScalingComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsScaling"));
 	connect(EmoticonsThemeComboBox.data(), SIGNAL(currentIndexChanged(int)), this, SLOT(emoticonThemeSelected(int)));
 
 	updateEmoticonThemes();

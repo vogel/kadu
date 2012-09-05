@@ -12,12 +12,6 @@
 					<item value="2" caption="Animated" />
 					<item value="1" caption="Static" />
 				</combo-box>
-				<combo-box caption="Emoticons window style" config-section="Chat" config-item="EmoticonsScaling" id="emoticonsScaling"
-					tool-tip="Choose the way emoticons are displayed in the emoticons window" >
-					<item value="3" caption="All Emoticons Of The Same Size" />
-					<item value="1" caption="Only Static Emoticons Of The Same Size" />
-					<item value="0" caption="Every Emoticon Of Original Size" />
-				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
 			</group-box>

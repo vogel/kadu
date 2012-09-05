@@ -33,8 +33,6 @@
 
 #include "configuration/configuration-file.h"
 
-#include "emoticons.h"
-
 #include "emoticon-selector-button.h"
 
 EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, const QString &anim_path, const QString &static_path, QWidget *parent) :
@@ -44,8 +42,6 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, c
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);
-	if (((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingStatic) && (p.height() > 18))
-		p = p.scaledToHeight(18, Qt::SmoothTransformation);
 	setPixmap(p);
 	setMouseTracking(true);
 	setMargin(4);
@@ -84,8 +80,6 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 	QMovie *movie = new QMovie(this);
 	movie->setFileName(parent->AnimPath);
 	setMovie(movie);
-	if((EmoticonsScaling)config_file.readNumEntry("Chat","EmoticonsScaling") & EmoticonsScalingAnimated)
-		movie->setScaledSize(parent->pixmap()->size());
 	movie->start();
 
 	// center on parent

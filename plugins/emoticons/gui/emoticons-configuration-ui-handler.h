@@ -32,7 +32,6 @@ class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 	QWeakPointer<ConfigurationWidget> Widget;
 	QWeakPointer<ConfigComboBox> EmoticonsStyleComboBox;
 	QWeakPointer<ConfigComboBox> EmoticonsThemeComboBox;
-	QWeakPointer<ConfigComboBox> EmoticonsScalingComboBox;
 
 private slots:
 	void updateEmoticonThemes();

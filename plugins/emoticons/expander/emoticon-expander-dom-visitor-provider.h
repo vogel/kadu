@@ -27,7 +27,6 @@
 
 #include "configuration/emoticon-configuration.h"
 #include "walker/emoticon-prefix-tree.h"
-#include "emoticons.h"
 
 #include "dom/dom-visitor-provider.h"
 
