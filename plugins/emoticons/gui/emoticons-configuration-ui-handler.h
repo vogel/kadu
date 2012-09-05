@@ -24,18 +24,19 @@
 
 #include "gui/windows/main-configuration-window.h"
 
+class ConfigPathListEdit;
+
 class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
 	QWeakPointer<ConfigurationWidget> Widget;
-	QWeakPointer<ConfigComboBox> EmoticonsStyleComboBox;
 	QWeakPointer<ConfigComboBox> EmoticonsThemeComboBox;
+	QWeakPointer<ConfigPathListEdit> EmoticonsThemesPathListEdit;
 
 private slots:
 	void updateEmoticonThemes();
-	void emoticonThemeSelected(int index);
 
 public:
 	explicit EmoticonsConfigurationUiHandler(QObject *parent = 0);

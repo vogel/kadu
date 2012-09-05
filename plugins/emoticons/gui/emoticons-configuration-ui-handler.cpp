@@ -19,7 +19,9 @@
 
 #include <QtGui/QApplication>
 
+#include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
 
@@ -36,11 +38,10 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!Widget)
+	if (!EmoticonsThemeComboBox || !EmoticonsThemesPathListEdit)
 		return;
 
-	ConfigComboBox *emoticonsThemes = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
-	ThemeManager.data()->loadThemes((static_cast<PathListEdit *>(Widget.data()->widgetById("emoticonsPaths")))->pathList());
+	ThemeManager.data()->loadThemes(EmoticonsThemesPathListEdit.data()->pathList());
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 
@@ -52,23 +53,23 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
 	}
 
-	emoticonsThemes->setItems(values, captions);
-	emoticonsThemes->setCurrentItem(ThemeManager.data()->currentTheme().name());
-}
-
-void EmoticonsConfigurationUiHandler::emoticonThemeSelected(int index)
-{
-	EmoticonsStyleComboBox.data()->setEnabled(index != 0);
+	EmoticonsThemeComboBox.data()->setItems(values, captions);
+	EmoticonsThemeComboBox.data()->setCurrentItem(ThemeManager.data()->currentTheme().name());
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	Widget = mainConfigurationWindow->widget();
-	connect(Widget.data()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(updateEmoticonThemes()));
 
-	EmoticonsStyleComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsStyle"));
 	EmoticonsThemeComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
-	connect(EmoticonsThemeComboBox.data(), SIGNAL(currentIndexChanged(int)), this, SLOT(emoticonThemeSelected(int)));
+	EmoticonsThemesPathListEdit = static_cast<ConfigPathListEdit *>(Widget.data()->widgetById("emoticonsPaths"));
+
+	QWidget *enableWidget = Widget.data()->widgetById("enableEmoticons");
+	connect(enableWidget, SIGNAL(toggled(bool)), Widget.data()->widgetById("emoticonsStyle"), SLOT(setEnabled(bool)));
+	connect(enableWidget, SIGNAL(toggled(bool)), EmoticonsThemeComboBox.data(), SLOT(setEnabled(bool)));
+	connect(enableWidget, SIGNAL(toggled(bool)), EmoticonsThemesPathListEdit.data(), SLOT(setEnabled(bool)));
+
+	connect(EmoticonsThemesPathListEdit.data(), SIGNAL(changed()), this, SLOT(updateEmoticonThemes()));
 
 	updateEmoticonThemes();
 }

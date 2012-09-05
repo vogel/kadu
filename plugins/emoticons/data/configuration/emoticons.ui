@@ -5,6 +5,7 @@
 
 		<tab name="Look">
 			<group-box name="Emoticons">
+				<check-box caption="Enable emoticons" config-section="Chat" config-item="EnableEmoticons" id="enableEmoticons" />
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					tool-tip="Choose emoticons theme" />
 				<combo-box caption="Version" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"

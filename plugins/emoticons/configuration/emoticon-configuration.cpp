@@ -20,22 +20,34 @@
 #include "emoticon-configuration.h"
 
 EmoticonConfiguration::EmoticonConfiguration() :
-		Animated(true)
+		Enabled(true), Animated(true)
 {
 }
 
 EmoticonConfiguration::EmoticonConfiguration(const EmoticonConfiguration &copyMe)
 {
+	Enabled = copyMe.Enabled;
 	Emoticons = copyMe.Emoticons;
 	Animated = copyMe.Animated;
 }
 
 EmoticonConfiguration & EmoticonConfiguration::operator = (const EmoticonConfiguration &copyMe)
 {
+	Enabled = copyMe.Enabled;
 	Emoticons = copyMe.Emoticons;
 	Animated = copyMe.Animated;
 
 	return *this;
+}
+
+void EmoticonConfiguration::setEnabled(bool enabled)
+{
+	Enabled = enabled;
+}
+
+bool EmoticonConfiguration::enabled() const
+{
+	return Enabled;
 }
 
 void EmoticonConfiguration::setEmoticonTheme(const EmoticonTheme &emoticonTheme)

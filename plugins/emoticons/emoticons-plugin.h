@@ -35,11 +35,8 @@ class EmoticonsPlugin : public QObject, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	QScopedPointer<EmoticonsConfigurationUiHandler> ConfigurationUiHandler;
-
 	QScopedPointer<EmoticonExpanderDomVisitorProvider> ExpanderDomVisitorProvider;
-
 	QScopedPointer<InsertEmoticonAction> InsertAction;
-
 	QScopedPointer<EmoticonConfigurator> Configurator;
 
 	void registerConfigurationUi();

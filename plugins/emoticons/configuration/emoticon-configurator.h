@@ -36,11 +36,12 @@ class EmoticonConfigurator : public ConfigurationHolder
 	Q_OBJECT
 
 	QString LastLoadedThemeName;
+	EmoticonTheme LastTheme;
 	EmoticonConfiguration Configuration;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	QWeakPointer<InsertEmoticonAction> InsertAction;
-	QWeakPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
+	InsertEmoticonAction *InsertAction;
+	EmoticonExpanderDomVisitorProvider *EmoticonExpanderProvider;
 
 	void createDefaultConfiguration();
 

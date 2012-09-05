@@ -45,36 +45,22 @@ void InsertEmoticonAction::actionInstanceCreated(Action *action)
 {
 	ActionDescription::actionInstanceCreated(action);
 
-	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
-	{
-		action->setToolTip(tr("Insert emoticon - enable in configuration"));
-		action->setEnabled(false);
-	}
-
+	updateActionState(action);
 }
 
-void InsertEmoticonAction::configurationUpdated()
+void InsertEmoticonAction::updateActionState(Action *action)
 {
-	ActionDescription::configurationUpdated();
+	ActionDescription::updateActionState(action);
 
-	QString toolTip;
-	bool enabled;
-
-	if (config_file.readEntry("Chat","EmoticonsTheme").trimmed().isEmpty())
+	if (Configuration.enabled())
 	{
-		toolTip =  tr("Insert emoticon - enable in configuration");
-		enabled = false;
+		action->setToolTip(tr("Insert emoticon"));
+		action->setEnabled(true);
 	}
 	else
 	{
-		toolTip = tr("Insert emoticon");
-		enabled = true;
-	}
-
- 	foreach (Action *action, actions())
-	{
-		action->setToolTip(toolTip);
-		action->setEnabled(enabled);
+		action->setToolTip(tr("Insert emoticon - enable in configuration"));
+		action->setEnabled(false);
 	}
 }
 
@@ -90,15 +76,18 @@ void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 	if (widgets.isEmpty())
 		return;
 
-	if (Emoticons.isEmpty())
+	if (Configuration.emoticonTheme().emoticons().isEmpty())
 		return;
 
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(Emoticons, widgets.at(widgets.size() - 1));
+	EmoticonSelector *emoticonSelector = new EmoticonSelector(Configuration.emoticonTheme().emoticons(), widgets.at(widgets.size() - 1));
 	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), chatEditBox, SLOT(insertPlainText(QString)));
 	emoticonSelector->show();
 }
 
 void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	Emoticons = configuration.emoticonTheme().emoticons();
+	Configuration = configuration;
+
+	foreach (Action *action, actions())
+		updateActionState(action);
 }

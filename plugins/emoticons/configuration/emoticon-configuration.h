@@ -26,6 +26,7 @@
 
 class EmoticonConfiguration
 {
+	bool Enabled;
 	EmoticonTheme Emoticons;
 	bool Animated;
 
@@ -34,6 +35,9 @@ public:
 	EmoticonConfiguration(const EmoticonConfiguration &copyMe);
 
 	EmoticonConfiguration & operator = (const EmoticonConfiguration &copyMe);
+
+	void setEnabled(bool enabled);
+	bool enabled() const;
 
 	void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
 	EmoticonTheme emoticonTheme() const;

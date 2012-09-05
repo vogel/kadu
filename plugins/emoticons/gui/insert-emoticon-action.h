@@ -22,19 +22,19 @@
 
 #include "gui/actions/action-description.h"
 
-#include "emoticon.h"
+#include "configuration/emoticon-configuration.h"
 
-class EmoticonConfiguration;
+#include "emoticon.h"
 
 class InsertEmoticonAction : public ActionDescription
 {
 	Q_OBJECT
 
-	QVector<Emoticon> Emoticons;
+	EmoticonConfiguration Configuration;
 
 protected:
 	virtual void actionInstanceCreated(Action *action);
-	virtual void configurationUpdated();
+	virtual void updateActionState(Action *action);
 
 public:
 	explicit InsertEmoticonAction(QObject *parent = 0);
