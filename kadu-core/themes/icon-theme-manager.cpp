@@ -41,7 +41,7 @@ QString IconThemeManager::defaultTheme()
 }
 
 IconThemeManager::IconThemeManager(QObject *parent) :
-		ThemeManager(false, parent)
+		ThemeManager(parent)
 {
 }
 

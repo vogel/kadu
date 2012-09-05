@@ -25,8 +25,8 @@
 
 #include "theme-manager.h"
 
-ThemeManager::ThemeManager(bool includeNone, QObject *parent) :
-		QObject(parent), IncludeNone(includeNone)
+ThemeManager::ThemeManager(QObject *parent) :
+		QObject(parent)
 {
 }
 
@@ -50,10 +50,6 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath) const
 void ThemeManager::loadThemes(const QStringList &customThemePaths)
 {
 	Themes.clear();
-
-	(void)QT_TRANSLATE_NOOP("@default", "None");
-	if (IncludeNone)
-		Themes.insert("None", Theme(QString(), "None"));
 
 	// Prefer custom theme paths.
 	QStringList themePaths = customThemePaths + defaultThemePaths();
@@ -87,7 +83,7 @@ void ThemeManager::setCurrentTheme(const QString &themeName)
 	if (Themes.contains(fixedName))
 		CurrentThemeName = fixedName;
 	else
-		CurrentThemeName = IncludeNone ? "None" : defaultThemeName();
+		CurrentThemeName = defaultThemeName();
 }
 
 Theme ThemeManager::currentTheme() const

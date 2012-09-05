@@ -50,7 +50,7 @@ bool EmoticonThemeManager::containsEmotsTxt(const QString &dir)
 }
 
 EmoticonThemeManager::EmoticonThemeManager(QObject *parent) :
-		ThemeManager(true, parent)
+		ThemeManager(parent)
 {
 }
 

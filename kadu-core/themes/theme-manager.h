@@ -35,7 +35,6 @@ class ThemeManager : public QObject
 {
 	Q_OBJECT
 
-	bool IncludeNone;
 	QMap<QString, Theme> Themes;
 	QString CurrentThemeName;
 
@@ -47,7 +46,7 @@ protected:
 	virtual bool isValidThemePath(const QString &themePath) const = 0;
 
 public:
-	explicit ThemeManager(bool includeNone, QObject *parent = 0);
+	explicit ThemeManager(QObject *parent = 0);
 	virtual ~ThemeManager();
 
 	void loadThemes(const QStringList &customThemePaths);
