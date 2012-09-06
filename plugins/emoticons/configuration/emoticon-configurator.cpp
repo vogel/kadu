@@ -51,7 +51,7 @@ void EmoticonConfigurator::configure()
 void EmoticonConfigurator::createDefaultConfiguration()
 {
 	config_file.addVariable("Chat", "EmoticonsPaths", QString());
-	config_file.addVariable("Chat", "EmoticonsStyle", 2);
+	config_file.addVariable("Chat", "EnableEmoticonAnimations", 1 != config_file.readNumEntry("Chat", "EmoticonsStyle", 2));
 	config_file.addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
 	config_file.addVariable("Chat", "EnableEmoticons", config_file.readEntry("Chat", "EmoticonsTheme") != "None");
 }
@@ -63,8 +63,8 @@ void EmoticonConfigurator::configurationUpdated()
 
 	ThemeManager->loadThemes(config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts));
 
-	Configuration.setEnabled(config_file.readBoolEntry("Chat", "EnableEmoticons"));
-	Configuration.setAnimated(1 != config_file.readNumEntry("Chat", "EmoticonsStyle", 2));
+	Configuration.setEnabled(config_file.readBoolEntry("Chat", "EnableEmoticons", true));
+	Configuration.setAnimate(config_file.readBoolEntry("Chat", "EnableEmoticonAnimations", true));
 
 	if (Configuration.enabled())
 	{

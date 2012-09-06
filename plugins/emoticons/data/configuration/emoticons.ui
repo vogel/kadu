@@ -6,13 +6,9 @@
 		<tab name="Look">
 			<group-box name="Emoticons">
 				<check-box caption="Enable emoticons" config-section="Chat" config-item="EnableEmoticons" id="enableEmoticons" />
+				<check-box caption="Animate" config-section="Chat" config-item="EnableEmoticonAnimations" id="enableEmoticonAnimations" />
 				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
 					tool-tip="Choose emoticons theme" />
-				<combo-box caption="Version" config-section="Chat" config-item="EmoticonsStyle" id="emoticonsStyle"
-					tool-tip="Choose emoticons style" >
-					<item value="2" caption="Animated" />
-					<item value="1" caption="Static" />
-				</combo-box>
 				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
 					tool-tip="Define emoticons paths" />
 			</group-box>

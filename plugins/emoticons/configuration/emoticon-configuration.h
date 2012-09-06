@@ -27,8 +27,8 @@
 class EmoticonConfiguration
 {
 	bool Enabled;
+	bool Animate;
 	EmoticonTheme Emoticons;
-	bool Animated;
 
 public:
 	EmoticonConfiguration();
@@ -39,11 +39,11 @@ public:
 	void setEnabled(bool enabled);
 	bool enabled() const;
 
+	void setAnimate(bool animate);
+	bool animate() const;
+
 	void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
 	EmoticonTheme emoticonTheme() const;
-
-	void setAnimated(bool animated);
-	bool animated() const;
 
 };
 

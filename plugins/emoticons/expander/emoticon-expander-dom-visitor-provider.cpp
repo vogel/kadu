@@ -43,7 +43,7 @@ void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
 		return;
 	}
 
-	EmoticonPathProvider *emoticonPathProvider = Configuration.animated()
+	EmoticonPathProvider *emoticonPathProvider = Configuration.animate()
 			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
 			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
 	LinksVisitor.reset(new IgnoreLinksDomVisitor(new EmoticonExpander(Tree.data(), emoticonPathProvider)));
