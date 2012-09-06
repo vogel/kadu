@@ -1,44 +1,69 @@
 include (FindPkgConfig)
 
 if (ENABLE_DEVELOPER_BUILD AND NOT MSVC AND NOT APPLE)
-	option (FAST_LINKING "Enable for linking optimized for low RAM (works best with GCC and GNU ld)" ON)
+	set (FAST_LINKING_DEFAULT ON)
 else ()
-	option (FAST_LINKING "Enable for linking optimized for low RAM (works best with GCC and GNU ld)" OFF)
+	set (FAST_LINKING_DEFAULT OFF)
 endif ()
+option (FAST_LINKING "Enable for linking optimized for low RAM (works best with GCC and GNU ld)" "${FAST_LINKING_DEFAULT}")
 
 if (FAST_LINKING)
-	message (STATUS "Fast linking enabled")
+	message (STATUS "Fast (re)linking enabled")
+else ()
+	message (STATUS "Fast (re)linking disabled")
 endif ()
 
 if (NOT WIN32)
 	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+endif ()
 
-	if (UNIX AND NOT APPLE)
-		option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
+if (UNIX AND NOT APPLE)
+	option (USE_X11_XFIXES "Use X11 XFixes extension (Desktop Linux)" ON)
 
-		pkg_search_module (INDICATEQT indicate-qt)
-		if (INDICATEQT_FOUND)
-			message (STATUS "libindicate-qt devel found. Enabling Ayatana support")
-			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" ON)
+	if (NOT DEFINED WITH_LIBINDICATE_QT OR WITH_LIBINDICATE_QT)
+		pkg_search_module (LIBINDICATE_QT indicate-qt)
+	endif ()
+
+	option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support through libindicate-qt" "${LIBINDICATE_QT_FOUND}")
+
+	if (WITH_LIBINDICATE_QT)
+		if (NOT LIBINDICATE_QT_FOUND)
+			message (SEND_ERROR "Could NOT find libindicate-qt")
 		else ()
-			message (STATUS "libindicate-qt devel NOT FOUND. Disabling Ayatana support")
-			option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support trough libindicate-qt" OFF)
+			message (STATUS "Found libindicate-qt. Enabling Ayatana support")
+			# We need to link core to libindicate-qt so that indicator_docking
+			# doesn't crash at unloading. And it crashes mainly because dbus-glib
+			# doesn't support being dlclose()'d, so there is no better workaround.
+			link_directories (${LIBINDICATE_QT_LIBRARY_DIRS})
+			add_definitions (${LIBINDICATE_QT_CFLAGS_OTHER})
+			include_directories (${LIBINDICATE_QT_INCLUDE_DIRS})
+			list (APPEND ADDITIONAL_LIBRARIES ${LIBINDICATE_QT_LIBRARIES})
 		endif ()
+	else ()
+		message (STATUS "Could NOT find libindicate-qt. Disabling Ayatana support")
 	endif ()
 endif ()
 
-if (NOT NETWORK_IMPLEMENTATION)
+if (NOT DEFINED NETWORK_IMPLEMENTATION OR "${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 	find_package (QNtrack 010)
-	if (QNTRACK_FOUND)
-		set (NETWORK_IMPLEMENTATION "ntrack" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
-		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
-	else ()
-		set (NETWORK_IMPLEMENTATION "Qt" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
-		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
-	endif ()
-elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
-	find_package (QNtrack 010 REQUIRED)
 endif ()
+
+if (NOT DEFINED NETWORK_IMPLEMENTATION)
+	if (QNTRACK_FOUND)
+		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: ntrack")
+		set (NETWORK_IMPLEMENTATION "ntrack")
+	else ()
+		message (STATUS "No NETWORK_IMPLEMENTATION defined. Autodetected implementation: Qt")
+		set (NETWORK_IMPLEMENTATION "Qt")
+	endif ()
+endif ()
+
+set (NETWORK_IMPLEMENTATION "${NETWORK_IMPLEMENTATION}" CACHE STRING "Select network-aware implementation (Qt/ntrack/dummy)" FORCE)
+
+if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
+	list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
+endif ()
+# The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
 
 set (kadu_SRCS
 	activate.cpp
@@ -114,8 +139,6 @@ set (kadu_SUBDIRS
 
 qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
-set (ADDITIONAL_LIBRARIES "")
-
 if (WIN32)
 	if (NOT WIN_QCA_DIR)
 		message (SEND_ERROR "Pass path to libqca2 -DWIN_QCA_DIR=path")
@@ -138,20 +161,6 @@ add_definitions (${QCA2_CFLAGS_OTHER})
 include_directories (${QCA2_INCLUDE_DIRS})
 
 if (UNIX AND NOT APPLE)
-	if (WITH_LIBINDICATE_QT)
-		# We need to link core to libindicate-qt so that indicator_docking
-		# doesn't crash at unloading. And it crashes mainly because dbus-glib
-		# doesn't support being dlclose()'d, so there is no better workaround.
-		link_directories (${INDICATEQT_LIBRARY_DIRS})
-		add_definitions (${INDICATEQT_CFLAGS_OTHER})
-		include_directories (${INDICATEQT_INCLUDE_DIRS})
-		list (APPEND ADDITIONAL_LIBRARIES ${INDICATEQT_LIBRARIES})
-	endif ()
-
-	if (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
-		list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
-	endif ()
-
 	include (FindX11)
 	if (X11_FOUND)
 		message (STATUS "Found X11 libraries: ${X11_X11_LIB}")
