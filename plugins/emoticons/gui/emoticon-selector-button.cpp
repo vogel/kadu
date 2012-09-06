@@ -42,7 +42,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, c
 		AnimPath = StaticPath;
 
 	QPixmap p(StaticPath);
-	setPixmap(p);
+	setPixmap(p.scaledToHeight(18, Qt::SmoothTransformation));
 	setMouseTracking(true);
 	setMargin(4);
 	setFixedSize(sizeHint());
