@@ -22,13 +22,13 @@ set (network_MOC_SRCS
 
 set (network_INCLUDES "")
 
-if (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
+if ("${NETWORK_IMPLEMENTATION}" STREQUAL "Qt")
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-qt.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerQt)
 
 	list (APPEND network_SRCS network-manager-qt.cpp)
 	list (APPEND network_MOC_SRCS network-manager-qt.h)
-elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
+elseif ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-ntrack.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerNTrack)
 
@@ -36,18 +36,15 @@ elseif (${NETWORK_IMPLEMENTATION} STREQUAL "ntrack")
 
 	list (APPEND network_SRCS network-manager-ntrack.cpp)
 	list (APPEND network_MOC_SRCS network-manager-ntrack.h)
-else (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
-	if (NOT ${NETWORK_IMPLEMENTATION} STREQUAL "dummy")
-		message (STATUS "Unknown ${NETWORK_IMPLEMENTATION} network implementation")
-		set (NETWORK_IMPLEMENTATION "dummy")
-	endif (NOT ${NETWORK_IMPLEMENTATION} STREQUAL "dummy")
-
+elseif ("${NETWORK_IMPLEMENTATION}" STREQUAL "dummy")
 	set (NETWORK_IMPLEMENTATION_INCLUDE network-manager-dummy.h)
 	set (NETWORK_IMPLEMENTATION_CLASS_NAME NetworkManagerDummy)
 
 	list (APPEND network_SRCS network-manager-dummy.cpp)
 	list (APPEND network_MOC_SRCS network-manager-dummy.h)
-endif (${NETWORK_IMPLEMENTATION} STREQUAL "Qt")
+else ("${NETWORK_IMPLEMENTATION}" STREQUAL "Qt")
+	message (FATAL_ERROR "Unknown ${NETWORK_IMPLEMENTATION} network implementation")
+endif ("${NETWORK_IMPLEMENTATION}" STREQUAL "Qt")
 
 message (STATUS "Using ${NETWORK_IMPLEMENTATION} network implementation")
 

@@ -23,16 +23,16 @@ if (NOT WITH_LIBINDICATE_QT)
 	message (SEND_ERROR "You need to compile core with -DWITH_LIBINDICATE_QT=ON. Aborting. If you are compiling outside of Kadu core sources, make sure it is compiled with libindicate-qt support and redefine the required macro here.")
 endif (NOT WITH_LIBINDICATE_QT)
 
-pkg_search_module (INDICATEQT REQUIRED indicate-qt)
+pkg_search_module (LIBINDICATE_QT REQUIRED indicate-qt)
 
-link_directories (${INDICATEQT_LIBRARY_DIRS})
-add_definitions (${INDICATEQT_CFLAGS_OTHER})
-include_directories (${INDICATEQT_INCLUDE_DIRS})
+link_directories (${LIBINDICATE_QT_LIBRARY_DIRS})
+add_definitions (${LIBINDICATE_QT_CFLAGS_OTHER})
+include_directories (${LIBINDICATE_QT_INCLUDE_DIRS})
 
 kadu_plugin (indicator_docking
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
-	PLUGIN_LIBRARIES ${INDICATEQT_LIBRARIES}
+	PLUGIN_LIBRARIES ${LIBINDICATE_QT_LIBRARIES}
 	PLUGIN_DEPENDENCIES docking
 )
 
