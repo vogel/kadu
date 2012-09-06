@@ -35,13 +35,10 @@
 
 #include "emoticon-selector-button.h"
 
-EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, const QString &anim_path, const QString &static_path, QWidget *parent) :
-		QLabel(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path)
+EmoticonSelectorButton::EmoticonSelectorButton(const Emoticon &emoticon, QWidget *parent) :
+		QLabel(parent), DisplayEmoticon(emoticon)
 {
-	if (config_file.readNumEntry("Chat","EmoticonsStyle") != 2) // TODO: use some providers
-		AnimPath = StaticPath;
-
-	QPixmap p(StaticPath);
+	QPixmap p(DisplayEmoticon.staticFilePath());
 	setPixmap(p.scaledToHeight(18, Qt::SmoothTransformation));
 	setMouseTracking(true);
 	setMargin(4);
@@ -50,7 +47,7 @@ EmoticonSelectorButton::EmoticonSelectorButton(const QString &emoticon_string, c
 
 void EmoticonSelectorButton::buttonClicked()
 {
-	emit clicked(EmoticonString);
+	emit clicked(DisplayEmoticon.text());
 }
 
 void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
@@ -68,7 +65,7 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 	setMinimumSize(parent->sizeHint());
 	setAlignment(Qt::AlignCenter);
 	setMouseTracking(true);
-	setToolTip(parent->EmoticonString);
+	setToolTip(parent->DisplayEmoticon.text());
 
 	QString style =
 		"QLabel {"
@@ -78,7 +75,7 @@ EmoticonSelectorButton::MovieViewer::MovieViewer(EmoticonSelectorButton *parent)
 	setStyleSheet(style);
 
 	QMovie *movie = new QMovie(this);
-	movie->setFileName(parent->AnimPath);
+	movie->setFileName(parent->DisplayEmoticon.animatedFilePath());
 	setMovie(movie);
 	movie->start();
 

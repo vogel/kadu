@@ -33,13 +33,13 @@
 
 #include <QtGui/QLabel>
 
+#include "emoticon.h"
+
 class EmoticonSelectorButton : public QLabel
 {
 	Q_OBJECT
 
-	QString EmoticonString;
-	QString AnimPath;
-	QString StaticPath;
+	Emoticon DisplayEmoticon;
 
 private slots:
 	void buttonClicked();
@@ -62,7 +62,7 @@ public:
 		\param static_path �cie�ka do statycznej emotikonki
 		\param anim_path �cie�ka do animowanej emotikonki
 	**/
-	EmoticonSelectorButton(const QString &emoticon_string, const QString &static_path, const QString &anim_path, QWidget *parent);
+	EmoticonSelectorButton(const Emoticon &emoticon, QWidget *parent);
 
 signals:
 	/**

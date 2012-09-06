@@ -72,8 +72,7 @@ void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QW
 	for (int i = 0; i < count; ++i)
 	{
 		const Emoticon &emoticon = emoticons.at(i);
-		btns[i] = new EmoticonSelectorButton(emoticon.text(), emoticon.animatedFilePath(), emoticon.staticFilePath(),
-			mainwidget);
+		btns[i] = new EmoticonSelectorButton(emoticon, mainwidget);
 		btn_width = btns[i]->sizeHint().width();
 
 		if (cur_width + btn_width >= selector_width)
