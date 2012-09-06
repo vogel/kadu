@@ -40,12 +40,12 @@ set (CONFIGURATION_FILES
 	data/configuration/screenshot.ui
 )
 
-set (LIBRARIES "")
-
 if (UNIX AND NOT APPLE)
-	include (FindX11)
-	if (NOT X11_Xshape_FOUND)
-		message (SEND_ERROR "X11 Xshape extension NOT FOUND")
+	find_package (X11 REQUIRED COMPONENTS X11 Xext Xshape)
+	if (X11_Xshape_FOUND)
+		message (STATUS "Found required X11 libraries: ${X11_X11_LIB};${X11_Xext_LIB}")
+	else ()
+		message (SEND_ERROR "Could NOT find X11 Xshape")
 	endif ()
 
 	include_directories (${X11_INCLUDE_DIR})
