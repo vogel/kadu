@@ -14,15 +14,15 @@ kadu_api_directories (plugins/idle
 )
 
 if (UNIX AND NOT APPLE)
-	include (FindX11)
+	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xscreensaver)
 	if (X11_Xscreensaver_FOUND)
-		message (STATUS "Found X11 Screen Saver extension: ${X11_Xscreensaver_LIB}")
+		message (STATUS "Found required X11 libraries: ${X11_X11_LIB};${X11_Xscreensaver_LIB}")
 	else (X11_Xscreensaver_FOUND)
-		message (FATAL_ERROR "Could not find X11 Screen Saver extension")
+		message (SEND_ERROR "Could NOT find X11 XScrnSaver")
 	endif (X11_Xscreensaver_FOUND)
 
 	include_directories (${X11_INCLUDE_DIR})
-	set (LIBRARIES ${X11_Xscreensaver_LIB})
+	set (LIBRARIES ${X11_X11_LIB} ${X11_Xscreensaver_LIB})
 
 	set (SOURCES
 		idle-plugin.cpp

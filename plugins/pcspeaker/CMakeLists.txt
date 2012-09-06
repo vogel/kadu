@@ -25,9 +25,9 @@ set (MOC_SOURCES
 set (LIBRARIES "")
 
 if (UNIX AND NOT APPLE)
-	include (FindX11)
+	find_package (X11 REQUIRED COMPONENTS X11)
 	if (NOT X11_FOUND)
-		message (SEND_ERROR "X11 NOT FOUD")
+		message (SEND_ERROR "Could NOT find X11")
 	endif (NOT X11_FOUND)
 
 	include_directories (${X11_INCLUDE_DIR})
