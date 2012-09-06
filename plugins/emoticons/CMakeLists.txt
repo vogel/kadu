@@ -23,8 +23,9 @@ set (SOURCES
 	expander/static-emoticon-path-provider.cpp
 
 	gui/emoticons-configuration-ui-handler.cpp
-	gui/emoticon-selector-button.cpp
 	gui/emoticon-selector.cpp
+	gui/emoticon-selector-button.cpp
+	gui/emoticon-selector-button-popup.cpp
 	gui/insert-emoticon-action.cpp
 
 	theme/emoticon-theme.cpp
@@ -45,8 +46,9 @@ set (MOC_SOURCES
 
 	expander/emoticon-expander-dom-visitor-provider.h
 
-	gui/emoticon-selector-button.h
 	gui/emoticon-selector.h
+	gui/emoticon-selector-button.h
+	gui/emoticon-selector-button-popup.h
 	gui/emoticons-configuration-ui-handler.h
 	gui/insert-emoticon-action.h
 

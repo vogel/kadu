@@ -6,12 +6,11 @@
  * Copyright 2003, 2004 Tomasz Chiliński (chilek@chilan.com)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
- * Copyright 2008, 2009 Piotr Galiszewski (piotrgaliszewski@gmail.com)
+ * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotrgaliszewski@gmail.com)
  * Copyright 2003, 2005 Paweł Płuciennik (pawel_p@kadu.net)
  * Copyright 2003, 2004 Dariusz Jagodzik (mast3r@kadu.net)
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -28,32 +27,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EMOTICONS_SELECTOR_BUTTON_H
-#define EMOTICONS_SELECTOR_BUTTON_H
+#ifndef EMOTICON_SELECTOR_BUTTON_POPUP_H
+#define EMOTICON_SELECTOR_BUTTON_POPUP_H
 
 #include <QtGui/QLabel>
 
-#include "emoticon.h"
+class Emoticon;
 
-class EmoticonSelectorButton : public QLabel
+class EmoticonSelectorButtonPopup : public QLabel
 {
 	Q_OBJECT
 
-	Emoticon DisplayEmoticon;
-
-private slots:
-	void buttonClicked();
-
 protected:
 	void mouseMoveEvent(QMouseEvent *e);
+	void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit EmoticonSelectorButton(const Emoticon &emoticon, QWidget *parent = 0);
-	virtual ~EmoticonSelectorButton();
+	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, QWidget *parent = 0);
+	virtual ~EmoticonSelectorButtonPopup();
 
 signals:
-	void clicked(const QString &emoticonString);
+	void clicked();
 
 };
 
-#endif // EMOTICONS_SELECTOR_BUTTON_H
+#endif // EMOTICON_SELECTOR_BUTTON_POPUP_H
