@@ -38,6 +38,19 @@ class QChar;
 class Emoticon;
 class EmoticonPrefixTree;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonWalker
+ * @short Class used to find emoticons in text using EmoticonPrefixTree data structure.
+ *
+ * For each search new instance must be created. Then for each character a matchEmoticon() must be called.
+ * If some matched sequence of characters is equal to trigger text of any emoticon represented by EmoticonPrefixTree
+ * then this emoticon is returned.
+ */
 class EmoticonWalker
 {
 	EmoticonPrefixTree *Tree;
@@ -51,22 +64,91 @@ class EmoticonWalker
 	QList<EmoticonCandidate> Candidates;
 	bool PreviousWasLetter;
 
+	/**
+	 * @short Return true if given character can be a start of new emoticon sequence.
+	 * @param c checked character
+	 * @return true if given character can be a start of new emoticon sequence
+	 *
+	 * Emoticons can not start in the middle of word. This methods returns true if last character was not letter
+	 * or c is not letter. If boths are letters false is returned.
+	 */
 	bool possibleEmoticonStart(QChar c) const;
+
+	/**
+	 * @short Return true if given character can be a end of new emoticon sequence.
+	 * @param c checked character
+	 * @return true if given character can be a end of new emoticon sequence
+	 *
+	 * Emoticons can not end in the middle of word. This methods returns true if next character is not letter
+	 * or c is not letter. If boths are letters false is returned.
+	 */
 	bool possibleEmoticonEnd(QChar c, bool nextIsLetter) const;
 
+	/**
+	 * @short Adds empty candidate to list of match candidates
+	 */
 	void addEmptyCandidate();
-	EmoticonPrefixTree * findCandidateExpansion(int i, QChar c);
-	void expandCandidate(int i, EmoticonPrefixTree *expansion);
+
+	/**
+	 * @short Return tree node that expands given candidate by character c.
+	 * @param candidate candidate to check
+	 * @param c next character to expand
+	 * @return tree node that expands given candidate by character c or null
+	 */
+	EmoticonPrefixTree * findCandidateExpansion(const EmoticonCandidate &candidate, QChar c);
+
+	/**
+	 * @short Expand candidate to new tree node.
+	 * @param candidate candidate to expand
+	 * @param expandion new candidate tree node
+	 * @return expanded candidate
+	 */
+	EmoticonCandidate expandCandidate(const EmoticonCandidate &candidate, EmoticonPrefixTree *expansion);
+
+	/**
+	 * @short Remove candidate with given idnex.
+	 * @param i index of candidate to remove
+	 */
 	void removeCandidate(int i);
+
+	/**
+	 * @short Try to expand all candidates by a character.
+	 * @param c character to expand by
+	 *
+	 * This method check all candidates for possible expansion by c. If expansion is possible then it is done.
+	 * If not, then candidate is removed.
+	 */
 	void tryExpandAllCandidates(QChar c);
+
+	/**
+	 * @short Return emoticon with longest trigger text from matching candidates.
+	 * @return emoticon with longest trigger text from matching candidates
+	 */
 	Emoticon findLongestCandidate() const;
 
 public:
+	/**
+	 * @short Create new EmoticonWalker instance with given EmoticonPrefixTree.
+	 * @param tree EmoticonPrefixTree representation of emoticons to fidn
+	 */
 	explicit EmoticonWalker(EmoticonPrefixTree *tree);
 	~EmoticonWalker();
 
+	/**
+	 * @short Try to match emoticon to next character.
+	 * @param c next charater
+	 * @param nextIsLetter pass true if next character in sequence is letter
+	 * @return matched emoticon
+	 *
+	 * If sequence of characters ending with c is equal to trigger text of any emoticon represented by EmoticonPrefixTree
+	 * then this emoticon is returned.
+	 */
 	Emoticon matchEmoticon(QChar c, bool nextIsLetter);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_WALKER_Hs

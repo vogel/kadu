@@ -23,14 +23,34 @@
 class EmoticonTheme;
 class Theme;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonThemeLoader
+ * @short Interface for loading emoticon themes from local disc.
+ * @author Rafał 'Vogel' Malinowski
+ */
 class EmoticonThemeLoader
 {
 
 public:
 	virtual ~EmoticonThemeLoader() {}
 
+	/**
+	 * @short Load emoticon theme from given path.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param path path of file or directory to load emoticon theme from
+	 * @return loaded emoticon theme
+	 */
 	virtual EmoticonTheme loadEmoticonTheme(const QString &path) = 0;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_THEME_LOADER

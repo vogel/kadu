@@ -25,6 +25,19 @@
 
 #include "emoticon.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class GaduEmoticonParser
+ * @short This class parses one line from Gadu Gadu emoticon theme file: emots.txt.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * Use this class to parse one line  from Gadu Gadu emoticon theme file. If this line is valid, emoticon and all of
+ * its aliases will be returned by this class.
+ */
 class GaduEmoticonParser
 {
 	QString ThemePath;
@@ -44,11 +57,36 @@ class GaduEmoticonParser
 	QString getToIndex(int endIndexExclusive);
 
 public:
+	/**
+	 * @short Parse one line from Gadu Gadu emoticon theme file.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param themePath path of theme, used to construct absolute file paths of emoticons
+	 * @param emoticonLine one line in Gadu Gadu emoticon format
+	 */
 	GaduEmoticonParser(const QString &themePath, const QString &emoticonLine);
 
+	/**
+	 * @short Return parsed emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return parsed emoticon
+	 *
+	 * Returned emoticon can be null if line was in invalid format.
+	 */
 	Emoticon emoticon() const;
+
+	/**
+	 * @short Return parsed aliases.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return parsed aliases
+	 *
+	 * Returned aliases can be empty if line was in invalid format.
+	 */
 	QVector<Emoticon> aliases() const;
 
 };
+
+/**
+ * @}
+ */
 
 #endif // GADU_EMOTICON_PARSER_H

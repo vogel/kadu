@@ -37,15 +37,15 @@ EmoticonExpander::~EmoticonExpander()
 
 QDomText EmoticonExpander::insertEmoticon(QDomText textNode, const Emoticon &emoticon, int index)
 {
-	int emoticonLength = emoticon.text().length();
+	int emoticonLength = emoticon.triggerText().length();
 
 	QDomText afterEmoticon = textNode.splitText(index + emoticonLength);
 	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
 
 	QDomElement emoticonElement = textNode.ownerDocument().createElement("img");
-	emoticonElement.setAttribute("emoticon", emoticon.text());
-	emoticonElement.setAttribute("title", emoticon.text());
-	emoticonElement.setAttribute("alt", emoticon.text());
+	emoticonElement.setAttribute("emoticon", emoticon.triggerText());
+	emoticonElement.setAttribute("title", emoticon.triggerText());
+	emoticonElement.setAttribute("alt", emoticon.triggerText());
 	emoticonElement.setAttribute("src", "file:///" + PathProvider->emoticonPath(emoticon));
 	textNode.parentNode().insertBefore(emoticonElement, afterEmoticon);
 
@@ -72,7 +72,7 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 			continue;
 
 		// TODO: remove this dependency
-		int emoticonStart = i - emoticon.text().length() + 1;
+		int emoticonStart = i - emoticon.triggerText().length() + 1;
 		if (currentEmoticon.isNull() || currentEmoticonStart >= emoticonStart)
 		{
 			currentEmoticon = emoticon;

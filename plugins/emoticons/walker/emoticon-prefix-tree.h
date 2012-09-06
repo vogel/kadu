@@ -37,6 +37,18 @@
 
 #include "emoticon.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonPrefixTree
+ * @author Rafał 'Vogel' Malinowski
+ * @short Prefix tree build from emoticons trigger texts.
+ *
+ * Each tree can be a node in a super-tree and can contains sub-tree nodes.
+ */
 class EmoticonPrefixTree
 {
 	Emoticon NodeEmoticon;
@@ -46,14 +58,51 @@ public:
 	EmoticonPrefixTree();
 	~EmoticonPrefixTree();
 
+	/**
+	 * @short Return Emoticon assigned to this node.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return Emoticon assigned to this node
+	 */
 	Emoticon nodeEmoticon() const;
+
+	/**
+	 * @short Assign Emoticon to this node.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param emoticon new Emoticon to assign to this node
+	 */
 	void setNodeEmoticon(const Emoticon &emoticon);
 
+	/**
+	 * @short Return sub-nodes.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return subnodes
+	 */
 	QMap<QChar, EmoticonPrefixTree *> children() const;
 
+	/**
+	 * @short Return sub-node assigned to given next prefix character.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param c next prefix character
+	 * @return sub-node assigned to given next prefix character
+	 *
+	 * This method can return null value.
+	 */
 	EmoticonPrefixTree * child(QChar c);
+
+	/**
+	 * @short Return or create and return sub-node assigned to given next prefix character.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param c next prefix character
+	 * @return sub-node assigned to given next prefix character
+	 *
+	 * This method can not return null value.
+	 */
 	EmoticonPrefixTree * createChild(QChar c);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_PREFIX_TREE_H

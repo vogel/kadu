@@ -29,6 +29,16 @@ class EmoticonConfigurator;
 class EmoticonExpanderDomVisitorProvider;
 class InsertEmoticonAction;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonsPlugin
+ * @short Emoticons plugin initialization and finalization class.
+ * @author Rafał 'Vogel' Malinowski'
+ */
 class EmoticonsPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
@@ -59,5 +69,9 @@ public:
 	virtual void done();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICONS_PLUGIN_H

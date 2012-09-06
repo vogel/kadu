@@ -26,6 +26,15 @@
 
 class ConfigPathListEdit;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonsConfigurationUiHandler
+ * @short Handler of configuration UI for emotcions plugin.
+ */
 class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
@@ -45,5 +54,9 @@ public:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICONS_CONFIGURATION_UI_HANDLER_H

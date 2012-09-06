@@ -49,16 +49,11 @@ EmoticonSelectorButton::~EmoticonSelectorButton()
 {
 }
 
-void EmoticonSelectorButton::buttonClicked()
-{
-	emit clicked(DisplayEmoticon.text());
-}
-
 void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 {
 	QLabel::mouseMoveEvent(e);
 
 	EmoticonSelectorButtonPopup *popup = new EmoticonSelectorButtonPopup(DisplayEmoticon, PathProvider, this);
-	connect(popup, SIGNAL(clicked()), this, SLOT(buttonClicked()));
+	connect(popup, SIGNAL(clicked(Emoticon)), this, SIGNAL(clicked(Emoticon)));
 	popup->show();
 }

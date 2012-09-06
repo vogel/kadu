@@ -87,7 +87,7 @@ void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 
 	EmoticonSelector *emoticonSelector = new EmoticonSelector(Configuration.emoticonTheme().emoticons(), emoticonPathProvider,
 			widgets.at(widgets.size() - 1));
-	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), chatEditBox, SLOT(insertPlainText(QString)));
+	connect(emoticonSelector, SIGNAL(emoticonClicked(QString)), chatEditBox, SLOT(insertPlainText(QString)));
 	emoticonSelector->show();
 }
 

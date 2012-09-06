@@ -37,6 +37,15 @@
 
 class EmoticonPathProvider;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonSelectorButton
+ * @short Small widget displaying static version of emoticon on an EmoticonSelector.
+ */
 class EmoticonSelectorButton : public QLabel
 {
 	Q_OBJECT
@@ -44,19 +53,30 @@ class EmoticonSelectorButton : public QLabel
 	Emoticon DisplayEmoticon;
 	EmoticonPathProvider *PathProvider;
 
-private slots:
-	void buttonClicked();
-
 protected:
 	void mouseMoveEvent(QMouseEvent *e);
 
 public:
+	/**
+	 * @short Create new EmoticonSelectorButton widget.
+	 * @param emoticon emoticon to display
+	 * @param pathProvider EmoticonPathProvider used to get image file name for emoticon for popup widget
+	 * @param parent parent widget
+	 */
 	explicit EmoticonSelectorButton(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
 	virtual ~EmoticonSelectorButton();
 
 signals:
-	void clicked(const QString &emoticonString);
+	/**
+	 * @short Signal emited when button is clicked.
+	 * @param emoticon clicked emoticon
+	 */
+	void clicked(const Emoticon &emoticon);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICONS_SELECTOR_BUTTON_H

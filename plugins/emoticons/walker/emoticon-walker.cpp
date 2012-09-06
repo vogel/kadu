@@ -63,15 +63,18 @@ void EmoticonWalker::addEmptyCandidate()
 	Candidates.append(emptyCandidate);
 }
 
-EmoticonPrefixTree * EmoticonWalker::findCandidateExpansion(int i, QChar c)
+EmoticonPrefixTree * EmoticonWalker::findCandidateExpansion(const EmoticonCandidate &candidate, QChar c)
 {
-	return Candidates.at(i).EmoticonNode->child(c);
+	return candidate.EmoticonNode->child(c);
 }
 
-void EmoticonWalker::expandCandidate(int i, EmoticonPrefixTree *expansion)
+EmoticonWalker::EmoticonCandidate EmoticonWalker::expandCandidate(const EmoticonCandidate &candidate, EmoticonPrefixTree *expansion)
 {
-	Candidates[i].EmoticonNode = expansion;
-	Candidates[i].EmoticonLength++;
+	EmoticonCandidate result;
+	result.EmoticonNode = expansion;
+	result.EmoticonLength = candidate.EmoticonLength + 1;
+
+	return result;
 }
 
 void EmoticonWalker::removeCandidate(int i)
@@ -86,9 +89,9 @@ void EmoticonWalker::tryExpandAllCandidates(QChar c)
 	// iterate backward because removeCandidate can switch elements after current one
 	for (int i = Candidates.count() - 1; i >= 0; --i)
 	{
-		EmoticonPrefixTree *expansion = findCandidateExpansion(i, c);
+		EmoticonPrefixTree *expansion = findCandidateExpansion(Candidates.at(i) , c);
 		if (expansion)
-			expandCandidate(i, expansion);
+			Candidates.replace(i, expandCandidate(Candidates.at(i), expansion));
 		else
 			removeCandidate(i);
 	}

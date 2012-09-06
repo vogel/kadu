@@ -30,6 +30,16 @@
 
 #include "dom/dom-visitor-provider.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonExpanderDomVisitorProvider
+ * @short This DomVisitorProvider provides instance of EmoticonExpander with up-to-date configuration.
+ * @author Rafał 'Vogel' Malinowski
+ */
 class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
 	Q_OBJECT
@@ -38,7 +48,11 @@ class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProv
 	QScopedPointer<IgnoreLinksDomVisitor> LinksVisitor;
 	QScopedPointer<EmoticonPrefixTree> Tree;
 
-	void rebuildVisitor();
+	/**
+	 * @short Create new EmoticonExpander with updated EmoticonConfiguration.
+	 * @author Rafał 'Vogel' Malinowski
+	 */
+	void rebuildExpander();
 
 public:
 	EmoticonExpanderDomVisitorProvider();
@@ -46,8 +60,17 @@ public:
 
 	virtual DomVisitor * provide() const;
 
+	/**
+	 * @short Update configuration of provided EmoticonExpander.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param configuration new configuration for provided EmoticonExpander
+	 */
 	void setConfiguration(const EmoticonConfiguration &configuration);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_EXPANDER_DOM_VISITOR_PROVIDER

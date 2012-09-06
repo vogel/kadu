@@ -31,6 +31,19 @@
 class EmoticonExpanderDomVisitorProvider;
 class InsertEmoticonAction;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonConfigurator
+ * @short Standard configuration setter for emoticon plugin.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * This class listens to changed in global configuration. After change is detected it updated configuration of given
+ * InsertEmoticonAction and EmoticonExpanderDomVisitorProvider with updated EmoticonConfiguration instance.
+ */
 class EmoticonConfigurator : public ConfigurationHolder
 {
 	Q_OBJECT
@@ -51,12 +64,34 @@ protected:
 public:
 	EmoticonConfigurator();
 
+	/**
+	 * @short Sets InsertEmoticonAction to configure.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param insertAction InsertEmoticonAction to configured
+	 */
 	void setInsertAction(InsertEmoticonAction *insertAction);
+
+	/**
+	 * @short Sets EmoticonExpanderDomVisitorProvider to configure.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param emoticonExpanderProvider EmoticonExpanderDomVisitorProvider to configured
+	 */
 	void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
 
+	/**
+	 * @short Update configurations of set objects.
+	 * @author Rafał 'Vogel' Malinowski
+	 *
+	 * Call this method after setInsertAction() and setEmoticonExpanderProvider() to update configuration of
+	 * set objects.
+	 */
 	void configure();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_CONFIGURATOR
 

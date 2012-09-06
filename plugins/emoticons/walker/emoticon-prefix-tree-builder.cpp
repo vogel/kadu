@@ -32,7 +32,7 @@ void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
 {
 	Q_ASSERT(Root);
 
-	QString text = emoticon.text().toLower();
+	QString text = emoticon.triggerText().toLower();
 	unsigned int length = text.length();
 
 	EmoticonPrefixTree *node = Root.data();

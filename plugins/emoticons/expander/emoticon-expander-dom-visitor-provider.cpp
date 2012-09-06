@@ -35,7 +35,7 @@ EmoticonExpanderDomVisitorProvider::~EmoticonExpanderDomVisitorProvider()
 {
 }
 
-void EmoticonExpanderDomVisitorProvider::rebuildVisitor()
+void EmoticonExpanderDomVisitorProvider::rebuildExpander()
 {
 	if (!Tree)
 	{
@@ -69,5 +69,5 @@ void EmoticonExpanderDomVisitorProvider::setConfiguration(const EmoticonConfigur
 	else
 		Tree.reset(0);
 
-	rebuildVisitor();
+	rebuildExpander();
 }

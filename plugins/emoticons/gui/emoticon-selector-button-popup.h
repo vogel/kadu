@@ -32,24 +32,52 @@
 
 #include <QtGui/QLabel>
 
-class Emoticon;
+#include "emoticon.h"
+
 class EmoticonPathProvider;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonSelectorButtonPopup
+ * @short Small widget displaying animated or static version of emoticon on a popup over EmoticonSelector.
+ *
+ * This widgets deletes itself on close.
+ */
 class EmoticonSelectorButtonPopup : public QLabel
 {
 	Q_OBJECT
+
+	Emoticon DisplayEmoticon;
 
 protected:
 	void mouseMoveEvent(QMouseEvent *e);
 	void mouseReleaseEvent(QMouseEvent *e);
 
 public:
+	/**
+	 * @short Create new EmoticonSelectorButtonPopup widget.
+	 * @param emoticon emoticon to display
+	 * @param pathProvider EmoticonPathProvider used to get image file name for emoticon
+	 * @param parent parent widget
+	 */
 	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
 	virtual ~EmoticonSelectorButtonPopup();
 
 signals:
-	void clicked();
+	/**
+	 * @short Signal emited when popup is clicked.
+	 * @param emoticon clicked emoticon
+	 */
+	void clicked(const Emoticon &emoticon);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_SELECTOR_BUTTON_POPUP_H

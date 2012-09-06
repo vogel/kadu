@@ -36,13 +36,13 @@
 #include "emoticon-selector-button-popup.h"
 
 EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent) :
-		QLabel(parent, Qt::Popup)
+		QLabel(parent, Qt::Popup), DisplayEmoticon(emoticon)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setMinimumSize(parent->sizeHint());
 	setAlignment(Qt::AlignCenter);
 	setMouseTracking(true);
-	setToolTip(emoticon.text());
+	setToolTip(emoticon.triggerText());
 
 	QString style =
 		"QLabel {"
@@ -77,5 +77,5 @@ void EmoticonSelectorButtonPopup::mouseMoveEvent(QMouseEvent *e)
 void EmoticonSelectorButtonPopup::mouseReleaseEvent(QMouseEvent *e)
 {
 	QLabel::mouseReleaseEvent(e);
-	emit clicked();
+	emit clicked(DisplayEmoticon);
 }

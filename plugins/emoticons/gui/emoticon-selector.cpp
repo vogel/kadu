@@ -86,7 +86,7 @@ void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QW
 			total_height += btns[i]->sizeHint().height() + 1;
 		cur_width += btn_width;
 
-		connect(btns[i], SIGNAL(clicked(const QString &)), this, SLOT(iconClicked(const QString &)));
+		connect(btns[i], SIGNAL(clicked(Emoticon)), this, SLOT(emoticonClickedSlot(Emoticon)));
 	}
 
 	if (total_height < selector_width - 80)
@@ -179,9 +179,14 @@ void EmoticonSelector::calculatePositionAndSize(const QWidget *activatingWidget,
 	move(x, y);
 }
 
-void EmoticonSelector::iconClicked(const QString &emoticon_string)
+void EmoticonSelector::emoticonClickedSlot(const Emoticon &emoticon)
 {
-	emit emoticonSelect(emoticon_string);
+	if (emoticon.isNull())
+		return;
+
+	emit emoticonClicked(emoticon);
+	emit emoticonClicked(emoticon.triggerText());
+
 	close();
 }
 

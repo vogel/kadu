@@ -26,6 +26,15 @@
 
 #include "emoticon.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class InsertEmoticonAction
+ * @short Action for inserting emoticons into chat edit boxes.
+ */
 class InsertEmoticonAction : public ActionDescription
 {
 	Q_OBJECT
@@ -37,14 +46,27 @@ protected:
 	virtual void updateActionState(Action *action);
 
 public:
+	/**
+	 * @short Create new instance of InsertEmoticonAction.
+	 * @param parent QObject parent
+	 */
 	explicit InsertEmoticonAction(QObject *parent = 0);
 	virtual ~InsertEmoticonAction();
 
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
+	/**
+	 * @short Configure instance of InsertEmoticonAction.
+	 * @param configuration new configuration
+	 *
+	 * This configuration is used to get list of emoticons to pass to EmoticonSelector widget.
+	 */
 	void setConfiguration(const EmoticonConfiguration &configuration);
 
 };
 
+/**
+ * @}
+ */
 
 #endif // INSERT_EMOTICON_ACTION_H

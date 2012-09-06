@@ -27,6 +27,15 @@
 
 #include "themes/theme-manager.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonThemeManager
+ * @short Theme manager for emoticons.
+ */
 class EmoticonThemeManager : public ThemeManager
 {
 	Q_OBJECT
@@ -37,12 +46,26 @@ protected:
 	virtual bool isValidThemePath(const QString &themePath) const;
 
 public:
+	/**
+	 * @short Return default theme name.
+	 * @return default theme name
+	 */
 	static QString defaultTheme();
+
+	/**
+	 * @short Check if given directory contains emots.txt file.
+	 * @param dir directory path to check
+	 * @return true if directory dir contains emots.txt file
+	 */
 	static bool containsEmotsTxt(const QString &dir);
 
 	explicit EmoticonThemeManager(QObject *parent = 0);
 	virtual ~EmoticonThemeManager();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_THEME_MANAGER_H

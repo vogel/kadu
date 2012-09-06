@@ -26,6 +26,18 @@
 
 class QChar;
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class EmoticonPrefixTreeBuilder
+ * @short This class takes any number of Emoticon and build an EmoticonPrefixTree from them.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * Note that tree() method of this class can only be called once.
+ */
 class EmoticonPrefixTreeBuilder
 {
 	QScopedPointer<EmoticonPrefixTree> Root;
@@ -33,10 +45,25 @@ class EmoticonPrefixTreeBuilder
 public:
 	EmoticonPrefixTreeBuilder();
 
+	/**
+	 * @short Add new emoticon to builded prefix tree.
+	 * @param emoticon emoticon to add
+	 */
 	void addEmoticon(const Emoticon &emoticon);
 
+	/**
+	 * @short Return created prefix tree.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return created prefix tree.
+	 *
+	 * Not that this method can only be called once.
+	 */
 	EmoticonPrefixTree * tree();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // EMOTICON_PREFIX_TREE_BUILDER_H

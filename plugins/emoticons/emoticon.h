@@ -20,27 +20,84 @@
 #ifndef EMOTICON_H
 #define EMOTICON_H
 
+#include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class Emoticon
+ * @short Emoticon representation.
+ * @author Rafał 'Vogel' Malinowski
+ */
 class Emoticon
 {
-	QString Text;
+	QString TriggerText;
 	QString StaticFilePath;
 	QString AnimatedFilePath;
 
 public:
+	/**
+	 * @short Create null emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 */
 	Emoticon();
-	Emoticon(const QString &text, const QString &staticFilePath, const QString &animatedFilePath);
+
+	/**
+	 * @short Create emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param triggerText text that triggers this emoticon to display
+	 * @param staticFilePath file path of not-animated version of emoticon
+	 * @param animatedFilePath file path of animated version of emoticon
+	 */
+	Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath);
+
+	/**
+	 * @short Create copy of emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param copyMe emoticon to copy
+	 */
 	Emoticon(const Emoticon &copyMe);
 
 	Emoticon & operator = (const Emoticon &copyMe);
 
+	/**
+	 * @short Check if emoticon is null.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true, if emoticon is null
+	 */
 	bool isNull() const;
 
-	QString text() const;
+	/**
+	 * @short Return text that triggers this emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return text that triggers this emoticon
+	 */
+	QString triggerText() const;
+
+	/**
+	 * @short Return file path of not-animated version of emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return file path of not-animated version of emoticon
+	 */
 	QString staticFilePath() const;
+
+	/**
+	 * @short Return file path of animated version of emoticon.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return file path of animated version of emoticon
+	 */
 	QString animatedFilePath() const;
 
 };
 
-#endif //EMOTICON_H
+Q_DECLARE_METATYPE(Emoticon);
+
+/**
+ * @}
+ */
+
+#endif // EMOTICON_H

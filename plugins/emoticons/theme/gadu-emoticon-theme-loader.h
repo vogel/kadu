@@ -26,6 +26,15 @@
 
 #include "theme/emoticon-theme-loader.h"
 
+/**
+ * @addtogroup Emoticons
+ * @{
+ */
+
+/**
+ * @class GaduEmoticonThemeLoader
+ * @short Loader for Gadu Gadu emoticon themes.
+ */
 class GaduEmoticonThemeLoader : public EmoticonThemeLoader
 {
 	QVector<Emoticon> Emoticons;
@@ -40,5 +49,9 @@ public:
 	virtual EmoticonTheme loadEmoticonTheme(const QString &path);
 
 };
+
+/**
+ * @}
+ */
 
 #endif // GADU_EMOTICON_THEME_LOADER_H
