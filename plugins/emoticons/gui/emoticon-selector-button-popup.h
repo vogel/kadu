@@ -33,6 +33,7 @@
 #include <QtGui/QLabel>
 
 class Emoticon;
+class EmoticonPathProvider;
 
 class EmoticonSelectorButtonPopup : public QLabel
 {
@@ -43,7 +44,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, QWidget *parent = 0);
+	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
 	virtual ~EmoticonSelectorButtonPopup();
 
 signals:

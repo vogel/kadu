@@ -35,11 +35,14 @@
 
 #include "emoticon.h"
 
+class EmoticonPathProvider;
+
 class EmoticonSelectorButton : public QLabel
 {
 	Q_OBJECT
 
 	Emoticon DisplayEmoticon;
+	EmoticonPathProvider *PathProvider;
 
 private slots:
 	void buttonClicked();
@@ -48,7 +51,7 @@ protected:
 	void mouseMoveEvent(QMouseEvent *e);
 
 public:
-	explicit EmoticonSelectorButton(const Emoticon &emoticon, QWidget *parent = 0);
+	explicit EmoticonSelectorButton(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
 	virtual ~EmoticonSelectorButton();
 
 signals:

@@ -35,8 +35,8 @@
 
 #include "emoticon-selector-button.h"
 
-EmoticonSelectorButton::EmoticonSelectorButton(const Emoticon &emoticon, QWidget *parent) :
-		QLabel(parent), DisplayEmoticon(emoticon)
+EmoticonSelectorButton::EmoticonSelectorButton(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent) :
+		QLabel(parent), DisplayEmoticon(emoticon), PathProvider(pathProvider)
 {
 	QPixmap p(DisplayEmoticon.staticFilePath());
 	setPixmap(p.scaledToHeight(18, Qt::SmoothTransformation));
@@ -58,7 +58,7 @@ void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 {
 	QLabel::mouseMoveEvent(e);
 
-	EmoticonSelectorButtonPopup *popup = new EmoticonSelectorButtonPopup(DisplayEmoticon, this);
+	EmoticonSelectorButtonPopup *popup = new EmoticonSelectorButtonPopup(DisplayEmoticon, PathProvider, this);
 	connect(popup, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 	popup->show();
 }

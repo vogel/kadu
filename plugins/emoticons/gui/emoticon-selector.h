@@ -34,14 +34,15 @@
 
 #include <QtGui/QScrollArea>
 
+#include "expander/emoticon-path-provider.h"
+
 #include "emoticon.h"
 
-/**
-	Klasa wy�wietlaj�ca list� emotikonek z aktualnego zestawu.
-**/
 class EmoticonSelector : public QScrollArea
 {
 	Q_OBJECT
+
+	QScopedPointer<EmoticonPathProvider> PathProvider;
 
 	void addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainwidget);
 	void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
@@ -54,12 +55,8 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	/**
-		Konstruktor tworz�cy list� emotikonek.
-		\param activatingWidget okno wywo�uj�ce
-		\param parent rodzic na kt�rym ma by� wy�wietlona lista
-	**/
-	EmoticonSelector(const QVector<Emoticon> &emoticons, QWidget *parent);
+	explicit EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent = 0);
+	virtual ~EmoticonSelector();
 
 signals:
 	// TODO: rename

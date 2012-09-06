@@ -30,11 +30,12 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 
+#include "expander/emoticon-path-provider.h"
 #include "emoticon.h"
 
 #include "emoticon-selector-button-popup.h"
 
-EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(const Emoticon &emoticon, QWidget *parent) :
+EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent) :
 		QLabel(parent, Qt::Popup)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -51,7 +52,7 @@ EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(const Emoticon &emotico
 	setStyleSheet(style);
 
 	QMovie *movie = new QMovie(this);
-	movie->setFileName(emoticon.animatedFilePath());
+	movie->setFileName(pathProvider->emoticonPath(emoticon));
 	setMovie(movie);
 	movie->start();
 

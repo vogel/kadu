@@ -22,6 +22,8 @@
 #include "gui/widgets/chat-edit-box.h"
 
 #include "configuration/emoticon-configuration.h"
+#include "expander/animated-emoticon-path-provider.h"
+#include "expander/static-emoticon-path-provider.h"
 #include "gui/emoticon-selector.h"
 
 #include "insert-emoticon-action.h"
@@ -79,7 +81,12 @@ void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 	if (Configuration.emoticonTheme().emoticons().isEmpty())
 		return;
 
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(Configuration.emoticonTheme().emoticons(), widgets.at(widgets.size() - 1));
+	EmoticonPathProvider *emoticonPathProvider = Configuration.animate()
+			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
+			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
+
+	EmoticonSelector *emoticonSelector = new EmoticonSelector(Configuration.emoticonTheme().emoticons(), emoticonPathProvider,
+			widgets.at(widgets.size() - 1));
 	connect(emoticonSelector, SIGNAL(emoticonSelect(const QString &)), chatEditBox, SLOT(insertPlainText(QString)));
 	emoticonSelector->show();
 }

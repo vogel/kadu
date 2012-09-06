@@ -44,27 +44,31 @@
 
 #include "emoticon-selector.h"
 
-EmoticonSelector::EmoticonSelector(const QVector<Emoticon> &emoticons, QWidget *parent) :
-		QScrollArea(parent)
+EmoticonSelector::EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent) :
+		QScrollArea(parent), PathProvider(pathProvider)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowFlags(Qt::Popup);
 	setFrameStyle(QFrame::NoFrame);
 
-	QWidget *mainwidget = new QWidget(this);
+	QWidget *mainWidget = new QWidget(this);
 
-	addEmoticonButtons(emoticons, mainwidget);
-	setWidget(mainwidget);
-	calculatePositionAndSize(parent, mainwidget);
+	addEmoticonButtons(emoticons, mainWidget);
+	setWidget(mainWidget);
+	calculatePositionAndSize(parent, mainWidget);
 }
 
-void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainwidget)
+EmoticonSelector::~EmoticonSelector()
+{
+}
+
+void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainWidget)
 {
 	int selector_width = 460;
 	int total_height = 0, cur_width = 0, btn_width = 0;
 	int count = emoticons.count();
 	QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[count]);
-	QVBoxLayout *layout = new QVBoxLayout(mainwidget);
+	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 	QHBoxLayout *row = 0;
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
@@ -72,7 +76,7 @@ void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QW
 	for (int i = 0; i < count; ++i)
 	{
 		const Emoticon &emoticon = emoticons.at(i);
-		btns[i] = new EmoticonSelectorButton(emoticon, mainwidget);
+		btns[i] = new EmoticonSelectorButton(emoticon, PathProvider.data(), mainWidget);
 		btn_width = btns[i]->sizeHint().width();
 
 		if (cur_width + btn_width >= selector_width)
