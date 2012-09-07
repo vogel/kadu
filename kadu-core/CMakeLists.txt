@@ -77,15 +77,11 @@ set (kadu_SRCS
 
 if (WIN32)
 	list (APPEND kadu_SRCS
-		kadu.rc
-
 		os/qtsingleapplication/qtlockedfile_win.cpp
+		kadu.rc
 	)
 else ()
 	list (APPEND kadu_SRCS
-		main.cpp
-		main_unix.cpp
-
 		os/qtsingleapplication/qtlockedfile_unix.cpp
 	)
 endif ()
@@ -93,6 +89,21 @@ endif ()
 if (UNIX AND NOT APPLE)
 	list (APPEND kadu_SRCS
 		os/x11tools.cpp
+	)
+endif ()
+
+set (main_SRCS
+	main.cpp
+)
+
+if (WIN32)
+	list (APPEND main_SRCS
+		main_win32.cpp
+		kadu.rc
+	)
+else ()
+	list (APPEND main_SRCS
+		main_unix.cpp
 	)
 endif ()
 
@@ -187,6 +198,9 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			${${SUBDIR}_MOC_FILES}
 		)
 		set_target_properties (${SUBDIR} PROPERTIES COMPILE_DEFINITIONS KADULIB)
+		if (NOT WIN32)
+			set_target_properties (${SUBDIR} PROPERTIES COMPILE_FLAGS -fPIC)
+		endif ()
 	else ()
 		set (tmp "")
 		foreach (SRC ${SRCS})
@@ -229,49 +243,43 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 	endif ()
 endmacro ()
 
-if (WIN32)
-	set (KADU_MAIN_SOURCES_TARGET kadu_core)
-else ()
-	set (KADU_MAIN_SOURCES_TARGET kadu)
-endif ()
-
 if (NOT FAST_LINKING)
-	kadu_source_subdirectories (${KADU_MAIN_SOURCES_TARGET} ${kadu_SUBDIRS})
+	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
-if (WIN32)
-	add_library (${KADU_MAIN_SOURCES_TARGET} SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
-else ()
-	add_executable (${KADU_MAIN_SOURCES_TARGET} ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
-endif ()
+add_library (libkadu SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
 if (FAST_LINKING)
-	kadu_source_subdirectories (${KADU_MAIN_SOURCES_TARGET} ${kadu_SUBDIRS})
+	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
-
-set_target_properties (${KADU_MAIN_SOURCES_TARGET} PROPERTIES
-	ENABLE_EXPORTS ON
+target_link_libraries (libkadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
+set_target_properties (libkadu PROPERTIES
 	COMPILE_DEFINITIONS KADULIB
-	LINK_INTERFACE_LIBRARIES ""
+	PREFIX ""
 )
 
-target_link_libraries (${KADU_MAIN_SOURCES_TARGET} ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
+add_executable (kadu WIN32 ${main_SRCS})
+target_link_libraries (kadu libkadu ${QT_QTMAIN_LIBRARY})
+set_target_properties (kadu PROPERTIES
+	INSTALL_RPATH "${KADU_LIBDIR}"
+	BUILD_WITH_INSTALL_RPATH TRUE
+)
+
+install (TARGETS libkadu kadu
+	LIBRARY DESTINATION ${KADU_LIBDIR}
+	RUNTIME DESTINATION ${KADU_BINDIR}
+)
+# TODO this WIN32 check is a workaround for an error on Linux
+if (WIN32 AND INSTALL_SDK)
+	install (TARGETS libkadu ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib)
+endif ()
 
 if (WIN32)
-	add_executable (kadu WIN32 main.cpp main_win32.cpp kadu.rc)
-	add_executable (kadu_c main.cpp main_win32.cpp kadu.rc)
+	add_executable (kadu_c ${main_SRCS})
 
 	set_target_properties (kadu_c PROPERTIES COMPILE_DEFINITIONS KADU_CONSOLE)
 
-	target_link_libraries (kadu ${KADU_MAIN_SOURCES_TARGET} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ws2_32)
-	target_link_libraries (kadu_c ${KADU_MAIN_SOURCES_TARGET} ${QT_LIBRARIES} ws2_32)
+	target_link_libraries (kadu ws2_32)
+	target_link_libraries (kadu_c libkadu ws2_32)
 
-	if (INSTALL_SDK)
-		install (TARGETS ${KADU_MAIN_SOURCES_TARGET}
-			ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib
-			LIBRARY DESTINATION ${KADU_SDK_DIR}/lib
-		)
-	endif ()
-
-	install (TARGETS ${KADU_MAIN_SOURCES_TARGET} RUNTIME DESTINATION ${KADU_BINDIR})
 	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
 
 	file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")

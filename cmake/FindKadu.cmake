@@ -131,6 +131,14 @@ if (NOT KADU_BINDIR)
 	endif ()
 endif ()
 
+if (NOT KADU_LIBDIR)
+	if (WIN32)
+		set (KADU_LIBDIR ${CMAKE_INSTALL_PREFIX})
+	else ()
+		set (KADU_LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR})
+	endif ()
+endif ()
+
 if (NOT KADU_DATADIR)
 	if (WIN32)
 		set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX})
@@ -314,7 +322,7 @@ macro (kadu_plugin)
 	endif ()
 
 	if (WIN32)
-		target_link_libraries (${PLUGIN_NAME} kadu_core ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+		target_link_libraries (${PLUGIN_NAME} libkadu ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
 
 		if (INSTALL_SDK)
 			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib)
