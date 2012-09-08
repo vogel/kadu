@@ -42,6 +42,9 @@ class ImageLinkPlugin : public QObject, public GenericPlugin
 	QScopedPointer<ImageExpanderDomVisitorProvider> ImageExpanderProvider;
 	QScopedPointer<VideoExpanderDomVisitorProvider> VideoExpanderProvider;
 
+	void registerConfigurationUi();
+	void unregisterConfigurationUi();
+
 	void registerImageExpander();
 	void unregisterImageExpander();
 
@@ -49,10 +52,12 @@ class ImageLinkPlugin : public QObject, public GenericPlugin
 	void unregisterVideoExpander();
 
 public:
+	explicit ImageLinkPlugin(QObject *parent = 0);
 	virtual ~ImageLinkPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
+
 };
 
 #endif // IMAGE_LINK_PLUGIN_H

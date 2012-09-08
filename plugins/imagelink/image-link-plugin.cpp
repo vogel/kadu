@@ -29,8 +29,23 @@
 
 #include "image-link-plugin.h"
 
+ImageLinkPlugin::ImageLinkPlugin(QObject *parent) :
+		QObject(parent)
+{
+}
+
 ImageLinkPlugin::~ImageLinkPlugin()
 {
+}
+
+void ImageLinkPlugin::registerConfigurationUi()
+{
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+}
+
+void ImageLinkPlugin::unregisterConfigurationUi()
+{
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 void ImageLinkPlugin::registerImageExpander()
@@ -63,7 +78,7 @@ int ImageLinkPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	registerConfigurationUi();
 	registerImageExpander();
 	registerVideoExpander();
 
@@ -72,9 +87,9 @@ int ImageLinkPlugin::init(bool firstLoad)
 
 void ImageLinkPlugin::done()
 {
+	unregisterConfigurationUi();
 	unregisterVideoExpander();
 	unregisterImageExpander();
-	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
 }
 
 Q_EXPORT_PLUGIN2(imagelink, ImageLinkPlugin)
