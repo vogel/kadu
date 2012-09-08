@@ -20,14 +20,20 @@
 #ifndef VIDEO_LINK_DOM_VISITOR_PROVIDER_H
 #define VIDEO_LINK_DOM_VISITOR_PROVIDER_H
 
+#include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
 #include "dom/ignore-links-dom-visitor.h"
 
+#include "configuration/image-link-configuration.h"
+
 #include "dom/dom-visitor-provider.h"
 
-class VideoExpanderDomVisitorProvider : public DomVisitorProvider
+class VideoExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
+	Q_OBJECT
+
+	ImageLinkConfiguration Configuration;
 	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
 
 public:
@@ -35,6 +41,8 @@ public:
 	virtual ~VideoExpanderDomVisitorProvider();
 
 	virtual DomVisitor * provide() const;
+
+	void setConfiguration(const ImageLinkConfiguration &configuration);
 
 };
 

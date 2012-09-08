@@ -32,5 +32,10 @@ ImageExpanderDomVisitorProvider::~ImageExpanderDomVisitorProvider()
 
 DomVisitor * ImageExpanderDomVisitorProvider::provide() const
 {
-	return Visitor.data();
+	return Configuration.showImages() ? Visitor.data() : 0;
+}
+
+void ImageExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
+{
+	Configuration = configuration;
 }

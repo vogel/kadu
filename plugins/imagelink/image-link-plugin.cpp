@@ -74,6 +74,19 @@ void ImageLinkPlugin::unregisterVideoExpander()
 	VideoExpanderProvider.reset();
 }
 
+void ImageLinkPlugin::startConfigurator()
+{
+	Configurator.reset(new ImageLinkConfigurator(this));
+	Configurator->setImageExpanderProvider(ImageExpanderProvider.data());
+	Configurator->setVideoExpanderProvider(VideoExpanderProvider.data());
+	Configurator->configure();
+}
+
+void ImageLinkPlugin::stopConfigurator()
+{
+	Configurator.reset();
+}
+
 int ImageLinkPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
@@ -81,12 +94,14 @@ int ImageLinkPlugin::init(bool firstLoad)
 	registerConfigurationUi();
 	registerImageExpander();
 	registerVideoExpander();
+	startConfigurator();
 
 	return 0;
 }
 
 void ImageLinkPlugin::done()
 {
+	stopConfigurator();
 	unregisterConfigurationUi();
 	unregisterVideoExpander();
 	unregisterImageExpander();

@@ -29,6 +29,7 @@
 
 #include <QtCore/QScopedPointer>
 
+#include "configuration/image-link-configurator.h"
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
 
@@ -41,6 +42,7 @@ class ImageLinkPlugin : public QObject, public GenericPlugin
 
 	QScopedPointer<ImageExpanderDomVisitorProvider> ImageExpanderProvider;
 	QScopedPointer<VideoExpanderDomVisitorProvider> VideoExpanderProvider;
+	QScopedPointer<ImageLinkConfigurator> Configurator;
 
 	void registerConfigurationUi();
 	void unregisterConfigurationUi();
@@ -50,6 +52,9 @@ class ImageLinkPlugin : public QObject, public GenericPlugin
 
 	void registerVideoExpander();
 	void unregisterVideoExpander();
+
+	void startConfigurator();
+	void stopConfigurator();
 
 public:
 	explicit ImageLinkPlugin(QObject *parent = 0);

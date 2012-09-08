@@ -23,24 +23,23 @@
 #ifndef IMAGE_LINK_CONFIGURATION_H
 #define IMAGE_LINK_CONFIGURATION_H
 
-#include "configuration/configuration-aware-object.h"
-
-class ImageLinkConfiguration : public ConfigurationAwareObject
+class ImageLinkConfiguration
 {
-	bool ShowVideos;
 	bool ShowImages;
-
-	void createDefaultConfiguration();
-
-protected:
-	virtual void configurationUpdated();
+	bool ShowVideos;
 
 public:
 	ImageLinkConfiguration();
+	ImageLinkConfiguration(const ImageLinkConfiguration &copyMe);
 	~ImageLinkConfiguration();
 
-	bool showVideos() { return ShowVideos; }
-	bool showImages() { return ShowImages; }
+	ImageLinkConfiguration & operator = (const ImageLinkConfiguration &copyMe);
+
+	void setShowImages(bool showImages);
+	bool showImages() const;
+
+	void setShowVideos(bool showVideos);
+	bool showVideos() const;
 
 };
 

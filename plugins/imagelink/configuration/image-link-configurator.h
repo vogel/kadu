@@ -17,33 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
-#define IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
+#ifndef IMAGE_LINK_CONFIGURATOR_H
+#define IMAGE_LINK_CONFIGURATOR_H
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
+#include <QtCore/QWeakPointer>
 
-#include "dom/ignore-links-dom-visitor.h"
+#include "configuration/configuration-holder.h"
 
-#include "configuration/image-link-configuration.h"
+class ImageExpanderDomVisitorProvider;
+class VideoExpanderDomVisitorProvider;
 
-#include "dom/dom-visitor-provider.h"
-
-class ImageExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
+class ImageLinkConfigurator : public ConfigurationHolder
 {
 	Q_OBJECT
 
-	ImageLinkConfiguration Configuration;
-	QScopedPointer<IgnoreLinksDomVisitor> Visitor;
+	QWeakPointer<ImageExpanderDomVisitorProvider> ImageExpander;
+	QWeakPointer<VideoExpanderDomVisitorProvider> VideoExpander;
+
+	void createDefaultConfiguration();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
-	ImageExpanderDomVisitorProvider();
-	virtual ~ImageExpanderDomVisitorProvider();
+	explicit ImageLinkConfigurator(QObject *parent = 0);
+	virtual ~ImageLinkConfigurator();
 
-	virtual DomVisitor * provide() const;
+	void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
+	void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
 
-	void setConfiguration(const ImageLinkConfiguration &configuration);
+	void configure();
 
 };
 
-#endif // IMAGE_EXPANDER_DOM_VISITOR_PROVIDER_H
+
+#endif // IMAGE_LINK_CONFIGURATOR_H

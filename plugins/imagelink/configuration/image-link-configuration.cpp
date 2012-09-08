@@ -24,23 +24,45 @@
 
 #include "image-link-configuration.h"
 
-ImageLinkConfiguration::ImageLinkConfiguration()
+ImageLinkConfiguration::ImageLinkConfiguration() :
+		ShowImages(true), ShowVideos(true)
 {
-	configurationUpdated();
+}
+
+ImageLinkConfiguration::ImageLinkConfiguration(const ImageLinkConfiguration &copyMe)
+{
+	ShowImages = copyMe.ShowImages;
+	ShowVideos = copyMe.ShowVideos;
 }
 
 ImageLinkConfiguration::~ImageLinkConfiguration()
 {
 }
 
-void ImageLinkConfiguration::createDefaultConfiguration()
+ImageLinkConfiguration & ImageLinkConfiguration::operator = (const ImageLinkConfiguration &copyMe)
 {
-	config_file.addVariable("Imagelink", "show_yt", true);
-	config_file.addVariable("Imagelink", "show_image", true);
+	ShowImages = copyMe.ShowImages;
+	ShowVideos = copyMe.ShowVideos;
+
+	return *this;
 }
 
-void ImageLinkConfiguration::configurationUpdated()
+void ImageLinkConfiguration::setShowImages(bool showImages)
 {
-	ShowVideos = config_file.readBoolEntry("Imagelink", "show_yt", true);
-	ShowImages = config_file.readBoolEntry("Imagelink", "show_image", true);
+	ShowImages = showImages;
+}
+
+bool ImageLinkConfiguration::showImages() const
+{
+	return ShowImages;
+}
+
+void ImageLinkConfiguration::setShowVideos(bool showVideos)
+{
+	ShowVideos = showVideos;
+}
+
+bool ImageLinkConfiguration::showVideos() const
+{
+	return ShowVideos;
 }

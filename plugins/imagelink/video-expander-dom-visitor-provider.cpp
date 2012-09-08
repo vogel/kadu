@@ -32,5 +32,10 @@ VideoExpanderDomVisitorProvider::~VideoExpanderDomVisitorProvider()
 
 DomVisitor * VideoExpanderDomVisitorProvider::provide() const
 {
-	return Visitor.data();
+	return Configuration.showVideos() ? Visitor.data() : 0;
+}
+
+void VideoExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
+{
+	Configuration = configuration;
 }
