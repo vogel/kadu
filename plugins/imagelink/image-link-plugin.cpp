@@ -20,11 +20,12 @@
  */
 
 #include "core/core.h"
+#include "dom/dom-processor-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
-#include "services/message-filter-service.h"
 
-#include "image-link.h"
+#include "image-expander-dom-visitor-provider.h"
+#include "video-expander-dom-visitor-provider.h"
 
 #include "image-link-plugin.h"
 
@@ -32,25 +33,48 @@ ImageLinkPlugin::~ImageLinkPlugin()
 {
 }
 
+void ImageLinkPlugin::registerImageExpander()
+{
+	// do it before all url providers
+	ImageExpanderProvider.reset(new ImageExpanderDomVisitorProvider());
+	Core::instance()->domProcessorService()->registerVisitorProvider(ImageExpanderProvider.data(), -100);
+}
+
+void ImageLinkPlugin::unregisterImageExpander()
+{
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(ImageExpanderProvider.data());
+	ImageExpanderProvider.reset();
+}
+
+void ImageLinkPlugin::registerVideoExpander()
+{
+	// do it before all url providers
+	VideoExpanderProvider.reset(new VideoExpanderDomVisitorProvider());
+	Core::instance()->domProcessorService()->registerVisitorProvider(VideoExpanderProvider.data(), -50);
+}
+
+void ImageLinkPlugin::unregisterVideoExpander()
+{
+	Core::instance()->domProcessorService()->unregisterVisitorProvider(VideoExpanderProvider.data());
+	VideoExpanderProvider.reset();
+}
+
 int ImageLinkPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	ImageLink::createInstance();
-	ImageLink::instance()->setFormattedStringFactory(Core::instance()->formattedStringFactory());
-	Core::instance()->messageFilterService()->registerMessageFilter(ImageLink::instance());
-
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
+	registerImageExpander();
+	registerVideoExpander();
 
 	return 0;
 }
 
 void ImageLinkPlugin::done()
 {
+	unregisterVideoExpander();
+	unregisterImageExpander();
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/image-link.ui"));
-
-	Core::instance()->messageFilterService()->unregisterMessageFilter(ImageLink::instance());
-	ImageLink::destroyInstance();
 }
 
 Q_EXPORT_PLUGIN2(imagelink, ImageLinkPlugin)

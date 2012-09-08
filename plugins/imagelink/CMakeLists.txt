@@ -6,12 +6,14 @@ include (FindKadu)
 set (SOURCES
 	configuration/image-link-configuration.cpp
 
-	image-link.cpp
+	image-expander.cpp
+	image-expander-dom-visitor-provider.cpp
 	image-link-plugin.cpp
+	video-expander.cpp
+	video-expander-dom-visitor-provider.cpp
 )
 
 set (MOC_SOURCES
-	image-link.h
 	image-link-plugin.h
 )
 

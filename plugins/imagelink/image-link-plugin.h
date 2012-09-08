@@ -27,12 +27,26 @@
 #ifndef IMAGE_LINK_PLUGIN_H
 #define IMAGE_LINK_PLUGIN_H
 
+#include <QtCore/QScopedPointer>
+
+#include "image-expander-dom-visitor-provider.h"
+#include "video-expander-dom-visitor-provider.h"
+
 #include "plugins/generic-plugin.h"
 
 class ImageLinkPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	QScopedPointer<ImageExpanderDomVisitorProvider> ImageExpanderProvider;
+	QScopedPointer<VideoExpanderDomVisitorProvider> VideoExpanderProvider;
+
+	void registerImageExpander();
+	void unregisterImageExpander();
+
+	void registerVideoExpander();
+	void unregisterVideoExpander();
 
 public:
 	virtual ~ImageLinkPlugin();
