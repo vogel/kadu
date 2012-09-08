@@ -28,6 +28,9 @@ class AddRoomChatAction : public ActionDescription
 {
 	Q_OBJECT
 
+private slots:
+	void updateAddChatMenuItem();
+
 protected:
 	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 

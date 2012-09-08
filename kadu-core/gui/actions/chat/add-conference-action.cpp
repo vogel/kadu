@@ -17,6 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-manager.h"
+#include "accounts/account.h"
+#include "gui/actions/action.h"
 #include "gui/windows/add-conference-window.h"
 
 #include "add-conference-action.h"
@@ -29,6 +32,13 @@ AddConferenceAction::AddConferenceAction(QObject *parent) :
 	setText(tr("Add Conference..."));
 
 	registerAction();
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+
+	updateAddChatMenuItem();
 }
 
 AddConferenceAction::~AddConferenceAction()
@@ -41,4 +51,20 @@ void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, boo
 	Q_UNUSED(toggled)
 
 	(new AddConferenceWindow(widget))->show();
+}
+
+void AddConferenceAction::updateAddChatMenuItem()
+{
+	bool isConferenceSupported = false;
+
+	foreach (const Account &account, AccountManager::instance()->items())
+	{
+		if (account.protocolName() == "gadu")
+			isConferenceSupported = true;
+	}
+
+	foreach (Action *action, actions())
+	{
+		action->setVisible(isConferenceSupported);
+	}
 }

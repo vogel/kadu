@@ -17,6 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-manager.h"
+#include "accounts/account.h"
+#include "gui/actions/action.h"
+
 #include "gui/windows/add-room-chat-window.h"
 
 #include "add-room-chat-action.h"
@@ -29,6 +33,13 @@ AddRoomChatAction::AddRoomChatAction(QObject *parent) :
 	setText(tr("Join Room..."));
 
 	registerAction();
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+	        this, SLOT(updateAddChatMenuItem()));
+
+	updateAddChatMenuItem();
 }
 
 AddRoomChatAction::~AddRoomChatAction()
@@ -41,4 +52,20 @@ void AddRoomChatAction::triggered(QWidget *widget, ActionContext *context, bool 
 	Q_UNUSED(toggled)
 
 	(new AddRoomChatWindow(widget))->show();
+}
+
+void AddRoomChatAction::updateAddChatMenuItem()
+{
+	bool isRoomChatSupported = false;
+
+	foreach (const Account &account, AccountManager::instance()->items())
+	{
+		if (account.protocolName() == "jabber")
+			isRoomChatSupported = true;
+	}
+
+	foreach (Action *action, actions())
+	{
+		action->setVisible(isRoomChatSupported);
+	}
 }

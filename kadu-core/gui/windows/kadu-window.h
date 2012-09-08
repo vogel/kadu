@@ -43,7 +43,6 @@ class QMenu;
 class QMenuBar;
 class QVBoxLayout;
 
-class Action;
 class ActionDescription;
 class BuddyInfoPanel;
 class ProxyActionContext;
@@ -66,9 +65,6 @@ public:
 	};
 
 private:
-	typedef QPair<Action *, MenuType> MenuAction;
-	QMap<ActionDescription *, MenuAction> MenuActions;
-
 	bool Docked; // TODO: 0.11.0 it is a hack
 	QSplitter *Split;
 
@@ -82,9 +78,6 @@ private:
 	QMenu *ContactsMenu;
 	QMenu *ToolsMenu;
 	QMenu *HelpMenu;
-
-	QAction *AddConference;
-	QAction *AddRoomChat;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -119,9 +112,6 @@ private:
 
 	virtual void compositingEnabled();
 	virtual void compositingDisabled();
-
-private slots:
-	void updateAddChatMenuItem();
 
 #ifdef Q_WS_WIN
 	void setHiddenParent();

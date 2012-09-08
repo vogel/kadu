@@ -209,13 +209,6 @@ void KaduWindow::createContactsMenu()
 		->update();
 
 	menuBar()->addMenu(ContactsMenu);
-
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
-
-	updateAddChatMenuItem();
 }
 
 void KaduWindow::createToolsMenu()
@@ -316,20 +309,6 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 			UrlOpener::openEmail(buddy.email().toUtf8());
 
 	emit talkableActivated(talkable);
-}
-
-void KaduWindow::updateAddChatMenuItem()
-{
-// 	AddConference->setVisible(false);
-// 	AddRoomChat->setVisible(false);
-// 
-// 	
-// 
-// 	foreach (const Account &account, AccountManager::instance()->items())
-// 		if (account.protocolName() == "gadu")
-// 			AddConference->setVisible(true);
-// 		else if (account.protocolName() == "jabber")
-// 			AddRoomChat->setVisible(true);
 }
 
 void KaduWindow::storeConfiguration()
@@ -495,76 +474,6 @@ void KaduWindow::configurationUpdated()
 	triggerCompositingStateChanged();
 	setBlur(config_file.readBoolEntry("Look", "UserboxTransparency") && config_file.readBoolEntry("Look", "UserboxBlur"));
 }
-
-// QAction * KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
-// {
-// 	Q_ASSERT(actionDescription);
-// 
-// 	Action *action = actionDescription->createAction(actionContext(), this);
-// 	QMenu *menu = 0;
-// 
-// 	switch (type)
-// 	{
-// 		case MenuKadu:
-// 			menu = KaduMenu;
-// 			break;
-// 		case MenuBuddies:
-// 			menu = ContactsMenu;
-// 			break;
-// 		case MenuTools:
-// 			menu = ToolsMenu;
-// 			break;
-// 		case MenuHelp:
-// 			menu = HelpMenu;
-// 			break;
-// 	}
-// 
-// 	if (!menu)
-// 	{
-// 		delete action;
-// 		return 0;
-// 	}
-// 
-// 	QList<QAction *> menuActions = menu->actions();
-// 	if (pos < 0 || pos >= menuActions.count())
-// 		menu->addAction(action);
-// 	else
-// 		menu->insertAction(menuActions.at(pos), action);
-// 
-// 	MenuActions.insert(actionDescription, MenuAction(action, type));
-// 
-// 	return action;
-// }
-// 
-// void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescription)
-// {
-// 	if (!actionDescription)
-// 		return;
-// 
-// 	QMap<ActionDescription *, MenuAction>::iterator it = MenuActions.find(actionDescription);
-// 	if (it == MenuActions.end())
-// 		return;
-// 
-// 	Action *action = it.value().first;
-// 	switch (it.value().second)
-// 	{
-// 		case MenuKadu:
-// 			KaduMenu->removeAction(action);
-// 			break;
-// 		case MenuBuddies:
-// 			ContactsMenu->removeAction(action);
-// 			break;
-// 		case MenuTools:
-// 			ToolsMenu->removeAction(action);
-// 			break;
-// 		case MenuHelp:
-// 			HelpMenu->removeAction(action);
-// 			break;
-// 	}
-// 
-// 	MenuActions.erase(it);
-// 	delete action;
-// }
 
 void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 {
