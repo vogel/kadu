@@ -2,8 +2,7 @@
 	<section name="Chat">
 		<tab name="General">
 			<group-box name="Messages">
-				<check-box caption="Show YouTube movies in chat window" config-section="Imagelink" config-item="show_yt" />
-				<check-box caption="Play YouTube movies in chat window" config-section="Imagelink" config-item="autoplay" />
+				<check-box caption="Show YouTube movies in chat window" config-section="Imagelink" config-item="show_yt" />>
 				<check-box caption="Show images in chat window" config-section="Imagelink" config-item="show_image" />
 			</group-box>
 		</tab>

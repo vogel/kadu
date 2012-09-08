@@ -37,12 +37,10 @@ void ImageLinkConfiguration::createDefaultConfiguration()
 {
 	config_file.addVariable("Imagelink", "show_yt", true);
 	config_file.addVariable("Imagelink", "show_image", true);
-	config_file.addVariable("Imagelink", "autoplay", true);
 }
 
 void ImageLinkConfiguration::configurationUpdated()
 {
 	ShowVideos = config_file.readBoolEntry("Imagelink", "show_yt", true);
-	AutoStartVideos = config_file.readBoolEntry("Imagelink", "autoplay", true);
 	ShowImages = config_file.readBoolEntry("Imagelink", "show_image", true);
 }

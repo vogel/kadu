@@ -28,7 +28,6 @@
 class ImageLinkConfiguration : public ConfigurationAwareObject
 {
 	bool ShowVideos;
-	bool AutoStartVideos;
 	bool ShowImages;
 
 	void createDefaultConfiguration();
@@ -41,7 +40,6 @@ public:
 	~ImageLinkConfiguration();
 
 	bool showVideos() { return ShowVideos; }
-	bool autoStartVideos() { return AutoStartVideos; }
 	bool showImages() { return ShowImages; }
 
 };
