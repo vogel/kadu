@@ -41,7 +41,7 @@ public:
 
 	void setConfiguration(const StandardUrlExpanderConfiguration &configuration);
 
-	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp);
 
 };
 

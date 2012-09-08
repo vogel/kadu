@@ -29,7 +29,7 @@ public:
 	explicit MailUrlExpander(QRegExp regExp);
 	virtual ~MailUrlExpander();
 
-	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp);
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp);
 
 };
 

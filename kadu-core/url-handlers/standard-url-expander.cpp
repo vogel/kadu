@@ -50,7 +50,7 @@ void StandardUrlExpander::setConfiguration(const StandardUrlExpanderConfiguratio
 	Configuration = configuration;
 }
 
-QDomNode StandardUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
+QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
 {
 	QDomElement linkElement = document.createElement("a");
 
@@ -70,5 +70,5 @@ QDomNode StandardUrlExpander::matchToDomNode(QDomDocument document, QRegExp regE
 	}
 
 	linkElement.appendChild(document.createTextNode(display));
-	return linkElement;
+	return QList<QDomNode>() << linkElement;
 }

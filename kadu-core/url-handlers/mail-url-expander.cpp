@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 #include "mail-url-expander.h"
@@ -30,7 +31,7 @@ MailUrlExpander::~MailUrlExpander()
 {
 }
 
-QDomNode MailUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
+QList<QDomNode> MailUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
 {
 	QDomElement linkElement = document.createElement("a");
 	QString mail = regExp.cap();
@@ -39,5 +40,5 @@ QDomNode MailUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
 	linkElement.setAttribute("title", mail);
 
 	linkElement.appendChild(document.createTextNode(mail));
-	return linkElement;
+	return QList<QDomNode>() << linkElement;
 }

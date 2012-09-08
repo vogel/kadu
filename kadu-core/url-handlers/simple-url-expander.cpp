@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QList>
 #include <QtXml/QDomDocument>
 
 #include "simple-url-expander.h"
@@ -30,12 +31,12 @@ SimpleUrlExpander::~SimpleUrlExpander()
 {
 }
 
-QDomNode SimpleUrlExpander::matchToDomNode(QDomDocument document, QRegExp regExp)
+QList<QDomNode> SimpleUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
 {
 	QDomElement linkElement = document.createElement("a");
 	QString link = regExp.cap();
 
 	linkElement.setAttribute("href", link);
 	linkElement.appendChild(document.createTextNode(link));
-	return linkElement;
+	return QList<QDomNode>() << linkElement;
 }

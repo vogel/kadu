@@ -39,7 +39,7 @@ class QDomNode;
  * @author Rafał 'Vogel' Malinowski
  *
  * This visitor is used to find regexp matches in text nodes and insert new nodes in place of them.
- * Override matchToDomNode() to get each regexp match and create DOM node for it.
+ * Override matchToDomNodes() to get each regexp match and create DOM node for it.
  *
  * This visitor is subclassed by emoticon and link expanders.
  */
@@ -66,9 +66,9 @@ public:
 	 * @short Replace matched regular expression with DOM node.
 	 * @param document searched DOM document
 	 * @param regExp object containing match information
-	 * @return DOM node replacing matched text
+	 * @return DOM nodes replacing matched text
 	 */
-	virtual QDomNode matchToDomNode(QDomDocument document, QRegExp regExp) = 0;
+	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) = 0;
 
 };
 
