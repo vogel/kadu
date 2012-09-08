@@ -30,6 +30,7 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "protocols/protocol.h"
@@ -72,7 +73,6 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		disableNonFileTransferContacts
 	);
 	SendFileActionDescription->setShortcut("kadu_sendfile");
-	TalkableMenuManager::instance()->addActionDescription(SendFileActionDescription, TalkableMenuItem::CategoryActions, 100);
 
 	connect(SendFileActionDescription, SIGNAL(actionCreated(Action*)),
 	        this, SLOT(sendFileActionCreated(Action*)));
@@ -83,13 +83,24 @@ FileTransferActions::FileTransferActions(QObject *parent)
 		KaduIcon("document-send"), tr("View File Transfers")
 	);
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuTools, 5);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(SendFileActionDescription, KaduMenu::SectionActions, 100);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(FileTransferWindowActionDescription, KaduMenu::SectionTools, 5);
 }
 
 FileTransferActions::~FileTransferActions()
 {
-	TalkableMenuManager::instance()->removeActionDescription(SendFileActionDescription);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->removeAction(SendFileActionDescription);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(FileTransferWindowActionDescription);
 }
 
 void FileTransferActions::sendFileActionCreated(Action *action)

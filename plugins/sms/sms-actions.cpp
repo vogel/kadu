@@ -23,10 +23,11 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
-#include "contacts/contact-set.h"
 #include "core/core.h"
+#include "contacts/contact-set.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/talkable-menu-manager.h"
@@ -72,16 +73,25 @@ SmsActions::SmsActions()
 		KaduIcon("phone"), tr("Send SMS...")
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
-	TalkableMenuManager::instance()->addActionDescription(sendSmsActionDescription, TalkableMenuItem::CategoryActions, 100);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(sendSmsActionDescription, KaduWindow::MenuBuddies, 5);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(sendSmsActionDescription, KaduMenu::SectionActions, 100);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddies)
+		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5);
 }
 
 SmsActions::~SmsActions()
 {
 	disconnect(Core::instance()->kaduWindow(), 0, this, 0);
 
-	TalkableMenuManager::instance()->removeActionDescription(sendSmsActionDescription);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(sendSmsActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->removeAction(sendSmsActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddies)
+		->removeAction(sendSmsActionDescription);
 }
 
 void SmsActions::newSms(const QString &mobile)

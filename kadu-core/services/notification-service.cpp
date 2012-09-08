@@ -18,11 +18,10 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/menu/menu-inventory.h"
 #include "notify/listener/account-event-listener.h"
 #include "notify/notification/account-notification.h"
 #include "notify/listener/chat-event-listener.h"
@@ -101,7 +100,9 @@ void NotificationService::createActionDescriptions()
 
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(SilentModeActionDescription, KaduWindow::MenuKadu, 6);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->addAction(SilentModeActionDescription, KaduMenu::SectionMiscTools, 5);
 }
 
 void NotificationService::createEventListeners()

@@ -30,6 +30,7 @@
 #include "accounts/account.h"
 #include "core/core.h"
 #include "gui/actions/action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
@@ -55,13 +56,17 @@ GenerateKeysActionDescription::GenerateKeysActionDescription(QObject *parent) :
 	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
 			this, SLOT(updateGenerateKeysMenu()));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(this, KaduWindow::MenuTools);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(this, KaduMenu::SectionTools);
 }
 
 GenerateKeysActionDescription::~GenerateKeysActionDescription()
 {
 	// actions will delete theirs menus
-	Core::instance()->kaduWindow()->removeMenuActionDescription(this);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(this);
 }
 
 void GenerateKeysActionDescription::actionInstanceCreated(Action *action)

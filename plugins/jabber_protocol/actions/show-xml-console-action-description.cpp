@@ -23,9 +23,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "core/core.h"
 #include "gui/actions/action.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/windows/xml-console.h"
 #include "identities/identity.h"
 
@@ -53,12 +52,16 @@ ShowXmlConsoleActionDescription::ShowXmlConsoleActionDescription(QObject *parent
 ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 {
 	// actions will delete their menus
-	Core::instance()->kaduWindow()->removeMenuActionDescription(this);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(this);
 }
 
 void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 {
-	Core::instance()->kaduWindow()->insertMenuActionDescription(this, KaduWindow::MenuTools);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(this, KaduMenu::SectionTools);
 }
 
 void ShowXmlConsoleActionDescription::actionInstanceCreated(Action *action)

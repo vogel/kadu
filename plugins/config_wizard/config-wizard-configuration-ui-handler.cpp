@@ -23,10 +23,9 @@
 #include <QtGui/QAction>
 
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "gui/actions/action-description.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/kadu-window.h"
 #include "misc/kadu-paths.h"
 #include "activate.h"
 #include "debug.h"
@@ -64,12 +63,16 @@ ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 			"showConfigWizard", this, SLOT(showConfigWizardSlot()), KaduIcon(),
 			tr("Start Configuration Wizard..."));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowConfigWizardActionDescription, KaduWindow::MenuTools, 0);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(ShowConfigWizardActionDescription, KaduMenu::SectionTools);
 }
 
 ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowConfigWizardActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(ShowConfigWizardActionDescription);
 
 	delete Wizard.data();
 }

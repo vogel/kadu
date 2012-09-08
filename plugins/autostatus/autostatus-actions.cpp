@@ -21,7 +21,7 @@
 
 #include <QtGui/QAction>
 
-#include "core/core.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/windows/kadu-window.h"
 
 #include "autostatus.h"
@@ -57,12 +57,18 @@ void AutostatusActions::registerActions()
 		this, SLOT(autostatusActionActivated(QAction *, bool)),
 		KaduIcon(), tr("&Autostatus"), true
 	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(AutostatusActionDescription, KaduWindow::MenuKadu, 6);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->addAction(AutostatusActionDescription, KaduMenu::SectionMiscTools, 2);
 }
 
 void AutostatusActions::unregisterActions()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(AutostatusActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->removeAction(AutostatusActionDescription);
+
 	delete AutostatusActionDescription;
 	AutostatusActionDescription = 0;
 }

@@ -151,9 +151,6 @@ public:
 
 	KaduWindowActions * kaduWindowActions() const { return Actions; }
 
-	QAction * insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
-	void removeMenuActionDescription(ActionDescription *actionDescription);
-
 	void setDocked(bool);
 	bool docked() { return Docked; }
 

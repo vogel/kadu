@@ -26,10 +26,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/actions/action-description.h"
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "gui/actions/action.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/menu/menu-inventory.h"
 #include "debug.h"
 #include "themes.h"
 
@@ -70,7 +70,9 @@ SoundActions::SoundActions()
 	);
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(MuteActionDescription, KaduWindow::MenuKadu, 7);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->addAction(MuteActionDescription, KaduMenu::SectionMiscTools, 7);
 
 	setMuteActionState();
 
@@ -79,7 +81,9 @@ SoundActions::SoundActions()
 
 SoundActions::~SoundActions()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(MuteActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->removeAction(MuteActionDescription);
 }
 
 void SoundActions::setMuteActionState()

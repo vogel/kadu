@@ -51,6 +51,8 @@
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
 #include "gui/hot-key.h"
+#include "gui/menu/menu-inventory.h"
+#include "gui/menu/menu-item.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -169,25 +171,25 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu(this);
+	MenuInventory::instance()->bindMenu(KaduMenu::CategoryMain, KaduMenu);
+	MenuInventory::instance()->menu(KaduMenu::CategoryMain)
+		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
+		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
+		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)
+		->update();
+
 #ifdef Q_OS_MAC
 	KaduMenu->setTitle(tr("General"));
 #else
 	KaduMenu->setTitle("&Kadu");
 #endif
 	RecentChatsMenuWidget = new RecentChatsMenu(this);
-	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)),
+		this, SLOT(openRecentChats(QAction *)));
 
-	insertMenuActionDescription(Actions->Configuration, MenuKadu);
-	insertMenuActionDescription(Actions->ShowYourAccounts, MenuKadu);
-
-	KaduMenu->addSeparator();
-
-	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenuWidget);
-	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)), RecentChatsMenuAction, SLOT(setEnabled(bool)));
-
-	KaduMenu->addSeparator();
-
-	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);
+	/*MenuItem recentChatsItem = */MenuInventory::instance()->menu(KaduMenu::CategoryMain)->addMenu(RecentChatsMenuWidget, KaduMenu::SectionRecentChats, 28);
+// 	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)),
+// 		recentChatsItem, SLOT(setEnabled(bool)));
 
 	menuBar()->addMenu(KaduMenu);
 }
@@ -197,20 +199,19 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
-	insertMenuActionDescription(Actions->AddUser, MenuBuddies);
-	AddConference = insertMenuActionDescription(Actions->addConference(), MenuBuddies);
-	AddRoomChat = insertMenuActionDescription(Actions->addRoomChat(), MenuBuddies);
-	insertMenuActionDescription(Actions->AddGroup, MenuBuddies);
-	insertMenuActionDescription(Actions->OpenSearch, MenuBuddies);
-
-	ContactsMenu->addSeparator();
-	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuBuddies);
-
-	ContactsMenu->addSeparator();
-	insertMenuActionDescription(Actions->InactiveUsers, MenuBuddies);
-	insertMenuActionDescription(Actions->ShowBlockedBuddies, MenuBuddies);
-	insertMenuActionDescription(Actions->ShowMyself, MenuBuddies);
-	insertMenuActionDescription(Actions->ShowInfoPanel, MenuBuddies);
+	MenuInventory::instance()->bindMenu(KaduMenu::CategoryBuddies, ContactsMenu);
+	MenuInventory::instance()->menu(KaduMenu::CategoryBuddies)
+		->addAction(Actions->AddUser, KaduMenu::SectionBuddies, 50)
+		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
+		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
+		->addAction(Actions->AddGroup, KaduMenu::SectionBuddies, 20)
+		->addAction(Actions->OpenSearch, KaduMenu::SectionBuddies, 10)
+		->addAction(ChatWidgetManager::instance()->actions()->openChatWith(), KaduMenu::SectionOpenChat)
+		->addAction(Actions->InactiveUsers, KaduMenu::SectionBuddyListFilters, 4)
+		->addAction(Actions->ShowBlockedBuddies, KaduMenu::SectionBuddyListFilters, 3)
+		->addAction(Actions->ShowMyself, KaduMenu::SectionBuddyListFilters, 2)
+		->addAction(Actions->ShowInfoPanel, KaduMenu::SectionBuddyListFilters, 1)
+		->update();
 
 	menuBar()->addMenu(ContactsMenu);
 
@@ -227,7 +228,10 @@ void KaduWindow::createToolsMenu()
 	ToolsMenu = new QMenu(this);
 	ToolsMenu->setTitle(tr("&Tools"));
 
-	insertMenuActionDescription(Actions->ShowMultilogons, MenuTools);
+	MenuInventory::instance()->bindMenu(KaduMenu::CategoryTools, ToolsMenu);
+	MenuInventory::instance()->menu(KaduMenu::CategoryTools)
+		->addAction(Actions->ShowMultilogons, KaduMenu::SectionTools, 1)
+		->update();
 
 	menuBar()->addMenu(ToolsMenu);
 }
@@ -237,13 +241,14 @@ void KaduWindow::createHelpMenu()
 	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
-	// insertMenuActionDescription(Actions->Help, MenuHelp);
-	insertMenuActionDescription(Actions->Bugs, MenuHelp);
-	HelpMenu->addSeparator();
-	insertMenuActionDescription(Actions->GetInvolved, MenuHelp);
-	insertMenuActionDescription(Actions->Translate, MenuHelp);
-	HelpMenu->addSeparator();
-	insertMenuActionDescription(Actions->About, MenuHelp);
+	MenuInventory::instance()->bindMenu(KaduMenu::CategoryHelp, HelpMenu);
+	MenuInventory::instance()->menu(KaduMenu::CategoryHelp)
+		->addAction(Actions->Help, KaduMenu::SectionHelp, 2)
+		->addAction(Actions->Bugs, KaduMenu::SectionHelp, 1)
+		->addAction(Actions->GetInvolved, KaduMenu::SectionGetInvolved, 2)
+		->addAction(Actions->Translate, KaduMenu::SectionGetInvolved, 1)
+		->addAction(Actions->About, KaduMenu::SectionAbout, 1)
+		->update();
 
 	menuBar()->addMenu(HelpMenu);
 }
@@ -320,14 +325,16 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 
 void KaduWindow::updateAddChatMenuItem()
 {
-	AddConference->setVisible(false);
-	AddRoomChat->setVisible(false);
-
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (account.protocolName() == "gadu")
-			AddConference->setVisible(true);
-		else if (account.protocolName() == "jabber")
-			AddRoomChat->setVisible(true);
+// 	AddConference->setVisible(false);
+// 	AddRoomChat->setVisible(false);
+// 
+// 	
+// 
+// 	foreach (const Account &account, AccountManager::instance()->items())
+// 		if (account.protocolName() == "gadu")
+// 			AddConference->setVisible(true);
+// 		else if (account.protocolName() == "jabber")
+// 			AddRoomChat->setVisible(true);
 }
 
 void KaduWindow::openRecentChats(QAction *action)
@@ -501,75 +508,75 @@ void KaduWindow::configurationUpdated()
 	setBlur(config_file.readBoolEntry("Look", "UserboxTransparency") && config_file.readBoolEntry("Look", "UserboxBlur"));
 }
 
-QAction * KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
-{
-	Q_ASSERT(actionDescription);
-
-	Action *action = actionDescription->createAction(actionContext(), this);
-	QMenu *menu = 0;
-
-	switch (type)
-	{
-		case MenuKadu:
-			menu = KaduMenu;
-			break;
-		case MenuBuddies:
-			menu = ContactsMenu;
-			break;
-		case MenuTools:
-			menu = ToolsMenu;
-			break;
-		case MenuHelp:
-			menu = HelpMenu;
-			break;
-	}
-
-	if (!menu)
-	{
-		delete action;
-		return 0;
-	}
-
-	QList<QAction *> menuActions = menu->actions();
-	if (pos < 0 || pos >= menuActions.count())
-		menu->addAction(action);
-	else
-		menu->insertAction(menuActions.at(pos), action);
-
-	MenuActions.insert(actionDescription, MenuAction(action, type));
-
-	return action;
-}
-
-void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescription)
-{
-	if (!actionDescription)
-		return;
-
-	QMap<ActionDescription *, MenuAction>::iterator it = MenuActions.find(actionDescription);
-	if (it == MenuActions.end())
-		return;
-
-	Action *action = it.value().first;
-	switch (it.value().second)
-	{
-		case MenuKadu:
-			KaduMenu->removeAction(action);
-			break;
-		case MenuBuddies:
-			ContactsMenu->removeAction(action);
-			break;
-		case MenuTools:
-			ToolsMenu->removeAction(action);
-			break;
-		case MenuHelp:
-			HelpMenu->removeAction(action);
-			break;
-	}
-
-	MenuActions.erase(it);
-	delete action;
-}
+// QAction * KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
+// {
+// 	Q_ASSERT(actionDescription);
+// 
+// 	Action *action = actionDescription->createAction(actionContext(), this);
+// 	QMenu *menu = 0;
+// 
+// 	switch (type)
+// 	{
+// 		case MenuKadu:
+// 			menu = KaduMenu;
+// 			break;
+// 		case MenuBuddies:
+// 			menu = ContactsMenu;
+// 			break;
+// 		case MenuTools:
+// 			menu = ToolsMenu;
+// 			break;
+// 		case MenuHelp:
+// 			menu = HelpMenu;
+// 			break;
+// 	}
+// 
+// 	if (!menu)
+// 	{
+// 		delete action;
+// 		return 0;
+// 	}
+// 
+// 	QList<QAction *> menuActions = menu->actions();
+// 	if (pos < 0 || pos >= menuActions.count())
+// 		menu->addAction(action);
+// 	else
+// 		menu->insertAction(menuActions.at(pos), action);
+// 
+// 	MenuActions.insert(actionDescription, MenuAction(action, type));
+// 
+// 	return action;
+// }
+// 
+// void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescription)
+// {
+// 	if (!actionDescription)
+// 		return;
+// 
+// 	QMap<ActionDescription *, MenuAction>::iterator it = MenuActions.find(actionDescription);
+// 	if (it == MenuActions.end())
+// 		return;
+// 
+// 	Action *action = it.value().first;
+// 	switch (it.value().second)
+// 	{
+// 		case MenuKadu:
+// 			KaduMenu->removeAction(action);
+// 			break;
+// 		case MenuBuddies:
+// 			ContactsMenu->removeAction(action);
+// 			break;
+// 		case MenuTools:
+// 			ToolsMenu->removeAction(action);
+// 			break;
+// 		case MenuHelp:
+// 			HelpMenu->removeAction(action);
+// 			break;
+// 	}
+// 
+// 	MenuActions.erase(it);
+// 	delete action;
+// }
 
 void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 {

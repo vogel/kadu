@@ -29,9 +29,8 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
-#include "core/core.h"
 #include "gui/actions/action-description.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/menu/menu-inventory.h"
 #include "misc/kadu-paths.h"
 #include "debug.h"
 #include "exports.h"
@@ -96,7 +95,10 @@ Infos::Infos(QObject *parent) :
 		this, SLOT(onShowInfos()),
 		KaduIcon(), tr("&Show infos about buddies...")
 	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(lastSeenActionDescription, KaduWindow::MenuTools, 3);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(lastSeenActionDescription, KaduMenu::SectionTools, 3);
 
 	kdebugf2();
 }
@@ -125,7 +127,9 @@ Infos::~Infos()
 		fflush(stderr);
 	}
 
-	Core::instance()->kaduWindow()->removeMenuActionDescription(lastSeenActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(lastSeenActionDescription);
 
 	kdebugf2();
 }

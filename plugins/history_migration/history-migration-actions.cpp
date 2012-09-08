@@ -23,9 +23,8 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "core/core.h"
 #include "gui/actions/action-description.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/menu/menu-inventory.h"
 #include "misc/kadu-paths.h"
 #include "protocols/protocol.h"
 
@@ -58,13 +57,17 @@ HistoryMigrationActions::HistoryMigrationActions() :
 		ImportHistoryActionDescription = new ActionDescription(this, ActionDescription::TypeGlobal, "import_history",
 				this, SLOT(importHistoryActionActivated(QAction*,bool)), KaduIcon(), tr("Import history..."));
 
-		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportHistoryActionDescription, KaduWindow::MenuTools);
+		MenuInventory::instance()
+			->menu(KaduMenu::CategoryTools)
+			->addAction(ImportHistoryActionDescription, KaduMenu::SectionTools);
 	}
 }
 
 HistoryMigrationActions::~HistoryMigrationActions()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportHistoryActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(ImportHistoryActionDescription);
 }
 
 void HistoryMigrationActions::importHistoryActionActivated(QAction *sender, bool toggled)

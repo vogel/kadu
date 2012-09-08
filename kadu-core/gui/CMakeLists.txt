@@ -12,6 +12,10 @@ set (gui_SRCS
 	actions/delete-talkable-action.cpp
 	actions/edit-talkable-action.cpp
 
+	menu/kadu-menu.cpp
+	menu/menu-inventory.cpp
+	menu/menu-item.cpp
+
 	model/checkbox-styled-item-delegate.cpp
 
 	widgets/account-buddy-list-widget.cpp
@@ -180,6 +184,10 @@ set (gui_MOC_SRCS
 	actions/delete-talkable-action.h
 	actions/default-proxy-action.h
 	actions/edit-talkable-action.h
+
+	menu/kadu-menu.h
+	menu/menu-inventory.h
+	menu/menu-item.h
 
 	model/checkbox-styled-item-delegate.h
 

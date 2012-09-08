@@ -52,12 +52,12 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/actions/actions.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -153,8 +153,12 @@ void History::createActionDescriptions()
 
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
 
-	TalkableMenuManager::instance()->addActionDescription(ShowHistoryActionDescriptionInstance, TalkableMenuItem::CategoryView, 100);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ShowHistoryActionDescriptionInstance, KaduWindow::MenuKadu, 5);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionView, 100);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionRecentChats);
 
 	// The last ActionDescription will send actionLoaded() signal.
 	Actions::instance()->unblockSignals();
@@ -170,8 +174,12 @@ void History::createActionDescriptions()
 
 void History::deleteActionDescriptions()
 {
-	TalkableMenuManager::instance()->removeActionDescription(ShowHistoryActionDescriptionInstance);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ShowHistoryActionDescriptionInstance);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->removeAction(ShowHistoryActionDescriptionInstance);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryMain)
+		->removeAction(ShowHistoryActionDescriptionInstance);
 
 	delete ShowHistoryActionDescriptionInstance;
 	ShowHistoryActionDescriptionInstance = 0;

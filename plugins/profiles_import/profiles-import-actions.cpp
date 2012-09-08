@@ -22,10 +22,10 @@
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/actions.h"
-#include "gui/windows/kadu-window.h"
-
+#include "gui/menu/menu-inventory.h"
 #include "gui/windows/import-profile-window.h"
 #include "gui/windows/import-profiles-window.h"
+#include "gui/windows/kadu-window.h"
 #include "profile-data-manager.h"
 
 #include "profiles-import-actions.h"
@@ -59,7 +59,10 @@ ProfilesImportActions::ProfilesImportActions() :
 		ImportProfiles = new ActionDescription(this, ActionDescription::TypeGlobal, "import_profiles",
 				this, SLOT(importProfilesActionActivated(QAction*, bool)), KaduIcon(),
 				tr("Import profiles..."), false);
-		Core::instance()->kaduWindow()->insertMenuActionDescription(ImportProfiles, KaduWindow::MenuTools);
+
+		MenuInventory::instance()
+			->menu(KaduMenu::CategoryTools)
+			->addAction(ImportProfiles, KaduMenu::SectionTools);
 
 		// The last ActionDescription will send actionLoaded() signal.
 		Actions::instance()->unblockSignals();
@@ -68,19 +71,30 @@ ProfilesImportActions::ProfilesImportActions() :
 	ImportExternalProfile = new ActionDescription(this, ActionDescription::TypeGlobal, "import_external_profile",
 			this, SLOT(importExternalProfileActionActivated(QAction*, bool)), KaduIcon(),
 			tr("Import external profile..."), false);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(ImportExternalProfile, KaduWindow::MenuTools);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->addAction(ImportExternalProfile, KaduMenu::SectionTools);
 }
 
 ProfilesImportActions::~ProfilesImportActions()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportProfiles);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(ImportExternalProfile);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(ImportProfiles);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryTools)
+		->removeAction(ImportExternalProfile);
 }
 
 void ProfilesImportActions::updateActions()
 {
 	if (ProfileDataManager::readProfileData().isEmpty())
-		Core::instance()->kaduWindow()->removeMenuActionDescription(ImportProfiles);
+	{
+		MenuInventory::instance()
+			->menu(KaduMenu::CategoryTools)
+			->removeAction(ImportProfiles);
+	}
 }
 
 void ProfilesImportActions::importProfilesActionActivated(QAction *action, bool toggled)
