@@ -43,13 +43,13 @@ KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::M
 	return this;
 }
 
-KaduMenu * KaduMenu::addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority)
+MenuItem * KaduMenu::addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority)
 {
 	MenuItem *item = new MenuItem(menu, section, priority);
 	Items.append(item);
 	IsSorted = false;
 
-	return this;
+	return item;
 }
 
 void KaduMenu::removeAction(ActionDescription *actionDescription)
@@ -63,6 +63,21 @@ void KaduMenu::removeAction(ActionDescription *actionDescription)
 		else
 			++i;
 	}
+}
+
+MenuItem * KaduMenu::menuItem(ActionDescription *actionDescription)
+{
+	QList<MenuItem*>::iterator i = Items.begin();
+
+	while (i != Items.end())
+	{
+		if ((*i)->actionDescription() == actionDescription)
+			return *i;
+		else
+			++i;
+	}
+
+	return 0;
 }
 
 bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)

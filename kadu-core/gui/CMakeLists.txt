@@ -11,6 +11,7 @@ set (gui_SRCS
 	actions/default-proxy-action.cpp
 	actions/delete-talkable-action.cpp
 	actions/edit-talkable-action.cpp
+	actions/recent-chats-action-description.cpp
 
 	menu/kadu-menu.cpp
 	menu/menu-inventory.cpp
@@ -184,6 +185,7 @@ set (gui_MOC_SRCS
 	actions/delete-talkable-action.h
 	actions/default-proxy-action.h
 	actions/edit-talkable-action.h
+	actions/recent-chats-action-description.h
 
 	menu/kadu-menu.h
 	menu/menu-inventory.h

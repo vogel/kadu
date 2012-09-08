@@ -48,19 +48,19 @@ public:
 
 	enum MenuSection
 	{
-		SectionConfig = 0,
-		SectionRecentChats = 1,
-		SectionMiscTools =2,
-		SectionQuit =3,
-		SectionBuddies=4,
-		SectionOpenChat=5,
-		SectionBuddyListFilters=6,
-		SectionTools=7,
-		SectionHelp=8,
-		SectionGetInvolved=9,
-		SectionAbout=10,
-		SectionActions = 11,
-		SectionView = 12,
+		SectionConfig,
+		SectionRecentChats,
+		SectionMiscTools,
+		SectionQuit,
+		SectionBuddies,
+		SectionOpenChat,
+		SectionBuddyListFilters,
+		SectionTools,
+		SectionHelp,
+		SectionGetInvolved,
+		SectionAbout,
+		SectionActions,
+		SectionView,
 	};
 
 	MenuCategory Category;
@@ -79,7 +79,8 @@ public:
 	KaduMenu(MenuCategory category, KaduMenu *parent = 0);
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
-	KaduMenu * addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority = 0);
+	MenuItem * addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority = 0);
+	MenuItem * menuItem(ActionDescription *actionDescription);
 	void removeAction(ActionDescription *actionDescription);
 	void updateGuiMenuLater();
 

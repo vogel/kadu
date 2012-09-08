@@ -50,6 +50,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
+#include "gui/actions/recent-chats-action-description.h"
 #include "gui/hot-key.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/menu/menu-item.h"
@@ -175,6 +176,7 @@ void KaduWindow::createKaduMenu()
 	MenuInventory::instance()->menu(KaduMenu::CategoryMain)
 		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
+		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
 		->addAction(Actions->ExitKadu, KaduMenu::SectionQuit)
 		->update();
 
@@ -183,13 +185,6 @@ void KaduWindow::createKaduMenu()
 #else
 	KaduMenu->setTitle("&Kadu");
 #endif
-	RecentChatsMenuWidget = new RecentChatsMenu(this);
-	connect(RecentChatsMenuWidget, SIGNAL(triggered(QAction *)),
-		this, SLOT(openRecentChats(QAction *)));
-
-	/*MenuItem recentChatsItem = */MenuInventory::instance()->menu(KaduMenu::CategoryMain)->addMenu(RecentChatsMenuWidget, KaduMenu::SectionRecentChats, 28);
-// 	connect(RecentChatsMenuWidget, SIGNAL(chatsListAvailable(bool)),
-// 		recentChatsItem, SLOT(setEnabled(bool)));
 
 	menuBar()->addMenu(KaduMenu);
 }
@@ -335,13 +330,6 @@ void KaduWindow::updateAddChatMenuItem()
 // 			AddConference->setVisible(true);
 // 		else if (account.protocolName() == "jabber")
 // 			AddRoomChat->setVisible(true);
-}
-
-void KaduWindow::openRecentChats(QAction *action)
-{
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
-	if (chatWidget)
-		chatWidget->activate();
 }
 
 void KaduWindow::storeConfiguration()

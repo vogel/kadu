@@ -40,6 +40,7 @@ class DeleteTalkableAction;
 class DefaultProxyAction;
 class EditTalkableAction;
 class MainWindow;
+class RecentChatsActionDescription;
 class StatusContainer;
 
 class KaduWindowActions : QObject, ConfigurationAwareObject
@@ -50,6 +51,7 @@ class KaduWindowActions : QObject, ConfigurationAwareObject
 	ActionDescription *Configuration;
 	ActionDescription *ShowYourAccounts;
 	ActionDescription *ShowMultilogons;
+	RecentChatsActionDescription *RecentChats;
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
 	AddConferenceAction *AddConference;
