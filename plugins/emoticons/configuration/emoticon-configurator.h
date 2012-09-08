@@ -53,8 +53,8 @@ class EmoticonConfigurator : public ConfigurationHolder
 	EmoticonConfiguration Configuration;
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	InsertEmoticonAction *InsertAction;
-	EmoticonExpanderDomVisitorProvider *EmoticonExpanderProvider;
+	QWeakPointer<InsertEmoticonAction> InsertAction;
+	QWeakPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
 
 	void createDefaultConfiguration();
 

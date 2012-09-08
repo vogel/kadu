@@ -83,7 +83,7 @@ void EmoticonConfigurator::configurationUpdated()
 		Configuration.setEmoticonTheme(EmoticonTheme());
 
 	if (InsertAction)
-		InsertAction->setConfiguration(Configuration);
+		InsertAction.data()->setConfiguration(Configuration);
 	if (EmoticonExpanderProvider)
-		EmoticonExpanderProvider->setConfiguration(Configuration);
+		EmoticonExpanderProvider.data()->setConfiguration(Configuration);
 }
