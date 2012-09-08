@@ -50,7 +50,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/chat/add-conference-action.h"
 #include "gui/actions/chat/add-room-chat-action.h"
-#include "gui/actions/recent-chats-action-description.h"
+#include "gui/actions/recent-chats-action.h"
 #include "gui/hot-key.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/menu/menu-item.h"

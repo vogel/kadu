@@ -46,7 +46,7 @@
 #include "gui/actions/default-proxy-action.h"
 #include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/edit-talkable-action.h"
-#include "gui/actions/recent-chats-action-description.h"
+#include "gui/actions/recent-chats-action.h"
 #include "gui/status-icon.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget-actions.h"
@@ -178,7 +178,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("x-office-address-book"), tr("Your Accounts...")
 	);
 
-	RecentChats = new RecentChatsActionDescription(this);
+	RecentChats = new RecentChatsAction(this);
 
 	ShowMultilogons = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",

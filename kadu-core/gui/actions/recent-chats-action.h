@@ -17,14 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECENT_CHATS_ACTION_DESCRIPTION_H
-#define RECENT_CHATS_ACTION_DESCRIPTION_H
+#ifndef RECENT_CHATS_ACTION_H
+#define RECENT_CHATS_ACTION_H
 
 #include "gui/actions/action-description.h"
 
 class RecentChatsMenu;
 
-class RecentChatsActionDescription : public ActionDescription
+class RecentChatsAction : public ActionDescription
 {
 	Q_OBJECT
 
@@ -37,9 +37,9 @@ protected:
 	virtual void actionInstanceCreated(Action *action);
 
 public:
-	explicit RecentChatsActionDescription(QObject *parent);
-	virtual ~RecentChatsActionDescription();
+	explicit RecentChatsAction(QObject *parent);
+	virtual ~RecentChatsAction();
 
 };
 
-#endif // RECENT_CHATS_ACTION_DESCRIPTION_H
+#endif // RECENT_CHATS_ACTION_H

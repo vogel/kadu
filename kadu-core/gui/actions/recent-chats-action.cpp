@@ -26,9 +26,9 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/recent-chats-menu.h"
 
-#include "recent-chats-action-description.h"
+#include "recent-chats-action.h"
 
-RecentChatsActionDescription::RecentChatsActionDescription(QObject *parent) :
+RecentChatsAction::RecentChatsAction(QObject *parent) :
 		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeMainMenu);
@@ -41,13 +41,13 @@ RecentChatsActionDescription::RecentChatsActionDescription(QObject *parent) :
 		this, SLOT(openRecentChats(QAction *)));
 }
 
-RecentChatsActionDescription::~RecentChatsActionDescription()
+RecentChatsAction::~RecentChatsAction()
 {
 	delete RecentChatsMenuInstance;
 	RecentChatsMenuInstance = 0;
 }
 
-void RecentChatsActionDescription::actionInstanceCreated(Action *action)
+void RecentChatsAction::actionInstanceCreated(Action *action)
 {
 	action->setEnabled(false);
 	action->setMenu(RecentChatsMenuInstance);
@@ -55,10 +55,9 @@ void RecentChatsActionDescription::actionInstanceCreated(Action *action)
 		action, SLOT(setEnabled(bool)));
 }
 
-void RecentChatsActionDescription::openRecentChats(QAction *action)
+void RecentChatsAction::openRecentChats(QAction *action)
 {
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
 		chatWidget->activate();
 }
-
