@@ -148,26 +148,10 @@ set (kadu_SUBDIRS
 
 qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
-if (WIN32)
-	if (NOT WIN_QCA_DIR)
-		message (SEND_ERROR "Pass path to libqca2 -DWIN_QCA_DIR=path")
-	else ()
-		set (QCA2_INCLUDE_DIRS ${WIN_QCA_DIR}/include/QtCrypto)
-		set (QCA2_LIBRARIES optimized qca2 debug qcad2)
-
-		if (MSVC)
-			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/lib)
-		else ()
-			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/bin)
-		endif ()
-	endif ()
-else ()
-	pkg_search_module (QCA2 REQUIRED qca2)
-endif ()
-
-link_directories (${QCA2_LIBRARY_DIRS})
-add_definitions (${QCA2_CFLAGS_OTHER})
-include_directories (${QCA2_INCLUDE_DIRS})
+find_package (QCA2 REQUIRED)
+include_directories (${QCA2_INCLUDE_DIR})
+add_definitions (${QCA2_DEFINITIONS})
+list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
 
 if (UNIX AND NOT APPLE)
 	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xfixes)
@@ -250,7 +234,7 @@ add_library (libkadu SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
 if (FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
-target_link_libraries (libkadu ${QT_LIBRARIES} ${QCA2_LIBRARIES} ${ADDITIONAL_LIBRARIES})
+target_link_libraries (libkadu ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 set_target_properties (libkadu PROPERTIES
 	COMPILE_DEFINITIONS KADULIB
 	PREFIX ""

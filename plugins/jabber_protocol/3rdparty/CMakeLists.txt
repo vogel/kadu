@@ -205,7 +205,7 @@ endif ()
 
 include_directories (
 	${IDN_INCLUDE_DIRS}
-	${QCA2_INCLUDE_DIRS}
+	${QCA2_INCLUDE_DIR}
 	${ZLIB_INCLUDE_DIRS}
 
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include/iris

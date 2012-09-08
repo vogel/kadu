@@ -29,34 +29,18 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-if (WIN32)
-	if (NOT WIN_QCA_DIR)
-		message (SEND_ERROR "Pass path to libqca2 -DWIN_QCA_DIR=path")
-	else ()
-		set (QCA2_INCLUDE_DIRS ${WIN_QCA_DIR}/include/QtCrypto)
-		set (QCA2_LIBRARIES optimized qca2 debug qcad2)
-
-		if (MSVC)
-			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/lib)
-		else ()
-			set (QCA2_LIBRARY_DIRS ${WIN_QCA_DIR}/bin)
-		endif ()
-	endif ()
-else ()
-	pkg_search_module (QCA2 REQUIRED qca2)
-endif ()
+find_package (QCA2 REQUIRED)
 
 if (APPLE)
 	if (QCA_FRAMEWORK_DIR)
-		set (QCA2_INCLUDE_DIRS ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
-		set (QCA2_LIBRARY_DIRS ${QCA_FRAMEWORK_DIR}/qca.framework/)
+		set (QCA2_INCLUDE_DIR ${QCA_FRAMEWORK_DIR}/qca.framework/Headers/)
 		set (QCA2_LIBRARIES "-framework qca")
+		link_directories (${QCA_FRAMEWORK_DIR}/qca.framework/)
 	endif ()
 endif ()
 
-link_directories (${QCA2_LIBRARY_DIRS})
-add_definitions (${QCA2_CFLAGS_OTHER})
-include_directories (${QCA2_INCLUDE_DIRS})
+add_definitions (${QCA2_DEFINITIONS})
+include_directories (${QCA2_INCLUDE_DIR})
 
 kadu_plugin (encryption_ng_simlite
 	PLUGIN_SOURCES ${SOURCES}
