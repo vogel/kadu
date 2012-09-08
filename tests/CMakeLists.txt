@@ -13,6 +13,9 @@ macro (kadu_add_test name_)
 
 	file (RELATIVE_PATH sourcePath "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_CURRENT_SOURCE_DIR}")
 
+	get_filename_component (exeDir "${CMAKE_CURRENT_BINARY_DIR}/${name_}" PATH)
+	file (MAKE_DIRECTORY "${exeDir}")
+
 	add_executable (${name_} ${ARGN})
 	target_link_libraries (${name_} libkadu ${QT_QTTEST_LIBRARY})
 	add_test ("${sourcePath}/${name_}" ${name_})
