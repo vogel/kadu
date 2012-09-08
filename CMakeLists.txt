@@ -5,6 +5,8 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set (KADU_INSTALLS_SDK TRUE)
 include (FindKadu)
 
+option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
+
 if (NOT KADU_VERSION)
 	if (WIN32)
 		set (guessed_paths
@@ -83,6 +85,10 @@ add_subdirectory (plugins)
 add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
+if (BUILD_TESTING)
+	enable_testing ()
+	add_subdirectory (tests)
+endif ()
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be built:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
