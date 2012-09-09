@@ -59,7 +59,7 @@ void JabberConnectionService::cleanUp()
 	// Destroy in order opposite to creation. Expect crashes otherwise.
 
 	// Just deinit. JabberProtocols owns it.
-	if (XmppClient)
+	if (XmppClient && XmppClient.data()->isActive())
 		XmppClient.data()->close();
 
 	// We need to delete iris objects immediately (normally we would do that
