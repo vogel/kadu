@@ -37,10 +37,6 @@ VideoExpander::~VideoExpander()
 
 QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp regExp)
 {
-	QDomElement objectElement = document.createElement("object");
-	objectElement.setAttribute("width", "33%");
-	objectElement.setAttribute("height", "33%");
-
 	QDomElement embedElement = document.createElement("embed");
 	embedElement.setAttribute("src", QString("http://www.youtube.com/v/%1&autoplay=0").arg(regExp.cap(1)));
 	embedElement.setAttribute("type", "application/x-shockwave-flash");
@@ -49,9 +45,7 @@ QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp re
 	embedElement.setAttribute("width", "33%");
 	embedElement.setAttribute("height", "33%");
 
-	objectElement.appendChild(embedElement);
-
 	QDomText textElement = document.createTextNode(regExp.cap());
 
-	return QList<QDomNode>() << objectElement << document.createElement("br") << textElement;
+	return QList<QDomNode>() << embedElement << document.createElement("br") << textElement;
 }
