@@ -94,9 +94,6 @@ public:
 
 	QList<TrackInfo> getTrackList() const;
 
-public slots:
-	void trackChanged(const QVariantMap &map);
-
 };
 
 #endif
