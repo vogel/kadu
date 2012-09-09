@@ -42,5 +42,5 @@ QList<QDomNode> ImageExpander::matchToDomNodes(QDomDocument document, QRegExp re
 
 	QDomText textElement = document.createTextNode(regExp.cap());
 
-	return QList<QDomNode>() << imageElement << textElement;
+	return QList<QDomNode>() << imageElement << document.createElement("br") << textElement;
 }

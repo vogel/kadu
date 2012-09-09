@@ -53,5 +53,5 @@ QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp re
 
 	QDomText textElement = document.createTextNode(regExp.cap());
 
-	return QList<QDomNode>() << objectElement << textElement;
+	return QList<QDomNode>() << objectElement << document.createElement("br") << textElement;
 }
