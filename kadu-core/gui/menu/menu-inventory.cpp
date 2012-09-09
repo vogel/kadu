@@ -47,7 +47,7 @@ MenuInventory::MenuInventory()
 {
 }
 
-void MenuInventory::bindMenu ( KaduMenu::MenuCategory category, QMenu* menu )
+void MenuInventory::bindMenu(KaduMenu::MenuCategory category, QMenu *menu)
 {
 	KaduMenu *kaduMenu = new KaduMenu(category);
 	kaduMenu->setGuiMenu(menu);
@@ -68,81 +68,3 @@ KaduMenu * MenuInventory::menu(KaduMenu::MenuCategory category)
 	return menu;
 }
 
-
-/*
-// TODO: refactor, split
-QMenu * MenuInventory::menu(QWidget *parent, ActionContext *actionContext)
-{
-	sortActions();
-
-	QMenu *menu = new QMenu(parent);
-
-	QMenu *actions = new QMenu(tr("More Actions..."), menu);
-
-	TalkableMenuItem::MenuCategory lastCategory = TalkableMenuItem::CategoryChat;
-	bool first = true;
-	foreach (TalkableMenuItem menuItem, Actions)
-	{
-		if (!first && lastCategory != menuItem.category())
-			actions->addSeparator();
-
-		Action *action = menuItem.actionDescription()->createAction(actionContext, parent);
-		actions->addAction(action);
-		action->checkState();
-
-		lastCategory = menuItem.category();
-		first = false;
-	}
-
-	if (actionContext->roles().contains(ContactRole))
-	{
-		if (1 == actionContext->contacts().size())
-		{
-			Contact contact = *actionContext->contacts().constBegin();
-
-			if (contact.contactAccount() && contact.contactAccount().protocolHandler())
-			{
-				Account account = contact.contactAccount();
-				ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
-
-				if (protocolFactory && protocolFactory->protocolMenuManager())
-				{
-					if (!first && !protocolFactory->protocolMenuManager()->protocolActions().isEmpty())
-						actions->addSeparator();
-
-					foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())
-						if (actionDescription)
-						{
-							Action *action = actionDescription->createAction(actionContext, parent);
-							actions->addAction(action);
-							action->checkState();
-						}
-						else
-							actions->addSeparator();
-				}
-			}
-		}
-	}
-
-	lastCategory = TalkableMenuItem::CategoryChat;
-	first = true;
-	foreach (TalkableMenuItem menuItem, ContexMenu)
-	{
-		if (!first && lastCategory != menuItem.category())
-		{
-			if (menuItem.category() > TalkableMenuItem::CategoryActions)
-				menu->addMenu(actions);
-			menu->addSeparator();
-		}
-
-		Action *action = menuItem.actionDescription()->createAction(actionContext, parent);
-		menu->addAction(action);
-		action->checkState();
-
-		lastCategory = menuItem.category();
-		first = false;
-	}
-
-	return menu;
-}
-*/

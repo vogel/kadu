@@ -48,11 +48,11 @@
 #include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
@@ -113,7 +113,10 @@ TabsManager::TabsManager(QObject *parent) :
 		this, SLOT(onNewTab(QAction *, bool)),
 		KaduIcon("internet-group-chat"), tr("Chat in New Tab"), false, disableNewTab
 	);
-	TalkableMenuManager::instance()->addActionDescription(OpenInNewTabActionDescription, TalkableMenuItem::CategoryChat, 200);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
 		ActionDescription::TypeChat, "attachToTabsAction",
@@ -132,7 +135,9 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-	TalkableMenuManager::instance()->removeActionDescription(OpenInNewTabActionDescription);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->removeAction(OpenInNewTabActionDescription);
 
 	Timer.stop();
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);

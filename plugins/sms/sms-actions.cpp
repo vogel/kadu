@@ -30,7 +30,6 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
@@ -76,7 +75,7 @@ SmsActions::SmsActions()
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(sendSmsActionDescription, KaduMenu::SectionActions, 100);
+		->addAction(sendSmsActionDescription, KaduMenu::SectionChat, 100);
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddies)
 		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5);

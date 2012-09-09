@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2009 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2009, 2012 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
@@ -23,12 +23,7 @@
 #include "menu-item.h"
 
 MenuItem::MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority) :
-		Action(action), SubMenu(0), Section(section), Priority(priority)
-{
-}
-
-MenuItem::MenuItem(QMenu *menu, KaduMenu::MenuSection section, int priority) :
-		Action(0), SubMenu(menu), Section(section), Priority(priority)
+		Action(action), Section(section), Priority(priority)
 {
 }
 
@@ -42,8 +37,3 @@ bool MenuItem::operator < (const MenuItem &compareTo) const
 	return Section < compareTo.Section;
 }
 
-void MenuItem::setEnabled ( bool enabled )
-{
-	if (MenuAction)
-		MenuAction->setEnabled(enabled);
-}

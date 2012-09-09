@@ -8,26 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QProcess>
-#include <QtGui/QCheckBox>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QListWidget>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
 #include <QtScript/QScriptEngine>
-
-#include "buddies/buddy-manager.h"
-#include "configuration/configuration-file.h"
-#include "core/core.h"
-#include "gui/hot-key.h"
-#include "gui/widgets/configuration/config-group-box.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/talkable-menu-manager.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "debug.h"
 
 #include "scripts/sms-script-manager.h"
 

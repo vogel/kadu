@@ -29,29 +29,18 @@
 class QMenu;
 class ActionDescription;
 
-class MenuItem : public QObject
+class MenuItem
 {
-	Q_OBJECT
-
 	ActionDescription *Action;
-	QAction *MenuAction;
-
-	QMenu *SubMenu;
-	
 	KaduMenu::MenuSection Section;
 	int Priority;
 
-public slots:
-	void setEnabled(bool enabled);
-
 public:
 	MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority = 0);
-	MenuItem(QMenu *menu, KaduMenu::MenuSection section, int priority = 0);
 
 	bool operator < (const MenuItem &compareTo) const;
 
 	ActionDescription * actionDescription() { return Action; }
-	QMenu * submenu() { return SubMenu; }
 	KaduMenu::MenuSection section() const { return Section; }
 	int priority() const { return Priority; }
 

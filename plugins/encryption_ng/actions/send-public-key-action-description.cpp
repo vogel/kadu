@@ -26,7 +26,7 @@
 #include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/talkable-menu-manager.h"
+#include "gui/menu/menu-inventory.h"
 #include "message/message-manager.h"
 
 #include "keys/keys-manager.h"
@@ -44,13 +44,16 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 
 	registerAction();
 
-	TalkableMenuManager::instance()->addListActionDescription(this,
-			TalkableMenuItem::CategoryManagement, 20);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(this, KaduMenu::SectionManagement, 20);
 }
 
 SendPublicKeyActionDescription::~SendPublicKeyActionDescription()
 {
-	TalkableMenuManager::instance()->removeListActionDescription(this);
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->removeAction(this);
 }
 
 void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggled)

@@ -22,11 +22,15 @@
 
 #include <QtCore/QTimer>
 
+#include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "menu-item.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocol-menu-manager.h"
 
 #include "kadu-menu.h"
 
@@ -41,15 +45,6 @@ KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::M
 	IsSorted = false;
 
 	return this;
-}
-
-MenuItem * KaduMenu::addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority)
-{
-	MenuItem *item = new MenuItem(menu, section, priority);
-	Items.append(item);
-	IsSorted = false;
-
-	return item;
 }
 
 void KaduMenu::removeAction(ActionDescription *actionDescription)
@@ -104,45 +99,88 @@ void KaduMenu::setGuiMenu ( QMenu* menu )
 	GuiMenu = menu;
 }
 
-void KaduMenu::updateGuiMenu()
+void KaduMenu::updateGuiMenu(ActionContext *context)
 {
 	sort();
 
 	GuiMenu->clear();
 
-	ActionContext *actionContext = getActionContext();
+	ActionContext *actionContext = context
+		? context
+		: getActionContext();
 
 	bool firstItem = true;
 	MenuSection latestSection;
 
+	QMenu *actions = new QMenu(tr("More Actions..."), GuiMenu);
+
 	foreach (MenuItem* menuItem, Items)
 	{
+		QMenu *currentMenu = menuItem->section() == KaduMenu::SectionActions
+			? actions
+			: GuiMenu;
+
 		if (!firstItem && latestSection != menuItem->section())
 		{
-// 			if (menuItem.category() > TalkableMenuItem::CategoryActions)
-// 				menu->addMenu(actions);
-			GuiMenu->addSeparator();
+			currentMenu->addSeparator();
 		}
 
-		if (menuItem->actionDescription())
-		{
-			Action *action = menuItem->actionDescription()->createAction(actionContext, GuiMenu->parentWidget());
-			GuiMenu->addAction(action);
-			action->checkState();
-		}
-		else if (menuItem->submenu())
-		{
-			GuiMenu->addMenu(menuItem->submenu());
-		}
+		Action *action = menuItem->actionDescription()->createAction(actionContext, currentMenu->parent());
+		currentMenu->addAction(action);
+		action->checkState();
 
 		latestSection = menuItem->section();
 		firstItem = false;
 	}
+
+	if (actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size())
+	{
+		Contact contact = *actionContext->contacts().constBegin();
+
+		if (contact.contactAccount() && contact.contactAccount().protocolHandler())
+		{
+			Account account = contact.contactAccount();
+			ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
+
+			if (protocolFactory && protocolFactory->protocolMenuManager())
+			{
+				if (!firstItem && !protocolFactory->protocolMenuManager()->protocolActions().isEmpty())
+					actions->addSeparator();
+
+				foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())
+					if (actionDescription)
+					{
+						Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
+						actions->addAction(action);
+						action->checkState();
+					}
+					else
+						actions->addSeparator();
+			}
+		}
+	}
+
+	if (actions->actions().size() > 0)
+		GuiMenu->addMenu(actions);
 }
 
 void KaduMenu::updateGuiMenuLater()
 {
-	QTimer::singleShot(1000, this, SLOT(updateGuiMenu()));
+	QTimer::singleShot(1000, this, SLOT(updateGuiMenuSlot()));
+}
+
+void KaduMenu::updateGuiMenuSlot()
+{
+	updateGuiMenu();
+}
+
+
+QMenu * KaduMenu::menu(QWidget *parent, ActionContext *actionContext)
+{
+	GuiMenu = new QMenu(parent);
+	updateGuiMenu(actionContext);
+
+	return GuiMenu;
 }
 
 ActionContext * KaduMenu::getActionContext()

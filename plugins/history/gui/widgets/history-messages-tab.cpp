@@ -29,6 +29,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
 #include "buddies/model/buddy-list-model.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "gui/widgets/wait-overlay.h"
@@ -37,7 +38,6 @@
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"
@@ -289,7 +289,7 @@ void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistor
 
 void HistoryMessagesTab::showTalkablePopupMenu()
 {
-	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, TalkableTree->actionContext()));
+	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, TalkableTree->actionContext()));
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));

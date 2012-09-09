@@ -36,7 +36,7 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "contacts/contact-manager.h"
 #include "gui/actions/base-action-context.h"
-#include "gui/widgets/talkable-menu-manager.h"
+#include "gui/menu/menu-inventory.h"
 #include "model/roles.h"
 #include "os/generic/window-geometry-manager.h"
 #include "status/status-type-data.h"
@@ -153,6 +153,6 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	actionContext.setContacts(ContactSet(contact));
 	actionContext.setRoles(RoleSet() << ContactRole);
 
-	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, &actionContext));
+	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, &actionContext));
 	menu->exec(QCursor::pos());
 }

@@ -36,15 +36,14 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/actions/chat/leave-chat-action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/actions/edit-talkable-action.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "model/roles.h"
@@ -215,7 +214,10 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		KaduIcon("internet-group-chat"), tr("&Chat"), false,
 		disableNoChat
 	);
-	TalkableMenuManager::instance()->addActionDescription(OpenChat, TalkableMenuItem::CategoryChat, 25);
+
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(OpenChat, KaduMenu::SectionChat);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",

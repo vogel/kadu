@@ -52,11 +52,11 @@
 #include "gui/actions/base-action-context.h"
 #include "gui/actions/delete-talkable-action.h"
 #include "gui/actions/edit-talkable-action.h"
+#include "gui/menu/menu-inventory.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
-#include "gui/widgets/talkable-menu-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -173,7 +173,7 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	QScopedPointer<QMenu> menu(TalkableMenuManager::instance()->menu(this, Context));
+	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, Context));
 	menu->exec(event->globalPos());
 }
 

@@ -59,27 +59,27 @@ public:
 		SectionHelp,
 		SectionGetInvolved,
 		SectionAbout,
+		SectionChat,
 		SectionActions,
 		SectionView,
+		SectionManagement,
 	};
 
 	MenuCategory Category;
 	QList<MenuItem *> Items;
 	bool IsSorted;
-	QMap<MenuCategory, KaduMenu *> Submenus;
-
 	QMenu *GuiMenu;
 
 	void sort();
-
 	ActionContext * getActionContext();
+	void updateGuiMenu(ActionContext *context = 0);
+
 private slots:
-	void updateGuiMenu();
+	void updateGuiMenuSlot();
 public:
 	KaduMenu(MenuCategory category, KaduMenu *parent = 0);
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
-	MenuItem * addMenu(QMenu *menu, KaduMenu::MenuSection section, int priority = 0);
 	MenuItem * menuItem(ActionDescription *actionDescription);
 	void removeAction(ActionDescription *actionDescription);
 	void updateGuiMenuLater();
@@ -88,6 +88,8 @@ public:
 
 	void setGuiMenu(QMenu *menu);
 	QMenu * guiMenu() { return GuiMenu; }
+
+	QMenu * menu(QWidget *parent, ActionContext *actionContext);
 
 	static bool lessThan(const MenuItem *a, const MenuItem *b);
 };
