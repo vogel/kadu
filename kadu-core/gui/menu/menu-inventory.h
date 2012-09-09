@@ -34,6 +34,7 @@ class QWidget;
 class ActionContext;
 class ActionDescription;
 class Contact;
+class ProtocolMenuManager;
 
 class KADUAPI MenuInventory : public QObject
 {
@@ -43,6 +44,7 @@ class KADUAPI MenuInventory : public QObject
 	static MenuInventory *Instance;
 
 	QMap<KaduMenu::MenuCategory, KaduMenu *> Menus;
+	QList<ProtocolMenuManager *> ProtocolMenuManagers;
 
 	MenuInventory();
 
@@ -50,8 +52,12 @@ public:
 	static MenuInventory * instance();
 
 	void bindMenu(KaduMenu::MenuCategory, QMenu *menu);
-
 	KaduMenu * menu(KaduMenu::MenuCategory category);
+
+	void registerProtocolMenuManager(ProtocolMenuManager *manager);
+	void unregisterProtocolMenuManager(ProtocolMenuManager *manager);
+
+	QList<ProtocolMenuManager *> & protocolMenuManagers() { return ProtocolMenuManagers; }
 };
 
 #endif // MENU_INVENTORY_H

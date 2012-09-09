@@ -19,6 +19,7 @@
  */
 
 #include "actions/jabber-actions.h"
+#include "gui/menu/menu-inventory.h"
 
 #include "jabber-protocol-menu-manager.h"
 
@@ -41,11 +42,15 @@ JabberProtocolMenuManager::JabberProtocolMenuManager()
 	RosterActions.append(JabberActions::instance()->resendSubscription());
 	RosterActions.append(JabberActions::instance()->removeSubscription());
 	RosterActions.append(JabberActions::instance()->askForSubscription());
+
+	MenuInventory::instance()->registerProtocolMenuManager(this);
 }
 
 JabberProtocolMenuManager::~JabberProtocolMenuManager()
 {
 	RosterActions.clear();
+
+	MenuInventory::instance()->unregisterProtocolMenuManager(this);
 }
 
 const QList<ActionDescription *> & JabberProtocolMenuManager::protocolActions() const

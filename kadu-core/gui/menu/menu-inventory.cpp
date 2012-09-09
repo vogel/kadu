@@ -26,10 +26,7 @@
 #include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
-#include "model/roles.h"
-#include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
-#include "protocols/protocol.h"
 
 #include "menu-inventory.h"
 
@@ -66,5 +63,15 @@ KaduMenu * MenuInventory::menu(KaduMenu::MenuCategory category)
 	menu = Menus.value(category);
 
 	return menu;
+}
+
+void MenuInventory::registerProtocolMenuManager(ProtocolMenuManager *manager)
+{
+	ProtocolMenuManagers.append(manager);
+}
+
+void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
+{
+	ProtocolMenuManagers.removeAll(manager);
 }
 

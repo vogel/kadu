@@ -80,10 +80,8 @@ public:
 	KaduMenu(MenuCategory category, KaduMenu *parent = 0);
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
-	MenuItem * menuItem(ActionDescription *actionDescription);
 	void removeAction(ActionDescription *actionDescription);
 	void updateGuiMenuLater();
-
 	void update();
 
 	void setGuiMenu(QMenu *menu);

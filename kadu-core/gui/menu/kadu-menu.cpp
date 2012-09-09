@@ -27,9 +27,8 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/menu/menu-inventory.h"
 #include "menu-item.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 
 #include "kadu-menu.h"
@@ -60,21 +59,6 @@ void KaduMenu::removeAction(ActionDescription *actionDescription)
 	}
 }
 
-MenuItem * KaduMenu::menuItem(ActionDescription *actionDescription)
-{
-	QList<MenuItem*>::iterator i = Items.begin();
-
-	while (i != Items.end())
-	{
-		if ((*i)->actionDescription() == actionDescription)
-			return *i;
-		else
-			++i;
-	}
-
-	return 0;
-}
-
 bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)
 {
 	if (a->section() == b->section())
@@ -87,11 +71,11 @@ bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)
 
 void KaduMenu::sort()
 {
-	if (!IsSorted)
-	{
-		qSort(Items.begin(), Items.end(), lessThan);
-		IsSorted = true;
-	}
+	if (IsSorted)
+		return;
+
+	qSort(Items.begin(), Items.end(), lessThan);
+	IsSorted = true;
 }
 
 void KaduMenu::setGuiMenu ( QMenu* menu )
@@ -133,30 +117,21 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 		firstItem = false;
 	}
 
-	if (actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size())
+	foreach (ProtocolMenuManager *manager, MenuInventory::instance()->protocolMenuManagers())
 	{
-		Contact contact = *actionContext->contacts().constBegin();
+		if (!firstItem && !manager->protocolActions().isEmpty())
+			actions->addSeparator();
 
-		if (contact.contactAccount() && contact.contactAccount().protocolHandler())
+		foreach (ActionDescription *actionDescription, manager->protocolActions())
 		{
-			Account account = contact.contactAccount();
-			ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
-
-			if (protocolFactory && protocolFactory->protocolMenuManager())
+			if (actionDescription)
 			{
-				if (!firstItem && !protocolFactory->protocolMenuManager()->protocolActions().isEmpty())
-					actions->addSeparator();
-
-				foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions())
-					if (actionDescription)
-					{
-						Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
-						actions->addAction(action);
-						action->checkState();
-					}
-					else
-						actions->addSeparator();
+				Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
+				actions->addAction(action);
+				action->checkState();
 			}
+			else
+				actions->addSeparator();
 		}
 	}
 
@@ -173,7 +148,6 @@ void KaduMenu::updateGuiMenuSlot()
 {
 	updateGuiMenu();
 }
-
 
 QMenu * KaduMenu::menu(QWidget *parent, ActionContext *actionContext)
 {
