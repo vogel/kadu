@@ -321,7 +321,7 @@ void JabberConnectionService::connectToServer()
 
 	if ((forceTLS() || useSSL()) && !QCA::isSupported("tls"))
 	{
-		emit connectionError(tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system."));
+		emit connectionClosed(tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system."));
 		return;
 	}
 
