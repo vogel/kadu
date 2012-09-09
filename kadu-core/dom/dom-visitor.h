@@ -21,6 +21,7 @@
 #define DOM_VISITOR_H
 
 class QDomElement;
+class QDomNode;
 class QDomText;
 
 /**
@@ -44,30 +45,33 @@ public:
 	 * @short Visit current text node.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param textNode text node to process
+	 * @return new version of visited node
 	 *
-	 * This method can change textNode and/or document that this node belongs to.
+	 * This method can change textNode and/or document that this node belongs to. It returns new version of visited node.
 	 */
-	virtual void visit(QDomText textNode) = 0;
+	virtual QDomNode visit(QDomText textNode) = 0;
 
 	/**
 	 * @short Visit current element before visiting all its subnodes.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param elementNode element node to process
+	 * @return new version of visited node
 	 *
 	 * This method can change elementNode and/or document that this node belongs to. This method is called
-	 * before subnodes of elementNode are processed.
+	 * before subnodes of elementNode are processed. It returns new version of visited node.
 	 */
-	virtual void beginVisit(QDomElement elementNode) = 0;
+	virtual QDomNode beginVisit(QDomElement elementNode) = 0;
 
 	/**
 	 * @short Visit current element after visiting all its subnodes.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param elementNode element node to process
+	 * @return new version of visited node
 	 *
 	 * This method can change elementNode and/or document that this node belongs to. This method is called
-	 * after subnodes of elementNode are processed.
+	 * after subnodes of elementNode are processed. It returns new version of visited node.
 	 */
-	virtual void endVisit(QDomElement elementNode) = 0;
+	virtual QDomNode endVisit(QDomElement elementNode) = 0;
 
 };
 

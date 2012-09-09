@@ -44,7 +44,7 @@ class KADUAPI DomProcessor
 {
 	QDomDocument &DomDocument;
 
-	void acceptNode(DomVisitor *visitor, QDomNode node);
+	QDomNode acceptNode(DomVisitor *visitor, QDomNode node);
 
 public:
 	/**

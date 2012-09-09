@@ -89,18 +89,24 @@ QDomText EmoticonExpander::expandFirstEmoticon(QDomText textNode)
 	return QDomText();
 }
 
-void EmoticonExpander::visit(QDomText textNode)
+QDomNode EmoticonExpander::visit(QDomText textNode)
 {
+	QDomText result = textNode;
 	while (!textNode.isNull())
+	{
+		result = textNode;
 		textNode = expandFirstEmoticon(textNode);
+	}
+
+	return result; // last real node
 }
 
-void EmoticonExpander::beginVisit(QDomElement elementNode)
+QDomNode EmoticonExpander::beginVisit(QDomElement elementNode)
 {
-	Q_UNUSED(elementNode);
+	return elementNode;
 }
 
-void EmoticonExpander::endVisit(QDomElement elementNode)
+QDomNode EmoticonExpander::endVisit(QDomElement elementNode)
 {
-	Q_UNUSED(elementNode);
+	return elementNode;
 }

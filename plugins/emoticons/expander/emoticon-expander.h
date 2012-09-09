@@ -70,8 +70,8 @@ class EmoticonExpander : public DomVisitor
 	 */
 	QDomText expandFirstEmoticon(QDomText textNode);
 
-	virtual void beginVisit(QDomElement elementNode);
-	virtual void endVisit(QDomElement elementNode);
+	virtual QDomNode beginVisit(QDomElement elementNode);
+	virtual QDomNode endVisit(QDomElement elementNode);
 
 public:
 	/**
@@ -94,7 +94,7 @@ public:
 	 * This method expands emoticons in given text node. After that new text nodes and elements with img tag names will
 	 * be inserted after given textNode. Also text content of current textNode will be cut to first emoticon occurence.
 	 */
-	virtual void visit(QDomText textNode);
+	virtual QDomNode visit(QDomText textNode);
 
 };
 

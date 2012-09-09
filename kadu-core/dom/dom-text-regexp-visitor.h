@@ -58,9 +58,9 @@ public:
 	explicit DomTextRegexpVisitor(QRegExp regExp);
 	virtual ~DomTextRegexpVisitor();
 
-	virtual void visit(QDomText textNode);
-	virtual void beginVisit(QDomElement elementNode);
-	virtual void endVisit(QDomElement elementNode);
+	virtual QDomNode visit(QDomText textNode);
+	virtual QDomNode beginVisit(QDomElement elementNode);
+	virtual QDomNode endVisit(QDomElement elementNode);
 
 	/**
 	 * @short Replace matched regular expression with DOM node.

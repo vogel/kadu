@@ -31,24 +31,30 @@ IgnoreLinksDomVisitor::~IgnoreLinksDomVisitor()
 {
 }
 
-void IgnoreLinksDomVisitor::visit(QDomText textNode)
+QDomNode IgnoreLinksDomVisitor::visit(QDomText textNode)
 {
 	if (0 == LinksDepth)
-		Visitor->visit(textNode);
+		return Visitor->visit(textNode);
+
+	return textNode;
 }
 
-void IgnoreLinksDomVisitor::beginVisit(QDomElement elementNode)
+QDomNode IgnoreLinksDomVisitor::beginVisit(QDomElement elementNode)
 {
 	if (elementNode.tagName().toLower() == "a")
 		LinksDepth++;
 	else if (0 == LinksDepth)
-		Visitor->beginVisit(elementNode);
+		return Visitor->beginVisit(elementNode);
+
+	return elementNode;
 }
 
-void IgnoreLinksDomVisitor::endVisit(QDomElement elementNode)
+QDomNode IgnoreLinksDomVisitor::endVisit(QDomElement elementNode)
 {
 	if (elementNode.tagName().toLower() == "a")
 		LinksDepth--;
 	else if (0 == LinksDepth)
-		Visitor->beginVisit(elementNode);
+		return Visitor->endVisit(elementNode);
+
+	return elementNode;
 }

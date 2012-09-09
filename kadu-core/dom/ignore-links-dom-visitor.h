@@ -54,9 +54,11 @@ public:
 	explicit IgnoreLinksDomVisitor(DomVisitor *visitor);
 	virtual ~IgnoreLinksDomVisitor();
 
-	virtual void visit(QDomText textNode);
-	virtual void beginVisit(QDomElement elementNode);
-	virtual void endVisit(QDomElement elementNode);
+	DomVisitor * visitor() { return Visitor.data(); }
+
+	virtual QDomNode visit(QDomText textNode);
+	virtual QDomNode beginVisit(QDomElement elementNode);
+	virtual QDomNode endVisit(QDomElement elementNode);
 
 };
 

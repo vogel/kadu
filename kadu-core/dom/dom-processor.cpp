@@ -29,33 +29,37 @@ DomProcessor::DomProcessor(QDomDocument &domDocument) :
 {
 }
 
-void DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
+QDomNode DomProcessor::acceptNode(DomVisitor *visitor, QDomNode node)
 {
 	switch (node.nodeType())
 	{
 		case QDomNode::TextNode:
-			visitor->visit(node.toText());
+			node = visitor->visit(node.toText());
 			break;
 		case QDomNode::ElementNode:
-			visitor->beginVisit(node.toElement());
+			node = visitor->beginVisit(node.toElement());
 			break;
 		default:
 			break;
 	}
 
-	QDomNodeList childNodes = node.childNodes();
-	uint childNodesLength = childNodes.length();
-	for (uint i = 0; i < childNodesLength; i++)
-		acceptNode(visitor, childNodes.at(i));
+	QDomNode childNode = node.firstChild();
+	while (!childNode.isNull())
+	{
+		childNode = acceptNode(visitor, childNode);
+		childNode = childNode.nextSibling();
+	}
 
 	switch (node.nodeType())
 	{
 		case QDomNode::ElementNode:
-			visitor->endVisit(node.toElement());
+			node = visitor->endVisit(node.toElement());
 			break;
 		default:
 			break;
 	}
+
+	return node;
 }
 
 void DomProcessor::accept(DomVisitor *visitor)

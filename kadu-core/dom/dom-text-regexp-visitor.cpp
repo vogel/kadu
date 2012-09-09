@@ -50,18 +50,24 @@ QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode)
 	return afterMatch;
 }
 
-void DomTextRegexpVisitor::visit(QDomText textNode)
+QDomNode DomTextRegexpVisitor::visit(QDomText textNode)
 {
+	QDomText result = textNode;
 	while (!textNode.isNull())
+	{
+		result = textNode;
 		textNode = expandFirstMatch(textNode);
+	}
+
+	return result;
 }
 
-void DomTextRegexpVisitor::beginVisit(QDomElement elementNode)
+QDomNode DomTextRegexpVisitor::beginVisit(QDomElement elementNode)
 {
-	Q_UNUSED(elementNode)
+	return elementNode;
 }
 
-void DomTextRegexpVisitor::endVisit(QDomElement elementNode)
+QDomNode DomTextRegexpVisitor::endVisit(QDomElement elementNode)
 {
-	Q_UNUSED(elementNode)
+	return elementNode;
 }
