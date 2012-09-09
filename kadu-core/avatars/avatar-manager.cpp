@@ -122,6 +122,10 @@ bool AvatarManager::needUpdate(const Contact &contact)
 {
 	QMutexLocker locker(&mutex());
 
+	Protocol *protocol = contact.contactAccount().protocolHandler();
+	if (!protocol || !protocol->isConnected())
+		return false;
+
 	if (!contact.contactAvatar())
 		return true;
 
