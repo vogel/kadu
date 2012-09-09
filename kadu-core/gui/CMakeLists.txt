@@ -88,8 +88,6 @@ set (gui_SRCS
 	widgets/syntax-editor.cpp
 	widgets/talkable-delegate.cpp
 	widgets/talkable-delegate-configuration.cpp
-	widgets/talkable-menu-item.cpp
-	widgets/talkable-menu-manager.cpp
 	widgets/talkable-painter.cpp
 	widgets/talkable-tree-view.cpp
 	widgets/toolbar.cpp
@@ -189,7 +187,6 @@ set (gui_MOC_SRCS
 
 	menu/kadu-menu.h
 	menu/menu-inventory.h
-	menu/menu-item.h
 
 	model/checkbox-styled-item-delegate.h
 
@@ -262,7 +259,6 @@ set (gui_MOC_SRCS
 	widgets/status-menu.h
 	widgets/syntax-editor.h
 	widgets/talkable-delegate.h
-	widgets/talkable-menu-manager.h
 	widgets/talkable-tree-view.h
 	widgets/toolbar.h
 	widgets/wait-overlay.h
