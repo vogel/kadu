@@ -42,8 +42,6 @@ QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp re
 	embedElement.setAttribute("type", "application/x-shockwave-flash");
 	embedElement.setAttribute("allowscriptaccess", "always");
 	embedElement.setAttribute("allowfullscreen", "true");
-	embedElement.setAttribute("width", "33%");
-	embedElement.setAttribute("height", "33%");
 
 	QDomText textElement = document.createTextNode(regExp.cap());
 
