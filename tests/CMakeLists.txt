@@ -17,7 +17,6 @@ macro (kadu_add_test name_)
 	file (MAKE_DIRECTORY "${exeDir}")
 
 	add_executable (${name_} ${ARGN})
-	target_link_libraries (${name_} libkadu ${QT_QTTEST_LIBRARY})
 	add_test ("${sourcePath}/${name_}" ${name_})
 
 	if ("${sourcePath}" MATCHES "^[^/]+/plugins/.*")
@@ -27,6 +26,10 @@ macro (kadu_add_test name_)
 			target_link_libraries (${name_} ${pluginName})
 		endif ()
 	endif ()
+
+	# Add it after the plugin so that --as-needed won't drop anything
+	# needed by the plugin.
+	target_link_libraries (${name_} libkadu ${QT_QTTEST_LIBRARY})
 endmacro ()
 
 add_subdirectory (auto)
