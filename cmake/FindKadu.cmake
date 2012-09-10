@@ -103,6 +103,13 @@ if (NOT MSVC)
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
 		set (CMAKE_C_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_C_FLAGS}")
 		set (CMAKE_CXX_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_CXX_FLAGS}")
+
+		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
+			# -z now check there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
+			set (CMAKE_SHARED_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_SHARED_LINKER_FLAGS}")
+			set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_MODULE_LINKER_FLAGS}")
+			set (CMAKE_EXE_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_EXE_LINKER_FLAGS}")
+		endif ()
 	endif ()
 
 	set (CMAKE_C_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -Wwrite-strings -fno-common ${CMAKE_C_FLAGS}")
