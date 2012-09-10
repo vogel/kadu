@@ -44,6 +44,8 @@ public:
 
 	virtual const QList<ActionDescription *> & protocolActions() const;
 
+	virtual const QString protocolName() const { return "jabber"; }
+
 };
 
 #endif // JABBER_PROTOCOL_MENU_MANAGER_H

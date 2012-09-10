@@ -117,21 +117,33 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 		firstItem = false;
 	}
 
-	foreach (ProtocolMenuManager *manager, MenuInventory::instance()->protocolMenuManagers())
+	if (CategoryBuddiesList != Category)
 	{
-		if (!firstItem && !manager->protocolActions().isEmpty())
-			actions->addSeparator();
+		return;
+	}
 
-		foreach (ActionDescription *actionDescription, manager->protocolActions())
+	if (actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size())
+	{
+		foreach (ProtocolMenuManager *manager, MenuInventory::instance()->protocolMenuManagers())
 		{
-			if (actionDescription)
-			{
-				Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
-				actions->addAction(action);
-				action->checkState();
-			}
-			else
+			Contact contact = *actionContext->contacts().constBegin();
+			if (contact.contactAccount().protocolName() != manager->protocolName())
+				continue;
+
+			if (!firstItem && !manager->protocolActions().isEmpty())
 				actions->addSeparator();
+
+			foreach (ActionDescription *actionDescription, manager->protocolActions())
+			{
+				if (actionDescription)
+				{
+					Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
+					actions->addAction(action);
+					action->checkState();
+				}
+				else
+					actions->addSeparator();
+			}
 		}
 	}
 

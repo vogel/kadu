@@ -35,6 +35,7 @@ public:
 
 	virtual const QList<ActionDescription *> & protocolActions() const = 0;
 
+	virtual const QString protocolName() const = 0;
 };
 
 #endif // PROTOCOL_MENU_MANAGER_H
