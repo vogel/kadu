@@ -38,15 +38,15 @@ bool X11_getCardinalProperty( Display *display, Window window, const char *prope
 	Atom property = XInternAtom( display, propertyName, False );
 	if( property == None )
 		return false;
-	unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
-	int result = XGetWindowProperty( display, window, property, offset, 1L, False, XA_CARDINAL, &realtype, &realformat, &nitems, &left, &data );
+	uint32_t *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
+	int result = XGetWindowProperty( display, window, property, offset, 1L, False, XA_CARDINAL, &realtype, &realformat, &nitems, &left, (unsigned char**)&data );
 	if( result == Success )
 	{
 		if( realtype == XA_CARDINAL )
 		{
 			if( nitems > 0 )
 			{
-				*value = ((uint32_t*)data)[0];
+				*value = data[0];
 				XFree( data );
 				return true;
 			}
@@ -62,15 +62,15 @@ bool X11_getFirstPropertyAtom( Display *display, Window window, const char *prop
 	Atom property = XInternAtom( display, propertyName, False );
 	if( property == None )
 		return false;
-	unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
-	int result = XGetWindowProperty( display, window, property, 0L, 1L, False, XA_ATOM, &realtype, &realformat, &nitems, &left, &data );
+	Atom *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
+	int result = XGetWindowProperty( display, window, property, 0L, 1L, False, XA_ATOM, &realtype, &realformat, &nitems, &left, (unsigned char**)&data );
 	if( result == Success )
 	{
 		if( realtype == XA_ATOM )
 		{
 			if( nitems > 0 )
 			{
-				*value = ((Atom*)data)[0L];
+				*value = data[0L];
 				XFree( data );
 				return true;
 			}
@@ -89,22 +89,21 @@ bool X11_isPropertyAtomSet( Display *display, Window window, const char *propert
 	Atom atom = XInternAtom( display, atomName, False );
 	if( atom == None )
 		return false;
-	unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
-	int result = XGetWindowProperty( display, window, property, 0L, 8192L, False, XA_ATOM, &realtype, &realformat, &nitems, &left, &data );
+	Atom *atoms = NULL; Atom realtype; int realformat; unsigned long nitems, left;
+	int result = XGetWindowProperty( display, window, property, 0L, 8192L, False, XA_ATOM, &realtype, &realformat, &nitems, &left, (unsigned char**)&atoms );
 	if( result != Success )
 		return false;
 	if( realtype != XA_ATOM )
 		return false;
-	Atom *atoms = (Atom*)data;
 	for( unsigned long k = 0; k < nitems; k++ )
 	{
 		if( atoms[k] == atom )
 		{
-			XFree( data );
+			XFree( atoms );
 			return true;
 		}
 	}
-	XFree( data );
+	XFree( atoms );
 	return false;
 }
 
@@ -673,28 +672,28 @@ void X11_setSizeHintsOfWindow( Display *display, Window window, int minwidth, in
 
 Window X11_getActiveWindow( Display *display )
 {
-	Window window;
 	// _NET_ACTIVE_WINDOW
 	Atom net_active_window = XInternAtom( display, "_NET_ACTIVE_WINDOW", False );
 	if( net_active_window != None )
 	{
-		unsigned char *data = NULL; Atom realtype; int realformat; unsigned long nitems, left;
-		int result = XGetWindowProperty( display, XDefaultRootWindow( display ), net_active_window, 0L, sizeof(Window), False, XA_WINDOW, &realtype, &realformat, &nitems, &left, &data);
+		Window *windowptr = NULL; Atom realtype; int realformat; unsigned long nitems, left;
+		int result = XGetWindowProperty( display, XDefaultRootWindow( display ), net_active_window, 0L, sizeof(Window), False, XA_WINDOW, &realtype, &realformat, &nitems, &left, (unsigned char**)&windowptr);
 		if( result == Success )
 		{
 			if( realtype == XA_WINDOW )
 			{
 				if( nitems > 0 )
 				{
-					window = *(Window*)data;
-					XFree( data );
+					Window window = *windowptr;
+					XFree( windowptr );
 					return window;
 				}
 			}
-			XFree( data );
+			XFree( windowptr );
 		}
 	}
 	// XGetInputFocus
+	Window window;
 	int revertto;
 	XGetInputFocus( display, &window, &revertto );
 	return window;
@@ -745,32 +744,30 @@ Window X11_getTopMostWindow( Display *display )
 	int format_return;
 	unsigned long nitems_return;
 	unsigned long bytesafter_return;
-	unsigned char *data = NULL;
+	Window *windowarray = NULL;
 	// _NET_CLIENT_LIST_STACKING
 	listatom = XInternAtom( display, "_NET_CLIENT_LIST_STACKING", False );
-	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, &data ) == Success )
+	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, (unsigned char**)&windowarray ) == Success )
 	{
 		Window window = None;
-		if( (type_return == XA_WINDOW) && (format_return == 32) && (data) && (nitems_return > 0) )
+		if( (type_return == XA_WINDOW) && (format_return == 32) && (windowarray) && (nitems_return > 0) )
 		{
-			uint *array = (uint*)data;
-			window = (Window) array[nitems_return-1];
+			window = windowarray[nitems_return-1];
 		}
-		XFree( data );
+		XFree( windowarray );
 		if( window != None )
 			return window;
 	}
 	// _NET_CLIENT_LIST
 	listatom = XInternAtom( display, "_NET_CLIENT_LIST" , False );
-	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, &data ) == Success )
+	if( XGetWindowProperty( display, DefaultRootWindow( display ), listatom, 0L, (~0L), False, XA_WINDOW, &type_return, &format_return, &nitems_return, &bytesafter_return, (unsigned char**)&windowarray ) == Success )
 	{
 		Window window = None;
-		if( (type_return == XA_WINDOW) && (format_return == 32) && (data) && (nitems_return > 0) )
+		if( (type_return == XA_WINDOW) && (format_return == 32) && (windowarray) && (nitems_return > 0) )
 		{
-			uint *array = (uint*) data;
-			window = (Window) array[nitems_return-1];
+			window = windowarray[nitems_return-1];
 		}
-		XFree(data);
+		XFree(windowarray);
 		if( window != None )
 			return window;
 	}
