@@ -30,7 +30,6 @@
 
 #include <libgadu.h>
 
-#include "misc/token-reader.h"
 #include "protocols/protocol.h"
 
 class GaduServerChangePassword : public QObject
