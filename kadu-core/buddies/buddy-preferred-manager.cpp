@@ -20,6 +20,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "accounts/account-manager.h"
 #include "buddy.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat.h"
@@ -104,7 +105,7 @@ ContactSet BuddyPreferredManager::preferredContacts(const BuddySet &buddies)
 	if (account.isNull())
 		return ContactSet();
 
-	Account commonAccount = ChatManager::instance()->getCommonAccount(buddies);
+	Account commonAccount = getCommonAccount(buddies);
 	if (!commonAccount)
 		return ContactSet();
 
@@ -203,4 +204,22 @@ Contact BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, c
 		return c1;
 
 	return Contact::contactWithHigherStatus(c1, c2);
+}
+
+bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddySet &buddies)
+{
+	foreach (const Buddy &buddy, buddies)
+		if (buddy.contacts(account).isEmpty())
+			return false;
+
+	return true;
+}
+
+Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
+{
+	foreach (const Account &account, AccountManager::instance()->items())
+		if (isAccountCommon(account, buddies))
+			return account;
+
+	return Account::null;
 }

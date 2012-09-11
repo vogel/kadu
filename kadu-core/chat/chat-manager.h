@@ -131,10 +131,6 @@ public:
 	 */
 	virtual QString storageNodeItemName() { return QLatin1String("Chat"); }
 
-	// TODO: move somewhere
-	bool isAccountCommon(const Account &account, const BuddySet &buddies);
-	Account getCommonAccount(const BuddySet &buddies);
-
 	/**
 	 * @author Rafal 'Vogel' Malinowski
 	 * @short Return list of chats assigned to given account.

@@ -53,6 +53,9 @@ class KADUAPI BuddyPreferredManager : public QObject
 	BuddyPreferredManager();
 	~BuddyPreferredManager();
 
+	bool isAccountCommon(const Account &account, const BuddySet &buddies);
+	Account getCommonAccount(const BuddySet &buddies);
+
 public:
 	static BuddyPreferredManager *instance();
 

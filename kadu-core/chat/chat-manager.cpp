@@ -22,8 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account-manager.h"
-#include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-details-contact-set.h"
 #include "chat/type/chat-type-manager.h"
@@ -96,28 +94,6 @@ void ChatManager::itemAboutToBeUnregisterd(Chat item)
 void ChatManager::itemUnregistered(Chat item)
 {
 	emit chatRemoved(item);
-}
-
-bool ChatManager::isAccountCommon(const Account &account, const BuddySet &buddies)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Buddy &buddy, buddies)
-		if (buddy.contacts(account).isEmpty())
-			return false;
-
-	return true;
-}
-
-Account ChatManager::getCommonAccount(const BuddySet &buddies)
-{
-	QMutexLocker locker(&mutex());
-
-	foreach (const Account &account, AccountManager::instance()->items())
-		if (isAccountCommon(account, buddies))
-			return account;
-
-	return Account::null;
 }
 
 QVector<Chat> ChatManager::chats(const Account &account)
