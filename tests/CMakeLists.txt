@@ -1,4 +1,4 @@
-find_package (Qt REQUIRED COMPONENTS QtTest)
+find_package (Qt QUIET REQUIRED COMPONENTS QtTest)
 
 set (CMAKE_INCLUDE_CURRENT_DIR TRUE)
 
