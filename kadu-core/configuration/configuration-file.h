@@ -682,6 +682,7 @@ public:
 
 //TODO: po wydaniu 0.4 trzeba zmieni� nazw� na config_file i wywali� define'a
 //TODO: mamy juz 0.6 ;)
+//TODO pozdrowienia z prawie-1.0
 
 extern KADUAPI ConfigFile *config_file_ptr;
 #define config_file (*config_file_ptr)
