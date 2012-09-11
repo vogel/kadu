@@ -321,29 +321,35 @@ void AdiumChatStyleEngine::refreshHackFinished(HtmlMessagesRenderer *renderer)
 	CurrentRefreshHacks.remove(renderer);
 }
 
-void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
+QString AdiumChatStyleEngine::preprocessStyleBaseHtml(AdiumStyle &style, const Chat &chat)
 {
-	QString styleBaseHtml = CurrentStyle.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(CurrentStyle.baseHref()));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.footerHtml()));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(renderer->chat(), CurrentStyle.baseHref(), CurrentStyle.headerHtml()));
+	QString styleBaseHtml = style.templateHtml();
+	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(style.baseHref()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(chat, style.baseHref(), style.footerHtml()));
+	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(chat, style.baseHref(), style.headerHtml()));
 
-	if (CurrentStyle.usesCustomTemplateHtml() && CurrentStyle.styleViewVersion() < 3)
+	if (style.usesCustomTemplateHtml() && style.styleViewVersion() < 3)
 	{
-		if (CurrentStyle.currentVariant() != CurrentStyle.defaultVariant())
-			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + CurrentStyle.currentVariant());
+		if (style.currentVariant() != style.defaultVariant())
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
 		else
-			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, CurrentStyle.mainHref());
+			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, style.mainHref());
 	}
 	else
 	{
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (CurrentStyle.styleViewVersion() < 3 && CurrentStyle.defaultVariant() == CurrentStyle.currentVariant()) ? CurrentStyle.mainHref() : "Variants/" + CurrentStyle.currentVariant());
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (CurrentStyle.styleViewVersion() < 3) ? "" : QString("@import url( \"" + CurrentStyle.mainHref() + "\" );"));
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3 && style.defaultVariant() == style.currentVariant()) ? style.mainHref() : "Variants/" + style.currentVariant());
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3) ? QString() : QString("@import url( \"" + style.mainHref() + "\" );"));
 	}
 
+	return styleBaseHtml;
+}
+
+void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useTransparency)
+{
+	QString styleBaseHtml = preprocessStyleBaseHtml(CurrentStyle, renderer->chat());
 
 	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), 18, "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), qstrlen("==bodyBackground=="), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
 	if (CurrentRefreshHacks.contains(renderer))
 		CurrentRefreshHacks.value(renderer)->cancel();
@@ -385,23 +391,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		return;
 	Message msg = message->message();
 
-	QString styleBaseHtml = style.templateHtml();
-	styleBaseHtml.replace(styleBaseHtml.indexOf("%@"), 2, KaduPaths::webKitPath(style.baseHref()));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.footerHtml()));
-	styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, replaceKeywords(msg.messageChat(), style.baseHref(), style.headerHtml()));
-
-	if (style.usesCustomTemplateHtml() && style.styleViewVersion() < 3)
-	{
-		if (style.currentVariant() != style.defaultVariant())
-			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, "Variants/" + style.currentVariant());
-		else
-			styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, style.mainHref());
-	}
-	else
-	{
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3 && style.defaultVariant() == style.currentVariant()) ? style.mainHref() : "Variants/" + style.currentVariant());
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("%@"), 2, (style.styleViewVersion() < 3) ? "s" : QString("@import url( \"" + style.mainHref() + "\" );"));
-	}
+	QString styleBaseHtml = preprocessStyleBaseHtml(style, message->message().messageChat());
 
 	PreviewHack *previousHack = CurrentPreviewHack.data();
 	CurrentPreviewHack = new PreviewHack(this, preview, style.baseHref(), style.outgoingHtml(), style.incomingHtml(), this);
