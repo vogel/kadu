@@ -63,10 +63,10 @@ QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QReg
 		linkElement.setAttribute("href", QString("http://%1").arg(link));
 
 	linkElement.setAttribute("title", link);
-	if (shouldFold(link.length()))
+	if (display != link)
 	{
-		linkElement.setAttribute("folded", "1");
-		linkElement.setAttribute("displaystr", display);
+		linkElement.setAttribute("class", "folded");
+		linkElement.setAttribute("data-display", display);
 	}
 
 	linkElement.appendChild(document.createTextNode(display));
