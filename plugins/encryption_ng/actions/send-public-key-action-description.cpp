@@ -46,7 +46,7 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(this, KaduMenu::SectionManagement, 20);
+		->addAction(this, KaduMenu::SectionActions, 200);
 }
 
 SendPublicKeyActionDescription::~SendPublicKeyActionDescription()

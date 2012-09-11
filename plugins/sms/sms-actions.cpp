@@ -75,7 +75,7 @@ SmsActions::SmsActions()
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(sendSmsActionDescription, KaduMenu::SectionChat, 100);
+		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10);
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddies)
 		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5);

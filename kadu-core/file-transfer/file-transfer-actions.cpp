@@ -84,7 +84,7 @@ FileTransferActions::FileTransferActions(QObject *parent)
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(SendFileActionDescription, KaduMenu::SectionActions, 100);
+		->addAction(SendFileActionDescription, KaduMenu::SectionSend, 100);
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryTools)

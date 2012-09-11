@@ -309,7 +309,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(WriteEmail, KaduMenu::SectionActions, 200);
+		->addAction(WriteEmail, KaduMenu::SectionSend, 200);
 
 	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",

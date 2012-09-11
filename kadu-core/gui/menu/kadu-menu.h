@@ -60,6 +60,7 @@ public:
 		SectionGetInvolved,
 		SectionAbout,
 		SectionChat,
+		SectionSend,
 		SectionActions,
 		SectionView,
 		SectionManagement,
