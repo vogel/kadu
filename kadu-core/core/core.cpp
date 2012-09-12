@@ -48,6 +48,7 @@
 #include "dom/dom-processor-service.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -534,6 +535,7 @@ void Core::runServices()
 	CurrentMessageTransformerService = new MessageTransformerService(this);
 	CurrentFormattedStringFactory = new FormattedStringFactory();
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
+	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -603,6 +605,11 @@ FormattedStringFactory * Core::formattedStringFactory() const
 RawMessageTransformerService * Core::rawMessageTransformerService() const
 {
 	return CurrentRawMessageTransformerService;
+}
+
+ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
+{
+	return CurrentClipboardHtmlTransformerService;
 }
 
 void Core::showMainWindow()

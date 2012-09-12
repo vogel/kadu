@@ -54,7 +54,9 @@
 #include <QtWebKit/QWebHitTestResult>
 #include <QtWebKit/QWebPage>
 
+#include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
@@ -374,6 +376,9 @@ void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 	static QRegExp foldedLinksRegExp("<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]*)<[^>]*>");
 
 	QString html = QApplication::clipboard()->mimeData(mode)->html();
+
+	if (Core::instance()->clipboardHtmlTransformerService())
+		html = Core::instance()->clipboardHtmlTransformerService()->transform(html);
 
 	html.replace(emotsRegExp, QLatin1String("\\1"));
 

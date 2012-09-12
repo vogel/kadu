@@ -19,6 +19,8 @@ set (gui_SRCS
 
 	model/checkbox-styled-item-delegate.cpp
 
+	services/clipboard-html-transformer-service.cpp
+
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/accounts-combo-box.cpp
@@ -189,6 +191,8 @@ set (gui_MOC_SRCS
 	menu/menu-inventory.h
 
 	model/checkbox-styled-item-delegate.h
+
+	services/clipboard-html-transformer-service.h
 
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
