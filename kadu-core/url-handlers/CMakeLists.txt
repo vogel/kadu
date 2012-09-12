@@ -8,6 +8,7 @@ set (url-handlers_SRCS
 	standard-url-expander-configuration.cpp
 	standard-url-expander-configurator.cpp
 	standard-url-handler.cpp
+	url-clipboard-html-transformer.cpp
 	url-handler-manager.cpp
 )
 

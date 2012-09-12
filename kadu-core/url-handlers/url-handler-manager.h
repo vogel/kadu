@@ -25,6 +25,7 @@
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
+#include <QtCore/QScopedPointer>
 
 #include "exports.h"
 
@@ -34,6 +35,7 @@ class MailUrlDomVisitorProvider;
 class MailUrlHandler;
 class StandardUrlDomVisitorProvider;
 class StandardUrlHandler;
+class UrlClipboardHtmlTransformer;
 class UrlHandler;
 
 class KADUAPI UrlHandlerManager
@@ -51,6 +53,11 @@ class KADUAPI UrlHandlerManager
 
 	StandardUrlHandler *standardUrlHandler;
 	MailUrlHandler *mailUrlHandler;
+
+	QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
+
+	void registerUrlClipboardTransformer();
+	void unregisterUrlClipboardTransformer();
 
 public:
 	static UrlHandlerManager * instance();

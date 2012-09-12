@@ -23,10 +23,12 @@
 #include "core/core.h"
 
 #include "dom/dom-processor-service.h"
+#include "gui/services/clipboard-html-transformer-service.h"
 #include "url-handlers/mail-url-dom-visitor-provider.h"
 #include "url-handlers/mail-url-handler.h"
 #include "url-handlers/standard-url-dom-visitor-provider.h"
 #include "url-handlers/standard-url-handler.h"
+#include "url-handlers/url-clipboard-html-transformer.h"
 
 #include "url-handler-manager.h"
 
@@ -54,10 +56,13 @@ UrlHandlerManager::UrlHandlerManager()
 
 	mailUrlHandler = new MailUrlHandler();
 	registerUrlHandler("Mail", mailUrlHandler);
+	registerUrlClipboardTransformer();
 }
 
 UrlHandlerManager::~UrlHandlerManager()
 {
+	unregisterUrlClipboardTransformer();
+
 	Core::instance()->domProcessorService()->unregisterVisitorProvider(StandardUrlVisitorProvider);
 	delete StandardUrlVisitorProvider;
 	StandardUrlVisitorProvider = 0;
@@ -90,6 +95,19 @@ void UrlHandlerManager::unregisterUrlHandler(const QString &name)
 		delete handler;
 	}
 }
+
+void UrlHandlerManager::registerUrlClipboardTransformer()
+{
+	ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
+	Core::instance()->clipboardHtmlTransformerService()->registerTransformer(ClipboardTransformer.data());
+}
+
+void UrlHandlerManager::unregisterUrlClipboardTransformer()
+{
+	Core::instance()->clipboardHtmlTransformerService()->unregisterTransformer(ClipboardTransformer.data());
+	ClipboardTransformer.reset();
+}
+
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {

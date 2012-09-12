@@ -361,38 +361,10 @@ void KaduWebView::textCopied() const
 // taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
-	// Assume we don't use apostrophes in HTML attributes.
-
-	// Expected string to replace is as follows (capitalics are captured):
-	// <a folded="1" displaystr="DISPLAY" href="HREF"*>DISPLAY</a>
-	// If first display is different than the second, it means that the user selected only part of the link.
-	// Source string is created in StandardUrlHandler::convertUrlsToHtml().
-	// BTW, I know it is totally ugly.
-	static QRegExp foldedLinksRegExp("<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]*)<[^>]*>");
-
 	QString html = QApplication::clipboard()->mimeData(mode)->html();
 
 	if (Core::instance()->clipboardHtmlTransformerService())
 		html = Core::instance()->clipboardHtmlTransformerService()->transform(html);
-
-	int pos = 0;
-	while (-1 != (pos = foldedLinksRegExp.indexIn(html, pos)))
-	{
-		int matchedLength = foldedLinksRegExp.matchedLength();
-		QString displayStr = foldedLinksRegExp.cap(1);
-		QString realDisplayStr = foldedLinksRegExp.cap(3);
-
-		if (displayStr == realDisplayStr) // i.e., we are copying the entire link, not a part of it
-		{
-			QString hRef = foldedLinksRegExp.cap(2);
-			QString unfoldedLink = QString("<a href=\"%1\">%1</a>").arg(hRef);
-			html.replace(pos, matchedLength, unfoldedLink);
-
-			pos += unfoldedLink.length();
-		}
-		else
-			pos += matchedLength;
-	}
 
 	QTextDocument document;
 	document.setHtml(html);
