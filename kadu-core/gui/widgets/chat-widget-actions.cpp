@@ -217,7 +217,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 
 	MenuInventory::instance()
 		->menu(KaduMenu::CategoryBuddiesList)
-		->addAction(OpenChat, KaduMenu::SectionChat);
+		->addAction(OpenChat, KaduMenu::SectionChat, 1000);
 
 	OpenWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",

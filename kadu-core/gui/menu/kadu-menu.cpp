@@ -63,7 +63,7 @@ bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)
 {
 	if (a->section() == b->section())
 	{
-		return a->priority() < b->priority();
+		return a->priority() > b->priority();
 	}
 
 	return a->section() < b->section();
