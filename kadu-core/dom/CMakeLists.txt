@@ -2,7 +2,6 @@ set (dom_SRCS
 	dom-processor.cpp
 	dom-processor-service.cpp
 	dom-text-regexp-visitor.cpp
-	html-fixup-dom-visitor.cpp
 	ignore-links-dom-visitor.cpp
 )
 
