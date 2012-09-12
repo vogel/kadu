@@ -23,6 +23,7 @@ set (SOURCES
 	expander/static-emoticon-path-provider.cpp
 
 	gui/emoticons-configuration-ui-handler.cpp
+	gui/emoticon-clipboard-html-transformer.cpp
 	gui/emoticon-selector.cpp
 	gui/emoticon-selector-button.cpp
 	gui/emoticon-selector-button-popup.cpp

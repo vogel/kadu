@@ -25,6 +25,7 @@
 #include "plugins/generic-plugin.h"
 
 class EmoticonsConfigurationUiHandler;
+class EmoticonClipboardHtmlTransformer;
 class EmoticonConfigurator;
 class EmoticonExpanderDomVisitorProvider;
 class InsertEmoticonAction;
@@ -46,6 +47,7 @@ class EmoticonsPlugin : public QObject, public GenericPlugin
 
 	QScopedPointer<EmoticonsConfigurationUiHandler> ConfigurationUiHandler;
 	QScopedPointer<EmoticonExpanderDomVisitorProvider> ExpanderDomVisitorProvider;
+	QScopedPointer<EmoticonClipboardHtmlTransformer> ClipboardTransformer;
 	QScopedPointer<InsertEmoticonAction> InsertAction;
 	QScopedPointer<EmoticonConfigurator> Configurator;
 
@@ -54,6 +56,9 @@ class EmoticonsPlugin : public QObject, public GenericPlugin
 
 	void registerEmoticonExpander();
 	void unregisterEmoticonExpander();
+
+	void registerEmoticonClipboardHtmlTransformer();
+	void unregisterEmoticonClipboardHtmlTransformer();
 
 	void registerActions();
 	void unregisterActions();

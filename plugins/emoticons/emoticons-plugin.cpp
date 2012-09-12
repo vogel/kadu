@@ -19,6 +19,7 @@
 
 #include "core/core.h"
 #include "dom/dom-processor-service.h"
+#include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 
@@ -26,6 +27,7 @@
 #include "expander/emoticon-expander-dom-visitor-provider.h"
 #include "theme/emoticon-theme-manager.h"
 #include "gui/emoticons-configuration-ui-handler.h"
+#include "gui/emoticon-clipboard-html-transformer.h"
 #include "gui/insert-emoticon-action.h"
 
 #include "emoticons-plugin.h"
@@ -67,6 +69,18 @@ void EmoticonsPlugin::unregisterEmoticonExpander()
 	ExpanderDomVisitorProvider.reset();
 }
 
+void EmoticonsPlugin::registerEmoticonClipboardHtmlTransformer()
+{
+	ClipboardTransformer.reset(new EmoticonClipboardHtmlTransformer());
+	Core::instance()->clipboardHtmlTransformerService()->registerTransformer(ClipboardTransformer.data());
+}
+
+void EmoticonsPlugin::unregisterEmoticonClipboardHtmlTransformer()
+{
+	Core::instance()->clipboardHtmlTransformerService()->unregisterTransformer(ClipboardTransformer.data());
+	ClipboardTransformer.reset();
+}
+
 void EmoticonsPlugin::registerActions()
 {
 	InsertAction.reset(new InsertEmoticonAction(this));
@@ -96,6 +110,7 @@ int EmoticonsPlugin::init(bool firstLoad)
 
 	registerConfigurationUi();
 	registerEmoticonExpander();
+	registerEmoticonClipboardHtmlTransformer();
 	registerActions();
 	startConfigurator();
 
@@ -107,6 +122,7 @@ void EmoticonsPlugin::done()
 	stopConfigurator();
 	unregisterActions();
 	unregisterEmoticonExpander();
+	unregisterEmoticonClipboardHtmlTransformer();
 	unregisterConfigurationUi();
 }
 
