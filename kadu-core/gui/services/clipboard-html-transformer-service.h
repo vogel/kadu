@@ -26,6 +26,21 @@
 
 #include "services/transformer-service.h"
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ClipboardHtmlTransformerService
+ * @short Service for fixing HTML code that is pasted into clipboard.
+ * @author Rafał 'Vogel' Malinowski
+ *
+ * Use this service to fix HTML code that is pasted into clipboard. Fixing can include: replacing emoticon images
+ * with emoticon text triggers, expanding URLs, removing unneeded message parts.
+ *
+ * This should be done by DomProcessor, but unfortunately what is in chat view is not exactly valid XML (yet).
+ */
 class ClipboardHtmlTransformerService : public QObject, public TransformerService<ClipboardHtmlTransformer>
 {
 	Q_OBJECT
@@ -35,5 +50,9 @@ public:
 	virtual ~ClipboardHtmlTransformerService();
 
 };
+
+/**
+ * @}
+ */
 
 #endif // CLIPBOARD_HTML_TRANSFORMER_SERVICE_H
