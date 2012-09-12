@@ -25,6 +25,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * Copyright for copying and drag'n'drop code from Psi+:
+ *
+ * Copyright (C) 2010 senu, Rion
+ */
+
 #include <QtCore/QEvent>
 #include <QtCore/QFile>
 #include <QtCore/QMimeData>
@@ -49,9 +55,6 @@
 #include <QtWebKit/QWebPage>
 
 #include "configuration/configuration-file.h"
-#include "dom/dom-processor.h"
-#include <dom/html-fixup-dom-visitor.h>
-#include "gui/convert-to-clipboard-dom-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"
 #include "services/image-storage-service.h"
@@ -353,28 +356,54 @@ void KaduWebView::textCopied() const
 	convertClipboardHtml(QClipboard::Clipboard);
 }
 
+// taken from Psi+'s webkit patch, SVN rev. 2638, and slightly modified
 void KaduWebView::convertClipboardHtml(QClipboard::Mode mode)
 {
+	// Assume we don't use apostrophes in HTML attributes.
+
+	// Expected string to replace is as follows (capitalics are captured):
+	// <img emoticon="1" title="TITLE"*>
+	// Source string is created in EmoticonsManager::expandEmoticons().
+	static QRegExp emotsRegExp("<img[^>]+emoticon\\s*=\\s*\"1\"[^>]+title\\s*=\\s*\"([^\"]+)\"[^>]*>");
+
+	// Expected string to replace is as follows (capitalics are captured):
+	// <a folded="1" displaystr="DISPLAY" href="HREF"*>DISPLAY</a>
+	// If first display is different than the second, it means that the user selected only part of the link.
+	// Source string is created in StandardUrlHandler::convertUrlsToHtml().
+	// BTW, I know it is totally ugly.
+	static QRegExp foldedLinksRegExp("<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]*)<[^>]*>");
+
 	QString html = QApplication::clipboard()->mimeData(mode)->html();
 
-	ConvertToClipboardDomVisitor convertToClipboard;
-	HtmlFixupDomVisitor htmlFixup;
+	html.replace(emotsRegExp, QLatin1String("\\1"));
 
-	QDomDocument document;
-	document.setContent(html);
+	int pos = 0;
+	while (-1 != (pos = foldedLinksRegExp.indexIn(html, pos)))
+	{
+		int matchedLength = foldedLinksRegExp.matchedLength();
+		QString displayStr = foldedLinksRegExp.cap(1);
+		QString realDisplayStr = foldedLinksRegExp.cap(3);
 
-	DomProcessor processor(document);
-	processor.accept(&htmlFixup);
-	processor.accept(&convertToClipboard);
-	html = document.toString(0);
+		if (displayStr == realDisplayStr) // i.e., we are copying the entire link, not a part of it
+		{
+			QString hRef = foldedLinksRegExp.cap(2);
+			QString unfoldedLink = QString("<a href=\"%1\">%1</a>").arg(hRef);
+			html.replace(pos, matchedLength, unfoldedLink);
 
+			pos += unfoldedLink.length();
+		}
+		else
+			pos += matchedLength;
+	}
+
+	QTextDocument document;
+	document.setHtml(html);
 	QMimeData *data = new QMimeData();
 	data->setHtml(html);
 
-	QTextDocument textDocument;
-	textDocument.setHtml(html);
-	data->setText(textDocument.toPlainText()); // TODO: make own dom processor to convert anything into plain text
-
+	// remove OBJECT REPLACEMENT CHARACTER
+	// see http://www.kadu.im/redmine/issues/2490
+	data->setText(document.toPlainText().remove(QChar(0xfffc)));
 	QApplication::clipboard()->setMimeData(data, mode);
 }
 
