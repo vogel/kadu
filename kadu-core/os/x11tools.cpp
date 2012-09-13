@@ -208,7 +208,7 @@ uint32_t X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 	{
 		uint32_t value;
 		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_NUMBER_OF_DESKTOPS", &value ) )
-			return 0;
+			return 1; // 0 desktops doesn't make sense, even Compiz returns 1 ()
 		return value;
 	}
 }
