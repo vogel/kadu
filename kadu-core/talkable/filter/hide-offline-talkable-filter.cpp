@@ -18,8 +18,10 @@
  */
 
 #include "buddies/buddy.h"
+#include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 
 #include "hide-offline-talkable-filter.h"
 
@@ -63,4 +65,19 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
 
 	Enabled = enabled;
 	emit filterChanged();
+
+	// Without it, Kadu crashes either on login or on clicking on the contacts list
+	// because of QTBUG-27122 in Qt 4.8.3. Though, I'm not 100% sure if we don't need
+	// it anyways to be correct...
+	// TODO Qt5: Check whether we actually need it (QTBUG-27122 is fixed in Qt5) and remove if not.
+	if (enabled)
+	{
+		connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+	}
+	else
+	{
+		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SIGNAL(filterChanged()));
+		disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
+	}
 }
