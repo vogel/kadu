@@ -407,6 +407,8 @@ int main(int argc, char *argv[])
 	int ret = qApp->exec();
 	kdebugm(KDEBUG_INFO, "after exec\n");
 
+	xml_config_file->sync();
+
 	delete xml_config_file;
 	delete config_file_ptr;
 
