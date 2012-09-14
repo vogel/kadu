@@ -76,8 +76,8 @@ void ConfigWizardSetUpAccountPage::initializePage()
 		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
 		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
 		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		// Same as above, parentWidget() is QWizard.
-		connect(AccountWidget.data(), SIGNAL(destroyed()), parentWidget(), SLOT(back()));
+		// Same as above, window() is QWizard.
+		connect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
 	}
 }
 
@@ -85,6 +85,7 @@ void ConfigWizardSetUpAccountPage::cleanupPage()
 {
 	if (AccountWidget)
 	{
+		disconnect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
 		disconnect(AccountWidget.data(), 0, this, 0);
 		delete AccountWidget.data();
 	}
