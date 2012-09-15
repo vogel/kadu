@@ -40,8 +40,8 @@ QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp re
 	QDomElement embedElement = document.createElement("embed");
 	embedElement.setAttribute("src", QString("http://www.youtube.com/v/%1&autoplay=0").arg(regExp.cap(1)));
 	embedElement.setAttribute("type", "application/x-shockwave-flash");
-	embedElement.setAttribute("allowscriptaccess", "always");
-	embedElement.setAttribute("allowfullscreen", "true");
+	embedElement.setAttribute("width", "640");
+	embedElement.setAttribute("height", "390");
 
 	QDomText textElement = document.createTextNode(regExp.cap());
 
