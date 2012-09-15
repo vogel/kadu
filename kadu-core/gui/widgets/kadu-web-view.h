@@ -60,6 +60,10 @@ private slots:
 	void saveImage();
 	void textCopied() const;
 
+#ifdef DEBUG_ENABLED
+	void runInspector(bool toggled);
+#endif
+
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *e);
 	virtual void mouseMoveEvent(QMouseEvent *e);

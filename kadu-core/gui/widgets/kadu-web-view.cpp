@@ -54,6 +54,10 @@
 #include <QtWebKit/QWebHitTestResult>
 #include <QtWebKit/QWebPage>
 
+#ifdef DEBUG_ENABLED
+#	include <QtWebKit/QWebInspector>
+#endif
+
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "gui/services/clipboard-html-transformer-service.h"
@@ -150,6 +154,15 @@ void KaduWebView::contextMenuEvent(QContextMenuEvent *e)
 	popupMenu.addSeparator();
 	popupMenu.addAction(copyImage);
 	popupMenu.addAction(saveImage);
+
+#ifdef DEBUG_ENABLED
+	QAction *runInspector = new QAction(&popupMenu);
+	runInspector->setText(tr("Run Inspector"));
+	connect(runInspector, SIGNAL(triggered(bool)), this, SLOT(runInspector(bool)));
+
+	popupMenu.addSeparator();
+	popupMenu.addAction(runInspector);
+#endif
 
  	popupMenu.exec(e->globalPos());
  	kdebugf2();
@@ -352,6 +365,20 @@ void KaduWebView::saveImage()
 
 	delete fd.data();
 }
+
+#ifdef DEBUG_ENABLED
+void KaduWebView::runInspector(bool toggled)
+{
+	Q_UNUSED(toggled)
+
+	page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+
+	QWebInspector *inspector = new QWebInspector();
+	inspector->setPage(page());
+
+	inspector->show();
+}
+#endif
 
 void KaduWebView::textCopied() const
 {
