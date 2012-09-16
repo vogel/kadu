@@ -39,6 +39,7 @@ QList<QDomNode> ImageExpander::matchToDomNodes(QDomDocument document, QRegExp re
 {
 	QDomElement imageElement = document.createElement("img");
 	imageElement.setAttribute("src", regExp.cap());
+	imageElement.setAttribute("class", "scalable");
 
 	QDomText textElement = document.createTextNode(regExp.cap());
 

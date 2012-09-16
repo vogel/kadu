@@ -52,6 +52,8 @@ void FormattedStringDomVisitor::visit(const FormattedStringImageBlock * const fo
 
 	QDomElement img = Result.createElement("img");
 	img.setAttribute("id", imageKey.toString());
+	img.setAttribute("class", "scalable");
+
 	if (QFileInfo(imagePath).isAbsolute())
 		img.setAttribute("src", QString("file://%1").arg(imagePath));
 	else if (imagePath.startsWith("kaduimg:///"))

@@ -417,6 +417,11 @@ void KaduWebView::setUserFont(const QString &fontString, bool force)
 		style = QString("* { %1 }").arg(userFontStyle(font, force));
 	}
 
+	style.append("\
+		img.scalable { max-width: 80%; }\
+		img.scalable.unscaled { max-width: none; }\
+	");
+
 	QString url = QString("data:text/css;charset=utf-8;base64,%1").arg(QString(style.toUtf8().toBase64()));
 	settings()->setUserStyleSheetUrl(url);
 }
