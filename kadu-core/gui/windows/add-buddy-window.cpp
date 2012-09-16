@@ -226,7 +226,7 @@ void AddBuddyWindow::createGui()
 	accountChanged();
 	updateGui();
 
-	setFixedHeight(height());
+	// setFixedHeight(height());
 
 	if (MyBuddy)
 		DisplayNameEdit->setFocus();
