@@ -1,4 +1,4 @@
-<!-- 
+<!--
       This file is borrowed from adium project (see http://adium.im/)
       and is licensed under the terms of the GNU General Public License version 2 (or any later version)
 -->
@@ -11,7 +11,7 @@
 		// NOTE:
 		// Any percent signs in this file must be escaped!
 		// Use two escape signs (%%) to display it, this is passed through a format call!
-		
+
 		function appendHTML(html) {
 			var node = document.getElementById("Chat");
 			var range = document.createRange();
@@ -19,7 +19,7 @@
 			var documentFragment = range.createContextualFragment(html);
 			node.appendChild(documentFragment);
 		}
-		
+
 		// a coalesced HTML object buffers and outputs DOM objects en masse.
 		// saves A LOT of CSS recalculation time when loading many messages.
 		// (ex. a long twitter timeline)
@@ -32,11 +32,11 @@
 			this.isCoalescing = false;
 			this.isConsecutive = undefined;
 			this.shouldScroll = undefined;
-			
+
 			var appendElement = function (elem) {
 				document.getElementById("Chat").appendChild(elem);
 			};
-			
+
 			function outputHTML() {
 				var insert = document.getElementById("insert");
 				if(!!insert && self.isConsecutive) {
@@ -53,14 +53,14 @@
 					body.appendChild(self.scriptNodes[k]);
 
 				alignChat(self.shouldScroll);
-				
+
 				// reset state to empty/non-coalescing
 				self.shouldScroll = undefined;
 				self.isConsecutive = undefined;
 				self.isCoalescing = false;
 				self.coalesceRounds = 0;
 			}
-			
+
 			// creates and returns a new documentFragment, containing all content nodes
 			// which can be inserted as a single node.
 			function createHTMLNode(html) {
@@ -90,19 +90,19 @@
 				if(insert)
 					insert.parentNode.removeChild(insert);
 			}
-			
+
 			function setShouldScroll(flag) {
 				if(flag && undefined === self.shouldScroll)
 					self.shouldScroll = flag;
 			}
-			
+
 			// hook in a custom method to append new data
 			// to the chat.
 			this.setAppendElementMethod = function (func) {
 				if(typeof func === 'function')
 					appendElement = func;
 			}
-						
+
 			// (re)start the coalescing timer.
 			//   we wait 25ms for a new message to come in.
 			//   If we get one, restart the timer and wait another 10ms.
@@ -117,7 +117,7 @@
 				if(400 < self.coalesceRounds)
 					self.cancel();
 			}
-			
+
 			// if we need to append content into an insertion div,
 			// we need to clear the buffer and cancel the timeout.
 			this.cancel = function() {
@@ -126,10 +126,10 @@
 					outputHTML();
 				}
 			}
-			
-			
+
+
 			// coalased analogs to the global functions
-			
+
 			this.append = function(html, shouldScroll) {
 				// if we started this fragment with a consecuative message,
 				// cancel and output before we continue
@@ -147,7 +147,7 @@
 				setShouldScroll(shouldScroll);
 				self.coalesce();
 			}
-			
+
 			this.appendNext = function(html, shouldScroll) {
 				if(undefined === self.isConsecutive)
 					self.isConsecutive = true;
@@ -165,7 +165,7 @@
 				setShouldScroll(shouldScroll);
 				self.coalesce();
 			}
-			
+
 			this.replaceLast = function (html, shouldScroll) {
 				rmInsertNode();
 				var node = createHTMLNode(html);
@@ -180,7 +180,7 @@
 		//Appending new content to the message view
 		function appendMessage(html) {
 			var shouldScroll;
-			
+
 			// Only call nearBottom() if should scroll is undefined.
 			if(undefined === coalescedHTML.shouldScroll) {
 				shouldScroll = nearBottom();
@@ -189,13 +189,13 @@
 			}
 			appendMessageNoScroll(html, shouldScroll);
 		}
-		
-		function appendMessageNoScroll(html, shouldScroll) {			
+
+		function appendMessageNoScroll(html, shouldScroll) {
 			shouldScroll = shouldScroll || false;
 			// always try to coalesce new, non-griuped, messages
 			coalescedHTML.append(html, shouldScroll)
 		}
-		
+
 		function appendNextMessage(html){
 			var shouldScroll;
 			if(undefined === coalescedHTML.shouldScroll) {
@@ -205,7 +205,7 @@
 			}
 			appendNextMessageNoScroll(html, shouldScroll);
 		}
-		
+
 		function appendNextMessageNoScroll(html, shouldScroll){
 			shouldScroll = shouldScroll || false;
 			// only group next messages if we're already coalescing input
@@ -252,7 +252,7 @@
 		//Dynamically exchange the active stylesheet
 		function setStylesheet( id, url ) {
 			var code = "<style id=\"" + id + "\" type=\"text/css\" media=\"screen,print\">";
-			if( url.length ) 
+			if( url.length )
 				code += "@import url( \"" + url + "\" );";
 			code += "</style>";
 			var range = document.createRange();
@@ -268,25 +268,25 @@
 			var node = event.target;
 			if (node.tagName.toLowerCase() != 'img')
 				return;
-				
+
 			imageSwap(node, false);
 		}
-		
+
 		/* Converts textual emoticons to images if textToImagesFlag is true, otherwise vice versa */
 		function imageSwap(node, textToImagesFlag) {
 			var shouldScroll = nearBottom();
-			
+
 			var images = [node];
 			if (event.altKey) {
 				while (node.id != "Chat" && node.parentNode.id != "Chat")
 					node = node.parentNode;
 				images = node.querySelectorAll(textToImagesFlag ? "a" : "img");
 			}
-			
+
 			for (var i = 0; i < images.length; i++) {
 				textToImagesFlag ? textToImage(images[i]) : imageToText(images[i]);
 			}
-			
+
 			alignChat(shouldScroll);
 		}
 
@@ -300,7 +300,7 @@
 			img.className = node.className;
 			node.parentNode.replaceChild(img, node);
 		}
-		
+
 		function imageToText(node)
 		{
 			if (client.zoomImage(node) || !node.alt)
@@ -357,7 +357,6 @@
 			if(!coalescedHTML)
 				coalescedHTML = new CoalescedHTML();
 			initEvents();
-
 		}
 	</script>
 

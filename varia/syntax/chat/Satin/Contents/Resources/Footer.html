@@ -24,7 +24,6 @@
 
 
 		//Swap an image with its alt-tag text on click
-		document.onclick = imageCheck;
 		function imageCheck() {
 			node = event.target;
 			if(node.tagName == 'IMG' && node.alt && node.className!="avatar") {
@@ -37,6 +36,8 @@
 				node.parentNode.replaceChild(a, node);
 			}
 		}
+		document.addEventListener("click", imageCheck, true);
+
 		function imageSwap(node) {
 			shouldScroll = nearBottom();
 

@@ -156,4 +156,19 @@ function kadu_chatImageAvailable(id, src)
 	image.src = src;
 }
 
+
+
+function toggleImageScaling() {
+	var node = event.target;
+	if (!node || !node.className)
+		return;
+
+	if (node.className.indexOf("scalable") >= 0) {
+		if (node.className.indexOf("unscaled") >= 0) {
+			node.className = node.className.replace(" unscaled", "");
+		} else
+			node.className = node.className + " unscaled";
+	}
+}
+document.addEventListener("click", toggleImageScaling, true);
 /* ]]> */
