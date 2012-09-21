@@ -342,15 +342,19 @@ void GaduProtocolSocketNotifiers::socketEvent()
 
 int GaduProtocolSocketNotifiers::timeout()
 {
-	return 15000;
+	if (!Sess)
+		return -1;
+
+	int tout = Sess->timeout;
+	if (tout < 0)
+		return tout;
+
+	return qMin(tout * 1000, 15000);
 }
 
 bool GaduProtocolSocketNotifiers::handleSoftTimeout()
 {
 	kdebugf();
-
-	if (GG_STATE_CONNECTED == Sess->state)
-		return true;
 
 	if (!Sess || !Sess->soft_timeout)
 		return false;

@@ -111,7 +111,7 @@ int GaduTokenSocketNotifiers::timeout()
 {
 	return H
 		? H->timeout * 1000
-		: 0;
+		: -1;
 }
 
 bool GaduTokenSocketNotifiers::handleSoftTimeout()

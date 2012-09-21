@@ -94,7 +94,7 @@ int GaduPubdirSocketNotifiers::timeout()
 {
 	return H
 		? H->timeout * 1000
-		: 0;
+		: -1;
 }
 
 bool GaduPubdirSocketNotifiers::handleSoftTimeout()

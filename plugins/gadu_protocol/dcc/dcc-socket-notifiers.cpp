@@ -192,7 +192,7 @@ int DccSocketNotifiers::timeout()
 {
 	return Socket7
 			? Socket7->timeout * 1000
-			: 0;
+			: -1;
 }
 
 bool DccSocketNotifiers::handleSoftTimeout()
