@@ -406,7 +406,6 @@ void GaduProtocol::setupLoginParams()
 
 	GaduLoginParams.external_port = gaduAccountDetails->externalPort();
 
-	GaduLoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	GaduLoginParams.client_version = qstrdup(Core::nameWithVersion().toUtf8().constData());
 	GaduLoginParams.protocol_features =
 			GG_FEATURE_UNKNOWN_4 | // GG_FEATURE_STATUS80
