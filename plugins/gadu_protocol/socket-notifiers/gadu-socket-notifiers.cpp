@@ -62,15 +62,16 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	if (!checkWrite())
 		WriteNotifier->setEnabled(false);
 
-	TimeoutTimer = new QTimer();
-	TimeoutTimer->setSingleShot(true);
-	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
-
 	Started = true;
 
 	int tout = timeout();
-	if (0 < tout)
+	if (tout > 0)
+	{
+		TimeoutTimer = new QTimer(this);
+		TimeoutTimer->setSingleShot(true);
+		connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
 		TimeoutTimer->start(tout);
+	}
 
 	kdebugf2();
 }
@@ -92,9 +93,12 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 	WriteNotifier->deleteLater();
 	WriteNotifier = 0;
 
-	TimeoutTimer->stop();
-	TimeoutTimer->deleteLater();
-	TimeoutTimer = 0;
+	if (TimeoutTimer)
+	{
+		TimeoutTimer->stop();
+		TimeoutTimer->deleteLater();
+		TimeoutTimer = 0;
+	}
 
 	kdebugf2();
 }
@@ -108,7 +112,8 @@ void GaduSocketNotifiers::disable()
 
 	ReadNotifier->setEnabled(false);
 	WriteNotifier->setEnabled(false);
-	TimeoutTimer->stop();
+	if (TimeoutTimer)
+		TimeoutTimer->stop();
 }
 
 void GaduSocketNotifiers::enable()
@@ -124,8 +129,22 @@ void GaduSocketNotifiers::enable()
 		WriteNotifier->setEnabled(true);
 
 	int tout = timeout();
-	if (0 < tout)
+	if (tout > 0)
+	{
+		if (!TimeoutTimer)
+		{
+			TimeoutTimer = new QTimer(this);
+			TimeoutTimer->setSingleShot(true);
+			connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
+		}
 		TimeoutTimer->start(tout);
+	}
+	else if (TimeoutTimer)
+	{
+		TimeoutTimer->stop();
+		TimeoutTimer->deleteLater();
+		TimeoutTimer = 0;
+	}
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
