@@ -393,7 +393,8 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 {
 	bool offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
 
-	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, MainConfigurationWindow::instance());
+	// TODO: set parent to MainConfigurationWindow is it exists
+	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
 	if (offerLoadInFutureChoice)
 		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
 
