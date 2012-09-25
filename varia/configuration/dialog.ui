@@ -17,18 +17,6 @@
 			</group-box>
 		</tab>
 
-		<tab name="Look">
-			<group-box name="Icons">
-				<list-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
-					tool-tip="Choose icon theme" />
-				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
-					tool-tip="Definie icons paths" />
-			</group-box>
-			<group-box name="Colors and fonts">
-				<action-button caption="Advanced..." id="colorsAdvanced" />
-			</group-box>
-		</tab>
-
 		<tab name="Applications">
 			<group-box name="Web and E-Mail">
 				<label caption="Kadu will use default applications to open links from chat messages and buddy descriptions." />
@@ -60,51 +48,27 @@
 		</tab>
 	</section>
 
-	<section name="Chat" icon="internet-group-chat">
+	<section name="Look" icon="preferences-desktop-theme">
 		<tab name="General">
-			<group-box name="Messages">
-				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
-					id="ignoreMessagesFromAnonymous" />
-				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
-					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
-				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
-					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
-				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
-					tool-tip="Shorten ugly, long links to save space in chat window" />
-				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
-					tool-tip="Display dates like Today, Yesterday or Friday, 2:30PM" />
+			<group-box name="Icons">
+				<list-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
+					tool-tip="Choose icon theme" />
+				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
+					tool-tip="Definie icons paths" />
 			</group-box>
-			<group-box name="Chat syntax">
-				<action-button caption="Configure..." id="lookChatAdvanced" />
+			<group-box name="Colors and fonts">
+				<action-button caption="Advanced..." id="colorsAdvanced" />
 			</group-box>
 		</tab>
-		<tab name="Look">
+		<tab name="Chat">
+			<group-box name="Transparency">
+				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
+			</group-box>
 			<group-box name="Style">
 				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
 			</group-box>
 		</tab>
-	</section>
-
-	<section name="Buddies list" icon="system-users">
-		<tab name="General">
-			<group-box name="Buddies window">
-				<check-box caption="Show buddy information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
-					tool-tip="Displays buddy information panel below the buddy list" />
-				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton"
-					tool-tip="Displays status changing buttons below the buddy list" />
-			</group-box>
-			<group-box name="Buddy groups">
-				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
-					tool-tip="Displays group tabs on the buddy list" />
-				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
-			</group-box>
-			<group-box name="Filters">
-				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />
-				<check-box caption="Show buddies that are ignored" config-section="General" config-item="ShowBlocked" />
-				<check-box caption="Show buddies which are blocking me" config-section="General" config-item="ShowBlocking" />
-			</group-box>
-		</tab>
-		<tab name="Look">
+		<tab name="Buddies list">
 			<group-box name="Buddy Photos">
 				<check-box caption="Show buddies' photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
 				<check-box caption="Add border to buddies' photos" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
@@ -133,6 +97,47 @@
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Chat" icon="internet-group-chat">
+		<tab name="General">
+			<group-box name="Messages">
+				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
+					id="ignoreMessagesFromAnonymous" />
+				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
+				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
+					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
+				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
+					tool-tip="Shorten ugly, long links to save space in chat window" />
+				<check-box caption="Use descriptive date format" config-section="Look" config-item="NiceDateFormat"
+					tool-tip="Display dates like Today, Yesterday or Friday, 2:30PM" />
+			</group-box>
+			<group-box name="Chat syntax">
+				<action-button caption="Configure..." id="lookChatAdvanced" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Buddies list" icon="system-users">
+		<tab name="General">
+			<group-box name="Buddies window">
+				<check-box caption="Show buddy information panel" config-section="Look" config-item="ShowInfoPanel" id="showInformationPanel"
+					tool-tip="Displays buddy information panel below the buddy list" />
+				<check-box caption="Show status changing button" config-section="Look" config-item="ShowStatusButton"
+					tool-tip="Displays status changing buttons below the buddy list" />
+			</group-box>
+			<group-box name="Buddy groups">
+				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
+					tool-tip="Displays group tabs on the buddy list" />
+				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
+			</group-box>
+			<group-box name="Filters">
+				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />
+				<check-box caption="Show buddies that are ignored" config-section="General" config-item="ShowBlocked" />
+				<check-box caption="Show buddies which are blocking me" config-section="General" config-item="ShowBlocking" />
 			</group-box>
 		</tab>
 		<tab name="Information">
@@ -280,6 +285,9 @@
 				<hot-key-edit caption="Underline text" config-section="ShortCuts" config-item="chat_underline" />
 			</group-box>
 		</tab>
+	</section>
+
+	<section name="Extras" icon="image-loading">
 	</section>
 
 	<section name="Plugins" icon="kadu_icons/plugins">

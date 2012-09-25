@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
 
-	<section name="General" icon="x-office-address-book">
-
-		<tab name="Look">
+	<section name="Look" icon="preferences-desktop-theme">
+		<tab name="Chat">
 			<group-box name="Emoticons">
 				<check-box caption="Enable emoticons" config-section="Chat" config-item="EnableEmoticons" id="enableEmoticons" />
 				<check-box caption="Animate" config-section="Chat" config-item="EnableEmoticonAnimations" id="enableEmoticonAnimations" />
@@ -13,7 +12,6 @@
 					tool-tip="Define emoticons paths" />
 			</group-box>
 		</tab>
-
 	</section>
 
 </configuration-ui>

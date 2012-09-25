@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration-ui>
-	<section name="MediaPlayer" icon="external_modules/mediaplayer-media-playback-play">
-		<tab name="General">
-			<group-box name="General Settings">
+	<section name="Extras" icon="image-loading">
+		<tab name="Media Player">
+			<group-box name="General">
 				<line-edit caption="MediaPlayer message format in chat window" config-section="MediaPlayer" config-item="chatString"
 						   id="mediaplayer/syntax" />
 				<combo-box caption="MediaPlayer statuses in description" config-section="MediaPlayer" config-item="statusPosition" >
