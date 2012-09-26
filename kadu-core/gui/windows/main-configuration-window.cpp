@@ -264,10 +264,13 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
-	connect(widget()->widgetById("colorsAdvanced"), SIGNAL(clicked()), this, SLOT(showColorsAdvanced()));
-
 	PluginList = new PluginListWidget(this);
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+
+	connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
 
 	triggerCompositingStateChanged();
 }
@@ -404,22 +407,6 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	}
 
 	lookChatAdvanced.data()->show();
-}
-
-void MainConfigurationWindow::showColorsAdvanced()
-{
-	if (!lookColorsAdvanced)
-	{
-		lookColorsAdvanced = new ConfigurationWindow("ColorsAdvanced", tr("Advanced colors configuration"), "General", instanceDataManager());
-		lookColorsAdvanced.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-colors-advanced.ui"));
-
-		connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
-		connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
-		connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
-		connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
-	}
-
-	lookColorsAdvanced.data()->show();
 }
 
 void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName)

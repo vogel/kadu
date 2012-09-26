@@ -1,6 +1,5 @@
 set (CONFIGURATION_FILES
 	dialog-look-chat-advanced.ui
-	dialog-colors-advanced.ui
 	dialog.ui
 )
 

@@ -2,7 +2,7 @@
 <configuration-ui>
 
 	<section name="Look" icon="preferences-desktop-theme">
-		<tab name="Chat">
+		<tab name="Icons">
 			<group-box name="Emoticons">
 				<check-box caption="Enable emoticons" config-section="Chat" config-item="EnableEmoticons" id="enableEmoticons" />
 				<check-box caption="Animate" config-section="Chat" config-item="EnableEmoticonAnimations" id="enableEmoticonAnimations" />

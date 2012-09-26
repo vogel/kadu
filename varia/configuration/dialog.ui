@@ -49,15 +49,12 @@
 	</section>
 
 	<section name="Look" icon="preferences-desktop-theme">
-		<tab name="General">
+		<tab name="Icons">
 			<group-box name="Icons">
 				<list-box caption="Icon theme" config-section="Look" config-item="IconTheme" id="iconThemes"
 					tool-tip="Choose icon theme" />
 				<path-list-edit caption="Icon paths" config-section="Look" config-item="IconsPaths" id="iconPaths"
 					tool-tip="Definie icons paths" />
-			</group-box>
-			<group-box name="Colors and fonts">
-				<action-button caption="Advanced..." id="colorsAdvanced" />
 			</group-box>
 		</tab>
 		<tab name="Chat">
@@ -97,6 +94,39 @@
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
+			</group-box>
+		</tab>
+		<tab name="Colors">
+			<group-box name="Chat Window">
+				<color-button caption="My message font color" config-section="Look" config-item="ChatMyFontColor" />
+				<color-button caption="Buddy's message font color" config-section="Look" config-item="ChatUsrFontColor" />
+				<color-button caption="My nick color" config-section="Look" config-item="ChatMyNickColor" />
+				<color-button caption="Buddy's nick color" config-section="Look" config-item="ChatUsrNickColor" />
+				<color-button caption="My messages' background" config-section="Look" config-item="ChatMyBgColor" />
+				<color-button caption="Buddy's messages' background" config-section="Look" config-item="ChatUsrBgColor" />
+				<check-box caption="Use custom chat background color" config-section="Look" config-item="ChatBgFilled" id="chatBgFilled" />
+				<color-button caption="Chat background" config-section="Look" config-item="ChatBgColor" id="chatBgColor" />
+				<check-box caption="Use custom text edit colors" config-section="Look" config-item="ChatTextCustomColors" id="chatTextCustomColors" />
+				<color-button caption="Text edit background" config-section="Look" config-item="ChatTextBgColor" id="chatTextBgColor" />
+				<color-button caption="Text edit font" config-section="Look" config-item="ChatTextFontColor" id="chatTextFontColor" />
+			</group-box>
+			<group-box name="Buddy List">
+				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
+				<color-button caption="Descriptions font" config-section="Look" config-item="DescriptionColor" />
+			</group-box>
+			<group-box name="Information Panel">
+				<color-button caption="Font" config-section="Look" config-item="InfoPanelFgColor" />
+				<check-box caption="Use custom background color" config-section="Look" config-item="InfoPanelBgFilled" id="infoPanelBgFilled" />
+				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" id="infoPanelBgColor" />
+			</group-box>
+		</tab>
+		<tab name="Fonts">
+			<group-box name="Fonts">
+				<check-box caption="Use custom font in chat window" config-section="Look" config-item="ForceCustomChatFont"
+					tool-tip="Use custom font even for chat styles which define their own fonts (most Adium styles do that)" />
+				<select-font caption="Chat window" config-section="Look" config-item="ChatFont" />
+				<select-font caption="Buddy list" config-section="Look" config-item="UserboxFont" />
+				<select-font caption="Information panel" config-section="Look" config-item="PanelFont" />
 			</group-box>
 		</tab>
 	</section>
