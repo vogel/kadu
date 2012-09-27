@@ -207,32 +207,12 @@ MainConfigurationWindow::MainConfigurationWindow() :
 		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 		onStartupSetDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 	}
-	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarBorder"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("showAvatars"), SIGNAL(toggled(bool)), widget()->widgetById("avatarGreyOut"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
-	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
-	connect(widget()->widgetById("foldLink"), SIGNAL(toggled(bool)), widget()->widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatPrune"), SIGNAL(toggled(bool)), widget()->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widget()->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
+
+	//TODO these are comboboxes now
+	//connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
+	//connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
+
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
-	connect(widget()->widgetById("showDescription"), SIGNAL(toggled(bool)), widget()->widgetById("multilineDescription"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widget()->widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("displayGroupTabs"), SIGNAL(toggled(bool)), widget()->widgetById("showGroupAll"), SLOT(setEnabled(bool)));
-
-	QWidget *showInformationPanel = widget()->widgetById("showInformationPanel");
-	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
-
-	ConfigCheckBox *useDefaultBrowserCheckbox = static_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultBrowser"));
-	ConfigLineEdit *browserCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("browserPath"));
-	connect(useDefaultBrowserCheckbox, SIGNAL(toggled(bool)), browserCommandLineEdit, SLOT(setDisabled(bool)));
-
-	ConfigCheckBox *useDefaultEMailCheckbox = static_cast<ConfigCheckBox *>(widget()->widgetById("useDefaultEMail"));
-	ConfigLineEdit *mailCommandLineEdit = static_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
-	connect(useDefaultEMailCheckbox, SIGNAL(toggled(bool)), mailCommandLineEdit, SLOT(setDisabled(bool)));
-
-	connect(widget()->widgetById("limitImageSize"), SIGNAL(toggled(bool)), widget()->widgetById("maximumImageSizeInKiloBytes"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("limitImageSize"), SIGNAL(toggled(bool)), widget()->widgetById("allowBiggerImagesAfterAsking"), SLOT(setEnabled(bool)));
-
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
 	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
@@ -241,30 +221,17 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
  	connect(widget()->widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
-	connect(widget()->widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widget()->widgetById("ignoreFormattingFromAnonymous"), SLOT(setDisabled(bool)));
-
-	QWidget *useUserboxBackground = widget()->widgetById("useUserboxBackground");
-	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackground"), SLOT(setEnabled(bool)));
-	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
-
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
 	(static_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
 
 	userboxTransparency = static_cast<QCheckBox *>(widget()->widgetById("userboxTransparency"));
 	userboxAlpha = static_cast<QSlider *>(widget()->widgetById("userboxAlpha"));
-	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxAlpha"), SLOT(setEnabled(bool)));
 	userboxBlur = static_cast<QCheckBox *>(widget()->widgetById("userboxBlur"));
-	connect(userboxTransparency, SIGNAL(toggled(bool)), widget()->widgetById("userboxBlur"), SLOT(setEnabled(bool)));
 
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
 	PluginList = new PluginListWidget(this);
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
-
-	connect(widget()->widgetById("chatBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("chatBgColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextBgColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("chatTextCustomColors"), SIGNAL(toggled(bool)), widget()->widgetById("chatTextFontColor"), SLOT(setEnabled(bool)));
-	connect(widget()->widgetById("infoPanelBgFilled"), SIGNAL(toggled(bool)), widget()->widgetById("infoPanelBgColor"), SLOT(setEnabled(bool)));
 
 	triggerCompositingStateChanged();
 }

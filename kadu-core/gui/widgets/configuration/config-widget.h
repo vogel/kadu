@@ -42,6 +42,7 @@ protected:
 	QString widgetCaption;
 	QString CurrentWidgetId;
 	QString ParentWidgetId;
+	QString StateDependency;
 	QString toolTip;
 	ConfigurationWindowDataManager *dataManager;
 
@@ -59,6 +60,7 @@ public:
 
 	QString parentWidgetId() { return ParentWidgetId; }
 	QString currentWidgetId() { return CurrentWidgetId; }
+	bool isStateDependentDirectly() { return StateDependency == "" || StateDependency == "direct"; }
 };
 
 #endif

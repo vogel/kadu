@@ -44,6 +44,7 @@ bool ConfigWidget::fromDomElement(QDomElement domElement)
 
 	CurrentWidgetId = domElement.attribute("id");
 	ParentWidgetId = domElement.attribute("parent-widget");
+	StateDependency = domElement.attribute("state-dependency");
 
 	if (widgetCaption.isEmpty())
 		return false;

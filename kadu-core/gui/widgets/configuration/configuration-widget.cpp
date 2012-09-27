@@ -129,7 +129,13 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 		QWidget *parentWidget = widgetById(widget->parentWidgetId());
 
 		if (parentWidget && currentWidget)
-			connect(parentWidget, SIGNAL(toggled(bool)), currentWidget, SLOT(setEnabled(bool)));
+		{
+			const char* slot = widget->isStateDependentDirectly()
+					? SLOT(setEnabled(bool))
+					: SLOT(setDisabled(bool));
+
+			connect(parentWidget, SIGNAL(toggled(bool)), currentWidget, slot);
+		}
 
 		if (load)
 			widget->loadConfiguration();

@@ -21,10 +21,10 @@
 			<group-box name="Web and E-Mail">
 				<label caption="Kadu will use default applications to open links from chat messages and buddy descriptions." />
 				<check-box caption="Use System Web Browser" config-section="Chat" config-item="UseDefaultWebBrowser" id="useDefaultBrowser" />
-				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
+				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath" parent-widget="useDefaultBrowser" state-dependency="reversed"
 					tool-tip="Write specific path to your browser" />
 				<check-box caption="Use System E-Mail Client" config-section="Chat" config-item="UseDefaultEMailClient" id="useDefaultEMail" />
-				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath"
+				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" parent-widget="useDefaultEMail" state-dependency="reversed"
 					tool-tip="Write specific path to your email client" />
 			</group-box>
 		</tab>
@@ -68,27 +68,27 @@
 		<tab name="Buddies list">
 			<group-box name="Buddy Photos">
 				<check-box caption="Show buddies' photos" config-section="Look" config-item="ShowAvatars" id="showAvatars" />
-				<check-box caption="Add border to buddies' photos" config-section="Look" config-item="AvatarBorder" id="avatarBorder" />
-				<check-box caption="Grey out offline buddies' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut"
+				<check-box caption="Add border to buddies' photos" config-section="Look" config-item="AvatarBorder" id="avatarBorder" parent-widget="showAvatars" />
+				<check-box caption="Grey out offline buddies' photos" config-section="Look" config-item="AvatarGreyOut" id="avatarGreyOut" parent-widget="showAvatars"
 					tool-tip="Buddies who are offline will have their photos greyed out" />
 			</group-box>
 			<group-box name="Descriptions">
 				<check-box caption="Show buddies' descriptions" config-section="Look" config-item="ShowDesc" id="showDescription"
 					tool-tip="Displays descriptions in the buddy list" />
 				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
-					tool-tip="Dislpays multiline descriptions in the buddy list" />
+					tool-tip="Dislpays multiline descriptions in the buddy list" parent-widget="showDescription" />
 			</group-box>
 			<group-box name="Background">
 				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
 				<slider caption="Transparency level" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10"
-					id="userboxAlpha" />
+					id="userboxAlpha" parent-widget="userboxTransparency" />
 				<label caption="0" />
-				<check-box caption="Turn on blur" config-section="Look" config-item="UserboxBlur" id="userboxBlur" />
+				<check-box caption="Turn on blur" config-section="Look" config-item="UserboxBlur" id="userboxBlur" parent-widget="userboxTransparency" />
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
-					tool-tip="Define background file for the buddy list" id="userboxBackground" />
+					tool-tip="Define background file for the buddy list" id="userboxBackground" parent-widget="useUserboxBackground" />
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
-					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" >
+					tool-tip="Choose buddy list background style" id="userboxBackgroundDisplayStyle" parent-widget="useUserboxBackground" >
 					<item value="Tiled" caption="Tiled" />
 					<item value="TiledAndCentered" caption="Tiled and Centered" />
 					<item value="Centered" caption="Centered" />
@@ -105,10 +105,10 @@
 				<color-button caption="My messages' background" config-section="Look" config-item="ChatMyBgColor" />
 				<color-button caption="Buddy's messages' background" config-section="Look" config-item="ChatUsrBgColor" />
 				<check-box caption="Use custom chat background color" config-section="Look" config-item="ChatBgFilled" id="chatBgFilled" />
-				<color-button caption="Chat background" config-section="Look" config-item="ChatBgColor" id="chatBgColor" />
+				<color-button caption="Chat background" config-section="Look" config-item="ChatBgColor" id="chatBgColor" parent-widget="chatBgFilled" />
 				<check-box caption="Use custom text edit colors" config-section="Look" config-item="ChatTextCustomColors" id="chatTextCustomColors" />
-				<color-button caption="Text edit background" config-section="Look" config-item="ChatTextBgColor" id="chatTextBgColor" />
-				<color-button caption="Text edit font" config-section="Look" config-item="ChatTextFontColor" id="chatTextFontColor" />
+				<color-button caption="Text edit background" config-section="Look" config-item="ChatTextBgColor" id="chatTextBgColor" parent-widget="chatTextCustomColors" />
+				<color-button caption="Text edit font" config-section="Look" config-item="ChatTextFontColor" id="chatTextFontColor" parent-widget="chatTextCustomColors" />
 			</group-box>
 			<group-box name="Buddy List">
 				<color-button caption="Font" config-section="Look" config-item="UserboxFgColor" />
@@ -117,7 +117,7 @@
 			<group-box name="Information Panel">
 				<color-button caption="Font" config-section="Look" config-item="InfoPanelFgColor" />
 				<check-box caption="Use custom background color" config-section="Look" config-item="InfoPanelBgFilled" id="infoPanelBgFilled" />
-				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" id="infoPanelBgColor" />
+				<color-button caption="Background" config-section="Look" config-item="InfoPanelBgColor" id="infoPanelBgColor" parent-widget="infoPanelBgFilled" />
 			</group-box>
 		</tab>
 		<tab name="Fonts">
@@ -137,7 +137,8 @@
 				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
 					id="ignoreMessagesFromAnonymous" />
 				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
-					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" parent-widget="ignoreMessagesFromAnonymous" />
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)."
+					id="ignoreFormattingFromAnonymous" parent-widget="ignoreMessagesFromAnonymous" state-dependency="reversed" />
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
 					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
 				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"
@@ -162,7 +163,7 @@
 			<group-box name="Buddy groups">
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
 					tool-tip="Displays group tabs on the buddy list" />
-				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll"/>
+				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll" parent-widget="displayGroupTabs" />
 			</group-box>
 			<group-box name="Filters">
 				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />
@@ -238,7 +239,7 @@
 				<check-box caption="Open chat window on new message" config-section="Chat" config-item="OpenChatOnMessage" id="openChatOnMessage"
 						tool-tip="Open chat window when a new message arrives" />
 				<check-box caption="Open chat window only when I am online" config-section="Chat" config-item="OpenChatOnMessageWhenOnline"
-						id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" />
+						id="openChatOnMessageWhenOnline" tool-tip="Open chat window on new message only when online" parent-widget="openChatOnMessage" />
 				<check-box caption="Remember chat windows positions" config-section="Chat" config-item="RememberPosition" />
 				<check-box caption="Remember opened chats" config-section="Chat" config-item="SaveOpenedWindows"
 					tool-tip="Save opened chat windows when exiting and restore them on next statup" />
