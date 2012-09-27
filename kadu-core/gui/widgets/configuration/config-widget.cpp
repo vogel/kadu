@@ -42,6 +42,9 @@ bool ConfigWidget::fromDomElement(QDomElement domElement)
 {
 	widgetCaption = domElement.attribute("caption");
 
+	CurrentWidgetId = domElement.attribute("id");
+	ParentWidgetId = domElement.attribute("parent-widget");
+
 	if (widgetCaption.isEmpty())
 		return false;
 

@@ -120,10 +120,20 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 {
 	QList<ConfigWidget *> widgets = processUiFile(fileName, true);
 
-	if (load)
-		foreach (ConfigWidget *widget, widgets)
-			if (widget)
-				widget->loadConfiguration();
+	foreach (ConfigWidget *widget, widgets)
+	{
+		if (!widget)
+			continue;
+
+		QWidget *currentWidget = widgetById(widget->currentWidgetId());
+		QWidget *parentWidget = widgetById(widget->parentWidgetId());
+
+		if (parentWidget && currentWidget)
+			connect(parentWidget, SIGNAL(toggled(bool)), currentWidget, SLOT(setEnabled(bool)));
+
+		if (load)
+			widget->loadConfiguration();
+	}
 
 	return widgets;
 }

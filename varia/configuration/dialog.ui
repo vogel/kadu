@@ -137,7 +137,7 @@
 				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers"
 					id="ignoreMessagesFromAnonymous" />
 				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
-					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" />
+					tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)." id="ignoreFormattingFromAnonymous" parent-widget="ignoreMessagesFromAnonymous" />
 				<spin-box caption="Limit visible messages in chat window to" config-section="Chat" config-item="ChatPruneLen"
 					min-value="1" max-value="255" id="chatPruneLen" tool-tip="Maximum number of messages visible in chat window" />
 				<check-box caption="Fold links in messages" config-section="Chat" config-item="FoldLink" id="foldLink"

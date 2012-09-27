@@ -128,16 +128,10 @@ ConfigFileDataManager * MainConfigurationWindow::instanceDataManager()
 void MainConfigurationWindow::registerUiFile(const QString &uiFile)
 {
 	UiFiles.append(uiFile);
-	if (Instance)
-	{
-		QList<ConfigWidget *> widgets = Instance->widget()->appendUiFile(uiFile);
+	if (!Instance)
+		return;
 
-		// allow uiHandler handle this...
-		// TODO: make it pretty
-		foreach(ConfigWidget *widget, widgets)
-			if (widget)
-				widget->loadConfiguration();
-	}
+	Instance->widget()->appendUiFile(uiFile);
 }
 
 void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)

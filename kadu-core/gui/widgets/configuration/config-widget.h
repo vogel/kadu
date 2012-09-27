@@ -40,6 +40,8 @@ class KADUAPI ConfigWidget
 protected:
 	ConfigGroupBox *parentConfigGroupBox;
 	QString widgetCaption;
+	QString CurrentWidgetId;
+	QString ParentWidgetId;
 	QString toolTip;
 	ConfigurationWindowDataManager *dataManager;
 
@@ -54,6 +56,9 @@ public:
 	virtual void saveConfiguration() = 0;
 
 	virtual bool fromDomElement(QDomElement domElement);
+
+	QString parentWidgetId() { return ParentWidgetId; }
+	QString currentWidgetId() { return CurrentWidgetId; }
 };
 
 #endif
