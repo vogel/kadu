@@ -5,12 +5,12 @@
 			<group-box name="Chats History" id="history/chats">
 				<check-box caption="Save chats in history" config-section="History" config-item="SaveChats" id="history/save"
 						tool-tip="Save messages in history" />
-				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" />
+				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" parent-widget="history/save" />
 			</group-box>
 			<group-box name="Status Changes" id="history/statusChanges">
 				<check-box caption="Save status changes" config-section="History" config-item="SaveStatusChanges"
 					   tool-tip="Save status changes in history" id="history/savestatuschanges"/>
-				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" />
+				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" parent-widget="history/savestatuschanges" />
 			</group-box>
 			<group-box name="History in chat window" id="history/citation">
 				<combo-box caption="Show messages from history since" config-section="History" config-item="ChatHistoryQuotationTime"

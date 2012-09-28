@@ -289,7 +289,7 @@
 				<check-box caption="Store descriptions" config-section="General" config-item="StoreDescriptions"
 					id="storeDescriptions" tool-tip="Every description you set will be saved for further use." />
 				<spin-box caption="Number of kept descriptions" config-section="General" config-item="NumberOfDescriptions" min-value="1"
-					max-value="30" />
+					max-value="30" parent-widget="storeDescriptions" />
 			</group-box>
 		</tab>
 		<tab name="Shortcuts">

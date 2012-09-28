@@ -5,10 +5,10 @@
 		<tab name="Icons">
 			<group-box name="Emoticons">
 				<check-box caption="Enable emoticons" config-section="Chat" config-item="EnableEmoticons" id="enableEmoticons" />
-				<check-box caption="Animate" config-section="Chat" config-item="EnableEmoticonAnimations" id="enableEmoticonAnimations" />
-				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme"
+				<check-box caption="Animate" config-section="Chat" config-item="EnableEmoticonAnimations" id="enableEmoticonAnimations" parent-widget="enableEmoticons" />
+				<combo-box caption="Emoticons theme" config-section="Chat" config-item="EmoticonsTheme" id="emoticonsTheme" parent-widget="enableEmoticons"
 					tool-tip="Choose emoticons theme" />
-				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths"
+				<path-list-edit caption="Emoticons paths" config-section="Chat" config-item="EmoticonsPaths" id="emoticonsPaths" parent-widget="enableEmoticons"
 					tool-tip="Define emoticons paths" />
 			</group-box>
 		</tab>

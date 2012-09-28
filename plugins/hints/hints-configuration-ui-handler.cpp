@@ -123,9 +123,6 @@ void HintsConfigurationUiHandler::showAdvanced()
 		newHintUnder = static_cast<QComboBox *>(AdvancedWindow.data()->widget()->widgetById("hints/newHintUnder"));
 
 		ownPosition = static_cast<QCheckBox *>(AdvancedWindow.data()->widget()->widgetById("hints/ownPosition"));
-		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow.data()->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
-		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow.data()->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
-		connect(ownPosition, SIGNAL(toggled(bool)), AdvancedWindow.data()->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
 		connect(ownPosition, SIGNAL(toggled(bool)), this, SLOT(updateHintsPreview()));
 
 		minimumWidth = static_cast<QSpinBox *>(AdvancedWindow.data()->widget()->widgetById("hints/minimumWidth"));

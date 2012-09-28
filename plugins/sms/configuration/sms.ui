@@ -5,11 +5,11 @@
 			<group-box name="Application">
 				<line-edit caption="Your nick for SMS" config-section="SMS" config-item="SmsNick" />
 				<check-box caption="Use built-in SMS application" config-section="SMS" config-item="BuiltInApp" id="sms/useBuildInApp" />
-				<proxy-combo-box caption="SMS proxy for built-in application" config-section="SMS" config-item="Proxy" config-item-default="DefaultProxy" show-default="true" id="sms/proxy" />
+				<proxy-combo-box caption="SMS proxy for built-in application" config-section="SMS" config-item="Proxy" config-item-default="DefaultProxy" show-default="true" id="sms/proxy" parent-widget="sms/useBuildInApp" />
 				<line-edit caption="Custom SMS application" config-section="SMS" config-item="SmsApp" id="sms/customApp" />
 				<check-box caption="Use application custom arguments" config-section="SMS" config-item="UseCustomString" id="sms/useCustomString"
 					tool-tip="Check this box if your sms application does not understand arguments: number &amp;message&amp;\nArguments should be separated with spaces. %k argument is converted to number, %m to message" />
-				<line-edit caption="SMS custom arguments" config-section="SMS" config-item="SmsString" id="sms/customString" />
+				<line-edit caption="SMS custom arguments" config-section="SMS" config-item="SmsString" id="sms/customString" parent-widget="sms/useCustomString" />
 			</group-box>
 			<group-box name="Gateways">
 				<combo-box caption="SMS T-Mobile.pl Gateway" config-section="SMS" config-item="EraGateway" id="default_sms/eraGateway">

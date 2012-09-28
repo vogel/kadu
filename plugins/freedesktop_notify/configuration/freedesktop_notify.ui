@@ -4,9 +4,9 @@
 		<tab name="Options">
 			<group-box name="System notifications">
 				<check-box caption="Use custom expiration timeout" config-section="FreedesktopNotify" config-item="CustomTimeout" id="freedesktop-notify/customTimeout"/>
-				<spin-box caption="Expiration timeout" config-section="FreedesktopNotify" config-item="Timeout" id="freedesktop-notify/timeout" min-value="0" max-value="3600" suffix="%n second(s)" special-value="Never"/>
+				<spin-box caption="Expiration timeout" config-section="FreedesktopNotify" config-item="Timeout" id="freedesktop-notify/timeout" min-value="0" max-value="3600" suffix="%n second(s)" special-value="Never" parent-widget="freedesktop-notify/customTimeout" />
 				<check-box caption="Show message content" config-section="FreedesktopNotify" config-item="ShowContentMessage" id="freedesktop-notify/showContent" />
-				<spin-box caption="Number of quoted characters" config-section="FreedesktopNotify" config-item="CiteSign" min-value="1" max-value="2000" id="freedesktop-notify/showContentCount" />
+				<spin-box caption="Number of quoted characters" config-section="FreedesktopNotify" config-item="CiteSign" min-value="1" max-value="2000" id="freedesktop-notify/showContentCount" parent-widget="freedesktop-notify/showContent" />
 			</group-box>
 		</tab>
 	</section>

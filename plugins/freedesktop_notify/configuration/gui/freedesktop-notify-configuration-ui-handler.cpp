@@ -59,8 +59,5 @@ FreedesktopNotifyConfigurationUiHandler::FreedesktopNotifyConfigurationUiHandler
 
 void FreedesktopNotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("freedesktop-notify/customTimeout"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("freedesktop-notify/timeout"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContent"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("freedesktop-notify/showContentCount"), SLOT(setEnabled(bool)));
+	Q_UNUSED(mainConfigurationWindow)
 }

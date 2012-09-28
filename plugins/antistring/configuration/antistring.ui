@@ -9,7 +9,7 @@
 			
 			<group-box name="Log">
 				<check-box caption="Write log to file" config-section="PowerKadu" config-item="log message" id="antistring/enable_log" />
-				<line-edit caption="Log" config-section="PowerKadu" config-item="log file" id="antistring/log_file" />
+				<line-edit caption="Log" config-section="PowerKadu" config-item="log file" id="antistring/log_file" parent-widget="antistring/enable_log" />
 			</group-box>
 
 			<group-box name="Conditions">

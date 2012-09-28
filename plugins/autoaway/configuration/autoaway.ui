@@ -8,19 +8,19 @@
 				<check-box caption="Switch to 'away'" config-section="General" config-item="AutoAway"
 					id="autoaway/enableAutoAway" />
 				<spin-box caption="Set status to away after" config-section="General" config-item="AutoAwayTimeMinutes" min-value="1" max-value="600" suffix="%n minute(s)"
-					id="autoaway/autoAway" />
+					id="autoaway/autoAway" parent-widget="autoaway/enableAutoAway" />
 				<check-box caption="Switch to 'auto extended away'" config-section="General" config-item="AutoExtendedAway"
 					id="autoaway/enableAutoExtendedAway" />
 				<spin-box caption="Set status to extended away after" config-section="General" config-item="AutoExtendedAwayTimeMinutes" min-value="1" max-value="600" suffix="%n minute(s)"
-					id="autoaway/autoExtendedAway" />
+					id="autoaway/autoExtendedAway" parent-widget="autoaway/enableAutoExtendedAway" />
 				<check-box caption="Switch to 'invisible'" config-section="General" config-item="AutoInvisible"
 					id="autoaway/enableAutoInvisible" />
 				<spin-box caption="Set status to invisible after" config-section="General" config-item="AutoInvisibleTimeMinutes" min-value="1" max-value="600" suffix="%n minute(s)"
-					id="autoaway/autoInvisible" />
+					id="autoaway/autoInvisible" parent-widget="autoaway/enableAutoInvisible" />
 				<check-box caption="Switch to 'offline'" config-section="General" config-item="AutoDisconnect"
 					id="autoaway/enableAutoOffline" />
 				<spin-box caption="Set status to offline after" config-section="General" config-item="AutoDisconnectTimeMinutes" min-value="1" max-value="600" suffix="%n minute(s)"
-					id="autoaway/autoOffline" />
+					id="autoaway/autoOffline" parent-widget="autoaway/enableAutoOffline" />
 			</group-box>
 
 			<group-box name="Description">

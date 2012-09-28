@@ -369,11 +369,7 @@ void History::stopSaveThread()
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("history/save"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/savechatswithanonymous"), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("history/savestatuschanges"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("history/saveonlystatuswithdescription"), SLOT(setEnabled(bool)));
+	Q_UNUSED(mainConfigurationWindow)
 }
 
 void History::configurationUpdated()

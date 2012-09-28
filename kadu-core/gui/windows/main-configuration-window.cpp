@@ -198,8 +198,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 #endif
 
 	onStartupSetLastDescription = static_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
-	QLineEdit *disconnectDescription = static_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
-	QLineEdit *onStartupSetDescription = static_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
+	disconnectDescription = static_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
+	onStartupSetDescription = static_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
 	Account account = AccountManager::instance()->defaultAccount();
 	if (!account.isNull() && account.protocolHandler())
@@ -208,9 +208,8 @@ MainConfigurationWindow::MainConfigurationWindow() :
 		onStartupSetDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 	}
 
-	//TODO these are comboboxes now
-	//connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
-	//connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
+	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(activated(int)), this, SLOT(onChangeShutdownStatus(int)));
+	connect(onStartupSetLastDescription, SIGNAL(activated(int)), this, SLOT(onChangeStartupDescription(int)));
 
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
@@ -274,6 +273,16 @@ void MainConfigurationWindow::onChangeStartupStatus(int index)
 	onStartupSetLastDescription->setEnabled(index != 6);
 	widget()->widgetById("startupStatusInvisibleWhenLastWasOffline")->setEnabled(index == 0);
 	widget()->widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 6);
+}
+
+void MainConfigurationWindow::onChangeStartupDescription(int index)
+{
+	onStartupSetDescription->setEnabled(index == 1);
+}
+
+void MainConfigurationWindow::onChangeShutdownStatus(int index)
+{
+	disconnectDescription->setEnabled(index == 1);
 }
 
 void MainConfigurationWindow::setLanguages()
@@ -354,9 +363,6 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	{
 		lookChatAdvanced = new ConfigurationWindow("LookChatAdvanced", tr("Advanced chat's look configuration"), "General", instanceDataManager());
 		lookChatAdvanced.data()->widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog-look-chat-advanced.ui"));
-
-		connect(lookChatAdvanced.data()->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced.data()->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
-		connect(lookChatAdvanced.data()->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced.data()->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 
 		lookChatAdvanced.data()->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
 		lookChatAdvanced.data()->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", SyntaxText));

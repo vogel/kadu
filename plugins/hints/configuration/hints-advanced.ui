@@ -9,9 +9,9 @@
 					<item value="2" caption="On Bottom" />
 				</combo-box>
 				<check-box caption="Own hints position" config-section="Hints" config-item="UseUserPosition" id="hints/ownPosition" />
-				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="hints/ownPositionX" suffix=" px" />
-				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="hints/ownPositionY" suffix=" px" />
-				<combo-box caption="Hint's corner" config-section="Hints" config-item="Corner" id="hints/ownPositionCorner">
+				<spin-box caption="X" config-section="Hints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="hints/ownPositionX" suffix=" px" parent-widget="hints/ownPosition" />
+				<spin-box caption="Y" config-section="Hints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="hints/ownPositionY" suffix=" px" parent-widget="hints/ownPosition" />
+				<combo-box caption="Hint's corner" config-section="Hints" config-item="Corner" id="hints/ownPositionCorner" parent-widget="hints/ownPosition">
 					<item value="0" caption="Top Left" />
 					<item value="1" caption="Top Right" />
 					<item value="2" caption="Bottom Left" />

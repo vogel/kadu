@@ -137,16 +137,10 @@ Automatic question GUI
 /*
 End creating Gui
 */
-	connect(mainConfigurationWindow->widget()->widgetById("firewall/write_log"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("firewall/log_file"), SLOT(setEnabled(bool)));
-
 	connect(mainConfigurationWindow->widget()->widgetById("firewall/chats"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->configGroupBox("Firewall", "Unknown chats protection", "Automatic question")->widget(), SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widget()->widgetById("firewall/chats"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->configGroupBox("Firewall", "Unknown chats protection", "Reaction on right answer")->widget(), SLOT(setEnabled(bool)));
-
-	connect(mainConfigurationWindow->widget()->widgetById("firewall/confirmation"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("firewall/confirmation_text"), SLOT(setEnabled(bool)));
 
 	QWidget *safeSending = mainConfigurationWindow->widget()->widgetById("firewall/safe_sending");
 	connect(safeSending, SIGNAL(toggled(bool)),

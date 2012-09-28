@@ -64,11 +64,6 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 	EmoticonsThemeComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
 	EmoticonsThemesPathListEdit = static_cast<ConfigPathListEdit *>(Widget.data()->widgetById("emoticonsPaths"));
 
-	QWidget *enableWidget = Widget.data()->widgetById("enableEmoticons");
-	connect(enableWidget, SIGNAL(toggled(bool)), Widget.data()->widgetById("enableEmoticonAnimations"), SLOT(setEnabled(bool)));
-	connect(enableWidget, SIGNAL(toggled(bool)), EmoticonsThemeComboBox.data(), SLOT(setEnabled(bool)));
-	connect(enableWidget, SIGNAL(toggled(bool)), EmoticonsThemesPathListEdit.data(), SLOT(setEnabled(bool)));
-
 	connect(EmoticonsThemesPathListEdit.data(), SIGNAL(changed()), this, SLOT(updateEmoticonThemes()));
 
 	updateEmoticonThemes();

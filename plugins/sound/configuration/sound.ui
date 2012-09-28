@@ -4,9 +4,9 @@
 		<tab name="Sound">
 			<group-box name="General">
 				<check-box caption="Enable sound notifications" config-section="Sounds" config-item="PlaySound" id="sound/use" />
-				<action-button caption="Test sound playing" id="sound/testPlay" />
-				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" />
-				<path-list-edit caption="Sound paths" config-section="Sounds" config-item="SoundPaths" id="soundPaths" />
+				<action-button caption="Test sound playing" id="sound/testPlay" parent-widget="sound/use" />
+				<combo-box caption="Sound theme" config-section="Sounds" config-item="SoundTheme" id="sound/themes" parent-widget="sound/use" />
+				<path-list-edit caption="Sound paths" config-section="Sounds" config-item="SoundPaths" id="soundPaths" parent-widget="sound/use" />
 			</group-box>
 		</tab>
 	</section>

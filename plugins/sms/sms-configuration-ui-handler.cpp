@@ -136,8 +136,6 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	customString = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
 
 	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
-	connect(useBuiltIn, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("sms/proxy"), SLOT(setEnabled(bool)));
-	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
 	EraGatewayComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("default_sms/eraGateway"));
 	connect(EraGatewayComboBox, SIGNAL(activated(int)), this, SLOT(onEraGatewayChanged(int)));

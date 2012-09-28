@@ -8,6 +8,7 @@
 #include "exports.h"
 
 class QCheckBox;
+class QLineEdit;
 class QSlider;
 
 class BuddyListBackgroundColorsWidget;
@@ -61,7 +62,9 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 	QWeakPointer<ConfigurationWindow> lookChatAdvanced;
 
 	QCheckBox *onStartupSetLastDescription;
+	QLineEdit *onStartupSetDescription;
 	QCheckBox *userboxTransparency;
+	QLineEdit *disconnectDescription;
 	QSlider *userboxAlpha;
 	QCheckBox *userboxBlur;
 	BuddyListBackgroundColorsWidget *buddyColors;
@@ -78,7 +81,8 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingA
 
 private slots:
 	void onChangeStartupStatus(int index);
-
+	void onChangeStartupDescription(int index);
+	void onChangeShutdownStatus(int index);
 	void showLookChatAdvanced();
 
 	void setIconThemes();

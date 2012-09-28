@@ -103,9 +103,6 @@ void AntistringConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	connect(changeConditionButton, SIGNAL(clicked()), this, SLOT(changeCondition()));
 	connect(deleteConditionButton, SIGNAL(clicked()), this, SLOT(deleteCondition()));
 
-	connect(mainConfigurationWindow->widget()->widgetById("antistring/enable_log"), SIGNAL(toggled(bool)),
-	        mainConfigurationWindow->widget()->widgetById("antistring/log_file"), SLOT(setEnabled(bool)));
-
 	updateConditionList();
 
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(applyConfiguration()));
