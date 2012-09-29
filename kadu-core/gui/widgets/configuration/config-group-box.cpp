@@ -19,7 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QGridLayout>
+#include <QtGui/QFormLayout>
 #include <QtGui/QGroupBox>
 #include <QtGui/QLayout>
 #include <QtGui/QWidget>
@@ -34,9 +34,8 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 	Container = new QWidget(GroupBox);
 	GroupBox->layout()->addWidget(Container);
 
-	GridLayout = new QGridLayout(Container);
-	GridLayout->setContentsMargins(5, 5, 5, 5);
-	GridLayout->setColumnStretch(1, 100);
+	MainLayout = new QFormLayout(Container);
+	MainLayout->setContentsMargins(5, 5, 5, 5);
 }
 
 ConfigGroupBox::~ConfigGroupBox()
@@ -54,38 +53,20 @@ ConfigGroupBox::~ConfigGroupBox()
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 {
-	int numRows = GridLayout->rowCount();
-
-	if (fullSpace)
-		GridLayout->addWidget(widget, numRows, 0, 1, 2);
-	else
-		GridLayout->addWidget(widget, numRows, 1);
+	MainLayout->addRow(widget);
 }
 
 void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2, Qt::Alignment alignment)
 {
-	int numRows = GridLayout->rowCount();
-
-	if (widget1)
-		GridLayout->addWidget(widget1, numRows, 0, alignment);
-
-	if (widget2)
-		GridLayout->addWidget(widget2, numRows, 1);
+	MainLayout->addRow(widget1, widget2);
 }
 
 void ConfigGroupBox::insertWidget(int pos, QWidget *widget, bool fullSpace)
 {
-	if (fullSpace)
-		GridLayout->addWidget(widget, pos, 0, 1, 2);
-	else
-		GridLayout->addWidget(widget, pos, 1);
+	MainLayout->insertRow(pos, widget);
 }
 
 void ConfigGroupBox::insertWidgets(int pos, QWidget *widget1, QWidget *widget2)
 {
-	if (widget1)
-		GridLayout->addWidget(widget1, pos, 0, Qt::AlignRight);
-
-	if (widget2)
-		GridLayout->addWidget(widget2, pos, 1);
+	MainLayout->insertRow(pos, widget1, widget2);
 }

@@ -27,7 +27,7 @@
 #include "exports.h"
 
 class ConfigTab;
-class QGridLayout;
+class QFormLayout;
 class QWidget;
 class QGroupBox;
 class QLayout;
@@ -62,7 +62,7 @@ class KADUAPI ConfigGroupBox : public QObject
 
 	QGroupBox *GroupBox;
 	QWidget *Container;
-	QGridLayout *GridLayout;
+	QFormLayout *MainLayout;
 
 	int RefCount;
 
