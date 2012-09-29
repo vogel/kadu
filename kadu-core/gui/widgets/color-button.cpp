@@ -45,7 +45,7 @@ bool ColorButton::setColor(const QColor &color)
 		return false;
 
 	currentColor = color;
-	QPixmap pm(35, 10);
+	QPixmap pm(40, 20);
 	pm.fill(color);
 	setIcon(pm);
 
