@@ -52,7 +52,12 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chatWidget)
 		return;
 
-	if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), widget))
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
+						      tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
+						      widget);
+	dialog->addButton(QMessageBox::Yes, tr("Leave conference"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+	if (!dialog->ask())
 		return;
 
 	chat.setIgnoreAllMessages(true);

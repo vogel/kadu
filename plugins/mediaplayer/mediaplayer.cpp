@@ -507,14 +507,25 @@ void MediaPlayer::putPlayList(int ident)
 
 	if (emptyEntries > (lgt / 10))
 	{
-		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName())))
+		QString question = tr("More than 1/10 of titles you're trying to send are empty.<br>Perhaps %1 hasn't read all titles yet, give its some more time.<br>Do you want to send playlist anyway?").arg(getPlayerName());
+
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), question);
+		dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (!dialog->ask())
 			return;
 	}
 
 	if (chars >= 2000)
 	{
-		if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
-			.arg(QString::number(lgt)).arg(getPlayerName())) )
+		QString question = tr("You're trying to send %1 entries of %2 playlist.<br>It will be split and sent in few messages<br>Are you sure to do that?")
+			.arg(QString::number(lgt)).arg(getPlayerName());
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), question);
+		dialog->addButton(QMessageBox::Yes, tr("Send"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (!dialog->ask())
 			return;
 	}
 

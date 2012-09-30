@@ -33,40 +33,43 @@
 
 #include "message-dialog.h"
 
-namespace MessageDialog
-{
 
-static QMessageBox * createMessageBox(const KaduIcon &icon, const QString &title, const QString &text,
-		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+MessageDialog * MessageDialog::create(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
-	QMessageBox *mb = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
-	mb->setAttribute(Qt::WA_DeleteOnClose, true);
+	return new MessageDialog(icon, title, text, QMessageBox::NoButton, parent, f);
+}
 
-	int iconSize = mb->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, mb);
+void MessageDialog::show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+{
+	new MessageDialog(icon, title, text, QMessageBox::Ok, parent, f);
+}
+
+MessageDialog::MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+{
+	Box = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
+	Box->setAttribute(Qt::WA_DeleteOnClose, true);
+
+	int iconSize = Box->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, Box);
 	QPixmap pixmap(icon.icon().pixmap(iconSize, iconSize));
 	if (!pixmap.isNull())
-		mb->setIconPixmap(pixmap);
-
-	return mb;
+		Box->setIconPixmap(pixmap);
 }
 
-void show(const KaduIcon &icon, const QString &title, const QString &text,
-		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+MessageDialog * MessageDialog::addButton(QMessageBox::StandardButton button, const QString &text)
 {
-	QMessageBox *mb = createMessageBox(icon, title, text, buttons, parent, f);
-	mb->show();
+	Box->addButton(button);
+	if (!text.isEmpty())
+		Box->setButtonText(button, text);
+
+	return this;
 }
 
-int exec(const KaduIcon &icon, const QString &title, const QString &text,
-		QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+int MessageDialog::exec()
 {
-	QMessageBox *mb = createMessageBox(icon, title, text, buttons, parent, f);
-	return mb->exec();
+	return Box->exec();
 }
 
-bool ask(const KaduIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+bool MessageDialog::ask()
 {
-	return QMessageBox::Yes == exec(icon, title, text, QMessageBox::Yes | QMessageBox::No, parent, f);
+	return QMessageBox::Yes == Box->exec();
 }
-
-} // namespace

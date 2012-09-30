@@ -252,13 +252,17 @@ void ChatEditBox::openInsertImageDialog()
 		Error imageSizeError = chatImageService->checkImageSize(f.size());
 		if (!imageSizeError.message().isEmpty())
 		{
+			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), imageSizeError.message(), this);
+			dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
 			switch (imageSizeError.severity())
 			{
 				case NoError:
 					break;
 				case ErrorLow:
-						if (!MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), imageSizeError.message(), this))
-							return;
+					if (dialog->ask())
+						return;
 					break;
 				case ErrorHigh:
 					MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), imageSizeError.message(), QMessageBox::Ok, this);
@@ -300,7 +304,11 @@ void ChatEditBox::openInsertImageDialog()
 		if (tooBigCounter > 0 || disconnectedCounter > 0)
 			message += tr("Do you really want to send this image?");
 
-		if (!message.isEmpty() && !MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), message, this))
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), message, this);
+		dialog->addButton(QMessageBox::Yes, tr("Send anyway"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (!message.isEmpty() && !dialog->ask())
 			return;
 
 		InputBox->insertHtml(QString("<img src='%1' />").arg(selectedFile));

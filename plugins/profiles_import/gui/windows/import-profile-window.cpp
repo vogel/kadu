@@ -114,14 +114,14 @@ void ImportProfileWindow::accept()
 
 	if (!kaduConfFile.exists())
 	{
-		MessageDialog::exec(KaduIcon("dialog-warning"), tr("Import external profile..."), tr("This directory is not a Kadu profile directory.\nFile kadu.conf.xml not found"));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Import external profile..."), tr("This directory is not a Kadu profile directory.\nFile kadu.conf.xml not found"));
 		return;
 	}
 
 	ProfileImporter importer(kaduConfFile.absoluteFilePath());
 	if (importer.import(SelectIdentity->currentIdentity()))
 	{
-		MessageDialog::exec(KaduIcon("dialog-information"), tr("Import external profile..."), tr("Profile successfully imported!"));
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Import external profile..."), tr("Profile successfully imported!"));
 
 		if (ImportHistory->isChecked() && !HistoryImporterManager::instance()->containsImporter(kaduConfFile.absoluteDir().absolutePath() + "/history/"))
 		{
@@ -132,7 +132,7 @@ void ImportProfileWindow::accept()
 		}
 	}
 	else
-		MessageDialog::exec(KaduIcon("dialog-warning"), tr("Import external profile..."), tr("Unable to import profile: %1").arg(importer.errorMessage()));
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Import external profile..."), tr("Unable to import profile: %1").arg(importer.errorMessage()));
 
 	QDialog::accept();
 }

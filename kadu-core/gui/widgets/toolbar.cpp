@@ -820,7 +820,12 @@ void ToolBar::addSpacerClicked()
 void ToolBar::removeToolbar()
 {
 	kdebugf();
-	if (MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Do you really want to remove selected toolbar?"), this))
+
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), tr("Do you really want to remove this toolbar?"), this);
+	dialog->addButton(QMessageBox::Yes, tr("Remove toolbar"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+	if (dialog->ask())
 		emit removed(this); // parent window will remove this toolbar
 	kdebugf2();
 }

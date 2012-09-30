@@ -62,7 +62,7 @@ int GaduProtocolPlugin::init(bool firstLoad)
 
 	if (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_USERLIST100))
 	{
-		MessageDialog::exec(KaduIcon("dialog-error"), tr("Gadu-Gadu Protocol"),
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Gadu-Gadu Protocol"),
 				tr("Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support."));
 
 		return -1;

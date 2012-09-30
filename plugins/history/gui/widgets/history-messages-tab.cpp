@@ -307,7 +307,11 @@ void HistoryMessagesTab::clearTalkableHistory()
 	const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
 	QList<Talkable> talkables;
 
-	if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("Do you really want to delete history?")))
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("Do you really want to delete history?"));
+	dialog->addButton(QMessageBox::Yes, tr("Delete history"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+	if (!dialog->ask())
 		return;
 
 	foreach (const QModelIndex &selectedIndex, selectedIndexes)

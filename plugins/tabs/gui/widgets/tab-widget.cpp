@@ -226,7 +226,11 @@ void TabWidget::closeTab(QWidget *tabWidget)
 
 		if (QDateTime::currentDateTime() < chatWidget->lastReceivedMessageTime().addSecs(period))
 		{
-			if (!MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?")))
+			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?"));
+			dialog->addButton(QMessageBox::Yes, tr("Close window"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+			if (!dialog->ask())
 				return;
 		}
 	}

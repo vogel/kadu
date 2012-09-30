@@ -118,9 +118,8 @@ void AccountBuddyListWidget::restoreFromFile()
 
 		if (list.isEmpty())
 		{
-			MessageDialog::exec(KaduIcon("dialog-error"), tr("Kadu"),
-							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName),
-							QMessageBox::Cancel | QMessageBox::Retry);
+			MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"),
+							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName));
 			return;
 		}
 

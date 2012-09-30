@@ -164,7 +164,11 @@ void FileTransferWidget::removeTransfer()
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
 	{
-		if (!MessageDialog::ask(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this))
+		MessageDialog *dialog = MessageDialog::create(KaduIcon(), tr("Kadu"), tr("Are you sure you want to remove this transfer?"), this);
+		dialog->addButton(QMessageBox::Yes, tr("Remove"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (!dialog->ask())
 			return;
 		else
 			if (CurrentTransfer.handler())

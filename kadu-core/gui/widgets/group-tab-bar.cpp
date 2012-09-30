@@ -456,7 +456,11 @@ void GroupTabBar::deleteGroup()
 	if (!group)
 		return;
 
-	if (group && MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"), tr("Selected group:\n%0 will be deleted. Are you sure?").arg(group.name()), Core::instance()->kaduWindow()))
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), tr("Group %0 will be deleted. Are you sure?").arg(group.name()), Core::instance()->kaduWindow());
+	dialog->addButton(QMessageBox::Yes, tr("Delete group"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+	if (group && dialog->ask())
 		GroupManager::instance()->removeItem(group);
 }
 

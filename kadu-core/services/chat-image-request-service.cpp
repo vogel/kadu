@@ -113,10 +113,14 @@ bool ChatImageRequestService::acceptImage(const Account &account, const QString 
 			"Do you want to accept this image anyway?")
 			.arg(contact.display(true)).arg((imageKey.size() + 1023) / 1024);
 
-	return MessageDialog::ask(
+	MessageDialog *dialog = MessageDialog::create(
 			KaduIcon("dialog-question"),
 			tr("@default", "Kadu") + " - " + tr("@default", "Incoming Image"),
 			question);
+	dialog->addButton(QMessageBox::Yes, tr("Accept image"));
+	dialog->addButton(QMessageBox::No, tr("Deny"));
+
+	return dialog->ask();
 }
 
 void ChatImageRequestService::chatImageKeyReceived(const QString &id, const ChatImageKey &imageKey)

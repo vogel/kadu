@@ -34,17 +34,23 @@
 
 #include "exports.h"
 
-class QBoxLayout;
-class QLabel;
 
-namespace MessageDialog
+class KADUAPI MessageDialog
 {
-	KADUAPI void show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+	QMessageBox *Box;
+
+	MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+public:
+	static MessageDialog * create(const KaduIcon &icon, const QString &title, const QString &text,
+				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+	static void show(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
 			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	KADUAPI int exec(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	KADUAPI bool ask(const KaduIcon &icon, const QString &title, const QString &text,
-			 QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-}
+
+	MessageDialog * addButton(QMessageBox::StandardButton button, const QString &text = "");
+
+	int exec();
+	bool ask();
+};
 
 #endif // MESSAGE_DIALOG_H

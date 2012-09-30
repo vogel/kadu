@@ -325,7 +325,11 @@ void KaduWebView::saveImage()
 		QString file = fd.data()->selectedFiles().at(0);
 		if (QFile::exists(file))
 		{
-			if (MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("File already exists. Overwrite?")))
+			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("File already exists. Overwrite?"));
+			dialog->addButton(QMessageBox::Yes, tr("Overwrite"));
+			dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+			if (dialog->ask())
 			{
 				QFile removeMe(file);
 				if (!removeMe.remove())

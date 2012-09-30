@@ -225,5 +225,5 @@ void JabberAddAccountWidget::resetGui()
 
 void JabberAddAccountWidget::showWhatIsMyUsername()
 {
-	MessageDialog::exec(KaduIcon("dialog-information"), Factory->displayName(), Factory->whatIsMyUsername());
+	MessageDialog::show(KaduIcon("dialog-information"), Factory->displayName(), Factory->whatIsMyUsername());
 }

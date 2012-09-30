@@ -391,13 +391,15 @@ void StatusWindow::eraseDescription()
 
 void StatusWindow::clearDescriptionsHistory()
 {
-	bool confirmed = MessageDialog::ask(
+	MessageDialog *dialog = MessageDialog::create(
 		KaduIcon("dialog-warning"),
 		tr("Clear Descriptions History"),
 		tr("Do you really want to clear the descriptions history?"),
 		this);
+	dialog->addButton(QMessageBox::Yes, tr("Clear history"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!confirmed)
+	if (!dialog->ask())
 		return;
 
 	DescriptionManager::instance()->clearDescriptions();

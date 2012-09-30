@@ -177,5 +177,5 @@ void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const Q
 	qApp->alert(this);
 
 	if (!ok && !entryMessage.isEmpty())
-		MessageDialog::exec(KaduIcon(entryIcon), Label, entryMessage);
+		MessageDialog::show(KaduIcon(entryIcon), Label, entryMessage);
 }

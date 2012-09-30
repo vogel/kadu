@@ -157,9 +157,11 @@ void EncryptionProviderManager::keyReceived(const Contact &contact, const QStrin
 		return;
 
 	QString question = tr("Buddy %1 is sending you his public key.\nDo you want to save it?").arg(contact.display(true));
-	bool answer = MessageDialog::ask(KaduIcon("dialog-question"), tr("Encryption"), question);
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Encryption"), question);
+	dialog->addButton(QMessageBox::Yes, tr("Save"));
+	dialog->addButton(QMessageBox::No, tr("Ignore"));
 
-	if (answer)
+	if (dialog->ask())
 	{
 		key = KeysManager::instance()->byContactAndType(contact, keyType, ActionCreateAndAdd);
 		key.setKey(keyData);

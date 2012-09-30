@@ -217,9 +217,11 @@ void BuddyContactsTable::removeClicked()
 		return;
 	}
 
-	bool sure = MessageDialog::ask(KaduIcon("dialog-warning"), tr("Kadu"),
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"),
 			tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
+	dialog->addButton(QMessageBox::Yes, tr("Delete contact"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (sure)
+	if (dialog->ask())
 		item->setAction(BuddyContactsTableItem::ItemRemove);
 }

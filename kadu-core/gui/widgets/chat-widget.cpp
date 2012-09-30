@@ -535,11 +535,17 @@ void ChatWidget::resetEditBox()
 void ChatWidget::clearChatWindow()
 {
 	kdebugf();
-	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), tr("Chat window will be cleared. Continue?")))
+
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("Chat window will be cleared. Continue?"));
+	dialog->addButton(QMessageBox::Yes, tr("Clear chat window"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || dialog->ask())
 	{
 		MessagesView->clearMessages();
 		activateWindow();
 	}
+
 	kdebugf2();
 }
 

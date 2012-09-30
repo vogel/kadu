@@ -77,7 +77,11 @@ bool ContactListService::askForAddingContacts(const QMap<Buddy, Contact> &contac
 	questionString += tr("Do you want to apply the above changes to your local contact list? "
 			"Regardless of your choice, it will be sent to the server after making possible changes.");
 
-	return MessageDialog::ask(KaduIcon("dialog-question"), tr("Kadu"), questionString);
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), questionString);
+	dialog->addButton(QMessageBox::Yes, tr("Apply changes"));
+	dialog->addButton(QMessageBox::No, tr("Leave contact list unchanged"));
+
+	return dialog->ask();
 }
 
 QVector<Contact> ContactListService::performAdds(const QMap<Buddy, Contact> &contactsToAdd)
@@ -231,10 +235,14 @@ void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOld
 
 	if (!unImportedContacts.isEmpty())
 	{
-		if (removeOldAutomatically || MessageDialog::ask(KaduIcon("dialog-question"),
-				tr("Kadu"),
-				tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
-				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>"))))
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"),
+				      tr("Kadu"),
+				      tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
+				      "Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>")));
+		dialog->addButton(QMessageBox::Yes, tr("Remove"));
+		dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+		if (removeOldAutomatically || dialog->ask())
 		{
 			foreach (const Contact &contact, unImportedContacts)
 			{

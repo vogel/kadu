@@ -138,8 +138,12 @@ void DeleteTalkableAction::chatActionTriggered(ActionContext *context)
 	if (!chat)
 		return;
 
-	if (MessageDialog::ask(KaduIcon("dialog-warning"), tr("Delete Chat"),
-	                        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display())))
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Delete Chat"),
+	                        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display()));
+	dialog->addButton(QMessageBox::Yes, tr("Delete chat"));
+	dialog->addButton(QMessageBox::No, tr("Cancel"));
+
+	if (dialog->ask())
 		chat.setDisplay(QString());
 }
 
