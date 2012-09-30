@@ -314,6 +314,7 @@ set (gui_MOC_SRCS
 	windows/main-configuration-window.h
 	windows/main-window.h
 	windows/merge-buddies-window.h
+	windows/message-dialog.h
 	windows/multilogon-window.h
 	windows/password-window.h
 	windows/plugin-error-dialog.h

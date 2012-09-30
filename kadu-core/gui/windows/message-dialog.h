@@ -34,13 +34,18 @@
 
 #include "exports.h"
 
-
-class KADUAPI MessageDialog
+class KADUAPI MessageDialog : public QObject
 {
+	Q_OBJECT
+
 	QMessageBox *Box;
 
 	MessageDialog(const KaduIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
 				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+
+protected slots:
+	void messageBoxFinished(int result);
+
 public:
 	static MessageDialog * create(const KaduIcon &icon, const QString &title, const QString &text,
 				      QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
