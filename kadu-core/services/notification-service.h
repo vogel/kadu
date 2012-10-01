@@ -82,8 +82,6 @@ public:
 	explicit NotificationService(QObject *parent = 0);
 	virtual ~NotificationService();
 
-	bool notifyAboutAll() { return NotifyAboutAll; }
-	void setNotifyAboutAll(bool notify) { NotifyAboutAll = notify; }
 	bool notifyIgnoreOnConnection() { return NotifyIgnoreOnConnection; }
 	bool ignoreOnlineToOnline() { return IgnoreOnlineToOnline; }
 	bool newMessageOnlyIfInactive() { return NewMessageOnlyIfInactive; }

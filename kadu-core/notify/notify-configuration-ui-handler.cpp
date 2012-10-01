@@ -129,54 +129,7 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 		NotifyEvents[eventName] = item;
 	}
-/*
-FIXME remove?
-	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status Change");
 
-	QWidget *notifyUsers = new QWidget(statusGroupBox->widget());
-	QGridLayout *notifyUsersLayout = new QGridLayout(notifyUsers);
-	notifyUsersLayout->setSpacing(5);
-	notifyUsersLayout->setMargin(5);
-
-	allUsers = new QListWidget(notifyUsers);
-	QPushButton *moveToNotifyList = new QPushButton(tr("Move to 'Notify List'"), notifyUsers);
-
-	notifyUsersLayout->addWidget(new QLabel(tr("Buddy List"), notifyUsers), 0, 0);
-	notifyUsersLayout->addWidget(allUsers, 1, 0);
-	notifyUsersLayout->addWidget(moveToNotifyList, 2, 0);
-
-	notifiedUsers = new QListWidget(notifyUsers);
-	QPushButton *moveToAllList = new QPushButton(tr("Move to 'Buddy List'"), notifyUsers);
-
-	notifyUsersLayout->addWidget(new QLabel(tr("Notify List"), notifyUsers), 0, 1);
-	notifyUsersLayout->addWidget(notifiedUsers, 1, 1);
-	notifyUsersLayout->addWidget(moveToAllList, 2, 1);
-
-	connect(moveToNotifyList, SIGNAL(clicked()), this, SLOT(moveToNotifyList()));
-	connect(moveToAllList, SIGNAL(clicked()), this, SLOT(moveToAllList()));
-
-	statusGroupBox->addWidgets(0, notifyUsers);
-
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
-		if (!buddy.isAnonymous())
-		{
-			if (!buddy.property("notify:Notify", false).toBool())
-				allUsers->addItem(buddy.display());
-			else
-				notifiedUsers->addItem(buddy.display());
-		}
-
-	allUsers->sortItems();
-	notifiedUsers->sortItems();
-	allUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	notifiedUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-	connect(notifiedUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToAllList()));
-	connect(allUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToNotifyList()));
-
-	connect(mainConfigurationWindow->widget()->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
-	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
-*/
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Events", "Notifications");
 
 	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
@@ -244,26 +197,6 @@ void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent *notifyEv
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
 {
-	int count = notifiedUsers->count();
-	for (int i = 0; i < count; i++)
-	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(notifiedUsers->item(i)->text(), ActionReturnNull);
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
-	}
-
-	count = allUsers->count();
-	for (int i = 0; i < count; i++)
-	{
-		Buddy buddy = BuddyManager::instance()->byDisplay(allUsers->item(i)->text(), ActionReturnNull);
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
-
-		buddy.removeProperty("notify:Notify");
-	}
-
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
 		if (notifyEvent->category().isEmpty() || !NotifyEvents.contains(notifyEvent->name()))

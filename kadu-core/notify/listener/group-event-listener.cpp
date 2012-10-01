@@ -53,21 +53,15 @@ void GroupEventListener::groupUpdated()
 
 	bool notify = group.notifyAboutStatusChanges();
 
-	if (Service->notifyAboutAll() && !notify)
-	{
-		Service->setNotifyAboutAll(false);
-		config_file.writeEntry("Notify", "NotifyAboutAll", false);
-	}
-
 	foreach (const Buddy &buddy, BuddyManager::instance()->items())
 	{
 		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
 			continue;
 
 		if (notify)
-			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
-		else
 			buddy.removeProperty("notify:Notify");
+		else
+			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
 	}
 }
 

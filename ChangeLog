@@ -2,6 +2,7 @@
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)
 * gui: do not scale up avatars smaller than 32x32 on buddy list (beevvy)
 * gui: square, rounded avatars on buddy list (Juzef)
+* gui: #2622 fixed: ignoring buddies in buddy options window and using menu option (Juzef)
 
 +++ version 0.12.3
 * jabber: fixed Facebook contacts groups being lost when upgrading from 0.10.x/0.11.x (beevvy)

@@ -92,6 +92,10 @@ void NotificationService::createActionDescriptions()
 		checkNotify
 	);
 
+	MenuInventory::instance()
+		->menu(KaduMenu::CategoryBuddiesList)
+		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
+
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
@@ -132,45 +136,26 @@ void NotificationService::statusUpdated()
 
 void NotificationService::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 {
-	Q_UNUSED(toggled)
-
 	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
 		return;
 
 	const BuddySet &buddies = action->context()->buddies();
 
-	bool on = true;
-	foreach (const Buddy &buddy, buddies)
-		if (buddy.data())
-		{
-			if (!buddy.property("notify:Notify", false).toBool())
-			{
-				on = false;
-				break;
-			}
-		}
-
-	if (NotifyAboutAll)
-	{
-		NotifyAboutAll = false;
-		config_file.writeEntry("Notify", "NotifyAboutAll", false);
-	}
-
 	foreach (const Buddy &buddy, buddies)
 	{
 		if (buddy.isNull() || buddy.isAnonymous())
 			continue;
 
-		if (on)
-			buddy.addProperty("notify:Notify", true, CustomProperties::Storable);
-		else
+		if (toggled)
 			buddy.removeProperty("notify:Notify");
+		else
+			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
 	}
 
 	foreach (Action *action, notifyAboutUserActionDescription->actions())
 		if (action->context()->contacts().toBuddySet() == buddies)
-			action->setChecked(!on);
+			action->setChecked(toggled);
 }
 
 void NotificationService::silentModeActionCreated(Action *action)
@@ -283,18 +268,18 @@ void checkNotify(Action *action)
 {
 	action->setEnabled(!action->context()->buddies().isEmpty());
 
-	bool on = true;
+	bool notifyAll = true;
 	foreach (const Buddy &buddy, action->context()->contacts().toBuddySet())
 		if (buddy.data())
 		{
-			if (!buddy.data()->customProperties()->property("notify:Notify", false).toBool())
+			if (!buddy.data()->customProperties()->property("notify:Notify", true).toBool())
 			{
-				on = false;
+				notifyAll = false;
 				break;
 			}
 		}
 
-	action->setChecked(on);
+	action->setChecked(notifyAll);
 }
 
 

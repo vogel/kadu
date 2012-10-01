@@ -78,7 +78,7 @@ void BuddyOptionsConfigurationWidget::createGui()
 	if (MyBuddy)
 	{
 		HideDescriptionCheckBox->setChecked(MyBuddy.property("kadu:HideDescription", false).toBool());
-		NotifyCheckBox->setChecked(MyBuddy.property("notify:Notify", false).toBool());
+		NotifyCheckBox->setChecked(MyBuddy.property("notify:Notify", true).toBool());
 	}
 }
 
@@ -94,16 +94,15 @@ void BuddyOptionsConfigurationWidget::save()
 		else
 			MyBuddy.addProperty("kadu:HideDescription", true, CustomProperties::Storable);
 
-		if (!NotifyCheckBox->isChecked())
+		if (NotifyCheckBox->isChecked())
 			MyBuddy.removeProperty("notify:Notify");
 		else
-			MyBuddy.addProperty("notify:Notify", true, CustomProperties::Storable);
+			MyBuddy.addProperty("notify:Notify", false, CustomProperties::Storable);
 	}
 }
 
 void BuddyOptionsConfigurationWidget::configurationUpdated()
 {
-	NotifyCheckBox->setVisible(!config_file.readBoolEntry("Notify", "NotifyAboutAll"));
 }
 
 void BuddyOptionsConfigurationWidget::updateOfflineTo()

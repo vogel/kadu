@@ -108,10 +108,10 @@ void AccountEventListener::contactStatusChanged(Contact contact, Status oldStatu
 	}
 
 	bool notify_contact = true;
-	if (!contact.ownerBuddy().property("notify:Notify", false).toBool())
+	if (!contact.ownerBuddy().property("notify:Notify", true).toBool())
 		notify_contact = false;
 
-	if (!notify_contact && !Service->notifyAboutAll())
+	if (!notify_contact)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
