@@ -39,7 +39,6 @@ class NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	bool NotifyAboutAll;
 	bool NewMessageOnlyIfInactive;
 	bool NotifyIgnoreOnConnection;
 	bool IgnoreOnlineToOnline;

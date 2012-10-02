@@ -146,6 +146,8 @@ Core::Core() :
 	Parser::GlobalVariables.insert(QLatin1String("HOME"), KaduPaths::homePath());
 	Parser::GlobalVariables.insert(QLatin1String("KADU_CONFIG"), KaduPaths::instance()->profilePath());
 	DateTimeParserTags::registerParserTags();
+
+	importPre10Configuration();
 }
 
 Core::~Core()
@@ -187,6 +189,29 @@ Core::~Core()
 void Core::import_0_6_5_configuration()
 {
 	config_file.addVariable("Look", "UserboxAlternateBgColor", config_file.readEntry("Look", "UserboxBgColor"));
+}
+
+void Core::importPre10Configuration()
+{
+	if (config_file.readBoolEntry("General", "ImportedPre10"))
+	{
+		return;
+	}
+
+	foreach (const Buddy &buddy, BuddyManager::instance()->items())
+	{
+		if (buddy.isNull() || buddy.isAnonymous())
+			continue;
+
+		bool notify = buddy.property("notify:Notify", false).toBool() || config_file.readBoolEntry("Notify", "NotifyAboutAll");
+
+		if (notify)
+			buddy.removeProperty("notify:Notify");
+		else
+			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
+	}
+
+	config_file.addVariable("General", "ImportedPre10", true);
 }
 
 void Core::createDefaultConfiguration()

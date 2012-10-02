@@ -198,7 +198,6 @@ bool NotificationService::ignoreNotifications()
 
 void NotificationService::configurationUpdated()
 {
-	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
 	NewMessageOnlyIfInactive = config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive");
 	NotifyIgnoreOnConnection = config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection");
 	IgnoreOnlineToOnline = config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline");
@@ -252,7 +251,6 @@ void NotificationService::createDefaultConfiguration()
 {
 	config_file.addVariable("Notify", "IgnoreOnlineToOnline", false);
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
-	config_file.addVariable("Notify", "NotifyAboutAll", true);
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
 }
 
