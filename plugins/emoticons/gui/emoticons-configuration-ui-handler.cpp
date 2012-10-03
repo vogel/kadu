@@ -18,12 +18,16 @@
  */
 
 #include <QtGui/QApplication>
+#include <QtGui/QPainter>
 
 #include "gui/widgets/configuration/config-check-box.h"
-#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
+
+#include "theme/emoticon-theme.h"
+#include "theme/gadu-emoticon-theme-loader.h"
 
 #include "emoticons-configuration-ui-handler.h"
 
@@ -38,7 +42,7 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!EmoticonsThemeComboBox || !EmoticonsThemesPathListEdit)
+	if (!ThemesList || !EmoticonsThemesPathListEdit)
 		return;
 
 	ThemeManager.data()->loadThemes(EmoticonsThemesPathListEdit.data()->pathList());
@@ -47,21 +51,42 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 
 	QStringList values;
 	QStringList captions;
+	int iconsNumber = 4;
+	GaduEmoticonThemeLoader loader;
+
+	QList<QIcon> icons;
 	foreach (const Theme &theme, ThemeManager.data()->themes())
 	{
 		values.append(theme.name());
 		captions.append(qApp->translate("@default", theme.name().toUtf8().constData()));
+
+		QPixmap combinedIcon(iconsNumber * 36, 36);
+		combinedIcon.fill(Qt::transparent);
+
+		QPainter iconPainter(&combinedIcon);
+
+		for (int i = 0; i < iconsNumber; i++)
+		{
+			EmoticonTheme emoticonsTheme = loader.loadEmoticonTheme(theme.path());
+			Emoticon result = emoticonsTheme.emoticons().at(i);
+			QIcon icon(QPixmap(result.staticFilePath()));
+			icon.paint(&iconPainter, 2 + 36 * i, 2, 32, 32);
+		}
+
+		icons.append(QIcon(combinedIcon));
 	}
 
-	EmoticonsThemeComboBox.data()->setItems(values, captions);
-	EmoticonsThemeComboBox.data()->setCurrentItem(ThemeManager.data()->currentTheme().name());
+	ThemesList.data()->setItems(values, captions);
+	ThemesList.data()->setCurrentItem(ThemeManager.data()->currentTheme().name());
+	ThemesList.data()->setIconSize(QSize(iconsNumber * 36, 36));
+	ThemesList.data()->setIcons(icons);
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	Widget = mainConfigurationWindow->widget();
 
-	EmoticonsThemeComboBox = static_cast<ConfigComboBox *>(Widget.data()->widgetById("emoticonsTheme"));
+	ThemesList = static_cast<ConfigListWidget *>(Widget.data()->widgetById("emoticonsTheme"));
 	EmoticonsThemesPathListEdit = static_cast<ConfigPathListEdit *>(Widget.data()->widgetById("emoticonsPaths"));
 
 	connect(EmoticonsThemesPathListEdit.data(), SIGNAL(changed()), this, SLOT(updateEmoticonThemes()));

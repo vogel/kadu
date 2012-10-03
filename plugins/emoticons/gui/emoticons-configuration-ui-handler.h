@@ -24,6 +24,7 @@
 
 #include "gui/windows/main-configuration-window.h"
 
+class ConfigListWidget;
 class ConfigPathListEdit;
 
 /**
@@ -41,8 +42,8 @@ class EmoticonsConfigurationUiHandler : public ConfigurationUiHandler
 
 	QScopedPointer<EmoticonThemeManager> ThemeManager;
 	QWeakPointer<ConfigurationWidget> Widget;
-	QWeakPointer<ConfigComboBox> EmoticonsThemeComboBox;
 	QWeakPointer<ConfigPathListEdit> EmoticonsThemesPathListEdit;
+	QWeakPointer<ConfigListWidget> ThemesList;
 
 private slots:
 	void updateEmoticonThemes();
