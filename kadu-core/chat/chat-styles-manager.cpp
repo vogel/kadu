@@ -379,6 +379,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	TurnOnTransparency = static_cast<QCheckBox *>(window->widget()->widgetById("useTransparency"));
 	TurnOnTransparency->setEnabled(CompositingEnabled);
+
+	QLabel *help = static_cast<QLabel *>(window->widget()->widgetById("useTransparencyHelp"));
+	help->setVisible(!CompositingEnabled);
 }
 
 void ChatStylesManager::configurationApplied()

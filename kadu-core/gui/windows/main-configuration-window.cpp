@@ -246,6 +246,8 @@ void MainConfigurationWindow::compositingEnabled()
 	userboxTransparency->blockSignals(false);
 	userboxAlpha->setEnabled(userboxTransparency->isChecked());
 	userboxBlur->setEnabled(userboxTransparency->isChecked());
+	QLabel *help = static_cast<QLabel *>(widget()->widgetById("userboxTransparencyHelp"));
+	help->setVisible(false);
 }
 
 void MainConfigurationWindow::compositingDisabled()
@@ -254,6 +256,8 @@ void MainConfigurationWindow::compositingDisabled()
 	userboxTransparency->blockSignals(true);
 	userboxAlpha->setEnabled(false);
 	userboxBlur->setEnabled(false);
+	QLabel *help = static_cast<QLabel *>(widget()->widgetById("userboxTransparencyHelp"));
+	help->setVisible(true);
 }
 
 void MainConfigurationWindow::show()

@@ -58,11 +58,9 @@
 			</group-box>
 		</tab>
 		<tab name="Chat">
-			<group-box name="Transparency">
-				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
-			</group-box>
 			<group-box name="Style">
 				<check-box caption="Enable transparency in chat window" config-section="Chat" config-item="UseTransparency" id="useTransparency" />
+				<label caption="Your system does not support transparency." id="useTransparencyHelp" />
 			</group-box>
 		</tab>
 		<tab name="Buddies list">
@@ -78,12 +76,15 @@
 				<check-box caption="Split long descriptions into multiple lines" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
 					tool-tip="Dislpays multiline descriptions in the buddy list" parent-widget="showDescription" />
 			</group-box>
-			<group-box name="Background">
-				<check-box caption="Turn on transparency" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
+			<group-box name="Transparency">
+				<check-box caption="Enable transparency in buddy list" config-section="Look" config-item="UserboxTransparency" id="userboxTransparency" />
+				<label caption="Your system does not support transparency." id="userboxTransparencyHelp" />
 				<slider caption="Transparency level" config-section="Look" config-item="UserboxAlpha" min-value="0" max-value="255" page-step="10"
 					id="userboxAlpha" parent-widget="userboxTransparency" />
 				<label caption="0" />
 				<check-box caption="Turn on blur" config-section="Look" config-item="UserboxBlur" id="userboxBlur" parent-widget="userboxTransparency" />
+			</group-box>
+			<group-box name="Background">
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
 					tool-tip="Define background file for the buddy list" id="userboxBackground" parent-widget="useUserboxBackground" />
