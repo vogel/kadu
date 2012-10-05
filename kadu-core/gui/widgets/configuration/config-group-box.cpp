@@ -53,16 +53,22 @@ ConfigGroupBox::~ConfigGroupBox()
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 {
+	Q_UNUSED(fullSpace);
+
 	MainLayout->addRow(widget);
 }
 
 void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2, Qt::Alignment alignment)
 {
+	Q_UNUSED(alignment);
+
 	MainLayout->addRow(widget1, widget2);
 }
 
 void ConfigGroupBox::insertWidget(int pos, QWidget *widget, bool fullSpace)
 {
+	Q_UNUSED(fullSpace);
+
 	MainLayout->insertRow(pos, widget);
 }
 
