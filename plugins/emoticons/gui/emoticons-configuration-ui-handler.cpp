@@ -52,7 +52,6 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 	QStringList values;
 	QStringList captions;
 	int iconsNumber = 4;
-	GaduEmoticonThemeLoader loader;
 
 	QList<QIcon> icons;
 	foreach (const Theme &theme, ThemeManager.data()->themes())
@@ -67,6 +66,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 
 		for (int i = 0; i < iconsNumber; i++)
 		{
+			GaduEmoticonThemeLoader loader;
 			EmoticonTheme emoticonsTheme = loader.loadEmoticonTheme(theme.path());
 			Emoticon result = emoticonsTheme.emoticons().at(i);
 			QIcon icon(QPixmap(result.staticFilePath()));
