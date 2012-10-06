@@ -245,7 +245,7 @@ void AccountManager::providePassword(Account account)
 {
 	QMutexLocker locker(&mutex());
 
-	QString message = tr("Please provide valid password for %1 (%2) account")
+	QString message = tr("Please provide password for %1 (%2) account")
 			.arg(account.accountIdentity().name())
 			.arg(account.id());
 	PasswordWindow::getPassword(message, account, this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));

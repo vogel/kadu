@@ -29,8 +29,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QFormLayout>
 
 #include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
+#include "gui/widgets/dialog/title-widget.h"
 
 #include "password-window.h"
 
@@ -46,17 +50,44 @@ PasswordWindow::PasswordWindow(const QString &message, QVariant data, QWidget *p
 		QDialog(parent), DesktopAwareObject(this), Data(data)
 {
 	setWindowRole("kadu-password");
-
 	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowTitle(tr("Incorrect password") + " - Kadu");
+	horizontalLayout = new QHBoxLayout(this);
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	iconLabel = new QLabel(this);
+	QIcon icon = KaduIcon("dialog-password").icon();
+	iconLabel->setPixmap(icon.pixmap(icon.actualSize(QSize(64, 64))));
+	horizontalLayout->addWidget(iconLabel);
 
-	QLabel *messageLabel = new QLabel(message, this);
+	QSpacerItem *horizontalSpacer = new QSpacerItem(20, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+	horizontalLayout->addItem(horizontalSpacer);
+
+	verticalLayout = new QVBoxLayout();
+
+	QWidget *widget = new QWidget(this);
+	verticalLayout->addWidget(widget);
+
+	Title = new TitleWidget(this);
+	Title->setText(message);
+
+	verticalLayout->addWidget(Title);
+
+	formLayout = new QFormLayout();
+	formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+
 	Password = new QLineEdit(this);
 	Password->setEchoMode(QLineEdit::Password);
 	Password->setFocus();
 
+	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
+	formLayout->addRow(passwordLabel, Password);
+
 	Store = new QCheckBox(tr("Store this password"), this);
+	formLayout->addWidget(Store);
+
+	verticalLayout->addLayout(formLayout);
+
+	horizontalLayout->addLayout(verticalLayout);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -72,10 +103,7 @@ PasswordWindow::PasswordWindow(const QString &message, QVariant data, QWidget *p
 	connect(this, SIGNAL(accepted()), this, SLOT(dialogAccepted()));
 	connect(this, SIGNAL(rejected()), this, SLOT(dialogRejected()));
 
-	layout->addWidget(messageLabel);
-	layout->addWidget(Password);
-	layout->addWidget(Store);
-	layout->addWidget(buttons);
+	verticalLayout->addWidget(buttons);
 }
 
 PasswordWindow::~PasswordWindow()

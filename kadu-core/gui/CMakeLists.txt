@@ -126,6 +126,8 @@ set (gui_SRCS
 	widgets/configuration/notify-group-box.cpp
 	widgets/configuration/notify-tree-widget.cpp
 
+	widgets/dialog/title-widget.cpp
+
 	windows/about.cpp
 	windows/add-buddy-window.cpp
 	windows/add-conference-window.cpp
@@ -297,6 +299,8 @@ set (gui_MOC_SRCS
 	widgets/configuration/notify-tree-widget.h
 	widgets/configuration/notifier-configuration-widget.h
 	widgets/configuration/notify-group-box.h
+
+	widgets/dialog/title-widget.h
 
 	windows/about.h
 	windows/add-buddy-window.h

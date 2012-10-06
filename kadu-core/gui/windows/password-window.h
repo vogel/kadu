@@ -33,12 +33,23 @@
 
 class QCheckBox;
 class QLineEdit;
+class QHBoxLayout;
+class QLabel;
+class QVBoxLayout;
+class QFormLayout;
+class TitleWidget;
 
 class KADUAPI PasswordWindow : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
 	QVariant Data;
+
+	QHBoxLayout *horizontalLayout;
+	QLabel *iconLabel;
+	QVBoxLayout *verticalLayout;
+	TitleWidget *Title;
+	QFormLayout *formLayout;
 
 	QLineEdit *Password;
 	QCheckBox *Store;
