@@ -50,6 +50,7 @@ KaduDialog::KaduDialog(DialogWidget *dialogWidget, QWidget *parent) :
 	
 	connect(this, SIGNAL(accepted()), CentralWidget, SLOT(dialogAccepted()));
 	connect(this, SIGNAL(rejected()), CentralWidget, SLOT(dialogRejected()));
+	connect(CentralWidget, SIGNAL(valid(bool)), this, SLOT(widgetValidated(bool)));
 }
 
 KaduDialog::~KaduDialog()
@@ -90,6 +91,7 @@ void KaduDialog::createButtonBox()
 
 	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
 	OkButton->setDefault(true);
+	OkButton->setEnabled(false);
 	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
 	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
@@ -108,4 +110,9 @@ void KaduDialog::setAcceptButtonText(const QString &text)
 void KaduDialog::setCancelButtonText(const QString &text)
 {
 	CancelButton->setText(text);
+}
+
+void KaduDialog::widgetValidated(bool valid)
+{
+	OkButton->setEnabled(valid);
 }

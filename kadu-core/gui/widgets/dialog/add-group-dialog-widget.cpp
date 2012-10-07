@@ -21,59 +21,56 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QCheckBox>
+#include <QtGui/QIcon>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QFormLayout>
 
 #include "icons/kadu-icon.h"
+#include "buddies/group-manager.h"
 
-#include "password-dialog-widget.h"
+#include "add-group-dialog-widget.h"
 
-PasswordDialogWidget::PasswordDialogWidget(const QString &message, QVariant data, QWidget *parent) :
-		DialogWidget(tr("Incorrect password"), message, QPixmap(), parent), Data(data)
+AddGroupDialogWidget::AddGroupDialogWidget(const QString &message, QWidget *parent) :
+		DialogWidget(tr("Add Group"), message, QPixmap(), parent)
 {
-	QIcon icon = KaduIcon("dialog-password").icon();
+	QIcon icon = KaduIcon("kadu_icons/kadu").icon();
 	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
 
 	createGui();
 }
 
-PasswordDialogWidget::~PasswordDialogWidget()
+AddGroupDialogWidget::~AddGroupDialogWidget()
 {
 }
 
-void PasswordDialogWidget::createGui()
+void AddGroupDialogWidget::createGui()
 {
 	formLayout = new QFormLayout(this);
 	formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	Password = new QLineEdit(this);
-	Password->setEchoMode(QLineEdit::Password);
-	Password->setFocus();
-	connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(passwordTextChanged(const QString &)));
+	GroupName = new QLineEdit(this);
+	GroupName->setFocus();
+	connect(GroupName, SIGNAL(textChanged(const QString &)), this, SLOT(groupNameTextChanged(const QString &)));
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	formLayout->addRow(passwordLabel, Password);
-
-	Store = new QCheckBox(tr("Store this password"), this);
-	formLayout->addWidget(Store);
+	QLabel *addGroupLabel = new QLabel(tr("Group Name") + ":", this);
+	formLayout->addRow(addGroupLabel, GroupName);
 
 	setLayout(formLayout);
 }
 
-void PasswordDialogWidget::dialogAccepted()
+void AddGroupDialogWidget::groupNameTextChanged(const QString& text)
 {
-	emit passwordEntered(Data, Password->text(), Store->isChecked());
+	emit valid(GroupManager::instance()->acceptableGroupName(text));
 }
 
-void PasswordDialogWidget::dialogRejected()
+void AddGroupDialogWidget::dialogAccepted()
 {
-	emit passwordEntered(Data, QString(), false);
+	QString newGroupName = GroupName->text();
+	if (!newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		GroupManager::instance()->byName(newGroupName);
 }
 
-void PasswordDialogWidget::passwordTextChanged(const QString &text)
+void AddGroupDialogWidget::dialogRejected()
 {
-	emit valid(!text.isEmpty());
 }

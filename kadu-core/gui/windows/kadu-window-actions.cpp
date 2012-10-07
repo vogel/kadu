@@ -55,8 +55,10 @@
 #include "gui/widgets/status-menu.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/dialog/add-group-dialog-widget.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-delete-window.h"
+#include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/merge-buddies-window.h"
@@ -589,13 +591,10 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
-	bool ok;
-	QString newGroupName = QInputDialog::getText(sender->parentWidget(), tr("New Group"),
-				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString(), &ok);
-
-	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		GroupManager::instance()->byName(newGroupName);
+	AddGroupDialogWidget *groupWidget = new AddGroupDialogWidget(tr("Please enter the name for the new group"), sender->parentWidget());
+	KaduDialog *window = new KaduDialog(groupWidget, sender->parentWidget());
+	window->setAcceptButtonText(tr("Add Group"));
+	window->exec();
 }
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)

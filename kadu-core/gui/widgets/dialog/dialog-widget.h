@@ -56,9 +56,12 @@ public:
 			: QWidget(parent), Title(title), WindowTitle(windowTitle), Pixmap(pixmap) {}
 	virtual ~DialogWidget() {};
 
-	QPixmap & pixmap() { return Pixmap; }
-	QString & title() { return Title; }
-	QString & windowTitle() { return WindowTitle; }
+	QPixmap pixmap() { return Pixmap; }
+	QString title() { return Title; }
+	QString windowTitle() { return WindowTitle; }
+
+signals:
+	void valid(bool valid);
 };
 
 #endif // DIALOG_WIDGET_H

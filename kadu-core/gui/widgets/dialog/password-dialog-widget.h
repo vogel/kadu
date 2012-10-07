@@ -26,7 +26,6 @@
 #define PASSWORD_DIALOG_WIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QDialog>
 
 #include "gui/widgets/dialog/dialog-widget.h"
 
@@ -49,6 +48,7 @@ class PasswordDialogWidget : public DialogWidget
 private slots:
 	virtual void dialogAccepted();
 	virtual void dialogRejected();
+	void passwordTextChanged(const QString &text);
 
 public:
 	explicit PasswordDialogWidget(const QString &title, QVariant data, QWidget* parent);

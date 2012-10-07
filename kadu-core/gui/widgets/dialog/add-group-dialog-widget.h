@@ -22,47 +22,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KADU_DIALOG_H
-#define KADU_DIALOG_H
+#ifndef ADD_GROUP_DIALOG_WIDGET_H
+#define ADD_GROUP_DIALOG_WIDGET_H
 
+#include <QtCore/QVariant>
 #include <QtGui/QDialog>
 
-#include "os/generic/desktop-aware-object.h"
-#include "exports.h"
+#include "gui/widgets/dialog/dialog-widget.h"
 
-class DialogWidget;
-class QHBoxLayout;
-class QLabel;
-class QVBoxLayout;
-class QPushButton;
-class TitleWidget;
+class QCheckBox;
+class QLineEdit;
+class QFormLayout;
 
-class KADUAPI KaduDialog : public QDialog, DesktopAwareObject
+class AddGroupDialogWidget : public DialogWidget
 {
 	Q_OBJECT
 
-	DialogWidget *CentralWidget;
+	QFormLayout *formLayout;
+	QLineEdit *GroupName;
 
-	QHBoxLayout *horizontalLayout;
-	QLabel *iconLabel;
-	QVBoxLayout *verticalLayout;
-	TitleWidget *Title;
-
-	QPushButton *OkButton;
-	QPushButton *CancelButton;
-
-	void createGui();
-	void createButtonBox();
+	virtual void createGui();
 
 private slots:
-	void widgetValidated(bool valid);
+	virtual void dialogAccepted();
+	virtual void dialogRejected();
+	void groupNameTextChanged(const QString &text);
 
 public:
-	explicit KaduDialog(DialogWidget *dialogWidget, QWidget* parent);
-	virtual ~KaduDialog();
-
-	void setAcceptButtonText(const QString &text);
-	void setCancelButtonText(const QString &text);
+	explicit AddGroupDialogWidget(const QString &title, QWidget* parent);
+	virtual ~AddGroupDialogWidget();
 };
 
-#endif // KADU_DIALOG_H
+#endif // ADD_GROUP_DIALOG_WIDGET_H
