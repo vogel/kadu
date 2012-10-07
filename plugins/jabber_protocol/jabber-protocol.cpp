@@ -31,7 +31,6 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "gui/windows/password-window.h"
 #include "os/generic/system-info.h"
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"

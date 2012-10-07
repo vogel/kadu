@@ -126,6 +126,7 @@ set (gui_SRCS
 	widgets/configuration/notify-group-box.cpp
 	widgets/configuration/notify-tree-widget.cpp
 
+	widgets/dialog/password-dialog-widget.cpp
 	widgets/dialog/title-widget.cpp
 
 	windows/about.cpp
@@ -141,6 +142,7 @@ set (gui_SRCS
 	windows/configuration-window.cpp
 	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
+	windows/kadu-dialog.cpp
 	windows/kadu-window.cpp
 	windows/kadu-window-actions.cpp
 	windows/main-configuration-window.cpp
@@ -148,7 +150,6 @@ set (gui_SRCS
 	windows/merge-buddies-window.cpp
 	windows/message-dialog.cpp
 	windows/multilogon-window.cpp
-	windows/password-window.cpp
 	windows/plugin-error-dialog.cpp
 	windows/progress-window.cpp
 	windows/proxy-action-context.cpp
@@ -300,6 +301,8 @@ set (gui_MOC_SRCS
 	widgets/configuration/notifier-configuration-widget.h
 	widgets/configuration/notify-group-box.h
 
+	widgets/dialog/dialog-widget.h
+	widgets/dialog/password-dialog-widget.h
 	widgets/dialog/title-widget.h
 
 	windows/about.h
@@ -313,6 +316,7 @@ set (gui_MOC_SRCS
 	windows/configuration-window.h
 	windows/file-transfer-window.h
 	windows/group-properties-window.h
+	windows/kadu-dialog.h
 	windows/kadu-window.h
 	windows/kadu-window-actions.h
 	windows/main-configuration-window.h
@@ -320,7 +324,6 @@ set (gui_MOC_SRCS
 	windows/merge-buddies-window.h
 	windows/message-dialog.h
 	windows/multilogon-window.h
-	windows/password-window.h
 	windows/plugin-error-dialog.h
 	windows/progress-window.h
 	windows/proxy-action-context.h

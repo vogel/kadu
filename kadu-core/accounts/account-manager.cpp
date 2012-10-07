@@ -29,7 +29,8 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
-#include "gui/windows/password-window.h"
+#include "gui/widgets/dialog/password-dialog-widget.h"
+#include "gui/windows/kadu-dialog.h"
 #include "identities/identity.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
@@ -248,7 +249,11 @@ void AccountManager::providePassword(Account account)
 	QString message = tr("Please provide password for %1 (%2) account")
 			.arg(account.accountIdentity().name())
 			.arg(account.id());
-	PasswordWindow::getPassword(message, account, this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));
+
+	PasswordDialogWidget *passwordWidget = new PasswordDialogWidget(message, account, 0);
+	connect(passwordWidget, SIGNAL(passwordEntered(const QVariant &, const QString &, bool)), this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));
+	KaduDialog *window = new KaduDialog(passwordWidget, 0);
+	window->exec();
 }
 
 void AccountManager::loaded()

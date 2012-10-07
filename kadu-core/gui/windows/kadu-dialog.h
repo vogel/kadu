@@ -22,51 +22,44 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PASSWORD_WINDOW_H
-#define PASSWORD_WINDOW_H
+#ifndef KADU_DIALOG_H
+#define KADU_DIALOG_H
 
-#include <QtCore/QVariant>
 #include <QtGui/QDialog>
 
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
 
-class QCheckBox;
-class QLineEdit;
+class DialogWidget;
 class QHBoxLayout;
 class QLabel;
 class QVBoxLayout;
-class QFormLayout;
+class QPushButton;
 class TitleWidget;
 
-class KADUAPI PasswordWindow : public QDialog, DesktopAwareObject
+class KADUAPI KaduDialog : public QDialog, DesktopAwareObject
 {
 	Q_OBJECT
 
-	QVariant Data;
+	DialogWidget *CentralWidget;
 
 	QHBoxLayout *horizontalLayout;
 	QLabel *iconLabel;
 	QVBoxLayout *verticalLayout;
 	TitleWidget *Title;
-	QFormLayout *formLayout;
 
-	QLineEdit *Password;
-	QCheckBox *Store;
+	QPushButton *OkButton;
+	QPushButton *CancelButton;
 
-private slots:
-	void dialogAccepted();
-	void dialogRejected();
+	void createGui();
+	void createButtonBox();
 
 public:
-	static void getPassword(const QString &message, QVariant data, QObject *receiver, const char *slot);
+	explicit KaduDialog(DialogWidget *dialogWidget, QWidget* parent);
+	virtual ~KaduDialog();
 
-	explicit PasswordWindow(const QString &message, QVariant data, QWidget* parent);
-	virtual ~PasswordWindow();
-
-signals:
-	void passwordEntered(const QVariant &data, const QString &password, bool permanent);
-
+	void setAcceptButtonText(const QString &text);
+	void setCancelButtonText(const QString &text);
 };
 
-#endif // PASSWORD_WINDOW_H
+#endif // KADU_DIALOG_H
