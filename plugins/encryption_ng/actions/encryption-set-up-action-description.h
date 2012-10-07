@@ -20,14 +20,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
-#define ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
+#ifndef ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H
+#define ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H
 
 #include "gui/actions/action-description.h"
 
 class Chat;
 
-class EnableEncryptionActionDescription : public ActionDescription
+class EncryptionSetUpActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
@@ -39,9 +39,9 @@ protected:
 	virtual void updateActionState(Action *action);
 
 public:
-	explicit EnableEncryptionActionDescription(QObject *parent);
-	virtual ~EnableEncryptionActionDescription();
+	explicit EncryptionSetUpActionDescription(QObject *parent);
+	virtual ~EncryptionSetUpActionDescription();
 
 };
 
-#endif // ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
+#endif // ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H

@@ -31,7 +31,7 @@
 class Action;
 class ActionDescription;
 class Contact;
-class EnableEncryptionActionDescription;
+class EncryptionSetUpActionDescription;
 
 class EncryptionActions : public QObject
 {
@@ -40,7 +40,7 @@ class EncryptionActions : public QObject
 
 	static EncryptionActions *Instance;
 
-	EnableEncryptionActionDescription *EnableEncryptionActionDescriptionInstance;
+	EncryptionSetUpActionDescription *EncryptionSetUpActionDescriptionInstance;
 
 	EncryptionActions();
 	virtual ~EncryptionActions();
