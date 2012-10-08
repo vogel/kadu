@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,26 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QMenu>
-
-#include "chat/chat.h"
-#include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
-#include "gui/actions/actions.h"
+#include "gui/actions/action-context.h"
 
 #include "encryption-chat-data.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
-#include "encryption-set-up-action-description.h"
+#include "enable-encryption-action-description.h"
 
-EncryptionSetUpActionDescription::EncryptionSetUpActionDescription(QObject *parent) :
+EnableEncryptionActionDescription::EnableEncryptionActionDescription(QObject *parent) :
 		ActionDescription(parent)
 {
-	setType(ActionDescription::TypeChat);
-	setName("encryptionAction");
+	setType(ActionDescription::TypePrivate);
+	setName("enableEncryptionAction");
 	setIcon(KaduIcon("security-high"));
-	setText(tr("Encrypt"));
+	setText(tr("Enable Encryption"));
 	setCheckable(true);
 
 	registerAction();
@@ -46,12 +41,11 @@ EncryptionSetUpActionDescription::EncryptionSetUpActionDescription(QObject *pare
 			this, SLOT(canEncryptChanged(Chat)));
 }
 
-EncryptionSetUpActionDescription::~EncryptionSetUpActionDescription()
+EnableEncryptionActionDescription::~EnableEncryptionActionDescription()
 {
-	disconnect(EncryptionProviderManager::instance(), 0, this, 0);
 }
 
-void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool toggled)
+void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool toggled)
 {
 	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
@@ -67,17 +61,7 @@ void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool tog
 		sender->setChecked(false);
 }
 
-QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
-{
-	// no parents for menu as it is destroyed manually by Action class
-	QMenu *menu = new QMenu();
-	menu->addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
-	menu->addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
-
-	return menu;
-}
-
-void EncryptionSetUpActionDescription::updateActionState(Action *action)
+void EnableEncryptionActionDescription::updateActionState(Action *action)
 {
 	Chat chat = action->context()->chat();
 	// This is needed beacause we may be called before it is called in EncryptionNgPlugin::init().
@@ -85,10 +69,11 @@ void EncryptionSetUpActionDescription::updateActionState(Action *action)
 	// so we cannot simply change order in EncryptionNgPlugin::init().
 	EncryptionManager::createInstance();
 	bool canEncrypt = chat && EncryptionProviderManager::instance()->canEncrypt(chat);
+	action->setEnabled(canEncrypt);
 	action->setChecked(canEncrypt && EncryptionManager::instance()->chatEncryption(chat)->encrypt());
 }
 
-void EncryptionSetUpActionDescription::canEncryptChanged(const Chat &chat)
+void EnableEncryptionActionDescription::canEncryptChanged(const Chat& chat)
 {
 	// there is only as much actions as chat windows, so this is not really N^2 when
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
@@ -96,9 +81,4 @@ void EncryptionSetUpActionDescription::canEncryptChanged(const Chat &chat)
 	foreach (Action *action, actions())
 		if (action->context()->chat() == chat)
 			action->checkState();
-}
-
-QToolButton::ToolButtonPopupMode EncryptionSetUpActionDescription::buttonPopupMode() const
-{
-	return QToolButton::MenuButtonPopup;
 }
