@@ -38,7 +38,7 @@ public:
 	explicit ChangeStatusAction(QObject *parent);
 	virtual ~ChangeStatusAction();
 
-	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
 	{
 		return QToolButton::InstantPopup;
 	}

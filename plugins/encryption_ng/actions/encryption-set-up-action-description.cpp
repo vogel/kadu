@@ -18,9 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
 #include "chat/chat.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 
 #include "encryption-chat-data.h"
 #include "encryption-manager.h"
@@ -61,11 +64,16 @@ void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool tog
 	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(toggled);
 
 	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled) && toggled)
-	{
-		// disable it, we could not enable encryption for this contact
-		sender->setEnabled(false);
 		sender->setChecked(false);
-	}
+}
+
+QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
+{
+	// no parents for menu as it is destroyed manually by Action class
+	QMenu *menu = new QMenu();
+	menu->addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
+
+	return menu;
 }
 
 void EncryptionSetUpActionDescription::updateActionState(Action *action)
@@ -76,7 +84,6 @@ void EncryptionSetUpActionDescription::updateActionState(Action *action)
 	// so we cannot simply change order in EncryptionNgPlugin::init().
 	EncryptionManager::createInstance();
 	bool canEncrypt = chat && EncryptionProviderManager::instance()->canEncrypt(chat);
-	action->setEnabled(canEncrypt);
 	action->setChecked(canEncrypt && EncryptionManager::instance()->chatEncryption(chat)->encrypt());
 }
 
@@ -88,4 +95,9 @@ void EncryptionSetUpActionDescription::canEncryptChanged(const Chat &chat)
 	foreach (Action *action, actions())
 		if (action->context()->chat() == chat)
 			action->checkState();
+}
+
+QToolButton::ToolButtonPopupMode EncryptionSetUpActionDescription::buttonPopupMode() const
+{
+	return QToolButton::MenuButtonPopup;
 }

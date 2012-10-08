@@ -88,6 +88,7 @@ public:
 		TypeUserList = 0x0010, //!< actions with TypeUserList type requires access to user list widget
 		TypeHistory  = 0x0020, //!< actions with TypeHistory type requires access to history window
 		TypeMainMenu = 0x0040,
+		TypePrivate  = 0x0080, //!< actions with TypePrivate can not be placed on toolbars by users
 		TypeAll      = 0xFFFF  //!< TypeAll is used to set masks for all types of actions
 	};
 
@@ -295,7 +296,7 @@ public:
 	 * If action does not have default behaviour no method will be called after clicking on method. Reimplementing
 	 * actionTriggered is then not required.
 	 */
-	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
 	{
 		return QToolButton::MenuButtonPopup;
 	}
