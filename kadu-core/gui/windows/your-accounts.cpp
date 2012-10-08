@@ -375,16 +375,20 @@ bool YourAccounts::canChangeWidget()
 
 	if (!IsCurrentWidgetEditAccount)
 	{
-		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
-				tr("You have unsaved changes in current account.<br />Do you want to return to editing?"),
-				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Unsaved changes"),
+					tr("You have unsaved changes in current account.<br />Do you want to return to edit or discard changes?"));
+		dialog->addButton(QMessageBox::Yes, tr("Return to edit"));
+		dialog->addButton(QMessageBox::Ignore, tr("Discard changes"));
+		dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
+
+		QMessageBox::StandardButton result = (QMessageBox::StandardButton) dialog->exec();
 
 		switch (result)
 		{
 			case QMessageBox::Yes:
 				return false;
 
-			case QMessageBox::No:
+			case QMessageBox::Ignore:
 				CurrentWidget->cancel();
 				return true;
 
@@ -395,17 +399,21 @@ bool YourAccounts::canChangeWidget()
 
 	if (StateChangedDataValid == CurrentWidget->state())
 	{
-		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
-				tr("You have unsaved changes in current account.<br />Do you want to save them?"),
-				QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Unsaved changes"),
+					tr("You have unsaved changes in current account.<br />Do you want to save them?"));
+		dialog->addButton(QMessageBox::Save, tr("Save changes"));
+		dialog->addButton(QMessageBox::Ignore, tr("Discard"));
+		dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
+
+		QMessageBox::StandardButton result = (QMessageBox::StandardButton) dialog->exec();
 
 		switch (result)
 		{
-			case QMessageBox::Yes:
+			case QMessageBox::Save:
 				CurrentWidget->apply();
 				return true;
 
-			case QMessageBox::No:
+			case QMessageBox::Ignore:
 				CurrentWidget->cancel();
 				return true;
 
@@ -416,16 +424,20 @@ bool YourAccounts::canChangeWidget()
 
 	if (StateChangedDataInvalid == CurrentWidget->state())
 	{
-		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
-				tr("You have unsaved changes in current account.<br />This data is invalid, so you will loose all changes.<br />Do you want to go back to edit them?"),
-				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Invalid changes"),
+					tr("You have invalid changes in current account, which cannot be saved.<br />Do you want to stay in edit or discard changes?"));
+		dialog->addButton(QMessageBox::Yes, tr("Stay in edit"));
+		dialog->addButton(QMessageBox::Ignore, tr("Discard changes"));
+		dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
+
+		QMessageBox::StandardButton result = (QMessageBox::StandardButton) dialog->exec();
 
 		switch (result)
 		{
 			case QMessageBox::Yes:
 				return false;
 
-			case QMessageBox::No:
+			case QMessageBox::Ignore:
 				CurrentWidget->cancel();
 				return true;
 
