@@ -27,10 +27,14 @@
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
+#include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
 
 #include "keys/keys-manager.h"
 #include "notify/encryption-ng-notification.h"
+
+#include "encryption-manager.h"
+#include "key-generator.h"
 
 #include "send-public-key-action-description.h"
 
@@ -68,33 +72,31 @@ void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggl
 		sendPublicKey(contact);
 }
 
-void SendPublicKeyActionDescription::updateActionState(Action *action)
+void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 {
-	action->setEnabled(false);
-
-	ContactSet contacts = action->context()->contacts();
-	if (contacts.isEmpty())
-		return;
-
-	if (action->context()->buddies().contains(Core::instance()->myself()))
-		return;
-
-	foreach (const Contact &contact, contacts)
+	KeyGenerator *generator = EncryptionManager::instance()->generator();
+	if (!generator)
 	{
-		Contact accountContact = contact.contactAccount().accountContact();
-		// TODO: this should depend on submodule and not be hardcoded
-		// TODO 0.10:
-		Key key = KeysManager::instance()->byContactAndType(accountContact, "simlite", ActionReturnNull);
-		if (key)
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Cannot send keys. Check if encryption_ng_simlite plugin is loaded"));
+		return;
+	}
+
+	if (!generator->hasKeys(contact.contactAccount()))
+	{
+		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-information"), tr("Encryption"), tr("Public key dont exist. Do you want to create new one?"));
+		dialog->addButton(QMessageBox::Yes, tr("Yes"));
+		dialog->addButton(QMessageBox::No, tr("No"));
+
+		if (!dialog->ask())
+			return;
+
+		if (!generator->generateKeys(contact.contactAccount()))
 		{
-			action->setEnabled(true);
+			MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Error generating key"));
 			return;
 		}
 	}
-}
 
-void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
-{
 	Key key = KeysManager::instance()->byContactAndType(contact.contactAccount().accountContact(), "simlite", ActionReturnNull);
 	if (!key)
 	{

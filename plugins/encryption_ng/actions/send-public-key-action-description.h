@@ -35,7 +35,6 @@ class SendPublicKeyActionDescription : public ActionDescription
 
 protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
-	virtual void updateActionState(Action *action);
 
 public:
 	explicit SendPublicKeyActionDescription(QObject *parent);
