@@ -125,7 +125,7 @@ void GaduRemindPasswordWindow::remindPasswordFinished(GaduServerRemindPassword *
 
 	if (result)
 	{
-		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Your password has been send on your email"), QMessageBox::Ok, parentWidget());
+		MessageDialog::show(KaduIcon("dialog-information"), tr("Kadu"), tr("Your password has been sent on your email"), QMessageBox::Ok, parentWidget());
 		close();
 	}
 	else

@@ -45,7 +45,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 	if (!ThemesList || !EmoticonsThemesPathListEdit)
 		return;
 
-	ThemeManager.data()->loadThemes(EmoticonsThemesPathListEdit.data()->pathList());
+	ThemeManager.data()->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 

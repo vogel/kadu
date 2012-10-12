@@ -49,7 +49,7 @@ public:
 	explicit ThemeManager(QObject *parent = 0);
 	virtual ~ThemeManager();
 
-	void loadThemes(const QStringList &customThemePaths);
+	void loadThemes();
 
 	const QMap<QString, Theme> & themes() const { return Themes; }
 

@@ -32,8 +32,12 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
 #include <QtGui/QLabel>
 #include <QtGui/QStyleFactory>
+
+#include <archive.h>
+#include <archive_entry.h>
 
 #include "configuration/config-file-data-manager.h"
 
@@ -44,6 +48,7 @@
 #include "chat/style-engines/chat-style-engine.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
+#include "compression/archive-extractor.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -60,6 +65,7 @@
 #include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-dialog.h"
 #include "message/message-render-info.h"
 #include "misc/kadu-paths.h"
 #include "network/proxy/network-proxy.h"
@@ -213,6 +219,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
+	connect(widget()->widgetById("installIconTheme"), SIGNAL(clicked()), this, SLOT(installIconTheme()));
 
 	Preview *infoPanelSyntaxPreview = static_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
 	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
@@ -296,10 +303,32 @@ void MainConfigurationWindow::setLanguages()
 	languages->setItems(LanguagesManager::languages().keys(), LanguagesManager::languages().values());
 }
 
+void MainConfigurationWindow::installIconTheme()
+{
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open icon theme archive"), QDir::home().path(), tr("XZ archive (*.tar.xz)"));
+
+	if (fileName.isEmpty())
+		return;
+
+	const QString &dataPath = KaduPaths::instance()->dataPath();
+	ArchiveExtractor extractor;
+	bool success = extractor.extract(fileName, dataPath + "themes/icons");
+	if (success)
+	{
+		setIconThemes();
+	}
+	else
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr("Archive file does not contain valid Kadu icon theme."), QMessageBox::Ok, widget());
+	}
+}
+
 void MainConfigurationWindow::setIconThemes()
 {
 	ConfigListWidget *iconThemes = static_cast<ConfigListWidget *>(widget()->widgetById("iconThemes"));
-	IconsManager::instance()->themeManager()->loadThemes((static_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
+	iconThemes->clear();
+
+	IconsManager::instance()->themeManager()->loadThemes();
 
 	(void)QT_TRANSLATE_NOOP("@default", "default");
 

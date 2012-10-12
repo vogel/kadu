@@ -47,12 +47,11 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath) const
 	return result;
 }
 
-void ThemeManager::loadThemes(const QStringList &customThemePaths)
+void ThemeManager::loadThemes()
 {
 	Themes.clear();
 
-	// Prefer custom theme paths.
-	QStringList themePaths = customThemePaths + defaultThemePaths();
+	QStringList themePaths = defaultThemePaths();
 	foreach (const QString &path, themePaths)
 	{
 		if (!isValidThemePath(path))

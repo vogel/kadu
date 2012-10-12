@@ -61,7 +61,7 @@ void EmoticonConfigurator::configurationUpdated()
 	if (!EmoticonExpanderProvider && !InsertAction)
 		return;
 
-	ThemeManager->loadThemes(config_file.readEntry("Chat", "EmoticonsPaths").split('&', QString::SkipEmptyParts));
+	ThemeManager->loadThemes();
 
 	Configuration.setEnabled(config_file.readBoolEntry("Chat", "EnableEmoticons", true));
 	Configuration.setAnimate(config_file.readBoolEntry("Chat", "EnableEmoticonAnimations", true));

@@ -84,7 +84,7 @@ private slots:
 	void onChangeStartupDescription(int index);
 	void onChangeShutdownStatus(int index);
 	void showLookChatAdvanced();
-
+	void installIconTheme();
 	void setIconThemes();
 
 	void chatPreviewSyntaxChanged(const QString &syntaxName);

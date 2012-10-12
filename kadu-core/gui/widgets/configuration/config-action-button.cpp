@@ -44,7 +44,7 @@ void ConfigActionButton::createWidgets()
 	kdebugf();
 
 	setText(qApp->translate("@default", widgetCaption.toUtf8().constData()));
-	parentConfigGroupBox->addWidget(this);
+	parentConfigGroupBox->addWidgets(new QLabel(" "), this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));

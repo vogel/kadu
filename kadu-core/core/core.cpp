@@ -317,7 +317,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "DescriptionColor", w.palette().text().color());
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
-	config_file.addVariable("Look", "IconsPaths", QString());
 	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
 	config_file.addVariable("Look", "InfoPanelBgFilled", false);
 	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().base().color());

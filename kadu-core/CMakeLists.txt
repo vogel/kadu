@@ -118,6 +118,7 @@ set (kadu_SUBDIRS
 	avatars
 	buddies
 	chat
+	compression
 	configuration
 	contacts
 	core
@@ -152,6 +153,50 @@ find_package (QCA2 REQUIRED)
 include_directories (${QCA2_INCLUDE_DIR})
 add_definitions (${QCA2_DEFINITIONS})
 list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
+
+include(CheckLibraryExists)
+
+if (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
+  # in cache already
+  set(LIBARCHIVE_FOUND TRUE)
+else (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
+  find_path(LIBARCHIVE_INCLUDE_DIR archive.h
+    ${GNUWIN32_DIR}/include
+  )
+
+  find_library(LIBARCHIVE_LIBRARY NAMES archive libarchive archive2 libarchive2
+    PATHS
+    ${GNUWIN32_DIR}/lib
+  )
+
+  if (LIBARCHIVE_LIBRARY)
+    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_lzma   "" HAVE_LIBARCHIVE_LZMA_SUPPORT)
+    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_xz     "" HAVE_LIBARCHIVE_XZ_SUPPORT)
+  endif (LIBARCHIVE_LIBRARY)
+
+  include(FindPackageHandleStandardArgs)
+  find_package_handle_standard_args(LibArchive DEFAULT_MSG LIBARCHIVE_INCLUDE_DIR LIBARCHIVE_LIBRARY)
+
+  mark_as_advanced(LIBARCHIVE_INCLUDE_DIR LIBARCHIVE_LIBRARY HAVE_LIBARCHIVE_LZMA_SUPPORT)
+endif (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
+
+if (LIBARCHIVE_FOUND)
+    if (HAVE_LIBARCHIVE_READ_DISK_API )
+        if (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
+            message(STATUS "Your libarchive does not have support for lzma and/or xz archives. libarchive >= 2.7.0 is recommended.")
+        endif (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
+    else (HAVE_LIBARCHIVE_READ_DISK_API)
+        # Remove the cached variables from FindLibArchive.cmake
+        unset (LIBARCHIVE_FOUND)
+        unset (LIBARCHIVE_INCLUDE_DIR)
+        unset (LIBARCHIVE_LIBRARY)
+        message(STATUS "Your libarchive does not have support for archive_read_disk api. libarchive >= 2.6.0 is needed.")
+    endif (HAVE_LIBARCHIVE_READ_DISK_API)
+endif (LIBARCHIVE_FOUND)
+
+include_directories(${LIBARCHIVE_INCLUDE_DIR})
+add_definitions (${LIBARCHIVE_DEFINITIONS})
+list (APPEND ADDITIONAL_LIBRARIES ${LIBARCHIVE_LIBRARY})
 
 if (UNIX AND NOT APPLE)
 	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xfixes)
@@ -305,6 +350,7 @@ kadu_api_directories (kadu-core
 	chat/style-engines/chat-engine-adium
 	chat/style-engines/chat-engine-kadu
 	chat/type
+	compression
 	configuration
 	contacts
 	contacts/model

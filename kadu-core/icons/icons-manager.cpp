@@ -53,10 +53,8 @@ IconsManager::IconsManager()
 {
 	kdebugf();
 
-	QStringList iconPaths = config_file.readEntry("Look", "IconsPaths").split('&', QString::SkipEmptyParts);
-
 	ThemeManager = new IconThemeManager(this);
-	ThemeManager->loadThemes(iconPaths);
+	ThemeManager->loadThemes();
 	ThemeManager->setCurrentTheme(config_file.readEntry("Look", "IconTheme"));
 	configurationUpdated();
 
