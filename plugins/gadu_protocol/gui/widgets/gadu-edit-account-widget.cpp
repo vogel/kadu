@@ -98,7 +98,7 @@ void GaduEditAccountWidget::createGui()
 	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
-	QPushButton *removeAccount = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Delete account"), this);
+	QPushButton *removeAccount = new QPushButton(tr("Delete account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
