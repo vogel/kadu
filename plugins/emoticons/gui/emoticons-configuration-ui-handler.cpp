@@ -18,13 +18,17 @@
  */
 
 #include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
 #include <QtGui/QPainter>
 
+#include "compression/archive-extractor.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/path-list-edit.h"
+#include "gui/windows/message-dialog.h"
+#include "misc/kadu-paths.h"
 
 #include "theme/emoticon-theme.h"
 #include "theme/gadu-emoticon-theme-loader.h"
@@ -42,7 +46,7 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!ThemesList || !EmoticonsThemesPathListEdit)
+	if (!ThemesList)
 		return;
 
 	ThemeManager.data()->loadThemes();
@@ -87,9 +91,28 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigu
 	Widget = mainConfigurationWindow->widget();
 
 	ThemesList = static_cast<ConfigListWidget *>(Widget.data()->widgetById("emoticonsTheme"));
-	EmoticonsThemesPathListEdit = static_cast<ConfigPathListEdit *>(Widget.data()->widgetById("emoticonsPaths"));
-
-	connect(EmoticonsThemesPathListEdit.data(), SIGNAL(changed()), this, SLOT(updateEmoticonThemes()));
+	connect(Widget.data()->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
 
 	updateEmoticonThemes();
+}
+
+void EmoticonsConfigurationUiHandler::installEmoticonTheme()
+{
+	QString fileName = QFileDialog::getOpenFileName(Widget.data(), tr("Open icon theme archive"), QDir::home().path(), tr("XZ archive (*.tar.xz)"));
+
+	if (fileName.isEmpty())
+		return;
+
+	const QString &profilePath = KaduPaths::instance()->profilePath();
+	ArchiveExtractor extractor;
+	bool success = extractor.extract(fileName, profilePath + "emoticons");
+
+	if (success)
+	{
+		updateEmoticonThemes();
+	}
+	else
+	{
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
+	}
 }

@@ -36,9 +36,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QStyleFactory>
 
-#include <archive.h>
-#include <archive_entry.h>
-
 #include "configuration/config-file-data-manager.h"
 
 #include "accounts/account-manager.h"
@@ -46,9 +43,9 @@
 #include "buddies/buddy.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"
+#include "compression/archive-extractor.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "compression/archive-extractor.h"
 #include "core/core.h"
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/configuration/buddy-list-background-colors-widget.h"
@@ -310,16 +307,16 @@ void MainConfigurationWindow::installIconTheme()
 	if (fileName.isEmpty())
 		return;
 
-	const QString &dataPath = KaduPaths::instance()->dataPath();
+	const QString &profilePath = KaduPaths::instance()->profilePath();
 	ArchiveExtractor extractor;
-	bool success = extractor.extract(fileName, dataPath + "themes/icons");
+	bool success = extractor.extract(fileName, profilePath + "icons");
 	if (success)
 	{
 		setIconThemes();
 	}
 	else
 	{
-		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr("Archive file does not contain valid Kadu icon theme."), QMessageBox::Ok, widget());
+		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, widget());
 	}
 }
 

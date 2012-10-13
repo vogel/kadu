@@ -50,12 +50,24 @@ struct ArchiveExtractor::ArchiveWriteCustomDeleter
 
 bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPath)
 {
+	Message = "";
 	QFileInfo info(sourcePath);
 	QString filePath = info.absoluteFilePath();
 
 	int flags = ARCHIVE_EXTRACT_TIME;
 	flags |= ARCHIVE_EXTRACT_SECURE_NODOTDOT;
 
+	QDir dest(destPath);
+	if (!dest.exists())
+	{
+		if (!dest.mkpath(destPath))
+		{
+			Message = QString("Cannot create directory '%s'").arg(destPath);
+			return false;
+		}
+	}
+
+	qDebug() << "Setting destination path to: " << destPath;
 	QDir::setCurrent(destPath);
 
 	const bool preservePaths = true;
@@ -63,29 +75,18 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 
 	ArchiveRead arch(archive_read_new());
 
-	if (!(arch.data()))
+	if (!arch.data() || archive_read_support_compression_all(arch.data()) != ARCHIVE_OK
+	    || archive_read_support_format_all(arch.data()) != ARCHIVE_OK
+	    || archive_read_open_filename(arch.data(), QFile::encodeName(filePath), 10240) != ARCHIVE_OK)
 	{
-		return false;
-	}
-
-	if (archive_read_support_compression_all(arch.data()) != ARCHIVE_OK)
-	{
-		return false;
-	}
-
-	if (archive_read_support_format_all(arch.data()) != ARCHIVE_OK)
-	{
-		return false;
-	}
-
-	if (archive_read_open_filename(arch.data(), QFile::encodeName(filePath), 10240) != ARCHIVE_OK)
-	{
+		Message = "Archive file does not contain valid Kadu emoticon theme.";
 		return false;
 	}
 
 	ArchiveWrite writer(archive_write_disk_new());
 	if (!(writer.data()))
 	{
+		Message = "Archive file does not contain valid Kadu emoticon theme.";
 		return false;
 	}
 
@@ -118,6 +119,7 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 			//for now we just can't handle absolute filenames in a tar archive.
 			//TODO: find out what to do here!!
 			//emit error(i18n("This archive contains archive entries with absolute paths, which are not yet supported by ark."));
+			Message = "Archive file does not contain valid Kadu emoticon theme.";
 			return false;
 		}
 
@@ -164,6 +166,7 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 		if (entryIsDir && entryFI.exists() && !entryFI.isWritable())
 		{
 			qDebug() << "Warning, existing, but non-writable dir. skipping";
+			Message = QString("Directory '%s' is not writable.").arg(destPath);
 			archive_entry_clear(entry);
 			archive_read_data_skip(arch.data());
 			continue;
@@ -190,7 +193,14 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 		archive_entry_clear(entry);
 	}
 
-	return archive_read_close(arch.data()) == ARCHIVE_OK;
+	bool result = archive_read_close(arch.data()) == ARCHIVE_OK;
+
+	if (!result && Message.isEmpty())
+	{
+		Message = QString("Archive file is corrupted.").arg(destPath);
+	}
+
+	return result;
 }
 
 void ArchiveExtractor::copyData(struct archive *source, struct archive *dest)

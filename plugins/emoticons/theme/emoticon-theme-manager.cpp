@@ -66,7 +66,7 @@ QString EmoticonThemeManager::defaultThemeName() const
 QStringList EmoticonThemeManager::defaultThemePaths() const
 {
 	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("icons"));
+	QStringList result = getSubDirs(KaduPaths::instance()->profilePath() + QLatin1String("emoticons"));
 	result += getSubDirs(KaduPaths::instance()->dataPath() + QLatin1String("themes/emoticons"));
 
 	return result;
