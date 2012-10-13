@@ -33,7 +33,6 @@
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
-class QPushButton;
 class QSpinBox;
 class QTabWidget;
 class QVBoxLayout;
@@ -75,10 +74,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	ProxyComboBox *ProxyCombo;
 
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
-
-	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);
 	void createPersonalInfoTab(QTabWidget *);
@@ -90,9 +85,12 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	void resetState();
 
+protected:
+	virtual void createTabs(QTabWidget *tabWidget);
+
 private slots:
+	virtual void removeAccount();
 	void dataChanged();
-	void removeAccount();
 	void remindPasssword();
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);

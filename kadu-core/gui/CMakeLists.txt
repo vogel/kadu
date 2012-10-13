@@ -23,6 +23,7 @@ set (gui_SRCS
 
 	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
+	widgets/account-edit-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
 	widgets/avatar-painter.cpp

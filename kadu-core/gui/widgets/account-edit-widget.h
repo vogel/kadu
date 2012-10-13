@@ -29,13 +29,25 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
+class QTabWidget;
+class QPushButton;
+
 class KADUAPI AccountEditWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
 	Account MyAccount;
 
+private slots:
+	virtual void removeAccount() = 0;
+
 protected:
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
+
+	void createGui();
+	virtual void createTabs(QTabWidget *tabWidget) = 0;
+
 	Account account() { return MyAccount; }
 
 public:
@@ -43,6 +55,9 @@ public:
 			ModalConfigurationWidget(parent), MyAccount(account) {}
 	virtual ~AccountEditWidget() {}
 
+public slots:
+	virtual void apply() = 0;
+	virtual void cancel() = 0;
 };
 
 #endif // ACCOUNT_EDIT_WIDGET_H

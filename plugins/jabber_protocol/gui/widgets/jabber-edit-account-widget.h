@@ -31,7 +31,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
 
 #include "gui/widgets/account-edit-widget.h"
 #include "gui/widgets/identities-combo-box.h"
@@ -85,10 +84,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 		
 	ProxyComboBox *ProxyCombo;
 
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
-
-	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
@@ -101,8 +96,11 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	void resetState();
 
+protected:
+	virtual void createTabs(QTabWidget *tabWidget);
+
 private slots:
-	void removeAccount();
+	virtual void removeAccount();
 	void sslActivated(int i);
 	void hostToggled(bool on);
 	void autoResourceToggled(bool on);
