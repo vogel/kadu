@@ -21,10 +21,31 @@
 #include "gui/actions/actions.h"
 
 #include "encryption-set-up-menu.h"
+#include <encryption-provider-manager.h>
 
 EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 		QMenu(parent)
 {
+	EncryptorsGroup = new QActionGroup(this);
+	EncryptorsGroup->setExclusive(true);
+
+	QAction *noEncryption = addAction(tr("No Encryption"));
+	noEncryption->setActionGroup(EncryptorsGroup);
+	noEncryption->setCheckable(true);
+	noEncryption->setChecked(true);
+
+	int i = 0;
+	foreach (EncryptionProvider *encryptionProvider, EncryptionProviderManager::instance()->providers())
+	{
+		Q_UNUSED(encryptionProvider);
+
+		QAction *encryptorAction = addAction(tr("Encryptor: %1").arg(i));
+		encryptorAction->setActionGroup(EncryptorsGroup);
+		encryptorAction->setCheckable(true);
+		encryptorAction->setData(i);
+		i++;
+	}
+
 	addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
 	addSeparator();
 	addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));

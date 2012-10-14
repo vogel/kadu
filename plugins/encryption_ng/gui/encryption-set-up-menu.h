@@ -28,6 +28,8 @@ class EncryptionSetUpMenu : public QMenu
 {
 	Q_OBJECT
 
+	QActionGroup *EncryptorsGroup;
+
 public:
 	explicit EncryptionSetUpMenu(Action *action, QWidget *parent = 0);
 	virtual ~EncryptionSetUpMenu();
