@@ -21,6 +21,8 @@ set (SOURCES
 
 	configuration/encryption-ng-configuration.cpp
 
+	gui/encryption-set-up-menu.cpp
+
 	keys/keys-manager.cpp
 	keys/key-shared.cpp
 	keys/key.cpp
@@ -43,6 +45,8 @@ set (MOC_SOURCES
 	actions/encryption-set-up-action-description.h
 	actions/generate-keys-action-description.h
 	actions/send-public-key-action-description.h
+
+	gui/encryption-set-up-menu.h
 
 	keys/keys-manager.h
 	keys/key-shared.h

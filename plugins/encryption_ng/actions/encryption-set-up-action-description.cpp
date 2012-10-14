@@ -25,6 +25,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 
+#include "gui/encryption-set-up-menu.h"
 #include "encryption-chat-data.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
@@ -70,12 +71,7 @@ void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool tog
 QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
 {
 	// no parents for menu as it is destroyed manually by Action class
-	QMenu *menu = new QMenu();
-	menu->addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
-	menu->addSeparator();
-	menu->addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
-
-	return menu;
+	return new EncryptionSetUpMenu(action);
 }
 
 void EncryptionSetUpActionDescription::updateActionState(Action *action)
