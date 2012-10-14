@@ -121,14 +121,14 @@ void NotificationService::statusUpdated()
 	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == StatusTypeDoNotDisturb)
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
-			action->setChecked(false);
+			action->setChecked(true);
 
 		AutoSilentMode = true;
 	}
 	else if (!silentMode() && AutoSilentMode)
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
-			action->setChecked(true);
+			action->setChecked(false);
 
 		AutoSilentMode = false;
 	}
@@ -160,7 +160,7 @@ void NotificationService::notifyAboutUserActionActivated(QAction *sender, bool t
 
 void NotificationService::silentModeActionCreated(Action *action)
 {
-	action->setChecked(!SilentMode);
+	action->setChecked(SilentMode);
 }
 
 void NotificationService::silentModeActionActivated(QAction *sender, bool toggled)
