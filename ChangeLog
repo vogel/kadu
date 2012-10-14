@@ -4,6 +4,7 @@
 * gui: square, rounded avatars on buddy list (Juzef)
 * gui: #2622 fixed: ignoring buddies in buddy options window and using menu option (Juzef)
 * gui: #2553 done: new tray icon's tooltip (ultr)
+* gui: #2552 done: display description in status button's tooltip (ultr)
 
 +++ version 0.12.3
 * jabber: fixed Facebook contacts groups being lost when upgrading from 0.10.x/0.11.x (beevvy)

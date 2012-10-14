@@ -44,6 +44,8 @@ class StatusButton : public QToolButton, private ConfigurationAwareObject
 	void createGui();
 	void updateStatus();
 
+	QString prepareDescription(const QString &description) const;
+
 private slots:
 	void iconUpdated(const KaduIcon &icon);
 	void statusUpdated();
