@@ -99,7 +99,7 @@ void NotificationService::createActionDescriptions()
 	SilentModeActionDescription = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "silentModeAction",
 		this, SLOT(silentModeActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/enable-notifications"), tr("Enable Notifications"), true
+		KaduIcon("kadu_icons/enable-notifications"), tr("Silent Mode"), true
 	);
 
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
@@ -167,7 +167,7 @@ void NotificationService::silentModeActionActivated(QAction *sender, bool toggle
 {
 	Q_UNUSED(sender)
 
-	setSilentMode(!toggled);
+	setSilentMode(toggled);
 }
 
 void NotificationService::setSilentMode(bool newSilentMode)
@@ -178,7 +178,7 @@ void NotificationService::setSilentMode(bool newSilentMode)
 	bool wasSilent = silentMode();
 	SilentMode = newSilentMode;
 	foreach (Action *action, SilentModeActionDescription->actions())
-		action->setChecked(!SilentMode);
+		action->setChecked(SilentMode);
 
 	config_file.writeEntry("Notify", "SilentMode", SilentMode);
 

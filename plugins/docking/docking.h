@@ -72,6 +72,7 @@ class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject, Stat
 	QAction *ShowKaduAction;
 	QAction *HideKaduAction;
 #endif
+	QAction *SilentModeAction;
 	QAction *CloseKaduAction;
 	QAction *containersSeparator;
 
@@ -104,6 +105,7 @@ private slots:
 
 	void showKaduWindow();
 	void hideKaduWindow();
+	void silentModeToggled(bool enabled);
 
 	void contextMenuAboutToBeShown();
 	void updateContextMenu();

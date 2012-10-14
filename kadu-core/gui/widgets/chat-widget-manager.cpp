@@ -40,6 +40,7 @@
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
+#include "services/notification-service.h"
 #include "protocols/protocol-factory.h"
 #include "activate.h"
 
@@ -275,6 +276,9 @@ void ChatWidgetManager::configurationUpdated()
 bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
 {
 	if (!OpenChatOnMessage)
+		return false;
+
+	if ((OpenChatOnMessage || OpenChatOnMessageWhenOnline) && Core::instance()->notificationService()->silentMode())
 		return false;
 
 	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();

@@ -52,6 +52,7 @@
 #include "icons/kadu-icon.h"
 #include "message/message-manager.h"
 #include "misc/misc.h"
+#include "services/notification-service.h"
 #include "protocols/protocol.h"
 #include "status/status-changer.h"
 #include "status/status-container-manager.h"
@@ -435,6 +436,14 @@ void DockingManager::doUpdateContextMenu()
 
 	DockMenu->addSeparator();
 
+	SilentModeAction = new QAction(KaduIcon("kadu_icons/enable-notifications").icon(), tr("Silent mode"), this);
+	SilentModeAction->setCheckable(true);
+	connect(SilentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
+	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), SilentModeAction, SLOT(setChecked(bool)));
+	DockMenu->addAction(SilentModeAction);
+
+	DockMenu->addSeparator();
+
 #ifdef Q_WS_X11
 	KaduWindowLastTimeVisible = Core::instance()->kaduWindow()->window()->isVisible();
 	DockMenu->addAction(KaduWindowLastTimeVisible ? HideKaduAction : ShowKaduAction);
@@ -442,6 +451,11 @@ void DockingManager::doUpdateContextMenu()
 	DockMenu->addAction(CloseKaduAction);
 
 	DockMenuNeedsUpdate = false;
+}
+
+void DockingManager::silentModeToggled(bool enabled)
+{
+	Core::instance()->notificationService()->setSilentMode(enabled);
 }
 
 void DockingManager::containerStatusChanged()
