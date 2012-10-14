@@ -62,6 +62,8 @@ public:
 
 	void setMessageFilter(EncryptionNgSimliteMessageFilter *messageFilter);
 
+	virtual QString displayName() const;
+
 	virtual bool canDecrypt(const Chat &chat);
 	virtual bool canEncrypt(const Chat &chat);
 

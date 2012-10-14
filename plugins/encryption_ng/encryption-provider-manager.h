@@ -68,6 +68,8 @@ public:
 
 	EncryptionProvider * defaultEncryptorProvider(const Chat &chat);
 
+	virtual QString displayName() const;
+
 	virtual Encryptor * acquireEncryptor(const Chat &chat);
 	virtual Decryptor * acquireDecryptor(const Chat &chat);
 

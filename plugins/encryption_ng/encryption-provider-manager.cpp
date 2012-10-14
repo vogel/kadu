@@ -108,6 +108,11 @@ EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const C
 	return 0;
 }
 
+QString EncryptionProviderManager::displayName() const
+{
+	return QString();
+}
+
 Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)
 {
 	return new DecryptorWrapper(chat, this, this);

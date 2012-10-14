@@ -84,6 +84,11 @@ void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 	}
 }
 
+QString EncryptioNgSimliteProvider::displayName() const
+{
+	return tr("Simlite");
+}
+
 bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
 {
 	if (1 != chat.contacts().size())

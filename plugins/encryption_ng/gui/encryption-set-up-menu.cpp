@@ -37,9 +37,7 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 	int i = 0;
 	foreach (EncryptionProvider *encryptionProvider, EncryptionProviderManager::instance()->providers())
 	{
-		Q_UNUSED(encryptionProvider);
-
-		QAction *encryptorAction = addAction(tr("Encryptor: %1").arg(i));
+		QAction *encryptorAction = addAction(tr("%1 Encryption").arg(encryptionProvider->displayName()));
 		encryptorAction->setActionGroup(EncryptorsGroup);
 		encryptorAction->setCheckable(true);
 		encryptorAction->setData(i);
