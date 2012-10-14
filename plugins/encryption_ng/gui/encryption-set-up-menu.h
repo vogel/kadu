@@ -28,6 +28,8 @@ class EncryptionSetUpMenu : public QMenu
 {
 	Q_OBJECT
 
+	Action *MenuAction;
+
 	QActionGroup *EncryptorsGroup;
 
 private slots:

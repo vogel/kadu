@@ -18,13 +18,17 @@
  */
 
 #include "gui/actions/action.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/actions.h"
 
+#include "encryption-chat-data.h"
+#include "encryption-manager.h"
+#include "encryption-provider-manager.h"
+
 #include "encryption-set-up-menu.h"
-#include <encryption-provider-manager.h>
 
 EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
-		QMenu(parent)
+		QMenu(parent), MenuAction(action)
 {
 	EncryptorsGroup = new QActionGroup(this);
 	EncryptorsGroup->setExclusive(true);
@@ -44,7 +48,6 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 
 	connect(EncryptorsGroup, SIGNAL(selected(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
 
-	addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
 	addSeparator();
 	addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
 }
@@ -55,6 +58,12 @@ EncryptionSetUpMenu::~EncryptionSetUpMenu()
 
 void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)
 {
+	Chat chat = MenuAction->context()->chat();
+	if (!chat)
+		return;
+
 	EncryptionProvider *encryptionProvider = selectedAction->data().value<EncryptionProvider *>();
-	Q_UNUSED(encryptionProvider);
+	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(encryptionProvider);
+
+	EncryptionManager::instance()->setEncryptionProvider(chat, encryptionProvider);
 }

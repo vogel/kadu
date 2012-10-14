@@ -123,6 +123,24 @@ bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enabled)
 	}
 }
 
+void EncryptionManager::setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider)
+{
+	if (!chat)
+		return;
+
+	EncryptionChatData *encryptionChatData = chatEncryption(chat);
+	Encryptor *currentEncryptor = encryptionChatData->encryptor();
+
+	if (currentEncryptor && currentEncryptor->provider() == encryptionProvider)
+		return;
+
+	if (currentEncryptor)
+		currentEncryptor->provider()->releaseEncryptor(chat, currentEncryptor);
+
+	encryptionChatData->setEncryptor(encryptionProvider ? encryptionProvider->acquireEncryptor(chat) : 0);
+	EncryptionActions::instance()->checkEnableEncryption(chat, encryptionChatData->encryptor());
+}
+
 void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
