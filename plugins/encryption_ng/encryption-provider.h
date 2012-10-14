@@ -28,6 +28,7 @@
 #ifndef ENCRYPTION_PROVIDER_H
 #define ENCRYPTION_PROVIDER_H
 
+#include <QtCore/QMetaType>
 #include <QtCore/QObject>
 
 #include "encryption_exports.h"
@@ -61,6 +62,8 @@ signals:
 	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &key);
 
 };
+
+Q_DECLARE_METATYPE(EncryptionProvider *);
 
 // for MOC
 #include "chat/chat.h"

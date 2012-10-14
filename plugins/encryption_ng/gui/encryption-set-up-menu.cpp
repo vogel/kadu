@@ -34,14 +34,12 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 	noEncryption->setCheckable(true);
 	noEncryption->setChecked(true);
 
-	int i = 0;
 	foreach (EncryptionProvider *encryptionProvider, EncryptionProviderManager::instance()->providers())
 	{
 		QAction *encryptorAction = addAction(tr("%1 Encryption").arg(encryptionProvider->displayName()));
 		encryptorAction->setActionGroup(EncryptorsGroup);
 		encryptorAction->setCheckable(true);
-		encryptorAction->setData(i);
-		i++;
+		encryptorAction->setData(QVariant::fromValue(encryptionProvider));
 	}
 
 	addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
