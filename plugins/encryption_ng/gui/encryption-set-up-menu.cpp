@@ -42,6 +42,8 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 		encryptorAction->setData(QVariant::fromValue(encryptionProvider));
 	}
 
+	connect(EncryptorsGroup, SIGNAL(selected(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
+
 	addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
 	addSeparator();
 	addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
@@ -49,4 +51,10 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 
 EncryptionSetUpMenu::~EncryptionSetUpMenu()
 {
+}
+
+void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)
+{
+	EncryptionProvider *encryptionProvider = selectedAction->data().value<EncryptionProvider *>();
+	Q_UNUSED(encryptionProvider);
 }

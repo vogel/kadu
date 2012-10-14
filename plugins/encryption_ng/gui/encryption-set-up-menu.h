@@ -30,6 +30,9 @@ class EncryptionSetUpMenu : public QMenu
 
 	QActionGroup *EncryptorsGroup;
 
+private slots:
+	void encryptionMethodSelected(QAction *selectedAction);
+
 public:
 	explicit EncryptionSetUpMenu(Action *action, QWidget *parent = 0);
 	virtual ~EncryptionSetUpMenu();
