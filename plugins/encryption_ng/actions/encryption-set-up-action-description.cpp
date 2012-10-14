@@ -72,6 +72,7 @@ QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
 	// no parents for menu as it is destroyed manually by Action class
 	QMenu *menu = new QMenu();
 	menu->addAction(Actions::instance()->createAction("enableEncryptionAction", action->context(), action->parent()));
+	menu->addSeparator();
 	menu->addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
 
 	return menu;

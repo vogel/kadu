@@ -43,8 +43,7 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 {
 	setType(ActionDescription::TypePrivate);
 	setName("sendPublicKeyAction");
-	setIcon(KaduIcon("security-high"));
-	setText(tr("Send My Public Key"));
+	setText(tr("Send My Public Key (Simlite)"));
 
 	registerAction();
 
