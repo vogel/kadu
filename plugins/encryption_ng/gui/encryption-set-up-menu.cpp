@@ -45,16 +45,23 @@ void EncryptionSetUpMenu::aboutToShowSlot()
 {
 	clear();
 
+	Chat chat = MenuAction->context()->chat();
+	if (!chat)
+		return;
+
+	EncryptionProvider *currentEncryptionProvider = EncryptionManager::instance()->encryptionProvider(chat);
+
 	QAction *noEncryption = addAction(tr("No Encryption"));
 	noEncryption->setActionGroup(EncryptorsGroup);
 	noEncryption->setCheckable(true);
-	noEncryption->setChecked(true);
+	noEncryption->setChecked(0 == currentEncryptionProvider);
 
 	foreach (EncryptionProvider *encryptionProvider, EncryptionProviderManager::instance()->providers())
 	{
 		QAction *encryptorAction = addAction(tr("%1 Encryption").arg(encryptionProvider->displayName()));
 		encryptorAction->setActionGroup(EncryptorsGroup);
 		encryptorAction->setCheckable(true);
+		encryptorAction->setChecked(encryptionProvider == currentEncryptionProvider);
 		encryptorAction->setData(QVariant::fromValue(encryptionProvider));
 	}
 

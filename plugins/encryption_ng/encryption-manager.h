@@ -68,7 +68,9 @@ public:
 	EncryptionChatData * chatEncryption(const Chat &chat);
 
 	bool setEncryptionEnabled(const Chat &chat, bool enabled);
+
 	void setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider);
+	EncryptionProvider * encryptionProvider(const Chat &chat);
 
 	QByteArray transformIncomingMessage(const QByteArray &rawMessage, const Message &message);
 	QByteArray transformOutgoingMessage(const QByteArray &rawMessage, const Message &message);

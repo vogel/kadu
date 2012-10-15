@@ -141,6 +141,19 @@ void EncryptionManager::setEncryptionProvider(const Chat &chat, EncryptionProvid
 	EncryptionActions::instance()->checkEnableEncryption(chat, encryptionChatData->encryptor());
 }
 
+EncryptionProvider * EncryptionManager::encryptionProvider(const Chat &chat)
+{
+	if (!chat)
+		return 0;
+
+	EncryptionChatData *encryptionChatData = chatEncryption(chat);
+	Encryptor *currentEncryptor = encryptionChatData->encryptor();
+	if (!currentEncryptor)
+		return 0;
+
+	return currentEncryptor->provider();
+}
+
 void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
