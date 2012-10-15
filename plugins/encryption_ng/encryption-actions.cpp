@@ -31,7 +31,6 @@
 #include "identities/identity.h"
 #include "protocols/protocol.h"
 
-#include "actions/enable-encryption-action-description.h"
 #include "actions/encryption-set-up-action-description.h"
 #include "actions/generate-keys-action-description.h"
 #include "actions/send-public-key-action-description.h"
@@ -55,7 +54,6 @@ void EncryptionActions::unregisterActions()
 EncryptionActions::EncryptionActions()
 {
 	EncryptionSetUpActionDescriptionInstance = new EncryptionSetUpActionDescription(this);
-	new EnableEncryptionActionDescription(this);
 	new GenerateKeysActionDescription(this);
 	new SendPublicKeyActionDescription(this);
 }
