@@ -84,43 +84,30 @@ EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)
 	return ChatEnryptions.value(chat);
 }
 
-bool EncryptionManager::setEncryptionEnabled(const Chat &chat, bool enabled)
+bool EncryptionManager::setEncryptionEnabled(const Chat& chat)
 {
 	if (!chat)
 		return false;
 
 	EncryptionChatData *encryptionChatData = chatEncryption(chat);
-	if (enabled)
-	{
-		Encryptor *encryptor = encryptionChatData->encryptor();
-		bool enableSucceeded;
+	Encryptor *encryptor = encryptionChatData->encryptor();
+	bool enableSucceeded;
 
-		if (encryptor && encryptor->provider() == EncryptionProviderManager::instance()->defaultEncryptorProvider(chat))
-			enableSucceeded = true;
-		else
-		{
-			if (encryptor)
-				encryptor->provider()->releaseEncryptor(chat, encryptor);
-
-			encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
-			encryptionChatData->setEncryptor(encryptor);
-			enableSucceeded = (0 != encryptor);
-		}
-
-		EncryptionActions::instance()->checkEnableEncryption(chat, enableSucceeded);
-
-		return enableSucceeded;
-	}
+	if (encryptor && encryptor->provider() == EncryptionProviderManager::instance()->defaultEncryptorProvider(chat))
+		enableSucceeded = true;
 	else
 	{
-		Encryptor *encryptor = encryptionChatData->encryptor();
 		if (encryptor)
 			encryptor->provider()->releaseEncryptor(chat, encryptor);
-		encryptionChatData->setEncryptor(0);
-		EncryptionActions::instance()->checkEnableEncryption(chat, false);
 
-		return true; // we can always disable
+		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
+		encryptionChatData->setEncryptor(encryptor);
+		enableSucceeded = (0 != encryptor);
 	}
+
+	EncryptionActions::instance()->checkEnableEncryption(chat, enableSucceeded);
+
+	return enableSucceeded;
 }
 
 void EncryptionManager::setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider)
@@ -163,7 +150,8 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 	if (!EncryptionProviderManager::instance()->canEncrypt(chat))
 		return;
 
-	setEncryptionEnabled(chat, chatEncryption(chat)->encrypt());
+	if (chatEncryption(chat)->encrypt())
+		setEncryptionEnabled(chat);
 }
 
 void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
@@ -213,7 +201,7 @@ QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMess
 	QByteArray result = encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
 
 	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
-		setEncryptionEnabled(message.messageChat(), true);
+		setEncryptionEnabled(message.messageChat());
 
 	return result;
 }

@@ -63,9 +63,14 @@ void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool tog
 		return;
 
 	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(toggled);
-
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled) && toggled)
+	if (!toggled)
+	{
+		EncryptionManager::instance()->setEncryptionProvider(chat, 0);
 		sender->setChecked(false);
+		return;
+	}
+
+	sender->setChecked(EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat()));
 }
 
 QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
