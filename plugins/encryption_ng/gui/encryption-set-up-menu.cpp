@@ -33,6 +33,18 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 	EncryptorsGroup = new QActionGroup(this);
 	EncryptorsGroup->setExclusive(true);
 
+	connect(EncryptorsGroup, SIGNAL(selected(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
+	connect(this, SIGNAL(aboutToShow()), SLOT(aboutToShowSlot()));
+}
+
+EncryptionSetUpMenu::~EncryptionSetUpMenu()
+{
+}
+
+void EncryptionSetUpMenu::aboutToShowSlot()
+{
+	clear();
+
 	QAction *noEncryption = addAction(tr("No Encryption"));
 	noEncryption->setActionGroup(EncryptorsGroup);
 	noEncryption->setCheckable(true);
@@ -46,14 +58,8 @@ EncryptionSetUpMenu::EncryptionSetUpMenu(Action *action, QWidget *parent) :
 		encryptorAction->setData(QVariant::fromValue(encryptionProvider));
 	}
 
-	connect(EncryptorsGroup, SIGNAL(selected(QAction*)), this, SLOT(encryptionMethodSelected(QAction*)));
-
 	addSeparator();
-	addAction(Actions::instance()->createAction("sendPublicKeyAction", action->context(), action->parent()));
-}
-
-EncryptionSetUpMenu::~EncryptionSetUpMenu()
-{
+	addAction(Actions::instance()->createAction("sendPublicKeyAction", MenuAction->context(), MenuAction->parent()));
 }
 
 void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)

@@ -33,6 +33,7 @@ class EncryptionSetUpMenu : public QMenu
 	QActionGroup *EncryptorsGroup;
 
 private slots:
+	void aboutToShowSlot();
 	void encryptionMethodSelected(QAction *selectedAction);
 
 public:
