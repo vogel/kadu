@@ -108,6 +108,11 @@ EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const C
 	return 0;
 }
 
+QString EncryptionProviderManager::name() const
+{
+	return QString();
+}
+
 QString EncryptionProviderManager::displayName() const
 {
 	return QString();

@@ -84,6 +84,11 @@ void EncryptioNgSimliteProvider::accountUnregistered(Account account)
 	}
 }
 
+QString EncryptioNgSimliteProvider::name() const
+{
+	return "simlite";
+}
+
 QString EncryptioNgSimliteProvider::displayName() const
 {
 	return tr("Simlite");

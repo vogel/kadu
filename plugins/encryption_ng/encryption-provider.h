@@ -45,6 +45,7 @@ class ENCRYPTIONAPI EncryptionProvider : public QObject
 public:
 	virtual ~EncryptionProvider() {}
 
+	virtual QString name() const = 0;
 	virtual QString displayName() const = 0;
 
 	virtual bool canEncrypt(const Chat &chat) = 0;
