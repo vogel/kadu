@@ -78,5 +78,8 @@ void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)
 	EncryptionProvider *encryptionProvider = selectedAction->data().value<EncryptionProvider *>();
 	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(encryptionProvider);
 
+	if (encryptionProvider)
+		EncryptionManager::instance()->chatEncryption(chat)->setLastEncryptionProviderName(encryptionProvider->name());
+
 	EncryptionManager::instance()->setEncryptionProvider(chat, encryptionProvider);
 }
