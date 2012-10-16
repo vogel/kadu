@@ -53,6 +53,7 @@ public:
 			  QWidget *parent = 0, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
 	MessageDialog * addButton(QMessageBox::StandardButton button, const QString &text = "");
+	void setDefaultButton(QMessageBox::StandardButton button);
 
 	int exec();
 	bool ask();

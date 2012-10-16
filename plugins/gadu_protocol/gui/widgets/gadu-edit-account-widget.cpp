@@ -22,7 +22,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QWeakPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
@@ -32,7 +31,6 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 #include <QtGui/QTabWidget>
@@ -46,6 +44,7 @@
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocol.h"
@@ -175,25 +174,19 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	// incoming images
 
-	QGroupBox *inclomingImages = new QGroupBox(tr("Incoming Images"), this);
-	QFormLayout *incomingImagesLayout = new QFormLayout(inclomingImages);
+	QGroupBox *images = new QGroupBox(tr("Images"), this);
+	QFormLayout *imagesLayout = new QFormLayout(images);
 
-	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images also when Invisible"), optionsTab);
+	ReceiveImagesDuringInvisibility = new QCheckBox(tr("Receive images also when I am Invisible"), optionsTab);
 	connect(ReceiveImagesDuringInvisibility, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	incomingImagesLayout->addRow(ReceiveImagesDuringInvisibility);
+	imagesLayout->addRow(ReceiveImagesDuringInvisibility);
 
-	layout->addWidget(inclomingImages);
-
-	// outgoing images
-
-	QGroupBox *outgoingImages = new QGroupBox(tr("Outgoing Images"), this);
-	QFormLayout *outgoingImagesLayout = new QFormLayout(outgoingImages);
-
-	ChatImageSizeWarning = new QCheckBox(tr("Show a warning when the image is larger then 256 KiB"), optionsTab);
+	ChatImageSizeWarning = new QCheckBox(tr("Warn me when the image being sent may be too large"), optionsTab);
+	ChatImageSizeWarning->setToolTip(tr("Some clients may have trouble with too large images (over 256 KiB)."));
 	connect(ChatImageSizeWarning, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
-	outgoingImagesLayout->addRow(ChatImageSizeWarning);
+	imagesLayout->addRow(ChatImageSizeWarning);
 
-	layout->addWidget(outgoingImages);
+	layout->addWidget(images);
 
 	QGroupBox *other = new QGroupBox(tr("Other"), this);
 	QFormLayout *otherLayout = new QFormLayout(other);
@@ -202,8 +195,8 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	// status
 
-	ShowStatusToEveryone = new QCheckBox(tr("Show my status to everyone"), other);
-	ShowStatusToEveryone->setToolTip(tr("When disabled, you're visible only to buddies on your list"));
+	ShowStatusToEveryone = new QCheckBox(tr("Show my status only to buddies on my list"), other);
+	ShowStatusToEveryone->setToolTip(tr("When disabled, anyone can see your status."));
 	connect(ShowStatusToEveryone, SIGNAL(clicked(bool)), this, SLOT(showStatusToEveryoneToggled(bool)));
 	connect(ShowStatusToEveryone, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
@@ -211,14 +204,16 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 	// notifications
 
-	SendTypingNotification = new QCheckBox(tr("Send composing events"), other);
+	SendTypingNotification = new QCheckBox(tr("Enable composing events"), other);
+	SendTypingNotification->setToolTip(tr("Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa."));
 	connect(SendTypingNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
 	otherLayout->addRow(SendTypingNotification);
 
 	// spam
 
-	ReceiveSpam = new QCheckBox(tr("Receive URLs from anonymous buddies"), other);
+	ReceiveSpam = new QCheckBox(tr("Block links from anonymous buddies"), other);
+	ReceiveSpam->setToolTip(tr("Protects you from potentially malicious links in messages from anonymous buddies"));
 	connect(ReceiveSpam, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
 	otherLayout->addRow(ReceiveSpam);
@@ -230,27 +225,23 @@ void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 {
-	QGroupBox *general = new QGroupBox(tr("General"), this);
-	QGridLayout *generalLayout = new QGridLayout(general);
-	generalLayout->setColumnMinimumWidth(0, 20);
-	generalLayout->setColumnMinimumWidth(3, 20);
-	layout->addWidget(general);
+	QGroupBox *general = new QGroupBox(tr("Gadu-Gadu Server"), this);
+	QFormLayout *generalLayout = new QFormLayout(general);
 
 	useDefaultServers = new QCheckBox(tr("Use default servers"), general);
-	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 4);
+	generalLayout->addRow(useDefaultServers);
 
-	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), general);
+	QLabel *ipAddressesLabel = new QLabel(tr("Custom server IP addresses"), general);
 	ipAddresses = new QLineEdit(general);
 	ipAddresses->setToolTip("You can specify which servers and ports to use.\n"
 							"Separate every server using semicolon.\n"
 							"The last IPv4 octet may be specified as a range of addresses.\n"
 							"For example:\n"
 							"91.214.237.1 ; 91.214.237.3 ; 91.214.237.10:8074 ; 91.214.237.11-20 ; 91.214.237.21-30:8074");
-	generalLayout->addWidget(ipAddressesLabel, 1, 1);
-	generalLayout->addWidget(ipAddresses, 1, 2);
+	generalLayout->addRow(ipAddressesLabel, ipAddresses);
 
-	AllowFileTransfers = new QCheckBox(tr("Allow file transfers"), general);
-	generalLayout->addWidget(AllowFileTransfers, 2, 0, 1, 4);
+	AllowFileTransfers = new QCheckBox(tr("Enable file transfers"), general);
+	generalLayout->addRow(AllowFileTransfers);
 
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setDisabled(bool)));
 	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setDisabled(bool)));
@@ -260,7 +251,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(AllowFileTransfers, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
 	UseTlsEncryption = new QCheckBox(tr("Use encrypted connection"), general);
-	generalLayout->addWidget(UseTlsEncryption, 3, 0, 1, 4);
+	generalLayout->addRow(UseTlsEncryption);
 
 	if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
 		connect(UseTlsEncryption, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
@@ -270,30 +261,29 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 		UseTlsEncryption->setToolTip(tr("You have to compile libgadu with SSL support to be able to enable encrypted connection"));
 	}
 
-	QHBoxLayout *externalLayout = new QHBoxLayout();
+	QGroupBox *connection = new QGroupBox(tr("Connection"), this);
+	QFormLayout *connectionLayout = new QFormLayout(connection);
 
-	ExternalIp = new QLineEdit(general);
+	ExternalIp = new QLineEdit(connection);
 	connect(ExternalIp, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	externalLayout->addWidget(new QLabel(tr("External ip") + ':', general));
-	externalLayout->addWidget(ExternalIp);
+	connectionLayout->addRow(new QLabel(tr("External IP") + ':', connection), ExternalIp);
 
-	ExternalPort = new QLineEdit(general);
+	ExternalPort = new QLineEdit(connection);
 	ExternalPort->setValidator(new QIntValidator(0, 99999, ExternalPort));
 	connect(ExternalPort, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	externalLayout->addWidget(new QLabel(tr("External port") + ':', general));
-	externalLayout->addWidget(ExternalPort);
+	connectionLayout->addRow(new QLabel(tr("External port") + ':', connection), ExternalPort);
 
-	generalLayout->addLayout(externalLayout, 4, 0, 1, 4);
-
-	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
-	ProxyCombo = new ProxyComboBox(general);
+	QLabel *proxyLabel = new QLabel(tr("Proxy configuration") + ':', connection);
+	ProxyCombo = new ProxyComboBox(connection);
 	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
-	generalLayout->addWidget(proxyLabel, 5, 1);
-	generalLayout->addWidget(ProxyCombo, 5, 2);
+	connectionLayout->addRow(proxyLabel, ProxyCombo);
+
+	layout->addWidget(general);
+	layout->addWidget(connection);
 }
 
 void GaduEditAccountWidget::apply()
@@ -303,7 +293,7 @@ void GaduEditAccountWidget::apply()
 	account().setRememberPassword(RememberPassword->isChecked());
 	account().setPassword(AccountPassword->text());
 	account().setHasPassword(!AccountPassword->text().isEmpty());
-	account().setPrivateStatus(!ShowStatusToEveryone->isChecked());
+	account().setPrivateStatus(ShowStatusToEveryone->isChecked());
 	account().setUseDefaultProxy(ProxyCombo->isDefaultProxySelected());
 	account().setProxy(ProxyCombo->currentProxy());
 
@@ -317,7 +307,7 @@ void GaduEditAccountWidget::apply()
 		if (gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL))
 			Details->setTlsEncryption(UseTlsEncryption->isChecked());
 		Details->setSendTypingNotification(SendTypingNotification->isChecked());
-		Details->setReceiveSpam(ReceiveSpam->isChecked());
+		Details->setReceiveSpam(!ReceiveSpam->isChecked());
 
 		Details->setExternalIp(ExternalIp->text());
 		Details->setExternalPort(ExternalPort->text().toUInt());
@@ -363,7 +353,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
-		&& account().privateStatus() != ShowStatusToEveryone->isChecked()
+		&& account().privateStatus() == ShowStatusToEveryone->isChecked()
 		&& account().useDefaultProxy() == ProxyCombo->isDefaultProxySelected()
 		&& account().proxy() == ProxyCombo->currentProxy()
 		&& Details->receiveImagesDuringInvisibility() == ReceiveImagesDuringInvisibility->isChecked()
@@ -376,7 +366,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& config_file.readEntry("Network", "Server") == ipAddresses->text()
 		&& (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) || Details->tlsEncryption() == UseTlsEncryption->isChecked())
 		&& Details->sendTypingNotification() == SendTypingNotification->isChecked()
-		&& Details->receiveSpam() == ReceiveSpam->isChecked()
+		&& Details->receiveSpam() != ReceiveSpam->isChecked()
 		&& !gpiw->isModified()
 
 		&& Details->externalIp() == ExternalIp->text()
@@ -409,7 +399,7 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountId->setText(account().id());
 	RememberPassword->setChecked(account().rememberPassword());
 	AccountPassword->setText(account().password());
-	ShowStatusToEveryone->setChecked(!account().privateStatus());
+	ShowStatusToEveryone->setChecked(account().privateStatus());
 	if (account().useDefaultProxy())
 		ProxyCombo->selectDefaultProxy();
 	else
@@ -425,7 +415,7 @@ void GaduEditAccountWidget::loadAccountData()
 		AllowFileTransfers->setChecked(details->allowDcc());
 		UseTlsEncryption->setChecked(gg_libgadu_check_feature(GG_LIBGADU_FEATURE_SSL) ? details->tlsEncryption() : false);
 		SendTypingNotification->setChecked(details->sendTypingNotification());
-		ReceiveSpam->setChecked(details->receiveSpam());
+		ReceiveSpam->setChecked(!details->receiveSpam());
 
 		ExternalIp->setText(details->externalIp());
 		ExternalPort->setText(QString::number(details->externalPort()));
@@ -437,30 +427,23 @@ void GaduEditAccountWidget::loadAccountData()
 
 void GaduEditAccountWidget::removeAccount()
 {
-	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
-	messageBox.data()->setWindowTitle(tr("Confirm account removal"));
-	messageBox.data()->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account().accountIdentity().name())
-			.arg(account().id()));
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Confrim Account Removal"),
+	                        tr("Are you sure do you want to remove account %1 (%2)?")
+				.arg(account().accountIdentity().name())
+				.arg(account().id()));
+	dialog->addButton(QMessageBox::Yes, tr("Remove account"));
+	dialog->addButton(QMessageBox::YesToAll, tr("Remove account and unregister from server"));
+	dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
+	dialog->setDefaultButton(QMessageBox::Cancel);
+	int decision = dialog->exec();
 
-	QPushButton *removeButton = messageBox.data()->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	QPushButton *removeAndUnregisterButton = messageBox.data()->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
-	messageBox.data()->addButton(QMessageBox::Cancel);
-	messageBox.data()->setDefaultButton(QMessageBox::Cancel);
-	messageBox.data()->exec();
-
-	if (messageBox.isNull())
-		return;
-
-	if (messageBox.data()->clickedButton() == removeButton)
+	if (decision == QMessageBox::Yes)
 	{
 		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
-	else if (messageBox.data()->clickedButton() == removeAndUnregisterButton)
+	else if (decision == QMessageBox::YesToAll)
 		(new GaduUnregisterAccountWindow(account()))->show();
-
-	delete messageBox.data();
 }
 
 void GaduEditAccountWidget::remindPasssword()
@@ -490,7 +473,7 @@ void GaduEditAccountWidget::passwordChanged(const QString &newPassword)
 
 void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 {
-	if (!toggled)
+	if (toggled)
 		return;
 
 	int count = 0;
@@ -503,20 +486,15 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 	if (!count)
 		return;
 
-	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
-	messageBox.data()->setWindowTitle(tr("Confirm checking \"Show my status to everyone\" option"));
-	messageBox.data()->setText(tr("Are you sure do you want to check \"Show my status to everyone\" option?\n"
-	                              "You have several buddies which are not allowed to see your status.\n"
-	                              "Enabling this option will allow them to know you are available."));
-	QAbstractButton* yesButton = messageBox.data()->addButton(QMessageBox::Yes);
-	messageBox.data()->addButton(QMessageBox::No);
-	messageBox.data()->setDefaultButton(QMessageBox::No);
-	messageBox.data()->exec();
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Status Visibility"),
+	                        tr("You are going to reveal your status to several buddies which are currently not allowed to see it.\n"
+				  "Are you sure to allow them to know you are available?"));
+	dialog->addButton(QMessageBox::Yes, tr("Make my status visible anyway"));
+	dialog->addButton(QMessageBox::No, tr("Stay with private status"));
+	dialog->setDefaultButton(QMessageBox::No);
+	int decision = dialog->exec();
 
-	if (messageBox.isNull())
-		return;
-
-	if (messageBox.data()->clickedButton() == yesButton)
+	if (decision == QMessageBox::Yes)
 		return;
 
 	ShowStatusToEveryone->setChecked(false);

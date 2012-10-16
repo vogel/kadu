@@ -131,7 +131,8 @@ Error GaduChatImageService::checkImageSize(qint64 size) const
 	if (!details || !details->chatImageSizeWarning() || size <= RECOMMENDED_MAXIMUM_SIZE)
 		return Error(NoError, QString());
 
-	QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB.") + '\n' + tr("Do you really want to send this image?");
+	QString message = tr("This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.")
+		+ '\n' + tr("Do you really want to send this image?");
 	message = message.arg((size + 1023) / 1024).arg(RECOMMENDED_MAXIMUM_SIZE / 1024);
 
 	return Error(ErrorLow, message);

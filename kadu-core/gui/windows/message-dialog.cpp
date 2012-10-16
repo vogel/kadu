@@ -72,6 +72,11 @@ MessageDialog * MessageDialog::addButton(QMessageBox::StandardButton button, con
 	return this;
 }
 
+void MessageDialog::setDefaultButton(QMessageBox::StandardButton button)
+{
+	Box->setDefaultButton(button);
+}
+
 int MessageDialog::exec()
 {
 	return Box->exec();
