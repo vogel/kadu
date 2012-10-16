@@ -33,11 +33,7 @@
 
 QString IconThemeManager::defaultTheme()
 {
-#ifdef Q_WS_MAEMO_5
-	return QLatin1String("glass");
-#else
 	return QLatin1String("default");
-#endif
 }
 
 IconThemeManager::IconThemeManager(QObject *parent) :

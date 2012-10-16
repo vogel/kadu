@@ -39,7 +39,7 @@
 
 #include "kadu-application.h"
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if defined(Q_WS_X11)
 #include <X11/Xatom.h>
 #include <X11/extensions/Xfixes.h>
 #undef KeyPress
@@ -48,7 +48,7 @@
 #include <QtGui/QX11Info>
 
 #include "os/generic/compositing-aware-object.h"
-#endif // Q_WS_X11 && !Q_WS_MAEMO_5
+#endif // Q_WS_X11
 
 KaduApplication::KaduApplication(int &argc, char *argv[]) :
 		QApplication(argc, argv), SessionClosing(false)
@@ -61,7 +61,7 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	setStyleSheet("QToolBar{border:0px}");
 #endif
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if defined(Q_WS_X11)
 	xfixes_event_base = -1;
 	int dummy;
 	if (XFixesQueryExtension(QX11Info::display(), &xfixes_event_base, &dummy))
@@ -74,7 +74,7 @@ KaduApplication::KaduApplication(int &argc, char *argv[]) :
 	}
 	if (QX11Info::isCompositingManagerRunning())
 		CompositingAwareObject::compositingStateChanged();
-#endif // Q_WS_X11 && !Q_WS_MAEMO_5
+#endif // Q_WS_X11
 }
 
 void KaduApplication::commitData(QSessionManager &manager)
@@ -95,7 +95,7 @@ void KaduApplication::commitData(QSessionManager &manager)
 	SessionClosing = false;
 }
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if defined(Q_WS_X11)
 bool KaduApplication::x11EventFilter(XEvent *event)
 {
 	if (xfixes_event_base != -1 && event->type == xfixes_event_base + XFixesSelectionNotify)
@@ -106,7 +106,7 @@ bool KaduApplication::x11EventFilter(XEvent *event)
 	}
 	return false;
 }
-#endif // Q_WS_X11 && !Q_WS_MAEMO_5
+#endif // Q_WS_X11
 
 bool KaduApplication::sessionClosing() const
 {

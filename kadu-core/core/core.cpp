@@ -222,11 +222,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "BlinkChatTitle", true);
 	config_file.addVariable("Chat", "ChatCloseTimer", true);
 	config_file.addVariable("Chat", "ChatCloseTimerPeriod", 2);
-#ifdef Q_WS_MAEMO_5
-	config_file.addVariable("Chat", "ChatPrune", true);
-#else
 	config_file.addVariable("Chat", "ChatPrune", false);
-#endif
 	config_file.addVariable("Chat", "ChatPruneLen", 20);
 	config_file.addVariable("Chat", "ConfirmChatClear", true);
 	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
@@ -329,11 +325,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Look", "PanelFont", qApp->font());
 	config_file.addVariable("Look", "PanelVerticalScrollbar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
-#ifdef Q_WS_MAEMO_5
-	config_file.addVariable("Look", "ShowAvatars", false);
-#else
 	config_file.addVariable("Look", "ShowAvatars", true);
-#endif
 	config_file.addVariable("Look", "IconTheme", IconThemeManager::defaultTheme());
 	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);

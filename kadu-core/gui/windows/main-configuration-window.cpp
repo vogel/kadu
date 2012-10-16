@@ -193,7 +193,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	widget()->widgetById("notify/fullscreenSilentMode")->hide();
 #endif
 
-#if !defined(Q_WS_X11) || defined(Q_WS_MAEMO_5)
+#if !defined(Q_WS_X11)
 	widget()->widgetById("useTransparency")->hide();
 	widget()->widgetById("userboxTransparency")->hide();
 	widget()->widgetById("userboxAlpha")->hide();

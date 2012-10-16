@@ -36,7 +36,7 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if defined(Q_WS_X11)
 #include "notify/x11-screen-mode-checker.h"
 #elif defined(Q_WS_WIN)
 #include "notify/windows-screen-mode-checker.h"
@@ -216,7 +216,7 @@ void NotificationService::startScreenModeChecker()
 	if (FullscreenChecker)
 		return;
 
-#if defined(Q_WS_X11) && !defined(Q_WS_MAEMO_5)
+#if defined(Q_WS_X11)
 	FullscreenChecker = new X11ScreenModeChecker();
 #elif defined(Q_WS_WIN)
 	FullscreenChecker = new WindowsScreenModeChecker();

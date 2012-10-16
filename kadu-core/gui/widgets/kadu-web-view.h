@@ -70,10 +70,6 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *e);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 
-#ifdef Q_WS_MAEMO_5
-	virtual bool eventFilter(QObject *, QEvent *e);
-#endif
-
 public:
 	explicit KaduWebView(QWidget *parent = 0);
 	virtual ~KaduWebView();

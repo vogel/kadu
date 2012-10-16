@@ -90,8 +90,6 @@ void Updates::buildQuery()
 		platform.append("OpenBSD");
 #elif defined(Q_OS_SOLARIS)
 		platform.append("Solaris");
-#elif defined(Q_WS_MAEMO_5)
-		platform.append("Maemo");
 #elif defined(Q_OS_MAC)
 		switch (QSysInfo::MacintoshVersion)
 		{

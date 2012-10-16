@@ -38,9 +38,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QStackedWidget>
 #include <QtGui/QVBoxLayout>
-#ifdef Q_WS_MAEMO_5
-#include <QtGui/QScrollArea>
-#endif
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
@@ -153,17 +150,7 @@ void YourAccounts::createGui()
 
 	MainStack = new QStackedWidget(this);
 
-#ifdef Q_WS_MAEMO_5
-	QScrollArea *scrollArea = new QScrollArea(this);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setWidget(MainStack);
-	scrollArea->setWidgetResizable(true);
-	contentLayout->addWidget(scrollArea, 100);
-#else
 	contentLayout->addWidget(MainStack, 100);
-#endif
 
 	createAccountWidget();
 	createEditAccountWidget();
@@ -171,10 +158,8 @@ void YourAccounts::createGui()
 
 void YourAccounts::switchToCreateMode()
 {
-#ifndef Q_WS_MAEMO_5
 	MainAccountLabel->setText(tr("<font size='+2'><b>Create New Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Create New Account"));
-#endif
 
 	CanRegisterFilter->setEnabled(true);
 
@@ -190,10 +175,8 @@ void YourAccounts::switchToCreateMode()
 
 void YourAccounts::switchToAddMode()
 {
-#ifndef Q_WS_MAEMO_5
 	MainAccountLabel->setText(tr("<font size='+2'><b>Add Existing Account</b></font>"));
 	MainAccountGroupBox->setTitle(tr("Setup an Existing Account"));
-#endif
 
 	CanRegisterFilter->setEnabled(false);
 
@@ -221,20 +204,13 @@ void YourAccounts::createAccountWidget()
 
 	QGroupBox *selectNetworkGroupbox = new QGroupBox(tr("Choose a network"), CreateAddAccountContainer);
 	selectNetworkGroupbox->setFlat(true);
-#ifdef Q_WS_MAEMO_5
-	selectNetworkGroupbox->setTitle(QString());
-#endif
+
 	QFormLayout *selectNetworkLayout = new QFormLayout(selectNetworkGroupbox);
 
 	QLabel *imNetworkLabel = new QLabel(tr("IM Network") + ':', CreateAddAccountContainer);
 	Protocols = new ProtocolsComboBox(CreateAddAccountContainer);
 	Protocols->addFilter(CanRegisterFilter);
 	selectNetworkLayout->addRow(imNetworkLabel, Protocols);
-
-//#ifndef Q_WS_MAEMO_5
-//	QLabel *protocolComboLabel = new QLabel(tr("<font size='-1'><i>The default network has been selected based on your language settings.</i></font>"));
-//	selectNetworkLayout->addRow(0, protocolComboLabel);
-//#endif
 
 	newAccountLayout->addWidget(selectNetworkGroupbox);
 

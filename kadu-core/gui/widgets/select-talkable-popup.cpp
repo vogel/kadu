@@ -88,9 +88,7 @@ void SelectTalkablePopup::setShowAnonymous(bool showAnonymous)
 
 void SelectTalkablePopup::show(const Talkable &talkable)
 {
-#ifndef Q_WS_MAEMO_5
 	filterWidget()->setFocus();
-#endif
 
 	QModelIndex currentIndex;
 

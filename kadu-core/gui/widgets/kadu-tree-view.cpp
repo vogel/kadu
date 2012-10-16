@@ -36,19 +36,14 @@ KaduTreeView::KaduTreeView(QWidget *parent) :
 		BackgroundImageMode(BackgroundNone), BackgroundTemporaryFile(0)
 {
 	setAnimated(true);
-#ifndef Q_WS_MAEMO_5
-	/* Disable as we use kinetic scrolling by default */
 	setDragEnabled(true);
 	setDragDropMode(DragOnly);
-#endif
 	setItemsExpandable(true);
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setMouseTracking(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
-#ifndef Q_WS_MAEMO_5
 	setUniformRowHeights(false);
-#endif
 	setWordWrap(true);
 
 	configurationUpdated();

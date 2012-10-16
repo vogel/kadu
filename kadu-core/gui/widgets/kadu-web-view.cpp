@@ -87,11 +87,6 @@ KaduWebView::KaduWebView(QWidget *parent) :
 
 	connect(RefreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
-#ifdef Q_WS_MAEMO_5
-	/* Workaround for Qt kinetic scrolling issue in QWebView */
-	installEventFilter(this);
-#endif
-
 	kdebugf2();
 }
 
@@ -230,31 +225,6 @@ void KaduWebView::mouseReleaseEvent(QMouseEvent *e)
 		convertClipboardHtml(QClipboard::Selection);
 #endif
 }
-
-#ifdef Q_WS_MAEMO_5
-bool KaduWebView::eventFilter(QObject *, QEvent *e)
-{
-	static bool mousePressed = false;
-	switch (e->type())
-	{
-		case QEvent::MouseButtonPress:
-			if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton)
-				mousePressed = true;
-			break;
-		case QEvent::MouseButtonRelease:
-			if (static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton)
-				mousePressed = false;
-			break;
-		case QEvent::MouseMove:
-			if (mousePressed)
-				return true;
-			break;
-		default:
-			break;
-	}
-	return false;
-}
-#endif
 
 void KaduWebView::hyperlinkClicked(const QUrl &anchor) const
 {

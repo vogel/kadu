@@ -91,9 +91,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	InputBox->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
-#ifdef Q_WS_MAEMO_5
-	InputBox->setMinimumHeight(64);
-#endif
+
 	setCentralWidget(InputBox);
 
 	bool old_top = loadOldToolBarsFromConfig("chatTopDockArea", Qt::TopToolBarArea);
@@ -208,14 +206,10 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
 	addToolButton(toolbarConfig, "insertEmoticonAction", Qt::ToolButtonTextBesideIcon);
-
-#ifndef Q_WS_MAEMO_5
 	addToolButton(toolbarConfig, "insertImageAction");
 	addToolButton(toolbarConfig, "showHistoryAction");
 	addToolButton(toolbarConfig, "encryptionAction");
 	addToolButton(toolbarConfig, "editUserAction");
-#endif
-
 	addToolButton(toolbarConfig, "__spacer1", Qt::ToolButtonTextBesideIcon);
 	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }

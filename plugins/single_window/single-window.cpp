@@ -72,10 +72,6 @@ SingleWindow::SingleWindow()
 	tabs = new QTabWidget(this);
 	tabs->setTabsClosable(true);
 
-#ifdef Q_WS_MAEMO_5
-	tabs->setStyleSheet("QTabBar::tab { height: 56px; }");
-#endif
-
 	rosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
 	if (rosterPos == 0)
 	{
@@ -96,13 +92,6 @@ SingleWindow::SingleWindow()
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
 	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
-
-#ifdef Q_WS_MAEMO_5
-	kaduwidth = kadu->width();
-	if (kaduwidth > 250)
-		kaduwidth = 250;
-	kadu->setFixedWidth(kaduwidth);
-#endif
 
 	if (rosterPos == 0)
 	{

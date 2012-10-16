@@ -677,7 +677,7 @@ void HintManager::import_0_6_5_configuration()
 
 void HintManager::createDefaultConfiguration()
 {
-#if !defined(Q_WS_X11) || defined(Q_WS_MAEMO_5)
+#if !defined(Q_WS_X11)
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
