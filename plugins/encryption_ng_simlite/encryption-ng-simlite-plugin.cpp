@@ -25,6 +25,8 @@
  */
 
 #include "core/core.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/kadu-paths.h"
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "services/message-filter-service.h"
@@ -56,11 +58,15 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
 
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+
 	return 0;
 }
 
 void EngryptionNgSimlitePlugin::done()
 {
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+
 	Core::instance()->messageFilterService()->unregisterMessageFilter(MessageFilter);
 
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());

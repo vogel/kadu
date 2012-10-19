@@ -27,6 +27,7 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
+	data/configuration/encryption-ng-simlite.ui
 )
 
 find_package (QCA2 REQUIRED)

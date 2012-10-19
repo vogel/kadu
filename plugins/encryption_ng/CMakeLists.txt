@@ -33,7 +33,6 @@ set (SOURCES
 	encryption-actions.cpp
 	encryption-chat-data.cpp
 	encryption-manager.cpp
-	encryption-ng-configuration-ui-handler.cpp
 	encryption-ng-plugin.cpp
 	encryption-provider-manager.cpp
 	encryptor.cpp
@@ -56,7 +55,6 @@ set (MOC_SOURCES
 	encryption-actions.h
 	encryption-chat-data.h
 	encryption-manager.h
-	encryption-ng-configuration-ui-handler.h
 	encryption-ng-plugin.h
 	encryption-provider.h
 	encryption-provider-manager.h
@@ -64,7 +62,6 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	data/configuration/encryption-ng.ui
 )
 
 find_package (QCA2 REQUIRED)
