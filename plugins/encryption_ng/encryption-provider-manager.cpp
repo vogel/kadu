@@ -87,6 +87,15 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 	emit providerUnregistered(provider);
 }
 
+EncryptionProvider * EncryptionProviderManager::byName(const QString &name) const
+{
+	foreach (EncryptionProvider *provider, Providers)
+		if (provider->name() == name)
+			return provider;
+
+	return 0;
+}
+
 bool EncryptionProviderManager::canDecrypt(const Chat &chat)
 {
 	foreach (EncryptionProvider *provider, Providers)
@@ -109,9 +118,7 @@ EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const C
 	EncryptionChatData *encryptionChatData = EncryptionManager::instance()->chatEncryption(chat);
 	QString lastEncryptionProviderName = encryptionChatData->lastEncryptionProviderName();
 	if (!lastEncryptionProviderName.isEmpty())
-		foreach (EncryptionProvider *provider, Providers)
-			if (provider->name() == lastEncryptionProviderName)
-				return provider;
+		return byName(lastEncryptionProviderName);
 
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canEncrypt(chat))

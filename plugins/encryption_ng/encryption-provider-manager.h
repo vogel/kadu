@@ -63,6 +63,8 @@ public:
 	void registerProvider(EncryptionProvider *provider);
 	void unregisterProvider(EncryptionProvider *provider);
 
+	EncryptionProvider * byName(const QString &name) const;
+
 	bool canEncrypt(const Chat &chat);
 	bool canDecrypt(const Chat &chat);
 
