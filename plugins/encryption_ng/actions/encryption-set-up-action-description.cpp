@@ -70,7 +70,9 @@ void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool tog
 		return;
 	}
 
-	sender->setChecked(EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat()));
+	EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->defaultEncryptorProvider(chat);
+	EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);
+	sender->setChecked(encryptorProvider);
 }
 
 QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)

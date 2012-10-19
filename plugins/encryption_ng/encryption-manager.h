@@ -67,8 +67,6 @@ public:
 
 	EncryptionChatData * chatEncryption(const Chat &chat);
 
-	bool setEncryptionEnabled(const Chat &chat);
-
 	void setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider);
 	EncryptionProvider * encryptionProvider(const Chat &chat);
 

@@ -84,32 +84,6 @@ EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)
 	return ChatEnryptions.value(chat);
 }
 
-bool EncryptionManager::setEncryptionEnabled(const Chat& chat)
-{
-	if (!chat)
-		return false;
-
-	EncryptionChatData *encryptionChatData = chatEncryption(chat);
-	Encryptor *encryptor = encryptionChatData->encryptor();
-	bool enableSucceeded;
-
-	if (encryptor && encryptor->provider() == EncryptionProviderManager::instance()->defaultEncryptorProvider(chat))
-		enableSucceeded = true;
-	else
-	{
-		if (encryptor)
-			encryptor->provider()->releaseEncryptor(chat, encryptor);
-
-		encryptor = EncryptionProviderManager::instance()->acquireEncryptor(chat);
-		encryptionChatData->setEncryptor(encryptor);
-		enableSucceeded = (0 != encryptor);
-	}
-
-	EncryptionActions::instance()->checkEnableEncryption(chat, enableSucceeded);
-
-	return enableSucceeded;
-}
-
 void EncryptionManager::setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider)
 {
 	if (!chat)
@@ -151,7 +125,10 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 		return;
 
 	if (chatEncryption(chat)->encrypt())
-		setEncryptionEnabled(chat);
+	{
+		EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->defaultEncryptorProvider(chat);
+		EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);
+	}
 }
 
 void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
@@ -201,7 +178,10 @@ QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMess
 	QByteArray result = encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
 
 	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
-		setEncryptionEnabled(message.messageChat());
+	{
+		EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->defaultEncryptorProvider(message.messageChat());
+		EncryptionManager::instance()->setEncryptionProvider(message.messageChat(), encryptorProvider);
+	}
 
 	return result;
 }
