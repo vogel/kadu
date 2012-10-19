@@ -25,7 +25,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QWeakPointer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
@@ -33,10 +32,8 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
-#include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QMessageBox>
 #include <QtGui/QTabWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtCrypto>
@@ -463,27 +460,20 @@ void JabberEditAccountWidget::cancel()
 
 void JabberEditAccountWidget::removeAccount()
 {
-	QWeakPointer<QMessageBox> messageBox = new QMessageBox(this);
-	messageBox.data()->setWindowTitle(tr("Confirm account removal"));
-	messageBox.data()->setText(tr("Are you sure you want to remove account %1 (%2)?")
-			.arg(account().accountIdentity().name())
-			.arg(account().id()));
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Confrim Account Removal"),
+	                        tr("Are you sure do you want to remove account %1 (%2)?")
+				.arg(account().accountIdentity().name())
+				.arg(account().id()));
+	dialog->addButton(QMessageBox::Yes, tr("Remove account"));
+	dialog->addButton(QMessageBox::Cancel, tr("Cancel"));
+	dialog->setDefaultButton(QMessageBox::Cancel);
+	int decision = dialog->exec();
 
-	QPushButton *removeButton = messageBox.data()->addButton(tr("Remove account"), QMessageBox::AcceptRole);
-	messageBox.data()->addButton(QMessageBox::Cancel);
-	messageBox.data()->setDefaultButton(QMessageBox::Cancel);
-	messageBox.data()->exec();
-
-	if (messageBox.isNull())
-		return;
-
-	if (messageBox.data()->clickedButton() == removeButton)
+	if (decision == QMessageBox::Yes)
 	{
 		AccountManager::instance()->removeAccountAndBuddies(account());
 		deleteLater();
 	}
-
-	delete messageBox.data();
 }
 
 void JabberEditAccountWidget::changePasssword()
