@@ -26,6 +26,8 @@
 #include "keys/keys-manager.h"
 
 #include "decryptor-wrapper.h"
+#include "encryption-chat-data.h"
+#include "encryption-manager.h"
 #include "encryption-provider.h"
 #include "encryptor.h"
 
@@ -101,6 +103,16 @@ bool EncryptionProviderManager::canEncrypt(const Chat &chat)
 
 EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat)
 {
+	if (!chat)
+		return 0;
+
+	EncryptionChatData *encryptionChatData = EncryptionManager::instance()->chatEncryption(chat);
+	QString lastEncryptionProviderName = encryptionChatData->lastEncryptionProviderName();
+	if (!lastEncryptionProviderName.isEmpty())
+		foreach (EncryptionProvider *provider, Providers)
+			if (provider->name() == lastEncryptionProviderName)
+				return provider;
+
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canEncrypt(chat))
 			return provider;
