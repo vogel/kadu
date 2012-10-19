@@ -34,7 +34,7 @@
 
 JabberAccountDetails::JabberAccountDetails(AccountShared *data) :
 		AccountDetails(data), AutoResource(false), UseCustomHostPort(false), CustomPort(5222),
-		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS), LegacySSLProbe(true),
+		EncryptionMode(Encryption_Auto), PlainAuthMode(AllowPlainOverTLS),
 		SendTypingNotification(true), SendGoneNotification(true), PublishSystemInfo(true)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(data);
@@ -74,7 +74,6 @@ void JabberAccountDetails::load()
 
 	EncryptionMode = (EncryptionFlag)loadValue<int>("EncryptionMode", (int)Encryption_Auto);
 	PlainAuthMode = (AllowPlainType)loadValue<int>("PlainAuthMode", (int)AllowPlainOverTLS);
-	LegacySSLProbe = loadValue<bool>("LegacySSLProbe", true);
 	TlsOverrideCert = XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert"));
 	TlsOverrideDomain = loadValue<QString>("TlsOverrideDomain");
 
@@ -99,7 +98,6 @@ void JabberAccountDetails::store()
 
 	storeValue("EncryptionMode", EncryptionMode);
 	storeValue("PlainAuthMode", PlainAuthMode);
-	storeValue("LegacySSLProbe", LegacySSLProbe);
 	storeValue("TlsOverrideCert", XMPP::Base64::encode(TlsOverrideCert).toAscii());
 	storeValue("TlsOverrideDomain", TlsOverrideDomain);
 

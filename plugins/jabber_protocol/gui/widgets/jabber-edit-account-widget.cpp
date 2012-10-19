@@ -143,39 +143,33 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 {
 	QGroupBox *general = new QGroupBox(this);
-	general->setTitle(tr("General"));
+	general->setTitle(tr("XMPP Server"));
 	layout->addWidget(general);
 
-	QVBoxLayout *vboxLayout2 = new QVBoxLayout(general);
-	vboxLayout2->setSpacing(6);
-	vboxLayout2->setMargin(9);
+	QFormLayout *boxLayout = new QFormLayout(general);
+	boxLayout->setSpacing(6);
+	boxLayout->setMargin(9);
 
 	CustomHostPort = new QCheckBox(general);
-	CustomHostPort->setText(tr("Manually specify server host/port") + ':');
-	vboxLayout2->addWidget(CustomHostPort);
-
-	HostPortLayout = new QHBoxLayout();
-	HostPortLayout->setSpacing(6);
-	HostPortLayout->setMargin(0);
+	CustomHostPort->setText(tr("Use custom server address/port"));
+	boxLayout->addRow(CustomHostPort);
 
 	CustomHostLabel = new QLabel(general);
-	CustomHostLabel->setText(tr("Host") + ':');
-	HostPortLayout->addWidget(CustomHostLabel);
+	CustomHostLabel->setText(tr("Server address") + ':');
 
 	CustomHost = new QLineEdit(general);
 	connect(CustomHost, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	HostPortLayout->addWidget(CustomHost);
+	boxLayout->addRow(CustomHostLabel, CustomHost);
 
 	CustomPortLabel = new QLabel(general);
 	CustomPortLabel->setText(tr("Port") + ':');
-	HostPortLayout->addWidget(CustomPortLabel);
 
 	CustomPort = new QLineEdit(general);
 	CustomPort->setMinimumSize(QSize(56, 0));
 	CustomPort->setMaximumSize(QSize(56, 32767));
 	CustomPort->setValidator(new QIntValidator(0, 9999999, CustomPort));
 	connect(CustomPort, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	HostPortLayout->addWidget(CustomPort);
+	boxLayout->addRow(CustomPortLabel, CustomPort);
 
 	// Manual Host/Port
 	CustomHost->setEnabled(false);
@@ -185,74 +179,50 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
 	connect(CustomHostPort, SIGNAL(clicked()), this, SLOT(dataChanged()));
 
-	vboxLayout2->addLayout(HostPortLayout);
-
-	QHBoxLayout *EncryptionLayout = new QHBoxLayout();
-	EncryptionLayout->setSpacing(6);
-	EncryptionLayout->setMargin(0);
 	EncryptionModeLabel = new QLabel(general);
-	EncryptionModeLabel->setText(tr("Encrypt connection") + ':');
-	EncryptionLayout->addWidget(EncryptionModeLabel);
+	EncryptionModeLabel->setText(tr("Use encrypted connection") + ':');
 
 	EncryptionMode = new QComboBox(general);
 	EncryptionMode->addItem(tr("Never"), JabberAccountDetails::Encryption_No);
 	EncryptionMode->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
 	EncryptionMode->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
-	EncryptionMode->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
+	EncryptionMode->addItem(tr("Only in older version"), JabberAccountDetails::Encryption_Legacy);
 	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
 	connect(EncryptionMode, SIGNAL(activated(int)), this, SLOT(dataChanged()));
-	EncryptionLayout->addWidget(EncryptionMode);
+	boxLayout->addRow(EncryptionModeLabel, EncryptionMode);
 
-	QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-	EncryptionLayout->addItem(spacerItem);
-	vboxLayout2->addLayout(EncryptionLayout);
-
-	LegacySSLProbe = new QCheckBox(general);
-	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
-	connect(LegacySSLProbe, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	vboxLayout2->addWidget(LegacySSLProbe);
-
-	QHBoxLayout *plainAuthLayout = new QHBoxLayout();
-	plainAuthLayout->setSpacing(6);
-	plainAuthLayout->setMargin(0);
 	QLabel *plainAuthLabel = new QLabel(general);
 	plainAuthLabel->setText(tr("Allow plaintext authentication") + ':');
-	plainAuthLayout->addWidget(plainAuthLabel);
 
 	PlainTextAuth = new QComboBox(general);
 	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::NoAllowPlain);
 	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::AllowPlain);
 	PlainTextAuth->addItem(tr("Over encrypted connection"), JabberAccountDetails::AllowPlainOverTLS);
 	connect(PlainTextAuth, SIGNAL(activated(int)), this, SLOT(dataChanged()));
-	plainAuthLayout->addWidget(PlainTextAuth);
-	vboxLayout2->addLayout(plainAuthLayout);
+	boxLayout->addRow(plainAuthLabel, PlainTextAuth);
 
-	QHBoxLayout *dataTransferLayout = new QHBoxLayout();
-	dataTransferLayout->setSpacing(6);
-	dataTransferLayout->setMargin(0);
 
-	QLabel *dataTransferProxyLabel = new QLabel(general);
+	QGroupBox *connection = new QGroupBox(this);
+	connection->setTitle(tr("Network"));
+	layout->addWidget(connection);
+
+	QFormLayout *connectionBoxLayout = new QFormLayout(connection);
+	boxLayout->setSpacing(6);
+	boxLayout->setMargin(9);
+
+	QLabel *dataTransferProxyLabel = new QLabel(connection);
 	dataTransferProxyLabel->setText(tr("Data transfer proxy") + ':');
-	dataTransferLayout->addWidget(dataTransferProxyLabel);
 
-	DataTransferProxy = new QLineEdit(general);
+	DataTransferProxy = new QLineEdit(connection);
 	connect(DataTransferProxy, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	dataTransferLayout->addWidget(DataTransferProxy);
-	vboxLayout2->addLayout(dataTransferLayout);
+	connectionBoxLayout->addRow(dataTransferProxyLabel, DataTransferProxy);
 
-	QHBoxLayout *proxyLayout = new QHBoxLayout();
-	proxyLayout->setSpacing(6);
-	proxyLayout->setMargin(0);
-
-	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), general);
-	ProxyCombo = new ProxyComboBox(general);
+	QLabel *proxyLabel = new QLabel(tr("Proxy configuration"), connection);
+	ProxyCombo = new ProxyComboBox(connection);
 	ProxyCombo->enableDefaultProxyAction();
 	connect(ProxyCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
-	proxyLayout->addWidget(proxyLabel);
-	proxyLayout->addWidget(ProxyCombo);
-
-	vboxLayout2->addLayout(proxyLayout);
+	connectionBoxLayout->addRow(proxyLabel, ProxyCombo);
 }
 
 void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
@@ -265,60 +235,51 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	layout->setMargin(9);
 
 	QGroupBox *resource = new QGroupBox(tr("Resource"), this);
-	QVBoxLayout *resourceLayout = new QVBoxLayout(resource);
+	QFormLayout *resourceLayout = new QFormLayout(resource);
 
-	QHBoxLayout *resourceDetailsLayout = new QHBoxLayout();
-	resourceDetailsLayout->setSpacing(6);
-	resourceDetailsLayout->setMargin(0);
-
-	AutoResource = new QCheckBox(tr("Use hostname as a resource"));
+	AutoResource = new QCheckBox(tr("Use computer name as a resource"));
 	connect(AutoResource, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
-	resourceLayout->addWidget(AutoResource);
+	resourceLayout->addRow(AutoResource);
 
 	ResourceLabel = new QLabel;
 	ResourceLabel->setText(tr("Resource") + ':');
-	resourceDetailsLayout->addWidget(ResourceLabel);
 
 	ResourceName = new QLineEdit;
 	connect(ResourceName, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	resourceDetailsLayout->addWidget(ResourceName);
+	resourceLayout->addRow(ResourceLabel, ResourceName);
 
 	PriorityLabel = new QLabel;
 	PriorityLabel->setText(tr("Priority") + ':');
-	resourceDetailsLayout->addWidget(PriorityLabel);
 
 	Priority = new QLineEdit;
 	connect(Priority, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
 	Priority->setValidator(new QIntValidator(Priority));
-	resourceDetailsLayout->addWidget(Priority);
+	resourceLayout->addRow(PriorityLabel, Priority);
 
-	resourceLayout->addLayout(resourceDetailsLayout);
 	layout->addWidget(resource);
 
-	QGroupBox *notifications = new QGroupBox(tr("Notifications"), this);
+	QGroupBox *options = new QGroupBox(tr("Options"), this);
+	QFormLayout *optionsLayout = new QFormLayout(options);
 
-	QVBoxLayout *notificationsLayout = new QVBoxLayout(notifications);
-	SendTypingNotification = new QCheckBox(tr("Send composing events"));
+	SendTypingNotification = new QCheckBox(tr("Enable composing events"));
+	SendTypingNotification->setToolTip(tr("Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa."));
 	connect(SendTypingNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	notificationsLayout->addWidget(SendTypingNotification);
+	optionsLayout->addRow(SendTypingNotification);
 
-	SendGoneNotification = new QCheckBox(tr("Send inactivity events (end/suspend conversation)"));
+	SendGoneNotification = new QCheckBox(tr("Enable chat activity events"));
+	SendGoneNotification->setToolTip(tr("Your interlocutor will be notified when you suspend or end conversation. And vice versa."));
 	SendGoneNotification->setEnabled(false);
 	connect(SendGoneNotification, SIGNAL(clicked()), this, SLOT(dataChanged()));
 	connect(SendTypingNotification, SIGNAL(toggled(bool)), SendGoneNotification, SLOT(setEnabled(bool)));
-	notificationsLayout->addWidget(SendGoneNotification);
+	optionsLayout->addRow(SendGoneNotification);
 
-	layout->addWidget(notifications);
-
-	QGroupBox *privacy = new QGroupBox(tr("Privacy"), this);
-
-	QVBoxLayout *privacyLayout = new QVBoxLayout(privacy);
 	PublishSystemInfo = new QCheckBox(tr("Publish system information"));
+	PublishSystemInfo->setToolTip(tr("Others can see your system name/version"));
 	connect(PublishSystemInfo, SIGNAL(clicked()), this, SLOT(dataChanged()));
-	privacyLayout->addWidget(PublishSystemInfo);
+	optionsLayout->addRow(PublishSystemInfo);
 
-	layout->addWidget(privacy);
+	layout->addWidget(options);
 
 	layout->addStretch(100);
 }
@@ -385,7 +346,6 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->customPort() == CustomPort->displayText().toInt()
 		&& AccountDetails->encryptionMode() == (JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()
 		&& AccountDetails->plainAuthMode() == (JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()
-		&& AccountDetails->legacySSLProbe() == LegacySSLProbe->isChecked()
 		&& AccountDetails->autoResource() == AutoResource->isChecked()
 		&& AccountDetails->resource() == ResourceName->text()
 		&& AccountDetails->priority() == Priority->text().toInt()
@@ -443,7 +403,6 @@ void JabberEditAccountWidget::loadAccountDetailsData()
 	CustomPort->setText(QString::number(AccountDetails->customPort()));
 	EncryptionMode->setCurrentIndex(EncryptionMode->findData(AccountDetails->encryptionMode()));
 	PlainTextAuth->setCurrentIndex(PlainTextAuth->findData(AccountDetails->plainAuthMode()));
-	LegacySSLProbe->setChecked(AccountDetails->legacySSLProbe());
 
 	AutoResource->setChecked(AccountDetails->autoResource());
 	ResourceName->setText(AccountDetails->resource());
@@ -474,7 +433,6 @@ void JabberEditAccountWidget::apply()
 	AccountDetails->setCustomPort(CustomPort->text().toInt());
 	AccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
 	AccountDetails->setPlainAuthMode((JabberAccountDetails::AllowPlainType)PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt());
-	AccountDetails->setLegacySSLProbe(LegacySSLProbe->isChecked());
 	AccountDetails->setAutoResource(AutoResource->isChecked());
 	AccountDetails->setResource(ResourceName->text());
 	AccountDetails->setPriority(Priority->text().toInt());

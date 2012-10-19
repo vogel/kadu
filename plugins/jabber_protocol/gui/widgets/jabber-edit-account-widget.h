@@ -64,7 +64,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *CustomPort;
 	QLabel *EncryptionModeLabel;
 	QComboBox *EncryptionMode;
-	QCheckBox *LegacySSLProbe;
 	QComboBox *PlainTextAuth;
 
 	IdentitiesComboBox *Identities;

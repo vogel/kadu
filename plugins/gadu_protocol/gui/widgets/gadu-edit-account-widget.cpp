@@ -261,7 +261,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 		UseTlsEncryption->setToolTip(tr("You have to compile libgadu with SSL support to be able to enable encrypted connection"));
 	}
 
-	QGroupBox *connection = new QGroupBox(tr("Connection"), this);
+	QGroupBox *connection = new QGroupBox(tr("Network"), this);
 	QFormLayout *connectionLayout = new QFormLayout(connection);
 
 	ExternalIp = new QLineEdit(connection);
