@@ -23,6 +23,9 @@
 #include <QtCore/QTextCodec>
 
 #include "chat/chat.h"
+#include "plugins/encryption_ng/configuration/encryption-ng-configuration.h"
+#include "plugins/encryption_ng/encryption-manager.h"
+#include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
@@ -194,6 +197,13 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 			chat.removeProperty("encryption-ng-simlite:SupportUtf");
 		else
 			chat.addProperty("encryption-ng-simlite:SupportUtf", true, CustomProperties::Storable);
+	}
+
+	// maybe this should not be done here
+	if (EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
+	{
+		EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->byName("simlite");
+		EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);
 	}
 
 	return result;

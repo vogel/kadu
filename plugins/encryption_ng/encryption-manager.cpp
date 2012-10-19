@@ -175,15 +175,7 @@ QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMess
 		encryptionChatData->setDecryptor(EncryptionProviderManager::instance()->acquireDecryptor(message.messageChat()));
 
 	bool decrypted;
-	QByteArray result = encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
-
-	if (decrypted && EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
-	{
-		EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->defaultEncryptorProvider(message.messageChat());
-		EncryptionManager::instance()->setEncryptionProvider(message.messageChat(), encryptorProvider);
-	}
-
-	return result;
+	return encryptionChatData->decryptor()->decrypt(rawMessage, message.messageChat(), &decrypted);
 }
 
 QByteArray EncryptionManager::transformOutgoingMessage(const QByteArray &rawMessage, const Message &message)
