@@ -48,8 +48,8 @@ public:
 	virtual QString name() const = 0;
 	virtual QString displayName() const = 0;
 
-	virtual bool canEncrypt(const Chat &chat) = 0;
-	virtual bool canDecrypt(const Chat &chat) = 0;
+	virtual bool canEncrypt(const Chat &chat) const = 0;
+	virtual bool canDecrypt(const Chat &chat) const = 0;
 
 	virtual Encryptor * acquireEncryptor(const Chat &chat) = 0;
 	virtual Decryptor * acquireDecryptor(const Chat &chat) = 0;

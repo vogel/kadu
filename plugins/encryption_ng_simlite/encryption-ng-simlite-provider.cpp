@@ -94,7 +94,7 @@ QString EncryptioNgSimliteProvider::displayName() const
 	return tr("Simlite");
 }
 
-bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
+bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat) const
 {
 	if (1 != chat.contacts().size())
 		return false;
@@ -105,7 +105,7 @@ bool EncryptioNgSimliteProvider::canDecrypt(const Chat &chat)
 	return Decryptors.value(chat.chatAccount())->isValid();
 }
 
-bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat)
+bool EncryptioNgSimliteProvider::canEncrypt(const Chat &chat) const
 {
 	if (1 != chat.contacts().size())
 		return false;

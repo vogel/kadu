@@ -65,8 +65,8 @@ public:
 	virtual QString name() const;
 	virtual QString displayName() const;
 
-	virtual bool canDecrypt(const Chat &chat);
-	virtual bool canEncrypt(const Chat &chat);
+	virtual bool canDecrypt(const Chat &chat) const;
+	virtual bool canEncrypt(const Chat &chat) const;
 
 	virtual Encryptor * acquireEncryptor(const Chat &chat);
 	virtual Decryptor * acquireDecryptor(const Chat &chat);

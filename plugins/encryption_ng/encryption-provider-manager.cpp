@@ -96,7 +96,7 @@ EncryptionProvider * EncryptionProviderManager::byName(const QString &name) cons
 	return 0;
 }
 
-bool EncryptionProviderManager::canDecrypt(const Chat &chat)
+bool EncryptionProviderManager::canDecrypt(const Chat &chat) const
 {
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canDecrypt(chat))
@@ -105,12 +105,12 @@ bool EncryptionProviderManager::canDecrypt(const Chat &chat)
 	return false;
 }
 
-bool EncryptionProviderManager::canEncrypt(const Chat &chat)
+bool EncryptionProviderManager::canEncrypt(const Chat &chat) const
 {
 	return (0 != defaultEncryptorProvider(chat));
 }
 
-EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat)
+EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat) const
 {
 	if (!chat)
 		return 0;

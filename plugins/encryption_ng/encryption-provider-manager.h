@@ -65,10 +65,10 @@ public:
 
 	EncryptionProvider * byName(const QString &name) const;
 
-	bool canEncrypt(const Chat &chat);
-	bool canDecrypt(const Chat &chat);
+	bool canEncrypt(const Chat &chat) const;
+	bool canDecrypt(const Chat &chat) const;
 
-	EncryptionProvider * defaultEncryptorProvider(const Chat &chat);
+	EncryptionProvider * defaultEncryptorProvider(const Chat &chat) const;
 
 	virtual QString name() const;
 	virtual QString displayName() const;
