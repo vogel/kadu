@@ -23,12 +23,12 @@
 #include <QtCore/QTextCodec>
 
 #include "chat/chat.h"
-#include "plugins/encryption_ng/configuration/encryption-ng-configuration.h"
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"
 
+#include "configuration/encryption-ng-simlite-configuration.h"
 #include "encryption-ng-simlite-common.h"
 #include "pkcs1_certificate.h"
 
@@ -200,7 +200,7 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 	}
 
 	// maybe this should not be done here
-	if (EncryptionNgConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
+	if (EncryptionNgSimliteConfiguration::instance()->encryptAfterReceiveEncryptedMessage())
 	{
 		EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->byName("simlite");
 		EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);

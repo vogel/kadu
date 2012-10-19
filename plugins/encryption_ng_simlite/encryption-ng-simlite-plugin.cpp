@@ -32,6 +32,7 @@
 #include "services/message-filter-service.h"
 #include "exports.h"
 
+#include "configuration/encryption-ng-simlite-configuration.h"
 #include "encryption-ng-simlite-key-generator.h"
 #include "encryption-ng-simlite-key-importer.h"
 #include "encryption-ng-simlite-message-filter.h"
@@ -47,6 +48,8 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 {
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
+
+	EncryptionNgSimliteConfiguration::createInstance();
 
 	EncryptioNgSimliteKeyGenerator::createInstance();
 	EncryptionManager::instance()->setGenerator(EncryptioNgSimliteKeyGenerator::instance());
@@ -74,6 +77,8 @@ void EngryptionNgSimlitePlugin::done()
 
 	EncryptionManager::instance()->setGenerator(0);
 	EncryptioNgSimliteKeyGenerator::destroyInstance();
+
+	EncryptionNgSimliteConfiguration::destroyInstance();
 
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();

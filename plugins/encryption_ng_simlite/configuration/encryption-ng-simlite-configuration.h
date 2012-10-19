@@ -19,23 +19,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CONFIGURATION_H
-#define ENCRYPTION_NG_CONFIGURATION_H
+#ifndef ENCRYPTION_NG_SIMLITE_CONFIGURATION_H
+#define ENCRYPTION_NG_SIMLITE_CONFIGURATION_H
 
 #include <QtCore/QString>
 
 #include "configuration/configuration-aware-object.h"
 
-class EncryptionNgConfiguration : private ConfigurationAwareObject
+class EncryptionNgSimliteConfiguration : private ConfigurationAwareObject
 {
-	Q_DISABLE_COPY(EncryptionNgConfiguration)
+	Q_DISABLE_COPY(EncryptionNgSimliteConfiguration)
 
-	static EncryptionNgConfiguration * Instance;
+	static EncryptionNgSimliteConfiguration * Instance;
 
 	bool EncryptAfterReceiveEncryptedMessage;
 
-	EncryptionNgConfiguration();
-	virtual ~EncryptionNgConfiguration();
+	EncryptionNgSimliteConfiguration();
+	virtual ~EncryptionNgSimliteConfiguration();
 
 	void createDefaultConfiguration();
 
@@ -43,7 +43,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	static EncryptionNgConfiguration * instance();
+	static EncryptionNgSimliteConfiguration * instance();
 
 	static void createInstance();
 	static void destroyInstance();
@@ -52,4 +52,4 @@ public:
 
 };
 
-#endif // ENCRYPTION_NG_CONFIGURATION_H
+#endif // ENCRYPTION_NG_SIMLITE_CONFIGURATION_H

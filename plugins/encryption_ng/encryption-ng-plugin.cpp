@@ -32,7 +32,6 @@
 #include "misc/kadu-paths.h"
 #include "exports.h"
 
-#include "configuration/encryption-ng-configuration.h"
 #include "keys/keys-manager.h"
 #include "notify/encryption-ng-notification.h"
 #include "encryption-actions.h"
@@ -61,7 +60,6 @@ int EncryptionNgPlugin::init(bool firstLoad)
 	}
 
 	EncryptionNgNotification::registerNotifications();
-	EncryptionNgConfiguration::createInstance();
 
 	EncryptionProviderManager::createInstance();
 	EncryptionActions::registerActions();
@@ -76,7 +74,6 @@ void EncryptionNgPlugin::done()
 	EncryptionActions::unregisterActions();
 	EncryptionProviderManager::destroyInstance();
 
-	EncryptionNgConfiguration::destroyInstance();
 	EncryptionNgNotification::unregisterNotifications();
 
 	KeysManager::destroyInstance();

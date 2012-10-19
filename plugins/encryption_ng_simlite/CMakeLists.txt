@@ -6,6 +6,8 @@ include (FindKadu)
 include (FindPkgConfig)
 
 set (SOURCES
+	configuration/encryption-ng-simlite-configuration.cpp
+
 	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-generator.cpp

@@ -26,7 +26,6 @@
 #include "protocols/services/chat-service.h"
 #include "services/raw-message-transformer-service.h"
 
-#include "configuration/encryption-ng-configuration.h"
 #include "decryptor.h"
 #include "encryption-actions.h"
 #include "encryption-chat-data.h"

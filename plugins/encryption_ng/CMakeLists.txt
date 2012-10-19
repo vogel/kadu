@@ -18,8 +18,6 @@ set (SOURCES
 	actions/generate-keys-action-description.cpp
 	actions/send-public-key-action-description.cpp
 
-	configuration/encryption-ng-configuration.cpp
-
 	gui/encryption-set-up-menu.cpp
 
 	keys/keys-manager.cpp
