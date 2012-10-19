@@ -14,6 +14,8 @@
 					tool-tip="Automatically open Kadu at startup" id="startup" />
 				<check-box caption="Inform about new versions of Kadu" config-section="General" config-item="CheckUpdates"
 					tool-tip="Check for updates when Kadu is opened" />
+				<check-box caption="Hide main window icon from taskbar" config-section="General" config-item="HideMainWindowFromTaskbar"
+					tool-tip="Kadu main window will not be visible in window list on your taskbar" id="hideMainWindowFromTaskbar" />
 			</group-box>
 		</tab>
 
@@ -38,7 +40,6 @@
 				<check-box caption="Allow using variables in status" config-section="General" config-item="ParseStatus" id="parseStatus" />
 			</group-box>
 			<group-box name="Misc">
-				<check-box caption="Hide main window icon from taskbar" config-section="General" config-item="HideMainWindowFromTaskbar" id="hideMainWindowFromTaskbar" />
 				<combo-box caption="Select window activation method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
 					<item value="0" caption="Move the Window to the Active Desktop" />
 					<item value="1" caption="Switch Desktop Making the Window Visible" />
