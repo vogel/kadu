@@ -93,7 +93,7 @@ void NotificationService::createActionDescriptions()
 	);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(notifyAboutUserActionDescription, KaduMenu::SectionActions);
 
 	SilentModeActionDescription = new ActionDescription(this,
@@ -105,7 +105,7 @@ void NotificationService::createActionDescriptions()
 	connect(SilentModeActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(silentModeActionCreated(Action *)));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->addAction(SilentModeActionDescription, KaduMenu::SectionMiscTools, 5);
 }
 

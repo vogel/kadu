@@ -33,7 +33,7 @@
 
 #include "kadu-menu.h"
 
-KaduMenu::KaduMenu(MenuCategory category, KaduMenu *parent) :
+KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) :
 		QObject(parent), Category(category), IsSorted(true)
 {
 }
@@ -117,10 +117,8 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 		firstItem = false;
 	}
 
-	if (CategoryBuddiesList != Category)
-	{
+	if ("buddy-list" != Category)
 		return;
-	}
 
 	if (actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size())
 	{

@@ -57,7 +57,7 @@ GenerateKeysActionDescription::GenerateKeysActionDescription(QObject *parent) :
 			this, SLOT(updateGenerateKeysMenu()));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(this, KaduMenu::SectionTools);
 }
 
@@ -65,7 +65,7 @@ GenerateKeysActionDescription::~GenerateKeysActionDescription()
 {
 	// actions will delete theirs menus
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(this);
 }
 

@@ -58,7 +58,7 @@ HistoryMigrationActions::HistoryMigrationActions() :
 				this, SLOT(importHistoryActionActivated(QAction*,bool)), KaduIcon(), tr("Import history..."));
 
 		MenuInventory::instance()
-			->menu(KaduMenu::CategoryTools)
+			->menu("tools")
 			->addAction(ImportHistoryActionDescription, KaduMenu::SectionTools);
 	}
 }
@@ -66,7 +66,7 @@ HistoryMigrationActions::HistoryMigrationActions() :
 HistoryMigrationActions::~HistoryMigrationActions()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(ImportHistoryActionDescription);
 }
 

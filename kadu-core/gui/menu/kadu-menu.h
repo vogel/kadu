@@ -37,15 +37,6 @@ class KaduMenu : public QObject
 	Q_OBJECT
 
 public:
-	enum MenuCategory
-	{
-		CategoryMain,
-		CategoryBuddies,
-		CategoryTools,
-		CategoryHelp,
-		CategoryBuddiesList,
-	};
-
 	enum MenuSection
 	{
 		SectionConfig,
@@ -66,7 +57,7 @@ public:
 		SectionManagement,
 	};
 
-	MenuCategory Category;
+	QString Category;
 	QList<MenuItem *> Items;
 	bool IsSorted;
 	QMenu *GuiMenu;
@@ -78,7 +69,7 @@ public:
 private slots:
 	void updateGuiMenuSlot();
 public:
-	KaduMenu(MenuCategory category, KaduMenu *parent = 0);
+	KaduMenu(const QString &category, KaduMenu *parent = 0);
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
 	void removeAction(ActionDescription *actionDescription);

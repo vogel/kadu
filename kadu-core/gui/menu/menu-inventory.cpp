@@ -44,21 +44,19 @@ MenuInventory::MenuInventory()
 {
 }
 
-void MenuInventory::bindMenu(KaduMenu::MenuCategory category, QMenu *menu)
+void MenuInventory::bindMenu(const QString &category, QMenu *menu)
 {
 	KaduMenu *kaduMenu = new KaduMenu(category);
 	kaduMenu->setGuiMenu(menu);
 	Menus.insert(category, kaduMenu);
 }
 
-KaduMenu * MenuInventory::menu(KaduMenu::MenuCategory category)
+KaduMenu * MenuInventory::menu(const QString &category)
 {
 	KaduMenu *menu = Menus.value(category);
 
 	if (!menu)
-	{
 		bindMenu(category, new QMenu());
-	}
 
 	menu = Menus.value(category);
 
@@ -74,4 +72,3 @@ void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
 {
 	ProtocolMenuManagers.removeAll(manager);
 }
-

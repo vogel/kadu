@@ -53,14 +53,14 @@ ShowXmlConsoleActionDescription::~ShowXmlConsoleActionDescription()
 {
 	// actions will delete their menus
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(this);
 }
 
 void ShowXmlConsoleActionDescription::insertMenuActionDescription()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(this, KaduMenu::SectionTools);
 }
 

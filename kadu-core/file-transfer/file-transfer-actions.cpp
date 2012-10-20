@@ -83,22 +83,22 @@ FileTransferActions::FileTransferActions(QObject *parent)
 	);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(SendFileActionDescription, KaduMenu::SectionSend, 100);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(FileTransferWindowActionDescription, KaduMenu::SectionTools, 5);
 }
 
 FileTransferActions::~FileTransferActions()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->removeAction(SendFileActionDescription);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(FileTransferWindowActionDescription);
 }
 

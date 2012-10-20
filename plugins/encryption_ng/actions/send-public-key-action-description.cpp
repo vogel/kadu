@@ -48,14 +48,14 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 	registerAction();
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(this, KaduMenu::SectionActions, 200);
 }
 
 SendPublicKeyActionDescription::~SendPublicKeyActionDescription()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->removeAction(this);
 }
 

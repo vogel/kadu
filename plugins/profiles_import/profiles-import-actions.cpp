@@ -61,7 +61,7 @@ ProfilesImportActions::ProfilesImportActions() :
 				tr("Import profiles..."), false);
 
 		MenuInventory::instance()
-			->menu(KaduMenu::CategoryTools)
+			->menu("tools")
 			->addAction(ImportProfiles, KaduMenu::SectionTools);
 
 		// The last ActionDescription will send actionLoaded() signal.
@@ -73,17 +73,17 @@ ProfilesImportActions::ProfilesImportActions() :
 			tr("Import external profile..."), false);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(ImportExternalProfile, KaduMenu::SectionTools);
 }
 
 ProfilesImportActions::~ProfilesImportActions()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(ImportProfiles);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(ImportExternalProfile);
 }
 
@@ -92,7 +92,7 @@ void ProfilesImportActions::updateActions()
 	if (ProfileDataManager::readProfileData().isEmpty())
 	{
 		MenuInventory::instance()
-			->menu(KaduMenu::CategoryTools)
+			->menu("tools")
 			->removeAction(ImportProfiles);
 	}
 }

@@ -232,7 +232,7 @@ MediaPlayer::~MediaPlayer()
 	// Remove menu item (statuses)
 // 	Core::instance()->kaduWindow()->removeMenuActionDescription(enableMediaPlayerStatuses);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->removeAction(enableMediaPlayerStatuses);
 
 	if (DockedMediaplayerStatus)
@@ -746,7 +746,7 @@ void MediaPlayer::configurationUpdated()
 	if (config_file.readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
 		MenuInventory::instance()
-			->menu(KaduMenu::CategoryMain)
+			->menu("main")
 			->removeAction(enableMediaPlayerStatuses);
 
 		if (!DockedMediaplayerStatus)
@@ -762,7 +762,7 @@ void MediaPlayer::configurationUpdated()
 	else
 	{
 		MenuInventory::instance()
-			->menu(KaduMenu::CategoryMain)
+			->menu("main")
 			->addAction(enableMediaPlayerStatuses, KaduMenu::SectionMiscTools, 7);
 
 		if (DockedMediaplayerStatus)
