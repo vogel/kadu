@@ -65,6 +65,8 @@ public:
 
 	void sort();
 	ActionContext * getActionContext();
+
+	void appendTo(QMenu *menu, ActionContext *context = 0);
 	void applyTo(QMenu *menu, ActionContext *context = 0);
 
 private slots:
@@ -78,6 +80,8 @@ public:
 
 	void attachToMenu(QMenu *menu);
 	void detachFromMenu(QMenu *menu);
+
+	bool empty() const;
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
 	void removeAction(ActionDescription *actionDescription);

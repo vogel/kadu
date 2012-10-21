@@ -65,6 +65,11 @@ void KaduMenu::detachFromMenu(QMenu* menu)
 	disconnect(menu, SIGNAL(destroyed(QObject*)), this, SLOT(menuDestroyed(QObject*)));
 }
 
+bool KaduMenu::empty() const
+{
+	return Items.empty();
+}
+
 KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority)
 {
 	Items.append(new MenuItem(actionDescription, section, priority));
@@ -105,11 +110,9 @@ void KaduMenu::sort()
 	IsSorted = true;
 }
 
-void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
+void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 {
 	sort();
-
-	menu->clear();
 
 	ActionContext *actionContext = context
 		? context
@@ -169,6 +172,12 @@ void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
 		menu->addMenu(actions);
 	else
 		delete actions;
+}
+
+void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
+{
+	menu->clear();
+	appendTo(menu, context);
 }
 
 void KaduMenu::updateGuiMenuLater()
