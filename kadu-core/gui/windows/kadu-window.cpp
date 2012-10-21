@@ -172,7 +172,7 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu(this);
-	MenuInventory::instance()->bindMenu("main", KaduMenu);
+	MenuInventory::instance()->menu("main")->attachToMenu(KaduMenu);
 	MenuInventory::instance()->menu("main")
 		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
@@ -194,7 +194,7 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
-	MenuInventory::instance()->bindMenu("buddy", ContactsMenu);
+	MenuInventory::instance()->menu("buddy")->attachToMenu(ContactsMenu);
 	MenuInventory::instance()->menu("buddy")
 		->addAction(Actions->AddUser, KaduMenu::SectionBuddies, 50)
 		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
@@ -216,7 +216,7 @@ void KaduWindow::createToolsMenu()
 	ToolsMenu = new QMenu(this);
 	ToolsMenu->setTitle(tr("&Tools"));
 
-	MenuInventory::instance()->bindMenu("tools", ToolsMenu);
+	MenuInventory::instance()->menu("tools")->attachToMenu(ToolsMenu);
 	MenuInventory::instance()->menu("tools")
 		->addAction(Actions->ShowMultilogons, KaduMenu::SectionTools, 1)
 		->update();
@@ -229,7 +229,7 @@ void KaduWindow::createHelpMenu()
 	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
-	MenuInventory::instance()->bindMenu("help", HelpMenu);
+	MenuInventory::instance()->menu("help")->attachToMenu(HelpMenu);
 	MenuInventory::instance()->menu("help")
 		->addAction(Actions->Help, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->Bugs, KaduMenu::SectionHelp, 1)
