@@ -16,7 +16,6 @@ kadu_api_directories (plugins/encryption_ng
 set (SOURCES
 	actions/encryption-set-up-action-description.cpp
 	actions/generate-keys-action-description.cpp
-	actions/send-public-key-action-description.cpp
 
 	gui/encryption-set-up-menu.cpp
 
@@ -39,7 +38,6 @@ set (SOURCES
 set (MOC_SOURCES
 	actions/encryption-set-up-action-description.h
 	actions/generate-keys-action-description.h
-	actions/send-public-key-action-description.h
 
 	gui/encryption-set-up-menu.h
 

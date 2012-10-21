@@ -6,6 +6,8 @@ include (FindKadu)
 include (FindPkgConfig)
 
 set (SOURCES
+	actions/simlite-send-public-key-action-description.cpp
+
 	configuration/encryption-ng-simlite-configuration.cpp
 
 	encryption-ng-simlite-decryptor.cpp
@@ -20,6 +22,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	actions/simlite-send-public-key-action-description.h
+
 	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h

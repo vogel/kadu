@@ -30,19 +30,18 @@
 #include "gui/windows/message-dialog.h"
 #include "message/message-manager.h"
 
-#include "keys/keys-manager.h"
-#include "notify/encryption-ng-notification.h"
+#include "plugins/encryption_ng/encryption-manager.h"
+#include "plugins/encryption_ng/key-generator.h"
+#include "plugins/encryption_ng/keys/keys-manager.h"
+#include "plugins/encryption_ng/notify/encryption-ng-notification.h"
 
-#include "encryption-manager.h"
-#include "key-generator.h"
+#include "simlite-send-public-key-action-description.h"
 
-#include "send-public-key-action-description.h"
-
-SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) :
+SimliteSendPublicKeyActionDescription::SimliteSendPublicKeyActionDescription(QObject *parent) :
 		ActionDescription(parent)
 {
 	setType(ActionDescription::TypePrivate);
-	setName("sendPublicKeyAction");
+	setName("simliteSendPublicKeyAction");
 	setText(tr("Send My Public Key (Simlite)"));
 
 	registerAction();
@@ -52,14 +51,14 @@ SendPublicKeyActionDescription::SendPublicKeyActionDescription(QObject *parent) 
 		->addAction(this, KaduMenu::SectionActions, 200);
 }
 
-SendPublicKeyActionDescription::~SendPublicKeyActionDescription()
+SimliteSendPublicKeyActionDescription::~SimliteSendPublicKeyActionDescription()
 {
 	MenuInventory::instance()
 		->menu("buddy-list")
 		->removeAction(this);
 }
 
-void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggled)
+void SimliteSendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggled)
 {
 	Q_UNUSED(toggled)
 
@@ -71,7 +70,7 @@ void SendPublicKeyActionDescription::actionTriggered(QAction *sender, bool toggl
 		sendPublicKey(contact);
 }
 
-void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
+void SimliteSendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 {
 	KeyGenerator *generator = EncryptionManager::instance()->generator();
 	if (!generator)

@@ -20,14 +20,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
-#define SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#ifndef SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#define SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
 
 #include "gui/actions/action-description.h"
 
 class Contact;
 
-class SendPublicKeyActionDescription : public ActionDescription
+class SimliteSendPublicKeyActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
@@ -37,9 +37,9 @@ protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	explicit SendPublicKeyActionDescription(QObject *parent);
-	virtual ~SendPublicKeyActionDescription();
+	explicit SimliteSendPublicKeyActionDescription(QObject *parent);
+	virtual ~SimliteSendPublicKeyActionDescription();
 
 };
 
-#endif // SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#endif // SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H

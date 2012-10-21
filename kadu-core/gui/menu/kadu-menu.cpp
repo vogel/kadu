@@ -123,8 +123,11 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 
 	QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
-	foreach (MenuItem* menuItem, Items)
+	foreach (MenuItem *menuItem, Items)
 	{
+		if (!menuItem->actionDescription())
+			continue;
+
 		QMenu *currentMenu = menuItem->section() == KaduMenu::SectionActions
 			? actions
 			: menu;

@@ -33,7 +33,6 @@
 
 #include "actions/encryption-set-up-action-description.h"
 #include "actions/generate-keys-action-description.h"
-#include "actions/send-public-key-action-description.h"
 
 #include "encryption-actions.h"
 
@@ -55,7 +54,6 @@ EncryptionActions::EncryptionActions()
 {
 	EncryptionSetUpActionDescriptionInstance = new EncryptionSetUpActionDescription(this);
 	new GenerateKeysActionDescription(this);
-	new SendPublicKeyActionDescription(this);
 }
 
 EncryptionActions::~EncryptionActions()
