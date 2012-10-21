@@ -47,7 +47,7 @@ MenuInventory::MenuInventory()
 void MenuInventory::bindMenu(const QString &category, QMenu *menu)
 {
 	KaduMenu *kaduMenu = new KaduMenu(category);
-	kaduMenu->setGuiMenu(menu);
+	kaduMenu->attachToMenu(menu);
 	Menus.insert(category, kaduMenu);
 }
 

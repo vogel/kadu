@@ -38,6 +38,33 @@ KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) :
 {
 }
 
+KaduMenu::~KaduMenu()
+{
+}
+
+void KaduMenu::menuDestroyed(QObject *object)
+{
+	Menus.removeAll(static_cast<QMenu *>(object));
+}
+
+void KaduMenu::attachToMenu(QMenu *menu)
+{
+	if (!menu)
+		return;
+
+	Menus.append(menu);
+	connect(menu, SIGNAL(destroyed(QObject*)), this, SLOT(menuDestroyed(QObject*)));
+}
+
+void KaduMenu::detachFromMenu(QMenu* menu)
+{
+	if (!menu)
+		return;
+
+	Menus.removeAll(menu);
+	disconnect(menu, SIGNAL(destroyed(QObject*)), this, SLOT(menuDestroyed(QObject*)));
+}
+
 KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority)
 {
 	Items.append(new MenuItem(actionDescription, section, priority));
@@ -76,11 +103,6 @@ void KaduMenu::sort()
 
 	qSort(Items.begin(), Items.end(), lessThan);
 	IsSorted = true;
-}
-
-void KaduMenu::setGuiMenu ( QMenu* menu )
-{
-	GuiMenu = menu;
 }
 
 void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
@@ -156,15 +178,8 @@ void KaduMenu::updateGuiMenuLater()
 
 void KaduMenu::updateGuiMenuSlot()
 {
-	applyTo(GuiMenu);
-}
-
-QMenu * KaduMenu::menu(QWidget *parent, ActionContext *actionContext)
-{
-	GuiMenu = new QMenu(parent);
-	applyTo(GuiMenu, actionContext);
-
-	return GuiMenu;
+	foreach (QMenu *menu, Menus)
+		applyTo(menu);
 }
 
 ActionContext * KaduMenu::getActionContext()
