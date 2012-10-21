@@ -83,11 +83,11 @@ void KaduMenu::setGuiMenu ( QMenu* menu )
 	GuiMenu = menu;
 }
 
-void KaduMenu::updateGuiMenu(ActionContext *context)
+void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
 {
 	sort();
 
-	GuiMenu->clear();
+	menu->clear();
 
 	ActionContext *actionContext = context
 		? context
@@ -96,18 +96,16 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 	bool firstItem = true;
 	MenuSection latestSection;
 
-	QMenu *actions = new QMenu(tr("More Actions..."), GuiMenu);
+	QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
 	foreach (MenuItem* menuItem, Items)
 	{
 		QMenu *currentMenu = menuItem->section() == KaduMenu::SectionActions
 			? actions
-			: GuiMenu;
+			: menu;
 
 		if (!firstItem && latestSection != menuItem->section())
-		{
 			currentMenu->addSeparator();
-		}
 
 		Action *action = menuItem->actionDescription()->createAction(actionContext, currentMenu->parent());
 		currentMenu->addAction(action);
@@ -135,7 +133,7 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 			{
 				if (actionDescription)
 				{
-					Action *action = actionDescription->createAction(actionContext, GuiMenu->parent());
+					Action *action = actionDescription->createAction(actionContext, menu->parent());
 					actions->addAction(action);
 					action->checkState();
 				}
@@ -146,7 +144,9 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 	}
 
 	if (actions->actions().size() > 0)
-		GuiMenu->addMenu(actions);
+		menu->addMenu(actions);
+	else
+		delete actions;
 }
 
 void KaduMenu::updateGuiMenuLater()
@@ -156,13 +156,13 @@ void KaduMenu::updateGuiMenuLater()
 
 void KaduMenu::updateGuiMenuSlot()
 {
-	updateGuiMenu();
+	applyTo(GuiMenu);
 }
 
 QMenu * KaduMenu::menu(QWidget *parent, ActionContext *actionContext)
 {
 	GuiMenu = new QMenu(parent);
-	updateGuiMenu(actionContext);
+	applyTo(GuiMenu, actionContext);
 
 	return GuiMenu;
 }

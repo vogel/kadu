@@ -64,10 +64,11 @@ public:
 
 	void sort();
 	ActionContext * getActionContext();
-	void updateGuiMenu(ActionContext *context = 0);
+	void applyTo(QMenu *menu, ActionContext *context = 0);
 
 private slots:
 	void updateGuiMenuSlot();
+
 public:
 	KaduMenu(const QString &category, KaduMenu *parent = 0);
 
