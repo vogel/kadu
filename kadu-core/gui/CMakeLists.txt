@@ -128,6 +128,7 @@ set (gui_SRCS
 	widgets/configuration/notify-tree-widget.cpp
 
 	widgets/dialog/add-group-dialog-widget.cpp
+	widgets/dialog/merge-buddies-dialog-widget.cpp
 	widgets/dialog/password-dialog-widget.cpp
 	widgets/dialog/title-widget.cpp
 
@@ -149,7 +150,6 @@ set (gui_SRCS
 	windows/kadu-window-actions.cpp
 	windows/main-configuration-window.cpp
 	windows/main-window.cpp
-	windows/merge-buddies-window.cpp
 	windows/message-dialog.cpp
 	windows/multilogon-window.cpp
 	windows/plugin-error-dialog.cpp
@@ -305,6 +305,7 @@ set (gui_MOC_SRCS
 
 	widgets/dialog/add-group-dialog-widget.h
 	widgets/dialog/dialog-widget.h
+	widgets/dialog/merge-buddies-dialog-widget.h
 	widgets/dialog/password-dialog-widget.h
 	widgets/dialog/title-widget.h
 
@@ -324,7 +325,6 @@ set (gui_MOC_SRCS
 	windows/kadu-window-actions.h
 	windows/main-configuration-window.h
 	windows/main-window.h
-	windows/merge-buddies-window.h
 	windows/message-dialog.h
 	windows/multilogon-window.h
 	windows/plugin-error-dialog.h

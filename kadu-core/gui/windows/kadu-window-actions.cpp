@@ -56,12 +56,12 @@
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/widgets/dialog/add-group-dialog-widget.h"
+#include "gui/widgets/dialog/merge-buddies-dialog-widget.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-delete-window.h"
 #include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/multilogon-window.h"
 #include "gui/windows/search-window.h"
@@ -578,11 +578,15 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 		return;
 
 	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (buddy)
-	{
-		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(buddy);
-		mergeBuddiesWindow->show();
-	}
+	if (!buddy)
+		return;
+
+	MergeBuddiesDialogWidget *mergeWidget = new MergeBuddiesDialogWidget(buddy,
+			tr("Choose which buddy would you like to merge with <i>%1</i>")
+			.arg(buddy.display()), sender->parentWidget());
+	KaduDialog *window = new KaduDialog(mergeWidget, sender->parentWidget());
+	window->setAcceptButtonText(tr("Merge"));
+	window->exec();
 
 	kdebugf2();
 }
