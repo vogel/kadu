@@ -78,7 +78,6 @@ public:
 	void update();
 
 	void setGuiMenu(QMenu *menu);
-	QMenu * guiMenu() { return GuiMenu; }
 
 	QMenu * menu(QWidget *parent, ActionContext *actionContext);
 
