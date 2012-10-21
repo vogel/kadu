@@ -20,6 +20,7 @@
 #include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/actions.h"
+#include "gui/menu/menu-inventory.h"
 
 #include "encryption-chat-data.h"
 #include "encryption-manager.h"
@@ -65,8 +66,12 @@ void EncryptionSetUpMenu::aboutToShowSlot()
 		encryptorAction->setData(QVariant::fromValue(encryptionProvider));
 	}
 
-	addSeparator();
-	addAction(Actions::instance()->createAction("sendPublicKeyAction", MenuAction->context(), MenuAction->parent()));
+	KaduMenu *additionalItems = MenuInventory::instance()->menu("encryption-ng");
+	if (!additionalItems->empty())
+	{
+		addSeparator();
+		additionalItems->appendTo(this, MenuAction->context());
+	}
 }
 
 void EncryptionSetUpMenu::encryptionMethodSelected(QAction *selectedAction)
