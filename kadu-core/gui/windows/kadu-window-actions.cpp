@@ -170,14 +170,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Configuration = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "configurationAction",
 		this, SLOT(configurationActionActivated(QAction *, bool)),
-		KaduIcon("preferences-other"), tr("Preferences...")
+		KaduIcon("preferences-other"), tr("Preferences")
 	);
 	Configuration->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 
 	ShowYourAccounts = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
-		KaduIcon("x-office-address-book"), tr("Your Accounts...")
+		KaduIcon("x-office-address-book"), tr("Your Accounts")
 	);
 
 	RecentChats = new RecentChatsAction(this);
@@ -185,7 +185,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	ShowMultilogons = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "showMultilogonsAction",
 		this, SLOT(showMultilogonsActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/multilogon"), tr("Multilogons..."), false,
+		KaduIcon("kadu_icons/multilogon"), tr("Multilogons"), false,
 		hideNoMultilogonAccounts
 	);
 	connect(ShowMultilogons, SIGNAL(actionCreated(Action *)), this, SLOT(showMultilogonsActionCreated(Action *)));
@@ -224,25 +224,25 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Help = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "helpAction",
 		this, SLOT(helpActionActivated(QAction *, bool)),
-		KaduIcon("help-contents"), tr("Getting H&elp...")
+		KaduIcon("help-contents"), tr("Getting H&elp")
 	);
 
 	Bugs = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "bugsAction",
 		this, SLOT(bugsActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/report-a-bug"), tr("Report a Bug...")
+		KaduIcon("kadu_icons/report-a-bug"), tr("Report a Bug")
 	);
 
 	GetInvolved = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "getInvolvedAction",
 		this, SLOT(getInvolvedActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/get-involved"), tr("Get Involved...")
+		KaduIcon("kadu_icons/get-involved"), tr("Get Involved")
 	);
 
 	Translate = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "translateAction",
 		this, SLOT(translateActionActivated(QAction *, bool)),
-		KaduIcon("kadu_icons/translate-kadu"), tr("Translate Kadu...")
+		KaduIcon("kadu_icons/translate-kadu"), tr("Translate Kadu")
 	);
 
 	About = new ActionDescription(this,
@@ -294,7 +294,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	OpenDescriptionLink = new ActionDescription(this,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		KaduIcon("go-jump"), tr("Open Description Link in Browser..."), false,
+		KaduIcon("go-jump"), tr("Open Description Link in Browser"), false,
 		disableNoDescriptionUrl
 	);
 	MenuInventory::instance()

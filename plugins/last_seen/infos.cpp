@@ -93,7 +93,7 @@ Infos::Infos(QObject *parent) :
 	lastSeenActionDescription = new ActionDescription(
 		this, ActionDescription::TypeMainMenu, "lastSeenAction",
 		this, SLOT(onShowInfos()),
-		KaduIcon(), tr("&Show infos about buddies...")
+		KaduIcon(), tr("&Show infos about buddies")
 	);
 
 	MenuInventory::instance()

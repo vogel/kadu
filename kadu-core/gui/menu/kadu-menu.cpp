@@ -96,7 +96,7 @@ void KaduMenu::updateGuiMenu(ActionContext *context)
 	bool firstItem = true;
 	MenuSection latestSection;
 
-	QMenu *actions = new QMenu(tr("More Actions..."), GuiMenu);
+	QMenu *actions = new QMenu(tr("More Actions"), GuiMenu);
 
 	foreach (MenuItem* menuItem, Items)
 	{
