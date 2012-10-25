@@ -22,36 +22,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADD_GROUP_DIALOG_WIDGET_H
-#define ADD_GROUP_DIALOG_WIDGET_H
+#ifndef EDIT_GROUP_DIALOG_WIDGET_H
+#define EDIT_GROUP_DIALOG_WIDGET_H
 
-#include <QtCore/QVariant>
-#include <QtGui/QDialog>
+#include "buddies/group.h"
+#include "gui/widgets/dialog/add-group-dialog-widget.h"
 
-#include "gui/widgets/dialog/dialog-widget.h"
 
-class QCheckBox;
-class QLineEdit;
-class QFormLayout;
-
-class AddGroupDialogWidget : public DialogWidget
+class EditGroupDialogWidget : public AddGroupDialogWidget
 {
 	Q_OBJECT
 
-protected:
-	QFormLayout *formLayout;
-	QLineEdit *GroupName;
+	Group CurrentGroup;
 
-	virtual void createGui();
-
-protected slots:
+private slots:
 	virtual void dialogAccepted();
-	virtual void dialogRejected();
-	void groupNameTextChanged(const QString &text);
 
 public:
-	explicit AddGroupDialogWidget(const QString &title, QWidget* parent);
-	virtual ~AddGroupDialogWidget();
+	explicit EditGroupDialogWidget(Group group, const QString &title, QWidget* parent);
+	virtual ~EditGroupDialogWidget();
 };
 
-#endif // ADD_GROUP_DIALOG_WIDGET_H
+#endif // EDIT_GROUP_DIALOG_WIDGET_H

@@ -42,8 +42,11 @@
 #include "chat/chat-list-mime-data-helper.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "gui/widgets/dialog/add-group-dialog-widget.h"
+#include "gui/widgets/dialog/edit-group-dialog-widget.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
+#include "gui/windows/kadu-dialog.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
@@ -437,13 +440,12 @@ void GroupTabBar::renameGroup()
 	if (!group)
 		return;
 
-	bool ok;
-	QString newGroupName = QInputDialog::getText(this, tr("Rename Group"),
-				tr("Please enter a new name for this group"), QLineEdit::Normal,
-				group.name(), &ok);
-
-	if (ok && newGroupName != group.name() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		group.setName(newGroupName);
+	EditGroupDialogWidget *groupWidget = new EditGroupDialogWidget(group,
+								       tr("Please enter a new name for the <i>%0</i> group").arg(group.name()),
+								       Core::instance()->kaduWindow());
+	KaduDialog *window = new KaduDialog(groupWidget, Core::instance()->kaduWindow());
+	window->setAcceptButtonText(tr("Edit Group"));
+	window->exec();
 }
 
 void GroupTabBar::deleteGroup()
@@ -456,7 +458,10 @@ void GroupTabBar::deleteGroup()
 	if (!group)
 		return;
 
-	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Kadu"), tr("Group %0 will be deleted. Are you sure?").arg(group.name()), Core::instance()->kaduWindow());
+	MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"),
+						      tr("Delete group"),
+						      tr("Group <i>%0</i> will be deleted, but without buddies. Are you sure?").arg(group.name()),
+						      Core::instance()->kaduWindow());
 	dialog->addButton(QMessageBox::Yes, tr("Delete group"));
 	dialog->addButton(QMessageBox::No, tr("Cancel"));
 
@@ -466,13 +471,10 @@ void GroupTabBar::deleteGroup()
 
 void GroupTabBar::createNewGroup()
 {
-	bool ok;
-	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-				tr("Please enter the name for the new group:"), QLineEdit::Normal,
-				QString(), &ok);
-
-	if (ok && GroupManager::instance()->acceptableGroupName(newGroupName))
-		GroupManager::instance()->byName(newGroupName);
+	AddGroupDialogWidget *groupWidget = new AddGroupDialogWidget(tr("Please enter the name for the new group"), Core::instance()->kaduWindow());
+	KaduDialog *window = new KaduDialog(groupWidget, Core::instance()->kaduWindow());
+	window->setAcceptButtonText(tr("Add Group"));
+	window->exec();
 }
 
 void GroupTabBar::groupProperties()

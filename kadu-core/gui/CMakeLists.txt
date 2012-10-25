@@ -128,6 +128,7 @@ set (gui_SRCS
 	widgets/configuration/notify-tree-widget.cpp
 
 	widgets/dialog/add-group-dialog-widget.cpp
+	widgets/dialog/edit-group-dialog-widget.cpp
 	widgets/dialog/merge-buddies-dialog-widget.cpp
 	widgets/dialog/password-dialog-widget.cpp
 	widgets/dialog/title-widget.cpp
@@ -304,6 +305,7 @@ set (gui_MOC_SRCS
 	widgets/configuration/notify-group-box.h
 
 	widgets/dialog/add-group-dialog-widget.h
+	widgets/dialog/edit-group-dialog-widget.h
 	widgets/dialog/dialog-widget.h
 	widgets/dialog/merge-buddies-dialog-widget.h
 	widgets/dialog/password-dialog-widget.h
