@@ -551,7 +551,7 @@ void DockingManager::doUpdateContextMenu()
 			menu->setIcon(container->statusIcon().icon());
 			new StatusMenu(container, false, menu);
 			StatusContainerMenus[container] = DockMenu->addMenu(menu);
-			connect(container, SIGNAL(statusUpdated()), this, SLOT(containerStatusChanged()));
+			connect(container, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(containerStatusChanged(StatusContainer *)));
 		}
 
 		if (statusContainersCount > 1)
@@ -599,10 +599,9 @@ void DockingManager::silentModeToggled(bool enabled)
 	Core::instance()->notificationService()->setSilentMode(enabled);
 }
 
-void DockingManager::containerStatusChanged()
+void DockingManager::containerStatusChanged(StatusContainer *container)
 {
-	StatusContainer *container;
-	if (sender() && (container = qobject_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
+	if (StatusContainerMenus[container])
 		StatusContainerMenus[container]->setIcon(container->statusIcon().icon());
 }
 

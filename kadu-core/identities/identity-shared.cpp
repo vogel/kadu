@@ -115,9 +115,9 @@ void IdentityShared::addAccount(const Account &account)
 	ensureLoaded();
 
 	Accounts.append(account);
-	connect(account.statusContainer(), SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
 
-	emit statusUpdated();
+	emit statusUpdated(this);
 }
 
 void IdentityShared::removeAccount(const Account &account)
@@ -130,7 +130,7 @@ void IdentityShared::removeAccount(const Account &account)
 	if (Accounts.removeAll(account) > 0)
 	{
 		disconnect(account.statusContainer(), 0, this, 0);
-		emit statusUpdated();
+		emit statusUpdated(this);
 	}
 }
 

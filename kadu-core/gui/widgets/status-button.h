@@ -48,7 +48,7 @@ class StatusButton : public QToolButton, private ConfigurationAwareObject
 
 private slots:
 	void iconUpdated(const KaduIcon &icon);
-	void statusUpdated();
+	void statusUpdated(StatusContainer *container = 0);
 	void addTitleToMenu(const QString &title, QMenu *menu);
 
 protected:

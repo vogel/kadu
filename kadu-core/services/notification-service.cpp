@@ -59,7 +59,7 @@ NotificationService::NotificationService(QObject *parent) :
 	StatusChangedNotification::registerEvents();
 	MultilogonNotification::registerEvents();
 
-	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(StatusContainerManager::instance(), SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	createEventListeners();
 	createActionDescriptions();
@@ -116,9 +116,9 @@ void NotificationService::createEventListeners()
 	GroupListener = new GroupEventListener(this);
 }
 
-void NotificationService::statusUpdated()
+void NotificationService::statusUpdated(StatusContainer *container)
 {
-	if (SilentModeWhenDnD && !silentMode() && StatusContainerManager::instance()->status().type() == StatusTypeDoNotDisturb)
+	if (SilentModeWhenDnD && !silentMode() && container->status().type() == StatusTypeDoNotDisturb)
 	{
 		foreach (Action *action, SilentModeActionDescription->actions())
 			action->setChecked(true);

@@ -50,7 +50,7 @@ class KADUAPI StatusIcon : public QObject, private ConfigurationAwareObject
 
 private slots:
 	void blink();
-	void statusUpdated();
+	void statusUpdated(StatusContainer *container = 0);
 
 protected:
 	virtual void configurationUpdated();

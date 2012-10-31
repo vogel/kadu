@@ -33,7 +33,7 @@ StatusIcon::StatusIcon(StatusContainer *statusContainer, QObject *parent) :
 		QObject(parent), MyStatusContainer(statusContainer), BlinkTimer(0), BlinkOffline(true)
 {
 	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 }
 
 StatusIcon::~StatusIcon()
@@ -85,8 +85,10 @@ void StatusIcon::updateStatus()
 		enableBlink();
 }
 
-void StatusIcon::statusUpdated()
+void StatusIcon::statusUpdated(StatusContainer *container)
 {
+	Q_UNUSED(container)
+
 	updateStatus();
 }
 

@@ -94,5 +94,5 @@ QList<StatusType> AccountStatusContainer::supportedStatusTypes()
 
 void AccountStatusContainer::triggerStatusUpdated()
 {
-	emit statusUpdated();
+	emit statusUpdated(this);
 }

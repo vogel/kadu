@@ -50,7 +50,7 @@ StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 	setPopupMode(InstantPopup);
 
 	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(iconUpdated(KaduIcon)));
 }
 
@@ -143,8 +143,10 @@ void StatusButton::updateStatus()
 	setToolTip(tooltip);
 }
 
-void StatusButton::statusUpdated()
+void StatusButton::statusUpdated(StatusContainer *container)
 {
+	Q_UNUSED(container)
+
 	updateStatus();
 }
 

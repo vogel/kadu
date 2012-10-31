@@ -46,7 +46,7 @@ StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefi
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
 
 	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated()), this, SLOT(statusUpdated()));
+	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
@@ -137,8 +137,10 @@ void StatusActions::cleanUpActions()
 	ChangeDescription = 0;
 }
 
-void StatusActions::statusUpdated()
+void StatusActions::statusUpdated(StatusContainer *container)
 {
+	Q_UNUSED(container)
+
 	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
 	{
 		cleanUpActions();

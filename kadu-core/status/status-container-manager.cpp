@@ -147,9 +147,9 @@ void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultS
 		DefaultStatusContainer = 0;
 
 	if (DefaultStatusContainer)
-		connect(DefaultStatusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+		connect(DefaultStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
 
-	emit statusUpdated();
+	emit statusUpdated(this);
 }
 
 void StatusContainerManager::setStatusModeChanged()
@@ -173,7 +173,7 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
-	connect(statusContainer, SIGNAL(statusUpdated()), this, SIGNAL(statusUpdated()));
+	connect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)

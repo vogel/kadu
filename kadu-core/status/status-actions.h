@@ -55,7 +55,7 @@ class StatusActions : public QObject
 	void cleanUpActions();
 
 private slots:
-	void statusUpdated();
+	void statusUpdated(StatusContainer *container = 0);
 	void iconThemeChanged();
 
 public:

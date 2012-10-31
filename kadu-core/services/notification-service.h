@@ -34,6 +34,7 @@ class GroupEventListener;
 class Notification;
 class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
+class StatusContainer;
 
 class NotificationService : public QObject, ConfigurationAwareObject
 {
@@ -69,7 +70,7 @@ private slots:
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 	void silentModeActionCreated(Action *action);
 	void silentModeActionActivated(QAction *sender, bool toggled);
-	void statusUpdated();
+	void statusUpdated(StatusContainer *container);
 	void fullscreenToggled(bool inFullscreen);
 	void startScreenModeChecker();
 	void stopScreenModeChecker();

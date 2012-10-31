@@ -119,7 +119,7 @@ private slots:
 	void contextMenuAboutToBeShown();
 	void updateContextMenu();
 
-	void containerStatusChanged();
+	void containerStatusChanged(StatusContainer *container);
 
 protected:
 	virtual void configurationUpdated();

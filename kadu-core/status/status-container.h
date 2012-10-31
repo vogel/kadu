@@ -209,7 +209,7 @@ signals:
 	 * StatusContainer was changed that might have caused implicit status change (but did not
 	 * need to, so do not assume real status change after this signal).
 	 */
-	void statusUpdated();
+	void statusUpdated(StatusContainer *container);
 
 };
 
