@@ -7,6 +7,7 @@
 * gui: #2553 done: new tray icon's tooltip (ultr)
 * gui: #2552 done: display description in status button's tooltip (ultr)
 * core: #2623 fixed: silent mode while DnD checks status of proper account, not default one (Juzef)
+* core: #2652 fixed: StatusMenu correctly updated after account is disconnected (Juzef)
 
 +++ version 0.12.3
 * jabber: fixed Facebook contacts groups being lost when upgrading from 0.10.x/0.11.x (beevvy)

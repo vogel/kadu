@@ -139,15 +139,16 @@ void StatusActions::cleanUpActions()
 
 void StatusActions::statusUpdated(StatusContainer *container)
 {
-	Q_UNUSED(container)
-
 	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
 	{
 		cleanUpActions();
 		createActions();
 	}
 
-	StatusType currentStatusType = StatusSetter::instance()->manuallySetStatus(MyStatusContainer).type();
+	StatusType currentStatusType = container
+		? container->status().type()
+		: StatusSetter::instance()->manuallySetStatus(MyStatusContainer).type();
+
 	if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
 		currentStatusType = MyStatusContainer->status().type();
 
@@ -156,7 +157,6 @@ void StatusActions::statusUpdated(StatusContainer *container)
 		StatusType statusType = action->data().value<StatusType>();
 		if (StatusTypeNone == statusType)
 			continue;
-
 		action->setIcon(MyStatusContainer->statusIcon(statusType).icon());
 
 		if (!MyStatusContainer->isStatusSettingInProgress())
