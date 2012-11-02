@@ -43,6 +43,7 @@ void SearchBar::createGui()
 {
 	QToolButton *closeButton = new QToolButton(this);
 	closeButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton));
+	closeButton->setFixedSize(QSize(16, 16));
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(hide()));
 	addWidget(closeButton);
 
@@ -54,11 +55,13 @@ void SearchBar::createGui()
 	QToolButton *previousButton = new QToolButton(this);
 	previousButton->setIcon(qApp->style()->standardIcon(QStyle::SP_ArrowLeft));
 	previousButton->setText(tr("Previous"));
+	previousButton->setFixedSize(QSize(16, 16));
 	connect(previousButton, SIGNAL(clicked(bool)), this, SLOT(previous()));
 	addWidget(previousButton);
 
 	QToolButton *nextButton = new QToolButton(this);
 	nextButton->setIcon(qApp->style()->standardIcon(QStyle::SP_ArrowRight));
+	nextButton->setFixedSize(QSize(16, 16));
 	nextButton->setText(tr("Next"));
 	connect(nextButton, SIGNAL(clicked(bool)), this, SLOT(next()));
 	addWidget(nextButton);
