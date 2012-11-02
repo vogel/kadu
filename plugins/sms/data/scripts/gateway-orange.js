@@ -143,17 +143,17 @@ GatewaySmsSender.prototype = {
             return;
         }
 
+        var successSigns = ["Twój SMS został wysłany", "Wiadomość została pomyślnie wysłana", "message_sended", "message_sent_success"];
         var content = this.reply.content();
-        if (content.indexOf("wyczerpany") >= 0) {
+
+        if (successSigns.some(function(v) { return content.indexOf(v) >= 0; })) {
+            this.finished();
+        } else if (content.indexOf("wyczerpany") >= 0) {
             this.failure(translator.tr("You exceeded your daily limit"));
         } else if (content.indexOf("Podano błędne hasło") >= 0) {
             this.failure(translator.tr("Text from the picture is incorrect"));
         } else if (content.indexOf("Użytkownik nie ma aktywnej usługi") >= 0) {
             this.failure(translator.tr("The receiver has to enable SMS STANDARD service"));
-        } else if (content.indexOf("Twój SMS został wysłany") >= 0) {
-            this.finished();
-        } else if (content.indexOf("Wiadomość została pomyślnie wysłana") >= 0) {
-            this.finished();
         } else {
             this.failure(translator.tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
         }
