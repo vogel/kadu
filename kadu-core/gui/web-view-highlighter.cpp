@@ -72,35 +72,46 @@ void WebViewHighlighter::updateHighlighting()
 	if (HighlightString.isEmpty())
 		return;
 
+	bool found = false;
 	// reset to first occurence
 	chatMessagesView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
 	chatMessagesView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
 
 	// highlight all other
-	chatMessagesView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+	found = chatMessagesView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+
+	emit somethingFound(found);
 }
 
 void WebViewHighlighter::clearHighlighting()
 {
 	chatMessagesView()->findText(QString(), QWebPage::HighlightAllOccurrences);
+
+	emit somethingFound(true);
 }
 
 void WebViewHighlighter::selectNext(const QString &select)
 {
-	chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument);
+	bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument);
 	chatMessagesView()->updateAtBottom();
+
+	emit somethingFound(found);
 }
 
 void WebViewHighlighter::selectPrevious(const QString &select)
 {
-	chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+	bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
 	chatMessagesView()->updateAtBottom();
+
+	emit somethingFound(found);
 }
 
 void WebViewHighlighter::clearSelect()
 {
 	chatMessagesView()->findText(QString(), 0);
 	chatMessagesView()->updateAtBottom();
+
+	emit somethingFound(true);
 
 	updateHighlighting();
 }

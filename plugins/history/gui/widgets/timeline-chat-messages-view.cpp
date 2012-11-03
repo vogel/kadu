@@ -94,6 +94,7 @@ void TimelineChatMessagesView::createGui()
 	connect(MessagesSearchBar, SIGNAL(searchPrevious(QString)), Highlighter, SLOT(selectPrevious(QString)));
 	connect(MessagesSearchBar, SIGNAL(searchNext(QString)), Highlighter, SLOT(selectNext(QString)));
 	connect(MessagesSearchBar, SIGNAL(clearSearch()), Highlighter, SLOT(clearSelect()));
+	connect(Highlighter, SIGNAL(somethingFound(bool)), MessagesSearchBar, SLOT(somethingFound(bool)));
 
 	frameLayout->addWidget(MessagesSearchBar);
 

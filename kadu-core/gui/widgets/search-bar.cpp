@@ -50,6 +50,7 @@ void SearchBar::createGui()
 	addWidget(new QLabel(tr("Find:"), this));
 
 	FindEdit = new QLineEdit(this);
+	connect(FindEdit, SIGNAL(textChanged(QString)), this, SLOT(searchTextChanged(QString)));
 	addWidget(FindEdit);
 
 	QToolButton *previousButton = new QToolButton(this);
@@ -97,7 +98,11 @@ void SearchBar::keyPressEvent(QKeyEvent *event)
 		}
 
 		default:
+		{
+			somethingFound(true);
+
 			QWidget::keyPressEvent(event);
+		}
 	}
 }
 
@@ -175,4 +180,21 @@ void SearchBar::close()
 
 	if (SearchWidget)
 		SearchWidget.data()->setFocus();
+}
+
+void SearchBar::searchTextChanged(const QString &text)
+{
+	Q_UNUSED(text)
+
+	somethingFound(true);
+}
+
+void SearchBar::somethingFound(bool found)
+{
+	QString style = "";
+
+	if (!found)
+		style = "QLineEdit{background: #FFB4B4;}";
+
+	FindEdit->setStyleSheet(style);
 }

@@ -109,6 +109,10 @@ public slots:
 	 */
 	void setSearchText(const QString &search);
 
+	void somethingFound(bool found);
+
+	void searchTextChanged(const QString &text);
+
 signals:
 	/**
 	 * @author Rafał 'Vogel' Malinowski

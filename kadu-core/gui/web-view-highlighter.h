@@ -130,6 +130,8 @@ public slots:
 	 */
 	void clearSelect();
 
+signals:
+	void somethingFound(bool found);
 };
 
 /**
