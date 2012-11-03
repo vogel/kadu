@@ -305,9 +305,9 @@ void JabberConnectionService::streamError(int error)
 	cleanUp();
 
 	if (reconn)
-		emit connectionError(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
+		emit connectionError(tr("Connection error.\nDetails: %1").arg(errorText));
 	else
-		emit connectionClosed(tr("There was an error communicating with the server.\nDetails: %1").arg(errorText));
+		emit connectionClosed(tr("Account disconnected.\nDetails: %1").arg(errorText));
 }
 
 void JabberConnectionService::connectToServer()

@@ -22,6 +22,8 @@
 
 #include <xmpp_client.h>
 
+#include "accounts/account-manager.h"
+#include "jabber-protocol.h"
 #include "server/jabber-avatar-pep-downloader.h"
 #include "server/jabber-avatar-vcard-downloader.h"
 #include "services/jabber-pep-service.h"
@@ -93,8 +95,15 @@ void JabberAvatarDownloader::downloadAvatar(const QString &id)
 {
 	Id = id;
 
-	if (PepService && PepService.data()->enabled())
-		downloadAvatarPEP();
-	else
-		downloadAvatarVCard();
+	Account account = AccountManager::instance()->byId("jabber", Id);
+
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
+
+	if (account && protocol->isConnected() && protocol->xmppClient())
+	{
+		if (PepService && PepService.data()->enabled())
+			downloadAvatarPEP();
+		else
+			downloadAvatarVCard();
+	}
 }
