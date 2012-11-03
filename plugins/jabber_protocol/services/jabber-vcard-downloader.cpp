@@ -19,6 +19,9 @@
 
 #include <xmpp_tasks.h>
 
+#include "accounts/account-manager.h"
+#include "jabber-protocol.h"
+
 #include "jabber-vcard-downloader.h"
 
 JabberVCardDownloader::JabberVCardDownloader(XMPP::Client *client, QObject *parent) :
@@ -52,7 +55,11 @@ void JabberVCardDownloader::taskFinished()
 
 void JabberVCardDownloader::downloadVCard(const QString &id)
 {
-	if (!XmppClient || !XmppClient.data()->rootTask())
+	Account account = AccountManager::instance()->byId("jabber", id);
+
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(account.protocolHandler());
+
+	if (account && protocol->isConnected() && protocol->xmppClient())
 	{
 		failed();
 		return;
