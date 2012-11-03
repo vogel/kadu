@@ -41,9 +41,9 @@ class KADUAPI AccountService : public QObject
 {
 	Q_OBJECT
 
+protected:
 	Account ServiceAccount;
 
-protected:
 	explicit AccountService(Account account, QObject *parent = 0);
 	virtual ~AccountService();
 

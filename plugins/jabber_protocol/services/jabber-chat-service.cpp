@@ -39,6 +39,8 @@
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
+#include "resource/jabber-resource.h"
+#include "resource/jabber-resource-pool.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "debug.h"
@@ -113,6 +115,13 @@ void JabberChatService::chatOpened(const Chat &chat)
 
 void JabberChatService::chatClosed(const Chat &chat)
 {
+	XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+
+	if (protocol)
+	{
+		protocol->resourcePool()->removeAllResources(chat.contacts().toContact().id());
+	}
+
 	ChatDetailsRoom *details = myRoomChatDetails(chat);
 	if (!details)
 		return;
@@ -198,6 +207,17 @@ XMPP::Jid JabberChatService::chatJid(const Chat &chat)
 		ContactSet contacts = chat.contacts();
 		Q_ASSERT(1 == contacts.size());
 
+		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+
+		if (protocol)
+		{
+			JabberResource *resource = protocol->resourcePool()->lockedJabberResource(contacts.toContact().id());
+			if (resource)
+			{
+				return resource->jid().withResource(resource->resource().name());
+			}
+		}
+
 		return contacts.toContact().id();
 	}
 
@@ -250,7 +270,7 @@ bool JabberChatService::sendMessage(const ::Message &message)
 	msg.setType(chatMessageType(message.messageChat(), jid));
 	msg.setBody(plain);
 	msg.setTimeStamp(QDateTime::currentDateTime());
-	//msg.setFrom(jabberID);
+	msg.setFrom(XmppClient.data()->jid());
 
 	emit messageAboutToSend(msg);
 	XmppClient.data()->sendMessage(msg);
@@ -294,6 +314,31 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	{
 		contact = ContactManager::instance()->byId(account(), msg.from().bare(), ActionCreateAndAdd);
 		chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+
+		XMPP::JabberProtocol *protocol = qobject_cast<XMPP::JabberProtocol *>(ServiceAccount.protocolHandler());
+
+		if (protocol)
+		{
+			// make sure current resource is in pool
+			protocol->resourcePool()->addResource(msg.from().bare(), msg.from().resource());
+
+			//if we have a locked resource, we simply talk to it
+			JabberResource *resource = protocol->resourcePool()->lockedJabberResource(msg.from().bare());
+			if (resource)
+			{
+				// if new resource appears, we remove locked resource, so that messages will be sent
+				// to bare JID until some full JID talks and we lock to it then
+				if (msg.from().resource() != resource->resource().name())
+				{
+					protocol->resourcePool()->removeLock(msg.from().bare());
+				}
+			}
+			else
+			{
+				// first message from full JID - lock to this resource
+				protocol->resourcePool()->lockToResource(msg.from().bare(), msg.from().resource());
+			}
+		}
 	}
 
 	::Message message = ::Message::create();

@@ -11,6 +11,7 @@
 * sms: #2662 fixed: updated check of successful response after sending SMS to Orange network (Juzef)
 * core: #2607 fixed: search bar in chat messages list gets highlighted if the phrase was not found (Juzef)
 * jabber: #2651, #2573 fixed: avoid trying to download avatars after account is disconnected (Juzef)
+* jabber: #2665 fixed: correct handling of chats with contacts on different resources at the same time (Juzef)
 
 +++ version 0.12.3
 * jabber: fixed Facebook contacts groups being lost when upgrading from 0.10.x/0.11.x (beevvy)
