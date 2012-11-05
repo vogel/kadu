@@ -5,7 +5,7 @@
 			<group-box name="General">
 				<check-box caption="Enable tabs in chat window" config-section="Chat" config-item="DefaultTabs" id="tabs/DefaultTabs" />
 				<check-box caption="Closing window closes current tab only" config-section="Tabs" config-item="OldStyleClosing" tool-tip="&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module." />
-				<combo-box caption="Tab bar position:" config-section="Chat" config-item="TabsBelowChats"
+				<combo-box caption="Tab bar position" config-section="Chat" config-item="TabsBelowChats"
 					tool-tip="Choose position of tab bar" >
 					<item value="false" caption="Top" />
 					<item value="true" caption="Bottom" />
