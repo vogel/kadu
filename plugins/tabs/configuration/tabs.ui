@@ -3,17 +3,19 @@
 	<section name="Chat">
 		<tab name="Tabs">
 			<group-box name="General">
-				<check-box caption="Enable tabs in chat window" config-section="Chat" config-item="DefaultTabs" id="tabs/DefaultTabs" />
-				<check-box caption="Closing window closes current tab only" config-section="Tabs" config-item="OldStyleClosing" tool-tip="&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module." />
+				<check-box caption="Enable tabs in chat window" config-section="Chat" config-item="DefaultTabs" id="tabs/DefaultTabs"
+					tool-tip="With this option, each chat will be opened in a separate tab in single window" />
+				<check-box caption="Closing window closes current tab only" config-section="Tabs" config-item="OldStyleClosing"
+					tool-tip="When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself" />
 				<combo-box caption="Tab bar position" config-section="Chat" config-item="TabsBelowChats"
-					tool-tip="Choose position of tab bar" >
+					tool-tip="Choose where you want the tab bar to be placed in chat window" >
 					<item value="false" caption="Top" />
 					<item value="true" caption="Bottom" />
 				</combo-box>
 			</group-box>
 			<group-box name="Look">
-				<check-box caption="Show &quot;New Tab&quot; button" config-section="Tabs" config-item="OpenChatButton" />
-				<check-box caption="Show common &quot;Close Current Tab&quot; button in the corner" config-section="Tabs" config-item="CloseButton" />
+				<check-box caption="Show &quot;Open chat&quot; button" config-section="Tabs" config-item="OpenChatButton" />
+				<check-box caption="Show common &quot;Close Tab&quot; button on tab bar" config-section="Tabs" config-item="CloseButton" />
 				<check-box caption="Show &quot;Close&quot; button on each tab" config-section="Tabs" config-item="CloseButtonOnTab" />
 			</group-box>
 		</tab>
