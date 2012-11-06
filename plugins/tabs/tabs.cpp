@@ -490,9 +490,11 @@ void TabsManager::makePopupMenu()
 	Menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	Menu->addSeparator();
 	CloseTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-close").icon(), tr("Close"), this, SLOT(onMenuActionClose()));
-	CloseOtherTabsMenuAction = Menu->addAction(tr("Close all but active"), this, SLOT(onMenuActionCloseAllButActive()));
+	CloseOtherTabsMenuAction = Menu->addAction(tr("Close other tabs"), this, SLOT(onMenuActionCloseAllButActive()));
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
-	Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
+
+	if (config_file.readBoolEntry("Tabs", "OldStyleClosing"))
+		Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
 }
