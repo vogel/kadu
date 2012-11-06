@@ -287,6 +287,8 @@ void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 		switchTabLeft();
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 		switchTabRight();
+	else if (HotKey::shortCut(e, "ShortCuts", "ReopenClosedTab"))
+		Manager->reopenClosedChat();
 	#if defined(Q_WS_WIN) || defined(Q_WS_MAC)
 		#define TAB_SWITCH_MODIFIER "Ctrl"
 	#else

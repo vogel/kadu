@@ -764,11 +764,14 @@ void TabsManager::closeChat()
 
 void TabsManager::reopenClosedChat()
 {
+	if (ClosedChats.isEmpty())
+		return;
+
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(ClosedChats.takeFirst(), true);
 	if (chatWidget)
 		chatWidget->activate();
 
-	ReopenClosedTabMenuAction->setEnabled(ClosedChats.size() > 0);
+	ReopenClosedTabMenuAction->setEnabled(ClosedChats.isEmpty());
 }
 
 void TabsManager::createDefaultConfiguration()
@@ -777,6 +780,7 @@ void TabsManager::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "MoveTabRight", "Ctrl+Alt+Right");
 	config_file.addVariable("ShortCuts", "SwitchTabLeft", "Alt+Left");
 	config_file.addVariable("ShortCuts", "SwitchTabRight", "Alt+Right");
+	config_file.addVariable("ShortCuts", "ReopenClosedTab", "Ctrl+Shift+T");
 	config_file.addVariable("Chat", "ConferencesInTabs", "true");
 	config_file.addVariable("Chat", "TabsBelowChats", "false");
 	config_file.addVariable("Chat", "DefaultTabs", "true");

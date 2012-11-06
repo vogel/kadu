@@ -25,6 +25,7 @@
 				<hot-key-edit caption="Move tab right" config-section="ShortCuts" config-item="MoveTabRight" />
 				<hot-key-edit caption="Switch to previous tab" config-section="ShortCuts" config-item="SwitchTabLeft" />
 				<hot-key-edit caption="Switch to next tab" config-section="ShortCuts" config-item="SwitchTabRight" />
+				<hot-key-edit caption="Reopen closed tab" config-section="ShortCuts" config-item="ReopenClosedTab" />
 			</group-box>
 		</tab>
 	</section>
