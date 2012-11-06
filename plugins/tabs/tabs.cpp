@@ -232,6 +232,9 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 
+	ClosedChats.append(chatWidget->chat());
+	ReopenClosedTabMenuAction->setEnabled(ClosedChats.size() > 0);
+
 	kdebugf2();
 }
 
@@ -492,6 +495,8 @@ void TabsManager::makePopupMenu()
 	CloseTabMenuAction = Menu->addAction(KaduIcon("kadu_icons/tab-close").icon(), tr("Close"), this, SLOT(onMenuActionClose()));
 	CloseOtherTabsMenuAction = Menu->addAction(tr("Close other tabs"), this, SLOT(onMenuActionCloseAllButActive()));
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
+	ReopenClosedTabMenuAction = Menu->addAction(tr("Reopen closed tab"), this, SLOT(reopenClosedChat()));
+	ReopenClosedTabMenuAction->setEnabled(false);
 
 	if (config_file.readBoolEntry("Tabs", "OldStyleClosing"))
 		Menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
@@ -755,6 +760,15 @@ void TabsManager::closeChat()
 	QObject *chat = sender();
 	if (chat)
 		chat->deleteLater();
+}
+
+void TabsManager::reopenClosedChat()
+{
+	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(ClosedChats.takeFirst(), true);
+	if (chatWidget)
+		chatWidget->activate();
+
+	ReopenClosedTabMenuAction->setEnabled(ClosedChats.size() > 0);
 }
 
 void TabsManager::createDefaultConfiguration()

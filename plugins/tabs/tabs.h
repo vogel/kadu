@@ -64,6 +64,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QList<ChatWidget *> ChatsWithNewMessages;
 	QList<ChatWidget *> NewChats;
 	QList<ChatWidget *> DetachedChats;
+	QList<Chat> ClosedChats;
 	bool NoTabs;
 	bool ForceTabs;
 
@@ -75,6 +76,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QAction *DetachTabMenuAction;
 	QAction *CloseTabMenuAction;
 	QAction *CloseOtherTabsMenuAction;
+	QAction *ReopenClosedTabMenuAction;
 
 	void updateTabName(ChatWidget *chatWidget);
 	void updateTabIcon(ChatWidget *chatWidget);
@@ -97,6 +99,7 @@ private slots:
 	void onMenuActionClose();
 	void onMenuActionCloseAll();
 	void onMenuActionCloseAllButActive();
+	void reopenClosedChat();
 
 protected:
 	virtual void configurationUpdated();
