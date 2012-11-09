@@ -37,25 +37,22 @@ void tst_StringUtils::ellipsisTest_data()
 	QTest::addColumn<int>("maxLen");
 	QTest::addColumn<QString>("expected");
 
-	// TODO: omg this function is unintuitive
-// 	QTest::newRow(",0") << "" << 0 << "";
-// 	QTest::newRow(",10") << "" << 10 << "";
-// 	QTest::newRow("string,0") << "string" << 0 << "";
-// 	QTest::newRow("string,1") << "string" << 0 << "s";
-// 	QTest::newRow("string,5") << "string" << 5 << "st...";
-// 	QTest::newRow("string,6") << "string" << 6 << "string";
-
-	// this is how actually it works:
+	QTest::newRow("string,0") << "string" << 0 << "";
+	QTest::newRow("string,0") << "string" << 1 << "s";
+	QTest::newRow("string,5") << "string" << 2 << "st...";
 	QTest::newRow("string,3") << "string" << 3 << "str...";
+	QTest::newRow("string,6") << "string" << 6 << "string";
 }
 
 void tst_StringUtils::ellipsisTest()
 {
-	QFETCH(QString, input);
-	QFETCH(int, maxLen);
-	QFETCH(QString, expected);
+	for (int i = 0; i < 5; i++) {
+		QFETCH(QString, input);
+		QFETCH(int, maxLen);
+		QFETCH(QString, expected);
 
-	QCOMPARE(StringUtils::ellipsis(input, maxLen), expected);
+		QCOMPARE(StringUtils::ellipsis(input, maxLen), expected);
+	}
 }
 
 QTEST_APPLESS_MAIN(tst_StringUtils)
