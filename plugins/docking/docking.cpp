@@ -579,6 +579,7 @@ void DockingManager::doUpdateContextMenu()
 
 	SilentModeAction = new QAction(KaduIcon("kadu_icons/enable-notifications").icon(), tr("Silent mode"), this);
 	SilentModeAction->setCheckable(true);
+	SilentModeAction->setChecked(Core::instance()->notificationService()->silentMode());
 	connect(SilentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
 	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), SilentModeAction, SLOT(setChecked(bool)));
 	DockMenu->addAction(SilentModeAction);
