@@ -16,6 +16,8 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
+pkg_check_modules (LIBOTR REQUIRED libotr>=3.0 REQUIRED)
+
 kadu_plugin (encryption_ng_otr
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
