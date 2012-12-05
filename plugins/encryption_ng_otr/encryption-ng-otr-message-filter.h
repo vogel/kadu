@@ -17,36 +17,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_PLUGIN_H
-#define ENCRYPTION_NG_OTR_PLUGIN_H
+#ifndef ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
+#define ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
 
-#include <QtCore/QObject>
+#include "message/message-filter.h"
 
-#include "plugins/generic-plugin.h"
-
-class EncryptionNgOtrMessageFilter;
-class EncryptionNgOtrUserStateService;
-
-class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
+class EncryptionNgOtrMessageFilter : public MessageFilter
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
-
-	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
-	QScopedPointer<EncryptionNgOtrMessageFilter> OtrMessageFilter;
-
-	void registerOtrUserStateService();
-	void unregisterOtrUserStateService();
-
-	void registerOtrMessageFilter();
-	void unregisterOtrMessageFilter();
 
 public:
-	virtual ~EngryptionNgOtrPlugin();
+	explicit EncryptionNgOtrMessageFilter(QObject *parent = 0);
+	virtual ~EncryptionNgOtrMessageFilter();
 
-	virtual int init(bool firstLoad);
-	virtual void done();
+	virtual bool acceptMessage(const Message &message);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_PLUGIN_H
+
+#endif // ENCRYPTION_NG_OTR_MESSAGE_FILTER_H

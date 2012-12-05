@@ -17,21 +17,56 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
+#include "services/message-filter-service.h"
+
+#include "encryption-ng-otr-message-filter.h"
+#include "encryption-ng-otr-user-state-service.h"
+
 #include "encryption-ng-otr-plugin.h"
 
 EngryptionNgOtrPlugin::~EngryptionNgOtrPlugin()
 {
 }
 
+void EngryptionNgOtrPlugin::registerOtrUserStateService()
+{
+	OtrUserStateService.reset(new EncryptionNgOtrUserStateService(this));
+}
+
+void EngryptionNgOtrPlugin::unregisterOtrUserStateService()
+{
+	OtrUserStateService.reset();
+}
+
+void EngryptionNgOtrPlugin::registerOtrMessageFilter()
+{
+	OtrMessageFilter.reset(new EncryptionNgOtrMessageFilter(this));
+
+	Core::instance()->messageFilterService()->registerMessageFilter(OtrMessageFilter.data());
+}
+
+void EngryptionNgOtrPlugin::unregisterOtrMessageFilter()
+{
+	Core::instance()->messageFilterService()->unregisterMessageFilter(OtrMessageFilter.data());
+
+	OtrMessageFilter.reset();
+}
+
 int EngryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
+
+	registerOtrUserStateService();
+	registerOtrMessageFilter();
 
 	return 0;
 }
 
 void EngryptionNgOtrPlugin::done()
 {
+	unregisterOtrUserStateService();
+	unregisterOtrMessageFilter();
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_otr, EngryptionNgOtrPlugin)

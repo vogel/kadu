@@ -17,36 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_PLUGIN_H
-#define ENCRYPTION_NG_OTR_PLUGIN_H
+#ifndef ENCRYPTION_NG_OTR_USER_STATE_SERVICE_H
+#define ENCRYPTION_NG_OTR_USER_STATE_SERVICE_H
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "accounts/accounts-aware-object.h"
 
-class EncryptionNgOtrMessageFilter;
-class EncryptionNgOtrUserStateService;
+extern "C" {
+#	include <libotr/userstate.h>
+}
 
-class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
+class EncryptionNgOtrUserStateService : public QObject, public AccountsAwareObject
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
 
-	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
-	QScopedPointer<EncryptionNgOtrMessageFilter> OtrMessageFilter;
+	QMap<Account, OtrlUserState> UserStates;
 
-	void registerOtrUserStateService();
-	void unregisterOtrUserStateService();
-
-	void registerOtrMessageFilter();
-	void unregisterOtrMessageFilter();
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
-	virtual ~EngryptionNgOtrPlugin();
-
-	virtual int init(bool firstLoad);
-	virtual void done();
+	explicit EncryptionNgOtrUserStateService(QObject *parent = 0);
+	virtual ~EncryptionNgOtrUserStateService();
 
 };
 
-#endif // ENCRYPTION_NG_OTR_PLUGIN_H
+
+#endif // ENCRYPTION_NG_OTR_USER_STATE_SERVICE_H

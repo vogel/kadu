@@ -17,36 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_PLUGIN_H
-#define ENCRYPTION_NG_OTR_PLUGIN_H
+#include "accounts/account.h"
 
-#include <QtCore/QObject>
+#include "encryption-ng-otr-user-state-service.h"
 
-#include "plugins/generic-plugin.h"
-
-class EncryptionNgOtrMessageFilter;
-class EncryptionNgOtrUserStateService;
-
-class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
+EncryptionNgOtrUserStateService::EncryptionNgOtrUserStateService(QObject *parent) :
+		QObject(parent)
 {
-	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	triggerAllAccountsRegistered();
+}
 
-	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
-	QScopedPointer<EncryptionNgOtrMessageFilter> OtrMessageFilter;
+EncryptionNgOtrUserStateService::~EncryptionNgOtrUserStateService()
+{
+	triggerAllAccountsUnregistered();
+}
 
-	void registerOtrUserStateService();
-	void unregisterOtrUserStateService();
+void EncryptionNgOtrUserStateService::accountRegistered(Account account)
+{
+	if (UserStates.contains(account))
+		return;
 
-	void registerOtrMessageFilter();
-	void unregisterOtrMessageFilter();
+	UserStates.insert(account, otrl_userstate_create());
+}
 
-public:
-	virtual ~EngryptionNgOtrPlugin();
+void EncryptionNgOtrUserStateService::accountUnregistered(Account account)
+{
+	if (!UserStates.contains(account))
+		return;
 
-	virtual int init(bool firstLoad);
-	virtual void done();
-
-};
-
-#endif // ENCRYPTION_NG_OTR_PLUGIN_H
+	OtrlUserState userState = UserStates.value(account);
+	UserStates.remove(account);
+	otrl_userstate_free(userState);
+}
