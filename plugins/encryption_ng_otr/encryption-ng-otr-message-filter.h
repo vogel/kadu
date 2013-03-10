@@ -22,9 +22,16 @@
 
 #include "message/message-filter.h"
 
+extern "C" {
+#	include <libotr/proto.h>
+#	include <libotr/message.h>
+}
+
 class EncryptionNgOtrMessageFilter : public MessageFilter
 {
 	Q_OBJECT
+	
+	OtrlMessageAppOps ops;
 
 public:
 	explicit EncryptionNgOtrMessageFilter(QObject *parent = 0);
