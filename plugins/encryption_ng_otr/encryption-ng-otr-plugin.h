@@ -24,6 +24,7 @@
 
 #include "plugins/generic-plugin.h"
 
+class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrMessageFilter;
 class EncryptionNgOtrUserStateService;
 
@@ -32,8 +33,12 @@ class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
+	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 	QScopedPointer<EncryptionNgOtrMessageFilter> OtrMessageFilter;
+
+	void registerOtrAppOpsWrapper();
+	void unregisterOtrAppOpsWrapper();
 
 	void registerOtrUserStateService();
 	void unregisterOtrUserStateService();
@@ -42,6 +47,7 @@ class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
 	void unregisterOtrMessageFilter();
 
 public:
+	explicit EngryptionNgOtrPlugin();
 	virtual ~EngryptionNgOtrPlugin();
 
 	virtual int init(bool firstLoad);

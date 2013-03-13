@@ -20,13 +20,29 @@
 #include "core/core.h"
 #include "services/message-filter-service.h"
 
+#include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-message-filter.h"
 #include "encryption-ng-otr-user-state-service.h"
 
 #include "encryption-ng-otr-plugin.h"
 
+EngryptionNgOtrPlugin::EngryptionNgOtrPlugin()
+{
+	OTRL_INIT;
+}
+
 EngryptionNgOtrPlugin::~EngryptionNgOtrPlugin()
 {
+}
+
+void EngryptionNgOtrPlugin::registerOtrAppOpsWrapper()
+{
+	OtrAppOpsWrapper.reset(new EncryptionNgOtrAppOpsWrapper());
+}
+
+void EngryptionNgOtrPlugin::unregisterOtrAppOpsWrapper()
+{
+	OtrAppOpsWrapper.reset();
 }
 
 void EngryptionNgOtrPlugin::registerOtrUserStateService()
@@ -57,9 +73,11 @@ int EngryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
 
+	registerOtrAppOpsWrapper();
 	registerOtrUserStateService();
 	registerOtrMessageFilter();
 
+	OtrMessageFilter->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
 	OtrMessageFilter->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
 
 	return 0;
@@ -71,6 +89,7 @@ void EngryptionNgOtrPlugin::done()
 
 	unregisterOtrUserStateService();
 	unregisterOtrMessageFilter();
+	unregisterOtrAppOpsWrapper();
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_otr, EngryptionNgOtrPlugin)

@@ -6,12 +6,14 @@ include (FindKadu)
 include (FindPkgConfig)
 
 set (SOURCES
+	encryption-ng-otr-app-ops-wrapper.cpp
 	encryption-ng-otr-message-filter.cpp
 	encryption-ng-otr-plugin.cpp
 	encryption-ng-otr-user-state-service.cpp
 )
 
 set (MOC_SOURCES
+	encryption-ng-otr-app-ops-wrapper.h
 	encryption-ng-otr-message-filter.h
 	encryption-ng-otr-plugin.h
 	encryption-ng-otr-user-state-service.h

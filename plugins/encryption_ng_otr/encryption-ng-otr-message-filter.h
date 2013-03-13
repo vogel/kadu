@@ -29,24 +29,26 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
+class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrUserStateService;
 
 class EncryptionNgOtrMessageFilter : public MessageFilter
 {
 	Q_OBJECT
-	
+
 	OtrlMessageAppOps ops;
+	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QWeakPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 
 public:
 	explicit EncryptionNgOtrMessageFilter(QObject *parent = 0);
 	virtual ~EncryptionNgOtrMessageFilter();
 
+	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
 	void setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService);
 
 	virtual bool acceptMessage(const Message &message);
 
 };
-
 
 #endif // ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
