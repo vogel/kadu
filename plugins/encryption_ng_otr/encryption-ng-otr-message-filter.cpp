@@ -179,5 +179,7 @@ bool EncryptionNgOtrMessageFilter::acceptMessage(const Message &message)
 			strdup(message.htmlContent().toUtf8().data()),
 			&newmessage, 0, 0, 0);
 
-	return (otrMessageResult == 0) && (newmessage == 0);
+	free(newmessage);
+
+	return otrMessageResult == 0;
 }
