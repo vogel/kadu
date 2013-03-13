@@ -60,11 +60,15 @@ int EngryptionNgOtrPlugin::init(bool firstLoad)
 	registerOtrUserStateService();
 	registerOtrMessageFilter();
 
+	OtrMessageFilter->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
+
 	return 0;
 }
 
 void EngryptionNgOtrPlugin::done()
 {
+	OtrMessageFilter->setEncryptionNgOtrUserStateService(0);
+
 	unregisterOtrUserStateService();
 	unregisterOtrMessageFilter();
 }

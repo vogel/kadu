@@ -21,9 +21,13 @@ extern "C" {
 #	include <libotr/userstate.h>
 }
 
+#include "accounts/account.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
+
+#include "encryption-ng-otr-user-state-service.h"
 
 #include "encryption-ng-otr-message-filter.h"
 
@@ -155,15 +159,22 @@ EncryptionNgOtrMessageFilter::~EncryptionNgOtrMessageFilter()
 {
 }
 
+void EncryptionNgOtrMessageFilter::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
+{
+	OtrUserStateService = encryptionNgOtrUserStateService;
+}
+
 bool EncryptionNgOtrMessageFilter::acceptMessage(const Message &message)
 {
 	Q_UNUSED(message);
 
-	if (MessageTypeSent == message.type())
+	if (MessageTypeSent == message.type() || OtrUserStateService.isNull())
 		return true;
 
+	OtrlUserState userState = OtrUserStateService.data()->forAccount(message.messageChat().chatAccount());
+
 	char *newmessage = 0;
-	int otrMessageResult = otrl_message_receiving(otrl_userstate_create(), &ops, 0, "2964574", "gadu",
+	int otrMessageResult = otrl_message_receiving(userState, &ops, 0, "2964574", "gadu",
 			strdup(message.messageSender().id().toUtf8().data()),
 			strdup(message.htmlContent().toUtf8().data()),
 			&newmessage, 0, 0, 0);

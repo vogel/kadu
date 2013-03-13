@@ -20,6 +20,8 @@
 #ifndef ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
 #define ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
 
+#include <QtCore/QWeakPointer>
+
 #include "message/message-filter.h"
 
 extern "C" {
@@ -27,15 +29,20 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
+class EncryptionNgOtrUserStateService;
+
 class EncryptionNgOtrMessageFilter : public MessageFilter
 {
 	Q_OBJECT
 	
 	OtrlMessageAppOps ops;
+	QWeakPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 
 public:
 	explicit EncryptionNgOtrMessageFilter(QObject *parent = 0);
 	virtual ~EncryptionNgOtrMessageFilter();
+
+	void setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService);
 
 	virtual bool acceptMessage(const Message &message);
 
