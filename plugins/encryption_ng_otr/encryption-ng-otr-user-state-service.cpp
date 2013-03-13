@@ -49,3 +49,8 @@ void EncryptionNgOtrUserStateService::accountUnregistered(Account account)
 	UserStates.remove(account);
 	otrl_userstate_free(userState);
 }
+
+OtrlUserState EncryptionNgOtrUserStateService::forAccount(Account account)
+{
+	return UserStates.value(account);
+}

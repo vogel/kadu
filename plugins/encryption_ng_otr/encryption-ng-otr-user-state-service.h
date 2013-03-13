@@ -42,6 +42,8 @@ public:
 	explicit EncryptionNgOtrUserStateService(QObject *parent = 0);
 	virtual ~EncryptionNgOtrUserStateService();
 
+	OtrlUserState forAccount(Account account);
+
 };
 
 
