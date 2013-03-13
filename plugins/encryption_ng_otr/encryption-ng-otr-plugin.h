@@ -28,7 +28,7 @@ class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrMessageFilter;
 class EncryptionNgOtrUserStateService;
 
-class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
+class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
@@ -47,8 +47,8 @@ class EngryptionNgOtrPlugin : public QObject, public GenericPlugin
 	void unregisterOtrMessageFilter();
 
 public:
-	explicit EngryptionNgOtrPlugin();
-	virtual ~EngryptionNgOtrPlugin();
+	explicit EncryptionNgOtrPlugin();
+	virtual ~EncryptionNgOtrPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();

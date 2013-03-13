@@ -26,50 +26,50 @@
 
 #include "encryption-ng-otr-plugin.h"
 
-EngryptionNgOtrPlugin::EngryptionNgOtrPlugin()
+EncryptionNgOtrPlugin::EncryptionNgOtrPlugin()
 {
 	OTRL_INIT;
 }
 
-EngryptionNgOtrPlugin::~EngryptionNgOtrPlugin()
+EncryptionNgOtrPlugin::~EncryptionNgOtrPlugin()
 {
 }
 
-void EngryptionNgOtrPlugin::registerOtrAppOpsWrapper()
+void EncryptionNgOtrPlugin::registerOtrAppOpsWrapper()
 {
 	OtrAppOpsWrapper.reset(new EncryptionNgOtrAppOpsWrapper());
 }
 
-void EngryptionNgOtrPlugin::unregisterOtrAppOpsWrapper()
+void EncryptionNgOtrPlugin::unregisterOtrAppOpsWrapper()
 {
 	OtrAppOpsWrapper.reset();
 }
 
-void EngryptionNgOtrPlugin::registerOtrUserStateService()
+void EncryptionNgOtrPlugin::registerOtrUserStateService()
 {
 	OtrUserStateService.reset(new EncryptionNgOtrUserStateService(this));
 }
 
-void EngryptionNgOtrPlugin::unregisterOtrUserStateService()
+void EncryptionNgOtrPlugin::unregisterOtrUserStateService()
 {
 	OtrUserStateService.reset();
 }
 
-void EngryptionNgOtrPlugin::registerOtrMessageFilter()
+void EncryptionNgOtrPlugin::registerOtrMessageFilter()
 {
 	OtrMessageFilter.reset(new EncryptionNgOtrMessageFilter(this));
 
 	Core::instance()->messageFilterService()->registerMessageFilter(OtrMessageFilter.data());
 }
 
-void EngryptionNgOtrPlugin::unregisterOtrMessageFilter()
+void EncryptionNgOtrPlugin::unregisterOtrMessageFilter()
 {
 	Core::instance()->messageFilterService()->unregisterMessageFilter(OtrMessageFilter.data());
 
 	OtrMessageFilter.reset();
 }
 
-int EngryptionNgOtrPlugin::init(bool firstLoad)
+int EncryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
 
@@ -83,7 +83,7 @@ int EngryptionNgOtrPlugin::init(bool firstLoad)
 	return 0;
 }
 
-void EngryptionNgOtrPlugin::done()
+void EncryptionNgOtrPlugin::done()
 {
 	OtrMessageFilter->setEncryptionNgOtrUserStateService(0);
 
@@ -92,4 +92,4 @@ void EngryptionNgOtrPlugin::done()
 	unregisterOtrAppOpsWrapper();
 }
 
-Q_EXPORT_PLUGIN2(encryption_ng_otr, EngryptionNgOtrPlugin)
+Q_EXPORT_PLUGIN2(encryption_ng_otr, EncryptionNgOtrPlugin)
