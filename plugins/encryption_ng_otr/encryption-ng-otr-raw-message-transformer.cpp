@@ -55,12 +55,14 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || OtrUserStateService.isNull())
 		return messageContent;
 
-	OtrlUserState userState = OtrUserStateService.data()->forAccount(message.messageChat().chatAccount());
+	Account account = message.messageChat().chatAccount();
+	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
 	if (!userState)
 		return messageContent;
 
 	char *newMessage = 0;
-	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0, "2964574", "gadu",
+	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0,
+			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
 			&newMessage, 0, 0, 0);
