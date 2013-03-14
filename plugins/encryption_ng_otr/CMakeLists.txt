@@ -7,6 +7,7 @@ include (FindPkgConfig)
 
 set (SOURCES
 	encryption-ng-otr-app-ops-wrapper.cpp
+	encryption-ng-otr-op-data.cpp
 	encryption-ng-otr-plugin.cpp
 	encryption-ng-otr-raw-message-transformer.cpp
 	encryption-ng-otr-user-state-service.cpp

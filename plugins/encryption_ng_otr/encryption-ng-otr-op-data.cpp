@@ -17,34 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
-#define ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
+#include "encryption-ng-otr-op-data.h"
 
-#include <QtCore/QObject>
-
-extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+EncryptionNgOtrOpData::EncryptionNgOtrOpData()
+{
 }
 
-class EncryptionNgOtrOpData;
-
-class EncryptionNgOtrAppOpsWrapper : public QObject
+EncryptionNgOtrOpData::~EncryptionNgOtrOpData()
 {
-	Q_OBJECT
+}
 
-	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
+void EncryptionNgOtrOpData::setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOpsWrapper)
+{
+	AppOpsWrapper = appOpsWrapper;
+}
 
-	OtrlMessageAppOps Ops;
+EncryptionNgOtrAppOpsWrapper* EncryptionNgOtrOpData::appOpsWrapper() const
+{
+	return AppOpsWrapper;
+}
 
-	void injectMessage(EncryptionNgOtrOpData* ngOtrOpData, const QString &messageContent);
+void EncryptionNgOtrOpData::setMessage(const Message &message)
+{
+	MyMessage = message;
+}
 
-public:
-	explicit EncryptionNgOtrAppOpsWrapper();
-	virtual ~EncryptionNgOtrAppOpsWrapper();
-
-	const OtrlMessageAppOps * ops() const;
-
-};
-
-#endif // ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
+Message EncryptionNgOtrOpData::message() const
+{
+	return MyMessage;
+}

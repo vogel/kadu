@@ -24,6 +24,11 @@ extern "C" {
 #	include <libotr/userstate.h>
 }
 
+#include "chat/chat.h"
+#include "message/message-manager.h"
+
+#include "encryption-ng-otr-op-data.h"
+
 #include "encryption-ng-otr-app-ops-wrapper.h"
 
 OtrlPolicy kadu_enomf_policy(void *opdata, ConnContext *context)
@@ -45,7 +50,12 @@ int kadu_enomf_is_logged_in(void *opdata, const char *accountname, const char *p
 
 void kadu_enomf_inject_message(void *opdata, const char *accountname, const char *protocol, const char *recipient, const char *message)
 {
-	printf("kadu_enomf_inject_message %p %s %s %s %s\n", opdata, accountname, protocol, recipient, message);
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+	Q_UNUSED(recipient);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->injectMessage(ngOtrOpData, QString::fromUtf8(message));
 }
 
 void kadu_enomf_notify(void *opdata, OtrlNotifyLevel level, const char *accountname, const char *protocol, const char *username,
@@ -154,4 +164,10 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
+}
+
+void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData* ngOtrOpData, const QString &messageContent)
+{
+	Chat chat = ngOtrOpData->message().messageChat();
+	MessageManager::instance()->sendMessage(chat, messageContent, true);
 }

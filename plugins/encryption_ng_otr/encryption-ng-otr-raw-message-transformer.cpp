@@ -28,6 +28,7 @@ extern "C" {
 #include "message/message.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
+#include "encryption-ng-otr-op-data.h"
 #include "encryption-ng-otr-user-state-service.h"
 
 #include "encryption-ng-otr-raw-message-transformer.h"
@@ -55,13 +56,19 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || OtrUserStateService.isNull())
 		return messageContent;
 
+	printf("received message: %s\n", messageContent.data());
+
 	Account account = message.messageChat().chatAccount();
 	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
 	if (!userState)
 		return messageContent;
 
+	EncryptionNgOtrOpData opData;
+	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
+	opData.setMessage(message);
+
 	char *newMessage = 0;
-	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0,
+	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
