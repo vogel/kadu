@@ -60,10 +60,20 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 		return messageContent;
 
 	char *newMessage = 0;
-	otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0, "2964574", "gadu",
+	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0, "2964574", "gadu",
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
 			&newMessage, 0, 0, 0);
 
-	return QByteArray(newMessage);
+	if (ignoreMessage)
+		return QByteArray();
+
+	if (newMessage)
+	{
+		QByteArray result = newMessage;
+		otrl_message_free(newMessage);
+		return result;
+	}
+	else
+		return messageContent;
 }
