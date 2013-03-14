@@ -18,10 +18,10 @@
  */
 
 #include "core/core.h"
-#include "services/message-filter-service.h"
+#include "services/raw-message-transformer-service.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
-#include "encryption-ng-otr-message-filter.h"
+#include "encryption-ng-otr-raw-message-transformer.h"
 #include "encryption-ng-otr-user-state-service.h"
 
 #include "encryption-ng-otr-plugin.h"
@@ -55,18 +55,18 @@ void EncryptionNgOtrPlugin::unregisterOtrUserStateService()
 	OtrUserStateService.reset();
 }
 
-void EncryptionNgOtrPlugin::registerOtrMessageFilter()
+void EncryptionNgOtrPlugin::registerOtrRawMessageTransformer()
 {
-	OtrMessageFilter.reset(new EncryptionNgOtrMessageFilter(this));
+	OtrRawMessageTransformer.reset(new EncryptionNgOtrRawMessageTransformer());
 
-	Core::instance()->messageFilterService()->registerMessageFilter(OtrMessageFilter.data());
+	Core::instance()->rawMessageTransformerService()->registerTransformer(OtrRawMessageTransformer.data());
 }
 
-void EncryptionNgOtrPlugin::unregisterOtrMessageFilter()
+void EncryptionNgOtrPlugin::unregisterOtrRawMessageTransformer()
 {
-	Core::instance()->messageFilterService()->unregisterMessageFilter(OtrMessageFilter.data());
+	Core::instance()->rawMessageTransformerService()->unregisterTransformer(OtrRawMessageTransformer.data());
 
-	OtrMessageFilter.reset();
+	OtrRawMessageTransformer.reset();
 }
 
 int EncryptionNgOtrPlugin::init(bool firstLoad)
@@ -74,21 +74,22 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad);
 
 	registerOtrAppOpsWrapper();
-	registerOtrUserStateService();
-	registerOtrMessageFilter();
+    registerOtrUserStateService();
+	registerOtrRawMessageTransformer();
 
-	OtrMessageFilter->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
-	OtrMessageFilter->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
+	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
+	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
 
 	return 0;
 }
 
 void EncryptionNgOtrPlugin::done()
 {
-	OtrMessageFilter->setEncryptionNgOtrUserStateService(0);
+	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(0);
+    OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
 
+    unregisterOtrRawMessageTransformer();
 	unregisterOtrUserStateService();
-	unregisterOtrMessageFilter();
 	unregisterOtrAppOpsWrapper();
 }
 

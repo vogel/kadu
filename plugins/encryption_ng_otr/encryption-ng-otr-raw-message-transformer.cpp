@@ -30,43 +30,40 @@ extern "C" {
 #include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-user-state-service.h"
 
-#include "encryption-ng-otr-message-filter.h"
+#include "encryption-ng-otr-raw-message-transformer.h"
 
-EncryptionNgOtrMessageFilter::EncryptionNgOtrMessageFilter(QObject *parent) :
-		MessageFilter(parent)
+EncryptionNgOtrRawMessageTransformer::EncryptionNgOtrRawMessageTransformer()
 {
 }
 
-EncryptionNgOtrMessageFilter::~EncryptionNgOtrMessageFilter()
+EncryptionNgOtrRawMessageTransformer::~EncryptionNgOtrRawMessageTransformer()
 {
 }
 
-void EncryptionNgOtrMessageFilter::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
+void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
 {
 	OtrAppOpsWrapper = encryptionNgOtrAppOpsWrapper;
 }
 
-void EncryptionNgOtrMessageFilter::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
+void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
 {
 	OtrUserStateService = encryptionNgOtrUserStateService;
 }
 
-bool EncryptionNgOtrMessageFilter::acceptMessage(const Message &message)
+QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	Q_UNUSED(message);
-
 	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || OtrUserStateService.isNull())
-		return true;
+		return messageContent;
 
 	OtrlUserState userState = OtrUserStateService.data()->forAccount(message.messageChat().chatAccount());
+	if (!userState)
+		return messageContent;
 
-	char *newmessage = 0;
-	int otrMessageResult = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0, "2964574", "gadu",
-			strdup(message.messageSender().id().toUtf8().data()),
-			strdup(message.htmlContent().toUtf8().data()),
-			&newmessage, 0, 0, 0);
+	char *newMessage = 0;
+	otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), 0, "2964574", "gadu",
+			message.messageSender().id().toUtf8().data(),
+			messageContent.data(),
+			&newMessage, 0, 0, 0);
 
-	free(newmessage);
-
-	return otrMessageResult == 0;
+	return QByteArray(newMessage);
 }

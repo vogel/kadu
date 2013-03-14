@@ -17,12 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
-#define ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
+#ifndef ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
+#define ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
 
 #include <QtCore/QWeakPointer>
 
-#include "message/message-filter.h"
+#include "protocols/services/raw-message-transformer.h"
 
 extern "C" {
 #	include <libotr/proto.h>
@@ -32,23 +32,21 @@ extern "C" {
 class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrUserStateService;
 
-class EncryptionNgOtrMessageFilter : public MessageFilter
+class EncryptionNgOtrRawMessageTransformer: public RawMessageTransformer
 {
-	Q_OBJECT
-
 	OtrlMessageAppOps ops;
 	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QWeakPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 
 public:
-	explicit EncryptionNgOtrMessageFilter(QObject *parent = 0);
-	virtual ~EncryptionNgOtrMessageFilter();
+	explicit EncryptionNgOtrRawMessageTransformer();
+	virtual ~EncryptionNgOtrRawMessageTransformer();
 
 	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
 	void setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService);
 
-	virtual bool acceptMessage(const Message &message);
+	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_MESSAGE_FILTER_H
+#endif // ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
