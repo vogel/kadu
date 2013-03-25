@@ -24,10 +24,12 @@ extern "C" {
 #	include <libotr/userstate.h>
 }
 
+#include "accounts/account.h"
 #include "chat/chat.h"
 #include "message/message-manager.h"
 
 #include "encryption-ng-otr-op-data.h"
+#include "encryption-ng-otr-private-key-service.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
 
@@ -39,7 +41,11 @@ OtrlPolicy kadu_enomf_policy(void *opdata, ConnContext *context)
 
 void kadu_enomf_create_privkey(void *opdata, const char *accountname, const char *protocol)
 {
-	printf("kadu_enomf_create_privkey %p %s %s\n", opdata, accountname, protocol);
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->createPrivateKey(ngOtrOpData);
 }
 
 int kadu_enomf_is_logged_in(void *opdata, const char *accountname, const char *protocol, const char *recipient)
@@ -166,7 +172,13 @@ const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 	return &Ops;
 }
 
-void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData* ngOtrOpData, const QString &messageContent)
+void EncryptionNgOtrAppOpsWrapper::createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	ngOtrOpData->privateKeyService()->createPrivateKey(account);
+}
+
+void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent)
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);

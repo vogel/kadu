@@ -19,7 +19,8 @@
 
 #include "encryption-ng-otr-op-data.h"
 
-EncryptionNgOtrOpData::EncryptionNgOtrOpData()
+EncryptionNgOtrOpData::EncryptionNgOtrOpData() :
+		AppOpsWrapper(0), PrivateKeyService(0)
 {
 }
 
@@ -32,9 +33,19 @@ void EncryptionNgOtrOpData::setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOp
 	AppOpsWrapper = appOpsWrapper;
 }
 
-EncryptionNgOtrAppOpsWrapper* EncryptionNgOtrOpData::appOpsWrapper() const
+EncryptionNgOtrAppOpsWrapper * EncryptionNgOtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
+}
+
+void EncryptionNgOtrOpData::setAPrivateKeyService(EncryptionNgOtrPrivateKeyService* privateKeyService)
+{
+	PrivateKeyService = privateKeyService;
+}
+
+EncryptionNgOtrPrivateKeyService * EncryptionNgOtrOpData::privateKeyService() const
+{
+	return PrivateKeyService;
 }
 
 void EncryptionNgOtrOpData::setMessage(const Message &message)

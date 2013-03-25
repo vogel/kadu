@@ -17,36 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
-#define ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
+#ifndef ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H
+#define ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H
 
 #include <QtCore/QObject>
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#   include <libotr/privkey.h>
 }
 
-class EncryptionNgOtrOpData;
+class Account;
 
-class EncryptionNgOtrAppOpsWrapper : public QObject
+class EncryptionNgOtrUserStateService;
+
+class EncryptionNgOtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	friend void kadu_enomf_create_privkey(void *, const char *, const char *);
-	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
+	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
+	QString privateStoreFileName(const Account &account);
 
-	OtrlMessageAppOps Ops;
-
-	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
-	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
+private slots:
+	void userStateCreated(const Account &account);
 
 public:
-	explicit EncryptionNgOtrAppOpsWrapper();
-	virtual ~EncryptionNgOtrAppOpsWrapper();
+	explicit EncryptionNgOtrPrivateKeyService(QObject *parent = 0);
+	virtual ~EncryptionNgOtrPrivateKeyService();
 
-	const OtrlMessageAppOps * ops() const;
+	void setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService);
+
+	void createPrivateKey(const Account &account);
+	void readPrivateKey(const Account &account);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_APP_OPS_WRAPPER_H
+
+#endif // ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H

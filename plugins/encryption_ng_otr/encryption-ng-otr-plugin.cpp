@@ -21,6 +21,7 @@
 #include "services/raw-message-transformer-service.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
+#include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-raw-message-transformer.h"
 #include "encryption-ng-otr-user-state-service.h"
 
@@ -43,6 +44,16 @@ void EncryptionNgOtrPlugin::registerOtrAppOpsWrapper()
 void EncryptionNgOtrPlugin::unregisterOtrAppOpsWrapper()
 {
 	OtrAppOpsWrapper.reset();
+}
+
+void EncryptionNgOtrPlugin::registerOtrPrivateKeyService()
+{
+	OtrPrivateKeyService.reset(new EncryptionNgOtrPrivateKeyService());
+}
+
+void EncryptionNgOtrPlugin::unregisterOtrPrivateKeyService()
+{
+	OtrPrivateKeyService.reset();
 }
 
 void EncryptionNgOtrPlugin::registerOtrUserStateService()
@@ -74,10 +85,14 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad);
 
 	registerOtrAppOpsWrapper();
-    registerOtrUserStateService();
+	registerOtrPrivateKeyService();
+	registerOtrUserStateService();
 	registerOtrRawMessageTransformer();
 
+	OtrPrivateKeyService->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
+
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
+	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(OtrPrivateKeyService.data());
 	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
 
 	return 0;
@@ -86,10 +101,14 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 void EncryptionNgOtrPlugin::done()
 {
 	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(0);
-    OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
+	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(0);
+	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
 
-    unregisterOtrRawMessageTransformer();
+	OtrPrivateKeyService->setEncryptionNgOtrUserStateService(0);
+
+	unregisterOtrRawMessageTransformer();
 	unregisterOtrUserStateService();
+	unregisterOtrPrivateKeyService();
 	unregisterOtrAppOpsWrapper();
 }
 

@@ -42,7 +42,11 @@ public:
 	explicit EncryptionNgOtrUserStateService(QObject *parent = 0);
 	virtual ~EncryptionNgOtrUserStateService();
 
-	OtrlUserState forAccount(Account account);
+	const QMap<Account, OtrlUserState> & userStates();
+	OtrlUserState forAccount(const Account &account);
+
+signals:
+	void userStateCreated(const Account &account);
 
 };
 

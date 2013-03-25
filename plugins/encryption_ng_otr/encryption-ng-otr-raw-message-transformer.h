@@ -30,12 +30,13 @@ extern "C" {
 }
 
 class EncryptionNgOtrAppOpsWrapper;
+class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrUserStateService;
 
 class EncryptionNgOtrRawMessageTransformer: public RawMessageTransformer
 {
-	OtrlMessageAppOps ops;
 	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
+	QWeakPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 	QWeakPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 
 public:
@@ -43,6 +44,7 @@ public:
 	virtual ~EncryptionNgOtrRawMessageTransformer();
 
 	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
+	void setEncryptionNgOtrPrivateKeyService(EncryptionNgOtrPrivateKeyService *encryptionNgOtrPrivateKeyService);
 	void setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService);
 
 	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);

@@ -19,6 +19,8 @@
 
 #include "accounts/account.h"
 
+#include "encryption-ng-otr-private-key-service.h"
+
 #include "encryption-ng-otr-user-state-service.h"
 
 EncryptionNgOtrUserStateService::EncryptionNgOtrUserStateService(QObject *parent) :
@@ -31,13 +33,15 @@ EncryptionNgOtrUserStateService::~EncryptionNgOtrUserStateService()
 {
 	triggerAllAccountsUnregistered();
 }
-
 void EncryptionNgOtrUserStateService::accountRegistered(Account account)
 {
 	if (UserStates.contains(account))
 		return;
 
-	UserStates.insert(account, otrl_userstate_create());
+	OtrlUserState userState = otrl_userstate_create();
+	UserStates.insert(account, userState);
+
+	emit userStateCreated(account);
 }
 
 void EncryptionNgOtrUserStateService::accountUnregistered(Account account)
@@ -50,7 +54,12 @@ void EncryptionNgOtrUserStateService::accountUnregistered(Account account)
 	otrl_userstate_free(userState);
 }
 
-OtrlUserState EncryptionNgOtrUserStateService::forAccount(Account account)
+const QMap<Account, OtrlUserState> & EncryptionNgOtrUserStateService::userStates()
+{
+	return UserStates;
+}
+
+OtrlUserState EncryptionNgOtrUserStateService::forAccount(const Account &account)
 {
 	return UserStates.value(account);
 }

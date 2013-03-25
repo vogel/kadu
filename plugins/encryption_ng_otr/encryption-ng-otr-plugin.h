@@ -25,6 +25,7 @@
 #include "plugins/generic-plugin.h"
 
 class EncryptionNgOtrAppOpsWrapper;
+class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrRawMessageTransformer;
 class EncryptionNgOtrUserStateService;
 
@@ -34,11 +35,15 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
+	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
 
 	void registerOtrAppOpsWrapper();
 	void unregisterOtrAppOpsWrapper();
+
+	void registerOtrPrivateKeyService();
+	void unregisterOtrPrivateKeyService();
 
 	void registerOtrUserStateService();
 	void unregisterOtrUserStateService();

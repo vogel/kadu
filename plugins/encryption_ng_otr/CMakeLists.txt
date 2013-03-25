@@ -9,6 +9,7 @@ set (SOURCES
 	encryption-ng-otr-app-ops-wrapper.cpp
 	encryption-ng-otr-op-data.cpp
 	encryption-ng-otr-plugin.cpp
+	encryption-ng-otr-private-key-service.cpp
 	encryption-ng-otr-raw-message-transformer.cpp
 	encryption-ng-otr-user-state-service.cpp
 )
@@ -16,6 +17,7 @@ set (SOURCES
 set (MOC_SOURCES
 	encryption-ng-otr-app-ops-wrapper.h
 	encryption-ng-otr-plugin.h
+    encryption-ng-otr-private-key-service.h
 	encryption-ng-otr-user-state-service.h
 )
 

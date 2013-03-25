@@ -29,6 +29,7 @@ extern "C" {
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-op-data.h"
+#include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-user-state-service.h"
 
 #include "encryption-ng-otr-raw-message-transformer.h"
@@ -44,6 +45,11 @@ EncryptionNgOtrRawMessageTransformer::~EncryptionNgOtrRawMessageTransformer()
 void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
 {
 	OtrAppOpsWrapper = encryptionNgOtrAppOpsWrapper;
+}
+
+void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrPrivateKeyService(EncryptionNgOtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
+{
+	OtrPrivateKeyService = encryptionNgOtrPrivateKeyService;
 }
 
 void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
@@ -65,6 +71,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 
 	EncryptionNgOtrOpData opData;
 	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
+	opData.setAPrivateKeyService(OtrPrivateKeyService.data());
 	opData.setMessage(message);
 
 	char *newMessage = 0;
