@@ -23,7 +23,9 @@ extern "C" {
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "chat/chat-details.h"
 #include "contacts/contact.h"
+#include "contacts/contact-set.h"
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
 
@@ -78,7 +80,6 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 {
 	printf("received message: %s\n", messageContent.data());
 
-	Account account = message.messageChat().chatAccount();
 	OtrlUserState userState = UserState->userState();
 	if (!userState)
 		return messageContent;
@@ -88,6 +89,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 	opData.setAPrivateKeyService(OtrPrivateKeyService.data());
 	opData.setMessage(message);
 
+	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
@@ -112,5 +114,37 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 {
 	Q_UNUSED(message);
 
-	return messageContent;
+	OtrlUserState userState = UserState->userState();
+	if (!userState)
+		return messageContent;
+
+	Chat chat = message.messageChat();
+	ChatDetails *chatDetails = chat.details();
+	if (chatDetails->contacts().size() > 1)
+		return messageContent;
+
+	Contact receiver = (*chatDetails->contacts().begin());
+
+	EncryptionNgOtrOpData opData;
+	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
+	opData.setAPrivateKeyService(OtrPrivateKeyService.data());
+	opData.setMessage(message);
+
+	Account account = message.messageChat().chatAccount();
+	char *newMessage = 0;
+
+	gcry_error_t err = otrl_message_sending(userState, OtrAppOpsWrapper.data()->ops(), &opData,
+		account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
+		receiver.id().toUtf8().data(),
+		messageContent.data(), 0,
+		&newMessage, 0, 0);
+
+	if (!err && newMessage)
+	{
+		QByteArray result = newMessage;
+		otrl_message_free(newMessage);
+		return result;
+	}
+	else
+		return messageContent;
 }
