@@ -17,18 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QDir>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "misc/kadu-paths.h"
 
-#include "encryption-ng-otr-user-state-service.h"
+#include "encryption-ng-otr-user-state.h"
 
 #include "encryption-ng-otr-private-key-service.h"
-#include <qfileinfo.h>
-#include <QDir>
 
 EncryptionNgOtrPrivateKeyService::EncryptionNgOtrPrivateKeyService(QObject *parent) :
-		QObject(parent)
+		QObject(parent), UserState(0)
 {
 }
 
@@ -36,24 +36,9 @@ EncryptionNgOtrPrivateKeyService::~EncryptionNgOtrPrivateKeyService()
 {
 }
 
-void EncryptionNgOtrPrivateKeyService::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
+void EncryptionNgOtrPrivateKeyService::setUserState(EncryptionNgOtrUserState *userState)
 {
-	if (OtrUserStateService)
-		disconnect(OtrUserStateService.data(), SIGNAL(userStateCreated(Account)), this, SLOT(userStateCreated(Account)));
-		
-	OtrUserStateService.reset(encryptionNgOtrUserStateService);
-
-	if (OtrUserStateService)
-	{
-		connect(OtrUserStateService.data(), SIGNAL(userStateCreated(Account)), this, SLOT(userStateCreated(Account)));
-		foreach (const Account &account, AccountManager::instance()->items())
-			userStateCreated(account);
-	}
-}
-
-void EncryptionNgOtrPrivateKeyService::userStateCreated(const Account &account)
-{
-	readPrivateKey(account);
+	UserState = userState;
 }
 
 QString EncryptionNgOtrPrivateKeyService::privateStoreFileName()
@@ -63,10 +48,10 @@ QString EncryptionNgOtrPrivateKeyService::privateStoreFileName()
 
 void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
 {
-	if (!OtrUserStateService)
+	if (!UserState)
 		return;
 
-	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
+	OtrlUserState userState = UserState->userState();
 	QString fileName = privateStoreFileName();
 	QFileInfo fileInfo(fileName);
 	QDir fileDir = fileInfo.absoluteDir();
@@ -77,14 +62,14 @@ void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
 	}
 
 	otrl_privkey_generate(userState, fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());
-	readPrivateKey(account);
+	// readPrivateKeys(account);
 }
 
-void EncryptionNgOtrPrivateKeyService::readPrivateKey(const Account &account)
+void EncryptionNgOtrPrivateKeyService::readPrivateKeys()
 {
-	if (!OtrUserStateService)
+	if (!UserState)
 		return;
 
-	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
+	OtrlUserState userState = UserState->userState();
 	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
 }

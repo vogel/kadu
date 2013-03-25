@@ -17,36 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H
-#define ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H
-
-#include <QtCore/QObject>
+#ifndef ENCRYPTION_NG_OTR_USER_STATE_H
+#define ENCRYPTION_NG_OTR_USER_STATE_H
 
 extern "C" {
-#   include <libotr/privkey.h>
+#   include <libotr/userstate.h>
 }
 
-class Account;
-
-class EncryptionNgOtrUserState;
-
-class EncryptionNgOtrPrivateKeyService : public QObject
+class EncryptionNgOtrUserState
 {
-	Q_OBJECT
-
-	EncryptionNgOtrUserState *UserState;
-	QString privateStoreFileName();
+    OtrlUserState UserState;
 
 public:
-	explicit EncryptionNgOtrPrivateKeyService(QObject *parent = 0);
-	virtual ~EncryptionNgOtrPrivateKeyService();
+    EncryptionNgOtrUserState();
+    ~EncryptionNgOtrUserState();
 
-	void setUserState(EncryptionNgOtrUserState *userState);
-
-	void createPrivateKey(const Account &account);
-	void readPrivateKeys();
+    OtrlUserState userState() const;
 
 };
 
-
-#endif // ENCRYPTION_NG_OTR_PRIVATE_KEY_SERVICE_H
+#endif // ENCRYPTION_NG_OTR_USER_STATE_H

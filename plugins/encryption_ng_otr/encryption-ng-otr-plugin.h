@@ -24,19 +24,21 @@
 
 #include "plugins/generic-plugin.h"
 
+#include "encryption-ng-otr-user-state.h"
+
 class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrRawMessageTransformer;
-class EncryptionNgOtrUserStateService;
 
 class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
+	EncryptionNgOtrUserState OtrUserState;
+
 	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
-	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
 	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
 
 	void registerOtrAppOpsWrapper();
@@ -44,9 +46,6 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrPrivateKeyService();
 	void unregisterOtrPrivateKeyService();
-
-	void registerOtrUserStateService();
-	void unregisterOtrUserStateService();
 
 	void registerOtrRawMessageTransformer();
 	void unregisterOtrRawMessageTransformer();

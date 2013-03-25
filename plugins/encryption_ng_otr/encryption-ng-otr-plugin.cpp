@@ -23,7 +23,7 @@
 #include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-raw-message-transformer.h"
-#include "encryption-ng-otr-user-state-service.h"
+#include "encryption-ng-otr-user-state.h"
 
 #include "encryption-ng-otr-plugin.h"
 
@@ -56,16 +56,6 @@ void EncryptionNgOtrPlugin::unregisterOtrPrivateKeyService()
 	OtrPrivateKeyService.reset();
 }
 
-void EncryptionNgOtrPlugin::registerOtrUserStateService()
-{
-	OtrUserStateService.reset(new EncryptionNgOtrUserStateService(this));
-}
-
-void EncryptionNgOtrPlugin::unregisterOtrUserStateService()
-{
-	OtrUserStateService.reset();
-}
-
 void EncryptionNgOtrPlugin::registerOtrRawMessageTransformer()
 {
 	OtrRawMessageTransformer.reset(new EncryptionNgOtrRawMessageTransformer());
@@ -86,28 +76,27 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 
 	registerOtrAppOpsWrapper();
 	registerOtrPrivateKeyService();
-	registerOtrUserStateService();
 	registerOtrRawMessageTransformer();
 
-	OtrPrivateKeyService->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
+	OtrPrivateKeyService->setUserState(&OtrUserState);
+	OtrPrivateKeyService->readPrivateKeys();
 
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(OtrPrivateKeyService.data());
-	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(OtrUserStateService.data());
+	OtrRawMessageTransformer->setUserState(&OtrUserState);
 
 	return 0;
 }
 
 void EncryptionNgOtrPlugin::done()
 {
-	OtrRawMessageTransformer->setEncryptionNgOtrUserStateService(0);
+	OtrRawMessageTransformer->setUserState(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
 
-	OtrPrivateKeyService->setEncryptionNgOtrUserStateService(0);
+	OtrPrivateKeyService->setUserState(0);
 
 	unregisterOtrRawMessageTransformer();
-	unregisterOtrUserStateService();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrAppOpsWrapper();
 }

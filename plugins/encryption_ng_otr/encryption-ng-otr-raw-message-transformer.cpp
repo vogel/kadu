@@ -30,16 +30,22 @@ extern "C" {
 #include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-op-data.h"
 #include "encryption-ng-otr-private-key-service.h"
-#include "encryption-ng-otr-user-state-service.h"
+#include "encryption-ng-otr-user-state.h"
 
 #include "encryption-ng-otr-raw-message-transformer.h"
 
-EncryptionNgOtrRawMessageTransformer::EncryptionNgOtrRawMessageTransformer()
+EncryptionNgOtrRawMessageTransformer::EncryptionNgOtrRawMessageTransformer() :
+		UserState(0)
 {
 }
 
 EncryptionNgOtrRawMessageTransformer::~EncryptionNgOtrRawMessageTransformer()
 {
+}
+
+void EncryptionNgOtrRawMessageTransformer::setUserState(EncryptionNgOtrUserState *userState)
+{
+	UserState = userState;
 }
 
 void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
@@ -52,20 +58,15 @@ void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrPrivateKeyService(E
 	OtrPrivateKeyService = encryptionNgOtrPrivateKeyService;
 }
 
-void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrUserStateService(EncryptionNgOtrUserStateService *encryptionNgOtrUserStateService)
-{
-	OtrUserStateService = encryptionNgOtrUserStateService;
-}
-
 QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || OtrUserStateService.isNull())
+	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || !UserState)
 		return messageContent;
 
 	printf("received message: %s\n", messageContent.data());
 
 	Account account = message.messageChat().chatAccount();
-	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
+	OtrlUserState userState = UserState->userState();
 	if (!userState)
 		return messageContent;
 
