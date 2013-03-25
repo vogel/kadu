@@ -60,9 +60,22 @@ void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrPrivateKeyService(E
 
 QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	if (MessageTypeSent == message.type() || OtrAppOpsWrapper.isNull() || !UserState)
+	if (OtrAppOpsWrapper.isNull() || !UserState)
 		return messageContent;
 
+	switch (message.type())
+	{
+		case MessageTypeSent:
+			return transformSent(messageContent, message);
+		case MessageTypeReceived:
+			return transformReceived(messageContent, message);
+		default:
+			return messageContent;
+	}
+}
+
+QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
+{
 	printf("received message: %s\n", messageContent.data());
 
 	Account account = message.messageChat().chatAccount();
@@ -93,4 +106,11 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 	}
 	else
 		return messageContent;
+}
+
+QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
+{
+	Q_UNUSED(message);
+
+	return messageContent;
 }

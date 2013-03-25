@@ -40,6 +40,9 @@ class EncryptionNgOtrRawMessageTransformer: public RawMessageTransformer
 	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QWeakPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 
+	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
+	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
+
 public:
 	explicit EncryptionNgOtrRawMessageTransformer();
 	virtual ~EncryptionNgOtrRawMessageTransformer();
