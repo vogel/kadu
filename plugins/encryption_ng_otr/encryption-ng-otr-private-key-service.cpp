@@ -56,9 +56,9 @@ void EncryptionNgOtrPrivateKeyService::userStateCreated(const Account &account)
 	readPrivateKey(account);
 }
 
-QString EncryptionNgOtrPrivateKeyService::privateStoreFileName(const Account &account)
+QString EncryptionNgOtrPrivateKeyService::privateStoreFileName()
 {
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_private/%1").arg(account.uuid().toString());
+	return KaduPaths::instance()->profilePath() + QString("/keys/otr_private");
 }
 
 void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
@@ -67,7 +67,7 @@ void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
 		return;
 
 	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
-	QString fileName = privateStoreFileName(account);
+	QString fileName = privateStoreFileName();
 	QFileInfo fileInfo(fileName);
 	QDir fileDir = fileInfo.absoluteDir();
 	if (!fileDir.exists())
@@ -86,5 +86,5 @@ void EncryptionNgOtrPrivateKeyService::readPrivateKey(const Account &account)
 		return;
 
 	OtrlUserState userState = OtrUserStateService.data()->forAccount(account);
-	otrl_privkey_read(userState, privateStoreFileName(account).toUtf8().data());
+	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
 }

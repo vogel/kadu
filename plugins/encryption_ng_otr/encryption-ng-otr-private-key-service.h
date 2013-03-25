@@ -35,7 +35,7 @@ class EncryptionNgOtrPrivateKeyService : public QObject
 	Q_OBJECT
 
 	QScopedPointer<EncryptionNgOtrUserStateService> OtrUserStateService;
-	QString privateStoreFileName(const Account &account);
+	QString privateStoreFileName();
 
 private slots:
 	void userStateCreated(const Account &account);
