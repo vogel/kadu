@@ -134,10 +134,10 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 	char *newMessage = 0;
 
 	gcry_error_t err = otrl_message_sending(userState, OtrAppOpsWrapper.data()->ops(), &opData,
-		account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
-		receiver.id().toUtf8().data(),
-		messageContent.data(), 0,
-		&newMessage, 0, 0);
+			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
+			receiver.id().toUtf8().data(),
+			messageContent.data(), 0,
+			&newMessage, 0, 0);
 
 	if (!err && newMessage)
 	{
