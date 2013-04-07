@@ -38,6 +38,8 @@ class AccountConfigurationWidgetRepository : public QObject
 	QMap<AccountConfigurationWidget *, AccountConfigurationWidgetFactory *> FactoryByWidget;
 	QMap<AccountConfigurationWidgetFactory *, QList<AccountConfigurationWidget *> > WidgetsByFactory;
 
+	void addWidgetToMaps(AccountConfigurationWidgetFactory *factory, AccountConfigurationWidget *widget);
+
 private slots:
 	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
 

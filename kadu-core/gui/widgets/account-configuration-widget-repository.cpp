@@ -52,15 +52,20 @@ QList<AccountConfigurationWidget *> AccountConfigurationWidgetRepository::create
 		AccountConfigurationWidget *widget = factory->createWidget(account, parent);
 		if (widget)
 		{
-			if (!WidgetsByFactory.contains(factory))
-				WidgetsByFactory.insert(factory, QList<AccountConfigurationWidget *>());
-			WidgetsByFactory[factory].append(widget);
-			FactoryByWidget.insert(widget, factory);
+			addWidgetToMaps(factory, widget);
 			result.append(widget);
 		}
 	}
 
 	return result;
+}
+
+void AccountConfigurationWidgetRepository::addWidgetToMaps(AccountConfigurationWidgetFactory *factory, AccountConfigurationWidget *widget)
+{
+	if (!WidgetsByFactory.contains(factory))
+		WidgetsByFactory.insert(factory, QList<AccountConfigurationWidget *>());
+	WidgetsByFactory[factory].append(widget);
+	FactoryByWidget.insert(widget, factory);
 }
 
 void AccountConfigurationWidgetRepository::factoryUnregistered(AccountConfigurationWidgetFactory *factory)
