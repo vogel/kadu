@@ -57,7 +57,7 @@
 #include "jabber-edit-account-widget.h"
 
 JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *parent) :
-		AccountEditWidget(account, parent)
+		AccountEditWidget(0, account, parent)
 {
 	createGui();
 	loadAccountData();

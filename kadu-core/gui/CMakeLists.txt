@@ -22,6 +22,7 @@ set (gui_SRCS
 	services/clipboard-html-transformer-service.cpp
 
 	widgets/account-avatar-widget.cpp
+	widgets/account-edit-widget.cpp
 	widgets/account-configuration-widget.cpp
 	widgets/account-configuration-widget-factory-repository.cpp
 	widgets/account-configuration-widget-repository.cpp

@@ -29,14 +29,21 @@
 #include "gui/widgets/account-configuration-widget.h"
 #include "exports.h"
 
+class AccountConfigurationWidgetRepository;
+
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
+	AccountConfigurationWidgetRepository *MyAccountConfigurationWidgetRepository;
+
+protected:
+	AccountConfigurationWidgetRepository * accountConfigurationWidgetRepository() const;
+
 public:
-	explicit AccountEditWidget(Account account, QWidget *parent = 0) :
-			AccountConfigurationWidget(account, parent) {}
-	virtual ~AccountEditWidget() {}
+	explicit AccountEditWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository,
+							   Account account, QWidget *parent = 0);
+	virtual ~AccountEditWidget();
 
 };
 
