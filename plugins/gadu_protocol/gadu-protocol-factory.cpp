@@ -27,13 +27,14 @@
 
 #include <QtGui/QPushButton>
 
+#include "core/core.h"
+#include "icons/kadu-icon.h"
+#include "status/status-type.h"
+
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
-#include "icons/kadu-icon.h"
-#include "status/status-type.h"
-
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
 #include "gadu-id-validator.h"
@@ -100,7 +101,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool showButto
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	GaduEditAccountWidget *result = new GaduEditAccountWidget(0, account, parent);
+	GaduEditAccountWidget *result = new GaduEditAccountWidget(Core::instance()->accountConfigurationWidgetRepository(), account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

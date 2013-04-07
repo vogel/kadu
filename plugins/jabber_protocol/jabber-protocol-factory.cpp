@@ -22,6 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
@@ -101,7 +102,7 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showBut
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = new JabberEditAccountWidget(0, account, parent);
+	JabberEditAccountWidget *result = new JabberEditAccountWidget(Core::instance()->accountConfigurationWidgetRepository(), account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
