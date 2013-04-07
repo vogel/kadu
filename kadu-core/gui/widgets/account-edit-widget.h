@@ -26,21 +26,16 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
-#include "gui/widgets/modal-configuration-widget.h"
+#include "gui/widgets/account-configuration-widget.h"
 #include "exports.h"
 
-class KADUAPI AccountEditWidget : public ModalConfigurationWidget
+class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	Account MyAccount;
-
-protected:
-	Account account() { return MyAccount; }
-
 public:
 	explicit AccountEditWidget(Account account, QWidget *parent = 0) :
-			ModalConfigurationWidget(parent), MyAccount(account) {}
+			AccountConfigurationWidget(account, parent) {}
 	virtual ~AccountEditWidget() {}
 
 };
