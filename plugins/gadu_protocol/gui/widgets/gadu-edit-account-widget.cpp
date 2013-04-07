@@ -90,6 +90,13 @@ void GaduEditAccountWidget::createGui()
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
+	createAccountConfigurationWidgets();
+	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
+	{
+		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
+		tabWidget->addTab(widget, tr("Custom Configuration"));
+	}
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
@@ -320,6 +327,8 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 void GaduEditAccountWidget::apply()
 {
+	applyAccountConfigurationWidgets();
+
 	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -364,6 +373,8 @@ void GaduEditAccountWidget::apply()
 
 void GaduEditAccountWidget::cancel()
 {
+	cancelAccountConfigurationWidgets();
+
 	loadAccountData();
 	gpiw->cancel();
 
@@ -381,7 +392,10 @@ void GaduEditAccountWidget::resetState()
 
 void GaduEditAccountWidget::dataChanged()
 {
-	if (account().accountIdentity() == Identities->currentIdentity()
+	ModalConfigurationWidgetState widgetsState =accountConfigurationWidgetsState();
+
+	if (StateNotChanged == widgetsState
+		&& account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
@@ -411,7 +425,7 @@ void GaduEditAccountWidget::dataChanged()
 	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), AccountId->text())
 			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
 
-	if (AccountId->text().isEmpty() || sameIdExists)
+	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
 	{
 		setState(StateChangedDataInvalid);
 		ApplyButton->setEnabled(false);

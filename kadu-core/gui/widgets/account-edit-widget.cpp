@@ -17,6 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "account-configuration-widget-repository.h"
+
 #include "account-edit-widget.h"
 
 AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetRepository *configurationWidgetRepository, Account account, QWidget *parent) :
@@ -31,4 +33,50 @@ AccountEditWidget::~AccountEditWidget()
 AccountConfigurationWidgetRepository * AccountEditWidget::accountConfigurationWidgetRepository() const
 {
 	return MyAccountConfigurationWidgetRepository;
+}
+
+void AccountEditWidget::createAccountConfigurationWidgets()
+{
+	AccountConfigurationWidgets = MyAccountConfigurationWidgetRepository->createWidgets(account(), this);
+}
+
+QList<AccountConfigurationWidget *> AccountEditWidget::accountConfigurationWidgets() const
+{
+	return AccountConfigurationWidgets;
+}
+
+void AccountEditWidget::applyAccountConfigurationWidgets()
+{
+	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+		widget->apply();
+}
+
+void AccountEditWidget::cancelAccountConfigurationWidgets()
+{
+	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+		widget->cancel();
+}
+
+ModalConfigurationWidgetState AccountEditWidget::accountConfigurationWidgetsState()
+{
+	bool anyChanged = false;
+
+	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+	{
+		switch (widget->state())
+		{
+			case StateChangedDataInvalid:
+				return StateChangedDataInvalid;
+			case StateNotChanged:
+				break;
+			case StateChangedDataValid:
+				anyChanged = true;
+				break;
+		}
+	}
+
+	if (anyChanged)
+		return StateChangedDataValid;
+	else
+		return StateNotChanged;
 }

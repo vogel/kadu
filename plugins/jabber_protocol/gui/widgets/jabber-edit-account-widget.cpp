@@ -81,6 +81,13 @@ void JabberEditAccountWidget::createGui()
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
+	createAccountConfigurationWidgets();
+	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
+	{
+		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
+		tabWidget->addTab(widget, tr("Custom Configuration"));
+	}
+
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
@@ -397,7 +404,10 @@ void JabberEditAccountWidget::dataChanged()
 	if (!AccountDetails)
 		return;
 
-	if (account().accountIdentity() == Identities->currentIdentity()
+	ModalConfigurationWidgetState widgetsState =accountConfigurationWidgetsState();
+
+	if (StateNotChanged == widgetsState
+		&& account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()
@@ -428,7 +438,8 @@ void JabberEditAccountWidget::dataChanged()
 	if (/*AccountName->text().isEmpty()
 		|| sameNameExists
 		|| */AccountId->text().isEmpty()
-		|| sameIdExists)
+		|| sameIdExists
+		|| StateChangedDataInvalid == widgetsState)
 	{
 		setState(StateChangedDataInvalid);
 		ApplyButton->setEnabled(false);
@@ -485,6 +496,8 @@ void JabberEditAccountWidget::apply()
 	if (!AccountDetails)
 		return;
 
+	applyAccountConfigurationWidgets();
+
 	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -517,6 +530,8 @@ void JabberEditAccountWidget::apply()
 
 void JabberEditAccountWidget::cancel()
 {
+	cancelAccountConfigurationWidgets();
+
 	loadAccountData();
 	loadAccountDetailsData();
 	PersonalInfoWidget->cancel();

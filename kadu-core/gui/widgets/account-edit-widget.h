@@ -29,6 +29,7 @@
 #include "gui/widgets/account-configuration-widget.h"
 #include "exports.h"
 
+class AccountConfigurationWidget;
 class AccountConfigurationWidgetRepository;
 
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
@@ -36,9 +37,18 @@ class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 	Q_OBJECT
 
 	AccountConfigurationWidgetRepository *MyAccountConfigurationWidgetRepository;
+	QList<AccountConfigurationWidget *> AccountConfigurationWidgets;
 
 protected:
 	AccountConfigurationWidgetRepository * accountConfigurationWidgetRepository() const;
+
+	void createAccountConfigurationWidgets();
+	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
+
+	void applyAccountConfigurationWidgets();
+	void cancelAccountConfigurationWidgets();
+
+	ModalConfigurationWidgetState accountConfigurationWidgetsState();
 
 public:
 	explicit AccountEditWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository,
