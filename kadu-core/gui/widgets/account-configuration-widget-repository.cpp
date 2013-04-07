@@ -52,6 +52,7 @@ QList<AccountConfigurationWidget *> AccountConfigurationWidgetRepository::create
 		AccountConfigurationWidget *widget = factory->createWidget(account, parent);
 		if (widget)
 		{
+			connect(widget, SIGNAL(destroyed(QObject*)), this, SLOT(widgetDestroyed(QObject*)));
 			addWidgetToMaps(factory, widget);
 			result.append(widget);
 		}
@@ -79,4 +80,14 @@ void AccountConfigurationWidgetRepository::factoryUnregistered(AccountConfigurat
 		FactoryByWidget.remove(widget);
 		delete widget;
 	}
+}
+
+void AccountConfigurationWidgetRepository::widgetDestroyed(QObject *object)
+{
+	AccountConfigurationWidget *widget = static_cast<AccountConfigurationWidget *>(object);
+	AccountConfigurationWidgetFactory *factory = FactoryByWidget.value(widget);
+	FactoryByWidget.remove(widget);
+
+	if (WidgetsByFactory.contains(factory))
+		WidgetsByFactory[factory].removeAll(widget);
 }

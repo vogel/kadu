@@ -42,6 +42,7 @@ class AccountConfigurationWidgetRepository : public QObject
 
 private slots:
 	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
+	void widgetDestroyed(QObject *object);
 
 public:
 	explicit AccountConfigurationWidgetRepository(QObject *parent = 0);
