@@ -21,8 +21,9 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
-	widgets/account-buddy-list-widget.cpp
 	widgets/account-avatar-widget.cpp
+	widgets/account-configuration-widget.cpp
+	widgets/account-buddy-list-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
 	widgets/avatar-painter.cpp
@@ -200,6 +201,7 @@ set (gui_MOC_SRCS
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
 	widgets/account-buddy-list-widget.h
+	widgets/account-configuration-widget.h
 	widgets/account-create-widget.h
 	widgets/account-edit-widget.h
 	widgets/accounts-combo-box.h
