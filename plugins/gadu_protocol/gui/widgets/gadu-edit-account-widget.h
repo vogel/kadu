@@ -99,7 +99,7 @@ private slots:
 	void showStatusToEveryoneToggled(bool toggled);
 
 public:
-	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
+	explicit GaduEditAccountWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository, Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
 public slots:

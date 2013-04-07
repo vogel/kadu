@@ -63,8 +63,8 @@
 
 #include "gadu-edit-account-widget.h"
 
-GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
-		AccountEditWidget(0, account, parent)
+GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetRepository, account, parent)
 {
 	Details = dynamic_cast<GaduAccountDetails *>(account.details());
 

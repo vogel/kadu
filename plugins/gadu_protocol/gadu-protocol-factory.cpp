@@ -100,7 +100,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool showButto
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	GaduEditAccountWidget *result = new GaduEditAccountWidget(account, parent);
+	GaduEditAccountWidget *result = new GaduEditAccountWidget(0, account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }
