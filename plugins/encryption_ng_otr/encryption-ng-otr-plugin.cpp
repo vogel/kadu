@@ -19,7 +19,9 @@
 
 #include "core/core.h"
 #include "services/raw-message-transformer-service.h"
+#include <gui/widgets/account-configuration-widget-factory-repository.h>
 
+#include "gui/widgets/encryption-ng-otr-account-configuration-widget-factory.h"
 #include "encryption-ng-otr-app-ops-wrapper.h"
 #include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-raw-message-transformer.h"
@@ -34,6 +36,20 @@ EncryptionNgOtrPlugin::EncryptionNgOtrPlugin()
 
 EncryptionNgOtrPlugin::~EncryptionNgOtrPlugin()
 {
+}
+
+void EncryptionNgOtrPlugin::registerOtrAcountConfigurationWidgetFactory()
+{
+	OtrAccountConfigurationWidgetFactory.reset(new EncryptionNgOtrAccountConfigurationWidgetFactory());
+
+	Core::instance()->accountConfigurationWidgetFactoryRepository()->registerFactory(OtrAccountConfigurationWidgetFactory.data());
+}
+
+void EncryptionNgOtrPlugin::unregisterOtrAcountConfigurationWidgetFactory()
+{
+	Core::instance()->accountConfigurationWidgetFactoryRepository()->unregisterFactory(OtrAccountConfigurationWidgetFactory.data());
+
+	OtrAccountConfigurationWidgetFactory.reset();
 }
 
 void EncryptionNgOtrPlugin::registerOtrAppOpsWrapper()
@@ -74,6 +90,7 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
 
+	registerOtrAcountConfigurationWidgetFactory();
 	registerOtrAppOpsWrapper();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
@@ -99,6 +116,7 @@ void EncryptionNgOtrPlugin::done()
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrAppOpsWrapper();
+	unregisterOtrAcountConfigurationWidgetFactory();
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_otr, EncryptionNgOtrPlugin)

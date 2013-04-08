@@ -26,6 +26,7 @@
 
 #include "encryption-ng-otr-user-state.h"
 
+class EncryptionNgOtrAccountConfigurationWidgetFactory;
 class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrRawMessageTransformer;
@@ -37,9 +38,13 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 
 	EncryptionNgOtrUserState OtrUserState;
 
+	QScopedPointer<EncryptionNgOtrAccountConfigurationWidgetFactory> OtrAccountConfigurationWidgetFactory;
 	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
+
+	void registerOtrAcountConfigurationWidgetFactory();
+	void unregisterOtrAcountConfigurationWidgetFactory();
 
 	void registerOtrAppOpsWrapper();
 	void unregisterOtrAppOpsWrapper();

@@ -6,6 +6,9 @@ include (FindKadu)
 include (FindPkgConfig)
 
 set (SOURCES
+	gui/widgets/encryption-ng-otr-account-configuration-widget-factory.cpp
+	gui/widgets/encryption-ng-otr-account-configuration-widget.cpp
+
 	encryption-ng-otr-app-ops-wrapper.cpp
 	encryption-ng-otr-op-data.cpp
 	encryption-ng-otr-plugin.cpp
@@ -15,9 +18,11 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	gui/widgets/encryption-ng-otr-account-configuration-widget.h
+
 	encryption-ng-otr-app-ops-wrapper.h
 	encryption-ng-otr-plugin.h
-    encryption-ng-otr-private-key-service.h
+	encryption-ng-otr-private-key-service.h
 )
 
 set (CONFIGURATION_FILES
