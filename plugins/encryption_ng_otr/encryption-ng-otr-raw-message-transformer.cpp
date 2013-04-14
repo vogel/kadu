@@ -86,7 +86,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 
 	EncryptionNgOtrOpData opData;
 	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
-	opData.setAPrivateKeyService(OtrPrivateKeyService.data());
+	opData.setPrivateKeyService(OtrPrivateKeyService.data());
 	opData.setMessage(message);
 
 	Account account = message.messageChat().chatAccount();
@@ -127,7 +127,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 
 	EncryptionNgOtrOpData opData;
 	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
-	opData.setAPrivateKeyService(OtrPrivateKeyService.data());
+	opData.setPrivateKeyService(OtrPrivateKeyService.data());
 	opData.setMessage(message);
 
 	Account account = message.messageChat().chatAccount();

@@ -38,7 +38,7 @@ EncryptionNgOtrAppOpsWrapper * EncryptionNgOtrOpData::appOpsWrapper() const
 	return AppOpsWrapper;
 }
 
-void EncryptionNgOtrOpData::setAPrivateKeyService(EncryptionNgOtrPrivateKeyService* privateKeyService)
+void EncryptionNgOtrOpData::setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService)
 {
 	PrivateKeyService = privateKeyService;
 }

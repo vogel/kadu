@@ -38,7 +38,7 @@ public:
 	void setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOpsWrapper);
 	EncryptionNgOtrAppOpsWrapper * appOpsWrapper() const;
 
-	void setAPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService);
+	void setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService);
 	EncryptionNgOtrPrivateKeyService * privateKeyService() const;
 
 	void setMessage(const Message &message);
