@@ -54,6 +54,10 @@
 
 #include "archive-extractor.h"
 
+#ifdef Q_OS_WIN
+#define S_ISDIR(mode) (((mode) & _S_IFMT) == _S_IFDIR)
+typedef qint64 ssize_t;
+#endif
 
 struct ArchiveExtractor::ArchiveReadCustomDeleter
 {
