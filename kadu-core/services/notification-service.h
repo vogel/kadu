@@ -23,6 +23,7 @@
 #include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 
 class QAction;
 
@@ -36,7 +37,7 @@ class NotifyConfigurationUiHandler;
 class ScreenModeChecker;
 class StatusContainer;
 
-class NotificationService : public QObject, ConfigurationAwareObject
+class KADUAPI NotificationService : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 

@@ -52,8 +52,8 @@ QString rectToString(const QRect& rect);
 QList<int> stringToIntList(const QString &in);
 QString intListToString(const QList<int> &in);
 
-QString fixFileName(const QString &path, const QString &fn);
+KADUAPI QString fixFileName(const QString &path, const QString &fn);
 
-QChar extractLetter(QChar c);
+KADUAPI QChar extractLetter(QChar c);
 
 #endif // MISC_H

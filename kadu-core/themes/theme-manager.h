@@ -29,9 +29,10 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "themes/theme.h"
 
-class ThemeManager : public QObject
+class KADUAPI ThemeManager : public QObject
 {
 	Q_OBJECT
 

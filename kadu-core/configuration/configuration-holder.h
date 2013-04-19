@@ -29,7 +29,9 @@
 
 #include <QtCore/QObject>
 
-class ConfigurationHolder : public QObject
+#include "exports.h"
+
+class KADUAPI ConfigurationHolder : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ConfigurationHolder)

@@ -26,7 +26,9 @@
 
 #include <QtCore/QString>
 
-class Theme
+#include "exports.h"
+
+class KADUAPI Theme
 {
 	QString Path;
 	QString Name;

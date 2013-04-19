@@ -22,7 +22,9 @@
 
 #include <QtCore/QWeakPointer>
 
-class ArchiveExtractor
+#include "exports.h"
+
+class KADUAPI ArchiveExtractor
 {
 	struct ArchiveReadCustomDeleter;
 	struct ArchiveWriteCustomDeleter;

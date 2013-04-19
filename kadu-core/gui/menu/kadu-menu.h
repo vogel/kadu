@@ -28,11 +28,13 @@
 #include <QtCore/QMap>
 #include <QtGui/QMenu>
 
+#include "exports.h"
+
 class ActionContext;
 class ActionDescription;
 class MenuItem;
 
-class KaduMenu : public QObject
+class KADUAPI KaduMenu : public QObject
 {
 	Q_OBJECT
 
