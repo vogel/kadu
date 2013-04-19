@@ -1,0 +1,118 @@
+diff --git a/src/gui/kernel/qwidget.cpp b/src/gui/kernel/qwidget.cpp
+index 030e31b..0acd621e 100644
+--- a/src/gui/kernel/qwidget.cpp
++++ b/src/gui/kernel/qwidget.cpp
+@@ -2739,7 +2739,7 @@ void QWidget::setStyle(QStyle *style)
+         //(this may happen for exemple in QButtonDialogBox which propagates its style)
+         proxy->ref();
+         d->setStyle_helper(style, false);
+-    } else if (qobject_cast<QStyleSheetStyle *>(d->extra->style) || !qApp->styleSheet().isEmpty()) {
++    } else if (qobject_cast<QStyleSheetStyle *>(d->extra->style) || (style && !qApp->styleSheet().isEmpty())) {
+         // if we have an application stylesheet or have a proxy already, propagate
+         d->setStyle_helper(new QStyleSheetStyle(style), true);
+     } else
+@@ -2800,7 +2800,8 @@ void QWidgetPrivate::setStyle_helper(QStyle *newStyle, bool propagate, bool
+     }
+ 
+ #ifndef QT_NO_STYLE_STYLESHEET
+-    if (!qobject_cast<QStyleSheetStyle*>(newStyle)) {
++    // if we are done using stylesheet style, tidy up
++    if (!qobject_cast<QStyleSheetStyle*>(newStyle) && qApp->styleSheet().isEmpty()) {
+         if (const QStyleSheetStyle* cssStyle = qobject_cast<QStyleSheetStyle*>(origStyle.data())) {
+             cssStyle->clearWidgetFont(q);
+         }
+@@ -2838,13 +2839,16 @@ void QWidgetPrivate::inheritStyle()
+     QWidget *parent = q->parentWidget();
+     QStyle *parentStyle = (parent && parent->d_func()->extra) ? (QStyle*)parent->d_func()->extra->style : 0;
+     // If we have stylesheet on app or parent has stylesheet style, we need
+-    // to be running a proxy
++    // to be running a proxy. Although, stylesheet on app alone doesn't make
++    // us need proxy here.
+     if (!qApp->styleSheet().isEmpty() || qobject_cast<QStyleSheetStyle *>(parentStyle)) {
+         QStyle *newStyle = parentStyle;
+         if (q->testAttribute(Qt::WA_SetStyle))
+             newStyle = new QStyleSheetStyle(origStyle);
+         else if (QStyleSheetStyle *newProxy = qobject_cast<QStyleSheetStyle *>(parentStyle))
+             newProxy->ref();
++        // else newStyle is surely 0, because if app has style sheet,
++        // our parent can't possibly have a non-proxy style
+ 
+         setStyle_helper(newStyle, true);
+         return;
+@@ -4829,9 +4833,8 @@ void QWidget::setFont(const QFont &font)
+     Q_D(QWidget);
+ 
+ #ifndef QT_NO_STYLE_STYLESHEET
+-    const QStyleSheetStyle* style;
+-    if (d->extra && (style = qobject_cast<const QStyleSheetStyle*>(d->extra->style))) {
+-        style->saveWidgetFont(this, font);
++    if (QStyleSheetStyle *cssStyle = qobject_cast<QStyleSheetStyle *>(style())) {
++        cssStyle->saveWidgetFont(this, font);
+     }
+ #endif
+ 
+@@ -4919,8 +4922,7 @@ void QWidgetPrivate::updateFont(const QFont &font)
+ {
+     Q_Q(QWidget);
+ #ifndef QT_NO_STYLE_STYLESHEET
+-    const QStyleSheetStyle* cssStyle;
+-    cssStyle = extra ? qobject_cast<const QStyleSheetStyle*>(extra->style) : 0;
++    QStyleSheetStyle *cssStyle = qobject_cast<QStyleSheetStyle *>(q->style());
+ #endif
+ 
+ #ifdef QT3_SUPPORT
+diff --git a/src/gui/styles/qstylesheetstyle.cpp b/src/gui/styles/qstylesheetstyle.cpp
+index 9eaafb3..9b1fe6f 100644
+--- a/src/gui/styles/qstylesheetstyle.cpp
++++ b/src/gui/styles/qstylesheetstyle.cpp
+@@ -2551,8 +2551,12 @@ void QStyleSheetStyle::setPalette(QWidget *w)
+                 saveWidgetFont(w, w->font());
+             }
+             updateStyleSheetFont(w);
+-            if (ew != w)
++            if (ew != w) {
++                if (!ew->property("_q_styleSheetWidgetFont").isValid()) {
++                    saveWidgetFont(ew, ew->font());
++                }
+                 updateStyleSheetFont(ew);
++            }
+         }
+ 
+         rule.configurePalette(&p, map[i].group, ew, ew != w);
+@@ -2566,17 +2570,21 @@ void QStyleSheetStyle::setPalette(QWidget *w)
+ 
+ void QStyleSheetStyle::unsetPalette(QWidget *w)
+ {
++    QWidget *ew = embeddedWidget(w);
+     if (styleSheetCaches->customPaletteWidgets.contains(w)) {
+         QPalette p = styleSheetCaches->customPaletteWidgets.value(w);
+         w->setPalette(p);
+-        QWidget *ew = embeddedWidget(w);
+         if (ew != w)
+             ew->setPalette(p);
+         styleSheetCaches->customPaletteWidgets.remove(w);
+     }
+     QVariant oldFont = w->property("_q_styleSheetWidgetFont");
+-    if (oldFont.isValid()) {
++    if (oldFont.isValid())
+         w->setFont(qvariant_cast<QFont>(oldFont));
++    if (ew != w) {
++        oldFont = ew->property("_q_styleSheetWidgetFont");
++        if (oldFont.isValid())
++            ew->setFont(qvariant_cast<QFont>(oldFont));
+     }
+     if (styleSheetCaches->autoFillDisabledWidgets.contains(w)) {
+         embeddedWidget(w)->setAutoFillBackground(true);
+@@ -5805,6 +5813,12 @@ void QStyleSheetStyle::updateStyleSheetFont(QWidget* w) const
+             PseudoClass_Active | PseudoClass_Enabled | extendedPseudoClass(container));
+     QFont font = rule.font.resolve(w->font());
+ 
++    // To not forget what was explicitly set in the widget font,
++    // we need to restore the mask. Otherwise a natural child
++    // could forget its custom font and get one from its parent
++    // when restoring font after style sheet has been removed.
++    font.resolve(font.resolve() | w->font().resolve());
++
+     if ((!w->isWindow() || w->testAttribute(Qt::WA_WindowPropagation))
+         && isNaturalChild(w) && qobject_cast<QWidget *>(w->parent())) {
+ 

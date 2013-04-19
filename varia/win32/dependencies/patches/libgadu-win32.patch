@@ -1,0 +1,2346 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..4d98117
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,422 @@
++project (libgadu "C")
++
++cmake_minimum_required (VERSION 2.8.5 FATAL_ERROR)
++
++# Release version
++
++set (LIBGADU_VERSION_MAJOR 1)
++set (LIBGADU_VERSION_MINOR 12)
++set (LIBGADU_VERSION_PATCH 0)
++
++set (LIBGADU_VERSION_SUFFIX "-pre")
++
++set (VERSION "${LIBGADU_VERSION_MAJOR}.${LIBGADU_VERSION_MINOR}.${LIBGADU_VERSION_PATCH}${LIBGADU_VERSION_SUFFIX}")
++set (PACKAGE "${CMAKE_PROJECT_NAME}")
++
++# Library interface version, libtool-compatible
++
++set (_INTERFACE_VERSION_CURRENT 3)
++set (_INTERFACE_VERSION_REVISION 13)
++set (_INTERFACE_VERSION_AGE 0)
++
++# Build options
++
++option (BUILD_SHARED "Build shared library." ON)
++option (BUILD_STATIC "Build static library." ON)
++
++if (NOT BUILD_SHARED AND NOT BUILD_STATIC)
++	message (FATAL_ERROR "You must enable either shared or static library, or both")
++endif ()
++
++option (BUILD_EXAMPLES "Build examples." ON)
++
++# CTest provides BUILD_TESTING option (ON by default).
++include (CTest)
++
++# Compile with optimizations and debug info by default on make-based generators, as autotools do
++
++if (CMAKE_BUILD_TYPE STREQUAL "" AND NOT DEFINED CMAKE_CONFIGURATION_TYPES)
++	set (CMAKE_BUILD_TYPE "RelWithDebInfo")
++endif ()
++
++# Use folders in Visual Studio
++
++set_property (GLOBAL PROPERTY USE_FOLDERS TRUE)
++
++# Include required modules
++
++include (CheckCCompilerFlag)
++include (CheckCSourceCompiles)
++include (CheckCSourceRuns)
++include (CheckLibraryExists)
++include (CheckSymbolExists)
++include (CheckTypeSize)
++include (GNUInstallDirs)
++include (TestBigEndian)
++
++# Check C compiler flags
++
++check_c_compiler_flag ("-Wall" _HAVE_W_ALL)
++if (_HAVE_W_ALL)
++	set (CMAKE_C_FLAGS "-Wall ${CMAKE_C_FLAGS}")
++endif ()
++
++check_c_compiler_flag ("-Wmissing-prototypes" _HAVE_W_MISSING_PROTOTYPES)
++if (_HAVE_W_MISSING_PROTOTYPES)
++	set (CMAKE_C_FLAGS "-Wmissing-prototypes ${CMAKE_C_FLAGS}")
++endif ()
++
++# Check for SunOS-specific stuff
++
++check_library_exists ("nsl" "t_accept" "" _HAVE_SUNOS_NSL)
++if (_HAVE_SUNOS_NSL)
++	list (APPEND _LIBRARIES "nsl")
++	list (APPEND CMAKE_REQUIRED_LIBRARIES "nsl")
++endif ()
++
++check_library_exists ("socket" "socket" "" _HAVE_SUNOS_SOCKET)
++if (_HAVE_SUNOS_SOCKET)
++	list (APPEND _LIBRARIES "socket")
++	list (APPEND CMAKE_REQUIRED_LIBRARIES "socket")
++endif ()
++
++# Check for BeOS-specific stuff
++
++if (NOT DEFINED WITH_BIND OR WITH_BIND)
++	check_library_exists ("bind" "__inet_addr" "" _HAVE_BEOS_LIBBIND)
++	if (_HAVE_BEOS_LIBBIND)
++		list (APPEND _LIBRARIES "bind")
++		list (APPEND CMAKE_REQUIRED_LIBRARIES "bind")
++	endif ()
++endif ()
++if (DEFINED WITH_BIND OR _HAVE_BEOS_LIBBIND)
++	option (WITH_BIND "Use libbind on BeOS." ON)
++endif ()
++
++# Check for Win32-specific stuff
++
++# check_library_exists doesn't work (at least using VS10 generator), so just hardcode it, it's safe.
++if (WIN32)
++	list (APPEND _LIBRARIES "ws2_32")
++	list (APPEND CMAKE_REQUIRED_LIBRARIES "ws2_32")
++endif ()
++
++# Check endianness
++
++test_big_endian (GG_CONFIG_BIGENDIAN)
++
++# Check for 64-bit integer support
++
++check_c_source_compiles (
++"#include <stdio.h>
++int main(void)
++{
++	long long a = 1LL;
++	unsigned long long b = 1LL;
++	(void) a;
++	(void) b;
++	return 0;
++}
++" GG_CONFIG_HAVE_LONG_LONG)
++
++check_type_size ("uint64_t" HAVE_UINT64_T)
++check_symbol_exists ("strtoull" "stdlib.h" HAVE_STRTOULL)
++check_symbol_exists ("_strtoui64" "stdlib.h" HAVE__STRTOUI64)
++
++# Define GG_CONFIG_* variables for stdint (HAVE_* variables are defined by check_type_size macro)
++
++if (HAVE_STDINT_H)
++	set (GG_CONFIG_HAVE_STDINT_H TRUE)
++else ()
++	if (HAVE_SYS_TYPES_H)
++		set (GG_CONFIG_HAVE_SYS_TYPES_H TRUE)
++	else ()
++		# libgadu.h.in aims to support this case but it the types aren't actually check for their size...
++		message (SEND_ERROR "Missing <stdint.h> or <sys/types.h> header")
++	endif ()
++endif ()
++
++# Check for C99-conformant vsnprintf()
++
++if (CMAKE_CROSSCOMPILING)
++	if (NOT DEFINED HAVE_C99_VSNPRINTF)
++		message (FATAL_ERROR "Cannot determine vsnprintf() behaviour when cross-compiling. You need to provide -DHAVE_C99_VSNPRINTF=ON|OFF option. It is safe to assume that the former is valid on most modern operating systems")
++	endif ()
++
++	option (HAVE_C99_VSNPRINTF "Whether target system has C99-compatible vsnprintf()." ON)
++	set (GG_CONFIG_HAVE_C99_VSNPRINTF "${HAVE_C99_VSNPRINTF}")
++else ()
++	# TODO: check actually for vsnprintf()
++	check_c_source_runs (
++"#include <stdio.h>
++int main(void)
++{
++	char tmp;
++	return (snprintf(&tmp, sizeof(tmp), \"test\") != 4);
++}
++" _HAVE_C99_VSNPRINTF)
++	set (GG_CONFIG_HAVE_C99_VSNPRINTF "${_HAVE_C99_VSNPRINTF}")
++endif ()
++
++# Check for various other functions and macros
++
++check_symbol_exists ("_vscprintf" "stdio.h" HAVE__VSCPRINTF)
++
++if (WIN32)
++	set (_GETHOSTBYNAME_R_HEADERS "winsock2.h")
++else ()
++	set (_GETHOSTBYNAME_R_HEADERS "sys/types.h;sys/socket.h;netinet/in.h;arpa/inet.h;netdb.h")
++endif ()
++check_symbol_exists ("gethostbyname_r" "${_GETHOSTBYNAME_R_HEADERS}" GG_CONFIG_HAVE_GETHOSTBYNAME_R)
++
++check_symbol_exists ("va_copy" "stdarg.h" GG_CONFIG_HAVE_VA_COPY)
++check_symbol_exists ("__va_copy" "stdarg.h" GG_CONFIG_HAVE___VA_COPY)
++
++check_symbol_exists ("_exit" "unistd.h" HAVE__EXIT)
++
++check_symbol_exists ("fork" "unistd.h" GG_CONFIG_HAVE_FORK)
++
++# Check for pthreads
++
++if (NOT DEFINED WITH_PTHREAD OR WITH_PTHREAD)
++	set (CMAKE_THREAD_PREFER_PTHREAD TRUE)
++	set (_PTHREAD_FOUND FALSE)
++	find_package (Threads)
++	if (Threads_FOUND AND CMAKE_USE_PTHREADS_INIT)
++		set (_PTHREAD_FOUND TRUE)
++	endif ()
++endif ()
++
++option (WITH_PTHREAD "Use pthread resolver." "${_PTHREAD_FOUND}")
++
++if (WITH_PTHREAD)
++	if (NOT _PTHREAD_FOUND)
++		message (SEND_ERROR "Could NOT find pthread library")
++	else ()
++		# TODO: it's not hit on GNU/Linux... fix FindThreads.cmake!
++		if ("${CMAKE_THREAD_LIBS_INIT}" MATCHES "-pthread")
++			set (CMAKE_C_FLAGS "-pthread ${CMAKE_C_FLAGS}")
++		endif ()
++
++		list (APPEND _PC_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
++		list (APPEND _LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
++
++		option (ENABLE_PTHREAD_DEFAULT "Use pthread resolver by default." OFF)
++	endif ()
++endif ()
++
++set (GG_CONFIG_HAVE_PTHREAD "${WITH_PTHREAD}")
++set (GG_CONFIG_PTHREAD_DEFAULT "${ENABLE_PTHREAD_DEFAULT}")
++
++# Check for zlib
++
++if (NOT DEFINED WITH_ZLIB OR WITH_ZLIB)
++	find_package (ZLIB)
++endif ()
++
++option (WITH_ZLIB "Use zlib (de)compression library for USERLIST100 packet family support." "${ZLIB_FOUND}")
++
++if (WITH_ZLIB)
++	if (NOT ZLIB_FOUND)
++		message (SEND_ERROR "Could NOT find ZLIB")
++	else ()
++		list (APPEND _PC_REQUIRES_PRIVATE "zlib")
++		include_directories (${ZLIB_INCLUDE_DIRS})
++		list (APPEND _LIBRARIES ${ZLIB_LIBRARIES})
++	endif ()
++endif ()
++
++set (GG_CONFIG_HAVE_ZLIB "${WITH_ZLIB}")
++
++# Check for GnuTLS
++
++if (NOT DEFINED WITH_GNUTLS OR WITH_GNUTLS)
++	find_package (GnuTLS 2.10.0)
++endif ()
++
++option (WITH_GNUTLS "Use GnuTLS for encrypted connection support." "${GNUTLS_FOUND}")
++
++if (WITH_GNUTLS)
++	if (NOT GNUTLS_FOUND)
++		message (SEND_ERROR "Could NOT find GnuTLS")
++	else ()
++		list (APPEND _PC_REQUIRES_PRIVATE "gnutls")
++		include_directories (${GNUTLS_INCLUDE_DIR})
++		list (APPEND _LIBRARIES ${GNUTLS_LIBRARIES})
++		add_definitions (${GNUTLS_DEFINITIONS})
++	endif ()
++endif ()
++
++set (GG_CONFIG_HAVE_GNUTLS "${WITH_GNUTLS}")
++
++# Check for OpenSSL if not using GnuTLS
++
++if (NOT WITH_GNUTLS AND (NOT DEFINED WITH_OPENSSL OR WITH_OPENSSL))
++	find_package (OpenSSL 0.9.7)
++endif ()
++
++option (WITH_OPENSSL "Use OpenSSL for encrypted connection support." "${OPENSSL_FOUND}")
++
++if (WITH_OPENSSL)
++	if (WITH_GNUTLS)
++		message (SEND_ERROR "Cannot use both OpenSSL and GnuTLS")
++	elseif (NOT OPENSSL_FOUND)
++		message (SEND_ERROR "Could NOT find OpenSSL")
++	else ()
++		list (APPEND _PC_REQUIRES_PRIVATE "openssl")
++		include_directories (${OPENSSL_INCLUDE_DIR})
++		list (APPEND _LIBRARIES ${OPENSSL_LIBRARIES})
++	endif ()
++endif ()
++
++set (GG_CONFIG_HAVE_OPENSSL "${WITH_OPENSSL}")
++
++# Create pkgconfig file
++
++set (prefix "${CMAKE_INSTALL_PREFIX}")
++set (exec_prefix "\${prefix}") # CMake makes no difference between prefix and exec_prefix
++set (libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
++set (includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
++
++foreach (_LIBRARY ${CMAKE_REQUIRED_LIBRARIES} ${_PC_LIBRARIES})
++	if ("${_LIBRARY}" MATCHES "^-l")
++		set (LIBS_PRIVATE "${LIBS_PRIVATE} ${_LIBRARY}")
++	else ()
++		set (LIBS_PRIVATE "${LIBS_PRIVATE} -l${_LIBRARY}")
++	endif ()
++endforeach ()
++string (STRIP "${LIBS_PRIVATE}" LIBS_PRIVATE)
++
++foreach (_REQUIRE ${_PC_REQUIRES_PRIVATE})
++	set (REQUIRES_PRIVATE "${REQUIRES_PRIVATE} ${_REQUIRE}")
++endforeach ()
++string (STRIP "${REQUIRES_PRIVATE}" REQUIRES_PRIVATE)
++
++configure_file ("pkgconfig/libgadu.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/libgadu.pc" @ONLY)
++install (FILES "${CMAKE_CURRENT_BINARY_DIR}/pkgconfig/libgadu.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
++
++# Configure headers
++
++# This method causes all sources to be recompiled each time cmake is run, but I don't see a better way.
++file (READ "include/libgadu.h.in" _LIBGADU_H_IN)
++string (REPLACE "#undef GG_LIBGADU_VERSION" "#define GG_LIBGADU_VERSION \"\${VERSION}\"" _LIBGADU_H_IN "${_LIBGADU_H_IN}")
++string (REPLACE "#undef" "#cmakedefine" _LIBGADU_H_IN "${_LIBGADU_H_IN}")
++file (WRITE "${CMAKE_BINARY_DIR}/include/libgadu.h.in2" "${_LIBGADU_H_IN}")
++configure_file ("${CMAKE_BINARY_DIR}/include/libgadu.h.in2" "${CMAKE_BINARY_DIR}/include/libgadu.h")
++
++configure_file ("include/config.h.in" "${CMAKE_BINARY_DIR}/include/config.h")
++
++# Compile and link library
++
++set (_SOURCES
++	src/common.c 
++	src/dcc7.c
++	src/dcc.c
++	src/debug.c
++	src/deflate.c
++	src/encoding.c
++	src/endian.c
++	src/events.c
++	src/handlers.c
++	src/http.c
++	src/libgadu.c
++	src/message.c
++	src/network.c
++	src/obsolete.c
++	src/pubdir.c
++	src/pubdir50.c
++	src/sha1.c
++	src/resolver.c
++)
++
++if (WIN32)
++	list (APPEND _SOURCES src/libgadu.rc)
++endif (WIN32)
++
++include_directories (BEFORE "${CMAKE_BINARY_DIR}/include" "include")
++if (MSVC)
++	add_definitions (-D_CRT_SECURE_NO_WARNINGS)
++endif ()
++
++if (BUILD_STATIC OR BUILD_EXAMPLES OR BUILD_TESTING)
++	if (NOT BUILD_STATIC)
++		message (STATUS "Building static library despite disabled BUILD_STATIC; disable examples and testing if it is not desired")
++	endif ()
++
++	add_library (gadu_static STATIC ${_SOURCES})
++	target_link_libraries (gadu_static ${_LIBRARIES})
++	set_target_properties (gadu_static PROPERTIES
++		COMPILE_DEFINITIONS "GG_IGNORE_DEPRECATED"
++		OUTPUT_NAME "gadu"
++	)
++
++	if (WIN32)
++		set_target_properties (gadu_static PROPERTIES
++			OUTPUT_NAME "gadu_static"
++			OUTPUT_NAME_DEBUG "gadud_static"
++		)
++	endif ()
++
++	if (BUILD_STATIC)
++		install (TARGETS gadu_static DESTINATION "${CMAKE_INSTALL_LIBDIR}")
++	endif ()
++endif()
++
++if (BUILD_SHARED)
++	add_library (gadu SHARED ${_SOURCES})
++	target_link_libraries (gadu ${_LIBRARIES})
++	set_target_properties (gadu PROPERTIES
++		COMPILE_DEFINITIONS "GG_IGNORE_DEPRECATED"
++		PUBLIC_HEADER "${CMAKE_BINARY_DIR}/include/libgadu.h"
++		FRAMEWORK TRUE
++		SOVERSION "${_INTERFACE_VERSION_CURRENT}"
++		VERSION "${_INTERFACE_VERSION_CURRENT}.${_INTERFACE_VERSION_REVISION}.${_INTERFACE_VERSION_AGE}"
++	)
++
++	if (WIN32)
++		set_target_properties (gadu PROPERTIES OUTPUT_NAME_DEBUG "gadud")
++	endif ()
++
++	install (TARGETS gadu
++		ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
++		LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
++		RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
++		PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
++	)
++else ()
++	install (FILES "${CMAKE_BINARY_DIR}/include/libgadu.h" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
++endif ()
++
++# Build Doxygen documentation
++
++if (NOT DEFINED BUILD_DOC OR BUILD_DOC)
++	set (DOXYGEN_SKIP_DOT TRUE)
++	find_package (Doxygen)
++endif ()
++
++option (BUILD_DOC "Build Doxygen HTML documentation." "${DOXYGEN_FOUND}")
++
++if (BUILD_DOC)
++	if (NOT DOXYGEN_FOUND)
++		message (SEND_ERROR "Could NOT find Doxygen")
++	else ()
++		add_subdirectory (docs)
++	endif ()
++endif ()
++
++# Build examples
++
++if (BUILD_EXAMPLES)
++	add_subdirectory (examples)
++endif ()
++
++# Build and setup tests
++
++if (BUILD_TESTING)
++	enable_testing ()
++	add_subdirectory (test)
++endif ()
++
++# TODO: FeatureSummary.cmake + build_command ()
++
++# TODO: libgadu.rc.in
+diff --git a/Makefile.am b/Makefile.am
+index 3ec2da6..351cb94 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,5 +1,6 @@
+ SUBDIRS = include src pkgconfig test examples @SUBDIRS_DOXYGEN@
+ DIST_SUBDIRS = include src pkgconfig test examples docs
++EXTRA_DIST = CMakeLists.txt
+ 
+ LIBTOOL_DEPS = @LIBTOOL_DEPS@
+ 
+diff --git a/docs/CMakeLists.txt b/docs/CMakeLists.txt
+new file mode 100644
+index 0000000..ef2ccbf
+--- /dev/null
++++ b/docs/CMakeLists.txt
+@@ -0,0 +1,25 @@
++set (DOXYFILE_HTML_DIR "html")
++set (top_srcdir "${CMAKE_SOURCE_DIR}")
++set (srcdir "${CMAKE_CURRENT_SOURCE_DIR}")
++set (top_builddir "${CMAKE_BINARY_DIR}")
++
++configure_file ("Doxyfile.in" "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile" @ONLY)
++
++file (GLOB_RECURSE _DEP_FILES
++	"${CMAKE_SOURCE_DIR}/include/*.h"
++	"${CMAKE_SOURCE_DIR}/src/*.c"
++	"${CMAKE_CURRENT_SOURCE_DIR}/*.dox"
++)
++
++add_custom_command (OUTPUT "${DOXYFILE_HTML_DIR}"
++	COMMAND "${CMAKE_COMMAND}" -E remove_directory "${DOXYFILE_HTML_DIR}"
++	COMMAND "${DOXYGEN_EXECUTABLE}" "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile"
++	COMMENT "Generating Doxygen HTML documentation"
++	MAIN_DEPENDENCY "Doxyfile.in"
++	DEPENDS "${CMAKE_BINARY_DIR}/include/libgadu.h" ${_DEP_FILES}
++	VERBATIM
++)
++
++add_custom_target (docs ALL DEPENDS "${DOXYFILE_HTML_DIR}")
++
++install (DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${DOXYFILE_HTML_DIR}" DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+diff --git a/docs/Makefile.am b/docs/Makefile.am
+index bdc928c..1bf923c 100644
+--- a/docs/Makefile.am
++++ b/docs/Makefile.am
+@@ -1,4 +1,4 @@
+-EXTRA_DIST = Doxyfile protocol.html *.dox
++EXTRA_DIST = CMakeLists.txt Doxyfile protocol.html *.dox
+ 
+ all-local:	html-stamp
+ 
+diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
+new file mode 100644
+index 0000000..ef41e5f
+--- /dev/null
++++ b/examples/CMakeLists.txt
+@@ -0,0 +1,19 @@
++macro (libgadu_add_example _TARGET _SOURCES _DEFINITIONS)
++	add_executable (${_TARGET} ${_SOURCES})
++	target_link_libraries (${_TARGET} gadu_static)
++	set_target_properties (${_TARGET} PROPERTIES
++		COMPILE_DEFINITIONS "${_DEFINITIONS}"
++		FOLDER "examples"
++	)
++endmacro ()
++
++libgadu_add_example (send "send.c" "")
++libgadu_add_example (httphash "httphash.c" "GG_IGNORE_DEPRECATED")
++libgadu_add_example (conn-async "conn-async.c" "")
++libgadu_add_example (register-sync "register.c" "")
++libgadu_add_example (register-async "register.c" "ASYNC")
++libgadu_add_example (remind-sync "remind.c" "")
++libgadu_add_example (remind-async "remind.c" "ASYNC")
++libgadu_add_example (status "status.c" "")
++libgadu_add_example (token-sync "token.c" "")
++libgadu_add_example (token-async "token.c" "ASYNC")
+diff --git a/examples/Makefile.am b/examples/Makefile.am
+index e947ada..b341492 100644
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -1,4 +1,6 @@
+ noinst_PROGRAMS = send httphash conn-async register-sync register-async remind-sync remind-async status token-sync token-async
++EXTRA_DIST = CMakeLists.txt
++
+ LDADD = ../src/libgadu.la
+ AM_LDFLAGS = -no-install
+ 
+@@ -18,4 +20,3 @@ token_sync_SOURCES = token.c
+ 
+ token_async_SOURCES = token.c
+ token_async_CFLAGS = -DASYNC
+-
+diff --git a/include/config.h.in b/include/config.h.in
+new file mode 100644
+index 0000000..69414c5
+--- /dev/null
++++ b/include/config.h.in
+@@ -0,0 +1,5 @@
++#cmakedefine HAVE_UINT64_T
++#cmakedefine HAVE_STRTOULL
++#cmakedefine HAVE__STRTOUI64
++#cmakedefine HAVE__VSCPRINTF
++#cmakedefine HAVE__EXIT
+diff --git a/include/fileio.h b/include/fileio.h
+index ea8df16..d9cbab4 100644
+--- a/include/fileio.h
++++ b/include/fileio.h
+@@ -35,14 +35,21 @@
+ #  include <io.h>
+ #  define gg_file_close _close
+ #  define lseek _lseek
+-#  define open _open
++#  define open(path, flags, ...) _open((path), (flags) | _O_BINARY, ##__VA_ARGS__)
+ #  define read _read
+ #  define stat _stat
++#  define unlink _unlink
+ #  define write _write
++#  define mkstemp(template_) (_mktemp(template_) != NULL \
++   ? _open((template_), _O_CREAT | _O_EXCL | _O_RDWR | _O_BINARY, _S_IREAD | _S_IWRITE) \
++   : -1)
+ #else
+ #  ifdef sun
+ #    include <sys/filio.h>
+ #  endif
++#  include <sys/types.h>
++#  include <sys/stat.h>
++#  include <fcntl.h>
+ #  include <unistd.h>
+ #  define gg_file_close close
+ #endif
+diff --git a/include/internal.h b/include/internal.h
+index 54dd26a..a92d4f0 100644
+--- a/include/internal.h
++++ b/include/internal.h
+@@ -23,6 +23,9 @@
+ 
+ #include "libgadu.h"
+ #include "config.h"
++#include <errno.h>
++
++#define GG_EINTR_LOOP(res, cmd) do { res = cmd; } while (res == -1 && errno == EINTR)
+ 
+ struct gg_dcc7_relay {
+ 	uint32_t addr;
+diff --git a/include/libgadu.h.in b/include/libgadu.h.in
+index 377a3eb..7a8303e 100644
+--- a/include/libgadu.h.in
++++ b/include/libgadu.h.in
+@@ -34,6 +34,16 @@
+ #define LIBGADU_LIBGADU_H
+ 
+ #ifdef _WIN32
++#  ifdef gadu_EXPORTS
++#    define LIBGADUAPI __declspec(dllexport)
++#  else
++#    define LIBGADUAPI __declspec(dllimport)
++#  endif
++#else
++#  define LIBGADUAPI
++#endif
++
++#ifdef _WIN32
+ #pragma pack(push, 1)
+ #endif
+ 
+@@ -98,7 +108,7 @@ extern "C" {
+ /* Defined if uintX_t types are defined in <sys/types.h>. */
+ #undef GG_CONFIG_HAVE_SYS_TYPES_H
+ 
+-#ifdef GG_CONFIG_HAVE_OPENSSL
++#if defined(GG_CONFIG_HAVE_OPENSSL) && defined(gadu_EXPORTS)
+ #include <openssl/ssl.h>
+ #endif
+ 
+@@ -263,7 +273,7 @@ struct gg_session {
+ 	char *header_buf;	/**< Bufor na początek nagłówka pakietu */
+ 	unsigned int header_done;	/**< Liczba wczytanych bajtów nagłówka pakietu */
+ 
+-#ifdef GG_CONFIG_HAVE_OPENSSL
++#if defined(GG_CONFIG_HAVE_OPENSSL) && defined(gadu_EXPORTS)
+ 	SSL *ssl;		/**< Struktura TLS */
+ 	SSL_CTX *ssl_ctx;	/**< Kontekst sesji TLS */
+ #else
+@@ -654,42 +664,42 @@ struct gg_login_params {
+ 
+ };
+ 
+-struct gg_session *gg_login(const struct gg_login_params *p);
+-void gg_free_session(struct gg_session *sess);
+-void gg_logoff(struct gg_session *sess);
+-int gg_change_status(struct gg_session *sess, int status);
+-int gg_change_status_descr(struct gg_session *sess, int status, const char *descr);
+-int gg_change_status_descr_time(struct gg_session *sess, int status, const char *descr, int time);
+-int gg_change_status_flags(struct gg_session *sess, int flags);
+-int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message);
+-int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, const unsigned char *format, int formatlen);
+-int gg_send_message_html(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *html_message);
+-int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message);
+-int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message, const unsigned char *format, int formatlen);
+-int gg_send_message_confer_html(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *html_message);
+-int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
+-int gg_ping(struct gg_session *sess);
+-int gg_userlist_request(struct gg_session *sess, char type, const char *request);
+-int gg_userlist100_request(struct gg_session *sess, char type, unsigned int version, char format_type, const char *request);
+-int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_t crc32);
+-int gg_image_reply(struct gg_session *sess, uin_t recipient, const char *filename, const char *image, int size);
+-int gg_typing_notification(struct gg_session *sess, uin_t recipient, int length);
+-
+-uint32_t gg_crc32(uint32_t crc, const unsigned char *buf, int len);
+-
+-int gg_session_set_resolver(struct gg_session *gs, gg_resolver_t type);
+-gg_resolver_t gg_session_get_resolver(struct gg_session *gs);
+-int gg_session_set_custom_resolver(struct gg_session *gs, int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
+-
+-int gg_http_set_resolver(struct gg_http *gh, gg_resolver_t type);
+-gg_resolver_t gg_http_get_resolver(struct gg_http *gh);
+-int gg_http_set_custom_resolver(struct gg_http *gh, int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
+-
+-int gg_global_set_resolver(gg_resolver_t type);
+-gg_resolver_t gg_global_get_resolver(void);
+-int gg_global_set_custom_resolver(int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
+-
+-int gg_multilogon_disconnect(struct gg_session *gs, gg_multilogon_id_t conn_id);
++LIBGADUAPI struct gg_session *gg_login(const struct gg_login_params *p);
++LIBGADUAPI void gg_free_session(struct gg_session *sess);
++LIBGADUAPI void gg_logoff(struct gg_session *sess);
++LIBGADUAPI int gg_change_status(struct gg_session *sess, int status);
++LIBGADUAPI int gg_change_status_descr(struct gg_session *sess, int status, const char *descr);
++LIBGADUAPI int gg_change_status_descr_time(struct gg_session *sess, int status, const char *descr, int time);
++LIBGADUAPI int gg_change_status_flags(struct gg_session *sess, int flags);
++LIBGADUAPI int gg_send_message(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message);
++LIBGADUAPI int gg_send_message_richtext(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, const unsigned char *format, int formatlen);
++LIBGADUAPI int gg_send_message_html(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *html_message);
++LIBGADUAPI int gg_send_message_confer(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message);
++LIBGADUAPI int gg_send_message_confer_richtext(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *message, const unsigned char *format, int formatlen);
++LIBGADUAPI int gg_send_message_confer_html(struct gg_session *sess, int msgclass, int recipients_count, uin_t *recipients, const unsigned char *html_message);
++LIBGADUAPI int gg_send_message_ctcp(struct gg_session *sess, int msgclass, uin_t recipient, const unsigned char *message, int message_len);
++LIBGADUAPI int gg_ping(struct gg_session *sess);
++LIBGADUAPI int gg_userlist_request(struct gg_session *sess, char type, const char *request);
++LIBGADUAPI int gg_userlist100_request(struct gg_session *sess, char type, unsigned int version, char format_type, const char *request);
++LIBGADUAPI int gg_image_request(struct gg_session *sess, uin_t recipient, int size, uint32_t crc32);
++LIBGADUAPI int gg_image_reply(struct gg_session *sess, uin_t recipient, const char *filename, const char *image, int size);
++LIBGADUAPI int gg_typing_notification(struct gg_session *sess, uin_t recipient, int length);
++
++LIBGADUAPI uint32_t gg_crc32(uint32_t crc, const unsigned char *buf, int len);
++
++LIBGADUAPI int gg_session_set_resolver(struct gg_session *gs, gg_resolver_t type);
++LIBGADUAPI gg_resolver_t gg_session_get_resolver(struct gg_session *gs);
++LIBGADUAPI int gg_session_set_custom_resolver(struct gg_session *gs, int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
++
++LIBGADUAPI int gg_http_set_resolver(struct gg_http *gh, gg_resolver_t type);
++LIBGADUAPI gg_resolver_t gg_http_get_resolver(struct gg_http *gh);
++LIBGADUAPI int gg_http_set_custom_resolver(struct gg_http *gh, int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
++
++LIBGADUAPI int gg_global_set_resolver(gg_resolver_t type);
++LIBGADUAPI gg_resolver_t gg_global_get_resolver(void);
++LIBGADUAPI int gg_global_set_custom_resolver(int (*resolver_start)(int*, void**, const char*), void (*resolver_cleanup)(void**, int));
++
++LIBGADUAPI int gg_multilogon_disconnect(struct gg_session *gs, gg_multilogon_id_t conn_id);
+ 
+ /**
+  * Rodzaj zdarzenia.
+@@ -1123,31 +1133,31 @@ struct gg_event {
+ 	union gg_event_union event;	/**< Informacja o zdarzeniu */
+ };
+ 
+-struct gg_event *gg_watch_fd(struct gg_session *sess);
+-void gg_event_free(struct gg_event *e);
+-
+-int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int count);
+-int gg_notify(struct gg_session *sess, uin_t *userlist, int count);
+-int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type);
+-int gg_add_notify(struct gg_session *sess, uin_t uin);
+-int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type);
+-int gg_remove_notify(struct gg_session *sess, uin_t uin);
+-
+-struct gg_http *gg_http_connect(const char *hostname, int port, int async, const char *method, const char *path, const char *header);
+-int gg_http_watch_fd(struct gg_http *h);
+-void gg_http_stop(struct gg_http *h);
+-void gg_http_free(struct gg_http *h);
+-
+-uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req);
+-gg_pubdir50_t gg_pubdir50_new(int type);
+-int gg_pubdir50_add(gg_pubdir50_t req, const char *field, const char *value);
+-int gg_pubdir50_seq_set(gg_pubdir50_t req, uint32_t seq);
+-const char *gg_pubdir50_get(gg_pubdir50_t res, int num, const char *field);
+-int gg_pubdir50_type(gg_pubdir50_t res);
+-int gg_pubdir50_count(gg_pubdir50_t res);
+-uin_t gg_pubdir50_next(gg_pubdir50_t res);
+-uint32_t gg_pubdir50_seq(gg_pubdir50_t res);
+-void gg_pubdir50_free(gg_pubdir50_t res);
++LIBGADUAPI struct gg_event *gg_watch_fd(struct gg_session *sess);
++LIBGADUAPI void gg_event_free(struct gg_event *e);
++
++LIBGADUAPI int gg_notify_ex(struct gg_session *sess, uin_t *userlist, char *types, int count);
++LIBGADUAPI int gg_notify(struct gg_session *sess, uin_t *userlist, int count);
++LIBGADUAPI int gg_add_notify_ex(struct gg_session *sess, uin_t uin, char type);
++LIBGADUAPI int gg_add_notify(struct gg_session *sess, uin_t uin);
++LIBGADUAPI int gg_remove_notify_ex(struct gg_session *sess, uin_t uin, char type);
++LIBGADUAPI int gg_remove_notify(struct gg_session *sess, uin_t uin);
++
++LIBGADUAPI struct gg_http *gg_http_connect(const char *hostname, int port, int async, const char *method, const char *path, const char *header);
++LIBGADUAPI int gg_http_watch_fd(struct gg_http *h);
++LIBGADUAPI void gg_http_stop(struct gg_http *h);
++LIBGADUAPI void gg_http_free(struct gg_http *h);
++
++LIBGADUAPI uint32_t gg_pubdir50(struct gg_session *sess, gg_pubdir50_t req);
++LIBGADUAPI gg_pubdir50_t gg_pubdir50_new(int type);
++LIBGADUAPI int gg_pubdir50_add(gg_pubdir50_t req, const char *field, const char *value);
++LIBGADUAPI int gg_pubdir50_seq_set(gg_pubdir50_t req, uint32_t seq);
++LIBGADUAPI const char *gg_pubdir50_get(gg_pubdir50_t res, int num, const char *field);
++LIBGADUAPI int gg_pubdir50_type(gg_pubdir50_t res);
++LIBGADUAPI int gg_pubdir50_count(gg_pubdir50_t res);
++LIBGADUAPI uin_t gg_pubdir50_next(gg_pubdir50_t res);
++LIBGADUAPI uint32_t gg_pubdir50_seq(gg_pubdir50_t res);
++LIBGADUAPI void gg_pubdir50_free(gg_pubdir50_t res);
+ 
+ #ifndef DOXYGEN
+ 
+@@ -1246,8 +1256,8 @@ struct gg_pubdir {
+ 	gg_pubdir_error_t error;	/**< Powód błędu */
+ };
+ 
+-int gg_pubdir_watch_fd(struct gg_http *f);
+-void gg_pubdir_free(struct gg_http *f);
++LIBGADUAPI int gg_pubdir_watch_fd(struct gg_http *f);
++LIBGADUAPI void gg_pubdir_free(struct gg_http *f);
+ 
+ /**
+  * Token autoryzacji niektórych operacji HTTP.
+@@ -1261,73 +1271,73 @@ struct gg_token {
+ 	char *tokenid;		/**< Identyfikator tokenu */
+ };
+ 
+-struct gg_http *gg_token(int async);
+-int gg_token_watch_fd(struct gg_http *h);
+-void gg_token_free(struct gg_http *h);
++LIBGADUAPI struct gg_http *gg_token(int async);
++LIBGADUAPI int gg_token_watch_fd(struct gg_http *h);
++LIBGADUAPI void gg_token_free(struct gg_http *h);
+ 
+-struct gg_http *gg_register3(const char *email, const char *password, const char *tokenid, const char *tokenval, int async);
++LIBGADUAPI struct gg_http *gg_register3(const char *email, const char *password, const char *tokenid, const char *tokenval, int async);
+ #ifndef DOXYGEN
+ #define gg_register_watch_fd gg_pubdir_watch_fd
+ #define gg_register_free gg_pubdir_free
+ #endif
+ 
+-struct gg_http *gg_unregister3(uin_t uin, const char *password, const char *tokenid, const char *tokenval, int async);
++LIBGADUAPI struct gg_http *gg_unregister3(uin_t uin, const char *password, const char *tokenid, const char *tokenval, int async);
+ #ifndef DOXYGEN
+ #define gg_unregister_watch_fd gg_pubdir_watch_fd
+ #define gg_unregister_free gg_pubdir_free
+ #endif
+ 
+-struct gg_http *gg_remind_passwd3(uin_t uin, const char *email, const char *tokenid, const char *tokenval, int async);
++LIBGADUAPI struct gg_http *gg_remind_passwd3(uin_t uin, const char *email, const char *tokenid, const char *tokenval, int async);
+ #ifndef DOXYGEN
+ #define gg_remind_passwd_watch_fd gg_pubdir_watch_fd
+ #define gg_remind_passwd_free gg_pubdir_free
+ #endif
+ 
+-struct gg_http *gg_change_passwd4(uin_t uin, const char *email, const char *passwd, const char *newpasswd, const char *tokenid, const char *tokenval, int async);
++LIBGADUAPI struct gg_http *gg_change_passwd4(uin_t uin, const char *email, const char *passwd, const char *newpasswd, const char *tokenid, const char *tokenval, int async);
+ #ifndef DOXYGEN
+ #define gg_change_passwd_watch_fd gg_pubdir_watch_fd
+ #define gg_change_passwd_free gg_pubdir_free
+ #endif
+ 
+-extern int gg_dcc_port;
+-extern unsigned long gg_dcc_ip;
++LIBGADUAPI extern int gg_dcc_port;
++LIBGADUAPI extern unsigned long gg_dcc_ip;
+ 
+-int gg_dcc_request(struct gg_session *sess, uin_t uin);
++LIBGADUAPI int gg_dcc_request(struct gg_session *sess, uin_t uin);
+ 
+-struct gg_dcc *gg_dcc_send_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
+-struct gg_dcc *gg_dcc_get_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
+-struct gg_dcc *gg_dcc_voice_chat(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
+-void gg_dcc_set_type(struct gg_dcc *d, int type);
+-int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename);
+-int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *local_filename);
+-int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length);
++LIBGADUAPI struct gg_dcc *gg_dcc_send_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
++LIBGADUAPI struct gg_dcc *gg_dcc_get_file(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
++LIBGADUAPI struct gg_dcc *gg_dcc_voice_chat(uint32_t ip, uint16_t port, uin_t my_uin, uin_t peer_uin);
++LIBGADUAPI void gg_dcc_set_type(struct gg_dcc *d, int type);
++LIBGADUAPI int gg_dcc_fill_file_info(struct gg_dcc *d, const char *filename);
++LIBGADUAPI int gg_dcc_fill_file_info2(struct gg_dcc *d, const char *filename, const char *local_filename);
++LIBGADUAPI int gg_dcc_voice_send(struct gg_dcc *d, char *buf, int length);
+ 
+ #define GG_DCC_VOICE_FRAME_LENGTH 195		/**< Rozmiar pakietu głosowego przed wersją Gadu-Gadu 5.0.5 */
+ #define GG_DCC_VOICE_FRAME_LENGTH_505 326	/**< Rozmiar pakietu głosowego od wersji Gadu-Gadu 5.0.5 */
+ 
+-struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port);
++LIBGADUAPI struct gg_dcc *gg_dcc_socket_create(uin_t uin, uint16_t port);
+ #ifndef DOXYGEN
+ #define gg_dcc_socket_free gg_dcc_free
+ #define gg_dcc_socket_watch_fd gg_dcc_watch_fd
+ #endif
+ 
+-struct gg_event *gg_dcc_watch_fd(struct gg_dcc *d);
++LIBGADUAPI struct gg_event *gg_dcc_watch_fd(struct gg_dcc *d);
+ 
+-void gg_dcc_free(struct gg_dcc *c);
++LIBGADUAPI void gg_dcc_free(struct gg_dcc *c);
+ 
+-struct gg_event *gg_dcc7_watch_fd(struct gg_dcc7 *d);
+-struct gg_dcc7 *gg_dcc7_send_file(struct gg_session *sess, uin_t rcpt, const char *filename, const char *filename1250, const char *hash);
+-struct gg_dcc7 *gg_dcc7_send_file_fd(struct gg_session *sess, uin_t rcpt, int fd, size_t size, const char *filename1250, const char *hash);
+-int gg_dcc7_accept(struct gg_dcc7 *dcc, unsigned int offset);
+-int gg_dcc7_reject(struct gg_dcc7 *dcc, int reason);
+-void gg_dcc7_free(struct gg_dcc7 *d);
++LIBGADUAPI struct gg_event *gg_dcc7_watch_fd(struct gg_dcc7 *d);
++LIBGADUAPI struct gg_dcc7 *gg_dcc7_send_file(struct gg_session *sess, uin_t rcpt, const char *filename, const char *filename1250, const char *hash);
++LIBGADUAPI struct gg_dcc7 *gg_dcc7_send_file_fd(struct gg_session *sess, uin_t rcpt, int fd, size_t size, const char *filename1250, const char *hash);
++LIBGADUAPI int gg_dcc7_accept(struct gg_dcc7 *dcc, unsigned int offset);
++LIBGADUAPI int gg_dcc7_reject(struct gg_dcc7 *dcc, int reason);
++LIBGADUAPI void gg_dcc7_free(struct gg_dcc7 *d);
+ 
+-extern int gg_debug_level;
++LIBGADUAPI extern int gg_debug_level;
+ 
+-extern void (*gg_debug_handler)(int level, const char *format, va_list ap);
+-extern void (*gg_debug_handler_session)(struct gg_session *sess, int level, const char *format, va_list ap);
++LIBGADUAPI extern void (*gg_debug_handler)(int level, const char *format, va_list ap);
++LIBGADUAPI extern void (*gg_debug_handler_session)(struct gg_session *sess, int level, const char *format, va_list ap);
+ 
+-extern FILE *gg_debug_file;
++LIBGADUAPI extern FILE *gg_debug_file;
+ 
+ /**
+  * \ingroup debug
+@@ -1344,11 +1354,11 @@ extern FILE *gg_debug_file;
+ #define gg_debug(...) do { } while (0)
+ #define gg_debug_session(...) do { } while (0)
+ #else
+-void gg_debug(int level, const char *format, ...);
+-void gg_debug_session(struct gg_session *sess, int level, const char *format, ...);
++LIBGADUAPI void gg_debug(int level, const char *format, ...);
++LIBGADUAPI void gg_debug_session(struct gg_session *sess, int level, const char *format, ...);
+ #endif
+ 
+-const char *gg_libgadu_version(void);
++LIBGADUAPI const char *gg_libgadu_version(void);
+ 
+ /**
+  * Lista funkcji biblioteki, które zależą od zewnętrznych bibliotek.
+@@ -1361,16 +1371,16 @@ typedef enum {
+ 	GG_LIBGADU_FEATURE_USERLIST100,	/**< Biblioteka obsługuje listę kontaktów zgodną z Gadu-Gadu 10 */
+ } gg_libgadu_feature_t;
+ 
+-int gg_libgadu_check_feature(gg_libgadu_feature_t feature);
++LIBGADUAPI int gg_libgadu_check_feature(gg_libgadu_feature_t feature);
+ 
+-extern int gg_proxy_enabled;
+-extern char *gg_proxy_host;
+-extern int gg_proxy_port;
+-extern char *gg_proxy_username;
+-extern char *gg_proxy_password;
+-extern int gg_proxy_http_only;
++LIBGADUAPI extern int gg_proxy_enabled;
++LIBGADUAPI extern char *gg_proxy_host;
++LIBGADUAPI extern int gg_proxy_port;
++LIBGADUAPI extern char *gg_proxy_username;
++LIBGADUAPI extern char *gg_proxy_password;
++LIBGADUAPI extern int gg_proxy_http_only;
+ 
+-extern unsigned long gg_local_ip;
++LIBGADUAPI extern unsigned long gg_local_ip;
+ 
+ #define GG_LOGIN_HASH_GG32 0x01	/**< Algorytm Gadu-Gadu */
+ #define GG_LOGIN_HASH_SHA1 0x02	/**< Algorytm SHA1 */
+@@ -1444,29 +1454,29 @@ struct gg_search_result {
+ #define GG_GENDER_FEMALE 1
+ #define GG_GENDER_MALE 2
+ 
+-struct gg_http *gg_search(const struct gg_search_request *r, int async) GG_DEPRECATED;
+-int gg_search_watch_fd(struct gg_http *f) GG_DEPRECATED;
+-void gg_free_search(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_search(const struct gg_search_request *r, int async) GG_DEPRECATED;
++LIBGADUAPI int gg_search_watch_fd(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI void gg_free_search(struct gg_http *f) GG_DEPRECATED;
+ #define gg_search_free gg_free_search
+ 
+-const struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_name, char *last_name, char *city, int gender, int min_birth, int max_birth, int active, int start) GG_DEPRECATED;
+-const struct gg_search_request *gg_search_request_mode_1(char *email, int active, int start) GG_DEPRECATED;
+-const struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int start) GG_DEPRECATED;
+-const struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int start) GG_DEPRECATED;
+-void gg_search_request_free(struct gg_search_request *r) GG_DEPRECATED;
++LIBGADUAPI const struct gg_search_request *gg_search_request_mode_0(char *nickname, char *first_name, char *last_name, char *city, int gender, int min_birth, int max_birth, int active, int start) GG_DEPRECATED;
++LIBGADUAPI const struct gg_search_request *gg_search_request_mode_1(char *email, int active, int start) GG_DEPRECATED;
++LIBGADUAPI const struct gg_search_request *gg_search_request_mode_2(char *phone, int active, int start) GG_DEPRECATED;
++LIBGADUAPI const struct gg_search_request *gg_search_request_mode_3(uin_t uin, int active, int start) GG_DEPRECATED;
++LIBGADUAPI void gg_search_request_free(struct gg_search_request *r) GG_DEPRECATED;
+ 
+-struct gg_http *gg_register(const char *email, const char *password, int async) GG_DEPRECATED;
+-struct gg_http *gg_register2(const char *email, const char *password, const char *qa, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_register(const char *email, const char *password, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_register2(const char *email, const char *password, const char *qa, int async) GG_DEPRECATED;
+ 
+-struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async) GG_DEPRECATED;
+-struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_unregister(uin_t uin, const char *password, const char *email, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_unregister2(uin_t uin, const char *password, const char *qa, int async) GG_DEPRECATED;
+ 
+-struct gg_http *gg_remind_passwd(uin_t uin, int async) GG_DEPRECATED;
+-struct gg_http *gg_remind_passwd2(uin_t uin, const char *tokenid, const char *tokenval, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_remind_passwd(uin_t uin, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_remind_passwd2(uin_t uin, const char *tokenid, const char *tokenval, int async) GG_DEPRECATED;
+ 
+-struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async) GG_DEPRECATED;
+-struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *newpasswd, const char *email, const char *newemail, int async) GG_DEPRECATED;
+-struct gg_http *gg_change_passwd3(uin_t uin, const char *passwd, const char *newpasswd, const char *qa, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_change_passwd(uin_t uin, const char *passwd, const char *newpasswd, const char *newemail, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_change_passwd2(uin_t uin, const char *passwd, const char *newpasswd, const char *email, const char *newemail, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_change_passwd3(uin_t uin, const char *passwd, const char *newpasswd, const char *qa, int async) GG_DEPRECATED;
+ 
+ struct gg_change_info_request {
+ 	char *first_name;
+@@ -1478,65 +1488,65 @@ struct gg_change_info_request {
+ 	char *city;
+ } /* GG_DEPRECATED */;
+ 
+-struct gg_change_info_request *gg_change_info_request_new(const char *first_name, const char *last_name, const char *nickname, const char *email, int born, int gender, const char *city) GG_DEPRECATED;
+-void gg_change_info_request_free(struct gg_change_info_request *r) GG_DEPRECATED;
++LIBGADUAPI struct gg_change_info_request *gg_change_info_request_new(const char *first_name, const char *last_name, const char *nickname, const char *email, int born, int gender, const char *city) GG_DEPRECATED;
++LIBGADUAPI void gg_change_info_request_free(struct gg_change_info_request *r) GG_DEPRECATED;
+ 
+-struct gg_http *gg_change_info(uin_t uin, const char *passwd, const struct gg_change_info_request *request, int async) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_change_info(uin_t uin, const char *passwd, const struct gg_change_info_request *request, int async) GG_DEPRECATED;
+ #define gg_change_pubdir_watch_fd gg_pubdir_watch_fd
+ #define gg_change_pubdir_free gg_pubdir_free
+ #define gg_free_change_pubdir gg_pubdir_free
+ 
+-struct gg_http *gg_userlist_get(uin_t uin, const char *password, int async) GG_DEPRECATED;
+-int gg_userlist_get_watch_fd(struct gg_http *f) GG_DEPRECATED;
+-void gg_userlist_get_free(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_userlist_get(uin_t uin, const char *password, int async) GG_DEPRECATED;
++LIBGADUAPI int gg_userlist_get_watch_fd(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI void gg_userlist_get_free(struct gg_http *f) GG_DEPRECATED;
+ 
+-struct gg_http *gg_userlist_put(uin_t uin, const char *password, const char *contacts, int async) GG_DEPRECATED;
+-int gg_userlist_put_watch_fd(struct gg_http *f) GG_DEPRECATED;
+-void gg_userlist_put_free(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_userlist_put(uin_t uin, const char *password, const char *contacts, int async) GG_DEPRECATED;
++LIBGADUAPI int gg_userlist_put_watch_fd(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI void gg_userlist_put_free(struct gg_http *f) GG_DEPRECATED;
+ 
+-struct gg_http *gg_userlist_remove(uin_t uin, const char *password, int async) GG_DEPRECATED;
+-int gg_userlist_remove_watch_fd(struct gg_http *f) GG_DEPRECATED;
+-void gg_userlist_remove_free(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI struct gg_http *gg_userlist_remove(uin_t uin, const char *password, int async) GG_DEPRECATED;
++LIBGADUAPI int gg_userlist_remove_watch_fd(struct gg_http *f) GG_DEPRECATED;
++LIBGADUAPI void gg_userlist_remove_free(struct gg_http *f) GG_DEPRECATED;
+ 
+-int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length) GG_DEPRECATED;
++LIBGADUAPI int gg_pubdir50_handle_reply(struct gg_event *e, const char *packet, int length) GG_DEPRECATED;
+ 
+ /** \endcond */
+ 
+-int gg_file_hash_sha1(int fd, uint8_t *result) GG_DEPRECATED;
++LIBGADUAPI int gg_file_hash_sha1(int fd, uint8_t *result) GG_DEPRECATED;
+ 
+ #ifdef __GNUC__
+-char *gg_saprintf(const char *format, ...) __attribute__ ((format (printf, 1, 2))) GG_DEPRECATED;
++LIBGADUAPI char *gg_saprintf(const char *format, ...) __attribute__ ((format (printf, 1, 2))) GG_DEPRECATED;
+ #else
+-char *gg_saprintf(const char *format, ...) GG_DEPRECATED;
++LIBGADUAPI char *gg_saprintf(const char *format, ...) GG_DEPRECATED;
+ #endif
+ 
+-char *gg_vsaprintf(const char *format, va_list ap) GG_DEPRECATED;
++LIBGADUAPI char *gg_vsaprintf(const char *format, va_list ap) GG_DEPRECATED;
+ 
+ #define gg_alloc_sprintf gg_saprintf
+ 
+-char *gg_get_line(char **ptr) GG_DEPRECATED;
+-
+-int gg_connect(void *addr, int port, int async) GG_DEPRECATED;
+-struct in_addr *gg_gethostbyname(const char *hostname) GG_DEPRECATED;
+-char *gg_read_line(int sock, char *buf, int length) GG_DEPRECATED;
+-void gg_chomp(char *line) GG_DEPRECATED;
+-char *gg_urlencode(const char *str) GG_DEPRECATED;
+-int gg_http_hash(const char *format, ...) GG_DEPRECATED;
+-void gg_http_free_fields(struct gg_http *h) GG_DEPRECATED;
+-int gg_read(struct gg_session *sess, char *buf, int length) GG_DEPRECATED;
+-int gg_write(struct gg_session *sess, const char *buf, int length) GG_DEPRECATED;
+-void *gg_recv_packet(struct gg_session *sess) GG_DEPRECATED;
+-int gg_send_packet(struct gg_session *sess, int type, ...) GG_DEPRECATED;
+-unsigned int gg_login_hash(const unsigned char *password, unsigned int seed) GG_DEPRECATED;
+-void gg_login_hash_sha1(const char *password, uint32_t seed, uint8_t *result) GG_DEPRECATED;
+-uint32_t gg_fix32(uint32_t x);
+-uint16_t gg_fix16(uint16_t x);
++LIBGADUAPI char *gg_get_line(char **ptr) GG_DEPRECATED;
++
++LIBGADUAPI int gg_connect(void *addr, int port, int async) GG_DEPRECATED;
++LIBGADUAPI struct in_addr *gg_gethostbyname(const char *hostname) GG_DEPRECATED;
++LIBGADUAPI char *gg_read_line(int sock, char *buf, int length) GG_DEPRECATED;
++LIBGADUAPI void gg_chomp(char *line) GG_DEPRECATED;
++LIBGADUAPI char *gg_urlencode(const char *str) GG_DEPRECATED;
++LIBGADUAPI int gg_http_hash(const char *format, ...) GG_DEPRECATED;
++LIBGADUAPI void gg_http_free_fields(struct gg_http *h) GG_DEPRECATED;
++LIBGADUAPI int gg_read(struct gg_session *sess, char *buf, int length) GG_DEPRECATED;
++LIBGADUAPI int gg_write(struct gg_session *sess, const char *buf, int length) GG_DEPRECATED;
++LIBGADUAPI void *gg_recv_packet(struct gg_session *sess) GG_DEPRECATED;
++LIBGADUAPI int gg_send_packet(struct gg_session *sess, int type, ...) GG_DEPRECATED;
++LIBGADUAPI unsigned int gg_login_hash(const unsigned char *password, unsigned int seed) GG_DEPRECATED;
++LIBGADUAPI void gg_login_hash_sha1(const char *password, uint32_t seed, uint8_t *result) GG_DEPRECATED;
++LIBGADUAPI uint32_t gg_fix32(uint32_t x);
++LIBGADUAPI uint16_t gg_fix16(uint16_t x);
+ #define fix16 gg_fix16
+ #define fix32 gg_fix32
+-char *gg_proxy_auth(void) GG_DEPRECATED;
+-char *gg_base64_encode(const char *buf) GG_DEPRECATED;
+-char *gg_base64_decode(const char *buf) GG_DEPRECATED;
+-int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int freeq) GG_DEPRECATED;
++LIBGADUAPI char *gg_proxy_auth(void) GG_DEPRECATED;
++LIBGADUAPI char *gg_base64_encode(const char *buf) GG_DEPRECATED;
++LIBGADUAPI char *gg_base64_decode(const char *buf) GG_DEPRECATED;
++LIBGADUAPI int gg_image_queue_remove(struct gg_session *s, struct gg_image_queue *q, int freeq) GG_DEPRECATED;
+ 
+ /**
+  * Kolejka odbieranych obrazków.
+@@ -1552,11 +1562,11 @@ struct gg_image_queue {
+ 	struct gg_image_queue *next;	/**< Kolejny element listy */
+ } GG_DEPRECATED;
+ 
+-int gg_dcc7_handle_id(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
+-int gg_dcc7_handle_new(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
+-int gg_dcc7_handle_info(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
+-int gg_dcc7_handle_accept(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
+-int gg_dcc7_handle_reject(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
++LIBGADUAPI int gg_dcc7_handle_id(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
++LIBGADUAPI int gg_dcc7_handle_new(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
++LIBGADUAPI int gg_dcc7_handle_info(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
++LIBGADUAPI int gg_dcc7_handle_accept(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
++LIBGADUAPI int gg_dcc7_handle_reject(struct gg_session *sess, struct gg_event *e, const void *payload, int len) GG_DEPRECATED;
+ 
+ #define GG_APPMSG_HOST "appmsg.gadu-gadu.pl"
+ #define GG_APPMSG_PORT 80
+diff --git a/include/network.h b/include/network.h
+index 3b71d41..e53dca6 100644
+--- a/include/network.h
++++ b/include/network.h
+@@ -33,8 +33,7 @@
+ #  include <winsock2.h>
+ #  include <errno.h>
+ /* Obecnie na Win32 tylko MSVC definiuje te typy błędów. Na wypadek, gdyby
+- * jednak Cygwin bądź MinGW zaczęły je definiować, używamy bardziej ogólnych
+- * ifdefów. */
++ * jednak MinGW zaczęło je definiować, używamy bardziej ogólnych ifdefów. */
+ #  ifndef ECONNRESET
+ #    define ECONNRESET WSAECONNRESET
+ #  endif
+@@ -83,9 +82,7 @@ int gg_win32_socketpair(int sv[2]);
+ #  include <arpa/inet.h>
+ #  include <netdb.h>
+ #  include <unistd.h>
+-#  ifndef FIONBIO
+-#    include <fcntl.h>
+-#  endif
++#  include <fcntl.h>
+ #endif
+ 
+ #ifndef INADDR_NONE
+diff --git a/include/session.h b/include/session.h
+index 805742c..fc53d20 100644
+--- a/include/session.h
++++ b/include/session.h
+@@ -19,6 +19,8 @@
+ #ifndef LIBGADU_SESSION_H
+ #define LIBGADU_SESSION_H
+ 
++#include "config.h"
++
+ #ifdef GG_CONFIG_HAVE_GNUTLS
+ #  include <gnutls/gnutls.h>
+ #endif
+diff --git a/m4/openssl.m4 b/m4/openssl.m4
+index 9475d1e..630ba0d 100644
+--- a/m4/openssl.m4
++++ b/m4/openssl.m4
+@@ -22,8 +22,6 @@ AC_DEFUN([AC_CHECK_OPENSSL],[
+   fi
+ 
+   if test "x$without_openssl" != "xyes" ; then
+-    dnl Beware, this code is not able to check installed openssl version
+-
+     AC_MSG_CHECKING(for ssl.h)
+ 
+     for i in $with_arg \
+@@ -46,7 +44,8 @@ AC_DEFUN([AC_CHECK_OPENSSL],[
+ 	LDFLAGS="$lib -lssl -lcrypto"
+ 	save_LIBS="$LIBS"
+ 	LIBS="-lssl -lcrypto $LIBS"
+-	AC_CHECK_LIB(ssl, RSA_new, [
++	dnl BUF_strlcpy() was introduced in OpenSSL 0.9.7
++	AC_CHECK_LIB(ssl, BUF_strlcpy, [
+ 	  AC_DEFINE(HAVE_OPENSSL, 1, [define if you have OpenSSL])
+ 	  have_openssl=yes
+ 	  OPENSSL_LIBS="$lib -lssl -lcrypto"
+diff --git a/src/common.c b/src/common.c
+index 73499df..1b808a4 100644
+--- a/src/common.c
++++ b/src/common.c
+@@ -266,7 +266,7 @@ int gg_connect(void *addr, int port, int async)
+ 	}
+ 
+ 	if (async) {
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 		int one = 1;
+ 
+ 		if (ioctl(sock, FIONBIO, &one) == -1) {
+diff --git a/src/dcc.c b/src/dcc.c
+index a755d35..db24745 100644
+--- a/src/dcc.c
++++ b/src/dcc.c
+@@ -584,7 +584,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
+ 		struct sockaddr_in sin;
+ 		struct gg_dcc *c;
+ 		int fd;
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 		int one = 1;
+ #endif
+ 		socklen_t sin_len = sizeof(sin);
+@@ -596,7 +596,7 @@ struct gg_event *gg_dcc_watch_fd(struct gg_dcc *h)
+ 
+ 		gg_debug(GG_DEBUG_MISC, "// gg_dcc_watch_fd() new direct connection from %s:%d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+ 
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 		if (ioctl(fd, FIONBIO, &one) == -1) {
+ #else
+ 		if (fcntl(fd, F_SETFL, O_NONBLOCK) == -1) {
+diff --git a/src/dcc7.c b/src/dcc7.c
+index 1a38102..2a0f585 100644
+--- a/src/dcc7.c
++++ b/src/dcc7.c
+@@ -1051,7 +1051,7 @@ struct gg_event *gg_dcc7_watch_fd(struct gg_dcc7 *dcc)
+ 		{
+ 			struct sockaddr_in sin;
+ 			int fd;
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 			int one = 1;
+ #endif
+ 			socklen_t sin_len = sizeof(sin);
+@@ -1065,7 +1065,7 @@ struct gg_event *gg_dcc7_watch_fd(struct gg_dcc7 *dcc)
+ 
+ 			gg_debug_dcc(dcc, GG_DEBUG_MISC, "// gg_dcc7_watch_fd() connection from %s:%d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+ 
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 			if (ioctl(fd, FIONBIO, &one) == -1) {
+ #else
+ 			if (fcntl(fd, F_SETFL, O_NONBLOCK) == -1) {
+@@ -1353,9 +1353,7 @@ struct gg_event *gg_dcc7_watch_fd(struct gg_dcc7 *dcc)
+ 
+ 			gg_debug_dcc(dcc, GG_DEBUG_MISC, "// gg_dcc7_watch_fd() GG_STATE_RESOLVING_RELAY\n");
+ 
+-			do {
+-				res = gg_resolver_recv(dcc->fd, &addr, sizeof(addr));
+-			} while (res == -1 && errno == EINTR);
++			GG_EINTR_LOOP(res, gg_resolver_recv(dcc->fd, &addr, sizeof(addr)));
+ 
+ 			dcc->sess->resolver_cleanup(&dcc->resolver, 0);
+ 
+diff --git a/src/http.c b/src/http.c
+index b86bbf9..132e803 100644
+--- a/src/http.c
++++ b/src/http.c
+@@ -28,6 +28,7 @@
+ #include "network.h"
+ #include "libgadu.h"
+ #include "resolver.h"
++#include "internal.h"
+ 
+ #include <ctype.h>
+ #include <errno.h>
+@@ -203,9 +204,7 @@ int gg_http_watch_fd(struct gg_http *h)
+ 
+ 		gg_debug(GG_DEBUG_MISC, "=> http, resolving done\n");
+ 
+-		do {
+-			res = gg_resolver_recv(h->fd, &addr, sizeof(addr));
+-		} while (res == -1 && errno == EINTR);
++		GG_EINTR_LOOP(res, gg_resolver_recv(h->fd, &addr, sizeof(addr)));
+ 
+ 		h->resolver_cleanup(&h->resolver, 0);
+ 
+diff --git a/src/libgadu.c b/src/libgadu.c
+index c17e79b..6b22f58 100644
+--- a/src/libgadu.c
++++ b/src/libgadu.c
+@@ -240,14 +240,8 @@ int gg_read(struct gg_session *sess, char *buf, int length)
+ 	}
+ #endif
+ 
+-	for (;;) {
+-		res = recv(sess->fd, buf, length, 0);
+-
+-		if (res == -1 && errno == EINTR)
+-			continue;
+-
+-		return res;
+-	}
++	GG_EINTR_LOOP(res, recv(sess->fd, buf, length, 0));
++	return res;
+ }
+ 
+ /**
+@@ -318,14 +312,8 @@ static int gg_write_common(struct gg_session *sess, const char *buf, int length)
+ 	}
+ #endif
+ 
+-	for (;;) {
+-		res = send(sess->fd, buf, length, 0);
+-
+-		if (res == -1 && errno == EINTR)
+-			continue;
+-
+-		return res;
+-	}
++	GG_EINTR_LOOP(res, send(sess->fd, buf, length, 0));
++	return res;
+ }
+ 
+ 
+diff --git a/src/libgadu.rc b/src/libgadu.rc
+new file mode 100644
+index 0000000..970b182
+--- /dev/null
++++ b/src/libgadu.rc
+@@ -0,0 +1,27 @@
++#include <winver.h>
++
++VS_VERSION_INFO	VERSIONINFO
++FILEVERSION 	1,12,0,0
++PRODUCTVERSION	1,12,0,0
++#ifdef DEBUG
++FILEFLAGS	VS_FF_DEBUG
++#endif
++FILEOS		VOS__WINDOWS32
++FILETYPE	VFT_DLL
++FILESUBTYPE	VFT2_UNKNOWN
++BEGIN
++	BLOCK "StringFileInfo"
++	BEGIN 
++		BLOCK "040904E4"
++		BEGIN
++		VALUE "FileDescription",  "libgadu"
++		VALUE "FileVersion", "1.12.0"
++		VALUE "OriginalFilename", "libgadu.dll"
++		END
++	END
++
++	BLOCK "VarFileInfo"
++	BEGIN
++		VALUE "Translation", 0x0409, 0x04E4
++	END
++END
+diff --git a/src/libgadu.sym b/src/libgadu.sym
+index eaebb8a..00b20ba 100644
+--- a/src/libgadu.sym
++++ b/src/libgadu.sym
+@@ -76,6 +76,7 @@ gg_local_ip
+ gg_login
+ gg_login_hash
+ gg_login_hash_sha1
++gg_login_hash_sha1_2
+ gg_logoff
+ gg_multilogon_disconnect
+ gg_notify
+@@ -155,4 +156,18 @@ gg_userlist_request
+ gg_userlist100_request
+ gg_vsaprintf
+ gg_watch_fd
++gg_win32_accept
++gg_win32_bind
++gg_win32_close
++gg_win32_connect
++gg_win32_gethostbyname
++gg_win32_getsockname
++gg_win32_getsockopt
++gg_win32_ioctl
++gg_win32_listen
++gg_win32_recv
++gg_win32_send
++gg_win32_setsockopt
++gg_win32_socket
++gg_win32_socketpair
+ gg_write
+diff --git a/src/resolver.c b/src/resolver.c
+index c218572..d067d9a 100644
+--- a/src/resolver.c
++++ b/src/resolver.c
+@@ -172,8 +172,10 @@ int gg_gethostbyname_real(const char *hostname, struct in_addr **result, unsigne
+ 				pthread_setcancelstate(old_state, NULL);
+ #endif
+ 
+-			if (*result == NULL)
+-				return -1;
++			if (*result == NULL) {
++				res = -1;
++				goto fail;
++			}
+ 
+ 			/* Kopiuj */
+ 
+@@ -187,6 +189,7 @@ int gg_gethostbyname_real(const char *hostname, struct in_addr **result, unsigne
+ 			res = 0;
+ 		}
+ 
++fail:
+ #ifdef GG_CONFIG_HAVE_PTHREAD
+ 		if (pthread)
+ 			pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, &old_state);
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+new file mode 100644
+index 0000000..890c768
+--- /dev/null
++++ b/test/CMakeLists.txt
+@@ -0,0 +1,33 @@
++# libgadu_add_test (<name> [LINK_TO_LIBGADU] source1 source2 ... sourceN)
++macro (libgadu_add_test _NAME)
++	set (_SOURCES ${ARGN})
++	set (_LINK_TO_LIBGADU FALSE)
++	if ("${ARGV1}" STREQUAL "LINK_TO_LIBGADU")
++		list (REMOVE_AT _SOURCES 0)
++		set (_LINK_TO_LIBGADU TRUE)
++	endif ()
++
++	add_executable (${_NAME} ${_SOURCES})
++	if (NOT LIBGADU_MANUAL_TESTS)
++		add_test (${_NAME} ${_NAME})
++	endif ()
++	if (_LINK_TO_LIBGADU)
++		target_link_libraries (${_NAME} gadu_static)
++	endif ()
++
++	file (RELATIVE_PATH _FOLDER "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
++	set_property (TARGET ${_NAME} PROPERTY FOLDER "${_FOLDER}")
++
++	if (UNIX)
++		add_custom_command (TARGET ${_NAME} POST_BUILD
++			COMMAND "${CMAKE_COMMAND}" -E remove "${_NAME}-valgrind"
++			COMMAND "${CMAKE_COMMAND}" -E create_symlink "${CMAKE_SOURCE_DIR}/test/valgrind" "${_NAME}-valgrind"
++			VERBATIM 
++		)
++
++		set_property (DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${_NAME}-valgrind" "${_NAME}-valgrind.log")
++	endif ()
++endmacro ()
++
++add_subdirectory (automatic)
++add_subdirectory (manual)
+diff --git a/test/Makefile.am b/test/Makefile.am
+index 43c789f..695c0fc 100644
+--- a/test/Makefile.am
++++ b/test/Makefile.am
+@@ -1,2 +1,2 @@
+ SUBDIRS = automatic manual
+-EXTRA_DIST = config.sample
++EXTRA_DIST = CMakeLists.txt config.sample
+diff --git a/test/automatic/CMakeLists.txt b/test/automatic/CMakeLists.txt
+new file mode 100644
+index 0000000..72e5861
+--- /dev/null
++++ b/test/automatic/CMakeLists.txt
+@@ -0,0 +1,50 @@
++include (CheckFunctionExists)
++
++add_definitions (-DGG_IGNORE_DEPRECATED)
++
++libgadu_add_test (convert "convert.c" "${CMAKE_SOURCE_DIR}/src/encoding.c")
++libgadu_add_test (endian1 "endian1.c" "${CMAKE_SOURCE_DIR}/src/endian.c")
++libgadu_add_test (message1 "message1.c")
++
++# libxml2 for this test is optional.
++find_package (LibXml2)
++libgadu_add_test (message2 "message2.c" "${CMAKE_SOURCE_DIR}/src/message.c")
++if (LIBXML2_FOUND)
++	set_property (TARGET message2 APPEND PROPERTY COMPILE_DEFINITIONS "HAVE_LIBXML2" ${LIBXML2_DEFINITIONS})
++	set_property (TARGET message2 APPEND PROPERTY INCLUDE_DIRECTORIES ${LIBXML2_INCLUDE_DIR})
++	target_link_libraries (message2 ${LIBXML2_LIBRARIES})
++endif ()
++
++# We need only functions from sha1.c, but they depend on endian.c
++# and possibly GnuTLS or OpenSSL, so just use the static library.
++libgadu_add_test (hash LINK_TO_LIBGADU "hash.c")
++
++check_function_exists ("__connect" _HAVE_GLIBC)
++if (_HAVE_GLIBC)
++	libgadu_add_test (packet LINK_TO_LIBGADU "packet.c")
++	libgadu_add_test (resolver LINK_TO_LIBGADU "resolver.c")
++
++	find_package (GnuTLS 2.10.0)
++	if (GNUTLS_FOUND)
++		libgadu_add_test (connect LINK_TO_LIBGADU "connect.c")
++		configure_file ("connect.pem" "connect.pem" COPYONLY)
++		set_property (TARGET connect APPEND PROPERTY COMPILE_DEFINITIONS ${GNUTLS_DEFINITIONS})
++		set_property (TARGET connect APPEND PROPERTY INCLUDE_DIRECTORIES ${GNUTLS_INCLUDE_DIR})
++		target_link_libraries (connect ${GNUTLS_LIBRARIES})
++	endif ()
++endif ()
++
++find_package (Perl)
++if (PERL_FOUND)
++	file (GLOB _SCR_FILES "${CMAKE_CURRENT_SOURCE_DIR}/script/*.scr")
++	list (SORT _SCR_FILES)
++	add_custom_command (OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/script.c"
++		COMMAND "${PERL_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/script/compile" ${_SCR_FILES} > "${CMAKE_CURRENT_BINARY_DIR}/script.c"
++		MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/script/compile"
++		DEPENDS ${_SCR_FILES}
++		VERBATIM
++	)
++
++	libgadu_add_test (protocol LINK_TO_LIBGADU "protocol.c" "${CMAKE_CURRENT_BINARY_DIR}/script.c")
++	set_property (TARGET protocol APPEND PROPERTY INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/script")
++endif ()
+diff --git a/test/automatic/Makefile.am b/test/automatic/Makefile.am
+index c9ce3ba..694636d 100644
+--- a/test/automatic/Makefile.am
++++ b/test/automatic/Makefile.am
+@@ -28,7 +28,7 @@ packet_LDADD = $(top_builddir)/src/libgadu.la
+ 
+ resolver_LDADD = $(top_builddir)/src/libgadu.la
+ 
+-EXTRA_DIST = protocol.txt connect.txt
++EXTRA_DIST = CMakeLists.txt protocol.txt connect.txt
+ 
+ SUBDIRS = script
+ 
+diff --git a/test/automatic/connect.c b/test/automatic/connect.c
+index d31d2dc..87f8b7a 100644
+--- a/test/automatic/connect.c
++++ b/test/automatic/connect.c
+@@ -355,7 +355,9 @@ static int client_func(const test_param_t *test)
+ 	glp.uin = 1;
+ 	glp.password = "dupa.8";
+ 	glp.async = test->async_mode;
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	glp.resolver = GG_RESOLVER_PTHREAD;
++#endif
+ 
+ 	if (test->server)
+ 		glp.server_addr = inet_addr(HOST_LOCAL);
+@@ -926,7 +928,7 @@ int main(int argc, char **argv)
+ 	int res;
+ 	pthread_t server_thread;
+ 	
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 	int one = 1;
+ #endif
+ 
+@@ -981,7 +983,7 @@ int main(int argc, char **argv)
+ 		failure();
+ 	}
+ 
+-#ifdef FIONBIO
++#ifndef O_NONBLOCK
+ 	if (ioctl(timeout_pipe[0], FIONBIO, &one) == -1) {
+ #else
+ 	if (fcntl(timeout_pipe[0], F_SETFL, O_NONBLOCK) == -1) {
+diff --git a/test/automatic/convert.c b/test/automatic/convert.c
+index 7e032d0..880383a 100644
+--- a/test/automatic/convert.c
++++ b/test/automatic/convert.c
+@@ -8,19 +8,19 @@
+ // - ...
+ // TODO ograniczanie stringów
+ 
++#include "encoding.h"
++
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <string.h>
+-#include "encoding.h"
+ 
+ struct test_data
+ {
+ 	int line;
+ 	const char *src;
+ 	const char *dst;
+-	ssize_t src_len;
+-	ssize_t dst_len;
++	int src_len;
++	int dst_len;
+ };
+ 
+ #define TEST(src,dst) { __LINE__, src, dst, -1, -1 }
+diff --git a/test/automatic/endian1.c b/test/automatic/endian1.c
+index bf6acd8..8bdaf93 100644
+--- a/test/automatic/endian1.c
++++ b/test/automatic/endian1.c
+@@ -1,11 +1,11 @@
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+-
+ #include "config.h"
+ #include "libgadu.h"
+ #include "internal.h"
+ 
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
+ #ifdef HAVE_UINT64_T
+ static void test_gg_fix64(void)
+ {
+diff --git a/test/automatic/hash.c b/test/automatic/hash.c
+index 6025b79..61d8a0e 100644
+--- a/test/automatic/hash.c
++++ b/test/automatic/hash.c
+@@ -1,12 +1,10 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <string.h>
+-#include <fcntl.h>
+-#include <sys/types.h>
+ 
+ #include "libgadu.h"
+ #include "internal.h"
++#include "fileio.h"
+ 
+ static char *sha1_to_string(uint8_t *sha1)
+ {
+@@ -68,12 +66,12 @@ struct file_hash {
+ 
+ struct file_hash file_hashes[] = {
+ 	{ 0, "da39a3ee5e6b4b0d3255bfef95601890afd80709" },
+-	{ 1, "ad03e557eeed1f108ed9f5a54f9d0255f69c168e" },
+-	{ 2, "45afb38af4ba1e161f6fde18818a4acbe87a1c88" },
+-	{ 9, "940a5611380985416844aa6fb3767b38e4aac59f" },
++	{ 1, "382e89ab1ced2264f07eafaa1f002b46b977bf83" },
++	{ 2, "6a5caa926d0a03cc949e33349766313e5ea75bad" },
++	{ 9, "e1ba5948361532bec18389230ad1cd76e31c51a4" },
+ 	{ 10, "8f7659b0fa3994fcce2be062bbea0d183e9bc44e" },
+-	{ 11, "43c12a04edda27d2a87c8c85aa5680bf36bdb0c0" },
+-	{ 12, "f40bdc59b7b073735e6e53ce9fa67f17978ef236" },
++	{ 11, "ef95c2f8002b004cb5f792f19a7e3aa4e1e778f2" },
++	{ 12, "f361541c8c59fa5cc0c57178b1f943e3825efa48" },
+ };
+ 
+ static void test_file_hash(unsigned int megs, const char *expect)
+@@ -88,22 +86,29 @@ static void test_file_hash(unsigned int megs, const char *expect)
+ 	fd = mkstemp(name);
+ 
+ 	if (fd == -1) {
+-		fprintf(stderr, "Unable to create temporary file\n");
++		perror("mkstemp");
+ 		exit(1);
+ 	}
+ 
+ 	for (i = 1; i <= megs; i++) {
+ 		unsigned char j;
+ 
+-		if (lseek(fd, i * 1048756 - 1, SEEK_SET) == (off_t) -1) {
+-			fprintf(stderr, "Unable to seek past end of file\n");
++		if (lseek(fd, i * 1048756 - 3, SEEK_SET) == (off_t) -1) {
++			perror("lseek");
+ 			goto fail;
+ 		}
+ 
+ 		j = i;
+ 
+ 		if (write(fd, &j, sizeof(j)) != sizeof(j)) {
+-			fprintf(stderr, "Unable to write past end of file\n");
++			perror("write");
++			goto fail;
++		}
++
++		/* Upewnij się, że Windows nie będzie próbował dokonywać
++		 * żadnych szkodliwych konwersji. */
++		if (write(fd, "\r\n", 2) != 2) {
++			perror("write");
+ 			goto fail;
+ 		}
+ 	}
+@@ -118,12 +123,12 @@ static void test_file_hash(unsigned int megs, const char *expect)
+ 		goto fail;
+ 	}
+ 
+-	close(fd);
++	gg_file_close(fd);
+ 	unlink(name);
+ 	return;
+ 
+ fail:
+-	close(fd);
++	gg_file_close(fd);
+ 	unlink(name);
+ 	exit(1);
+ }
+diff --git a/test/automatic/message2.c b/test/automatic/message2.c
+index 5645a97..a93347a 100644
+--- a/test/automatic/message2.c
++++ b/test/automatic/message2.c
+@@ -1,9 +1,11 @@
+-#include <stdio.h>
+-#include <stdlib.h>
+-#include <string.h>
+ #include "libgadu.h"
+ #include "message.h"
+ #include "config.h"
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
+ #ifdef HAVE_LIBXML2
+ #include <libxml/parser.h>
+ #include <libxml/tree.h>
+diff --git a/test/automatic/protocol.c b/test/automatic/protocol.c
+index e5141d7..72efc99 100644
+--- a/test/automatic/protocol.c
++++ b/test/automatic/protocol.c
+@@ -1,41 +1,37 @@
++#include "script.h"
++
++#include "network.h"
++#include "libgadu.h"
++
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+-#include <stdarg.h>
+-#include <fcntl.h>
+ #include <time.h>
+ #include <string.h>
+ #include <errno.h>
+ #include <ctype.h>
+-#include <arpa/inet.h>
++#ifndef _WIN32
+ #include <sys/select.h>
+-#include <sys/socket.h>
+-#include <netinet/in.h>
+-#include <netdb.h>
+-
+-#include "libgadu.h"
+-
+-#include "script.h"
++#endif
+ 
+ #define LOCALHOST_NAME "localhost"
+ #define LOCALHOST_ADDR "127.0.0.1"
+ 
+-#define debug(msg...) \
++#define debug(...) \
+ 	do { \
+ 		fprintf(stderr, "\033[1m"); \
+-		fprintf(stderr, msg); \
++		fprintf(stderr, __VA_ARGS__); \
+ 		fprintf(stderr, "\033[0m"); \
+ 		fflush(stderr); \
+ 	} while(0)
+ 
+-#define error(state, msg...) \
++#define error(state,  ...) \
+ 	do { \
+ 		fprintf(stderr, "\033[1;31m"); \
+ 		if (script[state].test != -1) \
+ 			fprintf(stderr, "File: %s, Line: %d, Test: %s\n", script[state].filename, script[state].line, tests[script[state].test]); \
+ 		else \
+ 			fprintf(stderr, "File: %s, Line: %d\n", script[state].filename, script[state].line); \
+-		fprintf(stderr, msg); \
++		fprintf(stderr, __VA_ARGS__); \
+ 		fprintf(stderr, "\033[0m"); \
+ 		fflush(stderr); \
+ 	} while(0)
+@@ -44,6 +40,9 @@ static char outbuf[4096];
+ static int outbuflen = 0;
+ static int fd = -1;	/* connected socket */
+ 
++extern __declspec(dllimport) FILE * gg_debug_file;
++extern __declspec(dllimport) int gg_debug_level;
++
+ int main(int argc, char **argv)
+ {
+ 	struct gg_login_params glp;
+@@ -60,9 +59,19 @@ int main(int argc, char **argv)
+ 	uint32_t server_addr;
+ 	uint16_t server_port;
+ 
++#ifdef _WIN32
++	WSADATA wsa_data;
++	if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
++		perror("WSAStartup");
++		exit(1);
++	}
++#endif
++
+ 	gg_debug_file = stdout;
+ 	gg_debug_level = ~0;
+ 
++	script_init();
++
+ 	if ((lfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+ 		perror("socket");
+ 		exit(1);
+@@ -123,7 +132,9 @@ int main(int argc, char **argv)
+ 			glp.server_addr = server_addr;
+ 			glp.server_port = server_port;
+ 			glp.async = 1;
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 			glp.resolver = GG_RESOLVER_PTHREAD;
++#endif
+ 
+ 			if (!(gs = gg_login(&glp))) {
+ 				perror("gg_login");
+@@ -153,7 +164,7 @@ int main(int argc, char **argv)
+ 			if (outbuflen > 0) {
+ 				if (outbuflen + script[state].data_len > sizeof(outbuf)) {
+ 					errno = ENOMEM;
+-					perror("write");
++					perror("send");
+ 					exit(1);
+ 				}
+ 
+@@ -162,16 +173,16 @@ int main(int argc, char **argv)
+ 			} else {
+ 				int res;
+ 
+-				res = write(fd, script[state].data, script[state].data_len);
++				res = send(fd, script[state].data, script[state].data_len, 0);
+ 
+ 				if (res < 0) {
+-					perror("write");
++					perror("send");
+ 					exit(1);
+ 				}
+ 
+ 				if (outbuflen + script[state].data_len - res > sizeof(outbuf)) {
+ 					errno = ENOMEM;
+-					perror("write");
++					perror("send");
+ 					exit(1);
+ 				}
+ 
+@@ -304,7 +315,7 @@ int main(int argc, char **argv)
+ 		}
+ 
+ 		if (fd != -1 && FD_ISSET(fd, &rds)) {
+-			res = read(fd, inbuf + inbuflen, sizeof(inbuf) - inbuflen);
++			res = recv(fd, inbuf + inbuflen, sizeof(inbuf) - inbuflen, 0);
+ 
+ 			if (res < 1) {
+ 				if (script[state].type != EXPECT_DISCONNECT) {
+@@ -325,10 +336,10 @@ int main(int argc, char **argv)
+ 		}
+ 
+ 		if (fd != -1 && FD_ISSET(fd, &wds)) {
+-			res = write(fd, outbuf, outbuflen);
++			res = send(fd, outbuf, outbuflen, 0);
+ 
+ 			if (res == -1) {
+-				perror("write");
++				perror("send");
+ 				exit(1);
+ 			} else if (res == outbuflen) {
+ 				outbuflen = 0;
+@@ -382,5 +393,9 @@ int main(int argc, char **argv)
+ 
+ 	close(lfd);
+ 
++#ifdef _WIN32
++	WSACleanup();
++#endif
++
+ 	return 0;
+ }
+diff --git a/test/automatic/resolver.c b/test/automatic/resolver.c
+index 7560e7f..a08af55 100644
+--- a/test/automatic/resolver.c
++++ b/test/automatic/resolver.c
+@@ -176,6 +176,7 @@ static int test_set_get(void)
+ 		return 0;
+ 	}
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	printf("Setting global fork resolver\n");
+ 	gg_global_set_resolver(GG_RESOLVER_FORK);
+ 
+@@ -183,14 +184,17 @@ static int test_set_get(void)
+ 		printf("Expected global fork resolver\n");
+ 		return 0;
+ 	}
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	printf("Setting global pthread resolver\n");
+ 	gg_global_set_resolver(GG_RESOLVER_PTHREAD);
+ 
+ 	if (gg_global_get_resolver() != GG_RESOLVER_PTHREAD) {
+-		printf("Expected global thread resolver\n");
++		printf("Expected global pthread resolver\n");
+ 		return 0;
+ 	}
++#endif
+ 
+ 	printf("Setting global custom resolver\n");
+ 	gg_global_set_custom_resolver(dummy_start, dummy_cleanup);
+@@ -217,19 +221,32 @@ static int test_set_get(void)
+ 	if (gs == NULL)
+ 		return 0;
+ 
+-	if (gg_session_get_resolver(gs) != GG_RESOLVER_FORK && gg_session_get_resolver(gs) != GG_RESOLVER_PTHREAD) {
+-		printf("Expected local fork or pthread resolver\n");
++#if defined(_WIN32)
++	if (gg_session_get_resolver(gs) != GG_RESOLVER_WIN32) {
++		printf("Expected local win32 resolver\n");
+ 		return 0;
+ 	}
++#elif !defined(GG_CONFIG_HAVE_FORK) || defined(GG_CONFIG_PTHREAD_DEFAULT)
++	if (gg_session_get_resolver(gs) != GG_RESOLVER_PTHREAD) {
++		printf("Expected local pthread resolver\n");
++		return 0;
++	}
++#else
++	if (gg_session_get_resolver(gs) != GG_RESOLVER_FORK) {
++		printf("Expected local fork resolver\n");
++		return 0;
++	}
++#endif
+ 
+ 	gg_free_session(gs);
+ 
+ 	/* Testy globalnego default + lokalne */
+ 
+-	printf("Testing global default fork\n");
++	printf("Testing global default resolver\n");
+ 
+ 	gg_global_set_resolver(GG_RESOLVER_DEFAULT);
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	/* Test lokalnych ustawień -- fork */
+ 
+ 	printf("Testing local fork resolver\n");
+@@ -247,7 +264,9 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	/* Test lokalnych ustawień -- pthread */
+ 
+ 	printf("Testing local pthread resolver\n");
+@@ -265,7 +284,9 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	/* Testy globalnego fork + lokalne */
+ 
+ 	printf("Setting global fork resolver\n");
+@@ -307,6 +328,7 @@ static int test_set_get(void)
+ 
+ 	gg_free_session(gs);
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	/* Test globalnych ustawień + lokalne */
+ 
+ 	printf("Testing local pthread resolver\n");
+@@ -319,12 +341,15 @@ static int test_set_get(void)
+ 		return 0;
+ 
+ 	if (gg_session_get_resolver(gs) != GG_RESOLVER_PTHREAD) {
+-		printf("Expected local fork resolver\n");
++		printf("Expected local pthread resolver\n");
+ 		return 0;
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	/* Testy globalnego pthread + lokalne */
+ 
+ 	printf("Setting global pthread resolver\n");
+@@ -348,6 +373,7 @@ static int test_set_get(void)
+ 
+ 	gg_free_session(gs);
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	/* Test globalnych ustawień + lokalne */
+ 
+ 	printf("Testing local fork resolver\n");
+@@ -365,6 +391,7 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
+ 	/* Test globalnych ustawień + lokalne */
+ 
+@@ -378,11 +405,12 @@ static int test_set_get(void)
+ 		return 0;
+ 
+ 	if (gg_session_get_resolver(gs) != GG_RESOLVER_PTHREAD) {
+-		printf("Expected local fork resolver\n");
++		printf("Expected local pthread resolver\n");
+ 		return 0;
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
+ 	/* Testy globalnego custom + lokalne */
+ 
+@@ -407,6 +435,7 @@ static int test_set_get(void)
+ 
+ 	gg_free_session(gs);
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	/* Test globalnych ustawień + lokalne */
+ 
+ 	printf("Testing local fork resolver\n");
+@@ -424,7 +453,9 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	/* Test globalnych ustawień + lokalne */
+ 
+ 	printf("Testing local pthread resolver\n");
+@@ -437,11 +468,12 @@ static int test_set_get(void)
+ 		return 0;
+ 
+ 	if (gg_session_get_resolver(gs) != GG_RESOLVER_PTHREAD) {
+-		printf("Expected local fork resolver\n");
++		printf("Expected local pthread resolver\n");
+ 		return 0;
+ 	}
+ 
+ 	gg_free_session(gs);
++#endif
+ 
+ 	/* Test HTTP */
+ 
+@@ -453,13 +485,26 @@ static int test_set_get(void)
+ 	if (gh == NULL)
+ 		return 0;
+ 
+-	if (gg_http_get_resolver(gh) != GG_RESOLVER_FORK && gg_http_get_resolver(gh) != GG_RESOLVER_PTHREAD) {
+-		printf("Expected local fork or pthread resolver\n");
++#if defined(_WIN32)
++	if (gg_http_get_resolver(gh) != GG_RESOLVER_WIN32) {
++		printf("Expected local win32 resolver\n");
++		return 0;
++	}
++#elif !defined(GG_CONFIG_HAVE_FORK) || defined(GG_CONFIG_PTHREAD_DEFAULT)
++	if (gg_http_get_resolver(gh) != GG_RESOLVER_PTHREAD) {
++		printf("Expected local pthread resolver\n");
++		return 0;
++	}
++#else
++	if (gg_http_get_resolver(gh) != GG_RESOLVER_FORK) {
++		printf("Expected local fork resolver\n");
+ 		return 0;
+ 	}
++#endif
+ 
+ 	gg_http_free(gh);
+ 
++#ifdef GG_CONFIG_HAVE_FORK
+ 	/* Test HTTP */
+ 
+ 	printf("Testing global fork resolver in HTTP\n");
+@@ -476,7 +521,9 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_http_free(gh);
++#endif
+ 
++#ifdef GG_CONFIG_HAVE_PTHREAD
+ 	/* Test HTTP */
+ 
+ 	printf("Testing global pthread resolver in HTTP\n");
+@@ -493,6 +540,7 @@ static int test_set_get(void)
+ 	}
+ 
+ 	gg_http_free(gh);
++#endif
+ 
+ 	/* Test HTTP */
+ 
+@@ -534,7 +582,21 @@ int main(int argc, char **argv)
+ 	}
+ 	printf("\n");
+ 
+-	for (i = GG_RESOLVER_DEFAULT; i <= GG_RESOLVER_PTHREAD; i++) {
++	for (i = GG_RESOLVER_DEFAULT; i <= GG_RESOLVER_WIN32; i++) {
++		if (i == GG_RESOLVER_CUSTOM)
++			continue;
++#ifndef GG_CONFIG_HAVE_FORK
++		if (i == GG_RESOLVER_FORK)
++			continue;
++#endif
++#ifndef GG_CONFIG_HAVE_PTHREAD
++		if (i == GG_RESOLVER_PTHREAD)
++			continue;
++#endif
++#ifndef _WIN32
++		if (i == GG_RESOLVER_WIN32)
++			continue;
++#endif
+ 		for (j = 0; j < 2; j++) {
+ 			printf("*** TEST %d ***\n\n", k++);
+ 
+diff --git a/test/automatic/script/compile b/test/automatic/script/compile
+index 7b43670..2c7cd1b 100755
+--- a/test/automatic/script/compile
++++ b/test/automatic/script/compile
+@@ -1,6 +1,6 @@
+ #!/usr/bin/perl -w
+ 
+-use vars qw(@script $test);
++use vars qw(@script @script_init $test);
+ 
+ sub parse
+ {
+@@ -42,18 +42,16 @@ sub parse
+ 				push @params, $_;
+ 			}
+ 
+-			print "static struct gg_login_params script_glp_$state =\n";
+-			print "{\n";
+-			print "\t." . join(",\n\t.", @params) . "\n";
+-			print "};\n\n";
++			print "static struct gg_login_params script_glp_$state = { 0 };\n\n";
++			push @script_init, "\tscript_glp_$state." . join(";\n\tscript_glp_$state.", @params) . ";\n";
+ 
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = ACTION_LOGIN,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.test = $test,\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.glp = &script_glp_$state,\n";
++			$entry .= "\t\t/* .type */ ACTION_LOGIN,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
++			$entry .= "\t\t/* .glp */ &script_glp_$state,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -66,10 +64,10 @@ sub parse
+ 		if (/^logoff/) {
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = ACTION_LOGOFF,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
++			$entry .= "\t\t/* .type */ ACTION_LOGOFF,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -82,10 +80,10 @@ sub parse
+ 		if (/^expect\s+(dis)*connect/) {
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = EXPECT_" . uc($1) . "CONNECT,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
++			$entry .= "\t\t/* .type */ EXPECT_" . uc($1) . "CONNECT,\n";
++			$entry .= "\t\t/* .filename */\"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -153,17 +151,18 @@ sub parse
+ 
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = EXPECT_EVENT,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
++			$entry .= "\t\t/* .type */ EXPECT_EVENT,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
++			$entry .= "\t\t/* .glp */ NULL,\n";
+ 			if ($1 ne "") {
+-				$entry .= "\t\t.event = $1,\n";
++				$entry .= "\t\t/* .event */ \t\t$1,\n";
+ 			} else {
+-				$entry .= "\t\t.event = -1,\n";
++				$entry .= "\t\t/* .event */ \t\t-1,\n";
+ 			}
+ 			if (defined($2) && ($2 ne "")) {
+-				$entry .= "\t\t.check_event = script_check_event_$state,\n";
++				$entry .= "\t\t/* .check_event */ script_check_event_$state,\n";
+ 			}
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+@@ -241,13 +240,17 @@ sub parse
+ 
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = EXPECT_DATA,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
+-			$entry .= "\t\t.data = (unsigned char*) \"$data\",\n";
+-			$entry .= "\t\t.data_mask = (unsigned char*) \"$data_mask\",\n";
+-			$entry .= "\t\t.data_len = $data_len,\n";
++			$entry .= "\t\t/* .type */ EXPECT_DATA,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
++			$entry .= "\t\t/* .glp */ NULL,\n";
++			$entry .= "\t\t/* .event */ 0,\n";
++			$entry .= "\t\t/* .check_event */ NULL,\n";
++			$entry .= "\t\t/* .call */ NULL,\n";
++			$entry .= "\t\t/* .data */ (unsigned char*) \"$data\",\n";
++			$entry .= "\t\t/* .data_mask */ (unsigned char*) \"$data_mask\",\n";
++			$entry .= "\t\t/* .data_len */ $data_len,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -311,12 +314,17 @@ sub parse
+ 
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = ACTION_SEND,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
+-			$entry .= "\t\t.data = (unsigned char*) \"$data\",\n";
+-			$entry .= "\t\t.data_len = $data_len,\n";
++			$entry .= "\t\t/* .type */ ACTION_SEND,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
++			$entry .= "\t\t/* .glp */ NULL,\n";
++			$entry .= "\t\t/* .event */ 0,\n";
++			$entry .= "\t\t/* .check_event */ NULL,\n";
++			$entry .= "\t\t/* .call */ NULL,\n";
++			$entry .= "\t\t/* .data */ (unsigned char*) \"$data\",\n";
++			$entry .= "\t\t/* .data_mask */ NULL,\n";
++			$entry .= "\t\t/* .data_len */ $data_len,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -340,11 +348,14 @@ sub parse
+ 
+ 			$entry = "\t/* state $state */\n";
+ 			$entry .= "\t{\n";
+-			$entry .= "\t\t.type = ACTION_CALL,\n";
+-			$entry .= "\t\t.filename = \"$filename\",\n";
+-			$entry .= "\t\t.line = $line,\n";
+-			$entry .= "\t\t.test = $test,\n";
+-			$entry .= "\t\t.call = script_call_$state,\n";
++			$entry .= "\t\t/* .type */ ACTION_CALL,\n";
++			$entry .= "\t\t/* .filename */ \"$filename\",\n";
++			$entry .= "\t\t/* .line */ $line,\n";
++			$entry .= "\t\t/* .test */ $test,\n";
++			$entry .= "\t\t/* .glp */ NULL,\n";
++			$entry .= "\t\t/* .event */ 0,\n";
++			$entry .= "\t\t/* .check_event */ NULL,\n";
++			$entry .= "\t\t/* .call */ script_call_$state,\n";
+ 			$entry .= "\t},\n";
+ 			$entry .= "\n";
+ 
+@@ -361,11 +372,13 @@ sub parse
+ 
+ print "/* Generated from script. Do not edit. */\n";
+ print "\n";
++print "#include \"script.h\"\n";
++print "\n";
++print "#include \"libgadu.h\"\n";
++print "\n";
+ print "#include <stdio.h>\n";
+ print "#include <stdlib.h>\n";
+ print "#include <string.h>\n";
+-print "#include <arpa/inet.h>\n";
+-print "#include \"script.h\"\n";
+ print "\n";
+ 
+ $state = 0;
+@@ -375,6 +388,12 @@ foreach $i (@ARGV) {
+ 	parse($i);
+ }
+ 
++print "void script_init(void)\n";
++print "{\n";
++print @script_init;
++print "}\n";
++print "\n";
++
+ print "const char *tests[] =\n";
+ print "{\n";
+ print @tests;
+@@ -384,7 +403,7 @@ print "\n";
+ 
+ $entry = "\t/* state $state */\n";
+ $entry .= "\t{\n";
+-$entry .= "\t\t.type = ACTION_END,\n";
++$entry .= "\t\t/* .type */ ACTION_END,\n";
+ $entry .= "\t},\n";
+ $entry .= "\n";
+ 
+diff --git a/test/automatic/script/script.h b/test/automatic/script/script.h
+index b6873a5..6d1fe4a 100644
+--- a/test/automatic/script/script.h
++++ b/test/automatic/script/script.h
+@@ -1,7 +1,7 @@
+ #ifndef SCRIPT_H
+ #define SCRIPT_H
+ 
+-#include "libgadu.h"
++#include "config.h"
+ 
+ typedef enum {
+ 	ACTION_LOGIN = 1,
+@@ -19,10 +19,10 @@ typedef int (*state_check_event_func_t)(int type, union gg_event_union *);
+ typedef void (*state_api_call_func_t)(struct gg_session *);
+ 
+ typedef struct {
++	state_type_t type;
+ 	const char *filename;
+ 	int line;
+ 	int test;
+-	state_type_t type;
+ 	struct gg_login_params *glp;
+ 	enum gg_event_t event;
+ 	state_check_event_func_t check_event;
+@@ -32,6 +32,8 @@ typedef struct {
+ 	int data_len;
+ } state_t;
+ 
++extern void script_init(void);
++
+ extern state_t script[];
+ 
+ extern const char *tests[];
+diff --git a/test/manual/CMakeLists.txt b/test/manual/CMakeLists.txt
+new file mode 100644
+index 0000000..ad2f3d7
+--- /dev/null
++++ b/test/manual/CMakeLists.txt
+@@ -0,0 +1,42 @@
++set (LIBGADU_MANUAL_TESTS TRUE)
++
++add_definitions (-DGG_IGNORE_DEPRECATED)
++
++libgadu_add_test (client LINK_TO_LIBGADU "client.c" "userconfig.c" "userconfig.h")
++libgadu_add_test (dcc7 LINK_TO_LIBGADU "dcc7.c" "userconfig.c" "userconfig.h")
++libgadu_add_test (userlist LINK_TO_LIBGADU "userlist.c" "userconfig.c" "userconfig.h")
++
++find_package (CURL)
++find_package (EXPAT)
++find_package (OpenSSL 0.9.7)
++if (CURL_FOUND AND EXPAT_FOUND)
++	set (_SEARCH_SOURCES
++		search.c
++		lib/base64.c
++		lib/base64.h
++		lib/hmac.c
++		lib/hmac.h
++		lib/http.c
++		lib/http.h
++		lib/oauth.c
++		lib/oauth.h
++		lib/oauth_parameter.c
++		lib/oauth_parameter.h
++		lib/sha1.c
++		lib/sha1.h
++		lib/urlencode.c
++		lib/urlencode.h
++		lib/xml.c
++		lib/xml.h
++	)
++
++	libgadu_add_test (search LINK_TO_LIBGADU ${_SEARCH_SOURCES})
++	set_property (TARGET search APPEND PROPERTY INCLUDE_DIRECTORIES ${CURL_INCLUDE_DIRS} ${EXPAT_INCLUDE_DIRS})
++	target_link_libraries (search ${CURL_LIBRARIES} ${EXPAT_LIBRARIES})
++
++	if (OPENSSL_FOUND)
++		set_property (TARGET search APPEND PROPERTY COMPILE_DEFINITIONS "HAVE_OPENSSL")
++		set_property (TARGET search APPEND PROPERTY INCLUDE_DIRECTORIES ${OPENSSL_INCLUDE_DIR})
++		target_link_libraries (search ${OPENSSL_LIBRARIES})
++	endif ()
++endif ()
+diff --git a/test/manual/Makefile.am b/test/manual/Makefile.am
+index 078f3f1..fcd9aa4 100644
+--- a/test/manual/Makefile.am
++++ b/test/manual/Makefile.am
+@@ -1,5 +1,6 @@
+ check_PROGRAMS = client userlist $(OPTIONAL_TESTS_SEARCH) $(OPTIONAL_TESTS_VOICE7) $(OPTIONAL_TESTS_MANUAL_GLIBC)
+ EXTRA_PROGRAMS = client userlist search voice7 dcc7
++EXTRA_DIST = CMakeLists.txt
+ 
+ CFLAGS = -DGG_IGNORE_DEPRECATED
+ AM_LDFLAGS = -no-install
