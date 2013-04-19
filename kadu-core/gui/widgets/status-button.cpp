@@ -177,7 +177,7 @@ QString StatusButton::prepareDescription(const QString &description) const
 	QString colorString = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
 
 	QString html = Qt::escape(description);
-	html.replace('\n', QString::fromUtf8("<span style='color:%1;'> \u21B5</span><br />").arg(colorString));
+	html.replace('\n', QString(QLatin1String("<span style='color:%1;'> ") + QChar(0x21B5) + QLatin1String("</span><br />")).arg(colorString));
 
 	return html;
 }
