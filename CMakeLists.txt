@@ -42,17 +42,10 @@ if (GIT_FOUND)
 endif ()
 
 if (WIN32)
-	# Add more version info to files
 	string (REGEX REPLACE "([^\\.]+)\\.([^\\.]+)\\.([^\\.-]+)[\\.-].*" "\\1, \\2, \\3, 0" KADU_NUMERIC_VERSION ${KADU_VERSION})
-	set (PACKAGE_VERSION ${KADU_VERSION})
 	if (KADU_VERSION MATCHES ".*-.*")
 		set (KADU_PRERELEASE 1)
 	endif ()
-
-	# package
-	set (CPACK_GENERATOR "ZIP")
-	set (CPACK_PACKAGE_VERSION ${PACKAGE_VERSION})
-	include (CPack)
 endif ()
 
 if (NOT WIN32)
