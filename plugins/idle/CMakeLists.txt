@@ -1,8 +1,7 @@
 project (idle)
 
-set (KADU_FIND_REQUIRED true)
 set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/idle
 	.

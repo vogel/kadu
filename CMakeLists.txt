@@ -1,9 +1,16 @@
 project (kadu)
 
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+list (INSERT CMAKE_PREFIX_PATH 0 "${CMAKE_CURRENT_BINARY_DIR}")
 
 set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+
+# For the build tree.
+configure_file (cmake/KaduConfig.cmake.in "${CMAKE_CURRENT_BINARY_DIR}/KaduConfig.cmake" @ONLY)
+# For the installation tree.
+configure_file (cmake/KaduConfig.cmake.in "${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" @ONLY)
+
+find_package (Kadu REQUIRED)
 
 option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 
@@ -70,7 +77,10 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h)
 
 if (INSTALL_SDK)
-	install (FILES cmake/FindKadu.cmake DESTINATION ${KADU_CMAKE_MODULES_DIR})
+	install (FILES
+		"${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
+		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
+	)
 	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_SDK_DIR})
 endif ()
 

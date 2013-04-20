@@ -1,7 +1,6 @@
 project (profiles_import)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	gui/windows/import-profile-window.cpp

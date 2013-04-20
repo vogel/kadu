@@ -1,7 +1,6 @@
 project (indicator_docking)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 include (FindPkgConfig)
 
 set (SOURCES

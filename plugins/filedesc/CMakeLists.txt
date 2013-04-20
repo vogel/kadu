@@ -1,7 +1,6 @@
 project (filedesc)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	filedesc-plugin.cpp

@@ -1,7 +1,6 @@
 project (word_fix)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	word-fix.cpp

@@ -1,7 +1,6 @@
 project (auto_hide)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	auto_hide.cpp

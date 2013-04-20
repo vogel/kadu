@@ -1,7 +1,6 @@
 project (qt4_sound)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	qt4_sound.cpp

@@ -1,7 +1,6 @@
 project (cenzor)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	configuration/gui/cenzor-configuration-ui-handler.cpp

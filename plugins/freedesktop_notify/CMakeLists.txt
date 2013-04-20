@@ -1,8 +1,7 @@
 project (freedesktop_notify)
 
 set (QT_USE_QTDBUS 1)
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	configuration/gui/freedesktop-notify-configuration-ui-handler.cpp

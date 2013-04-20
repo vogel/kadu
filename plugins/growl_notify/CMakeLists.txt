@@ -1,7 +1,6 @@
 project (growl_notify)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	growl-notify.cpp

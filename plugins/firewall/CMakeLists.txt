@@ -1,7 +1,6 @@
 project (firewall)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	firewall-configuration-ui-handler.cpp

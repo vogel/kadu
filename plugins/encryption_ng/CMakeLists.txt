@@ -1,8 +1,7 @@
 project (encryption_ng)
 
-set (KADU_FIND_REQUIRED true)
 set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 include (FindPkgConfig)
 

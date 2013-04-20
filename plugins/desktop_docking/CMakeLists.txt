@@ -1,7 +1,6 @@
 project (desktop_docking)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	configuration/gui/desktop-dock-configuration-ui-handler.cpp

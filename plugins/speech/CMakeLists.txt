@@ -1,7 +1,6 @@
 project (speech)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	speech-configuration-ui-handler.cpp
