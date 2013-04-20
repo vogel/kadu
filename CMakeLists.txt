@@ -14,32 +14,29 @@ find_package (Kadu REQUIRED)
 
 option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 
-if (NOT KADU_VERSION)
-	if (WIN32)
-		set (guessed_paths
-			"C:/Program Files/Git/bin"
-			"C:/Program Files (x86)/Git/bin"
-		)
-	else ()
-		set (guessed_paths)
-	endif ()
-
-	find_program (GIT_EXECUTABLE git
-		PATHS ${guessed_paths}
-		DOC "git command line client"
+if (WIN32)
+	set (guessed_paths
+		"C:/Program Files/Git/bin"
+		"C:/Program Files (x86)/Git/bin"
 	)
-	if (GIT_EXECUTABLE)
-		execute_process (COMMAND ${GIT_EXECUTABLE} describe --tags HEAD
-			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-			OUTPUT_VARIABLE KADU_VERSION
-			OUTPUT_STRIP_TRAILING_WHITESPACE
-		)
-	endif ()
+else ()
+	set (guessed_paths)
+endif ()
 
-	if (NOT KADU_VERSION)
-		file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
-		string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
-	endif ()
+find_program (GIT_EXECUTABLE git
+	PATHS ${guessed_paths}
+	DOC "git command line client"
+)
+if (GIT_EXECUTABLE)
+	execute_process (COMMAND ${GIT_EXECUTABLE} describe --tags HEAD
+		WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+		OUTPUT_VARIABLE KADU_VERSION
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+endif ()
+
+if (NOT KADU_VERSION)
+	file (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" KADU_VERSION LIMIT_COUNT 1)
 endif ()
 
 if (WIN32)
