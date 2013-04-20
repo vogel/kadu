@@ -16,24 +16,13 @@ option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 
 file (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/VERSION" KADU_VERSION LIMIT_COUNT 1)
 
-if (WIN32)
-	set (guessed_paths
-		"C:/Program Files/Git/bin"
-		"C:/Program Files (x86)/Git/bin"
-	)
-else ()
-	set (guessed_paths)
-endif ()
-
-find_program (GIT_EXECUTABLE git
-	PATHS ${guessed_paths}
-	DOC "git command line client"
-)
-if (GIT_EXECUTABLE)
+find_package (Git QUIET)
+if (GIT_FOUND)
 	execute_process (COMMAND "${GIT_EXECUTABLE}" describe --tags --exact-match HEAD
 		WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 		RESULT_VARIABLE result
 		OUTPUT_VARIABLE git_tag
+		ERROR_QUIET
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 	)
 
@@ -42,6 +31,7 @@ if (GIT_EXECUTABLE)
 			WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
 			RESULT_VARIABLE result
 			OUTPUT_VARIABLE git_commit
+			ERROR_QUIET
 			OUTPUT_STRIP_TRAILING_WHITESPACE
 		)
 
