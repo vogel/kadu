@@ -1,5 +1,9 @@
 project (Kadu)
 
+# Options (some of them)
+
+option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
+
 # Global CMake variables
 
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
@@ -144,7 +148,6 @@ write_basic_package_version_file ("${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion
 
 # Include the generated file
 
-set (KADU_INSTALLS_SDK TRUE)
 find_package (Kadu REQUIRED)
 
 option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
@@ -169,7 +172,7 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h)
 
-if (INSTALL_SDK)
+if (KADU_INSTALL_SDK)
 	install (FILES
 		"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
 		"${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"

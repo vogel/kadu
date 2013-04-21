@@ -17,6 +17,8 @@ endif ()
 set (KADU_INCLUDE_DIRS "@PACKAGE_INCLUDE_DIR@")
 set (KADU_SDK_DIR "@PACKAGE_SDK_DIR@")
 
+set (KADU_INSTALL_SDK "@INSTALL_SDK@")
+
 set (_source_macros_file "${CMAKE_SOURCE_DIR}/cmake/KaduMacros.cmake")
 if (EXISTS "${_source_macros_file}")
 	# In build tree.

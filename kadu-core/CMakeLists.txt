@@ -297,7 +297,7 @@ install (TARGETS libkadu kadu
 	RUNTIME DESTINATION ${KADU_INSTALL_BIN_DIR}
 )
 # TODO this WIN32 check is a workaround for an error on Linux
-if (WIN32 AND INSTALL_SDK)
+if (WIN32 AND KADU_INSTALL_SDK)
 	install (TARGETS libkadu ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 endif ()
 

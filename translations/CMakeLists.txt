@@ -10,7 +10,7 @@ install (FILES ${TRANSLATION_FILES} ${LANGAUGE_FILES}
 	DESTINATION "${KADU_INSTALL_DATA_DIR}/translations"
 )
 
-if (INSTALL_SDK)
+if (KADU_INSTALL_SDK)
 	install (PROGRAMS plugintsupdate.sh DESTINATION "${KADU_INSTALL_SDK_DIR}/translations")
 	install (FILES configuration-ui.xsl DESTINATION "${KADU_INSTALL_SDK_DIR}/translations")
 endif ()

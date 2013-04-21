@@ -5,7 +5,6 @@ set (QT_USE_QTXMLPATTERNS 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
 
-set (KADU_INSTALLS_SDK TRUE)
 find_package (Kadu REQUIRED)
 
 include (FindPkgConfig)

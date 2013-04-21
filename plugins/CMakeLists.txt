@@ -27,7 +27,7 @@ if (BUILD_PLUGINS)
 	endforeach ()
 endif ()
 
-if (WIN32 AND INSTALL_SDK)
+if (WIN32 AND KADU_INSTALL_SDK)
 	install (PROGRAMS pluginrcgen.bat DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")
 	install (FILES pluginbase.rc DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")
 endif ()

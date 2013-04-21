@@ -1,6 +1,5 @@
 project (mediaplayer)
 
-set (KADU_INSTALLS_SDK TRUE)
 find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/mediaplayer
