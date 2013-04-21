@@ -36,5 +36,6 @@ if (NOT INDICATORS_DIR)
 endif ()
 
 # Pin Kadu to Messaging Menu
-file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/kadu "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}\n") 
+get_filename_component (desktop_file_path_absolute "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}" ABSOLUTE)
+file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/kadu "${desktop_file_path_absolute}\n")
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/kadu DESTINATION "${INDICATORS_DIR}")

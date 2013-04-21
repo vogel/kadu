@@ -120,86 +120,6 @@ else ()
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
 endif ()
 
-# installation paths
-
-if (NOT WIN32)
-	include (GNUInstallDirs)
-endif ()
-
-if (NOT KADU_BINDIR)
-	if (WIN32)
-		set (KADU_BINDIR ${CMAKE_INSTALL_PREFIX})
-	else ()
-		set (KADU_BINDIR ${CMAKE_INSTALL_FULL_BINDIR})
-	endif ()
-endif ()
-
-if (NOT KADU_LIBDIR)
-	if (WIN32)
-		set (KADU_LIBDIR ${CMAKE_INSTALL_PREFIX})
-	else ()
-		set (KADU_LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR})
-	endif ()
-endif ()
-
-if (NOT KADU_DATADIR)
-	if (WIN32)
-		set (KADU_DATADIR ${CMAKE_INSTALL_PREFIX})
-	else ()
-		set (KADU_DATADIR ${CMAKE_INSTALL_FULL_DATADIR}/kadu)
-	endif ()
-endif ()
-
-if (NOT KADU_PLUGINS_LIBDIR)
-	if (WIN32)
-		set (KADU_PLUGINS_LIBDIR ${CMAKE_INSTALL_PREFIX}/plugins)
-	else ()
-		set (KADU_PLUGINS_LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR}/kadu/plugins)
-	endif ()
-endif ()
-
-if (NOT KADU_PLUGINS_DIR)
-	set (KADU_PLUGINS_DIR "${KADU_DATADIR}/plugins")
-endif ()
-if (NOT KADU_PLUGINS_DIR STREQUAL "${KADU_DATADIR}/plugins")
-	message (WARNING "Custom KADU_PLUGINS_DIR directories are not supported by Kadu source code. If you really need it, please report a feature request to the Kadu project.")
-endif ()
-
-if (NOT KADU_SDK_DIR)
-	set (KADU_SDK_DIR ${CMAKE_INSTALL_PREFIX}/sdk)
-endif ()
-
-if (NOT KADU_INSTALL_INCLUDE_DIR)
-	if (WIN32)
-		set (KADU_INSTALL_INCLUDE_DIR ${KADU_SDK_DIR}/include)
-	else ()
-		set (KADU_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_FULL_INCLUDEDIR}/kadu)
-	endif ()
-endif ()
-
-if (NOT KADU_INSTALL_CMAKE_DIR)
-	if (WIN32)
-		set (KADU_INSTALL_CMAKE_DIR ${KADU_SDK_DIR}/cmake)
-	else ()
-		set (KADU_INSTALL_CMAKE_DIR ${KADU_LIBDIR}/cmake/Kadu)
-	endif ()
-endif ()
-
-if (UNIX AND NOT APPLE)
-	if (NOT KADU_DESKTOP_FILE_DIR)
-		set (KADU_DESKTOP_FILE_DIR ${CMAKE_INSTALL_FULL_DATADIR}/applications)
-	endif ()
-	if (NOT KADU_DESKTOP_FILE_NAME)
-		set (KADU_DESKTOP_FILE_NAME kadu.desktop)
-	endif ()
-endif ()
-
-file (RELATIVE_PATH KADU_DATADIR_RELATIVE_TO_BIN "${KADU_BINDIR}" "${KADU_DATADIR}")
-file (RELATIVE_PATH KADU_PLUGINS_LIBDIR_RELATIVE_TO_BIN "${KADU_BINDIR}" "${KADU_PLUGINS_LIBDIR}")
-if (UNIX AND NOT APPLE)
-	file (RELATIVE_PATH KADU_DESKTOP_FILE_DIR_RELATIVE_TO_BIN "${KADU_BINDIR}" "${KADU_DESKTOP_FILE_DIR}")
-endif ()
-
 macro (kadu_api_directories INCLUDE_DIR)
 	if (NOT KADU_INSTALLS_SDK)
 		message (FATAL_ERROR "kadu_api_directories called but KADU_INSTALLS_SDK is not set")
@@ -215,19 +135,19 @@ endmacro ()
 
 macro (kadu_configuration)
 	install (FILES ${ARGN}
-		DESTINATION ${KADU_DATADIR}/configuration
+		DESTINATION ${KADU_INSTALL_DATA_DIR}/configuration
 	)
 endmacro ()
 
 macro (kadu_plugin_configuration)
 	install (FILES ${ARGN}
-		DESTINATION ${KADU_PLUGINS_DIR}/configuration
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/configuration
 	)
 endmacro ()
 
 macro (kadu_plugin_desc PLUGIN_DESC)
 	install (FILES ${ARGN}
-		DESTINATION ${KADU_PLUGINS_DIR}
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
 	)
 endmacro ()
 
@@ -277,7 +197,7 @@ macro (kadu_plugin)
 	endif ()
 
 	install (FILES ${PLUGIN_NAME}.desc
-		DESTINATION ${KADU_PLUGINS_DIR}
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
 	)
 
 	if (PLUGIN_MOC_SOURCES)
@@ -294,18 +214,18 @@ macro (kadu_plugin)
 	kadu_plugin_configuration (${PLUGIN_CONFIGURATION_FILES})
 
 	install (FILES ${PLUGIN_TRANSLATION_FILES}
-		DESTINATION ${KADU_PLUGINS_DIR}/translations
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
 	)
 
 	if (NOT "${PLUGIN_DATA_FILES}" STREQUAL "")
 		install (FILES ${PLUGIN_DATA_FILES}
-			DESTINATION ${KADU_PLUGINS_DIR}/data/${PLUGIN_NAME}
+			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${PLUGIN_NAME}
 		)
 	endif ()
 
 	if (NOT "${PLUGIN_DATA_DIRECTORY}" STREQUAL "")
 		install (DIRECTORY ${PLUGIN_DATA_DIRECTORY}
-			DESTINATION ${KADU_PLUGINS_DIR}/data/${PLUGIN_NAME}
+			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${PLUGIN_NAME}
 		)
 	endif ()
 
@@ -328,7 +248,7 @@ macro (kadu_plugin)
 		target_link_libraries (${PLUGIN_NAME} libkadu ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
 
 		if (INSTALL_SDK)
-			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib)
+			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 		endif ()
 	endif ()
 
@@ -336,7 +256,7 @@ macro (kadu_plugin)
 		set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif ()
 
-	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_PLUGINS_LIBDIR} LIBRARY DESTINATION ${KADU_PLUGINS_LIBDIR})
+	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR} LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR})
 
 	if (NOT MSVC)
 		cmake_policy(SET CMP0002 OLD)

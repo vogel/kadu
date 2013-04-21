@@ -108,7 +108,7 @@ public:
 	 *
 	 * Default data path is $CMAKE_INSTALL_FULL_DATADIR/kadu on X11 and
 	 * $CMAKE_INSTALL_PREFIX on Windows. It can be overwritten by
-	 * KADU_DATADIR CMake argument.
+	 * KADU_INSTALL_DATA_DIR CMake argument.
 	 */
 	const QString & dataPath() const { return DataPath; }
 
@@ -124,7 +124,7 @@ public:
 	 *
 	 * Default library path for plugins is $CMAKE_INSTALL_FULL_LIBDIR/kadu/plugins
 	 * on X11 and $CMAKE_INSTALL_PREFIX/plugins on Windows. It can be overwritten by
-	 * KADU_PLUGINS_LIBDIR CMake argument.
+	 * KADU_INSTALL_PLUGINS_LIB_DIR CMake argument.
 	 */ 
 	const QString & pluginsLibPath() const { return PluginsLibPath; }
 

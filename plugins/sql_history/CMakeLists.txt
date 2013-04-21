@@ -45,6 +45,6 @@ kadu_plugin (sql_history
 
 if (NOT WIN32)
 	install (PROGRAMS data/scripts/history-database-recovery.sh
-		DESTINATION ${KADU_PLUGINS_DIR}/data/sql_history/scripts
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/sql_history/scripts
 	)
 endif ()

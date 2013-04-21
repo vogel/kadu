@@ -57,7 +57,7 @@ if (ICON_THEMES)
 	endforeach ()
 
 	install (DIRECTORY ${ICON_THEMES}
-		DESTINATION "${KADU_DATADIR}/themes/icons"
+		DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 		FILES_MATCHING
 		PATTERN "*.gif"
 		PATTERN "*.png"
@@ -68,13 +68,13 @@ if (ICON_THEMES)
 
 	if (TARGET compress_svgs)
 		install (DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/svgzs/"
-			DESTINATION "${KADU_DATADIR}/themes/icons"
+			DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 			FILES_MATCHING
 			PATTERN "*.svgz"
 		)
 	else ()
 		install (DIRECTORY ${ICON_THEMES}
-			DESTINATION "${KADU_DATADIR}/themes/icons"
+			DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 			FILES_MATCHING
 			PATTERN "*.svg"
 			PATTERN "src" EXCLUDE

@@ -288,17 +288,17 @@ set_target_properties (libkadu PROPERTIES
 add_executable (kadu WIN32 ${main_SRCS})
 target_link_libraries (kadu libkadu ${QT_QTMAIN_LIBRARY})
 set_target_properties (kadu PROPERTIES
-	INSTALL_RPATH "${KADU_LIBDIR}"
+	INSTALL_RPATH "${KADU_INSTALL_LIB_DIR}"
 	BUILD_WITH_INSTALL_RPATH TRUE
 )
 
 install (TARGETS libkadu kadu
-	LIBRARY DESTINATION ${KADU_LIBDIR}
-	RUNTIME DESTINATION ${KADU_BINDIR}
+	LIBRARY DESTINATION ${KADU_INSTALL_LIB_DIR}
+	RUNTIME DESTINATION ${KADU_INSTALL_BIN_DIR}
 )
 # TODO this WIN32 check is a workaround for an error on Linux
 if (WIN32 AND INSTALL_SDK)
-	install (TARGETS libkadu ARCHIVE DESTINATION ${KADU_SDK_DIR}/lib)
+	install (TARGETS libkadu ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 endif ()
 
 if (WIN32)
@@ -309,13 +309,13 @@ if (WIN32)
 	target_link_libraries (kadu ws2_32)
 	target_link_libraries (kadu_c libkadu ws2_32)
 
-	install (TARGETS kadu_c DESTINATION ${KADU_BINDIR})
+	install (TARGETS kadu_c DESTINATION ${KADU_INSTALL_BIN_DIR})
 
 	file (WRITE "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "[Paths]\nPlugins = qt-plugins\nTranslations = translations\n")
-	install (FILES "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_BINDIR}")
+	install (FILES "${CMAKE_CURRENT_BINARY_DIR}/qt.conf" "kadu.ico" DESTINATION "${KADU_INSTALL_BIN_DIR}")
 endif ()
 
-install (TARGETS kadu DESTINATION ${KADU_BINDIR})
+install (TARGETS kadu DESTINATION ${KADU_INSTALL_BIN_DIR})
 
 if (UNIX AND NOT APPLE)
 	configure_file (kadu.desktop.in "${CMAKE_CURRENT_BINARY_DIR}/${KADU_DESKTOP_FILE_NAME}")
@@ -331,7 +331,7 @@ if (UNIX AND NOT APPLE)
 	install (FILES hi256-app-kadu.png DESTINATION "${CMAKE_INSTALL_DATADIR}/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif ()
 
-install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_DATADIR}/scripts")
+install (FILES "chat/style-engines/chat-scripts.js" DESTINATION "${KADU_INSTALL_DATA_DIR}/scripts")
 
 # install api headers
 # how to get list: find . -name '*.h' -exec dirname {} +|sort|uniq|sed -e 's|\./||' -e 's|^|\t|'

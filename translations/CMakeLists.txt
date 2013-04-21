@@ -7,10 +7,10 @@ add_custom_target (translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (kadu translations)
 
 install (FILES ${TRANSLATION_FILES} ${LANGAUGE_FILES}
-	DESTINATION "${KADU_DATADIR}/translations"
+	DESTINATION "${KADU_INSTALL_DATA_DIR}/translations"
 )
 
 if (INSTALL_SDK)
-	install (PROGRAMS plugintsupdate.sh DESTINATION "${KADU_SDK_DIR}/translations")
-	install (FILES configuration-ui.xsl DESTINATION "${KADU_SDK_DIR}/translations")
+	install (PROGRAMS plugintsupdate.sh DESTINATION "${KADU_INSTALL_SDK_DIR}/translations")
+	install (FILES configuration-ui.xsl DESTINATION "${KADU_INSTALL_SDK_DIR}/translations")
 endif ()
