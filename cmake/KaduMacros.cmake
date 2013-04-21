@@ -53,11 +53,6 @@ endif ()
 
 add_definitions (-DQT_USE_QSTRINGBUILDER)
 
-if (MINGW)
-	# override cmake bug/feature?
-	set (CMAKE_SHARED_LIBRARY_PREFIX "")
-endif ()
-
 # warnings and other flags
 if (NOT MSVC)
 	if (ENABLE_DEVELOPER_BUILD)
@@ -197,7 +192,7 @@ macro (kadu_plugin)
 		)
 	endif ()
 
-	add_library (${PLUGIN_NAME} SHARED ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
+	add_library (${PLUGIN_NAME} MODULE ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
 	add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
 
 	add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
