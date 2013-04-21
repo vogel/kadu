@@ -23,37 +23,6 @@ endif ()
 find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
 
-if (KADU_INCLUDE_DIR)
-	# Already in cache, be silent
-	set (KADU_FIND_QUIETLY TRUE)
-endif ()
-
-if (NOT KADU_DO_NOT_FIND)
-	find_path (KADU_INCLUDE_DIR
-		kadu-core/kadu-application.h
-		PATHS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../.. ${KADU_SEARCH_DIRS}
-		PATH_SUFFIXES include/kadu sdk/include include
-	)
-
-	find_path (KADU_CURRENT_SDK_DIR
-		translations/plugintsupdate.sh
-		PATHS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../.. ${KADU_SEARCH_DIRS}
-		PATH_SUFFIXES sdk
-	)
-
-	if (KADU_INCLUDE_DIR)
-		if (NOT KADU_FIND_QUIETLY)
-			message (STATUS "Found Kadu headers: ${KADU_INCLUDE_DIR}/kadu")
-		endif ()
-	else ()
-		if (KADU_FIND_REQUIRED)
-			message (FATAL_ERROR "Could not find Kadu development headers")
-		else ()
-			message (STATUS "Could not find Kadu development headers")
-		endif ()
-    endif ()
-endif ()
-
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
 if (KADU_INSTALLS_SDK OR WIN32)
 	option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
@@ -166,8 +135,7 @@ macro (kadu_plugin)
 	set (PLUGIN_LIBRARIES "")
 
 	include_directories (".")
-	include_directories ("${KADU_INCLUDE_DIR}")
-	include_directories ("${KADU_INCLUDE_DIR}/kadu-core")
+	include_directories (${KADU_INCLUDE_DIRS})
 
 	foreach (ARG ${ARGV})
 		if ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")
@@ -183,12 +151,12 @@ macro (kadu_plugin)
 	endforeach ()
 
 	if (WIN32)
-		include_directories ("${KADU_CURRENT_SDK_DIR}" "${KADU_CURRENT_SDK_DIR}/plugins")
-		link_directories ("${KADU_CURRENT_SDK_DIR}/lib")
+		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
+		link_directories ("${KADU_SDK_DIR}/lib")
 
 		list (APPEND PLUGIN_SOURCES ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
-			COMMAND "${KADU_CURRENT_SDK_DIR}/plugins/pluginrcgen.bat"
+			COMMAND "${KADU_SDK_DIR}/plugins/pluginrcgen.bat"
 			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_NAME}.rc
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
@@ -264,7 +232,7 @@ macro (kadu_plugin)
 			add_custom_target (tsupdate)
 		endif ()
 		add_custom_target (${PLUGIN_NAME}-tsupdate
-			"${KADU_CURRENT_SDK_DIR}/translations/plugintsupdate.sh" "${CMAKE_CURRENT_SOURCE_DIR}"
+			"${KADU_SDK_DIR}/translations/plugintsupdate.sh" "${CMAKE_CURRENT_SOURCE_DIR}"
 		)
 		add_dependencies (tsupdate ${PLUGIN_NAME}-tsupdate)
 		cmake_policy(SET CMP0002 NEW)
