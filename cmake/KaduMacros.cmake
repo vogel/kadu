@@ -91,24 +91,6 @@ macro (kadu_api_directories INCLUDE_DIR)
 	endif ()
 endmacro ()
 
-macro (kadu_configuration)
-	install (FILES ${ARGN}
-		DESTINATION ${KADU_INSTALL_DATA_DIR}/configuration
-	)
-endmacro ()
-
-macro (kadu_plugin_configuration)
-	install (FILES ${ARGN}
-		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/configuration
-	)
-endmacro ()
-
-macro (kadu_plugin_desc PLUGIN_DESC)
-	install (FILES ${ARGN}
-		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
-	)
-endmacro ()
-
 macro (kadu_plugin)
 	set (VARIABLE_NAME "PLUGIN_NAME")
 
@@ -168,7 +150,9 @@ macro (kadu_plugin)
 		qt4_add_translation (PLUGIN_TRANSLATION_FILES ${PLUGIN_TRANSLATION_SOURCES})
 	endif ()
 
-	kadu_plugin_configuration (${PLUGIN_CONFIGURATION_FILES})
+	install (FILES ${PLUGIN_CONFIGURATION_FILES}
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/configuration
+	)
 
 	install (FILES ${PLUGIN_TRANSLATION_FILES}
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
