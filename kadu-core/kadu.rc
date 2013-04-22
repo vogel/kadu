@@ -52,7 +52,7 @@ BEGIN
 			VALUE "OriginalFilename", "kadu_c.exe\0"
 # endif
 #else
-			VALUE "OriginalFilename", "kadu_core.dll\0"
+			VALUE "OriginalFilename", "libkadu.dll\0"
 #endif
 			VALUE "URL", "http://www.kadu.im\0"
 			VALUE "ProductName", "Kadu Instant Messenger\0"
