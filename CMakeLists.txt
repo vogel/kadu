@@ -222,17 +222,19 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h)
 
-# kadu-core sets KADU_WITH_LIBINDICATE_QT option which is used by Plugins.cmake
 add_subdirectory (kadu-core)
-include (Plugins.cmake)
-add_subdirectory (plugins)
 add_subdirectory (varia)
 add_subdirectory (translations)
-add_subdirectory (kthxbye)
+
+include (Plugins.cmake)
+add_subdirectory (plugins)
+
 if (BUILD_TESTING)
 	enable_testing ()
 	add_subdirectory (tests)
 endif ()
+
+add_subdirectory (kthxbye)
 
 # Now write KaduConfig for installation.
 kadu_configure_package_config_file (cmake/KaduConfig.cmake.in

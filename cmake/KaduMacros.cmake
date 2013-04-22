@@ -120,17 +120,34 @@ macro (kadu_plugin)
 		qt4_wrap_cpp (PLUGIN_MOC_FILES ${PLUGIN_MOC_SOURCES})
 	endif ()
 
-	file (GLOB PLUGIN_TRANSLATION_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${PLUGIN_NAME}_*.ts")
+	add_library (${PLUGIN_NAME} MODULE ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
+	kadu_set_flags (${PLUGIN_NAME})
+
+	if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
+		file (GLOB PLUGIN_TRANSLATION_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${PLUGIN_NAME}_*.ts")
+	else ()
+		set (PLUGIN_TRANSLATION_SOURCES)
+		foreach (LANGUAGE ${KADU_ENABLED_LANGUAGES})
+			set (file_ "${CMAKE_CURRENT_SOURCE_DIR}/translations/${PLUGIN_NAME}_${LANGUAGE}.ts")
+			if (EXISTS "${file_}")
+				list (APPEND PLUGIN_TRANSLATION_SOURCES "${file_}")
+			endif ()
+		endforeach ()
+	endif ()
+
 	if (PLUGIN_TRANSLATION_SOURCES)
 		qt4_add_translation (PLUGIN_TRANSLATION_FILES ${PLUGIN_TRANSLATION_SOURCES})
+
+		install (FILES ${PLUGIN_TRANSLATION_FILES}
+			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
+		)
+
+		add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
+		add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
 	endif ()
 
 	install (FILES ${PLUGIN_CONFIGURATION_FILES}
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/configuration
-	)
-
-	install (FILES ${PLUGIN_TRANSLATION_FILES}
-		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
 	)
 
 	if (NOT "${PLUGIN_DATA_FILES}" STREQUAL "")
@@ -144,12 +161,6 @@ macro (kadu_plugin)
 			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${PLUGIN_NAME}
 		)
 	endif ()
-
-	add_library (${PLUGIN_NAME} MODULE ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
-	kadu_set_flags (${PLUGIN_NAME})
-	add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
-
-	add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
 
 	set_property (TARGET ${PLUGIN_NAME} PROPERTY LINK_INTERFACE_LIBRARIES "")
 
