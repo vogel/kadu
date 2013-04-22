@@ -191,12 +191,11 @@ macro (kadu_configure_package_config_file _in _out _mode)
 	endif ()
 endmacro ()
 
-# For the build tree.
+# This one is only for usable within the build tree. We want to actually
+# set some variables in there from within the subdirectories, so we generated
+# the intallation version later.
 kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
 	"${CMAKE_CURRENT_BINARY_DIR}/KaduConfig.cmake" BUILD_TREE)
-# For the installation tree.
-kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
-	"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
 
 string (REGEX REPLACE "-.*" "" simple_version ${KADU_VERSION})
 write_basic_package_version_file ("${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
@@ -223,19 +222,6 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h)
 
-if (KADU_INSTALL_SDK)
-	install (FILES
-		"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
-		"${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
-		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
-	)
-	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_INSTALL_SDK_DIR})
-endif ()
-
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
-
-add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
 # kadu-core sets WITH_LIBINDICATE_QT option which is used by Plugins.cmake
 add_subdirectory (kadu-core)
 include (Plugins.cmake)
@@ -247,6 +233,22 @@ if (BUILD_TESTING)
 	enable_testing ()
 	add_subdirectory (tests)
 endif ()
+
+# Now write KaduConfig for installation.
+kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
+	"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
+
+if (KADU_INSTALL_SDK)
+	install (FILES
+		"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
+		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
+	)
+	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_INSTALL_SDK_DIR})
+endif ()
+
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)
+add_custom_target (uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be built:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")

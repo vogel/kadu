@@ -30,10 +30,11 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES)
 	set (KADU_BUILD_TYPE "@CMAKE_BUILD_TYPE@")
 endif ()
 
-set (_source_macros_file "${CMAKE_SOURCE_DIR}/cmake/KaduMacros.cmake")
-if (EXISTS "${_source_macros_file}")
+get_filename_component (_real_current_list_dir "${CMAKE_CURRENT_LIST_DIR}" REALPATH)
+get_filename_component (_real_binary_dir "${CMAKE_BINARY_DIR}" REALPATH)
+if (_real_current_list_dir STREQUAL _real_binary_dir)
 	# In build tree.
-	include ("${_source_macros_file}")
+	include ("${CMAKE_SOURCE_DIR}/cmake/KaduMacros.cmake")
 else ()
 	# In installation tree.
 	include("${CMAKE_CURRENT_LIST_DIR}/KaduMacros.cmake")
