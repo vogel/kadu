@@ -217,10 +217,6 @@ if (NOT WIN32)
 
 		check_function_exists ("backtrace" HAVE_EXECINFO)
 	endif ()
-
-	if (SIG_HANDLING_ENABLED)
-		set (SIG_HANDLING_ENABLED 1)
-	endif ()
 endif ()
 
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})

@@ -13,10 +13,6 @@ else ()
 	message (STATUS "Fast (re)linking disabled")
 endif ()
 
-if (NOT WIN32)
-	option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
-endif ()
-
 if (UNIX AND NOT APPLE)
 	if (NOT DEFINED WITH_LIBINDICATE_QT OR WITH_LIBINDICATE_QT)
 		pkg_search_module (LIBINDICATE_QT indicate-qt)
