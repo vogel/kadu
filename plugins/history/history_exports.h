@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _HISTORY_EXPORTS_H
+#ifndef HISTORY_EXPORTS_H
+#define HISTORY_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define HISTORYAPI KADU_EXPORT
+#ifdef history_EXPORTS
+#define HISTORYAPI Q_DECL_EXPORT
 #else
-#ifdef HISTORY_BUILD
-#define HISTORYAPI KADU_EXPORT
-#else
-#define HISTORYAPI KADU_IMPORT
+#define HISTORYAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _HISTORY_EXPORTS_H
-#endif
+#endif // HISTORY_EXPORTS_H

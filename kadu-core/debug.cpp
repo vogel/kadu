@@ -41,7 +41,7 @@ int debug_mask = -2;
 #include <windows.h>
 #endif
 
-bool KADU_EXPORT showTimesInDebug = false;
+bool KADUAPI showTimesInDebug = false;
 
 void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
 {

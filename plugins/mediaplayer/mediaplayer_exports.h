@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _MEDIAPLAYER_EXPORTS_H
+#ifndef MEDIAPLAYER_EXPORTS_H
+#define MEDIAPLAYER_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define MEDIAPLAYERAPI KADU_EXPORT
+#ifdef mediaplayer_EXPORTS
+#define MEDIAPLAYERAPI Q_DECL_EXPORT
 #else
-#ifdef MEDIAPLAYER_BUILD
-#define MEDIAPLAYERAPI KADU_EXPORT
-#else
-#define MEDIAPLAYERAPI KADU_IMPORT
+#define MEDIAPLAYERAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _MEDIAPLAYER_EXPORTS_H
-#endif
+#endif // MEDIAPLAYER_EXPORTS_H

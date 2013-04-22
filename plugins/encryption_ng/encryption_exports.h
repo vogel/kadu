@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _ENCRYPTION_EXPORTS_H
+#ifndef ENCRYPTION_EXPORTS_H
+#define ENCRYPTION_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define ENCRYPTIONAPI KADU_EXPORT
+#ifdef encryption_ng_EXPORTS
+#define ENCRYPTIONAPI Q_DECL_EXPORT
 #else
-#ifdef ENCRYPTION_BUILD
-#define ENCRYPTIONAPI KADU_EXPORT
-#else
-#define ENCRYPTIONAPI KADU_IMPORT
+#define ENCRYPTIONAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _ENCRYPTION_EXPORTS_H
-#endif
+#endif // ENCRYPTION_EXPORTS_H

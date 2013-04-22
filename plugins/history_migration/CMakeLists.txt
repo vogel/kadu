@@ -38,5 +38,4 @@ kadu_plugin (history_migration
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	# TODO: make it more general, eg. gadu_protocol,history_storage
 	PLUGIN_DEPENDENCIES gadu_protocol sql_history history
-	PLUGIN_BUILDDEF HISTORY_MIGRATION_BUILD
 )
