@@ -30,7 +30,7 @@
 
 int debug_mask = -2;
 
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 
 #include <QtCore/QDebug>
 #include <QtCore/QMutex>

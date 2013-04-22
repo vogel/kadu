@@ -582,7 +582,7 @@ void GaduProtocol::enableSocketNotifiers()
 
 void GaduProtocol::configurationUpdated()
 {
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 	// 8 bits for gadu debug
 	gg_debug_level = debug_mask & 255;
 #endif

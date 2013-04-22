@@ -53,7 +53,7 @@ int GaduProtocolPlugin::init(bool firstLoad)
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 	// 8 bits for gadu debug
 	gg_debug_level = debug_mask & 255;
 #else

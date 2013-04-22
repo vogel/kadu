@@ -60,7 +60,7 @@
 	Wy�wietla komunikat debuguj�cy na konsoli.
 	Sk�adnia jak w printf.
 */
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 #ifdef _MSC_VER
 #define __PRETTY_FUNCTION__ __FUNCTION__
 #define kdebug(format, ...) \
@@ -101,7 +101,7 @@
 /*
 	Funkcja pomocnicza. Nie u�ywa�.
 */
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...)
 #ifndef _MSC_VER
  __attribute__((format (printf, 4, 5)))

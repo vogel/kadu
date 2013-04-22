@@ -24,7 +24,7 @@ endif ()
 # Warnings and other flags
 
 set (DEFINITIONS QT_USE_QSTRINGBUILDER)
-set (DEFINITIONS_DEBUG DEBUG_ENABLED)
+set (DEFINITIONS_DEBUG DEBUG_ENABLED DEBUG_OUTPUT_ENABLED)
 
 if (MSVC)
 	set (COMMON_COMPILE_FLAGS "/MP /Zc:wchar_t-")
@@ -53,13 +53,17 @@ else ()
 	endif ()
 endif ()
 
-if (ENABLE_DEVELOPER_BUILD OR WIN32)
+# Look above, DEBUG_ENABLED is always enabled in Debug configuration.
+# Enable it in all configurations when ENABLE_DEVELOPER_BUILD is on.
+if (ENABLE_DEVELOPER_BUILD)
 	list (APPEND DEFINITIONS DEBUG_ENABLED)
 endif ()
 
-if (MINGW)
-	# For *.rc files
-	list (APPEND DEFINITIONS_DEBUG _DEBUG)
+# The same notes as DEBUG_ENABLED concern also DEBUG_OUTPUT_ENABLED.
+# Additionally, Windows needs DEBUG_OUTPUT_ENABLED because we always
+# install kadu_c.exe with console output.
+if (ENABLE_DEVELOPER_BUILD OR WIN32)
+	list (APPEND DEFINITIONS DEBUG_OUTPUT_ENABLED)
 endif ()
 
 # Version information
