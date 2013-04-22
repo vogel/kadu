@@ -250,7 +250,9 @@ endif ()
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be built:")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
-message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+if (NOT DEFINED CMAKE_CONFIGURATION_TYPES)
+	message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
+endif ()
 
 install (FILES AUTHORS AUTHORS.html HISTORY README THANKS ChangeLog ChangeLog.OLD-PL DESTINATION "${KADU_INSTALL_DATA_DIR}")
 # For Win32 we use GPL3, and this COPYING is GPL2
