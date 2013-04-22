@@ -222,7 +222,7 @@ include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CUR
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h)
 
-# kadu-core sets WITH_LIBINDICATE_QT option which is used by Plugins.cmake
+# kadu-core sets KADU_WITH_LIBINDICATE_QT option which is used by Plugins.cmake
 add_subdirectory (kadu-core)
 include (Plugins.cmake)
 add_subdirectory (plugins)
