@@ -226,9 +226,10 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			${SRCS}
 			${${SUBDIR}_MOC_FILES}
 		)
-		set_target_properties (${SUBDIR} PROPERTIES COMPILE_DEFINITIONS KADULIB)
+		kadu_set_flags (${SUBDIR})
+		set_property (TARGET ${SUBDIR} APPEND PROPERTY COMPILE_DEFINITIONS KADULIB)
 		if (NOT WIN32)
-			set_target_properties (${SUBDIR} PROPERTIES COMPILE_FLAGS -fPIC)
+			set_property (TARGET ${SUBDIR} APPEND_STRING PROPERTY COMPILE_FLAGS " -fPIC")
 		endif ()
 	else ()
 		set (tmp "")
@@ -276,16 +277,16 @@ if (NOT FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
 add_library (libkadu SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
+kadu_set_flags (libkadu)
 if (FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
 target_link_libraries (libkadu ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
-set_target_properties (libkadu PROPERTIES
-	COMPILE_DEFINITIONS KADULIB
-	PREFIX ""
-)
+set_property (TARGET libkadu APPEND PROPERTY COMPILE_DEFINITIONS KADULIB)
+set_property (TARGET libkadu PROPERTY PREFIX "")
 
 add_executable (kadu WIN32 ${main_SRCS})
+kadu_set_flags (kadu)
 target_link_libraries (kadu libkadu ${QT_QTMAIN_LIBRARY})
 set_target_properties (kadu PROPERTIES
 	INSTALL_RPATH "${KADU_INSTALL_LIB_DIR}"
@@ -303,8 +304,9 @@ endif ()
 
 if (WIN32)
 	add_executable (kadu_c ${main_SRCS})
+	kadu_set_flags (kadu_c)
 
-	set_target_properties (kadu_c PROPERTIES COMPILE_DEFINITIONS KADU_CONSOLE)
+	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
 
 	target_link_libraries (kadu ws2_32)
 	target_link_libraries (kadu_c libkadu ws2_32)

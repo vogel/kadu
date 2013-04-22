@@ -19,7 +19,7 @@ set (MOC_SOURCES
 if (APPLE)
 	list (APPEND SOURCES mac_docking_helper.cpp)
 	list (APPEND MOC_SOURCES mac_docking_helper.h)
-	SET_SOURCE_FILES_PROPERTIES(mac_docking_helper.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
+	set_source_files_properties (SOURCE mac_docking_helper.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -x objective-c++")
 endif ()
 
 set (CONFIGURATION_FILES

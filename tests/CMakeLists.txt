@@ -17,6 +17,7 @@ macro (kadu_add_test name_)
 	file (MAKE_DIRECTORY "${exeDir}")
 
 	add_executable (${name_} ${ARGN})
+	kadu_set_flags (${name_})
 	add_test ("${sourcePath}/${name_}" ${name_})
 
 	if ("${sourcePath}" MATCHES "^[^/]+/plugins/.*")

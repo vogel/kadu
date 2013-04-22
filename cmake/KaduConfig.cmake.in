@@ -19,6 +19,17 @@ set (KADU_SDK_DIR "@PACKAGE_SDK_DIR@")
 
 set (KADU_INSTALL_SDK "@INSTALL_SDK@")
 
+set (KADU_C_FLAGS "@C_FLAGS@")
+set (KADU_CXX_FLAGS "@CXX_FLAGS@")
+set (KADU_COMPILE_FLAGS "@COMMON_COMPILE_FLAGS@")
+set (KADU_LINK_FLAGS "@LINK_FLAGS@")
+set (KADU_DEFINITIONS "@DEFINITIONS@")
+set (KADU_DEFINITIONS_DEBUG "@DEFINITIONS_DEBUG@")
+
+if (NOT DEFINED CMAKE_CONFIGURATION_TYPES)
+	set (KADU_BUILD_TYPE "@CMAKE_BUILD_TYPE@")
+endif ()
+
 set (_source_macros_file "${CMAKE_SOURCE_DIR}/cmake/KaduMacros.cmake")
 if (EXISTS "${_source_macros_file}")
 	# In build tree.

@@ -23,56 +23,43 @@ endif ()
 find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
 
-option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
-
-if (NOT MSVC AND NOT XCODE_VERSION AND NOT CMAKE_BUILD_TYPE)
-	if (ENABLE_DEVELOPER_BUILD)
-		set (CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
-	else ()
-		set (CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
-	endif ()
+# Set default build type
+if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+	set (CMAKE_BUILD_TYPE "${KADU_BUILD_TYPE}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug" OR ENABLE_DEVELOPER_BUILD OR WIN32)
-	add_definitions (-DDEBUG_ENABLED)
-endif ()
-
-if (MINGW AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-	add_definitions (-D_DEBUG)
-endif ()
-
-add_definitions (-DQT_USE_QSTRINGBUILDER)
-
-# warnings and other flags
-if (NOT MSVC)
-	if (ENABLE_DEVELOPER_BUILD)
-		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-			# -fcatch-undefined-behavior generates trap on every undefined behavior by C/C++
-			set (CMAKE_C_FLAGS "-fcatch-undefined-behavior ${CMAKE_C_FLAGS}")
-			set (CMAKE_CXX_FLAGS "-fcatch-undefined-behavior ${CMAKE_CXX_FLAGS}")
-		endif ()
-
-		# -pipe can speed up the build
-		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
-		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
-		set (CMAKE_C_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_C_FLAGS}")
-		set (CMAKE_CXX_FLAGS "-Werror -pipe -ftrapv -fno-omit-frame-pointer ${CMAKE_CXX_FLAGS}")
-
-		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
-			# -z now check there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
-			set (CMAKE_SHARED_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_SHARED_LINKER_FLAGS}")
-			set (CMAKE_MODULE_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_MODULE_LINKER_FLAGS}")
-			set (CMAKE_EXE_LINKER_FLAGS "-Wl,-z,now -Wl,--fatal-warnings ${CMAKE_EXE_LINKER_FLAGS}")
-		endif ()
+# To be used on each target
+macro (kadu_set_flags _target)
+	if (NOT TARGET ${_target})
+		message (FATAL_ERROR "kadu_use called with non-existning target as parameter")
 	endif ()
 
-	set (CMAKE_C_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -Wwrite-strings -fno-common ${CMAKE_C_FLAGS}")
-	set (CMAKE_CXX_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -Woverloaded-virtual -Wnon-virtual-dtor -fno-common -fno-exceptions -DQT_NO_EXCEPTIONS ${CMAKE_CXX_FLAGS}")
-else ()
-	set (CMAKE_C_FLAGS "/MP /Zc:wchar_t- ${CMAKE_C_FLAGS}")
-	set (CMAKE_CXX_FLAGS "/MP /Zc:wchar_t- ${CMAKE_CXX_FLAGS}")
-	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
-endif ()
+	set_property (TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS ${KADU_DEFINITIONS})
+	set_property (TARGET ${_target} APPEND PROPERTY COMPILE_DEFINITIONS_DEBUG ${KADU_DEFINITIONS_DEBUG})
+
+	if (KADU_COMPILE_FLAGS)
+		set_property (TARGET ${_target} APPEND_STRING PROPERTY COMPILE_FLAGS " ${KADU_COMPILE_FLAGS}")
+	endif ()
+
+	if (KADU_LINK_FLAGS)
+		set_property (TARGET ${_target} APPEND_STRING PROPERTY LINK_FLAGS " ${KADU_LINK_FLAGS}")
+	endif ()
+
+	get_target_property (_sources ${_target} SOURCES)
+	if (KADU_C_FLAGS OR KADU_CXX_FLAGS)
+		# If all sources are CXX, we could simply set flags on whole target,
+		# not on individual source files. This would greatly simplify the underlying
+		# build system rules, but is probably not necessary.
+		foreach (_source ${_sources})
+			get_source_file_property (_lang ${_source} LANGUAGE)
+			if (KADU_C_FLAGS AND _lang STREQUAL "C")
+				set_property (SOURCE ${_source} APPEND_STRING PROPERTY COMPILE_FLAGS " ${KADU_C_FLAGS}")
+			elseif (KADU_CXX_FLAGS AND _lang STREQUAL "CXX")
+				set_property (SOURCE ${_source} APPEND_STRING PROPERTY COMPILE_FLAGS " ${KADU_CXX_FLAGS}")
+			endif ()
+		endforeach ()
+	endif ()
+endmacro ()
 
 macro (kadu_api_directories INCLUDE_DIR)
 	if (KADU_INSTALL_SDK)
@@ -163,14 +150,15 @@ macro (kadu_plugin)
 	endif ()
 
 	add_library (${PLUGIN_NAME} MODULE ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
+	kadu_set_flags (${PLUGIN_NAME})
 	add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
 
 	add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
 
-	set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_INTERFACE_LIBRARIES "")
+	set_property (TARGET ${PLUGIN_NAME} PROPERTY LINK_INTERFACE_LIBRARIES "")
 
 	if (NOT ${PLUGIN_BUILDDEF} STREQUAL "")
-		set_target_properties (${PLUGIN_NAME} PROPERTIES COMPILE_DEFINITIONS ${PLUGIN_BUILDDEF})
+		set_property (TARGET ${PLUGIN_NAME} APPEND PROPERTY COMPILE_DEFINITIONS ${PLUGIN_BUILDDEF})
 	endif ()
 
 	if (NOT "${PLUGIN_LIBRARIES}" STREQUAL "")
@@ -186,7 +174,7 @@ macro (kadu_plugin)
 	endif ()
 
 	if (APPLE)
-		set_target_properties (${PLUGIN_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+		set_property (TARGET ${PLUGIN_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
 	endif ()
 
 	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR} LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR})

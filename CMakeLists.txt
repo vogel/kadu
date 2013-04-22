@@ -2,12 +2,65 @@ project (Kadu)
 
 # Options (some of them)
 
+option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)
 option (INSTALL_SDK "Install SDK (API headers, CMake modules, MSVC program libraries)" ON)
+option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 
 # Global CMake variables
 
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 list (INSERT CMAKE_PREFIX_PATH 0 "${CMAKE_CURRENT_BINARY_DIR}")
+
+if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+	if (ENABLE_DEVELOPER_BUILD)
+		set (default Debug)
+	else ()
+		set (default RelWithDebInfo)
+	endif ()
+
+	set (CMAKE_BUILD_TYPE "${default}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+endif ()
+
+# Warnings and other flags
+
+set (DEFINITIONS QT_USE_QSTRINGBUILDER)
+set (DEFINITIONS_DEBUG DEBUG_ENABLED)
+
+if (MSVC)
+	set (COMMON_COMPILE_FLAGS "/MP /Zc:wchar_t-")
+	list (APPEND DEFINITIONS _CRT_SECURE_NO_WARNINGS=1)
+else ()
+	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -fno-common")
+	set (C_FLAGS "-Wwrite-strings")
+	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -fno-exceptions")
+	list (APPEND DEFINITIONS QT_NO_EXCEPTIONS)
+
+	if (ENABLE_DEVELOPER_BUILD)
+		# -pipe can speed up the build
+		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
+		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -pipe -ftrapv -fno-omit-frame-pointer")
+
+		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+			# -fcatch-undefined-behavior generates trap on every undefined behavior by C/C++
+			set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fcatch-undefined-behavior" )
+		endif ()
+
+		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
+			# -z now checks there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
+			set (LINK_FLAGS "-Wl,-z,now -Wl,--fatal-warnings")
+		endif ()
+	endif ()
+endif ()
+
+if (ENABLE_DEVELOPER_BUILD OR WIN32)
+	list (APPEND DEFINITIONS DEBUG_ENABLED)
+endif ()
+
+if (MINGW)
+	# For *.rc files
+	list (APPEND DEFINITIONS_DEBUG _DEBUG)
+endif ()
 
 # Version information
 
@@ -149,8 +202,6 @@ write_basic_package_version_file ("${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion
 # Include the generated file
 
 find_package (Kadu REQUIRED)
-
-option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 
 if (NOT WIN32)
 	include (CheckIncludeFiles)
