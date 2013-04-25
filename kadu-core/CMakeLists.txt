@@ -360,6 +360,7 @@ kadu_api_directories (kadu-core
 	gui
 	gui/actions
 	gui/actions/chat
+	gui/menu
 	gui/model
 	gui/widgets
 	gui/widgets/configuration

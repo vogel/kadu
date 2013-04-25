@@ -188,7 +188,7 @@ macro (kadu_configure_package_config_file _in _out _mode)
 			set (PACKAGE_${path_var} "${${path_var}}")
 		endforeach ()
 
-		set (PACKAGE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}")
+		set (PACKAGE_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/kadu-core")
 		set (PACKAGE_SDK_DIR "${CMAKE_SOURCE_DIR}")
 
 		configure_package_config_file ("${_in}" "${_out}"
@@ -196,7 +196,7 @@ macro (kadu_configure_package_config_file _in _out _mode)
 			NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO
 		)
 	elseif ("${_mode}" STREQUAL INSTALL_TREE)
-		set (INCLUDE_DIR "${INSTALL_INCLUDE_DIR}")
+		set (INCLUDE_DIR "${INSTALL_INCLUDE_DIR}/kadu-core")
 		set (SDK_DIR "${INSTALL_SDK_DIR}")
 
 		configure_package_config_file ("${_in}" "${_out}"
@@ -259,6 +259,7 @@ if (KADU_INSTALL_SDK)
 	install (FILES
 		"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
 		"${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
+		cmake/KaduMacros.cmake
 		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
 	)
 	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_INSTALL_SDK_DIR})
