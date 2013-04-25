@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _GADU_EXPORTS_H
+#ifndef GADU_EXPORTS_H
+#define GADU_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define GADUAPI KADU_EXPORT
+#ifdef gadu_protocol_EXPORTS
+#define GADUAPI Q_DECL_EXPORT
 #else
-#ifdef GADU_BUILD
-#define GADUAPI KADU_EXPORT
-#else
-#define GADUAPI KADU_IMPORT
+#define GADUAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _GADU_EXPORTS_H
-#endif
+#endif // GADU_EXPORTS_H

@@ -1,7 +1,6 @@
 project (mprisplayer_mediaplayer)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	gui/windows/mpris-player-dialog.cpp

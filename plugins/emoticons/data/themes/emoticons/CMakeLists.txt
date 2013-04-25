@@ -14,7 +14,7 @@ if (EMOTICON_THEMES)
 	endforeach ()
 
 	install (DIRECTORY ${EMOTICON_THEMES}
-		DESTINATION "${KADU_DATADIR}/themes/emoticons"
+		DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/emoticons"
 		FILES_MATCHING
 		PATTERN "*.png"
 		PATTERN "*.gif"

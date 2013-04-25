@@ -1,7 +1,6 @@
 project (indicator_docking)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 include (FindPkgConfig)
 
 set (SOURCES
@@ -14,8 +13,8 @@ set (MOC_SOURCES
 	indicator_docking-plugin.h
 )
 
-if (NOT WITH_LIBINDICATE_QT)
-	message (SEND_ERROR "You need to compile core with -DWITH_LIBINDICATE_QT=ON. Aborting. If you are compiling outside of Kadu core sources, make sure it is compiled with libindicate-qt support and redefine the required macro here.")
+if (NOT KADU_WITH_LIBINDICATE_QT)
+	message (FATAL_ERROR "You need to compile core with libindicate support (-DWITH_LIBINDICATE_QT=ON)")
 endif ()
 
 pkg_search_module (LIBINDICATE_QT REQUIRED indicate-qt)
@@ -37,5 +36,6 @@ if (NOT INDICATORS_DIR)
 endif ()
 
 # Pin Kadu to Messaging Menu
-file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/kadu "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}\n") 
+get_filename_component (desktop_file_path_absolute "${KADU_DESKTOP_FILE_DIR}/${KADU_DESKTOP_FILE_NAME}" ABSOLUTE)
+file (WRITE ${CMAKE_CURRENT_BINARY_DIR}/kadu "${desktop_file_path_absolute}\n")
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/kadu DESTINATION "${INDICATORS_DIR}")

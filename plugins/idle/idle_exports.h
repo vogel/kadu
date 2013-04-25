@@ -7,20 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _IDLE_EXPORTS_H
+#ifndef IDLE_EXPORTS_H
+#define IDLE_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define IDLEAPI KADU_EXPORT
+#ifdef idle_EXPORTS
+#define IDLEAPI Q_DECL_EXPORT
 #else
-#ifdef IDLE_BUILD
-#define IDLEAPI KADU_EXPORT
-#else
-#define IDLEAPI KADU_IMPORT
-#endif
-#endif // KADULIB
-
-#define _IDLE_EXPORTS_H
+#define IDLEAPI Q_DECL_IMPORT
 #endif
 
+#endif // IDLE_EXPORTS_H

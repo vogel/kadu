@@ -1,7 +1,6 @@
 project (config_wizard)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	gui/widgets/config-wizard-choose-network-page.cpp

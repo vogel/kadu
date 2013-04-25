@@ -176,7 +176,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 
 	widget()->appendUiFile(KaduPaths::instance()->dataPath() + QLatin1String("configuration/dialog.ui"));
 
-#if !defined(DEBUG_ENABLED) || defined(Q_OS_WIN)
+#ifndef DEBUG_ENABLED
 	widget()->widgetById("debug")->hide();
 #endif
 

@@ -353,9 +353,7 @@ set (gui_MOC_SRCS
 )
 
 if (MINGW)
-	set_source_files_properties (windows/open-chat-with/open-chat-with.cpp PROPERTIES
-		COMPILE_FLAGS "-fno-strict-aliasing"
-	)
+	set_property (SOURCE windows/open-chat-with/open-chat-with.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -fno-strict-aliasing")
 endif ()
 
 kadu_subdirectory (gui "${gui_SRCS}" "${gui_MOC_SRCS}" "")

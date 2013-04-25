@@ -13,7 +13,7 @@ if (SOUND_THEMES)
 	endforeach ()
 
 	install (DIRECTORY ${SOUND_THEMES}
-		DESTINATION "${KADU_DATADIR}/themes/sounds"
+		DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/sounds"
 		FILES_MATCHING
 		PATTERN "*.wav"
 		PATTERN "sound.conf"

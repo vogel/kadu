@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _HISTORY_MIGRATION_EXPORTS_H
+#ifndef HISTORY_MIGRATION_EXPORTS_H
+#define HISTORY_MIGRATION_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define HISTORY_MIGRATION_API KADU_EXPORT
+#ifdef history_migration_EXPORTS
+#define HISTORY_MIGRATION_API Q_DECL_EXPORT
 #else
-#ifdef HISTORY_MIGRATION_BUILD
-#define HISTORY_MIGRATION_API KADU_EXPORT
-#else
-#define HISTORY_MIGRATION_API KADU_IMPORT
+#define HISTORY_MIGRATION_API Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _HISTORY_MIGRATION_EXPORTS_H
-#endif
+#endif // HISTORY_MIGRATION_EXPORTS_H

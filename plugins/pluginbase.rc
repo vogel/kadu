@@ -1,6 +1,6 @@
 #include <winver.h>
 
-#ifndef _DEBUG
+#ifndef DEBUG_ENABLED
 # define VER_DEBUG 0
 #else
 # define VER_DEBUG VS_FF_DEBUG

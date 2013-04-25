@@ -131,7 +131,7 @@ static void kaduQtMessageHandler(QtMsgType type, const char *msg)
 }
 #endif // Q_WS_WIN
 
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 extern KADUAPI bool showTimesInDebug;
 #endif
 
@@ -333,7 +333,7 @@ int main(int argc, char *argv[])
 	}
 	config_file_ptr = new ConfigFile(KaduPaths::instance()->profilePath() + QLatin1String("kadu.conf"));
 
-#ifdef DEBUG_ENABLED
+#ifdef DEBUG_OUTPUT_ENABLED
 	showTimesInDebug = (0 != qgetenv("SHOW_TIMES").toInt());
 #endif
 

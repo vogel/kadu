@@ -1,8 +1,6 @@
 project (mediaplayer)
 
-set (KADU_FIND_REQUIRED true)
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/mediaplayer
 	.
@@ -40,5 +38,4 @@ kadu_plugin (mediaplayer
 	PLUGIN_DEPENDENCIES docking
 	PLUGIN_LIBRARIES ${DBUS_LIBS}
 	PLUGIN_DATA_FILES ${DATA_FILES}
-	PLUGIN_BUILDDEF MEDIAPLAYER_BUILD
 )

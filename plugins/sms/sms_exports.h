@@ -19,19 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _SMS_EXPORTS_H
+#ifndef SMS_EXPORTS_H
+#define SMS_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define SMSAPI KADU_EXPORT
+#ifdef sms_EXPORTS
+#define SMSAPI Q_DECL_EXPORT
 #else
-#ifdef SMS_BUILD
-#define SMSAPI KADU_EXPORT
-#else
-#define SMSAPI KADU_IMPORT
+#define SMSAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _SMS_EXPORTS_H
-#endif
+#endif // SMS_EXPORTS_H

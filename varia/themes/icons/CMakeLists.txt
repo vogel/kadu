@@ -27,20 +27,8 @@ if (ICON_THEMES)
 		endforeach ()
 
 		if (inFiles)
-			if (WIN32)
-				set (guessed_paths
-					"C:/Program Files/Git/bin"
-					"C:/Program Files (x86)/Git/bin"
-					"C:/Program Files/GnuWin32/bin"
-					"C:/Program Files (x86)/GnuWin32/bin"
-				)
-			endif ()
-
-			find_program (GZIP_EXECUTABLE gzip
-				PATHS ${guessed_paths}
-				DOC "gzip command line utility"
-			)
-			if (NOT GZIP_EXECUTABLE)
+			find_package (Gzip QUIET)
+			if (NOT GZIP_FOUND)
 				message (STATUS "Could not compress SVG files: gzip not found")
 			else ()
 				foreach (inFile ${inFiles})
@@ -69,7 +57,7 @@ if (ICON_THEMES)
 	endforeach ()
 
 	install (DIRECTORY ${ICON_THEMES}
-		DESTINATION "${KADU_DATADIR}/themes/icons"
+		DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 		FILES_MATCHING
 		PATTERN "*.gif"
 		PATTERN "*.png"
@@ -80,13 +68,13 @@ if (ICON_THEMES)
 
 	if (TARGET compress_svgs)
 		install (DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/svgzs/"
-			DESTINATION "${KADU_DATADIR}/themes/icons"
+			DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 			FILES_MATCHING
 			PATTERN "*.svgz"
 		)
 	else ()
 		install (DIRECTORY ${ICON_THEMES}
-			DESTINATION "${KADU_DATADIR}/themes/icons"
+			DESTINATION "${KADU_INSTALL_DATA_DIR}/themes/icons"
 			FILES_MATCHING
 			PATTERN "*.svg"
 			PATTERN "src" EXCLUDE

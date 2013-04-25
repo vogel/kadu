@@ -19,22 +19,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _EXPORTS_H
+#ifndef EXPORTS_H
+#define EXPORTS_H
 
-#ifdef _WIN32
-#define KADU_IMPORT __declspec(dllimport)
-#define KADU_EXPORT __declspec(dllexport)
+#include <QtCore/QtGlobal>
+
+#ifdef libkadu_EXPORTS
+#define KADUAPI Q_DECL_EXPORT
 #else
-#define KADU_IMPORT
-#define KADU_EXPORT
+#define KADUAPI Q_DECL_IMPORT
 #endif
 
-#ifdef KADULIB
-#define KADUAPI KADU_EXPORT
-#else
-#define KADUAPI KADU_IMPORT
-#endif
-
-#else
-#define _EXPORTS_H
-#endif
+#endif // EXPORTS_H

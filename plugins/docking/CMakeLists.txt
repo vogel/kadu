@@ -1,8 +1,6 @@
 project (docking)
 
-set (KADU_FIND_REQUIRED true)
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/docking
 	.
@@ -21,7 +19,7 @@ set (MOC_SOURCES
 if (APPLE)
 	list (APPEND SOURCES mac_docking_helper.cpp)
 	list (APPEND MOC_SOURCES mac_docking_helper.h)
-	SET_SOURCE_FILES_PROPERTIES(mac_docking_helper.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
+	set_source_files_properties (SOURCE mac_docking_helper.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -x objective-c++")
 endif ()
 
 set (CONFIGURATION_FILES
@@ -32,5 +30,4 @@ kadu_plugin (docking
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	PLUGIN_BUILDDEF DOCKING_BUILD
 )

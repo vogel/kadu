@@ -1,7 +1,6 @@
 project (tabs)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	tabs.cpp

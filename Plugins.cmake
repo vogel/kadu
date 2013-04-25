@@ -128,14 +128,14 @@ if (UNIX AND NOT APPLE)
 		mpd_mediaplayer
 	)
 
-	if (WITH_LIBINDICATE_QT)
+	if (KADU_WITH_LIBINDICATE_QT)
 		list (APPEND DEFAULT_PLUGINS
 
 		# docking
 			# Indicator docking support
 			indicator_docking
 		)
-	endif (WITH_LIBINDICATE_QT)
+	endif ()
 endif (UNIX AND NOT APPLE)
 
 if (APPLE)

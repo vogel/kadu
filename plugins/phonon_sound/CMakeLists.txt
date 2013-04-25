@@ -1,7 +1,6 @@
 project (phonon_sound)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 include (FindPkgConfig)
 

@@ -1,7 +1,6 @@
 project (single_window)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	single-window.cpp

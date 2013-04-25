@@ -1,8 +1,6 @@
 project (encryption_ng)
 
-set (KADU_FIND_REQUIRED true)
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 include (FindPkgConfig)
 
@@ -81,5 +79,4 @@ kadu_plugin (encryption_ng
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_LIBRARIES ${QCA2_LIBRARIES}
-	PLUGIN_BUILDDEF ENCRYPTION_BUILD
 )

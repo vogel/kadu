@@ -1,8 +1,6 @@
 project (history)
 
-set (KADU_FIND_REQUIRED true)
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/history
 	actions
@@ -81,5 +79,4 @@ kadu_plugin (history
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
-	PLUGIN_BUILDDEF HISTORY_BUILD
 )

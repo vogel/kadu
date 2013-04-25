@@ -1,8 +1,6 @@
 project (idle)
 
-set (KADU_FIND_REQUIRED true)
-set (KADU_INSTALLS_SDK TRUE)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 kadu_api_directories (plugins/idle
 	.
@@ -48,5 +46,4 @@ kadu_plugin (idle
 	PLUGIN_SOURCES ${SOURCES}
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBRARIES}
-	PLUGIN_BUILDDEF IDLE_BUILD
 )

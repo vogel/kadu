@@ -1,7 +1,6 @@
 project (winamp_mediaplayer)
 
-set (KADU_FIND_REQUIRED true)
-include (FindKadu)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	winamp.cpp
@@ -14,9 +13,7 @@ set (MOC_SOURCES
 )
 
 if (MINGW)
-	set_source_files_properties (winamp.cpp PROPERTIES
-		COMPILE_FLAGS -fno-strict-aliasing
-	)
+	set_property (SOURCE winamp.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -fno-strict-aliasing")
 endif ()
 
 kadu_plugin (winamp_mediaplayer

@@ -7,19 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _QT4DOCKAPI_EXPORTS_H
+#ifndef QT4DOCKAPI_EXPORTS_H
+#define QT4DOCKAPI_EXPORTS_H
 
-#include "exports.h"
+#include <QtCore/QtGlobal>
 
-#ifdef KADULIB
-#define QT4DOCKAPI KADU_EXPORT
+#ifdef qt4_docking_EXPORTS
+#define QT4DOCKAPI Q_DECL_EXPORT
 #else
-#ifdef QT4DOCKAPI_BUILD
-#define QT4DOCKAPI KADU_EXPORT
-#else
-#define QT4DOCKAPI KADU_IMPORT
+#define QT4DOCKAPI Q_DECL_IMPORT
 #endif
-#endif // KADULIB
 
-#define _QT4DOCKAPI_EXPORTS_H
-#endif
+#endif // QT4DOCKAPI_EXPORTS_H
