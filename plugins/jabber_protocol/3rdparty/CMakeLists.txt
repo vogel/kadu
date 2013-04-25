@@ -144,9 +144,8 @@ include_directories (
 
 add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
+set_property (TARGET 3rdparty PROPERTY POSITION_INDEPENDENT_CODE TRUE)
+
 if (NOT MSVC)
 	set_property (TARGET 3rdparty APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error")
-endif ()
-if (NOT WIN32)
-	set_property (TARGET 3rdparty APPEND_STRING PROPERTY COMPILE_FLAGS " -fPIC")
 endif ()
