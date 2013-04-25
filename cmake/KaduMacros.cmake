@@ -120,7 +120,7 @@ macro (kadu_plugin)
 		qt4_wrap_cpp (PLUGIN_MOC_FILES ${PLUGIN_MOC_SOURCES})
 	endif ()
 
-	add_library (${PLUGIN_NAME} MODULE ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
+	add_library (${PLUGIN_NAME} SHARED ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
 	kadu_set_flags (${PLUGIN_NAME})
 
 	if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
