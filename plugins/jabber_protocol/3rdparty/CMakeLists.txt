@@ -1,38 +1,6 @@
-# based on qt4_automoc
-macro (kadu_jabber_automoc)
-	QT4_GET_MOC_FLAGS (_moc_INCS)
-
-	set (_matching_FILES)
-	foreach (_current_FILE ${ARGN})
-		get_filename_component (_abs_FILE ${_current_FILE} ABSOLUTE)
-		# if "SKIP_AUTOMOC" is set to true, we will not handle this file here.
-		# This is required to make uic work correctly:
-		# we need to add generated .cpp files to the sources (to compile them),
-		# but we cannot let automoc handle them, as the .cpp files don't exist yet when
-		# cmake is run for the very first time on them -> however the .cpp files might
-		# exist at a later run. at that time we need to skip them, so that we don't add two
-		# different rules for the same moc file
-		get_source_file_property (_skip ${_abs_FILE} SKIP_AUTOMOC)
-
-		if (NOT _skip AND EXISTS ${_abs_FILE})
-			file (READ ${_abs_FILE} _contents)
-
-			get_filename_component (_abs_PATH ${_abs_FILE} PATH)
-
-			string (REGEX MATCHALL "#include +[^ ]+\\.moc[\">]" _match "${_contents}")
-			if (_match)
-				foreach (_current_MOC_INC ${_match})
-					string (REGEX MATCH "[^ <\"]+\\.moc" _current_MOC "${_current_MOC_INC}")
-					get_filename_component (_basename ${_current_MOC} NAME_WE)
-					set (_header ${_abs_FILE})
-					set (_moc ${_abs_PATH}/${_current_MOC})
-					QT4_CREATE_MOC_COMMAND (${_header} ${_moc} "${_moc_INCS}" "")
-					MACRO_ADD_FILE_DEPENDENCIES (${_abs_FILE} ${_moc})
-				endforeach ()
-			endif ()
-		endif ()
-	endforeach ()
-endmacro ()
+set (CMAKE_INCLUDE_CURRENT_DIR ON)
+set (CMAKE_AUTOMOC ON)
+set (CMAKE_AUTOMOC_RELAXED_MODE ON)
 
 set (SOURCES_IRIS
 	libiris/src/xmpp/base/randomnumbergenerator.cpp
@@ -108,20 +76,7 @@ set (SOURCES_IRIS
 	libiris/src/jdns/jdns_sys.c
 	libiris/src/jdns/jdns_mdnsd.c
 	libiris/src/jdns/jdns_packet.c
-)
 
-if (WIN32)
-	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
-else ()
-	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
-endif ()
-
-if (NOT MSVC)
-	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error")
-	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error")
-endif ()
-
-set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/bytestream.h
 	libiris/src/irisnet/noncore/cutestuff/socks.h
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.h
@@ -170,37 +125,10 @@ set (MOC_SOURCES_IRIS
 	libiris/src/irisnet/corelib/objectsession.h
 )
 
-set (MOC_SOURCES2_IRIS
-	libiris/src/jdns/qjdns.cpp
-	libiris/src/irisnet/corelib/addressresolver.cpp
-	libiris/src/irisnet/corelib/jdnsshared.cpp
-	libiris/src/irisnet/corelib/netavailability.cpp
-	libiris/src/irisnet/corelib/netinterface.cpp
-	libiris/src/irisnet/corelib/netnames.cpp
-	libiris/src/irisnet/corelib/netnames_jdns.cpp
-	libiris/src/irisnet/corelib/objectsession.cpp
-	libiris/src/irisnet/noncore/ice176.cpp
-	libiris/src/irisnet/noncore/icecomponent.cpp
-	libiris/src/irisnet/noncore/icelocaltransport.cpp
-	libiris/src/irisnet/noncore/icetransport.cpp
-	libiris/src/irisnet/noncore/iceturntransport.cpp
-	libiris/src/irisnet/noncore/processquit.cpp
-	libiris/src/irisnet/noncore/stunallocate.cpp
-	libiris/src/irisnet/noncore/stunbinding.cpp
-	libiris/src/irisnet/noncore/stuntransaction.cpp
-	libiris/src/irisnet/noncore/stuntypes.cpp
-	libiris/src/irisnet/noncore/turnclient.cpp
-	libiris/src/irisnet/noncore/udpportreserver.cpp
-	libiris/src/irisnet/noncore/cutestuff/bsocket.cpp
-	libiris/src/xmpp/xmpp-core/securestream.cpp
-	libiris/src/xmpp/xmpp-im/s5b.cpp
-	libiris/src/xmpp/xmpp-im/xmpp_features.cpp
-)
-
 if (WIN32)
-	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
+	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_win.cpp)
 else ()
-	list (APPEND MOC_SOURCES2_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
+	list (APPEND SOURCES_IRIS libiris/src/irisnet/corelib/netinterface_unix.cpp)
 endif ()
 
 include_directories (
@@ -214,10 +142,7 @@ include_directories (
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
 )
 
-qt4_wrap_cpp (MOC_SOURCES_FILES ${MOC_SOURCES_IRIS})
-kadu_jabber_automoc (${MOC_SOURCES2_IRIS})
-
-add_library (3rdparty STATIC ${SOURCES_IRIS} ${MOC_SOURCES2_IRIS} ${MOC_SOURCES_FILES})
+add_library (3rdparty STATIC ${SOURCES_IRIS})
 kadu_set_flags (3rdparty)
 if (NOT MSVC)
 	set_property (TARGET 3rdparty APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error")
