@@ -12,6 +12,13 @@
 cmake_minimum_required (VERSION 2.8.9)
 cmake_policy (SET CMP0000 OLD)
 
+set (CMAKE_INSTALL_PREFIX "${KADU_INSTALL_PREFIX}" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
+
+# Set default build type
+if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+	set (CMAKE_BUILD_TYPE "${KADU_BUILD_TYPE}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
+endif ()
+
 # libraries
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
@@ -22,13 +29,6 @@ if (UNIX AND NOT APPLE)
 endif ()
 find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
-
-set (CMAKE_INSTALL_PREFIX "${KADU_INSTALL_PREFIX}" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
-
-# Set default build type
-if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-	set (CMAKE_BUILD_TYPE "${KADU_BUILD_TYPE}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
-endif ()
 
 # To be used on each target
 macro (kadu_set_flags _target)
