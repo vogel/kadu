@@ -164,14 +164,12 @@ macro (kadu_plugin)
 		)
 	endif ()
 
-	set_property (TARGET ${PLUGIN_NAME} PROPERTY LINK_INTERFACE_LIBRARIES "")
-
 	if (NOT "${PLUGIN_LIBRARIES}" STREQUAL "")
-		target_link_libraries (${PLUGIN_NAME} ${PLUGIN_LIBRARIES})
+		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE ${PLUGIN_LIBRARIES})
 	endif ()
 
 	if (WIN32)
-		target_link_libraries (${PLUGIN_NAME} libkadu ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE libkadu ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
 
 		if (KADU_INSTALL_SDK)
 			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)

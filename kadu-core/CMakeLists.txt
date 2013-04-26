@@ -261,9 +261,9 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 
 	if (FAST_LINKING)
 		if (APPLE)
-			target_link_libraries (${CURRENT_TARGET} -Wl,-all_load ${ARGN})
+			target_link_libraries (${CURRENT_TARGET} LINK_PRIVATE -Wl,-all_load ${ARGN})
 		else ()
-			target_link_libraries (${CURRENT_TARGET} -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
+			target_link_libraries (${CURRENT_TARGET} LINK_PRIVATE -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
 		endif ()
 	endif ()
 endmacro ()
@@ -276,12 +276,12 @@ kadu_set_flags (libkadu)
 if (FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
-target_link_libraries (libkadu ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
+target_link_libraries (libkadu LINK_PRIVATE ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 set_property (TARGET libkadu PROPERTY PREFIX "")
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
-target_link_libraries (kadu libkadu ${QT_QTMAIN_LIBRARY})
+target_link_libraries (kadu LINK_PRIVATE libkadu ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY})
 set_target_properties (kadu PROPERTIES
 	INSTALL_RPATH "${KADU_INSTALL_LIB_DIR}"
 	BUILD_WITH_INSTALL_RPATH TRUE
@@ -302,8 +302,8 @@ if (WIN32)
 
 	set_property (TARGET kadu_c APPEND PROPERTY COMPILE_DEFINITIONS KADU_CONSOLE)
 
-	target_link_libraries (kadu ws2_32)
-	target_link_libraries (kadu_c libkadu ws2_32)
+	target_link_libraries (kadu LINK_PRIVATE ws2_32)
+	target_link_libraries (kadu_c LINK_PRIVATE libkadu ${QT_LIBRARIES} ws2_32)
 
 	install (TARGETS kadu_c DESTINATION ${KADU_INSTALL_BIN_DIR})
 

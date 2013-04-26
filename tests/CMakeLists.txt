@@ -31,7 +31,7 @@ function (kadu_add_test name_)
 
 	# Add libkadu after the plugin so that --as-needed won't drop anything
 	# needed by the plugin.
-	target_link_libraries (${name_} ${pluginName} libkadu ${QT_QTTEST_LIBRARY})
+	target_link_libraries (${name_} LINK_PRIVATE ${pluginName} libkadu ${QT_LIBRARIES} ${QT_QTTEST_LIBRARY})
 endfunction ()
 
 add_subdirectory (auto)
