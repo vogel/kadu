@@ -263,6 +263,8 @@ if (KADU_INSTALL_SDK)
 		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
 	)
 	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_INSTALL_SDK_DIR})
+
+	install (EXPORT KaduTargets DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
 endif ()
 
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake IMMEDIATE @ONLY)

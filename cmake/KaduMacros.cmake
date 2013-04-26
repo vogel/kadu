@@ -102,7 +102,6 @@ macro (kadu_plugin)
 
 	if (WIN32)
 		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
-		link_directories ("${KADU_SDK_DIR}/lib")
 
 		list (APPEND PLUGIN_SOURCES ${PLUGIN_NAME}.rc)
 		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
@@ -169,7 +168,7 @@ macro (kadu_plugin)
 	endif ()
 
 	if (WIN32)
-		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE libkadu ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE ${KADU_LIBRARIES} ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
 
 		if (KADU_INSTALL_SDK)
 			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)

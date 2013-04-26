@@ -288,6 +288,7 @@ set_target_properties (kadu PROPERTIES
 )
 
 install (TARGETS libkadu kadu
+	EXPORT KaduTargets
 	LIBRARY DESTINATION ${KADU_INSTALL_LIB_DIR}
 	RUNTIME DESTINATION ${KADU_INSTALL_BIN_DIR}
 )
