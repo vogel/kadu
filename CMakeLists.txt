@@ -59,7 +59,7 @@ else ()
 
 		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
 			# -z now checks there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
-			set (LINK_FLAGS "${LINK_FLAGS} -Wl,-z,now -Wl,--fatal-warnings")
+			set (LINK_FLAGS "${LINK_FLAGS} -Wl,-z,now -Wl,--fatal-warnings -Wl,--as-needed")
 		endif ()
 	endif ()
 endif ()
