@@ -12,7 +12,10 @@
 cmake_minimum_required (VERSION 2.8.9)
 cmake_policy (SET CMP0000 OLD)
 
-set (CMAKE_INSTALL_PREFIX "${KADU_INSTALL_PREFIX}" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
+# Set default install prefix
+if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+	set (CMAKE_INSTALL_PREFIX "${KADU_INSTALL_PREFIX}" CACHE PATH "Install path prefix, prepended onto install directories." FORCE)
+endif ()
 
 # Set default build type
 if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)

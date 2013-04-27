@@ -282,8 +282,13 @@ set_property (TARGET libkadu PROPERTY PREFIX "")
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
 target_link_libraries (kadu LINK_PRIVATE libkadu ${QT_LIBRARIES} ${QT_QTMAIN_LIBRARY})
+if (NOT IS_ABSOLUTE "${KADU_INSTALL_LIB_DIR}")
+	set (install_full_lib_dir "${CMAKE_INSTALL_PREFIX}/${KADU_INSTALL_LIB_DIR}")
+else ()
+	set (install_full_lib_dir "${KADU_INSTALL_LIB_DIR}")
+endif ()
 set_target_properties (kadu PROPERTIES
-	INSTALL_RPATH "${KADU_INSTALL_LIB_DIR}"
+	INSTALL_RPATH "${install_full_lib_dir}"
 	BUILD_WITH_INSTALL_RPATH TRUE
 )
 

@@ -169,11 +169,27 @@ if (UNIX AND NOT APPLE)
 	file (RELATIVE_PATH KADU_DESKTOP_FILE_DIR_RELATIVE_TO_BIN "${INSTALL_BIN_DIR}" "${DESKTOP_FILE_DIR}")
 endif ()
 
-set (path_vars
+set (install_vars
 	INSTALL_SDK_DIR INSTALL_BIN_DIR INSTALL_LIB_DIR INSTALL_DATA_DIR INSTALL_PLUGINS_DATA_DIR
 	INSTALL_PLUGINS_LIB_DIR INSTALL_INCLUDE_DIR INSTALL_CMAKE_DIR
 )
+foreach (install_var ${install_vars})
+	if (NOT DEFINED ${install_var})
+		message (FATAL_ERROR "Variable ${install_var} does not exist")
+	else ()
+		if (IS_ABSOLUTE "${${install_var}}")
+			string (REPLACE "${CMAKE_INSTALL_PREFIX}/" "" RELATIVE_${install_var} "${${install_var}}")
+			if (IS_ABSOLUTE "${RELATIVE_${install_var}}")
+				message (FATAL_ERROR "Internal error, RELATIVE_${install_var} is absolute (${RELATIVE_${install_var}})")
+			endif ()
+		else ()
+			set (RELATIVE_${install_var} "${${install_var}}")
+		endif()
+	endif ()
+endforeach ()
 
+set (INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
+set (path_vars INSTALL_PREFIX)
 if (UNIX AND NOT APPLE)
 	list (APPEND path_vars DESKTOP_FILE_DIR)
 endif ()
@@ -198,10 +214,11 @@ macro (kadu_configure_package_config_file _in _out _mode)
 	elseif ("${_mode}" STREQUAL INSTALL_TREE)
 		set (INCLUDE_DIR "${INSTALL_INCLUDE_DIR}")
 		set (SDK_DIR "${INSTALL_SDK_DIR}")
+		list (APPEND path_vars INCLUDE_DIR SDK_DIR)
 
 		configure_package_config_file ("${_in}" "${_out}"
 			INSTALL_DESTINATION "${INSTALL_CMAKE_DIR}"
-			PATH_VARS ${path_vars} INCLUDE_DIR SDK_DIR
+			PATH_VARS ${path_vars}
 			NO_SET_AND_CHECK_MACRO NO_CHECK_REQUIRED_COMPONENTS_MACRO
 		)
 	endif ()
