@@ -77,3 +77,5 @@ QtSound4Player *qt4_player;
 
 /** @} */
 
+
+#include "moc_qt4_sound.cpp"

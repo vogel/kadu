@@ -21,7 +21,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
@@ -263,3 +262,5 @@ void AccountManager::loaded()
 	foreach (const Account &account, allItems())
 		account.accountContact().setOwnerBuddy(Core::instance()->myself());
 }
+
+#include "moc_account-manager.cpp"

@@ -64,3 +64,5 @@ void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }
+
+#include "moc_protocols-combo-box.cpp"

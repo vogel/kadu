@@ -170,3 +170,5 @@ void FileTransferShared::handlerDestroyed()
 }
 
 KaduShared_PropertyPtrDefCRW(FileTransferShared, Contact, peer, Peer)
+
+#include "moc_file-transfer-shared.cpp"

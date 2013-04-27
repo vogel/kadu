@@ -64,3 +64,5 @@ void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 	Protocol->enableSocketNotifiers();
 	//gg_pubdir50_free(req);
 }
+
+#include "moc_gadu-contact-personal-info-service.cpp"

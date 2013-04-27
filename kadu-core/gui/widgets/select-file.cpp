@@ -122,3 +122,5 @@ void SelectFile::fileEdited()
 	if (LineEdit->isModified())
 		emit fileChanged();
 }
+
+#include "moc_select-file.cpp"

@@ -130,3 +130,5 @@ KaduIcon GaduProtocolFactory::icon()
 {
 	return KaduIcon("protocols/gadu-gadu/gadu-gadu");
 }
+
+#include "moc_gadu-protocol-factory.cpp"

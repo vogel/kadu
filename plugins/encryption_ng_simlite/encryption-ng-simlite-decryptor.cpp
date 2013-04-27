@@ -198,3 +198,5 @@ QByteArray EncryptioNgSimliteDecryptor::decrypt(const QByteArray &data, Chat cha
 
 	return result;
 }
+
+#include "moc_encryption-ng-simlite-decryptor.cpp"

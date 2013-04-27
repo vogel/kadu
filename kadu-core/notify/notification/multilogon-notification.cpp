@@ -100,3 +100,5 @@ void MultilogonNotification::killSession()
 	multilogonService->killSession(Session);
 }
 
+
+#include "moc_multilogon-notification.cpp"

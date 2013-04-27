@@ -55,3 +55,5 @@ AntistringNotification::AntistringNotification(const Chat &chat) :
 AntistringNotification::~AntistringNotification()
 {
 }
+
+#include "moc_antistring-notification.cpp"

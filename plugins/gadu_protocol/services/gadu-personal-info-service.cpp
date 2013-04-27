@@ -114,3 +114,5 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 	Protocol->enableSocketNotifiers();
 	//gg_pubdir50_free(req);
 }
+
+#include "moc_gadu-personal-info-service.cpp"

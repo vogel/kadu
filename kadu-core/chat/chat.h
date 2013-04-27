@@ -148,7 +148,4 @@ public:
 
 Q_DECLARE_METATYPE(Chat)
 
-// for MOC
-#include "buddies/group.h"
-
 #endif // CHAT_H

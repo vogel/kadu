@@ -34,3 +34,5 @@ EventListener::~EventListener()
 {
 }
 
+
+#include "moc_event-listener.cpp"

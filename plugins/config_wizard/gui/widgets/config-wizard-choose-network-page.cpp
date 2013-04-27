@@ -87,3 +87,5 @@ void ConfigWizardChooseNetworkPage::protocolChanged()
 
 	LastProtocol = protocol;
 }
+
+#include "moc_config-wizard-choose-network-page.cpp"

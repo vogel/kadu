@@ -81,3 +81,5 @@ void ChatConfigurationHolder::configurationUpdated()
 
 	emit chatConfigurationUpdated();
 }
+
+#include "moc_chat-configuration-holder.cpp"

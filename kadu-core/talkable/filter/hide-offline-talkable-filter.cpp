@@ -81,3 +81,5 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
 		disconnect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
 	}
 }
+
+#include "moc_hide-offline-talkable-filter.cpp"

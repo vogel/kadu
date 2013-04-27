@@ -52,3 +52,5 @@ TalkableFilter::FilterResult TalkableFilter::filterContact(const Contact &contac
 
 	return Undecided;
 }
+
+#include "moc_talkable-filter.cpp"

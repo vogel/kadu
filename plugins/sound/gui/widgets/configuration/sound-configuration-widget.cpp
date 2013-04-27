@@ -92,3 +92,5 @@ void SoundConfigurationWidget::themeChanged(int index)
 			SoundFileSelectFile->setFile(it.value());
 	}
 }
+
+#include "moc_sound-configuration-widget.cpp"

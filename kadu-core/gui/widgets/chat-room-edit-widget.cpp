@@ -133,3 +133,5 @@ void ChatRoomEditWidget::cancel()
 
 	setState(StateNotChanged);
 }
+
+#include "moc_chat-room-edit-widget.cpp"

@@ -682,3 +682,5 @@ void SqlImport::performImport(QSqlDatabase &database)
 
 	config_file.writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
+
+#include "moc_sql-import.cpp"

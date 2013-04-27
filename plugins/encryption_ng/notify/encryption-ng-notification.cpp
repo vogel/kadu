@@ -125,3 +125,5 @@ EncryptionNgNotification::~EncryptionNgNotification()
 {
 
 }
+
+#include "moc_encryption-ng-notification.cpp"

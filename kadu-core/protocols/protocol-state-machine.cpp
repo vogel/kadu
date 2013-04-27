@@ -203,3 +203,5 @@ bool ProtocolStateMachine::isLoggingOut()
 {
 	return configuration().contains(LoggingOutState);
 }
+
+#include "moc_protocol-state-machine.cpp"

@@ -424,3 +424,5 @@ void WinampMediaPlayer::decrVolume()
 	if(hWinamp)
 		SendMessage(hWinamp, WM_COMMAND, WINAMP_CMD_LOWER_VOLUME, 1);
 }
+
+#include "moc_winamp.cpp"

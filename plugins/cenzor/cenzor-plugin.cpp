@@ -52,3 +52,5 @@ void CenzorPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(cenzor, CenzorPlugin)
+
+#include "moc_cenzor-plugin.cpp"

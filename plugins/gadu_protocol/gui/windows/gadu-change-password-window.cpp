@@ -179,3 +179,5 @@ void GaduChangePasswordWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_gadu-change-password-window.cpp"

@@ -67,3 +67,5 @@ NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* 
 {
 	return SoundConfigurationUiHandler::instance()->createConfigurationWidget(parent);
 }
+
+#include "moc_sound-notifier.cpp"

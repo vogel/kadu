@@ -115,3 +115,5 @@ void SmsTokenReadJob::tokenValueEntered(const QString &tokenValue)
 
 	deleteLater();
 }
+
+#include "moc_sms-token-read-job.cpp"

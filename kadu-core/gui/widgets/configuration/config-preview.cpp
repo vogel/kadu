@@ -68,3 +68,5 @@ bool ConfigPreview::fromDomElement(QDomElement domElement)
 		setFixedHeight(newheight);
 	return ConfigWidget::fromDomElement(domElement);
 }
+
+#include "moc_config-preview.cpp"

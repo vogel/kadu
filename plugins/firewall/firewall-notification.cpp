@@ -68,3 +68,5 @@ FirewallNotification::~FirewallNotification()
 {
 
 }
+
+#include "moc_firewall-notification.cpp"

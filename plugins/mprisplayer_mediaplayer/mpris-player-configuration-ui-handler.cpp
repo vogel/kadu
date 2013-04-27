@@ -265,3 +265,5 @@ void MPRISPlayerConfigurationUiHandler::configurationApplied()
 
 	MPRISPlayer::instance()->configurationApplied();
 }
+
+#include "moc_mpris-player-configuration-ui-handler.cpp"

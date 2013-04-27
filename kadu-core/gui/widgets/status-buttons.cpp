@@ -77,3 +77,5 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
 		enableStatusName();
 	}
 }
+
+#include "moc_status-buttons.cpp"

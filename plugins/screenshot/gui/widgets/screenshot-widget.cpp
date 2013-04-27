@@ -107,3 +107,5 @@ void ScreenshotWidget::canceledSlot()
 	emit canceled();
 	deleteLater();
 }
+
+#include "moc_screenshot-widget.cpp"

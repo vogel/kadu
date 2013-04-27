@@ -32,3 +32,5 @@ ChatImageService::ChatImageService(Account account, QObject *parent) :
 ChatImageService::~ChatImageService()
 {
 }
+
+#include "moc_chat-image-service.cpp"

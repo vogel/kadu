@@ -147,3 +147,5 @@ QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 
 	return result;
 }
+
+#include "moc_contact-list-model.cpp"

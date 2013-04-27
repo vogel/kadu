@@ -109,3 +109,5 @@ void ConnectionErrorNotification::ignoreErrors()
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
 }
+
+#include "moc_connection-error-notification.cpp"

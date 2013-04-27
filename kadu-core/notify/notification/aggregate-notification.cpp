@@ -122,3 +122,5 @@ void AggregateNotification::partialNotificationClosed(Notification *notification
 	close();
 }
 
+
+#include "moc_aggregate-notification.cpp"

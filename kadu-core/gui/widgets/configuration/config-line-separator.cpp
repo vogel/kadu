@@ -41,3 +41,5 @@ void ConfigLineSeparator::createWidgets()
 	setMinimumHeight(2*margin+1);
 	parentConfigGroupBox->addWidget(this, true);
 }
+
+#include "moc_config-line-separator.cpp"

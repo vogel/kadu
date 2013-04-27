@@ -152,3 +152,5 @@ QModelIndexList ActionListModel::indexListForValue(const QVariant &value) const
 
 	return result;
 }
+
+#include "moc_action-list-model.cpp"

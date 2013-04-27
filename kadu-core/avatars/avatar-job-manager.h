@@ -70,7 +70,4 @@ signals:
 
 };
 
-// for MOC
-#include "contacts/contact.h"
-
 #endif // AVATAR_JOB_MANAGER_H

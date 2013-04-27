@@ -136,3 +136,5 @@ void ChatDetailsBuddy::removeChat(const Chat &chat)
 	if (indexOf >= 0)
 		Chats.remove(indexOf);
 }
+
+#include "moc_chat-details-buddy.cpp"

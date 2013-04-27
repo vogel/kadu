@@ -178,3 +178,5 @@ void KaduMenu::update()
 {
 	updateGuiMenuLater();
 }
+
+#include "moc_kadu-menu.cpp"

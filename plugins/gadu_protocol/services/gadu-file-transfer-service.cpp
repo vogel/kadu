@@ -190,3 +190,5 @@ void GaduFileTransferService::attachSendFileTransferSocket(GaduFileTransferHandl
 	else
 		handler->socketNotAvailable();
 }
+
+#include "moc_gadu-file-transfer-service.cpp"

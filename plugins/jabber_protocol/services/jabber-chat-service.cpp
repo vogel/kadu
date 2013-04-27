@@ -364,3 +364,5 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 }
 
 }
+
+#include "moc_jabber-chat-service.cpp"

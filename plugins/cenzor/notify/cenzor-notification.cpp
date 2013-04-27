@@ -64,3 +64,5 @@ CenzorNotification::~CenzorNotification()
 {
 
 }
+
+#include "moc_cenzor-notification.cpp"

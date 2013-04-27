@@ -226,3 +226,5 @@ Avatar AvatarManager::byContact(Contact contact, NotFoundAction action)
 
 	return avatar;
 }
+
+#include "moc_avatar-manager.cpp"

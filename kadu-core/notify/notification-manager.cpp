@@ -270,3 +270,5 @@ QString NotificationManager::notifyConfigurationKey(const QString &eventType)
 
 	Q_ASSERT(false);
 }
+
+#include "moc_notification-manager.cpp"

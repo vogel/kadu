@@ -51,3 +51,5 @@ void ExtSoundPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(ext_sound, ExtSoundPlugin)
+
+#include "moc_ext-sound-plugin.cpp"

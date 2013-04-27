@@ -71,3 +71,5 @@ void JabberVCardDownloader::downloadVCard(const QString &id)
 	Task.data()->get(id);
 	Task.data()->go(true);
 }
+
+#include "moc_jabber-vcard-downloader.cpp"

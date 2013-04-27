@@ -172,3 +172,5 @@ void GaduUnregisterAccountWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_gadu-unregister-account-window.cpp"

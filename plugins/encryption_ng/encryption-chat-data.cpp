@@ -77,3 +77,5 @@ void EncryptionChatData::setDecryptor(Decryptor *decryptor)
 {
 	ChatDecryptor = decryptor;
 }
+
+#include "moc_encryption-chat-data.cpp"

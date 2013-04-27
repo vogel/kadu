@@ -96,3 +96,5 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
 	Layout->insertWidget(1, InfoWidget);
 }
+
+#include "moc_buddy-personal-info-configuration-widget.cpp"

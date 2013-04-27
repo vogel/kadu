@@ -80,3 +80,5 @@ void ConfigLineEdit::setVisible(bool visible)
 	label->setVisible(visible);
 	LineEditWithClearButton::setVisible(visible);
 }
+
+#include "moc_config-line-edit.cpp"

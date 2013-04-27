@@ -72,3 +72,5 @@ QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QReg
 	linkElement.appendChild(document.createTextNode(display));
 	return QList<QDomNode>() << linkElement;
 }
+
+#include "moc_standard-url-expander.cpp"

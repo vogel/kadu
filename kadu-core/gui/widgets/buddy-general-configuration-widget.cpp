@@ -181,3 +181,5 @@ void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap& avatar)
 	Avatar buddyAvatar = AvatarManager::instance()->byBuddy(MyBuddy, ActionCreateAndAdd);
 	buddyAvatar.setPixmap(avatar);
 }
+
+#include "moc_buddy-general-configuration-widget.cpp"

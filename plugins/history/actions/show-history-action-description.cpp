@@ -168,3 +168,5 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 
 	new HistoryMessagesPrepender(historyStorage->messages(query), chatMessagesView);
 }
+
+#include "moc_show-history-action-description.cpp"

@@ -112,3 +112,5 @@ void PhononPlayer::playSound(const QString &path)
 
 	kdebugf2();
 }
+
+#include "moc_phonon-player.cpp"

@@ -264,3 +264,5 @@ NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *pare
 {
 	return new ExecConfigurationWidget(parent);
 }
+
+#include "moc_exec_notify.cpp"

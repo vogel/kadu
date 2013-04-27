@@ -64,7 +64,4 @@ public:
 
 };
 
-// for MOC
-#include "contacts/contact.h"
-
 #endif // TALKABLE_DELEGATE_H

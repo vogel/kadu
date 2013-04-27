@@ -101,3 +101,5 @@ bool Cenzor::isExclusion(const QString &word)
 
 	return false;
 }
+
+#include "moc_cenzor.cpp"

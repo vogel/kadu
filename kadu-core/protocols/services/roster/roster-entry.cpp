@@ -87,3 +87,5 @@ bool RosterEntry::canAcceptRemoteUpdate() const
 {
 	return !Detached && RosterEntryDesynchronized != State && RosterEntrySynchronizing != State;
 }
+
+#include "moc_roster-entry.cpp"

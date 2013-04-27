@@ -186,3 +186,5 @@ void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)
 	FactorWidget->setValue(condition.second);
 	ConditionWidget->setText(condition.first);
 }
+
+#include "moc_antistring-configuration-ui-handler.cpp"

@@ -112,3 +112,5 @@ bool GaduContactListStateMachine::awaitingServerPutResponse() const
 {
 	return configuration().contains(AwaitingServerPutResponseState);
 }
+
+#include "moc_gadu-contact-list-state-machine.cpp"

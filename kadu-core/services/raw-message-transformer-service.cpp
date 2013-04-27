@@ -27,3 +27,5 @@ RawMessageTransformerService::RawMessageTransformerService(QObject* parent) :
 RawMessageTransformerService::~RawMessageTransformerService()
 {
 }
+
+#include "moc_raw-message-transformer-service.cpp"

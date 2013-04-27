@@ -425,3 +425,5 @@ void MainConfigurationWindow::chatPreviewSyntaxChanged(const QString &syntaxName
 	lookChatAdvanced.data()->widget()->widgetById("removeServerTime")->setEnabled(enableKaduFeatures);
 	lookChatAdvanced.data()->widget()->widgetById("maxTimeDifference")->setEnabled(enableKaduFeatures);
 }
+
+#include "moc_main-configuration-window.cpp"

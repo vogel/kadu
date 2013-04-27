@@ -37,3 +37,5 @@ QList<StatusContainer *> StatusContainer::subStatusContainers()
 	list.append(this);
 	return list;
 }
+
+#include "moc_status-container.cpp"

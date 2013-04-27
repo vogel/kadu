@@ -248,3 +248,5 @@ bool MPRISMediaPlayer::isActive()
 
 	return controller->active();
 }
+
+#include "moc_mpris_mediaplayer.cpp"

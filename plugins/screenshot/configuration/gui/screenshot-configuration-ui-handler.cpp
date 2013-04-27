@@ -77,3 +77,5 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
 	if (formats)
 		formats->setItems(opts, opts);
 }
+
+#include "moc_screenshot-configuration-ui-handler.cpp"

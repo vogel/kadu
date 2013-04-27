@@ -60,8 +60,4 @@ signals:
 
 };
 
-// for MOC
-#include "chat/chat.h"
-#include "contacts/contact.h"
-
 #endif // ENCRYPTION_PROVIDER_H

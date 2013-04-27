@@ -64,3 +64,5 @@ void JabberVCardUploader::uploadVCard(const QString &id, XMPP::VCard vCard)
 	Task.data()->set(id, vCard);
 	Task.data()->go(true);
 }
+
+#include "moc_jabber-vcard-uploader.cpp"

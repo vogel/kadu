@@ -64,3 +64,5 @@ void AccountTalkableFilter::setAccount(const Account &filterAccount)
 	FilterAccount = filterAccount;
 	emit filterChanged();
 }
+
+#include "moc_account-talkable-filter.cpp"

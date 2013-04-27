@@ -106,3 +106,5 @@ bool ProfileImporter::import(const Identity &identity)
 	ResultAccount = importedAccount;
 	return true;
 }
+
+#include "moc_profile-importer.cpp"

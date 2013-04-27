@@ -211,3 +211,5 @@ QByteArray EncryptionManager::transform(const QByteArray &rawMessage, const Mess
 			return rawMessage;
 	}
 }
+
+#include "moc_encryption-manager.cpp"

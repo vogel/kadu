@@ -129,3 +129,5 @@ void GroupShared::setName(const QString &name)
 		emit nameChanged();
 	}
 }
+
+#include "moc_group-shared.cpp"

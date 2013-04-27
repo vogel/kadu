@@ -601,3 +601,5 @@ void AddBuddyWindow::sendAuthorization(const Contact &contact)
 
 	account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }
+
+#include "moc_add-buddy-window.cpp"

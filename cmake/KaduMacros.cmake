@@ -94,9 +94,6 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		message (FATAL_ERROR "Unknown keywords given to kadu_plugin(): \"${KADU_UNPARSED_ARGUMENTS}\"")
 	endif()
 
-	include_directories (".")
-	include_directories (${KADU_INCLUDE_DIRS})
-
 	if (WIN32)
 		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
 
@@ -114,9 +111,12 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
 	)
 
-	qt4_wrap_cpp (_moc_files ${KADU_PLUGIN_MOC_SOURCES})
-	add_library (${KADU_PLUGIN_NAME} SHARED ${KADU_PLUGIN_SOURCES} ${_moc_files})
+	add_library (${KADU_PLUGIN_NAME} SHARED ${KADU_PLUGIN_SOURCES} ${KADU_PLUGIN_MOC_SOURCES})
 	kadu_set_flags (${KADU_PLUGIN_NAME})
+	set_property (TARGET ${KADU_PLUGIN_NAME} PROPERTY AUTOMOC ON)
+	set_property (TARGET ${KADU_PLUGIN_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES
+		"${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" ${KADU_INCLUDE_DIRS}
+	)
 
 	if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
 		file (GLOB _translation_sources RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${KADU_PLUGIN_NAME}_*.ts")

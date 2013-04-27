@@ -60,3 +60,5 @@ void HintsPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(hints, HintsPlugin)
+
+#include "moc_hints-plugin.cpp"

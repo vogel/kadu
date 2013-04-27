@@ -79,3 +79,5 @@ void ConfigColorButton::setVisible(bool visible)
 	label->setVisible(visible);
 	ColorButton::setVisible(visible);
 }
+
+#include "moc_config-color-button.cpp"

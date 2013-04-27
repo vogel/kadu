@@ -141,3 +141,5 @@ void NetworkProxyModel::networkProxyRemoved(NetworkProxy networkProxy)
 
 	endRemoveRows();
 }
+
+#include "moc_network-proxy-model.cpp"

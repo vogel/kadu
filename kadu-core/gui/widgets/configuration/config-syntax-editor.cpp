@@ -93,3 +93,5 @@ bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-syntax-editor.cpp"

@@ -344,3 +344,5 @@ QMimeData * ChatListModel::mimeData(const QModelIndexList &indexes) const
 
 	return ChatListMimeDataHelper::toMimeData(list);
 }
+
+#include "moc_chat-list-model.cpp"

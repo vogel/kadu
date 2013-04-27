@@ -103,3 +103,5 @@ void BaseActionContext::setRoles(const RoleSet &roles)
 		MyChangeNotifier->notify();
 	}
 }
+
+#include "moc_base-action-context.cpp"

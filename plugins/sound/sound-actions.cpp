@@ -107,3 +107,5 @@ void SoundActions::configurationUpdated()
 	SoundManager::instance()->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 	setMuteActionState();
 }
+
+#include "moc_sound-actions.cpp"

@@ -342,3 +342,5 @@ void TalkableTreeView::currentChanged(const QModelIndex &current, const QModelIn
 
 	setCurrentTalkable(talkableAt(current));
 }
+
+#include "moc_talkable-tree-view.cpp"

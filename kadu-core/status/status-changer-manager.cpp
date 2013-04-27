@@ -114,3 +114,5 @@ void StatusChangerManager::statusChanged(StatusContainer *container, StatusChang
 			container->setStatus(status, source);
 	}
 }
+
+#include "moc_status-changer-manager.cpp"

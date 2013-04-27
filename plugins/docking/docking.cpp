@@ -710,3 +710,5 @@ void DockingManager::dockIconClicked()
 	return;
 }
 #endif
+
+#include "moc_docking.cpp"

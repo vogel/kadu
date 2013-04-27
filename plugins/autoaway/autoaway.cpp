@@ -288,3 +288,5 @@ void AutoAway::createDefaultConfiguration()
 Q_EXPORT_PLUGIN2(autoaway, AutoAway)
 
 /** @} */
+
+#include "moc_autoaway.cpp"

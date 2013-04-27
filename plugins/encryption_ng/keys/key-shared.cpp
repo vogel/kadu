@@ -154,3 +154,5 @@ bool KeyShared::isEmpty()
 }
 
 KaduShared_PropertyPtrDefCRW(KeyShared, Contact, keyContact, KeyContact)
+
+#include "moc_key-shared.cpp"

@@ -68,3 +68,5 @@ void ImageLinkConfigurator::configurationUpdated()
 	if (VideoExpander)
 		VideoExpander.data()->setConfiguration(configuration);
 }
+
+#include "moc_image-link-configurator.cpp"

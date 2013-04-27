@@ -147,3 +147,5 @@ void EncryptioNgSimliteProvider::keyUpdated(Key key)
 
 	emit canEncryptChanged(chat);
 }
+
+#include "moc_encryption-ng-simlite-provider.cpp"

@@ -46,3 +46,5 @@ void DesktopAwareObjectHelper::workAreaResized()
 {
 	DesktopAwareObject::notifyDesktopModified();
 }
+
+#include "moc_desktop-aware-object-helper.cpp"

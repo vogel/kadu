@@ -90,3 +90,5 @@ void ProxyComboBox::editProxy()
 {
 	ProxyEditWindow::show();
 }
+
+#include "moc_proxy-combo-box.cpp"

@@ -142,3 +142,5 @@ bool TalkableDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, con
 
 	return model->setData(index, state, Qt::CheckStateRole);
 }
+
+#include "moc_talkable-delegate.cpp"

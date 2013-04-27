@@ -89,3 +89,5 @@ bool EmoticonThemeManager::isValidThemePath(const QString &themePath) const
 
 	return false;
 }
+
+#include "moc_emoticon-theme-manager.cpp"

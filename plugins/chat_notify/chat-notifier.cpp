@@ -89,3 +89,5 @@ void ChatNotifier::notify(Notification *notification)
 		i++;
 	}
 }
+
+#include "moc_chat-notifier.cpp"

@@ -53,6 +53,4 @@ public:
 
 };
 
-#include "buddies/group.h" // for MOC
-
 #endif // GROUPS_MODEL_H

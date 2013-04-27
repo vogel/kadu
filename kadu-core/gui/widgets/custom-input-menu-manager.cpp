@@ -121,3 +121,5 @@ QMenu * CustomInputMenuManager::menu(QWidget *parent)
 
 	return menu;
 }
+
+#include "moc_custom-input-menu-manager.cpp"

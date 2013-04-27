@@ -101,3 +101,5 @@ void SelectTalkableComboBox::removeFilter(TalkableFilter *filter)
 	ProxyModel->removeFilter(filter);
 	Popup->removeFilter(filter);
 }
+
+#include "moc_select-talkable-combo-box.cpp"

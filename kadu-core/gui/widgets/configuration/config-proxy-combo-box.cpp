@@ -102,3 +102,5 @@ bool ConfigProxyComboBox::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-proxy-combo-box.cpp"

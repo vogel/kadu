@@ -407,3 +407,5 @@ QString KaduWebView::userFontStyle(const QFont &font, bool force)
 		style += QString(" font-size:%1pt;").arg(font.pointSize());
 	return style;
 }
+
+#include "moc_kadu-web-view.cpp"

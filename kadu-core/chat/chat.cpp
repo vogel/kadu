@@ -22,12 +22,12 @@
  */
 
 #include "accounts/account.h"
+#include "buddies/group.h"
 #include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
 
 #include "chat.h"
-
 
 KaduSharedBaseClassImpl(Chat)
 

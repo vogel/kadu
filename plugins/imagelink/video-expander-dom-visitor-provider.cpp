@@ -39,3 +39,5 @@ void VideoExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfigurat
 {
 	Configuration = configuration;
 }
+
+#include "moc_video-expander-dom-visitor-provider.cpp"

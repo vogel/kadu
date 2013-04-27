@@ -51,3 +51,5 @@ void ChatManagerAdapter::chatRemoved(const Chat &chat)
 {
 	Model->removeChat(chat);
 }
+
+#include "moc_chat-manager-adapter.cpp"

@@ -63,3 +63,5 @@ void PathEdit::selectPath()
 	if (!directoryPath.isEmpty())
 		PathLineEdit->setText(directoryPath);
 }
+
+#include "moc_path-edit.cpp"

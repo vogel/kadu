@@ -149,3 +149,5 @@ void ChatDetailsContactSet::setContacts(const ContactSet &contacts)
 
 	Contacts = contacts;
 }
+
+#include "moc_chat-details-contact-set.cpp"

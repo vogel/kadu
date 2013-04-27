@@ -64,3 +64,5 @@ QModelIndexList KaduMergedProxyModel::indexListForValue(const QVariant &value) c
 
 	return result;
 }
+
+#include "moc_kadu-merged-proxy-model.cpp"

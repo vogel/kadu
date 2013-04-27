@@ -106,3 +106,5 @@ void GaduPubdirSocketNotifiers::connectionTimeout()
 {
 	finished(false);
 }
+
+#include "moc_gadu-pubdir-socket-notifiers.cpp"

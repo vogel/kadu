@@ -102,3 +102,5 @@ void CertificateErrorWindow::accept()
 	emit certificateAccepted();
 	QDialog::accept();
 }
+
+#include "moc_certificate-error-window.cpp"

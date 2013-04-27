@@ -61,3 +61,5 @@ void RecentChatsAction::openRecentChats(QAction *action)
 	if (chatWidget)
 		chatWidget->activate();
 }
+
+#include "moc_recent-chats-action.cpp"

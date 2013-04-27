@@ -139,3 +139,5 @@ void JabberPepService::getFinished()
 		if (!task->items().isEmpty())
 			emit itemPublished(task->jid(),task->node(),task->items().at(0));
 }
+
+#include "moc_jabber-pep-service.cpp"

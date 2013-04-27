@@ -114,3 +114,5 @@ void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 	talkablePainter.paint(painter);
 }
 
+
+#include "moc_kadu-tree-view-delegate.cpp"

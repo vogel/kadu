@@ -90,3 +90,5 @@ void HandlerRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	painter->setPen(Qt::black);
 	painter->drawRect(QRect(0, 0, Size, Size));
 }
+
+#include "moc_handler-rect-item.cpp"

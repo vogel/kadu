@@ -89,3 +89,5 @@ void SpeechConfigurationWidget::switchToEvent(const QString &event)
 	else
 		femaleLineEdit->setText(config_file.readEntry("Speech", event + "_Syntax/Female"));
 }
+
+#include "moc_speech-configuration-widget.cpp"

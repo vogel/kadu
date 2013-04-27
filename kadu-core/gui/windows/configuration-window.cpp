@@ -142,3 +142,5 @@ void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QDialog::keyPressEvent(e);
 }
+
+#include "moc_configuration-window.cpp"

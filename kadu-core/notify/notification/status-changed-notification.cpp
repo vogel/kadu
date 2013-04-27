@@ -120,3 +120,5 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 
 	setTitle(tr("Status changed"));
 }
+
+#include "moc_status-changed-notification.cpp"

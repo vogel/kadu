@@ -98,3 +98,5 @@ void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configu
 	foreach (Action *action, actions())
 		updateActionState(action);
 }
+
+#include "moc_insert-emoticon-action.cpp"

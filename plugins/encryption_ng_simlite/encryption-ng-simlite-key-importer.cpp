@@ -102,3 +102,5 @@ void EncryptioNgSimliteKeyImporter::importKeys(const Account &account)
 
 	KeysManager::instance()->ensureStored();
 }
+
+#include "moc_encryption-ng-simlite-key-importer.cpp"

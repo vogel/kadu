@@ -275,3 +275,5 @@ void RecentChatManager::onNewMessage(const Message &message)
 {
 	addRecentChat(message.messageChat());
 }
+
+#include "moc_recent-chat-manager.cpp"

@@ -49,3 +49,5 @@ void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBloc
 {
 	Q_UNUSED(formattedStringTextBlock);
 }
+
+#include "moc_formatted-string-image-key-received-visitor.cpp"

@@ -133,3 +133,5 @@ void FileDescription::createDefaultConfiguration()
 	config_file.addVariable("FileDesc", "forceDescr", true);
 	config_file.addVariable("FileDesc", "allowOther", true);
 }
+
+#include "moc_filedesc.cpp"

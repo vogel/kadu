@@ -106,3 +106,5 @@ QWidget * ConfigTab::widget() const
 {
 	return MyScrollArea;
 }
+
+#include "moc_config-tab.cpp"

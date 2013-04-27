@@ -95,3 +95,5 @@ void OAuthAuthorizationChain::accessTokenFetched(OAuthToken token)
 
 	deleteLater();
 }
+
+#include "moc_oauth-authorization-chain.cpp"

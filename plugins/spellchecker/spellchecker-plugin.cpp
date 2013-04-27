@@ -67,3 +67,5 @@ void SpellCheckerPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(spellchecker, SpellCheckerPlugin)
+
+#include "moc_spellchecker-plugin.cpp"

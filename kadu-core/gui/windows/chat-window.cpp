@@ -288,3 +288,5 @@ bool ChatWindow::isChatWidgetActive(ChatWidget *chatWidget)
 	return _isWindowActiveOrFullyVisible(this);
 }
 
+
+#include "moc_chat-window.cpp"

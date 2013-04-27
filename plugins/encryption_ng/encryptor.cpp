@@ -26,3 +26,5 @@ Encryptor::Encryptor(EncryptionProvider *provider, QObject *parent) :
 		QObject(parent), Provider(provider)
 {
 }
+
+#include "moc_encryptor.cpp"

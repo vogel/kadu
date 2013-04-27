@@ -297,3 +297,5 @@ void FileTransferManager::itemRemoved(FileTransfer fileTransfer)
 {
 	emit fileTransferRemoved(fileTransfer);
 }
+
+#include "moc_file-transfer-manager.cpp"

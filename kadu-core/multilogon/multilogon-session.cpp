@@ -68,3 +68,5 @@ const QDateTime & MultilogonSession::logonTime() const
 {
 	return LogonTime;
 }
+
+#include "moc_multilogon-session.cpp"

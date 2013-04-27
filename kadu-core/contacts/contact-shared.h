@@ -135,8 +135,5 @@ signals:
 
 };
 
-// for MOC
-#include "buddies/buddy.h"
-
 #endif // CONTACT_SHARED_H
 

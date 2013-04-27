@@ -89,3 +89,5 @@ void GroupsComboBox::createNewGroup()
 	if (newGroup)
 		setCurrentGroup(newGroup);
 }
+
+#include "moc_groups-combo-box.cpp"

@@ -90,3 +90,5 @@ BuddySet CheckableBuddiesProxyModel::checkedBuddies() const
 {
 	return CheckedBuddies;
 }
+
+#include "moc_checkable-buddies-proxy-model.cpp"

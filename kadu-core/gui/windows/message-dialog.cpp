@@ -86,3 +86,5 @@ bool MessageDialog::ask()
 {
 	return QMessageBox::Yes == Box->exec();
 }
+
+#include "moc_message-dialog.cpp"

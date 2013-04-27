@@ -55,3 +55,5 @@ void ProfilesImportPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(profiles_import, ProfilesImportPlugin)
+
+#include "moc_profiles-import-plugin.cpp"

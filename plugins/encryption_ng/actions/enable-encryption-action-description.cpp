@@ -89,3 +89,5 @@ void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)
 		if (action->context()->chat() == chat)
 			action->checkState();
 }
+
+#include "moc_enable-encryption-action-description.cpp"

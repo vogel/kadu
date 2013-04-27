@@ -89,3 +89,5 @@ void ExternalPlayer::createDefaultConfiguration()
 	config_file.addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 #endif
 }
+
+#include "moc_external-player.cpp"

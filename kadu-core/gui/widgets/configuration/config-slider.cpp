@@ -107,3 +107,5 @@ bool ConfigSlider::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-slider.cpp"

@@ -62,3 +62,5 @@ void ScreenshotPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(screenshot, ScreenshotPlugin)
+
+#include "moc_screenshot-plugin.cpp"

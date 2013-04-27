@@ -107,3 +107,5 @@ void UpdatesDialog::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_updates-dialog.cpp"

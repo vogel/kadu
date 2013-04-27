@@ -68,3 +68,5 @@ void JabberWaitForAccountRegisterWindow::registerNewAccountFinished(JabberServer
 
 	delete jsra;
 }
+
+#include "moc_jabber-wait-for-account-register-window.cpp"

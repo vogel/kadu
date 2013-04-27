@@ -154,3 +154,5 @@ void DesktopDock::createDefaultConfiguration()
 	config_file.addVariable("Desktop Dock", "PositionX", 0);
 	config_file.addVariable("Desktop Dock", "PositionY", 0);
 }
+
+#include "moc_desktop-dock.cpp"

@@ -71,3 +71,5 @@ void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }
+
+#include "moc_accounts-combo-box.cpp"

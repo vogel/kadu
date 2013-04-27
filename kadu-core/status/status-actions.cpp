@@ -183,3 +183,5 @@ void StatusActions::iconThemeChanged()
 		action->setIcon(MyStatusContainer->statusIcon(statusType).icon());
 	}
 }
+
+#include "moc_status-actions.cpp"

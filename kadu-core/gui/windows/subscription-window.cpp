@@ -122,3 +122,5 @@ void SubscriptionWindow::rejected()
 	emit requestConsidered(CurrentContact, false);
 	close();
 }
+
+#include "moc_subscription-window.cpp"

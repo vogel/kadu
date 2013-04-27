@@ -475,3 +475,5 @@ void ChatShared::setOpen(bool open)
 	else
 		emit closed();
 }
+
+#include "moc_chat-shared.cpp"

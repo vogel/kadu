@@ -50,3 +50,5 @@ bool PongServer::take(const QDomElement &element)
 
 	return false;
 }
+
+#include "moc_pong-server.cpp"

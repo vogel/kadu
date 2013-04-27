@@ -75,3 +75,5 @@ void WindowManager::ensureWholeVisible(QWidget *window)
 
 	window->move(windowPosition);
 }
+
+#include "moc_window-manager.cpp"

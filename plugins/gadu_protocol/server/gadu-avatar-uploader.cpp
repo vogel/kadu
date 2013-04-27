@@ -94,3 +94,5 @@ void GaduAvatarUploader::transferFinished()
 	emit avatarUploaded(QNetworkReply::NoError == Reply->error(), Avatar);
 	deleteLater();
 }
+
+#include "moc_gadu-avatar-uploader.cpp"

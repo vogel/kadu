@@ -158,3 +158,5 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 
 	config_file.addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
+
+#include "moc_sms-configuration-ui-handler.cpp"

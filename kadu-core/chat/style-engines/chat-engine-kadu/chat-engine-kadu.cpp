@@ -300,3 +300,5 @@ void KaduChatStyleEngine::syntaxAdded(const QString &syntaxName)
 {
 	ChatStylesManager::instance()->addStyle(syntaxName, this);
 }
+
+#include "moc_chat-engine-kadu.cpp"

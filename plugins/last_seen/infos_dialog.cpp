@@ -156,3 +156,5 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
 	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, &actionContext));
 	menu->exec(QCursor::pos());
 }
+
+#include "moc_infos_dialog.cpp"

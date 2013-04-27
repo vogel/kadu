@@ -74,3 +74,5 @@ void AddGroupDialogWidget::dialogAccepted()
 void AddGroupDialogWidget::dialogRejected()
 {
 }
+
+#include "moc_add-group-dialog-widget.cpp"

@@ -107,3 +107,5 @@ bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
 
 	return handled;
 }
+
+#include "moc_buddy-contacts-table-delegate.cpp"

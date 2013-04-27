@@ -71,3 +71,5 @@ void HistoryImportWindow::setMessagesProgress(int progress)
 {
 	MessagesProgressBar->setValue(progress);
 }
+
+#include "moc_history-import-window.cpp"

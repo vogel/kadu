@@ -372,3 +372,5 @@ void GaduProtocolSocketNotifiers::connectionTimeout()
 {
 	CurrentProtocol->socketConnFailed(GaduProtocol::ConnectionTimeout);
 }
+
+#include "moc_gadu-protocol-socket-notifiers.cpp"

@@ -308,3 +308,5 @@ void Protocol::setRosterService(RosterService * const rosterService)
 {
 	CurrentRosterService = rosterService;
 }
+
+#include "moc_protocol.cpp"

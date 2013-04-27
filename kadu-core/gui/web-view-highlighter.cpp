@@ -115,3 +115,5 @@ void WebViewHighlighter::clearSelect()
 
 	updateHighlighting();
 }
+
+#include "moc_web-view-highlighter.cpp"

@@ -71,3 +71,5 @@ QString ChooseIdentityWidget::identityName()
 		: description->currentText();
 }
 
+
+#include "moc_choose-identity-widget.cpp"

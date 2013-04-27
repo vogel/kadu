@@ -120,3 +120,5 @@ void ColorSelector::iconClicked(const QColor &color)
 	emit colorSelect(color);
 	close();
 }
+
+#include "moc_color-selector.cpp"

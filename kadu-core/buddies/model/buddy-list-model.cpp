@@ -529,3 +529,5 @@ void BuddyListModel::accountUnregistered (Account account)
 {
 	disconnect(account, 0, this, 0);
 }
+
+#include "moc_buddy-list-model.cpp"

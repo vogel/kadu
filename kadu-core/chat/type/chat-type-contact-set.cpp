@@ -171,3 +171,5 @@ ChatEditWidget * ChatTypeContactSet::createEditWidget(const Chat &chat, QWidget 
 
 	return 0;
 }
+
+#include "moc_chat-type-contact-set.cpp"

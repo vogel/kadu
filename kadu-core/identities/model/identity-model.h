@@ -53,6 +53,4 @@ public:
 
 };
 
-#include "identities/identity.h" // for MOC
-
 #endif // IDENTITY_MODEL_H

@@ -132,3 +132,5 @@ void DescriptionManager::clearDescriptions()
 {
 	StringList.clear();
 }
+
+#include "moc_description-manager.cpp"

@@ -186,3 +186,5 @@ void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 	avatarUpdated();
 	ChangePhotoButton->setEnabled(true);
 }
+
+#include "moc_account-avatar-widget.cpp"

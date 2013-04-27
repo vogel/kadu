@@ -109,3 +109,5 @@ void JabberAvatarVCardUploader::vCardUploaded(bool ok)
 	else
 		failed();
 }
+
+#include "moc_jabber-avatar-vcard-uploader.cpp"

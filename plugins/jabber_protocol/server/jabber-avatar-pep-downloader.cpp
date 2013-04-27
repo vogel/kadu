@@ -135,3 +135,5 @@ void JabberAvatarPepDownloader::avatarDataQueryFinished(const XMPP::Jid &jid, co
 	else
 		done(QImage());
 }
+
+#include "moc_jabber-avatar-pep-downloader.cpp"

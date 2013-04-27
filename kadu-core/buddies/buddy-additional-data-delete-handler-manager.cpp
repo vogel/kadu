@@ -66,3 +66,5 @@ void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHand
 	Items.removeAll(handler);
 	emit additionalDataDeleteHandlerUnregistered(handler);
 }
+
+#include "moc_buddy-additional-data-delete-handler-manager.cpp"

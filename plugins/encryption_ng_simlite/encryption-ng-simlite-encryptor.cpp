@@ -208,3 +208,5 @@ QByteArray EncryptioNgSimliteEncryptor::encrypt(const QByteArray &data)
 	//finally, put the encrypted message into the output QByteArray
 	return encrypted.toByteArray();
 }
+
+#include "moc_encryption-ng-simlite-encryptor.cpp"

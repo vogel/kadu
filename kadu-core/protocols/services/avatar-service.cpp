@@ -44,3 +44,5 @@ AvatarService::AvatarService(Account account, QObject *parent) :
 AvatarService::~AvatarService()
 {
 }
+
+#include "moc_avatar-service.cpp"

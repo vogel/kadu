@@ -221,3 +221,5 @@ void BuddyInfoPanel::styleFixup(QString &syntax)
 {
 	syntax = Template.arg(syntax);
 }
+
+#include "moc_buddy-info-panel.cpp"

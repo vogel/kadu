@@ -668,3 +668,5 @@ void Core::quit()
 	delete Instance;
 	Instance = 0;
 }
+
+#include "moc_core.cpp"

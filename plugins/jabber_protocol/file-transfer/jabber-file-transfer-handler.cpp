@@ -296,3 +296,5 @@ void JabberFileTransferHandler::fileTransferError(int error)
 {
 	cleanup(errorToStatus(error));
 }
+
+#include "moc_jabber-file-transfer-handler.cpp"

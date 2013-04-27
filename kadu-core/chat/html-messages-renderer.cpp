@@ -197,3 +197,5 @@ void HtmlMessagesRenderer::contactActivityChanged(const Contact &contact, ChatSt
 	}
 	ChatStylesManager::instance()->currentEngine()->contactActivityChanged(this, state, message, display);
 }
+
+#include "moc_html-messages-renderer.cpp"

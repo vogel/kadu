@@ -38,3 +38,5 @@ QSize KaduTextEdit::sizeHint() const
 	QFontMetrics fontMetrics(font());
 	return QSize(256, PreferredLines * fontMetrics.lineSpacing());
 }
+
+#include "moc_kadu-text-edit.cpp"

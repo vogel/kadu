@@ -167,3 +167,5 @@ void LineEditWithClearButton::setEnabled(bool enabled)
 	QLineEdit::setEnabled(enabled);
 	updateClearButton();
 }
+
+#include "moc_line-edit-with-clear-button.cpp"

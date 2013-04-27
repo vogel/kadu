@@ -152,3 +152,5 @@ void FileTransferWindow::contentsChanged()
 
 	TransfersLayout->invalidate();
 }
+
+#include "moc_file-transfer-window.cpp"

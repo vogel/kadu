@@ -50,3 +50,5 @@ QString NetworkReplyWrapper::redirect()
 {
 	return Reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl().toString();
 }
+
+#include "moc_network-reply-wrapper.cpp"

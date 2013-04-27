@@ -127,3 +127,5 @@ void EmoticonsPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(emoticons, EmoticonsPlugin)
+
+#include "moc_emoticons-plugin.cpp"

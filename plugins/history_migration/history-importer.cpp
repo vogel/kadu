@@ -140,3 +140,5 @@ void HistoryImporter::threadFinished()
 
 	deleteLater();
 }
+
+#include "moc_history-importer.cpp"

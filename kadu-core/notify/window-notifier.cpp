@@ -88,3 +88,5 @@ void WindowNotifier::createDefaultConfiguration()
 
 /** @} */
 
+
+#include "moc_window-notifier.cpp"

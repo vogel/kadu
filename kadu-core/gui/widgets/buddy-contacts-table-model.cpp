@@ -410,3 +410,5 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 
 	return true;
 }
+
+#include "moc_buddy-contacts-table-model.cpp"

@@ -347,3 +347,5 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 		emit sentMessageStatusChanged(message);
 	}
 }
+
+#include "moc_gadu-chat-service.cpp"

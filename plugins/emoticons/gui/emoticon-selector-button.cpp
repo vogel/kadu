@@ -57,3 +57,5 @@ void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 	connect(popup, SIGNAL(clicked(Emoticon)), this, SIGNAL(clicked(Emoticon)));
 	popup->show();
 }
+
+#include "moc_emoticon-selector-button.cpp"

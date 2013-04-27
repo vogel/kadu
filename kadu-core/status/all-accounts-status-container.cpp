@@ -108,3 +108,5 @@ void AllAccountsStatusContainer::storeStatus(Status status)
 	foreach (const Account &account, Accounts)
 		account.statusContainer()->storeStatus(status);
 }
+
+#include "moc_all-accounts-status-container.cpp"

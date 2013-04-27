@@ -298,3 +298,5 @@ void CropImageWidget::setCropRect(const QRect &cropRect)
 	CropRect = cropRect.normalized();
 	updateCropRectDisplay();
 }
+
+#include "moc_crop-image-widget.cpp"

@@ -67,3 +67,5 @@ void BuddyGroupsConfigurationWidget::save()
 {
 	MyBuddy.setGroups(BuddyGroupList->checkedGroups());
 }
+
+#include "moc_buddy-groups-configuration-widget.cpp"

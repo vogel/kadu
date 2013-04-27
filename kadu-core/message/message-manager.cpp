@@ -340,3 +340,5 @@ Message MessageManager::unreadMessageForContact(const Contact &contact) const
 
 	return Message::null;
 }
+
+#include "moc_message-manager.cpp"

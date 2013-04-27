@@ -51,3 +51,5 @@ GaduIdValidator::GaduIdValidator(QObject *parent) :
 GaduIdValidator::~GaduIdValidator()
 {
 }
+
+#include "moc_gadu-id-validator.cpp"

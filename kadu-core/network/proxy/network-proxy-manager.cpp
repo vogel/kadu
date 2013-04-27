@@ -129,3 +129,5 @@ void NetworkProxyManager::itemRemoved(NetworkProxy item)
 	disconnect(item, 0, this, 0);
 	emit networkProxyRemoved(item);
 }
+
+#include "moc_network-proxy-manager.cpp"

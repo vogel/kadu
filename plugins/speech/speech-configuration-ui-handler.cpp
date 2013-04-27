@@ -116,3 +116,5 @@ void SpeechConfigurationUiHandler::testSpeech()
 
 	kdebugf2();
 }
+
+#include "moc_speech-configuration-ui-handler.cpp"

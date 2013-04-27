@@ -109,3 +109,5 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 
 	emit newResults(results);
 }
+
+#include "moc_gadu-search-service.cpp"

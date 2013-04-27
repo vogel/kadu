@@ -178,3 +178,5 @@ void KaduTreeView::startDrag(Qt::DropActions supportedActions)
 
 	drag->exec(supportedActions, Qt::LinkAction);
 }
+
+#include "moc_kadu-tree-view.cpp"

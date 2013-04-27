@@ -53,3 +53,5 @@ void AutostatusPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(autostatus, AutostatusPlugin)
+
+#include "moc_autostatus-plugin.cpp"

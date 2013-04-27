@@ -84,3 +84,5 @@ void AvatarJobRunner::timeout()
 	emit jobFinished(false);
 	deleteLater();
 }
+
+#include "moc_avatar-job-runner.cpp"

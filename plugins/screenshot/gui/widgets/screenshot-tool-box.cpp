@@ -74,3 +74,5 @@ void ScreenshotToolBox::setFileSize(const QString &fileSize)
 {
 	FileSizeLabel->setText(fileSize);
 }
+
+#include "moc_screenshot-tool-box.cpp"

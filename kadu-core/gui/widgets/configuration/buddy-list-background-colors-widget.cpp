@@ -70,3 +70,5 @@ void BuddyListBackgroundColorsWidget::configurationApplied()
       	MainConfigurationWindow::instanceDataManager()->writeEntry("Look", "UserboxBgColor", QVariant(colorButton->color().name()));
       	MainConfigurationWindow::instanceDataManager()->writeEntry("Look", "UserboxAlternateBgColor", QVariant(alternateColorButton->color().name()));
 }
+
+#include "moc_buddy-list-background-colors-widget.cpp"

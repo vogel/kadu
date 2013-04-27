@@ -179,3 +179,5 @@ FormattedString * MessageShared::content() const
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)
 KaduShared_PropertyPtrDefCRW(MessageShared, Contact, messageSender, MessageSender)
+
+#include "moc_message-shared.cpp"

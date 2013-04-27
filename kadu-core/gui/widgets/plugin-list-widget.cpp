@@ -154,3 +154,5 @@ void PluginListWidget::configurationApplied()
 {
 	applyChanges();
 }
+
+#include "moc_plugin-list-widget.cpp"

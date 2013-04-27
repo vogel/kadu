@@ -96,3 +96,5 @@ void DesktopDockConfigurationUiHandler::dockWindowDropped(const QPoint &pos)
 	XSpinBox->setValue(posX);
 	YSpinBox->setValue(posY);
 }
+
+#include "moc_desktop-dock-configuration-ui-handler.cpp"

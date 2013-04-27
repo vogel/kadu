@@ -27,3 +27,5 @@ MessageFilter::MessageFilter(QObject *parent) :
 MessageFilter::~MessageFilter()
 {
 }
+
+#include "moc_message-filter.cpp"

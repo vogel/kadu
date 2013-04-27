@@ -266,3 +266,5 @@ void KaduLink::mousePressEvent(QMouseEvent *)
 {
 	UrlOpener::openUrl(Link);
 }
+
+#include "moc_about.cpp"

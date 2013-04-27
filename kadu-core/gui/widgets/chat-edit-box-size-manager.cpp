@@ -62,3 +62,5 @@ bool ChatEditBoxSizeManager::initialized()
 {
 	return 0 != CommonHeight;
 }
+
+#include "moc_chat-edit-box-size-manager.cpp"

@@ -121,3 +121,5 @@ void GrowlNotifyConfigurationWidget::titleChanged(const QString &title)
 //{
 //	currentProperties.showAvatar = (state == Qt::Checked);
 //}
+
+#include "moc_growl-notify-configuration-widget.cpp"

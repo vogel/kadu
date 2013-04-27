@@ -50,3 +50,5 @@ void SMSPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(sms, SMSPlugin)
+
+#include "moc_sms-plugin.cpp"

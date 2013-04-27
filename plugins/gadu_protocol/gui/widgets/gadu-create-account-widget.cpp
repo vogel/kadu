@@ -210,3 +210,5 @@ void GaduCreateAccountWidget::uinRegistered(UinType uin)
 
 	emit accountCreated(gaduAccount);
 }
+
+#include "moc_gadu-create-account-widget.cpp"

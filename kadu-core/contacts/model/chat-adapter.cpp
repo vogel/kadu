@@ -47,3 +47,5 @@ void ChatAdapter::contactRemoved(const Contact &contact)
 {
 	Model->removeContact(contact);
 }
+
+#include "moc_chat-adapter.cpp"

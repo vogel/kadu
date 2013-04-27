@@ -81,3 +81,5 @@ void TitleWidget::setComment(const QString &comment)
 	commentLabel->setText(comment);
 	show();
 }
+
+#include "moc_title-widget.cpp"

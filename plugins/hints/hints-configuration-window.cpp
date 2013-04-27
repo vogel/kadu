@@ -104,3 +104,5 @@ void HintsConfigurationWindow::backgroundColorChanged(const QColor &color)
 	QString style = QString("QWidget {color:%1; background-color:%2}").arg(fcolor.name(), color.name());
 	preview->setStyleSheet(style);
 }
+
+#include "moc_hints-configuration-window.cpp"

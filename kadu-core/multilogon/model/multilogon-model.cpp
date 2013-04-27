@@ -137,3 +137,5 @@ void MultilogonModel::multilogonSessionDisconnected(MultilogonSession *session)
 
 	endRemoveRows();
 }
+
+#include "moc_multilogon-model.cpp"

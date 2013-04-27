@@ -112,3 +112,5 @@ bool KaduApplication::sessionClosing() const
 {
 	return SessionClosing;
 }
+
+#include "moc_kadu-application.cpp"

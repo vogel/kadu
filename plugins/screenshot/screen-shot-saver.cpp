@@ -81,3 +81,5 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 
 	return path;
 }
+
+#include "moc_screen-shot-saver.cpp"

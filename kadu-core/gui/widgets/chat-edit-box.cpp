@@ -351,3 +351,5 @@ void ChatEditBox::insertPlainText(const QString &plainText)
 {
 	InputBox->insertPlainText( plainText);
 }
+
+#include "moc_chat-edit-box.cpp"

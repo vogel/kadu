@@ -116,3 +116,5 @@ void KaduDialog::widgetValidated(bool valid)
 {
 	OkButton->setEnabled(valid);
 }
+
+#include "moc_kadu-dialog.cpp"

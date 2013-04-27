@@ -590,3 +590,5 @@ void AdiumChatStyleEngine::chatImageAvailable(HtmlMessagesRenderer *renderer, co
 {
 	renderer->webPage()->mainFrame()->evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");").arg(imageKey.toString()).arg(fileName));
 }
+
+#include "moc_chat-engine-adium.cpp"

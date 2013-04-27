@@ -130,3 +130,5 @@ FormattedString * FormattedStringFactory::fromText(const QString &text)
 
 	return fromTextDocument(document.data());
 }
+
+#include "moc_formatted-string-factory.cpp"

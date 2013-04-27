@@ -191,3 +191,5 @@ void Infos::updateTimes()
 	}
 	kdebugf2();
 }
+
+#include "moc_infos.cpp"

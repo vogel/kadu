@@ -505,3 +505,5 @@ void YourAccounts::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_your-accounts.cpp"

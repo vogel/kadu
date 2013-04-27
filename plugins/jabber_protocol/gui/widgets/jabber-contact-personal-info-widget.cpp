@@ -136,3 +136,5 @@ void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
 	UrlOpener::openUrl(link.toUtf8());
 }
+
+#include "moc_jabber-contact-personal-info-widget.cpp"

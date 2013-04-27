@@ -499,3 +499,5 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 
 	ShowStatusToEveryone->setChecked(false);
 }
+
+#include "moc_gadu-edit-account-widget.cpp"

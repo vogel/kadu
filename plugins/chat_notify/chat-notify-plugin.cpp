@@ -64,3 +64,5 @@ void ChatNotifyPlugin::createDefaultConfiguration()
 }
 
 Q_EXPORT_PLUGIN2(chat_notify, ChatNotifyPlugin)
+
+#include "moc_chat-notify-plugin.cpp"

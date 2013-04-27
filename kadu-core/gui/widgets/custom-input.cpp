@@ -312,3 +312,5 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 
 	QTextEdit::insertFromMimeData(source);
 }
+
+#include "moc_custom-input.cpp"

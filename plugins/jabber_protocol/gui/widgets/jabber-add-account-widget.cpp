@@ -227,3 +227,5 @@ void JabberAddAccountWidget::showWhatIsMyUsername()
 {
 	MessageDialog::show(KaduIcon("dialog-information"), Factory->displayName(), Factory->whatIsMyUsername());
 }
+
+#include "moc_jabber-add-account-widget.cpp"

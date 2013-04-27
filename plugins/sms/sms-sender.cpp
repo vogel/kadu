@@ -48,3 +48,5 @@ void SmsSender::setSignature(const QString &signature)
 {
 	Signature = signature;
 }
+
+#include "moc_sms-sender.cpp"

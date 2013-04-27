@@ -81,3 +81,5 @@ void JabberAvatarVCardDownloader::vCardDownloaded(bool ok, XMPP::VCard vCard)
 
 	done(QImage::fromData(vCard.photo()));
 }
+
+#include "moc_jabber-avatar-vcard-downloader.cpp"

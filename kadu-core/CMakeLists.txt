@@ -108,6 +108,8 @@ set (kadu_MOC_SRCS
 	kadu-application.h
 	themes.h
 	updates.h
+
+	os/qtsingleapplication/qtlocalpeer.h
 )
 
 set (kadu_SUBDIRS
@@ -143,8 +145,6 @@ set (kadu_SUBDIRS
 	themes
 	url-handlers
 )
-
-qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
 
 find_package (QCA2 REQUIRED)
 include_directories (${QCA2_INCLUDE_DIR})
@@ -213,15 +213,10 @@ endif ()
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 	if (FAST_LINKING)
-		set (${SUBDIR}_MOC_FILES "")
-		if (NOT "${MOC_SRCS}" STREQUAL "")
-			qt4_wrap_cpp (${SUBDIR}_MOC_FILES ${MOC_SRCS})
-		endif ()
-
 		add_library (${SUBDIR}
 			STATIC
 			${SRCS}
-			${${SUBDIR}_MOC_FILES}
+			${MOC_SRCS}
 		)
 		kadu_set_flags (${SUBDIR})
 		set_property (TARGET ${SUBDIR} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
@@ -253,8 +248,7 @@ macro (kadu_source_subdirectories CURRENT_TARGET)
 				${ARG}
 			)
 		else ()
-			list (APPEND kadu_SUBDIRS_SRCS "${${ARG}_SRCS}")
-			qt4_wrap_cpp (MOC_FILES "${${ARG}_MOC_SRCS}")
+			list (APPEND kadu_SUBDIRS_SRCS ${${ARG}_SRCS} ${${ARG}_MOC_SRCS})
 			include_directories (${${ARG}_INCLUDES})
 		endif ()
 	endforeach ()
@@ -271,7 +265,7 @@ endmacro ()
 if (NOT FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
 endif ()
-add_library (libkadu SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
+add_library (libkadu SHARED ${kadu_SRCS} ${kadu_MOC_SRCS} ${kadu_SUBDIRS_SRCS})
 kadu_set_flags (libkadu)
 if (FAST_LINKING)
 	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})

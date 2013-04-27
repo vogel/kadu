@@ -101,3 +101,5 @@ const QString & PEPGetTask::node() const
 {
 	return node_;
 }
+
+#include "moc_pep-get-task.cpp"

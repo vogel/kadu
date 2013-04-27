@@ -86,3 +86,5 @@ void HistoryChatDataWindowAddons::chatDataWindowDestroyed(ChatDataWindow *chatDa
 
 	disconnect(chatDataWindow, 0, this, 0);
 }
+
+#include "moc_history-chat-data-window-addons.cpp"

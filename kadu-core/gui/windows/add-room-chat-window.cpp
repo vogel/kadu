@@ -239,3 +239,5 @@ void AddRoomChatWindow::start()
 
 	QDialog::accept();
 }
+
+#include "moc_add-room-chat-window.cpp"

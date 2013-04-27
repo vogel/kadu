@@ -292,3 +292,5 @@ void DccSocketNotifiers::rejectFileTransfer()
 	gg_dcc7_reject(Socket7, GG_DCC7_REJECT_USER);
 	enable();
 }
+
+#include "moc_dcc-socket-notifiers.cpp"

@@ -79,3 +79,5 @@ void AutostatusActions::autostatusActionActivated(QAction *action, bool toggled)
 
 	Autostatus::instance()->toggle(toggled);
 }
+
+#include "moc_autostatus-actions.cpp"

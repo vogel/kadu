@@ -114,3 +114,5 @@ void JabberSubscriptionService::sendSubsription(const Contact &contact, const QS
 }
 
 }
+
+#include "moc_jabber-subscription-service.cpp"

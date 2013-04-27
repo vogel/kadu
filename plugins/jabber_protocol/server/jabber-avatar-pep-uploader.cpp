@@ -147,3 +147,5 @@ void JabberAvatarPepUploader::uploadAvatar(const QString &id, const QString &pas
 	else
 		doRemove();
 }
+
+#include "moc_jabber-avatar-pep-uploader.cpp"

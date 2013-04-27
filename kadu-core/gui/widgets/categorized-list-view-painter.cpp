@@ -212,3 +212,5 @@ void CategorizedListViewPainter::mouseButtonDoubleClicked(const QModelIndex&, co
 void CategorizedListViewPainter::mouseLeft(const QModelIndex&, const QRect&)
 {
 }
+
+#include "moc_categorized-list-view-painter.cpp"

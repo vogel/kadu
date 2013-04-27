@@ -120,3 +120,5 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 
 	ConfigurationManager::instance()->flush();
 }
+
+#include "moc_config-wizard-set-up-account-page.cpp"

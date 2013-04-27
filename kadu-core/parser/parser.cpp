@@ -35,6 +35,7 @@
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-manager.h"
+#include "buddies/group.h"
 #include "chat/model/chat-data-extractor.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"

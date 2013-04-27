@@ -558,3 +558,5 @@ void TabWidget::updateTabsListButton()
 	TabsListButton->setVisible(!allTabsVisible);
 	TabsListButton->setText(QString::number(count()));
 }
+
+#include "moc_tab-widget.cpp"

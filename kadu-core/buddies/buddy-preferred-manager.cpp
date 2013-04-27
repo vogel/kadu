@@ -223,3 +223,5 @@ Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 
 	return Account::null;
 }
+
+#include "moc_buddy-preferred-manager.cpp"

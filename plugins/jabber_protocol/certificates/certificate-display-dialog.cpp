@@ -220,3 +220,5 @@ QString CertificateDisplayDialog::makePropEntry(QCA::CertificateInfoType var, co
 	else
 		return QString("<tr><td><nobr><b>") + name + "</b></nobr></td><td>" + val + "</td></tr>";
 }
+
+#include "moc_certificate-display-dialog.cpp"

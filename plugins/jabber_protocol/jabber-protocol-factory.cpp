@@ -141,3 +141,5 @@ ProtocolMenuManager * JabberProtocolFactory::protocolMenuManager()
 {
 	return JabberProtocolMenuManager::instance();
 }
+
+#include "moc_jabber-protocol-factory.cpp"

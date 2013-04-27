@@ -70,3 +70,5 @@ void MainConfigurationHolder::configurationUpdated()
 		emit setStatusModeChanged();
 	}
 }
+
+#include "moc_main-configuration-holder.cpp"

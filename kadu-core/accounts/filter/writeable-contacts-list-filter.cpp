@@ -43,3 +43,5 @@ bool WriteableContactsListFilter::acceptAccount(Account account)
 
 	return !protocol->contactsListReadOnly();
 }
+
+#include "moc_writeable-contacts-list-filter.cpp"

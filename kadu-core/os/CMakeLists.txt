@@ -10,7 +10,6 @@ set (os_SRCS
 set (os_MOC_SRCS
 	generic/desktop-aware-object-helper.h
 	generic/window-geometry-manager.h
-	qtsingleapplication/qtlocalpeer.h
 )
 
 if (MINGW)

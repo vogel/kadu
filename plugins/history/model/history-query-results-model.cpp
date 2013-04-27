@@ -121,3 +121,5 @@ void HistoryQueryResultsModel::setResults(const QVector<HistoryQueryResult> &res
 	Results = results;
 	endResetModel();
 }
+
+#include "moc_history-query-results-model.cpp"

@@ -436,3 +436,5 @@ QStringList SpellChecker::buildSuggestList(const QString &word)
 
 	return suggestWordList;
 }
+
+#include "moc_spellchecker.cpp"

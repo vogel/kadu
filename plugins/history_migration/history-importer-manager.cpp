@@ -78,3 +78,5 @@ void HistoryImporterManager::importerDestroyed(QObject *importer)
 {
 	Importers.removeAll(static_cast<HistoryImporter *>(importer));
 }
+
+#include "moc_history-importer-manager.cpp"

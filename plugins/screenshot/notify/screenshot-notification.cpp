@@ -63,3 +63,5 @@ ScreenshotNotification::~ScreenshotNotification()
 {
 
 }
+
+#include "moc_screenshot-notification.cpp"

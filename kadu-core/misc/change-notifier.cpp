@@ -61,3 +61,5 @@ void ChangeNotifier::forget()
 {
 	Changed = false;
 }
+
+#include "moc_change-notifier.cpp"

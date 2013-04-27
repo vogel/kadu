@@ -790,3 +790,5 @@ void TabsManager::createDefaultConfiguration()
 	config_file.addVariable("Tabs", "OldStyleClosing", "false");
 	config_file.addVariable("Tabs", "CloseButtonOnTab", "false");
 }
+
+#include "moc_tabs.cpp"

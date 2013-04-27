@@ -203,3 +203,5 @@ void ChatDetailsRoom::removeContact(const Contact &contact)
 	Contacts.remove(contact);
 	emit contactRemoved(contact);
 }
+
+#include "moc_chat-details-room.cpp"

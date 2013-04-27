@@ -75,3 +75,5 @@ void XmlConsole::xmlOutgoingSlot(const QString &str)
 	Viewer->setTextColor(Qt::red);
 	Viewer->append(str + '\n');
 }
+
+#include "moc_xml-console.cpp"

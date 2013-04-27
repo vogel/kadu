@@ -87,3 +87,5 @@ void EmoticonConfigurator::configurationUpdated()
 	if (EmoticonExpanderProvider)
 		EmoticonExpanderProvider.data()->setConfiguration(Configuration);
 }
+
+#include "moc_emoticon-configurator.cpp"

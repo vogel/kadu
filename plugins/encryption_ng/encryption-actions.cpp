@@ -71,3 +71,5 @@ void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
 		if (action->context()->chat() == chat)
 			action->setChecked(check);
 }
+
+#include "moc_encryption-actions.cpp"

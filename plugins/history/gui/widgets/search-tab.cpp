@@ -338,3 +338,5 @@ void SearchTab::setSizes(const QList<int> &newSizes)
 	Splitter->setSizes(newSizes.mid(0, 2));
 	TimelineView->setSizes(newSizes.mid(2, 2));
 }
+
+#include "moc_search-tab.cpp"

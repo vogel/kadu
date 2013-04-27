@@ -565,3 +565,5 @@ void Firewall::createDefaultConfiguration()
 	config_file.addVariable("Firewall", "write_log", true);
 	config_file.addVariable("Firewall", "logFile", KaduPaths::instance()->profilePath() + QLatin1String("firewall.log"));
 }
+
+#include "moc_firewall.cpp"

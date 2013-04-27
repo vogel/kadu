@@ -113,3 +113,5 @@ void ListEditWidget::deleteItem()
 	delete item;
 	LineEdit->clear();
 }
+
+#include "moc_list-edit-widget.cpp"

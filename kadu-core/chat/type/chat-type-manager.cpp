@@ -135,3 +135,5 @@ ChatType * ChatTypeManager::chatType(const QString &alias)
 {
 	return ChatTypesMap.value(alias);
 }
+
+#include "moc_chat-type-manager.cpp"

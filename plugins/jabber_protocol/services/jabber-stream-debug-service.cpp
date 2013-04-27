@@ -58,3 +58,5 @@ void JabberStreamDebugService::outgoingXml(const QString &xmlData)
 }
 
 }
+
+#include "moc_jabber-stream-debug-service.cpp"

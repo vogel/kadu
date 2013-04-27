@@ -152,3 +152,5 @@ void ChatImageRequestService::resetReceivedImageKeysCount()
 {
 	ReceivedImageKeysCount = 0;
 }
+
+#include "moc_chat-image-request-service.cpp"

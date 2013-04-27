@@ -744,3 +744,5 @@ void HintManager::createDefaultConfiguration()
 }
 
 HintManager *hint_manager = NULL;
+
+#include "moc_hint_manager.cpp"

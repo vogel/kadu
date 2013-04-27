@@ -160,3 +160,5 @@ void AccountsModel::setIncludeIdInDisplay(bool includeIdInDisplay)
 	IncludeIdInDisplay = includeIdInDisplay;
 	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
+
+#include "moc_accounts-model.cpp"

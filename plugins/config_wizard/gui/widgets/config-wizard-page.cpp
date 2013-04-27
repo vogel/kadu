@@ -70,3 +70,5 @@ void ConfigWizardPage::setDescription(const QString &description)
 {
 	DescriptionPane->setText(description);
 }
+
+#include "moc_config-wizard-page.cpp"

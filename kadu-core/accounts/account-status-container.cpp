@@ -96,3 +96,5 @@ void AccountStatusContainer::triggerStatusUpdated()
 {
 	emit statusUpdated(this);
 }
+
+#include "moc_account-status-container.cpp"

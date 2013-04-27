@@ -58,3 +58,5 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	Q_ASSERT(result.endsWith(QLatin1String("</message>")));
 	return result.mid(qstrlen("<message>"), result.length() - qstrlen("<message></message>"));
 }
+
+#include "moc_message-html-renderer-service.cpp"

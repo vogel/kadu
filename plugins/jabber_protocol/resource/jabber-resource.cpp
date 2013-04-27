@@ -37,3 +37,5 @@ void JabberResource::setResource(const XMPP::Resource &resource)
 {
 	Resource = resource;
 }
+
+#include "moc_jabber-resource.cpp"

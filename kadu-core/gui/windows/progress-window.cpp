@@ -179,3 +179,5 @@ void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const Q
 	if (!ok && !entryMessage.isEmpty())
 		MessageDialog::show(KaduIcon(entryIcon), Label, entryMessage);
 }
+
+#include "moc_progress-window.cpp"

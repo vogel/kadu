@@ -71,3 +71,5 @@ void EmoticonExpanderDomVisitorProvider::setConfiguration(const EmoticonConfigur
 
 	rebuildExpander();
 }
+
+#include "moc_emoticon-expander-dom-visitor-provider.cpp"

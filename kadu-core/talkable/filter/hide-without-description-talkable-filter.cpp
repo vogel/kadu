@@ -55,3 +55,5 @@ void HideWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
 	Enabled = enabled;
 	emit filterChanged();
 }
+
+#include "moc_hide-without-description-talkable-filter.cpp"

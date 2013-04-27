@@ -106,3 +106,5 @@ void SendPublicKeyActionDescription::sendPublicKey(const Contact &contact)
 	if (MessageManager::instance()->sendMessage(chat, QString::fromUtf8(key.key().data()), true))
 		EncryptionNgNotification::notifyPublicKeySent(contact);
 }
+
+#include "moc_send-public-key-action-description.cpp"

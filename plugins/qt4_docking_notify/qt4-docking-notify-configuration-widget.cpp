@@ -80,3 +80,5 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 	configWindow->show();
 	_activateWindow(configWindow);
 }
+
+#include "moc_qt4-docking-notify-configuration-widget.cpp"

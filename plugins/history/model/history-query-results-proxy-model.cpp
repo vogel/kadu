@@ -57,3 +57,5 @@ void HistoryQueryResultsProxyModel::setTitleVisible(const bool titleVisible)
 	TitleVisible = titleVisible;
 	invalidateFilter();
 }
+
+#include "moc_history-query-results-proxy-model.cpp"

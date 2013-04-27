@@ -272,3 +272,5 @@ void ContactListService::contactListImportedSlot(bool ok, const BuddyList &buddi
 	if (ok)
 		setBuddiesList(buddies, true);
 }
+
+#include "moc_contact-list-service.cpp"

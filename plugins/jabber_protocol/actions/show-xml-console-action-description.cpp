@@ -135,3 +135,5 @@ void ShowXmlConsoleActionDescription::menuActionTriggered(QAction *action)
 
 	(new XmlConsole(account))->show();
 }
+
+#include "moc_show-xml-console-action-description.cpp"

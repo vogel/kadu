@@ -104,3 +104,5 @@ void Preview::configurationUpdated()
 {
 	WebView->setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }
+
+#include "moc_preview.cpp"

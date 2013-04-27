@@ -177,3 +177,5 @@ void DeleteTalkableAction::trigger(ActionContext *context)
 			break;
 	}
 }
+
+#include "moc_delete-talkable-action.cpp"

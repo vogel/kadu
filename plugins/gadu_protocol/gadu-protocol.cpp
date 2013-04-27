@@ -587,3 +587,5 @@ void GaduProtocol::configurationUpdated()
 	gg_debug_level = debug_mask & 255;
 #endif
 }
+
+#include "moc_gadu-protocol.cpp"

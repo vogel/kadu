@@ -102,3 +102,5 @@ void StatusIcon::setIcon(const KaduIcon &icon)
 	Icon = icon;
 	emit iconUpdated(Icon);
 }
+
+#include "moc_status-icon.cpp"

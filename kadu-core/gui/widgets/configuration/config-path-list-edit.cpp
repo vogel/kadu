@@ -80,3 +80,5 @@ void ConfigPathListEdit::setVisible(bool visible)
 	label->setVisible(visible);
 	PathListEdit::setVisible(visible);
 }
+
+#include "moc_config-path-list-edit.cpp"

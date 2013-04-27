@@ -125,3 +125,5 @@ void JabberClientInfoService::setFeatures(const Features &features)
 }
 
 }
+
+#include "moc_jabber-client-info-service.cpp"

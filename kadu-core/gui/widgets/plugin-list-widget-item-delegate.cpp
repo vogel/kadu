@@ -299,3 +299,5 @@ QFont PluginListWidgetItemDelegate::subtitleFont(const QFont &baseFont) const
 
         return retFont;
 }
+
+#include "moc_plugin-list-widget-item-delegate.cpp"

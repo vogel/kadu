@@ -36,3 +36,5 @@ int StatusChanger::priority()
 {
 	return Priority;
 }
+
+#include "moc_status-changer.cpp"

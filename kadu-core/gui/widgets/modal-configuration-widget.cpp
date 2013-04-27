@@ -46,3 +46,5 @@ ModalConfigurationWidgetState ModalConfigurationWidget::state()
 {
 	return State;
 }
+
+#include "moc_modal-configuration-widget.cpp"

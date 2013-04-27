@@ -65,3 +65,5 @@ AccountNotification::AccountNotification(Account account, const QString &type, c
 AccountNotification::~AccountNotification()
 {
 }
+
+#include "moc_account-notification.cpp"

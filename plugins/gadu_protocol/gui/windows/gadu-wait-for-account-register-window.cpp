@@ -68,3 +68,5 @@ void GaduWaitForAccountRegisterWindow::registerNewAccountFinished(GaduServerRegi
 
 	delete gsra;
 }
+
+#include "moc_gadu-wait-for-account-register-window.cpp"

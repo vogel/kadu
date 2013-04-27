@@ -93,3 +93,5 @@ void GaduAvatarDownloader::parseReply()
 	else
 		done(QImage());
 }
+
+#include "moc_gadu-avatar-downloader.cpp"

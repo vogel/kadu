@@ -237,3 +237,5 @@ QSize IconsManager::getIconsSize()
 {
 	return QSize(16, 16);
 }
+
+#include "moc_icons-manager.cpp"

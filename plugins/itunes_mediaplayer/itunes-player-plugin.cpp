@@ -52,3 +52,5 @@ void ItunesMediaplayerPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(itunes_mediaplayer, ItunesMediaplayerPlugin)
+
+#include "moc_itunes-player-plugin.cpp"

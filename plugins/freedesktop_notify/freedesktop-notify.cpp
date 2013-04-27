@@ -407,3 +407,5 @@ void FreedesktopNotify::createDefaultConfiguration()
 	config_file.addVariable("FreedesktopNotify", "ShowContentMessage", true);
 	config_file.addVariable("FreedesktopNotify", "CiteSign", 100);
 }
+
+#include "moc_freedesktop-notify.cpp"

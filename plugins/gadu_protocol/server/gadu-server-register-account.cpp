@@ -64,3 +64,5 @@ void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
 
 	emit finished(this);
 }
+
+#include "moc_gadu-server-register-account.cpp"

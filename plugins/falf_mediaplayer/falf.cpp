@@ -174,3 +174,5 @@ bool FalfMediaPlayer::isActive()
 }
 
 Q_EXPORT_PLUGIN2(falf_mediaplayer, FalfMediaPlayer)
+
+#include "moc_falf.cpp"

@@ -48,3 +48,5 @@ void PhononPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(phonon_sound, PhononPlugin)
+
+#include "moc_phonon-plugin.cpp"

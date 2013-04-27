@@ -406,3 +406,5 @@ void ProxyEditWindow::proxySelectionChanged(const QItemSelection &selected, cons
 	ProxyView->selectionModel()->select(deselected, QItemSelectionModel::ClearAndSelect);
 	ForceProxyChange = false;
 }
+
+#include "moc_proxy-edit-window.cpp"

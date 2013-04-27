@@ -31,3 +31,5 @@ Notifier::Notifier(const QString& name, const QString& description, const KaduIc
 Notifier::~Notifier()
 {
 }
+
+#include "moc_notifier.cpp"

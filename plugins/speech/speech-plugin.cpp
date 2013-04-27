@@ -55,3 +55,5 @@ void SpeechPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(speech, SpeechPlugin)
+
+#include "moc_speech-plugin.cpp"

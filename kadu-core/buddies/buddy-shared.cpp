@@ -544,3 +544,5 @@ QSharedPointer<StoragePoint> BuddyShared::createStoragePoint()
 }
 
 KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)
+
+#include "moc_buddy-shared.cpp"

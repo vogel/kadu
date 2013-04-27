@@ -164,3 +164,5 @@ void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 	DnsNameText->setText(contact.dnsName());
 	ProtocolVerText->setText(contact.protocolVersion());
 }
+
+#include "moc_gadu-contact-personal-info-widget.cpp"

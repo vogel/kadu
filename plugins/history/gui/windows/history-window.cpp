@@ -185,3 +185,5 @@ void HistoryWindow::currentTabChanged(int newTabIndex)
 
 	currentTab->setSizes(previousTab->sizes());
 }
+
+#include "moc_history-window.cpp"

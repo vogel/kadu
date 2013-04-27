@@ -51,3 +51,5 @@ void BuddyManagerAdapter::buddyRemoved(const Buddy &buddy)
 {
 	Model->removeBuddy(buddy);
 }
+
+#include "moc_buddy-manager-adapter.cpp"

@@ -150,3 +150,5 @@ void JabberActions::askForSubscriptionActionActivated(QAction *sender)
 
 	subscriptionService->requestSubscription(contact);
 }
+
+#include "moc_jabber-actions.cpp"

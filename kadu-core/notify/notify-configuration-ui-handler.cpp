@@ -302,3 +302,5 @@ void NotifyConfigurationUiHandler::customSettingsCheckBoxToggled(bool toggled)
 		if (guiItem.ConfigurationGroupBox)
 			guiItem.ConfigurationGroupBox->setVisible(toggled);
 }
+
+#include "moc_notify-configuration-ui-handler.cpp"

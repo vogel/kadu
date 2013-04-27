@@ -84,3 +84,5 @@ void TokenWindow::reject()
 	emit tokenValueEntered(QString());
 	QDialog::reject();
 }
+
+#include "moc_token-window.cpp"

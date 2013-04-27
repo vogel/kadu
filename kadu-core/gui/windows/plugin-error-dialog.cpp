@@ -77,3 +77,5 @@ void PluginErrorDialog::accept()
 	if (LoadInFutureCheck)
 		emit accepted(LoadInFutureCheck->isChecked());
 }
+
+#include "moc_plugin-error-dialog.cpp"

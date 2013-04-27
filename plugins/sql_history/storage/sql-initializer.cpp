@@ -158,3 +158,5 @@ void SqlInitializer::initDatabase()
 		emit progressFinished(true, "dialog-information", tr("Copying completed."));
 	}
 }
+
+#include "moc_sql-initializer.cpp"

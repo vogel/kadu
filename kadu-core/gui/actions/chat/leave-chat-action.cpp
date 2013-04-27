@@ -63,3 +63,5 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	chat.setIgnoreAllMessages(true);
 	chatWidget->close();
 }
+
+#include "moc_leave-chat-action.cpp"

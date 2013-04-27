@@ -487,3 +487,5 @@ void MainWindow::showEvent(QShowEvent * event)
 		setBlur(true);
 	QMainWindow::showEvent(event);
 }
+
+#include "moc_main-window.cpp"

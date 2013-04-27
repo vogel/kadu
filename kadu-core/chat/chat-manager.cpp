@@ -164,3 +164,5 @@ void ChatManager::unreadMessageRemoved(const Message &message)
 	if (unreadMessagesCount > 0)
 		chat.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
+
+#include "moc_chat-manager.cpp"

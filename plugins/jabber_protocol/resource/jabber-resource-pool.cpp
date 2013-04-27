@@ -253,3 +253,5 @@ const XMPP::Resource & JabberResourcePool::bestResource(const XMPP::Jid &jid, bo
 
 	return bestResource ? bestResource->resource() : EmptyResource;
 }
+
+#include "moc_jabber-resource-pool.cpp"

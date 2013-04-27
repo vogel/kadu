@@ -205,3 +205,5 @@ MessageRenderInfo & MessageRenderInfo::setNickColor(const QString &nickColor)
 	NickColor = nickColor;
 	return *this;
 }
+
+#include "moc_message-render-info.cpp"

@@ -97,3 +97,5 @@ QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
 
 	return result;
 }
+
+#include "moc_model-chain.cpp"

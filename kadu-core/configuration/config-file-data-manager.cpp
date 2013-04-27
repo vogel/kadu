@@ -41,3 +41,5 @@ QVariant ConfigFileDataManager::readEntry(const QString &section, const QString 
 	return QVariant(config_file.readEntry(section, name));
 }
 
+
+#include "moc_config-file-data-manager.cpp"

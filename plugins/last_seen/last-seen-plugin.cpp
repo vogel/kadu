@@ -45,3 +45,5 @@ void LastSeenPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(last_seen, LastSeenPlugin)
+
+#include "moc_last-seen-plugin.cpp"

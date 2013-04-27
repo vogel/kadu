@@ -102,3 +102,5 @@ ProtocolFactory * ProtocolsManager::byIndex(int index)
 
 	return Factories.at(index);
 }
+
+#include "moc_protocols-manager.cpp"

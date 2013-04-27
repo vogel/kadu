@@ -62,3 +62,5 @@ const gg_multilogon_id_t & GaduMultilogonSession::id() const
 {
 	return Id;
 }
+
+#include "moc_gadu-multilogon-session.cpp"

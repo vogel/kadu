@@ -43,3 +43,5 @@ bool EncryptionNgSimliteMessageFilter::acceptMessage(const Message &message)
 	emit keyReceived(message.messageSender(), "simlite", message.plainTextContent().toUtf8());
 	return false;
 }
+
+#include "moc_encryption-ng-simlite-message-filter.cpp"

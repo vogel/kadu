@@ -33,7 +33,6 @@
 #include "exports.h"
 
 class Account;
-class Contact;
 
 class KADUAPI ContactManager : public QObject, public Manager<Contact>
 {
@@ -94,8 +93,5 @@ signals:
 	void contactUpdated(const Contact &contact);
 
 };
-
-// for MOC
-#include "contacts/contact.h"
 
 #endif // CONTACT_MANAGER_H

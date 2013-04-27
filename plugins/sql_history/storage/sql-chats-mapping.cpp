@@ -204,3 +204,5 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 
 	return Chat::create();
 }
+
+#include "moc_sql-chats-mapping.cpp"

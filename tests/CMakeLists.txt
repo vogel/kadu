@@ -1,7 +1,5 @@
 find_package (Qt QUIET REQUIRED COMPONENTS QtTest)
 
-set (CMAKE_INCLUDE_CURRENT_DIR TRUE)
-
 # kadu_add_test (<name> source1 source2 ... sourceN)
 function (kadu_add_test name_)
 	set (pluginName)
@@ -14,13 +12,6 @@ function (kadu_add_test name_)
 			return ()
 		endif ()
 	endif ()
-
-	foreach (file ${ARGN})
-		get_filename_component (mocFile "${file}" NAME_WE)
-		set (mocFile "${CMAKE_CURRENT_BINARY_DIR}/${mocFile}.moc")
-		qt4_generate_moc (${file} "${mocFile}")
-		set_property (SOURCE ${file} APPEND PROPERTY OBJECT_DEPENDS "${mocFile}")
-	endforeach ()
 
 	get_filename_component (exeDir "${CMAKE_CURRENT_BINARY_DIR}/${name_}" PATH)
 	file (MAKE_DIRECTORY "${exeDir}")

@@ -120,3 +120,5 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
 
 	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SIGNAL(personalInfoUpdated(bool)));
 }
+
+#include "moc_jabber-personal-info-service.cpp"

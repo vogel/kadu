@@ -279,3 +279,5 @@ QList<StatusContainer *> StatusContainerManager::subStatusContainers()
 {
 	return StatusContainers;
 }
+
+#include "moc_status-container-manager.cpp"
