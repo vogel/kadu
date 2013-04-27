@@ -23,12 +23,13 @@
 #ifndef NEW_MESSAGE_NOTIFICATION_H
 #define NEW_MESSAGE_NOTIFICATION_H
 
+#include "exports.h"
 #include "message/message.h"
 #include "chat-notification.h"
 
 class NotifyEvent;
 
-class MessageNotification : public ChatNotification
+class KADUAPI MessageNotification : public ChatNotification
 {
 	Q_OBJECT
 

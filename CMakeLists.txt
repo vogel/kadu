@@ -41,6 +41,11 @@ else ()
 		set (LINK_FLAGS "-Wl,--no-undefined")
 	endif ()
 
+	if (NOT WIN32)
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fvisibility=hidden")
+		set (CXX_FLAGS "${CXX_FLAGS} -fvisibility-inlines-hidden")
+	endif ()
+
 	if (ENABLE_DEVELOPER_BUILD)
 		# -pipe can speed up the build
 		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
