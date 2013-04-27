@@ -34,6 +34,9 @@ else ()
 	set (C_FLAGS "-Wwrite-strings")
 	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -fno-exceptions")
 	list (APPEND DEFINITIONS QT_NO_EXCEPTIONS)
+	if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
+		set (LINK_FLAGS "-Wl,--no-undefined")
+	endif ()
 
 	if (ENABLE_DEVELOPER_BUILD)
 		# -pipe can speed up the build
@@ -48,7 +51,7 @@ else ()
 
 		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
 			# -z now checks there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
-			set (LINK_FLAGS "-Wl,-z,now -Wl,--fatal-warnings")
+			set (LINK_FLAGS "${LINK_FLAGS} -Wl,-z,now -Wl,--fatal-warnings")
 		endif ()
 	endif ()
 endif ()

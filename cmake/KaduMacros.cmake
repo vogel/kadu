@@ -167,10 +167,6 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		endif ()
 	endif ()
 
-	if (APPLE)
-		set_property (TARGET ${KADU_PLUGIN_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
-	endif ()
-
 	if (NOT MSVC)
 		cmake_policy (SET CMP0002 OLD)
 		if (NOT TARGET tsupdate)
