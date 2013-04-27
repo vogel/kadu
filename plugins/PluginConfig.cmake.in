@@ -1,0 +1,10 @@
+if (NOT TARGET @KADU_PLUGIN_NAME@)
+	foreach (_plugin_dependency @KADU_PLUGIN_DEPENDENCIES@)
+		set (KaduPlugin_${_plugin_dependency}_DIR "${Kadu_DIR}")
+		find_package (KaduPlugin_${_plugin_dependency} REQUIRED)
+	endforeach ()
+
+	include ("${CMAKE_CURRENT_LIST_DIR}/KaduPlugin_@KADU_PLUGIN_NAME@Targets.cmake")
+
+	set (KADU_PLUGIN_@KADU_PLUGIN_NAME@_LIBRARIES @KADU_PLUGIN_NAME@)
+endif ()

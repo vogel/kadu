@@ -9,7 +9,7 @@ option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 # Global CMake variables
 
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-list (INSERT CMAKE_PREFIX_PATH 0 "${CMAKE_CURRENT_BINARY_DIR}")
+list (INSERT CMAKE_PREFIX_PATH 0 "${CMAKE_BINARY_DIR}")
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
@@ -252,9 +252,9 @@ endmacro ()
 # set some variables in there from within the subdirectories, so we generated
 # the intallation version later.
 kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
-	"${CMAKE_CURRENT_BINARY_DIR}/KaduConfig.cmake" BUILD_TREE)
+	"${CMAKE_BINARY_DIR}/KaduConfig.cmake" BUILD_TREE)
 
-write_basic_package_version_file ("${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
+write_basic_package_version_file ("${CMAKE_BINARY_DIR}/KaduConfigVersion.cmake"
 	VERSION ${simple_version} COMPATIBILITY AnyNewerVersion
 )
 
@@ -294,12 +294,12 @@ add_subdirectory (kthxbye)
 
 # Now write KaduConfig for installation.
 kadu_configure_package_config_file (cmake/KaduConfig.cmake.in
-	"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
+	"${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake" INSTALL_TREE)
 
 if (KADU_INSTALL_SDK)
 	install (FILES
-		"${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
-		"${CMAKE_CURRENT_BINARY_DIR}/KaduConfigVersion.cmake"
+		"${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/KaduConfig.cmake"
+		"${CMAKE_BINARY_DIR}/KaduConfigVersion.cmake"
 		cmake/KaduMacros.cmake
 		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
 	)

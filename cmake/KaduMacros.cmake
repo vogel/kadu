@@ -77,7 +77,7 @@ endmacro ()
 
 include (CMakeParseArguments)
 
-macro (kadu_plugin KADU_PLUGIN_NAME)
+function (kadu_plugin KADU_PLUGIN_NAME)
 	set (_multi_value_keywords
 		PLUGIN_SOURCES
 		PLUGIN_MOC_SOURCES
@@ -153,18 +153,32 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${KADU_PLUGIN_NAME}
 	)
 
+	if (NOT KADU_BUILD)
+		foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
+			set (KaduPlugin_${_plugin_dependency}_DIR "${Kadu_DIR}")
+			find_package (KaduPlugin_${_plugin_dependency} REQUIRED)
+		endforeach ()
+	endif ()
+
 	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE
 		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES} ${QT_LIBRARIES}
 	)
 
+	configure_file ("${KADU_SDK_DIR}/plugins/PluginConfig.cmake.in" "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" @ONLY)
+
 	install (TARGETS ${KADU_PLUGIN_NAME}
+		EXPORT KaduPlugin_${KADU_PLUGIN_NAME}Targets
 		RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR}
 		LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR}
 	)
-	if (WIN32)
-		if (KADU_INSTALL_SDK)
+
+	if (KADU_INSTALL_SDK)
+		if (WIN32)
 			install (TARGETS ${KADU_PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 		endif ()
+
+		install (FILES "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
+		install (EXPORT KaduPlugin_${KADU_PLUGIN_NAME}Targets DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
 	endif ()
 
 	if (NOT MSVC)
@@ -178,4 +192,4 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		add_dependencies (tsupdate ${KADU_PLUGIN_NAME}-tsupdate)
 		cmake_policy (SET CMP0002 NEW)
 	endif ()
-endmacro ()
+endfunction ()

@@ -35,17 +35,22 @@ get_filename_component (_real_current_list_dir "${CMAKE_CURRENT_LIST_DIR}" REALP
 get_filename_component (_real_binary_dir "${CMAKE_BINARY_DIR}" REALPATH)
 if (_real_current_list_dir STREQUAL _real_binary_dir)
 	# In build tree.
+	set (KADU_BUILD TRUE)
+
 	include ("${CMAKE_SOURCE_DIR}/cmake/KaduMacros.cmake")
 else ()
 	# In installation tree.
+	set (KADU_BUILD FALSE)
+
 	if (NOT TARGET libkadu)
 		set (KADU_WITH_LIBINDICATE_QT "@KADU_WITH_LIBINDICATE_QT@")
 		set (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS "@KADU_INSTALL_UNOFFICIAL_TRANSLATIONS@")
 		set (KADU_ENABLED_LANGUAGES "@KADU_ENABLED_LANGUAGES@")
 
-		include("${CMAKE_CURRENT_LIST_DIR}/KaduTargets.cmake")
-		include("${CMAKE_CURRENT_LIST_DIR}/KaduMacros.cmake")
+		include ("${CMAKE_CURRENT_LIST_DIR}/KaduTargets.cmake")
+		include ("${CMAKE_CURRENT_LIST_DIR}/KaduMacros.cmake")
 	endif ()
 endif ()
 
 set (KADU_LIBRARIES libkadu)
+set (KADU_EXECUTABLE kadu)
