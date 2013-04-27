@@ -75,124 +75,109 @@ macro (kadu_api_directories INCLUDE_DIR)
 	endif ()
 endmacro ()
 
-macro (kadu_plugin)
-	set (VARIABLE_NAME "PLUGIN_NAME")
+include (CMakeParseArguments)
 
-	set (PLUGIN_NAME "")
-	set (PLUGIN_SOURCES "")
-	set (PLUGIN_MOC_SOURCES "")
-	set (PLUGIN_CONFIGURATION_FILES "")
-	set (PLUGIN_DATA_FILES "")
-	set (PLUGIN_DATA_DIRECTORIES "")
-	set (PLUGIN_DEPENDENCIES "")
-	set (PLUGIN_LIBRARIES "")
+macro (kadu_plugin KADU_PLUGIN_NAME)
+	set (_multi_value_keywords
+		PLUGIN_SOURCES
+		PLUGIN_MOC_SOURCES
+		PLUGIN_CONFIGURATION_FILES
+		PLUGIN_DATA_FILES
+		PLUGIN_DATA_DIRECTORIES
+		PLUGIN_DEPENDENCIES
+		PLUGIN_LIBRARIES
+	)
+
+	cmake_parse_arguments (KADU "" "" "${_multi_value_keywords}" ${ARGN})
+
+	if (KADU_UNPARSED_ARGUMENTS)
+		message (FATAL_ERROR "Unknown keywords given to kadu_plugin(): \"${KADU_UNPARSED_ARGUMENTS}\"")
+	endif()
 
 	include_directories (".")
 	include_directories (${KADU_INCLUDE_DIRS})
 
-	foreach (ARG ${ARGV})
-		if ("${VARIABLE_NAME}" STREQUAL "PLUGIN_NAME")
-			set (PLUGIN_NAME ${ARG})
-			set (VARIABLE_NAME "")
-		elseif (ARG MATCHES "(PLUGIN_SOURCES|PLUGIN_MOC_SOURCES|PLUGIN_CONFIGURATION_FILES|PLUGIN_DATA_FILES|PLUGIN_DATA_DIRECTORIES|PLUGIN_DEPENDENCIES|PLUGIN_LIBRARIES)")
-			set (VARIABLE_NAME ${ARG})
-		elseif (VARIABLE_NAME STREQUAL "")
-			message (FATAL_ERROR "Invalid invocation of kadu_plugin macro")
-		else ()
-			set (${VARIABLE_NAME} "${${VARIABLE_NAME}};${ARG}")
-		endif ()
-	endforeach ()
-
 	if (WIN32)
 		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
 
-		list (APPEND PLUGIN_SOURCES ${PLUGIN_NAME}.rc)
-		add_custom_command (OUTPUT ${PLUGIN_NAME}.rc
+		list (APPEND KADU_PLUGIN_SOURCES ${KADU_PLUGIN_NAME}.rc)
+		add_custom_command (OUTPUT ${KADU_PLUGIN_NAME}.rc
 			COMMAND "${KADU_SDK_DIR}/plugins/pluginrcgen.bat"
-			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_NAME}.rc
+			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN_NAME}.desc
-			COMMENT "Building RC source ${PLUGIN_NAME}.rc"
+			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc
+			COMMENT "Building RC source ${KADU_PLUGIN_NAME}.rc"
 		)
 	endif ()
 
-	install (FILES ${PLUGIN_NAME}.desc
+	install (FILES ${KADU_PLUGIN_NAME}.desc
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
 	)
 
-	if (PLUGIN_MOC_SOURCES)
-		qt4_wrap_cpp (PLUGIN_MOC_FILES ${PLUGIN_MOC_SOURCES})
-	endif ()
-
-	add_library (${PLUGIN_NAME} SHARED ${PLUGIN_SOURCES} ${PLUGIN_MOC_FILES})
-	kadu_set_flags (${PLUGIN_NAME})
+	qt4_wrap_cpp (_moc_files ${KADU_PLUGIN_MOC_SOURCES})
+	add_library (${KADU_PLUGIN_NAME} SHARED ${KADU_PLUGIN_SOURCES} ${_moc_files})
+	kadu_set_flags (${KADU_PLUGIN_NAME})
 
 	if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
-		file (GLOB PLUGIN_TRANSLATION_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${PLUGIN_NAME}_*.ts")
+		file (GLOB _translation_sources RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${KADU_PLUGIN_NAME}_*.ts")
 	else ()
-		set (PLUGIN_TRANSLATION_SOURCES)
+		set (_translation_sources)
 		foreach (LANGUAGE ${KADU_ENABLED_LANGUAGES})
-			set (file_ "${CMAKE_CURRENT_SOURCE_DIR}/translations/${PLUGIN_NAME}_${LANGUAGE}.ts")
+			set (file_ "${CMAKE_CURRENT_SOURCE_DIR}/translations/${KADU_PLUGIN_NAME}_${LANGUAGE}.ts")
 			if (EXISTS "${file_}")
-				list (APPEND PLUGIN_TRANSLATION_SOURCES "${file_}")
+				list (APPEND _translation_sources "${file_}")
 			endif ()
 		endforeach ()
 	endif ()
 
-	if (PLUGIN_TRANSLATION_SOURCES)
-		qt4_add_translation (PLUGIN_TRANSLATION_FILES ${PLUGIN_TRANSLATION_SOURCES})
+	if (_translation_sources)
+		qt4_add_translation (_translation_files ${_translation_sources})
 
-		install (FILES ${PLUGIN_TRANSLATION_FILES}
+		install (FILES ${_translation_files}
 			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/translations
 		)
 
-		add_custom_target (${PLUGIN_NAME}-translations DEPENDS ${PLUGIN_TRANSLATION_FILES})
-		add_dependencies (${PLUGIN_NAME} ${PLUGIN_NAME}-translations)
+		add_custom_target (${KADU_PLUGIN_NAME}-translations DEPENDS ${_translation_files})
+		add_dependencies (${KADU_PLUGIN_NAME} ${KADU_PLUGIN_NAME}-translations)
 	endif ()
 
-	install (FILES ${PLUGIN_CONFIGURATION_FILES}
+	install (FILES ${KADU_PLUGIN_CONFIGURATION_FILES}
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/configuration
 	)
 
-	if (NOT "${PLUGIN_DATA_FILES}" STREQUAL "")
-		install (FILES ${PLUGIN_DATA_FILES}
-			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${PLUGIN_NAME}
-		)
-	endif ()
+	install (FILES ${KADU_PLUGIN_DATA_FILES}
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${KADU_PLUGIN_NAME}
+	)
 
-	if (NOT "${PLUGIN_DATA_DIRECTORIES}" STREQUAL "")
-		install (DIRECTORY ${PLUGIN_DATA_DIRECTORIES}
-			DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${PLUGIN_NAME}
-		)
-	endif ()
+	install (DIRECTORY ${KADU_PLUGIN_DATA_DIRECTORIES}
+		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${KADU_PLUGIN_NAME}
+	)
 
-	if (NOT "${PLUGIN_LIBRARIES}" STREQUAL "")
-		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE ${PLUGIN_LIBRARIES})
-	endif ()
+	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_LIBRARIES})
 
 	if (WIN32)
-		target_link_libraries (${PLUGIN_NAME} LINK_PRIVATE ${KADU_LIBRARIES} ${PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+		target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
 
 		if (KADU_INSTALL_SDK)
-			install (TARGETS ${PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
+			install (TARGETS ${KADU_PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 		endif ()
 	endif ()
 
 	if (APPLE)
-		set_property (TARGET ${PLUGIN_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
+		set_property (TARGET ${KADU_PLUGIN_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
 	endif ()
 
-	install (TARGETS ${PLUGIN_NAME} RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR} LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR})
+	install (TARGETS ${KADU_PLUGIN_NAME} RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR} LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR})
 
 	if (NOT MSVC)
-		cmake_policy(SET CMP0002 OLD)
+		cmake_policy (SET CMP0002 OLD)
 		if (NOT TARGET tsupdate)
 			add_custom_target (tsupdate)
 		endif ()
-		add_custom_target (${PLUGIN_NAME}-tsupdate
+		add_custom_target (${KADU_PLUGIN_NAME}-tsupdate
 			"${KADU_SDK_DIR}/translations/plugintsupdate.sh" "${CMAKE_CURRENT_SOURCE_DIR}"
 		)
-		add_dependencies (tsupdate ${PLUGIN_NAME}-tsupdate)
-		cmake_policy(SET CMP0002 NEW)
+		add_dependencies (tsupdate ${KADU_PLUGIN_NAME}-tsupdate)
+		cmake_policy (SET CMP0002 NEW)
 	endif ()
 endmacro ()
