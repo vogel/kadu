@@ -1,29 +1,19 @@
 option (BUILD_PLUGINS "Switch to OFF if you do not want to build plugins" ON)
 
 if (BUILD_PLUGINS)
-	if (NOT WIN32)
-		find_program (AWK gawk awk)
-		if (AWK)
-			set (_COMPILE_PLUGINS "")
-			foreach (ARG ${COMPILE_PLUGINS})
-				set (_COMPILE_PLUGINS "${_COMPILE_PLUGINS} ${ARG}")
-			endforeach ()
-
-			exec_program (${CMAKE_CURRENT_SOURCE_DIR}/check-deps.sh ${CMAKE_CURRENT_SOURCE_DIR}
-				ARGS ${AWK} ${_COMPILE_PLUGINS}
-				OUTPUT_VARIABLE DEPS_MESSAGE
-				RETURN_VALUE DEPS_STATUS
-			)
-
-			if (DEPS_STATUS EQUAL 1)
-				message (FATAL_ERROR ${DEPS_MESSAGE})
+	foreach (plugin ${COMPILE_PLUGINS})
+		file (STRINGS "${plugin}/${plugin}.desc" plugin_dependencies REGEX "^Dependencies")
+		string (REPLACE "Dependencies=" "" plugin_dependencies "${plugin_dependencies}")
+		string (REPLACE " " ";" plugin_dependencies "${plugin_dependencies}")
+		foreach (dependency ${plugin_dependencies})
+			list (FIND COMPILE_PLUGINS "${dependency}" index)
+			if (index EQUAL -1)
+				message (FATAL_ERROR "`${plugin}' plugin requires `${dependency}' plugin. Please enable `${dependency}' plugin.")
 			endif ()
-		endif ()
-	endif ()
+		endforeach ()
 
-	foreach (PLUGIN ${COMPILE_PLUGINS})
-		message (STATUS "Plugin: " ${PLUGIN})
-		add_subdirectory (${PLUGIN})
+		message (STATUS "Plugin: " ${plugin})
+		add_subdirectory (${plugin})
 	endforeach ()
 endif ()
 
