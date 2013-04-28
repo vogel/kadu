@@ -93,7 +93,7 @@ void GaduEditAccountWidget::createGui()
 	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
 	{
 		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
-		tabWidget->addTab(widget, tr("Custom Configuration"));
+		tabWidget->addTab(widget, widget->windowTitle());
 	}
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);

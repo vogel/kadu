@@ -25,6 +25,8 @@
 EncryptionNgOtrAccountConfigurationWidget::EncryptionNgOtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
 		AccountConfigurationWidget(account, parent)
 {
+	setWindowTitle(tr("OTR Encyption"));
+
 	createGui();
 }
 
