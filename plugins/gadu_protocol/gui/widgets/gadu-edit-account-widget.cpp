@@ -44,6 +44,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/account-configuration-widget-tab-adapter.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-combo-box.h"
 #include "icons/icons-manager.h"
@@ -90,11 +91,7 @@ void GaduEditAccountWidget::createGui()
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
-	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
-	{
-		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));
-		tabWidget->addTab(widget, widget->windowTitle());
-	}
+	new AccountConfigurationWidgetTabAdapter(this, tabWidget, this);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 

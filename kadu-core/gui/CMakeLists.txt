@@ -25,6 +25,7 @@ set (gui_SRCS
 	widgets/account-edit-widget.cpp
 	widgets/account-configuration-widget.cpp
 	widgets/account-configuration-widget-factory-repository.cpp
+	widgets/account-configuration-widget-tab-adapter.cpp
 	widgets/account-buddy-list-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
@@ -206,6 +207,7 @@ set (gui_MOC_SRCS
 	widgets/account-configuration-widget.h
 	widgets/account-create-widget.h
 	widgets/account-configuration-widget-factory-repository.h
+	widgets/account-configuration-widget-tab-adapter.h
 	widgets/account-edit-widget.h
 	widgets/accounts-combo-box.h
 	widgets/actions-combo-box.h

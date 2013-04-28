@@ -47,8 +47,6 @@ private slots:
 protected:
 	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
 
-	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
-
 	void applyAccountConfigurationWidgets();
 	void cancelAccountConfigurationWidgets();
 
@@ -58,6 +56,8 @@ public:
 	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
 							   Account account, QWidget *parent = 0);
 	virtual ~AccountEditWidget();
+
+	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
 
 signals:
 	void widgetAdded(AccountConfigurationWidget *widget);
