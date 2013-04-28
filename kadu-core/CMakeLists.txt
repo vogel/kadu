@@ -340,7 +340,6 @@ kadu_api_directories (kadu-core
 	contacts/model
 	core
 	dom
-	emoticons
 	file-transfer
 	formatted-string
 	gui
@@ -348,8 +347,10 @@ kadu_api_directories (kadu-core
 	gui/actions/chat
 	gui/menu
 	gui/model
+	gui/services
 	gui/widgets
 	gui/widgets/configuration
+	gui/widgets/dialog
 	gui/windows
 	gui/windows/open-chat-with
 	icons
