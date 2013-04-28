@@ -9,7 +9,6 @@ option (BUILD_TESTING "Build the test suite." "${ENABLE_DEVELOPER_BUILD}")
 # Global CMake variables
 
 list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
-list (INSERT CMAKE_PREFIX_PATH 0 "${CMAKE_BINARY_DIR}")
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
@@ -260,6 +259,7 @@ write_basic_package_version_file ("${CMAKE_BINARY_DIR}/KaduConfigVersion.cmake"
 
 # Include the generated file
 
+set (Kadu_DIR "${CMAKE_BINARY_DIR}")
 find_package (Kadu REQUIRED)
 
 if (NOT WIN32)
