@@ -60,6 +60,9 @@ if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 endif ()
 # The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
 
+configure_file (kadu-config.h.in "${CMAKE_CURRENT_BINARY_DIR}/kadu-config.h" ESCAPE_QUOTES)
+include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
+
 set (kadu_SRCS
 	activate.cpp
 	debug.cpp

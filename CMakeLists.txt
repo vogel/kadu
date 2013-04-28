@@ -263,8 +263,6 @@ endif ()
 
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
-configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.in ${CMAKE_BINARY_DIR}/kadu-config.h ESCAPE_QUOTES)
-
 add_subdirectory (kadu-core)
 add_subdirectory (varia)
 add_subdirectory (translations)
@@ -290,7 +288,6 @@ if (KADU_INSTALL_SDK)
 		cmake/KaduMacros.cmake
 		DESTINATION "${KADU_INSTALL_CMAKE_DIR}"
 	)
-	install (FILES ${CMAKE_BINARY_DIR}/kadu-config.h DESTINATION ${KADU_INSTALL_SDK_DIR})
 
 	install (EXPORT KaduTargets DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
 endif ()
