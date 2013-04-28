@@ -1,5 +1,8 @@
 project (gadu_protocol)
 
+# Needed for FindQCA2.cmake when building externally
+list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+
 set (QT_USE_QTXML 1)
 set (QT_USE_QTXMLPATTERNS 1)
 set (QT_USE_QTNETWORK 1)

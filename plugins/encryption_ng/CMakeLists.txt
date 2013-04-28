@@ -1,5 +1,8 @@
 project (encryption_ng)
 
+# Needed for FindQCA2.cmake when building externally
+list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+
 find_package (Kadu REQUIRED)
 
 include (FindPkgConfig)
