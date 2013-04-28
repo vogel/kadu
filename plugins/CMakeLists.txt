@@ -29,8 +29,7 @@ endif ()
 
 if (KADU_INSTALL_SDK)
 	if (WIN32)
-		install (PROGRAMS pluginrcgen.bat DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")
-		install (FILES pluginbase.rc DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")
+		install (FILES pluginbase.rc.in DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")
 	endif ()
 
 	install (FILES PluginConfig.cmake.in DESTINATION "${KADU_INSTALL_SDK_DIR}/plugins")

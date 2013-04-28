@@ -110,21 +110,8 @@ endif ()
 
 string (REGEX REPLACE "-.*" "" simple_version ${KADU_VERSION})
 
-if (WIN32)
-	if (NOT KADU_VERSION STREQUAL simple_version)
-		set (KADU_PRERELEASE 1)
-	endif ()
-
-	# Change "."'s to ","'s.
-	string (REPLACE "." ", " KADU_NUMERIC_VERSION ${simple_version})
-	# Remove 5-th and further components, if any.
-	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*,[^,]*).*" "\\1" KADU_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
-	# Add 4-th component if not present.
-	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*$)" "\\1, 0" KADU_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
-	# Add 3-rd and 4-th components if not present.
-	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0" KADU_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
-	# Add 2-nd, 3-rd and 4-th components if not present.
-	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0, 0" KADU_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
+if (NOT KADU_VERSION STREQUAL simple_version)
+	set (KADU_PRERELEASE TRUE)
 endif ()
 
 # Installation paths.

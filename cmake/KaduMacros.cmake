@@ -33,6 +33,23 @@ endif ()
 find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
 
+macro (kadu_numeric_version _version _result_variable)
+	# Remove non-digit suffixes like "-git".
+	string (REGEX REPLACE "-[^0-9].*" "" ${_result_variable} ${_version})
+	# Change "-"'s and "."'s to ","'s.
+	string (REGEX REPLACE "[-.]" ", " ${_result_variable} ${${_result_variable}})
+	# Remove 5-th and further components, if any.
+	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*,[^,]*).*" "\\1" ${_result_variable} "${${_result_variable}}")
+	# Add 4-th component if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*$)" "\\1, 0" ${_result_variable} "${${_result_variable}}")
+	# Add 3-rd and 4-th components if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0" ${_result_variable} "${${_result_variable}}")
+	# Add 2-nd, 3-rd and 4-th components if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0, 0" ${_result_variable} "${${_result_variable}}")
+endmacro ()
+
+kadu_numeric_version (${KADU_VERSION} KADU_NUMERIC_VERSION)
+
 # To be used on each target
 macro (kadu_set_flags _target)
 	if (NOT TARGET ${_target})
@@ -95,16 +112,20 @@ function (kadu_plugin KADU_PLUGIN_NAME)
 	endif()
 
 	if (WIN32)
-		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
+		file (READ "${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc" _plugin_desc)
+		string (REGEX REPLACE ".*Description=([^\n]*)\n.*" "\\1" KADU_PLUGIN_DESCRIPTION "${_plugin_desc}")
+		string (REGEX REPLACE ".*Author=([^\n]*)\n.*" "\\1" KADU_PLUGIN_AUTHOR "${_plugin_desc}")
+		string (REGEX REPLACE ".*Version=([^\n]*)\n.*" "\\1" KADU_PLUGIN_VERSION "${_plugin_desc}")
+		if (KADU_PLUGIN_VERSION STREQUAL "core")
+			set (KADU_PLUGIN_VERSION "${KADU_VERSION}")
+			set (KADU_PLUGIN_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
+		else ()
+			kadu_numeric_version (${KADU_PLUGIN_VERSION} KADU_PLUGIN_NUMERIC_VERSION)
+		endif ()
 
-		list (APPEND KADU_PLUGIN_SOURCES ${KADU_PLUGIN_NAME}.rc)
-		add_custom_command (OUTPUT ${KADU_PLUGIN_NAME}.rc
-			COMMAND "${KADU_SDK_DIR}/plugins/pluginrcgen.bat"
-			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc
-			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc
-			COMMENT "Building RC source ${KADU_PLUGIN_NAME}.rc"
-		)
+		configure_file ("${KADU_SDK_DIR}/plugins/pluginbase.rc.in" "${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc" ESCAPE_QUOTES @ONLY)
+
+		list (APPEND KADU_PLUGIN_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc")
 	endif ()
 
 	install (FILES ${KADU_PLUGIN_NAME}.desc
