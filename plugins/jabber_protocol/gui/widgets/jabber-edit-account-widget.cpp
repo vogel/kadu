@@ -56,8 +56,8 @@
 
 #include "jabber-edit-account-widget.h"
 
-JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository, Account account, QWidget *parent) :
-		AccountEditWidget(accountConfigurationWidgetRepository, account, parent)
+JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
 {
 	createGui();
 	loadAccountData();
@@ -81,7 +81,6 @@ void JabberEditAccountWidget::createGui()
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
-	createAccountConfigurationWidgets();
 	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
 	{
 		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));

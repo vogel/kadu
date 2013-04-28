@@ -102,7 +102,7 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(bool showBut
 
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	JabberEditAccountWidget *result = new JabberEditAccountWidget(Core::instance()->accountConfigurationWidgetRepository(), account, parent);
+	JabberEditAccountWidget *result = new JabberEditAccountWidget(Core::instance()->accountConfigurationWidgetFactoryRepository(), account, parent);
 	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
 	return result;
 }

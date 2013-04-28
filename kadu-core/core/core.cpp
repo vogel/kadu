@@ -50,7 +50,6 @@
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
-#include "gui/widgets/account-configuration-widget-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -564,7 +563,6 @@ void Core::runServices()
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
 	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
-	CurrentAccountConfigurationWidgetRepository = new AccountConfigurationWidgetRepository(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -584,8 +582,6 @@ void Core::runServices()
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
-
-	CurrentAccountConfigurationWidgetRepository->setFactoryRepository(CurrentAccountConfigurationWidgetFactoryRepository);
 }
 
 void Core::runGuiServices()
@@ -646,11 +642,6 @@ ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
 AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFactoryRepository() const
 {
 	return CurrentAccountConfigurationWidgetFactoryRepository;
-}
-
-AccountConfigurationWidgetRepository * Core::accountConfigurationWidgetRepository() const
-{
-	return CurrentAccountConfigurationWidgetRepository;
 }
 
 void Core::showMainWindow()

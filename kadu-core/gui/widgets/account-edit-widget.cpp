@@ -17,32 +17,58 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "account-configuration-widget-repository.h"
+#include "account-configuration-widget-factory-repository.h"
 
 #include "account-edit-widget.h"
+#include "account-configuration-widget-factory.h"
 
-AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetRepository *configurationWidgetRepository, Account account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetRepository(configurationWidgetRepository)
+AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository)
 {
+	if (MyAccountConfigurationWidgetFactoryRepository)
+	{
+		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
+				this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory*)));
+		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory*)),
+				this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory*)));
+
+		foreach (AccountConfigurationWidgetFactory *factory, MyAccountConfigurationWidgetFactoryRepository->factories())
+			factoryRegistered(factory);
+	}
 }
 
 AccountEditWidget::~AccountEditWidget()
 {
 }
 
-AccountConfigurationWidgetRepository * AccountEditWidget::accountConfigurationWidgetRepository() const
+AccountConfigurationWidgetFactoryRepository * AccountEditWidget::accountConfigurationWidgetFactoryRepository() const
 {
-	return MyAccountConfigurationWidgetRepository;
+	return MyAccountConfigurationWidgetFactoryRepository;
 }
 
-void AccountEditWidget::createAccountConfigurationWidgets()
+void AccountEditWidget::factoryRegistered(AccountConfigurationWidgetFactory *factory)
 {
-	AccountConfigurationWidgets = MyAccountConfigurationWidgetRepository->createWidgets(account(), this);
+	AccountConfigurationWidget *widget = factory->createWidget(account(), this);
+	if (widget)
+	{
+		AccountConfigurationWidgets.insert(factory, widget);
+		emit widgetAdded(widget);
+	}
+}
+
+void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *factory)
+{
+	if (AccountConfigurationWidgets.contains(factory))
+	{
+		AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
+		emit widgetRemoved(widget);
+		widget->deleteLater();
+	}
 }
 
 QList<AccountConfigurationWidget *> AccountEditWidget::accountConfigurationWidgets() const
 {
-	return AccountConfigurationWidgets;
+	return AccountConfigurationWidgets.values();
 }
 
 void AccountEditWidget::applyAccountConfigurationWidgets()

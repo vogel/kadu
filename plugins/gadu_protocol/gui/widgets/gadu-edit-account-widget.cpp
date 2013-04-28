@@ -63,8 +63,8 @@
 
 #include "gadu-edit-account-widget.h"
 
-GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository, Account account, QWidget *parent) :
-		AccountEditWidget(accountConfigurationWidgetRepository, account, parent)
+GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
 {
 	Details = dynamic_cast<GaduAccountDetails *>(account.details());
 
@@ -90,7 +90,6 @@ void GaduEditAccountWidget::createGui()
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
 
-	createAccountConfigurationWidgets();
 	foreach (AccountConfigurationWidget *widget, accountConfigurationWidgets())
 	{
 		connect(widget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(dataChanged()));

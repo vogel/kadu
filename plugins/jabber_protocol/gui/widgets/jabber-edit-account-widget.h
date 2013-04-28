@@ -111,7 +111,7 @@ private slots:
 	void passwordChanged(const QString &newPassword);
 
 public:
-	explicit JabberEditAccountWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository, Account account, QWidget *parent = 0);
+	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
 	virtual ~JabberEditAccountWidget();
 
 public slots:

@@ -30,19 +30,23 @@
 #include "exports.h"
 
 class AccountConfigurationWidget;
-class AccountConfigurationWidgetRepository;
+class AccountConfigurationWidgetFactory;
+class AccountConfigurationWidgetFactoryRepository;
 
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	AccountConfigurationWidgetRepository *MyAccountConfigurationWidgetRepository;
-	QList<AccountConfigurationWidget *> AccountConfigurationWidgets;
+	AccountConfigurationWidgetFactoryRepository *MyAccountConfigurationWidgetFactoryRepository;
+	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
+
+private slots:
+	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
+	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
 
 protected:
-	AccountConfigurationWidgetRepository * accountConfigurationWidgetRepository() const;
+	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
 
-	void createAccountConfigurationWidgets();
 	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
 
 	void applyAccountConfigurationWidgets();
@@ -51,9 +55,13 @@ protected:
 	ModalConfigurationWidgetState accountConfigurationWidgetsState();
 
 public:
-	explicit AccountEditWidget(AccountConfigurationWidgetRepository *accountConfigurationWidgetRepository,
+	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
 							   Account account, QWidget *parent = 0);
 	virtual ~AccountEditWidget();
+
+signals:
+	void widgetAdded(AccountConfigurationWidget *widget);
+	void widgetRemoved(AccountConfigurationWidget *widget);
 
 };
 
