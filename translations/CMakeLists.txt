@@ -1,7 +1,7 @@
 option (INSTALL_UNOFFICIAL_TRANSLATIONS "Install translations generated from all *.ts files, not only the ones enabled by *.language files. In kadu-core this also means generating additional *.language files so that the unofficial translations can be used." OFF)
-set (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS ${INSTALL_UNOFFICIAL_TRANSLATIONS} PARENT_SCOPE)
+set (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS ${INSTALL_UNOFFICIAL_TRANSLATIONS} PARENT_SCOPE) # Do not use it here, it's in parent scope
 
-if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
+if (INSTALL_UNOFFICIAL_TRANSLATIONS)
 	file (GLOB LANGUAGE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "*.language")
 	file (GLOB TRANSLATION_SOURCES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "kadu_*.ts")
 
@@ -30,7 +30,7 @@ else ()
 	endforeach ()
 
 	list (SORT LANGUAGES)
-	set (KADU_ENABLED_LANGUAGES ${LANGUAGES} PARENT_SCOPE)
+	set (KADU_ENABLED_LANGUAGES ${LANGUAGES} PARENT_SCOPE) # Do not use it here, it's in parent scope
 endif ()
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})

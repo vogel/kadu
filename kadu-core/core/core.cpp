@@ -85,7 +85,7 @@
 #include "kadu-config.h"
 #include "updates.h"
 
-#if KADU_WITH_LIBINDICATE_QT
+#if WITH_LIBINDICATE_QT
 #include <libindicate-qt/qindicateserver.h>
 #endif
 
@@ -441,7 +441,7 @@ void Core::init()
 	MessageManager::instance()->ensureLoaded();
 	AvatarManager::instance(); // initialize that
 
-#if KADU_WITH_LIBINDICATE_QT
+#if WITH_LIBINDICATE_QT
 	// Use a symbol from libindicate-qt so that it will not get dropped for example by --as-needed.
 	(void)QIndicate::Server::defaultInstance();
 #endif

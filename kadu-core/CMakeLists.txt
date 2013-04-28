@@ -19,9 +19,9 @@ if (UNIX AND NOT APPLE)
 	endif ()
 
 	option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support through libindicate-qt" "${LIBINDICATE_QT_FOUND}")
-	set (KADU_WITH_LIBINDICATE_QT ${WITH_LIBINDICATE_QT} PARENT_SCOPE)
+	set (KADU_WITH_LIBINDICATE_QT ${WITH_LIBINDICATE_QT} PARENT_SCOPE)  # Do not use it here, it's in parent scope
 
-	if (KADU_WITH_LIBINDICATE_QT)
+	if (WITH_LIBINDICATE_QT)
 		if (NOT LIBINDICATE_QT_FOUND)
 			message (SEND_ERROR "Could NOT find libindicate-qt")
 		else ()
