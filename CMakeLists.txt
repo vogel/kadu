@@ -116,11 +116,12 @@ endif ()
 
 # Installation paths.
 
-if (NOT INSTALL_SDK_DIR)
-	set (INSTALL_SDK_DIR "" CACHE PATH "SDK installation root")
-	set (INSTALL_SDK_DIR "${CMAKE_INSTALL_PREFIX}/sdk")
-endif ()
+set (INSTALL_SDK_DIR "" CACHE PATH "SDK installation root")
 mark_as_advanced (INSTALL_SDK_DIR)
+if (NOT INSTALL_SDK_DIR)
+	set (INSTALL_SDK_DIR "${CMAKE_INSTALL_PREFIX}/sdk")
+	set (install_sdk_dir_set_to_default TRUE)
+endif ()
 
 # Override default GNU install dirs on Windows.
 if (WIN32)
@@ -138,6 +139,10 @@ if (WIN32)
 	set (INSTALL_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}")
 else ()
 	set (INSTALL_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/kadu")
+
+	if (install_sdk_dir_set_to_default)
+		set (INSTALL_SDK_DIR "${INSTALL_DATA_DIR}/sdk")
+	endif ()
 endif ()
 
 set (INSTALL_PLUGINS_DATA_DIR "${INSTALL_DATA_DIR}/plugins")
