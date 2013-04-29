@@ -1,4 +1,4 @@
-find_package (Qt QUIET REQUIRED COMPONENTS QtTest)
+find_package (Qt4 QUIET REQUIRED COMPONENTS QtTest)
 
 # kadu_add_test (<name> source1 source2 ... sourceN)
 function (kadu_add_test name_)
