@@ -154,49 +154,16 @@ include_directories (${QCA2_INCLUDE_DIR})
 add_definitions (${QCA2_DEFINITIONS})
 list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
 
-include(CheckLibraryExists)
+find_package (LibArchive 2.6.0 REQUIRED)
+include (CheckLibraryExists)
+check_library_exists ("${LibArchive_LIBRARIES}" "archive_write_set_compression_lzma" "" have_libarchive_lzma_support)
+check_library_exists ("${LibArchive_LIBRARIES}" "archive_write_set_compression_xz" "" have_libarchive_xz_support)
+if (NOT have_libarchive_lzma_support OR NOT have_libarchive_xz_support)
+	message (SEND_ERROR "Your libarchive does not have support for lzma and/or xz archives.")
+endif ()
 
-if (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-  # in cache already
-  set(LIBARCHIVE_FOUND TRUE)
-else (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-  find_path(LIBARCHIVE_INCLUDE_DIR archive.h
-    ${GNUWIN32_DIR}/include
-  )
-
-  find_library(LIBARCHIVE_LIBRARY NAMES archive libarchive archive2 libarchive2
-    PATHS
-    ${GNUWIN32_DIR}/lib
-  )
-
-  if (LIBARCHIVE_LIBRARY)
-    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_lzma   "" HAVE_LIBARCHIVE_LZMA_SUPPORT)
-    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_xz     "" HAVE_LIBARCHIVE_XZ_SUPPORT)
-  endif (LIBARCHIVE_LIBRARY)
-
-  include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(LibArchive DEFAULT_MSG LIBARCHIVE_LIBRARY LIBARCHIVE_INCLUDE_DIR)
-
-  mark_as_advanced(LIBARCHIVE_INCLUDE_DIR LIBARCHIVE_LIBRARY HAVE_LIBARCHIVE_LZMA_SUPPORT)
-endif (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-
-if (LIBARCHIVE_FOUND)
-    if (HAVE_LIBARCHIVE_READ_DISK_API )
-        if (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
-            message(STATUS "Your libarchive does not have support for lzma and/or xz archives. libarchive >= 2.7.0 is recommended.")
-        endif (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
-    else (HAVE_LIBARCHIVE_READ_DISK_API)
-        # Remove the cached variables from FindLibArchive.cmake
-        unset (LIBARCHIVE_FOUND)
-        unset (LIBARCHIVE_INCLUDE_DIR)
-        unset (LIBARCHIVE_LIBRARY)
-        message(STATUS "Your libarchive does not have support for archive_read_disk api. libarchive >= 2.6.0 is needed.")
-    endif (HAVE_LIBARCHIVE_READ_DISK_API)
-endif (LIBARCHIVE_FOUND)
-
-include_directories(${LIBARCHIVE_INCLUDE_DIR})
-add_definitions (${LIBARCHIVE_DEFINITIONS})
-list (APPEND ADDITIONAL_LIBRARIES ${LIBARCHIVE_LIBRARY})
+include_directories (${LibArchive_INCLUDE_DIRS})
+list (APPEND ADDITIONAL_LIBRARIES ${LibArchive_LIBRARIES})
 
 if (UNIX AND NOT APPLE)
 	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xfixes)
