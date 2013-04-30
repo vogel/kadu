@@ -1,5 +1,7 @@
 project (Kadu)
 
+cmake_minimum_required (VERSION 2.8.9)
+
 # Options (some of them)
 
 option (ENABLE_DEVELOPER_BUILD "Turn on some features helpful during development process (has nothing to do with debugging symbols)" OFF)

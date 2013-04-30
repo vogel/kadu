@@ -1,5 +1,7 @@
 project (qt4_docking_notify)
 
+cmake_minimum_required (VERSION 2.8)
+
 find_package (Kadu REQUIRED)
 
 set (SOURCES
