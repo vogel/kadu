@@ -7,8 +7,6 @@ list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Module
 
 find_package (Kadu REQUIRED)
 
-include (FindPkgConfig)
-
 set (SOURCES
 	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp

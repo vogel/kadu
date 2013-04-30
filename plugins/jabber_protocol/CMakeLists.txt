@@ -7,8 +7,6 @@ list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Module
 
 find_package (Kadu REQUIRED)
 
-include (FindPkgConfig)
-
 if (WIN32)
 	if (NOT WIN_IDN_DIR)
 		message (SEND_ERROR "Pass path to libidn -DWIN_IDN_DIR=path")
@@ -23,10 +21,11 @@ if (WIN32)
 		endif ()
 	endif ()
 else ()
+	find_package (PkgConfig)
 	pkg_search_module (IDN REQUIRED libidn)
+	pkg_search_module (ZLIB zlib)
 endif ()
 
-pkg_search_module (ZLIB zlib)
 if (NOT ZLIB_FOUND)
 	find_package (ZLIB REQUIRED)
 endif ()

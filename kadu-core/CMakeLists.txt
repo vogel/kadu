@@ -1,5 +1,3 @@
-include (FindPkgConfig)
-
 if (ENABLE_DEVELOPER_BUILD AND NOT MSVC AND NOT APPLE)
 	set (FAST_LINKING_DEFAULT ON)
 else ()
@@ -15,6 +13,7 @@ endif ()
 
 if (UNIX AND NOT APPLE)
 	if (NOT DEFINED WITH_LIBINDICATE_QT OR WITH_LIBINDICATE_QT)
+		find_package (PkgConfig)
 		pkg_search_module (LIBINDICATE_QT indicate-qt)
 	endif ()
 

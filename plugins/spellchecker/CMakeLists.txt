@@ -59,7 +59,7 @@ else ()
 		endif ()
 		
 		if (USE_ENCHANT)
-			include (FindPkgConfig)
+			find_package (PkgConfig)
 			pkg_search_module (ENCHANT enchant)
 		
 			if (NOT ENCHANT_FOUND)

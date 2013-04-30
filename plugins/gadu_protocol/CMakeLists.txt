@@ -12,8 +12,6 @@ set (QT_USE_QTWEBKIT 1)
 
 find_package (Kadu REQUIRED)
 
-include (FindPkgConfig)
-
 set (LIBGADU_MIN_VERSION "1.11.1")
 
 kadu_api_directories (plugins/gadu_protocol
@@ -190,6 +188,7 @@ if (WIN32)
 		endif ()
 	endif ()
 else ()
+	find_package (PkgConfig)
 	pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 endif ()
 
