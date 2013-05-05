@@ -33,11 +33,13 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 {
 	Q_OBJECT
 
+	friend OtrlPolicy kadu_enomf_policy(void *, ConnContext *);
 	friend void kadu_enomf_create_privkey(void *, const char *, const char *);
 	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
 
 	OtrlMessageAppOps Ops;
 
+	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData);
 	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
 	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
 

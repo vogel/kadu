@@ -12,6 +12,7 @@ set (SOURCES
 	encryption-ng-otr-app-ops-wrapper.cpp
 	encryption-ng-otr-op-data.cpp
 	encryption-ng-otr-plugin.cpp
+	encryption-ng-otr-policy.cpp
 	encryption-ng-otr-private-key-service.cpp
 	encryption-ng-otr-raw-message-transformer.cpp
 	encryption-ng-otr-user-state.cpp

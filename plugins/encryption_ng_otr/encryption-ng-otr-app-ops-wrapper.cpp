@@ -29,14 +29,17 @@ extern "C" {
 #include "message/message-manager.h"
 
 #include "encryption-ng-otr-op-data.h"
+#include "encryption-ng-otr-policy.h"
 #include "encryption-ng-otr-private-key-service.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
 
 OtrlPolicy kadu_enomf_policy(void *opdata, ConnContext *context)
 {
-	printf("kadu_enomf_policy %p %p\n", opdata, context);
-	return OTRL_POLICY_DEFAULT;
+	Q_UNUSED(context);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	return ngOtrOpData->appOpsWrapper()->policy(ngOtrOpData);
 }
 
 void kadu_enomf_create_privkey(void *opdata, const char *accountname, const char *protocol)
@@ -170,6 +173,14 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
+}
+
+OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	EncryptionNgOtrPolicy policy = EncryptionNgOtrPolicy::fromString(account.property("encryption_ng_otr:policy", QVariant()).toString());
+
+	return policy.toOtrPolicy();
 }
 
 void EncryptionNgOtrAppOpsWrapper::createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData)
