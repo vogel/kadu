@@ -17,8 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QCheckBox>
 #include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
+
+#include "encryption-ng-otr-policy.h"
 
 #include "encryption-ng-otr-account-configuration-widget.h"
 
@@ -36,14 +39,91 @@ EncryptionNgOtrAccountConfigurationWidget::~EncryptionNgOtrAccountConfigurationW
 
 void EncryptionNgOtrAccountConfigurationWidget::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(new QLabel(tr("OTR Configuration Widget")));
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
+	EnableCheckBox = new QCheckBox(tr("Enable private nessaging"));
+	AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
+	RequireCheckBox = new QCheckBox(tr("Require private messaging"));
+
+	connect(EnableCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+	connect(AutomaticallyInitiateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+	connect(RequireCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+
+	layout->addWidget(EnableCheckBox);
+	layout->addWidget(AutomaticallyInitiateCheckBox);
+	layout->addWidget(RequireCheckBox);
+	layout->addStretch(100);
+
+	loadValues();
+	updateState();
+}
+
+EncryptionNgOtrPolicy EncryptionNgOtrAccountConfigurationWidget::policy()
+{
+	if (!EnableCheckBox->isChecked())
+		return EncryptionNgOtrPolicy::NEVER;
+	if (!AutomaticallyInitiateCheckBox->isChecked())
+		return EncryptionNgOtrPolicy::MANUAL;
+	if (!RequireCheckBox->isChecked())
+		return EncryptionNgOtrPolicy::OPPORTUNISTIC;
+	return EncryptionNgOtrPolicy::ALWAYS;
+}
+
+void EncryptionNgOtrAccountConfigurationWidget::loadValues()
+{
+	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicy::fromString(account().property("encryption_ng_otr:policy", QVariant()).toString());
+
+	if (accountPolicy == EncryptionNgOtrPolicy::MANUAL)
+	{
+		EnableCheckBox->setChecked(true);
+		AutomaticallyInitiateCheckBox->setChecked(false);
+		RequireCheckBox->setChecked(false);
+	}
+	else if (accountPolicy == EncryptionNgOtrPolicy::OPPORTUNISTIC)
+	{
+		EnableCheckBox->setChecked(true);
+		AutomaticallyInitiateCheckBox->setChecked(true);
+		RequireCheckBox->setChecked(false);
+	}
+	else if (accountPolicy == EncryptionNgOtrPolicy::MANUAL)
+	{
+		EnableCheckBox->setChecked(true);
+		AutomaticallyInitiateCheckBox->setChecked(true);
+		RequireCheckBox->setChecked(true);
+	}
+	else
+	{
+		EnableCheckBox->setChecked(false);
+		AutomaticallyInitiateCheckBox->setChecked(false);
+		RequireCheckBox->setChecked(false);
+	}
+}
+
+void EncryptionNgOtrAccountConfigurationWidget::updateState()
+{
+	AutomaticallyInitiateCheckBox->setEnabled(false);
+	RequireCheckBox->setEnabled(false);
+
+	if (EnableCheckBox->isChecked())
+	{
+		AutomaticallyInitiateCheckBox->setEnabled(true);
+		if (AutomaticallyInitiateCheckBox->isChecked())
+			RequireCheckBox->setEnabled(true);
+	}
+
+	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicy::fromString(account().property("encryption_ng_otr:policy", QVariant()).toString());
+	if (accountPolicy == policy())
+		setState(StateNotChanged);
+	else
+		setState(StateChangedDataValid);
 }
 
 void EncryptionNgOtrAccountConfigurationWidget::apply()
 {
+	account().addProperty("encryption_ng_otr:policy", policy().toString(), CustomProperties::Storable);
 }
 
 void EncryptionNgOtrAccountConfigurationWidget::cancel()
 {
+	loadValues();
 }

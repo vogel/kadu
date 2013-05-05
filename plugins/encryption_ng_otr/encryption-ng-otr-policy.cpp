@@ -19,11 +19,16 @@
 
 #include "encryption-ng-otr-policy.h"
 
+EncryptionNgOtrPolicy EncryptionNgOtrPolicy::NEVER(OTRL_POLICY_NEVER, "never");
+EncryptionNgOtrPolicy EncryptionNgOtrPolicy::MANUAL(OTRL_POLICY_MANUAL, "manual");
+EncryptionNgOtrPolicy EncryptionNgOtrPolicy::OPPORTUNISTIC(OTRL_POLICY_OPPORTUNISTIC, "opportunistic");
+EncryptionNgOtrPolicy EncryptionNgOtrPolicy::ALWAYS(OTRL_POLICY_ALWAYS, "always");
+
 QList<EncryptionNgOtrPolicy> EncryptionNgOtrPolicy::Values = QList<EncryptionNgOtrPolicy>()
-		<< EncryptionNgOtrPolicy(OTRL_POLICY_MANUAL, "manual")
-		<< EncryptionNgOtrPolicy(OTRL_POLICY_OPPORTUNISTIC, "opportunistic")
-		<< EncryptionNgOtrPolicy(OTRL_POLICY_ALWAYS, "always")
-		<< EncryptionNgOtrPolicy(OTRL_POLICY_NEVER, "never");
+		<< EncryptionNgOtrPolicy::MANUAL
+		<< EncryptionNgOtrPolicy::OPPORTUNISTIC
+		<< EncryptionNgOtrPolicy::ALWAYS
+		<< EncryptionNgOtrPolicy::NEVER;
 
 EncryptionNgOtrPolicy EncryptionNgOtrPolicy::fromPolicy(OtrlPolicy otrPolicy)
 {

@@ -37,6 +37,11 @@ class EncryptionNgOtrPolicy
 	explicit EncryptionNgOtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
 
 public:
+	static EncryptionNgOtrPolicy NEVER;
+	static EncryptionNgOtrPolicy MANUAL;
+	static EncryptionNgOtrPolicy OPPORTUNISTIC;
+	static EncryptionNgOtrPolicy ALWAYS;
+
 	static EncryptionNgOtrPolicy fromPolicy(OtrlPolicy otrPolicy);
 	static EncryptionNgOtrPolicy fromString(const QString &policyString);
 

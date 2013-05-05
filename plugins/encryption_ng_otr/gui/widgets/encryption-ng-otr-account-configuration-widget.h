@@ -22,11 +22,24 @@
 
 #include "gui/widgets/account-configuration-widget.h"
 
+class QCheckBox;
+
+class EncryptionNgOtrPolicy;
+
 class EncryptionNgOtrAccountConfigurationWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
+	QCheckBox *EnableCheckBox;
+	QCheckBox *AutomaticallyInitiateCheckBox;
+	QCheckBox *RequireCheckBox;
+
 	void createGui();
+	EncryptionNgOtrPolicy policy();
+	void loadValues();
+
+private slots:
+	void updateState();
 
 public:
 	explicit EncryptionNgOtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
