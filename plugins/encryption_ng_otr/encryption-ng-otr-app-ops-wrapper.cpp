@@ -30,6 +30,7 @@ extern "C" {
 
 #include "encryption-ng-otr-op-data.h"
 #include "encryption-ng-otr-policy.h"
+#include "encryption-ng-otr-policy-account-store.h"
 #include "encryption-ng-otr-private-key-service.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
@@ -178,7 +179,7 @@ const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData)
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
-	EncryptionNgOtrPolicy policy = EncryptionNgOtrPolicy::fromString(account.property("encryption_ng_otr:policy", QVariant()).toString());
+	EncryptionNgOtrPolicy policy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account);
 
 	return policy.toOtrPolicy();
 }

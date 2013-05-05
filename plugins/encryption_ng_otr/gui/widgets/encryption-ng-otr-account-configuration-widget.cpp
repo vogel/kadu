@@ -22,6 +22,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "encryption-ng-otr-policy.h"
+#include "encryption-ng-otr-policy-account-store.h"
 
 #include "encryption-ng-otr-account-configuration-widget.h"
 
@@ -71,7 +72,7 @@ EncryptionNgOtrPolicy EncryptionNgOtrAccountConfigurationWidget::policy()
 
 void EncryptionNgOtrAccountConfigurationWidget::loadValues()
 {
-	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicy::fromString(account().property("encryption_ng_otr:policy", QVariant()).toString());
+	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account());
 
 	if (accountPolicy == EncryptionNgOtrPolicy::MANUAL)
 	{
@@ -111,7 +112,7 @@ void EncryptionNgOtrAccountConfigurationWidget::updateState()
 			RequireCheckBox->setEnabled(true);
 	}
 
-	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicy::fromString(account().property("encryption_ng_otr:policy", QVariant()).toString());
+	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account());
 	if (accountPolicy == policy())
 		setState(StateNotChanged);
 	else
@@ -120,7 +121,7 @@ void EncryptionNgOtrAccountConfigurationWidget::updateState()
 
 void EncryptionNgOtrAccountConfigurationWidget::apply()
 {
-	account().addProperty("encryption_ng_otr:policy", policy().toString(), CustomProperties::Storable);
+	EncryptionNgOtrPolicyAccountStore::storePolicyToAccount(account(), policy());
 }
 
 void EncryptionNgOtrAccountConfigurationWidget::cancel()
