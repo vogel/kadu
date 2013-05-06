@@ -71,7 +71,6 @@ GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetFactoryRe
 
 	createGui();
 	loadAccountData();
-	resetState();
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
@@ -109,6 +108,8 @@ void GaduEditAccountWidget::createGui()
 	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
 
 	mainLayout->addWidget(buttons);
+
+	connect(this, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(stateChangedSlot(ModalConfigurationWidgetState)));
 }
 
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -321,6 +322,12 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(ProxyCombo, 5, 2);
 }
 
+void GaduEditAccountWidget::stateChangedSlot(ModalConfigurationWidgetState state)
+{
+	ApplyButton->setEnabled(state == StateChangedDataValid);
+	CancelButton->setEnabled(state != StateNotChanged);
+}
+
 void GaduEditAccountWidget::apply()
 {
 	applyAccountConfigurationWidgets();
@@ -360,7 +367,7 @@ void GaduEditAccountWidget::apply()
 	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	resetState();
+	setState(StateNotChanged);
 
 	// TODO: 0.13, fix this
 	// hack, changing details does not trigger this
@@ -376,14 +383,7 @@ void GaduEditAccountWidget::cancel()
 
 	IdentityManager::instance()->removeUnused();
 
-	resetState();
-}
-
-void GaduEditAccountWidget::resetState()
-{
 	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
 }
 
 void GaduEditAccountWidget::dataChanged()
@@ -414,7 +414,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->externalIp() == ExternalIp->text()
 		&& Details->externalPort() == ExternalPort->text().toUInt())
 	{
-		resetState();
+		setState(StateNotChanged);
 		return;
 	}
 
@@ -422,17 +422,9 @@ void GaduEditAccountWidget::dataChanged()
 			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
-	{
 		setState(StateChangedDataInvalid);
-		ApplyButton->setEnabled(false);
-		CancelButton->setEnabled(true);
-	}
 	else
-	{
 		setState(StateChangedDataValid);
-		ApplyButton->setEnabled(true);
-		CancelButton->setEnabled(true);
-	}
 }
 
 void GaduEditAccountWidget::loadAccountData()
@@ -465,6 +457,8 @@ void GaduEditAccountWidget::loadAccountData()
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
 	ipAddresses->setText(config_file.readEntry("Network", "Server"));
+
+	setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::removeAccount()

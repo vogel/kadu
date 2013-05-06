@@ -88,8 +88,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	void loadAccountData();
 
-	void resetState();
-
 private slots:
 	void dataChanged();
 	void removeAccount();
@@ -97,6 +95,7 @@ private slots:
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);
 	void showStatusToEveryoneToggled(bool toggled);
+	void stateChangedSlot(ModalConfigurationWidgetState state);
 
 public:
 	explicit GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
