@@ -99,8 +99,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	void loadAccountDetailsData();
 	bool checkSSL();
 
-	void resetState();
-
 private slots:
 	void removeAccount();
 	void sslActivated(int i);
@@ -109,6 +107,7 @@ private slots:
 	void dataChanged();
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);
+	void stateChangedSlot(ModalConfigurationWidgetState);
 
 public:
 	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
