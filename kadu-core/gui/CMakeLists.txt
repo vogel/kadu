@@ -89,6 +89,7 @@ set (gui_SRCS
 	widgets/select-font.cpp
 	widgets/select-talkable-combo-box.cpp
 	widgets/select-talkable-popup.cpp
+	widgets/simple-configuration-value-state-notifier.cpp
 	widgets/status-button.cpp
 	widgets/status-buttons.cpp
 	widgets/status-menu.cpp
@@ -270,6 +271,7 @@ set (gui_MOC_SRCS
 	widgets/select-font.h
 	widgets/select-talkable-combo-box.h
 	widgets/select-talkable-popup.h
+	widgets/simple-configuration-value-state-notifier.h
 	widgets/status-button.h
 	widgets/status-buttons.h
 	widgets/status-menu.h
