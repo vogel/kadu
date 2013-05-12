@@ -54,6 +54,7 @@ set (gui_SRCS
 	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
+	widgets/configuration-value-state-notifier.cpp
 	widgets/custom-input.cpp
 	widgets/custom-input-menu-item.cpp
 	widgets/custom-input-menu-manager.cpp
@@ -236,6 +237,7 @@ set (gui_MOC_SRCS
 	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h
+	widgets/configuration-value-state-notifier.h
 	widgets/custom-input.h
 	widgets/custom-input-menu-manager.h
 	widgets/delayed-line-edit.h
