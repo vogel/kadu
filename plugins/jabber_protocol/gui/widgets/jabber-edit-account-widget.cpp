@@ -404,8 +404,7 @@ void JabberEditAccountWidget::dataChanged()
 
 	ConfigurationValueState widgetsState = stateNotifier()->state();
 
-	if (StateNotChanged == widgetsState
-		&& account().accountIdentity() == Identities->currentIdentity()
+	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
 		&& account().password() == AccountPassword->text()

@@ -103,7 +103,7 @@ void GaduPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 
 void GaduPersonalInfoWidget::fillForm()
 {
- 	NickName->setText(MyBuddy.nickName());
+	NickName->setText(MyBuddy.nickName());
 	FirstName->setText(MyBuddy.firstName());
 	LastName->setText(MyBuddy.lastName());
 	Sex->setCurrentIndex((int)MyBuddy.gender());
@@ -116,13 +116,13 @@ void GaduPersonalInfoWidget::fillForm()
 bool GaduPersonalInfoWidget::isModified()
 {
 	return NickName->text() != MyBuddy.nickName()
-	|| FirstName->text() != MyBuddy.firstName()
-	|| LastName->text() != MyBuddy.lastName()
-	|| Sex->currentIndex() != (int)MyBuddy.gender()
-	|| FamilyName->text() != MyBuddy.familyName()
-	|| BirthYear->text() != QString::number(MyBuddy.birthYear())
-	|| City->text() != MyBuddy.city()
-	|| FamilyCity->text() != MyBuddy.familyCity();
+			|| FirstName->text() != MyBuddy.firstName()
+			|| LastName->text() != MyBuddy.lastName()
+			|| Sex->currentIndex() != (int)MyBuddy.gender()
+			|| FamilyName->text() != MyBuddy.familyName()
+			|| BirthYear->text() != QString::number(MyBuddy.birthYear())
+			|| City->text() != MyBuddy.city()
+			|| FamilyCity->text() != MyBuddy.familyCity();
 }
 
 void GaduPersonalInfoWidget::apply()
