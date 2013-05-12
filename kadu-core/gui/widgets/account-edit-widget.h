@@ -55,7 +55,6 @@ protected:
 	void applyAccountConfigurationWidgets();
 	void cancelAccountConfigurationWidgets();
 
-	ConfigurationValueState accountConfigurationWidgetsState();
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 	CompositeConfigurationValueStateNotifier * compositeStateNotifier() const;
 

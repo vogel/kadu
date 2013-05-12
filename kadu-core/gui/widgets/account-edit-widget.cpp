@@ -30,6 +30,8 @@ AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository
 		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
+	compositeStateNotifier()->addConfigurationValueStateNotifier(StateNotifier);
+
 	if (MyAccountConfigurationWidgetFactoryRepository)
 	{
 		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
@@ -40,8 +42,6 @@ AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository
 		foreach (AccountConfigurationWidgetFactory *factory, MyAccountConfigurationWidgetFactoryRepository->factories())
 			factoryRegistered(factory);
 	}
-
-	compositeStateNotifier()->addConfigurationValueStateNotifier(StateNotifier);
 }
 
 AccountEditWidget::~AccountEditWidget()
@@ -58,6 +58,8 @@ void AccountEditWidget::factoryRegistered(AccountConfigurationWidgetFactory *fac
 	AccountConfigurationWidget *widget = factory->createWidget(account(), this);
 	if (widget)
 	{
+		if (widget->stateNotifier())
+			CompositeStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
 		AccountConfigurationWidgets.insert(factory, widget);
 		emit widgetAdded(widget);
 	}
@@ -68,6 +70,8 @@ void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *f
 	if (AccountConfigurationWidgets.contains(factory))
 	{
 		AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
+		if (widget->stateNotifier())
+			CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
 		emit widgetRemoved(widget);
 		widget->deleteLater();
 	}
@@ -88,33 +92,6 @@ void AccountEditWidget::cancelAccountConfigurationWidgets()
 {
 	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
 		widget->cancel();
-}
-
-ConfigurationValueState AccountEditWidget::accountConfigurationWidgetsState()
-{
-	bool anyChanged = false;
-
-	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
-	{
-		if (widget->stateNotifier())
-		{
-			switch (widget->stateNotifier()->state())
-			{
-				case StateChangedDataInvalid:
-					return StateChangedDataInvalid;
-				case StateNotChanged:
-					break;
-				case StateChangedDataValid:
-					anyChanged = true;
-					break;
-			}
-		}
-	}
-
-	if (anyChanged)
-		return StateChangedDataValid;
-	else
-		return StateNotChanged;
 }
 
 SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier() const

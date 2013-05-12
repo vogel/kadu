@@ -72,6 +72,7 @@ GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetFactoryRe
 
 	createGui();
 	loadAccountData();
+	stateChangedSlot(stateNotifier()->state());
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
@@ -389,7 +390,7 @@ void GaduEditAccountWidget::cancel()
 
 void GaduEditAccountWidget::dataChanged()
 {
-	ConfigurationValueState widgetsState =accountConfigurationWidgetsState();
+	ConfigurationValueState widgetsState = stateNotifier()->state();
 
 	if (StateNotChanged == widgetsState
 		&& account().accountIdentity() == Identities->currentIdentity()

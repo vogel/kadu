@@ -65,6 +65,7 @@ JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFacto
 	loadAccountData();
 	loadAccountDetailsData();
 	simpleStateNotifier()->setState(StateNotChanged);
+	stateChangedSlot(stateNotifier()->state());
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
@@ -401,7 +402,7 @@ void JabberEditAccountWidget::dataChanged()
 	if (!AccountDetails)
 		return;
 
-	ConfigurationValueState widgetsState = accountConfigurationWidgetsState();
+	ConfigurationValueState widgetsState = stateNotifier()->state();
 
 	if (StateNotChanged == widgetsState
 		&& account().accountIdentity() == Identities->currentIdentity()
