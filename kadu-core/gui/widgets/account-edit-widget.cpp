@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
 #include "account-configuration-widget-factory-repository.h"
@@ -26,7 +27,8 @@
 
 AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
 		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository),
-		StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
+		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
 	if (MyAccountConfigurationWidgetFactoryRepository)
 	{
@@ -38,6 +40,8 @@ AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository
 		foreach (AccountConfigurationWidgetFactory *factory, MyAccountConfigurationWidgetFactoryRepository->factories())
 			factoryRegistered(factory);
 	}
+
+	compositeStateNotifier()->addConfigurationValueStateNotifier(StateNotifier);
 }
 
 AccountEditWidget::~AccountEditWidget()
@@ -118,7 +122,12 @@ SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier()
 	return StateNotifier;
 }
 
+CompositeConfigurationValueStateNotifier * AccountEditWidget::compositeStateNotifier() const
+{
+	return CompositeStateNotifier;
+}
+
 const ConfigurationValueStateNotifier * AccountEditWidget::stateNotifier() const
 {
-	return StateNotifier;
+	return CompositeStateNotifier;
 }

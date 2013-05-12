@@ -33,6 +33,7 @@
 class AccountConfigurationWidget;
 class AccountConfigurationWidgetFactory;
 class AccountConfigurationWidgetFactoryRepository;
+class CompositeConfigurationValueStateNotifier;
 class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
@@ -42,6 +43,7 @@ class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 	AccountConfigurationWidgetFactoryRepository *MyAccountConfigurationWidgetFactoryRepository;
 	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
 	SimpleConfigurationValueStateNotifier *StateNotifier;
+	CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
 
 private slots:
 	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
@@ -55,6 +57,7 @@ protected:
 
 	ConfigurationValueState accountConfigurationWidgetsState();
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+	CompositeConfigurationValueStateNotifier * compositeStateNotifier() const;
 
 public:
 	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
