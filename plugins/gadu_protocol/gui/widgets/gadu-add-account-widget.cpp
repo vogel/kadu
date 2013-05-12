@@ -34,6 +34,7 @@
 #include "accounts/account-manager.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocols-manager.h"
@@ -176,9 +177,9 @@ void GaduAddAccountWidget::dataChanged()
 			&& AccountPassword->text().isEmpty()
 			&& RememberPassword->isChecked()
 			&& 0 == Identity->currentIndex())
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 	else
-		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void GaduAddAccountWidget::remindPasssword()

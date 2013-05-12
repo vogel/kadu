@@ -51,8 +51,8 @@ void ConfigWizardSetUpAccountPage::createGui()
 
 bool ConfigWizardSetUpAccountPage::isComplete() const
 {
-	if (AccountWidget)
-		return StateChangedDataValid == AccountWidget.data()->state();
+	if (AccountWidget && AccountWidget.data()->stateNotifier())
+		return StateChangedDataValid == AccountWidget.data()->stateNotifier()->state();
 
 	return true;
 }
@@ -72,7 +72,8 @@ void ConfigWizardSetUpAccountPage::initializePage()
 	{
 		formLayout()->addRow(QString(), AccountWidget.data());
 
-		connect(AccountWidget.data(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(completeChanged()));
+		if (AccountWidget.data()->stateNotifier())
+			connect(AccountWidget.data()->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(completeChanged()));
 		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
 		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
 		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));

@@ -21,13 +21,15 @@
 #include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+
 #include "encryption-ng-otr-policy.h"
 #include "encryption-ng-otr-policy-account-store.h"
 
 #include "encryption-ng-otr-account-configuration-widget.h"
 
 EncryptionNgOtrAccountConfigurationWidget::EncryptionNgOtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent)
+		AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("OTR Encyption"));
 
@@ -114,9 +116,14 @@ void EncryptionNgOtrAccountConfigurationWidget::updateState()
 
 	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account());
 	if (accountPolicy == policy())
-		setState(StateNotChanged);
+		StateNotifier->setState(StateNotChanged);
 	else
-		setState(StateChangedDataValid);
+		StateNotifier->setState(StateChangedDataValid);
+}
+
+const ConfigurationValueStateNotifier * EncryptionNgOtrAccountConfigurationWidget::stateNotifier() const
+{
+	return StateNotifier;
 }
 
 void EncryptionNgOtrAccountConfigurationWidget::apply()

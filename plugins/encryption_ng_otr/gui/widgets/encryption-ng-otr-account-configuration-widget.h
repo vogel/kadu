@@ -24,6 +24,8 @@
 
 class QCheckBox;
 
+class SimpleConfigurationValueStateNotifier;
+
 class EncryptionNgOtrPolicy;
 
 class EncryptionNgOtrAccountConfigurationWidget : public AccountConfigurationWidget
@@ -33,6 +35,8 @@ class EncryptionNgOtrAccountConfigurationWidget : public AccountConfigurationWid
 	QCheckBox *EnableCheckBox;
 	QCheckBox *AutomaticallyInitiateCheckBox;
 	QCheckBox *RequireCheckBox;
+
+	SimpleConfigurationValueStateNotifier *StateNotifier;
 
 	void createGui();
 	EncryptionNgOtrPolicy policy();
@@ -44,6 +48,8 @@ private slots:
 public:
 	explicit EncryptionNgOtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
 	virtual ~EncryptionNgOtrAccountConfigurationWidget();
+
+    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 	virtual void apply();
 	virtual void cancel();

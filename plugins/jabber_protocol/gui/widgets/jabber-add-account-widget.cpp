@@ -36,6 +36,7 @@
 
 #include "accounts/account-manager.h"
 #include "gui/widgets/choose-identity-widget.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
@@ -162,9 +163,9 @@ void JabberAddAccountWidget::dataChanged()
 			&& RememberPassword->isChecked()
 			&& Domain->currentText() == Factory->defaultServer()
 			&& 0 == Identity->currentIndex())
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 	else
-		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void JabberAddAccountWidget::apply()
@@ -220,7 +221,7 @@ void JabberAddAccountWidget::resetGui()
 	Identity->setCurrentIndex(0);
 	AddAccountButton->setDisabled(true);
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberAddAccountWidget::showWhatIsMyUsername()

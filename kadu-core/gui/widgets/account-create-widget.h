@@ -30,13 +30,22 @@
 
 #include "exports.h"
 
+class SimpleConfigurationValueStateNotifier;
+
 class KADUAPI AccountCreateWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+
+protected:
+	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+
 public:
-	explicit AccountCreateWidget(QWidget *parent = 0) : ModalConfigurationWidget(parent) {}
-	virtual ~AccountCreateWidget() {}
+	explicit AccountCreateWidget(QWidget *parent = 0);
+	virtual ~AccountCreateWidget();
+
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 signals:
 	void accountCreated(Account account);

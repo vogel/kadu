@@ -35,6 +35,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "gui/widgets/identities-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
@@ -137,7 +138,7 @@ void GaduCreateAccountWidget::resetGui()
 	MyTokenWidget->setTokenValue(QString());
 	RegisterAccountButton->setEnabled(false);
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void GaduCreateAccountWidget::dataChanged()
@@ -156,9 +157,9 @@ void GaduCreateAccountWidget::dataChanged()
 			&& EMail->text().isEmpty()
 			&& 0 == IdentityCombo->currentIndex()
 			&& MyTokenWidget->tokenValue().isEmpty())
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 	else
-		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void GaduCreateAccountWidget::apply()

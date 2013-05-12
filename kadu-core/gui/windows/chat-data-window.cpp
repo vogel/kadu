@@ -130,7 +130,8 @@ void ChatDataWindow::createGui()
 		if (EditWidget)
 		{
 			TabWidget->addTab(EditWidget, tr("Chat"));
-			connect(EditWidget, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(editChatStateChanged(ConfigurationValueState)));
+			if (EditWidget->stateNotifier())
+				connect(EditWidget->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(editChatStateChanged(ConfigurationValueState)));
 		}
 	}
 

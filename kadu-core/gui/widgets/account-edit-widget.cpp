@@ -17,13 +17,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+
 #include "account-configuration-widget-factory-repository.h"
 
 #include "account-edit-widget.h"
 #include "account-configuration-widget-factory.h"
 
 AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository)
+		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository),
+		StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	if (MyAccountConfigurationWidgetFactoryRepository)
 	{
@@ -89,15 +92,18 @@ ConfigurationValueState AccountEditWidget::accountConfigurationWidgetsState()
 
 	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
 	{
-		switch (widget->state())
+		if (widget->stateNotifier())
 		{
-			case StateChangedDataInvalid:
-				return StateChangedDataInvalid;
-			case StateNotChanged:
-				break;
-			case StateChangedDataValid:
-				anyChanged = true;
-				break;
+			switch (widget->stateNotifier()->state())
+			{
+				case StateChangedDataInvalid:
+					return StateChangedDataInvalid;
+				case StateNotChanged:
+					break;
+				case StateChangedDataValid:
+					anyChanged = true;
+					break;
+			}
 		}
 	}
 
@@ -105,4 +111,14 @@ ConfigurationValueState AccountEditWidget::accountConfigurationWidgetsState()
 		return StateChangedDataValid;
 	else
 		return StateNotChanged;
+}
+
+SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier() const
+{
+	return StateNotifier;
+}
+
+const ConfigurationValueStateNotifier * AccountEditWidget::stateNotifier() const
+{
+	return StateNotifier;
 }

@@ -38,6 +38,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
@@ -280,9 +281,9 @@ void JabberCreateAccountWidget::dataChanged()
 			&& CustomPort->text().toUInt() == port_
 			&& EncryptionMode->currentIndex() == 1
 			&& LegacySSLProbe->isChecked())
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 	else
-		setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void JabberCreateAccountWidget::apply()
@@ -333,7 +334,7 @@ void JabberCreateAccountWidget::resetGui()
 	LegacySSLProbe->setChecked(true);
 	RegisterAccountButton->setEnabled(false);
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString &tlsDomain)

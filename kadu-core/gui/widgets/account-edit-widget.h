@@ -27,11 +27,13 @@
 
 #include "accounts/account.h"
 #include "gui/widgets/account-configuration-widget.h"
+#include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
 class AccountConfigurationWidget;
 class AccountConfigurationWidgetFactory;
 class AccountConfigurationWidgetFactoryRepository;
+class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
@@ -39,6 +41,7 @@ class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 
 	AccountConfigurationWidgetFactoryRepository *MyAccountConfigurationWidgetFactoryRepository;
 	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
+	SimpleConfigurationValueStateNotifier *StateNotifier;
 
 private slots:
 	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
@@ -51,11 +54,14 @@ protected:
 	void cancelAccountConfigurationWidgets();
 
 	ConfigurationValueState accountConfigurationWidgetsState();
+	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
 public:
 	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
 							   Account account, QWidget *parent = 0);
 	virtual ~AccountEditWidget();
+
+    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
 

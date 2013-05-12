@@ -48,6 +48,7 @@
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
@@ -63,7 +64,7 @@ JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFacto
 	createGui();
 	loadAccountData();
 	loadAccountDetailsData();
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
@@ -101,7 +102,7 @@ void JabberEditAccountWidget::createGui()
 
 	mainLayout->addWidget(buttons);
 
-	connect(this, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
+	connect(stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -424,7 +425,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
 		&& !PersonalInfoWidget->isModified())
 	{
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 		return;
 	}
 
@@ -436,9 +437,9 @@ void JabberEditAccountWidget::dataChanged()
 		|| */AccountId->text().isEmpty()
 		|| sameIdExists
 		|| StateChangedDataInvalid == widgetsState)
-		setState(StateChangedDataInvalid);
+		simpleStateNotifier()->setState(StateChangedDataInvalid);
 	else
-		setState(StateChangedDataValid);
+		simpleStateNotifier()->setState(StateChangedDataValid);
 }
 
 void JabberEditAccountWidget::loadAccountData()
@@ -513,7 +514,7 @@ void JabberEditAccountWidget::apply()
 	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberEditAccountWidget::cancel()
@@ -526,7 +527,7 @@ void JabberEditAccountWidget::cancel()
 
 	IdentityManager::instance()->removeUnused();
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberEditAccountWidget::removeAccount()

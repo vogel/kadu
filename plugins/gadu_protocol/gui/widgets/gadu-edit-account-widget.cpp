@@ -47,6 +47,7 @@
 #include "gui/widgets/account-configuration-widget-tab-adapter.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "protocols/protocol.h"
@@ -109,7 +110,7 @@ void GaduEditAccountWidget::createGui()
 
 	mainLayout->addWidget(buttons);
 
-	connect(this, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
+	connect(stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -367,7 +368,7 @@ void GaduEditAccountWidget::apply()
 	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 
 	// TODO: 0.13, fix this
 	// hack, changing details does not trigger this
@@ -383,7 +384,7 @@ void GaduEditAccountWidget::cancel()
 
 	IdentityManager::instance()->removeUnused();
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::dataChanged()
@@ -414,7 +415,7 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->externalIp() == ExternalIp->text()
 		&& Details->externalPort() == ExternalPort->text().toUInt())
 	{
-		setState(StateNotChanged);
+		simpleStateNotifier()->setState(StateNotChanged);
 		return;
 	}
 
@@ -422,9 +423,9 @@ void GaduEditAccountWidget::dataChanged()
 			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
 
 	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
-		setState(StateChangedDataInvalid);
+		simpleStateNotifier()->setState(StateChangedDataInvalid);
 	else
-		setState(StateChangedDataValid);
+		simpleStateNotifier()->setState(StateChangedDataValid);
 }
 
 void GaduEditAccountWidget::loadAccountData()
@@ -458,7 +459,7 @@ void GaduEditAccountWidget::loadAccountData()
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
 	ipAddresses->setText(config_file.readEntry("Network", "Server"));
 
-	setState(StateNotChanged);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::removeAccount()

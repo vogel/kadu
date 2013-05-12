@@ -21,12 +21,14 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
+	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp
-	widgets/account-edit-widget.cpp
+	widgets/account-buddy-list-widget.cpp
 	widgets/account-configuration-widget.cpp
 	widgets/account-configuration-widget-factory-repository.cpp
 	widgets/account-configuration-widget-tab-adapter.cpp
-	widgets/account-buddy-list-widget.cpp
+	widgets/account-create-widget.cpp
+	widgets/account-edit-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
 	widgets/avatar-painter.cpp
@@ -45,6 +47,7 @@ set (gui_SRCS
 	widgets/categorized-list-view-painter.cpp
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
+	widgets/chat-edit-widget.cpp
 	widgets/chat-messages-view.cpp
 	widgets/chat-room-edit-widget.cpp
 	widgets/chat-view-network-access-manager.cpp

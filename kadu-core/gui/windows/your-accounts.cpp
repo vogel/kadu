@@ -370,7 +370,7 @@ bool YourAccounts::canChangeWidget()
 	if (!CurrentWidget)
 		return true;
 
-	if (StateNotChanged == CurrentWidget->state())
+	if (StateNotChanged == CurrentWidget->stateNotifier()->state())
 		return true;
 
 	if (!IsCurrentWidgetEditAccount)
@@ -393,7 +393,7 @@ bool YourAccounts::canChangeWidget()
 		}
 	}
 
-	if (StateChangedDataValid == CurrentWidget->state())
+	if (StateChangedDataValid == CurrentWidget->stateNotifier()->state())
 	{
 		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
 				tr("You have unsaved changes in current account.<br />Do you want to save them?"),
@@ -414,7 +414,7 @@ bool YourAccounts::canChangeWidget()
 		}
 	}
 
-	if (StateChangedDataInvalid == CurrentWidget->state())
+	if (StateChangedDataInvalid == CurrentWidget->stateNotifier()->state())
 	{
 		QMessageBox::StandardButton result = QMessageBox::question(this, tr("Account"),
 				tr("You have unsaved changes in current account.<br />This data is invalid, so you will loose all changes.<br />Do you want to go back to edit them?"),
