@@ -29,38 +29,12 @@
 #include <QtGui/QWidget>
 #include "exports.h"
 
+#include "configuration-value-state-notifier.h"
+
 /**
  * @addtogroup Gui
  * @{
  */
-
-/**
- * @enum ModalConfigurationWidgetState
- * @author Rafal 'Vogel' Malinowski
- * @short State of modal configuration widget.
- *
- * Modal configuration window can be in one of three states:
- * <ul>
- *   <li>no data in widget has been changed</li>
- *   <li>data in widget has been changed and is valid (can be stored)</li>
- *   <li>data in widget has been changed and is invalid (can not be stored)</li>
- * </ul>
- */
-enum ModalConfigurationWidgetState
-{
-	/**
-	 * No data in widget has been changed.
-	 */
-	StateNotChanged,
-	/**
-	 * Data in widget has been changed and is valid (can be stored).
-	 */
-	StateChangedDataValid,
-	/**
-	 * Data in widget has been changed and is invalid (can not be stored).
-	 */
-	StateChangedDataInvalid
-};
 
 /**
  * @class ModalConfigurationWidget
@@ -78,7 +52,7 @@ class KADUAPI ModalConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	ModalConfigurationWidgetState State;
+	ConfigurationValueState State;
 
 protected:
 	/**
@@ -88,7 +62,7 @@ protected:
 	 * Sets new state value. When new value is different from
 	 * old one, stateChanged signal is emitted.
 	 */
-	void setState(ModalConfigurationWidgetState state);
+	void setState(ConfigurationValueState state);
 
 public:
 	/**
@@ -108,7 +82,7 @@ public:
 	 *
 	 * Returns state of widget.
 	 */
-	ModalConfigurationWidgetState state();
+	ConfigurationValueState state();
 
 public slots:
 	/**
@@ -137,7 +111,7 @@ signals:
 	 * Emitted when state of data modifiecation in widget has been changed. For example:
 	 * first bit of data is changed, data is saved, data is restored from saved state.
 	 */
-	void stateChanged(ModalConfigurationWidgetState state);
+	void stateChanged(ConfigurationValueState state);
 
 };
 

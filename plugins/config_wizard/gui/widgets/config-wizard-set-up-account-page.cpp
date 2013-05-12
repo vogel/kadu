@@ -72,7 +72,7 @@ void ConfigWizardSetUpAccountPage::initializePage()
 	{
 		formLayout()->addRow(QString(), AccountWidget.data());
 
-		connect(AccountWidget.data(), SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SIGNAL(completeChanged()));
+		connect(AccountWidget.data(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(completeChanged()));
 		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
 		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
 		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));

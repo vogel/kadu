@@ -50,7 +50,7 @@ protected:
 	void applyAccountConfigurationWidgets();
 	void cancelAccountConfigurationWidgets();
 
-	ModalConfigurationWidgetState accountConfigurationWidgetsState();
+	ConfigurationValueState accountConfigurationWidgetsState();
 
 public:
 	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,

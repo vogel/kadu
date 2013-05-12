@@ -70,8 +70,8 @@ class ProxyEditWindow : public QWidget
 	void updateProxyView();
 	void saveProxy(NetworkProxy proxy);
 
-	ModalConfigurationWidgetState state(NetworkProxy proxy);
-	ModalConfigurationWidgetState state();
+	ConfigurationValueState state(NetworkProxy proxy);
+	ConfigurationValueState state();
 	bool canChangeProxy(const QItemSelection &selection);
 
 	void selectProxy(NetworkProxy proxy);

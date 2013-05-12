@@ -276,7 +276,7 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 	ForceProxyChange = false;
 }
 
-ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
+ConfigurationValueState ProxyEditWindow::state(NetworkProxy proxy)
 {
 	bool valid = !Host->text().isEmpty()
 			&& !Port->text().isEmpty();
@@ -295,7 +295,7 @@ ModalConfigurationWidgetState ProxyEditWindow::state(NetworkProxy proxy)
 			: StateChangedDataInvalid;
 }
 
-ModalConfigurationWidgetState ProxyEditWindow::state()
+ConfigurationValueState ProxyEditWindow::state()
 {
 	QModelIndexList selection = ProxyView->selectionModel()->selectedIndexes();
 	if (selection.size() != 1)
@@ -319,7 +319,7 @@ bool ProxyEditWindow::canChangeProxy(const QItemSelection &selection)
 	if (ForceProxyChange)
 		return true;
 
-	ModalConfigurationWidgetState currenState = state(proxy);
+	ConfigurationValueState currenState = state(proxy);
 	if (StateNotChanged == currenState)
 		return true;
 
@@ -379,7 +379,7 @@ void ProxyEditWindow::dataChanged()
 {
 	PollingUrl->setEnabled(Type->itemData(Type->currentIndex()).toString() == QLatin1String("poll"));
 
-	ModalConfigurationWidgetState changeState = state();
+	ConfigurationValueState changeState = state();
 	SaveButton->setEnabled(StateChangedDataValid == changeState);
 	CancelButton->setEnabled(StateNotChanged != changeState);
 }

@@ -32,7 +32,7 @@ ModalConfigurationWidget::~ModalConfigurationWidget()
 {
 }
 
-void ModalConfigurationWidget::setState(ModalConfigurationWidgetState state)
+void ModalConfigurationWidget::setState(ConfigurationValueState state)
 {
 	if (State != state)
 	{
@@ -42,7 +42,7 @@ void ModalConfigurationWidget::setState(ModalConfigurationWidgetState state)
 }
 
 
-ModalConfigurationWidgetState ModalConfigurationWidget::state()
+ConfigurationValueState ModalConfigurationWidget::state()
 {
 	return State;
 }

@@ -83,7 +83,7 @@ void AccountEditWidget::cancelAccountConfigurationWidgets()
 		widget->cancel();
 }
 
-ModalConfigurationWidgetState AccountEditWidget::accountConfigurationWidgetsState()
+ConfigurationValueState AccountEditWidget::accountConfigurationWidgetsState()
 {
 	bool anyChanged = false;
 

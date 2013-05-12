@@ -109,7 +109,7 @@ void GaduEditAccountWidget::createGui()
 
 	mainLayout->addWidget(buttons);
 
-	connect(this, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(stateChangedSlot(ModalConfigurationWidgetState)));
+	connect(this, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -322,7 +322,7 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->addWidget(ProxyCombo, 5, 2);
 }
 
-void GaduEditAccountWidget::stateChangedSlot(ModalConfigurationWidgetState state)
+void GaduEditAccountWidget::stateChangedSlot(ConfigurationValueState state)
 {
 	ApplyButton->setEnabled(state == StateChangedDataValid);
 	CancelButton->setEnabled(state != StateNotChanged);
@@ -388,7 +388,7 @@ void GaduEditAccountWidget::cancel()
 
 void GaduEditAccountWidget::dataChanged()
 {
-	ModalConfigurationWidgetState widgetsState =accountConfigurationWidgetsState();
+	ConfigurationValueState widgetsState =accountConfigurationWidgetsState();
 
 	if (StateNotChanged == widgetsState
 		&& account().accountIdentity() == Identities->currentIdentity()

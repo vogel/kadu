@@ -101,7 +101,7 @@ void JabberEditAccountWidget::createGui()
 
 	mainLayout->addWidget(buttons);
 
-	connect(this, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(stateChangedSlot(ModalConfigurationWidgetState)));
+	connect(this, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -388,7 +388,7 @@ void JabberEditAccountWidget::sslActivated(int i)
 	}
 }
 
-void JabberEditAccountWidget::stateChangedSlot(ModalConfigurationWidgetState state)
+void JabberEditAccountWidget::stateChangedSlot(ConfigurationValueState state)
 {
 	ApplyButton->setEnabled(state == StateChangedDataValid);
 	CancelButton->setEnabled(state != StateNotChanged);
@@ -400,7 +400,7 @@ void JabberEditAccountWidget::dataChanged()
 	if (!AccountDetails)
 		return;
 
-	ModalConfigurationWidgetState widgetsState = accountConfigurationWidgetsState();
+	ConfigurationValueState widgetsState = accountConfigurationWidgetsState();
 
 	if (StateNotChanged == widgetsState
 		&& account().accountIdentity() == Identities->currentIdentity()
