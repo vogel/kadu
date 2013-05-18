@@ -43,6 +43,7 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	friend void kadu_enomf_create_privkey(void *, const char *, const char *);
 	friend int kadu_enomf_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
+	friend int kadu_enomf_max_message_size(void *, ConnContext *);
 
 	OtrlMessageAppOps Ops;
 
@@ -50,6 +51,7 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
 	IsLoggedInStatus isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId);
 	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
+	int maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData);
 
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();

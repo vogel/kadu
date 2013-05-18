@@ -28,6 +28,9 @@ extern "C" {
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "message/message-manager.h"
+#include <protocols/protocol.h>
+#include <protocols/protocol-factory.h>
+#include <protocols/services/chat-service.h>
 
 #include "encryption-ng-otr-op-data.h"
 #include "encryption-ng-otr-policy.h"
@@ -134,8 +137,10 @@ void kadu_enomf_log_message(void *opdata, const char *message)
 
 int kadu_enomf_max_message_size(void *opdata, ConnContext *context)
 {
-	printf("kadu_enomf_max_message_size %p %p\n", opdata, context);
-	return 20000;
+	Q_UNUSED(context);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	return ngOtrOpData->appOpsWrapper()->maxMessageSize(ngOtrOpData);
 }
 
 const char * kadu_enomf_account_name(void *opdata, const char *account, const char *protocol)
@@ -212,4 +217,16 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
+}
+
+int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	Protocol *protocolHandler = account.protocolHandler();
+	if (!protocolHandler)
+		return 0;
+	ChatService *chatService = protocolHandler->chatService();
+	if (!chatService)
+		return 0;
+	return chatService->maxMessageLength();
 }
