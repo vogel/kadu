@@ -91,6 +91,11 @@ void JabberChatService::setXmppClient(Client *xmppClient)
 		connectClient();
 }
 
+int JabberChatService::maxMessageLength() const
+{
+	return 100000;
+}
+
 ChatDetailsRoom * JabberChatService::myRoomChatDetails(const Chat &chat) const
 {
 	if (chat.chatAccount() != account())

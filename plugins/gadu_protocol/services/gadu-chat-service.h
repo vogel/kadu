@@ -105,6 +105,8 @@ public:
 	 */
 	void setConnection(GaduConnection *connection);
 
+	virtual int maxMessageLength() const;
+
 public slots:
 	virtual bool sendMessage(const Message &message);
 

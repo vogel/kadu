@@ -80,6 +80,11 @@ void GaduChatService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
+int GaduChatService::maxMessageLength() const
+{
+	return 10000;
+}
+
 int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
@@ -136,7 +141,7 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
-	if (rawMessage.length() >= 10000)
+	if (rawMessage.length() > maxMessageLength())
 	{
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Kadu"), tr("Message too long (%1 >= %2)").arg(rawMessage.length()).arg(10000));
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
