@@ -33,14 +33,22 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 {
 	Q_OBJECT
 
+	enum IsLoggedInStatus {
+		NotSure = -1,
+		NotLoggedIn = 0,
+		LoggedIn = 1
+	};
+
 	friend OtrlPolicy kadu_enomf_policy(void *, ConnContext *);
 	friend void kadu_enomf_create_privkey(void *, const char *, const char *);
+	friend int kadu_enomf_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
 
 	OtrlMessageAppOps Ops;
 
 	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData);
 	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
+	IsLoggedInStatus isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId);
 	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
 
 public:

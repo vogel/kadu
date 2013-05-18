@@ -26,6 +26,7 @@ extern "C" {
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "contacts/contact-manager.h"
 #include "message/message-manager.h"
 
 #include "encryption-ng-otr-op-data.h"
@@ -54,8 +55,11 @@ void kadu_enomf_create_privkey(void *opdata, const char *accountname, const char
 
 int kadu_enomf_is_logged_in(void *opdata, const char *accountname, const char *protocol, const char *recipient)
 {
-	printf("kadu_enomf_is_logged_in %p %s %s %s\n", opdata, accountname, protocol, recipient);
-	return -1;
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	return (int)ngOtrOpData->appOpsWrapper()->isLoggedIn(ngOtrOpData, recipient);
 }
 
 void kadu_enomf_inject_message(void *opdata, const char *accountname, const char *protocol, const char *recipient, const char *message)
@@ -188,6 +192,20 @@ void EncryptionNgOtrAppOpsWrapper::createPrivateKey(EncryptionNgOtrOpData *ngOtr
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	ngOtrOpData->privateKeyService()->createPrivateKey(account);
+}
+
+EncryptionNgOtrAppOpsWrapper::IsLoggedInStatus EncryptionNgOtrAppOpsWrapper::isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId)
+{
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
+
+	if (!contact)
+		return NotSure;
+
+	if (contact.currentStatus().isDisconnected())
+		return NotLoggedIn;
+	else
+		return LoggedIn;
 }
 
 void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent)
