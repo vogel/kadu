@@ -27,6 +27,9 @@ extern "C" {
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
+#include "formatted-string/formatted-string-factory.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -84,8 +87,15 @@ void kadu_enomf_notify(void *opdata, OtrlNotifyLevel level, const char *accountn
 
 int kadu_enomf_display_otr_message(void *opdata, const char *accountname, const char *protocol, const char *username, const char *msg)
 {
-	printf("kadu_enomf_display_otr_message %p %s %s %s %s %s\n", opdata, accountname, protocol, username, username, msg);
-	return 0;
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+	Q_UNUSED(username);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	if (ngOtrOpData->appOpsWrapper()->displayOtrMessage(ngOtrOpData, QString::fromUtf8(msg)))
+		return 0;
+	else
+		return -1;
 }
 
 void kadu_enomf_update_context_list(void *opdata)
@@ -191,6 +201,11 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 {
 }
 
+void EncryptionNgOtrAppOpsWrapper::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	MyFormattedStringFactory = formattedStringFactory;
+}
+
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
@@ -228,6 +243,21 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
+}
+
+bool EncryptionNgOtrAppOpsWrapper::displayOtrMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent)
+{
+	if (!MyFormattedStringFactory)
+		return false;
+
+	Chat chat = ngOtrOpData->message().messageChat();
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	if (!chatWidget)
+		return false;
+
+	FormattedString *messageString = MyFormattedStringFactory.data()->fromText(messageContent);
+	chatWidget->appendSystemMessage(messageString);
+	return true;
 }
 
 void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData)
