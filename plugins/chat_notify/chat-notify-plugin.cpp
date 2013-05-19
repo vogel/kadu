@@ -61,6 +61,7 @@ void ChatNotifyPlugin::createDefaultConfiguration()
 	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
+	config_file.addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
 Q_EXPORT_PLUGIN2(chat_notify, ChatNotifyPlugin)
