@@ -23,11 +23,13 @@
 #include "message/message.h"
 
 class EncryptionNgOtrAppOpsWrapper;
+class EncryptionNgOtrNotifier;
 class EncryptionNgOtrPrivateKeyService;
 
 class EncryptionNgOtrOpData
 {
 	EncryptionNgOtrAppOpsWrapper *AppOpsWrapper;
+	EncryptionNgOtrNotifier *Notifier;
 	EncryptionNgOtrPrivateKeyService *PrivateKeyService;
 	Message MyMessage;
 
@@ -37,6 +39,9 @@ public:
 
 	void setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOpsWrapper);
 	EncryptionNgOtrAppOpsWrapper * appOpsWrapper() const;
+
+	void setNotifier(EncryptionNgOtrNotifier *notifier);
+	EncryptionNgOtrNotifier * notifier() const;
 
 	void setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService);
 	EncryptionNgOtrPrivateKeyService * privateKeyService() const;

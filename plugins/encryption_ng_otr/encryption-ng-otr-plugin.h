@@ -28,6 +28,7 @@
 
 class EncryptionNgOtrAccountConfigurationWidgetFactory;
 class EncryptionNgOtrAppOpsWrapper;
+class EncryptionNgOtrNotifier;
 class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrRawMessageTransformer;
 
@@ -40,6 +41,7 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 
 	QScopedPointer<EncryptionNgOtrAccountConfigurationWidgetFactory> OtrAccountConfigurationWidgetFactory;
 	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
+	QScopedPointer<EncryptionNgOtrNotifier> OtrNotifier;
 	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
 
@@ -48,6 +50,9 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrAppOpsWrapper();
 	void unregisterOtrAppOpsWrapper();
+
+	void registerOtrNotifier();
+	void unregisterOtrNotifier();
 
 	void registerOtrPrivateKeyService();
 	void unregisterOtrPrivateKeyService();

@@ -18,11 +18,13 @@
  */
 
 #include "core/core.h"
+#include "gui/widgets/account-configuration-widget-factory-repository.h"
+#include "notify/notification-manager.h"
 #include "services/raw-message-transformer-service.h"
-#include <gui/widgets/account-configuration-widget-factory-repository.h>
 
 #include "gui/widgets/encryption-ng-otr-account-configuration-widget-factory.h"
 #include "encryption-ng-otr-app-ops-wrapper.h"
+#include "encryption-ng-otr-notifier.h"
 #include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-raw-message-transformer.h"
 #include "encryption-ng-otr-user-state.h"
@@ -62,6 +64,22 @@ void EncryptionNgOtrPlugin::unregisterOtrAppOpsWrapper()
 	OtrAppOpsWrapper.reset();
 }
 
+void EncryptionNgOtrPlugin::registerOtrNotifier()
+{
+	OtrNotifier.reset(new EncryptionNgOtrNotifier());
+
+	foreach (NotifyEvent *notifyEvent, OtrNotifier.data()->notifyEvents())
+		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
+}
+
+void EncryptionNgOtrPlugin::unregisterOtrNotifier()
+{
+	foreach (NotifyEvent *notifyEvent, OtrNotifier.data()->notifyEvents())
+		NotificationManager::instance()->unregisterNotifyEvent(notifyEvent);
+
+	OtrNotifier.reset(0);
+}
+
 void EncryptionNgOtrPlugin::registerOtrPrivateKeyService()
 {
 	OtrPrivateKeyService.reset(new EncryptionNgOtrPrivateKeyService());
@@ -92,6 +110,7 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 
 	registerOtrAcountConfigurationWidgetFactory();
 	registerOtrAppOpsWrapper();
+	registerOtrNotifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
 
@@ -99,6 +118,7 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	OtrPrivateKeyService->readPrivateKeys();
 
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
+	OtrRawMessageTransformer->setEncryptionNgOtrNotifier(OtrNotifier.data());
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(OtrPrivateKeyService.data());
 	OtrRawMessageTransformer->setUserState(&OtrUserState);
 
@@ -109,12 +129,14 @@ void EncryptionNgOtrPlugin::done()
 {
 	OtrRawMessageTransformer->setUserState(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(0);
+	OtrRawMessageTransformer->setEncryptionNgOtrNotifier(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
 
 	OtrPrivateKeyService->setUserState(0);
 
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
+	unregisterOtrNotifier();
 	unregisterOtrAppOpsWrapper();
 	unregisterOtrAcountConfigurationWidgetFactory();
 }

@@ -20,7 +20,7 @@
 #include "encryption-ng-otr-op-data.h"
 
 EncryptionNgOtrOpData::EncryptionNgOtrOpData() :
-		AppOpsWrapper(0), PrivateKeyService(0)
+		AppOpsWrapper(0), Notifier(0), PrivateKeyService(0)
 {
 }
 
@@ -36,6 +36,16 @@ void EncryptionNgOtrOpData::setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOp
 EncryptionNgOtrAppOpsWrapper * EncryptionNgOtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
+}
+
+void EncryptionNgOtrOpData::setNotifier(EncryptionNgOtrNotifier *notifier)
+{
+	Notifier = notifier;
+}
+
+EncryptionNgOtrNotifier * EncryptionNgOtrOpData::notifier() const
+{
+	return Notifier;
 }
 
 void EncryptionNgOtrOpData::setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService)

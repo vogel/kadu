@@ -10,6 +10,7 @@ set (SOURCES
 	gui/widgets/encryption-ng-otr-account-configuration-widget.cpp
 
 	encryption-ng-otr-app-ops-wrapper.cpp
+	encryption-ng-otr-notifier.cpp
 	encryption-ng-otr-op-data.cpp
 	encryption-ng-otr-plugin.cpp
 	encryption-ng-otr-policy.cpp
@@ -23,6 +24,7 @@ set (MOC_SOURCES
 	gui/widgets/encryption-ng-otr-account-configuration-widget.h
 
 	encryption-ng-otr-app-ops-wrapper.h
+	encryption-ng-otr-notifier.h
 	encryption-ng-otr-plugin.h
 	encryption-ng-otr-private-key-service.h
 )

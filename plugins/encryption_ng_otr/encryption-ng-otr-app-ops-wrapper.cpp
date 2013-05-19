@@ -28,10 +28,11 @@ extern "C" {
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "message/message-manager.h"
-#include <protocols/protocol.h>
-#include <protocols/protocol-factory.h>
-#include <protocols/services/chat-service.h>
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/services/chat-service.h"
 
+#include "encryption-ng-otr-notifier.h"
 #include "encryption-ng-otr-op-data.h"
 #include "encryption-ng-otr-policy.h"
 #include "encryption-ng-otr-policy-account-store.h"
@@ -117,17 +118,27 @@ void kadu_enomf_write_fingerprints(void *opdata)
 
 void kadu_enomf_gone_secure(void *opdata, ConnContext *context)
 {
-	printf("kadu_enomf_gone_secure %p %p\n", opdata, context);
+	Q_UNUSED(context);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->goneSecure(ngOtrOpData);
 }
 
 void kadu_enomf_gone_insecure(void *opdata, ConnContext *context)
 {
-	printf("kadu_enomf_gone_insecure %p %p\n", opdata, context);
+	Q_UNUSED(context);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->goneInsecure(ngOtrOpData);
 }
 
 void kadu_enomf_still_secure(void *opdata, ConnContext *context, int is_reply)
 {
-	printf("kadu_enomf_still_secure %p %p %d\n", opdata, context, is_reply);
+	Q_UNUSED(context);
+	Q_UNUSED(is_reply);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->stillSecure(ngOtrOpData);
 }
 
 void kadu_enomf_log_message(void *opdata, const char *message)
@@ -217,6 +228,24 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
+}
+
+void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Chat chat = ngOtrOpData->message().messageChat();
+	ngOtrOpData->notifier()->notifyGoneSecure(chat);
+}
+
+void EncryptionNgOtrAppOpsWrapper::goneInsecure(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Chat chat = ngOtrOpData->message().messageChat();
+	ngOtrOpData->notifier()->notifyGoneInsecure(chat);
+}
+
+void EncryptionNgOtrAppOpsWrapper::stillSecure(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Chat chat = ngOtrOpData->message().messageChat();
+	ngOtrOpData->notifier()->notifyStillSecure(chat);
 }
 
 int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData)
