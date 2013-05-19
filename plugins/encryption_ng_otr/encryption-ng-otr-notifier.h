@@ -30,11 +30,13 @@ class EncryptionNgOtrNotifier : public QObject
 	Q_OBJECT
 
 	static QString OtrNotifyTopic;
+	static QString GenericNotifyTopic;
 	static QString GoneSecureNotifyTopic;
 	static QString GoneInsecureNotifyTopic;
 	static QString StillSecureNotifyTopic;
 
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
+	QScopedPointer<NotifyEvent> GenericNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
 	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
@@ -45,6 +47,7 @@ public:
 
 	QList<NotifyEvent *> notifyEvents();
 
+	void notifyGeneric(const Chat &chat, const QString &primary, const QString &secondary);
 	void notifyGoneSecure(const Chat &chat);
 	void notifyGoneInsecure(const Chat &chat);
 	void notifyStillSecure(const Chat &chat);
