@@ -105,6 +105,8 @@ void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
 
 void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()),
+			this, SLOT(configurationWindowApplied()));
 	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
