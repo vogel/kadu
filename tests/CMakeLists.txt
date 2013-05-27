@@ -27,6 +27,9 @@ function (kadu_add_test name_)
 
 	add_executable (${name_} ${ARGN})
 	kadu_set_flags (${name_})
+	if (NOT MSVC)
+		set_property (TARGET ${name_} APPEND_STRING PROPERTY COMPILE_FLAGS " -Wno-error")
+	endif ()
 	add_test ("${sourcePath}/${name_}" ${name_})
 
 	# Add libkadu after the plugin so that --as-needed won't drop anything
