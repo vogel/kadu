@@ -45,7 +45,7 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 	explicit FreedesktopNotify();
 	virtual ~FreedesktopNotify();
 
-	QDBusInterface *KNotify;
+	QDBusInterface *NotificationsInterface;
 	QRegExp StripBr;
 	QRegExp StripHtml;
 	QRegExp StripUnsupportedHtml;
@@ -58,7 +58,6 @@ class FreedesktopNotify : public Notifier, public ConfigurationAwareObject
 
 	bool KdePlasmaNotifications;
 	bool IsXCanonicalAppendSupported;
-	bool UseFreedesktopStandard;
 	bool ServerSupportsActions;
 	bool ServerSupportsBody;
 	bool ServerSupportsHyperlinks;
