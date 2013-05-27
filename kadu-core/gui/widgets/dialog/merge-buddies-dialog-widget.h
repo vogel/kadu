@@ -40,7 +40,6 @@ class MergeBuddiesDialogWidget : public DialogWidget
 	Buddy MyBuddy;
 
 	SelectTalkableComboBox *SelectCombo;
-	QPushButton *MergeButton;
 
 	virtual void createGui();
 

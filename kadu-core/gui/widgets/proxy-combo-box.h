@@ -38,7 +38,6 @@ class KADUAPI ProxyComboBox : public ActionsComboBox
 
 	NetworkProxyModel *Model;
 
-	bool InActivatedSlot;
 	QAction *EditProxyAction;
 	QAction *DefaultProxyAction;
 

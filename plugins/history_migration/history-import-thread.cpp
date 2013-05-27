@@ -39,9 +39,9 @@
 #include "history-importer-manager.h"
 #include "history-migration-helper.h"
 
-HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent) :
+HistoryImportThread::HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, QObject *parent) :
 		QObject(parent), GaduAccount(gaduAccount), Path(path), UinsLists(uinsLists),
-		TotalEntries(totalEntries), ImportedEntries(0), ImportedChats(0), TotalMessages(0),
+		ImportedEntries(0), ImportedChats(0), TotalMessages(0),
 		ImportedMessages(0), Canceled(false), CancelForced(false)
 {
 }

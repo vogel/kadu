@@ -8,9 +8,6 @@ class SmsGatewayQuery : public QObject
 {
 	Q_OBJECT
 
-	QHttp *Query;
-	QBuffer *QueryBuffer;
-
 public:
 	explicit SmsGatewayQuery(QObject *parent = 0);
 	virtual ~SmsGatewayQuery();

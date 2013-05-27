@@ -29,7 +29,7 @@ namespace XMPP
 {
 
 JabberStreamDebugService::JabberStreamDebugService(JabberProtocol *protocol) :
-		QObject(protocol), ParentProtocol(protocol), XmppClient(protocol->xmppClient())
+		QObject(protocol), XmppClient(protocol->xmppClient())
 {
 	connect(XmppClient.data(), SIGNAL(xmlIncoming(QString)), this, SLOT(incomingXml(QString)));
 	connect(XmppClient.data(), SIGNAL(xmlOutgoing(QString)), this, SLOT(outgoingXml(QString)));

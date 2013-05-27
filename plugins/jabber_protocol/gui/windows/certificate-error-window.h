@@ -38,26 +38,22 @@ class CertificateErrorWindow : public QDialog
 {
 	Q_OBJECT
 
-	QPushButton *ShowButton;
 	QPushButton *ConnectButton;
 	QPushButton *CancelButton;
 	QCheckBox *RememberCheckbox;
-	QPushButton *ClickedButton;
 
 	QCA::Certificate CurrentCertificate;
 	int Result;
 	QCA::Validity Validity;
 	QString DomainOverride;
 	QString Host;
-	QObject *Parent;
-	QString &TlsOverrideDomain;
 
 private slots:
 	void showCertificate();
 
 public:
 	CertificateErrorWindow(const QString& title, const QString& host, const QCA::Certificate& cert, int result, QCA::Validity validity,
-			       const QString &domainOverride, QString &tlsOverrideDomain_, QObject *receiver, const char *slot);
+			       const QString &domainOverride, QObject *receiver, const char *slot);
 	virtual ~CertificateErrorWindow();
 
 public slots:

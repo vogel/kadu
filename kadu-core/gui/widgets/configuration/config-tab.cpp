@@ -31,7 +31,7 @@
 #include "gui/widgets/configuration/kadu-scroll-area.h"
 
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget) :
-		QObject(configSection), MyName(name), MyConfigSection(configSection)
+		QObject(configSection), MyName(name)
 {
 	MyScrollArea = new KaduScrollArea(mainWidget);
 	MyScrollArea->setFrameStyle(QFrame::NoFrame);

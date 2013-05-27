@@ -39,7 +39,7 @@
 // avatar data node)
 
 JabberPepService::JabberPepService(XMPP::JabberProtocol *protocol) :
-		QObject(protocol), ParentProtocol(protocol), XmppClient(protocol->xmppClient()), Enabled(false)
+		QObject(protocol), XmppClient(protocol->xmppClient()), Enabled(false)
 {
 	if (XmppClient)
 		connect(XmppClient.data(), SIGNAL(messageReceived(const Message &)), SLOT(messageReceived(const Message &)));

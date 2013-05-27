@@ -41,7 +41,7 @@
 
 ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
 		QWidget(parent, Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
-		ButtonPressed(false), ShotMode(ShotModeStandard)
+		ShotMode(ShotModeStandard)
 {
 	setWindowRole("kadu-screenshot");
 

@@ -57,7 +57,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QCheckBox *RememberPassword;
 
 	QCheckBox *CustomHostPort;
-	QHBoxLayout *HostPortLayout;
 	QLabel *CustomHostLabel;
 	QLineEdit *CustomHost;
 	QLabel *CustomPortLabel;

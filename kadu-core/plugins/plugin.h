@@ -108,7 +108,6 @@ private:
 	QString Name;
 	bool Active;
 	PluginState State;
-	bool FirstLoad;
 
 	QPluginLoader *PluginLoader;
 	GenericPlugin *PluginObject;

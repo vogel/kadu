@@ -40,7 +40,6 @@ class ConfigTab : public QObject
 	Q_OBJECT
 
 	QString MyName;
-	ConfigSection *MyConfigSection;
 
 	QMap<QString, ConfigGroupBox *> MyConfigGroupBoxes;
 

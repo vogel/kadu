@@ -40,7 +40,6 @@ class SoundConfigurationWidget : public NotifierConfigurationWidget
 	QString CurrentNotifyEvent;
 
 	SelectFile *SoundFileSelectFile;
-	QLabel *Warning;
 
 private slots:
 	void test();

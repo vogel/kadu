@@ -43,7 +43,6 @@ class HistoryImportThread : public QObject
 	QString Path;
 	QList<UinsList> UinsLists;
 
-	int TotalEntries;
 	int ImportedEntries;
 	int ImportedChats;
 	int TotalMessages;
@@ -56,7 +55,7 @@ class HistoryImportThread : public QObject
 	void importEntry(const Chat &chat, const HistoryEntry &entry);
 
 public:
-	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, int totalEntries, QObject *parent = 0);
+	HistoryImportThread(Account gaduAccount, const QString &path, const QList<UinsList> &uinsLists, QObject *parent = 0);
 	virtual ~HistoryImportThread();
 
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);

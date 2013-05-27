@@ -221,7 +221,7 @@ bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tl
 	CertificateErrorWindow *errorDialog = new CertificateErrorWindow(
 			title, host, certificate,
 			result, tls->peerCertificateValidity(),
-			overridenHostname, tlsOverrideDomain, receiver, slot);
+			overridenHostname, receiver, slot);
 
 	if (blocking)
 		return QDialog::Accepted == errorDialog->exec();

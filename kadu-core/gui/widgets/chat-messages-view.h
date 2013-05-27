@@ -55,9 +55,6 @@ class KADUAPI ChatMessagesView : public KaduWebView, public ConfigurationAwareOb
 	Chat CurrentChat;
 	HtmlMessagesRenderer *Renderer;
 
-	int LastScrollValue;
-	bool LastLine;
-
 	bool SupportTransparency;
 
 	void connectChat();

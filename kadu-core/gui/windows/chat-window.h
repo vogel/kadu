@@ -21,7 +21,6 @@ private:
 	ChatWidget *currentChatWidget;
 	QTimer *title_timer;  /*!< zmienna przechowująca czas od ostatniego odświeżenia tytułu okna */
 
-	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyjęciu nowej wiadomości */
 	bool showNewMessagesNum; /*!< czy pokazujemy liczbę nowych wiadomości w tytule nieaktywnego okna */
 	bool blinkChatTitle; /*!< czy tytuł nieaktywnego okna z nieprzeczytanymi wiadomościami powinien mrugać */
 

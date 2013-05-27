@@ -83,7 +83,6 @@ private:
 	QVBoxLayout *MainLayout;
 
 	RosterWidget *Roster;
-	QMenu *StatusButtonMenu;
 	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 

@@ -35,7 +35,6 @@ class JabberStreamDebugService : public QObject
 {
 	Q_OBJECT
 
-	XMPP::JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 
 	QString filterPrivateData(const QString &streamData);

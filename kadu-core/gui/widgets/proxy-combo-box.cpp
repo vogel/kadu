@@ -31,7 +31,7 @@
 #define DEFAULT_PROXY_INDEX 1
 
 ProxyComboBox::ProxyComboBox(QWidget *parent) :
-		ActionsComboBox(parent), InActivatedSlot(false), DefaultProxyAction(0)
+		ActionsComboBox(parent), DefaultProxyAction(0)
 {
 	addBeforeAction(new QAction(tr(" - No proxy - "), this));
 

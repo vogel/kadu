@@ -37,12 +37,8 @@ class ScreenshotWidget : public QWidget
 
 	CropImageWidget *CropWidget;
 
-	bool ButtonPressed;
-	QTimer *ToolBoxTimer;
-
 	ScreenShotMode ShotMode;
 	QRect ShotRegion;
-	bool ShowPaintRect;
 
 private slots:
 	void pixmapCapturedSlot(QPixmap pixmap);

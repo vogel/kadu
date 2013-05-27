@@ -72,11 +72,6 @@ class JabberProtocol : public Protocol
 	XMPP::Client *XmppClient;
 	JabberResourcePool *ResourcePool;
 
-	bool usingSSL;
-	bool confUseSSL;
-	bool doReconnect;
-	bool doAboutRoster;
-
 	bool ContactsListReadOnly;
 
 	void notifyAboutPresenceChanged(const XMPP::Jid &jid, const XMPP::Resource &resource);

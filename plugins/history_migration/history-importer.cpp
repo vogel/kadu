@@ -95,7 +95,7 @@ void HistoryImporter::run()
 		return;
 	}
 
-	HistoryImport = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists, totalEntries);
+	HistoryImport = new HistoryImportThread(DestinationAccount, SourceDirectory, uinsLists);
 	HistoryImport->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	HistoryImport->prepareChats();
 

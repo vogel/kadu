@@ -44,7 +44,6 @@ class JabberPepService : public QObject
 
 	typedef XMPP::Message Message;
 
-	XMPP::JabberProtocol *ParentProtocol;
 	QWeakPointer<XMPP::Client> XmppClient;
 	bool Enabled;
 

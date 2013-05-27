@@ -42,8 +42,8 @@
 #include "certificate-error-window.h"
 
 CertificateErrorWindow::CertificateErrorWindow(const QString& title, const QString& host, const QCA::Certificate& cert,
-	int result, QCA::Validity validity, const QString &domainOverride, QString &tlsOverrideDomain, QObject *receiver, const char *slot)
-	: QDialog(), CurrentCertificate(cert), Result(result), Validity(validity), DomainOverride(domainOverride), Host(host), TlsOverrideDomain(tlsOverrideDomain)
+	int result, QCA::Validity validity, const QString &domainOverride, QObject *receiver, const char *slot)
+	: QDialog(), CurrentCertificate(cert), Result(result), Validity(validity), DomainOverride(domainOverride), Host(host)
 {
 	setWindowRole("kadu-certificate-error");
 

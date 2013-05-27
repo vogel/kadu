@@ -58,7 +58,6 @@ class KADUAPI ConfigGroupBox : public QObject
 	Q_OBJECT
 
 	QString Name;
-	ConfigTab *MyConfigTab;
 
 	QGroupBox *GroupBox;
 	QWidget *Container;
