@@ -41,10 +41,11 @@ else ()
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
 		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -pipe -ftrapv -fno-omit-frame-pointer")
 
-		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-			# -fcatch-undefined-behavior generates trap on every undefined behavior by C/C++
-			set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fcatch-undefined-behavior" )
-		endif ()
+		# TODO: uncomment for Clang 3.3
+		#if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+		#	# run-time checks for undefined or suspicious behavior
+		#	set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fsanitize=undefined")
+		#endif ()
 
 		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
 			# -z now checks there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
