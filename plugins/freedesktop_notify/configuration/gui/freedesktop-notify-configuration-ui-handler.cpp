@@ -61,3 +61,5 @@ void FreedesktopNotifyConfigurationUiHandler::mainConfigurationWindowCreated(Mai
 {
 	Q_UNUSED(mainConfigurationWindow)
 }
+
+#include "moc_freedesktop-notify-configuration-ui-handler.cpp"

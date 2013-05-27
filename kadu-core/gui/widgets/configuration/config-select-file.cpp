@@ -91,3 +91,5 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-select-file.cpp"

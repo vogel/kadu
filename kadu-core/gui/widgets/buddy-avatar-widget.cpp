@@ -135,3 +135,5 @@ const QPixmap BuddyAvatarWidget::avatarPixmap()
 
 	return QPixmap();
 }
+
+#include "moc_buddy-avatar-widget.cpp"

@@ -26,6 +26,7 @@
 #include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
 
+#include <libindicate-qt/qindicateindicator.h>
 #include <libindicate-qt/qindicateserver.h>
 
 #include "avatars/avatar.h"
@@ -44,6 +45,7 @@
 #include "message/message-manager.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification/new-message-notification.h"
+#include "notify/notification/notification.h"
 #include "notify/notification-manager.h"
 #include "services/notification-service.h"
 
@@ -319,3 +321,5 @@ void IndicatorDocking::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewChat_IndicatorNotify", true);
 	config_file.addVariable("Notify", "NewMessage_IndicatorNotify", true);
 }
+
+#include "moc_indicator_docking.cpp"

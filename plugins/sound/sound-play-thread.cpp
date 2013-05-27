@@ -105,3 +105,5 @@ void SoundPlayThread::play(SoundPlayer *player, const QString &path)
 	PlayingMutex.unlock();
 	WaitForNewSoundToPlay.wakeAll();
 }
+
+#include "moc_sound-play-thread.cpp"

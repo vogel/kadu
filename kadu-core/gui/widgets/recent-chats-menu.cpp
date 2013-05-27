@@ -95,3 +95,5 @@ void RecentChatsMenu::iconThemeChanged()
 {
 	setIcon(KaduIcon("internet-group-chat").icon());
 }
+
+#include "moc_recent-chats-menu.cpp"

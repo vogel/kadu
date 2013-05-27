@@ -40,7 +40,7 @@ public:
 
 };
 
-// for MOC
+// for MSVC
 #include "contacts/contact-shared.h"
 
 #endif // CONTACT_DETAILS_H

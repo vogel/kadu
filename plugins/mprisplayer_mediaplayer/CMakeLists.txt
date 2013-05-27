@@ -1,5 +1,7 @@
 project (mprisplayer_mediaplayer)
 
+cmake_minimum_required (VERSION 2.8)
+
 find_package (Kadu REQUIRED)
 
 set (SOURCES
@@ -48,4 +50,5 @@ kadu_plugin (mprisplayer_mediaplayer
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 	PLUGIN_DATA_FILES ${DATA_FILES}
+	PLUGIN_DEPENDENCIES mediaplayer
 )

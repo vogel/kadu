@@ -44,3 +44,5 @@ void ConfigWizardPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(config_wizard, ConfigWizardPlugin)
+
+#include "moc_config-wizard-plugin.cpp"

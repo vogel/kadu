@@ -228,3 +228,5 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 	deleteLater();
 }
+
+#include "moc_updates.cpp"

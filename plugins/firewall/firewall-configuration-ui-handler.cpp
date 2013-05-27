@@ -234,3 +234,5 @@ void FirewallConfigurationUiHandler::configurationApplied()
 	config_file.writeEntry("Firewall", "question", QuestionEdit->toPlainText());
 	config_file.writeEntry("Firewall", "answer", AnswerEdit->text());
 }
+
+#include "moc_firewall-configuration-ui-handler.cpp"

@@ -115,3 +115,5 @@ void GaduUrlHandler::accountSelected(QAction *action)
 	if (chatWidget)
 		chatWidget->activate();
 }
+
+#include "moc_gadu-url-handler.cpp"

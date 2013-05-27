@@ -43,3 +43,5 @@ void ExecNotifyPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(exec_notify, ExecNotifyPlugin)
+
+#include "moc_exec-notify-plugin.cpp"

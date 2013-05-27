@@ -68,3 +68,5 @@ bool ProtocolGaduConnection::endWrite()
 	ConnectionProtocol.data()->enableSocketNotifiers();
 	return true;
 }
+
+#include "moc_protocol-gadu-connection.cpp"

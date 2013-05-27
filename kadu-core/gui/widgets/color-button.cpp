@@ -51,3 +51,5 @@ bool ColorButton::setColor(const QColor &color)
 
 	return true;
 }
+
+#include "moc_color-button.cpp"

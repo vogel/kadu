@@ -198,3 +198,5 @@ void SearchBar::somethingFound(bool found)
 
 	FindEdit->setStyleSheet(style);
 }
+
+#include "moc_search-bar.cpp"

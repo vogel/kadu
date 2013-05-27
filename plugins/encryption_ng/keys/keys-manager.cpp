@@ -104,3 +104,5 @@ Key KeysManager::byContactAndType(Contact contact, const QString &keyType, NotFo
 
 	return key;
 }
+
+#include "moc_keys-manager.cpp"

@@ -39,3 +39,5 @@ void ToolbarConfigurationManager::notifyConfigurationUpdated()
 	// do not use '0' here, with '50' there is no flicking
 	QTimer::singleShot(50, this, SIGNAL(configurationUpdated()));
 }
+
+#include "moc_toolbar-configuration-manager.cpp"

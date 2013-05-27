@@ -116,3 +116,5 @@ void DefaultProxyAction::editProxyConfiguration()
 {
 	ProxyEditWindow::show();
 }
+
+#include "moc_default-proxy-action.cpp"

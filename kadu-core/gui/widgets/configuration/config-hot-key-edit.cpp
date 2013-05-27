@@ -78,3 +78,5 @@ void ConfigHotKeyEdit::setVisible(bool visible)
 	label->setVisible(visible);
 	HotKeyEdit::setVisible(visible);
 }
+
+#include "moc_config-hot-key-edit.cpp"

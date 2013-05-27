@@ -252,3 +252,5 @@ void SimpleView::configurationUpdated()
 	Borderless = config_file.readBoolEntry("Look", "SimpleViewBorderless", true);
 
 }
+
+#include "moc_simpleview.cpp"

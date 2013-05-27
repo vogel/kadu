@@ -75,3 +75,5 @@ const QString & PEPRetractTask::node() const
 {
 	return node_;
 }
+
+#include "moc_pep-retract-task.cpp"

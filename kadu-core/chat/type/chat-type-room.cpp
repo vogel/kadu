@@ -145,3 +145,5 @@ ChatEditWidget * ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *paren
 {
 	return new ChatRoomEditWidget(chat, parent);
 }
+
+#include "moc_chat-type-room.cpp"

@@ -201,3 +201,5 @@ void WindowGeometryManager::restoreGeometry()
 		mainWindow->setUnifiedTitleAndToolBarOnMac(true);
 #endif
 }
+
+#include "moc_window-geometry-manager.cpp"

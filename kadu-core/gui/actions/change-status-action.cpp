@@ -66,3 +66,5 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
 		action->setIcon(icon->icon());
 	}
 }
+
+#include "moc_change-status-action.cpp"

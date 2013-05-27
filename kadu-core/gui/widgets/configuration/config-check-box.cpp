@@ -65,3 +65,5 @@ void ConfigCheckBox::saveConfiguration()
 		return;
 	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
+
+#include "moc_config-check-box.cpp"

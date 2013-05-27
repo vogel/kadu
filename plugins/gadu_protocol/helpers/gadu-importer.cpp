@@ -264,3 +264,5 @@ void GaduImporter::buddyAdded(const Buddy &buddy)
 
 	importGaduContact(account, buddy);
 }
+
+#include "moc_gadu-importer.cpp"

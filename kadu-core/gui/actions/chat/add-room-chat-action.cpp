@@ -69,3 +69,5 @@ void AddRoomChatAction::updateAddChatMenuItem()
 		action->setVisible(isRoomChatSupported);
 	}
 }
+
+#include "moc_add-room-chat-action.cpp"

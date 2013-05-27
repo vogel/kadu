@@ -46,3 +46,5 @@ bool ProtocolFilter::acceptAccount(Account account)
 {
 	return (ProtocolName.isEmpty() || ProtocolName == account.protocolName());
 }
+
+#include "moc_protocol-filter.cpp"

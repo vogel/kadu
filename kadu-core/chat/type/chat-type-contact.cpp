@@ -154,3 +154,5 @@ ChatEditWidget * ChatTypeContact::createEditWidget(const Chat &chat, QWidget *pa
 
 	return 0;
 }
+
+#include "moc_chat-type-contact.cpp"

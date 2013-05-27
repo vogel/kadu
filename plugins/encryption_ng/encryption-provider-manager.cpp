@@ -167,3 +167,5 @@ void EncryptionProviderManager::keyReceived(const Contact &contact, const QStrin
 		key.setKey(keyData);
 	}
 }
+
+#include "moc_encryption-provider-manager.cpp"

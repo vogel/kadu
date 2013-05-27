@@ -240,3 +240,5 @@ void BuddyDataWindow::updateButtons()
 	OkButton->setEnabled(valid);
 	ApplyButton->setEnabled(valid);
 }
+
+#include "moc_buddy-data-window.cpp"

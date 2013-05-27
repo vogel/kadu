@@ -87,3 +87,5 @@ void HintsConfigurationWidget::updatePreview()
 	QString style = QString("* {color:%1; background-color:%2}").arg(fcolor.name(), bcolor.name());
 	preview->setStyleSheet(style);
 }
+
+#include "moc_hints_configuration_widget.cpp"

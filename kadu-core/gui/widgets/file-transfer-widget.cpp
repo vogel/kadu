@@ -270,3 +270,5 @@ void FileTransferWidget::fileTransferUpdate()
 
 	qApp->processEvents();
 }
+
+#include "moc_file-transfer-widget.cpp"

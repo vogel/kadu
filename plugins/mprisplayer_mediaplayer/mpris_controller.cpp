@@ -287,3 +287,5 @@ QList<TrackInfo> MPRISController::getTrackList() const
 
 	return result;
 }
+
+#include "moc_mpris_controller.cpp"

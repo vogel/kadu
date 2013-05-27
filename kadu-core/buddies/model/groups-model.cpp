@@ -128,3 +128,5 @@ void GroupsModel::groupRemoved(Group group)
 
 	endRemoveRows();
 }
+
+#include "moc_groups-model.cpp"

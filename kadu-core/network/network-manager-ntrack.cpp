@@ -61,3 +61,5 @@ void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newS
 	if (wasOnline != nowOnline)
 		onlineStateChanged(nowOnline);
 }
+
+#include "moc_network-manager-ntrack.cpp"

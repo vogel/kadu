@@ -66,3 +66,5 @@ QSet<Group> GroupList::checkedGroups()
 
 	return result;
 }
+
+#include "moc_group-list.cpp"

@@ -158,3 +158,5 @@ void ScreenShot::checkShotsSize()
 	if (size/1024 >= limit)
 		ScreenshotNotification::notifySizeLimit(size);
 }
+
+#include "moc_screenshot.cpp"

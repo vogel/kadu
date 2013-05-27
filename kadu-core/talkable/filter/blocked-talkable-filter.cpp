@@ -62,3 +62,5 @@ void BlockedTalkableFilter::setEnabled(bool enabled)
 	Enabled = enabled;
 	emit filterChanged();
 }
+
+#include "moc_blocked-talkable-filter.cpp"

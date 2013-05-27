@@ -174,3 +174,5 @@ void GaduSocketNotifiers::dataSent()
 
 	kdebugf2();
 }
+
+#include "moc_gadu-socket-notifiers.cpp"

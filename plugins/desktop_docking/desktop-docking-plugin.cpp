@@ -57,3 +57,5 @@ void DesktopDockingPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(desktop_docking, DesktopDockingPlugin)
+
+#include "moc_desktop-docking-plugin.cpp"

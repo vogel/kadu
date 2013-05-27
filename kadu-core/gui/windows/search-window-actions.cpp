@@ -182,3 +182,5 @@ void SearchWindowActions::chatFoundActionActivated(QAction *sender)
 	if (search)
 		search->chatFound();
 }
+
+#include "moc_search-window-actions.cpp"

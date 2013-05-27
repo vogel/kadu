@@ -1042,3 +1042,5 @@ void MediaPlayer::insertPlaylistFilenames()
 {
 	putPlayList(4);
 }
+
+#include "moc_mediaplayer.cpp"

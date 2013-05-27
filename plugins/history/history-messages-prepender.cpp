@@ -49,3 +49,5 @@ void HistoryMessagesPrepender::messagesAvailable()
 	MessagesView.clear();
 	deleteLater();
 }
+
+#include "moc_history-messages-prepender.cpp"

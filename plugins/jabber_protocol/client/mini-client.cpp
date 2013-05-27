@@ -265,3 +265,5 @@ void MiniClient::slotDebug(const QString &text)
 	kdebugm(KDEBUG_WARNING, "Jabber MiniClient debug:  %s\n", qPrintable(text));
 }
 
+
+#include "moc_mini-client.cpp"

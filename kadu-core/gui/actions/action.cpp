@@ -117,3 +117,5 @@ void disableNoChat(Action *action)
 {
 	action->setEnabled(action->context()->chat());
 }
+
+#include "moc_action.cpp"

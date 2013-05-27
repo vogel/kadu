@@ -79,3 +79,5 @@ void EmoticonSelectorButtonPopup::mouseReleaseEvent(QMouseEvent *e)
 	QLabel::mouseReleaseEvent(e);
 	emit clicked(DisplayEmoticon);
 }
+
+#include "moc_emoticon-selector-button-popup.cpp"

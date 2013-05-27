@@ -174,3 +174,5 @@ int PluginModel::rowCount(const QModelIndex &parent) const
 {
         return parent.isValid() ? 0 : Plugins.count();
 }
+
+#include "moc_plugin-model.cpp"

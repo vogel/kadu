@@ -144,3 +144,5 @@ void BuddyContactModel::setIncludeIdentityInDisplay(bool includeIdentityInDispla
 	IncludeIdentityInDisplay = includeIdentityInDisplay;
 	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
+
+#include "moc_buddy-contact-model.cpp"

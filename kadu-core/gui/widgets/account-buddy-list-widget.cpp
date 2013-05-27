@@ -145,3 +145,5 @@ void AccountBuddyListWidget::storeToFile()
 		file.close();
 	}
 }
+
+#include "moc_account-buddy-list-widget.cpp"

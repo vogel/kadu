@@ -250,3 +250,5 @@ void RosterService::updateContact(const Contact& contact)
 	if (canPerformLocalUpdate())
 		executeAllTasks();
 }
+
+#include "moc_roster-service.cpp"

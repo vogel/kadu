@@ -140,3 +140,5 @@ void Suggester::replaceWithSuggest(QAction *sender)
 
 	CurrentTextSelection.insertText(replaceText);
 }
+
+#include "moc_suggester.cpp"

@@ -78,3 +78,5 @@ RoleSet ProxyActionContext::roles()
 			? ForwardActionContext->roles()
 			: RoleSet();
 }
+
+#include "moc_proxy-action-context.cpp"

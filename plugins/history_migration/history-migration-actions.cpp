@@ -95,3 +95,5 @@ void HistoryMigrationActions::runImportHistoryAction()
 
 	hi->run();
 }
+
+#include "moc_history-migration-actions.cpp"

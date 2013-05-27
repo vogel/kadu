@@ -606,3 +606,5 @@ void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool e
 	if (action)
 		action->setEnabled(enable);
 }
+
+#include "moc_search-window.cpp"

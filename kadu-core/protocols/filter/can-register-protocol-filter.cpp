@@ -47,3 +47,5 @@ bool CanRegisterProtocolFilter::acceptProtocol(ProtocolFactory *factory)
 
 	return factory->canRegister();
 }
+
+#include "moc_can-register-protocol-filter.cpp"

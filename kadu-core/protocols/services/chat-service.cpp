@@ -45,3 +45,5 @@ RawMessageTransformerService * ChatService::rawMessageTransformerService() const
 {
 	return CurrentRawMessageTransformerService.data();
 }
+
+#include "moc_chat-service.cpp"

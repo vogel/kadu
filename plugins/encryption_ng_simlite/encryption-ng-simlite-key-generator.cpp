@@ -19,6 +19,7 @@
  */
 
 #include "accounts/account.h"
+#include "contacts/contact.h"
 
 #include "plugins/encryption_ng/keys/key.h"
 #include "plugins/encryption_ng/keys/keys-manager.h"

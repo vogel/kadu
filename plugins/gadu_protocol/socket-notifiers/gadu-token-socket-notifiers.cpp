@@ -123,3 +123,5 @@ void GaduTokenSocketNotifiers::connectionTimeout()
 {
 	finished(QString(), QPixmap());
 }
+
+#include "moc_gadu-token-socket-notifiers.cpp"

@@ -225,3 +225,5 @@ void BuddyContactsTable::removeClicked()
 	if (dialog->ask())
 		item->setAction(BuddyContactsTableItem::ItemRemove);
 }
+
+#include "moc_buddy-contacts-table.cpp"

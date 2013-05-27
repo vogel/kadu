@@ -178,3 +178,5 @@ Contact ChatDetailsContact::contact()
 {
 	return CurrentContact;
 }
+
+#include "moc_chat-details-contact.cpp"

@@ -46,3 +46,5 @@ void FiledescPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(filedesc, FiledescPlugin)
+
+#include "moc_filedesc-plugin.cpp"

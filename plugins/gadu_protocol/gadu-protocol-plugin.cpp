@@ -111,3 +111,5 @@ void GaduProtocolPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(gadu_protocol, GaduProtocolPlugin)
+
+#include "moc_gadu-protocol-plugin.cpp"

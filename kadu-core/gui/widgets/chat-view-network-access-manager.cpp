@@ -57,3 +57,5 @@ QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManage
 
 	return QNetworkAccessManager::createRequest(operation, newRequest, device);
 }
+
+#include "moc_chat-view-network-access-manager.cpp"

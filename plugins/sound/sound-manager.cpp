@@ -159,3 +159,5 @@ void SoundManager::testSoundPlaying()
 	QString soundFile = SoundThemeManager::instance()->themes()->themePath() + SoundThemeManager::instance()->themes()->getThemeEntry("NewChat");
 	playFile(soundFile, true);
 }
+
+#include "moc_sound-manager.cpp"

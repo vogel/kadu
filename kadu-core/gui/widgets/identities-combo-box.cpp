@@ -82,3 +82,5 @@ void IdentitiesComboBox::createNewIdentity()
 	if (newIdentity)
 		setCurrentIdentity(newIdentity);
 }
+
+#include "moc_identities-combo-box.cpp"

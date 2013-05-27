@@ -223,3 +223,5 @@ void ChatDataWindow::updateButtons()
 	OkButton->setEnabled(valid);
 	ApplyButton->setEnabled(valid);
 }
+
+#include "moc_chat-data-window.cpp"

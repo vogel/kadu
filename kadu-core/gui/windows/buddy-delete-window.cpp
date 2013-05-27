@@ -181,3 +181,5 @@ void BuddyDeleteWindow::additionalDataListViewItemClicked(QListWidgetItem *item)
 
 	item->setCheckState(ItemState);
 }
+
+#include "moc_buddy-delete-window.cpp"

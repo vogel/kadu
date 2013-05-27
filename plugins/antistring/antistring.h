@@ -59,8 +59,4 @@ public:
 
 };
 
-// for MOC
-#include "chat/chat.h"
-#include "contacts/contact.h"
-
 #endif // ANTISTRING_H

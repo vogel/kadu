@@ -85,3 +85,5 @@ QString MPRISPlayerDialog::getService()
 {
 	return ServiceEdit->text();
 }
+
+#include "moc_mpris-player-dialog.cpp"

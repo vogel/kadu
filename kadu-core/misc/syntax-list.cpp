@@ -199,3 +199,5 @@ bool SyntaxList::isGlobal(const QString &name)
 	SyntaxInfo info = *(find(name));
 	return info.global;
 }
+
+#include "moc_syntax-list.cpp"

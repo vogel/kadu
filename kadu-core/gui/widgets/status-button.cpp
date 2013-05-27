@@ -181,3 +181,5 @@ QString StatusButton::prepareDescription(const QString &description) const
 
 	return html;
 }
+
+#include "moc_status-button.cpp"

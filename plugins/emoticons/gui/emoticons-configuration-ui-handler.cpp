@@ -116,3 +116,5 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 		MessageDialog::show(KaduIcon("dialog-warning"), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
 	}
 }
+
+#include "moc_emoticons-configuration-ui-handler.cpp"

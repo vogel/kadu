@@ -592,3 +592,5 @@ void PluginsManager::releasePlugin(const QString &pluginName)
 	if (Plugins.contains(pluginName))
 		Plugins.value(pluginName)->decUsage();
 }
+
+#include "moc_plugins-manager.cpp"

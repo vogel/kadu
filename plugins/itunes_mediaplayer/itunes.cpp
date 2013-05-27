@@ -216,3 +216,5 @@ QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
 
 	return result;
 }
+
+#include "moc_itunes.cpp"

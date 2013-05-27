@@ -75,3 +75,5 @@ void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
 	ProtocolMenuManagers.removeAll(manager);
 }
 
+
+#include "moc_menu-inventory.cpp"

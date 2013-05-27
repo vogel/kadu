@@ -80,6 +80,4 @@ signals:
 
 };
 
-#include "network/proxy/network-proxy.h" // for MOC
-
 #endif // NETWORK_PROXY_MANAGER_H

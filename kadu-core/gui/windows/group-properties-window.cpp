@@ -182,3 +182,5 @@ void GroupPropertiesWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_group-properties-window.cpp"

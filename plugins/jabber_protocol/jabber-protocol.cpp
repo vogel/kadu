@@ -365,3 +365,5 @@ JabberContactDetails * JabberProtocol::jabberContactDetails(Contact contact) con
 }
 
 }
+
+#include "moc_jabber-protocol.cpp"

@@ -56,3 +56,5 @@ void Qt4SoundPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(qt4_sound, Qt4SoundPlugin)
+
+#include "moc_qt4-sound-plugin.cpp"

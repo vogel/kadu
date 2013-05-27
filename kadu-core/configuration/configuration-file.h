@@ -41,7 +41,7 @@
 /**
 	Klasa reprezentuj�ca tekstowy plik konfiguracyjny (format INI)
 **/
-class PlainConfigFile
+class KADUAPI PlainConfigFile
 {
 	void write() const;
 	bool changeEntry(const QString &group, const QString &name, const QString &value);

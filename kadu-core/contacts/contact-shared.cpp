@@ -409,3 +409,5 @@ Avatar ContactShared::avatar(bool useBuddyData)
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
 KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
 KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
+
+#include "moc_contact-shared.cpp"

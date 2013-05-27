@@ -95,3 +95,5 @@ void ConfigWizardConfigurationUiHandler::showConfigWizardSlot()
 {
 	showConfigWizard();
 }
+
+#include "moc_config-wizard-configuration-ui-handler.cpp"

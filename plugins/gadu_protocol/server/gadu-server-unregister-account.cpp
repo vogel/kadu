@@ -68,3 +68,5 @@ void GaduServerUnregisterAccount::done(bool ok, struct gg_http *h)
 		H = 0;
 	}
 }
+
+#include "moc_gadu-server-unregister-account.cpp"

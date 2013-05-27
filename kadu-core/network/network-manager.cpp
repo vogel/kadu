@@ -78,3 +78,5 @@ void NetworkManager::onlineStateChanged(bool isOnline)
 	else
 		emit offline();
 }
+
+#include "moc_network-manager.cpp"

@@ -50,6 +50,6 @@ message (STATUS "Using ${NETWORK_IMPLEMENTATION} network implementation")
 
 list (APPEND network_INCLUDES ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${network_INCLUDES})
-configure_file (kadu-network-config.h.in kadu-network-config.h)
+configure_file (kadu-network-config.h.in kadu-network-config.h ESCAPE_QUOTES)
 
 kadu_subdirectory (network "${network_SRCS}" "${network_MOC_SRCS}" "${network_INCLUDES}")

@@ -1881,3 +1881,5 @@ void CategorizedListView::slotLayoutChanged()
 //END: Public part
 
 // #include "kcategorizedview.moc"
+
+#include "moc_categorized-list-view.cpp"

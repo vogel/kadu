@@ -81,3 +81,5 @@ void ConfigSelectFont::setVisible(bool visible)
 	label->setVisible(visible);
 	SelectFont::setVisible(visible);
 }
+
+#include "moc_config-select-font.cpp"

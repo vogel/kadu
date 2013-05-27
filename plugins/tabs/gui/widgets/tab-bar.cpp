@@ -55,3 +55,5 @@ void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
 	emit mouseDoubleClickEventSignal(e);
 	kdebugf2();
 }
+
+#include "moc_tab-bar.cpp"

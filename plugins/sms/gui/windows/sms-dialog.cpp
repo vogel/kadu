@@ -343,3 +343,5 @@ void SmsDialog::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_sms-dialog.cpp"

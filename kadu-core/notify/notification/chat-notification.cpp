@@ -48,3 +48,5 @@ void ChatNotification::callbackAccept()
 {
 	openChat();
 }
+
+#include "moc_chat-notification.cpp"

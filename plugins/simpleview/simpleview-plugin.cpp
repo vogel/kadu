@@ -50,3 +50,5 @@ void SimpleViewPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(simpleview, SimpleViewPlugin)
+
+#include "moc_simpleview-plugin.cpp"

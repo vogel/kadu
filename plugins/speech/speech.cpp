@@ -272,3 +272,5 @@ NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent)
 
 
 /** @} */
+
+#include "moc_speech.cpp"

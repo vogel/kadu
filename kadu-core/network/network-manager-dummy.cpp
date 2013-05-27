@@ -38,3 +38,5 @@ bool NetworkManagerDummy::isOnline()
 void NetworkManagerDummy::forceOnline()
 {
 }
+
+#include "moc_network-manager-dummy.cpp"

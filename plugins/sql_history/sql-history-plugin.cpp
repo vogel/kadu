@@ -54,3 +54,5 @@ void SqlHistoryPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(sql_history, SqlHistoryPlugin)
+
+#include "moc_sql-history-plugin.cpp"

@@ -287,3 +287,5 @@ QList<QEvent::Type> PluginListWidgetDelegate::blockedEventTypes(QWidget *widget)
 {
         return widget->property("goya:blockedEventTypes").value<QList<QEvent::Type> >();
 }
+
+#include "moc_plugin-list-view-delegate.cpp"

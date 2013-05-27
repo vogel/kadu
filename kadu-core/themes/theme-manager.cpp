@@ -89,3 +89,5 @@ Theme ThemeManager::currentTheme() const
 {
 	return Themes.value(CurrentThemeName);
 }
+
+#include "moc_theme-manager.cpp"

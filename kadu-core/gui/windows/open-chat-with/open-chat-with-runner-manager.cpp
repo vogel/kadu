@@ -62,3 +62,5 @@ BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 
 	return matchingContacts;
 }
+
+#include "moc_open-chat-with-runner-manager.cpp"

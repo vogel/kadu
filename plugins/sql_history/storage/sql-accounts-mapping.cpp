@@ -117,3 +117,5 @@ int SqlAccountsMapping::idByAccount(const Account &account)
 {
 	return account.property("sql_history:id", 0).toInt();
 }
+
+#include "moc_sql-accounts-mapping.cpp"

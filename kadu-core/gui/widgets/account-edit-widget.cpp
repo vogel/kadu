@@ -56,3 +56,5 @@ void AccountEditWidget::createGui()
 
 	mainLayout->addWidget(buttons);
 }
+
+#include "moc_account-edit-widget.cpp"

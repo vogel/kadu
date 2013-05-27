@@ -130,3 +130,5 @@ void ConfigSpinBox::onValueChanged(int i)
 	}
 	setSuffix(suffix);
 }
+
+#include "moc_config-spin-box.cpp"

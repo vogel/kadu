@@ -224,3 +224,5 @@ void NotifyTreeWidgetItem::useCustomSettingsChecked(bool checked)
 
 	setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
  }
+
+#include "moc_notify-tree-widget.cpp"

@@ -1,8 +1,11 @@
 project (encryption_ng_simlite)
 
-find_package (Kadu REQUIRED)
+cmake_minimum_required (VERSION 2.8)
 
-include (FindPkgConfig)
+# Needed for FindQCA2.cmake when building externally
+list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	encryption-ng-simlite-decryptor.cpp

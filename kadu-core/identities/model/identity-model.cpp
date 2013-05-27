@@ -121,3 +121,5 @@ void IdentityModel::identityRemoved(Identity identity)
 
 	endRemoveRows();
 }
+
+#include "moc_identity-model.cpp"

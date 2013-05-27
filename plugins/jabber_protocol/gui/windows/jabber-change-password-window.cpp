@@ -163,3 +163,5 @@ void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_jabber-change-password-window.cpp"

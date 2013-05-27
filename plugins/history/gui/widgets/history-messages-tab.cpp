@@ -388,3 +388,5 @@ HistoryMessagesStorage * HistoryMessagesTab::historyMessagesStorage() const
 {
 	return Storage;
 }
+
+#include "moc_history-messages-tab.cpp"

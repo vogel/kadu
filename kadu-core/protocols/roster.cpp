@@ -68,3 +68,5 @@ void Roster::removeContact(const Contact &contact) const
 	if (service)
 		service->removeContact(contact);
 }
+
+#include "moc_roster.cpp"

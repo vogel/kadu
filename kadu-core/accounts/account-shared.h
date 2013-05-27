@@ -145,8 +145,4 @@ signals:
 
 };
 
-// for MOC
-#include "contacts/contact.h"
-#include "status/status.h"
-
 #endif // ACCOUNT_SHARED_H

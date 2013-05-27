@@ -28,7 +28,6 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
-#include "contacts/contact.h"
 #include "core/core.h"
 #include "message/message-manager.h"
 #include "protocols/protocol-factory.h"
@@ -281,3 +280,5 @@ void ContactManager::loaded()
 		// delay it so that everything needed will be loaded when we call this method
 		QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
 }
+
+#include "moc_contact-manager.cpp"

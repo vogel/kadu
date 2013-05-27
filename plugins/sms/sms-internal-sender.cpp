@@ -164,3 +164,5 @@ void SmsInternalSender::failure(const QString &errorMessage)
 
 	deleteLater();
 }
+
+#include "moc_sms-internal-sender.cpp"

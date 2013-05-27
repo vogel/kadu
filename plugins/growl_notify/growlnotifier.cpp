@@ -360,3 +360,5 @@ void GrowlNotifier::cleanupAfterGrowl()
 	foreach (const QString &subdir, subdirs)
 		checkDirectory(d.absolutePath() + '/' + subdir);
 }
+
+#include "moc_growlnotifier.cpp"

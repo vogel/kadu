@@ -158,3 +158,5 @@ bool BuddyContactsTableItem::isEditValid() const
 
 	return true;
 }
+
+#include "moc_buddy-contacts-table-item.cpp"

@@ -1,5 +1,7 @@
 project (spellchecker)
 
+cmake_minimum_required (VERSION 2.8)
+
 find_package (Kadu REQUIRED)
 
 set (SOURCES
@@ -57,7 +59,7 @@ else ()
 		endif ()
 		
 		if (USE_ENCHANT)
-			include (FindPkgConfig)
+			find_package (PkgConfig)
 			pkg_search_module (ENCHANT enchant)
 		
 			if (NOT ENCHANT_FOUND)

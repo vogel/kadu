@@ -39,3 +39,5 @@ void ImageExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfigurat
 {
 	Configuration = configuration;
 }
+
+#include "moc_image-expander-dom-visitor-provider.cpp"

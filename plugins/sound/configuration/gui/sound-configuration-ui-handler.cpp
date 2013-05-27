@@ -150,3 +150,5 @@ void SoundConfigurationUiHandler::configurationWindowDestroyed()
 	ThemesComboBox = 0;
 	ConfigurationWidget = 0;
 }
+
+#include "moc_sound-configuration-ui-handler.cpp"

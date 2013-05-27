@@ -34,3 +34,5 @@ ConfigurationHolder::~ConfigurationHolder()
 {
 	Instances.removeOne(this);
 }
+
+#include "moc_configuration-holder.cpp"

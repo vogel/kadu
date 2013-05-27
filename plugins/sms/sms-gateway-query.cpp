@@ -42,3 +42,5 @@ void SmsGatewayQuery::process(const QString &number)
 
 	jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
+
+#include "moc_sms-gateway-query.cpp"

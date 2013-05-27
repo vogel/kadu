@@ -89,7 +89,4 @@ signals:
 
 };
 
-// for MOC
-#include "contacts/contact.h"
-
 #endif // AVATAR_MANAGER_H

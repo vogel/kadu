@@ -105,3 +105,5 @@ void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
 	invalidateFilter();
 	disconnect(filter, 0, this, 0);
 }
+
+#include "moc_protocols-model-proxy.cpp"

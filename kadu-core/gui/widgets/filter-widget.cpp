@@ -289,3 +289,5 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 
 	QWidget::keyPressEvent(event);
 }
+
+#include "moc_filter-widget.cpp"

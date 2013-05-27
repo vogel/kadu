@@ -99,3 +99,5 @@ void AccountsProxyModel::filterChangedSlot()
 	invalidateFilter();
 	emit filterChanged();
 }
+
+#include "moc_accounts-proxy-model.cpp"

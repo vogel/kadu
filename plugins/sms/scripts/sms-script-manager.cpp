@@ -133,3 +133,5 @@ void SmsScriptsManager::loadScript(const QFileInfo &fileInfo)
 
 	Engine->evaluate(content);
 }
+
+#include "moc_sms-script-manager.cpp"

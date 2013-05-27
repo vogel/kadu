@@ -137,3 +137,5 @@ Error GaduChatImageService::checkImageSize(qint64 size) const
 
 	return Error(ErrorLow, message);
 }
+
+#include "moc_gadu-chat-image-service.cpp"

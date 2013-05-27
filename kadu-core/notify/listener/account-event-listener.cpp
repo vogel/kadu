@@ -163,3 +163,5 @@ void AccountEventListener::multilogonSessionDisconnected(MultilogonSession *sess
 	Service->notify(notification);
 }
 
+
+#include "moc_account-event-listener.cpp"

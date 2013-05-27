@@ -134,3 +134,5 @@ void JabberUrlHandler::accountSelected(QAction *action)
 	if (chatWidget)
 		chatWidget->activate();
 }
+
+#include "moc_jabber-url-handler.cpp"

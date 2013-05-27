@@ -1,13 +1,16 @@
 project (gadu_protocol)
 
+cmake_minimum_required (VERSION 2.8)
+
+# Needed for FindQCA2.cmake when building externally
+list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Modules")
+
 set (QT_USE_QTXML 1)
 set (QT_USE_QTXMLPATTERNS 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
 
 find_package (Kadu REQUIRED)
-
-include (FindPkgConfig)
 
 set (LIBGADU_MIN_VERSION "1.11.1")
 
@@ -185,6 +188,7 @@ if (WIN32)
 		endif ()
 	endif ()
 else ()
+	find_package (PkgConfig)
 	pkg_search_module (LIBGADU REQUIRED libgadu>=${LIBGADU_MIN_VERSION})
 endif ()
 

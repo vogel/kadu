@@ -63,3 +63,5 @@ void NetworkManagerQt::forceOnline()
 {
 	onlineStateChanged(true);
 }
+
+#include "moc_network-manager-qt.cpp"

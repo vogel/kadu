@@ -89,3 +89,5 @@ void MergeBuddiesDialogWidget::dialogAccepted()
 void MergeBuddiesDialogWidget::dialogRejected()
 {
 }
+
+#include "moc_merge-buddies-dialog-widget.cpp"

@@ -57,3 +57,5 @@ ScreenshotActions::ScreenshotActions()
 ScreenshotActions::~ScreenshotActions()
 {
 }
+
+#include "moc_screenshot-actions.cpp"

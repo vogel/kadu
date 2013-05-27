@@ -281,3 +281,5 @@ void checkNotify(Action *action)
 }
 
 
+
+#include "moc_notification-service.cpp"

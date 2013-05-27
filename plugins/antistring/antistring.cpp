@@ -113,3 +113,5 @@ int Antistring::points(const QString &message)
 
 	return result;
 }
+
+#include "moc_antistring.cpp"

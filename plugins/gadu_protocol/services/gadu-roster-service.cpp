@@ -177,3 +177,5 @@ void GaduRosterService::executeTask(const RosterTask &task)
 			break;
 	}
 }
+
+#include "moc_gadu-roster-service.cpp"

@@ -44,3 +44,5 @@ AvatarUploader * GaduAvatarService::createAvatarUploader()
 {
 	return new GaduAvatarUploader(this);
 }
+
+#include "moc_gadu-avatar-service.cpp"

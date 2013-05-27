@@ -49,3 +49,5 @@ void ConfigActionButton::createWidgets()
 	if (!ConfigWidget::toolTip.isEmpty())
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
+
+#include "moc_config-action-button.cpp"

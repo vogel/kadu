@@ -173,3 +173,5 @@ void HintOverUserConfigurationWindow::configurationWindowApplied()
 {
 	config_file.writeEntry("Hints", "MouseOverUserSyntax", hintSyntax->toPlainText());
 }
+
+#include "moc_hint-over-user-configuration-window.cpp"

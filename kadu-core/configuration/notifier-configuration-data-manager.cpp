@@ -74,3 +74,5 @@ void NotifierConfigurationDataManager::configurationWindowDestroyed()
 		deleteLater();
 	}
 }
+
+#include "moc_notifier-configuration-data-manager.cpp"

@@ -36,3 +36,5 @@ TalkableFilter::FilterResult ExcludeBuddyTalkableFilter::filterBuddy(const Buddy
 	else
 		return Undecided;
 }
+
+#include "moc_exclude-buddy-talkable-filter.cpp"

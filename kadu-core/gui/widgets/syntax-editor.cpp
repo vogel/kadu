@@ -117,3 +117,5 @@ void SyntaxEditor::syntaxListUpdated()
 	syntaxListCombo->clear();
 	syntaxListCombo->addItems(syntaxList->keys());
 }
+
+#include "moc_syntax-editor.cpp"

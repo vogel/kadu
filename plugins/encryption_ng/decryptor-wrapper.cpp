@@ -77,3 +77,5 @@ QByteArray DecryptorWrapper::decrypt(const QByteArray &data, Chat chat, bool *ok
 
 	return decrypted;
 }
+
+#include "moc_decryptor-wrapper.cpp"

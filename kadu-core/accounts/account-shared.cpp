@@ -464,3 +464,5 @@ void AccountShared::fileTransferServiceChanged(FileTransferService *service)
 }
 
 KaduShared_PropertyPtrReadDef(AccountShared, Identity, accountIdentity, AccountIdentity)
+
+#include "moc_account-shared.cpp"

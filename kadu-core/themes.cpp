@@ -190,3 +190,5 @@ QString Themes::getThemeEntry(const QString &name) const
 	else
 		return QString();
 }
+
+#include "moc_themes.cpp"

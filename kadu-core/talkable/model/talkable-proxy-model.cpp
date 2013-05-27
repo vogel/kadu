@@ -277,3 +277,5 @@ void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 
 	emit invalidated();
 }
+
+#include "moc_talkable-proxy-model.cpp"

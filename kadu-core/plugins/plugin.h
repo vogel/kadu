@@ -24,6 +24,7 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
@@ -74,7 +75,7 @@ class PluginInfo;
  *
  * Note: this class is not responsible for activating dependencies, see PluginsManager::activateDependencies()
  */
-class Plugin : public QObject, public NamedStorableObject
+class KADUAPI Plugin : public QObject, public NamedStorableObject
 {
 	Q_OBJECT
 

@@ -142,3 +142,5 @@ void MacDockingHelper::overlay(const NSInteger count)
 	[newImage release];
 	[[[NSApplication sharedApplication] dockTile]setBadgeLabel:[NSString stringWithFormat:@"%d", count]];
 }
+
+#include "moc_mac_docking_helper.cpp"

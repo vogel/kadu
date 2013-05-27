@@ -253,3 +253,5 @@ void JabberChatStateService::sendState(const Contact &contact, State state)
 }
 
 }
+
+#include "moc_jabber-chat-state-service.cpp"

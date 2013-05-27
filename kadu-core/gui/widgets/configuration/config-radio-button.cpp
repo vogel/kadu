@@ -67,3 +67,5 @@ void ConfigRadioButton::saveConfiguration()
 
 	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
+
+#include "moc_config-radio-button.cpp"

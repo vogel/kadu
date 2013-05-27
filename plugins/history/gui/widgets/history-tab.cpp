@@ -27,3 +27,5 @@ HistoryTab::HistoryTab(QWidget *parent) :
 HistoryTab::~HistoryTab()
 {
 }
+
+#include "moc_history-tab.cpp"

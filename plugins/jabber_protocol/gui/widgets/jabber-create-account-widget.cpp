@@ -362,3 +362,5 @@ void JabberCreateAccountWidget::jidRegistered(const QString &jid, const QString 
 
 	emit accountCreated(jabberAccount);
 }
+
+#include "moc_jabber-create-account-widget.cpp"

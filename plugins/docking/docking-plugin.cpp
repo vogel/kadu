@@ -47,3 +47,5 @@ void DockingPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(docking, DockingPlugin)
+
+#include "moc_docking-plugin.cpp"

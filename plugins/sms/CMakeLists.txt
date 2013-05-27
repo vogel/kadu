@@ -1,5 +1,7 @@
 project (sms)
 
+cmake_minimum_required (VERSION 2.8)
+
 set (QT_USE_QTXML 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)

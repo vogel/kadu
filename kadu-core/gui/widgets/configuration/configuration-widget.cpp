@@ -541,3 +541,5 @@ void ConfigurationWidget::configSectionDestroyed(QObject *obj)
 		CurrentSection = 0;
 }
 
+
+#include "moc_configuration-widget.cpp"

@@ -92,8 +92,4 @@ public:
 
 };
 
-// for MOC
-#include "notify/notification/notification.h"
-#include <libindicate-qt/qindicateindicator.h>
-
 #endif // INDICATOR_DOCKING_H

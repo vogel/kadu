@@ -146,3 +146,5 @@ void GaduPersonalInfoWidget::cancel()
 {
 	fillForm();
 }
+
+#include "moc_gadu-personal-info-widget.cpp"

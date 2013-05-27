@@ -26,7 +26,6 @@
 #include <QtXml/QDomElement>
 
 #include "buddies/buddy-manager.h"
-#include "buddies/group.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
@@ -213,3 +212,5 @@ void GroupManager::itemRemoved(Group item)
 	disconnect(item, 0, this, 0);
 	emit groupRemoved(item);
 }
+
+#include "moc_group-manager.cpp"

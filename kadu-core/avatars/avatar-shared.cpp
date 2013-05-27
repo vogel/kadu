@@ -225,3 +225,5 @@ void AvatarShared::setPixmap(const QPixmap &pixmap)
 	changeNotifier()->notify();
 	emit pixmapUpdated();
 }
+
+#include "moc_avatar-shared.cpp"

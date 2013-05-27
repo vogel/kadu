@@ -86,3 +86,5 @@ void EncryptionNgPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_plugin, EncryptionNgPlugin)
+
+#include "moc_encryption-ng-plugin.cpp"

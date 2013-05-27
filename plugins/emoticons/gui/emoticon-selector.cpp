@@ -209,3 +209,5 @@ void EmoticonSelector::keyPressEvent(QKeyEvent *e)
 	}
 	QAbstractScrollArea::keyPressEvent(e);
 }
+
+#include "moc_emoticon-selector.cpp"

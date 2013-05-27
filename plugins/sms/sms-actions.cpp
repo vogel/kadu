@@ -115,3 +115,5 @@ void SmsActions::sendSmsActionActivated(QAction *sender)
 
 	newSms(action->context()->buddies().toBuddy().mobile());
 }
+
+#include "moc_sms-actions.cpp"

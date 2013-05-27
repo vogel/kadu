@@ -134,3 +134,5 @@ void Autostatus::toggle(bool toggled)
 		on();
 	}
 }
+
+#include "moc_autostatus.cpp"

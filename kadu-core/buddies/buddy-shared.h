@@ -201,7 +201,4 @@ signals:
 
 };
 
-// for MOC
-#include "contacts/contact.h"
-
 #endif // BUDDY_SHARED_DATA

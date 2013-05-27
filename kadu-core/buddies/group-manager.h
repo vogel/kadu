@@ -26,11 +26,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include "buddies/group.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"
-
-class Group;
 
 class KADUAPI GroupManager : public QObject, public SimpleManager<Group>
 {
@@ -79,7 +78,5 @@ signals:
 	void saveGroupData();
 
 };
-
-#include "buddies/group.h" // for MOC
 
 #endif // GROUP_MANAGER_H

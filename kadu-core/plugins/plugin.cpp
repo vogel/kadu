@@ -400,3 +400,5 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
+
+#include "moc_plugin.cpp"

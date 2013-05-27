@@ -222,3 +222,5 @@ void RosterWidget::clearFilter()
 {
 	TalkableWidget->filterWidget()->setFilter(QString());
 }
+
+#include "moc_roster-widget.cpp"

@@ -164,3 +164,5 @@ QAction * ActionsComboBox::currentAction()
 {
 	return model()->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
+
+#include "moc_actions-combo-box.cpp"

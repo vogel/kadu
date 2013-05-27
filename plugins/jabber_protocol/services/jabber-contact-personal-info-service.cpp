@@ -25,6 +25,7 @@
 #include <xmpp_jid.h>
 #include <xmpp_vcard.h>
 
+#include "contacts/contact.h"
 #include "buddies/buddy-manager.h"
 
 #include "jabber-vcard-downloader.h"
@@ -80,3 +81,5 @@ void JabberContactPersonalInfoService::vCardDownloaded(bool ok, XMPP::VCard vCar
 
 	emit personalInfoAvailable(CurrentBuddy);
 }
+
+#include "moc_jabber-contact-personal-info-service.cpp"

@@ -83,3 +83,5 @@ MessageNotification::MessageNotification(MessageType messageType, const Message 
 	setDetails(message.htmlContent());
 }
 
+
+#include "moc_new-message-notification.cpp"

@@ -72,3 +72,5 @@ void ScreenModeChecker::checkFullScreen()
 	}
 }
 
+
+#include "moc_screen-mode-checker.cpp"

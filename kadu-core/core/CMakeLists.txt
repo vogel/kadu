@@ -1,6 +1,5 @@
 set (core_SRCS
 	core.cpp
-	core-actions.cpp
 	crash-aware-object.cpp
 )
 

@@ -504,3 +504,5 @@ void ChatStylesManager::configurationWindowDestroyed()
 	VariantListCombo = 0;
 	TurnOnTransparency = 0;
 }
+
+#include "moc_chat-styles-manager.cpp"

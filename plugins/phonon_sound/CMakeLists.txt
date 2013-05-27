@@ -1,8 +1,8 @@
 project (phonon_sound)
 
-find_package (Kadu REQUIRED)
+cmake_minimum_required (VERSION 2.8)
 
-include (FindPkgConfig)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	phonon-player.cpp
@@ -14,12 +14,17 @@ set (MOC_SOURCES
 	phonon-plugin.h
 )
 
-pkg_search_module (PHONON phonon)
-if (PHONON_FOUND)
-	set (LIBRARIES ${PHONON_LIBRARIES})
-	link_directories (${PHONON_LIBRARY_DIRS})
-	include_directories (${PHONON_INCLUDE_DIRS})
-else ()
+if (NOT WIN32)
+	find_package (PkgConfig)
+	pkg_search_module (PHONON phonon)
+	if (PHONON_FOUND)
+		set (LIBRARIES ${PHONON_LIBRARIES})
+		link_directories (${PHONON_LIBRARY_DIRS})
+		include_directories (${PHONON_INCLUDE_DIRS})
+	endif ()
+endif ()
+
+if (WIN32 OR NOT PHONON_FOUND)
 	if (QT_PHONON_FOUND)
 		set (LIBRARIES ${QT_PHONON_LIBRARY})
 		include_directories (${QT_PHONON_INCLUDE_DIR})

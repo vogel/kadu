@@ -56,3 +56,5 @@ void JabberServerChangePassword::actionFinished()
 
 	emit finished(this);
 }
+
+#include "moc_jabber-server-change-password.cpp"

@@ -114,3 +114,5 @@ QUrl ImageStorageService::toFileUrl(const QUrl &url)
 
 	return result;
 }
+
+#include "moc_image-storage-service.cpp"

@@ -142,3 +142,5 @@ void GaduRemindPasswordWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_gadu-remind-password-window.cpp"

@@ -188,3 +188,5 @@ void GaduAddAccountWidget::remindPasssword()
 	if (ok)
 		(new GaduRemindPasswordWindow(uin))->show();
 }
+
+#include "moc_gadu-add-account-widget.cpp"

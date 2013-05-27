@@ -184,3 +184,5 @@ void MultilogonWindow::killSession()
 	if (session)
 		service->killSession(session);
 }
+
+#include "moc_multilogon-window.cpp"

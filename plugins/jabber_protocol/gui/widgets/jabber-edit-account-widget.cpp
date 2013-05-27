@@ -487,3 +487,5 @@ void JabberEditAccountWidget::passwordChanged(const QString &newPassword)
 {
 	AccountPassword->setText(newPassword);
 }
+
+#include "moc_jabber-edit-account-widget.cpp"

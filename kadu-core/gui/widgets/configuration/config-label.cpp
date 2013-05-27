@@ -54,3 +54,5 @@ void ConfigLabel::setText(const QString &text, bool defaultFormatting)
 {
 	QLabel::setText((defaultFormatting ? "<i>" : "") + text + (defaultFormatting ? "</i>" : ""));
 }
+
+#include "moc_config-label.cpp"

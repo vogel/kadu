@@ -389,3 +389,5 @@ QString JabberConnectionService::localAddress() const
 }
 
 }
+
+#include "moc_jabber-connection-service.cpp"

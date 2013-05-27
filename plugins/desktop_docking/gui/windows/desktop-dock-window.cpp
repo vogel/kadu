@@ -107,3 +107,5 @@ void DesktopDockWindow::startMoving()
 {
 	IsMoving = true;
 }
+
+#include "moc_desktop-dock-window.cpp"

@@ -104,3 +104,5 @@ void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
 	if (text().at(text().length() - 1) == '+')
 		clear();
 }
+
+#include "moc_hot-key.cpp"

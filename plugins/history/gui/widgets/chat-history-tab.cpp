@@ -71,3 +71,5 @@ void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
 	TalkableToSelect = talkable;
 }
+
+#include "moc_chat-history-tab.cpp"

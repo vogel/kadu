@@ -106,3 +106,5 @@ void FilteredTreeView::keyPressEvent(QKeyEvent *event)
 
 	QWidget::keyPressEvent(event);
 }
+
+#include "moc_filtered-tree-view.cpp"

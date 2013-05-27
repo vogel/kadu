@@ -342,3 +342,5 @@ void Hint::discardNotification()
 
 /** @} */
 
+
+#include "moc_hint.cpp"

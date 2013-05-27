@@ -165,3 +165,5 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 }
 
 /** @} */
+
+#include "moc_qt4_docking.cpp"

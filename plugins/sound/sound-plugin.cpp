@@ -64,3 +64,5 @@ void SoundPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(sound, SoundPlugin)
+
+#include "moc_sound-plugin.cpp"

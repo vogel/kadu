@@ -18,6 +18,7 @@
  */
 
 #include "buddies/buddy.h"
+#include "buddies/group.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
@@ -130,3 +131,5 @@ void NameTalkableFilter::setName(const QString &name)
 	Name = name;
 	emit filterChanged();
 }
+
+#include "moc_name-talkable-filter.cpp"

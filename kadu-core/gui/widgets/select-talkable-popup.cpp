@@ -127,3 +127,5 @@ void SelectTalkablePopup::removeFilter(TalkableFilter *filter)
 {
 	ProxyModel->removeFilter(filter);
 }
+
+#include "moc_select-talkable-popup.cpp"

@@ -94,3 +94,5 @@ bool ActionFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
 
 	return true;
 }
+
+#include "moc_action-filter-proxy-model.cpp"

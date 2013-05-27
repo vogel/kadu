@@ -68,3 +68,5 @@ void AddConferenceAction::updateAddChatMenuItem()
 		action->setVisible(isConferenceSupported);
 	}
 }
+
+#include "moc_add-conference-action.cpp"

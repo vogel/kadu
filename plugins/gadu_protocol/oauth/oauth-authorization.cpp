@@ -61,3 +61,5 @@ void OAuthAuthorization::requestFinished()
 	emit authorized(QNetworkReply::NoError == Reply->error());
 	deleteLater();
 }
+
+#include "moc_oauth-authorization.cpp"

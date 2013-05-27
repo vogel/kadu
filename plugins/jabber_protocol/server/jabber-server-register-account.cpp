@@ -178,3 +178,5 @@ void JabberServerRegisterAccount::performAction()
 	kdebugf2();
 }
 
+
+#include "moc_jabber-server-register-account.cpp"

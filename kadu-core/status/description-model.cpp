@@ -105,3 +105,5 @@ void DescriptionModel::descriptionRemoved(const QString &description)
 
 	endRemoveRows();
 }
+
+#include "moc_description-model.cpp"

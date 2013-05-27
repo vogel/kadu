@@ -77,3 +77,5 @@ void PasswordDialogWidget::passwordTextChanged(const QString &text)
 {
 	emit valid(!text.isEmpty());
 }
+
+#include "moc_password-dialog-widget.cpp"

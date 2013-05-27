@@ -104,3 +104,5 @@ QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString
 
 	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::post(request, requestData)));
 }
+
+#include "moc_network-access-manager-wrapper.cpp"

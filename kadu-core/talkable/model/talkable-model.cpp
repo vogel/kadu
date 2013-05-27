@@ -59,3 +59,5 @@ bool TalkableModel::includeMyself() const
 {
 	return IncludeMyself;
 }
+
+#include "moc_talkable-model.cpp"

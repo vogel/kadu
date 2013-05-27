@@ -148,3 +148,5 @@ void GaduMultilogonService::removeAllSessions()
 		delete gaduSession;
 	}
 }
+
+#include "moc_gadu-multilogon-service.cpp"

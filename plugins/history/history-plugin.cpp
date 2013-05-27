@@ -70,3 +70,5 @@ void HistoryPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(history, HistoryPlugin)
+
+#include "moc_history-plugin.cpp"

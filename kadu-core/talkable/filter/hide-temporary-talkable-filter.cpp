@@ -61,3 +61,5 @@ void HideTemporaryTalkableFilter::setEnabled(bool enabled)
 	Enabled = enabled;
 	emit filterChanged();
 }
+
+#include "moc_hide-temporary-talkable-filter.cpp"

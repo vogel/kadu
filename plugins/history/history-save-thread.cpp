@@ -167,3 +167,5 @@ void HistorySaveThread::stop()
 	WaitForSomethingToSave.wakeAll();
 	SomethingToSave.unlock();
 }
+
+#include "moc_history-save-thread.cpp"

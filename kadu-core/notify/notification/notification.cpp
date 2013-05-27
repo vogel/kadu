@@ -166,3 +166,5 @@ void Notification::setIcon(const KaduIcon &icon)
 {
 	Icon = icon;
 }
+
+#include "moc_notification.cpp"

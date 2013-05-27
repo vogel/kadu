@@ -23,6 +23,8 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
+#include "emoticons-exports.h"
+
 /**
  * @addtogroup Emoticons
  * @{
@@ -33,7 +35,7 @@
  * @short Emoticon representation.
  * @author Rafał 'Vogel' Malinowski
  */
-class Emoticon
+class EMOTICONSAPI_TESTS Emoticon
 {
 	QString TriggerText;
 	QString StaticFilePath;

@@ -66,3 +66,5 @@ void StorableStatusContainer::storeStatus(Status status)
 
 	ConfigurationManager::instance()->flush();
 }
+
+#include "moc_storable-status-container.cpp"

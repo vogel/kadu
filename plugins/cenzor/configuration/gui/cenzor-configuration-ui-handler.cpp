@@ -80,3 +80,5 @@ void CenzorConfigurationUiHandler::configurationWindowApplied()
 	Cenzor::instance()->configuration().setExclusionList(CenzorConfiguration::toRegExpList(ExclusionsWidget->list()));
 	Cenzor::instance()->configuration().saveConfiguration();
 }
+
+#include "moc_cenzor-configuration-ui-handler.cpp"

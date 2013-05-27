@@ -876,3 +876,5 @@ void KaduWindowActions::configurationUpdated()
 	if (ShowMyself->action(context)->isChecked() != config_file.readBoolEntry("General", "ShowMyself"))
 		ShowMyself->action(context)->trigger();
 }
+
+#include "moc_kadu-window-actions.cpp"

@@ -123,3 +123,5 @@ void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &passwo
 	else
 		uploadAvatarVCard();
 }
+
+#include "moc_jabber-avatar-uploader.cpp"

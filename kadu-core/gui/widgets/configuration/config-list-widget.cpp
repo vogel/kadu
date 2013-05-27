@@ -137,3 +137,5 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-list-widget.cpp"

@@ -53,3 +53,5 @@ void FirewallPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(firewall, FirewallPlugin)
+
+#include "moc_firewall-plugin.cpp"

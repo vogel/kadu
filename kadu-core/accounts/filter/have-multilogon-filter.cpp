@@ -43,3 +43,5 @@ bool HaveMultilogonFilter::acceptAccount(Account account)
 		return false;
 	return 0 != account.protocolHandler()->multilogonService();
 }
+
+#include "moc_have-multilogon-filter.cpp"

@@ -209,3 +209,5 @@ int IdentityShared::maxDescriptionLength()
 	Account account = AccountManager::bestAccount(Accounts);
 	return account ? account.statusContainer()->maxDescriptionLength() : -1;
 }
+
+#include "moc_identity-shared.cpp"

@@ -66,3 +66,5 @@ bool IconThemeManager::isValidThemePath(const QString &themePath) const
 
 	return kaduIconFile.exists();
 }
+
+#include "moc_icon-theme-manager.cpp"

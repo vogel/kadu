@@ -73,3 +73,5 @@ void GroupTalkableFilter::setAllGroupShown(bool shown)
 	AllGroupShown = shown;
 	emit filterChanged();
 }
+
+#include "moc_group-talkable-filter.cpp"

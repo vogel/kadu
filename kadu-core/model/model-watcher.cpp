@@ -147,3 +147,5 @@ void ModelWatcher::rowsRemoved(const QModelIndex &parent, int start, int end)
 {
 	printf("rowsRemoved: %s\n", qPrintable(QString("%1 - %2 - %3 - %4").arg(Name).arg(indexToString(parent).arg(start).arg(end))));
 }
+
+#include "moc_model-watcher.cpp"

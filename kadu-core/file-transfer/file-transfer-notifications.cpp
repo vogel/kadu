@@ -147,3 +147,5 @@ void NewFileTransferNotification::callbackReject()
 
 	FileTransferManager::instance()->rejectFileTransfer(ft);
 }
+
+#include "moc_file-transfer-notifications.cpp"

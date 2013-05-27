@@ -46,3 +46,5 @@ void Qt4DockingPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(qt4_docking, Qt4DockingPlugin)
+
+#include "moc_qt4-docking-plugin.cpp"

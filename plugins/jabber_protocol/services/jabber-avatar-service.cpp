@@ -72,3 +72,5 @@ AvatarUploader * JabberAvatarService::createAvatarUploader()
 		return new JabberAvatarVCardUploader(VCardService.data(), this);
 	return new JabberAvatarUploader(PepService.data(), VCardService.data(), this);
 }
+
+#include "moc_jabber-avatar-service.cpp"

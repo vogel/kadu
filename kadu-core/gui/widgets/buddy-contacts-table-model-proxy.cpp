@@ -65,3 +65,5 @@ bool BuddyContactsTableModelProxy::lessThan(const QModelIndex &left, const QMode
 
 	return leftItem->itemContactPriority() < rightItem->itemContactPriority();
 }
+
+#include "moc_buddy-contacts-table-model-proxy.cpp"

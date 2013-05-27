@@ -83,3 +83,5 @@ void GaduTokenFetcher::tokenReceivedSlot(int id, bool error)
 		TokenId.clear();
 	}
 }
+
+#include "moc_gadu-token-fetcher.cpp"

@@ -68,3 +68,5 @@ void SimpleViewConfigUi::createDefaultConfiguration()
 }
 
 
+
+#include "moc_simpleview-config-ui.cpp"

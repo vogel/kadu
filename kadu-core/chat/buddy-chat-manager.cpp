@@ -169,3 +169,5 @@ Chat BuddyChatManager::buddyChat(const Buddy &buddy)
 	else
 		return createAndInsertBuddyChat(buddy);
 }
+
+#include "moc_buddy-chat-manager.cpp"

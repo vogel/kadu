@@ -91,3 +91,5 @@ void HistoryBuddyDataWindowAddons::buddyDataWindowDestroyed(BuddyDataWindow *bud
 
 	disconnect(buddyDataWindow, 0, this, 0);
 }
+
+#include "moc_history-buddy-data-window-addons.cpp"

@@ -110,3 +110,5 @@ bool TrustedCertificatesManager::isTrusted(const QString &certificate)
 		}
 	return false;
 }
+
+#include "moc_trusted-certificates-manager.cpp"

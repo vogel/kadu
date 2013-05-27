@@ -58,3 +58,5 @@ bool NetworkProxyProxyModel::lessThan(const QModelIndex &left, const QModelIndex
 	int displayCompare = compareNames(leftNetworkProxy.address(), rightNetworkProxy.address());
 	return displayCompare < 0;
 }
+
+#include "moc_network-proxy-proxy-model.cpp"

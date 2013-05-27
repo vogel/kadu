@@ -63,3 +63,5 @@ void LongValidator::fixup(QString &input) const
 
 	input = result;
 }
+
+#include "moc_long-validator.cpp"

@@ -73,3 +73,5 @@ TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterContact(const Co
 	else
 		return Undecided;
 }
+
+#include "moc_hide-anonymous-talkable-filter.cpp"

@@ -55,3 +55,5 @@ void MPRISPlayerPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(mprisplayer_mediaplayer, MPRISPlayerPlugin)
+
+#include "moc_mpris-player-plugin.cpp"

@@ -158,3 +158,5 @@ void GenerateKeysActionDescription::menuActionTriggered(QAction *action)
 	else
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Error generating keys"));
 }
+
+#include "moc_generate-keys-action-description.cpp"

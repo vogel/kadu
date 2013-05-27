@@ -264,3 +264,5 @@ void PCSpeaker::createDefaultConfiguration()
 }
 
 Q_EXPORT_PLUGIN2(pcspeaker, PCSpeaker)
+
+#include "moc_pcspeaker.cpp"

@@ -65,3 +65,5 @@ void SelectFont::onClick()
 	if (ok)
 		setFont(f);
 }
+
+#include "moc_select-font.cpp"

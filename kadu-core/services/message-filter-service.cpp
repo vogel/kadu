@@ -50,3 +50,5 @@ bool MessageFilterService::acceptMessage(const Message &message)
 			return false;
 	return true;
 }
+
+#include "moc_message-filter-service.cpp"

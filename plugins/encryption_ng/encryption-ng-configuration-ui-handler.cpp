@@ -51,3 +51,5 @@ EncryptionNgConfigurationUiHandler::EncryptionNgConfigurationUiHandler()
 EncryptionNgConfigurationUiHandler::~EncryptionNgConfigurationUiHandler()
 {
 }
+
+#include "moc_encryption-ng-configuration-ui-handler.cpp"

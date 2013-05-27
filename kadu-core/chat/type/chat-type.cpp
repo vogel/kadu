@@ -35,3 +35,5 @@ ChatType::ChatType(QObject *parent) :
 ChatType::~ChatType()
 {
 }
+
+#include "moc_chat-type.cpp"

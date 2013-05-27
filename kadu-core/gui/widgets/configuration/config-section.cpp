@@ -139,3 +139,5 @@ void ConfigSection::addFullPageWidget(const QString &name, QWidget *widget)
 {
 	TabWidget->addTab(widget, name);
 }
+
+#include "moc_config-section.cpp"

@@ -55,3 +55,5 @@ TalkableFilter::FilterResult UnreadMessagesTalkableFilter::filterContact(const C
 	else
 		return Undecided;
 }
+
+#include "moc_unread-messages-talkable-filter.cpp"

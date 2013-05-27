@@ -1,8 +1,8 @@
 project (mpd_mediaplayer)
 
-find_package (Kadu REQUIRED)
+cmake_minimum_required (VERSION 2.8)
 
-include (FindPkgConfig)
+find_package (Kadu REQUIRED)
 
 set (SOURCES
 	mpd-mediaplayer.cpp
@@ -17,6 +17,7 @@ set (CONFIGURATION_FILES
 	configuration/mpd_config.ui
 )
 
+find_package (PkgConfig)
 pkg_search_module (LIBMPDCLIENT REQUIRED libmpdclient)
 include_directories (${LIBMPDCLIENT_INCLUDE_DIRS})
 link_directories (${LIBMPDCLIENT_LIBRARY_DIRS})
@@ -26,4 +27,5 @@ kadu_plugin (mpd_mediaplayer
 	PLUGIN_MOC_SOURCES ${MOC_SOURCES}
 	PLUGIN_LIBRARIES ${LIBMPDCLIENT_LIBRARIES}
 	PLUGIN_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	PLUGIN_DEPENDENCIES mediaplayer
 )

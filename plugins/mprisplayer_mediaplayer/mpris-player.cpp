@@ -133,3 +133,5 @@ void MPRISPlayer::configurationApplied()
 		MediaPlayer::instance()->registerMediaPlayer(MPRISPlayer::instance(), MPRISPlayer::instance());
 	}
 }
+
+#include "moc_mpris-player.cpp"

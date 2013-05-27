@@ -325,3 +325,5 @@ void ChatWidgetManager::messageSent(const Message &message)
 
 	chatWidget->appendMessage(message);
 }
+
+#include "moc_chat-widget-manager.cpp"

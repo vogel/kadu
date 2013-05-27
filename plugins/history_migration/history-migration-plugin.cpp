@@ -46,3 +46,5 @@ void HistoryMigrationPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(history_migration, HistoryMigrationPlugin)
+
+#include "moc_history-migration-plugin.cpp"

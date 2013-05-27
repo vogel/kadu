@@ -125,3 +125,5 @@ void ProtocolsModel::protocolFactoryUnregistered(ProtocolFactory *protocolFactor
 
 	endRemoveRows();
 }
+
+#include "moc_protocols-model.cpp"

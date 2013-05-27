@@ -50,3 +50,5 @@ void SqlMessagesStatusStorage::deleteMessages(const Talkable &talkable, const QD
 {
 	SqlStorage->clearStatusHistory(talkable, date);
 }
+
+#include "moc_sql-messages-status-storage.cpp"

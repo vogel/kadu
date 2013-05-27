@@ -37,3 +37,5 @@ TalkableFilter::FilterResult HideContactChatsTalkableFilter::filterChat(const Ch
 	else
 		return Undecided;
 }
+
+#include "moc_hide-contact-chats-talkable-filter.cpp"

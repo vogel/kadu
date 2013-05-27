@@ -209,3 +209,5 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 			break;
 	}
 }
+
+#include "moc_history-import-thread.cpp"

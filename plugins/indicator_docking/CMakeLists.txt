@@ -1,7 +1,8 @@
 project (indicator_docking)
 
+cmake_minimum_required (VERSION 2.8)
+
 find_package (Kadu REQUIRED)
-include (FindPkgConfig)
 
 set (SOURCES
 	indicator_docking.cpp
@@ -17,6 +18,7 @@ if (NOT KADU_WITH_LIBINDICATE_QT)
 	message (FATAL_ERROR "You need to compile core with libindicate support (-DWITH_LIBINDICATE_QT=ON)")
 endif ()
 
+find_package (PkgConfig)
 pkg_search_module (LIBINDICATE_QT REQUIRED indicate-qt)
 
 link_directories (${LIBINDICATE_QT_LIBRARY_DIRS})

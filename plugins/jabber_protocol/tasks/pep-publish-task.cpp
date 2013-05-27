@@ -111,3 +111,5 @@ const QString & PEPPublishTask::node() const
 {
 	return node_;
 }
+
+#include "moc_pep-publish-task.cpp"

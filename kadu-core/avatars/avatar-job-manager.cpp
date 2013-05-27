@@ -115,3 +115,5 @@ Contact AvatarJobManager::nextJob()
 
 	return job;
 }
+
+#include "moc_avatar-job-manager.cpp"

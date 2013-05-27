@@ -397,3 +397,5 @@ void ChatMessagesView::configurationUpdated()
 {
 	setUserFont(ChatConfigurationHolder::instance()->chatFont().toString(), ChatConfigurationHolder::instance()->forceCustomChatFont());
 }
+
+#include "moc_chat-messages-view.cpp"

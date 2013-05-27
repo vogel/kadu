@@ -68,3 +68,5 @@ void MediaPlayerStatusChanger::changePositionInStatus(ChangeDescriptionTo newSon
 			emit statusChanged(0);
 	}
 }
+
+#include "moc_mp_status_changer.cpp"

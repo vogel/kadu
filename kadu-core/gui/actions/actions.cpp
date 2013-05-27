@@ -68,3 +68,5 @@ QAction * Actions::createAction(const QString &name, ActionContext *context, QOb
 
 	return result;
 }
+
+#include "moc_actions.cpp"

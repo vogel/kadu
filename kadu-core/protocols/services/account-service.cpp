@@ -35,3 +35,5 @@ Account AccountService::account() const
 {
 	return ServiceAccount;
 }
+
+#include "moc_account-service.cpp"

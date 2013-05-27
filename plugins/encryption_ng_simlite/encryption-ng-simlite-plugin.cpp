@@ -74,3 +74,5 @@ void EngryptionNgSimlitePlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_simlite, EngryptionNgSimlitePlugin)
+
+#include "moc_encryption-ng-simlite-plugin.cpp"

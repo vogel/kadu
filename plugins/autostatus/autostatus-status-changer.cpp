@@ -72,3 +72,5 @@ void AutostatusStatusChanger::changeStatus(StatusContainer *container, Status &s
 
 	status.setDescription(Description);
 }
+
+#include "moc_autostatus-status-changer.cpp"

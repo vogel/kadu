@@ -97,3 +97,5 @@ void JabberServerInfoService::reset()
 }
 
 }
+
+#include "moc_jabber-server-info-service.cpp"

@@ -103,3 +103,5 @@ QString NetworkProxyShared::displayName()
 	else
 		return User + "@" + Address + ":" + QString::number(Port);
 }
+
+#include "moc_network-proxy-shared.cpp"

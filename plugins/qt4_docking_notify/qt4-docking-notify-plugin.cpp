@@ -51,3 +51,5 @@ void Qt4DockingNotifyPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(qt4_docking_notify, Qt4DockingNotifyPlugin)
+
+#include "moc_qt4-docking-notify-plugin.cpp"

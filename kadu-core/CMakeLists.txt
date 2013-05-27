@@ -1,5 +1,3 @@
-include (FindPkgConfig)
-
 if (ENABLE_DEVELOPER_BUILD AND NOT MSVC AND NOT APPLE)
 	set (FAST_LINKING_DEFAULT ON)
 else ()
@@ -15,13 +13,14 @@ endif ()
 
 if (UNIX AND NOT APPLE)
 	if (NOT DEFINED WITH_LIBINDICATE_QT OR WITH_LIBINDICATE_QT)
+		find_package (PkgConfig)
 		pkg_search_module (LIBINDICATE_QT indicate-qt)
 	endif ()
 
 	option (WITH_LIBINDICATE_QT "Compile with Messaging Menu (Ayatana) support through libindicate-qt" "${LIBINDICATE_QT_FOUND}")
-	set (KADU_WITH_LIBINDICATE_QT ${WITH_LIBINDICATE_QT} PARENT_SCOPE)
+	set (KADU_WITH_LIBINDICATE_QT ${WITH_LIBINDICATE_QT} PARENT_SCOPE)  # Do not use it here, it's in parent scope
 
-	if (KADU_WITH_LIBINDICATE_QT)
+	if (WITH_LIBINDICATE_QT)
 		if (NOT LIBINDICATE_QT_FOUND)
 			message (SEND_ERROR "Could NOT find libindicate-qt")
 		else ()
@@ -59,6 +58,9 @@ if ("${NETWORK_IMPLEMENTATION}" STREQUAL "ntrack")
 	list (APPEND ADDITIONAL_LIBRARIES ${QNTRACK_LIBRARIES})
 endif ()
 # The rest of NETWORK_IMPLEMENTATION stuff is handled in network/CMakeLists.txt.
+
+configure_file (kadu-config.h.in "${CMAKE_CURRENT_BINARY_DIR}/kadu-config.h" ESCAPE_QUOTES)
+include_directories ("${CMAKE_CURRENT_BINARY_DIR}")
 
 set (kadu_SRCS
 	activate.cpp
@@ -108,6 +110,8 @@ set (kadu_MOC_SRCS
 	kadu-application.h
 	themes.h
 	updates.h
+
+	os/qtsingleapplication/qtlocalpeer.h
 )
 
 set (kadu_SUBDIRS
@@ -144,56 +148,21 @@ set (kadu_SUBDIRS
 	url-handlers
 )
 
-qt4_wrap_cpp (MOC_FILES ${kadu_MOC_SRCS})
-
 find_package (QCA2 REQUIRED)
 include_directories (${QCA2_INCLUDE_DIR})
 add_definitions (${QCA2_DEFINITIONS})
 list (APPEND ADDITIONAL_LIBRARIES ${QCA2_LIBRARIES})
 
-include(CheckLibraryExists)
+find_package (LibArchive 2.6.0 REQUIRED)
+include (CheckLibraryExists)
+check_library_exists ("${LibArchive_LIBRARIES}" "archive_write_set_compression_lzma" "" have_libarchive_lzma_support)
+check_library_exists ("${LibArchive_LIBRARIES}" "archive_write_set_compression_xz" "" have_libarchive_xz_support)
+if (NOT have_libarchive_lzma_support OR NOT have_libarchive_xz_support)
+	message (SEND_ERROR "Your libarchive does not have support for lzma and/or xz archives.")
+endif ()
 
-if (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-  # in cache already
-  set(LIBARCHIVE_FOUND TRUE)
-else (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-  find_path(LIBARCHIVE_INCLUDE_DIR archive.h
-    ${GNUWIN32_DIR}/include
-  )
-
-  find_library(LIBARCHIVE_LIBRARY NAMES archive libarchive archive2 libarchive2
-    PATHS
-    ${GNUWIN32_DIR}/lib
-  )
-
-  if (LIBARCHIVE_LIBRARY)
-    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_lzma   "" HAVE_LIBARCHIVE_LZMA_SUPPORT)
-    check_library_exists(${LIBARCHIVE_LIBRARY} archive_write_set_compression_xz     "" HAVE_LIBARCHIVE_XZ_SUPPORT)
-  endif (LIBARCHIVE_LIBRARY)
-
-  include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(LibArchive DEFAULT_MSG LIBARCHIVE_LIBRARY LIBARCHIVE_INCLUDE_DIR)
-
-  mark_as_advanced(LIBARCHIVE_INCLUDE_DIR LIBARCHIVE_LIBRARY HAVE_LIBARCHIVE_LZMA_SUPPORT)
-endif (LIBARCHIVE_LIBRARY AND LIBARCHIVE_INCLUDE_DIR)
-
-if (LIBARCHIVE_FOUND)
-    if (HAVE_LIBARCHIVE_READ_DISK_API )
-        if (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
-            message(STATUS "Your libarchive does not have support for lzma and/or xz archives. libarchive >= 2.7.0 is recommended.")
-        endif (NOT HAVE_LIBARCHIVE_LZMA_SUPPORT OR NOT HAVE_LIBARCHIVE_XZ_SUPPORT)
-    else (HAVE_LIBARCHIVE_READ_DISK_API)
-        # Remove the cached variables from FindLibArchive.cmake
-        unset (LIBARCHIVE_FOUND)
-        unset (LIBARCHIVE_INCLUDE_DIR)
-        unset (LIBARCHIVE_LIBRARY)
-        message(STATUS "Your libarchive does not have support for archive_read_disk api. libarchive >= 2.6.0 is needed.")
-    endif (HAVE_LIBARCHIVE_READ_DISK_API)
-endif (LIBARCHIVE_FOUND)
-
-include_directories(${LIBARCHIVE_INCLUDE_DIR})
-add_definitions (${LIBARCHIVE_DEFINITIONS})
-list (APPEND ADDITIONAL_LIBRARIES ${LIBARCHIVE_LIBRARY})
+include_directories (${LibArchive_INCLUDE_DIRS})
+list (APPEND ADDITIONAL_LIBRARIES ${LibArchive_LIBRARIES})
 
 if (UNIX AND NOT APPLE)
 	find_package (X11 REQUIRED COMPONENTS X11 Xutil Xfixes)
@@ -213,15 +182,10 @@ endif ()
 
 macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 	if (FAST_LINKING)
-		set (${SUBDIR}_MOC_FILES "")
-		if (NOT "${MOC_SRCS}" STREQUAL "")
-			qt4_wrap_cpp (${SUBDIR}_MOC_FILES ${MOC_SRCS})
-		endif ()
-
 		add_library (${SUBDIR}
 			STATIC
 			${SRCS}
-			${${SUBDIR}_MOC_FILES}
+			${MOC_SRCS}
 		)
 		kadu_set_flags (${SUBDIR})
 		set_property (TARGET ${SUBDIR} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
@@ -243,41 +207,28 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 	endif ()
 endmacro ()
 
-macro (kadu_source_subdirectories CURRENT_TARGET)
-	foreach (ARG ${ARGN})
-		add_subdirectory (${ARG})
+foreach (ARG ${kadu_SUBDIRS})
+	add_subdirectory (${ARG})
 
-		if (FAST_LINKING)
-			link_directories (${ARG})
-			add_dependencies (${CURRENT_TARGET}
-				${ARG}
-			)
-		else ()
-			list (APPEND kadu_SUBDIRS_SRCS "${${ARG}_SRCS}")
-			qt4_wrap_cpp (MOC_FILES "${${ARG}_MOC_SRCS}")
-			include_directories (${${ARG}_INCLUDES})
-		endif ()
-	endforeach ()
-
-	if (FAST_LINKING)
-		if (APPLE)
-			target_link_libraries (${CURRENT_TARGET} LINK_PRIVATE -Wl,-all_load ${ARGN})
-		else ()
-			target_link_libraries (${CURRENT_TARGET} LINK_PRIVATE -Wl,--start-group -Wl,--whole-archive ${ARGN} -Wl,--no-whole-archive -Wl,--end-group)
-		endif ()
+	if (NOT FAST_LINKING)
+		list (APPEND kadu_SUBDIRS_SRCS ${${ARG}_SRCS} ${${ARG}_MOC_SRCS})
+		include_directories (${${ARG}_INCLUDES})
 	endif ()
-endmacro ()
+endforeach ()
 
-if (NOT FAST_LINKING)
-	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
-endif ()
-add_library (libkadu SHARED ${kadu_SRCS} ${kadu_SUBDIRS_SRCS} ${MOC_FILES})
+add_library (libkadu SHARED ${kadu_SRCS} ${kadu_MOC_SRCS} ${kadu_SUBDIRS_SRCS})
 kadu_set_flags (libkadu)
-if (FAST_LINKING)
-	kadu_source_subdirectories (libkadu ${kadu_SUBDIRS})
-endif ()
-target_link_libraries (libkadu LINK_PRIVATE ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 set_property (TARGET libkadu PROPERTY PREFIX "")
+
+if (FAST_LINKING)
+	if (APPLE)
+		target_link_libraries (libkadu LINK_PRIVATE -Wl,-all_load ${kadu_SUBDIRS})
+	else ()
+		target_link_libraries (libkadu LINK_PRIVATE -Wl,--start-group -Wl,--whole-archive ${kadu_SUBDIRS} -Wl,--no-whole-archive -Wl,--end-group)
+	endif ()
+endif ()
+
+target_link_libraries (libkadu LINK_PRIVATE ${QT_LIBRARIES} ${ADDITIONAL_LIBRARIES})
 
 add_executable (kadu WIN32 ${main_SRCS})
 kadu_set_flags (kadu)
@@ -358,7 +309,6 @@ kadu_api_directories (kadu-core
 	contacts/model
 	core
 	dom
-	emoticons
 	file-transfer
 	formatted-string
 	gui
@@ -366,8 +316,10 @@ kadu_api_directories (kadu-core
 	gui/actions/chat
 	gui/menu
 	gui/model
+	gui/services
 	gui/widgets
 	gui/widgets/configuration
+	gui/widgets/dialog
 	gui/windows
 	gui/windows/open-chat-with
 	icons

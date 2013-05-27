@@ -524,3 +524,5 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 
 	chatEditBox->openColorSelector(widgets.at(widgets.size() - 1));
 }
+
+#include "moc_chat-widget-actions.cpp"

@@ -8,9 +8,7 @@
 # Copyright (c) 2009, Ruslan Nigmatullin, <euroelessar@gmail.com>
 # Copyrignt (c) 2011, Rafał 'Vogel' Malinowski <vogel@kadu.im>
 
-# Do not require plugins to specify minimum version.
 cmake_minimum_required (VERSION 2.8.9)
-cmake_policy (SET CMP0000 OLD)
 
 # Set default install prefix
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -32,6 +30,23 @@ if (UNIX AND NOT APPLE)
 endif ()
 find_package (Qt4 4.8.0 REQUIRED)
 include (${QT_USE_FILE})
+
+macro (kadu_numeric_version _version _result_variable)
+	# Remove non-digit suffixes like "-git".
+	string (REGEX REPLACE "-[^0-9].*" "" ${_result_variable} ${_version})
+	# Change "-"'s and "."'s to ","'s.
+	string (REGEX REPLACE "[-.]" ", " ${_result_variable} ${${_result_variable}})
+	# Remove 5-th and further components, if any.
+	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*,[^,]*).*" "\\1" ${_result_variable} "${${_result_variable}}")
+	# Add 4-th component if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*,[^,]*$)" "\\1, 0" ${_result_variable} "${${_result_variable}}")
+	# Add 3-rd and 4-th components if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0" ${_result_variable} "${${_result_variable}}")
+	# Add 2-nd, 3-rd and 4-th components if not present.
+	string (REGEX REPLACE "(^[^,]*,[^,]*$)" "\\1, 0, 0, 0" ${_result_variable} "${${_result_variable}}")
+endmacro ()
+
+kadu_numeric_version (${KADU_VERSION} KADU_NUMERIC_VERSION)
 
 # To be used on each target
 macro (kadu_set_flags _target)
@@ -77,7 +92,7 @@ endmacro ()
 
 include (CMakeParseArguments)
 
-macro (kadu_plugin KADU_PLUGIN_NAME)
+function (kadu_plugin KADU_PLUGIN_NAME)
 	set (_multi_value_keywords
 		PLUGIN_SOURCES
 		PLUGIN_MOC_SOURCES
@@ -94,29 +109,33 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		message (FATAL_ERROR "Unknown keywords given to kadu_plugin(): \"${KADU_UNPARSED_ARGUMENTS}\"")
 	endif()
 
-	include_directories (".")
-	include_directories (${KADU_INCLUDE_DIRS})
-
 	if (WIN32)
-		include_directories ("${KADU_SDK_DIR}" "${KADU_SDK_DIR}/plugins")
+		file (READ "${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc" _plugin_desc)
+		string (REGEX REPLACE ".*Description=([^\n]*)\n.*" "\\1" KADU_PLUGIN_DESCRIPTION "${_plugin_desc}")
+		string (REGEX REPLACE ".*Author=([^\n]*)\n.*" "\\1" KADU_PLUGIN_AUTHOR "${_plugin_desc}")
+		string (REGEX REPLACE ".*Version=([^\n]*)\n.*" "\\1" KADU_PLUGIN_VERSION "${_plugin_desc}")
+		if (KADU_PLUGIN_VERSION STREQUAL "core")
+			set (KADU_PLUGIN_VERSION "${KADU_VERSION}")
+			set (KADU_PLUGIN_NUMERIC_VERSION "${KADU_NUMERIC_VERSION}")
+		else ()
+			kadu_numeric_version (${KADU_PLUGIN_VERSION} KADU_PLUGIN_NUMERIC_VERSION)
+		endif ()
 
-		list (APPEND KADU_PLUGIN_SOURCES ${KADU_PLUGIN_NAME}.rc)
-		add_custom_command (OUTPUT ${KADU_PLUGIN_NAME}.rc
-			COMMAND "${KADU_SDK_DIR}/plugins/pluginrcgen.bat"
-			ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc ${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc
-			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-			DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${KADU_PLUGIN_NAME}.desc
-			COMMENT "Building RC source ${KADU_PLUGIN_NAME}.rc"
-		)
+		configure_file ("${KADU_SDK_DIR}/plugins/pluginbase.rc.in" "${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc" ESCAPE_QUOTES @ONLY)
+
+		list (APPEND KADU_PLUGIN_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/${KADU_PLUGIN_NAME}.rc")
 	endif ()
 
 	install (FILES ${KADU_PLUGIN_NAME}.desc
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}
 	)
 
-	qt4_wrap_cpp (_moc_files ${KADU_PLUGIN_MOC_SOURCES})
-	add_library (${KADU_PLUGIN_NAME} SHARED ${KADU_PLUGIN_SOURCES} ${_moc_files})
+	add_library (${KADU_PLUGIN_NAME} SHARED ${KADU_PLUGIN_SOURCES} ${KADU_PLUGIN_MOC_SOURCES})
 	kadu_set_flags (${KADU_PLUGIN_NAME})
+	set_property (TARGET ${KADU_PLUGIN_NAME} PROPERTY AUTOMOC ON)
+	set_property (TARGET ${KADU_PLUGIN_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES
+		"${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" ${KADU_INCLUDE_DIRS}
+	)
 
 	if (KADU_INSTALL_UNOFFICIAL_TRANSLATIONS)
 		file (GLOB _translation_sources RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "translations/${KADU_PLUGIN_NAME}_*.ts")
@@ -153,24 +172,35 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 		DESTINATION ${KADU_INSTALL_PLUGINS_DATA_DIR}/data/${KADU_PLUGIN_NAME}
 	)
 
-	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_PLUGIN_LIBRARIES})
+	if (NOT KADU_BUILD)
+		foreach (_plugin_dependency ${KADU_PLUGIN_DEPENDENCIES})
+			set (KaduPlugin_${_plugin_dependency}_DIR "${Kadu_DIR}")
+			find_package (KaduPlugin_${_plugin_dependency} REQUIRED)
+		endforeach ()
+	endif ()
 
-	if (WIN32)
-		target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE ${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${QT_LIBRARIES})
+	target_link_libraries (${KADU_PLUGIN_NAME} LINK_PRIVATE
+		${KADU_LIBRARIES} ${KADU_PLUGIN_DEPENDENCIES} ${KADU_PLUGIN_LIBRARIES} ${QT_LIBRARIES}
+	)
 
-		if (KADU_INSTALL_SDK)
+	configure_file ("${KADU_SDK_DIR}/plugins/PluginConfig.cmake.in" "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" @ONLY)
+
+	install (TARGETS ${KADU_PLUGIN_NAME}
+		EXPORT KaduPlugin_${KADU_PLUGIN_NAME}Targets
+		RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR}
+		LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR}
+	)
+
+	if (KADU_INSTALL_SDK)
+		if (WIN32)
 			install (TARGETS ${KADU_PLUGIN_NAME} ARCHIVE DESTINATION ${KADU_INSTALL_SDK_DIR}/lib)
 		endif ()
-	endif ()
 
-	if (APPLE)
-		set_property (TARGET ${KADU_PLUGIN_NAME} APPEND_STRING PROPERTY LINK_FLAGS " -undefined dynamic_lookup")
+		install (FILES "${CMAKE_BINARY_DIR}/KaduPlugin_${KADU_PLUGIN_NAME}Config.cmake" DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
+		install (EXPORT KaduPlugin_${KADU_PLUGIN_NAME}Targets DESTINATION "${KADU_INSTALL_CMAKE_DIR}")
 	endif ()
-
-	install (TARGETS ${KADU_PLUGIN_NAME} RUNTIME DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR} LIBRARY DESTINATION ${KADU_INSTALL_PLUGINS_LIB_DIR})
 
 	if (NOT MSVC)
-		cmake_policy (SET CMP0002 OLD)
 		if (NOT TARGET tsupdate)
 			add_custom_target (tsupdate)
 		endif ()
@@ -178,6 +208,5 @@ macro (kadu_plugin KADU_PLUGIN_NAME)
 			"${KADU_SDK_DIR}/translations/plugintsupdate.sh" "${CMAKE_CURRENT_SOURCE_DIR}"
 		)
 		add_dependencies (tsupdate ${KADU_PLUGIN_NAME}-tsupdate)
-		cmake_policy (SET CMP0002 NEW)
 	endif ()
-endmacro ()
+endfunction ()

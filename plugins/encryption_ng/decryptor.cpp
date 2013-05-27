@@ -26,3 +26,5 @@ Decryptor::Decryptor(EncryptionProvider *provider, QObject *parent) :
 		QObject(parent), Provider(provider)
 {
 }
+
+#include "moc_decryptor.cpp"

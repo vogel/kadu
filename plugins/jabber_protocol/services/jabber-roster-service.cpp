@@ -352,3 +352,5 @@ void JabberRosterService::executeTask(const RosterTask& task)
 }
 
 }
+
+#include "moc_jabber-roster-service.cpp"

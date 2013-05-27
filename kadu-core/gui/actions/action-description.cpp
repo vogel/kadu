@@ -225,3 +225,5 @@ void ActionDescription::connectNotify(const char *signal)
 		foreach (Action *action, MappedActions)
 			emit actionCreated(action);
 }
+
+#include "moc_action-description.cpp"

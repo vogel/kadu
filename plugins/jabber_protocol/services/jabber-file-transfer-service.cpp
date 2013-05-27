@@ -91,3 +91,5 @@ void JabberFileTransferService::incomingFileTransferSlot()
 
 	emit incomingFileTransfer(transfer);
 }
+
+#include "moc_jabber-file-transfer-service.cpp"

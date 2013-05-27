@@ -115,3 +115,5 @@ void OAuthTokenFetcher::requestFinished()
 
 	deleteLater();
 }
+
+#include "moc_oauth-token-fetcher.cpp"

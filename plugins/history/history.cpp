@@ -451,3 +451,5 @@ void History::setSyncEnabled(bool syncEnabled)
 	if (SaveThread)
 		SaveThread->setEnabled(syncEnabled);
 }
+
+#include "moc_history.cpp"

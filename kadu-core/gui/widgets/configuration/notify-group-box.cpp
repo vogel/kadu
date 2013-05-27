@@ -63,3 +63,5 @@ void NotifyGroupBox::iconThemeChanged()
 {
 	NotifierCheckBox->setIcon(Notificator->icon().icon());
 }
+
+#include "moc_notify-group-box.cpp"

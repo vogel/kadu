@@ -305,3 +305,5 @@ bool AmarokMediaPlayer::isActive()
 }
 
 Q_EXPORT_PLUGIN2(amarok1_mediaplayer, AmarokMediaPlayer)
+
+#include "moc_amarok.cpp"

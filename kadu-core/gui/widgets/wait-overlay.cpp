@@ -68,3 +68,5 @@ bool WaitOverlay::eventFilter(QObject *object, QEvent *event)
 
 	return QWidget::eventFilter(object, event);
 }
+
+#include "moc_wait-overlay.cpp"

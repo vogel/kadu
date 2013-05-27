@@ -861,3 +861,5 @@ void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 
 	handled = keyPressEventHandled(e);
 }
+
+#include "moc_chat-widget.cpp"

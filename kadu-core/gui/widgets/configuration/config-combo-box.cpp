@@ -151,3 +151,5 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
+
+#include "moc_config-combo-box.cpp"

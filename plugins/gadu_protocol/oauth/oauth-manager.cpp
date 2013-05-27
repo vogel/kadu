@@ -51,3 +51,5 @@ void OAuthManager::authorize(OAuthConsumer consumer)
 	connect(chain, SIGNAL(authorized(OAuthToken)), this, SIGNAL(authorized(OAuthToken)));
 	chain->authorize();
 }
+
+#include "moc_oauth-manager.cpp"

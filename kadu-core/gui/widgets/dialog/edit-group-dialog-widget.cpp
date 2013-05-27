@@ -51,3 +51,5 @@ void EditGroupDialogWidget::dialogAccepted()
 	if (!newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
 		CurrentGroup.setName(newGroupName);
 }
+
+#include "moc_edit-group-dialog-widget.cpp"

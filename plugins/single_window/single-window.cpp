@@ -431,3 +431,5 @@ void SingleWindow::closeChat()
 	if (chat)
 		chat->deleteLater();
 }
+
+#include "moc_single-window.cpp"

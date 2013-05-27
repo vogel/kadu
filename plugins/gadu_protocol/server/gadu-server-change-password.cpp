@@ -77,3 +77,5 @@ void GaduServerChangePassword::done(bool ok, struct gg_http *h)
 		H = 0;
 	}
 }
+
+#include "moc_gadu-server-change-password.cpp"

@@ -193,3 +193,5 @@ NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *par
 }
 
 Q_EXPORT_PLUGIN2(growl_notify, GrowlNotify)
+
+#include "moc_growl-notify.cpp"

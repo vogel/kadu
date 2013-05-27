@@ -255,3 +255,5 @@ QByteArray GaduContactListService::storeBuddyList(const BuddyList &buddies)
 {
 	return GaduListHelper::buddyListToByteArray(Protocol->account(), buddies);
 }
+
+#include "moc_gadu-contact-list-service.cpp"

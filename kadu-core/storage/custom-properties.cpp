@@ -139,3 +139,5 @@ QVariant CustomProperties::property(const QString &name, const QVariant &default
 	else
 		return defaultValue;
 }
+
+#include "moc_custom-properties.cpp"

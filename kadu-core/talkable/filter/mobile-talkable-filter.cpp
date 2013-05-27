@@ -53,3 +53,5 @@ TalkableFilter::FilterResult MobileTalkableFilter::filterContact(const Contact &
 
 	return Rejected;
 }
+
+#include "moc_mobile-talkable-filter.cpp"

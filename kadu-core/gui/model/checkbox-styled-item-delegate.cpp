@@ -100,3 +100,5 @@ void CheckboxStyledItemDelegate::setModelData(QWidget *editor, QAbstractItemMode
 
 	model->setData(index, checkBox->isChecked());
 }
+
+#include "moc_checkbox-styled-item-delegate.cpp"

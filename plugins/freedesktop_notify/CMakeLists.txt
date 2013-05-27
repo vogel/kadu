@@ -1,5 +1,7 @@
 project (freedesktop_notify)
 
+cmake_minimum_required (VERSION 2.8)
+
 set (QT_USE_QTDBUS 1)
 find_package (Kadu REQUIRED)
 

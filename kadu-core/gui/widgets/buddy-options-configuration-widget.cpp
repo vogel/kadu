@@ -154,3 +154,5 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
 		}
 	}
 }
+
+#include "moc_buddy-options-configuration-widget.cpp"

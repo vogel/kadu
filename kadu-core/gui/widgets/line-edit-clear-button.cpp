@@ -121,3 +121,5 @@ void LineEditClearButton::animationFinished()
 	else
 		setVisible(false);
 }
+
+#include "moc_line-edit-clear-button.cpp"

@@ -147,3 +147,5 @@ void ConfigWizardWindow::rejectedSlot()
 }
 
 /** @} */
+
+#include "moc_config-wizard-window.cpp"

@@ -489,3 +489,5 @@ void KaduWindow::setDocked(bool docked)
 {
 	Docked = docked;
 }
+
+#include "moc_kadu-window.cpp"

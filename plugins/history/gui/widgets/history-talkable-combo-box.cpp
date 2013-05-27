@@ -95,3 +95,5 @@ void HistoryTalkableComboBox::futureTalkablesCanceled()
 	TalkablesFutureWatcher->deleteLater();
 	TalkablesFutureWatcher = 0;
 }
+
+#include "moc_history-talkable-combo-box.cpp"

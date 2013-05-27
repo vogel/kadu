@@ -110,3 +110,5 @@ void JabberProtocolPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(jabber_protocol, JabberProtocolPlugin)
+
+#include "moc_jabber-protocol-plugin.cpp"

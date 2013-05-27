@@ -151,6 +151,4 @@ signals:
  * @}
  */
 
-#include "chat/chat.h" // for MOC
-
 #endif // RECENT_CHAT_MANAGER_H

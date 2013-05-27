@@ -124,3 +124,5 @@ void ScreenshotAction::takeWindowShotSlot()
 	if (chatWidget)
 		(new ScreenShot(chatWidget))->takeWindowShot();
 }
+
+#include "moc_screenshot-action.cpp"

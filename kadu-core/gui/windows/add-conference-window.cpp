@@ -282,3 +282,5 @@ void AddConferenceWindow::start()
 
 	QDialog::accept();
 }
+
+#include "moc_add-conference-window.cpp"

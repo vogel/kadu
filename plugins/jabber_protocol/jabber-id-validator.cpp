@@ -64,3 +64,5 @@ QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 	else
 		return QValidator::Invalid;
 }
+
+#include "moc_jabber-id-validator.cpp"

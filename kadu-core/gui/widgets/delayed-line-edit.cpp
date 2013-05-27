@@ -59,3 +59,5 @@ void DelayedLineEdit::timeout()
 {
 	emit delayedTextChanged(text());
 }
+
+#include "moc_delayed-line-edit.cpp"

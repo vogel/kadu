@@ -86,3 +86,5 @@ void StatusMenu::changeDescription()
 	QWidget *statusWindow = StatusWindow::showDialog(Container, Menu);
 	WindowManager::instance()->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }
+
+#include "moc_status-menu.cpp"

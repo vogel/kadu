@@ -59,3 +59,5 @@ void ConfigWizardCompletedPage::acceptPage()
     if (ConfigureAccouuntsCheckBox->isChecked())
 		YourAccounts::instance()->show();
 }
+
+#include "moc_config-wizard-completed-page.cpp"

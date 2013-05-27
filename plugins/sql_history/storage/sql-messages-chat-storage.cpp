@@ -50,3 +50,5 @@ void SqlMessagesChatStorage::deleteMessages(const Talkable &talkable, const QDat
 {
 	SqlStorage->clearChatHistory(talkable, date);
 }
+
+#include "moc_sql-messages-chat-storage.cpp"

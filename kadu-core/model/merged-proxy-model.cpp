@@ -432,3 +432,5 @@ QMimeData * MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) cons
 
 	return mergedMimeData;
 }
+
+#include "moc_merged-proxy-model.cpp"

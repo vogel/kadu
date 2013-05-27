@@ -223,3 +223,5 @@ void Qt4Notify::createDefaultConfiguration()
 
 /** @} */
 
+
+#include "moc_qt4-docking-notify.cpp"

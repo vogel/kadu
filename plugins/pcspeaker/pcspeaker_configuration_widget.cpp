@@ -81,3 +81,5 @@ void PCSpeakerConfigurationWidget::test()
 {
 	PCSpeaker::instance()->parseAndPlay(soundEdit->text());
 }
+
+#include "moc_pcspeaker_configuration_widget.cpp"

@@ -105,3 +105,5 @@ void TokenWidget::setTokenValue(const QString &tokenValue)
 {
 	TokenCode->setText(tokenValue);
 }
+
+#include "moc_token-widget.cpp"

@@ -180,3 +180,5 @@ void FileTransferActions::selectFilesAndSend(const ContactSet &contacts)
 		}
 	}
 }
+
+#include "moc_file-transfer-actions.cpp"

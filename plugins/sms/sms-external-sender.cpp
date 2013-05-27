@@ -104,3 +104,5 @@ void SmsExternalSender::cancel()
 
 	deleteLater();
 }
+
+#include "moc_sms-external-sender.cpp"

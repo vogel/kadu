@@ -127,7 +127,4 @@ public:
 
 Q_DECLARE_METATYPE(Buddy)
 
-// for MOC
-#include "buddies/group.h"
-
 #endif // BUDDY_H

@@ -1215,3 +1215,5 @@ int ToolBarSpacer::token()
 	++Token;
 	return Token;
 }
+
+#include "moc_toolbar.cpp"

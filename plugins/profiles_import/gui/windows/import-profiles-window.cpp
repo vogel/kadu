@@ -139,3 +139,5 @@ void ImportProfilesWindow::accept()
 
 	QDialog::accept();
 }
+
+#include "moc_import-profiles-window.cpp"

@@ -71,3 +71,5 @@ MediaPlayerNotification::~MediaPlayerNotification()
 {
 
 }
+
+#include "moc_mediaplayer-notification.cpp"

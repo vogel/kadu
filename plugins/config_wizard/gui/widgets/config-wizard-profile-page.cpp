@@ -90,3 +90,5 @@ void ConfigWizardProfilePage::acceptPage()
 
 	Core::instance()->myself().setDisplay(NickNameEdit->text());
 }
+
+#include "moc_config-wizard-profile-page.cpp"

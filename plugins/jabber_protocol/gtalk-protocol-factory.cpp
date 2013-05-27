@@ -67,3 +67,5 @@ QString GTalkProtocolFactory::defaultServer()
 {
     return QLatin1String("gmail.com");
 }
+
+#include "moc_gtalk-protocol-factory.cpp"

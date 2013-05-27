@@ -26,12 +26,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "identities/identity.h"
 #include "storage/simple-manager.h"
 
 #include "exports.h"
 
 class Account;
-class Identity;
 class Status;
 
 class KADUAPI IdentityManager : public QObject, public SimpleManager<Identity>
@@ -72,7 +72,5 @@ signals:
 	void identityRemoved(Identity);
 
 };
-
-#include "identities/identity.h" // for MOC
 
 #endif // IDENTITY_MANAGER_H

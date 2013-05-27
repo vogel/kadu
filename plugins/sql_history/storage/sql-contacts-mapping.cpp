@@ -117,3 +117,5 @@ const QMap<int, Contact> & SqlContactsMapping::mapping() const
 {
 	return ContactMapping;
 }
+
+#include "moc_sql-contacts-mapping.cpp"

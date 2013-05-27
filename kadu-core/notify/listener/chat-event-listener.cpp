@@ -52,3 +52,5 @@ void ChatEventListener::messageReceived(const Message &message)
 		Service->notify(new MessageNotification(MessageNotification::NewMessage, message));
 }
 
+
+#include "moc_chat-event-listener.cpp"

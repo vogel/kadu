@@ -1126,3 +1126,5 @@ HistoryMessagesStorage * HistorySqlStorage::statusStorage()
 {
 	return StatusStorage;
 }
+
+#include "moc_history-sql-storage.cpp"

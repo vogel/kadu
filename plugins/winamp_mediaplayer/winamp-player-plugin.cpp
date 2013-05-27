@@ -51,3 +51,5 @@ void WinampMediaplayerPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(winamp_mediaplayer, WinampMediaplayerPlugin)
+
+#include "moc_winamp-player-plugin.cpp"

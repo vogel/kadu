@@ -109,3 +109,5 @@ void AutoAwayStatusChanger::update()
 {
 	emit statusChanged(0); // for all status containers
 }
+
+#include "moc_autoaway-status-changer.cpp"

@@ -342,3 +342,5 @@ void HintsConfigurationUiHandler::maximumWidthChanged(int value)
 	if (value < minimumWidth->value())
 		minimumWidth->setValue(value);
 }
+
+#include "moc_hints-configuration-ui-handler.cpp"

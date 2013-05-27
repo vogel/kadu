@@ -24,7 +24,6 @@
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "identities/identities-aware-object.h"
-#include "identity.h"
 
 #include "identity-manager.h"
 
@@ -148,3 +147,5 @@ void IdentityManager::load()
 	if (items().isEmpty())
 		addDefaultIdentities();
 }
+
+#include "moc_identity-manager.cpp"

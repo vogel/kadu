@@ -63,3 +63,5 @@ JabberVCardUploader * JabberVCardService::createVCardUploader()
 }
 
 }
+
+#include "moc_jabber-vcard-service.cpp"

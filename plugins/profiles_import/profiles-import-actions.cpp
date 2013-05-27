@@ -112,3 +112,5 @@ void ProfilesImportActions::importExternalProfileActionActivated(QAction *action
 
 	(new ImportProfileWindow(Core::instance()->kaduWindow()))->show();
 }
+
+#include "moc_profiles-import-actions.cpp"

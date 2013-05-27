@@ -107,3 +107,5 @@ void JabberAvatarDownloader::downloadAvatar(const QString &id)
 			downloadAvatarVCard();
 	}
 }
+
+#include "moc_jabber-avatar-downloader.cpp"

@@ -135,3 +135,5 @@ void JabberPersonalInfoWidget::cancel()
 {
 	fillForm();
 }
+
+#include "moc_jabber-personal-info-widget.cpp"

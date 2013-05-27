@@ -93,3 +93,5 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	}
 	CurrentProtocol.data()->enableSocketNotifiers();
 }
+
+#include "moc_gadu-chat-state-service.cpp"

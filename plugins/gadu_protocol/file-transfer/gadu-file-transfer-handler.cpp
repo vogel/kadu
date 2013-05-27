@@ -168,3 +168,5 @@ void GaduFileTransferHandler::reject()
 
 	deleteLater();
 }
+
+#include "moc_gadu-file-transfer-handler.cpp"

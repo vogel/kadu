@@ -110,3 +110,5 @@ ChatEditWidget * ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *pare
 
 	return 0;
 }
+
+#include "moc_chat-type-buddy.cpp"

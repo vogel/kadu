@@ -244,3 +244,5 @@ void OpenChatWith::show()
 	else
 		_activateWindow(this);
 }
+
+#include "moc_open-chat-with.cpp"

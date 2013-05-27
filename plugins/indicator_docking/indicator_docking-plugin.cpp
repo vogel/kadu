@@ -45,3 +45,5 @@ void IndicatorDockingPlugin::done()
 }
 
 Q_EXPORT_PLUGIN2(indicator_docking, IndicatorDockingPlugin)
+
+#include "moc_indicator_docking-plugin.cpp"

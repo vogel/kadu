@@ -65,3 +65,5 @@ void GroupEventListener::groupUpdated()
 	}
 }
 
+
+#include "moc_group-event-listener.cpp"

@@ -88,3 +88,5 @@ QString FacebookProtocolFactory::whatIsMyUsername()
 		"If this field is empty, you can choose your Username and enter it there."
 	);
 }
+
+#include "moc_facebook-protocol-factory.cpp"

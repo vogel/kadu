@@ -25,3 +25,5 @@ NotifierConfigurationWidget::NotifierConfigurationWidget(QWidget *parent) :
 		QWidget(parent)
 {
 }
+
+#include "moc_notifier-configuration-widget.cpp"

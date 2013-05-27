@@ -214,3 +214,5 @@ void PathListEditWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
+
+#include "moc_path-list-edit.cpp"

@@ -569,3 +569,5 @@ void GroupTabBar::configurationUpdated()
 			connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 	}
 }
+
+#include "moc_group-tab-bar.cpp"
