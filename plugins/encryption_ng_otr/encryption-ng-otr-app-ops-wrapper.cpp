@@ -28,6 +28,7 @@ extern "C" {
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
@@ -131,17 +132,18 @@ int kadu_enomf_max_message_size(void *opdata, ConnContext *context)
 
 const char * kadu_enomf_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
 {
-	Q_UNUSED(opdata);
 	Q_UNUSED(context);
-	Q_UNUSED(err_code);
 
-	return 0;
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	QString errorMessage = ngOtrOpData->appOpsWrapper()->errorMessage(ngOtrOpData, err_code);
+	return strdup(errorMessage.toUtf8().constData());
 }
 
 void kadu_enomf_otr_error_message_free(void *opdata, const char *err_msg)
 {
 	Q_UNUSED(opdata);
-	Q_UNUSED(err_msg);
+
+	free((char *)err_msg);
 }
 
 const char * kadu_enomf_resent_msg_prefix(void *opdata, ConnContext *context)
@@ -306,4 +308,24 @@ int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpD
 	if (!chatService)
 		return 0;
 	return chatService->maxMessageLength();
+}
+
+QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode)
+{
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	Contact receiver = ngOtrOpData->message().messageChat().contacts().toContact();
+
+	switch (errorCode)
+	{
+		case OTRL_ERRCODE_ENCRYPTION_ERROR:
+			return tr("Error occurred during message encryption");
+		case OTRL_ERRCODE_MSG_NOT_IN_PRIVATE:
+			return tr("You sent encrypted data to %1, who wasn't expecting it").arg(receiver.display(true));
+		case OTRL_ERRCODE_MSG_UNREADABLE:
+			return tr("You transmitted an unreadable encrypted message");
+		case OTRL_ERRCODE_MSG_MALFORMED:
+			return tr("You transmitted a malformed data message");
+		default:
+			return QString();
+	}
 }
