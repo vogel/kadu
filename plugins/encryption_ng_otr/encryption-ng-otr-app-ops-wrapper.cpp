@@ -190,22 +190,6 @@ void kadu_enomf_create_instag(void *opdata, const char *accountname, const char 
 	Q_UNUSED(protocol);
 }
 
-void kadu_enomf_convert_msg(void *opdata, ConnContext *context, OtrlConvertType convert_type, char **dest, const char *src)
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(context);
-	Q_UNUSED(convert_type);
-	Q_UNUSED(dest);
-	Q_UNUSED(src);
-}
-
-void kadu_enomf_convert_free(void *opdata, ConnContext *context, char *dest)
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(context);
-	Q_UNUSED(dest);
-}
-
 void kadu_enomf_timer_control(void *opdata, unsigned int interval)
 {
 	Q_UNUSED(opdata);
@@ -235,8 +219,8 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 	Ops.handle_msg_event = kadu_enomf_handle_msg_event;
 	Ops.handle_smp_event = kadu_enomf_handle_smp_event;
 	Ops.create_instag = kadu_enomf_create_instag;
-	Ops.convert_msg = kadu_enomf_convert_msg;
-	Ops.convert_free = kadu_enomf_convert_free;
+	Ops.convert_msg = 0;
+	Ops.convert_free = 0;
 	Ops.timer_control = kadu_enomf_timer_control;
 }
 
