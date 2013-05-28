@@ -246,7 +246,7 @@ const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 	return &Ops;
 }
 
-OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData)
+OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	EncryptionNgOtrPolicy policy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account);
@@ -254,13 +254,13 @@ OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpDa
 	return policy.toOtrPolicy();
 }
 
-void EncryptionNgOtrAppOpsWrapper::createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData)
+void EncryptionNgOtrAppOpsWrapper::createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	ngOtrOpData->privateKeyService()->createPrivateKey(account);
 }
 
-EncryptionNgOtrAppOpsWrapper::IsLoggedInStatus EncryptionNgOtrAppOpsWrapper::isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId)
+EncryptionNgOtrAppOpsWrapper::IsLoggedInStatus EncryptionNgOtrAppOpsWrapper::isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId) const
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
@@ -274,31 +274,31 @@ EncryptionNgOtrAppOpsWrapper::IsLoggedInStatus EncryptionNgOtrAppOpsWrapper::isL
 		return LoggedIn;
 }
 
-void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent)
+void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent) const
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
 }
 
-void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData)
+void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	ngOtrOpData->notifier()->notifyGoneSecure(chat);
 }
 
-void EncryptionNgOtrAppOpsWrapper::goneInsecure(EncryptionNgOtrOpData *ngOtrOpData)
+void EncryptionNgOtrAppOpsWrapper::goneInsecure(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	ngOtrOpData->notifier()->notifyGoneInsecure(chat);
 }
 
-void EncryptionNgOtrAppOpsWrapper::stillSecure(EncryptionNgOtrOpData *ngOtrOpData)
+void EncryptionNgOtrAppOpsWrapper::stillSecure(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	ngOtrOpData->notifier()->notifyStillSecure(chat);
 }
 
-int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData)
+int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData) const
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	Protocol *protocolHandler = account.protocolHandler();
@@ -310,7 +310,7 @@ int EncryptionNgOtrAppOpsWrapper::maxMessageSize(EncryptionNgOtrOpData *ngOtrOpD
 	return chatService->maxMessageLength();
 }
 
-QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode)
+QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const
 {
 	Account account = ngOtrOpData->message().messageChat().chatAccount();
 	Contact receiver = ngOtrOpData->message().messageChat().contacts().toContact();

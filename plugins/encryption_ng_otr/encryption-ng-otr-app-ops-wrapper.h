@@ -52,15 +52,15 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 
 	OtrlMessageAppOps Ops;
 
-	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData);
-	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
-	IsLoggedInStatus isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId);
-	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
-	void goneSecure(EncryptionNgOtrOpData *ngOtrOpData);
-	void goneInsecure(EncryptionNgOtrOpData *ngOtrOpData);
-	void stillSecure(EncryptionNgOtrOpData *ngOtrOpData);
-	int maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData);
-	QString errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode);
+	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData) const;
+	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData) const;
+	IsLoggedInStatus isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId) const;
+	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent) const;
+	void goneSecure(EncryptionNgOtrOpData *ngOtrOpData) const;
+	void goneInsecure(EncryptionNgOtrOpData *ngOtrOpData) const;
+	void stillSecure(EncryptionNgOtrOpData *ngOtrOpData) const;
+	int maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData) const;
+	QString errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
 
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();
