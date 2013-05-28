@@ -129,17 +129,6 @@ int kadu_enomf_max_message_size(void *opdata, ConnContext *context)
 	return ngOtrOpData->appOpsWrapper()->maxMessageSize(ngOtrOpData);
 }
 
-void kadu_enomf_received_symkey(void *opdata, ConnContext *context, unsigned int use, const unsigned char *usedata,
-								size_t usedatalen, const unsigned char *symkey)
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(context);
-	Q_UNUSED(use);
-	Q_UNUSED(usedata);
-	Q_UNUSED(usedatalen);
-	Q_UNUSED(symkey);
-}
-
 const char * kadu_enomf_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
 {
 	Q_UNUSED(opdata);
@@ -233,7 +222,7 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 	Ops.max_message_size = kadu_enomf_max_message_size;
 	Ops.account_name = 0;
 	Ops.account_name_free = 0;
-	Ops.received_symkey = kadu_enomf_received_symkey;
+	Ops.received_symkey = 0;
 	Ops.otr_error_message = kadu_enomf_otr_error_message;
 	Ops.otr_error_message_free = kadu_enomf_otr_error_message_free;
 	Ops.resent_msg_prefix = kadu_enomf_resent_msg_prefix;
