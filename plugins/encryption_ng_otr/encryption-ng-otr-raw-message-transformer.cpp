@@ -18,6 +18,7 @@
  */
 
 extern "C" {
+#	include <libotr/proto.h>
 #	include <libotr/userstate.h>
 }
 
@@ -102,7 +103,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
-			&newMessage, 0, 0, 0);
+			&newMessage, 0, 0, 0, 0);
 
 	if (ignoreMessage)
 		return QByteArray();
@@ -142,9 +143,10 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 
 	gcry_error_t err = otrl_message_sending(userState, OtrAppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
-			receiver.id().toUtf8().data(),
+			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			messageContent.data(), 0,
-			&newMessage, 0, 0);
+			&newMessage, OTRL_FRAGMENT_SEND_ALL,
+			0, 0, 0);
 
 	if (!err && newMessage)
 	{

@@ -21,7 +21,8 @@
 #define ENCRYPTION_NG_OTR_USER_STATE_H
 
 extern "C" {
-#   include <libotr/userstate.h>
+#	include <libotr/proto.h>
+#	include <libotr/userstate.h>
 }
 
 class EncryptionNgOtrUserState

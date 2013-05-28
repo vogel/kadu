@@ -21,6 +21,7 @@
 #include <qglobal.h>
 
 extern "C" {
+#	include <gcrypt.h>
 #	include <libotr/userstate.h>
 }
 
@@ -187,20 +188,26 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 	Ops.create_privkey = kadu_enomf_create_privkey;
 	Ops.is_logged_in = kadu_enomf_is_logged_in;
 	Ops.inject_message = kadu_enomf_inject_message;
-	Ops.notify = kadu_enomf_notify;
-	Ops.display_otr_message = kadu_enomf_display_otr_message;
 	Ops.update_context_list = kadu_enomf_update_context_list;
-	Ops.protocol_name = kadu_enomf_protocol_name;
-	Ops.protocol_name_free = kadu_enomf_protocol_name_free;
 	Ops.new_fingerprint = kadu_enomf_new_fingerprint;
 	Ops.write_fingerprints = kadu_enomf_write_fingerprints;
 	Ops.gone_secure = kadu_enomf_gone_secure;
 	Ops.gone_insecure = kadu_enomf_gone_insecure;
 	Ops.still_secure = kadu_enomf_still_secure;
-	Ops.log_message = kadu_enomf_log_message;
 	Ops.max_message_size = kadu_enomf_max_message_size;
 	Ops.account_name = kadu_enomf_account_name;
 	Ops.account_name_free = kadu_enomf_account_name_free;
+	Ops.received_symkey = 0;
+	Ops.otr_error_message = 0;
+	Ops.otr_error_message_free = 0;
+	Ops.resent_msg_prefix = 0;
+	Ops.resent_msg_prefix_free = 0;
+	Ops.handle_msg_event = 0;
+	Ops.handle_smp_event = 0;
+	Ops.create_instag = 0;
+	Ops.convert_msg = 0;
+	Ops.convert_free = 0;
+	Ops.timer_control = 0;
 }
 
 EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()

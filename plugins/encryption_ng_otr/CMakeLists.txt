@@ -32,7 +32,7 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 )
 
-pkg_check_modules (LIBOTR REQUIRED libotr>=3.0 REQUIRED)
+pkg_check_modules (LIBOTR REQUIRED libotr>=4.0 REQUIRED)
 
 include_directories (${LIBOTR_INCLUDE_DIR})
 
