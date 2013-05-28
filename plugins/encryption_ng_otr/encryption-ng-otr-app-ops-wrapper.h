@@ -28,7 +28,10 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
+class QTimer;
+
 class EncryptionNgOtrOpData;
+class EncryptionNgOtrUserState;
 
 class EncryptionNgOtrAppOpsWrapper : public QObject
 {
@@ -50,8 +53,12 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	friend int kadu_enomf_max_message_size(void *, ConnContext *);
 	friend const char * kadu_enomf_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_enomf_resent_msg_prefix(void *, ConnContext *);
+	friend void kadu_enomf_timer_control(void *, unsigned int);
+
+	EncryptionNgOtrUserState *UserState;
 
 	OtrlMessageAppOps Ops;
+	QTimer *OtrTimer;
 
 	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData) const;
 	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData) const;
@@ -63,10 +70,16 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	int maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData) const;
 	QString errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
+	void timerControl(int intervalSeconds);
+
+private slots:
+	void otrTimerTimeout();
 
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();
 	virtual ~EncryptionNgOtrAppOpsWrapper();
+
+	void setUserState(EncryptionNgOtrUserState *userState);
 
 	const OtrlMessageAppOps * ops() const;
 

@@ -41,6 +41,7 @@ extern "C" {
 #include "encryption-ng-otr-policy.h"
 #include "encryption-ng-otr-policy-account-store.h"
 #include "encryption-ng-otr-private-key-service.h"
+#include "encryption-ng-otr-user-state.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
 
@@ -192,11 +193,12 @@ void kadu_enomf_create_instag(void *opdata, const char *accountname, const char 
 
 void kadu_enomf_timer_control(void *opdata, unsigned int interval)
 {
-	Q_UNUSED(opdata);
-	Q_UNUSED(interval);
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->timerControl(interval);
 }
 
-EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
+EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper() :
+		OtrTimer(0)
 {
 	Ops.policy = kadu_enomf_policy;
 	Ops.create_privkey = kadu_enomf_create_privkey;
@@ -228,9 +230,32 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 {
 }
 
+void EncryptionNgOtrAppOpsWrapper::setUserState(EncryptionNgOtrUserState *userState)
+{
+	if (UserState)
+	{
+		delete OtrTimer;
+		OtrTimer = 0;
+	}
+
+	UserState = userState;
+
+	if (UserState)
+	{
+		OtrTimer = new QTimer(this);
+		connect(OtrTimer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
+	}
+}
+
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
+}
+
+void EncryptionNgOtrAppOpsWrapper::otrTimerTimeout()
+{
+	otrl_message_poll(UserState->userState(), ops(), 0);
+	printf("timer timeout\n");
 }
 
 OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData) const
@@ -320,4 +345,15 @@ QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrO
 QString EncryptionNgOtrAppOpsWrapper::resentMessagePrefix() const
 {
 	return tr("[resent]");
+}
+
+void EncryptionNgOtrAppOpsWrapper::timerControl(int intervalSeconds)
+{
+	if (!OtrTimer)
+		return;
+
+	if (intervalSeconds)
+		OtrTimer->start(intervalSeconds * 1000);
+	else
+		OtrTimer->stop();
 }
