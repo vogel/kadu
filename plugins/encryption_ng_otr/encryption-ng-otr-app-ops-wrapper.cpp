@@ -151,13 +151,16 @@ const char * kadu_enomf_resent_msg_prefix(void *opdata, ConnContext *context)
 	Q_UNUSED(opdata);
 	Q_UNUSED(context);
 
-	return 0;
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	QString resentMessagePrefix = ngOtrOpData->appOpsWrapper()->resentMessagePrefix();
+	return strdup(resentMessagePrefix.toUtf8().constData());
 }
 
 void kadu_enomf_resent_msg_prefix_free(void *opdata, const char *prefix)
 {
 	Q_UNUSED(opdata);
-	Q_UNUSED(prefix);
+
+	free((char *)prefix);
 }
 
 void kadu_enomf_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
@@ -328,4 +331,9 @@ QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrO
 		default:
 			return QString();
 	}
+}
+
+QString EncryptionNgOtrAppOpsWrapper::resentMessagePrefix() const
+{
+	return tr("[resent]");
 }
