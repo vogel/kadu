@@ -25,7 +25,6 @@
 #include "encryption-ng-otr-notifier.h"
 
 QString EncryptionNgOtrNotifier::OtrNotifyTopic("OTR");
-QString EncryptionNgOtrNotifier::GenericNotifyTopic("OTR/Generic");
 QString EncryptionNgOtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString EncryptionNgOtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
 QString EncryptionNgOtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
@@ -35,8 +34,6 @@ EncryptionNgOtrNotifier::EncryptionNgOtrNotifier(QObject *parent) :
 {
 	OtrNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
-	GenericNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Generic")));
 	GoneSecureNotifyEvent.reset(new NotifyEvent(GoneSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Conversation gone secure")));
 	GoneInsecureNotifyEvent.reset(new NotifyEvent(GoneInsecureNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -56,16 +53,6 @@ QList<NotifyEvent *> EncryptionNgOtrNotifier::notifyEvents()
 			<< GoneSecureNotifyEvent.data()
 			<< GoneInsecureNotifyEvent.data()
 			<< StillSecureNotifyEvent.data();
-}
-
-void EncryptionNgOtrNotifier::notifyGeneric(const Chat &chat, const QString &primary, const QString &secondary)
-{
-	ChatNotification *notification = new ChatNotification(chat, GoneSecureNotifyTopic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(primary);
-	notification->setDetails(secondary);
-
-	NotificationManager::instance()->notify(notification);
 }
 
 void EncryptionNgOtrNotifier::notifyGoneSecure(const Chat &chat)

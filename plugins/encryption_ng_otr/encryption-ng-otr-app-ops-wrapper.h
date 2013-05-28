@@ -29,7 +29,6 @@ extern "C" {
 }
 
 class EncryptionNgOtrOpData;
-class FormattedStringFactory;
 
 class EncryptionNgOtrAppOpsWrapper : public QObject
 {
@@ -45,22 +44,17 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	friend void kadu_enomf_create_privkey(void *, const char *, const char *);
 	friend int kadu_enomf_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_enomf_inject_message(void *, const char *, const char *, const char *, const char *);
-	friend void kadu_enomf_notify(void *, OtrlNotifyLevel, const char *, const char *, const char *, const char *, const char *, const char *);
-	friend int kadu_enomf_display_otr_message(void *, const char *, const char *, const char *, const char *);
 	friend void kadu_enomf_gone_secure(void *, ConnContext *);
 	friend void kadu_enomf_gone_insecure(void *, ConnContext *);
 	friend void kadu_enomf_still_secure(void *, ConnContext *, int);
 	friend int kadu_enomf_max_message_size(void *, ConnContext *);
 
 	OtrlMessageAppOps Ops;
-	QWeakPointer<FormattedStringFactory> MyFormattedStringFactory;
 
 	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData);
 	void createPrivateKey(EncryptionNgOtrOpData *ngOtrOpData);
 	IsLoggedInStatus isLoggedIn(EncryptionNgOtrOpData *ngOtrOpData, const QString &contactId);
 	void injectMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
-	void notify(EncryptionNgOtrOpData *ngOtrOpData, const QString &title, const QString &primary, const QString &secondary);
-	bool displayOtrMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent);
 	void goneSecure(EncryptionNgOtrOpData *ngOtrOpData);
 	void goneInsecure(EncryptionNgOtrOpData *ngOtrOpData);
 	void stillSecure(EncryptionNgOtrOpData *ngOtrOpData);
@@ -69,8 +63,6 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();
 	virtual ~EncryptionNgOtrAppOpsWrapper();
-
-	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	const OtrlMessageAppOps * ops() const;
 

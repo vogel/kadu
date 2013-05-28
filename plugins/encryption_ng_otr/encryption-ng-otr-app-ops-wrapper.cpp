@@ -28,7 +28,6 @@ extern "C" {
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
-#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
@@ -80,45 +79,9 @@ void kadu_enomf_inject_message(void *opdata, const char *accountname, const char
 	ngOtrOpData->appOpsWrapper()->injectMessage(ngOtrOpData, QString::fromUtf8(message));
 }
 
-void kadu_enomf_notify(void *opdata, OtrlNotifyLevel level, const char *accountname, const char *protocol, const char *username,
-					   const char *title, const char *primary, const char *secondary)
-{
-	Q_UNUSED(level);
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-	Q_UNUSED(username);
-
-	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
-	ngOtrOpData->appOpsWrapper()->notify(ngOtrOpData, QString::fromUtf8(title), QString::fromUtf8(primary), QString::fromUtf8(secondary));
-}
-
-int kadu_enomf_display_otr_message(void *opdata, const char *accountname, const char *protocol, const char *username, const char *msg)
-{
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-	Q_UNUSED(username);
-
-	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
-	if (ngOtrOpData->appOpsWrapper()->displayOtrMessage(ngOtrOpData, QString::fromUtf8(msg)))
-		return 0;
-	else
-		return -1;
-}
-
 void kadu_enomf_update_context_list(void *opdata)
 {
 	printf("kadu_enomf_update_context_list %p\n", opdata);
-}
-
-const char * kadu_enomf_protocol_name(void *opdata, const char *protocol)
-{
-	printf("kadu_enomf_protocol_name %p %s\n", opdata, protocol);
-	return protocol;
-}
-
-void kadu_enomf_protocol_name_free(void *opdata, const char *protocol_name)
-{
-	printf("kadu_enomf_protocol_name_free %p %s\n", opdata, protocol_name);
 }
 
 void kadu_enomf_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
@@ -156,11 +119,6 @@ void kadu_enomf_still_secure(void *opdata, ConnContext *context, int is_reply)
 
 	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
 	ngOtrOpData->appOpsWrapper()->stillSecure(ngOtrOpData);
-}
-
-void kadu_enomf_log_message(void *opdata, const char *message)
-{
-	printf("kadu_enomf_log_message %p %s\n", opdata, message);
 }
 
 int kadu_enomf_max_message_size(void *opdata, ConnContext *context)
@@ -303,11 +261,6 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 {
 }
 
-void EncryptionNgOtrAppOpsWrapper::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	MyFormattedStringFactory = formattedStringFactory;
-}
-
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
@@ -345,27 +298,6 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
-}
-
-void EncryptionNgOtrAppOpsWrapper::notify(EncryptionNgOtrOpData *ngOtrOpData, const QString &title, const QString &primary, const QString &secondary)
-{
-	Chat chat = ngOtrOpData->message().messageChat();
-	ngOtrOpData->notifier()->notifyGeneric(chat, QString("<b>%1<b/>: %2").arg(title).arg(primary), secondary);
-}
-
-bool EncryptionNgOtrAppOpsWrapper::displayOtrMessage(EncryptionNgOtrOpData *ngOtrOpData, const QString &messageContent)
-{
-	if (!MyFormattedStringFactory)
-		return false;
-
-	Chat chat = ngOtrOpData->message().messageChat();
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
-	if (!chatWidget)
-		return false;
-
-	FormattedString *messageString = MyFormattedStringFactory.data()->fromText(messageContent);
-	chatWidget->appendSystemMessage(messageString);
-	return true;
 }
 
 void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData)
