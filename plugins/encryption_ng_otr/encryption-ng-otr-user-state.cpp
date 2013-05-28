@@ -21,15 +21,15 @@
 
 EncryptionNgOtrUserState::EncryptionNgOtrUserState()
 {
-    UserState = otrl_userstate_create();
+	UserState = otrl_userstate_create();
 }
 
 EncryptionNgOtrUserState::~EncryptionNgOtrUserState()
 {
-    otrl_userstate_free(UserState);
+	otrl_userstate_free(UserState);
 }
 
 OtrlUserState EncryptionNgOtrUserState::userState() const
 {
-    return UserState;
+	return UserState;
 }

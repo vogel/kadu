@@ -27,13 +27,13 @@ extern "C" {
 
 class EncryptionNgOtrUserState
 {
-    OtrlUserState UserState;
+	OtrlUserState UserState;
 
 public:
-    EncryptionNgOtrUserState();
-    ~EncryptionNgOtrUserState();
+	EncryptionNgOtrUserState();
+	~EncryptionNgOtrUserState();
 
-    OtrlUserState userState() const;
+	OtrlUserState userState() const;
 
 };
 
