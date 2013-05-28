@@ -182,6 +182,95 @@ void kadu_enomf_account_name_free(void *opdata, const char *account_name)
 	printf("kadu_enomf_account_name_free %p %s\n", opdata, account_name);
 }
 
+void kadu_enomf_received_symkey(void *opdata, ConnContext *context, unsigned int use, const unsigned char *usedata,
+								size_t usedatalen, const unsigned char *symkey)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(context);
+	Q_UNUSED(use);
+	Q_UNUSED(usedata);
+	Q_UNUSED(usedatalen);
+	Q_UNUSED(symkey);
+}
+
+const char * kadu_enomf_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(context);
+	Q_UNUSED(err_code);
+
+	return 0;
+}
+
+void kadu_enomf_otr_error_message_free(void *opdata, const char *err_msg)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(err_msg);
+}
+
+const char * kadu_enomf_resent_msg_prefix(void *opdata, ConnContext *context)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(context);
+
+	return 0;
+}
+
+void kadu_enomf_resent_msg_prefix_free(void *opdata, const char *prefix)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(prefix);
+}
+
+void kadu_enomf_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
+								 unsigned short progress_percent, char *question)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(smp_event);
+	Q_UNUSED(context);
+	Q_UNUSED(progress_percent);
+	Q_UNUSED(question);
+}
+
+void kadu_enomf_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
+								 const char *message, gcry_error_t err)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(msg_event);
+	Q_UNUSED(context);
+	Q_UNUSED(message);
+	Q_UNUSED(err);
+}
+
+void kadu_enomf_create_instag(void *opdata, const char *accountname, const char *protocol)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+}
+
+void kadu_enomf_convert_msg(void *opdata, ConnContext *context, OtrlConvertType convert_type, char **dest, const char *src)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(context);
+	Q_UNUSED(convert_type);
+	Q_UNUSED(dest);
+	Q_UNUSED(src);
+}
+
+void kadu_enomf_convert_free(void *opdata, ConnContext *context, char *dest)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(context);
+	Q_UNUSED(dest);
+}
+
+void kadu_enomf_timer_control(void *opdata, unsigned int interval)
+{
+	Q_UNUSED(opdata);
+	Q_UNUSED(interval);
+}
+
 EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 {
 	Ops.policy = kadu_enomf_policy;
@@ -197,17 +286,17 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 	Ops.max_message_size = kadu_enomf_max_message_size;
 	Ops.account_name = kadu_enomf_account_name;
 	Ops.account_name_free = kadu_enomf_account_name_free;
-	Ops.received_symkey = 0;
-	Ops.otr_error_message = 0;
-	Ops.otr_error_message_free = 0;
-	Ops.resent_msg_prefix = 0;
-	Ops.resent_msg_prefix_free = 0;
-	Ops.handle_msg_event = 0;
-	Ops.handle_smp_event = 0;
-	Ops.create_instag = 0;
-	Ops.convert_msg = 0;
-	Ops.convert_free = 0;
-	Ops.timer_control = 0;
+	Ops.received_symkey = kadu_enomf_received_symkey;
+	Ops.otr_error_message = kadu_enomf_otr_error_message;
+	Ops.otr_error_message_free = kadu_enomf_otr_error_message_free;
+	Ops.resent_msg_prefix = kadu_enomf_resent_msg_prefix;
+	Ops.resent_msg_prefix_free = kadu_enomf_resent_msg_prefix_free;
+	Ops.handle_msg_event = kadu_enomf_handle_msg_event;
+	Ops.handle_smp_event = kadu_enomf_handle_smp_event;
+	Ops.create_instag = kadu_enomf_create_instag;
+	Ops.convert_msg = kadu_enomf_convert_msg;
+	Ops.convert_free = kadu_enomf_convert_free;
+	Ops.timer_control = kadu_enomf_timer_control;
 }
 
 EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
