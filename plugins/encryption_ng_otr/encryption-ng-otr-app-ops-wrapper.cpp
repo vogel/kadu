@@ -188,7 +188,10 @@ void kadu_enomf_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnC
 	Q_UNUSED(message);
 	Q_UNUSED(err);
 
-	printf("kadu_enomf_handle_msg_event: %p %d %p %s %d\n", opdata, msg_event, context, message, err);
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->handleMsgEvent(ngOtrOpData, msg_event, message, err);
+	
+	
 }
 
 void kadu_enomf_create_instag(void *opdata, const char *accountname, const char *protocol)
@@ -338,4 +341,67 @@ QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrO
 QString EncryptionNgOtrAppOpsWrapper::resentMessagePrefix() const
 {
 	return tr("[resent]");
+}
+
+void EncryptionNgOtrAppOpsWrapper::handleMsgEvent(EncryptionNgOtrOpData *ngOtrOpData, OtrlMessageEvent event,
+												  const QString &message, gcry_error_t errorCode) const
+{
+	QString senderDisplay = ngOtrOpData->message().messageSender().display(true);
+	QString errorMessage = messageString(event, message, errorCode, senderDisplay);
+
+	if (errorMessage.isEmpty())
+		return;
+
+	Chat chat = ngOtrOpData->message().messageChat();
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	if (chatWidget)
+		chatWidget->appendSystemMessage(errorMessage);
+}
+
+QString EncryptionNgOtrAppOpsWrapper::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &senderDisplay) const
+{
+	switch (event)
+	{
+		case OTRL_MSGEVENT_ENCRYPTION_REQUIRED:
+			return tr("Unencrypted messages to %1 are not allowed. Attmpting to start a private conversation...").arg(senderDisplay);
+		case OTRL_MSGEVENT_ENCRYPTION_ERROR:
+			return tr("Encryption error. Message was not sent.");
+		case OTRL_MSGEVENT_CONNECTION_ENDED:
+			return tr("Message was not sent. Private conversation was closed by %1. Either restart or close your private conversation.").arg(senderDisplay);
+		case OTRL_MSGEVENT_SETUP_ERROR:
+			return tr("Error during setting up private conversation with %1: %2").arg(senderDisplay).arg(gpgErrorString(errorCode));
+		case OTRL_MSGEVENT_MSG_REFLECTED:
+			return tr("We are receiving our own OTR messages from %1. Either restart or close your private conversation.").arg(senderDisplay);
+		case OTRL_MSGEVENT_MSG_RESENT:
+			return tr("Last message was resent: %1").arg(message);
+		case OTRL_MSGEVENT_RCVDMSG_NOT_IN_PRIVATE:
+			return tr("Message from %1 was unreadable, as you are not currently communicating privately.").arg(senderDisplay);
+		case OTRL_MSGEVENT_RCVDMSG_UNREADABLE:
+			return tr("Message from %1 was unreadable.").arg(senderDisplay);
+		case OTRL_MSGEVENT_RCVDMSG_MALFORMED:
+			return tr("Message from %1 was malformed.").arg(senderDisplay);
+		case OTRL_MSGEVENT_RCVDMSG_GENERAL_ERR:
+			return tr("Encryption error: %1").arg(message);
+		case OTRL_MSGEVENT_RCVDMSG_UNENCRYPTED:
+			return tr("Message from %1 was unencrypted.").arg(senderDisplay);
+		case OTRL_MSGEVENT_RCVDMSG_UNRECOGNIZED:
+			return tr("Message from %1 was unrecognized.").arg(senderDisplay);
+		case OTRL_MSGEVENT_RCVDMSG_FOR_OTHER_INSTANCE:
+			return tr("%1 has sent a message intended for different session. "
+					  "If you are logged in multiple times another session may have received the message.").arg(senderDisplay);
+		default:
+			return QString();
+	}
+}
+
+QString EncryptionNgOtrAppOpsWrapper::gpgErrorString(gcry_error_t errorCode) const
+{
+	switch (errorCode)
+	{
+		case 0:
+		case GPG_ERR_INV_VALUE:
+			return (tr("Malformed message received"));
+		default:
+			return gcry_strerror(errorCode);
+	}
 }

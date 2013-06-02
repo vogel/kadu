@@ -50,6 +50,7 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	friend int kadu_enomf_max_message_size(void *, ConnContext *);
 	friend const char * kadu_enomf_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_enomf_resent_msg_prefix(void *, ConnContext *);
+	friend void kadu_enomf_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
 
 	OtrlMessageAppOps Ops;
 
@@ -63,6 +64,9 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	int maxMessageSize(EncryptionNgOtrOpData *ngOtrOpData) const;
 	QString errorMessage(EncryptionNgOtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
+	void handleMsgEvent(EncryptionNgOtrOpData *ngOtrOpData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
+	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &senderDisplay) const;
+	QString gpgErrorString(gcry_error_t errorCode) const;
 
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();
