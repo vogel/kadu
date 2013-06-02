@@ -501,6 +501,12 @@ void ChatWidget::appendMessage(const Message &message)
 		Container->alertChatWidget(this);
 }
 
+void ChatWidget::appendSystemMessage(const QString &content)
+{
+	FormattedStringFactory *formattedStringFactory = Core::instance()->formattedStringFactory();
+	appendSystemMessage(formattedStringFactory->fromText(content));
+}
+
 void ChatWidget::appendSystemMessage(FormattedString *content)
 {
 	Message message = Message::create();
