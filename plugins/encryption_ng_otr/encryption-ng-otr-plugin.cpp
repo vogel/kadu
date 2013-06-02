@@ -27,17 +27,30 @@
 #include "encryption-ng-otr-notifier.h"
 #include "encryption-ng-otr-private-key-service.h"
 #include "encryption-ng-otr-raw-message-transformer.h"
+#include "encryption-ng-otr-timer.h"
 #include "encryption-ng-otr-user-state.h"
 
 #include "encryption-ng-otr-plugin.h"
 
+EncryptionNgOtrPlugin * EncryptionNgOtrPlugin::Instance = 0;
+
+EncryptionNgOtrPlugin * EncryptionNgOtrPlugin::instance()
+{
+	return Instance;
+}
+
 EncryptionNgOtrPlugin::EncryptionNgOtrPlugin()
 {
+	Q_ASSERT(!Instance);
+	Instance = this;
+
 	OTRL_INIT;
 }
 
 EncryptionNgOtrPlugin::~EncryptionNgOtrPlugin()
 {
+	Q_ASSERT(Instance);
+	Instance = 0;
 }
 
 void EncryptionNgOtrPlugin::registerOtrAcountConfigurationWidgetFactory()
@@ -104,6 +117,16 @@ void EncryptionNgOtrPlugin::unregisterOtrRawMessageTransformer()
 	OtrRawMessageTransformer.reset();
 }
 
+void EncryptionNgOtrPlugin::registerOtrTimer()
+{
+	OtrTimer.reset(new EncryptionNgOtrTimer());
+}
+
+void EncryptionNgOtrPlugin::unregisterOtrTimer()
+{
+	OtrTimer.reset();
+}
+
 int EncryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
@@ -113,8 +136,7 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	registerOtrNotifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
-
-	OtrAppOpsWrapper->setUserState(&OtrUserState);
+	registerOtrTimer();
 
 	OtrPrivateKeyService->setUserState(&OtrUserState);
 	OtrPrivateKeyService->readPrivateKeys();
@@ -124,11 +146,17 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(OtrPrivateKeyService.data());
 	OtrRawMessageTransformer->setUserState(&OtrUserState);
 
+	OtrTimer->setEncryptionNgOtrAppOpsWrapper(OtrAppOpsWrapper.data());
+	OtrTimer->setUserState(&OtrUserState);
+
 	return 0;
 }
 
 void EncryptionNgOtrPlugin::done()
 {
+	OtrTimer->setUserState(0);
+	OtrTimer->setEncryptionNgOtrAppOpsWrapper(0);
+
 	OtrRawMessageTransformer->setUserState(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrPrivateKeyService(0);
 	OtrRawMessageTransformer->setEncryptionNgOtrNotifier(0);
@@ -136,13 +164,17 @@ void EncryptionNgOtrPlugin::done()
 
 	OtrPrivateKeyService->setUserState(0);
 
-	OtrAppOpsWrapper->setUserState(0);
-
+	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrNotifier();
 	unregisterOtrAppOpsWrapper();
 	unregisterOtrAcountConfigurationWidgetFactory();
+}
+
+EncryptionNgOtrTimer * EncryptionNgOtrPlugin::otrTimer() const
+{
+	return OtrTimer.data();
 }
 
 Q_EXPORT_PLUGIN2(encryption_ng_otr, EncryptionNgOtrPlugin)

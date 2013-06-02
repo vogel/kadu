@@ -38,10 +38,11 @@ extern "C" {
 
 #include "encryption-ng-otr-notifier.h"
 #include "encryption-ng-otr-op-data.h"
+#include "encryption-ng-otr-plugin.h"
 #include "encryption-ng-otr-policy.h"
 #include "encryption-ng-otr-policy-account-store.h"
 #include "encryption-ng-otr-private-key-service.h"
-#include "encryption-ng-otr-user-state.h"
+#include "encryption-ng-otr-timer.h"
 
 #include "encryption-ng-otr-app-ops-wrapper.h"
 
@@ -76,6 +77,8 @@ void kadu_enomf_inject_message(void *opdata, const char *accountname, const char
 	Q_UNUSED(accountname);
 	Q_UNUSED(protocol);
 	Q_UNUSED(recipient);
+
+	printf("message to inject: [   %s   ]\n", message);
 
 	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
 	ngOtrOpData->appOpsWrapper()->injectMessage(ngOtrOpData, QString::fromUtf8(message));
@@ -172,6 +175,8 @@ void kadu_enomf_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnConte
 	Q_UNUSED(context);
 	Q_UNUSED(progress_percent);
 	Q_UNUSED(question);
+
+	printf("kadu_enomf_handle_smp_event: %p %d %p %d %s\n", opdata, smp_event, context, progress_percent, question);
 }
 
 void kadu_enomf_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
@@ -182,6 +187,8 @@ void kadu_enomf_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnC
 	Q_UNUSED(context);
 	Q_UNUSED(message);
 	Q_UNUSED(err);
+
+	printf("kadu_enomf_handle_msg_event: %p %d %p %s %d\n", opdata, msg_event, context, message, err);
 }
 
 void kadu_enomf_create_instag(void *opdata, const char *accountname, const char *protocol)
@@ -193,12 +200,20 @@ void kadu_enomf_create_instag(void *opdata, const char *accountname, const char 
 
 void kadu_enomf_timer_control(void *opdata, unsigned int interval)
 {
-	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
-	ngOtrOpData->appOpsWrapper()->timerControl(interval);
+	Q_UNUSED(opdata);
+
+	EncryptionNgOtrPlugin *plugin = EncryptionNgOtrPlugin::instance();
+	if (!plugin)
+		return;
+
+	EncryptionNgOtrTimer *otrTimer = plugin->otrTimer();
+	if (!otrTimer)
+		return;
+
+	otrTimer->timerControl(interval);
 }
 
-EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper() :
-		OtrTimer(0)
+EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 {
 	Ops.policy = kadu_enomf_policy;
 	Ops.create_privkey = kadu_enomf_create_privkey;
@@ -230,32 +245,9 @@ EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 {
 }
 
-void EncryptionNgOtrAppOpsWrapper::setUserState(EncryptionNgOtrUserState *userState)
-{
-	if (UserState)
-	{
-		delete OtrTimer;
-		OtrTimer = 0;
-	}
-
-	UserState = userState;
-
-	if (UserState)
-	{
-		OtrTimer = new QTimer(this);
-		connect(OtrTimer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
-	}
-}
-
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-void EncryptionNgOtrAppOpsWrapper::otrTimerTimeout()
-{
-	otrl_message_poll(UserState->userState(), ops(), 0);
-	printf("timer timeout\n");
 }
 
 OtrlPolicy EncryptionNgOtrAppOpsWrapper::policy(EncryptionNgOtrOpData *ngOtrOpData) const
@@ -290,6 +282,7 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
+	printf("will send message: %s\n", messageContent.toUtf8().data());
 }
 
 void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData) const
@@ -345,15 +338,4 @@ QString EncryptionNgOtrAppOpsWrapper::errorMessage(EncryptionNgOtrOpData *ngOtrO
 QString EncryptionNgOtrAppOpsWrapper::resentMessagePrefix() const
 {
 	return tr("[resent]");
-}
-
-void EncryptionNgOtrAppOpsWrapper::timerControl(int intervalSeconds)
-{
-	if (!OtrTimer)
-		return;
-
-	if (intervalSeconds)
-		OtrTimer->start(intervalSeconds * 1000);
-	else
-		OtrTimer->stop();
 }

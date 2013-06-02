@@ -31,12 +31,14 @@ class EncryptionNgOtrAppOpsWrapper;
 class EncryptionNgOtrNotifier;
 class EncryptionNgOtrPrivateKeyService;
 class EncryptionNgOtrRawMessageTransformer;
+class EncryptionNgOtrTimer;
 
 class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
+	static EncryptionNgOtrPlugin *Instance; // ugly, but required by otr unfortunately
 	EncryptionNgOtrUserState OtrUserState;
 
 	QScopedPointer<EncryptionNgOtrAccountConfigurationWidgetFactory> OtrAccountConfigurationWidgetFactory;
@@ -44,6 +46,7 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<EncryptionNgOtrNotifier> OtrNotifier;
 	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
 	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
+	QScopedPointer<EncryptionNgOtrTimer> OtrTimer;
 
 	void registerOtrAcountConfigurationWidgetFactory();
 	void unregisterOtrAcountConfigurationWidgetFactory();
@@ -60,12 +63,19 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 	void registerOtrRawMessageTransformer();
 	void unregisterOtrRawMessageTransformer();
 
+	void registerOtrTimer();
+	void unregisterOtrTimer();
+
 public:
+	static EncryptionNgOtrPlugin * instance();
+
 	explicit EncryptionNgOtrPlugin();
 	virtual ~EncryptionNgOtrPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
+
+	EncryptionNgOtrTimer * otrTimer() const;
 
 };
 
