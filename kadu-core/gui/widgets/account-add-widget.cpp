@@ -22,7 +22,7 @@
 #include "account-add-widget.h"
 
 AccountAddWidget::AccountAddWidget(QWidget *parent) :
-		ModalConfigurationWidget(parent)
+		ModalConfigurationWidget(parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 }
 
