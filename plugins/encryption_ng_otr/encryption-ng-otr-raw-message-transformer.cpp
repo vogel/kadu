@@ -85,8 +85,6 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 
 QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
 {
-	printf("received message: %s\n", messageContent.data());
-
 	OtrlUserState userState = UserState->userState();
 	if (!userState)
 		return messageContent;
@@ -99,6 +97,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
+
 	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
@@ -145,7 +144,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			messageContent.data(), 0,
-			&newMessage, OTRL_FRAGMENT_SEND_ALL,
+			&newMessage, OTRL_FRAGMENT_SEND_SKIP,
 			0, 0, 0);
 
 	if (!err && newMessage)
