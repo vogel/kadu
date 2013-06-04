@@ -39,6 +39,7 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	static EncryptionNgOtrPlugin *Instance; // ugly, but required by otr unfortunately
+	bool OtrAvailable;
 	EncryptionNgOtrUserState OtrUserState;
 
 	QScopedPointer<EncryptionNgOtrAccountConfigurationWidgetFactory> OtrAccountConfigurationWidgetFactory;

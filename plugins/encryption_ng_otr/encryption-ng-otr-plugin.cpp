@@ -44,7 +44,7 @@ EncryptionNgOtrPlugin::EncryptionNgOtrPlugin()
 	Q_ASSERT(!Instance);
 	Instance = this;
 
-	OTRL_INIT;
+	OtrAvailable = otrl_init(OTRL_VERSION_MAJOR, OTRL_VERSION_MINOR, OTRL_VERSION_SUB) == 0;
 }
 
 EncryptionNgOtrPlugin::~EncryptionNgOtrPlugin()
@@ -131,6 +131,9 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
 
+	if (!OtrAvailable)
+		return 1;
+
 	registerOtrAcountConfigurationWidgetFactory();
 	registerOtrAppOpsWrapper();
 	registerOtrNotifier();
@@ -154,6 +157,9 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 
 void EncryptionNgOtrPlugin::done()
 {
+	if (!OtrAvailable)
+		return;
+
 	OtrTimer->setUserState(0);
 	OtrTimer->setEncryptionNgOtrAppOpsWrapper(0);
 
