@@ -63,6 +63,7 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrRawMessageTransformer();
 	void unregisterOtrRawMessageTransformer();
+	bool fragmentsFixAvailable() const;
 
 	void registerOtrTimer();
 	void unregisterOtrTimer();

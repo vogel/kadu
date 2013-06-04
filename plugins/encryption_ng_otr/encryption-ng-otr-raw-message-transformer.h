@@ -37,6 +37,7 @@ class EncryptionNgOtrUserState;
 class EncryptionNgOtrRawMessageTransformer: public RawMessageTransformer
 {
 	EncryptionNgOtrUserState *UserState;
+	bool EnableFragments;
 
 	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
 	QWeakPointer<EncryptionNgOtrNotifier> OtrNotifier;
@@ -50,6 +51,7 @@ public:
 	virtual ~EncryptionNgOtrRawMessageTransformer();
 
 	void setUserState(EncryptionNgOtrUserState *userState);
+	void setEnableFragments(bool enableFragments);
 
 	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
 	void setEncryptionNgOtrNotifier(EncryptionNgOtrNotifier *encryptionNgOtrNotifier);

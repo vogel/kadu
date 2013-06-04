@@ -106,6 +106,7 @@ void EncryptionNgOtrPlugin::unregisterOtrPrivateKeyService()
 void EncryptionNgOtrPlugin::registerOtrRawMessageTransformer()
 {
 	OtrRawMessageTransformer.reset(new EncryptionNgOtrRawMessageTransformer());
+	OtrRawMessageTransformer.data()->setEnableFragments(fragmentsFixAvailable());
 
 	Core::instance()->rawMessageTransformerService()->registerTransformer(OtrRawMessageTransformer.data());
 }
@@ -115,6 +116,11 @@ void EncryptionNgOtrPlugin::unregisterOtrRawMessageTransformer()
 	Core::instance()->rawMessageTransformerService()->unregisterTransformer(OtrRawMessageTransformer.data());
 
 	OtrRawMessageTransformer.reset();
+}
+
+bool EncryptionNgOtrPlugin::fragmentsFixAvailable() const
+{
+	return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
 }
 
 void EncryptionNgOtrPlugin::registerOtrTimer()

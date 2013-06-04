@@ -39,7 +39,7 @@ extern "C" {
 #include "encryption-ng-otr-raw-message-transformer.h"
 
 EncryptionNgOtrRawMessageTransformer::EncryptionNgOtrRawMessageTransformer() :
-		UserState(0)
+		UserState(0), EnableFragments(false)
 {
 }
 
@@ -50,6 +50,11 @@ EncryptionNgOtrRawMessageTransformer::~EncryptionNgOtrRawMessageTransformer()
 void EncryptionNgOtrRawMessageTransformer::setUserState(EncryptionNgOtrUserState *userState)
 {
 	UserState = userState;
+}
+
+void EncryptionNgOtrRawMessageTransformer::setEnableFragments(bool enableFragments)
+{
+	EnableFragments = enableFragments;
 }
 
 void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
@@ -144,7 +149,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			messageContent.data(), 0,
-			&newMessage, OTRL_FRAGMENT_SEND_SKIP,
+			&newMessage, EnableFragments ? OTRL_FRAGMENT_SEND_ALL : OTRL_FRAGMENT_SEND_SKIP,
 			0, 0, 0);
 
 	if (!err && newMessage)
