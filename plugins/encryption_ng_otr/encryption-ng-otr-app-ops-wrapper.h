@@ -29,6 +29,7 @@ extern "C" {
 }
 
 class EncryptionNgOtrOpData;
+class EncryptionNgOtrUserState;
 
 class EncryptionNgOtrAppOpsWrapper : public QObject
 {
@@ -51,7 +52,9 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	friend const char * kadu_enomf_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_enomf_resent_msg_prefix(void *, ConnContext *);
 	friend void kadu_enomf_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
+	friend void kadu_enomf_create_instag(void *, const char *, const char *);
 
+	EncryptionNgOtrUserState *UserState;
 	OtrlMessageAppOps Ops;
 
 	OtrlPolicy policy(EncryptionNgOtrOpData *ngOtrOpData) const;
@@ -67,11 +70,14 @@ class EncryptionNgOtrAppOpsWrapper : public QObject
 	void handleMsgEvent(EncryptionNgOtrOpData *ngOtrOpData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &senderDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
+	void createInstanceTag(EncryptionNgOtrOpData *ngOtrOpData);
+	QString instanceTagsFileName() const;
 
 public:
 	explicit EncryptionNgOtrAppOpsWrapper();
 	virtual ~EncryptionNgOtrAppOpsWrapper();
 
+	void setUserState(EncryptionNgOtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
 
 };

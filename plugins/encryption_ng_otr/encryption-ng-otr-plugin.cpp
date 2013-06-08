@@ -147,6 +147,8 @@ int EncryptionNgOtrPlugin::init(bool firstLoad)
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
 
+	OtrAppOpsWrapper->setUserState(&OtrUserState);
+
 	OtrPrivateKeyService->setUserState(&OtrUserState);
 	OtrPrivateKeyService->readPrivateKeys();
 
@@ -175,6 +177,8 @@ void EncryptionNgOtrPlugin::done()
 	OtrRawMessageTransformer->setEncryptionNgOtrAppOpsWrapper(0);
 
 	OtrPrivateKeyService->setUserState(0);
+
+	OtrAppOpsWrapper->setUserState(0);
 
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();

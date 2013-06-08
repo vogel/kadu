@@ -32,6 +32,7 @@ extern "C" {
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
+#include "misc/kadu-paths.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
@@ -78,27 +79,29 @@ void kadu_enomf_inject_message(void *opdata, const char *accountname, const char
 	Q_UNUSED(protocol);
 	Q_UNUSED(recipient);
 
-	printf("message to inject: [   %s   ]\n", message);
-
 	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
 	ngOtrOpData->appOpsWrapper()->injectMessage(ngOtrOpData, QString::fromUtf8(message));
 }
 
 void kadu_enomf_update_context_list(void *opdata)
 {
-	printf("kadu_enomf_update_context_list %p\n", opdata);
+    Q_UNUSED(opdata);
 }
 
 void kadu_enomf_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
 								const char *username, unsigned char fingerprint[20])
 {
+	Q_UNUSED(opdata);
+	Q_UNUSED(us);
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+	Q_UNUSED(username);
 	Q_UNUSED(fingerprint);
-	printf("kadu_enomf_new_fingerprint %p %p %s %s %s\n", opdata, us->context_root, accountname, protocol, username);
 }
 
 void kadu_enomf_write_fingerprints(void *opdata)
 {
-	printf("kadu_enomf_write_fingerprints %p\n", opdata);
+	Q_UNUSED(opdata);
 }
 
 void kadu_enomf_gone_secure(void *opdata, ConnContext *context)
@@ -175,8 +178,15 @@ void kadu_enomf_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnConte
 	Q_UNUSED(context);
 	Q_UNUSED(progress_percent);
 	Q_UNUSED(question);
+}
 
-	printf("kadu_enomf_handle_smp_event: %p %d %p %d %s\n", opdata, smp_event, context, progress_percent, question);
+void kadu_enomf_create_instag(void *opdata, const char *accountname, const char *protocol)
+{
+	Q_UNUSED(accountname);
+	Q_UNUSED(protocol);
+
+	EncryptionNgOtrOpData *ngOtrOpData = static_cast<EncryptionNgOtrOpData *>(opdata);
+	ngOtrOpData->appOpsWrapper()->createInstanceTag(ngOtrOpData);
 }
 
 void kadu_enomf_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
@@ -209,7 +219,8 @@ void kadu_enomf_timer_control(void *opdata, unsigned int interval)
 	otrTimer->timerControl(interval);
 }
 
-EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
+EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper() :
+		UserState(0)
 {
 	Ops.policy = kadu_enomf_policy;
 	Ops.create_privkey = kadu_enomf_create_privkey;
@@ -231,7 +242,7 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 	Ops.resent_msg_prefix_free = kadu_enomf_resent_msg_prefix_free;
 	Ops.handle_msg_event = kadu_enomf_handle_msg_event;
 	Ops.handle_smp_event = kadu_enomf_handle_smp_event;
-	Ops.create_instag = 0;
+	Ops.create_instag = kadu_enomf_create_instag;
 	Ops.convert_msg = 0;
 	Ops.convert_free = 0;
 	Ops.timer_control = kadu_enomf_timer_control;
@@ -239,6 +250,11 @@ EncryptionNgOtrAppOpsWrapper::EncryptionNgOtrAppOpsWrapper()
 
 EncryptionNgOtrAppOpsWrapper::~EncryptionNgOtrAppOpsWrapper()
 {
+}
+
+void EncryptionNgOtrAppOpsWrapper::setUserState(EncryptionNgOtrUserState *userState)
+{
+	UserState = userState;
 }
 
 const OtrlMessageAppOps * EncryptionNgOtrAppOpsWrapper::ops() const
@@ -278,7 +294,6 @@ void EncryptionNgOtrAppOpsWrapper::injectMessage(EncryptionNgOtrOpData *ngOtrOpD
 {
 	Chat chat = ngOtrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
-	printf("will send message: %s\n", messageContent.toUtf8().data());
 }
 
 void EncryptionNgOtrAppOpsWrapper::goneSecure(EncryptionNgOtrOpData *ngOtrOpData) const
@@ -397,4 +412,19 @@ QString EncryptionNgOtrAppOpsWrapper::gpgErrorString(gcry_error_t errorCode) con
 		default:
 			return gcry_strerror(errorCode);
 	}
+}
+
+void EncryptionNgOtrAppOpsWrapper::createInstanceTag(EncryptionNgOtrOpData *ngOtrOpData)
+{
+	Q_ASSERT(UserState);
+
+	Account account = ngOtrOpData->message().messageChat().chatAccount();
+	QString fileName = instanceTagsFileName();
+
+	otrl_instag_generate(UserState->userState(), fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());
+}
+
+QString EncryptionNgOtrAppOpsWrapper::instanceTagsFileName() const
+{
+	return KaduPaths::instance()->profilePath() + QString("/keys/otr_instance_tags");
 }
