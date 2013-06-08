@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QDir>
-
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "misc/kadu-paths.h"
@@ -53,16 +51,8 @@ void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
 
 	OtrlUserState userState = UserState->userState();
 	QString fileName = privateStoreFileName();
-	QFileInfo fileInfo(fileName);
-	QDir fileDir = fileInfo.absoluteDir();
-	if (!fileDir.exists())
-	{
-		printf("oo: %s\n", qPrintable(fileDir.absolutePath()));
-		printf("aaaa: %d\n", fileDir.mkpath(fileDir.absolutePath()));
-	}
 
 	otrl_privkey_generate(userState, fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());
-	// readPrivateKeys(account);
 }
 
 void EncryptionNgOtrPrivateKeyService::readPrivateKeys()
