@@ -158,6 +158,9 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 		otrl_message_free(newMessage);
 		return result;
 	}
-	else
-		return messageContent;
+
+	if (newMessage)
+		otrl_message_free(newMessage);
+
+	return messageContent;
 }
