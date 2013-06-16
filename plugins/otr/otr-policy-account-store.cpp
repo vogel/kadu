@@ -17,19 +17,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "encryption-ng-otr-user-state.h"
+#include "accounts/account.h"
 
-EncryptionNgOtrUserState::EncryptionNgOtrUserState()
+#include "otr-policy.h"
+
+#include "otr-policy-account-store.h"
+
+void OtrPolicyAccountStore::storePolicyToAccount(const Account &account, const OtrPolicy &policy)
 {
-	UserState = otrl_userstate_create();
+	account.addProperty("encryption_ng_otr:policy", policy.toString(), CustomProperties::Storable);
 }
 
-EncryptionNgOtrUserState::~EncryptionNgOtrUserState()
+OtrPolicy OtrPolicyAccountStore::loadPolicyFromAccount(const Account &account)
 {
-	otrl_userstate_free(UserState);
-}
-
-OtrlUserState EncryptionNgOtrUserState::userState() const
-{
-	return UserState;
+	return OtrPolicy::fromString(account.property("encryption_ng_otr:policy", QVariant()).toString());
 }

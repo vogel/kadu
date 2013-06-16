@@ -17,38 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_NOTIFIER_H
-#define ENCRYPTION_NG_OTR_NOTIFIER_H
+#ifndef OTR_PRIVATE_KEY_SERVICE_H
+#define OTR_PRIVATE_KEY_SERVICE_H
 
 #include <QtCore/QObject>
 
-class Chat;
-class NotifyEvent;
+extern "C" {
+#   include <libotr/privkey.h>
+}
 
-class EncryptionNgOtrNotifier : public QObject
+class Account;
+
+class OtrUserState;
+
+class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	static QString OtrNotifyTopic;
-	static QString GoneSecureNotifyTopic;
-	static QString GoneInsecureNotifyTopic;
-	static QString StillSecureNotifyTopic;
-
-	QScopedPointer<NotifyEvent> OtrNotifyEvent;
-	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
-	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
-	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
+	OtrUserState *UserState;
+	QString privateStoreFileName();
 
 public:
-	explicit EncryptionNgOtrNotifier(QObject *parent = 0);
-	virtual ~EncryptionNgOtrNotifier();
+	explicit OtrPrivateKeyService(QObject *parent = 0);
+	virtual ~OtrPrivateKeyService();
 
-	QList<NotifyEvent *> notifyEvents();
+	void setUserState(OtrUserState *userState);
 
-	void notifyGoneSecure(const Chat &chat);
-	void notifyGoneInsecure(const Chat &chat);
-	void notifyStillSecure(const Chat &chat);
+	void createPrivateKey(const Account &account);
+	void readPrivateKeys();
 
 };
 
-#endif // ENCRYPTION_NG_OTR_NOTIFIER_H
+
+#endif // OTR_PRIVATE_KEY_SERVICE_H

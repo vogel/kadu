@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
-#define ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
+#ifndef OTR_RAW_MESSAGE_TRANSFORMER_H
+#define OTR_RAW_MESSAGE_TRANSFORMER_H
 
 #include <QtCore/QWeakPointer>
 
@@ -29,36 +29,36 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
-class EncryptionNgOtrAppOpsWrapper;
-class EncryptionNgOtrNotifier;
-class EncryptionNgOtrPrivateKeyService;
-class EncryptionNgOtrUserState;
+class OtrAppOpsWrapper;
+class OtrNotifier;
+class OtrPrivateKeyService;
+class OtrUserState;
 
-class EncryptionNgOtrRawMessageTransformer: public RawMessageTransformer
+class OtrRawMessageTransformer: public RawMessageTransformer
 {
-	EncryptionNgOtrUserState *UserState;
+	OtrUserState *UserState;
 	bool EnableFragments;
 
-	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
-	QWeakPointer<EncryptionNgOtrNotifier> OtrNotifier;
-	QWeakPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrNotifier> Notifier;
+	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
 
 	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
 	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
 
 public:
-	explicit EncryptionNgOtrRawMessageTransformer();
-	virtual ~EncryptionNgOtrRawMessageTransformer();
+	explicit OtrRawMessageTransformer();
+	virtual ~OtrRawMessageTransformer();
 
-	void setUserState(EncryptionNgOtrUserState *userState);
+	void setUserState(OtrUserState *userState);
 	void setEnableFragments(bool enableFragments);
 
-	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
-	void setEncryptionNgOtrNotifier(EncryptionNgOtrNotifier *encryptionNgOtrNotifier);
-	void setEncryptionNgOtrPrivateKeyService(EncryptionNgOtrPrivateKeyService *encryptionNgOtrPrivateKeyService);
+	void setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
+	void setOtrNotifier(OtrNotifier *encryptionNgOtrNotifier);
+	void setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService);
 
 	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_RAW_MESSAGE_TRANSFORMER_H
+#endif // OTR_RAW_MESSAGE_TRANSFORMER_H

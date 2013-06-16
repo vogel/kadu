@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_POLICY_H
-#define ENCRYPTION_NG_OTR_POLICY_H
+#ifndef OTR_POLICY_H
+#define OTR_POLICY_H
 
 #include <QtCore/QList>
 #include <QtCore/QString>
@@ -27,32 +27,32 @@ extern "C" {
 #	include <libotr/proto.h>
 }
 
-class EncryptionNgOtrPolicy
+class OtrPolicy
 {
-	static QList<EncryptionNgOtrPolicy> Values;
+	static QList<OtrPolicy> Values;
 
 	OtrlPolicy Policy;
 	QString PolicyString;
 
-	explicit EncryptionNgOtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
+	explicit OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
 
 public:
-	static EncryptionNgOtrPolicy NEVER;
-	static EncryptionNgOtrPolicy MANUAL;
-	static EncryptionNgOtrPolicy OPPORTUNISTIC;
-	static EncryptionNgOtrPolicy ALWAYS;
+	static OtrPolicy NEVER;
+	static OtrPolicy MANUAL;
+	static OtrPolicy OPPORTUNISTIC;
+	static OtrPolicy ALWAYS;
 
-	static EncryptionNgOtrPolicy fromPolicy(OtrlPolicy otrPolicy);
-	static EncryptionNgOtrPolicy fromString(const QString &policyString);
+	static OtrPolicy fromPolicy(OtrlPolicy otrPolicy);
+	static OtrPolicy fromString(const QString &policyString);
 
-	EncryptionNgOtrPolicy(const EncryptionNgOtrPolicy &copyFrom);
+	OtrPolicy(const OtrPolicy &copyFrom);
 
-	EncryptionNgOtrPolicy & operator = (const EncryptionNgOtrPolicy &copyFrom);
-	bool operator == (const EncryptionNgOtrPolicy &compareTo) const;
+	OtrPolicy & operator = (const OtrPolicy &copyFrom);
+	bool operator == (const OtrPolicy &compareTo) const;
 
 	OtrlPolicy toOtrPolicy() const;
 	const QString & toString() const;
 
 };
 
-#endif // ENCRYPTION_NG_OTR_POLICY_H
+#endif // OTR_POLICY_H

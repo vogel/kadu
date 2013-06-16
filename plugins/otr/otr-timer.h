@@ -17,19 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_POLICY_ACCOUNT_STORE_H
-#define ENCRYPTION_NG_OTR_POLICY_ACCOUNT_STORE_H
+#ifndef OTR_TIMER_H
+#define OTR_TIMER_H
 
-class Account;
-class EncryptionNgOtrPolicy;
+#include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
-class EncryptionNgOtrPolicyAccountStore
+class QTimer;
+
+class OtrAppOpsWrapper;
+class OtrUserState;
+
+class OtrTimer : public QObject
 {
+	Q_OBJECT
+
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	OtrUserState *UserState;
+	QTimer *Timer;
+
+	friend void kadu_otr_timer_control(void *, unsigned int);
+	void timerControl(int intervalInSeconds);
+
+private slots:
+	void otrTimerTimeout();
 
 public:
-	static void storePolicyToAccount(const Account &account, const EncryptionNgOtrPolicy &policy);
-	static EncryptionNgOtrPolicy loadPolicyFromAccount(const Account &account);
+	explicit OtrTimer(QObject *parent = 0);
+	virtual ~OtrTimer();
+
+	void setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
+	void setUserState(OtrUserState *userState);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_POLICY_ACCOUNT_STORE_H
+#endif // OTR_TIMER_H

@@ -30,51 +30,51 @@ extern "C" {
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
 
-#include "encryption-ng-otr-app-ops-wrapper.h"
-#include "encryption-ng-otr-notifier.h"
-#include "encryption-ng-otr-op-data.h"
-#include "encryption-ng-otr-private-key-service.h"
-#include "encryption-ng-otr-user-state.h"
+#include "otr-app-ops-wrapper.h"
+#include "otr-notifier.h"
+#include "otr-op-data.h"
+#include "otr-private-key-service.h"
+#include "otr-user-state.h"
 
-#include "encryption-ng-otr-raw-message-transformer.h"
+#include "otr-raw-message-transformer.h"
 
-EncryptionNgOtrRawMessageTransformer::EncryptionNgOtrRawMessageTransformer() :
+OtrRawMessageTransformer::OtrRawMessageTransformer() :
 		UserState(0), EnableFragments(false)
 {
 }
 
-EncryptionNgOtrRawMessageTransformer::~EncryptionNgOtrRawMessageTransformer()
+OtrRawMessageTransformer::~OtrRawMessageTransformer()
 {
 }
 
-void EncryptionNgOtrRawMessageTransformer::setUserState(EncryptionNgOtrUserState *userState)
+void OtrRawMessageTransformer::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
 }
 
-void EncryptionNgOtrRawMessageTransformer::setEnableFragments(bool enableFragments)
+void OtrRawMessageTransformer::setEnableFragments(bool enableFragments)
 {
 	EnableFragments = enableFragments;
 }
 
-void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
+void OtrRawMessageTransformer::setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
 {
-	OtrAppOpsWrapper = encryptionNgOtrAppOpsWrapper;
+	AppOpsWrapper = encryptionNgOtrAppOpsWrapper;
 }
 
-void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrNotifier(EncryptionNgOtrNotifier *encryptionNgOtrNotifier)
+void OtrRawMessageTransformer::setOtrNotifier(OtrNotifier *encryptionNgOtrNotifier)
 {
-	OtrNotifier = encryptionNgOtrNotifier;
+	Notifier = encryptionNgOtrNotifier;
 }
 
-void EncryptionNgOtrRawMessageTransformer::setEncryptionNgOtrPrivateKeyService(EncryptionNgOtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
+void OtrRawMessageTransformer::setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
 {
-	OtrPrivateKeyService = encryptionNgOtrPrivateKeyService;
+	PrivateKeyService = encryptionNgOtrPrivateKeyService;
 }
 
-QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
+QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	if (OtrAppOpsWrapper.isNull() || !UserState)
+	if (AppOpsWrapper.isNull() || !UserState)
 		return messageContent;
 
 	switch (message.type())
@@ -88,22 +88,22 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transform(const QByteArray &mes
 	}
 }
 
-QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
+QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
 {
 	OtrlUserState userState = UserState->userState();
 	if (!userState)
 		return messageContent;
 
-	EncryptionNgOtrOpData opData;
-	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
-	opData.setNotifier(OtrNotifier.data());
-	opData.setPrivateKeyService(OtrPrivateKeyService.data());
+	OtrOpData opData;
+	opData.setAppOpsWrapper(AppOpsWrapper.data());
+	opData.setNotifier(Notifier.data());
+	opData.setPrivateKeyService(PrivateKeyService.data());
 	opData.setMessage(message);
 
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
-	bool ignoreMessage = otrl_message_receiving(userState, OtrAppOpsWrapper.data()->ops(), &opData,
+	bool ignoreMessage = otrl_message_receiving(userState, AppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
@@ -122,7 +122,7 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformReceived(const QByteAr
 		return messageContent;
 }
 
-QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
+QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
 {
 	Q_UNUSED(message);
 
@@ -137,15 +137,15 @@ QByteArray EncryptionNgOtrRawMessageTransformer::transformSent(const QByteArray 
 
 	Contact receiver = (*chatDetails->contacts().begin());
 
-	EncryptionNgOtrOpData opData;
-	opData.setAppOpsWrapper(OtrAppOpsWrapper.data());
-	opData.setPrivateKeyService(OtrPrivateKeyService.data());
+	OtrOpData opData;
+	opData.setAppOpsWrapper(AppOpsWrapper.data());
+	opData.setPrivateKeyService(PrivateKeyService.data());
 	opData.setMessage(message);
 
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
-	gcry_error_t err = otrl_message_sending(userState, OtrAppOpsWrapper.data()->ops(), &opData,
+	gcry_error_t err = otrl_message_sending(userState, AppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			messageContent.data(), 0,

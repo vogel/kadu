@@ -17,24 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_USER_STATE_H
-#define ENCRYPTION_NG_OTR_USER_STATE_H
+#ifndef OTR_NOTIFIER_H
+#define OTR_NOTIFIER_H
 
-extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/userstate.h>
-}
+#include <QtCore/QObject>
 
-class EncryptionNgOtrUserState
+class Chat;
+class NotifyEvent;
+
+class OtrNotifier : public QObject
 {
-	OtrlUserState UserState;
+	Q_OBJECT
+
+	static QString OtrNotifyTopic;
+	static QString GoneSecureNotifyTopic;
+	static QString GoneInsecureNotifyTopic;
+	static QString StillSecureNotifyTopic;
+
+	QScopedPointer<NotifyEvent> OtrNotifyEvent;
+	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
+	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
+	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
 
 public:
-	EncryptionNgOtrUserState();
-	~EncryptionNgOtrUserState();
+	explicit OtrNotifier(QObject *parent = 0);
+	virtual ~OtrNotifier();
 
-	OtrlUserState userState() const;
+	QList<NotifyEvent *> notifyEvents();
+
+	void notifyGoneSecure(const Chat &chat);
+	void notifyGoneInsecure(const Chat &chat);
+	void notifyStillSecure(const Chat &chat);
 
 };
 
-#endif // ENCRYPTION_NG_OTR_USER_STATE_H
+#endif // OTR_NOTIFIER_H

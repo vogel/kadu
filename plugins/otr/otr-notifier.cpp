@@ -22,14 +22,14 @@
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
 
-#include "encryption-ng-otr-notifier.h"
+#include "otr-notifier.h"
 
-QString EncryptionNgOtrNotifier::OtrNotifyTopic("OTR");
-QString EncryptionNgOtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
-QString EncryptionNgOtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
-QString EncryptionNgOtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
+QString OtrNotifier::OtrNotifyTopic("OTR");
+QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
+QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
+QString OtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
 
-EncryptionNgOtrNotifier::EncryptionNgOtrNotifier(QObject *parent) :
+OtrNotifier::OtrNotifier(QObject *parent) :
 		QObject(parent)
 {
 	OtrNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -42,11 +42,11 @@ EncryptionNgOtrNotifier::EncryptionNgOtrNotifier(QObject *parent) :
 			QT_TRANSLATE_NOOP("@default", "Conversation still secure")));
 }
 
-EncryptionNgOtrNotifier::~EncryptionNgOtrNotifier()
+OtrNotifier::~OtrNotifier()
 {
 }
 
-QList<NotifyEvent *> EncryptionNgOtrNotifier::notifyEvents()
+QList<NotifyEvent *> OtrNotifier::notifyEvents()
 {
 	return QList<NotifyEvent *>()
 			<< OtrNotifyEvent.data()
@@ -55,7 +55,7 @@ QList<NotifyEvent *> EncryptionNgOtrNotifier::notifyEvents()
 			<< StillSecureNotifyEvent.data();
 }
 
-void EncryptionNgOtrNotifier::notifyGoneSecure(const Chat &chat)
+void OtrNotifier::notifyGoneSecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, GoneSecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
@@ -64,7 +64,7 @@ void EncryptionNgOtrNotifier::notifyGoneSecure(const Chat &chat)
 	NotificationManager::instance()->notify(notification);
 }
 
-void EncryptionNgOtrNotifier::notifyGoneInsecure(const Chat &chat)
+void OtrNotifier::notifyGoneInsecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, GoneInsecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
@@ -73,7 +73,7 @@ void EncryptionNgOtrNotifier::notifyGoneInsecure(const Chat &chat)
 	NotificationManager::instance()->notify(notification);
 }
 
-void EncryptionNgOtrNotifier::notifyStillSecure(const Chat &chat)
+void OtrNotifier::notifyStillSecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, StillSecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));

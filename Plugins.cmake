@@ -33,6 +33,8 @@ set (DEFAULT_PLUGINS
 	encryption_ng
 	# OpenSSL encrypted chat support
 	encryption_ng_simlite
+	# OTR encryption
+	otr
 
 # docking
 	# Tray icon support (common part of all docking modules)

@@ -17,53 +17,53 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "encryption-ng-otr-op-data.h"
+#include "otr-op-data.h"
 
-EncryptionNgOtrOpData::EncryptionNgOtrOpData() :
+OtrOpData::OtrOpData() :
 		AppOpsWrapper(0), Notifier(0), PrivateKeyService(0)
 {
 }
 
-EncryptionNgOtrOpData::~EncryptionNgOtrOpData()
+OtrOpData::~OtrOpData()
 {
 }
 
-void EncryptionNgOtrOpData::setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOpsWrapper)
+void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
 	AppOpsWrapper = appOpsWrapper;
 }
 
-EncryptionNgOtrAppOpsWrapper * EncryptionNgOtrOpData::appOpsWrapper() const
+OtrAppOpsWrapper * OtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
 }
 
-void EncryptionNgOtrOpData::setNotifier(EncryptionNgOtrNotifier *notifier)
+void OtrOpData::setNotifier(OtrNotifier *notifier)
 {
 	Notifier = notifier;
 }
 
-EncryptionNgOtrNotifier * EncryptionNgOtrOpData::notifier() const
+OtrNotifier * OtrOpData::notifier() const
 {
 	return Notifier;
 }
 
-void EncryptionNgOtrOpData::setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService)
+void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
 {
 	PrivateKeyService = privateKeyService;
 }
 
-EncryptionNgOtrPrivateKeyService * EncryptionNgOtrOpData::privateKeyService() const
+OtrPrivateKeyService * OtrOpData::privateKeyService() const
 {
 	return PrivateKeyService;
 }
 
-void EncryptionNgOtrOpData::setMessage(const Message &message)
+void OtrOpData::setMessage(const Message &message)
 {
 	MyMessage = message;
 }
 
-Message EncryptionNgOtrOpData::message() const
+Message OtrOpData::message() const
 {
 	return MyMessage;
 }

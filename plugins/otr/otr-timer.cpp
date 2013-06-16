@@ -26,59 +26,59 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
-#include "encryption-ng-otr-app-ops-wrapper.h"
-#include "encryption-ng-otr-user-state.h"
+#include "otr-app-ops-wrapper.h"
+#include "otr-user-state.h"
 
-#include "encryption-ng-otr-timer.h"
+#include "otr-timer.h"
 
-EncryptionNgOtrTimer::EncryptionNgOtrTimer(QObject *parent) :
-		QObject(parent), OtrTimer(0)
+OtrTimer::OtrTimer(QObject *parent) :
+		QObject(parent), Timer(0)
 {
 
 }
 
-EncryptionNgOtrTimer::~EncryptionNgOtrTimer()
+OtrTimer::~OtrTimer()
 {
 
 }
 
-void EncryptionNgOtrTimer::setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *otrAppOpsWrapper)
+void OtrTimer::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
 {
-	OtrAppOpsWrapper = otrAppOpsWrapper;
+	AppOpsWrapper = otrAppOpsWrapper;
 }
 
-void EncryptionNgOtrTimer::setUserState(EncryptionNgOtrUserState *userState)
+void OtrTimer::setUserState(OtrUserState *userState)
 {
 	if (UserState)
 	{
-		delete OtrTimer;
-		OtrTimer = 0;
+		delete Timer;
+		Timer = 0;
 	}
 
 	UserState = userState;
 
 	if (UserState)
 	{
-		OtrTimer = new QTimer(this);
-		connect(OtrTimer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
+		Timer = new QTimer(this);
+		connect(Timer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
 	}
 }
 
-void EncryptionNgOtrTimer::otrTimerTimeout()
+void OtrTimer::otrTimerTimeout()
 {
-	const OtrlMessageAppOps *ops = OtrAppOpsWrapper
-			? OtrAppOpsWrapper.data()->ops()
+	const OtrlMessageAppOps *ops = AppOpsWrapper
+			? AppOpsWrapper.data()->ops()
 			: 0;
 	otrl_message_poll(UserState->userState(), ops, 0);
 }
 
-void EncryptionNgOtrTimer::timerControl(int intervalInSeconds)
+void OtrTimer::timerControl(int intervalInSeconds)
 {
-	if (!OtrTimer)
+	if (!Timer)
 		return;
 
 	if (intervalInSeconds)
-		OtrTimer->start(intervalInSeconds * 1000);
+		Timer->start(intervalInSeconds * 1000);
 	else
-		OtrTimer->stop();
+		Timer->stop();
 }

@@ -17,38 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_OP_DATA_H
-#define ENCRYPTION_NG_OTR_OP_DATA_H
+#ifndef OTR_OP_DATA_H
+#define OTR_OP_DATA_H
 
 #include "message/message.h"
 
-class EncryptionNgOtrAppOpsWrapper;
-class EncryptionNgOtrNotifier;
-class EncryptionNgOtrPrivateKeyService;
+class OtrAppOpsWrapper;
+class OtrNotifier;
+class OtrPrivateKeyService;
 
-class EncryptionNgOtrOpData
+class OtrOpData
 {
-	EncryptionNgOtrAppOpsWrapper *AppOpsWrapper;
-	EncryptionNgOtrNotifier *Notifier;
-	EncryptionNgOtrPrivateKeyService *PrivateKeyService;
+	OtrAppOpsWrapper *AppOpsWrapper;
+	OtrNotifier *Notifier;
+	OtrPrivateKeyService *PrivateKeyService;
 	Message MyMessage;
 
 public:
-	explicit EncryptionNgOtrOpData();
-	virtual ~EncryptionNgOtrOpData();
+	explicit OtrOpData();
+	virtual ~OtrOpData();
 
-	void setAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *appOpsWrapper);
-	EncryptionNgOtrAppOpsWrapper * appOpsWrapper() const;
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	OtrAppOpsWrapper * appOpsWrapper() const;
 
-	void setNotifier(EncryptionNgOtrNotifier *notifier);
-	EncryptionNgOtrNotifier * notifier() const;
+	void setNotifier(OtrNotifier *notifier);
+	OtrNotifier * notifier() const;
 
-	void setPrivateKeyService(EncryptionNgOtrPrivateKeyService *privateKeyService);
-	EncryptionNgOtrPrivateKeyService * privateKeyService() const;
+	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+	OtrPrivateKeyService * privateKeyService() const;
 
 	void setMessage(const Message &message);
 	Message message() const;
 
 };
 
-#endif // ENCRYPTION_NG_OTR_OP_DATA_H
+#endif // OTR_OP_DATA_H

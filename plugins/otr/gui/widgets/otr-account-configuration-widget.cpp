@@ -23,12 +23,12 @@
 
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
-#include "encryption-ng-otr-policy.h"
-#include "encryption-ng-otr-policy-account-store.h"
+#include "otr-policy.h"
+#include "otr-policy-account-store.h"
 
-#include "encryption-ng-otr-account-configuration-widget.h"
+#include "otr-account-configuration-widget.h"
 
-EncryptionNgOtrAccountConfigurationWidget::EncryptionNgOtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
+OtrAccountConfigurationWidget::OtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
 		AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 	setWindowTitle(tr("OTR Encyption"));
@@ -36,11 +36,11 @@ EncryptionNgOtrAccountConfigurationWidget::EncryptionNgOtrAccountConfigurationWi
 	createGui();
 }
 
-EncryptionNgOtrAccountConfigurationWidget::~EncryptionNgOtrAccountConfigurationWidget()
+OtrAccountConfigurationWidget::~OtrAccountConfigurationWidget()
 {
 }
 
-void EncryptionNgOtrAccountConfigurationWidget::createGui()
+void OtrAccountConfigurationWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -61,34 +61,34 @@ void EncryptionNgOtrAccountConfigurationWidget::createGui()
 	updateState();
 }
 
-EncryptionNgOtrPolicy EncryptionNgOtrAccountConfigurationWidget::policy()
+OtrPolicy OtrAccountConfigurationWidget::policy()
 {
 	if (!EnableCheckBox->isChecked())
-		return EncryptionNgOtrPolicy::NEVER;
+		return OtrPolicy::NEVER;
 	if (!AutomaticallyInitiateCheckBox->isChecked())
-		return EncryptionNgOtrPolicy::MANUAL;
+		return OtrPolicy::MANUAL;
 	if (!RequireCheckBox->isChecked())
-		return EncryptionNgOtrPolicy::OPPORTUNISTIC;
-	return EncryptionNgOtrPolicy::ALWAYS;
+		return OtrPolicy::OPPORTUNISTIC;
+	return OtrPolicy::ALWAYS;
 }
 
-void EncryptionNgOtrAccountConfigurationWidget::loadValues()
+void OtrAccountConfigurationWidget::loadValues()
 {
-	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account());
+	OtrPolicy accountPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account());
 
-	if (accountPolicy == EncryptionNgOtrPolicy::MANUAL)
+	if (accountPolicy == OtrPolicy::MANUAL)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(false);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (accountPolicy == EncryptionNgOtrPolicy::OPPORTUNISTIC)
+	else if (accountPolicy == OtrPolicy::OPPORTUNISTIC)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (accountPolicy == EncryptionNgOtrPolicy::MANUAL)
+	else if (accountPolicy == OtrPolicy::MANUAL)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);
@@ -102,7 +102,7 @@ void EncryptionNgOtrAccountConfigurationWidget::loadValues()
 	}
 }
 
-void EncryptionNgOtrAccountConfigurationWidget::updateState()
+void OtrAccountConfigurationWidget::updateState()
 {
 	AutomaticallyInitiateCheckBox->setEnabled(false);
 	RequireCheckBox->setEnabled(false);
@@ -114,24 +114,24 @@ void EncryptionNgOtrAccountConfigurationWidget::updateState()
 			RequireCheckBox->setEnabled(true);
 	}
 
-	EncryptionNgOtrPolicy accountPolicy = EncryptionNgOtrPolicyAccountStore::loadPolicyFromAccount(account());
+	OtrPolicy accountPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account());
 	if (accountPolicy == policy())
 		StateNotifier->setState(StateNotChanged);
 	else
 		StateNotifier->setState(StateChangedDataValid);
 }
 
-const ConfigurationValueStateNotifier * EncryptionNgOtrAccountConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier * OtrAccountConfigurationWidget::stateNotifier() const
 {
 	return StateNotifier;
 }
 
-void EncryptionNgOtrAccountConfigurationWidget::apply()
+void OtrAccountConfigurationWidget::apply()
 {
-	EncryptionNgOtrPolicyAccountStore::storePolicyToAccount(account(), policy());
+	OtrPolicyAccountStore::storePolicyToAccount(account(), policy());
 }
 
-void EncryptionNgOtrAccountConfigurationWidget::cancel()
+void OtrAccountConfigurationWidget::cancel()
 {
 	loadValues();
 }

@@ -17,38 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_TIMER_H
-#define ENCRYPTION_NG_OTR_TIMER_H
+#ifndef OTR_ACCOUNT_CONFIGURATION_WIDGET_H
+#define OTR_ACCOUNT_CONFIGURATION_WIDGET_H
 
-#include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include "gui/widgets/account-configuration-widget.h"
 
-class QTimer;
+class QCheckBox;
 
-class EncryptionNgOtrAppOpsWrapper;
-class EncryptionNgOtrUserState;
+class SimpleConfigurationValueStateNotifier;
 
-class EncryptionNgOtrTimer : public QObject
+class OtrPolicy;
+
+class OtrAccountConfigurationWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	QWeakPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
-	EncryptionNgOtrUserState *UserState;
-	QTimer *OtrTimer;
+	QCheckBox *EnableCheckBox;
+	QCheckBox *AutomaticallyInitiateCheckBox;
+	QCheckBox *RequireCheckBox;
 
-	friend void kadu_enomf_timer_control(void *, unsigned int);
-	void timerControl(int intervalInSeconds);
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+
+	void createGui();
+	OtrPolicy policy();
+	void loadValues();
 
 private slots:
-	void otrTimerTimeout();
+	void updateState();
 
 public:
-	explicit EncryptionNgOtrTimer(QObject *parent = 0);
-	virtual ~EncryptionNgOtrTimer();
+	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
+	virtual ~OtrAccountConfigurationWidget();
 
-	void setEncryptionNgOtrAppOpsWrapper(EncryptionNgOtrAppOpsWrapper *otrAppOpsWrapper);
-	void setUserState(EncryptionNgOtrUserState *userState);
+    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+
+	virtual void apply();
+	virtual void cancel();
 
 };
 
-#endif // ENCRYPTION_NG_OTR_TIMER_H
+#endif // OTR_ACCOUNT_CONFIGURATION_WIDGET_H

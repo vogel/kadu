@@ -17,37 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_PLUGIN_H
-#define ENCRYPTION_NG_OTR_PLUGIN_H
+#ifndef OTR_PLUGIN_H
+#define OTR_PLUGIN_H
 
 #include <QtCore/QObject>
 
 #include "plugins/generic-plugin.h"
 
-#include "encryption-ng-otr-user-state.h"
+#include "otr-user-state.h"
 
-class EncryptionNgOtrAccountConfigurationWidgetFactory;
-class EncryptionNgOtrAppOpsWrapper;
-class EncryptionNgOtrNotifier;
-class EncryptionNgOtrPrivateKeyService;
-class EncryptionNgOtrRawMessageTransformer;
-class EncryptionNgOtrTimer;
+class OtrAccountConfigurationWidgetFactory;
+class OtrAppOpsWrapper;
+class OtrNotifier;
+class OtrPrivateKeyService;
+class OtrRawMessageTransformer;
+class OtrTimer;
 
-class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
+class OtrPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
-	static EncryptionNgOtrPlugin *Instance; // ugly, but required by otr unfortunately
+	static OtrPlugin *Instance; // ugly, but required by otr unfortunately
 	bool OtrAvailable;
-	EncryptionNgOtrUserState OtrUserState;
+	OtrUserState UserState;
 
-	QScopedPointer<EncryptionNgOtrAccountConfigurationWidgetFactory> OtrAccountConfigurationWidgetFactory;
-	QScopedPointer<EncryptionNgOtrAppOpsWrapper> OtrAppOpsWrapper;
-	QScopedPointer<EncryptionNgOtrNotifier> OtrNotifier;
-	QScopedPointer<EncryptionNgOtrPrivateKeyService> OtrPrivateKeyService;
-	QScopedPointer<EncryptionNgOtrRawMessageTransformer> OtrRawMessageTransformer;
-	QScopedPointer<EncryptionNgOtrTimer> OtrTimer;
+	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
+	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QScopedPointer<OtrNotifier> Notifier;
+	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
+	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
+	QScopedPointer<OtrTimer> Timer;
 
 	void registerOtrAcountConfigurationWidgetFactory();
 	void unregisterOtrAcountConfigurationWidgetFactory();
@@ -69,16 +69,16 @@ class EncryptionNgOtrPlugin : public QObject, public GenericPlugin
 	void unregisterOtrTimer();
 
 public:
-	static EncryptionNgOtrPlugin * instance();
+	static OtrPlugin * instance();
 
-	explicit EncryptionNgOtrPlugin();
-	virtual ~EncryptionNgOtrPlugin();
+	explicit OtrPlugin();
+	virtual ~OtrPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
 
-	EncryptionNgOtrTimer * otrTimer() const;
+	OtrTimer * otrTimer() const;
 
 };
 
-#endif // ENCRYPTION_NG_OTR_PLUGIN_H
+#endif // OTR_PLUGIN_H

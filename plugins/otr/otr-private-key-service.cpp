@@ -21,30 +21,30 @@
 #include "accounts/account-manager.h"
 #include "misc/kadu-paths.h"
 
-#include "encryption-ng-otr-user-state.h"
+#include "otr-user-state.h"
 
-#include "encryption-ng-otr-private-key-service.h"
+#include "otr-private-key-service.h"
 
-EncryptionNgOtrPrivateKeyService::EncryptionNgOtrPrivateKeyService(QObject *parent) :
+OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
 		QObject(parent), UserState(0)
 {
 }
 
-EncryptionNgOtrPrivateKeyService::~EncryptionNgOtrPrivateKeyService()
+OtrPrivateKeyService::~OtrPrivateKeyService()
 {
 }
 
-void EncryptionNgOtrPrivateKeyService::setUserState(EncryptionNgOtrUserState *userState)
+void OtrPrivateKeyService::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
 }
 
-QString EncryptionNgOtrPrivateKeyService::privateStoreFileName()
+QString OtrPrivateKeyService::privateStoreFileName()
 {
 	return KaduPaths::instance()->profilePath() + QString("/keys/otr_private");
 }
 
-void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
+void OtrPrivateKeyService::createPrivateKey(const Account &account)
 {
 	if (!UserState)
 		return;
@@ -55,7 +55,7 @@ void EncryptionNgOtrPrivateKeyService::createPrivateKey(const Account &account)
 	otrl_privkey_generate(userState, fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());
 }
 
-void EncryptionNgOtrPrivateKeyService::readPrivateKeys()
+void OtrPrivateKeyService::readPrivateKeys()
 {
 	if (!UserState)
 		return;

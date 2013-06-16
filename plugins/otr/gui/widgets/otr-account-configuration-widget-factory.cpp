@@ -17,18 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
-#define ENCRYPTION_NG_OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
+#include "otr-account-configuration-widget.h"
 
-#include "gui/widgets/account-configuration-widget-factory.h"
+#include "otr-account-configuration-widget-factory.h"
 
-class EncryptionNgOtrAccountConfigurationWidgetFactory : public AccountConfigurationWidgetFactory
+OtrAccountConfigurationWidgetFactory::~OtrAccountConfigurationWidgetFactory()
 {
-public:
-	virtual ~EncryptionNgOtrAccountConfigurationWidgetFactory();
+}
 
-	virtual AccountConfigurationWidget * createWidget(const Account &account, QWidget *parent);
-
-};
-
-#endif // ENCRYPTION_NG_OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
+AccountConfigurationWidget * OtrAccountConfigurationWidgetFactory::createWidget(const Account &account, QWidget *parent)
+{
+	return new OtrAccountConfigurationWidget(account, parent);
+}
