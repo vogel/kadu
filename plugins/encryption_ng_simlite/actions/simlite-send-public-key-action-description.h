@@ -20,28 +20,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
-#define ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
+#ifndef SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#define SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
 
 #include "gui/actions/action-description.h"
 
-class Chat;
+class Contact;
 
-class EnableEncryptionActionDescription : public ActionDescription
+class SimliteSendPublicKeyActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
-private slots:
-	void canEncryptChanged(const Chat &chat);
+	void sendPublicKey(const Contact &contact);
 
 protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
-	virtual void updateActionState(Action *action);
 
 public:
-	explicit EnableEncryptionActionDescription(QObject *parent);
-	virtual ~EnableEncryptionActionDescription();
+	explicit SimliteSendPublicKeyActionDescription(QObject *parent);
+	virtual ~SimliteSendPublicKeyActionDescription();
 
 };
 
-#endif // ENABLE_ENCRYPTION_ACTION_DESCRIPTION_H
+#endif // SIMLITE_SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H

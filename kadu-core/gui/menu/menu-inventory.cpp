@@ -44,25 +44,12 @@ MenuInventory::MenuInventory()
 {
 }
 
-void MenuInventory::bindMenu(KaduMenu::MenuCategory category, QMenu *menu)
+KaduMenu * MenuInventory::menu(const QString &category)
 {
-	KaduMenu *kaduMenu = new KaduMenu(category);
-	kaduMenu->setGuiMenu(menu);
-	Menus.insert(category, kaduMenu);
-}
+	if (!Menus.contains(category))
+		Menus.insert(category, new KaduMenu(category));
 
-KaduMenu * MenuInventory::menu(KaduMenu::MenuCategory category)
-{
-	KaduMenu *menu = Menus.value(category);
-
-	if (!menu)
-	{
-		bindMenu(category, new QMenu());
-	}
-
-	menu = Menus.value(category);
-
-	return menu;
+	return Menus.value(category);
 }
 
 void MenuInventory::registerProtocolMenuManager(ProtocolMenuManager *manager)
@@ -74,6 +61,5 @@ void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
 {
 	ProtocolMenuManagers.removeAll(manager);
 }
-
 
 #include "moc_menu-inventory.cpp"

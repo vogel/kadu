@@ -24,27 +24,12 @@
 #include "modal-configuration-widget.h"
 
 ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) :
-		QWidget(parent), State(StateNotChanged)
+		QWidget(parent)
 {
 }
 
 ModalConfigurationWidget::~ModalConfigurationWidget()
 {
-}
-
-void ModalConfigurationWidget::setState(ModalConfigurationWidgetState state)
-{
-	if (State != state)
-	{
-		State = state;
-		emit stateChanged(State);
-	}
-}
-
-
-ModalConfigurationWidgetState ModalConfigurationWidget::state()
-{
-	return State;
 }
 
 #include "moc_modal-configuration-widget.cpp"

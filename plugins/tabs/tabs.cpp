@@ -115,7 +115,7 @@ TabsManager::TabsManager(QObject *parent) :
 	);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(OpenInNewTabActionDescription, KaduMenu::SectionChat, 20);
 
 	AttachToTabsActionDescription = new ActionDescription(this,
@@ -136,7 +136,7 @@ TabsManager::~TabsManager()
 	kdebugf();
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->removeAction(OpenInNewTabActionDescription);
 
 	Timer.stop();

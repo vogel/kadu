@@ -77,6 +77,13 @@ public:
 	 */
 	RawMessageTransformerService * rawMessageTransformerService() const;
 
+	/**
+	 * @short Return max message length for this implementation.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return max message length for this implementation
+	 */
+	virtual int maxMessageLength() const = 0;
+
 public slots:
 	/**
 	 * @short Send new message to given chat.

@@ -15,11 +15,10 @@ kadu_api_directories (plugins/encryption_ng
 )
 
 set (SOURCES
-	actions/enable-encryption-action-description.cpp
+	actions/encryption-set-up-action-description.cpp
 	actions/generate-keys-action-description.cpp
-	actions/send-public-key-action-description.cpp
 
-	configuration/encryption-ng-configuration.cpp
+	gui/encryption-set-up-menu.cpp
 
 	keys/keys-manager.cpp
 	keys/key-shared.cpp
@@ -32,16 +31,16 @@ set (SOURCES
 	encryption-actions.cpp
 	encryption-chat-data.cpp
 	encryption-manager.cpp
-	encryption-ng-configuration-ui-handler.cpp
 	encryption-ng-plugin.cpp
 	encryption-provider-manager.cpp
 	encryptor.cpp
 )
 
 set (MOC_SOURCES
-	actions/enable-encryption-action-description.h
+	actions/encryption-set-up-action-description.h
 	actions/generate-keys-action-description.h
-	actions/send-public-key-action-description.h
+
+	gui/encryption-set-up-menu.h
 
 	keys/keys-manager.h
 	keys/key-shared.h
@@ -53,7 +52,6 @@ set (MOC_SOURCES
 	encryption-actions.h
 	encryption-chat-data.h
 	encryption-manager.h
-	encryption-ng-configuration-ui-handler.h
 	encryption-ng-plugin.h
 	encryption-provider.h
 	encryption-provider-manager.h
@@ -61,7 +59,6 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	data/configuration/encryption-ng.ui
 )
 
 find_package (QCA2 REQUIRED)

@@ -4,6 +4,7 @@
  * Copyright 2008, 2009 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2007, 2008, 2009, 2010 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,41 +21,96 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QPushButton>
-#include <QtGui/QStyle>
-#include <QtGui/QTabWidget>
-#include <QtGui/QVBoxLayout>
+#include "gui/widgets/composite-configuration-value-state-notifier.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
+
+#include "account-configuration-widget-factory-repository.h"
 
 #include "account-edit-widget.h"
+#include "account-configuration-widget-factory.h"
 
-
-void AccountEditWidget::createGui()
+AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository),
+		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
+		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	compositeStateNotifier()->addConfigurationValueStateNotifier(StateNotifier);
 
-	QTabWidget *tabWidget = new QTabWidget(this);
-	mainLayout->addWidget(tabWidget);
+	if (MyAccountConfigurationWidgetFactoryRepository)
+	{
+		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
+				this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory*)));
+		connect(MyAccountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory*)),
+				this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory*)));
 
-	createTabs(tabWidget);
+		foreach (AccountConfigurationWidgetFactory *factory, MyAccountConfigurationWidgetFactoryRepository->factories())
+			factoryRegistered(factory);
+	}
+}
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+AccountEditWidget::~AccountEditWidget()
+{
+}
 
-	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
-	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+AccountConfigurationWidgetFactoryRepository * AccountEditWidget::accountConfigurationWidgetFactoryRepository() const
+{
+	return MyAccountConfigurationWidgetFactoryRepository;
+}
 
-	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+void AccountEditWidget::factoryRegistered(AccountConfigurationWidgetFactory *factory)
+{
+	AccountConfigurationWidget *widget = factory->createWidget(account(), this);
+	if (widget)
+	{
+		if (widget->stateNotifier())
+			CompositeStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
+		AccountConfigurationWidgets.insert(factory, widget);
+		emit widgetAdded(widget);
+	}
+}
 
-	QPushButton *removeAccount = new QPushButton(tr("Delete account"), this);
-	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *factory)
+{
+	if (AccountConfigurationWidgets.contains(factory))
+	{
+		AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
+		if (widget->stateNotifier())
+			CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+		emit widgetRemoved(widget);
+		widget->deleteLater();
+	}
+}
 
-	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
-	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+QList<AccountConfigurationWidget *> AccountEditWidget::accountConfigurationWidgets() const
+{
+	return AccountConfigurationWidgets.values();
+}
 
-	mainLayout->addWidget(buttons);
+void AccountEditWidget::applyAccountConfigurationWidgets()
+{
+	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+		widget->apply();
+}
+
+void AccountEditWidget::cancelAccountConfigurationWidgets()
+{
+	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+		widget->cancel();
+}
+
+SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier() const
+{
+	return StateNotifier;
+}
+
+CompositeConfigurationValueStateNotifier * AccountEditWidget::compositeStateNotifier() const
+{
+	return CompositeStateNotifier;
+}
+
+const ConfigurationValueStateNotifier * AccountEditWidget::stateNotifier() const
+{
+	return CompositeStateNotifier;
 }
 
 #include "moc_account-edit-widget.cpp"

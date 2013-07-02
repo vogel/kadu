@@ -75,6 +75,8 @@ public:
 
 	void setXmppClient(Client *xmppClient);
 
+	virtual int maxMessageLength() const;
+
 public slots:
 	virtual bool sendMessage(const ::Message &message);
 

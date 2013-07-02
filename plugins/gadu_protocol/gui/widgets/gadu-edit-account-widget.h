@@ -74,6 +74,11 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	ProxyComboBox *ProxyCombo;
 
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
+
+	void createGui();
+
 	void createGeneralTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);
 	void createPersonalInfoTab(QTabWidget *);
@@ -83,11 +88,6 @@ class GaduEditAccountWidget : public AccountEditWidget
 
 	void loadAccountData();
 
-	void resetState();
-
-protected:
-	virtual void createTabs(QTabWidget *tabWidget);
-
 private slots:
 	virtual void removeAccount();
 	void dataChanged();
@@ -95,9 +95,10 @@ private slots:
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);
 	void showStatusToEveryoneToggled(bool toggled);
+	void stateChangedSlot(ConfigurationValueState state);
 
 public:
-	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
+	explicit GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
 public slots:

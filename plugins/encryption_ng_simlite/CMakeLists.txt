@@ -8,6 +8,10 @@ list (INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/Module
 find_package (Kadu REQUIRED)
 
 set (SOURCES
+	actions/simlite-send-public-key-action-description.cpp
+
+	configuration/encryption-ng-simlite-configuration.cpp
+
 	encryption-ng-simlite-decryptor.cpp
 	encryption-ng-simlite-encryptor.cpp
 	encryption-ng-simlite-key-generator.cpp
@@ -20,6 +24,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	actions/simlite-send-public-key-action-description.h
+
 	encryption-ng-simlite-decryptor.h
 	encryption-ng-simlite-encryptor.h
 	encryption-ng-simlite-key-importer.h
@@ -29,6 +35,7 @@ set (MOC_SOURCES
 )
 
 set (CONFIGURATION_FILES
+	data/configuration/encryption-ng-simlite.ui
 )
 
 find_package (QCA2 REQUIRED)

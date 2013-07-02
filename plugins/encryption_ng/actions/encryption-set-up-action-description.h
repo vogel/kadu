@@ -20,27 +20,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
-#define SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#ifndef ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H
+#define ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H
 
 #include "gui/actions/action-description.h"
 
-class Contact;
+class Chat;
 
-class SendPublicKeyActionDescription : public ActionDescription
+class EncryptionSetUpActionDescription : public ActionDescription
 {
 	Q_OBJECT
 
-	void sendPublicKey(const Contact &contact);
+private slots:
+	void canEncryptChanged(const Chat &chat);
 
 protected:
 	virtual void actionTriggered(QAction *sender, bool toggled);
+	virtual QMenu * menuForAction(Action *action);
 	virtual void updateActionState(Action *action);
 
 public:
-	explicit SendPublicKeyActionDescription(QObject *parent);
-	virtual ~SendPublicKeyActionDescription();
+	explicit EncryptionSetUpActionDescription(QObject *parent);
+	virtual ~EncryptionSetUpActionDescription();
+
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const;
 
 };
 
-#endif // SEND_PUBLIC_KEY_ACTION_DESCRIPTION_H
+#endif // ENCRYPTION_SET_UP_ACTION_DESCRIPTION_H

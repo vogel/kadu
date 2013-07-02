@@ -64,14 +64,14 @@ ConfigWizardConfigurationUiHandler::ConfigWizardConfigurationUiHandler()
 			tr("Start Configuration Wizard"));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(ShowConfigWizardActionDescription, KaduMenu::SectionTools);
 }
 
 ConfigWizardConfigurationUiHandler::~ConfigWizardConfigurationUiHandler()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(ShowConfigWizardActionDescription);
 
 	delete Wizard.data();

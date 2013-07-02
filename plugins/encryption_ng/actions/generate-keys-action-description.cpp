@@ -57,7 +57,7 @@ GenerateKeysActionDescription::GenerateKeysActionDescription(QObject *parent) :
 			this, SLOT(updateGenerateKeysMenu()));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->addAction(this, KaduMenu::SectionTools);
 }
 
@@ -65,7 +65,7 @@ GenerateKeysActionDescription::~GenerateKeysActionDescription()
 {
 	// actions will delete theirs menus
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryTools)
+		->menu("tools")
 		->removeAction(this);
 }
 
@@ -139,7 +139,7 @@ void GenerateKeysActionDescription::menuActionTriggered(QAction *action)
 	KeyGenerator *generator = EncryptionManager::instance()->generator();
 	if (!generator)
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Cannot generate keys. Check if encryption_simlite module is loaded"));
+		MessageDialog::show(KaduIcon("dialog-error"), tr("Encryption"), tr("Cannot generate keys. Check if encryption_ng_simlite plugin is loaded"));
 		return;
 	}
 

@@ -71,7 +71,7 @@ SoundActions::SoundActions()
 	connect(MuteActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->addAction(MuteActionDescription, KaduMenu::SectionMiscTools, 7);
 
 	setMuteActionState();
@@ -82,7 +82,7 @@ SoundActions::SoundActions()
 SoundActions::~SoundActions()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->removeAction(MuteActionDescription);
 }
 

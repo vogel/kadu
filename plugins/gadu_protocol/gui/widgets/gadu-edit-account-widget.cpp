@@ -42,8 +42,10 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/account-configuration-widget-tab-adapter.h"
 #include "gui/widgets/identities-combo-box.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
@@ -62,27 +64,53 @@
 
 #include "gadu-edit-account-widget.h"
 
-GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
-		AccountEditWidget(account, parent)
+GaduEditAccountWidget::GaduEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
 {
 	Details = dynamic_cast<GaduAccountDetails *>(account.details());
 
 	createGui();
 	loadAccountData();
-	resetState();
+	stateChangedSlot(stateNotifier()->state());
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
 {
 }
 
-void GaduEditAccountWidget::createTabs(QTabWidget *tabWidget)
+void GaduEditAccountWidget::createGui()
 {
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QTabWidget *tabWidget = new QTabWidget(this);
+	mainLayout->addWidget(tabWidget);
+
 	createGeneralTab(tabWidget);
 	createPersonalInfoTab(tabWidget);
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
+
+	new AccountConfigurationWidgetTabAdapter(this, tabWidget, this);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	QPushButton *removeAccount = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Delete account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+
+	mainLayout->addWidget(buttons);
+
+	connect(stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -286,8 +314,16 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	layout->addWidget(connection);
 }
 
+void GaduEditAccountWidget::stateChangedSlot(ConfigurationValueState state)
+{
+	ApplyButton->setEnabled(state == StateChangedDataValid);
+	CancelButton->setEnabled(state != StateNotChanged);
+}
+
 void GaduEditAccountWidget::apply()
 {
+	applyAccountConfigurationWidgets();
+
 	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -323,7 +359,7 @@ void GaduEditAccountWidget::apply()
 	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	resetState();
+	simpleStateNotifier()->setState(StateNotChanged);
 
 	// TODO: 0.13, fix this
 	// hack, changing details does not trigger this
@@ -332,23 +368,20 @@ void GaduEditAccountWidget::apply()
 
 void GaduEditAccountWidget::cancel()
 {
+	cancelAccountConfigurationWidgets();
+
 	loadAccountData();
 	gpiw->cancel();
 
 	IdentityManager::instance()->removeUnused();
 
-	resetState();
-}
-
-void GaduEditAccountWidget::resetState()
-{
-	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::dataChanged()
 {
+	ConfigurationValueState widgetsState = stateNotifier()->state();
+
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
 		&& account().rememberPassword() == RememberPassword->isChecked()
@@ -372,25 +405,17 @@ void GaduEditAccountWidget::dataChanged()
 		&& Details->externalIp() == ExternalIp->text()
 		&& Details->externalPort() == ExternalPort->text().toUInt())
 	{
-		resetState();
+		simpleStateNotifier()->setState(StateNotChanged);
 		return;
 	}
 
 	bool sameIdExists = AccountManager::instance()->byId(account().protocolName(), AccountId->text())
 			&& AccountManager::instance()->byId(account().protocolName(), AccountId->text()) != account();
 
-	if (AccountId->text().isEmpty() || sameIdExists)
-	{
-		setState(StateChangedDataInvalid);
-		ApplyButton->setEnabled(false);
-		CancelButton->setEnabled(true);
-	}
+	if (AccountId->text().isEmpty() || sameIdExists || StateChangedDataInvalid == widgetsState)
+		simpleStateNotifier()->setState(StateChangedDataInvalid);
 	else
-	{
-		setState(StateChangedDataValid);
-		ApplyButton->setEnabled(true);
-		CancelButton->setEnabled(true);
-	}
+		simpleStateNotifier()->setState(StateChangedDataValid);
 }
 
 void GaduEditAccountWidget::loadAccountData()
@@ -423,6 +448,8 @@ void GaduEditAccountWidget::loadAccountData()
 
 	useDefaultServers->setChecked(config_file.readBoolEntry("Network", "isDefServers", true));
 	ipAddresses->setText(config_file.readEntry("Network", "Server"));
+
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void GaduEditAccountWidget::removeAccount()

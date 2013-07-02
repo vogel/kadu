@@ -21,8 +21,13 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
-	widgets/account-buddy-list-widget.cpp
+	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp
+	widgets/account-buddy-list-widget.cpp
+	widgets/account-configuration-widget.cpp
+	widgets/account-configuration-widget-factory-repository.cpp
+	widgets/account-configuration-widget-tab-adapter.cpp
+	widgets/account-create-widget.cpp
 	widgets/account-edit-widget.cpp
 	widgets/accounts-combo-box.cpp
 	widgets/actions-combo-box.cpp
@@ -42,6 +47,7 @@ set (gui_SRCS
 	widgets/categorized-list-view-painter.cpp
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
+	widgets/chat-edit-widget.cpp
 	widgets/chat-messages-view.cpp
 	widgets/chat-room-edit-widget.cpp
 	widgets/chat-view-network-access-manager.cpp
@@ -51,6 +57,8 @@ set (gui_SRCS
 	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
+	widgets/composite-configuration-value-state-notifier.cpp
+	widgets/configuration-value-state-notifier.cpp
 	widgets/custom-input.cpp
 	widgets/custom-input-menu-item.cpp
 	widgets/custom-input-menu-manager.cpp
@@ -85,6 +93,7 @@ set (gui_SRCS
 	widgets/select-font.cpp
 	widgets/select-talkable-combo-box.cpp
 	widgets/select-talkable-popup.cpp
+	widgets/simple-configuration-value-state-notifier.cpp
 	widgets/status-button.cpp
 	widgets/status-buttons.cpp
 	widgets/status-menu.cpp
@@ -203,6 +212,9 @@ set (gui_MOC_SRCS
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
 	widgets/account-buddy-list-widget.h
+	widgets/account-configuration-widget.h
+	widgets/account-configuration-widget-factory-repository.h
+	widgets/account-configuration-widget-tab-adapter.h
 	widgets/account-create-widget.h
 	widgets/account-edit-widget.h
 	widgets/accounts-combo-box.h
@@ -232,6 +244,8 @@ set (gui_MOC_SRCS
 	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h
+	widgets/composite-configuration-value-state-notifier.h
+	widgets/configuration-value-state-notifier.h
 	widgets/custom-input.h
 	widgets/custom-input-menu-manager.h
 	widgets/delayed-line-edit.h
@@ -264,6 +278,7 @@ set (gui_MOC_SRCS
 	widgets/select-font.h
 	widgets/select-talkable-combo-box.h
 	widgets/select-talkable-popup.h
+	widgets/simple-configuration-value-state-notifier.h
 	widgets/status-button.h
 	widgets/status-buttons.h
 	widgets/status-menu.h

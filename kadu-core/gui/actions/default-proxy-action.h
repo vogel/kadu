@@ -46,7 +46,7 @@ public:
 	explicit DefaultProxyAction(QObject *parent);
 	virtual ~DefaultProxyAction();
 
-	virtual QToolButton::ToolButtonPopupMode buttonPopupMode()
+	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
 	{
 		return QToolButton::InstantPopup;
 	}

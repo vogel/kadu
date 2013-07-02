@@ -121,6 +121,7 @@ public:
 	void setContainer(ChatWidgetContainer *container);
 	ChatWidgetContainer * container() const;
 
+	void appendSystemMessage(const QString &content);
 	void appendSystemMessage(FormattedString *content);
 
 	void repaintMessages();

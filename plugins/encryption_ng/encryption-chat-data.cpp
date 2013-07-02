@@ -68,6 +68,16 @@ void EncryptionChatData::setEncrypt(bool encrypt)
 		MyChat.removeProperty("encryption-ng:Encrypt");
 }
 
+void EncryptionChatData::setLastEncryptionProviderName(const QString &lastEncryptionProviderName)
+{
+	MyChat.addProperty("encryption-ng:LastEncryptionProviderName", lastEncryptionProviderName, CustomProperties::Storable);
+}
+
+QString EncryptionChatData::lastEncryptionProviderName() const
+{
+	return MyChat.property("encryption-ng:LastEncryptionProviderName", QString()).toString();
+}
+
 void EncryptionChatData::setEncryptor(Encryptor *encryptor)
 {
 	ChatEncryptor = encryptor;

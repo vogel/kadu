@@ -76,7 +76,7 @@ private slots:
 	void updateChat();
 	void updateChatAndClose();
 	void chatRemoved(const Chat &buddy);
-	void editChatStateChanged(ModalConfigurationWidgetState state);
+	void editChatStateChanged(ConfigurationValueState state);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

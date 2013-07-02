@@ -31,9 +31,8 @@
 #include "identities/identity.h"
 #include "protocols/protocol.h"
 
-#include "actions/enable-encryption-action-description.h"
+#include "actions/encryption-set-up-action-description.h"
 #include "actions/generate-keys-action-description.h"
-#include "actions/send-public-key-action-description.h"
 
 #include "encryption-actions.h"
 
@@ -53,9 +52,8 @@ void EncryptionActions::unregisterActions()
 
 EncryptionActions::EncryptionActions()
 {
-	EnableEncryptionActionDescriptionInstance = new EnableEncryptionActionDescription(this);
+	EncryptionSetUpActionDescriptionInstance = new EncryptionSetUpActionDescription(this);
 	new GenerateKeysActionDescription(this);
-	new SendPublicKeyActionDescription(this);
 }
 
 EncryptionActions::~EncryptionActions()
@@ -67,7 +65,7 @@ void EncryptionActions::checkEnableEncryption(const Chat &chat, bool check)
 	// there is only as much actions as chat windows, so this is not really N^2 when
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
 	// so no need to optimize it
-	foreach (Action *action, EnableEncryptionActionDescriptionInstance->actions())
+	foreach (Action *action, EncryptionSetUpActionDescriptionInstance->actions())
 		if (action->context()->chat() == chat)
 			action->setChecked(check);
 }

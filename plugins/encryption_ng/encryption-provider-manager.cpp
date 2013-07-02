@@ -26,6 +26,8 @@
 #include "keys/keys-manager.h"
 
 #include "decryptor-wrapper.h"
+#include "encryption-chat-data.h"
+#include "encryption-manager.h"
 #include "encryption-provider.h"
 #include "encryptor.h"
 
@@ -85,7 +87,16 @@ void EncryptionProviderManager::unregisterProvider(EncryptionProvider *provider)
 	emit providerUnregistered(provider);
 }
 
-bool EncryptionProviderManager::canDecrypt(const Chat &chat)
+EncryptionProvider * EncryptionProviderManager::byName(const QString &name) const
+{
+	foreach (EncryptionProvider *provider, Providers)
+		if (provider->name() == name)
+			return provider;
+
+	return 0;
+}
+
+bool EncryptionProviderManager::canDecrypt(const Chat &chat) const
 {
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canDecrypt(chat))
@@ -94,18 +105,36 @@ bool EncryptionProviderManager::canDecrypt(const Chat &chat)
 	return false;
 }
 
-bool EncryptionProviderManager::canEncrypt(const Chat &chat)
+bool EncryptionProviderManager::canEncrypt(const Chat &chat) const
 {
 	return (0 != defaultEncryptorProvider(chat));
 }
 
-EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat)
+EncryptionProvider * EncryptionProviderManager::defaultEncryptorProvider(const Chat &chat) const
 {
+	if (!chat)
+		return 0;
+
+	EncryptionChatData *encryptionChatData = EncryptionManager::instance()->chatEncryption(chat);
+	QString lastEncryptionProviderName = encryptionChatData->lastEncryptionProviderName();
+	if (!lastEncryptionProviderName.isEmpty())
+		return byName(lastEncryptionProviderName);
+
 	foreach (EncryptionProvider *provider, Providers)
 		if (provider->canEncrypt(chat))
 			return provider;
 
 	return 0;
+}
+
+QString EncryptionProviderManager::name() const
+{
+	return QString();
+}
+
+QString EncryptionProviderManager::displayName() const
+{
+	return QString();
 }
 
 Decryptor * EncryptionProviderManager::acquireDecryptor(const Chat &chat)

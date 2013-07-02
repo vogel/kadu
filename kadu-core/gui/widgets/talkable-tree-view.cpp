@@ -173,7 +173,9 @@ void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 	if (!ContextMenuEnabled)
 		return;
 
-	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, Context));
+	QScopedPointer<QMenu> menu(new QMenu());
+	MenuInventory::instance()->menu("buddy-list")->attachToMenu(menu.data());
+	MenuInventory::instance()->menu("buddy-list")->applyTo(menu.data(), Context);
 	menu->exec(event->globalPos());
 }
 

@@ -1,8 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,24 +17,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_NG_CONFIGURATION_UI_HANDLER
-#define ENCRYPTION_NG_CONFIGURATION_UI_HANDLER
+#ifndef OTR_PRIVATE_KEY_SERVICE_H
+#define OTR_PRIVATE_KEY_SERVICE_H
 
-#include "gui/windows/main-configuration-window.h"
+#include <QtCore/QObject>
 
-class EncryptionNgConfigurationUiHandler : public QObject
+extern "C" {
+#   include <libotr/privkey.h>
+}
+
+class Account;
+
+class OtrUserState;
+
+class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	static EncryptionNgConfigurationUiHandler * Instance;
-
-	explicit EncryptionNgConfigurationUiHandler();
-	virtual ~EncryptionNgConfigurationUiHandler();
+	OtrUserState *UserState;
+	QString privateStoreFileName();
 
 public:
-	static void registerConfigurationUi();
-	static void unregisterConfigurationUi();
+	explicit OtrPrivateKeyService(QObject *parent = 0);
+	virtual ~OtrPrivateKeyService();
+
+	void setUserState(OtrUserState *userState);
+
+	void createPrivateKey(const Account &account);
+	void readPrivateKeys();
 
 };
 
-#endif // ENCRYPTION_NG_CONFIGURATION_UI_HANDLER
+
+#endif // OTR_PRIVATE_KEY_SERVICE_H

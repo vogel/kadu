@@ -24,45 +24,45 @@
 
 #include "configuration/configuration-file.h"
 
-#include "encryption-ng-configuration.h"
+#include "encryption-ng-simlite-configuration.h"
 
-EncryptionNgConfiguration * EncryptionNgConfiguration::Instance = 0;
+EncryptionNgSimliteConfiguration * EncryptionNgSimliteConfiguration::Instance = 0;
 
-EncryptionNgConfiguration * EncryptionNgConfiguration::instance()
+EncryptionNgSimliteConfiguration * EncryptionNgSimliteConfiguration::instance()
 {
 	return Instance;
 }
 
-void EncryptionNgConfiguration::createInstance()
+void EncryptionNgSimliteConfiguration::createInstance()
 {
 	if (!Instance)
-		Instance = new EncryptionNgConfiguration();
+		Instance = new EncryptionNgSimliteConfiguration();
 }
 
-void EncryptionNgConfiguration::destroyInstance()
+void EncryptionNgSimliteConfiguration::destroyInstance()
 {
 	delete Instance;
 	Instance = 0;
 }
 
-EncryptionNgConfiguration::EncryptionNgConfiguration()
+EncryptionNgSimliteConfiguration::EncryptionNgSimliteConfiguration()
 {
 	configurationUpdated();
 	createDefaultConfiguration();
 }
 
-EncryptionNgConfiguration::~EncryptionNgConfiguration()
+EncryptionNgSimliteConfiguration::~EncryptionNgSimliteConfiguration()
 {
 
 }
 
-void EncryptionNgConfiguration::createDefaultConfiguration()
+void EncryptionNgSimliteConfiguration::createDefaultConfiguration()
 {
 	config_file.removeVariable("Chat", "Encryption");
 	config_file.addVariable("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }
 
-void EncryptionNgConfiguration::configurationUpdated()
+void EncryptionNgSimliteConfiguration::configurationUpdated()
 {
 	EncryptAfterReceiveEncryptedMessage = config_file.readBoolEntry("Chat", "EncryptAfterReceiveEncryptedMessage", true);
 }

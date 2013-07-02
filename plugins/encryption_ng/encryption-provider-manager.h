@@ -63,10 +63,15 @@ public:
 	void registerProvider(EncryptionProvider *provider);
 	void unregisterProvider(EncryptionProvider *provider);
 
-	bool canEncrypt(const Chat &chat);
-	bool canDecrypt(const Chat &chat);
+	EncryptionProvider * byName(const QString &name) const;
 
-	EncryptionProvider * defaultEncryptorProvider(const Chat &chat);
+	bool canEncrypt(const Chat &chat) const;
+	bool canDecrypt(const Chat &chat) const;
+
+	EncryptionProvider * defaultEncryptorProvider(const Chat &chat) const;
+
+	virtual QString name() const;
+	virtual QString displayName() const;
 
 	virtual Encryptor * acquireEncryptor(const Chat &chat);
 	virtual Decryptor * acquireDecryptor(const Chat &chat);

@@ -289,7 +289,10 @@ void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistor
 
 void HistoryMessagesTab::showTalkablePopupMenu()
 {
-	QScopedPointer<QMenu> menu(MenuInventory::instance()->menu(KaduMenu::CategoryBuddiesList)->menu(this, TalkableTree->actionContext()));
+	QScopedPointer<QMenu> menu(new QMenu());
+	MenuInventory::instance()->menu("buddy-list")->attachToMenu(menu.data());
+	MenuInventory::instance()->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
+
 	menu->addSeparator();
 	menu->addAction(KaduIcon("kadu_icons/clear-history").icon(),
 	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));

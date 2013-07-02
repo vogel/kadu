@@ -172,8 +172,8 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu(this);
-	MenuInventory::instance()->bindMenu(KaduMenu::CategoryMain, KaduMenu);
-	MenuInventory::instance()->menu(KaduMenu::CategoryMain)
+	MenuInventory::instance()->menu("main")->attachToMenu(KaduMenu);
+	MenuInventory::instance()->menu("main")
 		->addAction(Actions->Configuration, KaduMenu::SectionConfig, 30)
 		->addAction(Actions->ShowYourAccounts, KaduMenu::SectionConfig, 29)
 		->addAction(Actions->RecentChats, KaduMenu::SectionRecentChats, 28)
@@ -194,8 +194,8 @@ void KaduWindow::createContactsMenu()
 	ContactsMenu = new QMenu(this);
 	ContactsMenu->setTitle(tr("&Buddies"));
 
-	MenuInventory::instance()->bindMenu(KaduMenu::CategoryBuddies, ContactsMenu);
-	MenuInventory::instance()->menu(KaduMenu::CategoryBuddies)
+	MenuInventory::instance()->menu("buddy")->attachToMenu(ContactsMenu);
+	MenuInventory::instance()->menu("buddy")
 		->addAction(Actions->AddUser, KaduMenu::SectionBuddies, 50)
 		->addAction(Actions->addConference(), KaduMenu::SectionBuddies, 40)
 		->addAction(Actions->addRoomChat(), KaduMenu::SectionBuddies, 30)
@@ -216,8 +216,8 @@ void KaduWindow::createToolsMenu()
 	ToolsMenu = new QMenu(this);
 	ToolsMenu->setTitle(tr("&Tools"));
 
-	MenuInventory::instance()->bindMenu(KaduMenu::CategoryTools, ToolsMenu);
-	MenuInventory::instance()->menu(KaduMenu::CategoryTools)
+	MenuInventory::instance()->menu("tools")->attachToMenu(ToolsMenu);
+	MenuInventory::instance()->menu("tools")
 		->addAction(Actions->ShowMultilogons, KaduMenu::SectionTools, 1)
 		->update();
 
@@ -229,8 +229,8 @@ void KaduWindow::createHelpMenu()
 	HelpMenu = new QMenu(this);
 	HelpMenu->setTitle(tr("&Help"));
 
-	MenuInventory::instance()->bindMenu(KaduMenu::CategoryHelp, HelpMenu);
-	MenuInventory::instance()->menu(KaduMenu::CategoryHelp)
+	MenuInventory::instance()->menu("help")->attachToMenu(HelpMenu);
+	MenuInventory::instance()->menu("help")
 		->addAction(Actions->Help, KaduMenu::SectionHelp, 2)
 		->addAction(Actions->Bugs, KaduMenu::SectionHelp, 1)
 		->addAction(Actions->GetInvolved, KaduMenu::SectionGetInvolved, 2)

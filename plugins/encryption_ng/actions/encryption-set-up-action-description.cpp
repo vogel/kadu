@@ -18,17 +18,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QMenu>
+
 #include "chat/chat.h"
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 
+#include "gui/encryption-set-up-menu.h"
 #include "encryption-chat-data.h"
 #include "encryption-manager.h"
 #include "encryption-provider-manager.h"
 
-#include "enable-encryption-action-description.h"
+#include "encryption-set-up-action-description.h"
 
-EnableEncryptionActionDescription::EnableEncryptionActionDescription(QObject *parent) :
+EncryptionSetUpActionDescription::EncryptionSetUpActionDescription(QObject *parent) :
 		ActionDescription(parent)
 {
 	setType(ActionDescription::TypeChat);
@@ -43,12 +47,12 @@ EnableEncryptionActionDescription::EnableEncryptionActionDescription(QObject *pa
 			this, SLOT(canEncryptChanged(Chat)));
 }
 
-EnableEncryptionActionDescription::~EnableEncryptionActionDescription()
+EncryptionSetUpActionDescription::~EncryptionSetUpActionDescription()
 {
 	disconnect(EncryptionProviderManager::instance(), 0, this, 0);
 }
 
-void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool toggled)
+void EncryptionSetUpActionDescription::actionTriggered(QAction *sender, bool toggled)
 {
 	Action *action = qobject_cast<Action *>(sender);
 	if (!action)
@@ -59,28 +63,36 @@ void EnableEncryptionActionDescription::actionTriggered(QAction *sender, bool to
 		return;
 
 	EncryptionManager::instance()->chatEncryption(chat)->setEncrypt(toggled);
-
-	if (!EncryptionManager::instance()->setEncryptionEnabled(action->context()->chat(), toggled) && toggled)
+	if (!toggled)
 	{
-		// disable it, we could not enable encryption for this contact
-		sender->setEnabled(false);
+		EncryptionManager::instance()->setEncryptionProvider(chat, 0);
 		sender->setChecked(false);
+		return;
 	}
+
+	EncryptionProvider *encryptorProvider = EncryptionProviderManager::instance()->defaultEncryptorProvider(chat);
+	EncryptionManager::instance()->setEncryptionProvider(chat, encryptorProvider);
+	sender->setChecked(encryptorProvider);
 }
 
-void EnableEncryptionActionDescription::updateActionState(Action *action)
+QMenu * EncryptionSetUpActionDescription::menuForAction(Action* action)
+{
+	// no parents for menu as it is destroyed manually by Action class
+	return new EncryptionSetUpMenu(action);
+}
+
+void EncryptionSetUpActionDescription::updateActionState(Action *action)
 {
 	Chat chat = action->context()->chat();
 	// This is needed beacause we may be called before it is called in EncryptionNgPlugin::init().
-	// And EncryptionManager may need EnableEncryptionActionDescription from its c-tor,
+	// And EncryptionManager may need EncryptionSetUpActionDescription from its c-tor,
 	// so we cannot simply change order in EncryptionNgPlugin::init().
 	EncryptionManager::createInstance();
 	bool canEncrypt = chat && EncryptionProviderManager::instance()->canEncrypt(chat);
-	action->setEnabled(canEncrypt);
 	action->setChecked(canEncrypt && EncryptionManager::instance()->chatEncryption(chat)->encrypt());
 }
 
-void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)
+void EncryptionSetUpActionDescription::canEncryptChanged(const Chat &chat)
 {
 	// there is only as much actions as chat windows, so this is not really N^2 when
 	// this slot is called for each chat when new encryption implementation is loaded/unloaded
@@ -90,4 +102,10 @@ void EnableEncryptionActionDescription::canEncryptChanged(const Chat &chat)
 			action->checkState();
 }
 
-#include "moc_enable-encryption-action-description.cpp"
+
+QToolButton::ToolButtonPopupMode EncryptionSetUpActionDescription::buttonPopupMode() const
+{
+	return QToolButton::MenuButtonPopup;
+}
+
+#include "moc_encryption-set-up-action-description.cpp"

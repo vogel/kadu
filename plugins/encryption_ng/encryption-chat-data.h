@@ -53,6 +53,9 @@ public:
 	void setEncrypt(bool encrypt);
 	bool encrypt() const { return Encrypt; }
 
+	void setLastEncryptionProviderName(const QString &lastEncryptionProviderName);
+	QString lastEncryptionProviderName() const;
+
 	void setEncryptor(Encryptor *encryptor);
 	Encryptor * encryptor() const { return ChatEncryptor.data(); }
 

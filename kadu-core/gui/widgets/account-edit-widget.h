@@ -26,34 +26,57 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "gui/widgets/account-configuration-widget.h"
 #include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
 class QTabWidget;
 class QPushButton;
 
-class KADUAPI AccountEditWidget : public ModalConfigurationWidget
+class AccountConfigurationWidget;
+class AccountConfigurationWidgetFactory;
+class AccountConfigurationWidgetFactoryRepository;
+class CompositeConfigurationValueStateNotifier;
+class SimpleConfigurationValueStateNotifier;
+
+class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
 
-	Account MyAccount;
+	AccountConfigurationWidgetFactoryRepository *MyAccountConfigurationWidgetFactoryRepository;
+	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+	CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
 
 private slots:
+	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
+	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
 	virtual void removeAccount() = 0;
 
 protected:
 	QPushButton *ApplyButton;
 	QPushButton *CancelButton;
 
-	void createGui();
-	virtual void createTabs(QTabWidget *tabWidget) = 0;
+	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
 
-	Account account() { return MyAccount; }
+	void applyAccountConfigurationWidgets();
+	void cancelAccountConfigurationWidgets();
+
+	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+	CompositeConfigurationValueStateNotifier * compositeStateNotifier() const;
 
 public:
-	explicit AccountEditWidget(Account account, QWidget *parent = 0) :
-			ModalConfigurationWidget(parent), MyAccount(account) {}
-	virtual ~AccountEditWidget() {}
+	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,
+							   Account account, QWidget *parent = 0);
+	virtual ~AccountEditWidget();
+
+    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+
+	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
+
+signals:
+	void widgetAdded(AccountConfigurationWidget *widget);
+	void widgetRemoved(AccountConfigurationWidget *widget);
 
 public slots:
 	virtual void apply() = 0;

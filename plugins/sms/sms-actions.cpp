@@ -74,10 +74,10 @@ SmsActions::SmsActions()
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(sendSmsActionDescription, KaduMenu::SectionSend, 10);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddies)
+		->menu("buddy")
 		->addAction(sendSmsActionDescription, KaduMenu::SectionBuddies, 5);
 }
 
@@ -86,10 +86,10 @@ SmsActions::~SmsActions()
 	disconnect(Core::instance()->kaduWindow(), 0, this, 0);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->removeAction(sendSmsActionDescription);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddies)
+		->menu("buddy")
 		->removeAction(sendSmsActionDescription);
 }
 

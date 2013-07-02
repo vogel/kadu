@@ -130,7 +130,8 @@ void ChatDataWindow::createGui()
 		if (EditWidget)
 		{
 			TabWidget->addTab(EditWidget, tr("Chat"));
-			connect(EditWidget, SIGNAL(stateChanged(ModalConfigurationWidgetState)), this, SLOT(editChatStateChanged(ModalConfigurationWidgetState)));
+			if (EditWidget->stateNotifier())
+				connect(EditWidget->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(editChatStateChanged(ConfigurationValueState)));
 		}
 	}
 
@@ -191,7 +192,7 @@ void ChatDataWindow::chatRemoved(const Chat &chat)
 		close();
 }
 
-void ChatDataWindow::editChatStateChanged(ModalConfigurationWidgetState state)
+void ChatDataWindow::editChatStateChanged(ConfigurationValueState state)
 {
 	OkButton->setEnabled(state != StateChangedDataInvalid);
 	ApplyButton->setEnabled(state != StateChangedDataInvalid);

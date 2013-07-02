@@ -154,10 +154,10 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescriptionInstance = new ShowHistoryActionDescription(this);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionView, 100);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->addAction(ShowHistoryActionDescriptionInstance, KaduMenu::SectionRecentChats);
 
 	// The last ActionDescription will send actionLoaded() signal.
@@ -175,10 +175,10 @@ void History::createActionDescriptions()
 void History::deleteActionDescriptions()
 {
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->removeAction(ShowHistoryActionDescriptionInstance);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryMain)
+		->menu("main")
 		->removeAction(ShowHistoryActionDescriptionInstance);
 
 	delete ShowHistoryActionDescriptionInstance;

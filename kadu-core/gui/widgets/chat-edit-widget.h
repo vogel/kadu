@@ -26,19 +26,26 @@
 #include "gui/widgets/modal-configuration-widget.h"
 #include "exports.h"
 
+class SimpleConfigurationValueStateNotifier;
+
 class KADUAPI ChatEditWidget : public ModalConfigurationWidget
 {
 	Q_OBJECT
 
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+
 	Chat MyChat;
 
 protected:
-	Chat chat() { return MyChat; }
+	Chat chat();
+
+	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
 
 public:
-	explicit ChatEditWidget(Chat chat, QWidget *parent = 0) :
-			ModalConfigurationWidget(parent), MyChat(chat) {}
-	virtual ~ChatEditWidget() {}
+	explicit ChatEditWidget(Chat chat, QWidget *parent = 0);
+	virtual ~ChatEditWidget();
+
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 };
 

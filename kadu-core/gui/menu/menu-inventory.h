@@ -43,7 +43,7 @@ class KADUAPI MenuInventory : public QObject
 
 	static MenuInventory *Instance;
 
-	QMap<KaduMenu::MenuCategory, KaduMenu *> Menus;
+	QMap<QString, KaduMenu *> Menus;
 	QList<ProtocolMenuManager *> ProtocolMenuManagers;
 
 	MenuInventory();
@@ -51,13 +51,13 @@ class KADUAPI MenuInventory : public QObject
 public:
 	static MenuInventory * instance();
 
-	void bindMenu(KaduMenu::MenuCategory, QMenu *menu);
-	KaduMenu * menu(KaduMenu::MenuCategory category);
+	KaduMenu * menu(const QString &category);
 
 	void registerProtocolMenuManager(ProtocolMenuManager *manager);
 	void unregisterProtocolMenuManager(ProtocolMenuManager *manager);
 
 	QList<ProtocolMenuManager *> & protocolMenuManagers() { return ProtocolMenuManagers; }
+
 };
 
 #endif // MENU_INVENTORY_H

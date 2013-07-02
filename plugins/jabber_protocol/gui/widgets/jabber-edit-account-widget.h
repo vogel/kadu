@@ -82,6 +82,11 @@ class JabberEditAccountWidget : public AccountEditWidget
 		
 	ProxyComboBox *ProxyCombo;
 
+	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
+
+	void createGui();
+
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
@@ -94,9 +99,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	void resetState();
 
-protected:
-	virtual void createTabs(QTabWidget *tabWidget);
-
 private slots:
 	virtual void removeAccount();
 	void sslActivated(int i);
@@ -105,9 +107,10 @@ private slots:
 	void dataChanged();
 	void changePasssword();
 	void passwordChanged(const QString &newPassword);
+	void stateChangedSlot(ConfigurationValueState);
 
 public:
-	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);
+	explicit JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent = 0);
 	virtual ~JabberEditAccountWidget();
 
 public slots:

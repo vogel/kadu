@@ -346,7 +346,7 @@ bool YourAccounts::canChangeWidget()
 	if (!CurrentWidget)
 		return true;
 
-	if (StateNotChanged == CurrentWidget->state())
+	if (StateNotChanged == CurrentWidget->stateNotifier()->state())
 		return true;
 
 	if (!IsCurrentWidgetEditAccount)
@@ -373,7 +373,7 @@ bool YourAccounts::canChangeWidget()
 		}
 	}
 
-	if (StateChangedDataValid == CurrentWidget->state())
+	if (StateChangedDataValid == CurrentWidget->stateNotifier()->state())
 	{
 		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Unsaved changes"),
 					tr("You have unsaved changes in current account.<br />Do you want to save them?"));
@@ -398,7 +398,7 @@ bool YourAccounts::canChangeWidget()
 		}
 	}
 
-	if (StateChangedDataInvalid == CurrentWidget->state())
+	if (StateChangedDataInvalid == CurrentWidget->stateNotifier()->state())
 	{
 		MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-warning"), tr("Invalid changes"),
 					tr("You have invalid changes in current account, which cannot be saved.<br />Do you want to stay in edit or discard changes?"));

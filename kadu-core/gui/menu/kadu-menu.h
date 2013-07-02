@@ -39,15 +39,6 @@ class KADUAPI KaduMenu : public QObject
 	Q_OBJECT
 
 public:
-	enum MenuCategory
-	{
-		CategoryMain,
-		CategoryBuddies,
-		CategoryTools,
-		CategoryHelp,
-		CategoryBuddiesList,
-	};
-
 	enum MenuSection
 	{
 		SectionConfig,
@@ -68,31 +59,39 @@ public:
 		SectionManagement,
 	};
 
-	MenuCategory Category;
+	QString Category;
 	QList<MenuItem *> Items;
 	bool IsSorted;
-	QMenu *GuiMenu;
+
+	QList<QMenu *> Menus;
 
 	void sort();
 	ActionContext * getActionContext();
-	void updateGuiMenu(ActionContext *context = 0);
+
+	void appendTo(QMenu *menu, ActionContext *context = 0);
+	void applyTo(QMenu *menu, ActionContext *context = 0);
 
 private slots:
+	void menuDestroyed(QObject *object);
+
 	void updateGuiMenuSlot();
+
 public:
-	KaduMenu(MenuCategory category, KaduMenu *parent = 0);
+	explicit KaduMenu(const QString &category, KaduMenu *parent = 0);
+	virtual ~KaduMenu();
+
+	void attachToMenu(QMenu *menu);
+	void detachFromMenu(QMenu *menu);
+
+	bool empty() const;
 
 	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
 	void removeAction(ActionDescription *actionDescription);
 	void updateGuiMenuLater();
 	void update();
 
-	void setGuiMenu(QMenu *menu);
-	QMenu * guiMenu() { return GuiMenu; }
-
-	QMenu * menu(QWidget *parent, ActionContext *actionContext);
-
 	static bool lessThan(const MenuItem *a, const MenuItem *b);
+
 };
 
 #endif // KADU_MENU_H

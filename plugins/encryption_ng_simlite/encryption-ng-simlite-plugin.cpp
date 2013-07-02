@@ -25,11 +25,17 @@
  */
 
 #include "core/core.h"
+#include "gui/actions/actions.h"
+#include "gui/menu/menu-inventory.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/kadu-paths.h"
 #include "plugins/encryption_ng/encryption-manager.h"
 #include "plugins/encryption_ng/encryption-provider-manager.h"
 #include "services/message-filter-service.h"
 #include "exports.h"
 
+#include "actions/simlite-send-public-key-action-description.h"
+#include "configuration/encryption-ng-simlite-configuration.h"
 #include "encryption-ng-simlite-key-generator.h"
 #include "encryption-ng-simlite-key-importer.h"
 #include "encryption-ng-simlite-message-filter.h"
@@ -46,6 +52,8 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 	if (firstLoad)
 		EncryptioNgSimliteKeyImporter::createInstance();
 
+	EncryptionNgSimliteConfiguration::createInstance();
+
 	EncryptioNgSimliteKeyGenerator::createInstance();
 	EncryptionManager::instance()->setGenerator(EncryptioNgSimliteKeyGenerator::instance());
 
@@ -56,11 +64,18 @@ int EngryptionNgSimlitePlugin::init(bool firstLoad)
 
 	EncryptionProviderManager::instance()->registerProvider(EncryptioNgSimliteProvider::instance());
 
+	new SimliteSendPublicKeyActionDescription(this);
+	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+	MenuInventory::instance()->menu("encryption-ng")->addAction(Actions::instance()->value("simliteSendPublicKeyAction"), KaduMenu::SectionConfig);
+
 	return 0;
 }
 
 void EngryptionNgSimlitePlugin::done()
 {
+	MenuInventory::instance()->menu("encryption-ng")->removeAction(Actions::instance()->value("simliteSendPublicKeyAction"));
+	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/encryption-ng-simlite.ui"));
+
 	Core::instance()->messageFilterService()->unregisterMessageFilter(MessageFilter);
 
 	EncryptionProviderManager::instance()->unregisterProvider(EncryptioNgSimliteProvider::instance());
@@ -68,6 +83,8 @@ void EngryptionNgSimlitePlugin::done()
 
 	EncryptionManager::instance()->setGenerator(0);
 	EncryptioNgSimliteKeyGenerator::destroyInstance();
+
+	EncryptionNgSimliteConfiguration::destroyInstance();
 
 	// it can work without createInstance too, so don't care about firstLoad here
 	EncryptioNgSimliteKeyImporter::destroyInstance();

@@ -43,7 +43,9 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/account-avatar-widget.h"
 #include "gui/widgets/account-buddy-list-widget.h"
+#include "gui/widgets/account-configuration-widget-tab-adapter.h"
 #include "gui/widgets/proxy-combo-box.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
@@ -53,25 +55,52 @@
 
 #include "jabber-edit-account-widget.h"
 
-JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *parent) :
-		AccountEditWidget(account, parent)
+JabberEditAccountWidget::JabberEditAccountWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
+		AccountEditWidget(accountConfigurationWidgetFactoryRepository, account, parent)
 {
 	createGui();
 	loadAccountData();
 	loadAccountDetailsData();
-	resetState();
+	simpleStateNotifier()->setState(StateNotChanged);
+	stateChangedSlot(stateNotifier()->state());
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
 {
 }
 
-void JabberEditAccountWidget::createTabs(QTabWidget *tabWidget)
+void JabberEditAccountWidget::createGui()
 {
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+
+	QTabWidget *tabWidget = new QTabWidget(this);
+	mainLayout->addWidget(tabWidget);
+
 	createGeneralTab(tabWidget);
 	createPersonalDataTab(tabWidget);
 	createConnectionTab(tabWidget);
 	createOptionsTab(tabWidget);
+
+	new AccountConfigurationWidgetTabAdapter(this, tabWidget, this);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+
+	QPushButton *removeAccount = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Delete account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
+
+	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+	buttons->addButton(removeAccount, QDialogButtonBox::DestructiveRole);
+
+	mainLayout->addWidget(buttons);
+
+	connect(stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 }
 
 void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
@@ -319,11 +348,10 @@ void JabberEditAccountWidget::sslActivated(int i)
 	}
 }
 
-void JabberEditAccountWidget::resetState()
+void JabberEditAccountWidget::stateChangedSlot(ConfigurationValueState state)
 {
-	setState(StateNotChanged);
-	ApplyButton->setEnabled(false);
-	CancelButton->setEnabled(false);
+	ApplyButton->setEnabled(state == StateChangedDataValid);
+	CancelButton->setEnabled(state != StateNotChanged);
 }
 
 void JabberEditAccountWidget::dataChanged()
@@ -331,6 +359,8 @@ void JabberEditAccountWidget::dataChanged()
   	AccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!AccountDetails)
 		return;
+
+	ConfigurationValueState widgetsState = stateNotifier()->state();
 
 	if (account().accountIdentity() == Identities->currentIdentity()
 		&& account().id() == AccountId->text()
@@ -352,7 +382,7 @@ void JabberEditAccountWidget::dataChanged()
 		&& AccountDetails->publishSystemInfo() == PublishSystemInfo->isChecked()
 		&& !PersonalInfoWidget->isModified())
 	{
-		resetState();
+		simpleStateNotifier()->setState(StateNotChanged);
 		return;
 	}
 
@@ -362,18 +392,11 @@ void JabberEditAccountWidget::dataChanged()
 	if (/*AccountName->text().isEmpty()
 		|| sameNameExists
 		|| */AccountId->text().isEmpty()
-		|| sameIdExists)
-	{
-		setState(StateChangedDataInvalid);
-		ApplyButton->setEnabled(false);
-		CancelButton->setEnabled(true);
-	}
+		|| sameIdExists
+		|| StateChangedDataInvalid == widgetsState)
+		simpleStateNotifier()->setState(StateChangedDataInvalid);
 	else
-	{
-		setState(StateChangedDataValid);
-		ApplyButton->setEnabled(true);
-		CancelButton->setEnabled(true);
-	}
+		simpleStateNotifier()->setState(StateChangedDataValid);
 }
 
 void JabberEditAccountWidget::loadAccountData()
@@ -418,6 +441,8 @@ void JabberEditAccountWidget::apply()
 	if (!AccountDetails)
 		return;
 
+	applyAccountConfigurationWidgets();
+
 	account().setAccountIdentity(Identities->currentIdentity());
 	account().setId(AccountId->text());
 	account().setRememberPassword(RememberPassword->isChecked());
@@ -444,18 +469,20 @@ void JabberEditAccountWidget::apply()
 	IdentityManager::instance()->removeUnused();
 	ConfigurationManager::instance()->flush();
 
-	resetState();
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberEditAccountWidget::cancel()
 {
+	cancelAccountConfigurationWidgets();
+
 	loadAccountData();
 	loadAccountDetailsData();
 	PersonalInfoWidget->cancel();
 
 	IdentityManager::instance()->removeUnused();
 
-	resetState();
+	simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberEditAccountWidget::removeAccount()

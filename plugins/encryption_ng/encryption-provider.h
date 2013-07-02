@@ -28,6 +28,7 @@
 #ifndef ENCRYPTION_PROVIDER_H
 #define ENCRYPTION_PROVIDER_H
 
+#include <QtCore/QMetaType>
 #include <QtCore/QObject>
 
 #include "encryption_exports.h"
@@ -44,8 +45,11 @@ class ENCRYPTIONAPI EncryptionProvider : public QObject
 public:
 	virtual ~EncryptionProvider() {}
 
-	virtual bool canEncrypt(const Chat &chat) = 0;
-	virtual bool canDecrypt(const Chat &chat) = 0;
+	virtual QString name() const = 0;
+	virtual QString displayName() const = 0;
+
+	virtual bool canEncrypt(const Chat &chat) const = 0;
+	virtual bool canDecrypt(const Chat &chat) const = 0;
 
 	virtual Encryptor * acquireEncryptor(const Chat &chat) = 0;
 	virtual Decryptor * acquireDecryptor(const Chat &chat) = 0;
@@ -59,5 +63,7 @@ signals:
 	void keyReceived(const Contact &contact, const QString &keyType, const QByteArray &key);
 
 };
+
+Q_DECLARE_METATYPE(EncryptionProvider *);
 
 #endif // ENCRYPTION_PROVIDER_H

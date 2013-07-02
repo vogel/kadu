@@ -279,7 +279,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNoDescription
 	);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(CopyDescription, KaduMenu::SectionActions, 10);
 
 	CopyPersonalInfo = new ActionDescription(this,
@@ -288,7 +288,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		KaduIcon("kadu_icons/copy-personal-info"), tr("Copy Personal Info")
 	);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(CopyPersonalInfo, KaduMenu::SectionActions, 20);
 
 	OpenDescriptionLink = new ActionDescription(this,
@@ -298,7 +298,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		disableNoDescriptionUrl
 	);
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(OpenDescriptionLink, KaduMenu::SectionActions, 30);
 
 	WriteEmail = new ActionDescription(this,
@@ -310,7 +310,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	connect(WriteEmail, SIGNAL(actionCreated(Action *)), this, SLOT(writeEmailActionCreated(Action *)));
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(WriteEmail, KaduMenu::SectionSend, 200);
 
 	LookupUserInfo = new ActionDescription(this,
@@ -357,7 +357,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	EditTalkable = new EditTalkableAction(this);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(EditTalkable, KaduMenu::SectionView);
 
 	MergeContact = new ActionDescription(this,
@@ -368,17 +368,17 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(MergeContact, KaduMenu::SectionManagement, 100);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(ChatWidgetManager::instance()->actions()->blockUser(), KaduMenu::SectionManagement, 500);
 		
 	DeleteTalkable = new DeleteTalkableAction(this);
 
 	MenuInventory::instance()
-		->menu(KaduMenu::CategoryBuddiesList)
+		->menu("buddy-list")
 		->addAction(DeleteTalkable, KaduMenu::SectionManagement, 1000);
 
 	// The last ActionDescription will send actionLoaded() signal.
