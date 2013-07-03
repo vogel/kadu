@@ -129,6 +129,7 @@ const ConfigurationValueStateNotifier * OtrAccountConfigurationWidget::stateNoti
 void OtrAccountConfigurationWidget::apply()
 {
 	OtrPolicyAccountStore::storePolicyToAccount(account(), policy());
+	updateState();
 }
 
 void OtrAccountConfigurationWidget::cancel()
