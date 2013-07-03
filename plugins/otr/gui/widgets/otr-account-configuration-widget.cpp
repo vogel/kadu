@@ -44,7 +44,7 @@ void OtrAccountConfigurationWidget::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	EnableCheckBox = new QCheckBox(tr("Enable private nessaging"));
+	EnableCheckBox = new QCheckBox(tr("Enable private messaging"));
 	AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
 	RequireCheckBox = new QCheckBox(tr("Require private messaging"));
 
