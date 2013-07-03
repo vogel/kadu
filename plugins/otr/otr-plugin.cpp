@@ -19,10 +19,12 @@
 
 #include "core/core.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "notify/notification-manager.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
+#include "gui/widgets/otr-chat-top-bar-widget-factory.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-notifier.h"
 #include "otr-private-key-service.h"
@@ -75,6 +77,20 @@ void OtrPlugin::registerOtrAppOpsWrapper()
 void OtrPlugin::unregisterOtrAppOpsWrapper()
 {
 	AppOpsWrapper.reset();
+}
+
+void OtrPlugin::registerOtrChatTopBarWidgetFactory()
+{
+	ChatTopBarWidgetFactory.reset(new OtrChatTopBarWidgetFactory());
+
+	Core::instance()->chatTopBarWidgetFactoryRepository()->registerFactory(ChatTopBarWidgetFactory.data());
+}
+
+void OtrPlugin::unregisterOtrChatTopBarWidgetFactory()
+{
+	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(ChatTopBarWidgetFactory.data());
+
+	ChatTopBarWidgetFactory.reset();
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -142,6 +158,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	registerOtrAcountConfigurationWidgetFactory();
 	registerOtrAppOpsWrapper();
+	registerOtrChatTopBarWidgetFactory();
 	registerOtrNotifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
@@ -184,6 +201,7 @@ void OtrPlugin::done()
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrNotifier();
+	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();
 	unregisterOtrAcountConfigurationWidgetFactory();
 }

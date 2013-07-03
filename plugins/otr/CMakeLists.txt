@@ -9,6 +9,8 @@ include (FindPkgConfig)
 set (SOURCES
 	gui/widgets/otr-account-configuration-widget-factory.cpp
 	gui/widgets/otr-account-configuration-widget.cpp
+	gui/widgets/otr-chat-top-bar-widget-factory.cpp
+	gui/widgets/otr-chat-top-bar-widget.cpp
 
 	otr-app-ops-wrapper.cpp
 	otr-notifier.cpp
