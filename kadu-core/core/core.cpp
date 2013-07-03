@@ -51,6 +51,7 @@
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
@@ -554,6 +555,7 @@ void Core::runServices()
 	CurrentRawMessageTransformerService = new RawMessageTransformerService(this);
 	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
+	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -633,6 +635,11 @@ ClipboardHtmlTransformerService * Core::clipboardHtmlTransformerService() const
 AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFactoryRepository() const
 {
 	return CurrentAccountConfigurationWidgetFactoryRepository;
+}
+
+ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const
+{
+	return CurrentChatTopBarWidgetFactoryRepository;
 }
 
 void Core::showMainWindow()

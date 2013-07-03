@@ -50,6 +50,8 @@ set (gui_SRCS
 	widgets/chat-edit-widget.cpp
 	widgets/chat-messages-view.cpp
 	widgets/chat-room-edit-widget.cpp
+	widgets/chat-top-bar-container-widget.cpp
+	widgets/chat-top-bar-widget-factory-repository.cpp
 	widgets/chat-view-network-access-manager.cpp
 	widgets/chat-widget.cpp
 	widgets/chat-widget-actions.cpp

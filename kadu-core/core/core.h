@@ -51,6 +51,7 @@ namespace QCA
 
 class AccountConfigurationWidgetFactoryRepository;
 class ChatImageRequestService;
+class ChatTopBarWidgetFactoryRepository;
 class ClipboardHtmlTransformerService;
 class DomProcessorService;
 class FormattedStringFactory;
@@ -86,6 +87,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	RawMessageTransformerService *CurrentRawMessageTransformerService;
 	ClipboardHtmlTransformerService *CurrentClipboardHtmlTransformerService;
 	AccountConfigurationWidgetFactoryRepository *CurrentAccountConfigurationWidgetFactoryRepository;
+	ChatTopBarWidgetFactoryRepository *CurrentChatTopBarWidgetFactoryRepository;
 
 	KaduWindow *Window;
 
@@ -147,6 +149,7 @@ public:
 	RawMessageTransformerService * rawMessageTransformerService() const;
 	ClipboardHtmlTransformerService * clipboardHtmlTransformerService() const;
 	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
+	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

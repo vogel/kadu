@@ -43,6 +43,7 @@ class QSplitter;
 
 class ChatEditBox;
 class ChatMessagesView;
+class ChatTopBarContainerWidget;
 class ChatWidget;
 class ChatWidgetContainer;
 class CustomInput;
@@ -64,6 +65,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 
 	ChatWidgetContainer *Container;
 
+	ChatTopBarContainerWidget *TopBarContainer;
 	ChatMessagesView *MessagesView;
 	FilteredTreeView *BuddiesWidget;
 	TalkableProxyModel *ProxyModel;

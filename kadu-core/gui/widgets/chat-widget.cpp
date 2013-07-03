@@ -65,6 +65,7 @@
 #include "gui/web-view-highlighter.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-messages-view.h"
+#include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-container.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -183,6 +184,9 @@ void ChatWidget::createGui()
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->setMargin(0);
 	mainLayout->setSpacing(0);
+
+	TopBarContainer = new ChatTopBarContainerWidget(Core::instance()->chatTopBarWidgetFactoryRepository(), CurrentChat);
+	mainLayout->addWidget(TopBarContainer);
 
 	VerticalSplitter = new QSplitter(Qt::Vertical, this);
 
