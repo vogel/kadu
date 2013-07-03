@@ -49,7 +49,7 @@ public:
 	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
 	virtual ~OtrAccountConfigurationWidget();
 
-    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 	virtual void apply();
 	virtual void cancel();
