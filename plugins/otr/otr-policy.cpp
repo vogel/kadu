@@ -58,7 +58,7 @@ OtrPolicy::OtrPolicy(const OtrPolicy &copyFrom)
 	*this = copyFrom;
 }
 
-OtrPolicy & OtrPolicy::operator=(const OtrPolicy &copyFrom)
+OtrPolicy & OtrPolicy::operator = (const OtrPolicy &copyFrom)
 {
 	Policy = copyFrom.Policy;
 	PolicyString = copyFrom.PolicyString;
