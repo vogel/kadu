@@ -25,10 +25,10 @@
 
 void OtrPolicyAccountStore::storePolicyToAccount(const Account &account, const OtrPolicy &policy)
 {
-	account.addProperty("encryption_ng_otr:policy", policy.toString(), CustomProperties::Storable);
+	account.addProperty("otr:policy", policy.toString(), CustomProperties::Storable);
 }
 
 OtrPolicy OtrPolicyAccountStore::loadPolicyFromAccount(const Account &account)
 {
-	return OtrPolicy::fromString(account.property("encryption_ng_otr:policy", QVariant()).toString());
+	return OtrPolicy::fromString(account.property("otr:policy", QVariant()).toString());
 }
