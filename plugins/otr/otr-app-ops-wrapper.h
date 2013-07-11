@@ -45,6 +45,7 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_privkey(void *, const char *, const char *);
 	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
+	friend void kadu_otr_update_context_list(void *);
 	friend void kadu_otr_gone_secure(void *, ConnContext *);
 	friend void kadu_otr_gone_insecure(void *, ConnContext *);
 	friend void kadu_otr_still_secure(void *, ConnContext *, int);
@@ -61,6 +62,7 @@ class OtrAppOpsWrapper : public QObject
 	void createPrivateKey(OtrOpData *ngOtrOpData) const;
 	IsLoggedInStatus isLoggedIn(OtrOpData *ngOtrOpData, const QString &contactId) const;
 	void injectMessage(OtrOpData *ngOtrOpData, const QString &messageContent) const;
+	void updateContextList(OtrOpData *ngOtrOpData);
 	void goneSecure(OtrOpData *ngOtrOpData) const;
 	void goneInsecure(OtrOpData *ngOtrOpData) const;
 	void stillSecure(OtrOpData *ngOtrOpData) const;

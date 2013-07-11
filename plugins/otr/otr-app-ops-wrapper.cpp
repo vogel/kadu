@@ -26,6 +26,7 @@ extern "C" {
 }
 
 #include "accounts/account.h"
+#include <accounts/account-manager.h>
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
@@ -44,8 +45,10 @@ extern "C" {
 #include "otr-policy-account-store.h"
 #include "otr-private-key-service.h"
 #include "otr-timer.h"
+#include "otr-trust-level.h"
 
 #include "otr-app-ops-wrapper.h"
+#include "otr-trust-level-contact-store.h"
 
 OtrlPolicy kadu_otr_policy(void *opdata, ConnContext *context)
 {
@@ -85,7 +88,8 @@ void kadu_otr_inject_message(void *opdata, const char *accountname, const char *
 
 void kadu_otr_update_context_list(void *opdata)
 {
-    Q_UNUSED(opdata);
+	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
+	otrOpData->appOpsWrapper()->updateContextList(otrOpData);
 }
 
 void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
@@ -200,8 +204,6 @@ void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnCon
 
 	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
 	otrOpData->appOpsWrapper()->handleMsgEvent(otrOpData, msg_event, message, err);
-	
-	
 }
 
 void kadu_otr_timer_control(void *opdata, unsigned int interval)
@@ -294,6 +296,21 @@ void OtrAppOpsWrapper::injectMessage(OtrOpData *otrOpData, const QString &messag
 {
 	Chat chat = otrOpData->message().messageChat();
 	MessageManager::instance()->sendMessage(chat, messageContent, true);
+}
+
+void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
+{
+	Q_UNUSED(otrOpData);
+
+	ConnContext *context = UserState->userState()->context_root;
+	while (context)
+	{
+		Account account = AccountManager::instance()->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
+		Contact contact = ContactManager::instance()->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
+		OtrTrustLevelContactStore::storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
+
+		context = context->next;
+	}
 }
 
 void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const
