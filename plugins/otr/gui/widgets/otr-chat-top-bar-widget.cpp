@@ -20,6 +20,8 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 
+#include "otr-trust-level-contact-store.h"
+
 #include "otr-chat-top-bar-widget.h"
 
 OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) :
@@ -41,11 +43,13 @@ void OtrChatTopBarWidget::createGui()
 	TrustStatusLabel = new QLabel();
 	layout->addWidget(TrustStatusLabel);
 
-	updateTrustStatus(OtrTrustLevel::TRUST_NOT_PRIVATE);
+	updateTrustStatus();
 }
 
-void OtrChatTopBarWidget::updateTrustStatus(OtrTrustLevel::Level level)
+void OtrChatTopBarWidget::updateTrustStatus()
 {
+	OtrTrustLevel::Level level = OtrTrustLevelContactStore::loadTrustLevelFromContact(MyContact);
+
 	setStyleSheet(QString("color: white; background-color: %1; border: 1px solid #121212;")
 			.arg(trustStatusColor(level).name()));
 	TrustStatusLabel->setText(trustStatusString(level));

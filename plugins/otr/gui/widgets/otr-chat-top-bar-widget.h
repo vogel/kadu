@@ -43,7 +43,7 @@ public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
 
-	void updateTrustStatus(OtrTrustLevel::Level level);
+	void updateTrustStatus();
 
 };
 
