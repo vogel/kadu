@@ -24,17 +24,26 @@
 
 #include "contacts/contact.h"
 
+#include "otr-trust-level.h"
+
+class QLabel;
+
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
 
 	Contact MyContact;
+	QLabel *TrustStatusLabel;
 
 	void createGui();
+	QString trustStatusString(OtrTrustLevel::Level level);
+	QColor trustStatusColor(OtrTrustLevel::Level level);
 
 public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
+
+	void updateTrustStatus(OtrTrustLevel::Level level);
 
 };
 

@@ -17,6 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+
 #include "otr-chat-top-bar-widget.h"
 
 OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) :
@@ -31,8 +34,51 @@ OtrChatTopBarWidget::~OtrChatTopBarWidget()
 
 void OtrChatTopBarWidget::createGui()
 {
-	setFixedHeight(20);
-	setStyleSheet("background-color: red; border: 1px solid black; border-radius: 4px;");
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->setMargin(2);
+	layout->setSpacing(0);
+
+	TrustStatusLabel = new QLabel();
+	layout->addWidget(TrustStatusLabel);
+
+	updateTrustStatus(OtrTrustLevel::TRUST_NOT_PRIVATE);
+}
+
+void OtrChatTopBarWidget::updateTrustStatus(OtrTrustLevel::Level level)
+{
+	setStyleSheet(QString("color: white; background-color: %1; border: 1px solid #121212;")
+			.arg(trustStatusColor(level).name()));
+	TrustStatusLabel->setText(trustStatusString(level));
+}
+
+QColor OtrChatTopBarWidget::trustStatusColor(OtrTrustLevel::Level level)
+{
+	switch (level)
+	{
+		case OtrTrustLevel::TRUST_NOT_PRIVATE:
+			return Qt::red;
+		case OtrTrustLevel::TRUST_UNVERIFIED:
+			return Qt::yellow;
+		case OtrTrustLevel::TRUST_PRIVATE:
+			return Qt::green;
+		case OtrTrustLevel::TRUST_FINISHED:
+			return Qt::red;
+	}
+}
+
+QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level)
+{
+	switch (level)
+	{
+		case OtrTrustLevel::TRUST_NOT_PRIVATE:
+			return tr("Not Private");
+		case OtrTrustLevel::TRUST_UNVERIFIED:
+			return tr("Unverified");
+		case OtrTrustLevel::TRUST_PRIVATE:
+			return tr("Private");
+		case OtrTrustLevel::TRUST_FINISHED:
+			return tr("Finished");
+	}
 }
 
 #include "moc_otr-chat-top-bar-widget.cpp"
