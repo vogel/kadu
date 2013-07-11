@@ -17,20 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_TRUST_LEVEL_CHAT_STORE_H
-#define OTR_TRUST_LEVEL_CHAT_STORE_H
+#ifndef OTR_TRUST_LEVEL_CONTACT_STORE_H
+#define OTR_TRUST_LEVEL_CONTACT_STORE_H
 
 #include "otr-trust-level.h"
 
-class Chat;
+class Contact;
 
-class OtrTrustLevelAccountStore
+class OtrTrustLevelContactStore
 {
 
 public:
-	static void storeTrustLevelToChat(const Chat &chat, OtrTrustLevel::Level level);
-	static OtrTrustLevel::Level loadTrustLevelFromChat(const Chat &chat);
+	static void storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level);
+	static OtrTrustLevel::Level loadTrustLevelFromContact(const Contact &contact);
 
 };
 
-#endif // OTR_TRUST_LEVEL_CHAT_STORE_H
+#endif // OTR_TRUST_LEVEL_CONTACT_STORE_H

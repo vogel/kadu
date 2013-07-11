@@ -22,7 +22,7 @@ set (SOURCES
 	otr-raw-message-transformer.cpp
 	otr-timer.cpp
 	otr-trust-level.cpp
-	otr-trust-level-chat-store.cpp
+	otr-trust-level-contact-store.cpp
 	otr-user-state.cpp
 )
 

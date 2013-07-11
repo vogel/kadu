@@ -19,16 +19,14 @@
 
 #include "chat/chat.h"
 
-#include "otr-trust-level-chat-store.h"
+#include "otr-trust-level-contact-store.h"
 
-#include "otr-policy-account-store.h"
-
-void OtrTrustLevelAccountStore::storeTrustLevelToChat(const Chat &chat, OtrTrustLevel::Level level)
+void OtrTrustLevelContactStore::storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level)
 {
-	chat.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
+	contact.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
 }
 
-OtrTrustLevel::Level OtrTrustLevelAccountStore::loadTrustLevelFromChat(const Chat &chat)
+OtrTrustLevel::Level OtrTrustLevelContactStore::loadTrustLevelFromContact(const Contact &contact)
 {
-	return (OtrTrustLevel::Level)chat.property("otr:trustLevel", QVariant()).toInt();
+	return (OtrTrustLevel::Level)contact.property("otr:trustLevel", QVariant()).toInt();
 }
