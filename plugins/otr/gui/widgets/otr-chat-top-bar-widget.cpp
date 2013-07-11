@@ -19,8 +19,8 @@
 
 #include "otr-chat-top-bar-widget.h"
 
-OtrChatTopBarWidget::OtrChatTopBarWidget(QWidget *parent) :
-		QWidget(parent)
+OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) :
+		QWidget(parent), MyContact(contact)
 {
 	createGui();
 }

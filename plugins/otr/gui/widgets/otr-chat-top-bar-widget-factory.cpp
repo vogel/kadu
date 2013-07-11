@@ -18,6 +18,7 @@
  */
 
 #include "chat/chat.h"
+#include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 
 #include "gui/widgets/otr-chat-top-bar-widget.h"
@@ -26,7 +27,9 @@
 
 QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	if (chat.contacts().size() > 1)
+	ChatType *chatType = ChatTypeManager::instance()->chatType(chat.type());
+	if (chatType->name() != "Contact")
 		return 0;
-	return new OtrChatTopBarWidget(parent);
+
+	return new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
 }

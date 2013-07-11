@@ -22,14 +22,18 @@
 
 #include <QtGui/QWidget>
 
+#include "contacts/contact.h"
+
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
 
+	Contact MyContact;
+
 	void createGui();
 
 public:
-	explicit OtrChatTopBarWidget(QWidget *parent = 0);
+	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
 
 };
