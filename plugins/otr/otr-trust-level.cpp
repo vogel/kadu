@@ -25,7 +25,7 @@ OtrTrustLevel::Level OtrTrustLevel::fromContext(ConnContext *context)
 		return TRUST_NOT_PRIVATE;
 
 	if (context->msgstate == OTRL_MSGSTATE_FINISHED)
-		return TRUST_FINISHED;
+		return TRUST_NOT_PRIVATE;
 
 	if (context->msgstate != OTRL_MSGSTATE_ENCRYPTED)
 		return TRUST_NOT_PRIVATE;

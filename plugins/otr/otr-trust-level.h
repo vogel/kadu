@@ -32,8 +32,7 @@ public:
 	{
 		TRUST_NOT_PRIVATE,
 		TRUST_UNVERIFIED,
-		TRUST_PRIVATE,
-		TRUST_FINISHED
+		TRUST_PRIVATE
 	};
 
 	static Level fromContext(ConnContext *context);

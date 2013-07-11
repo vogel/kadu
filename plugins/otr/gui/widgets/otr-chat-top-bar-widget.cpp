@@ -61,8 +61,6 @@ QColor OtrChatTopBarWidget::trustStatusColor(OtrTrustLevel::Level level)
 			return Qt::yellow;
 		case OtrTrustLevel::TRUST_PRIVATE:
 			return Qt::green;
-		case OtrTrustLevel::TRUST_FINISHED:
-			return Qt::red;
 	}
 }
 
@@ -76,8 +74,6 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level)
 			return tr("Unverified");
 		case OtrTrustLevel::TRUST_PRIVATE:
 			return tr("Private");
-		case OtrTrustLevel::TRUST_FINISHED:
-			return tr("Finished");
 	}
 }
 
