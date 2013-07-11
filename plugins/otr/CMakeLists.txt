@@ -28,6 +28,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	gui/widgets/otr-account-configuration-widget.h
+	gui/widgets/otr-chat-top-bar-widget-factory.h
 
 	otr-app-ops-wrapper.h
 	otr-notifier.h

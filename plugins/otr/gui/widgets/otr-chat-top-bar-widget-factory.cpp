@@ -31,5 +31,21 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 	if (chatType->name() != "Contact")
 		return 0;
 
-	return new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
+	OtrChatTopBarWidget *result = new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
+	connect(result, SIGNAL(destroyed(QObject*)), this, SLOT(widgetDestroyed(QObject*)));
+	Widgets.append(result);
+
+	return result;
+}
+
+void OtrChatTopBarWidgetFactory::widgetDestroyed(QObject *widget)
+{
+	OtrChatTopBarWidget *otrWidget = static_cast<OtrChatTopBarWidget *>(widget);
+	Widgets.removeAll(otrWidget);
+}
+
+void OtrChatTopBarWidgetFactory::updateTrustStatuses()
+{
+	foreach (OtrChatTopBarWidget *otrWidget, Widgets)
+		otrWidget->updateTrustStatus();
 }

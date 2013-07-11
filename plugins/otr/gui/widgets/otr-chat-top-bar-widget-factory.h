@@ -20,15 +20,28 @@
 #ifndef OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
 #define OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
 
+#include <QtCore/QObject>
+
 #include "gui/widgets/chat-top-bar-widget-factory.h"
 
-class OtrChatTopBarWidgetFactory : public ChatTopBarWidgetFactory
+class OtrChatTopBarWidget;
+
+class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactory
 {
+	Q_OBJECT
+
+	QList<OtrChatTopBarWidget *> Widgets;
+
+private slots:
+	void widgetDestroyed(QObject *widget);
 
 public:
 	virtual ~OtrChatTopBarWidgetFactory() {}
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
+
+public slots:
+	void updateTrustStatuses();
 
 };
 

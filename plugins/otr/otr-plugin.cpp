@@ -166,6 +166,8 @@ int OtrPlugin::init(bool firstLoad)
 
 	AppOpsWrapper->setUserState(&UserState);
 
+	connect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
+
 	PrivateKeyService->setUserState(&UserState);
 	PrivateKeyService->readPrivateKeys();
 
@@ -194,6 +196,8 @@ void OtrPlugin::done()
 	RawMessageTransformer->setOtrAppOpsWrapper(0);
 
 	PrivateKeyService->setUserState(0);
+
+	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	AppOpsWrapper->setUserState(0);
 

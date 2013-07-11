@@ -82,6 +82,9 @@ public:
 	void setUserState(OtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
 
+signals:
+	void contextListUpdated();
+
 };
 
 #endif // OTR_APP_OPS_WRAPPER_H

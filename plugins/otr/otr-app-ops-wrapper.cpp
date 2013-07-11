@@ -311,6 +311,8 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 
 		context = context->next;
 	}
+
+	emit contextListUpdated();
 }
 
 void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const
