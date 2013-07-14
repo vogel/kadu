@@ -26,8 +26,9 @@ extern "C" {
 }
 
 #include "accounts/account.h"
-#include <accounts/account-manager.h>
+#include "accounts/account-manager.h"
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget.h"
@@ -254,6 +255,11 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 {
 }
 
+void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
+{
+	CurrentMessageManager = messageManager;
+}
+
 void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
@@ -262,6 +268,35 @@ void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
+}
+
+void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
+{
+	if (!CurrentMessageManager)
+		return;
+
+	OtrTrustLevel::Level level = OtrTrustLevelContactStore::loadTrustLevelFromContact(contact);
+	if (OtrTrustLevel::TRUST_PRIVATE == level)
+		return;
+
+	Account account = contact.contactAccount();
+	OtrPolicy otrPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
+	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
+
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	CurrentMessageManager.data()->sendMessage(chat, message, true);
+}
+
+void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
+{
+	if (!UserState)
+		return;
+
+	otrl_message_disconnect(UserState->userState(), &Ops, 0,
+							qPrintable(contact.contactAccount().id()),
+							qPrintable(contact.contactAccount().protocolName()),
+							qPrintable(contact.id()),
+							OTRL_INSTAG_BEST);
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const

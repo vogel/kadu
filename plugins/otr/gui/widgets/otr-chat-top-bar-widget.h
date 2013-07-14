@@ -26,22 +26,32 @@
 
 #include "otr-trust-level.h"
 
-class QLabel;
+class QPushButton;
+
+class OtrAppOpsWrapper;
 
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrAppOpsWrapper> CurrentAppOpsWrapper;
+
 	Contact MyContact;
-	QLabel *TrustStatusLabel;
+	QPushButton *OtrStatusButton;
 
 	void createGui();
-	QString trustStatusString(OtrTrustLevel::Level level);
-	QColor trustStatusColor(OtrTrustLevel::Level level);
+	OtrTrustLevel::Level trustLevel() const;
+	QString trustStatusString(OtrTrustLevel::Level level) const;
+
+private slots:
+	void startPrivateConversation();
+	void endPrivateConversation();
 
 public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
+
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 
 	void updateTrustStatus();
 

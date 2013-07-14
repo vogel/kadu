@@ -18,8 +18,12 @@
  */
 
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
+#include <QtGui/QMenu>
+#include <QtGui/QPushButton>
 
+#include "otr-app-ops-wrapper.h"
+#include "otr-policy.h"
+#include "otr-policy-account-store.h"
 #include "otr-trust-level-contact-store.h"
 
 #include "otr-chat-top-bar-widget.h"
@@ -34,41 +38,45 @@ OtrChatTopBarWidget::~OtrChatTopBarWidget()
 {
 }
 
+void OtrChatTopBarWidget::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+{
+	CurrentAppOpsWrapper = appOpsWrapper;
+}
+
 void OtrChatTopBarWidget::createGui()
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setMargin(2);
 	layout->setSpacing(0);
 
-	TrustStatusLabel = new QLabel();
-	layout->addWidget(TrustStatusLabel);
+	OtrStatusButton = new QPushButton();
+	layout->addWidget(OtrStatusButton);
+	layout->addStretch(1);
+
+	QMenu *otrMenu = new QMenu(OtrStatusButton);
+	QAction *startAction = otrMenu->addAction(tr("Start Private Conversation"));
+	connect(startAction, SIGNAL(triggered(bool)), this, SLOT(startPrivateConversation()));
+	QAction *endAction = otrMenu->addAction(tr("End Private Conversation"));
+	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endPrivateConversation()));
+
+	OtrStatusButton->setMenu(otrMenu);
 
 	updateTrustStatus();
 }
 
 void OtrChatTopBarWidget::updateTrustStatus()
 {
-	OtrTrustLevel::Level level = OtrTrustLevelContactStore::loadTrustLevelFromContact(MyContact);
+	OtrTrustLevel::Level level = trustLevel();
 
-	setStyleSheet(QString("color: white; background-color: %1; border: 1px solid #121212;")
-			.arg(trustStatusColor(level).name()));
-	TrustStatusLabel->setText(trustStatusString(level));
+	OtrStatusButton->setText(trustStatusString(level));
 }
 
-QColor OtrChatTopBarWidget::trustStatusColor(OtrTrustLevel::Level level)
+OtrTrustLevel::Level OtrChatTopBarWidget::trustLevel() const
 {
-	switch (level)
-	{
-		case OtrTrustLevel::TRUST_NOT_PRIVATE:
-			return Qt::red;
-		case OtrTrustLevel::TRUST_UNVERIFIED:
-			return Qt::yellow;
-		case OtrTrustLevel::TRUST_PRIVATE:
-			return Qt::green;
-	}
+	return OtrTrustLevelContactStore::loadTrustLevelFromContact(MyContact);
 }
 
-QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level)
+QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level) const
 {
 	switch (level)
 	{
@@ -79,6 +87,18 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level)
 		case OtrTrustLevel::TRUST_PRIVATE:
 			return tr("Private");
 	}
+}
+
+void OtrChatTopBarWidget::startPrivateConversation()
+{
+	if (CurrentAppOpsWrapper)
+		CurrentAppOpsWrapper.data()->startPrivateConversation(MyContact);
+}
+
+void OtrChatTopBarWidget::endPrivateConversation()
+{
+	if (CurrentAppOpsWrapper)
+		CurrentAppOpsWrapper.data()->endPrivateConversation(MyContact);
 }
 
 #include "moc_otr-chat-top-bar-widget.cpp"

@@ -28,6 +28,9 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
+class Contact;
+class MessageManager;
+
 class OtrOpData;
 class OtrUserState;
 
@@ -55,6 +58,7 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
+	QWeakPointer<MessageManager> CurrentMessageManager;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
 
@@ -79,8 +83,12 @@ public:
 	explicit OtrAppOpsWrapper();
 	virtual ~OtrAppOpsWrapper();
 
+	void setMessageManager(MessageManager *messageManager);
 	void setUserState(OtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
+
+	void startPrivateConversation(const Contact &contact);
+	void endPrivateConversation(const Contact &contact);
 
 signals:
 	void contextListUpdated();

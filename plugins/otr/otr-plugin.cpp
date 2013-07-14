@@ -21,6 +21,7 @@
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "notify/notification-manager.h"
+#include "message/message-manager.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
@@ -164,6 +165,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
 
+	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setUserState(&UserState);
 
 	connect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
@@ -200,6 +202,7 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	AppOpsWrapper->setUserState(0);
+	AppOpsWrapper->setMessageManager(0);
 
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();
