@@ -267,19 +267,20 @@ void FreedesktopNotify::notify(Notification *notification)
 
 void FreedesktopNotify::notificationClosed(Notification *notification)
 {
-	QMap<unsigned int, Notification *>::const_iterator i = NotificationMap.constBegin();
-	while (i != NotificationMap.constEnd())
+	QMap<unsigned int, Notification *>::iterator i = NotificationMap.begin();
+	while (i != NotificationMap.end())
 	{
 		if (i.value() == notification)
 		{
-			NotificationMap.remove(i.key());
-
 			QList<QVariant> args;
 			args.append(i.key());
 			NotificationsInterface->callWithArgumentList(QDBus::Block, "CloseNotification", args);
 
+			NotificationMap.erase(i);
+
 			return;
 		}
+
 		++i;
 	}
 }
