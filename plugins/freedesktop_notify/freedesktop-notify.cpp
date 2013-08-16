@@ -302,10 +302,8 @@ void FreedesktopNotify::slotServiceOwnerChanged(const QString &serviceName, cons
 	Q_UNUSED(oldOwner)
 	Q_UNUSED(newOwner)
 
-	QMap<unsigned int, Notification *>::const_iterator i = NotificationMap.constBegin();
-	while (i != NotificationMap.constEnd())
+	foreach (Notification *notification, NotificationMap)
 	{
-		Notification *notification = i.value();
 		disconnect(notification, SIGNAL(closed(Notification*)), this, SLOT(notificationClosed(Notification*)));
 		notification->release(this);
 	}
