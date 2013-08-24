@@ -22,8 +22,14 @@
 #include "contacts/contact-set.h"
 
 #include "gui/widgets/otr-chat-top-bar-widget.h"
+#include "otr-app-ops-wrapper.h"
 
 #include "otr-chat-top-bar-widget-factory.h"
+
+void OtrChatTopBarWidgetFactory::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+{
+	AppOpsWrapper = otrAppOpsWrapper;
+}
 
 QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
@@ -32,6 +38,8 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 		return 0;
 
 	OtrChatTopBarWidget *result = new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
+	result->setAppOpsWrapper(AppOpsWrapper.data());
+
 	connect(result, SIGNAL(destroyed(QObject*)), this, SLOT(widgetDestroyed(QObject*)));
 	Widgets.append(result);
 

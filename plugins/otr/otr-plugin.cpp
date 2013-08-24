@@ -168,6 +168,8 @@ int OtrPlugin::init(bool firstLoad)
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setUserState(&UserState);
 
+	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());
+
 	connect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	PrivateKeyService->setUserState(&UserState);

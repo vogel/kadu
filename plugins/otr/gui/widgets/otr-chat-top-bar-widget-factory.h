@@ -21,15 +21,18 @@
 #define OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 #include "gui/widgets/chat-top-bar-widget-factory.h"
 
+class OtrAppOpsWrapper;
 class OtrChatTopBarWidget;
 
 class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactory
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QList<OtrChatTopBarWidget *> Widgets;
 
 private slots:
@@ -37,6 +40,8 @@ private slots:
 
 public:
 	virtual ~OtrChatTopBarWidgetFactory() {}
+
+	void setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
 
