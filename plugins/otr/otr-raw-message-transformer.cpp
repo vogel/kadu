@@ -94,13 +94,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	if (!userState)
 		return messageContent;
 
-	OtrOpData opData;
-	opData.setAppOpsWrapper(AppOpsWrapper.data());
-	opData.setNotifier(Notifier.data());
-	opData.setPrivateKeyService(PrivateKeyService.data());
-	opData.setChat(message.messageChat());
-	opData.setSender(message.messageSender().display(true));
-
+	OtrOpData opData(otrOpDataFromMessage(message));
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
@@ -135,14 +129,7 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 		return messageContent;
 
 	Contact receiver = (*chatDetails->contacts().begin());
-
-	OtrOpData opData;
-	opData.setAppOpsWrapper(AppOpsWrapper.data());
-	opData.setNotifier(Notifier.data());
-	opData.setPrivateKeyService(PrivateKeyService.data());
-	opData.setChat(message.messageChat());
-	opData.setSender(message.messageSender().display(true));
-
+	OtrOpData opData(otrOpDataFromMessage(message));
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
@@ -164,4 +151,16 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 		otrl_message_free(newMessage);
 
 	return messageContent;
+}
+
+OtrOpData OtrRawMessageTransformer::otrOpDataFromMessage(const Message &message) const
+{
+	OtrOpData opData;
+	opData.setAppOpsWrapper(AppOpsWrapper.data());
+	opData.setNotifier(Notifier.data());
+	opData.setPrivateKeyService(PrivateKeyService.data());
+	opData.setChat(message.messageChat());
+	opData.setSender(message.messageSender().display(true));
+
+	return opData;
 }

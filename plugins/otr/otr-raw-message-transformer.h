@@ -31,6 +31,7 @@ extern "C" {
 
 class OtrAppOpsWrapper;
 class OtrNotifier;
+class OtrOpData;
 class OtrPrivateKeyService;
 class OtrUserState;
 
@@ -45,6 +46,8 @@ class OtrRawMessageTransformer: public RawMessageTransformer
 
 	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
 	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
+
+	OtrOpData otrOpDataFromMessage(const Message &message) const;
 
 public:
 	explicit OtrRawMessageTransformer();
