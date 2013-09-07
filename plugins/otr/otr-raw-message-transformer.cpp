@@ -126,6 +126,10 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 {
 	Q_UNUSED(message);
 
+	// temporary workaround for my lack of understanding of how libotr works
+	if (messageContent.startsWith("?OTR"))
+		return messageContent;
+
 	OtrlUserState userState = UserState->userState();
 	if (!userState)
 		return messageContent;
