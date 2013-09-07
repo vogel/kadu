@@ -28,6 +28,7 @@
 #include <libgadu.h>
 
 #include "message/message-common.h"
+#include "protocols/protocol.h"
 #include "protocols/services/chat-image-key.h"
 
 #include "protocols/services/chat-service.h"
@@ -72,6 +73,7 @@ class GaduChatService : public ChatService
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
 	int sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage);
+	UinType * contactsToUins(const QVector<Contact> &contacts) const;
 
 	QTimer *RemoveTimer;
 

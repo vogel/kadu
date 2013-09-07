@@ -104,11 +104,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	unsigned int uinsCount = contacts.count();
 	if (uinsCount > 1)
 	{
-		QScopedArrayPointer<UinType> uins(new UinType[uinsCount]);
-		unsigned int i = 0;
-
-		foreach (const Contact &contact, contacts)
-			uins[i++] = GaduProtocolHelper::uin(contact);
+		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 
 		if (!formats.isEmpty())
 			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage, (const unsigned char *) formats.constData(), formats.size());
@@ -127,6 +123,17 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	Connection.data()->endWrite();
 
 	return messageId;
+}
+
+UinType * GaduChatService::contactsToUins(const QVector<Contact> &contacts) const
+{
+	UinType * uins = new UinType[contacts.count()];
+	unsigned int i = 0;
+
+	foreach (const Contact &contact, contacts)
+		uins[i++] = GaduProtocolHelper::uin(contact);
+
+	return uins;
 }
 
 bool GaduChatService::sendMessage(const Message &message)
