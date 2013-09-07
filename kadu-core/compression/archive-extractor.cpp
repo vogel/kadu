@@ -65,7 +65,7 @@ struct ArchiveExtractor::ArchiveReadCustomDeleter
 	{
 		if (a)
 		{
-			archive_read_finish(a);
+			archive_read_free(a);
 		}
 	}
 };
@@ -76,7 +76,7 @@ struct ArchiveExtractor::ArchiveWriteCustomDeleter
 	{
 		if (a)
 		{
-			archive_write_finish(a);
+			archive_read_free(a);
 		}
 	}
 };
@@ -108,7 +108,7 @@ bool ArchiveExtractor::extract(const QString &sourcePath, const QString &destPat
 
 	ArchiveRead arch(archive_read_new());
 
-	if (!arch.data() || archive_read_support_compression_all(arch.data()) != ARCHIVE_OK
+	if (!arch.data() || archive_read_support_filter_all(arch.data()) != ARCHIVE_OK
 	    || archive_read_support_format_all(arch.data()) != ARCHIVE_OK
 	    || archive_read_open_filename(arch.data(), QFile::encodeName(filePath), 10240) != ARCHIVE_OK)
 	{
