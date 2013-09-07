@@ -36,7 +36,10 @@ class OtrOpData
 
 public:
 	explicit OtrOpData();
+	OtrOpData(const OtrOpData &copyMe);
 	virtual ~OtrOpData();
+
+	OtrOpData & operator = (const OtrOpData &copyMe);
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;

@@ -24,8 +24,25 @@ OtrOpData::OtrOpData() :
 {
 }
 
+OtrOpData::OtrOpData(const OtrOpData &copyMe)
+{
+	*this = copyMe;
+}
+
+
 OtrOpData::~OtrOpData()
 {
+}
+
+OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
+{
+	AppOpsWrapper = copyMe.AppOpsWrapper;
+	Notifier = copyMe.Notifier;
+	PrivateKeyService = copyMe.PrivateKeyService;
+	MyChat = copyMe.MyChat;
+	MySender = copyMe.MySender;
+
+	return *this;
 }
 
 void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
