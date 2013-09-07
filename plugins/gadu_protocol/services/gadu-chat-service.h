@@ -73,6 +73,7 @@ class GaduChatService : public ChatService
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
 	int sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const QByteArray &rawMessage);
+	QByteArray formattedStringToFormats(FormattedString *formattedString) const;
 	UinType * contactsToUins(const QVector<Contact> &contacts) const;
 
 	QTimer *RemoveTimer;

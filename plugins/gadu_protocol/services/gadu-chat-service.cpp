@@ -93,12 +93,7 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	Connection.data()->beginWrite();
 	gg_session *session = Connection.data()->session();
 
-	FormattedStringFormatsVisitor formatsVisitor;
-	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
-	formatsVisitor.setImageStorageService(CurrentImageStorageService.data());
-	formattedString->accept(&formatsVisitor);
-
-	QByteArray formats = formatsVisitor.result();
+	QByteArray formats = formattedStringToFormats(formattedString);
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
@@ -127,6 +122,16 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 	Connection.data()->endWrite();
 
 	return messageId;
+}
+
+QByteArray GaduChatService::formattedStringToFormats(FormattedString *formattedString) const
+{
+	FormattedStringFormatsVisitor formatsVisitor;
+	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
+	formatsVisitor.setImageStorageService(CurrentImageStorageService.data());
+	formattedString->accept(&formatsVisitor);
+
+	return formatsVisitor.result();
 }
 
 UinType * GaduChatService::contactsToUins(const QVector<Contact> &contacts) const
