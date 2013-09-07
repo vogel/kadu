@@ -20,7 +20,7 @@
 #ifndef OTR_OP_DATA_H
 #define OTR_OP_DATA_H
 
-#include "message/message.h"
+#include "chat/chat.h"
 
 class OtrAppOpsWrapper;
 class OtrNotifier;
@@ -31,7 +31,8 @@ class OtrOpData
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrNotifier *Notifier;
 	OtrPrivateKeyService *PrivateKeyService;
-	Message MyMessage;
+	Chat MyChat;
+	QString MySender;
 
 public:
 	explicit OtrOpData();
@@ -46,8 +47,11 @@ public:
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;
 
-	void setMessage(const Message &message);
-	Message message() const;
+	void setChat(const Chat &chat);
+	Chat chat() const;
+
+	void setSender(const QString &sender);
+	QString sender() const;
 
 };
 

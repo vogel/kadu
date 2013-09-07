@@ -58,12 +58,22 @@ OtrPrivateKeyService * OtrOpData::privateKeyService() const
 	return PrivateKeyService;
 }
 
-void OtrOpData::setMessage(const Message &message)
+void OtrOpData::setChat(const Chat &chat)
 {
-	MyMessage = message;
+	MyChat = chat;
 }
 
-Message OtrOpData::message() const
+Chat OtrOpData::chat() const
 {
-	return MyMessage;
+	return MyChat;
+}
+
+void OtrOpData::setSender(const QString &sender)
+{
+	MySender = sender;
+}
+
+QString OtrOpData::sender() const
+{
+	return MySender;
 }

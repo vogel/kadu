@@ -301,7 +301,7 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
 {
-	Account account = otrOpData->message().messageChat().chatAccount();
+	Account account = otrOpData->chat().chatAccount();
 	OtrPolicy policy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
 
 	return policy.toOtrPolicy();
@@ -309,13 +309,13 @@ OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
 
 void OtrAppOpsWrapper::createPrivateKey(OtrOpData *otrOpData) const
 {
-	Account account = otrOpData->message().messageChat().chatAccount();
+	Account account = otrOpData->chat().chatAccount();
 	otrOpData->privateKeyService()->createPrivateKey(account);
 }
 
 OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *otrOpData, const QString &contactId) const
 {
-	Account account = otrOpData->message().messageChat().chatAccount();
+	Account account = otrOpData->chat().chatAccount();
 	Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
 
 	if (!contact)
@@ -329,7 +329,7 @@ OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *otrOp
 
 void OtrAppOpsWrapper::injectMessage(OtrOpData *otrOpData, const QByteArray &messageContent) const
 {
-	Chat chat = otrOpData->message().messageChat();
+	Chat chat = otrOpData->chat();
 	MessageManager::instance()->sendRawMessage(chat, messageContent);
 }
 
@@ -352,25 +352,22 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 
 void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const
 {
-	Chat chat = otrOpData->message().messageChat();
-	otrOpData->notifier()->notifyGoneSecure(chat);
+	otrOpData->notifier()->notifyGoneSecure(otrOpData->chat());
 }
 
 void OtrAppOpsWrapper::goneInsecure(OtrOpData *otrOpData) const
 {
-	Chat chat = otrOpData->message().messageChat();
-	otrOpData->notifier()->notifyGoneInsecure(chat);
+	otrOpData->notifier()->notifyGoneInsecure(otrOpData->chat());
 }
 
 void OtrAppOpsWrapper::stillSecure(OtrOpData *otrOpData) const
 {
-	Chat chat = otrOpData->message().messageChat();
-	otrOpData->notifier()->notifyStillSecure(chat);
+	otrOpData->notifier()->notifyStillSecure(otrOpData->chat());
 }
 
 int OtrAppOpsWrapper::maxMessageSize(OtrOpData *otrOpData) const
 {
-	Account account = otrOpData->message().messageChat().chatAccount();
+	Account account = otrOpData->chat().chatAccount();
 	Protocol *protocolHandler = account.protocolHandler();
 	if (!protocolHandler)
 		return 0;
@@ -382,8 +379,8 @@ int OtrAppOpsWrapper::maxMessageSize(OtrOpData *otrOpData) const
 
 QString OtrAppOpsWrapper::errorMessage(OtrOpData *otrOpData, OtrlErrorCode errorCode) const
 {
-	Account account = otrOpData->message().messageChat().chatAccount();
-	Contact receiver = otrOpData->message().messageChat().contacts().toContact();
+	Account account = otrOpData->chat().chatAccount();
+	Contact receiver = otrOpData->chat().contacts().toContact();
 
 	switch (errorCode)
 	{
@@ -406,16 +403,15 @@ QString OtrAppOpsWrapper::resentMessagePrefix() const
 }
 
 void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *otrOpData, OtrlMessageEvent event,
-												  const QString &message, gcry_error_t errorCode) const
+									  const QString &message, gcry_error_t errorCode) const
 {
-	QString senderDisplay = otrOpData->message().messageSender().display(true);
+	QString senderDisplay = otrOpData->sender();
 	QString errorMessage = messageString(event, message, errorCode, senderDisplay);
 
 	if (errorMessage.isEmpty())
 		return;
 
-	Chat chat = otrOpData->message().messageChat();
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(otrOpData->chat(), false);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
 }
@@ -472,7 +468,7 @@ void OtrAppOpsWrapper::createInstanceTag(OtrOpData *otrOpData)
 {
 	Q_ASSERT(UserState);
 
-	Account account = otrOpData->message().messageChat().chatAccount();
+	Account account = otrOpData->chat().chatAccount();
 	QString fileName = instanceTagsFileName();
 
 	otrl_instag_generate(UserState->userState(), fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());

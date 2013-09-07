@@ -98,7 +98,8 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	opData.setAppOpsWrapper(AppOpsWrapper.data());
 	opData.setNotifier(Notifier.data());
 	opData.setPrivateKeyService(PrivateKeyService.data());
-	opData.setMessage(message);
+	opData.setChat(message.messageChat());
+	opData.setSender(message.messageSender().display(true));
 
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
@@ -137,8 +138,10 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 
 	OtrOpData opData;
 	opData.setAppOpsWrapper(AppOpsWrapper.data());
+	opData.setNotifier(Notifier.data());
 	opData.setPrivateKeyService(PrivateKeyService.data());
-	opData.setMessage(message);
+	opData.setChat(message.messageChat());
+	opData.setSender(message.messageSender().display(true));
 
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
