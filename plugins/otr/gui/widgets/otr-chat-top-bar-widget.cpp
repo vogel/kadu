@@ -86,6 +86,8 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level) const
 			return tr("Unverified");
 		case OtrTrustLevel::TRUST_PRIVATE:
 			return tr("Private");
+		default:
+			return tr("Not Private");
 	}
 }
 
