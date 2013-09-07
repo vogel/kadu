@@ -85,15 +85,13 @@ int GaduChatService::maxMessageLength() const
 	return 10000;
 }
 
-int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const QByteArray &rawMessage)
+int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage, const QByteArray &formats)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
 
 	Connection.data()->beginWrite();
 	gg_session *session = Connection.data()->session();
-
-	QByteArray formats = formattedStringToFormats(formattedString);
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
@@ -164,7 +162,7 @@ bool GaduChatService::sendMessage(const Message &message)
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), rawMessage);
+	int messageId = sendRawMessage(message.messageChat().contacts().toContactVector(), rawMessage, formattedStringToFormats(message.content()));
 
 	if (-1 == messageId)
 		return false;

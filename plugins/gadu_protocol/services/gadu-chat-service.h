@@ -72,7 +72,7 @@ class GaduChatService : public ChatService
 	FormattedString * createFormattedString(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const QByteArray &rawMessage);
+	int sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage, const QByteArray &formats);
 	QByteArray formattedStringToFormats(FormattedString *formattedString) const;
 	UinType * contactsToUins(const QVector<Contact> &contacts) const;
 
