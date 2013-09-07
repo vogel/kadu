@@ -85,7 +85,7 @@ int GaduChatService::maxMessageLength() const
 	return 10000;
 }
 
-int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const unsigned char *rawMessage)
+int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVector<Contact> &contacts, const QByteArray &rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
@@ -107,17 +107,21 @@ int GaduChatService::sendRawMessage(FormattedString *formattedString, const QVec
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 
 		if (!formats.isEmpty())
-			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage, (const unsigned char *) formats.constData(), formats.size());
+			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(),
+														(const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message_confer(session, GG_CLASS_CHAT, uinsCount, uins.data(), rawMessage);
+			messageId = gg_send_message_confer(session, GG_CLASS_CHAT, uinsCount, uins.data(),
+											   (const unsigned char *) rawMessage.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
 		if (!formats.isEmpty())
-			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin, rawMessage, (const unsigned char *) formats.constData(), formats.size());
+			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin,
+												 (const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message(session, GG_CLASS_CHAT, uin, rawMessage);
+			messageId = gg_send_message(session, GG_CLASS_CHAT, uin,
+										(const unsigned char *) rawMessage.constData());
 	}
 
 	Connection.data()->endWrite();
@@ -155,7 +159,7 @@ bool GaduChatService::sendMessage(const Message &message)
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), (const unsigned char *)rawMessage.constData());
+	int messageId = sendRawMessage(message.content(), message.messageChat().contacts().toContactVector(), rawMessage);
 
 	if (-1 == messageId)
 		return false;
