@@ -84,7 +84,7 @@ void kadu_otr_inject_message(void *opdata, const char *accountname, const char *
 	Q_UNUSED(recipient);
 
 	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->injectMessage(otrOpData, QString::fromUtf8(message));
+	otrOpData->appOpsWrapper()->injectMessage(otrOpData, QByteArray(message));
 }
 
 void kadu_otr_update_context_list(void *opdata)
@@ -327,10 +327,10 @@ OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *otrOp
 		return LoggedIn;
 }
 
-void OtrAppOpsWrapper::injectMessage(OtrOpData *otrOpData, const QString &messageContent) const
+void OtrAppOpsWrapper::injectMessage(OtrOpData *otrOpData, const QByteArray &messageContent) const
 {
 	Chat chat = otrOpData->message().messageChat();
-	MessageManager::instance()->sendMessage(chat, messageContent, true);
+	MessageManager::instance()->sendRawMessage(chat, messageContent);
 }
 
 void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)

@@ -65,7 +65,7 @@ class OtrAppOpsWrapper : public QObject
 	OtrlPolicy policy(OtrOpData *ngOtrOpData) const;
 	void createPrivateKey(OtrOpData *ngOtrOpData) const;
 	IsLoggedInStatus isLoggedIn(OtrOpData *ngOtrOpData, const QString &contactId) const;
-	void injectMessage(OtrOpData *ngOtrOpData, const QString &messageContent) const;
+	void injectMessage(OtrOpData *ngOtrOpData, const QByteArray &messageContent) const;
 	void updateContextList(OtrOpData *ngOtrOpData);
 	void goneSecure(OtrOpData *ngOtrOpData) const;
 	void goneInsecure(OtrOpData *ngOtrOpData) const;
