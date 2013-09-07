@@ -173,6 +173,12 @@ bool GaduChatService::sendMessage(const Message &message)
 	return true;
 }
 
+bool GaduChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
+{
+	int messageId = sendRawMessage(chat.contacts().toContactVector(), rawMessage, QByteArray());
+	return messageId != -1;
+}
+
 bool GaduChatService::isSystemMessage(gg_event *e)
 {
 	return 0 == e->event.msg.sender;

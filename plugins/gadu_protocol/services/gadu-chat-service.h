@@ -112,6 +112,7 @@ public:
 
 public slots:
 	virtual bool sendMessage(const Message &message);
+	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage);
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventMultilogonMsg(struct gg_event *e);

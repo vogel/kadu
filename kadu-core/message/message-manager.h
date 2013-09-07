@@ -164,6 +164,17 @@ public:
 	bool sendMessage(const Chat &chat, FormattedString *content, bool silent = false);
 
 	/**
+	 * @short Send new raw message to given chat.
+	 * @param chat chat to send message to
+	 * @param content raw content to be sent
+	 *
+	 * This methods sends a message to given chat. Message is passed as QByteArray.
+	 *
+	 * Raw messages will not invoke messageSent signals.
+	 */
+	bool sendRawMessage(const Chat &chat, const QByteArray &content);
+
+	/**
 	 * @short Adds new unread message to the list.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @param message new unread message

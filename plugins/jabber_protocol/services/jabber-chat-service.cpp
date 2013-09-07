@@ -254,8 +254,6 @@ QString JabberChatService::chatMessageType(const Chat &chat, const XMPP::Jid &ji
 
 bool JabberChatService::sendMessage(const ::Message &message)
 {
-	Q_UNUSED(message)
-
 	if (!XmppClient)
 		return false;
 
@@ -274,6 +272,28 @@ bool JabberChatService::sendMessage(const ::Message &message)
 
 	msg.setType(chatMessageType(message.messageChat(), jid));
 	msg.setBody(plain);
+	msg.setTimeStamp(QDateTime::currentDateTime());
+	msg.setFrom(XmppClient.data()->jid());
+
+	emit messageAboutToSend(msg);
+	XmppClient.data()->sendMessage(msg);
+
+	return true;
+}
+
+bool JabberChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
+{
+	if (!XmppClient)
+		return false;
+
+	XMPP::Jid jid = chatJid(chat);
+	if (jid.isEmpty())
+		return false;
+
+	XMPP::Message msg = XMPP::Message(jid);
+
+	msg.setType(chatMessageType(chat, jid));
+	msg.setBody(rawMessage);
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	msg.setFrom(XmppClient.data()->jid());
 

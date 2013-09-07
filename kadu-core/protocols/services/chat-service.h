@@ -96,6 +96,18 @@ public slots:
 	 */
 	virtual bool sendMessage(const Message &message) = 0;
 
+	/**
+	 * @short Send raw message to given chat.
+	 * @param chat chat for the message
+	 * @param message message to be sent
+	 * @param transform is message should be transformed by RawMessageTransformerService
+	 *
+	 * This methods sends a message. Service is allowed to ignore this requst.
+	 *
+	 * This message won't be altered by RawMessageTransformerService.
+	 */
+	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) = 0;
+
 signals:
 	/**
 	 * @short Signal emitted when sent message status has changed.
