@@ -30,11 +30,13 @@ class OtrNotifier : public QObject
 	Q_OBJECT
 
 	static QString OtrNotifyTopic;
+	static QString TryToStartSessionNotifyTopic;
 	static QString GoneSecureNotifyTopic;
 	static QString GoneInsecureNotifyTopic;
 	static QString StillSecureNotifyTopic;
 
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
+	QScopedPointer<NotifyEvent> TryToStartSessionNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
 	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
@@ -45,6 +47,7 @@ public:
 
 	QList<NotifyEvent *> notifyEvents();
 
+	void notifyTryToStartSession(const Chat &chat);
 	void notifyGoneSecure(const Chat &chat);
 	void notifyGoneInsecure(const Chat &chat);
 	void notifyStillSecure(const Chat &chat);

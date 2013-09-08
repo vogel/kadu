@@ -25,6 +25,7 @@
 #include "otr-notifier.h"
 
 QString OtrNotifier::OtrNotifyTopic("OTR");
+QString OtrNotifier::TryToStartSessionNotifyTopic("OTR/TryToStartSession");
 QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
 QString OtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
@@ -34,6 +35,8 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 {
 	OtrNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
+	TryToStartSessionNotifyEvent.reset(new NotifyEvent(TryToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Try to start private conversation")));
 	GoneSecureNotifyEvent.reset(new NotifyEvent(GoneSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Conversation gone secure")));
 	GoneInsecureNotifyEvent.reset(new NotifyEvent(GoneInsecureNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -50,9 +53,19 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 {
 	return QList<NotifyEvent *>()
 			<< OtrNotifyEvent.data()
+			<< TryToStartSessionNotifyEvent.data()
 			<< GoneSecureNotifyEvent.data()
 			<< GoneInsecureNotifyEvent.data()
 			<< StillSecureNotifyEvent.data();
+}
+
+void OtrNotifier::notifyTryToStartSession(const Chat &chat)
+{
+	ChatNotification *notification = new ChatNotification(chat, TryToStartSessionNotifyTopic, KaduIcon());
+	notification->setTitle(tr("OTR Encryption"));
+	notification->setText(tr("Trying to start private conversation"));
+
+	NotificationManager::instance()->notify(notification);
 }
 
 void OtrNotifier::notifyGoneSecure(const Chat &chat)

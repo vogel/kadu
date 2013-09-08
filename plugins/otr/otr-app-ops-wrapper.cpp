@@ -289,6 +289,10 @@ void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
 	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
 
 	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+
+	if (CurrentNotifier)
+		CurrentNotifier.data()->notifyTryToStartSession(chat);
+
 	CurrentMessageManager.data()->sendMessage(chat, message, true);
 }
 
