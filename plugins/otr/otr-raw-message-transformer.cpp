@@ -163,7 +163,6 @@ OtrOpData OtrRawMessageTransformer::otrOpDataFromMessage(const Message &message)
 {
 	OtrOpData opData;
 	opData.setAppOpsWrapper(AppOpsWrapper.data());
-	opData.setNotifier(Notifier.data());
 	opData.setPrivateKeyService(PrivateKeyService.data());
 	opData.setChat(message.messageChat());
 	opData.setSender(message.messageSender().display(true));

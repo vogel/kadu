@@ -39,7 +39,6 @@ extern "C" {
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
 
-#include "otr-notifier.h"
 #include "otr-op-data.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
@@ -260,11 +259,6 @@ void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 	CurrentMessageManager = messageManager;
 }
 
-void OtrAppOpsWrapper::setNotifier(OtrNotifier *notifier)
-{
-	CurrentNotifier = notifier;
-}
-
 void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
@@ -290,9 +284,7 @@ void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
 
 	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 
-	if (CurrentNotifier)
-		CurrentNotifier.data()->notifyTryToStartSession(chat);
-
+	emit tryToStartSession(chat);
 	CurrentMessageManager.data()->sendMessage(chat, message, true);
 }
 
@@ -305,7 +297,6 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 
 	OtrOpData opData;
 	opData.setAppOpsWrapper(this);
-	opData.setNotifier(CurrentNotifier.data());
 	opData.setChat(chat);
 	opData.setSender(contact.display(true));
 
@@ -314,8 +305,7 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));
 
-	if (CurrentNotifier)
-		CurrentNotifier.data()->notifyGoneInsecure(chat);
+	emit goneInsecure(chat);
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
@@ -371,17 +361,17 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 
 void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const
 {
-	otrOpData->notifier()->notifyGoneSecure(otrOpData->chat());
+	emit goneSecure(otrOpData->chat());
 }
 
 void OtrAppOpsWrapper::goneInsecure(OtrOpData *otrOpData) const
 {
-	otrOpData->notifier()->notifyGoneInsecure(otrOpData->chat());
+	emit goneInsecure(otrOpData->chat());
 }
 
 void OtrAppOpsWrapper::stillSecure(OtrOpData *otrOpData) const
 {
-	otrOpData->notifier()->notifyStillSecure(otrOpData->chat());
+	emit stillSecure(otrOpData->chat());
 }
 
 int OtrAppOpsWrapper::maxMessageSize(OtrOpData *otrOpData) const

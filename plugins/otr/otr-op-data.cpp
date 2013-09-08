@@ -20,7 +20,7 @@
 #include "otr-op-data.h"
 
 OtrOpData::OtrOpData() :
-		AppOpsWrapper(0), Notifier(0), PrivateKeyService(0)
+		AppOpsWrapper(0), PrivateKeyService(0)
 {
 }
 
@@ -37,7 +37,6 @@ OtrOpData::~OtrOpData()
 OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
 	AppOpsWrapper = copyMe.AppOpsWrapper;
-	Notifier = copyMe.Notifier;
 	PrivateKeyService = copyMe.PrivateKeyService;
 	MyChat = copyMe.MyChat;
 	MySender = copyMe.MySender;
@@ -53,16 +52,6 @@ void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 OtrAppOpsWrapper * OtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
-}
-
-void OtrOpData::setNotifier(OtrNotifier *notifier)
-{
-	Notifier = notifier;
-}
-
-OtrNotifier * OtrOpData::notifier() const
-{
-	return Notifier;
 }
 
 void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)

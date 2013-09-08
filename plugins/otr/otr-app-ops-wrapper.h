@@ -23,6 +23,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+#include "chat/chat.h"
+
 extern "C" {
 #	include <libotr/proto.h>
 #	include <libotr/message.h>
@@ -31,7 +33,6 @@ extern "C" {
 class Contact;
 class MessageManager;
 
-class OtrNotifier;
 class OtrOpData;
 class OtrUserState;
 
@@ -60,7 +61,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	QWeakPointer<MessageManager> CurrentMessageManager;
-	QWeakPointer<OtrNotifier> CurrentNotifier;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
 
@@ -86,7 +86,6 @@ public:
 	virtual ~OtrAppOpsWrapper();
 
 	void setMessageManager(MessageManager *messageManager);
-	void setNotifier(OtrNotifier *notifier);
 	void setUserState(OtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
 
@@ -94,7 +93,12 @@ public:
 	void endPrivateConversation(const Contact &contact);
 
 signals:
-	void contextListUpdated();
+	void tryToStartSession(const Chat &chat) const;
+	void goneSecure(const Chat &chat) const;
+	void goneInsecure(const Chat &chat) const;
+	void stillSecure(const Chat &chat) const;
+
+	void contextListUpdated() const;
 
 };
 

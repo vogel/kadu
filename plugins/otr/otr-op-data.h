@@ -23,13 +23,11 @@
 #include "chat/chat.h"
 
 class OtrAppOpsWrapper;
-class OtrNotifier;
 class OtrPrivateKeyService;
 
 class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
-	OtrNotifier *Notifier;
 	OtrPrivateKeyService *PrivateKeyService;
 	Chat MyChat;
 	QString MySender;
@@ -43,9 +41,6 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;
-
-	void setNotifier(OtrNotifier *notifier);
-	OtrNotifier * notifier() const;
 
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;
