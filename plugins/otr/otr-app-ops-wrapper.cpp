@@ -301,16 +301,21 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 	if (!UserState)
 		return;
 
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+
 	OtrOpData opData;
 	opData.setAppOpsWrapper(this);
 	opData.setNotifier(CurrentNotifier.data());
-	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	opData.setChat(chat);
 	opData.setSender(contact.display(true));
 
 	otrl_message_disconnect_all_instances(UserState->userState(), &Ops, &opData,
 										  qPrintable(contact.contactAccount().id()),
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));
+
+	if (CurrentNotifier)
+		CurrentNotifier.data()->notifyGoneInsecure(chat);
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
