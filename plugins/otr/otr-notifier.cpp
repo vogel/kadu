@@ -30,6 +30,8 @@ QString OtrNotifier::PeerClosedSessionNotifyTopic("OTR/PeerClosedStartSession");
 QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
 QString OtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
+QString OtrNotifier::CreatePrivateKeyStartedNotifyTopic("OTR/CreatePrivateKeyStarted");
+QString OtrNotifier::CreatePrivateKeyFinishedNotifyTopic("OTR/CreatePrivateKeyFinished");
 
 OtrNotifier::OtrNotifier(QObject *parent) :
 		QObject(parent)
@@ -46,6 +48,10 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 			QT_TRANSLATE_NOOP("@default", "Conversation gone insecure")));
 	StillSecureNotifyEvent.reset(new NotifyEvent(StillSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Conversation still secure")));
+	CreatePrivateKeyStartedNotifyEvent.reset(new NotifyEvent(CreatePrivateKeyStartedNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Create private key started")));
+	CreatePrivateKeyFinishedNotifyEvent.reset(new NotifyEvent(CreatePrivateKeyFinishedNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Create private key finished")));
 }
 
 OtrNotifier::~OtrNotifier()
@@ -59,7 +65,18 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 			<< TryToStartSessionNotifyEvent.data()
 			<< GoneSecureNotifyEvent.data()
 			<< GoneInsecureNotifyEvent.data()
-			<< StillSecureNotifyEvent.data();
+			<< StillSecureNotifyEvent.data()
+			<< CreatePrivateKeyStartedNotifyEvent.data()
+			<< CreatePrivateKeyFinishedNotifyEvent.data();
+}
+
+void OtrNotifier::notify(const QString &topic, const Account &account, const QString &message)
+{
+	AccountNotification *notification = new AccountNotification(account, topic, KaduIcon());
+	notification->setTitle(tr("OTR Encryption"));
+	notification->setText(message);
+
+	NotificationManager::instance()->notify(notification);
 }
 
 void OtrNotifier::notify(const QString &topic, const Chat &chat, const QString &message)
@@ -94,4 +111,16 @@ void OtrNotifier::notifyGoneInsecure(const Chat &chat)
 void OtrNotifier::notifyStillSecure(const Chat &chat)
 {
 	notify(StillSecureNotifyTopic, chat, tr("Conversation is still private"));
+}
+
+void OtrNotifier::notifyCreatePrivateKeyStarted(const Account &account)
+{
+	notify(CreatePrivateKeyStartedNotifyTopic, account, tr("Creating private key, it can took a few minutes"));
+}
+
+void OtrNotifier::notifyCreatePrivateKeyFinished(const Account &account, bool ok)
+{
+	notify(CreatePrivateKeyFinishedNotifyTopic, account, ok
+			? tr("Private key created, you can start a private conversation now")
+			: tr("Private key creation failed"));
 }

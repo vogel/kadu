@@ -180,6 +180,11 @@ int OtrPlugin::init(bool firstLoad)
 	PrivateKeyService->setUserState(&UserState);
 	PrivateKeyService->readPrivateKeys();
 
+	connect(PrivateKeyService.data(), SIGNAL(createPrivateKeyStarted(Account)),
+			Notifier.data(), SLOT(notifyCreatePrivateKeyStarted(Account)));
+	connect(PrivateKeyService.data(), SIGNAL(createPrivateKeyFinished(Account,bool)),
+			Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
+
 	RawMessageTransformer->setOtrAppOpsWrapper(AppOpsWrapper.data());
 	RawMessageTransformer->setOtrPrivateKeyService(PrivateKeyService.data());
 	RawMessageTransformer->setUserState(&UserState);

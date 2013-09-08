@@ -22,6 +22,7 @@
 
 #include <QtCore/QObject>
 
+class Account;
 class Chat;
 class NotifyEvent;
 
@@ -35,6 +36,8 @@ class OtrNotifier : public QObject
 	static QString GoneSecureNotifyTopic;
 	static QString GoneInsecureNotifyTopic;
 	static QString StillSecureNotifyTopic;
+	static QString CreatePrivateKeyStartedNotifyTopic;
+	static QString CreatePrivateKeyFinishedNotifyTopic;
 
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
 	QScopedPointer<NotifyEvent> TryToStartSessionNotifyEvent;
@@ -42,7 +45,10 @@ class OtrNotifier : public QObject
 	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
 	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
+	QScopedPointer<NotifyEvent> CreatePrivateKeyStartedNotifyEvent;
+	QScopedPointer<NotifyEvent> CreatePrivateKeyFinishedNotifyEvent;
 
+	void notify(const QString &topic, const Account &account, const QString &message);
 	void notify(const QString &topic, const Chat &chat, const QString &message);
 
 public:
@@ -57,6 +63,8 @@ public slots:
 	void notifyGoneSecure(const Chat &chat);
 	void notifyGoneInsecure(const Chat &chat);
 	void notifyStillSecure(const Chat &chat);
+	void notifyCreatePrivateKeyStarted(const Account &account);
+	void notifyCreatePrivateKeyFinished(const Account &account, bool ok);
 
 };
 
