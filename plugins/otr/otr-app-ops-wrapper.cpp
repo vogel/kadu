@@ -307,11 +307,10 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
 	opData.setSender(contact.display(true));
 
-	otrl_message_disconnect(UserState->userState(), &Ops, &opData,
-							qPrintable(contact.contactAccount().id()),
-							qPrintable(contact.contactAccount().protocolName()),
-							qPrintable(contact.id()),
-							OTRL_INSTAG_BEST);
+	otrl_message_disconnect_all_instances(UserState->userState(), &Ops, &opData,
+										  qPrintable(contact.contactAccount().id()),
+										  qPrintable(contact.contactAccount().protocolName()),
+										  qPrintable(contact.id()));
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
