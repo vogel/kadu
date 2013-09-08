@@ -20,10 +20,12 @@
 #ifndef OTR_PRIVATE_KEY_SERVICE_H
 #define OTR_PRIVATE_KEY_SERVICE_H
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
 class Account;
 
+class OtrCreatePrivateKeyJob;
 class OtrUserState;
 
 class OtrPrivateKeyService : public QObject
@@ -31,7 +33,12 @@ class OtrPrivateKeyService : public QObject
 	Q_OBJECT
 
 	OtrUserState *UserState;
+	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
+
 	QString privateStoreFileName();
+
+private slots:
+	void jobFinished(const Account &account, bool ok);
 
 public:
 	explicit OtrPrivateKeyService(QObject *parent = 0);
@@ -41,6 +48,10 @@ public:
 
 	void createPrivateKey(const Account &account);
 	void readPrivateKeys();
+
+signals:
+	void createPrivateKeyStarted(const Account &account);
+	void createPrivateKeyFinished(const Account &account, bool ok);
 
 };
 

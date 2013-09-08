@@ -51,10 +51,26 @@ QString OtrPrivateKeyService::privateStoreFileName()
 
 void OtrPrivateKeyService::createPrivateKey(const Account &account)
 {
+	if (CreateJobs.contains(account))
+		return;
+
 	OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
+	job->setAccount(account);
 	job->setUserState(UserState);
 	job->setPrivateStoreFileName(privateStoreFileName());
-	job->createPrivateKey(account);
+	job->createPrivateKey();
+
+	connect(job, SIGNAL(finished(Account, bool)), this, SLOT(jobFinished(Account, bool)));
+
+	CreateJobs.insert(account, job);
+	emit createPrivateKeyStarted(account);
+}
+
+void OtrPrivateKeyService::jobFinished(const Account &account, bool ok)
+{
+	emit createPrivateKeyFinished(account, ok);
+	CreateJobs.value(account)->deleteLater();
+	CreateJobs.remove(account);
 }
 
 void OtrPrivateKeyService::readPrivateKeys()

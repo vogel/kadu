@@ -30,6 +30,7 @@ class OtrCreatePrivateKeyJob : public QObject
 {
 	Q_OBJECT
 
+	Account MyAccount;
 	OtrUserState *UserState;
 	QString PrivateStoreFileName;
 	QWeakPointer<QThread> CreationThread;
@@ -42,12 +43,13 @@ public:
 	explicit OtrCreatePrivateKeyJob(QObject *parent = 0);
 	virtual ~OtrCreatePrivateKeyJob();
 
+	void setAccount(const Account &account);
 	void setUserState(OtrUserState *userState);
 	void setPrivateStoreFileName(const QString &privateStoreFileName);
-	void createPrivateKey(const Account &account);
+	void createPrivateKey();
 
 signals:
-	void finished(bool ok);
+	void finished(const Account &account, bool ok);
 
 };
 

@@ -45,6 +45,11 @@ OtrCreatePrivateKeyJob::~OtrCreatePrivateKeyJob()
 	}
 }
 
+void OtrCreatePrivateKeyJob::setAccount(const Account &account)
+{
+	MyAccount = account;
+}
+
 void OtrCreatePrivateKeyJob::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
@@ -55,21 +60,19 @@ void OtrCreatePrivateKeyJob::setPrivateStoreFileName(const QString &privateStore
 	PrivateStoreFileName = privateStoreFileName;
 }
 
-void OtrCreatePrivateKeyJob::createPrivateKey(const Account &account)
+void OtrCreatePrivateKeyJob::createPrivateKey()
 {
-	if (!UserState || PrivateStoreFileName.isEmpty() || CreationThread || KeyPointer)
+	if (!MyAccount || !UserState || PrivateStoreFileName.isEmpty() || CreationThread || KeyPointer)
 	{
-		emit finished(false);
-		deleteLater();
+		emit finished(MyAccount, false);
 		return;
 	}
 
-	gcry_error_t err = otrl_privkey_generate_start(UserState->userState(), account.id().toUtf8().data(),
-												   account.protocolName().toUtf8().data(), &KeyPointer);
+	gcry_error_t err = otrl_privkey_generate_start(UserState->userState(), MyAccount.id().toUtf8().data(),
+												   MyAccount.protocolName().toUtf8().data(), &KeyPointer);
 	if (err)
 	{
-		emit finished(false);
-		deleteLater();
+		emit finished(MyAccount, false);
 		return;
 	}
 
@@ -92,8 +95,7 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 
 	if (!ok)
 	{
-		emit finished(false);
-		deleteLater();
+		emit finished(MyAccount, false);
 		return;
 	}
 
@@ -102,6 +104,5 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 	gcry_error_t err = otrl_privkey_generate_finish(UserState->userState(), KeyPointer, PrivateStoreFileName.toUtf8().data());
 	KeyPointer = 0;
 
-	emit finished(0 == err);
-	deleteLater();
+	emit finished(MyAccount, 0 == err);
 }
