@@ -51,6 +51,7 @@ public:
 
 	QList<NotifyEvent *> notifyEvents();
 
+public slots:
 	void notifyTryToStartSession(const Chat &chat);
 	void notifyPeerClosedSession(const Chat &chat);
 	void notifyGoneSecure(const Chat &chat);
