@@ -184,10 +184,10 @@ void JabberAddAccountWidget::apply()
 		details->setState(StorableObject::StateNew);
 		details->setResource("Kadu");
 		details->setPriority(5);
-		if (!Domain->isVisible())
+		if (!Domain->isVisible()) // hack for facebook
 		{
-			details->setEncryptionMode(JabberAccountDetails::Encryption_No);
-			details->setPlainAuthMode(JabberAccountDetails::NoAllowPlain);
+			details->setEncryptionMode(JabberAccountDetails::Encryption_Auto);
+			details->setPlainAuthMode(JabberAccountDetails::AllowPlainOverTLS);
 		}
 
 		bool isGoogleAppsAccount = Factory->name() == "gmail/google talk" && !Domain->currentText().contains("gmail");
