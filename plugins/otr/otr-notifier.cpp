@@ -72,7 +72,7 @@ void OtrNotifier::notifyGoneSecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, GoneSecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Chat is now secure"));
+	notification->setText(tr("Private conversation started"));
 
 	NotificationManager::instance()->notify(notification);
 }
@@ -81,7 +81,7 @@ void OtrNotifier::notifyGoneInsecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, GoneInsecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Chat is now insecure"));
+	notification->setText(tr("Private conversation stopped"));
 
 	NotificationManager::instance()->notify(notification);
 }
@@ -90,7 +90,7 @@ void OtrNotifier::notifyStillSecure(const Chat &chat)
 {
 	ChatNotification *notification = new ChatNotification(chat, StillSecureNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Chat is still secure"));
+	notification->setText(tr("Conversation is still private"));
 
 	NotificationManager::instance()->notify(notification);
 }
