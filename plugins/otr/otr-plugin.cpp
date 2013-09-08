@@ -171,6 +171,7 @@ int OtrPlugin::init(bool firstLoad)
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
+	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
@@ -180,7 +181,6 @@ int OtrPlugin::init(bool firstLoad)
 	PrivateKeyService->readPrivateKeys();
 
 	RawMessageTransformer->setOtrAppOpsWrapper(AppOpsWrapper.data());
-	RawMessageTransformer->setOtrNotifier(Notifier.data());
 	RawMessageTransformer->setOtrPrivateKeyService(PrivateKeyService.data());
 	RawMessageTransformer->setUserState(&UserState);
 
@@ -200,11 +200,15 @@ void OtrPlugin::done()
 
 	RawMessageTransformer->setUserState(0);
 	RawMessageTransformer->setOtrPrivateKeyService(0);
-	RawMessageTransformer->setOtrNotifier(0);
 	RawMessageTransformer->setOtrAppOpsWrapper(0);
 
 	PrivateKeyService->setUserState(0);
 
+	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	AppOpsWrapper->setUserState(0);

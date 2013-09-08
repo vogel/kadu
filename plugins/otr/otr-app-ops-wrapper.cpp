@@ -308,6 +308,11 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 	emit goneInsecure(chat);
 }
 
+void OtrAppOpsWrapper::peerClosedSession(const Contact &contact)
+{
+	emit peerClosedSession(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+}
+
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
 {
 	Account account = otrOpData->chat().chatAccount();

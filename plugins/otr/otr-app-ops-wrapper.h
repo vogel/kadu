@@ -91,9 +91,11 @@ public:
 
 	void startPrivateConversation(const Contact &contact);
 	void endPrivateConversation(const Contact &contact);
+	void peerClosedSession(const Contact &contact);
 
 signals:
 	void tryToStartSession(const Chat &chat) const;
+	void peerClosedSession(const Chat &chat) const;
 	void goneSecure(const Chat &chat) const;
 	void goneInsecure(const Chat &chat) const;
 	void stillSecure(const Chat &chat) const;

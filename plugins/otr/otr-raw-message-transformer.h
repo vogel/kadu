@@ -30,7 +30,6 @@ extern "C" {
 }
 
 class OtrAppOpsWrapper;
-class OtrNotifier;
 class OtrOpData;
 class OtrPrivateKeyService;
 class OtrUserState;
@@ -41,7 +40,6 @@ class OtrRawMessageTransformer: public RawMessageTransformer
 	bool EnableFragments;
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
-	QWeakPointer<OtrNotifier> Notifier;
 	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
 
 	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
@@ -57,7 +55,6 @@ public:
 	void setEnableFragments(bool enableFragments);
 
 	void setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
-	void setOtrNotifier(OtrNotifier *encryptionNgOtrNotifier);
 	void setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService);
 
 	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);

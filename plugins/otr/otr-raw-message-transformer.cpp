@@ -31,7 +31,6 @@ extern "C" {
 #include "message/message.h"
 
 #include "otr-app-ops-wrapper.h"
-#include "otr-notifier.h"
 #include "otr-op-data.h"
 #include "otr-private-key-service.h"
 #include "otr-user-state.h"
@@ -60,11 +59,6 @@ void OtrRawMessageTransformer::setEnableFragments(bool enableFragments)
 void OtrRawMessageTransformer::setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
 {
 	AppOpsWrapper = encryptionNgOtrAppOpsWrapper;
-}
-
-void OtrRawMessageTransformer::setOtrNotifier(OtrNotifier *encryptionNgOtrNotifier)
-{
-	Notifier = encryptionNgOtrNotifier;
 }
 
 void OtrRawMessageTransformer::setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
@@ -107,7 +101,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 
     OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
     if (tlv)
-		Notifier.data()->notifyPeerClosedSession(message.messageChat());
+		AppOpsWrapper.data()->peerClosedSession(message.messageSender());
     otrl_tlv_free(tlvs);
 
 	if (ignoreMessage)
