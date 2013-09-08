@@ -17,6 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern "C" {
+#   include <libotr/privkey.h>
+}
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "misc/kadu-paths.h"

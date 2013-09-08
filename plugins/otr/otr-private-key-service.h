@@ -22,10 +22,6 @@
 
 #include <QtCore/QObject>
 
-extern "C" {
-#   include <libotr/privkey.h>
-}
-
 class Account;
 
 class OtrUserState;
