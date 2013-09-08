@@ -37,6 +37,7 @@ OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
 
 OtrPrivateKeyService::~OtrPrivateKeyService()
 {
+	qDeleteAll(CreateJobs);
 }
 
 void OtrPrivateKeyService::setUserState(OtrUserState *userState)
