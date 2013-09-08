@@ -43,6 +43,8 @@ class OtrNotifier : public QObject
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
 	QScopedPointer<NotifyEvent> StillSecureNotifyEvent;
 
+	void notify(const QString &topic, const Chat &chat, const QString &message);
+
 public:
 	explicit OtrNotifier(QObject *parent = 0);
 	virtual ~OtrNotifier();

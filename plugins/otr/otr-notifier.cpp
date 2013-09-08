@@ -62,47 +62,36 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 			<< StillSecureNotifyEvent.data();
 }
 
-void OtrNotifier::notifyTryToStartSession(const Chat &chat)
+void OtrNotifier::notify(const QString &topic, const Chat &chat, const QString &message)
 {
-	ChatNotification *notification = new ChatNotification(chat, TryToStartSessionNotifyTopic, KaduIcon());
+	ChatNotification *notification = new ChatNotification(chat, topic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Trying to start private conversation"));
+	notification->setText(message);
 
 	NotificationManager::instance()->notify(notification);
+}
+
+void OtrNotifier::notifyTryToStartSession(const Chat &chat)
+{
+	notify(TryToStartSessionNotifyTopic, chat, tr("Trying to start private conversation"));
 }
 
 void OtrNotifier::notifyPeerClosedSession(const Chat &chat)
 {
-	ChatNotification *notification = new ChatNotification(chat, PeerClosedSessionNotifyTopic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Peer ended private conversation; you should do the same"));
-
-	NotificationManager::instance()->notify(notification);
+	notify(PeerClosedSessionNotifyTopic, chat, tr("Peer ended private conversation; you should do the same"));
 }
 
 void OtrNotifier::notifyGoneSecure(const Chat &chat)
 {
-	ChatNotification *notification = new ChatNotification(chat, GoneSecureNotifyTopic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Private conversation started"));
-
-	NotificationManager::instance()->notify(notification);
+	notify(GoneSecureNotifyTopic, chat, tr("Private conversation started"));
 }
 
 void OtrNotifier::notifyGoneInsecure(const Chat &chat)
 {
-	ChatNotification *notification = new ChatNotification(chat, GoneInsecureNotifyTopic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Private conversation stopped"));
-
-	NotificationManager::instance()->notify(notification);
+	notify(GoneInsecureNotifyTopic, chat, tr("Private conversation stopped"));
 }
 
 void OtrNotifier::notifyStillSecure(const Chat &chat)
 {
-	ChatNotification *notification = new ChatNotification(chat, StillSecureNotifyTopic, KaduIcon());
-	notification->setTitle(tr("OTR Encryption"));
-	notification->setText(tr("Conversation is still private"));
-
-	NotificationManager::instance()->notify(notification);
+	notify(StillSecureNotifyTopic, chat, tr("Conversation is still private"));
 }
