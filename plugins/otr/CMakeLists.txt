@@ -14,6 +14,7 @@ set (SOURCES
 
 	otr-app-ops-wrapper.cpp
 	otr-create-private-key-job.cpp
+	otr-create-private-key-worker.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
 	otr-plugin.cpp
@@ -33,6 +34,7 @@ set (MOC_SOURCES
 
 	otr-app-ops-wrapper.h
 	otr-create-private-key-job.h
+	otr-create-private-key-worker.h
 	otr-notifier.h
 	otr-plugin.h
 	otr-private-key-service.h

@@ -17,38 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_CREATE_PRIVATE_KEY_JOB_H
-#define OTR_CREATE_PRIVATE_KEY_JOB_H
+extern "C" {
+#   include <libotr/privkey.h>
+}
 
-#include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include "otr-create-private-key-worker.h"
 
-class Account;
-class OtrUserState;
-
-class OtrCreatePrivateKeyJob : public QObject
+OtrCreatePrivateKeyWorker::OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent) :
+		QObject(parent), KeyPointer(keyPointer)
 {
-	Q_OBJECT
+}
 
-	OtrUserState *UserState;
-	QString PrivateStoreFileName;
-	QWeakPointer<QThread> CreationThread;
-	void *KeyPointer;
+OtrCreatePrivateKeyWorker::~OtrCreatePrivateKeyWorker()
+{
+}
 
-private slots:
-	void workerFinished(bool ok);
-
-public:
-	explicit OtrCreatePrivateKeyJob(QObject *parent = 0);
-	virtual ~OtrCreatePrivateKeyJob();
-
-	void setUserState(OtrUserState *userState);
-	void setPrivateStoreFileName(const QString &privateStoreFileName);
-	void createPrivateKey(const Account &account);
-
-signals:
-	void finished(bool ok);
-
-};
-
-#endif // OTR_CREATE_PRIVATE_KEY_JOB_H
+void OtrCreatePrivateKeyWorker::start()
+{
+	gcry_error_t err = otrl_privkey_generate_calculate(KeyPointer);
+	emit finished(0 == err);
+}
