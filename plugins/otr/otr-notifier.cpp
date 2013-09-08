@@ -90,37 +90,40 @@ void OtrNotifier::notify(const QString &topic, const Chat &chat, const QString &
 
 void OtrNotifier::notifyTryToStartSession(const Chat &chat)
 {
-	notify(TryToStartSessionNotifyTopic, chat, tr("Trying to start private conversation"));
+	notify(TryToStartSessionNotifyTopic, chat,
+		   tr("%1: trying to start private conversation").arg(chat.contacts().toContact().display(true)));
 }
 
 void OtrNotifier::notifyPeerClosedSession(const Chat &chat)
 {
-	notify(PeerClosedSessionNotifyTopic, chat, tr("Peer ended private conversation; you should do the same"));
+	notify(PeerClosedSessionNotifyTopic, chat,
+		   tr("%1: peer ended private conversation; you should do the same").arg(chat.contacts().toContact().display(true)));
 }
 
 void OtrNotifier::notifyGoneSecure(const Chat &chat)
 {
-	notify(GoneSecureNotifyTopic, chat, tr("Private conversation started"));
+	notify(GoneSecureNotifyTopic, chat, tr("%1: private conversation started").arg(chat.contacts().toContact().display(true)));
 }
 
 void OtrNotifier::notifyGoneInsecure(const Chat &chat)
 {
-	notify(GoneInsecureNotifyTopic, chat, tr("Private conversation stopped"));
+	notify(GoneInsecureNotifyTopic, chat, tr("%1: private conversation stopped").arg(chat.contacts().toContact().display(true)));
 }
 
 void OtrNotifier::notifyStillSecure(const Chat &chat)
 {
-	notify(StillSecureNotifyTopic, chat, tr("Conversation is still private"));
+	notify(StillSecureNotifyTopic, chat, tr("%1: conversation is still private").arg(chat.contacts().toContact().display(true)));
 }
 
 void OtrNotifier::notifyCreatePrivateKeyStarted(const Account &account)
 {
-	notify(CreatePrivateKeyStartedNotifyTopic, account, tr("Creating private key, it can took a few minutes"));
+	notify(CreatePrivateKeyStartedNotifyTopic, account,
+		   tr("%1: creating private key, it can took a few minutes").arg(account.id()));
 }
 
 void OtrNotifier::notifyCreatePrivateKeyFinished(const Account &account, bool ok)
 {
 	notify(CreatePrivateKeyFinishedNotifyTopic, account, ok
-			? tr("Private key created, you can start a private conversation now")
-			: tr("Private key creation failed"));
+			? tr("%1: private key created, you can start a private conversation now").arg(account.id())
+			: tr("%1: private key creation failed").arg(account.id()));
 }
