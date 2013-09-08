@@ -22,46 +22,43 @@ extern "C" {
 }
 
 #include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "misc/kadu-paths.h"
 
-#include "otr-create-private-key-job.h"
 #include "otr-user-state.h"
 
-#include "otr-private-key-service.h"
+#include "otr-create-private-key-job.h"
 
-OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
-		QObject(parent), UserState(0)
+OtrCreatePrivateKeyJob::OtrCreatePrivateKeyJob(QObject *parent) :
+		QObject(parent)
 {
 }
 
-OtrPrivateKeyService::~OtrPrivateKeyService()
+OtrCreatePrivateKeyJob::~OtrCreatePrivateKeyJob()
 {
 }
 
-void OtrPrivateKeyService::setUserState(OtrUserState *userState)
+void OtrCreatePrivateKeyJob::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
 }
 
-QString OtrPrivateKeyService::privateStoreFileName()
+void OtrCreatePrivateKeyJob::setPrivateStoreFileName(const QString &privateStoreFileName)
 {
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_private");
+	PrivateStoreFileName = privateStoreFileName;
 }
 
-void OtrPrivateKeyService::createPrivateKey(const Account &account)
+void OtrCreatePrivateKeyJob::createPrivateKey(const Account &account)
 {
-	OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
-	job->setUserState(UserState);
-	job->setPrivateStoreFileName(privateStoreFileName());
-	job->createPrivateKey(account);
-}
-
-void OtrPrivateKeyService::readPrivateKeys()
-{
-	if (!UserState)
+	if (!UserState || PrivateStoreFileName.isEmpty())
+	{
+		emit finished(false);
+		deleteLater();
 		return;
+	}
 
 	OtrlUserState userState = UserState->userState();
-	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
+	gcry_error_t err = otrl_privkey_generate(userState, PrivateStoreFileName.toUtf8().data(),
+											 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
+
+	emit finished(0 == err);
+	deleteLater();
 }
