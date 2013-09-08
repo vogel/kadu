@@ -260,6 +260,11 @@ void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 	CurrentMessageManager = messageManager;
 }
 
+void OtrAppOpsWrapper::setNotifier(OtrNotifier *notifier)
+{
+	CurrentNotifier = notifier;
+}
+
 void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
@@ -294,6 +299,7 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 
 	OtrOpData opData;
 	opData.setAppOpsWrapper(this);
+	opData.setNotifier(CurrentNotifier.data());
 	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
 	opData.setSender(contact.display(true));
 

@@ -166,6 +166,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrTimer();
 
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
+	AppOpsWrapper->setNotifier(Notifier.data());
 	AppOpsWrapper->setUserState(&UserState);
 
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());

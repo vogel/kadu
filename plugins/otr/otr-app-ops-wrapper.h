@@ -31,6 +31,7 @@ extern "C" {
 class Contact;
 class MessageManager;
 
+class OtrNotifier;
 class OtrOpData;
 class OtrUserState;
 
@@ -59,6 +60,7 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	QWeakPointer<MessageManager> CurrentMessageManager;
+	QWeakPointer<OtrNotifier> CurrentNotifier;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
 
@@ -84,6 +86,7 @@ public:
 	virtual ~OtrAppOpsWrapper();
 
 	void setMessageManager(MessageManager *messageManager);
+	void setNotifier(OtrNotifier *notifier);
 	void setUserState(OtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
 
