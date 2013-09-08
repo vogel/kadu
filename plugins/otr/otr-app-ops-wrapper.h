@@ -76,7 +76,7 @@ class OtrAppOpsWrapper : public QObject
 	QString errorMessage(OtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
 	void handleMsgEvent(OtrOpData *ngOtrOpData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
-	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &senderDisplay) const;
+	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
 	void createInstanceTag(OtrOpData *ngOtrOpData);
 	QString instanceTagsFileName() const;

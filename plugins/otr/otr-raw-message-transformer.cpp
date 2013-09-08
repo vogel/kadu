@@ -159,7 +159,7 @@ OtrOpData OtrRawMessageTransformer::otrOpDataFromMessage(const Message &message)
 	opData.setAppOpsWrapper(AppOpsWrapper.data());
 	opData.setPrivateKeyService(PrivateKeyService.data());
 	opData.setChat(message.messageChat());
-	opData.setSender(message.messageSender().display(true));
+	opData.setPeerDisplay(message.messageChat().contacts().toContact().display(true));
 
 	return opData;
 }

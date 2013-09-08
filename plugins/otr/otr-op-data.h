@@ -30,7 +30,7 @@ class OtrOpData
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrPrivateKeyService *PrivateKeyService;
 	Chat MyChat;
-	QString MySender;
+	QString PeerDisplay;
 
 public:
 	explicit OtrOpData();
@@ -48,8 +48,8 @@ public:
 	void setChat(const Chat &chat);
 	Chat chat() const;
 
-	void setSender(const QString &sender);
-	QString sender() const;
+	void setPeerDisplay(const QString &peerDisplay);
+	QString peerDisplay() const;
 
 };
 
