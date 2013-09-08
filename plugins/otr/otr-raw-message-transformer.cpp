@@ -97,12 +97,18 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	OtrOpData opData(otrOpDataFromMessage(message));
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
+    OtrlTLV *tlvs = 0;
 
 	bool ignoreMessage = otrl_message_receiving(userState, AppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
-			&newMessage, 0, 0, 0, 0);
+			&newMessage, &tlvs, 0, 0, 0);
+
+    OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
+    if (tlv)
+		Notifier.data()->notifyPeerClosedSession(message.messageChat());
+    otrl_tlv_free(tlvs);
 
 	if (ignoreMessage)
 		return QByteArray();

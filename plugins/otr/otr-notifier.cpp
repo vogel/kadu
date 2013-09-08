@@ -26,6 +26,7 @@
 
 QString OtrNotifier::OtrNotifyTopic("OTR");
 QString OtrNotifier::TryToStartSessionNotifyTopic("OTR/TryToStartSession");
+QString OtrNotifier::PeerClosedSessionNotifyTopic("OTR/PeerClosedStartSession");
 QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
 QString OtrNotifier::StillSecureNotifyTopic("OTR/StillSecure");
@@ -37,6 +38,8 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
 	TryToStartSessionNotifyEvent.reset(new NotifyEvent(TryToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Try to start private conversation")));
+	PeerClosedSessionNotifyEvent.reset(new NotifyEvent(PeerClosedSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Peer closed private conversation")));
 	GoneSecureNotifyEvent.reset(new NotifyEvent(GoneSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Conversation gone secure")));
 	GoneInsecureNotifyEvent.reset(new NotifyEvent(GoneInsecureNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -64,6 +67,15 @@ void OtrNotifier::notifyTryToStartSession(const Chat &chat)
 	ChatNotification *notification = new ChatNotification(chat, TryToStartSessionNotifyTopic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
 	notification->setText(tr("Trying to start private conversation"));
+
+	NotificationManager::instance()->notify(notification);
+}
+
+void OtrNotifier::notifyPeerClosedSession(const Chat &chat)
+{
+	ChatNotification *notification = new ChatNotification(chat, PeerClosedSessionNotifyTopic, KaduIcon());
+	notification->setTitle(tr("OTR Encryption"));
+	notification->setText(tr("Peer ended private conversation; you should do the same"));
 
 	NotificationManager::instance()->notify(notification);
 }
