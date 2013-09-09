@@ -31,7 +31,7 @@
 ChatNotification::ChatNotification(const Chat &chat, const QString &type, const KaduIcon &icon) :
 		AccountNotification(chat.chatAccount(), type, icon), CurrentChat(chat)
 {
-	addCallback(tr("Chat"), SLOT(openChat()), "openChat()");
+	addCallback(tr("Chat"), SLOT(callbackAccept()), "callbackAccept()");
 	addCallback(tr("Ignore"), SLOT(callbackDiscard()), "callbackDiscard()");
 }
 
