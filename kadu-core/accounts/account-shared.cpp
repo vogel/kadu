@@ -274,6 +274,9 @@ void AccountShared::store()
 
 	storeValue("PrivateStatus", PrivateStatus);
 
+	if (Details)
+		Details->ensureStored();
+
 	storeRosterTasks();
 }
 
