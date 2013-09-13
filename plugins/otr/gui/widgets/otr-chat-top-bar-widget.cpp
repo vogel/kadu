@@ -53,8 +53,8 @@ void OtrChatTopBarWidget::createGui()
 	QAction *endAction = otrMenu->addAction(tr("End Private Conversation"));
 	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endPrivateConversation()));
 	otrMenu->addSeparator();
-	QAction *verifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
-	connect(verifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
+	VerifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
+	connect(VerifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
 
 	OtrStatusButton->setMenu(otrMenu);
 
@@ -66,6 +66,7 @@ void OtrChatTopBarWidget::trustStatusUpdated()
 	OtrTrustLevel::Level level = trustLevel();
 
 	OtrStatusButton->setText(trustStatusString(level));
+	VerifyAction->setEnabled(OtrTrustLevel::TRUST_NOT_PRIVATE != level);
 }
 
 OtrTrustLevel::Level OtrChatTopBarWidget::trustLevel() const

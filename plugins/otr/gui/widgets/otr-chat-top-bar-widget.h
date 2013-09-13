@@ -34,6 +34,7 @@ class OtrChatTopBarWidget : public QWidget
 
 	Contact MyContact;
 	QPushButton *OtrStatusButton;
+	QAction *VerifyAction;
 
 	void createGui();
 	OtrTrustLevel::Level trustLevel() const;
