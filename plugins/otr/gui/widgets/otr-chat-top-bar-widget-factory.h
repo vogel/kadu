@@ -48,9 +48,6 @@ public:
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
 
-public slots:
-	void updateTrustStatuses();
-
 };
 
 #endif // OTR_CHAT_TOP_BAR_WIDGET_FACTORY_H

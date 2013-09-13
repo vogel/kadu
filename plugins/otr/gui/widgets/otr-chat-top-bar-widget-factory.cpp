@@ -49,6 +49,7 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 	{
 		connect(result, SIGNAL(startPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(startPrivateConversation(Contact)));
 		connect(result, SIGNAL(endPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(endPrivateConversation(Contact)));
+		connect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), result, SLOT(trustStatusUpdated()));
 	}
 
 	if (PeerIdentityVerifier)
@@ -64,10 +65,4 @@ void OtrChatTopBarWidgetFactory::widgetDestroyed(QObject *widget)
 {
 	OtrChatTopBarWidget *otrWidget = static_cast<OtrChatTopBarWidget *>(widget);
 	Widgets.removeAll(otrWidget);
-}
-
-void OtrChatTopBarWidgetFactory::updateTrustStatuses()
-{
-	foreach (OtrChatTopBarWidget *otrWidget, Widgets)
-		otrWidget->updateTrustStatus();
 }

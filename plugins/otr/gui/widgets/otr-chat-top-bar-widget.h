@@ -48,7 +48,8 @@ public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
 
-	void updateTrustStatus();
+public slots:
+	void trustStatusUpdated();
 
 signals:
 	void startPrivateConversation(const Contact &contact);
