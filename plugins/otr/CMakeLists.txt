@@ -17,6 +17,7 @@ set (SOURCES
 	otr-create-private-key-worker.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
+	otr-peer-identity-verifier.cpp
 	otr-plugin.cpp
 	otr-policy.cpp
 	otr-policy-account-store.cpp
@@ -36,6 +37,7 @@ set (MOC_SOURCES
 	otr-create-private-key-job.h
 	otr-create-private-key-worker.h
 	otr-notifier.h
+	otr-peer-identity-verifier.h
 	otr-plugin.h
 	otr-private-key-service.h
 	otr-timer.h

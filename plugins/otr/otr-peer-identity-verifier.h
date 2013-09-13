@@ -17,44 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_CHAT_TOP_BAR_WIDGET_H
-#define OTR_CHAT_TOP_BAR_WIDGET_H
+#ifndef OTR_PEER_IDENTITY_VERIFIER_H
+#define OTR_PEER_IDENTITY_VERIFIER_H
 
-#include <QtGui/QWidget>
+#include <QObject>
 
-#include "contacts/contact.h"
+class Contact;
 
-#include "otr-trust-level.h"
-
-class QPushButton;
-
-class OtrChatTopBarWidget : public QWidget
+class OtrPeerIdentityVerifier : public QObject
 {
 	Q_OBJECT
 
-	Contact MyContact;
-	QPushButton *OtrStatusButton;
-
-	void createGui();
-	OtrTrustLevel::Level trustLevel() const;
-	QString trustStatusString(OtrTrustLevel::Level level) const;
-
-private slots:
-	void startPrivateConversation();
-	void endPrivateConversation();
-	void verifyPeerIdentity();
-
 public:
-	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
-	virtual ~OtrChatTopBarWidget();
+	explicit OtrPeerIdentityVerifier(QObject *parent = 0);
+	virtual ~OtrPeerIdentityVerifier();
 
-	void updateTrustStatus();
-
-signals:
-	void startPrivateConversation(const Contact &contact);
-	void endPrivateConversation(const Contact &contact);
+public slots:
 	void verifyPeerIdentity(const Contact &contact);
 
 };
 
-#endif // OTR_CHAT_TOP_BAR_WIDGET_H
+#endif // OTR_PEER_IDENTITY_VERIFIER_H

@@ -27,12 +27,14 @@
 
 class OtrAppOpsWrapper;
 class OtrChatTopBarWidget;
+class OtrPeerIdentityVerifier;
 
 class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactory
 {
 	Q_OBJECT
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrPeerIdentityVerifier> PeerIdentityVerifier;
 	QList<OtrChatTopBarWidget *> Widgets;
 
 private slots:
@@ -42,6 +44,7 @@ public:
 	virtual ~OtrChatTopBarWidgetFactory() {}
 
 	void setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
+	void setPeerIdentityVerifier(OtrPeerIdentityVerifier *otrPeerIdentityVerifier);
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
 

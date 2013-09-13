@@ -28,6 +28,7 @@
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-notifier.h"
+#include "otr-peer-identity-verifier.h"
 #include "otr-private-key-service.h"
 #include "otr-raw-message-transformer.h"
 #include "otr-timer.h"
@@ -110,6 +111,16 @@ void OtrPlugin::unregisterOtrNotifier()
 	Notifier.reset(0);
 }
 
+void OtrPlugin::registerOtrPeerIdentityVerifier()
+{
+	PeerIdentityVerifier.reset(new OtrPeerIdentityVerifier());
+}
+
+void OtrPlugin::unregisterOtrPeerIdentityVerifier()
+{
+	PeerIdentityVerifier.reset();
+}
+
 void OtrPlugin::registerOtrPrivateKeyService()
 {
 	PrivateKeyService.reset(new OtrPrivateKeyService());
@@ -161,6 +172,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrAppOpsWrapper();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrNotifier();
+	registerOtrPeerIdentityVerifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
@@ -169,6 +181,7 @@ int OtrPlugin::init(bool firstLoad)
 	AppOpsWrapper->setUserState(&UserState);
 
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());
+	ChatTopBarWidgetFactory->setPeerIdentityVerifier(PeerIdentityVerifier.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
@@ -216,12 +229,16 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
+	ChatTopBarWidgetFactory->setPeerIdentityVerifier(0);
+	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(0);
+
 	AppOpsWrapper->setUserState(0);
 	AppOpsWrapper->setMessageManager(0);
 
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
+	unregisterOtrPeerIdentityVerifier();
 	unregisterOtrNotifier();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();

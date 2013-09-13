@@ -52,6 +52,9 @@ void OtrChatTopBarWidget::createGui()
 	connect(startAction, SIGNAL(triggered(bool)), this, SLOT(startPrivateConversation()));
 	QAction *endAction = otrMenu->addAction(tr("End Private Conversation"));
 	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endPrivateConversation()));
+	otrMenu->addSeparator();
+	QAction *verifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
+	connect(verifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
 
 	OtrStatusButton->setMenu(otrMenu);
 
@@ -93,6 +96,11 @@ void OtrChatTopBarWidget::startPrivateConversation()
 void OtrChatTopBarWidget::endPrivateConversation()
 {
 	emit endPrivateConversation(MyContact);
+}
+
+void OtrChatTopBarWidget::verifyPeerIdentity()
+{
+	emit verifyPeerIdentity(MyContact);
 }
 
 #include "moc_otr-chat-top-bar-widget.cpp"

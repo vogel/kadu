@@ -30,6 +30,7 @@ class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsWrapper;
 class OtrChatTopBarWidgetFactory;
 class OtrNotifier;
+class OtrPeerIdentityVerifier;
 class OtrPrivateKeyService;
 class OtrRawMessageTransformer;
 class OtrTimer;
@@ -47,6 +48,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
 	QScopedPointer<OtrNotifier> Notifier;
+	QScopedPointer<OtrPeerIdentityVerifier> PeerIdentityVerifier;
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
 	QScopedPointer<OtrTimer> Timer;
@@ -62,6 +64,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrNotifier();
 	void unregisterOtrNotifier();
+
+	void registerOtrPeerIdentityVerifier();
+	void unregisterOtrPeerIdentityVerifier();
 
 	void registerOtrPrivateKeyService();
 	void unregisterOtrPrivateKeyService();
