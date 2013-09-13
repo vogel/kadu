@@ -26,6 +26,7 @@
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
+#include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-notifier.h"
 #include "otr-peer-identity-verifier.h"
@@ -111,6 +112,16 @@ void OtrPlugin::unregisterOtrNotifier()
 	Notifier.reset(0);
 }
 
+void OtrPlugin::registerOtrPeerIdentityVerificationWindowFactory()
+{
+	PeerIdentityVerificationWindowFactory.reset(new OtrPeerIdentityVerificationWindowFactory());
+}
+
+void OtrPlugin::unregisterOtrPeerIdentityVerificationWindowFactory()
+{
+	PeerIdentityVerificationWindowFactory.reset();
+}
+
 void OtrPlugin::registerOtrPeerIdentityVerifier()
 {
 	PeerIdentityVerifier.reset(new OtrPeerIdentityVerifier());
@@ -172,6 +183,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrAppOpsWrapper();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrNotifier();
+	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
@@ -182,6 +194,8 @@ int OtrPlugin::init(bool firstLoad)
 
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(PeerIdentityVerifier.data());
+
+	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
@@ -228,6 +242,8 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
+	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
+
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(0);
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(0);
 
@@ -238,6 +254,7 @@ void OtrPlugin::done()
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrPeerIdentityVerifier();
+	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrNotifier();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();

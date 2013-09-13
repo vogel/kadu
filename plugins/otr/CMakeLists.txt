@@ -12,6 +12,9 @@ set (SOURCES
 	gui/widgets/otr-chat-top-bar-widget-factory.cpp
 	gui/widgets/otr-chat-top-bar-widget.cpp
 
+	gui/windows/otr-peer-identity-verification-window-factory.cpp
+	gui/windows/otr-peer-identity-verification-window.cpp
+
 	otr-app-ops-wrapper.cpp
 	otr-create-private-key-job.cpp
 	otr-create-private-key-worker.cpp
@@ -32,6 +35,10 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/widgets/otr-account-configuration-widget.h
 	gui/widgets/otr-chat-top-bar-widget-factory.h
+	gui/widgets/otr-chat-top-bar-widget.h
+
+	gui/windows/otr-peer-identity-verification-window-factory.h
+	gui/windows/otr-peer-identity-verification-window.h
 
 	otr-app-ops-wrapper.h
 	otr-create-private-key-job.h

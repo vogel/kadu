@@ -17,31 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFIER_H
-#define OTR_PEER_IDENTITY_VERIFIER_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
 
-#include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
+#include <QtGui/QDialog>
 
-class Contact;
+#include "contacts/contact.h"
 
-class OtrPeerIdentityVerificationWindowFactory;
-
-class OtrPeerIdentityVerifier : public QObject
+class OtrPeerIdentityVerificationWindow : public QDialog
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
+	Contact MyContact;
 
 public:
-	explicit OtrPeerIdentityVerifier(QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerifier();
+	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationWindow();
 
-	void setOtrPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *otrPeerIdentityVerificationWindowFactory);
-
-public slots:
-	void verifyPeerIdentity(const Contact &contact);
+signals:
+	void destroyed(const Contact &contact);
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFIER_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H

@@ -19,6 +19,9 @@
 
 #include "contacts/contact.h"
 
+#include "gui/windows/otr-peer-identity-verification-window-factory.h"
+#include "gui/windows/otr-peer-identity-verification-window.h"
+
 #include "otr-peer-identity-verifier.h"
 
 OtrPeerIdentityVerifier::OtrPeerIdentityVerifier(QObject *parent) :
@@ -30,7 +33,17 @@ OtrPeerIdentityVerifier::~OtrPeerIdentityVerifier()
 {
 }
 
+void OtrPeerIdentityVerifier::setOtrPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *otrPeerIdentityVerificationWindowFactory)
+{
+	PeerIdentityVerificationWindowFactory = otrPeerIdentityVerificationWindowFactory;
+}
+
 void OtrPeerIdentityVerifier::verifyPeerIdentity(const Contact &contact)
 {
-	printf("will verify identity of %s\n", qPrintable(contact.display(true)));
+	if (!PeerIdentityVerificationWindowFactory)
+		return;
+
+	OtrPeerIdentityVerificationWindow *window = PeerIdentityVerificationWindowFactory.data()->createWindow(contact);
+	if (window)
+		window->show();
 }
