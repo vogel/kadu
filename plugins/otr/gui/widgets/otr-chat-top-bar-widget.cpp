@@ -21,7 +21,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 
-#include "otr-app-ops-wrapper.h"
 #include "otr-policy.h"
 #include "otr-policy-account-store.h"
 #include "otr-trust-level-contact-store.h"
@@ -36,11 +35,6 @@ OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent
 
 OtrChatTopBarWidget::~OtrChatTopBarWidget()
 {
-}
-
-void OtrChatTopBarWidget::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
-{
-	CurrentAppOpsWrapper = appOpsWrapper;
 }
 
 void OtrChatTopBarWidget::createGui()
@@ -93,14 +87,12 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level) const
 
 void OtrChatTopBarWidget::startPrivateConversation()
 {
-	if (CurrentAppOpsWrapper)
-		CurrentAppOpsWrapper.data()->startPrivateConversation(MyContact);
+	emit startPrivateConversation(MyContact);
 }
 
 void OtrChatTopBarWidget::endPrivateConversation()
 {
-	if (CurrentAppOpsWrapper)
-		CurrentAppOpsWrapper.data()->endPrivateConversation(MyContact);
+	emit endPrivateConversation(MyContact);
 }
 
 #include "moc_otr-chat-top-bar-widget.cpp"

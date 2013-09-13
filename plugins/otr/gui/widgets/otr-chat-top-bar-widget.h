@@ -28,13 +28,9 @@
 
 class QPushButton;
 
-class OtrAppOpsWrapper;
-
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
-
-	QWeakPointer<OtrAppOpsWrapper> CurrentAppOpsWrapper;
 
 	Contact MyContact;
 	QPushButton *OtrStatusButton;
@@ -51,9 +47,11 @@ public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
-
 	void updateTrustStatus();
+
+signals:
+	void startPrivateConversation(const Contact &contact);
+	void endPrivateConversation(const Contact &contact);
 
 };
 

@@ -89,6 +89,7 @@ public:
 	void setUserState(OtrUserState *userState);
 	const OtrlMessageAppOps * ops() const;
 
+public slots:
 	void startPrivateConversation(const Contact &contact);
 	void endPrivateConversation(const Contact &contact);
 	void peerClosedSession(const Contact &contact);

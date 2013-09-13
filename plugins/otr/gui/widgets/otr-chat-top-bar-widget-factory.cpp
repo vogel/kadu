@@ -38,7 +38,12 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 		return 0;
 
 	OtrChatTopBarWidget *result = new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
-	result->setAppOpsWrapper(AppOpsWrapper.data());
+
+	if (AppOpsWrapper)
+	{
+		connect(result, SIGNAL(startPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(startPrivateConversation(Contact)));
+		connect(result, SIGNAL(endPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(endPrivateConversation(Contact)));
+	}
 
 	connect(result, SIGNAL(destroyed(QObject*)), this, SLOT(widgetDestroyed(QObject*)));
 	Widgets.append(result);
