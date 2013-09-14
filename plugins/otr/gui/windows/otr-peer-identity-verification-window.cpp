@@ -22,6 +22,7 @@
 OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent) :
 		QDialog(parent), MyContact(contact)
 {
+	setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
