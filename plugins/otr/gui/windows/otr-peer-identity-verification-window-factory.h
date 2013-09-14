@@ -28,6 +28,8 @@ class OtrPeerIdentityVerificationWindow;
 
 class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
+	Q_OBJECT
+
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 private slots:
