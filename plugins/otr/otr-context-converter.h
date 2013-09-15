@@ -26,16 +26,30 @@ extern "C" {
 
 #include <QtCore/QObject>
 
+#include "storage/manager-common.h"
+
 class Chat;
 class Contact;
+
+class OtrUserState;
 
 class OtrContextConverter : public QObject
 {
 	Q_OBJECT
 
+	OtrUserState *UserState;
+
 public:
+	explicit OtrContextConverter(QObject *parent = 0);
+	virtual ~OtrContextConverter();
+
+	void setUserState(OtrUserState *userState);
+
 	Chat connectionContextToChat(ConnContext *context) const;
 	Contact connectionContextToContact(ConnContext *context) const;
+
+	ConnContext * chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction = ActionReturnNull) const;
+	ConnContext * contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
 
 };
 

@@ -17,11 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+extern "C" {
+#	include <libotr/instag.h>
+}
+
 #include "accounts/account-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set.h"
+
+#include "otr-user-state.h"
 
 #include "otr-context-converter.h"
+
+OtrContextConverter::OtrContextConverter(QObject *parent) :
+		QObject(parent), UserState(0)
+{
+}
+
+OtrContextConverter::~OtrContextConverter()
+{
+}
+
+void OtrContextConverter::setUserState(OtrUserState *userState)
+{
+	UserState = userState;
+}
 
 Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
 {
@@ -33,4 +54,23 @@ Contact OtrContextConverter::connectionContextToContact(ConnContext *context) co
 {
 	Account account = AccountManager::instance()->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
 	return ContactManager::instance()->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
+}
+
+ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const
+{
+	if (!UserState || !chat)
+		return 0;
+
+	return contactToContextConverter(chat.contacts().toContact(), notFoundAction);
+	
+}
+
+ConnContext * OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const
+{
+	if (!UserState || !contact)
+		return 0;
+
+	return otrl_context_find(UserState->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
+							 qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd,
+							 0, 0, 0);
 }

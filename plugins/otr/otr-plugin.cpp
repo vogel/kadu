@@ -208,6 +208,8 @@ int OtrPlugin::init(bool firstLoad)
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(AppOpsWrapper.data());
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(PeerIdentityVerifier.data());
 
+	ContextConverter->setUserState(&UserState);
+
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
@@ -256,6 +258,8 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
+
+	ContextConverter->setUserState(0);
 
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(0);
 	ChatTopBarWidgetFactory->setOtrAppOpsWrapper(0);
