@@ -28,6 +28,7 @@
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "otr-app-ops-wrapper.h"
+#include "otr-context-converter.h"
 #include "otr-notifier.h"
 #include "otr-peer-identity-verifier.h"
 #include "otr-private-key-service.h"
@@ -94,6 +95,16 @@ void OtrPlugin::unregisterOtrChatTopBarWidgetFactory()
 	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(ChatTopBarWidgetFactory.data());
 
 	ChatTopBarWidgetFactory.reset();
+}
+
+void OtrPlugin::registerOtrContextConverter()
+{
+	ContextConverter.reset(new OtrContextConverter());
+}
+
+void OtrPlugin::unregisterOtrContextConverter()
+{
+	ContextConverter.reset(0);
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -182,6 +193,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrAcountConfigurationWidgetFactory();
 	registerOtrAppOpsWrapper();
 	registerOtrChatTopBarWidgetFactory();
+	registerOtrContextConverter();
 	registerOtrNotifier();
 	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerifier();
@@ -189,6 +201,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
 
+	AppOpsWrapper->setContextConverter(ContextConverter.data());
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setUserState(&UserState);
 
@@ -249,6 +262,7 @@ void OtrPlugin::done()
 
 	AppOpsWrapper->setUserState(0);
 	AppOpsWrapper->setMessageManager(0);
+	AppOpsWrapper->setContextConverter(0);
 
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();
@@ -256,6 +270,7 @@ void OtrPlugin::done()
 	unregisterOtrPeerIdentityVerifier();
 	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrNotifier();
+	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();
 	unregisterOtrAcountConfigurationWidgetFactory();

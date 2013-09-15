@@ -39,6 +39,7 @@ extern "C" {
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
 
+#include "otr-context-converter.h"
 #include "otr-op-data.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
@@ -254,6 +255,11 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 {
 }
 
+void OtrAppOpsWrapper::setContextConverter(OtrContextConverter *contextConverter)
+{
+	ContextConverter = contextConverter;
+}
+
 void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 {
 	CurrentMessageManager = messageManager;
@@ -351,11 +357,13 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 {
 	Q_UNUSED(otrOpData);
 
+	if (!ContextConverter)
+		return;
+
 	ConnContext *context = UserState->userState()->context_root;
 	while (context)
 	{
-		Account account = AccountManager::instance()->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
-		Contact contact = ContactManager::instance()->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
+		Contact contact = ContextConverter.data()->connectionContextToContact(context);
 		OtrTrustLevelContactStore::storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
 
 		context = context->next;

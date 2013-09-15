@@ -29,6 +29,7 @@
 class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsWrapper;
 class OtrChatTopBarWidgetFactory;
+class OtrContextConverter;
 class OtrNotifier;
 class OtrPeerIdentityVerificationWindowFactory;
 class OtrPeerIdentityVerifier;
@@ -48,6 +49,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
 	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
+	QScopedPointer<OtrContextConverter> ContextConverter;
 	QScopedPointer<OtrNotifier> Notifier;
 	QScopedPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
 	QScopedPointer<OtrPeerIdentityVerifier> PeerIdentityVerifier;
@@ -63,6 +65,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrChatTopBarWidgetFactory();
 	void unregisterOtrChatTopBarWidgetFactory();
+
+	void registerOtrContextConverter();
+	void unregisterOtrContextConverter();
 
 	void registerOtrNotifier();
 	void unregisterOtrNotifier();
