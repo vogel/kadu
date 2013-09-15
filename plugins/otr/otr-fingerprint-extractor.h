@@ -21,8 +21,11 @@
 #define OTR_FINGERPRINT_EXTRACTOR_H
 
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 class Account;
+class Contact;
+class OtrContextConverter;
 class OtrUserState;
 
 class OtrFingerprintExtractor : public QObject
@@ -30,14 +33,17 @@ class OtrFingerprintExtractor : public QObject
 	Q_OBJECT
 
 	OtrUserState *UserState;
+	QWeakPointer<OtrContextConverter> ContextConverter;
 
 public:
 	explicit OtrFingerprintExtractor(QObject *parent = 0);
 	virtual ~OtrFingerprintExtractor();
 
 	void setUserState(OtrUserState *userState);
+	void setContextConverter(OtrContextConverter *contextConverter);
 
 	QString extractAccountFingerprint(const Account &account) const;
+	QString extractContactFingerprint(const Contact &contact) const;
 
 };
 

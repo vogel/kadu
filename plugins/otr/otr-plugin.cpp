@@ -222,6 +222,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	ContextConverter->setUserState(&UserState);
 
+	FingerprintExtractor->setContextConverter(ContextConverter.data());
 	FingerprintExtractor->setUserState(&UserState);
 
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(FingerprintExtractor.data());
@@ -278,6 +279,7 @@ void OtrPlugin::done()
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(0);
 
 	FingerprintExtractor->setUserState(0);
+	FingerprintExtractor->setContextConverter(0);
 
 	ContextConverter->setUserState(0);
 

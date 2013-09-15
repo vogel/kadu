@@ -22,7 +22,9 @@ extern "C" {
 }
 
 #include "accounts/account.h"
+#include "contacts/contact.h"
 
+#include "otr-context-converter.h"
 #include "otr-user-state.h"
 
 #include "otr-fingerprint-extractor.h"
@@ -41,6 +43,11 @@ void OtrFingerprintExtractor::setUserState(OtrUserState *userState)
 	UserState = userState;
 }
 
+void OtrFingerprintExtractor::setContextConverter(OtrContextConverter *contextConverter)
+{
+	ContextConverter = contextConverter;
+}
+
 QString OtrFingerprintExtractor::extractAccountFingerprint(const Account &account) const
 {
 	if (!UserState)
@@ -51,6 +58,22 @@ QString OtrFingerprintExtractor::extractAccountFingerprint(const Account &accoun
 
 	if (!result)
 		return QString();
+
+	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
+	return QString(fingerprint);
+}
+
+QString OtrFingerprintExtractor::extractContactFingerprint(const Contact &contact) const
+{
+	if (!UserState || !ContextConverter)
+		return QString();
+
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	if (!context->active_fingerprint)
+		return QString();
+
+	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
+	otrl_privkey_hash_to_human(fingerprint, context->active_fingerprint->fingerprint);
 
 	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
 	return QString(fingerprint);

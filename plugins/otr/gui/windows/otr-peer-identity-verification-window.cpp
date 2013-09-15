@@ -80,6 +80,10 @@ QWizardPage * OtrPeerIdentityVerificationWindow::createFingerprintExchangePage(O
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.contactAccount().id())));
 	layout->addWidget(new QLabel(fingerprintExtractor->extractAccountFingerprint(MyContact.contactAccount())));
+	layout->addWidget(new QLabel(tr("Peer key (%1: %2): ")
+			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
+			.arg(MyContact.id())));
+	layout->addWidget(new QLabel(fingerprintExtractor->extractContactFingerprint(MyContact)));
 
 	return page;
 }
