@@ -24,16 +24,18 @@
 
 #include "contacts/contact.h"
 
+class OtrFingerprintExtractor;
+
 class OtrPeerIdentityVerificationWindow : public QWizard
 {
 	Q_OBJECT
 
 	Contact MyContact;
 
-	void createGui();
+	void createGui(OtrFingerprintExtractor *fingerprintExtractor);
 	QWizardPage * createQuestionAndAnswerPage();
 	QWizardPage * createSharedSecretPage();
-	QWizardPage * createFingerprintExchangePage();
+	QWizardPage * createFingerprintExchangePage(OtrFingerprintExtractor *fingerprintExtractor);
 
 public:
 	enum
@@ -44,7 +46,7 @@ public:
 		FingerprintExchangePage
 	};
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationWindow();
 
 signals:

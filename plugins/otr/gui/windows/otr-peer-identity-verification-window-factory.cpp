@@ -17,9 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-peer-identity-verification-window-factory.h"
-
+#include "otr-fingerprint-extractor.h"
 #include "otr-peer-identity-verification-window.h"
+
+#include "otr-peer-identity-verification-window-factory.h"
 
 OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFactory(QObject *parent) :
 		QObject(parent)
@@ -30,12 +31,17 @@ OtrPeerIdentityVerificationWindowFactory::~OtrPeerIdentityVerificationWindowFact
 {
 }
 
+void OtrPeerIdentityVerificationWindowFactory::setFingerprintExtractor(OtrFingerprintExtractor *fingerprintExtractor)
+{
+	FingerprintExtractor = fingerprintExtractor;
+}
+
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::createWindow(const Contact &contact, QWidget *parent)
 {
 	if (Windows.contains(contact))
 		return Windows.value(contact);
 
-	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, parent);
+	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, FingerprintExtractor.data(), parent);
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
 

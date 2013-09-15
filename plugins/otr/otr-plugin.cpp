@@ -205,6 +205,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrAppOpsWrapper();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
+	registerOtrFingerprintExtractor();
 	registerOtrNotifier();
 	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerifier();
@@ -222,6 +223,8 @@ int OtrPlugin::init(bool firstLoad)
 	ContextConverter->setUserState(&UserState);
 
 	FingerprintExtractor->setUserState(&UserState);
+
+	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(FingerprintExtractor.data());
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
@@ -272,6 +275,8 @@ void OtrPlugin::done()
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
 
+	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(0);
+
 	FingerprintExtractor->setUserState(0);
 
 	ContextConverter->setUserState(0);
@@ -289,6 +294,7 @@ void OtrPlugin::done()
 	unregisterOtrPeerIdentityVerifier();
 	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrNotifier();
+	unregisterOtrFingerprintExtractor();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();

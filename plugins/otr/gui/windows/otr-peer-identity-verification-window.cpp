@@ -17,20 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QLabel>
 #include <QtGui/QRadioButton>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
+
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
+#include "otr-fingerprint-extractor.h"
 
 #include "otr-peer-identity-verification-window.h"
 
-OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent) :
+OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent) :
 		QWizard(parent), MyContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
 
-	createGui();
+	createGui(fingerprintExtractor);
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
@@ -38,12 +44,14 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 	emit destroyed(MyContact);
 }
 
-void OtrPeerIdentityVerificationWindow::createGui()
+void OtrPeerIdentityVerificationWindow::createGui(OtrFingerprintExtractor *fingerprintExtractor)
 {
 	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
 	setPage(QuestionAndAnswerPage, createQuestionAndAnswerPage());
 	setPage(SharedSecretPage, createSharedSecretPage());
-	setPage(FingerprintExchangePage, createFingerprintExchangePage());
+
+	if (fingerprintExtractor)
+		setPage(FingerprintExchangePage, createFingerprintExchangePage(fingerprintExtractor));
 }
 
 QWizardPage * OtrPeerIdentityVerificationWindow::createQuestionAndAnswerPage()
@@ -62,10 +70,16 @@ QWizardPage * OtrPeerIdentityVerificationWindow::createSharedSecretPage()
 	return page;
 }
 
-QWizardPage * OtrPeerIdentityVerificationWindow::createFingerprintExchangePage()
+QWizardPage * OtrPeerIdentityVerificationWindow::createFingerprintExchangePage(OtrFingerprintExtractor *fingerprintExtractor)
 {
 	QWizardPage *page = new QWizardPage;
 	page->setTitle(tr("Fingerprint Exchange"));
+
+	QVBoxLayout *layout = new QVBoxLayout(page);
+	layout->addWidget(new QLabel(tr("Your key (%1: %2): ")
+			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
+			.arg(MyContact.contactAccount().id())));
+	layout->addWidget(new QLabel(fingerprintExtractor->extractAccountFingerprint(MyContact.contactAccount())));
 
 	return page;
 }
