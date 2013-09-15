@@ -11,6 +11,7 @@ set (SOURCES
 	gui/widgets/otr-account-configuration-widget.cpp
 	gui/widgets/otr-chat-top-bar-widget-factory.cpp
 	gui/widgets/otr-chat-top-bar-widget.cpp
+	gui/widgets/otr-peer-identity-verification-select-method-page.cpp
 
 	gui/windows/otr-peer-identity-verification-window-factory.cpp
 	gui/windows/otr-peer-identity-verification-window.cpp
@@ -36,6 +37,7 @@ set (MOC_SOURCES
 	gui/widgets/otr-account-configuration-widget.h
 	gui/widgets/otr-chat-top-bar-widget-factory.h
 	gui/widgets/otr-chat-top-bar-widget.h
+	gui/widgets/otr-peer-identity-verification-select-method-page.h
 
 	gui/windows/otr-peer-identity-verification-window-factory.h
 	gui/windows/otr-peer-identity-verification-window.h

@@ -17,15 +17,55 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QRadioButton>
+#include <QtGui/QVBoxLayout>
+
+#include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
+
 #include "otr-peer-identity-verification-window.h"
 
 OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent) :
-		QDialog(parent), MyContact(contact)
+		QWizard(parent), MyContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
+	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
+
+	createGui();
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 {
 	emit destroyed(MyContact);
+}
+
+void OtrPeerIdentityVerificationWindow::createGui()
+{
+	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
+	setPage(QuestionAndAnswerPage, createQuestionAndAnswerPage());
+	setPage(SharedSecretPage, createSharedSecretPage());
+	setPage(FingerprintExchangePage, createFingerprintExchangePage());
+}
+
+QWizardPage * OtrPeerIdentityVerificationWindow::createQuestionAndAnswerPage()
+{
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(tr("Question And Answer"));
+
+	return page;
+}
+
+QWizardPage * OtrPeerIdentityVerificationWindow::createSharedSecretPage()
+{
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(tr("Shared Secret"));
+
+	return page;
+}
+
+QWizardPage * OtrPeerIdentityVerificationWindow::createFingerprintExchangePage()
+{
+	QWizardPage *page = new QWizardPage;
+	page->setTitle(tr("Fingerprint Exchange"));
+
+	return page;
 }
