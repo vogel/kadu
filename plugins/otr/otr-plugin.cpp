@@ -29,6 +29,7 @@
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-context-converter.h"
+#include "otr-fingerprint-extractor.h"
 #include "otr-notifier.h"
 #include "otr-peer-identity-verifier.h"
 #include "otr-private-key-service.h"
@@ -105,6 +106,16 @@ void OtrPlugin::registerOtrContextConverter()
 void OtrPlugin::unregisterOtrContextConverter()
 {
 	ContextConverter.reset(0);
+}
+
+void OtrPlugin::registerOtrFingerprintExtractor()
+{
+	FingerprintExtractor.reset(new OtrFingerprintExtractor());
+}
+
+void OtrPlugin::unregisterOtrFingerprintExtractor()
+{
+	FingerprintExtractor.reset(0);
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -210,6 +221,8 @@ int OtrPlugin::init(bool firstLoad)
 
 	ContextConverter->setUserState(&UserState);
 
+	FingerprintExtractor->setUserState(&UserState);
+
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
@@ -258,6 +271,8 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), ChatTopBarWidgetFactory.data(), SLOT(updateTrustStatuses()));
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
+
+	FingerprintExtractor->setUserState(0);
 
 	ContextConverter->setUserState(0);
 
