@@ -25,23 +25,23 @@ extern "C" {
 
 #include "otr-context-converter.h"
 
-#include "otr-fingerprint-trust.h"
+#include "otr-fingerprint-service.h"
 
-OtrFingerprintTrust::OtrFingerprintTrust(QObject *parent) :
+OtrFingerprintService::OtrFingerprintService(QObject *parent) :
 		QObject(parent)
 {
 }
 
-OtrFingerprintTrust::~OtrFingerprintTrust()
+OtrFingerprintService::~OtrFingerprintService()
 {
 }
 
-void OtrFingerprintTrust::setContextConverter(OtrContextConverter *contextConverter)
+void OtrFingerprintService::setContextConverter(OtrContextConverter *contextConverter)
 {
 	ContextConverter = contextConverter;
 }
 
-void OtrFingerprintTrust::setContactFingerprintTrust(const Contact &contact, OtrFingerprintTrust::Trust trust) const
+void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, OtrFingerprintService::Trust trust) const
 {
 	if (!ContextConverter)
 		return;
@@ -53,7 +53,7 @@ void OtrFingerprintTrust::setContactFingerprintTrust(const Contact &contact, Otr
 	otrl_context_set_trust(context->active_fingerprint, TrustVerified == trust ? "verified" : "");
 }
 
-OtrFingerprintTrust::Trust OtrFingerprintTrust::contactFingerprintTrust(const Contact &contact) const
+OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(const Contact &contact) const
 {
 	if (!ContextConverter)
 		return TrustNotVerified;

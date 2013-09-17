@@ -25,7 +25,7 @@
 #include "contacts/contact.h"
 
 class OtrFingerprintExtractor;
-class OtrFingerprintTrust;
+class OtrFingerprintService;
 
 class OtrPeerIdentityVerificationWindow : public QWizard
 {
@@ -33,7 +33,7 @@ class OtrPeerIdentityVerificationWindow : public QWizard
 
 	Contact MyContact;
 
-	void createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintTrust *fingerprintTrust);
+	void createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintService *fingerprintService);
 	QWizardPage * createQuestionAndAnswerPage();
 	QWizardPage * createSharedSecretPage();
 	QWizardPage * createFingerprintExchangePage(OtrFingerprintExtractor *fingerprintExtractor);
@@ -48,7 +48,7 @@ public:
 	};
 
 	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor,
-											   OtrFingerprintTrust *fingerprintTrust, QWidget *parent = 0);
+											   OtrFingerprintService *fingerprintService, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationWindow();
 
 signals:

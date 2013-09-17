@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_FINGERPRINT_TRUST_H
-#define OTR_FINGERPRINT_TRUST_H
+#ifndef OTR_FINGERPRINT_SERVICE_H
+#define OTR_FINGERPRINT_SERVICE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
@@ -26,7 +26,7 @@
 class Contact;
 class OtrContextConverter;
 
-class OtrFingerprintTrust : public QObject
+class OtrFingerprintService : public QObject
 {
 	Q_OBJECT
 
@@ -39,8 +39,8 @@ public:
 		TrustVerified
 	};
 
-	explicit OtrFingerprintTrust(QObject *parent = 0);
-	virtual ~OtrFingerprintTrust();
+	explicit OtrFingerprintService(QObject *parent = 0);
+	virtual ~OtrFingerprintService();
 
 	void setContextConverter(OtrContextConverter *contextConverter);
 
@@ -49,4 +49,4 @@ public:
 
 };
 
-#endif // OTR_FINGERPRINT_TRUST_H
+#endif // OTR_FINGERPRINT_SERVICE_H

@@ -19,7 +19,7 @@
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-extractor.h"
-#include "otr-fingerprint-trust.h"
+#include "otr-fingerprint-service.h"
 
 #include "otr-peer-identity-verification-window-factory.h"
 
@@ -37,9 +37,9 @@ void OtrPeerIdentityVerificationWindowFactory::setFingerprintExtractor(OtrFinger
 	FingerprintExtractor = fingerprintExtractor;
 }
 
-void OtrPeerIdentityVerificationWindowFactory::setFingerprintTrust(OtrFingerprintTrust *fingerprintTrust)
+void OtrPeerIdentityVerificationWindowFactory::setFingerprintTrust(OtrFingerprintService *fingerprintService)
 {
-	FingerprintTrust = fingerprintTrust;
+	FingerprintService = fingerprintService;
 }
 
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::createWindow(const Contact &contact, QWidget *parent)
@@ -48,7 +48,7 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 		return Windows.value(contact);
 
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, FingerprintExtractor.data(),
-																					  FingerprintTrust.data(), parent);
+																					  FingerprintService.data(), parent);
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
 

@@ -22,7 +22,7 @@ set (SOURCES
 	otr-create-private-key-job.cpp
 	otr-create-private-key-worker.cpp
 	otr-fingerprint-extractor.cpp
-	otr-fingerprint-trust.cpp
+	otr-fingerprint-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
 	otr-peer-identity-verifier.cpp
@@ -52,7 +52,7 @@ set (MOC_SOURCES
 	otr-create-private-key-job.h
 	otr-create-private-key-worker.h
 	otr-fingerprint-extractor.h
-	otr-fingerprint-trust.h
+	otr-fingerprint-service.h
 	otr-notifier.h
 	otr-peer-identity-verifier.h
 	otr-plugin.h
