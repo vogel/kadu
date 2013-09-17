@@ -25,10 +25,11 @@
 #include "accounts/account.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+
 #include "otr-fingerprint-extractor.h"
+#include "otr-fingerprint-trust.h"
 
 #include "otr-peer-identity-verification-fingerprint-exchange-page.h"
-#include <otr-context-converter.h>
 
 OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent) :
 		QWizardPage(parent), MyContact(contact)
@@ -40,6 +41,11 @@ OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationF
 
 OtrPeerIdentityVerificationFingerprintExchangePage::~OtrPeerIdentityVerificationFingerprintExchangePage()
 {
+}
+
+void OtrPeerIdentityVerificationFingerprintExchangePage::setFingerprintTrust(OtrFingerprintTrust *fingerprintTrust)
+{
+	FingerprintTrust = fingerprintTrust;
 }
 
 void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintExtractor *fingerprintExtractor)
@@ -71,9 +77,27 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 	registerField("fingerprintExchangeNotConfirm", fingerprintExchangeNotConfirm);
 	registerField("fingerprintExchangeConfirm", fingerprintExchangeConfirm);
 
-	fingerprintExchangeNotConfirm->setChecked(true);
+	if (FingerprintTrust && OtrFingerprintTrust::TrustVerified == FingerprintTrust.data()->contactFingerprintTrust(MyContact))
+		fingerprintExchangeConfirm->setChecked(true);
+	else
+		fingerprintExchangeNotConfirm->setChecked(true);
 
 	layout->addSpacing(8);
 	layout->addWidget(fingerprintExchangeNotConfirm);
 	layout->addWidget(fingerprintExchangeConfirm);
+}
+
+bool OtrPeerIdentityVerificationFingerprintExchangePage::validatePage()
+{
+	printf("OtrPeerIdentityVerificationFingerprintExchangePage::validatePage\n");
+
+	if (!FingerprintTrust)
+		return true;
+
+	if (field("fingerprintExchangeConfirm").toBool())
+		FingerprintTrust.data()->setContactFingerprintTrust(MyContact, OtrFingerprintTrust::TrustVerified);
+	else
+		FingerprintTrust.data()->setContactFingerprintTrust(MyContact, OtrFingerprintTrust::TrustNotVerified);
+
+	return true;
 }

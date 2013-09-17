@@ -25,6 +25,7 @@
 #include "contacts/contact.h"
 
 class OtrFingerprintExtractor;
+class OtrFingerprintTrust;
 class OtrPeerIdentityVerificationWindow;
 
 class OtrPeerIdentityVerificationWindowFactory : public QObject
@@ -32,6 +33,7 @@ class OtrPeerIdentityVerificationWindowFactory : public QObject
 	Q_OBJECT
 
 	QWeakPointer<OtrFingerprintExtractor> FingerprintExtractor;
+	QWeakPointer<OtrFingerprintTrust> FingerprintTrust;
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 private slots:
@@ -42,6 +44,7 @@ public:
 	virtual ~OtrPeerIdentityVerificationWindowFactory();
 
 	void setFingerprintExtractor(OtrFingerprintExtractor *fingerprintExtractor);
+	void setFingerprintTrust(OtrFingerprintTrust *fingerprintTrust);
 
 	OtrPeerIdentityVerificationWindow * createWindow(const Contact &contact, QWidget *parent = 0);
 

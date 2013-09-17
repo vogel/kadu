@@ -25,18 +25,24 @@
 #include "contacts/contact.h"
 
 class OtrFingerprintExtractor;
+class OtrFingerprintTrust;
 
 class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 {
 	Q_OBJECT
 
 	Contact MyContact;
+	QWeakPointer<OtrFingerprintTrust> FingerprintTrust;
 
 	void createGui(OtrFingerprintExtractor *fingerprintExtractor);
 
 public:
 	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
+
+	void setFingerprintTrust(OtrFingerprintTrust *fingerprintTrust);
+
+	virtual bool validatePage();
 
 };
 

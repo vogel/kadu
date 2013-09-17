@@ -17,8 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-extractor.h"
-#include "otr-peer-identity-verification-window.h"
+#include "otr-fingerprint-trust.h"
 
 #include "otr-peer-identity-verification-window-factory.h"
 
@@ -36,12 +37,18 @@ void OtrPeerIdentityVerificationWindowFactory::setFingerprintExtractor(OtrFinger
 	FingerprintExtractor = fingerprintExtractor;
 }
 
+void OtrPeerIdentityVerificationWindowFactory::setFingerprintTrust(OtrFingerprintTrust *fingerprintTrust)
+{
+	FingerprintTrust = fingerprintTrust;
+}
+
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::createWindow(const Contact &contact, QWidget *parent)
 {
 	if (Windows.contains(contact))
 		return Windows.value(contact);
 
-	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, FingerprintExtractor.data(), parent);
+	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, FingerprintExtractor.data(),
+																					  FingerprintTrust.data(), parent);
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
 

@@ -30,6 +30,7 @@
 #include "otr-app-ops-wrapper.h"
 #include "otr-context-converter.h"
 #include "otr-fingerprint-extractor.h"
+#include "otr-fingerprint-trust.h"
 #include "otr-notifier.h"
 #include "otr-peer-identity-verifier.h"
 #include "otr-private-key-service.h"
@@ -105,7 +106,7 @@ void OtrPlugin::registerOtrContextConverter()
 
 void OtrPlugin::unregisterOtrContextConverter()
 {
-	ContextConverter.reset(0);
+	ContextConverter.reset();
 }
 
 void OtrPlugin::registerOtrFingerprintExtractor()
@@ -113,9 +114,19 @@ void OtrPlugin::registerOtrFingerprintExtractor()
 	FingerprintExtractor.reset(new OtrFingerprintExtractor());
 }
 
+void OtrPlugin::registerOtrFingerprintTrust()
+{
+	FingerprintTrust.reset(new OtrFingerprintTrust());
+}
+
+void OtrPlugin::unregisterOtrFingerprintTrust()
+{
+	FingerprintTrust.reset();
+}
+
 void OtrPlugin::unregisterOtrFingerprintExtractor()
 {
-	FingerprintExtractor.reset(0);
+	FingerprintExtractor.reset();
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -206,6 +217,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
 	registerOtrFingerprintExtractor();
+	registerOtrFingerprintTrust();
 	registerOtrNotifier();
 	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerifier();
@@ -225,7 +237,10 @@ int OtrPlugin::init(bool firstLoad)
 	FingerprintExtractor->setContextConverter(ContextConverter.data());
 	FingerprintExtractor->setUserState(&UserState);
 
+	FingerprintTrust->setContextConverter(ContextConverter.data());
+
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(FingerprintExtractor.data());
+	PeerIdentityVerificationWindowFactory->setFingerprintTrust(FingerprintTrust.data());
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
@@ -276,7 +291,10 @@ void OtrPlugin::done()
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
 
+	PeerIdentityVerificationWindowFactory->setFingerprintTrust(0);
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(0);
+
+	FingerprintTrust->setContextConverter(0);
 
 	FingerprintExtractor->setUserState(0);
 	FingerprintExtractor->setContextConverter(0);
