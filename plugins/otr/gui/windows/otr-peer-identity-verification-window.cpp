@@ -17,17 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QRadioButton>
-#include <QtGui/QVBoxLayout>
-
-#include "accounts/account.h"
-#include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
-
+#include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
-#include "otr-fingerprint-extractor.h"
 
 #include "otr-peer-identity-verification-window.h"
 
@@ -52,7 +43,7 @@ void OtrPeerIdentityVerificationWindow::createGui(OtrFingerprintExtractor *finge
 	setPage(SharedSecretPage, createSharedSecretPage());
 
 	if (fingerprintExtractor)
-		setPage(FingerprintExchangePage, createFingerprintExchangePage(fingerprintExtractor));
+		setPage(FingerprintExchangePage, new OtrPeerIdentityVerificationFingerprintExchangePage(MyContact, fingerprintExtractor, this));
 }
 
 QWizardPage * OtrPeerIdentityVerificationWindow::createQuestionAndAnswerPage()
@@ -67,38 +58,6 @@ QWizardPage * OtrPeerIdentityVerificationWindow::createSharedSecretPage()
 {
 	QWizardPage *page = new QWizardPage;
 	page->setTitle(tr("Shared Secret"));
-
-	return page;
-}
-
-QWizardPage * OtrPeerIdentityVerificationWindow::createFingerprintExchangePage(OtrFingerprintExtractor *fingerprintExtractor)
-{
-	QWizardPage *page = new QWizardPage;
-	page->setTitle(tr("Fingerprint Exchange"));
-
-	QVBoxLayout *layout = new QVBoxLayout(page);
-
-	layout->addSpacing(8);
-	layout->addWidget(new QLabel(tr("Your Key Fingerprint (%1: %2): ")
-			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
-			.arg(MyContact.contactAccount().id())));
-
-	QLineEdit *ownFingerprint = new QLineEdit(fingerprintExtractor->extractAccountFingerprint(MyContact.contactAccount()));
-	ownFingerprint->setReadOnly(true);
-	layout->addWidget(ownFingerprint);
-
-	layout->addWidget(new QLabel(tr("<b>%1</b> Key Fingerprint (%2: %3): ")
-			.arg(MyContact.display(true))
-			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
-			.arg(MyContact.id())));
-
-	QLineEdit *peerFingerprint = new QLineEdit(fingerprintExtractor->extractContactFingerprint(MyContact));
-	peerFingerprint->setReadOnly(true);
-	layout->addWidget(peerFingerprint);
-
-	layout->addSpacing(8);
-	layout->addWidget(new QRadioButton(tr("I'm not sure if above Key Fingerprint belongs to %1").arg(MyContact.display(true))));
-	layout->addWidget(new QRadioButton(tr("I confirm that above Key Fingerprint belongs to %1").arg(MyContact.display(true))));
 
 	return page;
 }
