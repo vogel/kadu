@@ -89,8 +89,6 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 
 bool OtrPeerIdentityVerificationFingerprintExchangePage::validatePage()
 {
-	printf("OtrPeerIdentityVerificationFingerprintExchangePage::validatePage\n");
-
 	if (!FingerprintTrust)
 		return true;
 

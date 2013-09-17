@@ -57,6 +57,5 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 
 void OtrPeerIdentityVerificationWindowFactory::windowDestroyed(const Contact &contact)
 {
-	printf("windowDestroyed: %s\n", qPrintable(contact.display(true)));
 	Windows.remove(contact);
 }
