@@ -25,12 +25,16 @@
 
 class Contact;
 class OtrContextConverter;
+class OtrUserState;
 
 class OtrFingerprintService : public QObject
 {
 	Q_OBJECT
 
+	OtrUserState *UserState;
 	QWeakPointer<OtrContextConverter> ContextConverter;
+
+	QString fingerprintsStoreFileName() const;
 
 public:
 	enum Trust
@@ -42,7 +46,11 @@ public:
 	explicit OtrFingerprintService(QObject *parent = 0);
 	virtual ~OtrFingerprintService();
 
+	void setUserState(OtrUserState *userState);
 	void setContextConverter(OtrContextConverter *contextConverter);
+
+	void readFingerprints() const;
+	void writeFingerprints() const;
 
 	void setContactFingerprintTrust(const Contact &contact, Trust trust) const;
 	Trust contactFingerprintTrust(const Contact &contact) const;

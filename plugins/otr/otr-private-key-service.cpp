@@ -45,7 +45,7 @@ void OtrPrivateKeyService::setUserState(OtrUserState *userState)
 	UserState = userState;
 }
 
-QString OtrPrivateKeyService::privateStoreFileName()
+QString OtrPrivateKeyService::privateStoreFileName() const
 {
 	return KaduPaths::instance()->profilePath() + QString("/keys/otr_private");
 }

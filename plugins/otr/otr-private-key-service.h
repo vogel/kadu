@@ -35,7 +35,7 @@ class OtrPrivateKeyService : public QObject
 	OtrUserState *UserState;
 	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
 
-	QString privateStoreFileName();
+	QString privateStoreFileName() const;
 
 private slots:
 	void jobFinished(const Account &account, bool ok);

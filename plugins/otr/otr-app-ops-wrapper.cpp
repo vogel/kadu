@@ -40,6 +40,7 @@ extern "C" {
 #include "protocols/services/chat-service.h"
 
 #include "otr-context-converter.h"
+#include "otr-fingerprint-service.h"
 #include "otr-op-data.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
@@ -47,9 +48,9 @@ extern "C" {
 #include "otr-private-key-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level.h"
+#include "otr-trust-level-contact-store.h"
 
 #include "otr-app-ops-wrapper.h"
-#include "otr-trust-level-contact-store.h"
 
 OtrlPolicy kadu_otr_policy(void *opdata, ConnContext *context)
 {
@@ -106,7 +107,8 @@ void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accoun
 
 void kadu_otr_write_fingerprints(void *opdata)
 {
-	Q_UNUSED(opdata);
+	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
+	otrOpData->appOpsWrapper()->writeFingerprints();
 }
 
 void kadu_otr_gone_secure(void *opdata, ConnContext *context)
@@ -260,6 +262,11 @@ void OtrAppOpsWrapper::setContextConverter(OtrContextConverter *contextConverter
 	ContextConverter = contextConverter;
 }
 
+void OtrAppOpsWrapper::setFingerprintService(OtrFingerprintService *fingerprintService)
+{
+	FingerprintService = fingerprintService;
+}
+
 void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 {
 	CurrentMessageManager = messageManager;
@@ -370,6 +377,12 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 	}
 
 	emit contextListUpdated();
+}
+
+void OtrAppOpsWrapper::writeFingerprints()
+{
+	if (FingerprintService)
+		FingerprintService.data()->writeFingerprints();
 }
 
 void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const

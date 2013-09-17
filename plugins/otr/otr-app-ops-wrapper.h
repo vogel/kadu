@@ -34,6 +34,7 @@ class Contact;
 class MessageManager;
 
 class OtrContextConverter;
+class OtrFingerprintService;
 class OtrOpData;
 class OtrUserState;
 
@@ -52,6 +53,7 @@ class OtrAppOpsWrapper : public QObject
 	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
 	friend void kadu_otr_update_context_list(void *);
+	friend void kadu_otr_write_fingerprints(void *);
 	friend void kadu_otr_gone_secure(void *, ConnContext *);
 	friend void kadu_otr_gone_insecure(void *, ConnContext *);
 	friend void kadu_otr_still_secure(void *, ConnContext *, int);
@@ -62,6 +64,7 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	QWeakPointer<OtrContextConverter> ContextConverter;
+	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<MessageManager> CurrentMessageManager;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
@@ -71,6 +74,7 @@ class OtrAppOpsWrapper : public QObject
 	IsLoggedInStatus isLoggedIn(OtrOpData *ngOtrOpData, const QString &contactId) const;
 	void injectMessage(OtrOpData *ngOtrOpData, const QByteArray &messageContent) const;
 	void updateContextList(OtrOpData *ngOtrOpData);
+	void writeFingerprints();
 	void goneSecure(OtrOpData *ngOtrOpData) const;
 	void goneInsecure(OtrOpData *ngOtrOpData) const;
 	void stillSecure(OtrOpData *ngOtrOpData) const;
@@ -88,6 +92,7 @@ public:
 	virtual ~OtrAppOpsWrapper();
 
 	void setContextConverter(OtrContextConverter *contextConverter);
+	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setMessageManager(MessageManager *messageManager);
 	void setUserState(OtrUserState *userState);
 

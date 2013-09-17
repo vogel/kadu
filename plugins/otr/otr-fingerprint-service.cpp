@@ -22,13 +22,15 @@ extern "C" {
 }
 
 #include "contacts/contact.h"
+#include "misc/kadu-paths.h"
 
 #include "otr-context-converter.h"
+#include "otr-user-state.h"
 
 #include "otr-fingerprint-service.h"
 
 OtrFingerprintService::OtrFingerprintService(QObject *parent) :
-		QObject(parent)
+		QObject(parent), UserState()
 {
 }
 
@@ -36,9 +38,37 @@ OtrFingerprintService::~OtrFingerprintService()
 {
 }
 
+void OtrFingerprintService::setUserState(OtrUserState *userState)
+{
+	UserState = userState;
+}
+
 void OtrFingerprintService::setContextConverter(OtrContextConverter *contextConverter)
 {
 	ContextConverter = contextConverter;
+}
+
+QString OtrFingerprintService::fingerprintsStoreFileName() const
+{
+	return KaduPaths::instance()->profilePath() + QString("/keys/otr_fingerprints");
+}
+
+void OtrFingerprintService::readFingerprints() const
+{
+	if (!UserState)
+		return;
+
+	OtrlUserState userState = UserState->userState();
+	otrl_privkey_read_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data(), 0, 0);
+}
+
+void OtrFingerprintService::writeFingerprints() const
+{
+	if (!UserState)
+		return;
+
+	OtrlUserState userState = UserState->userState();
+	otrl_privkey_write_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data());
 }
 
 void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, OtrFingerprintService::Trust trust) const
@@ -51,6 +81,7 @@ void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, O
 		return;
 
 	otrl_context_set_trust(context->active_fingerprint, TrustVerified == trust ? "verified" : "");
+	writeFingerprints();
 }
 
 OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(const Contact &contact) const

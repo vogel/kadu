@@ -226,6 +226,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrTimer();
 
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
+	AppOpsWrapper->setFingerprintService(FingerprintService.data());
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setUserState(&UserState);
 
@@ -238,6 +239,8 @@ int OtrPlugin::init(bool firstLoad)
 	FingerprintExtractor->setUserState(&UserState);
 
 	FingerprintService->setContextConverter(ContextConverter.data());
+	FingerprintService->setUserState(&UserState);
+	FingerprintService->readFingerprints();
 
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(FingerprintExtractor.data());
 	PeerIdentityVerificationWindowFactory->setFingerprintTrust(FingerprintService.data());
@@ -306,6 +309,7 @@ void OtrPlugin::done()
 
 	AppOpsWrapper->setUserState(0);
 	AppOpsWrapper->setMessageManager(0);
+	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);
 
 	unregisterOtrTimer();
