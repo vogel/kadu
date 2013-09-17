@@ -44,7 +44,7 @@ public:
 	virtual ~OtrPeerIdentityVerificationWindowFactory();
 
 	void setFingerprintExtractor(OtrFingerprintExtractor *fingerprintExtractor);
-	void setFingerprintTrust(OtrFingerprintService *fingerprintService);
+	void setFingerprintService(OtrFingerprintService *fingerprintService);
 
 	OtrPeerIdentityVerificationWindow * createWindow(const Contact &contact, QWidget *parent = 0);
 

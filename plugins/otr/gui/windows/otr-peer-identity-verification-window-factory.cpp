@@ -37,7 +37,7 @@ void OtrPeerIdentityVerificationWindowFactory::setFingerprintExtractor(OtrFinger
 	FingerprintExtractor = fingerprintExtractor;
 }
 
-void OtrPeerIdentityVerificationWindowFactory::setFingerprintTrust(OtrFingerprintService *fingerprintService)
+void OtrPeerIdentityVerificationWindowFactory::setFingerprintService(OtrFingerprintService *fingerprintService)
 {
 	FingerprintService = fingerprintService;
 }

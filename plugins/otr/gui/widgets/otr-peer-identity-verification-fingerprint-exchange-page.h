@@ -34,13 +34,12 @@ class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 	Contact MyContact;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 
-	void createGui(OtrFingerprintExtractor *fingerprintExtractor);
+	void createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintService *fingerprintService);
 
 public:
-	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor,
+																OtrFingerprintService *fingerprintService, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
-
-	void setFingerprintTrust(OtrFingerprintService *fingerprintService);
 
 	virtual bool validatePage();
 

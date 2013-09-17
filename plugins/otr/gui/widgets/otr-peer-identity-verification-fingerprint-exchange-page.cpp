@@ -31,24 +31,20 @@
 
 #include "otr-peer-identity-verification-fingerprint-exchange-page.h"
 
-OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor,
+																									   OtrFingerprintService *fingerprintService, QWidget *parent) :
+		QWizardPage(parent), MyContact(contact), FingerprintService(fingerprintService)
 {
 	setTitle(tr("Select Verification Method"));
 
-	createGui(fingerprintExtractor);
+	createGui(fingerprintExtractor, fingerprintService);
 }
 
 OtrPeerIdentityVerificationFingerprintExchangePage::~OtrPeerIdentityVerificationFingerprintExchangePage()
 {
 }
 
-void OtrPeerIdentityVerificationFingerprintExchangePage::setFingerprintTrust(OtrFingerprintService *fingerprintService)
-{
-	FingerprintService = fingerprintService;
-}
-
-void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintExtractor *fingerprintExtractor)
+void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintService *fingerprintService)
 {
 	setTitle(tr("Fingerprint Exchange"));
 
@@ -77,7 +73,7 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 	registerField("fingerprintExchangeNotConfirm", fingerprintExchangeNotConfirm);
 	registerField("fingerprintExchangeConfirm", fingerprintExchangeConfirm);
 
-	if (FingerprintService && OtrFingerprintService::TrustVerified == FingerprintService.data()->contactFingerprintTrust(MyContact))
+	if (fingerprintService && OtrFingerprintService::TrustVerified == fingerprintService->contactFingerprintTrust(MyContact))
 		fingerprintExchangeConfirm->setChecked(true);
 	else
 		fingerprintExchangeNotConfirm->setChecked(true);

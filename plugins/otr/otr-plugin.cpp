@@ -243,7 +243,7 @@ int OtrPlugin::init(bool firstLoad)
 	FingerprintService->readFingerprints();
 
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(FingerprintExtractor.data());
-	PeerIdentityVerificationWindowFactory->setFingerprintTrust(FingerprintService.data());
+	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
@@ -294,7 +294,7 @@ void OtrPlugin::done()
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
 
-	PeerIdentityVerificationWindowFactory->setFingerprintTrust(0);
+	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
 	PeerIdentityVerificationWindowFactory->setFingerprintExtractor(0);
 
 	FingerprintService->setContextConverter(0);
