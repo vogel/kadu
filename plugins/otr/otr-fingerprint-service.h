@@ -55,6 +55,9 @@ public:
 	void setContactFingerprintTrust(const Contact &contact, Trust trust) const;
 	Trust contactFingerprintTrust(const Contact &contact) const;
 
+	QString extractAccountFingerprint(const Account &account) const;
+	QString extractContactFingerprint(const Contact &contact) const;
+
 };
 
 #endif // OTR_FINGERPRINT_SERVICE_H

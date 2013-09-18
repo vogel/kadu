@@ -26,25 +26,24 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
-#include "otr-fingerprint-extractor.h"
 #include "otr-fingerprint-service.h"
 
 #include "otr-peer-identity-verification-fingerprint-exchange-page.h"
 
-OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor,
+OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact,
 																									   OtrFingerprintService *fingerprintService, QWidget *parent) :
 		QWizardPage(parent), MyContact(contact), FingerprintService(fingerprintService)
 {
 	setTitle(tr("Select Verification Method"));
 
-	createGui(fingerprintExtractor, fingerprintService);
+	createGui(fingerprintService);
 }
 
 OtrPeerIdentityVerificationFingerprintExchangePage::~OtrPeerIdentityVerificationFingerprintExchangePage()
 {
 }
 
-void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintService *fingerprintService)
+void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintService *fingerprintService)
 {
 	setTitle(tr("Fingerprint Exchange"));
 
@@ -55,7 +54,7 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.contactAccount().id())));
 
-	QLineEdit *ownFingerprint = new QLineEdit(fingerprintExtractor->extractAccountFingerprint(MyContact.contactAccount()));
+	QLineEdit *ownFingerprint = new QLineEdit(fingerprintService->extractAccountFingerprint(MyContact.contactAccount()));
 	ownFingerprint->setReadOnly(true);
 	layout->addWidget(ownFingerprint);
 
@@ -64,7 +63,7 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.id())));
 
-	QLineEdit *peerFingerprint = new QLineEdit(fingerprintExtractor->extractContactFingerprint(MyContact));
+	QLineEdit *peerFingerprint = new QLineEdit(fingerprintService->extractContactFingerprint(MyContact));
 	peerFingerprint->setReadOnly(true);
 	layout->addWidget(peerFingerprint);
 

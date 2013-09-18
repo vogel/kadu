@@ -22,14 +22,14 @@
 
 #include "otr-peer-identity-verification-window.h"
 
-OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, OtrFingerprintExtractor *fingerprintExtractor,
+OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact,
 																	 OtrFingerprintService *fingerprintService, QWidget *parent) :
 		QWizard(parent), MyContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
 
-	createGui(fingerprintExtractor, fingerprintService);
+	createGui(fingerprintService);
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
@@ -37,15 +37,15 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 	emit destroyed(MyContact);
 }
 
-void OtrPeerIdentityVerificationWindow::createGui(OtrFingerprintExtractor *fingerprintExtractor, OtrFingerprintService *fingerprintService)
+void OtrPeerIdentityVerificationWindow::createGui(OtrFingerprintService *fingerprintService)
 {
 	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
 	setPage(QuestionAndAnswerPage, createQuestionAndAnswerPage());
 	setPage(SharedSecretPage, createSharedSecretPage());
 
-	if (fingerprintExtractor)
+	if (fingerprintService)
 	{
-		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(MyContact, fingerprintExtractor,
+		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(MyContact,
 																																			 fingerprintService, this);
 		setPage(FingerprintExchangePage, fingerprintExchangePage);
 	}

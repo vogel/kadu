@@ -21,6 +21,7 @@ extern "C" {
 #	include <libotr/privkey.h>
 }
 
+#include "accounts/account.h"
 #include "contacts/contact.h"
 #include "misc/kadu-paths.h"
 
@@ -94,4 +95,35 @@ OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(cons
 		return TrustNotVerified;
 
 	return QLatin1String("verified") == context->active_fingerprint->trust ? TrustVerified : TrustNotVerified;
+}
+
+QString OtrFingerprintService::extractAccountFingerprint(const Account &account) const
+{
+	if (!UserState)
+		return QString();
+
+	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
+	char *result = otrl_privkey_fingerprint(UserState->userState(), fingerprint, qPrintable(account.id()), qPrintable(account.protocolName()));
+
+	if (!result)
+		return QString();
+
+	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
+	return QString(fingerprint);
+}
+
+QString OtrFingerprintService::extractContactFingerprint(const Contact &contact) const
+{
+	if (!UserState || !ContextConverter)
+		return QString();
+
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	if (!context->active_fingerprint)
+		return QString();
+
+	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
+	otrl_privkey_hash_to_human(fingerprint, context->active_fingerprint->fingerprint);
+
+	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
+	return QString(fingerprint);
 }

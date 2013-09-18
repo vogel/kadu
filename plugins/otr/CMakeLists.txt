@@ -21,7 +21,6 @@ set (SOURCES
 	otr-context-converter.cpp
 	otr-create-private-key-job.cpp
 	otr-create-private-key-worker.cpp
-	otr-fingerprint-extractor.cpp
 	otr-fingerprint-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
@@ -51,7 +50,6 @@ set (MOC_SOURCES
 	otr-context-converter.h
 	otr-create-private-key-job.h
 	otr-create-private-key-worker.h
-	otr-fingerprint-extractor.h
 	otr-fingerprint-service.h
 	otr-notifier.h
 	otr-peer-identity-verifier.h
