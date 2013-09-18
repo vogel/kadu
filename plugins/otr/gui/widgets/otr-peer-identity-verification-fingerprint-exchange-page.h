@@ -24,6 +24,9 @@
 
 #include "contacts/contact.h"
 
+class QLineEdit;
+class QRadioButton;
+
 class OtrFingerprintService;
 
 class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
@@ -33,13 +36,19 @@ class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 	Contact MyContact;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 
-	void createGui(OtrFingerprintService *fingerprintService);
+	QLineEdit *OwnFingerprint;
+	QLineEdit *PeerFingerprint;
+	QRadioButton *FingerprintExchangeNotConfirm;
+	QRadioButton *FingerprintExchangeConfirm;
+
+	void createGui();
 
 public:
 	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact,
 																OtrFingerprintService *fingerprintService, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
 
+	virtual void initializePage();
 	virtual bool validatePage();
 
 };

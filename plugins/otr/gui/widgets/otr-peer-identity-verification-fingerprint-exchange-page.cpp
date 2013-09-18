@@ -36,14 +36,14 @@ OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationF
 {
 	setTitle(tr("Select Verification Method"));
 
-	createGui(fingerprintService);
+	createGui();
 }
 
 OtrPeerIdentityVerificationFingerprintExchangePage::~OtrPeerIdentityVerificationFingerprintExchangePage()
 {
 }
 
-void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprintService *fingerprintService)
+void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 {
 	setTitle(tr("Fingerprint Exchange"));
 
@@ -54,32 +54,45 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui(OtrFingerprin
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.contactAccount().id())));
 
-	QLineEdit *ownFingerprint = new QLineEdit(fingerprintService->extractAccountFingerprint(MyContact.contactAccount()));
-	ownFingerprint->setReadOnly(true);
-	layout->addWidget(ownFingerprint);
+	OwnFingerprint = new QLineEdit();
+	OwnFingerprint->setReadOnly(true);
+	layout->addWidget(OwnFingerprint);
 
 	layout->addWidget(new QLabel(tr("<b>%1</b> Key Fingerprint (%2: %3): ")
 			.arg(MyContact.display(true))
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.id())));
 
-	QLineEdit *peerFingerprint = new QLineEdit(fingerprintService->extractContactFingerprint(MyContact));
-	peerFingerprint->setReadOnly(true);
-	layout->addWidget(peerFingerprint);
+	PeerFingerprint = new QLineEdit();
+	PeerFingerprint->setReadOnly(true);
+	layout->addWidget(PeerFingerprint);
 
-	QRadioButton *fingerprintExchangeNotConfirm = new QRadioButton(tr("I'm not sure if above Key Fingerprint belongs to %1").arg(MyContact.display(true)));
-	QRadioButton *fingerprintExchangeConfirm = new QRadioButton(tr("I confirm that above Key Fingerprint belongs to %1").arg(MyContact.display(true)));
-	registerField("fingerprintExchangeNotConfirm", fingerprintExchangeNotConfirm);
-	registerField("fingerprintExchangeConfirm", fingerprintExchangeConfirm);
-
-	if (fingerprintService && OtrFingerprintService::TrustVerified == fingerprintService->contactFingerprintTrust(MyContact))
-		fingerprintExchangeConfirm->setChecked(true);
-	else
-		fingerprintExchangeNotConfirm->setChecked(true);
+	FingerprintExchangeNotConfirm = new QRadioButton(tr("I'm not sure if above Key Fingerprint belongs to %1").arg(MyContact.display(true)));
+	FingerprintExchangeConfirm = new QRadioButton(tr("I confirm that above Key Fingerprint belongs to %1").arg(MyContact.display(true)));
+	registerField("fingerprintExchangeNotConfirm", FingerprintExchangeNotConfirm);
+	registerField("fingerprintExchangeConfirm", FingerprintExchangeConfirm);
 
 	layout->addSpacing(8);
-	layout->addWidget(fingerprintExchangeNotConfirm);
-	layout->addWidget(fingerprintExchangeConfirm);
+	layout->addWidget(FingerprintExchangeNotConfirm);
+	layout->addWidget(FingerprintExchangeConfirm);
+}
+
+void OtrPeerIdentityVerificationFingerprintExchangePage::initializePage()
+{
+	if (!FingerprintService)
+	{
+		FingerprintExchangeConfirm->setEnabled(false);
+		FingerprintExchangeNotConfirm->setChecked(true);
+		return;
+	}
+
+	OwnFingerprint->setText(FingerprintService.data()->extractAccountFingerprint(MyContact.contactAccount()));
+	PeerFingerprint->setText(FingerprintService.data()->extractContactFingerprint(MyContact));
+
+	if (OtrFingerprintService::TrustVerified == FingerprintService.data()->contactFingerprintTrust(MyContact))
+		FingerprintExchangeConfirm->setChecked(true);
+	else
+		FingerprintExchangeNotConfirm->setChecked(true);
 }
 
 bool OtrPeerIdentityVerificationFingerprintExchangePage::validatePage()
