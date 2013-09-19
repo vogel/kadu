@@ -28,9 +28,13 @@
 
 class QPushButton;
 
+class OtrTrustLevelService;
+
 class OtrChatTopBarWidget : public QWidget
 {
 	Q_OBJECT
+
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 
 	Contact MyContact;
 	QPushButton *OtrStatusButton;
@@ -44,13 +48,13 @@ private slots:
 	void startPrivateConversation();
 	void endPrivateConversation();
 	void verifyPeerIdentity();
+	void trustLevelUpdated();
 
 public:
 	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrChatTopBarWidget();
 
-public slots:
-	void trustLevelUpdated();
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 signals:
 	void startPrivateConversation(const Contact &contact);

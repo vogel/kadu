@@ -23,7 +23,7 @@
 
 #include "otr-policy.h"
 #include "otr-policy-account-store.h"
-#include "otr-trust-level-contact-store.h"
+#include "otr-trust-level-service.h"
 
 #include "otr-chat-top-bar-widget.h"
 
@@ -61,23 +61,37 @@ void OtrChatTopBarWidget::createGui()
 	trustLevelUpdated();
 }
 
+void OtrChatTopBarWidget::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	if (TrustLevelService)
+		disconnect(TrustLevelService.data(), 0, this, 0);
+	TrustLevelService = trustLevelService;
+	if (TrustLevelService)
+		connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), this, SLOT(trustLevelUpdated()));
+}
+
 void OtrChatTopBarWidget::trustLevelUpdated()
 {
 	OtrTrustLevel::Level level = trustLevel();
 
 	OtrStatusButton->setText(trustStatusString(level));
-	VerifyAction->setEnabled(OtrTrustLevel::TRUST_NOT_PRIVATE != level);
+	VerifyAction->setEnabled(level >= OtrTrustLevel::TRUST_UNVERIFIED);
 }
 
 OtrTrustLevel::Level OtrChatTopBarWidget::trustLevel() const
 {
-	return OtrTrustLevelContactStore::loadTrustLevelFromContact(MyContact);
+	if (TrustLevelService)
+		return TrustLevelService.data()->loadTrustLevelFromContact(MyContact);
+	else
+		return OtrTrustLevel::TRUST_UNKNOWN;
 }
 
 QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevel::Level level) const
 {
 	switch (level)
 	{
+		case OtrTrustLevel::TRUST_UNKNOWN:
+			return tr("Unknown");
 		case OtrTrustLevel::TRUST_NOT_PRIVATE:
 			return tr("Not Private");
 		case OtrTrustLevel::TRUST_UNVERIFIED:

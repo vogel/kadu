@@ -20,7 +20,6 @@
 #include "contacts/contact.h"
 
 #include "otr-context-converter.h"
-#include "otr-trust-level-contact-store.h"
 #include "otr-user-state.h"
 
 #include "otr-trust-level-service.h"
@@ -44,6 +43,16 @@ void OtrTrustLevelService::setContextConverter(OtrContextConverter *contextConve
 	ContextConverter = contextConverter;
 }
 
+void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level)
+{
+	contact.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
+}
+
+OtrTrustLevel::Level OtrTrustLevelService::loadTrustLevelFromContact(const Contact &contact)
+{
+	return (OtrTrustLevel::Level)contact.property("otr:trustLevel", QVariant()).toInt();
+}
+
 void OtrTrustLevelService::updateTrustLevels()
 {
 	if (!ContextConverter)
@@ -53,7 +62,7 @@ void OtrTrustLevelService::updateTrustLevels()
 	while (context)
 	{
 		Contact contact = ContextConverter.data()->connectionContextToContact(context);
-		OtrTrustLevelContactStore::storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
+		storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
 
 		context = context->next;
 	}

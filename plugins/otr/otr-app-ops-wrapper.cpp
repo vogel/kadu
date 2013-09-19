@@ -48,7 +48,6 @@ extern "C" {
 #include "otr-private-key-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level.h"
-#include "otr-trust-level-contact-store.h"
 #include "otr-trust-level-service.h"
 
 #include "otr-app-ops-wrapper.h"
@@ -290,10 +289,10 @@ const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 
 void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
 {
-	if (!CurrentMessageManager)
+	if (!CurrentMessageManager || !TrustLevelService)
 		return;
 
-	OtrTrustLevel::Level level = OtrTrustLevelContactStore::loadTrustLevelFromContact(contact);
+	OtrTrustLevel::Level level = TrustLevelService.data()->loadTrustLevelFromContact(contact);
 	if (OtrTrustLevel::TRUST_PRIVATE == level)
 		return;
 

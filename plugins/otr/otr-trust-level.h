@@ -30,6 +30,7 @@ class OtrTrustLevel
 public:
 	enum Level
 	{
+		TRUST_UNKNOWN,
 		TRUST_NOT_PRIVATE,
 		TRUST_UNVERIFIED,
 		TRUST_PRIVATE

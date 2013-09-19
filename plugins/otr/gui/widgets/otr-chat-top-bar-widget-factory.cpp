@@ -50,15 +50,13 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 		return 0;
 
 	OtrChatTopBarWidget *result = new OtrChatTopBarWidget(chat.contacts().toContact(), parent);
+	result->setTrustLevelService(TrustLevelService.data());
 
 	if (AppOpsWrapper)
 	{
 		connect(result, SIGNAL(startPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(startPrivateConversation(Contact)));
 		connect(result, SIGNAL(endPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(endPrivateConversation(Contact)));
 	}
-
-	if (TrustLevelService)
-		connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), result, SLOT(trustLevelUpdated()));
 
 	if (PeerIdentityVerifier)
 		connect(result, SIGNAL(verifyPeerIdentity(Contact)), PeerIdentityVerifier.data(), SLOT(verifyPeerIdentity(Contact)));

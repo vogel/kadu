@@ -23,6 +23,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+#include "otr-trust-level.h"
+
+class Contact;
+
 class OtrContextConverter;
 class OtrUserState;
 
@@ -45,6 +49,9 @@ public:
 
 	void setUserState(OtrUserState *userState);
 	void setContextConverter(OtrContextConverter *contextConverter);
+
+	void storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level);
+	OtrTrustLevel::Level loadTrustLevelFromContact(const Contact &contact);
 
 public slots:
 	void updateTrustLevels();
