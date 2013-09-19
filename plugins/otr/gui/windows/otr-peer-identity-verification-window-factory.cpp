@@ -18,6 +18,7 @@
  */
 
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
+#include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-service.h"
 
@@ -43,6 +44,9 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 		return Windows.value(contact);
 
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, parent);
+
+	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
+	result->setPage(OtrPeerIdentityVerificationWindow::QuestionAndAnswerPage, questionAndAnswerPage);
 
 	if (FingerprintService)
 	{

@@ -79,6 +79,11 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::setFingerprintService(O
 	FingerprintService = fingerprintService;
 }
 
+int OtrPeerIdentityVerificationFingerprintExchangePage::nextId() const
+{
+	return -1;
+}
+
 void OtrPeerIdentityVerificationFingerprintExchangePage::initializePage()
 {
 	if (!FingerprintService)

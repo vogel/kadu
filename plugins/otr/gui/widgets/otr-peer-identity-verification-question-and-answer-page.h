@@ -17,37 +17,29 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
-#define OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_QUESTION_AND_ANSWER_PAGE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_QUESTION_AND_ANSWER_PAGE_H
 
 #include <QtGui/QWizardPage>
 
 #include "contacts/contact.h"
 
 class QLineEdit;
-class QRadioButton;
 
-class OtrFingerprintService;
-
-class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
+class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 {
 	Q_OBJECT
 
 	Contact MyContact;
-	QWeakPointer<OtrFingerprintService> FingerprintService;
 
-	QLineEdit *OwnFingerprint;
-	QLineEdit *PeerFingerprint;
-	QRadioButton *FingerprintExchangeNotConfirm;
-	QRadioButton *FingerprintExchangeConfirm;
+	QLineEdit *QuestionEdit;
+	QLineEdit *AnswerEdit;
 
 	void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent = 0);
-	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
-
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
+	explicit OtrPeerIdentityVerificationQuestionAndAnswerPage(const Contact &contact, QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationQuestionAndAnswerPage();
 
 	virtual int nextId() const;
 	virtual void initializePage();
@@ -55,4 +47,4 @@ public:
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_QUESTION_AND_ANSWER_PAGE_H

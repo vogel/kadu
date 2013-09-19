@@ -31,7 +31,6 @@ class OtrPeerIdentityVerificationWindow : public QWizard
 	Contact MyContact;
 
 	void createGui();
-	QWizardPage * createQuestionAndAnswerPage();
 	QWizardPage * createSharedSecretPage();
 
 public:

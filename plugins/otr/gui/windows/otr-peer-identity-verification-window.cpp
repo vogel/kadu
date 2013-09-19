@@ -38,16 +38,7 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 void OtrPeerIdentityVerificationWindow::createGui()
 {
 	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
-	setPage(QuestionAndAnswerPage, createQuestionAndAnswerPage());
 	setPage(SharedSecretPage, createSharedSecretPage());
-}
-
-QWizardPage * OtrPeerIdentityVerificationWindow::createQuestionAndAnswerPage()
-{
-	QWizardPage *page = new QWizardPage;
-	page->setTitle(tr("Question And Answer"));
-
-	return page;
 }
 
 QWizardPage * OtrPeerIdentityVerificationWindow::createSharedSecretPage()
