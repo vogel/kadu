@@ -45,8 +45,8 @@ void OtrPeerIdentityVerificationWindow::createGui(OtrFingerprintService *fingerp
 
 	if (fingerprintService)
 	{
-		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(MyContact,
-																																			 fingerprintService, this);
+		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(MyContact, this);
+		fingerprintExchangePage->setFingerprintService(fingerprintService);
 		setPage(FingerprintExchangePage, fingerprintExchangePage);
 	}
 }

@@ -30,9 +30,8 @@
 
 #include "otr-peer-identity-verification-fingerprint-exchange-page.h"
 
-OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact,
-																									   OtrFingerprintService *fingerprintService, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact), FingerprintService(fingerprintService)
+OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent) :
+		QWizardPage(parent), MyContact(contact)
 {
 	setTitle(tr("Select Verification Method"));
 
@@ -75,6 +74,11 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 	layout->addSpacing(8);
 	layout->addWidget(FingerprintExchangeNotConfirm);
 	layout->addWidget(FingerprintExchangeConfirm);
+}
+
+void OtrPeerIdentityVerificationFingerprintExchangePage::setFingerprintService(OtrFingerprintService *fingerprintService)
+{
+	FingerprintService = fingerprintService;
 }
 
 void OtrPeerIdentityVerificationFingerprintExchangePage::initializePage()
