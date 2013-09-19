@@ -37,6 +37,7 @@ class OtrPeerIdentityVerifier;
 class OtrPrivateKeyService;
 class OtrRawMessageTransformer;
 class OtrTimer;
+class OtrTrustLevelService;
 
 class OtrPlugin : public QObject, public GenericPlugin
 {
@@ -58,6 +59,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
 	QScopedPointer<OtrTimer> Timer;
+	QScopedPointer<OtrTrustLevelService> TrustLevelService;
 
 	void registerOtrAcountConfigurationWidgetFactory();
 	void unregisterOtrAcountConfigurationWidgetFactory();
@@ -92,6 +94,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrTimer();
 	void unregisterOtrTimer();
+
+	void registerOtrTrustLevelService();
+	void unregisterOtrTrustLevelService();
 
 public:
 	static OtrPlugin * instance();

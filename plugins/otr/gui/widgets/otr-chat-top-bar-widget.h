@@ -50,7 +50,7 @@ public:
 	virtual ~OtrChatTopBarWidget();
 
 public slots:
-	void trustStatusUpdated();
+	void trustLevelUpdated();
 
 signals:
 	void startPrivateConversation(const Contact &contact);

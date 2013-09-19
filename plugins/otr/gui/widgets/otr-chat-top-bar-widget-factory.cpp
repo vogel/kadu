@@ -24,10 +24,11 @@
 #include "gui/widgets/otr-chat-top-bar-widget.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-peer-identity-verifier.h"
+#include "otr-trust-level-service.h"
 
 #include "otr-chat-top-bar-widget-factory.h"
 
-void OtrChatTopBarWidgetFactory::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+void OtrChatTopBarWidgetFactory::setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
 {
 	AppOpsWrapper = otrAppOpsWrapper;
 }
@@ -35,6 +36,11 @@ void OtrChatTopBarWidgetFactory::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOps
 void OtrChatTopBarWidgetFactory::setPeerIdentityVerifier(OtrPeerIdentityVerifier *otrPeerIdentityVerifier)
 {
 	PeerIdentityVerifier = otrPeerIdentityVerifier;
+}
+
+void OtrChatTopBarWidgetFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	TrustLevelService = trustLevelService;
 }
 
 QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
@@ -49,8 +55,10 @@ QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *pa
 	{
 		connect(result, SIGNAL(startPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(startPrivateConversation(Contact)));
 		connect(result, SIGNAL(endPrivateConversation(Contact)), AppOpsWrapper.data(), SLOT(endPrivateConversation(Contact)));
-		connect(AppOpsWrapper.data(), SIGNAL(contextListUpdated()), result, SLOT(trustStatusUpdated()));
 	}
+
+	if (TrustLevelService)
+		connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), result, SLOT(trustLevelUpdated()));
 
 	if (PeerIdentityVerifier)
 		connect(result, SIGNAL(verifyPeerIdentity(Contact)), PeerIdentityVerifier.data(), SLOT(verifyPeerIdentity(Contact)));

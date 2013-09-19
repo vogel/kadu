@@ -58,10 +58,10 @@ void OtrChatTopBarWidget::createGui()
 
 	OtrStatusButton->setMenu(otrMenu);
 
-	trustStatusUpdated();
+	trustLevelUpdated();
 }
 
-void OtrChatTopBarWidget::trustStatusUpdated()
+void OtrChatTopBarWidget::trustLevelUpdated()
 {
 	OtrTrustLevel::Level level = trustLevel();
 

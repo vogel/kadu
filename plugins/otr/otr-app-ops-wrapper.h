@@ -36,6 +36,7 @@ class MessageManager;
 class OtrContextConverter;
 class OtrFingerprintService;
 class OtrOpData;
+class OtrTrustLevelService;
 class OtrUserState;
 
 class OtrAppOpsWrapper : public QObject
@@ -66,6 +67,7 @@ class OtrAppOpsWrapper : public QObject
 	QWeakPointer<OtrContextConverter> ContextConverter;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<MessageManager> CurrentMessageManager;
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
 
@@ -95,6 +97,7 @@ public:
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setMessageManager(MessageManager *messageManager);
 	void setUserState(OtrUserState *userState);
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	const OtrlMessageAppOps * ops() const;
 
@@ -109,8 +112,6 @@ signals:
 	void goneSecure(const Chat &chat) const;
 	void goneInsecure(const Chat &chat) const;
 	void stillSecure(const Chat &chat) const;
-
-	void contextListUpdated() const;
 
 };
 

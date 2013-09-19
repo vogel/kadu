@@ -49,6 +49,7 @@ extern "C" {
 #include "otr-timer.h"
 #include "otr-trust-level.h"
 #include "otr-trust-level-contact-store.h"
+#include "otr-trust-level-service.h"
 
 #include "otr-app-ops-wrapper.h"
 
@@ -277,6 +278,11 @@ void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 	UserState = userState;
 }
 
+void OtrAppOpsWrapper::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	TrustLevelService = trustLevelService;
+}
+
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
@@ -364,19 +370,8 @@ void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
 {
 	Q_UNUSED(otrOpData);
 
-	if (!ContextConverter)
-		return;
-
-	ConnContext *context = UserState->userState()->context_root;
-	while (context)
-	{
-		Contact contact = ContextConverter.data()->connectionContextToContact(context);
-		OtrTrustLevelContactStore::storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
-
-		context = context->next;
-	}
-
-	emit contextListUpdated();
+	if (TrustLevelService)
+		TrustLevelService.data()->updateTrustLevels();
 }
 
 void OtrAppOpsWrapper::writeFingerprints()

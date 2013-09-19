@@ -33,6 +33,7 @@ set (SOURCES
 	otr-timer.cpp
 	otr-trust-level.cpp
 	otr-trust-level-contact-store.cpp
+	otr-trust-level-service.cpp
 	otr-user-state.cpp
 )
 
@@ -56,6 +57,7 @@ set (MOC_SOURCES
 	otr-plugin.h
 	otr-private-key-service.h
 	otr-timer.h
+	otr-trust-level-service.h
 )
 
 set (CONFIGURATION_FILES
