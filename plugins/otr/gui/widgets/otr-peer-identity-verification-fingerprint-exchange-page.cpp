@@ -33,8 +33,6 @@
 OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent) :
 		QWizardPage(parent), MyContact(contact)
 {
-	setTitle(tr("Select Verification Method"));
-
 	createGui();
 }
 
@@ -49,7 +47,7 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	layout->addSpacing(8);
-	layout->addWidget(new QLabel(tr("Your Key Fingerprint (%1: %2): ")
+	layout->addWidget(new QLabel(tr("Your Key Fingerprint (%1: %2):")
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.contactAccount().id())));
 
@@ -57,7 +55,7 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 	OwnFingerprint->setReadOnly(true);
 	layout->addWidget(OwnFingerprint);
 
-	layout->addWidget(new QLabel(tr("<b>%1</b> Key Fingerprint (%2: %3): ")
+	layout->addWidget(new QLabel(tr("<b>%1</b> Key Fingerprint (%2: %3):")
 			.arg(MyContact.display(true))
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.id())));
