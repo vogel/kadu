@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-service.h"
 
@@ -41,7 +42,15 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 	if (Windows.contains(contact))
 		return Windows.value(contact);
 
-	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, FingerprintService.data(), parent);
+	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, parent);
+
+	if (FingerprintService)
+	{
+		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
+		fingerprintExchangePage->setFingerprintService(FingerprintService.data());
+		result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
+	}
+
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
 
