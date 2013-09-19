@@ -20,10 +20,12 @@
 #ifndef OTR_TRUST_LEVEL_SERVICE_H
 #define OTR_TRUST_LEVEL_SERVICE_H
 
+extern "C" {
+#	include <libotr/context.h>
+}
+
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
-
-#include "otr-trust-level.h"
 
 class Contact;
 
@@ -38,10 +40,12 @@ class OtrTrustLevelService : public QObject
 	QWeakPointer<OtrContextConverter> ContextConverter;
 
 public:
-	enum Trust
+	enum TrustLevel
 	{
-		TrustNotVerified,
-		TrustVerified
+		TrustLevelUnknown,
+		TrustLevelNotPrivate,
+		TrustLevelUnverified,
+		TrustLevelPrivate
 	};
 
 	explicit OtrTrustLevelService(QObject *parent = 0);
@@ -50,8 +54,10 @@ public:
 	void setUserState(OtrUserState *userState);
 	void setContextConverter(OtrContextConverter *contextConverter);
 
-	void storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level);
-	OtrTrustLevel::Level loadTrustLevelFromContact(const Contact &contact);
+	void storeTrustLevelToContact(const Contact &contact, TrustLevel level) const;
+	TrustLevel loadTrustLevelFromContact(const Contact &contact) const;
+
+	TrustLevel trustLevelFromContext(ConnContext *context) const;
 
 public slots:
 	void updateTrustLevels();

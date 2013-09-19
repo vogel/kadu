@@ -24,11 +24,9 @@
 
 #include "contacts/contact.h"
 
-#include "otr-trust-level.h"
+#include "otr-trust-level-service.h"
 
 class QPushButton;
-
-class OtrTrustLevelService;
 
 class OtrChatTopBarWidget : public QWidget
 {
@@ -41,8 +39,8 @@ class OtrChatTopBarWidget : public QWidget
 	QAction *VerifyAction;
 
 	void createGui();
-	OtrTrustLevel::Level trustLevel() const;
-	QString trustStatusString(OtrTrustLevel::Level level) const;
+	OtrTrustLevelService::TrustLevel trustLevel() const;
+	QString trustStatusString(OtrTrustLevelService::TrustLevel level) const;
 
 private slots:
 	void startPrivateConversation();

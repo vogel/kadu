@@ -43,14 +43,37 @@ void OtrTrustLevelService::setContextConverter(OtrContextConverter *contextConve
 	ContextConverter = contextConverter;
 }
 
-void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, OtrTrustLevel::Level level)
+void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, TrustLevel level) const
 {
 	contact.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
 }
 
-OtrTrustLevel::Level OtrTrustLevelService::loadTrustLevelFromContact(const Contact &contact)
+OtrTrustLevelService::TrustLevel OtrTrustLevelService::loadTrustLevelFromContact(const Contact &contact) const
 {
-	return (OtrTrustLevel::Level)contact.property("otr:trustLevel", QVariant()).toInt();
+	return (TrustLevel)contact.property("otr:trustLevel", QVariant()).toInt();
+}
+
+OtrTrustLevelService::TrustLevel OtrTrustLevelService::trustLevelFromContext(ConnContext *context) const
+{
+	if (!context)
+		return TrustLevelNotPrivate;
+
+	if (context->msgstate == OTRL_MSGSTATE_FINISHED)
+		return TrustLevelNotPrivate;
+
+	if (context->msgstate != OTRL_MSGSTATE_ENCRYPTED)
+		return TrustLevelNotPrivate;
+
+	if (!context->active_fingerprint)
+		return TrustLevelUnverified;
+
+	if (!context->active_fingerprint->trust)
+		return TrustLevelUnverified;
+
+	if (context->active_fingerprint->trust[0] == '\0')
+		return TrustLevelUnverified;
+
+	return TrustLevelPrivate;
 }
 
 void OtrTrustLevelService::updateTrustLevels()
@@ -62,7 +85,7 @@ void OtrTrustLevelService::updateTrustLevels()
 	while (context)
 	{
 		Contact contact = ContextConverter.data()->connectionContextToContact(context);
-		storeTrustLevelToContact(contact, OtrTrustLevel::fromContext(context));
+		storeTrustLevelToContact(contact, trustLevelFromContext(context));
 
 		context = context->next;
 	}

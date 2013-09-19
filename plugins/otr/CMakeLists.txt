@@ -31,7 +31,6 @@ set (SOURCES
 	otr-private-key-service.cpp
 	otr-raw-message-transformer.cpp
 	otr-timer.cpp
-	otr-trust-level.cpp
 	otr-trust-level-service.cpp
 	otr-user-state.cpp
 )
