@@ -67,6 +67,8 @@ void OtrChatTopBarWidget::setTrustLevelService(OtrTrustLevelService *trustLevelS
 	TrustLevelService = trustLevelService;
 	if (TrustLevelService)
 		connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), this, SLOT(trustLevelUpdated()));
+
+	trustLevelUpdated();
 }
 
 void OtrChatTopBarWidget::trustLevelUpdated()

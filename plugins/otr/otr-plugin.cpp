@@ -271,6 +271,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	TrustLevelService->setUserState(&UserState);
 	TrustLevelService->setContextConverter(ContextConverter.data());
+	TrustLevelService->updateTrustLevels();
 
 	return 0;
 }
