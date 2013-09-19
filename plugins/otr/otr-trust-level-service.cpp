@@ -50,7 +50,7 @@ void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, Trus
 
 OtrTrustLevelService::TrustLevel OtrTrustLevelService::loadTrustLevelFromContact(const Contact &contact) const
 {
-	return (TrustLevel)contact.property("otr:trustLevel", QVariant()).toInt();
+	return (TrustLevel)contact.property("otr:trustLevel", QVariant(TrustLevelNotPrivate)).toInt();
 }
 
 OtrTrustLevelService::TrustLevel OtrTrustLevelService::trustLevelFromContext(ConnContext *context) const
