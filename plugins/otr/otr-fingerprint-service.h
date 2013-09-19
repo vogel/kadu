@@ -58,6 +58,9 @@ public:
 	QString extractAccountFingerprint(const Account &account) const;
 	QString extractContactFingerprint(const Contact &contact) const;
 
+signals:
+	void fingerprintsUpdated() const;
+
 };
 
 #endif // OTR_FINGERPRINT_SERVICE_H

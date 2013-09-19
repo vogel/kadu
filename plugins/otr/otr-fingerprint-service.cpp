@@ -61,6 +61,8 @@ void OtrFingerprintService::readFingerprints() const
 
 	OtrlUserState userState = UserState->userState();
 	otrl_privkey_read_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data(), 0, 0);
+
+	emit fingerprintsUpdated();
 }
 
 void OtrFingerprintService::writeFingerprints() const
@@ -70,6 +72,8 @@ void OtrFingerprintService::writeFingerprints() const
 
 	OtrlUserState userState = UserState->userState();
 	otrl_privkey_write_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data());
+
+	emit fingerprintsUpdated();
 }
 
 void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, OtrFingerprintService::Trust trust) const

@@ -231,6 +231,12 @@ int OtrPlugin::init(bool firstLoad)
 	AppOpsWrapper->setUserState(&UserState);
 	AppOpsWrapper->setTrustLevelService(TrustLevelService.data());
 
+	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
+	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
+	connect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
+	connect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
+	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
+
 	ChatTopBarWidgetFactory->setAppOpsWrapper(AppOpsWrapper.data());
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(PeerIdentityVerifier.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
@@ -239,17 +245,14 @@ int OtrPlugin::init(bool firstLoad)
 
 	FingerprintService->setContextConverter(ContextConverter.data());
 	FingerprintService->setUserState(&UserState);
+
+	connect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
+
 	FingerprintService->readFingerprints();
 
 	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
-
-	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
 	PrivateKeyService->setUserState(&UserState);
 	PrivateKeyService->readPrivateKeys();
@@ -287,17 +290,18 @@ void OtrPlugin::done()
 	RawMessageTransformer->setOtrPrivateKeyService(0);
 	RawMessageTransformer->setOtrAppOpsWrapper(0);
 
-	PrivateKeyService->setUserState(0);
+	disconnect(PrivateKeyService.data(), SIGNAL(createPrivateKeyStarted(Account)),
+			   Notifier.data(), SLOT(notifyCreatePrivateKeyStarted(Account)));
+	disconnect(PrivateKeyService.data(), SIGNAL(createPrivateKeyFinished(Account,bool)),
+			   Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
 
-	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
+	PrivateKeyService->setUserState(0);
 
 	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowFactory(0);
 
 	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
+
+	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
 	FingerprintService->setContextConverter(0);
 
@@ -306,6 +310,12 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerifier(0);
 	ChatTopBarWidgetFactory->setAppOpsWrapper(0);
+
+	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
+	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
 	AppOpsWrapper->setTrustLevelService(0);
 	AppOpsWrapper->setUserState(0);
