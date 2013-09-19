@@ -20,6 +20,7 @@
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
+#include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 
 #include "otr-peer-identity-verification-window-factory.h"
@@ -31,6 +32,11 @@ OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFacto
 
 OtrPeerIdentityVerificationWindowFactory::~OtrPeerIdentityVerificationWindowFactory()
 {
+}
+
+void OtrPeerIdentityVerificationWindowFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+{
+	AppOpsWrapper = appOpsWrapper;
 }
 
 void OtrPeerIdentityVerificationWindowFactory::setFingerprintService(OtrFingerprintService *fingerprintService)
@@ -46,14 +52,12 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, parent);
 
 	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
+	questionAndAnswerPage->setAppOpsWrapper(AppOpsWrapper.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::QuestionAndAnswerPage, questionAndAnswerPage);
 
-	if (FingerprintService)
-	{
-		OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
-		fingerprintExchangePage->setFingerprintService(FingerprintService.data());
-		result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
-	}
+	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
+	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
+	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
 
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);

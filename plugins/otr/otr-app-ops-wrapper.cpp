@@ -330,6 +330,21 @@ void OtrAppOpsWrapper::peerClosedSession(const Contact &contact)
 	emit peerClosedSession(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
 }
 
+void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString &question, const QString &answer)
+{
+	if (!ContextConverter || !UserState)
+		return;
+
+	OtrOpData opData;
+	opData.setAppOpsWrapper(this);
+	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	opData.setPeerDisplay(contact.display(true));
+
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	otrl_message_initiate_smp_q(UserState->userState(), &Ops, &opData,
+		context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
+}
+
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
 {
 	Account account = otrOpData->chat().chatAccount();

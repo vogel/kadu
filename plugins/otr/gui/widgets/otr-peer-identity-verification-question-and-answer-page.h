@@ -26,9 +26,13 @@
 
 class QLineEdit;
 
+class OtrAppOpsWrapper;
+
 class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 {
 	Q_OBJECT
+
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 
 	Contact MyContact;
 
@@ -37,9 +41,14 @@ class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 
 	void createGui();
 
+private slots:
+	void askQuestion();
+
 public:
 	explicit OtrPeerIdentityVerificationQuestionAndAnswerPage(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationQuestionAndAnswerPage();
+
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 
 	virtual int nextId() const;
 	virtual void initializePage();

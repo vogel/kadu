@@ -21,11 +21,13 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QRadioButton>
+#include <QtGui/QPushButton>
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
+#include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 
 #include "otr-peer-identity-verification-question-and-answer-page.h"
@@ -48,12 +50,26 @@ void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 
 	QuestionEdit = new QLineEdit();
 	AnswerEdit = new QLineEdit();
+	QPushButton *askQuestionButton = new QPushButton(tr("Ask Question"));
+	connect(askQuestionButton, SIGNAL(clicked(bool)), this, SLOT(askQuestion()));
 
 	layout->addRow(new QLabel(tr("Question:")), QuestionEdit);
 	layout->addRow(new QLabel(tr("Answer:")), AnswerEdit);
+	layout->addRow(0, askQuestionButton);
 
 	registerField("question", QuestionEdit);
 	registerField("answer", AnswerEdit);
+}
+
+void OtrPeerIdentityVerificationQuestionAndAnswerPage::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+{
+	AppOpsWrapper = appOpsWrapper;
+}
+
+void OtrPeerIdentityVerificationQuestionAndAnswerPage::askQuestion()
+{
+	if (AppOpsWrapper)
+		AppOpsWrapper.data()->startSMPAskQuestion(MyContact, field("question").toString(), field("answer").toString());
 }
 
 int OtrPeerIdentityVerificationQuestionAndAnswerPage::nextId() const
@@ -67,5 +83,5 @@ void OtrPeerIdentityVerificationQuestionAndAnswerPage::initializePage()
 
 bool OtrPeerIdentityVerificationQuestionAndAnswerPage::validatePage()
 {
-	return true;
+	return false;
 }

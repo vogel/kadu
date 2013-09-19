@@ -106,6 +106,8 @@ public slots:
 	void endPrivateConversation(const Contact &contact);
 	void peerClosedSession(const Contact &contact);
 
+	void startSMPAskQuestion(const Contact &contact, const QString &question, const QString &answer);
+
 signals:
 	void tryToStartSession(const Chat &chat) const;
 	void peerClosedSession(const Chat &chat) const;

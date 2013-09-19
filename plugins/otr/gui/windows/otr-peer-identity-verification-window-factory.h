@@ -24,6 +24,7 @@
 
 #include "contacts/contact.h"
 
+class OtrAppOpsWrapper;
 class OtrFingerprintService;
 class OtrPeerIdentityVerificationWindow;
 
@@ -31,6 +32,7 @@ class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
@@ -41,6 +43,7 @@ public:
 	explicit OtrPeerIdentityVerificationWindowFactory(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationWindowFactory();
 
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 
 	OtrPeerIdentityVerificationWindow * createWindow(const Contact &contact, QWidget *parent = 0);
