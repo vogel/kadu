@@ -22,23 +22,23 @@
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 
-#include "otr-peer-identity-verifier.h"
+#include "otr-peer-identity-verification-service.h"
 
-OtrPeerIdentityVerifier::OtrPeerIdentityVerifier(QObject *parent) :
+OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService(QObject *parent) :
 		QObject(parent)
 {
 }
 
-OtrPeerIdentityVerifier::~OtrPeerIdentityVerifier()
+OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
 
-void OtrPeerIdentityVerifier::setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
+void OtrPeerIdentityVerificationService::setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
 {
 	PeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
 }
 
-void OtrPeerIdentityVerifier::verifyPeerIdentity(const Contact &contact)
+void OtrPeerIdentityVerificationService::verifyPeerIdentity(const Contact &contact)
 {
 	if (!PeerIdentityVerificationWindowRepository)
 		return;

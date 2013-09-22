@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFIER_H
-#define OTR_PEER_IDENTITY_VERIFIER_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
@@ -27,15 +27,15 @@ class Contact;
 
 class OtrPeerIdentityVerificationWindowRepository;
 
-class OtrPeerIdentityVerifier : public QObject
+class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
 	QWeakPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 
 public:
-	explicit OtrPeerIdentityVerifier(QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerifier();
+	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
+	virtual ~OtrPeerIdentityVerificationService();
 
 	void setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
 
@@ -44,4 +44,4 @@ public slots:
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFIER_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H

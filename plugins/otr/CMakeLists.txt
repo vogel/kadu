@@ -26,7 +26,7 @@ set (SOURCES
 	otr-notifier.cpp
 	otr-op-data.cpp
 	otr-peer-identity-verification-job.cpp
-	otr-peer-identity-verifier.cpp
+	otr-peer-identity-verification-service.cpp
 	otr-plugin.cpp
 	otr-policy.cpp
 	otr-policy-account-store.cpp
@@ -55,7 +55,7 @@ set (MOC_SOURCES
 	otr-fingerprint-service.h
 	otr-notifier.h
 	otr-peer-identity-verification-job.h
-	otr-peer-identity-verifier.h
+	otr-peer-identity-verification-service.h
 	otr-plugin.h
 	otr-private-key-service.h
 	otr-timer.h

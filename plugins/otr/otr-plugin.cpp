@@ -31,7 +31,7 @@
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-notifier.h"
-#include "otr-peer-identity-verifier.h"
+#include "otr-peer-identity-verification-service.h"
 #include "otr-private-key-service.h"
 #include "otr-raw-message-transformer.h"
 #include "otr-timer.h"
@@ -135,6 +135,16 @@ void OtrPlugin::unregisterOtrNotifier()
 	Notifier.reset(0);
 }
 
+void OtrPlugin::registerOtrPeerIdentityVerificationService()
+{
+	PeerIdentityVerificationService.reset(new OtrPeerIdentityVerificationService());
+}
+
+void OtrPlugin::unregisterOtrPeerIdentityVerificationService()
+{
+	PeerIdentityVerificationService.reset();
+}
+
 void OtrPlugin::registerOtrPeerIdentityVerificationWindowRepository()
 {
 	PeerIdentityVerificationWindowRepository.reset(new OtrPeerIdentityVerificationWindowRepository());
@@ -143,16 +153,6 @@ void OtrPlugin::registerOtrPeerIdentityVerificationWindowRepository()
 void OtrPlugin::unregisterOtrPeerIdentityVerificationWindowRepository()
 {
 	PeerIdentityVerificationWindowRepository.reset();
-}
-
-void OtrPlugin::registerOtrPeerIdentityVerifier()
-{
-	PeerIdentityVerifier.reset(new OtrPeerIdentityVerifier());
-}
-
-void OtrPlugin::unregisterOtrPeerIdentityVerifier()
-{
-	PeerIdentityVerifier.reset();
 }
 
 void OtrPlugin::registerOtrPrivateKeyService()
@@ -218,8 +218,8 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrContextConverter();
 	registerOtrFingerprintService();
 	registerOtrNotifier();
+	registerOtrPeerIdentityVerificationService();
 	registerOtrPeerIdentityVerificationWindowRepository();
-	registerOtrPeerIdentityVerifier();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
@@ -238,7 +238,7 @@ int OtrPlugin::init(bool firstLoad)
 	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
 	ChatTopBarWidgetFactory->setAppOpsWrapper(AppOpsWrapper.data());
-	ChatTopBarWidgetFactory->setPeerIdentityVerifier(PeerIdentityVerifier.data());
+	ChatTopBarWidgetFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
 
 	ContextConverter->setUserState(&UserState);
@@ -250,10 +250,10 @@ int OtrPlugin::init(bool firstLoad)
 
 	FingerprintService->readFingerprints();
 
+	PeerIdentityVerificationService->setOtrPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
+
 	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationWindowRepository->setFingerprintService(FingerprintService.data());
-
-	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 
 	PrivateKeyService->setUserState(&UserState);
 	PrivateKeyService->readPrivateKeys();
@@ -299,10 +299,10 @@ void OtrPlugin::done()
 
 	PrivateKeyService->setUserState(0);
 
-	PeerIdentityVerifier->setOtrPeerIdentityVerificationWindowRepository(0);
-
 	PeerIdentityVerificationWindowRepository->setFingerprintService(0);
 	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(0);
+
+	PeerIdentityVerificationService->setOtrPeerIdentityVerificationWindowRepository(0);
 
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
@@ -311,7 +311,7 @@ void OtrPlugin::done()
 	ContextConverter->setUserState(0);
 
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
-	ChatTopBarWidgetFactory->setPeerIdentityVerifier(0);
+	ChatTopBarWidgetFactory->setPeerIdentityVerificationService(0);
 	ChatTopBarWidgetFactory->setAppOpsWrapper(0);
 
 	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
@@ -330,8 +330,8 @@ void OtrPlugin::done()
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
-	unregisterOtrPeerIdentityVerifier();
 	unregisterOtrPeerIdentityVerificationWindowRepository();
+	unregisterOtrPeerIdentityVerificationService();
 	unregisterOtrNotifier();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
