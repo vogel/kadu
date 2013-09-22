@@ -19,11 +19,12 @@
 
 #include "otr-peer-identity-verification-job.h"
 
-OtrPeerIdentityVerificationJob::OtrPeerIdentityVerificationJob(QObject *parent) :
-		QObject(parent)
+OtrPeerIdentityVerificationJob::OtrPeerIdentityVerificationJob(const Contact &contact, QObject *parent) :
+		QObject(parent), MyContact(contact)
 {
 }
 
 OtrPeerIdentityVerificationJob::~OtrPeerIdentityVerificationJob()
 {
+	emit destroyed(MyContact);
 }

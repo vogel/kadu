@@ -20,18 +20,27 @@
 #ifndef OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
 #define OTR_PEER_IDENTITY_VERIFICATION_SERVICE_H
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
 
 class Contact;
+
+class OtrPeerIdentityVerificationJob;
 
 class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
+	QMap<Contact, OtrPeerIdentityVerificationJob *> VerificationJobs;
+
+private slots:
+	void jobDestroyed(const Contact &contact);
+
 public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
+
+	OtrPeerIdentityVerificationJob * verificationJobForContact(const Contact &contact);
 
 };
 

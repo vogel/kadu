@@ -22,13 +22,20 @@
 
 #include <QtCore/QObject>
 
+#include "contacts/contact.h"
+
 class OtrPeerIdentityVerificationJob : public QObject
 {
 	Q_OBJECT
 
+	Contact MyContact;
+
 public:
-	explicit OtrPeerIdentityVerificationJob(QObject *parent = 0);
+	explicit OtrPeerIdentityVerificationJob(const Contact &contact, QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationJob();
+
+signals:
+	void destroyed(const Contact &contact);
 
 };
 
