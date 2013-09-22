@@ -62,6 +62,7 @@ class OtrAppOpsWrapper : public QObject
 	friend const char * kadu_otr_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_otr_resent_msg_prefix(void *, ConnContext *);
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
+	friend void kadu_otr_handle_smp_event(void *, OtrlSMPEvent, ConnContext *, unsigned short, char *);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	QWeakPointer<OtrContextConverter> ContextConverter;
@@ -84,6 +85,7 @@ class OtrAppOpsWrapper : public QObject
 	QString errorMessage(OtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
 	void handleMsgEvent(OtrOpData *ngOtrOpData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
+	void handleSmpEvent(OtrOpData *ngOtrOpData, OtrlSMPEvent event, unsigned short progressPercent, const QString &question);
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
 	void createInstanceTag(OtrOpData *ngOtrOpData);
