@@ -176,16 +176,6 @@ void kadu_otr_resent_msg_prefix_free(void *opdata, const char *prefix)
 	free((char *)prefix);
 }
 
-void kadu_otr_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
-								 unsigned short progress_percent, char *question)
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(smp_event);
-	Q_UNUSED(context);
-	Q_UNUSED(progress_percent);
-	Q_UNUSED(question);
-}
-
 void kadu_otr_create_instag(void *opdata, const char *accountname, const char *protocol)
 {
 	Q_UNUSED(accountname);
@@ -206,6 +196,15 @@ void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnCon
 
 	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
 	otrOpData->appOpsWrapper()->handleMsgEvent(otrOpData, msg_event, message, err);
+}
+
+void kadu_otr_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
+								 unsigned short progress_percent, char *question)
+{
+	Q_UNUSED(context);
+
+	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
+	otrOpData->appOpsWrapper()->handleSmpEvent(otrOpData, smp_event, progress_percent, QString::fromUtf8(question));
 }
 
 void kadu_otr_timer_control(void *opdata, unsigned int interval)
@@ -457,6 +456,11 @@ void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *otrOpData, OtrlMessageEvent eve
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(otrOpData->chat(), false);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
+}
+
+void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *ngOtrOpData, OtrlSMPEvent event, short unsigned int progressPercent, const QString &question)
+{
+	printf("OtrAppOpsWrapper::handleSmpEvent: %s %d %d %s\n", qPrintable(ngOtrOpData->peerDisplay()), event, progressPercent, qPrintable(question));
 }
 
 QString OtrAppOpsWrapper::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const

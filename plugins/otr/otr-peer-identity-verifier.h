@@ -25,19 +25,19 @@
 
 class Contact;
 
-class OtrPeerIdentityVerificationWindowFactory;
+class OtrPeerIdentityVerificationWindowRepository;
 
 class OtrPeerIdentityVerifier : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
+	QWeakPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 
 public:
 	explicit OtrPeerIdentityVerifier(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerifier();
 
-	void setOtrPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *otrPeerIdentityVerificationWindowFactory);
+	void setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
 
 public slots:
 	void verifyPeerIdentity(const Contact &contact);

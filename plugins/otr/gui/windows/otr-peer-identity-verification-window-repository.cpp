@@ -23,33 +23,33 @@
 #include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 
-#include "otr-peer-identity-verification-window-factory.h"
+#include "otr-peer-identity-verification-window-repository.h"
 
-OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFactory(QObject *parent) :
+OtrPeerIdentityVerificationWindowRepository::OtrPeerIdentityVerificationWindowRepository(QObject *parent) :
 		QObject(parent)
 {
 }
 
-OtrPeerIdentityVerificationWindowFactory::~OtrPeerIdentityVerificationWindowFactory()
+OtrPeerIdentityVerificationWindowRepository::~OtrPeerIdentityVerificationWindowRepository()
 {
 }
 
-void OtrPeerIdentityVerificationWindowFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrPeerIdentityVerificationWindowRepository::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
 	AppOpsWrapper = appOpsWrapper;
 }
 
-void OtrPeerIdentityVerificationWindowFactory::setFingerprintService(OtrFingerprintService *fingerprintService)
+void OtrPeerIdentityVerificationWindowRepository::setFingerprintService(OtrFingerprintService *fingerprintService)
 {
 	FingerprintService = fingerprintService;
 }
 
-OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::createWindow(const Contact &contact, QWidget *parent)
+OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository::windowForContact(const Contact &contact)
 {
 	if (Windows.contains(contact))
 		return Windows.value(contact);
 
-	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact, parent);
+	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact);
 
 	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
 	questionAndAnswerPage->setAppOpsWrapper(AppOpsWrapper.data());
@@ -65,7 +65,7 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::cr
 	return result;
 }
 
-void OtrPeerIdentityVerificationWindowFactory::windowDestroyed(const Contact &contact)
+void OtrPeerIdentityVerificationWindowRepository::windowDestroyed(const Contact &contact)
 {
 	Windows.remove(contact);
 }

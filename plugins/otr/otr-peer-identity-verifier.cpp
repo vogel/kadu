@@ -19,7 +19,7 @@
 
 #include "contacts/contact.h"
 
-#include "gui/windows/otr-peer-identity-verification-window-factory.h"
+#include "gui/windows/otr-peer-identity-verification-window-repository.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 
 #include "otr-peer-identity-verifier.h"
@@ -33,17 +33,17 @@ OtrPeerIdentityVerifier::~OtrPeerIdentityVerifier()
 {
 }
 
-void OtrPeerIdentityVerifier::setOtrPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *otrPeerIdentityVerificationWindowFactory)
+void OtrPeerIdentityVerifier::setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
 {
-	PeerIdentityVerificationWindowFactory = otrPeerIdentityVerificationWindowFactory;
+	PeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
 }
 
 void OtrPeerIdentityVerifier::verifyPeerIdentity(const Contact &contact)
 {
-	if (!PeerIdentityVerificationWindowFactory)
+	if (!PeerIdentityVerificationWindowRepository)
 		return;
 
-	OtrPeerIdentityVerificationWindow *window = PeerIdentityVerificationWindowFactory.data()->createWindow(contact);
+	OtrPeerIdentityVerificationWindow *window = PeerIdentityVerificationWindowRepository.data()->windowForContact(contact);
 	if (window)
 		window->show();
 }

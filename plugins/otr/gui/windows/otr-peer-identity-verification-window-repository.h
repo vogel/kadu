@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
+#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
 
 #include <QtCore/QObject>
 
@@ -28,7 +28,7 @@ class OtrAppOpsWrapper;
 class OtrFingerprintService;
 class OtrPeerIdentityVerificationWindow;
 
-class OtrPeerIdentityVerificationWindowFactory : public QObject
+class OtrPeerIdentityVerificationWindowRepository : public QObject
 {
 	Q_OBJECT
 
@@ -40,14 +40,14 @@ private slots:
 	void windowDestroyed(const Contact &contact);
 
 public:
-	explicit OtrPeerIdentityVerificationWindowFactory(QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindowFactory();
+	explicit OtrPeerIdentityVerificationWindowRepository(QObject *parent = 0);
+	virtual ~OtrPeerIdentityVerificationWindowRepository();
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 
-	OtrPeerIdentityVerificationWindow * createWindow(const Contact &contact, QWidget *parent = 0);
+	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
