@@ -69,3 +69,10 @@ void OtrPeerIdentityVerificationWindowRepository::windowDestroyed(const Contact 
 {
 	Windows.remove(contact);
 }
+
+void OtrPeerIdentityVerificationWindowRepository::showVerificationWindow(const Contact &contact)
+{
+	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);
+	if (window)
+		window->show();
+}

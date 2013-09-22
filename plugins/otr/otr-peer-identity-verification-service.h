@@ -25,22 +25,13 @@
 
 class Contact;
 
-class OtrPeerIdentityVerificationWindowRepository;
-
 class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
-
 public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
-
-	void setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
-
-public slots:
-	void verifyPeerIdentity(const Contact &contact);
 
 };
 

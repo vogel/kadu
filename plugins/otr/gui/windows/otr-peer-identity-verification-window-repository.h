@@ -48,6 +48,9 @@ public:
 
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
+public slots:
+	void showVerificationWindow(const Contact &contact);
+
 };
 
 #endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H

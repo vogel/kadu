@@ -32,18 +32,3 @@ OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService(QObject *
 OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
-
-void OtrPeerIdentityVerificationService::setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
-{
-	PeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
-}
-
-void OtrPeerIdentityVerificationService::verifyPeerIdentity(const Contact &contact)
-{
-	if (!PeerIdentityVerificationWindowRepository)
-		return;
-
-	OtrPeerIdentityVerificationWindow *window = PeerIdentityVerificationWindowRepository.data()->windowForContact(contact);
-	if (window)
-		window->show();
-}

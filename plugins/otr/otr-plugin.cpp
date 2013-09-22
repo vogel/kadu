@@ -238,7 +238,7 @@ int OtrPlugin::init(bool firstLoad)
 	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
 	ChatTopBarWidgetFactory->setAppOpsWrapper(AppOpsWrapper.data());
-	ChatTopBarWidgetFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
 
 	ContextConverter->setUserState(&UserState);
@@ -249,8 +249,6 @@ int OtrPlugin::init(bool firstLoad)
 	connect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
 	FingerprintService->readFingerprints();
-
-	PeerIdentityVerificationService->setOtrPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 
 	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationWindowRepository->setFingerprintService(FingerprintService.data());
@@ -302,8 +300,6 @@ void OtrPlugin::done()
 	PeerIdentityVerificationWindowRepository->setFingerprintService(0);
 	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(0);
 
-	PeerIdentityVerificationService->setOtrPeerIdentityVerificationWindowRepository(0);
-
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
 	FingerprintService->setContextConverter(0);
@@ -311,7 +307,7 @@ void OtrPlugin::done()
 	ContextConverter->setUserState(0);
 
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
-	ChatTopBarWidgetFactory->setPeerIdentityVerificationService(0);
+	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
 	ChatTopBarWidgetFactory->setAppOpsWrapper(0);
 
 	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
