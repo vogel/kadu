@@ -20,6 +20,7 @@
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-progress-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
+#include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
@@ -58,13 +59,17 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository:
 
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact);
 
+	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
+	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
+	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
+
 	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
 	questionAndAnswerPage->setAppOpsWrapper(AppOpsWrapper.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::QuestionAndAnswerPage, questionAndAnswerPage);
 
-	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
-	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
-	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
+	OtrPeerIdentityVerificationSharedSecretPage *sharedSecretPage = new OtrPeerIdentityVerificationSharedSecretPage(contact, result);
+	sharedSecretPage->setAppOpsWrapper(AppOpsWrapper.data());
+	result->setPage(OtrPeerIdentityVerificationWindow::SharedSecretPage, sharedSecretPage);
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
 	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());

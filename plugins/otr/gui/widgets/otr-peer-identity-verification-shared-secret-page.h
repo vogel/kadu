@@ -17,37 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H
 
-#include <QtGui/QWizard>
+#include <QtGui/QWizardPage>
 
 #include "contacts/contact.h"
 
-class OtrPeerIdentityVerificationWindow : public QWizard
+class OtrAppOpsWrapper;
+
+class OtrPeerIdentityVerificationSharedSecretPage : public QWizardPage
 {
 	Q_OBJECT
+
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 
 	Contact MyContact;
 
 	void createGui();
 
 public:
-	enum
-	{
-		SelectMethodPage,
-		QuestionAndAnswerPage,
-		SharedSecretPage,
-		FingerprintExchangePage,
-		ProgressPage
-	};
+	explicit OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationSharedSecretPage();
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindow();
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 
-signals:
-	void destroyed(const Contact &contact);
+	virtual int nextId() const;
+	virtual void initializePage();
+	virtual bool validatePage();
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H

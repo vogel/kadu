@@ -351,6 +351,21 @@ void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString
 		context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
 }
 
+void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QString &sharedSecret)
+{
+	if (!ContextConverter || !UserState)
+		return;
+
+	OtrOpData opData;
+	opData.setAppOpsWrapper(this);
+	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
+	opData.setPeerDisplay(contact.display(true));
+
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	otrl_message_initiate_smp(UserState->userState(), &Ops, &opData,
+		context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
+}
+
 void OtrAppOpsWrapper::abortSMP(const Contact &contact)
 {
 	if (!ContextConverter || !UserState)

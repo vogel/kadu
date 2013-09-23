@@ -15,6 +15,7 @@ set (SOURCES
 	gui/widgets/otr-peer-identity-verification-progress-page.cpp
 	gui/widgets/otr-peer-identity-verification-question-and-answer-page.cpp
 	gui/widgets/otr-peer-identity-verification-select-method-page.cpp
+	gui/widgets/otr-peer-identity-verification-shared-secret-page.cpp
 
 	gui/windows/otr-peer-identity-verification-window-repository.cpp
 	gui/windows/otr-peer-identity-verification-window.cpp
@@ -46,6 +47,7 @@ set (MOC_SOURCES
 	gui/widgets/otr-peer-identity-verification-progress-page.h
 	gui/widgets/otr-peer-identity-verification-question-and-answer-page.h
 	gui/widgets/otr-peer-identity-verification-select-method-page.h
+	gui/widgets/otr-peer-identity-verification-shared-secret-page.h
 
 	gui/windows/otr-peer-identity-verification-window-repository.h
 	gui/windows/otr-peer-identity-verification-window.h

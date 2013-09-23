@@ -38,13 +38,4 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 void OtrPeerIdentityVerificationWindow::createGui()
 {
 	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
-	setPage(SharedSecretPage, createSharedSecretPage());
-}
-
-QWizardPage * OtrPeerIdentityVerificationWindow::createSharedSecretPage()
-{
-	QWizardPage *page = new QWizardPage;
-	page->setTitle(tr("Shared Secret"));
-
-	return page;
 }
