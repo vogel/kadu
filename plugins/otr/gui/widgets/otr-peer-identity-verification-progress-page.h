@@ -17,38 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H
 
-#include <QtGui/QWizard>
+#include <QtGui/QWizardPage>
 
 #include "contacts/contact.h"
 
-class OtrPeerIdentityVerificationWindow : public QWizard
+class QLabel;
+class QProgressBar;
+
+class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 {
 	Q_OBJECT
 
 	Contact MyContact;
 
+	QLabel *StateLabel;
+	QProgressBar *StateProgress;
+
 	void createGui();
-	QWizardPage * createSharedSecretPage();
 
 public:
-	enum
-	{
-		SelectMethodPage,
-		QuestionAndAnswerPage,
-		SharedSecretPage,
-		FingerprintExchangePage,
-		ProgressPage
-	};
+	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationProgressPage();
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindow();
-
-signals:
-	void destroyed(const Contact &contact);
+	virtual int nextId() const;
+	virtual void initializePage();
+	virtual bool validatePage();
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H

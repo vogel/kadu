@@ -20,13 +20,12 @@
 #include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QRadioButton>
-#include <QtGui/QPushButton>
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
+#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 
@@ -48,17 +47,14 @@ void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 
 	QFormLayout *layout = new QFormLayout(this);
 
-	QuestionEdit = new QLineEdit();
-	AnswerEdit = new QLineEdit();
-	QPushButton *askQuestionButton = new QPushButton(tr("Ask Question"));
-	connect(askQuestionButton, SIGNAL(clicked(bool)), this, SLOT(askQuestion()));
+	QLineEdit *questionEdit = new QLineEdit();
+	QLineEdit *answerEdit = new QLineEdit();
 
-	layout->addRow(new QLabel(tr("Question:")), QuestionEdit);
-	layout->addRow(new QLabel(tr("Answer:")), AnswerEdit);
-	layout->addRow(0, askQuestionButton);
+	layout->addRow(new QLabel(tr("Question:")), questionEdit);
+	layout->addRow(new QLabel(tr("Answer:")), answerEdit);
 
-	registerField("question", QuestionEdit);
-	registerField("answer", AnswerEdit);
+	registerField("question", questionEdit);
+	registerField("answer", answerEdit);
 }
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
@@ -66,22 +62,27 @@ void OtrPeerIdentityVerificationQuestionAndAnswerPage::setAppOpsWrapper(OtrAppOp
 	AppOpsWrapper = appOpsWrapper;
 }
 
-void OtrPeerIdentityVerificationQuestionAndAnswerPage::askQuestion()
-{
-	if (AppOpsWrapper)
-		AppOpsWrapper.data()->startSMPAskQuestion(MyContact, field("question").toString(), field("answer").toString());
-}
-
 int OtrPeerIdentityVerificationQuestionAndAnswerPage::nextId() const
 {
-	return -1;
+	return OtrPeerIdentityVerificationWindow::ProgressPage;
 }
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::initializePage()
 {
+	setField("question", QString());
+	setField("answer", QString());
 }
 
 bool OtrPeerIdentityVerificationQuestionAndAnswerPage::validatePage()
 {
-	return false;
+	QString question = field("question").toString();
+	QString answer = field("answer").toString();
+
+	if (question.isEmpty() || answer.isEmpty())
+		return false;
+
+	if (AppOpsWrapper)
+		AppOpsWrapper.data()->startSMPAskQuestion(MyContact, field("question").toString(), field("answer").toString());
+
+	return true;
 }

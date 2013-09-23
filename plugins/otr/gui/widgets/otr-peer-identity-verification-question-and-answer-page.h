@@ -24,8 +24,6 @@
 
 #include "contacts/contact.h"
 
-class QLineEdit;
-
 class OtrAppOpsWrapper;
 
 class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
@@ -36,13 +34,7 @@ class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 
 	Contact MyContact;
 
-	QLineEdit *QuestionEdit;
-	QLineEdit *AnswerEdit;
-
 	void createGui();
-
-private slots:
-	void askQuestion();
 
 public:
 	explicit OtrPeerIdentityVerificationQuestionAndAnswerPage(const Contact &contact, QWidget *parent = 0);

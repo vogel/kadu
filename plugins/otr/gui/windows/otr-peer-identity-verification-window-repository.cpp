@@ -18,6 +18,7 @@
  */
 
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
+#include "gui/widgets/otr-peer-identity-verification-progress-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-app-ops-wrapper.h"
@@ -58,6 +59,9 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository:
 	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
 	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
+
+	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
+	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
 
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
