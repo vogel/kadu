@@ -43,6 +43,7 @@ OtrPeerIdentityVerificationQuestionAndAnswerPage::~OtrPeerIdentityVerificationQu
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 {
+	setCommitPage(true);
 	setTitle(tr("Question and Answer"));
 
 	QFormLayout *layout = new QFormLayout(this);
