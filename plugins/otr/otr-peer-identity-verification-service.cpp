@@ -38,23 +38,11 @@ void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *otrA
 	AppOpsWrapper = otrAppOpsWrapper;
 }
 
-OtrPeerIdentityVerificationState OtrPeerIdentityVerificationService::stateForContact(const Contact &contact) const
+void OtrPeerIdentityVerificationService::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
-	if (VerificationStates.contains(contact))
-		return VerificationStates.value(contact);
-
-	return OtrPeerIdentityVerificationState();
-}
-
-void OtrPeerIdentityVerificationService::setContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
-{
-	if (VerificationStates.contains(contact) && VerificationStates.value(contact) == state)
-		return;
-
 	if (OtrPeerIdentityVerificationState::StateFailed == state.state())
 		cancelVerification(contact);
 
-	VerificationStates.insert(contact, state);
 	emit contactStateUpdated(contact, state);
 }
 

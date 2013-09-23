@@ -37,16 +37,6 @@ OtrPeerIdentityVerificationState & OtrPeerIdentityVerificationState::operator = 
 	return *this;
 }
 
-bool OtrPeerIdentityVerificationState::operator == (const OtrPeerIdentityVerificationState &compareTo) const
-{
-	if (MyState != compareTo.MyState)
-		return false;
-	if (PercentCompleted != compareTo.PercentCompleted)
-		return false;
-
-	return true;
-}
-
 OtrPeerIdentityVerificationState::State OtrPeerIdentityVerificationState::state() const
 {
 	return MyState;

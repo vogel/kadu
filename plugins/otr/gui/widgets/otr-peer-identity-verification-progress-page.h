@@ -24,25 +24,27 @@
 
 #include "contacts/contact.h"
 
+#include "otr-peer-identity-verification-state.h"
+
 class QLabel;
 class QProgressBar;
 
 class OtrPeerIdentityVerificationService;
-class OtrPeerIdentityVerificationState;
 
 class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 {
 	Q_OBJECT
 
-	Contact MyContact;
-
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+
+	Contact MyContact;
+	OtrPeerIdentityVerificationState State;
 
 	QLabel *StateLabel;
 	QProgressBar *StateProgress;
 
 	void createGui();
-	void updateProgress(const OtrPeerIdentityVerificationState &state);
+	void setState(const OtrPeerIdentityVerificationState &state);
 	QString stateToString(const OtrPeerIdentityVerificationState &state);
 
 private slots:

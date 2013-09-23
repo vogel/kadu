@@ -35,7 +35,6 @@ class OtrPeerIdentityVerificationService : public QObject
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 
-	QMap<Contact, OtrPeerIdentityVerificationState> VerificationStates;
 
 public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
@@ -43,10 +42,8 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
 
-	OtrPeerIdentityVerificationState stateForContact(const Contact &contact) const;
-
 public slots:
-	void setContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 	void cancelVerification(const Contact &contact);
 
 signals:

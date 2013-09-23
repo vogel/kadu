@@ -50,10 +50,11 @@ void OtrPeerIdentityVerificationProgressPage::createGui()
 	layout->addWidget(StateProgress);
 }
 
-void OtrPeerIdentityVerificationProgressPage::updateProgress(const OtrPeerIdentityVerificationState &state)
+void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVerificationState &state)
 {
-	StateLabel->setText(stateToString(state));
-	StateProgress->setValue(state.percentCompleted());
+	State = state;
+	StateLabel->setText(stateToString(State));
+	StateProgress->setValue(State.percentCompleted());
 }
 
 QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIdentityVerificationState &state)
@@ -86,7 +87,7 @@ void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService
 void OtrPeerIdentityVerificationProgressPage::contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
 	if (contact == MyContact)
-		updateProgress(state);
+		setState(state);
 }
 
 int OtrPeerIdentityVerificationProgressPage::nextId() const
@@ -96,8 +97,7 @@ int OtrPeerIdentityVerificationProgressPage::nextId() const
 
 void OtrPeerIdentityVerificationProgressPage::initializePage()
 {
-	if (PeerIdentityVerificationService)
-		updateProgress(PeerIdentityVerificationService.data()->stateForContact(MyContact));
+	setState(OtrPeerIdentityVerificationState());
 }
 
 bool OtrPeerIdentityVerificationProgressPage::validatePage()
@@ -105,8 +105,7 @@ bool OtrPeerIdentityVerificationProgressPage::validatePage()
 	if (!PeerIdentityVerificationService)
 		return true;
 
-	OtrPeerIdentityVerificationState state = PeerIdentityVerificationService.data()->stateForContact(MyContact);
-	if (OtrPeerIdentityVerificationState::StateInProgress == state.state() || OtrPeerIdentityVerificationState::StateNotStarted == state.state())
+	if (OtrPeerIdentityVerificationState::StateInProgress == State.state() || OtrPeerIdentityVerificationState::StateNotStarted == State.state())
 		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
 
 	return true;

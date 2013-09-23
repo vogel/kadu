@@ -509,7 +509,7 @@ void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *ngOtrOpData, OtrlSMPEvent event
 			break;
 	}
 
-	PeerIdentityVerificationService.data()->setContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
+	PeerIdentityVerificationService.data()->updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
 
 QString OtrAppOpsWrapper::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const
