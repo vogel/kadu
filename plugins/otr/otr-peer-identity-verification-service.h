@@ -25,22 +25,19 @@
 
 class Contact;
 
-class OtrPeerIdentityVerificationJob;
+class OtrPeerIdentityVerificationState;
 
 class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
-	QMap<Contact, OtrPeerIdentityVerificationJob *> VerificationJobs;
-
-private slots:
-	void jobDestroyed(const Contact &contact);
+	QMap<Contact, OtrPeerIdentityVerificationState> VerificationStates;
 
 public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
-	OtrPeerIdentityVerificationJob * verificationJobForContact(const Contact &contact);
+	OtrPeerIdentityVerificationState stateForContact(const Contact &contact);
 
 };
 

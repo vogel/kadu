@@ -17,14 +17,32 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-peer-identity-verification-job.h"
+#include "otr-peer-identity-verification-state.h"
 
-OtrPeerIdentityVerificationJob::OtrPeerIdentityVerificationJob(const Contact &contact, QObject *parent) :
-		QObject(parent), MyContact(contact)
+OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(State state, int percentCompleted) :
+		MyState(state), PercentCompleted(percentCompleted)
 {
 }
 
-OtrPeerIdentityVerificationJob::~OtrPeerIdentityVerificationJob()
+OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe)
 {
-	emit destroyed(MyContact);
+	*this = copyMe;
+}
+
+OtrPeerIdentityVerificationState & OtrPeerIdentityVerificationState::operator = (const OtrPeerIdentityVerificationState &copyMe)
+{
+	MyState = copyMe.MyState;
+	PercentCompleted = copyMe.PercentCompleted;
+
+	return *this;
+}
+
+OtrPeerIdentityVerificationState::State OtrPeerIdentityVerificationState::state() const
+{
+	return MyState;
+}
+
+int OtrPeerIdentityVerificationState::percentCompleted() const
+{
+	return PercentCompleted;
 }

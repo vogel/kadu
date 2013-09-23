@@ -19,7 +19,7 @@
 
 #include "contacts/contact.h"
 
-#include "otr-peer-identity-verification-job.h"
+#include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-service.h"
 
@@ -32,20 +32,10 @@ OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
 
-OtrPeerIdentityVerificationJob * OtrPeerIdentityVerificationService::verificationJobForContact(const Contact &contact)
+OtrPeerIdentityVerificationState OtrPeerIdentityVerificationService::stateForContact(const Contact &contact)
 {
-	if (VerificationJobs.contains(contact))
-		return VerificationJobs.value(contact);
-	
-	
-	OtrPeerIdentityVerificationJob *result = new OtrPeerIdentityVerificationJob(contact);
-	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(jobDestroyed(Contact)));
-	VerificationJobs.insert(contact, result);
+	if (VerificationStates.contains(contact))
+		return VerificationStates.value(contact);
 
-	return result;
-}
-
-void OtrPeerIdentityVerificationService::jobDestroyed(const Contact &contact)
-{
-	VerificationJobs.remove(contact);
+	return OtrPeerIdentityVerificationState();
 }

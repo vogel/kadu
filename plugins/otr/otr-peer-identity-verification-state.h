@@ -17,26 +17,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_JOB_H
-#define OTR_PEER_IDENTITY_VERIFICATION_JOB_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_STATE_H
 
-#include <QtCore/QObject>
-
-#include "contacts/contact.h"
-
-class OtrPeerIdentityVerificationJob : public QObject
+class OtrPeerIdentityVerificationState
 {
-	Q_OBJECT
-
-	Contact MyContact;
 
 public:
-	explicit OtrPeerIdentityVerificationJob(const Contact &contact, QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerificationJob();
+	enum State
+	{
+		StateNotStarted,
+		StateInProgress,
+		StateFailed,
+		StateSucceeded
+	};
 
-signals:
-	void destroyed(const Contact &contact);
+private:
+	State MyState;
+	int PercentCompleted;
+
+public:
+	OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
+	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
+
+	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
+
+	State state() const;
+	int percentCompleted() const;
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_JOB_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_STATE_H
