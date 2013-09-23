@@ -102,5 +102,12 @@ void OtrPeerIdentityVerificationProgressPage::initializePage()
 
 bool OtrPeerIdentityVerificationProgressPage::validatePage()
 {
+	if (!PeerIdentityVerificationService)
+		return true;
+
+	OtrPeerIdentityVerificationState state = PeerIdentityVerificationService.data()->stateForContact(MyContact);
+	if (OtrPeerIdentityVerificationState::StateInProgress == state.state() || OtrPeerIdentityVerificationState::StateNotStarted == state.state())
+		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+
 	return true;
 }

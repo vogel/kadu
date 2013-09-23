@@ -19,6 +19,7 @@
 
 #include "contacts/contact.h"
 
+#include "otr-app-ops-wrapper.h"
 #include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-service.h"
@@ -30,6 +31,11 @@ OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService(QObject *
 
 OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
+}
+
+void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+{
+	AppOpsWrapper = otrAppOpsWrapper;
 }
 
 OtrPeerIdentityVerificationState OtrPeerIdentityVerificationService::stateForContact(const Contact &contact) const
@@ -45,6 +51,15 @@ void OtrPeerIdentityVerificationService::setContactState(const Contact &contact,
 	if (VerificationStates.contains(contact) && VerificationStates.value(contact) == state)
 		return;
 
+	if (OtrPeerIdentityVerificationState::StateFailed == state.state())
+		cancelVerification(contact);
+
 	VerificationStates.insert(contact, state);
 	emit contactStateUpdated(contact, state);
+}
+
+void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)
+{
+	if (AppOpsWrapper)
+		AppOpsWrapper.data()->abortSMP(contact);
 }

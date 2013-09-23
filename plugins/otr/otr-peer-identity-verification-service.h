@@ -22,14 +22,18 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 class Contact;
 
+class OtrAppOpsWrapper;
 class OtrPeerIdentityVerificationState;
 
 class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
+
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 
 	QMap<Contact, OtrPeerIdentityVerificationState> VerificationStates;
 
@@ -37,8 +41,13 @@ public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
+	void setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
+
 	OtrPeerIdentityVerificationState stateForContact(const Contact &contact) const;
+
+public slots:
 	void setContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+	void cancelVerification(const Contact &contact);
 
 signals:
 	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
