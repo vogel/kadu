@@ -26,6 +26,7 @@
 
 class OtrAppOpsWrapper;
 class OtrFingerprintService;
+class OtrPeerIdentityVerificationService;
 class OtrPeerIdentityVerificationWindow;
 
 class OtrPeerIdentityVerificationWindowRepository : public QObject
@@ -34,6 +35,7 @@ class OtrPeerIdentityVerificationWindowRepository : public QObject
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 private slots:
@@ -45,6 +47,7 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 

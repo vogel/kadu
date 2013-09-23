@@ -27,20 +27,29 @@
 class QLabel;
 class QProgressBar;
 
+class OtrPeerIdentityVerificationService;
+class OtrPeerIdentityVerificationState;
+
 class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 {
 	Q_OBJECT
 
 	Contact MyContact;
 
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+
 	QLabel *StateLabel;
 	QProgressBar *StateProgress;
 
 	void createGui();
+	void updateProgress(const OtrPeerIdentityVerificationState &state);
+	QString stateToString(const OtrPeerIdentityVerificationState &state);
 
 public:
 	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationProgressPage();
+
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
 	virtual int nextId() const;
 	virtual void initializePage();

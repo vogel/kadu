@@ -23,6 +23,7 @@
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
+#include "otr-peer-identity-verification-service.h"
 
 #include "otr-peer-identity-verification-window-repository.h"
 
@@ -45,6 +46,11 @@ void OtrPeerIdentityVerificationWindowRepository::setFingerprintService(OtrFinge
 	FingerprintService = fingerprintService;
 }
 
+void OtrPeerIdentityVerificationWindowRepository::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+{
+	PeerIdentityVerificationService = peerIdentityVerificationService;
+}
+
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository::windowForContact(const Contact &contact)
 {
 	if (Windows.contains(contact))
@@ -61,6 +67,7 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository:
 	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
+	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
 
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));

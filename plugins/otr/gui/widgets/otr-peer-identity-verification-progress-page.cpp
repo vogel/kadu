@@ -21,6 +21,9 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QVBoxLayout>
 
+#include "otr-peer-identity-verification-service.h"
+#include "otr-peer-identity-verification-state.h"
+
 #include "otr-peer-identity-verification-progress-page.h"
 
 OtrPeerIdentityVerificationProgressPage::OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent) :
@@ -41,9 +44,38 @@ void OtrPeerIdentityVerificationProgressPage::createGui()
 
 	StateLabel = new QLabel();
 	StateProgress = new QProgressBar();
+	StateProgress->setMaximum(100);
 
 	layout->addWidget(StateLabel);
 	layout->addWidget(StateProgress);
+}
+
+void OtrPeerIdentityVerificationProgressPage::updateProgress(const OtrPeerIdentityVerificationState &state)
+{
+	StateLabel->setText(stateToString(state));
+	StateProgress->setValue(state.percentCompleted());
+}
+
+QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIdentityVerificationState &state)
+{
+	switch (state.state())
+	{
+		case OtrPeerIdentityVerificationState::StateNotStarted:
+			return tr("Verification not started");
+		case OtrPeerIdentityVerificationState::StateInProgress:
+			return tr("Verification in progres...");
+		case OtrPeerIdentityVerificationState::StateFailed:
+			return tr("Verification failed");
+		case OtrPeerIdentityVerificationState::StateSucceeded:
+			return tr("Verification succeeded");
+		default:
+			return tr("Unknown");
+	}
+}
+
+void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+{
+	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 int OtrPeerIdentityVerificationProgressPage::nextId() const
@@ -53,6 +85,8 @@ int OtrPeerIdentityVerificationProgressPage::nextId() const
 
 void OtrPeerIdentityVerificationProgressPage::initializePage()
 {
+	if (PeerIdentityVerificationService)
+		updateProgress(PeerIdentityVerificationService.data()->stateForContact(MyContact));
 }
 
 bool OtrPeerIdentityVerificationProgressPage::validatePage()
