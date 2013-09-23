@@ -41,6 +41,7 @@ public:
 	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
 
 	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
+	bool operator == (const OtrPeerIdentityVerificationState &compareTo) const;
 
 	State state() const;
 	int percentCompleted() const;

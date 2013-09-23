@@ -37,7 +37,11 @@ public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
-	OtrPeerIdentityVerificationState stateForContact(const Contact &contact);
+	OtrPeerIdentityVerificationState stateForContact(const Contact &contact) const;
+	void setContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+
+signals:
+	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 };
 

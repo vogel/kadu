@@ -45,6 +45,9 @@ class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 	void updateProgress(const OtrPeerIdentityVerificationState &state);
 	QString stateToString(const OtrPeerIdentityVerificationState &state);
 
+private slots:
+	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+
 public:
 	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationProgressPage();

@@ -32,10 +32,19 @@ OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
 
-OtrPeerIdentityVerificationState OtrPeerIdentityVerificationService::stateForContact(const Contact &contact)
+OtrPeerIdentityVerificationState OtrPeerIdentityVerificationService::stateForContact(const Contact &contact) const
 {
 	if (VerificationStates.contains(contact))
 		return VerificationStates.value(contact);
 
 	return OtrPeerIdentityVerificationState();
+}
+
+void OtrPeerIdentityVerificationService::setContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
+{
+	if (VerificationStates.contains(contact) && VerificationStates.value(contact) == state)
+		return;
+
+	VerificationStates.insert(contact, state);
+	emit contactStateUpdated(contact, state);
 }

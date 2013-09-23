@@ -228,8 +228,9 @@ int OtrPlugin::init(bool firstLoad)
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
 	AppOpsWrapper->setFingerprintService(FingerprintService.data());
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
-	AppOpsWrapper->setUserState(&UserState);
+	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	AppOpsWrapper->setTrustLevelService(TrustLevelService.data());
+	AppOpsWrapper->setUserState(&UserState);
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
@@ -318,8 +319,9 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
 	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
-	AppOpsWrapper->setTrustLevelService(0);
 	AppOpsWrapper->setUserState(0);
+	AppOpsWrapper->setTrustLevelService(0);
+	AppOpsWrapper->setPeerIdentityVerificationService(0);
 	AppOpsWrapper->setMessageManager(0);
 	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);

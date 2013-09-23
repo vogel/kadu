@@ -36,6 +36,7 @@ class MessageManager;
 class OtrContextConverter;
 class OtrFingerprintService;
 class OtrOpData;
+class OtrPeerIdentityVerificationService;
 class OtrTrustLevelService;
 class OtrUserState;
 
@@ -65,9 +66,10 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_handle_smp_event(void *, OtrlSMPEvent, ConnContext *, unsigned short, char *);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
+	QWeakPointer<MessageManager> CurrentMessageManager;
 	QWeakPointer<OtrContextConverter> ContextConverter;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
-	QWeakPointer<MessageManager> CurrentMessageManager;
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	OtrUserState *UserState;
 	OtrlMessageAppOps Ops;
@@ -98,6 +100,7 @@ public:
 	void setContextConverter(OtrContextConverter *contextConverter);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setMessageManager(MessageManager *messageManager);
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setUserState(OtrUserState *userState);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 

@@ -42,6 +42,8 @@ extern "C" {
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-op-data.h"
+#include "otr-peer-identity-verification-service.h"
+#include "otr-peer-identity-verification-state.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
 #include "otr-policy-account-store.h"
@@ -270,6 +272,11 @@ void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 	CurrentMessageManager = messageManager;
 }
 
+void OtrAppOpsWrapper::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+{
+	PeerIdentityVerificationService = peerIdentityVerificationService;
+}
+
 void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
 {
 	UserState = userState;
@@ -460,7 +467,35 @@ void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *otrOpData, OtrlMessageEvent eve
 
 void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *ngOtrOpData, OtrlSMPEvent event, short unsigned int progressPercent, const QString &question)
 {
-	printf("OtrAppOpsWrapper::handleSmpEvent: %s %d %d %s\n", qPrintable(ngOtrOpData->peerDisplay()), event, progressPercent, qPrintable(question));
+	Q_UNUSED(question);
+
+	if (!PeerIdentityVerificationService)
+		return;
+
+	Contact contact = ngOtrOpData->chat().contacts().toContact();
+	if (!contact)
+		return;
+
+	OtrPeerIdentityVerificationState::State state = OtrPeerIdentityVerificationState::StateNotStarted;
+	switch (event)
+	{
+		case OTRL_SMPEVENT_IN_PROGRESS:
+			state = OtrPeerIdentityVerificationState::StateInProgress;
+			break;
+		case OTRL_SMPEVENT_CHEATED:
+		case OTRL_SMPEVENT_ERROR:
+		case OTRL_SMPEVENT_FAILURE:
+			state = OtrPeerIdentityVerificationState::StateFailed;
+			break;
+		case OTRL_SMPEVENT_SUCCESS:
+			state = OtrPeerIdentityVerificationState::StateSucceeded;
+			break;
+		default:
+			state = OtrPeerIdentityVerificationState::StateNotStarted;
+			break;
+	}
+
+	PeerIdentityVerificationService.data()->setContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
 
 QString OtrAppOpsWrapper::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const
