@@ -75,9 +75,8 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	connect(PeerIdentityVerificationService.data(), SIGNAL(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)),
 			progressPage, SLOT(updateContactState(Contact,OtrPeerIdentityVerificationState)));
+	connect(result, SIGNAL(aboutToBeRejected()), progressPage, SLOT(rejected()));
 	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
-
-	connect(result, SIGNAL(cancelVerification(Contact)), PeerIdentityVerificationService.data(), SLOT(cancelVerification(Contact)));
 
 	return result;
 }

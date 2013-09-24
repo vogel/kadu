@@ -47,7 +47,7 @@ public slots:
 	virtual void reject();
 
 signals:
-	void cancelVerification(const Contact &contact);
+	void aboutToBeRejected();
 	void destroyed(const Contact &contact);
 
 };

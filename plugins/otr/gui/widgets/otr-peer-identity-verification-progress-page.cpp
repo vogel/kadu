@@ -79,6 +79,22 @@ void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService
 	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
+void OtrPeerIdentityVerificationProgressPage::cancelVerification()
+{
+	PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+}
+
+bool OtrPeerIdentityVerificationProgressPage::canCancelVerification() const
+{
+	return OtrPeerIdentityVerificationState::StateInProgress == State.state() || OtrPeerIdentityVerificationState::StateNotStarted == State.state();
+}
+
+void OtrPeerIdentityVerificationProgressPage::rejected()
+{
+	if (wizard()->currentPage() == this && canCancelVerification())
+		cancelVerification();
+}
+
 void OtrPeerIdentityVerificationProgressPage::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
 	if (contact == MyContact)
@@ -100,8 +116,8 @@ bool OtrPeerIdentityVerificationProgressPage::validatePage()
 	if (!PeerIdentityVerificationService)
 		return true;
 
-	if (OtrPeerIdentityVerificationState::StateInProgress == State.state() || OtrPeerIdentityVerificationState::StateNotStarted == State.state())
-		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+	if (canCancelVerification())
+		cancelVerification();
 
 	return true;
 }

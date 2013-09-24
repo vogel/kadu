@@ -46,6 +46,8 @@ class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 	void createGui();
 	void setState(const OtrPeerIdentityVerificationState &state);
 	QString stateToString(const OtrPeerIdentityVerificationState &state);
+	void cancelVerification();
+	bool canCancelVerification() const;
 
 public:
 	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = 0);
@@ -58,6 +60,7 @@ public:
 	virtual bool validatePage();
 
 public slots:
+	void rejected();
 	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 };

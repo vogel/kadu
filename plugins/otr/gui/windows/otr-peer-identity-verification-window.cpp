@@ -33,7 +33,7 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 
 void OtrPeerIdentityVerificationWindow::reject()
 {
-	emit cancelVerification(MyContact);
+	emit aboutToBeRejected();
 
 	QWizard::reject();
 }
