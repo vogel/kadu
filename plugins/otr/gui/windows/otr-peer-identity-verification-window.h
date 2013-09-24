@@ -30,8 +30,6 @@ class OtrPeerIdentityVerificationWindow : public QWizard
 
 	Contact MyContact;
 
-	void createGui();
-
 public:
 	enum
 	{

@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
-
 #include "otr-peer-identity-verification-window.h"
 
 OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent) :
@@ -26,18 +24,11 @@ OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Conta
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
-
-	createGui();
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 {
 	emit destroyed(MyContact);
-}
-
-void OtrPeerIdentityVerificationWindow::createGui()
-{
-	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
 }
 
 void OtrPeerIdentityVerificationWindow::reject()

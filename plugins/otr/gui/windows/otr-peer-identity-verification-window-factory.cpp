@@ -20,6 +20,7 @@
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-progress-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
+#include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
 #include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-app-ops-wrapper.h"
@@ -55,6 +56,8 @@ void OtrPeerIdentityVerificationWindowFactory::setPeerIdentityVerificationServic
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::windowForContact(const Contact &contact)
 {
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact);
+
+	result->setPage(OtrPeerIdentityVerificationWindow::SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(result));
 
 	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
 	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
