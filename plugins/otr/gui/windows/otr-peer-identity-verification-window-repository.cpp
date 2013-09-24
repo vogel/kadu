@@ -73,6 +73,8 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository:
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
 	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	connect(PeerIdentityVerificationService.data(), SIGNAL(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)),
+			progressPage, SLOT(updateContactState(Contact,OtrPeerIdentityVerificationState)));
 	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
 
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));

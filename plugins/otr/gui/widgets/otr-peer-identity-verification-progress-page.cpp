@@ -76,15 +76,10 @@ QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIden
 
 void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	if (PeerIdentityVerificationService)
-		disconnect(PeerIdentityVerificationService.data(), 0, this, 0);
 	PeerIdentityVerificationService = peerIdentityVerificationService;
-	if (PeerIdentityVerificationService)
-		connect(PeerIdentityVerificationService.data(), SIGNAL(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)),
-				this, SLOT(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)));
 }
 
-void OtrPeerIdentityVerificationProgressPage::contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state)
+void OtrPeerIdentityVerificationProgressPage::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
 	if (contact == MyContact)
 		setState(state);
