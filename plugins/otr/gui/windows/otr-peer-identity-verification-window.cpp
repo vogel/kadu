@@ -39,3 +39,10 @@ void OtrPeerIdentityVerificationWindow::createGui()
 {
 	setPage(SelectMethodPage, new OtrPeerIdentityVerificationSelectMethodPage(this));
 }
+
+void OtrPeerIdentityVerificationWindow::reject()
+{
+	emit cancelVerification(MyContact);
+
+	QWizard::reject();
+}

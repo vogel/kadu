@@ -45,7 +45,11 @@ public:
 	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationWindow();
 
+public slots:
+	virtual void reject();
+
 signals:
+	void cancelVerification(const Contact &contact);
 	void destroyed(const Contact &contact);
 
 };
