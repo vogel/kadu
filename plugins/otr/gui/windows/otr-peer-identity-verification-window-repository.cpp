@@ -17,14 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
-#include "gui/widgets/otr-peer-identity-verification-progress-page.h"
-#include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
-#include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
-#include "otr-app-ops-wrapper.h"
-#include "otr-fingerprint-service.h"
-#include "otr-peer-identity-verification-service.h"
+#include "gui/windows/otr-peer-identity-verification-window-factory.h"
 
 #include "otr-peer-identity-verification-window-repository.h"
 
@@ -37,19 +31,9 @@ OtrPeerIdentityVerificationWindowRepository::~OtrPeerIdentityVerificationWindowR
 {
 }
 
-void OtrPeerIdentityVerificationWindowRepository::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrPeerIdentityVerificationWindowRepository::setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory)
 {
-	AppOpsWrapper = appOpsWrapper;
-}
-
-void OtrPeerIdentityVerificationWindowRepository::setFingerprintService(OtrFingerprintService *fingerprintService)
-{
-	FingerprintService = fingerprintService;
-}
-
-void OtrPeerIdentityVerificationWindowRepository::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
-{
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+	PeerIdentityVerificationWindowFactory = peerIdentityVerificationWindowFactory;
 }
 
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository::windowForContact(const Contact &contact)
@@ -57,26 +41,11 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowRepository:
 	if (Windows.contains(contact))
 		return Windows.value(contact);
 
-	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact);
+	if (!PeerIdentityVerificationWindowFactory)
+		return 0;
 
-	OtrPeerIdentityVerificationFingerprintExchangePage *fingerprintExchangePage = new OtrPeerIdentityVerificationFingerprintExchangePage(contact, result);
-	fingerprintExchangePage->setFingerprintService(FingerprintService.data());
-	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
 
-	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
-	questionAndAnswerPage->setAppOpsWrapper(AppOpsWrapper.data());
-	result->setPage(OtrPeerIdentityVerificationWindow::QuestionAndAnswerPage, questionAndAnswerPage);
-
-	OtrPeerIdentityVerificationSharedSecretPage *sharedSecretPage = new OtrPeerIdentityVerificationSharedSecretPage(contact, result);
-	sharedSecretPage->setAppOpsWrapper(AppOpsWrapper.data());
-	result->setPage(OtrPeerIdentityVerificationWindow::SharedSecretPage, sharedSecretPage);
-
-	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
-	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
-	connect(PeerIdentityVerificationService.data(), SIGNAL(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)),
-			progressPage, SLOT(updateContactState(Contact,OtrPeerIdentityVerificationState)));
-	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
-
+	OtrPeerIdentityVerificationWindow *result = PeerIdentityVerificationWindowFactory.data()->windowForContact(contact);
 	connect(result, SIGNAL(destroyed(Contact)), this, SLOT(windowDestroyed(Contact)));
 	Windows.insert(contact, result);
 

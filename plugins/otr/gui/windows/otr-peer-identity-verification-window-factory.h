@@ -17,37 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
+#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H
 
 #include <QtCore/QObject>
 
 #include "contacts/contact.h"
 
+class OtrAppOpsWrapper;
+class OtrFingerprintService;
+class OtrPeerIdentityVerificationService;
 class OtrPeerIdentityVerificationWindow;
-class OtrPeerIdentityVerificationWindowFactory;
 
-class OtrPeerIdentityVerificationWindowRepository : public QObject
+class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
+	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrFingerprintService> FingerprintService;
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
-private slots:
-	void windowDestroyed(const Contact &contact);
-
 public:
-	explicit OtrPeerIdentityVerificationWindowRepository(QObject *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindowRepository();
+	explicit OtrPeerIdentityVerificationWindowFactory(QObject *parent = 0);
+	virtual ~OtrPeerIdentityVerificationWindowFactory();
 
-	void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setFingerprintService(OtrFingerprintService *fingerprintService);
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
-public slots:
-	void showVerificationWindow(const Contact &contact);
-
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_REPOSITORY_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_FACTORY_H

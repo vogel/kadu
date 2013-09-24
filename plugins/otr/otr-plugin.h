@@ -33,6 +33,7 @@ class OtrContextConverter;
 class OtrFingerprintService;
 class OtrNotifier;
 class OtrPeerIdentityVerificationService;
+class OtrPeerIdentityVerificationWindowFactory;
 class OtrPeerIdentityVerificationWindowRepository;
 class OtrPrivateKeyService;
 class OtrRawMessageTransformer;
@@ -55,6 +56,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrFingerprintService> FingerprintService;
 	QScopedPointer<OtrNotifier> Notifier;
 	QScopedPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QScopedPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
 	QScopedPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
@@ -81,6 +83,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrPeerIdentityVerificationService();
 	void unregisterOtrPeerIdentityVerificationService();
+
+	void registerOtrPeerIdentityVerificationWindowFactory();
+	void unregisterOtrPeerIdentityVerificationWindowFactory();
 
 	void registerOtrPeerIdentityVerificationWindowRepository();
 	void unregisterOtrPeerIdentityVerificationWindowRepository();

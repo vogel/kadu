@@ -26,6 +26,7 @@
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
+#include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-context-converter.h"
@@ -145,6 +146,16 @@ void OtrPlugin::unregisterOtrPeerIdentityVerificationService()
 	PeerIdentityVerificationService.reset();
 }
 
+void OtrPlugin::registerOtrPeerIdentityVerificationWindowFactory()
+{
+	PeerIdentityVerificationWindowFactory.reset(new OtrPeerIdentityVerificationWindowFactory());
+}
+
+void OtrPlugin::unregisterOtrPeerIdentityVerificationWindowFactory()
+{
+	PeerIdentityVerificationWindowFactory.reset(0);
+}
+
 void OtrPlugin::registerOtrPeerIdentityVerificationWindowRepository()
 {
 	PeerIdentityVerificationWindowRepository.reset(new OtrPeerIdentityVerificationWindowRepository());
@@ -219,6 +230,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrFingerprintService();
 	registerOtrNotifier();
 	registerOtrPeerIdentityVerificationService();
+	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerificationWindowRepository();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
@@ -253,9 +265,11 @@ int OtrPlugin::init(bool firstLoad)
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
 
-	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(AppOpsWrapper.data());
-	PeerIdentityVerificationWindowRepository->setFingerprintService(FingerprintService.data());
-	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	PeerIdentityVerificationWindowFactory->setAppOpsWrapper(AppOpsWrapper.data());
+	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
+	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+
+	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
 	PrivateKeyService->setUserState(&UserState);
 	PrivateKeyService->readPrivateKeys();
@@ -301,9 +315,11 @@ void OtrPlugin::done()
 
 	PrivateKeyService->setUserState(0);
 
-	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationService(0);
-	PeerIdentityVerificationWindowRepository->setFingerprintService(0);
-	PeerIdentityVerificationWindowRepository->setAppOpsWrapper(0);
+	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(0);
+	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
+	PeerIdentityVerificationWindowFactory->setAppOpsWrapper(0);
+
+	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(0);
 
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
@@ -335,6 +351,7 @@ void OtrPlugin::done()
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrPeerIdentityVerificationWindowRepository();
+	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrPeerIdentityVerificationService();
 	unregisterOtrNotifier();
 	unregisterOtrContextConverter();
