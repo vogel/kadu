@@ -20,7 +20,7 @@
 #ifndef OTR_OP_DATA_H
 #define OTR_OP_DATA_H
 
-#include "chat/chat.h"
+#include "contacts/contact.h"
 
 class OtrAppOpsWrapper;
 class OtrPrivateKeyService;
@@ -29,7 +29,7 @@ class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrPrivateKeyService *PrivateKeyService;
-	Chat MyChat;
+	Contact MyContact;
 	QString PeerDisplay;
 
 public:
@@ -45,8 +45,8 @@ public:
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;
 
-	void setChat(const Chat &chat);
-	Chat chat() const;
+	void setContact(const Contact &contact);
+	Contact contact() const;
 
 	void setPeerDisplay(const QString &peerDisplay);
 	QString peerDisplay() const;

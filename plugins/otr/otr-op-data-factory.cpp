@@ -17,9 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
-#include "chat/type/chat-type-contact.h"
-
 #include "otr-app-ops-wrapper.h"
 #include "otr-op-data.h"
 #include "otr-private-key-service.h"
@@ -47,11 +44,9 @@ void OtrOpDataFactory::setPrivateKeyService(OtrPrivateKeyService *privateKeyServ
 
 OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 {
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-
 	OtrOpData result;
 	result.setAppOpsWrapper(AppOpsWrapper.data());
-	result.setChat(chat);
+	result.setContact(contact);
 	result.setPeerDisplay(contact.display(true));
 	result.setPrivateKeyService(PrivateKeyService.data());
 

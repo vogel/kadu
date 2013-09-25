@@ -38,7 +38,7 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
 	AppOpsWrapper = copyMe.AppOpsWrapper;
 	PrivateKeyService = copyMe.PrivateKeyService;
-	MyChat = copyMe.MyChat;
+	MyContact = copyMe.MyContact;
 	PeerDisplay = copyMe.PeerDisplay;
 
 	return *this;
@@ -64,14 +64,14 @@ OtrPrivateKeyService * OtrOpData::privateKeyService() const
 	return PrivateKeyService;
 }
 
-void OtrOpData::setChat(const Chat &chat)
+void OtrOpData::setContact(const Contact &contact)
 {
-	MyChat = chat;
+	MyContact = contact;
 }
 
-Chat OtrOpData::chat() const
+Contact OtrOpData::contact() const
 {
-	return MyChat;
+	return MyContact;
 }
 
 void OtrOpData::setPeerDisplay(const QString &peerDisplay)
