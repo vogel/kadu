@@ -26,7 +26,7 @@ extern "C" {
 #include "accounts/account.h"
 
 #include "otr-create-private-key-worker.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-create-private-key-job.h"
 
@@ -37,22 +37,23 @@ OtrCreatePrivateKeyJob::OtrCreatePrivateKeyJob(QObject *parent) :
 
 OtrCreatePrivateKeyJob::~OtrCreatePrivateKeyJob()
 {
-	if (CreationThread && KeyPointer)
-	{
-		otrl_privkey_generate_cancelled(UserState->userState(), KeyPointer);
-		CreationThread.data()->wait();
-		KeyPointer = 0;
-	}
+	if (!CreationThread || !KeyPointer)
+		return;
+
+	if (UserStateService)
+		otrl_privkey_generate_cancelled(UserStateService.data()->userState(), KeyPointer);
+	CreationThread.data()->wait();
+	KeyPointer = 0;
+}
+
+void OtrCreatePrivateKeyJob::setUserStateService(OtrUserStateService *userStateService)
+{
+	UserStateService = userStateService;
 }
 
 void OtrCreatePrivateKeyJob::setAccount(const Account &account)
 {
 	MyAccount = account;
-}
-
-void OtrCreatePrivateKeyJob::setUserState(OtrUserState *userState)
-{
-	UserState = userState;
 }
 
 void OtrCreatePrivateKeyJob::setPrivateStoreFileName(const QString &privateStoreFileName)
@@ -62,13 +63,13 @@ void OtrCreatePrivateKeyJob::setPrivateStoreFileName(const QString &privateStore
 
 void OtrCreatePrivateKeyJob::createPrivateKey()
 {
-	if (!MyAccount || !UserState || PrivateStoreFileName.isEmpty() || CreationThread || KeyPointer)
+	if (!MyAccount || !UserStateService || PrivateStoreFileName.isEmpty() || CreationThread || KeyPointer)
 	{
 		emit finished(MyAccount, false);
 		return;
 	}
 
-	gcry_error_t err = otrl_privkey_generate_start(UserState->userState(), MyAccount.id().toUtf8().data(),
+	gcry_error_t err = otrl_privkey_generate_start(UserStateService.data()->userState(), MyAccount.id().toUtf8().data(),
 												   MyAccount.protocolName().toUtf8().data(), &KeyPointer);
 	if (err)
 	{
@@ -101,7 +102,7 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 
 	Q_ASSERT(KeyPointer);
 
-	gcry_error_t err = otrl_privkey_generate_finish(UserState->userState(), KeyPointer, PrivateStoreFileName.toUtf8().data());
+	gcry_error_t err = otrl_privkey_generate_finish(UserStateService.data()->userState(), KeyPointer, PrivateStoreFileName.toUtf8().data());
 	KeyPointer = 0;
 
 	emit finished(MyAccount, 0 == err);

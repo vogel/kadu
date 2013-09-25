@@ -27,7 +27,7 @@ extern "C" {
 }
 
 #include "otr-app-ops-wrapper.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-timer.h"
 
@@ -47,17 +47,17 @@ void OtrTimer::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
 	AppOpsWrapper = otrAppOpsWrapper;
 }
 
-void OtrTimer::setUserState(OtrUserState *userState)
+void OtrTimer::setUserStateService(OtrUserStateService *userStateService)
 {
-	if (UserState)
+	if (UserStateService)
 	{
 		delete Timer;
 		Timer = 0;
 	}
 
-	UserState = userState;
+	UserStateService = userStateService;
 
-	if (UserState)
+	if (UserStateService)
 	{
 		Timer = new QTimer(this);
 		connect(Timer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
@@ -69,7 +69,7 @@ void OtrTimer::otrTimerTimeout()
 	const OtrlMessageAppOps *ops = AppOpsWrapper
 			? AppOpsWrapper.data()->ops()
 			: 0;
-	otrl_message_poll(UserState->userState(), ops, 0);
+	otrl_message_poll(UserStateService.data()->userState(), ops, 0);
 }
 
 void OtrTimer::timerControl(int intervalInSeconds)

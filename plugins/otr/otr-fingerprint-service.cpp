@@ -26,12 +26,12 @@ extern "C" {
 #include "misc/kadu-paths.h"
 
 #include "otr-context-converter.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-fingerprint-service.h"
 
 OtrFingerprintService::OtrFingerprintService(QObject *parent) :
-		QObject(parent), UserState()
+		QObject(parent)
 {
 }
 
@@ -39,14 +39,14 @@ OtrFingerprintService::~OtrFingerprintService()
 {
 }
 
-void OtrFingerprintService::setUserState(OtrUserState *userState)
-{
-	UserState = userState;
-}
-
 void OtrFingerprintService::setContextConverter(OtrContextConverter *contextConverter)
 {
 	ContextConverter = contextConverter;
+}
+
+void OtrFingerprintService::setUserStateService(OtrUserStateService *userStateService)
+{
+	UserStateService = userStateService;
 }
 
 QString OtrFingerprintService::fingerprintsStoreFileName() const
@@ -56,10 +56,10 @@ QString OtrFingerprintService::fingerprintsStoreFileName() const
 
 void OtrFingerprintService::readFingerprints() const
 {
-	if (!UserState)
+	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserState->userState();
+	OtrlUserState userState = UserStateService.data()->userState();
 	otrl_privkey_read_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data(), 0, 0);
 
 	emit fingerprintsUpdated();
@@ -67,10 +67,10 @@ void OtrFingerprintService::readFingerprints() const
 
 void OtrFingerprintService::writeFingerprints() const
 {
-	if (!UserState)
+	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserState->userState();
+	OtrlUserState userState = UserStateService.data()->userState();
 	otrl_privkey_write_fingerprints(userState, fingerprintsStoreFileName().toUtf8().data());
 
 	emit fingerprintsUpdated();
@@ -103,11 +103,12 @@ OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(cons
 
 QString OtrFingerprintService::extractAccountFingerprint(const Account &account) const
 {
-	if (!UserState)
+	if (!UserStateService)
 		return QString();
 
 	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
-	char *result = otrl_privkey_fingerprint(UserState->userState(), fingerprint, qPrintable(account.id()), qPrintable(account.protocolName()));
+	char *result = otrl_privkey_fingerprint(UserStateService.data()->userState(), fingerprint,
+											qPrintable(account.id()), qPrintable(account.protocolName()));
 
 	if (!result)
 		return QString();
@@ -118,7 +119,7 @@ QString OtrFingerprintService::extractAccountFingerprint(const Account &account)
 
 QString OtrFingerprintService::extractContactFingerprint(const Contact &contact) const
 {
-	if (!UserState || !ContextConverter)
+	if (!ContextConverter)
 		return QString();
 
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);

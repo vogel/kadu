@@ -20,12 +20,12 @@
 #include "contacts/contact.h"
 
 #include "otr-context-converter.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-trust-level-service.h"
 
 OtrTrustLevelService::OtrTrustLevelService(QObject *parent) :
-		QObject(parent), UserState(0)
+		QObject(parent)
 {
 }
 
@@ -33,14 +33,14 @@ OtrTrustLevelService::~OtrTrustLevelService()
 {
 }
 
-void OtrTrustLevelService::setUserState(OtrUserState *userState)
-{
-	UserState = userState;
-}
-
 void OtrTrustLevelService::setContextConverter(OtrContextConverter *contextConverter)
 {
 	ContextConverter = contextConverter;
+}
+
+void OtrTrustLevelService::setUserStateService(OtrUserStateService *userStateService)
+{
+	UserStateService = userStateService;
 }
 
 void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, TrustLevel level) const
@@ -78,10 +78,10 @@ OtrTrustLevelService::TrustLevel OtrTrustLevelService::trustLevelFromContext(Con
 
 void OtrTrustLevelService::updateTrustLevels()
 {
-	if (!ContextConverter)
+	if (!ContextConverter || !UserStateService)
 		return;
 
-	ConnContext *context = UserState->userState()->context_root;
+	ConnContext *context = UserStateService.data()->userState()->context_root;
 	while (context)
 	{
 		Contact contact = ContextConverter.data()->connectionContextToContact(context);

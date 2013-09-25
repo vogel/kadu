@@ -24,14 +24,15 @@
 #include <QtCore/QWeakPointer>
 
 class Account;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrCreatePrivateKeyJob : public QObject
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrUserStateService> UserStateService;
+
 	Account MyAccount;
-	OtrUserState *UserState;
 	QString PrivateStoreFileName;
 	QWeakPointer<QThread> CreationThread;
 	void *KeyPointer;
@@ -43,8 +44,9 @@ public:
 	explicit OtrCreatePrivateKeyJob(QObject *parent = 0);
 	virtual ~OtrCreatePrivateKeyJob();
 
+	void setUserStateService(OtrUserStateService *userStateService);
+
 	void setAccount(const Account &account);
-	void setUserState(OtrUserState *userState);
 	void setPrivateStoreFileName(const QString &privateStoreFileName);
 	void createPrivateKey();
 

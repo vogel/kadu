@@ -50,6 +50,7 @@ extern "C" {
 #include "otr-private-key-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
+#include "otr-user-state-service.h"
 
 #include "otr-app-ops-wrapper.h"
 
@@ -224,8 +225,7 @@ void kadu_otr_timer_control(void *opdata, unsigned int interval)
 	otrTimer->timerControl(interval);
 }
 
-OtrAppOpsWrapper::OtrAppOpsWrapper() :
-		UserState(0)
+OtrAppOpsWrapper::OtrAppOpsWrapper()
 {
 	Ops.policy = kadu_otr_policy;
 	Ops.create_privkey = kadu_otr_create_privkey;
@@ -277,9 +277,9 @@ void OtrAppOpsWrapper::setPeerIdentityVerificationService(OtrPeerIdentityVerific
 	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
-void OtrAppOpsWrapper::setUserState(OtrUserState *userState)
+void OtrAppOpsWrapper::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserState = userState;
+	UserStateService = userStateService;
 }
 
 void OtrAppOpsWrapper::setTrustLevelService(OtrTrustLevelService *trustLevelService)
@@ -313,7 +313,7 @@ void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
 
 void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 {
-	if (!UserState)
+	if (!UserStateService)
 		return;
 
 	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
@@ -323,7 +323,7 @@ void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 	opData.setChat(chat);
 	opData.setPeerDisplay(contact.display(true));
 
-	otrl_message_disconnect_all_instances(UserState->userState(), &Ops, &opData,
+	otrl_message_disconnect_all_instances(UserStateService.data()->userState(), &Ops, &opData,
 										  qPrintable(contact.contactAccount().id()),
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));
@@ -338,7 +338,7 @@ void OtrAppOpsWrapper::peerClosedSession(const Contact &contact)
 
 void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString &question, const QString &answer)
 {
-	if (!ContextConverter || !UserState)
+	if (!ContextConverter || !UserStateService)
 		return;
 
 	OtrOpData opData;
@@ -347,13 +347,13 @@ void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString
 	opData.setPeerDisplay(contact.display(true));
 
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_initiate_smp_q(UserState->userState(), &Ops, &opData,
+	otrl_message_initiate_smp_q(UserStateService.data()->userState(), &Ops, &opData,
 		context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
 }
 
 void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QString &sharedSecret)
 {
-	if (!ContextConverter || !UserState)
+	if (!ContextConverter || !UserStateService)
 		return;
 
 	OtrOpData opData;
@@ -362,13 +362,13 @@ void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QStrin
 	opData.setPeerDisplay(contact.display(true));
 
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_initiate_smp(UserState->userState(), &Ops, &opData,
+	otrl_message_initiate_smp(UserStateService.data()->userState(), &Ops, &opData,
 		context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
 }
 
 void OtrAppOpsWrapper::abortSMP(const Contact &contact)
 {
-	if (!ContextConverter || !UserState)
+	if (!ContextConverter || !UserStateService)
 		return;
 
 	OtrOpData opData;
@@ -377,7 +377,7 @@ void OtrAppOpsWrapper::abortSMP(const Contact &contact)
 	opData.setPeerDisplay(contact.display(true));
 
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_abort_smp(UserState->userState(), &Ops, &opData, context);
+	otrl_message_abort_smp(UserStateService.data()->userState(), &Ops, &opData, context);
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
@@ -577,12 +577,13 @@ QString OtrAppOpsWrapper::gpgErrorString(gcry_error_t errorCode) const
 
 void OtrAppOpsWrapper::createInstanceTag(OtrOpData *otrOpData)
 {
-	Q_ASSERT(UserState);
+	Q_ASSERT(UserStateService);
 
 	Account account = otrOpData->chat().chatAccount();
 	QString fileName = instanceTagsFileName();
 
-	otrl_instag_generate(UserState->userState(), fileName.toUtf8().data(), account.id().toUtf8().data(), account.protocolName().toUtf8().data());
+	otrl_instag_generate(UserStateService.data()->userState(), fileName.toUtf8().data(),
+						 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
 }
 
 QString OtrAppOpsWrapper::instanceTagsFileName() const

@@ -38,7 +38,7 @@ class OtrFingerprintService;
 class OtrOpData;
 class OtrPeerIdentityVerificationService;
 class OtrTrustLevelService;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrAppOpsWrapper : public QObject
 {
@@ -71,7 +71,7 @@ class OtrAppOpsWrapper : public QObject
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
-	OtrUserState *UserState;
+	QWeakPointer<OtrUserStateService> UserStateService;
 	OtrlMessageAppOps Ops;
 
 	OtrlPolicy policy(OtrOpData *ngOtrOpData) const;
@@ -101,7 +101,7 @@ public:
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setMessageManager(MessageManager *messageManager);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	void setUserState(OtrUserState *userState);
+	void setUserStateService(OtrUserStateService *userStateService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	const OtrlMessageAppOps * ops() const;

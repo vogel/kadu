@@ -31,19 +31,19 @@ extern "C" {
 class Chat;
 class Contact;
 
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrContextConverter : public QObject
 {
 	Q_OBJECT
 
-	OtrUserState *UserState;
+	QWeakPointer<OtrUserStateService> UserStateService;
 
 public:
 	explicit OtrContextConverter(QObject *parent = 0);
 	virtual ~OtrContextConverter();
 
-	void setUserState(OtrUserState *userState);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 	Chat connectionContextToChat(ConnContext *context) const;
 	Contact connectionContextToContact(ConnContext *context) const;

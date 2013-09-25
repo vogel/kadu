@@ -22,17 +22,18 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
 class Account;
 
 class OtrCreatePrivateKeyJob;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrPrivateKeyService : public QObject
 {
 	Q_OBJECT
 
-	OtrUserState *UserState;
+	QWeakPointer<OtrUserStateService> UserStateService;
 	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
 
 	QString privateStoreFileName() const;
@@ -44,7 +45,7 @@ public:
 	explicit OtrPrivateKeyService(QObject *parent = 0);
 	virtual ~OtrPrivateKeyService();
 
-	void setUserState(OtrUserState *userState);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 	void createPrivateKey(const Account &account);
 	void readPrivateKeys();

@@ -30,14 +30,14 @@ extern "C" {
 class Contact;
 
 class OtrContextConverter;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrTrustLevelService : public QObject
 {
 	Q_OBJECT
 
-	OtrUserState *UserState;
 	QWeakPointer<OtrContextConverter> ContextConverter;
+	QWeakPointer<OtrUserStateService> UserStateService;
 
 public:
 	enum TrustLevel
@@ -51,8 +51,8 @@ public:
 	explicit OtrTrustLevelService(QObject *parent = 0);
 	virtual ~OtrTrustLevelService();
 
-	void setUserState(OtrUserState *userState);
 	void setContextConverter(OtrContextConverter *contextConverter);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 	void storeTrustLevelToContact(const Contact &contact, TrustLevel level) const;
 	TrustLevel loadTrustLevelFromContact(const Contact &contact) const;

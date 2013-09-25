@@ -17,19 +17,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
-OtrUserState::OtrUserState()
+OtrUserStateService::OtrUserStateService(QObject *parent) :
+		QObject(parent)
 {
 	UserState = otrl_userstate_create();
 }
 
-OtrUserState::~OtrUserState()
+OtrUserStateService::~OtrUserStateService()
 {
 	otrl_userstate_free(UserState);
 }
 
-OtrlUserState OtrUserState::userState() const
+OtrlUserState OtrUserStateService::userState() const
 {
 	return UserState;
 }

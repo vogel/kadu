@@ -26,14 +26,15 @@
 class QTimer;
 
 class OtrAppOpsWrapper;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrTimer : public QObject
 {
 	Q_OBJECT
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
-	OtrUserState *UserState;
+	QWeakPointer<OtrUserStateService> UserStateService;
+
 	QTimer *Timer;
 
 	friend void kadu_otr_timer_control(void *, unsigned int);
@@ -47,7 +48,7 @@ public:
 	virtual ~OtrTimer();
 
 	void setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
-	void setUserState(OtrUserState *userState);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 };
 

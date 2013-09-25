@@ -33,22 +33,17 @@ extern "C" {
 #include "otr-app-ops-wrapper.h"
 #include "otr-op-data.h"
 #include "otr-private-key-service.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-raw-message-transformer.h"
 
 OtrRawMessageTransformer::OtrRawMessageTransformer() :
-		UserState(0), EnableFragments(false)
+		EnableFragments(false)
 {
 }
 
 OtrRawMessageTransformer::~OtrRawMessageTransformer()
 {
-}
-
-void OtrRawMessageTransformer::setUserState(OtrUserState *userState)
-{
-	UserState = userState;
 }
 
 void OtrRawMessageTransformer::setEnableFragments(bool enableFragments)
@@ -61,6 +56,11 @@ void OtrRawMessageTransformer::setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionN
 	AppOpsWrapper = encryptionNgOtrAppOpsWrapper;
 }
 
+void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStateService)
+{
+	UserStateService = userStateService;
+}
+
 void OtrRawMessageTransformer::setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
 {
 	PrivateKeyService = encryptionNgOtrPrivateKeyService;
@@ -68,7 +68,7 @@ void OtrRawMessageTransformer::setOtrPrivateKeyService(OtrPrivateKeyService *enc
 
 QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	if (AppOpsWrapper.isNull() || !UserState)
+	if (AppOpsWrapper.isNull())
 		return messageContent;
 
 	switch (message.type())
@@ -84,7 +84,10 @@ QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent,
 
 QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
 {
-	OtrlUserState userState = UserState->userState();
+	if (!UserStateService)
+		return messageContent;
+
+	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
 		return messageContent;
 
@@ -119,7 +122,10 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 
 QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
 {
-	OtrlUserState userState = UserState->userState();
+	if (!UserStateService)
+		return messageContent;
+
+	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
 		return messageContent;
 

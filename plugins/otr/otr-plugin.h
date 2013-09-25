@@ -24,8 +24,6 @@
 
 #include "plugins/generic-plugin.h"
 
-#include "otr-user-state.h"
-
 class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsWrapper;
 class OtrChatTopBarWidgetFactory;
@@ -39,6 +37,7 @@ class OtrPrivateKeyService;
 class OtrRawMessageTransformer;
 class OtrTimer;
 class OtrTrustLevelService;
+class OtrUserStateService;
 
 class OtrPlugin : public QObject, public GenericPlugin
 {
@@ -47,7 +46,6 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	static OtrPlugin *Instance; // ugly, but required by otr unfortunately
 	bool OtrAvailable;
-	OtrUserState UserState;
 
 	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
 	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
@@ -62,6 +60,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
 	QScopedPointer<OtrTimer> Timer;
 	QScopedPointer<OtrTrustLevelService> TrustLevelService;
+	QScopedPointer<OtrUserStateService> UserStateService;
 
 	void registerOtrAcountConfigurationWidgetFactory();
 	void unregisterOtrAcountConfigurationWidgetFactory();
@@ -102,6 +101,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrTrustLevelService();
 	void unregisterOtrTrustLevelService();
+
+	void registerOtrUserStateService();
+	void unregisterOtrUserStateService();
 
 public:
 	static OtrPlugin * instance();

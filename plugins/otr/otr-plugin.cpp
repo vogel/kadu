@@ -37,7 +37,7 @@
 #include "otr-raw-message-transformer.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-plugin.h"
 
@@ -216,6 +216,17 @@ void OtrPlugin::unregisterOtrTrustLevelService()
 	TrustLevelService.reset();
 }
 
+void OtrPlugin::registerOtrUserStateService()
+{
+	UserStateService.reset(new OtrUserStateService());
+}
+
+void OtrPlugin::unregisterOtrUserStateService()
+{
+	UserStateService.reset(0);
+}
+
+
 int OtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
@@ -236,13 +247,14 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrRawMessageTransformer();
 	registerOtrTimer();
 	registerOtrTrustLevelService();
+	registerOtrUserStateService();
 
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
 	AppOpsWrapper->setFingerprintService(FingerprintService.data());
 	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	AppOpsWrapper->setTrustLevelService(TrustLevelService.data());
-	AppOpsWrapper->setUserState(&UserState);
+	AppOpsWrapper->setUserStateService(UserStateService.data());
 
 	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
 	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
@@ -254,10 +266,10 @@ int OtrPlugin::init(bool firstLoad)
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
 
-	ContextConverter->setUserState(&UserState);
+	ContextConverter->setUserStateService(UserStateService.data());
 
 	FingerprintService->setContextConverter(ContextConverter.data());
-	FingerprintService->setUserState(&UserState);
+	FingerprintService->setUserStateService(UserStateService.data());
 
 	connect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
@@ -271,7 +283,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
-	PrivateKeyService->setUserState(&UserState);
+	PrivateKeyService->setUserStateService(UserStateService.data());
 	PrivateKeyService->readPrivateKeys();
 
 	connect(PrivateKeyService.data(), SIGNAL(createPrivateKeyStarted(Account)),
@@ -281,13 +293,13 @@ int OtrPlugin::init(bool firstLoad)
 
 	RawMessageTransformer->setOtrAppOpsWrapper(AppOpsWrapper.data());
 	RawMessageTransformer->setOtrPrivateKeyService(PrivateKeyService.data());
-	RawMessageTransformer->setUserState(&UserState);
+	RawMessageTransformer->setUserStateService(UserStateService.data());
 
 	Timer->setOtrAppOpsWrapper(AppOpsWrapper.data());
-	Timer->setUserState(&UserState);
+	Timer->setUserStateService(UserStateService.data());
 
-	TrustLevelService->setUserState(&UserState);
 	TrustLevelService->setContextConverter(ContextConverter.data());
+	TrustLevelService->setUserStateService(UserStateService.data());
 	TrustLevelService->updateTrustLevels();
 
 	return 0;
@@ -298,13 +310,13 @@ void OtrPlugin::done()
 	if (!OtrAvailable)
 		return;
 
+	TrustLevelService->setUserStateService(0);
 	TrustLevelService->setContextConverter(ContextConverter.data());
-	TrustLevelService->setUserState(&UserState);
 
-	Timer->setUserState(0);
+	Timer->setUserStateService(0);
 	Timer->setOtrAppOpsWrapper(0);
 
-	RawMessageTransformer->setUserState(0);
+	RawMessageTransformer->setUserStateService(0);
 	RawMessageTransformer->setOtrPrivateKeyService(0);
 	RawMessageTransformer->setOtrAppOpsWrapper(0);
 
@@ -313,7 +325,7 @@ void OtrPlugin::done()
 	disconnect(PrivateKeyService.data(), SIGNAL(createPrivateKeyFinished(Account,bool)),
 			   Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
 
-	PrivateKeyService->setUserState(0);
+	PrivateKeyService->setUserStateService(0);
 
 	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(0);
 	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
@@ -327,7 +339,7 @@ void OtrPlugin::done()
 
 	FingerprintService->setContextConverter(0);
 
-	ContextConverter->setUserState(0);
+	ContextConverter->setUserStateService(0);
 
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
@@ -339,13 +351,14 @@ void OtrPlugin::done()
 	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
 	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
-	AppOpsWrapper->setUserState(0);
+	AppOpsWrapper->setUserStateService(0);
 	AppOpsWrapper->setTrustLevelService(0);
 	AppOpsWrapper->setPeerIdentityVerificationService(0);
 	AppOpsWrapper->setMessageManager(0);
 	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);
 
+	unregisterOtrUserStateService();
 	unregisterOtrTrustLevelService();
 	unregisterOtrTimer();
 	unregisterOtrRawMessageTransformer();

@@ -37,7 +37,7 @@ set (SOURCES
 	otr-raw-message-transformer.cpp
 	otr-timer.cpp
 	otr-trust-level-service.cpp
-	otr-user-state.cpp
+	otr-user-state-service.cpp
 )
 
 set (MOC_SOURCES
@@ -65,6 +65,7 @@ set (MOC_SOURCES
 	otr-private-key-service.h
 	otr-timer.h
 	otr-trust-level-service.h
+	otr-user-state-service.h
 )
 
 set (CONFIGURATION_FILES

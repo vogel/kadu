@@ -25,14 +25,14 @@
 
 class Contact;
 class OtrContextConverter;
-class OtrUserState;
+class OtrUserStateService;
 
 class OtrFingerprintService : public QObject
 {
 	Q_OBJECT
 
-	OtrUserState *UserState;
 	QWeakPointer<OtrContextConverter> ContextConverter;
+	QWeakPointer<OtrUserStateService> UserStateService;
 
 	QString fingerprintsStoreFileName() const;
 
@@ -46,8 +46,8 @@ public:
 	explicit OtrFingerprintService(QObject *parent = 0);
 	virtual ~OtrFingerprintService();
 
-	void setUserState(OtrUserState *userState);
 	void setContextConverter(OtrContextConverter *contextConverter);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 	void readFingerprints() const;
 	void writeFingerprints() const;

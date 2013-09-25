@@ -17,24 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_USER_STATE_H
-#define OTR_USER_STATE_H
+#ifndef OTR_USER_STATE_SERVICE_H
+#define OTR_USER_STATE_SERVICE_H
 
 extern "C" {
 #	include <libotr/proto.h>
 #	include <libotr/userstate.h>
 }
 
-class OtrUserState
+#include <QtCore/QObject>
+
+class OtrUserStateService : public QObject
 {
+	Q_OBJECT
+
 	OtrlUserState UserState;
 
 public:
-	OtrUserState();
-	~OtrUserState();
+	explicit OtrUserStateService(QObject *parent = 0);
+	virtual ~OtrUserStateService();
 
 	OtrlUserState userState() const;
 
 };
 
-#endif // OTR_USER_STATE_H
+#endif // OTR_USER_STATE_SERVICE_H

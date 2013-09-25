@@ -26,12 +26,12 @@ extern "C" {
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-context-converter.h"
 
 OtrContextConverter::OtrContextConverter(QObject *parent) :
-		QObject(parent), UserState(0)
+		QObject(parent)
 {
 }
 
@@ -39,9 +39,9 @@ OtrContextConverter::~OtrContextConverter()
 {
 }
 
-void OtrContextConverter::setUserState(OtrUserState *userState)
+void OtrContextConverter::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserState = userState;
+	UserStateService = userStateService;
 }
 
 Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
@@ -58,7 +58,7 @@ Contact OtrContextConverter::connectionContextToContact(ConnContext *context) co
 
 ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const
 {
-	if (!UserState || !chat)
+	if (!UserStateService || !chat)
 		return 0;
 
 	return contactToContextConverter(chat.contacts().toContact(), notFoundAction);
@@ -67,10 +67,10 @@ ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotF
 
 ConnContext * OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const
 {
-	if (!UserState || !contact)
+	if (!UserStateService || !contact)
 		return 0;
 
-	return otrl_context_find(UserState->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
+	return otrl_context_find(UserStateService.data()->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
 							 qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd,
 							 0, 0, 0);
 }

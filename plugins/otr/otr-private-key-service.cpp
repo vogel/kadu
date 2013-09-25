@@ -26,12 +26,12 @@ extern "C" {
 #include "misc/kadu-paths.h"
 
 #include "otr-create-private-key-job.h"
-#include "otr-user-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-private-key-service.h"
 
 OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
-		QObject(parent), UserState(0)
+		QObject(parent)
 {
 }
 
@@ -40,9 +40,9 @@ OtrPrivateKeyService::~OtrPrivateKeyService()
 	qDeleteAll(CreateJobs);
 }
 
-void OtrPrivateKeyService::setUserState(OtrUserState *userState)
+void OtrPrivateKeyService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserState = userState;
+	UserStateService = userStateService;
 }
 
 QString OtrPrivateKeyService::privateStoreFileName() const
@@ -57,8 +57,8 @@ void OtrPrivateKeyService::createPrivateKey(const Account &account)
 
 	OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
 	job->setAccount(account);
-	job->setUserState(UserState);
 	job->setPrivateStoreFileName(privateStoreFileName());
+	job->setUserStateService(UserStateService.data());
 	job->createPrivateKey();
 
 	connect(job, SIGNAL(finished(Account, bool)), this, SLOT(jobFinished(Account, bool)));
@@ -76,9 +76,9 @@ void OtrPrivateKeyService::jobFinished(const Account &account, bool ok)
 
 void OtrPrivateKeyService::readPrivateKeys()
 {
-	if (!UserState)
+	if (!UserStateService)
 		return;
 
-	OtrlUserState userState = UserState->userState();
+	OtrlUserState userState = UserStateService.data()->userState();
 	otrl_privkey_read(userState, privateStoreFileName().toUtf8().data());
 }
