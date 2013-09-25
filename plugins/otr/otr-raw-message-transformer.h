@@ -30,14 +30,13 @@ extern "C" {
 }
 
 class OtrAppOpsWrapper;
-class OtrOpData;
-class OtrPrivateKeyService;
+class OtrOpDataFactory;
 class OtrUserStateService;
 
 class OtrRawMessageTransformer: public RawMessageTransformer
 {
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
-	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
+	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrUserStateService> UserStateService;
 
 	bool EnableFragments;
@@ -45,14 +44,12 @@ class OtrRawMessageTransformer: public RawMessageTransformer
 	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
 	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
 
-	OtrOpData otrOpDataFromMessage(const Message &message) const;
-
 public:
 	explicit OtrRawMessageTransformer();
 	virtual ~OtrRawMessageTransformer();
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
-	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 	void setEnableFragments(bool enableFragments);

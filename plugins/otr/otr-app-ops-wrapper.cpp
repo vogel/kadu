@@ -42,6 +42,7 @@ extern "C" {
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-op-data.h"
+#include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-peer-identity-verification-state.h"
 #include "otr-plugin.h"
@@ -272,6 +273,11 @@ void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
 	CurrentMessageManager = messageManager;
 }
 
+void OtrAppOpsWrapper::setOpDataFactory(OtrOpDataFactory *opDataFactory)
+{
+	OpDataFactory = opDataFactory;
+}
+
 void OtrAppOpsWrapper::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
 	PeerIdentityVerificationService = peerIdentityVerificationService;
@@ -313,21 +319,16 @@ void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
 
 void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
 {
-	if (!UserStateService)
+	if (!OpDataFactory || !UserStateService)
 		return;
 
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-
-	OtrOpData opData;
-	opData.setAppOpsWrapper(this);
-	opData.setChat(chat);
-	opData.setPeerDisplay(contact.display(true));
-
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	otrl_message_disconnect_all_instances(UserStateService.data()->userState(), &Ops, &opData,
 										  qPrintable(contact.contactAccount().id()),
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));
 
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	emit goneInsecure(chat);
 }
 
@@ -338,14 +339,10 @@ void OtrAppOpsWrapper::peerClosedSession(const Contact &contact)
 
 void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString &question, const QString &answer)
 {
-	if (!ContextConverter || !UserStateService)
+	if (!ContextConverter || !OpDataFactory || !UserStateService)
 		return;
 
-	OtrOpData opData;
-	opData.setAppOpsWrapper(this);
-	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
-	opData.setPeerDisplay(contact.display(true));
-
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 	otrl_message_initiate_smp_q(UserStateService.data()->userState(), &Ops, &opData,
 		context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
@@ -353,14 +350,10 @@ void OtrAppOpsWrapper::startSMPAskQuestion(const Contact &contact, const QString
 
 void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QString &sharedSecret)
 {
-	if (!ContextConverter || !UserStateService)
+	if (!ContextConverter || !OpDataFactory || !UserStateService)
 		return;
 
-	OtrOpData opData;
-	opData.setAppOpsWrapper(this);
-	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
-	opData.setPeerDisplay(contact.display(true));
-
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 	otrl_message_initiate_smp(UserStateService.data()->userState(), &Ops, &opData,
 		context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
@@ -368,14 +361,10 @@ void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QStrin
 
 void OtrAppOpsWrapper::abortSMP(const Contact &contact)
 {
-	if (!ContextConverter || !UserStateService)
+	if (!ContextConverter || !OpDataFactory || !UserStateService)
 		return;
 
-	OtrOpData opData;
-	opData.setAppOpsWrapper(this);
-	opData.setChat(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
-	opData.setPeerDisplay(contact.display(true));
-
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 	otrl_message_abort_smp(UserStateService.data()->userState(), &Ops, &opData, context);
 }

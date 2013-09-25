@@ -32,7 +32,7 @@ extern "C" {
 
 #include "otr-app-ops-wrapper.h"
 #include "otr-op-data.h"
-#include "otr-private-key-service.h"
+#include "otr-op-data-factory.h"
 #include "otr-user-state-service.h"
 
 #include "otr-raw-message-transformer.h"
@@ -56,9 +56,9 @@ void OtrRawMessageTransformer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 	AppOpsWrapper = appOpsWrapper;
 }
 
-void OtrRawMessageTransformer::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
+void OtrRawMessageTransformer::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
-	PrivateKeyService = privateKeyService;
+	OpDataFactory = opDataFactory;
 }
 
 void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStateService)
@@ -68,9 +68,6 @@ void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStat
 
 QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)
 {
-	if (AppOpsWrapper.isNull())
-		return messageContent;
-
 	switch (message.type())
 	{
 		case MessageTypeSent:
@@ -84,14 +81,14 @@ QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent,
 
 QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
 {
-	if (!UserStateService)
+	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
 		return messageContent;
 
 	OtrlUserState userState = UserStateService.data()->userState();
 	if (!userState)
 		return messageContent;
 
-	OtrOpData opData(otrOpDataFromMessage(message));
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
     OtrlTLV *tlvs = 0;
@@ -122,7 +119,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 
 QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
 {
-	if (!UserStateService)
+	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
 		return messageContent;
 
 	OtrlUserState userState = UserStateService.data()->userState();
@@ -135,7 +132,7 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 		return messageContent;
 
 	Contact receiver = (*chatDetails->contacts().begin());
-	OtrOpData opData(otrOpDataFromMessage(message));
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
@@ -157,15 +154,4 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 		otrl_message_free(newMessage);
 
 	return messageContent;
-}
-
-OtrOpData OtrRawMessageTransformer::otrOpDataFromMessage(const Message &message) const
-{
-	OtrOpData opData;
-	opData.setAppOpsWrapper(AppOpsWrapper.data());
-	opData.setPrivateKeyService(PrivateKeyService.data());
-	opData.setChat(message.messageChat());
-	opData.setPeerDisplay(message.messageChat().contacts().toContact().display(true));
-
-	return opData;
 }

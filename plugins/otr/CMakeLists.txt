@@ -28,6 +28,7 @@ set (SOURCES
 	otr-fingerprint-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
+	otr-op-data-factory.cpp
 	otr-peer-identity-verification-service.cpp
 	otr-peer-identity-verification-state.cpp
 	otr-plugin.cpp
@@ -60,6 +61,7 @@ set (MOC_SOURCES
 	otr-create-private-key-worker.h
 	otr-fingerprint-service.h
 	otr-notifier.h
+	otr-op-data-factory.h
 	otr-peer-identity-verification-service.h
 	otr-plugin.h
 	otr-private-key-service.h

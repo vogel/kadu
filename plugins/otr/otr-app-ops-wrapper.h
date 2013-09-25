@@ -36,6 +36,7 @@ class MessageManager;
 class OtrContextConverter;
 class OtrFingerprintService;
 class OtrOpData;
+class OtrOpDataFactory;
 class OtrPeerIdentityVerificationService;
 class OtrTrustLevelService;
 class OtrUserStateService;
@@ -69,6 +70,7 @@ class OtrAppOpsWrapper : public QObject
 	QWeakPointer<MessageManager> CurrentMessageManager;
 	QWeakPointer<OtrContextConverter> ContextConverter;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
+	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	QWeakPointer<OtrUserStateService> UserStateService;
@@ -100,6 +102,7 @@ public:
 	void setContextConverter(OtrContextConverter *contextConverter);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setMessageManager(MessageManager *messageManager);
+	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setUserStateService(OtrUserStateService *userStateService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
