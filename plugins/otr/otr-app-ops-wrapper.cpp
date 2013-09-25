@@ -59,8 +59,8 @@ OtrlPolicy kadu_otr_policy(void *opdata, ConnContext *context)
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	return otrOpData->appOpsWrapper()->policy(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	return opData->appOpsWrapper()->policy(opData);
 }
 
 void kadu_otr_create_privkey(void *opdata, const char *accountname, const char *protocol)
@@ -68,8 +68,8 @@ void kadu_otr_create_privkey(void *opdata, const char *accountname, const char *
 	Q_UNUSED(accountname);
 	Q_UNUSED(protocol);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->createPrivateKey(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->createPrivateKey(opData);
 }
 
 int kadu_otr_is_logged_in(void *opdata, const char *accountname, const char *protocol, const char *recipient)
@@ -77,8 +77,8 @@ int kadu_otr_is_logged_in(void *opdata, const char *accountname, const char *pro
 	Q_UNUSED(accountname);
 	Q_UNUSED(protocol);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	return (int)otrOpData->appOpsWrapper()->isLoggedIn(otrOpData, recipient);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	return (int)opData->appOpsWrapper()->isLoggedIn(opData, recipient);
 }
 
 void kadu_otr_inject_message(void *opdata, const char *accountname, const char *protocol, const char *recipient, const char *message)
@@ -87,14 +87,14 @@ void kadu_otr_inject_message(void *opdata, const char *accountname, const char *
 	Q_UNUSED(protocol);
 	Q_UNUSED(recipient);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->injectMessage(otrOpData, QByteArray(message));
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->injectMessage(opData, QByteArray(message));
 }
 
 void kadu_otr_update_context_list(void *opdata)
 {
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->updateContextList(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->updateContextList(opData);
 }
 
 void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
@@ -110,24 +110,24 @@ void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accoun
 
 void kadu_otr_write_fingerprints(void *opdata)
 {
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->writeFingerprints();
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->writeFingerprints();
 }
 
 void kadu_otr_gone_secure(void *opdata, ConnContext *context)
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->goneSecure(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->goneSecure(opData);
 }
 
 void kadu_otr_gone_insecure(void *opdata, ConnContext *context)
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->goneInsecure(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->goneInsecure(opData);
 }
 
 void kadu_otr_still_secure(void *opdata, ConnContext *context, int is_reply)
@@ -135,24 +135,24 @@ void kadu_otr_still_secure(void *opdata, ConnContext *context, int is_reply)
 	Q_UNUSED(context);
 	Q_UNUSED(is_reply);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->stillSecure(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->stillSecure(opData);
 }
 
 int kadu_otr_max_message_size(void *opdata, ConnContext *context)
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	return otrOpData->appOpsWrapper()->maxMessageSize(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	return opData->appOpsWrapper()->maxMessageSize(opData);
 }
 
 const char * kadu_otr_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	QString errorMessage = otrOpData->appOpsWrapper()->errorMessage(otrOpData, err_code);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	QString errorMessage = opData->appOpsWrapper()->errorMessage(opData, err_code);
 	return strdup(errorMessage.toUtf8().constData());
 }
 
@@ -168,8 +168,8 @@ const char * kadu_otr_resent_msg_prefix(void *opdata, ConnContext *context)
 	Q_UNUSED(opdata);
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	QString resentMessagePrefix = otrOpData->appOpsWrapper()->resentMessagePrefix();
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	QString resentMessagePrefix = opData->appOpsWrapper()->resentMessagePrefix();
 	return strdup(resentMessagePrefix.toUtf8().constData());
 }
 
@@ -185,8 +185,8 @@ void kadu_otr_create_instag(void *opdata, const char *accountname, const char *p
 	Q_UNUSED(accountname);
 	Q_UNUSED(protocol);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->createInstanceTag(otrOpData);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->createInstanceTag(opData);
 }
 
 void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
@@ -198,8 +198,8 @@ void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnCon
 	Q_UNUSED(message);
 	Q_UNUSED(err);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->handleMsgEvent(otrOpData, msg_event, message, err);
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->handleMsgEvent(opData, msg_event, message, err);
 }
 
 void kadu_otr_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
@@ -207,8 +207,8 @@ void kadu_otr_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext
 {
 	Q_UNUSED(context);
 
-	OtrOpData *otrOpData = static_cast<OtrOpData *>(opdata);
-	otrOpData->appOpsWrapper()->handleSmpEvent(otrOpData, smp_event, progress_percent, QString::fromUtf8(question));
+	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
+	opData->appOpsWrapper()->handleSmpEvent(opData, smp_event, progress_percent, QString::fromUtf8(question));
 }
 
 void kadu_otr_timer_control(void *opdata, unsigned int interval)
@@ -369,23 +369,23 @@ void OtrAppOpsWrapper::abortSMP(const Contact &contact)
 	otrl_message_abort_smp(UserStateService.data()->userState(), &Ops, &opData, context);
 }
 
-OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *otrOpData) const
+OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *opData) const
 {
-	Account account = otrOpData->contact().contactAccount();
+	Account account = opData->contact().contactAccount();
 	OtrPolicy policy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
 
 	return policy.toOtrPolicy();
 }
 
-void OtrAppOpsWrapper::createPrivateKey(OtrOpData *otrOpData) const
+void OtrAppOpsWrapper::createPrivateKey(OtrOpData *opData) const
 {
-	Account account = otrOpData->contact().contactAccount();
-	otrOpData->privateKeyService()->createPrivateKey(account);
+	Account account = opData->contact().contactAccount();
+	opData->privateKeyService()->createPrivateKey(account);
 }
 
-OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *otrOpData, const QString &contactId) const
+OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *opData, const QString &contactId) const
 {
-	Account account = otrOpData->contact().contactAccount();
+	Account account = opData->contact().contactAccount();
 	Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
 
 	if (!contact)
@@ -397,15 +397,15 @@ OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *otrOp
 		return LoggedIn;
 }
 
-void OtrAppOpsWrapper::injectMessage(OtrOpData *otrOpData, const QByteArray &messageContent) const
+void OtrAppOpsWrapper::injectMessage(OtrOpData *opData, const QByteArray &messageContent) const
 {
-	Chat chat = ChatTypeContact::findChat(otrOpData->contact(), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	MessageManager::instance()->sendRawMessage(chat, messageContent);
 }
 
-void OtrAppOpsWrapper::updateContextList(OtrOpData *otrOpData)
+void OtrAppOpsWrapper::updateContextList(OtrOpData *opData)
 {
-	Q_UNUSED(otrOpData);
+	Q_UNUSED(opData);
 
 	if (TrustLevelService)
 		TrustLevelService.data()->updateTrustLevels();
@@ -417,27 +417,27 @@ void OtrAppOpsWrapper::writeFingerprints()
 		FingerprintService.data()->writeFingerprints();
 }
 
-void OtrAppOpsWrapper::goneSecure(OtrOpData *otrOpData) const
+void OtrAppOpsWrapper::goneSecure(OtrOpData *opData) const
 {
-	Chat chat = ChatTypeContact::findChat(otrOpData->contact(), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	emit goneSecure(chat);
 }
 
-void OtrAppOpsWrapper::goneInsecure(OtrOpData *otrOpData) const
+void OtrAppOpsWrapper::goneInsecure(OtrOpData *opData) const
 {
-	Chat chat = ChatTypeContact::findChat(otrOpData->contact(), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	emit goneInsecure(chat);
 }
 
-void OtrAppOpsWrapper::stillSecure(OtrOpData *otrOpData) const
+void OtrAppOpsWrapper::stillSecure(OtrOpData *opData) const
 {
-	Chat chat = ChatTypeContact::findChat(otrOpData->contact(), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	emit stillSecure(chat);
 }
 
-int OtrAppOpsWrapper::maxMessageSize(OtrOpData *otrOpData) const
+int OtrAppOpsWrapper::maxMessageSize(OtrOpData *opData) const
 {
-	Account account = otrOpData->contact().contactAccount();
+	Account account = opData->contact().contactAccount();
 	Protocol *protocolHandler = account.protocolHandler();
 	if (!protocolHandler)
 		return 0;
@@ -447,10 +447,10 @@ int OtrAppOpsWrapper::maxMessageSize(OtrOpData *otrOpData) const
 	return chatService->maxMessageLength();
 }
 
-QString OtrAppOpsWrapper::errorMessage(OtrOpData *otrOpData, OtrlErrorCode errorCode) const
+QString OtrAppOpsWrapper::errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const
 {
-	Account account = otrOpData->contact().contactAccount();
-	Contact receiver = otrOpData->contact();
+	Account account = opData->contact().contactAccount();
+	Contact receiver = opData->contact();
 
 	switch (errorCode)
 	{
@@ -472,29 +472,29 @@ QString OtrAppOpsWrapper::resentMessagePrefix() const
 	return tr("[resent]");
 }
 
-void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *otrOpData, OtrlMessageEvent event,
+void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event,
 									  const QString &message, gcry_error_t errorCode) const
 {
-	QString peerDisplay = otrOpData->peerDisplay();
+	QString peerDisplay = opData->peerDisplay();
 	QString errorMessage = messageString(event, message, errorCode, peerDisplay);
 
 	if (errorMessage.isEmpty())
 		return;
 
-	Chat chat = ChatTypeContact::findChat(otrOpData->contact(), ActionCreateAndAdd);
+	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
 }
 
-void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *otrOpData, OtrlSMPEvent event, short unsigned int progressPercent, const QString &question)
+void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *opData, OtrlSMPEvent event, short unsigned int progressPercent, const QString &question)
 {
 	Q_UNUSED(question);
 
 	if (!PeerIdentityVerificationService)
 		return;
 
-	Contact contact = otrOpData->contact();
+	Contact contact = opData->contact();
 	if (!contact)
 		return;
 
@@ -568,11 +568,11 @@ QString OtrAppOpsWrapper::gpgErrorString(gcry_error_t errorCode) const
 	}
 }
 
-void OtrAppOpsWrapper::createInstanceTag(OtrOpData *otrOpData)
+void OtrAppOpsWrapper::createInstanceTag(OtrOpData *opData)
 {
 	Q_ASSERT(UserStateService);
 
-	Account account = otrOpData->contact().contactAccount();
+	Account account = opData->contact().contactAccount();
 	QString fileName = instanceTagsFileName();
 
 	otrl_instag_generate(UserStateService.data()->userState(), fileName.toUtf8().data(),

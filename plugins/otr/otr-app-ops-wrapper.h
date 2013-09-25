@@ -76,23 +76,23 @@ class OtrAppOpsWrapper : public QObject
 	QWeakPointer<OtrUserStateService> UserStateService;
 	OtrlMessageAppOps Ops;
 
-	OtrlPolicy policy(OtrOpData *ngOtrOpData) const;
-	void createPrivateKey(OtrOpData *ngOtrOpData) const;
-	IsLoggedInStatus isLoggedIn(OtrOpData *ngOtrOpData, const QString &contactId) const;
-	void injectMessage(OtrOpData *ngOtrOpData, const QByteArray &messageContent) const;
-	void updateContextList(OtrOpData *ngOtrOpData);
+	OtrlPolicy policy(OtrOpData *opData) const;
+	void createPrivateKey(OtrOpData *opData) const;
+	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
+	void injectMessage(OtrOpData *opData, const QByteArray &messageContent) const;
+	void updateContextList(OtrOpData *opData);
 	void writeFingerprints();
-	void goneSecure(OtrOpData *ngOtrOpData) const;
-	void goneInsecure(OtrOpData *ngOtrOpData) const;
-	void stillSecure(OtrOpData *ngOtrOpData) const;
-	int maxMessageSize(OtrOpData *ngOtrOpData) const;
-	QString errorMessage(OtrOpData *ngOtrOpData, OtrlErrorCode errorCode) const;
+	void goneSecure(OtrOpData *opData) const;
+	void goneInsecure(OtrOpData *opData) const;
+	void stillSecure(OtrOpData *opData) const;
+	int maxMessageSize(OtrOpData *opData) const;
+	QString errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
-	void handleMsgEvent(OtrOpData *ngOtrOpData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
-	void handleSmpEvent(OtrOpData *ngOtrOpData, OtrlSMPEvent event, unsigned short progressPercent, const QString &question);
+	void handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
+	void handleSmpEvent(OtrOpData *opData, OtrlSMPEvent event, unsigned short progressPercent, const QString &question);
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
-	void createInstanceTag(OtrOpData *ngOtrOpData);
+	void createInstanceTag(OtrOpData *opData);
 	QString instanceTagsFileName() const;
 
 public:
