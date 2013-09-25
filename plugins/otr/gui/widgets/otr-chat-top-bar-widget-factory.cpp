@@ -28,14 +28,14 @@
 
 #include "otr-chat-top-bar-widget-factory.h"
 
-void OtrChatTopBarWidgetFactory::setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+void OtrChatTopBarWidgetFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
-	AppOpsWrapper = otrAppOpsWrapper;
+	AppOpsWrapper = appOpsWrapper;
 }
 
-void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
+void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
 {
-	PeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
+	PeerIdentityVerificationWindowRepository = peerIdentityVerificationWindowRepository;
 }
 
 void OtrChatTopBarWidgetFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)

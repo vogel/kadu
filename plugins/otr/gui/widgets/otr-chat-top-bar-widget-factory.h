@@ -45,8 +45,8 @@ private slots:
 public:
 	virtual ~OtrChatTopBarWidgetFactory() {}
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
-	void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);

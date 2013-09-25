@@ -33,9 +33,9 @@ OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
 
-void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
-	AppOpsWrapper = otrAppOpsWrapper;
+	AppOpsWrapper = appOpsWrapper;
 }
 
 void OtrPeerIdentityVerificationService::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)

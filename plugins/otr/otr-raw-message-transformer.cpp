@@ -51,19 +51,19 @@ void OtrRawMessageTransformer::setEnableFragments(bool enableFragments)
 	EnableFragments = enableFragments;
 }
 
-void OtrRawMessageTransformer::setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper)
+void OtrRawMessageTransformer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
-	AppOpsWrapper = encryptionNgOtrAppOpsWrapper;
+	AppOpsWrapper = appOpsWrapper;
+}
+
+void OtrRawMessageTransformer::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
+{
+	PrivateKeyService = privateKeyService;
 }
 
 void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStateService)
 {
 	UserStateService = userStateService;
-}
-
-void OtrRawMessageTransformer::setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService)
-{
-	PrivateKeyService = encryptionNgOtrPrivateKeyService;
 }
 
 QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent, const Message &message)

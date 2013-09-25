@@ -47,7 +47,7 @@ public:
 	explicit OtrTimer(QObject *parent = 0);
 	virtual ~OtrTimer();
 
-	void setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 };

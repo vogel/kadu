@@ -51,8 +51,8 @@ public:
 	explicit OtrRawMessageTransformer();
 	virtual ~OtrRawMessageTransformer();
 
-	void setOtrAppOpsWrapper(OtrAppOpsWrapper *encryptionNgOtrAppOpsWrapper);
-	void setOtrPrivateKeyService(OtrPrivateKeyService *encryptionNgOtrPrivateKeyService);
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 	void setEnableFragments(bool enableFragments);

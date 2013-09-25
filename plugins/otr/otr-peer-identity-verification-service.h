@@ -40,7 +40,7 @@ public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper);
+	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 
 public slots:
 	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);

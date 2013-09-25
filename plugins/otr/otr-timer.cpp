@@ -42,9 +42,9 @@ OtrTimer::~OtrTimer()
 
 }
 
-void OtrTimer::setOtrAppOpsWrapper(OtrAppOpsWrapper *otrAppOpsWrapper)
+void OtrTimer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
-	AppOpsWrapper = otrAppOpsWrapper;
+	AppOpsWrapper = appOpsWrapper;
 }
 
 void OtrTimer::setUserStateService(OtrUserStateService *userStateService)

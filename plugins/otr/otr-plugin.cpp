@@ -291,11 +291,11 @@ int OtrPlugin::init(bool firstLoad)
 	connect(PrivateKeyService.data(), SIGNAL(createPrivateKeyFinished(Account,bool)),
 			Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
 
-	RawMessageTransformer->setOtrAppOpsWrapper(AppOpsWrapper.data());
-	RawMessageTransformer->setOtrPrivateKeyService(PrivateKeyService.data());
+	RawMessageTransformer->setAppOpsWrapper(AppOpsWrapper.data());
+	RawMessageTransformer->setPrivateKeyService(PrivateKeyService.data());
 	RawMessageTransformer->setUserStateService(UserStateService.data());
 
-	Timer->setOtrAppOpsWrapper(AppOpsWrapper.data());
+	Timer->setAppOpsWrapper(AppOpsWrapper.data());
 	Timer->setUserStateService(UserStateService.data());
 
 	TrustLevelService->setContextConverter(ContextConverter.data());
@@ -314,11 +314,11 @@ void OtrPlugin::done()
 	TrustLevelService->setContextConverter(ContextConverter.data());
 
 	Timer->setUserStateService(0);
-	Timer->setOtrAppOpsWrapper(0);
+	Timer->setAppOpsWrapper(0);
 
 	RawMessageTransformer->setUserStateService(0);
-	RawMessageTransformer->setOtrPrivateKeyService(0);
-	RawMessageTransformer->setOtrAppOpsWrapper(0);
+	RawMessageTransformer->setPrivateKeyService(0);
+	RawMessageTransformer->setAppOpsWrapper(0);
 
 	disconnect(PrivateKeyService.data(), SIGNAL(createPrivateKeyStarted(Account)),
 			   Notifier.data(), SLOT(notifyCreatePrivateKeyStarted(Account)));
@@ -378,4 +378,4 @@ OtrTimer * OtrPlugin::otrTimer() const
 	return Timer.data();
 }
 
-Q_EXPORT_PLUGIN2(encryption_ng_otr, OtrPlugin)
+Q_EXPORT_PLUGIN2(otr, OtrPlugin)
