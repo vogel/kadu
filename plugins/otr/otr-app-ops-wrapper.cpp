@@ -359,16 +359,6 @@ void OtrAppOpsWrapper::startSMPSharedSecret(const Contact &contact, const QStrin
 		context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
 }
 
-void OtrAppOpsWrapper::abortSMP(const Contact &contact)
-{
-	if (!ContextConverter || !OpDataFactory || !UserStateService)
-		return;
-
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_abort_smp(UserStateService.data()->userState(), &Ops, &opData, context);
-}
-
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *opData) const
 {
 	Account account = opData->contact().contactAccount();

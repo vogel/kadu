@@ -116,7 +116,6 @@ public slots:
 
 	void startSMPAskQuestion(const Contact &contact, const QString &question, const QString &answer);
 	void startSMPSharedSecret(const Contact &contact, const QString &sharedSecret);
-	void abortSMP(const Contact &contact);
 
 signals:
 	void tryToStartSession(const Chat &chat) const;

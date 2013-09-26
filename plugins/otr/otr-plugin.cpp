@@ -292,6 +292,9 @@ int OtrPlugin::init(bool firstLoad)
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
+	PeerIdentityVerificationService->setContextConverter(ContextConverter.data());
+	PeerIdentityVerificationService->setOpDataFactory(OpDataFactory.data());
+	PeerIdentityVerificationService->setUserStateService(UserStateService.data());
 
 	PeerIdentityVerificationWindowFactory->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
@@ -349,6 +352,9 @@ void OtrPlugin::done()
 
 	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(0);
 
+	PeerIdentityVerificationService->setUserStateService(0);
+	PeerIdentityVerificationService->setOpDataFactory(0);
+	PeerIdentityVerificationService->setContextConverter(0);
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
 	OpDataFactory.data()->setPrivateKeyService(0);

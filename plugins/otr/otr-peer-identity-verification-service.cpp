@@ -20,6 +20,10 @@
 #include "contacts/contact.h"
 
 #include "otr-app-ops-wrapper.h"
+#include "otr-context-converter.h"
+#include "otr-op-data.h"
+#include "otr-op-data-factory.h"
+#include "otr-user-state-service.h"
 #include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-service.h"
@@ -38,6 +42,21 @@ void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *appO
 	AppOpsWrapper = appOpsWrapper;
 }
 
+void OtrPeerIdentityVerificationService::setContextConverter(OtrContextConverter *contextConverter)
+{
+	ContextConverter = contextConverter;
+}
+
+void OtrPeerIdentityVerificationService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
+{
+	OpDataFactory = opDataFactory;
+}
+
+void OtrPeerIdentityVerificationService::setUserStateService(OtrUserStateService *userStateService)
+{
+	UserStateService = userStateService;
+}
+
 void OtrPeerIdentityVerificationService::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
 	if (OtrPeerIdentityVerificationState::StateFailed == state.state())
@@ -48,6 +67,10 @@ void OtrPeerIdentityVerificationService::updateContactState(const Contact &conta
 
 void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)
 {
-	if (AppOpsWrapper)
-		AppOpsWrapper.data()->abortSMP(contact);
+	if (!ContextConverter || !OpDataFactory || !UserStateService)
+		return;
+
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+	otrl_message_abort_smp(UserStateService.data()->userState(), AppOpsWrapper.data()->ops(), &opData, context);
 }

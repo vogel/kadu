@@ -27,6 +27,9 @@
 class Contact;
 
 class OtrAppOpsWrapper;
+class OtrContextConverter;
+class OtrOpDataFactory;
+class OtrUserStateService;
 class OtrPeerIdentityVerificationState;
 
 class OtrPeerIdentityVerificationService : public QObject
@@ -34,13 +37,18 @@ class OtrPeerIdentityVerificationService : public QObject
 	Q_OBJECT
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
-
+	QWeakPointer<OtrContextConverter> ContextConverter;
+	QWeakPointer<OtrOpDataFactory> OpDataFactory;
+	QWeakPointer<OtrUserStateService> UserStateService;
 
 public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setContextConverter(OtrContextConverter *contextConverter);
+	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	void setUserStateService(OtrUserStateService *userStateService);
 
 public slots:
 	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
