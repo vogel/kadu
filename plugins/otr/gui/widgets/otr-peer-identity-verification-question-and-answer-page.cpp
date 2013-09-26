@@ -26,8 +26,8 @@
 #include "protocols/protocol-factory.h"
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
-#include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
+#include "otr-peer-identity-verification-service.h"
 
 #include "otr-peer-identity-verification-question-and-answer-page.h"
 
@@ -58,9 +58,9 @@ void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 	registerField("answer", answerEdit);
 }
 
-void OtrPeerIdentityVerificationQuestionAndAnswerPage::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrPeerIdentityVerificationQuestionAndAnswerPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 int OtrPeerIdentityVerificationQuestionAndAnswerPage::nextId() const
@@ -79,11 +79,8 @@ bool OtrPeerIdentityVerificationQuestionAndAnswerPage::validatePage()
 	QString question = field("question").toString();
 	QString answer = field("answer").toString();
 
-	if (question.isEmpty() || answer.isEmpty())
-		return false;
-
-	if (AppOpsWrapper)
-		AppOpsWrapper.data()->startSMPAskQuestion(MyContact, field("question").toString(), field("answer").toString());
+	if (PeerIdentityVerificationService)
+		PeerIdentityVerificationService.data()->startQuestionAndAnswerVerification(MyContact, field("question").toString(), field("answer").toString());
 
 	return true;
 }

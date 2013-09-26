@@ -24,13 +24,13 @@
 
 #include "contacts/contact.h"
 
-class OtrAppOpsWrapper;
+class OtrPeerIdentityVerificationService;
 
 class OtrPeerIdentityVerificationQuestionAndAnswerPage : public QWizardPage
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
 	Contact MyContact;
 
@@ -40,7 +40,7 @@ public:
 	explicit OtrPeerIdentityVerificationQuestionAndAnswerPage(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationQuestionAndAnswerPage();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
 	virtual int nextId() const;
 	virtual void initializePage();

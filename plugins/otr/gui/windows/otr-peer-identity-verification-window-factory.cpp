@@ -23,7 +23,6 @@
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
 #include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
-#include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 #include "otr-peer-identity-verification-service.h"
 
@@ -36,11 +35,6 @@ OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFacto
 
 OtrPeerIdentityVerificationWindowFactory::~OtrPeerIdentityVerificationWindowFactory()
 {
-}
-
-void OtrPeerIdentityVerificationWindowFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
-{
-	AppOpsWrapper = appOpsWrapper;
 }
 
 void OtrPeerIdentityVerificationWindowFactory::setFingerprintService(OtrFingerprintService *fingerprintService)
@@ -64,11 +58,11 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 	result->setPage(OtrPeerIdentityVerificationWindow::FingerprintExchangePage, fingerprintExchangePage);
 
 	OtrPeerIdentityVerificationQuestionAndAnswerPage *questionAndAnswerPage = new OtrPeerIdentityVerificationQuestionAndAnswerPage(contact, result);
-	questionAndAnswerPage->setAppOpsWrapper(AppOpsWrapper.data());
+	questionAndAnswerPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::QuestionAndAnswerPage, questionAndAnswerPage);
 
 	OtrPeerIdentityVerificationSharedSecretPage *sharedSecretPage = new OtrPeerIdentityVerificationSharedSecretPage(contact, result);
-	sharedSecretPage->setAppOpsWrapper(AppOpsWrapper.data());
+	sharedSecretPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::SharedSecretPage, sharedSecretPage);
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);

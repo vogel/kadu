@@ -26,8 +26,8 @@
 #include "protocols/protocol-factory.h"
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
-#include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
+#include "otr-peer-identity-verification-service.h"
 
 #include "otr-peer-identity-verification-shared-secret-page.h"
 
@@ -55,9 +55,9 @@ void OtrPeerIdentityVerificationSharedSecretPage::createGui()
 	registerField("sharedSecret", sharedSecretEdit);
 }
 
-void OtrPeerIdentityVerificationSharedSecretPage::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrPeerIdentityVerificationSharedSecretPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 int OtrPeerIdentityVerificationSharedSecretPage::nextId() const
@@ -74,11 +74,8 @@ bool OtrPeerIdentityVerificationSharedSecretPage::validatePage()
 {
 	QString sharedSecret = field("sharedSecret").toString();
 
-	if (sharedSecret.isEmpty())
-		return false;
-
-	if (AppOpsWrapper)
-		AppOpsWrapper.data()->startSMPSharedSecret(MyContact, field("sharedSecret").toString());
+	if (PeerIdentityVerificationService)
+		PeerIdentityVerificationService.data()->startSharedSecretVerficiation(MyContact, field("sharedSecret").toString());
 
 	return true;
 }
