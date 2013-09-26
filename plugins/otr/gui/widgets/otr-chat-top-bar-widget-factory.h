@@ -25,17 +25,17 @@
 
 #include "gui/widgets/chat-top-bar-widget-factory.h"
 
-class OtrAppOpsWrapper;
 class OtrChatTopBarWidget;
 class OtrPeerIdentityVerificationWindowRepository;
+class OtrSessionService;
 class OtrTrustLevelService;
 
 class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactory
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
+	QWeakPointer<OtrSessionService> SessionService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	QList<OtrChatTopBarWidget *> Widgets;
 
@@ -43,10 +43,11 @@ private slots:
 	void widgetDestroyed(QObject *widget);
 
 public:
-	virtual ~OtrChatTopBarWidgetFactory() {}
+	explicit OtrChatTopBarWidgetFactory(QObject *parent = 0);
+	virtual ~OtrChatTopBarWidgetFactory();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
+	void setSessionService(OtrSessionService *sessionService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);

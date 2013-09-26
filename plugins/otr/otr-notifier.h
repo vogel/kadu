@@ -23,7 +23,7 @@
 #include <QtCore/QObject>
 
 class Account;
-class Chat;
+class Contact;
 class NotifyEvent;
 
 class OtrNotifier : public QObject
@@ -31,7 +31,7 @@ class OtrNotifier : public QObject
 	Q_OBJECT
 
 	static QString OtrNotifyTopic;
-	static QString TryToStartSessionNotifyTopic;
+	static QString TryingToStartSessionNotifyTopic;
 	static QString PeerClosedSessionNotifyTopic;
 	static QString GoneSecureNotifyTopic;
 	static QString GoneInsecureNotifyTopic;
@@ -40,7 +40,7 @@ class OtrNotifier : public QObject
 	static QString CreatePrivateKeyFinishedNotifyTopic;
 
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
-	QScopedPointer<NotifyEvent> TryToStartSessionNotifyEvent;
+	QScopedPointer<NotifyEvent> TryingToStartSessionNotifyEvent;
 	QScopedPointer<NotifyEvent> PeerClosedSessionNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
@@ -49,7 +49,7 @@ class OtrNotifier : public QObject
 	QScopedPointer<NotifyEvent> CreatePrivateKeyFinishedNotifyEvent;
 
 	void notify(const QString &topic, const Account &account, const QString &message);
-	void notify(const QString &topic, const Chat &chat, const QString &message);
+	void notify(const QString &topic, const Contact &contact, const QString &message);
 
 public:
 	explicit OtrNotifier(QObject *parent = 0);
@@ -58,11 +58,11 @@ public:
 	QList<NotifyEvent *> notifyEvents();
 
 public slots:
-	void notifyTryToStartSession(const Chat &chat);
-	void notifyPeerClosedSession(const Chat &chat);
-	void notifyGoneSecure(const Chat &chat);
-	void notifyGoneInsecure(const Chat &chat);
-	void notifyStillSecure(const Chat &chat);
+	void notifyTryingToStartSession(const Contact &contact);
+	void notifyPeerEndedSession(const Contact &contact);
+	void notifyGoneSecure(const Contact &contact);
+	void notifyGoneInsecure(const Contact &contact);
+	void notifyStillSecure(const Contact &contact);
 	void notifyCreatePrivateKeyStarted(const Account &account);
 	void notifyCreatePrivateKeyFinished(const Account &account, bool ok);
 

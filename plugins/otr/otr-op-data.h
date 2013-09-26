@@ -24,11 +24,13 @@
 
 class OtrAppOpsWrapper;
 class OtrPrivateKeyService;
+class OtrSessionService;
 
 class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrPrivateKeyService *PrivateKeyService;
+	OtrSessionService *SessionService;
 	Contact MyContact;
 	QString PeerDisplay;
 
@@ -41,6 +43,9 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;
+
+	void setSessionService(OtrSessionService *sessionService);
+	OtrSessionService * sessionService() const;
 
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;

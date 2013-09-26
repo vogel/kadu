@@ -36,6 +36,7 @@ class OtrPeerIdentityVerificationWindowFactory;
 class OtrPeerIdentityVerificationWindowRepository;
 class OtrPrivateKeyService;
 class OtrRawMessageTransformer;
+class OtrSessionService;
 class OtrTimer;
 class OtrTrustLevelService;
 class OtrUserStateService;
@@ -60,6 +61,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
+	QScopedPointer<OtrSessionService> SessionService;
 	QScopedPointer<OtrTimer> Timer;
 	QScopedPointer<OtrTrustLevelService> TrustLevelService;
 	QScopedPointer<OtrUserStateService> UserStateService;
@@ -100,6 +102,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 	void registerOtrRawMessageTransformer();
 	void unregisterOtrRawMessageTransformer();
 	bool fragmentsFixAvailable() const;
+
+	void registerOtrSessionService();
+	void unregisterOtrSessionService();
 
 	void registerOtrTimer();
 	void unregisterOtrTimer();

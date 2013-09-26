@@ -20,7 +20,7 @@
 #include "otr-op-data.h"
 
 OtrOpData::OtrOpData() :
-		AppOpsWrapper(0), PrivateKeyService(0)
+		AppOpsWrapper(0), PrivateKeyService(0), SessionService(0)
 {
 }
 
@@ -38,6 +38,7 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
 	AppOpsWrapper = copyMe.AppOpsWrapper;
 	PrivateKeyService = copyMe.PrivateKeyService;
+	SessionService = copyMe.SessionService;
 	MyContact = copyMe.MyContact;
 	PeerDisplay = copyMe.PeerDisplay;
 
@@ -62,6 +63,16 @@ void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
 OtrPrivateKeyService * OtrOpData::privateKeyService() const
 {
 	return PrivateKeyService;
+}
+
+void OtrOpData::setSessionService(OtrSessionService *sessionService)
+{
+	SessionService = sessionService;
+}
+
+OtrSessionService * OtrOpData::sessionService() const
+{
+	return SessionService;
 }
 
 void OtrOpData::setContact(const Contact &contact)

@@ -49,6 +49,7 @@ extern "C" {
 #include "otr-policy.h"
 #include "otr-policy-account-store.h"
 #include "otr-private-key-service.h"
+#include "otr-session-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
 #include "otr-user-state-service.h"
@@ -112,31 +113,6 @@ void kadu_otr_write_fingerprints(void *opdata)
 {
 	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
 	opData->appOpsWrapper()->writeFingerprints();
-}
-
-void kadu_otr_gone_secure(void *opdata, ConnContext *context)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->goneSecure(opData);
-}
-
-void kadu_otr_gone_insecure(void *opdata, ConnContext *context)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->goneInsecure(opData);
-}
-
-void kadu_otr_still_secure(void *opdata, ConnContext *context, int is_reply)
-{
-	Q_UNUSED(context);
-	Q_UNUSED(is_reply);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->stillSecure(opData);
 }
 
 int kadu_otr_max_message_size(void *opdata, ConnContext *context)
@@ -235,9 +211,9 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.update_context_list = kadu_otr_update_context_list;
 	Ops.new_fingerprint = kadu_otr_new_fingerprint;
 	Ops.write_fingerprints = kadu_otr_write_fingerprints;
-	Ops.gone_secure = kadu_otr_gone_secure;
-	Ops.gone_insecure = kadu_otr_gone_insecure;
-	Ops.still_secure = kadu_otr_still_secure;
+	Ops.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
+	Ops.gone_insecure = OtrSessionService::wrapperOtrGoneInsecure;
+	Ops.still_secure = OtrSessionService::wrapperOtrStillSecure;
 	Ops.max_message_size = kadu_otr_max_message_size;
 	Ops.account_name = 0;
 	Ops.account_name_free = 0;
@@ -268,11 +244,6 @@ void OtrAppOpsWrapper::setFingerprintService(OtrFingerprintService *fingerprintS
 	FingerprintService = fingerprintService;
 }
 
-void OtrAppOpsWrapper::setMessageManager(MessageManager *messageManager)
-{
-	CurrentMessageManager = messageManager;
-}
-
 void OtrAppOpsWrapper::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
 	OpDataFactory = opDataFactory;
@@ -296,45 +267,6 @@ void OtrAppOpsWrapper::setTrustLevelService(OtrTrustLevelService *trustLevelServ
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-void OtrAppOpsWrapper::startPrivateConversation(const Contact &contact)
-{
-	if (!CurrentMessageManager || !TrustLevelService)
-		return;
-
-	OtrTrustLevelService::TrustLevel level = TrustLevelService.data()->loadTrustLevelFromContact(contact);
-	if (OtrTrustLevelService::TrustLevelPrivate == level)
-		return;
-
-	Account account = contact.contactAccount();
-	OtrPolicy otrPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
-	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
-
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-
-	emit tryToStartSession(chat);
-	CurrentMessageManager.data()->sendMessage(chat, message, true);
-}
-
-void OtrAppOpsWrapper::endPrivateConversation(const Contact &contact)
-{
-	if (!OpDataFactory || !UserStateService)
-		return;
-
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	otrl_message_disconnect_all_instances(UserStateService.data()->userState(), &Ops, &opData,
-										  qPrintable(contact.contactAccount().id()),
-										  qPrintable(contact.contactAccount().protocolName()),
-										  qPrintable(contact.id()));
-
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	emit goneInsecure(chat);
-}
-
-void OtrAppOpsWrapper::peerClosedSession(const Contact &contact)
-{
-	emit peerClosedSession(ChatTypeContact::findChat(contact, ActionCreateAndAdd));
 }
 
 OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *opData) const
@@ -383,24 +315,6 @@ void OtrAppOpsWrapper::writeFingerprints()
 {
 	if (FingerprintService)
 		FingerprintService.data()->writeFingerprints();
-}
-
-void OtrAppOpsWrapper::goneSecure(OtrOpData *opData) const
-{
-	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
-	emit goneSecure(chat);
-}
-
-void OtrAppOpsWrapper::goneInsecure(OtrOpData *opData) const
-{
-	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
-	emit goneInsecure(chat);
-}
-
-void OtrAppOpsWrapper::stillSecure(OtrOpData *opData) const
-{
-	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
-	emit stillSecure(chat);
 }
 
 int OtrAppOpsWrapper::maxMessageSize(OtrOpData *opData) const

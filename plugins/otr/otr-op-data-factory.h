@@ -28,6 +28,7 @@ class Contact;
 class OtrAppOpsWrapper;
 class OtrOpData;
 class OtrPrivateKeyService;
+class OtrSessionService;
 
 class OtrOpDataFactory : public QObject
 {
@@ -35,6 +36,7 @@ class OtrOpDataFactory : public QObject
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
+	QWeakPointer<OtrSessionService> SessionService;
 
 public:
 	explicit OtrOpDataFactory(QObject *parent = 0);
@@ -42,6 +44,7 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+	void setSessionService(OtrSessionService *sessionService);
 
 	OtrOpData opDataForContact(const Contact &contact);
 

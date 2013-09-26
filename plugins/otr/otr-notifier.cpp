@@ -18,6 +18,7 @@
  */
 
 #include "chat/chat.h"
+#include "chat/type/chat-type-contact.h"
 #include "notify/notify-event.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
@@ -25,7 +26,7 @@
 #include "otr-notifier.h"
 
 QString OtrNotifier::OtrNotifyTopic("OTR");
-QString OtrNotifier::TryToStartSessionNotifyTopic("OTR/TryToStartSession");
+QString OtrNotifier::TryingToStartSessionNotifyTopic("OTR/TryingToStartSession");
 QString OtrNotifier::PeerClosedSessionNotifyTopic("OTR/PeerClosedStartSession");
 QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
@@ -38,8 +39,8 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 {
 	OtrNotifyEvent.reset(new NotifyEvent(OtrNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
-	TryToStartSessionNotifyEvent.reset(new NotifyEvent(TryToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "Try to start private conversation")));
+	TryingToStartSessionNotifyEvent.reset(new NotifyEvent(TryingToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Trying to start private conversation")));
 	PeerClosedSessionNotifyEvent.reset(new NotifyEvent(PeerClosedSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Peer closed private conversation")));
 	GoneSecureNotifyEvent.reset(new NotifyEvent(GoneSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -62,7 +63,7 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 {
 	return QList<NotifyEvent *>()
 			<< OtrNotifyEvent.data()
-			<< TryToStartSessionNotifyEvent.data()
+			<< TryingToStartSessionNotifyEvent.data()
 			<< GoneSecureNotifyEvent.data()
 			<< GoneInsecureNotifyEvent.data()
 			<< StillSecureNotifyEvent.data()
@@ -79,8 +80,9 @@ void OtrNotifier::notify(const QString &topic, const Account &account, const QSt
 	NotificationManager::instance()->notify(notification);
 }
 
-void OtrNotifier::notify(const QString &topic, const Chat &chat, const QString &message)
+void OtrNotifier::notify(const QString &topic, const Contact &contact, const QString &message)
 {
+	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	ChatNotification *notification = new ChatNotification(chat, topic, KaduIcon());
 	notification->setTitle(tr("OTR Encryption"));
 	notification->setText(message);
@@ -88,31 +90,31 @@ void OtrNotifier::notify(const QString &topic, const Chat &chat, const QString &
 	NotificationManager::instance()->notify(notification);
 }
 
-void OtrNotifier::notifyTryToStartSession(const Chat &chat)
+void OtrNotifier::notifyTryingToStartSession(const Contact &contact)
 {
-	notify(TryToStartSessionNotifyTopic, chat,
-		   tr("%1: trying to start private conversation").arg(chat.contacts().toContact().display(true)));
+	notify(TryingToStartSessionNotifyTopic, contact,
+		   tr("%1: trying to start private conversation").arg(contact.display(true)));
 }
 
-void OtrNotifier::notifyPeerClosedSession(const Chat &chat)
+void OtrNotifier::notifyPeerEndedSession(const Contact &contact)
 {
-	notify(PeerClosedSessionNotifyTopic, chat,
-		   tr("%1: peer ended private conversation; you should do the same").arg(chat.contacts().toContact().display(true)));
+	notify(PeerClosedSessionNotifyTopic, contact,
+		   tr("%1: peer ended private conversation; you should do the same").arg(contact.display(true)));
 }
 
-void OtrNotifier::notifyGoneSecure(const Chat &chat)
+void OtrNotifier::notifyGoneSecure(const Contact &contact)
 {
-	notify(GoneSecureNotifyTopic, chat, tr("%1: private conversation started").arg(chat.contacts().toContact().display(true)));
+	notify(GoneSecureNotifyTopic, contact, tr("%1: private conversation started").arg(contact.display(true)));
 }
 
-void OtrNotifier::notifyGoneInsecure(const Chat &chat)
+void OtrNotifier::notifyGoneInsecure(const Contact &contact)
 {
-	notify(GoneInsecureNotifyTopic, chat, tr("%1: private conversation stopped").arg(chat.contacts().toContact().display(true)));
+	notify(GoneInsecureNotifyTopic, contact, tr("%1: private conversation stopped").arg(contact.display(true)));
 }
 
-void OtrNotifier::notifyStillSecure(const Chat &chat)
+void OtrNotifier::notifyStillSecure(const Contact &contact)
 {
-	notify(StillSecureNotifyTopic, chat, tr("%1: conversation is still private").arg(chat.contacts().toContact().display(true)));
+	notify(StillSecureNotifyTopic, contact, tr("%1: conversation is still private").arg(contact.display(true)));
 }
 
 void OtrNotifier::notifyCreatePrivateKeyStarted(const Account &account)

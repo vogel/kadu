@@ -31,7 +31,6 @@ extern "C" {
 }
 
 class Contact;
-class MessageManager;
 
 class OtrContextConverter;
 class OtrFingerprintService;
@@ -57,9 +56,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
 	friend void kadu_otr_update_context_list(void *);
 	friend void kadu_otr_write_fingerprints(void *);
-	friend void kadu_otr_gone_secure(void *, ConnContext *);
-	friend void kadu_otr_gone_insecure(void *, ConnContext *);
-	friend void kadu_otr_still_secure(void *, ConnContext *, int);
 	friend int kadu_otr_max_message_size(void *, ConnContext *);
 	friend const char * kadu_otr_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_otr_resent_msg_prefix(void *, ConnContext *);
@@ -67,7 +63,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_handle_smp_event(void *, OtrlSMPEvent, ConnContext *, unsigned short, char *);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
-	QWeakPointer<MessageManager> CurrentMessageManager;
 	QWeakPointer<OtrContextConverter> ContextConverter;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
@@ -82,9 +77,6 @@ class OtrAppOpsWrapper : public QObject
 	void injectMessage(OtrOpData *opData, const QByteArray &messageContent) const;
 	void updateContextList(OtrOpData *opData);
 	void writeFingerprints();
-	void goneSecure(OtrOpData *opData) const;
-	void goneInsecure(OtrOpData *opData) const;
-	void stillSecure(OtrOpData *opData) const;
 	int maxMessageSize(OtrOpData *opData) const;
 	QString errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
@@ -101,25 +93,12 @@ public:
 
 	void setContextConverter(OtrContextConverter *contextConverter);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
-	void setMessageManager(MessageManager *messageManager);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setUserStateService(OtrUserStateService *userStateService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	const OtrlMessageAppOps * ops() const;
-
-public slots:
-	void startPrivateConversation(const Contact &contact);
-	void endPrivateConversation(const Contact &contact);
-	void peerClosedSession(const Contact &contact);
-
-signals:
-	void tryToStartSession(const Chat &chat) const;
-	void peerClosedSession(const Chat &chat) const;
-	void goneSecure(const Chat &chat) const;
-	void goneInsecure(const Chat &chat) const;
-	void stillSecure(const Chat &chat) const;
 
 };
 

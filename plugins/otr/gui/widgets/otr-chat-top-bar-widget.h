@@ -43,8 +43,8 @@ class OtrChatTopBarWidget : public QWidget
 	QString trustStatusString(OtrTrustLevelService::TrustLevel level) const;
 
 private slots:
-	void startPrivateConversation();
-	void endPrivateConversation();
+	void startSession();
+	void endSession();
 	void verifyPeerIdentity();
 	void trustLevelUpdated();
 
@@ -55,8 +55,8 @@ public:
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 signals:
-	void startPrivateConversation(const Contact &contact);
-	void endPrivateConversation(const Contact &contact);
+	void startSession(const Contact &contact);
+	void endSession(const Contact &contact);
 	void verifyPeerIdentity(const Contact &contact);
 
 };

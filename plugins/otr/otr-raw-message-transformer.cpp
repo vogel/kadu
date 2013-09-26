@@ -33,6 +33,7 @@ extern "C" {
 #include "otr-app-ops-wrapper.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
+#include "otr-session-service.h"
 #include "otr-user-state-service.h"
 
 #include "otr-raw-message-transformer.h"
@@ -59,6 +60,11 @@ void OtrRawMessageTransformer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 void OtrRawMessageTransformer::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
 	OpDataFactory = opDataFactory;
+}
+
+void OtrRawMessageTransformer::setSessionService(OtrSessionService *sessionService)
+{
+	SessionService = sessionService;
 }
 
 void OtrRawMessageTransformer::setUserStateService(OtrUserStateService *userStateService)
@@ -91,7 +97,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(message.messageChat().contacts().toContact());
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
-    OtrlTLV *tlvs = 0;
+	OtrlTLV *tlvs = 0;
 
 	bool ignoreMessage = otrl_message_receiving(userState, AppOpsWrapper.data()->ops(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
@@ -99,10 +105,10 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 			messageContent.data(),
 			&newMessage, &tlvs, 0, 0, 0);
 
-    OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
-    if (tlv)
-		AppOpsWrapper.data()->peerClosedSession(message.messageSender());
-    otrl_tlv_free(tlvs);
+	OtrlTLV *tlv = otrl_tlv_find(tlvs, OTRL_TLV_DISCONNECTED);
+	if (tlv)
+		emit peerEndedSession(message.messageSender());
+	otrl_tlv_free(tlvs);
 
 	if (ignoreMessage)
 		return QByteArray();

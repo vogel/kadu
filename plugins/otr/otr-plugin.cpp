@@ -36,11 +36,13 @@
 #include "otr-peer-identity-verification-service.h"
 #include "otr-private-key-service.h"
 #include "otr-raw-message-transformer.h"
+#include "otr-session-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
 #include "otr-user-state-service.h"
 
 #include "otr-plugin.h"
+#include <qvarlengtharray.h>
 
 OtrPlugin * OtrPlugin::Instance = 0;
 
@@ -207,6 +209,16 @@ bool OtrPlugin::fragmentsFixAvailable() const
 	return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
 }
 
+void OtrPlugin::registerOtrSessionService()
+{
+	SessionService.reset(new OtrSessionService());
+}
+
+void OtrPlugin::unregisterOtrSessionService()
+{
+	SessionService.reset(0);
+}
+
 void OtrPlugin::registerOtrTimer()
 {
 	Timer.reset(new OtrTimer());
@@ -257,26 +269,20 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrPeerIdentityVerificationWindowRepository();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
+	registerOtrSessionService();
 	registerOtrTimer();
 	registerOtrTrustLevelService();
 	registerOtrUserStateService();
 
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
 	AppOpsWrapper->setFingerprintService(FingerprintService.data());
-	AppOpsWrapper->setMessageManager(MessageManager::instance());
 	AppOpsWrapper->setOpDataFactory(OpDataFactory.data());
 	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	AppOpsWrapper->setTrustLevelService(TrustLevelService.data());
 	AppOpsWrapper->setUserStateService(UserStateService.data());
 
-	connect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
-	connect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
-
-	ChatTopBarWidgetFactory->setAppOpsWrapper(AppOpsWrapper.data());
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
+	ChatTopBarWidgetFactory->setSessionService(SessionService.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
 
 	ContextConverter->setUserStateService(UserStateService.data());
@@ -290,6 +296,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
+	OpDataFactory.data()->setSessionService(SessionService.data());
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationService->setContextConverter(ContextConverter.data());
@@ -311,7 +318,21 @@ int OtrPlugin::init(bool firstLoad)
 
 	RawMessageTransformer->setAppOpsWrapper(AppOpsWrapper.data());
 	RawMessageTransformer->setOpDataFactory(OpDataFactory.data());
+	RawMessageTransformer->setSessionService(SessionService.data());
 	RawMessageTransformer->setUserStateService(UserStateService.data());
+
+	connect(RawMessageTransformer.data(), SIGNAL(peerEndedSession(Contact)), Notifier.data(), SLOT(notifyPeerEndedSession(Contact)));
+
+	SessionService->setAppOpsWrapper(AppOpsWrapper.data());
+	SessionService->setMessageManager(MessageManager::instance());
+	SessionService->setOpDataFactory(OpDataFactory.data());
+	SessionService->setTrustLevelService(TrustLevelService.data());
+	SessionService->setUserStateService(UserStateService.data());
+
+	connect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
+	connect(SessionService.data(), SIGNAL(goneSecure(Contact)), Notifier.data(), SLOT(notifyGoneSecure(Contact)));
+	connect(SessionService.data(), SIGNAL(goneInsecure(Contact)), Notifier.data(), SLOT(notifyGoneInsecure(Contact)));
+	connect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));
 
 	Timer->setAppOpsWrapper(AppOpsWrapper.data());
 	Timer->setUserStateService(UserStateService.data());
@@ -334,7 +355,21 @@ void OtrPlugin::done()
 	Timer->setUserStateService(0);
 	Timer->setAppOpsWrapper(0);
 
+	disconnect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
+	disconnect(SessionService.data(), SIGNAL(goneSecure(Contact)), Notifier.data(), SLOT(notifyGoneSecure(Contact)));
+	disconnect(SessionService.data(), SIGNAL(goneInsecure(Contact)), Notifier.data(), SLOT(notifyGoneInsecure(Contact)));
+	disconnect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));
+
+	SessionService->setUserStateService(0);
+	SessionService->setTrustLevelService(0);
+	SessionService->setOpDataFactory(0);
+	SessionService->setMessageManager(0);
+	SessionService->setAppOpsWrapper(0);
+
+	disconnect(RawMessageTransformer.data(), SIGNAL(peerEndedSession(Contact)), Notifier.data(), SLOT(notifyPeerEndedSession(Contact)));
+
 	RawMessageTransformer->setUserStateService(0);
+	RawMessageTransformer->setSessionService(0);
 	RawMessageTransformer->setOpDataFactory(0);
 	RawMessageTransformer->setAppOpsWrapper(0);
 
@@ -355,6 +390,7 @@ void OtrPlugin::done()
 	PeerIdentityVerificationService->setContextConverter(0);
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
+	OpDataFactory.data()->setSessionService(0);
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
@@ -365,26 +401,20 @@ void OtrPlugin::done()
 	ContextConverter->setUserStateService(0);
 
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
+	ChatTopBarWidgetFactory->setSessionService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
-	ChatTopBarWidgetFactory->setAppOpsWrapper(0);
-
-	disconnect(AppOpsWrapper.data(), SIGNAL(tryToStartSession(Chat)), Notifier.data(), SLOT(notifyTryToStartSession(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(peerClosedSession(Chat)), Notifier.data(), SLOT(notifyPeerClosedSession(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(goneSecure(Chat)), Notifier.data(), SLOT(notifyGoneSecure(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(goneInsecure(Chat)), Notifier.data(), SLOT(notifyGoneInsecure(Chat)));
-	disconnect(AppOpsWrapper.data(), SIGNAL(stillSecure(Chat)), Notifier.data(), SLOT(notifyStillSecure(Chat)));
 
 	AppOpsWrapper->setUserStateService(0);
 	AppOpsWrapper->setTrustLevelService(0);
 	AppOpsWrapper->setPeerIdentityVerificationService(0);
 	AppOpsWrapper->setOpDataFactory(0);
-	AppOpsWrapper->setMessageManager(0);
 	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);
 
 	unregisterOtrUserStateService();
 	unregisterOtrTrustLevelService();
 	unregisterOtrTimer();
+	unregisterOtrSessionService();
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
 	unregisterOtrPeerIdentityVerificationWindowRepository();

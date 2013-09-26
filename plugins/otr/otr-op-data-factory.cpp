@@ -20,6 +20,7 @@
 #include "otr-app-ops-wrapper.h"
 #include "otr-op-data.h"
 #include "otr-private-key-service.h"
+#include "otr-session-service.h"
 
 #include "otr-op-data-factory.h"
 
@@ -42,6 +43,11 @@ void OtrOpDataFactory::setPrivateKeyService(OtrPrivateKeyService *privateKeyServ
 	PrivateKeyService = privateKeyService;
 }
 
+void OtrOpDataFactory::setSessionService(OtrSessionService *sessionService)
+{
+	SessionService = sessionService;
+}
+
 OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 {
 	OtrOpData result;
@@ -49,6 +55,7 @@ OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 	result.setContact(contact);
 	result.setPeerDisplay(contact.display(true));
 	result.setPrivateKeyService(PrivateKeyService.data());
+	result.setSessionService(SessionService.data());
 
 	return result;
 }

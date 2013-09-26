@@ -17,55 +17,59 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_RAW_MESSAGE_TRANSFORMER_H
-#define OTR_RAW_MESSAGE_TRANSFORMER_H
+#ifndef OTR_SESSION_SERVICE_H
+#define OTR_SESSION_SERVICE_H
 
+#include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
-
-#include "protocols/services/raw-message-transformer.h"
 
 extern "C" {
 #	include <libotr/proto.h>
-#	include <libotr/message.h>
 }
 
 class Contact;
+class MessageManager;
 
 class OtrAppOpsWrapper;
 class OtrOpDataFactory;
-class OtrSessionService;
+class OtrTrustLevelService;
 class OtrUserStateService;
 
-class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
+class OtrSessionService : public QObject
 {
 	Q_OBJECT
 
+	QWeakPointer<MessageManager> CurrentMessageManager;
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrSessionService> SessionService;
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	QWeakPointer<OtrUserStateService> UserStateService;
 
-	bool EnableFragments;
-
-	QByteArray transformReceived(const QByteArray &messageContent, const Message &message);
-	QByteArray transformSent(const QByteArray &messageContent, const Message &message);
-
 public:
-	explicit OtrRawMessageTransformer();
-	virtual ~OtrRawMessageTransformer();
+	static void wrapperOtrGoneSecure(void *opData, ConnContext *context);
+	static void wrapperOtrGoneInsecure(void *opData, ConnContext *context);
+	static void wrapperOtrStillSecure(void *opData, ConnContext *context, int isReply);
+
+	explicit OtrSessionService(QObject *parent = 0);
+	virtual ~OtrSessionService();
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setMessageManager(MessageManager *messageManager);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setSessionService(OtrSessionService *sessionService);
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 	void setUserStateService(OtrUserStateService *userStateService);
 
-	void setEnableFragments(bool enableFragments);
-
-	virtual QByteArray transform(const QByteArray &messageContent, const Message &message);
+public slots:
+	void startSession(const Contact &contact);
+	void endSession(const Contact &contact);
 
 signals:
-	void peerEndedSession(const Contact &contact) const;
+	void tryingToStartSession(const Contact &contact) const;
+
+	void goneSecure(const Contact &contact) const;
+	void goneInsecure(const Contact &contact) const;
+	void stillSecure(const Contact &contact) const;
 
 };
 
-#endif // OTR_RAW_MESSAGE_TRANSFORMER_H
+#endif // OTR_SESSION_SERVICE_H

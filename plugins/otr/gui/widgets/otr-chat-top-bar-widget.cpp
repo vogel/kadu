@@ -48,9 +48,9 @@ void OtrChatTopBarWidget::createGui()
 
 	QMenu *otrMenu = new QMenu(OtrStatusButton);
 	QAction *startAction = otrMenu->addAction(tr("Start Private Conversation"));
-	connect(startAction, SIGNAL(triggered(bool)), this, SLOT(startPrivateConversation()));
+	connect(startAction, SIGNAL(triggered(bool)), this, SLOT(startSession()));
 	QAction *endAction = otrMenu->addAction(tr("End Private Conversation"));
-	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endPrivateConversation()));
+	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endSession()));
 	otrMenu->addSeparator();
 	VerifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
 	connect(VerifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
@@ -104,14 +104,14 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevelService::TrustLevel 
 	}
 }
 
-void OtrChatTopBarWidget::startPrivateConversation()
+void OtrChatTopBarWidget::startSession()
 {
-	emit startPrivateConversation(MyContact);
+	emit startSession(MyContact);
 }
 
-void OtrChatTopBarWidget::endPrivateConversation()
+void OtrChatTopBarWidget::endSession()
 {
-	emit endPrivateConversation(MyContact);
+	emit endSession(MyContact);
 }
 
 void OtrChatTopBarWidget::verifyPeerIdentity()
