@@ -84,12 +84,6 @@ void kadu_otr_inject_message(void *opdata, const char *accountname, const char *
 	opData->appOpsWrapper()->injectMessage(opData, QByteArray(message));
 }
 
-void kadu_otr_update_context_list(void *opdata)
-{
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->updateContextList(opData);
-}
-
 void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
 								const char *username, unsigned char fingerprint[20])
 {
@@ -191,7 +185,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.create_privkey = kadu_otr_create_privkey;
 	Ops.is_logged_in = kadu_otr_is_logged_in;
 	Ops.inject_message = kadu_otr_inject_message;
-	Ops.update_context_list = kadu_otr_update_context_list;
+	Ops.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
 	Ops.new_fingerprint = kadu_otr_new_fingerprint;
 	Ops.write_fingerprints = kadu_otr_write_fingerprints;
 	Ops.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
@@ -242,11 +236,6 @@ void OtrAppOpsWrapper::setUserStateService(OtrUserStateService *userStateService
 	UserStateService = userStateService;
 }
 
-void OtrAppOpsWrapper::setTrustLevelService(OtrTrustLevelService *trustLevelService)
-{
-	TrustLevelService = trustLevelService;
-}
-
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
@@ -276,14 +265,6 @@ void OtrAppOpsWrapper::injectMessage(OtrOpData *opData, const QByteArray &messag
 {
 	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	MessageManager::instance()->sendRawMessage(chat, messageContent);
-}
-
-void OtrAppOpsWrapper::updateContextList(OtrOpData *opData)
-{
-	Q_UNUSED(opData);
-
-	if (TrustLevelService)
-		TrustLevelService.data()->updateTrustLevels();
 }
 
 void OtrAppOpsWrapper::writeFingerprints()

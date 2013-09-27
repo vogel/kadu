@@ -31,6 +31,7 @@ class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
+class OtrTrustLevelService;
 
 class OtrOpDataFactory : public QObject
 {
@@ -41,6 +42,7 @@ class OtrOpDataFactory : public QObject
 	QWeakPointer<OtrPolicyService> PolicyService;
 	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
 	QWeakPointer<OtrSessionService> SessionService;
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 
 public:
 	explicit OtrOpDataFactory(QObject *parent = 0);
@@ -51,6 +53,7 @@ public:
 	void setPolicyService(OtrPolicyService *policyService);
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	void setSessionService(OtrSessionService *sessionService);
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	OtrOpData opDataForContact(const Contact &contact);
 

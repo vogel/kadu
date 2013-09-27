@@ -291,7 +291,6 @@ int OtrPlugin::init(bool firstLoad)
 	AppOpsWrapper->setFingerprintService(FingerprintService.data());
 	AppOpsWrapper->setOpDataFactory(OpDataFactory.data());
 	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
-	AppOpsWrapper->setTrustLevelService(TrustLevelService.data());
 	AppOpsWrapper->setUserStateService(UserStateService.data());
 
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
@@ -312,6 +311,7 @@ int OtrPlugin::init(bool firstLoad)
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
 	OpDataFactory.data()->setSessionService(SessionService.data());
+	OpDataFactory.data()->setTrustLevelService(TrustLevelService.data());
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationService->setContextConverter(ContextConverter.data());
@@ -407,6 +407,7 @@ void OtrPlugin::done()
 	PeerIdentityVerificationService->setContextConverter(0);
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
+	OpDataFactory.data()->setTrustLevelService(0);
 	OpDataFactory.data()->setSessionService(0);
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setPolicyService(0);
@@ -424,7 +425,6 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
 
 	AppOpsWrapper->setUserStateService(0);
-	AppOpsWrapper->setTrustLevelService(0);
 	AppOpsWrapper->setPeerIdentityVerificationService(0);
 	AppOpsWrapper->setOpDataFactory(0);
 	AppOpsWrapper->setFingerprintService(0);

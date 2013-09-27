@@ -23,6 +23,7 @@
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
+#include "otr-trust-level-service.h"
 
 #include "otr-op-data-factory.h"
 
@@ -60,6 +61,11 @@ void OtrOpDataFactory::setSessionService(OtrSessionService *sessionService)
 	SessionService = sessionService;
 }
 
+void OtrOpDataFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	TrustLevelService = trustLevelService;
+}
+
 OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 {
 	OtrOpData result;
@@ -70,6 +76,7 @@ OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 	result.setPolicyService(PolicyService.data());
 	result.setPrivateKeyService(PrivateKeyService.data());
 	result.setSessionService(SessionService.data());
+	result.setTrustLevelService(TrustLevelService.data());
 
 	return result;
 }

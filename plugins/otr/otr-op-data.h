@@ -27,6 +27,7 @@ class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
+class OtrTrustLevelService;
 
 class OtrOpData
 {
@@ -35,6 +36,7 @@ class OtrOpData
 	OtrPolicyService *PolicyService;
 	OtrPrivateKeyService *PrivateKeyService;
 	OtrSessionService *SessionService;
+	OtrTrustLevelService *TrustLevelService;
 	Contact MyContact;
 	QString PeerDisplay;
 
@@ -60,6 +62,9 @@ public:
 
 	void setSessionService(OtrSessionService *sessionService);
 	OtrSessionService * sessionService() const;
+
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+	OtrTrustLevelService * trustLevelService() const;
 
 	void setContact(const Contact &contact);
 	Contact contact() const;

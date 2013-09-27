@@ -20,9 +20,17 @@
 #include "contacts/contact.h"
 
 #include "otr-context-converter.h"
+#include "otr-op-data.h"
 #include "otr-user-state-service.h"
 
 #include "otr-trust-level-service.h"
+
+void OtrTrustLevelService::wrapperOtrUpdateContextList(void *data)
+{
+	OtrOpData *opData = static_cast<OtrOpData *>(data);
+	if (opData->trustLevelService())
+		opData->trustLevelService()->updateTrustLevels();
+}
 
 OtrTrustLevelService::OtrTrustLevelService(QObject *parent) :
 		QObject(parent)

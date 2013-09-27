@@ -40,6 +40,8 @@ class OtrTrustLevelService : public QObject
 	QWeakPointer<OtrUserStateService> UserStateService;
 
 public:
+	static void wrapperOtrUpdateContextList(void *data);
+
 	enum TrustLevel
 	{
 		TrustLevelUnknown,
