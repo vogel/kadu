@@ -33,7 +33,7 @@ set (SOURCES
 	otr-peer-identity-verification-state.cpp
 	otr-plugin.cpp
 	otr-policy.cpp
-	otr-policy-account-store.cpp
+	otr-policy-service.cpp
 	otr-private-key-service.cpp
 	otr-raw-message-transformer.cpp
 	otr-session-service.cpp
@@ -65,6 +65,7 @@ set (MOC_SOURCES
 	otr-op-data-factory.h
 	otr-peer-identity-verification-service.h
 	otr-plugin.h
+	otr-policy-service.h
 	otr-private-key-service.h
 	otr-raw-message-transformer.h
 	otr-session-service.h

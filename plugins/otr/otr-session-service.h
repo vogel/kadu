@@ -32,6 +32,7 @@ class MessageManager;
 
 class OtrAppOpsWrapper;
 class OtrOpDataFactory;
+class OtrPolicyService;
 class OtrTrustLevelService;
 class OtrUserStateService;
 
@@ -42,6 +43,7 @@ class OtrSessionService : public QObject
 	QWeakPointer<MessageManager> CurrentMessageManager;
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
+	QWeakPointer<OtrPolicyService> PolicyService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	QWeakPointer<OtrUserStateService> UserStateService;
 
@@ -56,6 +58,7 @@ public:
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setMessageManager(MessageManager *messageManager);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+	void setPolicyService(OtrPolicyService *policyService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 	void setUserStateService(OtrUserStateService *userStateService);
 

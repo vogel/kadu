@@ -35,6 +35,7 @@ class OtrPeerIdentityVerificationService;
 class OtrPeerIdentityVerificationWindowFactory;
 class OtrPeerIdentityVerificationWindowRepository;
 class OtrPrivateKeyService;
+class OtrPolicyService;
 class OtrRawMessageTransformer;
 class OtrSessionService;
 class OtrTimer;
@@ -59,6 +60,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QScopedPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
 	QScopedPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
+	QScopedPointer<OtrPolicyService> PolicyService;
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
 	QScopedPointer<OtrSessionService> SessionService;
@@ -95,6 +97,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrPeerIdentityVerificationWindowRepository();
 	void unregisterOtrPeerIdentityVerificationWindowRepository();
+
+	void registerOtrPolicyService();
+	void unregisterOtrPolicyService();
 
 	void registerOtrPrivateKeyService();
 	void unregisterOtrPrivateKeyService();

@@ -22,7 +22,6 @@
 #include <QtGui/QPushButton>
 
 #include "otr-policy.h"
-#include "otr-policy-account-store.h"
 
 #include "otr-chat-top-bar-widget.h"
 

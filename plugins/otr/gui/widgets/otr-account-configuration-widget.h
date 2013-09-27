@@ -27,10 +27,13 @@ class QCheckBox;
 class SimpleConfigurationValueStateNotifier;
 
 class OtrPolicy;
+class OtrPolicyService;
 
 class OtrAccountConfigurationWidget : public AccountConfigurationWidget
 {
 	Q_OBJECT
+
+	QWeakPointer<OtrPolicyService> PolicyService;
 
 	QCheckBox *EnableCheckBox;
 	QCheckBox *AutomaticallyInitiateCheckBox;
@@ -48,6 +51,8 @@ private slots:
 public:
 	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = 0);
 	virtual ~OtrAccountConfigurationWidget();
+
+	void setPolicyService(OtrPolicyService *policyService);
 
 	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 

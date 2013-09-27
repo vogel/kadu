@@ -17,7 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-account-configuration-widget.h"
+#include "gui/widgets/otr-account-configuration-widget.h"
+#include "otr-policy-service.h"
 
 #include "otr-account-configuration-widget-factory.h"
 
@@ -25,7 +26,15 @@ OtrAccountConfigurationWidgetFactory::~OtrAccountConfigurationWidgetFactory()
 {
 }
 
+void OtrAccountConfigurationWidgetFactory::setPolicyService(OtrPolicyService *policyService)
+{
+	PolicyService = policyService;
+}
+
 AccountConfigurationWidget * OtrAccountConfigurationWidgetFactory::createWidget(const Account &account, QWidget *parent)
 {
-	return new OtrAccountConfigurationWidget(account, parent);
+	OtrAccountConfigurationWidget *result = new OtrAccountConfigurationWidget(account, parent);
+	result->setPolicyService(PolicyService.data());
+
+	return result;
 }

@@ -47,7 +47,7 @@ extern "C" {
 #include "otr-peer-identity-verification-state.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
-#include "otr-policy-account-store.h"
+#include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
 #include "otr-timer.h"
@@ -55,14 +55,6 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-app-ops-wrapper.h"
-
-OtrlPolicy kadu_otr_policy(void *opdata, ConnContext *context)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	return opData->appOpsWrapper()->policy(opData);
-}
 
 void kadu_otr_create_privkey(void *opdata, const char *accountname, const char *protocol)
 {
@@ -195,7 +187,7 @@ void kadu_otr_timer_control(void *opdata, unsigned int interval)
 
 OtrAppOpsWrapper::OtrAppOpsWrapper()
 {
-	Ops.policy = kadu_otr_policy;
+	Ops.policy = OtrPolicyService::wrapperOtrPolicy;
 	Ops.create_privkey = kadu_otr_create_privkey;
 	Ops.is_logged_in = kadu_otr_is_logged_in;
 	Ops.inject_message = kadu_otr_inject_message;
@@ -258,14 +250,6 @@ void OtrAppOpsWrapper::setTrustLevelService(OtrTrustLevelService *trustLevelServ
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-OtrlPolicy OtrAppOpsWrapper::policy(OtrOpData *opData) const
-{
-	Account account = opData->contact().contactAccount();
-	OtrPolicy policy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
-
-	return policy.toOtrPolicy();
 }
 
 void OtrAppOpsWrapper::createPrivateKey(OtrOpData *opData) const

@@ -28,6 +28,7 @@ class Contact;
 class OtrAppOpsWrapper;
 class OtrOpData;
 class OtrPeerIdentityVerificationService;
+class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
 
@@ -37,6 +38,7 @@ class OtrOpDataFactory : public QObject
 
 	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QWeakPointer<OtrPolicyService> PolicyService;
 	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
 	QWeakPointer<OtrSessionService> SessionService;
 
@@ -46,6 +48,7 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	void setPolicyService(OtrPolicyService *policyService);
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	void setSessionService(OtrSessionService *sessionService);
 

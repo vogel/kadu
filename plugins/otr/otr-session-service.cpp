@@ -30,7 +30,7 @@ extern "C" {
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-policy.h"
-#include "otr-policy-account-store.h"
+#include "otr-policy-service.h"
 #include "otr-trust-level-service.h"
 #include "otr-user-state-service.h"
 
@@ -88,6 +88,11 @@ void OtrSessionService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 	OpDataFactory = opDataFactory;
 }
 
+void OtrSessionService::setPolicyService(OtrPolicyService *policyService)
+{
+	PolicyService = policyService;
+}
+
 void OtrSessionService::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
 	TrustLevelService = trustLevelService;
@@ -100,7 +105,7 @@ void OtrSessionService::setUserStateService(OtrUserStateService *userStateServic
 
 void OtrSessionService::startSession(const Contact &contact)
 {
-	if (!CurrentMessageManager || !TrustLevelService)
+	if (!CurrentMessageManager || !PolicyService || !TrustLevelService)
 		return;
 
 	OtrTrustLevelService::TrustLevel level = TrustLevelService.data()->loadTrustLevelFromContact(contact);
@@ -108,7 +113,7 @@ void OtrSessionService::startSession(const Contact &contact)
 		return;
 
 	Account account = contact.contactAccount();
-	OtrPolicy otrPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account);
+	OtrPolicy otrPolicy = PolicyService.data()->accountPolicy(account);
 	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
 
 	emit tryingToStartSession(contact);

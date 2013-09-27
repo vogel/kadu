@@ -17,18 +17,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "accounts/account.h"
+#ifndef OTR_POLICY_SERVICE_H
+#define OTR_POLICY_SERVICE_H
 
-#include "otr-policy.h"
+#include <QtCore/QObject>
 
-#include "otr-policy-account-store.h"
-
-void OtrPolicyAccountStore::storePolicyToAccount(const Account &account, const OtrPolicy &policy)
-{
-	account.addProperty("otr:policy", policy.toString(), CustomProperties::Storable);
+extern "C" {
+#	include <libotr/proto.h>
 }
 
-OtrPolicy OtrPolicyAccountStore::loadPolicyFromAccount(const Account &account)
+class Account;
+class Contact;
+class OtrPolicy;
+
+class OtrPolicyService : public QObject
 {
-	return OtrPolicy::fromString(account.property("otr:policy", QVariant()).toString());
-}
+	Q_OBJECT
+
+public:
+	static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
+
+	explicit OtrPolicyService(QObject *parent = 0);
+	virtual ~OtrPolicyService();
+
+	void setAccountPolicy(const Account &account, const OtrPolicy &policy);
+	OtrPolicy accountPolicy(const Account &account) const;
+	OtrPolicy contactPolicy(const Contact &contact) const;
+
+};
+
+#endif // OTR_POLICY_SERVICE_H

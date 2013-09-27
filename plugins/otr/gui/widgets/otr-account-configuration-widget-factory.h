@@ -20,12 +20,20 @@
 #ifndef OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
 #define OTR_ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
 
+#include <QtCore/QWeakPointer>
+
 #include "gui/widgets/account-configuration-widget-factory.h"
+
+class OtrPolicyService;
 
 class OtrAccountConfigurationWidgetFactory : public AccountConfigurationWidgetFactory
 {
+	QWeakPointer<OtrPolicyService> PolicyService;
+
 public:
 	virtual ~OtrAccountConfigurationWidgetFactory();
+
+	void setPolicyService(OtrPolicyService *policyService);
 
 	virtual AccountConfigurationWidget * createWidget(const Account &account, QWidget *parent);
 

@@ -50,7 +50,6 @@ class OtrAppOpsWrapper : public QObject
 		LoggedIn = 1
 	};
 
-	friend OtrlPolicy kadu_otr_policy(void *, ConnContext *);
 	friend void kadu_otr_create_privkey(void *, const char *, const char *);
 	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
@@ -70,7 +69,6 @@ class OtrAppOpsWrapper : public QObject
 	QWeakPointer<OtrUserStateService> UserStateService;
 	OtrlMessageAppOps Ops;
 
-	OtrlPolicy policy(OtrOpData *opData) const;
 	void createPrivateKey(OtrOpData *opData) const;
 	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
 	void injectMessage(OtrOpData *opData, const QByteArray &messageContent) const;

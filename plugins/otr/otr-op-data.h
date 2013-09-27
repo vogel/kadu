@@ -24,6 +24,7 @@
 
 class OtrAppOpsWrapper;
 class OtrPeerIdentityVerificationService;
+class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
 
@@ -31,6 +32,7 @@ class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
+	OtrPolicyService *PolicyService;
 	OtrPrivateKeyService *PrivateKeyService;
 	OtrSessionService *SessionService;
 	Contact MyContact;
@@ -46,14 +48,18 @@ public:
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;
 
-	void setSessionService(OtrSessionService *sessionService);
-	OtrSessionService * sessionService() const;
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	OtrPeerIdentityVerificationService * peerIdentityVerificationService() const;
 
+	void setPolicyService(OtrPolicyService *policyService);
+	OtrPolicyService * policyService() const;
+
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;
+
+	void setSessionService(OtrSessionService *sessionService);
+	OtrSessionService * sessionService() const;
 
 	void setContact(const Contact &contact);
 	Contact contact() const;

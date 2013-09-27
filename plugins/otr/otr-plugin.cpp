@@ -34,6 +34,7 @@
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
+#include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-raw-message-transformer.h"
 #include "otr-session-service.h"
@@ -179,6 +180,16 @@ void OtrPlugin::unregisterOtrPeerIdentityVerificationWindowRepository()
 	PeerIdentityVerificationWindowRepository.reset();
 }
 
+void OtrPlugin::registerOtrPolicyService()
+{
+	PolicyService.reset(new OtrPolicyService());
+}
+
+void OtrPlugin::unregisterOtrPolicyService()
+{
+	PolicyService.reset(0);
+}
+
 void OtrPlugin::registerOtrPrivateKeyService()
 {
 	PrivateKeyService.reset(new OtrPrivateKeyService());
@@ -249,7 +260,6 @@ void OtrPlugin::unregisterOtrUserStateService()
 	UserStateService.reset(0);
 }
 
-
 int OtrPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad);
@@ -267,12 +277,15 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrPeerIdentityVerificationService();
 	registerOtrPeerIdentityVerificationWindowFactory();
 	registerOtrPeerIdentityVerificationWindowRepository();
+	registerOtrPolicyService();
 	registerOtrPrivateKeyService();
 	registerOtrRawMessageTransformer();
 	registerOtrSessionService();
 	registerOtrTimer();
 	registerOtrTrustLevelService();
 	registerOtrUserStateService();
+
+	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
 
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
 	AppOpsWrapper->setFingerprintService(FingerprintService.data());
@@ -296,6 +309,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
 	OpDataFactory.data()->setSessionService(SessionService.data());
 
@@ -327,6 +341,7 @@ int OtrPlugin::init(bool firstLoad)
 	SessionService->setAppOpsWrapper(AppOpsWrapper.data());
 	SessionService->setMessageManager(MessageManager::instance());
 	SessionService->setOpDataFactory(OpDataFactory.data());
+	SessionService->setPolicyService(PolicyService.data());
 	SessionService->setTrustLevelService(TrustLevelService.data());
 	SessionService->setUserStateService(UserStateService.data());
 
@@ -363,6 +378,7 @@ void OtrPlugin::done()
 
 	SessionService->setUserStateService(0);
 	SessionService->setTrustLevelService(0);
+	SessionService->setPolicyService(0);
 	SessionService->setOpDataFactory(0);
 	SessionService->setMessageManager(0);
 	SessionService->setAppOpsWrapper(0);
@@ -393,6 +409,7 @@ void OtrPlugin::done()
 
 	OpDataFactory.data()->setSessionService(0);
 	OpDataFactory.data()->setPrivateKeyService(0);
+	OpDataFactory.data()->setPolicyService(0);
 	OpDataFactory.data()->setPeerIdentityVerificationService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
@@ -413,12 +430,15 @@ void OtrPlugin::done()
 	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);
 
+	AccountConfigurationWidgetFactory->setPolicyService(0);
+
 	unregisterOtrUserStateService();
 	unregisterOtrTrustLevelService();
 	unregisterOtrTimer();
 	unregisterOtrSessionService();
 	unregisterOtrRawMessageTransformer();
 	unregisterOtrPrivateKeyService();
+	unregisterOtrPolicyService();
 	unregisterOtrPeerIdentityVerificationWindowRepository();
 	unregisterOtrPeerIdentityVerificationWindowFactory();
 	unregisterOtrPeerIdentityVerificationService();

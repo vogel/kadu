@@ -20,7 +20,8 @@
 #include "otr-op-data.h"
 
 OtrOpData::OtrOpData() :
-		AppOpsWrapper(0), PeerIdentityVerificationService(0), PrivateKeyService(0), SessionService(0)
+		AppOpsWrapper(0), PeerIdentityVerificationService(0), PolicyService(0),
+		PrivateKeyService(0), SessionService(0)
 {
 }
 
@@ -38,6 +39,7 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
 	AppOpsWrapper = copyMe.AppOpsWrapper;
 	PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
+	PolicyService = copyMe.PolicyService;
 	PrivateKeyService = copyMe.PrivateKeyService;
 	SessionService = copyMe.SessionService;
 	MyContact = copyMe.MyContact;
@@ -54,6 +56,26 @@ void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 OtrAppOpsWrapper * OtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
+}
+
+void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+{
+	PeerIdentityVerificationService = peerIdentityVerificationService;
+}
+
+OtrPeerIdentityVerificationService * OtrOpData::peerIdentityVerificationService() const
+{
+	return PeerIdentityVerificationService;
+}
+
+void OtrOpData::setPolicyService(OtrPolicyService *policyService)
+{
+	PolicyService = policyService;
+}
+
+OtrPolicyService * OtrOpData::policyService() const
+{
+	return PolicyService;
 }
 
 void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
@@ -74,16 +96,6 @@ void OtrOpData::setSessionService(OtrSessionService *sessionService)
 OtrSessionService * OtrOpData::sessionService() const
 {
 	return SessionService;
-}
-
-void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
-{
-	PeerIdentityVerificationService = peerIdentityVerificationService;
-}
-
-OtrPeerIdentityVerificationService * OtrOpData::peerIdentityVerificationService() const
-{
-	return PeerIdentityVerificationService;
 }
 
 void OtrOpData::setContact(const Contact &contact)

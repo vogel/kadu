@@ -24,7 +24,7 @@
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
 #include "otr-policy.h"
-#include "otr-policy-account-store.h"
+#include "otr-policy-service.h"
 
 #include "otr-account-configuration-widget.h"
 
@@ -56,6 +56,11 @@ void OtrAccountConfigurationWidget::createGui()
 	layout->addWidget(AutomaticallyInitiateCheckBox);
 	layout->addWidget(RequireCheckBox);
 	layout->addStretch(100);
+}
+
+void OtrAccountConfigurationWidget::setPolicyService(OtrPolicyService *policyService)
+{
+	PolicyService = policyService;
 
 	loadValues();
 	updateState();
@@ -74,7 +79,10 @@ OtrPolicy OtrAccountConfigurationWidget::policy()
 
 void OtrAccountConfigurationWidget::loadValues()
 {
-	OtrPolicy accountPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account());
+	if (!PolicyService)
+		return;
+
+	OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
 
 	if (accountPolicy == OtrPolicy::MANUAL)
 	{
@@ -88,7 +96,7 @@ void OtrAccountConfigurationWidget::loadValues()
 		AutomaticallyInitiateCheckBox->setChecked(true);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (accountPolicy == OtrPolicy::MANUAL)
+	else if (accountPolicy == OtrPolicy::ALWAYS)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);
@@ -104,6 +112,15 @@ void OtrAccountConfigurationWidget::loadValues()
 
 void OtrAccountConfigurationWidget::updateState()
 {
+	if (!PolicyService)
+	{
+		StateNotifier->setState(StateNotChanged);
+		hide();
+		return;
+	}
+	else
+		show();
+
 	AutomaticallyInitiateCheckBox->setEnabled(false);
 	RequireCheckBox->setEnabled(false);
 
@@ -114,7 +131,7 @@ void OtrAccountConfigurationWidget::updateState()
 			RequireCheckBox->setEnabled(true);
 	}
 
-	OtrPolicy accountPolicy = OtrPolicyAccountStore::loadPolicyFromAccount(account());
+	OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
 	if (accountPolicy == policy())
 		StateNotifier->setState(StateNotChanged);
 	else
@@ -128,7 +145,8 @@ const ConfigurationValueStateNotifier * OtrAccountConfigurationWidget::stateNoti
 
 void OtrAccountConfigurationWidget::apply()
 {
-	OtrPolicyAccountStore::storePolicyToAccount(account(), policy());
+	if (PolicyService)
+		PolicyService.data()->setAccountPolicy(account(), policy());
 	updateState();
 }
 
