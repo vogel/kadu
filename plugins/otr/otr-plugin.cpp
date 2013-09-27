@@ -288,7 +288,6 @@ int OtrPlugin::init(bool firstLoad)
 	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
 
 	AppOpsWrapper->setContextConverter(ContextConverter.data());
-	AppOpsWrapper->setFingerprintService(FingerprintService.data());
 	AppOpsWrapper->setOpDataFactory(OpDataFactory.data());
 	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	AppOpsWrapper->setUserStateService(UserStateService.data());
@@ -307,6 +306,7 @@ int OtrPlugin::init(bool firstLoad)
 	FingerprintService->readFingerprints();
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
+	OpDataFactory.data()->setFingerprintService(FingerprintService.data());
 	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
@@ -412,6 +412,7 @@ void OtrPlugin::done()
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setPolicyService(0);
 	OpDataFactory.data()->setPeerIdentityVerificationService(0);
+	OpDataFactory.data()->setFingerprintService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
@@ -427,7 +428,6 @@ void OtrPlugin::done()
 	AppOpsWrapper->setUserStateService(0);
 	AppOpsWrapper->setPeerIdentityVerificationService(0);
 	AppOpsWrapper->setOpDataFactory(0);
-	AppOpsWrapper->setFingerprintService(0);
 	AppOpsWrapper->setContextConverter(0);
 
 	AccountConfigurationWidgetFactory->setPolicyService(0);

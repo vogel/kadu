@@ -33,7 +33,6 @@ extern "C" {
 class Contact;
 
 class OtrContextConverter;
-class OtrFingerprintService;
 class OtrOpData;
 class OtrOpDataFactory;
 class OtrPeerIdentityVerificationService;
@@ -52,7 +51,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_privkey(void *, const char *, const char *);
 	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
 	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
-	friend void kadu_otr_write_fingerprints(void *);
 	friend int kadu_otr_max_message_size(void *, ConnContext *);
 	friend const char * kadu_otr_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_otr_resent_msg_prefix(void *, ConnContext *);
@@ -60,7 +58,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	QWeakPointer<OtrContextConverter> ContextConverter;
-	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrUserStateService> UserStateService;
@@ -69,7 +66,6 @@ class OtrAppOpsWrapper : public QObject
 	void createPrivateKey(OtrOpData *opData) const;
 	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
 	void injectMessage(OtrOpData *opData, const QByteArray &messageContent) const;
-	void writeFingerprints();
 	int maxMessageSize(OtrOpData *opData) const;
 	QString errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;
@@ -84,7 +80,6 @@ public:
 	virtual ~OtrAppOpsWrapper();
 
 	void setContextConverter(OtrContextConverter *contextConverter);
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setUserStateService(OtrUserStateService *userStateService);

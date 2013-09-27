@@ -20,7 +20,7 @@
 #include "otr-op-data.h"
 
 OtrOpData::OtrOpData() :
-		AppOpsWrapper(0), PeerIdentityVerificationService(0), PolicyService(0),
+		AppOpsWrapper(0), FingerprintService(0), PeerIdentityVerificationService(0), PolicyService(0),
 		PrivateKeyService(0), SessionService(0), TrustLevelService(0)
 {
 }
@@ -38,6 +38,7 @@ OtrOpData::~OtrOpData()
 OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
 	AppOpsWrapper = copyMe.AppOpsWrapper;
+	FingerprintService = copyMe.FingerprintService;
 	PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
 	PolicyService = copyMe.PolicyService;
 	PrivateKeyService = copyMe.PrivateKeyService;
@@ -57,6 +58,16 @@ void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 OtrAppOpsWrapper * OtrOpData::appOpsWrapper() const
 {
 	return AppOpsWrapper;
+}
+
+void OtrOpData::setFingerprintService(OtrFingerprintService *fingerprintService)
+{
+	FingerprintService = fingerprintService;
+}
+
+OtrFingerprintService * OtrOpData::fingerprintService() const
+{
+	return FingerprintService;
 }
 
 void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)

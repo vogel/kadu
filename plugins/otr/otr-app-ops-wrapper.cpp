@@ -84,23 +84,6 @@ void kadu_otr_inject_message(void *opdata, const char *accountname, const char *
 	opData->appOpsWrapper()->injectMessage(opData, QByteArray(message));
 }
 
-void kadu_otr_new_fingerprint(void *opdata, OtrlUserState us, const char *accountname, const char *protocol,
-								const char *username, unsigned char fingerprint[20])
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(us);
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-	Q_UNUSED(username);
-	Q_UNUSED(fingerprint);
-}
-
-void kadu_otr_write_fingerprints(void *opdata)
-{
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->writeFingerprints();
-}
-
 int kadu_otr_max_message_size(void *opdata, ConnContext *context)
 {
 	Q_UNUSED(context);
@@ -186,8 +169,8 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.is_logged_in = kadu_otr_is_logged_in;
 	Ops.inject_message = kadu_otr_inject_message;
 	Ops.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
-	Ops.new_fingerprint = kadu_otr_new_fingerprint;
-	Ops.write_fingerprints = kadu_otr_write_fingerprints;
+	Ops.new_fingerprint = 0;
+	Ops.write_fingerprints = OtrFingerprintService::wrapperOtrWriteFingerprints;
 	Ops.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
 	Ops.gone_insecure = OtrSessionService::wrapperOtrGoneInsecure;
 	Ops.still_secure = OtrSessionService::wrapperOtrStillSecure;
@@ -214,11 +197,6 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 void OtrAppOpsWrapper::setContextConverter(OtrContextConverter *contextConverter)
 {
 	ContextConverter = contextConverter;
-}
-
-void OtrAppOpsWrapper::setFingerprintService(OtrFingerprintService *fingerprintService)
-{
-	FingerprintService = fingerprintService;
 }
 
 void OtrAppOpsWrapper::setOpDataFactory(OtrOpDataFactory *opDataFactory)
@@ -265,12 +243,6 @@ void OtrAppOpsWrapper::injectMessage(OtrOpData *opData, const QByteArray &messag
 {
 	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
 	MessageManager::instance()->sendRawMessage(chat, messageContent);
-}
-
-void OtrAppOpsWrapper::writeFingerprints()
-{
-	if (FingerprintService)
-		FingerprintService.data()->writeFingerprints();
 }
 
 int OtrAppOpsWrapper::maxMessageSize(OtrOpData *opData) const

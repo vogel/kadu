@@ -23,6 +23,7 @@
 #include "contacts/contact.h"
 
 class OtrAppOpsWrapper;
+class OtrFingerprintService;
 class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
@@ -32,6 +33,7 @@ class OtrTrustLevelService;
 class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
+	OtrFingerprintService *FingerprintService;
 	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
 	OtrPolicyService *PolicyService;
 	OtrPrivateKeyService *PrivateKeyService;
@@ -50,6 +52,8 @@ public:
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;
 
+	void setFingerprintService(OtrFingerprintService *fingerprintService);
+	OtrFingerprintService * fingerprintService() const;
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	OtrPeerIdentityVerificationService * peerIdentityVerificationService() const;

@@ -26,9 +26,17 @@ extern "C" {
 #include "misc/kadu-paths.h"
 
 #include "otr-context-converter.h"
+#include "otr-op-data.h"
 #include "otr-user-state-service.h"
 
 #include "otr-fingerprint-service.h"
+
+void OtrFingerprintService::wrapperOtrWriteFingerprints(void *data)
+{
+	OtrOpData *opData = static_cast<OtrOpData *>(data);
+	if (opData->fingerprintService())
+		opData->fingerprintService()->writeFingerprints();
+}
 
 OtrFingerprintService::OtrFingerprintService(QObject *parent) :
 		QObject(parent)
@@ -98,7 +106,7 @@ OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(cons
 	if (!context->active_fingerprint)
 		return TrustNotVerified;
 
-	return QLatin1String("verified") == context->active_fingerprint->trust ? TrustVerified : TrustNotVerified;
+	return (context->active_fingerprint->trust && context->active_fingerprint->trust[0] != 0) ? TrustVerified : TrustNotVerified;
 }
 
 QString OtrFingerprintService::extractAccountFingerprint(const Account &account) const

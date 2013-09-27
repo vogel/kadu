@@ -37,6 +37,8 @@ class OtrFingerprintService : public QObject
 	QString fingerprintsStoreFileName() const;
 
 public:
+	static void wrapperOtrWriteFingerprints(void *data);
+
 	enum Trust
 	{
 		TrustNotVerified,
