@@ -178,15 +178,6 @@ void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnCon
 	opData->appOpsWrapper()->handleMsgEvent(opData, msg_event, message, err);
 }
 
-void kadu_otr_handle_smp_event(void *opdata, OtrlSMPEvent smp_event, ConnContext *context,
-								 unsigned short progress_percent, char *question)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->handleSmpEvent(opData, smp_event, progress_percent, QString::fromUtf8(question));
-}
-
 void kadu_otr_timer_control(void *opdata, unsigned int interval)
 {
 	Q_UNUSED(opdata);
@@ -223,7 +214,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.resent_msg_prefix = kadu_otr_resent_msg_prefix;
 	Ops.resent_msg_prefix_free = kadu_otr_resent_msg_prefix_free;
 	Ops.handle_msg_event = kadu_otr_handle_msg_event;
-	Ops.handle_smp_event = kadu_otr_handle_smp_event;
+	Ops.handle_smp_event = OtrPeerIdentityVerificationService::wrapperHandleSmpEvent;
 	Ops.create_instag = kadu_otr_create_instag;
 	Ops.convert_msg = 0;
 	Ops.convert_free = 0;
@@ -367,39 +358,6 @@ void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event,
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
-}
-
-void OtrAppOpsWrapper::handleSmpEvent(OtrOpData *opData, OtrlSMPEvent event, short unsigned int progressPercent, const QString &question)
-{
-	Q_UNUSED(question);
-
-	if (!PeerIdentityVerificationService)
-		return;
-
-	Contact contact = opData->contact();
-	if (!contact)
-		return;
-
-	OtrPeerIdentityVerificationState::State state = OtrPeerIdentityVerificationState::StateNotStarted;
-	switch (event)
-	{
-		case OTRL_SMPEVENT_IN_PROGRESS:
-			state = OtrPeerIdentityVerificationState::StateInProgress;
-			break;
-		case OTRL_SMPEVENT_CHEATED:
-		case OTRL_SMPEVENT_ERROR:
-		case OTRL_SMPEVENT_FAILURE:
-			state = OtrPeerIdentityVerificationState::StateFailed;
-			break;
-		case OTRL_SMPEVENT_SUCCESS:
-			state = OtrPeerIdentityVerificationState::StateSucceeded;
-			break;
-		default:
-			state = OtrPeerIdentityVerificationState::StateNotStarted;
-			break;
-	}
-
-	PeerIdentityVerificationService.data()->updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
 
 QString OtrAppOpsWrapper::messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const

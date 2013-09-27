@@ -24,6 +24,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+extern "C" {
+#	include <libotr/proto.h>
+#	include <libotr/message.h>
+}
+
 class Contact;
 
 class OtrAppOpsWrapper;
@@ -41,7 +46,11 @@ class OtrPeerIdentityVerificationService : public QObject
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrUserStateService> UserStateService;
 
+	void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
+
 public:
+	static void wrapperHandleSmpEvent(void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question);
+
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 

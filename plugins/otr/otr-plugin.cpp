@@ -295,6 +295,7 @@ int OtrPlugin::init(bool firstLoad)
 	FingerprintService->readFingerprints();
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
+	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
 	OpDataFactory.data()->setSessionService(SessionService.data());
 
@@ -392,6 +393,7 @@ void OtrPlugin::done()
 
 	OpDataFactory.data()->setSessionService(0);
 	OpDataFactory.data()->setPrivateKeyService(0);
+	OpDataFactory.data()->setPeerIdentityVerificationService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));

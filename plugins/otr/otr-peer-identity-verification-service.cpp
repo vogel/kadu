@@ -28,6 +28,16 @@
 
 #include "otr-peer-identity-verification-service.h"
 
+void OtrPeerIdentityVerificationService::wrapperHandleSmpEvent(void *data, OtrlSMPEvent smpEvent, ConnContext *context,
+															   unsigned short progressPercent, char *question)
+{
+	Q_UNUSED(context);
+
+	OtrOpData *opData = static_cast<OtrOpData *>(data);
+	if (opData->peerIdentityVerificationService())
+		opData->peerIdentityVerificationService()->handleSmpEvent(opData->contact(), smpEvent, progressPercent, QString::fromUtf8(question));
+}
+
 OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService(QObject *parent) :
 		QObject(parent)
 {
@@ -95,4 +105,33 @@ void OtrPeerIdentityVerificationService::cancelVerification(const Contact &conta
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 	otrl_message_abort_smp(UserStateService.data()->userState(), AppOpsWrapper.data()->ops(), &opData, context);
+}
+
+void OtrPeerIdentityVerificationService::handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question)
+{
+	Q_UNUSED(question);
+
+	if (!contact)
+		return;
+
+	OtrPeerIdentityVerificationState::State state = OtrPeerIdentityVerificationState::StateNotStarted;
+	switch (smpEvent)
+	{
+		case OTRL_SMPEVENT_IN_PROGRESS:
+			state = OtrPeerIdentityVerificationState::StateInProgress;
+			break;
+		case OTRL_SMPEVENT_CHEATED:
+		case OTRL_SMPEVENT_ERROR:
+		case OTRL_SMPEVENT_FAILURE:
+			state = OtrPeerIdentityVerificationState::StateFailed;
+			break;
+		case OTRL_SMPEVENT_SUCCESS:
+			state = OtrPeerIdentityVerificationState::StateSucceeded;
+			break;
+		default:
+			state = OtrPeerIdentityVerificationState::StateNotStarted;
+			break;
+	}
+
+	updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }

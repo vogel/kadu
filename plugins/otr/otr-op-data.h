@@ -23,12 +23,14 @@
 #include "contacts/contact.h"
 
 class OtrAppOpsWrapper;
+class OtrPeerIdentityVerificationService;
 class OtrPrivateKeyService;
 class OtrSessionService;
 
 class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
+	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
 	OtrPrivateKeyService *PrivateKeyService;
 	OtrSessionService *SessionService;
 	Contact MyContact;
@@ -46,6 +48,9 @@ public:
 
 	void setSessionService(OtrSessionService *sessionService);
 	OtrSessionService * sessionService() const;
+
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	OtrPeerIdentityVerificationService * peerIdentityVerificationService() const;
 
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	OtrPrivateKeyService * privateKeyService() const;
