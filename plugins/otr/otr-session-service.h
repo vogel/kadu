@@ -46,9 +46,9 @@ class OtrSessionService : public QObject
 	QWeakPointer<OtrUserStateService> UserStateService;
 
 public:
-	static void wrapperOtrGoneSecure(void *opData, ConnContext *context);
-	static void wrapperOtrGoneInsecure(void *opData, ConnContext *context);
-	static void wrapperOtrStillSecure(void *opData, ConnContext *context, int isReply);
+	static void wrapperOtrGoneSecure(void *data, ConnContext *context);
+	static void wrapperOtrGoneInsecure(void *data, ConnContext *context);
+	static void wrapperOtrStillSecure(void *data, ConnContext *context, int isReply);
 
 	explicit OtrSessionService(QObject *parent = 0);
 	virtual ~OtrSessionService();
