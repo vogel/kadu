@@ -39,12 +39,10 @@ extern "C" {
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
 
-#include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
-#include "otr-peer-identity-verification-state.h"
 #include "otr-plugin.h"
 #include "otr-policy.h"
 #include "otr-policy-service.h"
@@ -183,21 +181,6 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 
 OtrAppOpsWrapper::~OtrAppOpsWrapper()
 {
-}
-
-void OtrAppOpsWrapper::setContextConverter(OtrContextConverter *contextConverter)
-{
-	ContextConverter = contextConverter;
-}
-
-void OtrAppOpsWrapper::setOpDataFactory(OtrOpDataFactory *opDataFactory)
-{
-	OpDataFactory = opDataFactory;
-}
-
-void OtrAppOpsWrapper::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
-{
-	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 void OtrAppOpsWrapper::setUserStateService(OtrUserStateService *userStateService)

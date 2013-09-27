@@ -32,10 +32,7 @@ extern "C" {
 
 class Contact;
 
-class OtrContextConverter;
 class OtrOpData;
-class OtrOpDataFactory;
-class OtrPeerIdentityVerificationService;
 class OtrUserStateService;
 
 class OtrAppOpsWrapper : public QObject
@@ -56,9 +53,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
-	QWeakPointer<OtrContextConverter> ContextConverter;
-	QWeakPointer<OtrOpDataFactory> OpDataFactory;
-	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrUserStateService> UserStateService;
 	OtrlMessageAppOps Ops;
 
@@ -77,9 +71,6 @@ public:
 	explicit OtrAppOpsWrapper();
 	virtual ~OtrAppOpsWrapper();
 
-	void setContextConverter(OtrContextConverter *contextConverter);
-	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setUserStateService(OtrUserStateService *userStateService);
 
 	const OtrlMessageAppOps * ops() const;

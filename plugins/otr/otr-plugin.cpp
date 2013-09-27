@@ -287,9 +287,6 @@ int OtrPlugin::init(bool firstLoad)
 
 	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
 
-	AppOpsWrapper->setContextConverter(ContextConverter.data());
-	AppOpsWrapper->setOpDataFactory(OpDataFactory.data());
-	AppOpsWrapper->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	AppOpsWrapper->setUserStateService(UserStateService.data());
 
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
@@ -426,9 +423,6 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
 
 	AppOpsWrapper->setUserStateService(0);
-	AppOpsWrapper->setPeerIdentityVerificationService(0);
-	AppOpsWrapper->setOpDataFactory(0);
-	AppOpsWrapper->setContextConverter(0);
 
 	AccountConfigurationWidgetFactory->setPolicyService(0);
 
