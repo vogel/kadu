@@ -17,42 +17,28 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdio.h>
-#include <qglobal.h>
-
 extern "C" {
 #	include <gcrypt.h>
-#	include <libotr/userstate.h>
 }
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "message/message-manager.h"
-#include "misc/kadu-paths.h"
 #include "protocols/protocol.h"
-#include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
 
 #include "otr-fingerprint-service.h"
-#include "otr-instance-tag-service.h"
 #include "otr-op-data.h"
-#include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-plugin.h"
-#include "otr-policy.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
-#include "otr-user-state-service.h"
 
 #include "otr-app-ops-wrapper.h"
 
