@@ -56,15 +56,6 @@ extern "C" {
 
 #include "otr-app-ops-wrapper.h"
 
-void kadu_otr_create_privkey(void *opdata, const char *accountname, const char *protocol)
-{
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->createPrivateKey(opData);
-}
-
 int kadu_otr_is_logged_in(void *opdata, const char *accountname, const char *protocol, const char *recipient)
 {
 	Q_UNUSED(accountname);
@@ -165,7 +156,7 @@ void kadu_otr_timer_control(void *opdata, unsigned int interval)
 OtrAppOpsWrapper::OtrAppOpsWrapper()
 {
 	Ops.policy = OtrPolicyService::wrapperOtrPolicy;
-	Ops.create_privkey = kadu_otr_create_privkey;
+	Ops.create_privkey = OtrPrivateKeyService::wrapperOtrCreatePrivateKey;
 	Ops.is_logged_in = kadu_otr_is_logged_in;
 	Ops.inject_message = kadu_otr_inject_message;
 	Ops.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
@@ -217,12 +208,6 @@ void OtrAppOpsWrapper::setUserStateService(OtrUserStateService *userStateService
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-void OtrAppOpsWrapper::createPrivateKey(OtrOpData *opData) const
-{
-	Account account = opData->contact().contactAccount();
-	opData->privateKeyService()->createPrivateKey(account);
 }
 
 OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *opData, const QString &contactId) const

@@ -26,9 +26,23 @@ extern "C" {
 #include "misc/kadu-paths.h"
 
 #include "otr-create-private-key-job.h"
+#include "otr-op-data.h"
 #include "otr-user-state-service.h"
 
 #include "otr-private-key-service.h"
+
+void OtrPrivateKeyService::wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol)
+{
+	Q_UNUSED(accountName);
+	Q_UNUSED(protocol);
+
+	OtrOpData *opData = static_cast<OtrOpData *>(data);
+	if (opData->privateKeyService())
+	{
+		Account account = opData->contact().contactAccount();
+		opData->privateKeyService()->createPrivateKey(account);
+	}
+}
 
 OtrPrivateKeyService::OtrPrivateKeyService(QObject *parent) :
 		QObject(parent)

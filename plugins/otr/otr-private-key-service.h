@@ -42,6 +42,8 @@ private slots:
 	void jobFinished(const Account &account, bool ok);
 
 public:
+	static void wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol);
+
 	explicit OtrPrivateKeyService(QObject *parent = 0);
 	virtual ~OtrPrivateKeyService();
 
