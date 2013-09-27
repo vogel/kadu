@@ -29,6 +29,7 @@ class OtrAppOpsWrapper;
 class OtrChatTopBarWidgetFactory;
 class OtrContextConverter;
 class OtrFingerprintService;
+class OtrInstanceTagService;
 class OtrNotifier;
 class OtrOpDataFactory;
 class OtrPeerIdentityVerificationService;
@@ -55,6 +56,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
 	QScopedPointer<OtrContextConverter> ContextConverter;
 	QScopedPointer<OtrFingerprintService> FingerprintService;
+	QScopedPointer<OtrInstanceTagService> InstanceTagService;
 	QScopedPointer<OtrNotifier> Notifier;
 	QScopedPointer<OtrOpDataFactory> OpDataFactory;
 	QScopedPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
@@ -82,6 +84,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrFingerprintService();
 	void unregisterOtrFingerprintService();
+
+	void registerOtrInstanceTagService();
+	void unregisterOtrInstanceTagService();
 
 	void registerOtrNotifier();
 	void unregisterOtrNotifier();

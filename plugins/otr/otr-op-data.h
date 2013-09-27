@@ -24,6 +24,7 @@
 
 class OtrAppOpsWrapper;
 class OtrFingerprintService;
+class OtrInstanceTagService;
 class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
@@ -34,6 +35,7 @@ class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrFingerprintService *FingerprintService;
+	OtrInstanceTagService *InstanceTagService;
 	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
 	OtrPolicyService *PolicyService;
 	OtrPrivateKeyService *PrivateKeyService;
@@ -54,6 +56,9 @@ public:
 
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	OtrFingerprintService * fingerprintService() const;
+
+	void setInstanceTagService(OtrInstanceTagService *instanceTagService);
+	OtrInstanceTagService * instanceTagService() const;
 
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	OtrPeerIdentityVerificationService * peerIdentityVerificationService() const;

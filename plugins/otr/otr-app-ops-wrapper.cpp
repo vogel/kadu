@@ -40,6 +40,7 @@ extern "C" {
 #include "protocols/services/chat-service.h"
 
 #include "otr-fingerprint-service.h"
+#include "otr-instance-tag-service.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
@@ -48,6 +49,7 @@ extern "C" {
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
+#include "otr-instance-tag-service.h"
 #include "otr-timer.h"
 #include "otr-trust-level-service.h"
 #include "otr-user-state-service.h"
@@ -114,15 +116,6 @@ void kadu_otr_resent_msg_prefix_free(void *opdata, const char *prefix)
 	free((char *)prefix);
 }
 
-void kadu_otr_create_instag(void *opdata, const char *accountname, const char *protocol)
-{
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->createInstanceTag(opData);
-}
-
 void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
 								 const char *message, gcry_error_t err)
 {
@@ -173,7 +166,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.resent_msg_prefix_free = kadu_otr_resent_msg_prefix_free;
 	Ops.handle_msg_event = kadu_otr_handle_msg_event;
 	Ops.handle_smp_event = OtrPeerIdentityVerificationService::wrapperHandleSmpEvent;
-	Ops.create_instag = kadu_otr_create_instag;
+	Ops.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
 	Ops.convert_msg = 0;
 	Ops.convert_free = 0;
 	Ops.timer_control = kadu_otr_timer_control;
@@ -181,11 +174,6 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 
 OtrAppOpsWrapper::~OtrAppOpsWrapper()
 {
-}
-
-void OtrAppOpsWrapper::setUserStateService(OtrUserStateService *userStateService)
-{
-	UserStateService = userStateService;
 }
 
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
@@ -311,20 +299,4 @@ QString OtrAppOpsWrapper::gpgErrorString(gcry_error_t errorCode) const
 		default:
 			return gcry_strerror(errorCode);
 	}
-}
-
-void OtrAppOpsWrapper::createInstanceTag(OtrOpData *opData)
-{
-	Q_ASSERT(UserStateService);
-
-	Account account = opData->contact().contactAccount();
-	QString fileName = instanceTagsFileName();
-
-	otrl_instag_generate(UserStateService.data()->userState(), fileName.toUtf8().data(),
-						 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
-}
-
-QString OtrAppOpsWrapper::instanceTagsFileName() const
-{
-	return KaduPaths::instance()->profilePath() + QString("/keys/otr_instance_tags");
 }

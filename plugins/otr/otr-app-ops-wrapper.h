@@ -33,7 +33,6 @@ extern "C" {
 class Contact;
 
 class OtrOpData;
-class OtrUserStateService;
 
 class OtrAppOpsWrapper : public QObject
 {
@@ -53,7 +52,6 @@ class OtrAppOpsWrapper : public QObject
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
 	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
-	QWeakPointer<OtrUserStateService> UserStateService;
 	OtrlMessageAppOps Ops;
 
 	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
@@ -64,14 +62,10 @@ class OtrAppOpsWrapper : public QObject
 	void handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;
-	void createInstanceTag(OtrOpData *opData);
-	QString instanceTagsFileName() const;
 
 public:
 	explicit OtrAppOpsWrapper();
 	virtual ~OtrAppOpsWrapper();
-
-	void setUserStateService(OtrUserStateService *userStateService);
 
 	const OtrlMessageAppOps * ops() const;
 

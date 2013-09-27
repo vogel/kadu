@@ -31,6 +31,7 @@
 #include "otr-app-ops-wrapper.h"
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
+#include "otr-instance-tag-service.h"
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
@@ -122,6 +123,16 @@ void OtrPlugin::registerOtrFingerprintService()
 void OtrPlugin::unregisterOtrFingerprintService()
 {
 	FingerprintService.reset();
+}
+
+void OtrPlugin::registerOtrInstanceTagService()
+{
+	InstanceTagService.reset(new OtrInstanceTagService());
+}
+
+void OtrPlugin::unregisterOtrInstanceTagService()
+{
+	InstanceTagService.reset(0);
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -272,6 +283,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
 	registerOtrFingerprintService();
+	registerOtrInstanceTagService();
 	registerOtrNotifier();
 	registerOtrOpDataFactory();
 	registerOtrPeerIdentityVerificationService();
@@ -287,8 +299,6 @@ int OtrPlugin::init(bool firstLoad)
 
 	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
 
-	AppOpsWrapper->setUserStateService(UserStateService.data());
-
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 	ChatTopBarWidgetFactory->setSessionService(SessionService.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
@@ -297,13 +307,15 @@ int OtrPlugin::init(bool firstLoad)
 
 	FingerprintService->setContextConverter(ContextConverter.data());
 	FingerprintService->setUserStateService(UserStateService.data());
-
 	connect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
-
 	FingerprintService->readFingerprints();
+
+	InstanceTagService->setUserStateService(UserStateService.data());
+	InstanceTagService->readInstanceTags();
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory.data()->setFingerprintService(FingerprintService.data());
+	OpDataFactory.data()->setInstanceTagService(InstanceTagService.data());
 	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
@@ -409,8 +421,12 @@ void OtrPlugin::done()
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setPolicyService(0);
 	OpDataFactory.data()->setPeerIdentityVerificationService(0);
+	OpDataFactory.data()->setInstanceTagService(0);
 	OpDataFactory.data()->setFingerprintService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
+
+	InstanceTagService->writeInstanceTags();
+	InstanceTagService->setUserStateService(0);
 
 	disconnect(FingerprintService.data(), SIGNAL(fingerprintsUpdated()), TrustLevelService.data(), SLOT(updateTrustLevels()));
 
@@ -421,8 +437,6 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
 	ChatTopBarWidgetFactory->setSessionService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
-
-	AppOpsWrapper->setUserStateService(0);
 
 	AccountConfigurationWidgetFactory->setPolicyService(0);
 
@@ -438,6 +452,8 @@ void OtrPlugin::done()
 	unregisterOtrPeerIdentityVerificationService();
 	unregisterOtrOpDataFactory();
 	unregisterOtrNotifier();
+	unregisterOtrFingerprintService();
+	unregisterOtrInstanceTagService();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();
