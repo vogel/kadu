@@ -23,6 +23,7 @@ extern "C" {
 }
 
 #include "accounts/account.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
 

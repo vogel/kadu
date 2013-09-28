@@ -17,23 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-extern "C" {
-#	include <gcrypt.h>
-}
-
-#include "chat/type/chat-type-contact.h"
-#include "contacts/contact-manager.h"
-#include "gui/widgets/chat-widget.h"
-#include "gui/widgets/chat-widget-manager.h"
-
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-is-logged-in-service.h"
 #include "otr-message-event-service.h"
 #include "otr-message-service.h"
-#include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
-#include "otr-plugin.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"

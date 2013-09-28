@@ -21,18 +21,11 @@
 #define OTR_APP_OPS_WRAPPER_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
-
-#include "chat/chat.h"
 
 extern "C" {
 #	include <libotr/proto.h>
 #	include <libotr/message.h>
 }
-
-class Contact;
-
-class OtrOpData;
 
 class OtrAppOpsWrapper : public QObject
 {
