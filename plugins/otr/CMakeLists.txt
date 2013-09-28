@@ -27,6 +27,7 @@ set (SOURCES
 	otr-create-private-key-worker.cpp
 	otr-fingerprint-service.cpp
 	otr-instance-tag-service.cpp
+	otr-message-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
 	otr-op-data-factory.cpp
@@ -63,6 +64,7 @@ set (MOC_SOURCES
 	otr-create-private-key-worker.h
 	otr-fingerprint-service.h
 	otr-instance-tag-service.h
+	otr-message-service.h
 	otr-notifier.h
 	otr-op-data-factory.h
 	otr-peer-identity-verification-service.h

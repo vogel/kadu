@@ -25,11 +25,9 @@ extern "C" {
 #include "contacts/contact-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "message/message-manager.h"
-#include "protocols/protocol.h"
-#include "protocols/services/chat-service.h"
 
 #include "otr-fingerprint-service.h"
+#include "otr-message-service.h"
 #include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-plugin.h"
@@ -49,24 +47,6 @@ int kadu_otr_is_logged_in(void *opdata, const char *accountname, const char *pro
 
 	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
 	return (int)opData->appOpsWrapper()->isLoggedIn(opData, recipient);
-}
-
-void kadu_otr_inject_message(void *opdata, const char *accountname, const char *protocol, const char *recipient, const char *message)
-{
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-	Q_UNUSED(recipient);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	opData->appOpsWrapper()->injectMessage(opData, QByteArray(message));
-}
-
-int kadu_otr_max_message_size(void *opdata, ConnContext *context)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	return opData->appOpsWrapper()->maxMessageSize(opData);
 }
 
 const char * kadu_otr_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
@@ -135,14 +115,14 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.policy = OtrPolicyService::wrapperOtrPolicy;
 	Ops.create_privkey = OtrPrivateKeyService::wrapperOtrCreatePrivateKey;
 	Ops.is_logged_in = kadu_otr_is_logged_in;
-	Ops.inject_message = kadu_otr_inject_message;
+	Ops.inject_message = OtrMessageService::wrapperOtrInjectMessage;
 	Ops.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
 	Ops.new_fingerprint = 0;
 	Ops.write_fingerprints = OtrFingerprintService::wrapperOtrWriteFingerprints;
 	Ops.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
 	Ops.gone_insecure = OtrSessionService::wrapperOtrGoneInsecure;
 	Ops.still_secure = OtrSessionService::wrapperOtrStillSecure;
-	Ops.max_message_size = kadu_otr_max_message_size;
+	Ops.max_message_size = OtrMessageService::wrapperOtrMaxMessageSize;
 	Ops.account_name = 0;
 	Ops.account_name_free = 0;
 	Ops.received_symkey = 0;
@@ -179,24 +159,6 @@ OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *opDat
 		return NotLoggedIn;
 	else
 		return LoggedIn;
-}
-
-void OtrAppOpsWrapper::injectMessage(OtrOpData *opData, const QByteArray &messageContent) const
-{
-	Chat chat = ChatTypeContact::findChat(opData->contact(), ActionCreateAndAdd);
-	MessageManager::instance()->sendRawMessage(chat, messageContent);
-}
-
-int OtrAppOpsWrapper::maxMessageSize(OtrOpData *opData) const
-{
-	Account account = opData->contact().contactAccount();
-	Protocol *protocolHandler = account.protocolHandler();
-	if (!protocolHandler)
-		return 0;
-	ChatService *chatService = protocolHandler->chatService();
-	if (!chatService)
-		return 0;
-	return chatService->maxMessageLength();
 }
 
 QString OtrAppOpsWrapper::errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const

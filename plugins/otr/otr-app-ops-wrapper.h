@@ -45,17 +45,13 @@ class OtrAppOpsWrapper : public QObject
 	};
 
 	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
-	friend void kadu_otr_inject_message(void *, const char *, const char *, const char *, const char *);
-	friend int kadu_otr_max_message_size(void *, ConnContext *);
 	friend const char * kadu_otr_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_otr_resent_msg_prefix(void *, ConnContext *);
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
-	friend void kadu_otr_create_instag(void *, const char *, const char *);
 
 	OtrlMessageAppOps Ops;
 
 	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
-	void injectMessage(OtrOpData *opData, const QByteArray &messageContent) const;
 	int maxMessageSize(OtrOpData *opData) const;
 	QString errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;

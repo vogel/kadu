@@ -32,6 +32,7 @@
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
+#include "otr-message-service.h"
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
 #include "otr-peer-identity-verification-service.h"
@@ -133,6 +134,16 @@ void OtrPlugin::registerOtrInstanceTagService()
 void OtrPlugin::unregisterOtrInstanceTagService()
 {
 	InstanceTagService.reset(0);
+}
+
+void OtrPlugin::registerOtrMessageService()
+{
+	MessageService.reset(new OtrMessageService());
+}
+
+void OtrPlugin::unregisterOtrMessageService()
+{
+	MessageService.reset();
 }
 
 void OtrPlugin::registerOtrNotifier()
@@ -284,6 +295,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrContextConverter();
 	registerOtrFingerprintService();
 	registerOtrInstanceTagService();
+	registerOtrMessageService();
 	registerOtrNotifier();
 	registerOtrOpDataFactory();
 	registerOtrPeerIdentityVerificationService();
@@ -313,9 +325,12 @@ int OtrPlugin::init(bool firstLoad)
 	InstanceTagService->setUserStateService(UserStateService.data());
 	InstanceTagService->readInstanceTags();
 
+	MessageService->setMessageManager(MessageManager::instance());
+
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory.data()->setFingerprintService(FingerprintService.data());
 	OpDataFactory.data()->setInstanceTagService(InstanceTagService.data());
+	OpDataFactory.data()->setMessageService(MessageService.data());
 	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
@@ -425,6 +440,8 @@ void OtrPlugin::done()
 	OpDataFactory.data()->setFingerprintService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
+	MessageService->setMessageManager(0);
+
 	InstanceTagService->writeInstanceTags();
 	InstanceTagService->setUserStateService(0);
 
@@ -452,6 +469,7 @@ void OtrPlugin::done()
 	unregisterOtrPeerIdentityVerificationService();
 	unregisterOtrOpDataFactory();
 	unregisterOtrNotifier();
+	unregisterOtrMessageService();
 	unregisterOtrFingerprintService();
 	unregisterOtrInstanceTagService();
 	unregisterOtrContextConverter();
