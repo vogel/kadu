@@ -17,35 +17,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_APP_OPS_WRAPPER_H
-#define OTR_APP_OPS_WRAPPER_H
+#ifndef OTR_MESSAGE_EVENT_SERVICE_H
+#define OTR_MESSAGE_EVENT_SERVICE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
-
-#include "chat/chat.h"
 
 extern "C" {
 #	include <libotr/proto.h>
 #	include <libotr/message.h>
 }
 
+class ChatWidgetManager;
 class Contact;
 
-class OtrOpData;
-
-class OtrAppOpsWrapper : public QObject
+class OtrMessageEventService : public QObject
 {
 	Q_OBJECT
 
-	OtrlMessageAppOps Ops;
+	QWeakPointer<ChatWidgetManager> CurrentChatWidgetManager;
+
+	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
+	QString gpgErrorString(gcry_error_t errorCode) const;
 
 public:
-	explicit OtrAppOpsWrapper();
-	virtual ~OtrAppOpsWrapper();
+	static void wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error);
 
-	const OtrlMessageAppOps * ops() const;
+	explicit OtrMessageEventService(QObject *parent = 0);
+	virtual ~OtrMessageEventService();
+
+	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+
+	void handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 
 };
 
-#endif // OTR_APP_OPS_WRAPPER_H
+#endif // OTR_MESSAGE_EVENT_SERVICE_H

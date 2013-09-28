@@ -30,6 +30,7 @@ class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
 class OtrIsLoggedInService;
+class OtrMessageEventService;
 class OtrMessageService;
 class OtrOpData;
 class OtrPeerIdentityVerificationService;
@@ -48,6 +49,7 @@ class OtrOpDataFactory : public QObject
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrInstanceTagService> InstanceTagService;
 	QWeakPointer<OtrIsLoggedInService> IsLoggedInService;
+	QWeakPointer<OtrMessageEventService> MessageEventService;
 	QWeakPointer<OtrMessageService> MessageService;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 	QWeakPointer<OtrPolicyService> PolicyService;
@@ -65,6 +67,7 @@ public:
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setInstanceTagService(OtrInstanceTagService *instanceTagService);
 	void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+	void setMessageEventService(OtrMessageEventService *messageEventService);
 	void setMessageService(OtrMessageService *messageService);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 	void setPolicyService(OtrPolicyService *policyService);

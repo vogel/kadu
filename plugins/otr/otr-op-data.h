@@ -27,6 +27,7 @@ class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
 class OtrIsLoggedInService;
+class OtrMessageEventService;
 class OtrMessageService;
 class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
@@ -42,6 +43,7 @@ class OtrOpData
 	OtrFingerprintService *FingerprintService;
 	OtrInstanceTagService *InstanceTagService;
 	OtrIsLoggedInService *IsLoggedInService;
+	OtrMessageEventService *MessageEventService;
 	OtrMessageService *MessageService;
 	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
 	OtrPolicyService *PolicyService;
@@ -73,6 +75,9 @@ public:
 
 	void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
 	OtrIsLoggedInService * isLoggedInService() const;
+
+	void setMessageEventService(OtrMessageEventService *messageEventService);
+	OtrMessageEventService * messageEventService() const;
 
 	void setMessageService(OtrMessageService *messageService);
 	OtrMessageService * messageService() const;

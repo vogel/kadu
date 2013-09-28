@@ -32,6 +32,7 @@ class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
 class OtrIsLoggedInService;
+class OtrMessageEventService;
 class OtrMessageService;
 class OtrNotifier;
 class OtrOpDataFactory;
@@ -61,6 +62,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrFingerprintService> FingerprintService;
 	QScopedPointer<OtrInstanceTagService> InstanceTagService;
 	QScopedPointer<OtrIsLoggedInService> IsLoggedInService;
+	QScopedPointer<OtrMessageEventService> MessageEventService;
 	QScopedPointer<OtrMessageService> MessageService;
 	QScopedPointer<OtrNotifier> Notifier;
 	QScopedPointer<OtrOpDataFactory> OpDataFactory;
@@ -98,6 +100,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrIsLoggedInService();
 	void unregisterOtrIsLoggedInService();
+
+	void registerOtrMessageEventService();
+	void unregisterOtrMessageEventService();
 
 	void registerOtrMessageService();
 	void unregisterOtrMessageService();

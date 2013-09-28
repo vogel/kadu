@@ -21,8 +21,9 @@
 
 OtrOpData::OtrOpData() :
 		AppOpsWrapper(0), ErrorMessageService(0), FingerprintService(0), InstanceTagService(0),
-		IsLoggedInService(0), MessageService(0), PeerIdentityVerificationService(0), PolicyService(0),
-		PrivateKeyService(0), SessionService(0), TimerService(0), TrustLevelService(0)
+		IsLoggedInService(0), MessageEventService(0), MessageService(0),
+		PeerIdentityVerificationService(0), PolicyService(0), PrivateKeyService(0), SessionService(0),
+		TimerService(0), TrustLevelService(0)
 {
 }
 
@@ -43,6 +44,7 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 	FingerprintService = copyMe.FingerprintService;
 	InstanceTagService = copyMe.InstanceTagService;
 	IsLoggedInService = copyMe.IsLoggedInService;
+	MessageEventService = copyMe.MessageEventService;
 	MessageService = copyMe.MessageService;
 	PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
 	PolicyService = copyMe.PolicyService;
@@ -104,6 +106,16 @@ void OtrOpData::setIsLoggedInService(OtrIsLoggedInService *isLoggedInService)
 OtrIsLoggedInService * OtrOpData::isLoggedInService() const
 {
 	return IsLoggedInService;
+}
+
+void OtrOpData::setMessageEventService(OtrMessageEventService *messageEventService)
+{
+	MessageEventService = messageEventService;
+}
+
+OtrMessageEventService * OtrOpData::messageEventService() const
+{
+	return MessageEventService;
 }
 
 void OtrOpData::setMessageService(OtrMessageService *messageService)

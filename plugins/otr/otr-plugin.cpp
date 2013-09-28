@@ -35,6 +35,8 @@
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
+#include "otr-error-message-service.h"
+#include "otr-message-event-service.h"
 #include "otr-message-service.h"
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
@@ -144,6 +146,16 @@ void OtrPlugin::unregisterOtrIsLoggedInService()
 void OtrPlugin::unregisterOtrInstanceTagService()
 {
 	InstanceTagService.reset();
+}
+
+void OtrPlugin::registerOtrMessageEventService()
+{
+	MessageEventService.reset(new OtrMessageEventService());
+}
+
+void OtrPlugin::unregisterOtrMessageEventService()
+{
+	MessageEventService.reset();
 }
 
 void OtrPlugin::registerOtrMessageService()
@@ -307,6 +319,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrFingerprintService();
 	registerOtrInstanceTagService();
 	registerOtrIsLoggedInService();
+	registerOtrMessageEventService();
 	registerOtrMessageService();
 	registerOtrNotifier();
 	registerOtrOpDataFactory();
@@ -346,6 +359,7 @@ int OtrPlugin::init(bool firstLoad)
 	OpDataFactory->setFingerprintService(FingerprintService.data());
 	OpDataFactory->setInstanceTagService(InstanceTagService.data());
 	OpDataFactory->setIsLoggedInService(IsLoggedInService.data());
+	OpDataFactory->setMessageEventService(MessageEventService.data());
 	OpDataFactory->setMessageService(MessageService.data());
 	OpDataFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory->setPolicyService(PolicyService.data());
@@ -456,6 +470,8 @@ void OtrPlugin::done()
 	OpDataFactory->setPrivateKeyService(0);
 	OpDataFactory->setPolicyService(0);
 	OpDataFactory->setPeerIdentityVerificationService(0);
+	OpDataFactory->setMessageService(0);
+	OpDataFactory->setMessageEventService(0);
 	OpDataFactory->setIsLoggedInService(0);
 	OpDataFactory->setInstanceTagService(0);
 	OpDataFactory->setFingerprintService(0);
@@ -494,6 +510,7 @@ void OtrPlugin::done()
 	unregisterOtrOpDataFactory();
 	unregisterOtrNotifier();
 	unregisterOtrMessageService();
+	unregisterOtrMessageEventService();
 	unregisterOtrIsLoggedInService();
 	unregisterOtrInstanceTagService();
 	unregisterOtrFingerprintService();

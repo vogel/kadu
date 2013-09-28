@@ -29,6 +29,7 @@ set (SOURCES
 	otr-fingerprint-service.cpp
 	otr-instance-tag-service.cpp
 	otr-is-logged-in-service.cpp
+	otr-message-event-service.cpp
 	otr-message-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
@@ -68,6 +69,7 @@ set (MOC_SOURCES
 	otr-fingerprint-service.h
 	otr-instance-tag-service.h
 	otr-is-logged-in-service.h
+	otr-message-event-service.h
 	otr-message-service.h
 	otr-notifier.h
 	otr-op-data-factory.h
