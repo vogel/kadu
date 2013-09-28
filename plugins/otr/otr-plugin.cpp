@@ -127,12 +127,12 @@ void OtrPlugin::registerOtrIsLoggedInService()
 
 void OtrPlugin::unregisterOtrIsLoggedInService()
 {
-	IsLoggedInService.reset(0);
+	IsLoggedInService.reset();
 }
 
 void OtrPlugin::unregisterOtrInstanceTagService()
 {
-	InstanceTagService.reset(0);
+	InstanceTagService.reset();
 }
 
 void OtrPlugin::registerOtrMessageService()
@@ -158,7 +158,7 @@ void OtrPlugin::unregisterOtrNotifier()
 	foreach (NotifyEvent *notifyEvent, Notifier->notifyEvents())
 		NotificationManager::instance()->unregisterNotifyEvent(notifyEvent);
 
-	Notifier.reset(0);
+	Notifier.reset();
 }
 
 void OtrPlugin::registerOtrOpDataFactory()
@@ -168,7 +168,7 @@ void OtrPlugin::registerOtrOpDataFactory()
 
 void OtrPlugin::unregisterOtrOpDataFactory()
 {
-	OpDataFactory.reset(0);
+	OpDataFactory.reset();
 }
 
 void OtrPlugin::registerOtrPeerIdentityVerificationService()
@@ -188,7 +188,7 @@ void OtrPlugin::registerOtrPeerIdentityVerificationWindowFactory()
 
 void OtrPlugin::unregisterOtrPeerIdentityVerificationWindowFactory()
 {
-	PeerIdentityVerificationWindowFactory.reset(0);
+	PeerIdentityVerificationWindowFactory.reset();
 }
 
 void OtrPlugin::registerOtrPeerIdentityVerificationWindowRepository()
@@ -208,7 +208,7 @@ void OtrPlugin::registerOtrPolicyService()
 
 void OtrPlugin::unregisterOtrPolicyService()
 {
-	PolicyService.reset(0);
+	PolicyService.reset();
 }
 
 void OtrPlugin::registerOtrPrivateKeyService()
@@ -248,7 +248,7 @@ void OtrPlugin::registerOtrSessionService()
 
 void OtrPlugin::unregisterOtrSessionService()
 {
-	SessionService.reset(0);
+	SessionService.reset();
 }
 
 void OtrPlugin::registerOtrTimer()
@@ -278,7 +278,7 @@ void OtrPlugin::registerOtrUserStateService()
 
 void OtrPlugin::unregisterOtrUserStateService()
 {
-	UserStateService.reset(0);
+	UserStateService.reset();
 }
 
 int OtrPlugin::init(bool firstLoad)
