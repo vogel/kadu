@@ -354,7 +354,6 @@ int OtrPlugin::init(bool firstLoad)
 
 	MessageService->setMessageManager(MessageManager::instance());
 
-	OpDataFactory->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory->setErrorMessageService(ErrorMessageService.data());
 	OpDataFactory->setFingerprintService(FingerprintService.data());
 	OpDataFactory->setInstanceTagService(InstanceTagService.data());
@@ -476,7 +475,6 @@ void OtrPlugin::done()
 	OpDataFactory->setInstanceTagService(0);
 	OpDataFactory->setFingerprintService(0);
 	OpDataFactory->setErrorMessageService(0);
-	OpDataFactory->setAppOpsWrapper(0);
 
 	MessageService->setMessageManager(0);
 

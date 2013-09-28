@@ -20,7 +20,7 @@
 #include "otr-op-data.h"
 
 OtrOpData::OtrOpData() :
-		AppOpsWrapper(0), ErrorMessageService(0), FingerprintService(0), InstanceTagService(0),
+		ErrorMessageService(0), FingerprintService(0), InstanceTagService(0),
 		IsLoggedInService(0), MessageEventService(0), MessageService(0),
 		PeerIdentityVerificationService(0), PolicyService(0), PrivateKeyService(0), SessionService(0),
 		TimerService(0), TrustLevelService(0)
@@ -39,7 +39,6 @@ OtrOpData::~OtrOpData()
 
 OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 {
-	AppOpsWrapper = copyMe.AppOpsWrapper;
 	ErrorMessageService = copyMe.ErrorMessageService;
 	FingerprintService = copyMe.FingerprintService;
 	InstanceTagService = copyMe.InstanceTagService;
@@ -56,16 +55,6 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 	PeerDisplay = copyMe.PeerDisplay;
 
 	return *this;
-}
-
-void OtrOpData::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
-{
-	AppOpsWrapper = appOpsWrapper;
-}
-
-OtrAppOpsWrapper * OtrOpData::appOpsWrapper() const
-{
-	return AppOpsWrapper;
 }
 
 void OtrOpData::setErrorMessageService(OtrErrorMessageService *errorMessageService)

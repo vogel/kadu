@@ -22,7 +22,6 @@
 
 #include "contacts/contact.h"
 
-class OtrAppOpsWrapper;
 class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
@@ -38,7 +37,6 @@ class OtrTrustLevelService;
 
 class OtrOpData
 {
-	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrErrorMessageService *ErrorMessageService;
 	OtrFingerprintService *FingerprintService;
 	OtrInstanceTagService *InstanceTagService;
@@ -60,9 +58,6 @@ public:
 	virtual ~OtrOpData();
 
 	OtrOpData & operator = (const OtrOpData &copyMe);
-
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
-	OtrAppOpsWrapper * appOpsWrapper() const;
 
 	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
 	OtrErrorMessageService * errorMessageService() const;

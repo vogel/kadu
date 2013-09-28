@@ -23,6 +23,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+class Account;
 class Contact;
 class OtrContextConverter;
 class OtrUserStateService;

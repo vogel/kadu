@@ -25,7 +25,6 @@
 
 class Contact;
 
-class OtrAppOpsWrapper;
 class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
@@ -44,7 +43,6 @@ class OtrOpDataFactory : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QWeakPointer<OtrErrorMessageService> ErrorMessageService;
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrInstanceTagService> InstanceTagService;
@@ -62,7 +60,6 @@ public:
 	explicit OtrOpDataFactory(QObject *parent = 0);
 	virtual ~OtrOpDataFactory();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setInstanceTagService(OtrInstanceTagService *instanceTagService);

@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-app-ops-wrapper.h"
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
@@ -41,11 +40,6 @@ OtrOpDataFactory::OtrOpDataFactory(QObject *parent) :
 
 OtrOpDataFactory::~OtrOpDataFactory()
 {
-}
-
-void OtrOpDataFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
-{
-	AppOpsWrapper = appOpsWrapper;
 }
 
 void OtrOpDataFactory::setErrorMessageService(OtrErrorMessageService *errorMessageService)
@@ -111,7 +105,6 @@ void OtrOpDataFactory::setTrustLevelService(OtrTrustLevelService *trustLevelServ
 OtrOpData OtrOpDataFactory::opData()
 {
 	OtrOpData result;
-	result.setAppOpsWrapper(AppOpsWrapper.data());
 	result.setErrorMessageService(ErrorMessageService.data());
 	result.setFingerprintService(FingerprintService.data());
 	result.setInstanceTagService(InstanceTagService.data());
