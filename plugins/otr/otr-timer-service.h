@@ -25,7 +25,7 @@
 
 class QTimer;
 
-class OtrAppOpsWrapper;
+class OtrAppOpsService;
 class OtrOpDataFactory;
 class OtrUserStateService;
 
@@ -33,7 +33,7 @@ class OtrTimerService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrAppOpsService> AppOpsService;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrUserStateService> UserStateService;
 
@@ -50,7 +50,7 @@ public:
 	explicit OtrTimerService(QObject *parent = 0);
 	virtual ~OtrTimerService();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setAppOpsService(OtrAppOpsService *appOpsService);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setUserStateService(OtrUserStateService *userStateService);
 

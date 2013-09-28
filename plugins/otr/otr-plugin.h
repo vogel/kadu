@@ -25,7 +25,7 @@
 #include "plugins/generic-plugin.h"
 
 class OtrAccountConfigurationWidgetFactory;
-class OtrAppOpsWrapper;
+class OtrAppOpsService;
 class OtrChatTopBarWidgetFactory;
 class OtrContextConverter;
 class OtrErrorMessageService;
@@ -55,7 +55,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	bool OtrAvailable;
 
 	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
-	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QScopedPointer<OtrAppOpsService> AppOpsService;
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
 	QScopedPointer<OtrContextConverter> ContextConverter;
 	QScopedPointer<OtrErrorMessageService> ErrorMessageService;
@@ -80,8 +80,8 @@ class OtrPlugin : public QObject, public GenericPlugin
 	void registerOtrAcountConfigurationWidgetFactory();
 	void unregisterOtrAcountConfigurationWidgetFactory();
 
-	void registerOtrAppOpsWrapper();
-	void unregisterOtrAppOpsWrapper();
+	void registerOtrAppOpsService();
+	void unregisterOtrAppOpsService();
 
 	void registerOtrChatTopBarWidgetFactory();
 	void unregisterOtrChatTopBarWidgetFactory();

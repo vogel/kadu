@@ -31,7 +31,7 @@ extern "C" {
 
 class Contact;
 
-class OtrAppOpsWrapper;
+class OtrAppOpsService;
 class OtrOpDataFactory;
 class OtrSessionService;
 class OtrUserStateService;
@@ -40,7 +40,7 @@ class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrAppOpsService> AppOpsService;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrSessionService> SessionService;
 	QWeakPointer<OtrUserStateService> UserStateService;
@@ -54,7 +54,7 @@ public:
 	explicit OtrRawMessageTransformer();
 	virtual ~OtrRawMessageTransformer();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setAppOpsService(OtrAppOpsService *appOpsService);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setSessionService(OtrSessionService *sessionService);
 	void setUserStateService(OtrUserStateService *userStateService);

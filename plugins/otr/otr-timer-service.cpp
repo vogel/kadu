@@ -26,7 +26,7 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
-#include "otr-app-ops-wrapper.h"
+#include "otr-app-ops-service.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-user-state-service.h"
@@ -49,9 +49,9 @@ OtrTimerService::~OtrTimerService()
 {
 }
 
-void OtrTimerService::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrTimerService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	AppOpsService = appOpsService;
 }
 
 void OtrTimerService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
@@ -78,11 +78,11 @@ void OtrTimerService::setUserStateService(OtrUserStateService *userStateService)
 
 void OtrTimerService::otrTimerTimeout()
 {
-	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return;
 
 	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *ops = AppOpsWrapper.data()->ops();
+	const OtrlMessageAppOps *ops = AppOpsService.data()->appOps();
 	OtrOpData opData = OpDataFactory.data()->opData();
 
 	otrl_message_poll(userState, ops, &opData);

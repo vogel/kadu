@@ -30,7 +30,7 @@ extern "C" {
 class Contact;
 class MessageManager;
 
-class OtrAppOpsWrapper;
+class OtrAppOpsService;
 class OtrOpDataFactory;
 class OtrPolicyService;
 class OtrTrustLevelService;
@@ -41,7 +41,7 @@ class OtrSessionService : public QObject
 	Q_OBJECT
 
 	QWeakPointer<MessageManager> CurrentMessageManager;
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrAppOpsService> AppOpsService;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrPolicyService> PolicyService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
@@ -55,7 +55,7 @@ public:
 	explicit OtrSessionService(QObject *parent = 0);
 	virtual ~OtrSessionService();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setAppOpsService(OtrAppOpsService *appOpsService);
 	void setMessageManager(MessageManager *messageManager);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setPolicyService(OtrPolicyService *policyService);

@@ -21,7 +21,7 @@ set (SOURCES
 	gui/windows/otr-peer-identity-verification-window-repository.cpp
 	gui/windows/otr-peer-identity-verification-window.cpp
 
-	otr-app-ops-wrapper.cpp
+	otr-app-ops-service.cpp
 	otr-context-converter.cpp
 	otr-create-private-key-job.cpp
 	otr-create-private-key-worker.cpp
@@ -61,7 +61,7 @@ set (MOC_SOURCES
 	gui/windows/otr-peer-identity-verification-window-repository.h
 	gui/windows/otr-peer-identity-verification-window.h
 
-	otr-app-ops-wrapper.h
+	otr-app-ops-service.h
 	otr-context-converter.h
 	otr-create-private-key-job.h
 	otr-create-private-key-worker.h

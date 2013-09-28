@@ -27,7 +27,7 @@ extern "C" {
 #include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
 
-#include "otr-app-ops-wrapper.h"
+#include "otr-app-ops-service.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-policy.h"
@@ -74,9 +74,9 @@ OtrSessionService::~OtrSessionService()
 {
 }
 
-void OtrSessionService::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrSessionService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	AppOpsService = appOpsService;
 }
 
 void OtrSessionService::setMessageManager(MessageManager *messageManager)
@@ -123,12 +123,12 @@ void OtrSessionService::startSession(const Contact &contact)
 
 void OtrSessionService::endSession(const Contact &contact)
 {
-	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return;
 
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	otrl_message_disconnect_all_instances(UserStateService.data()->userState(),
-										  AppOpsWrapper.data()->ops(), &opData,
+										  AppOpsService.data()->appOps(), &opData,
 										  qPrintable(contact.contactAccount().id()),
 										  qPrintable(contact.contactAccount().protocolName()),
 										  qPrintable(contact.id()));

@@ -30,7 +30,7 @@ extern "C" {
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
 
-#include "otr-app-ops-wrapper.h"
+#include "otr-app-ops-service.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
 #include "otr-session-service.h"
@@ -52,9 +52,9 @@ void OtrRawMessageTransformer::setEnableFragments(bool enableFragments)
 	EnableFragments = enableFragments;
 }
 
-void OtrRawMessageTransformer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrRawMessageTransformer::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	AppOpsService = appOpsService;
 }
 
 void OtrRawMessageTransformer::setOpDataFactory(OtrOpDataFactory *opDataFactory)
@@ -87,7 +87,7 @@ QByteArray OtrRawMessageTransformer::transform(const QByteArray &messageContent,
 
 QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &messageContent, const Message &message)
 {
-	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return messageContent;
 
 	OtrlUserState userState = UserStateService.data()->userState();
@@ -99,7 +99,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 	char *newMessage = 0;
 	OtrlTLV *tlvs = 0;
 
-	bool ignoreMessage = otrl_message_receiving(userState, AppOpsWrapper.data()->ops(), &opData,
+	bool ignoreMessage = otrl_message_receiving(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			message.messageSender().id().toUtf8().data(),
 			messageContent.data(),
@@ -125,7 +125,7 @@ QByteArray OtrRawMessageTransformer::transformReceived(const QByteArray &message
 
 QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageContent, const Message &message)
 {
-	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
+	if (!AppOpsService || !OpDataFactory || !UserStateService)
 		return messageContent;
 
 	OtrlUserState userState = UserStateService.data()->userState();
@@ -142,7 +142,7 @@ QByteArray OtrRawMessageTransformer::transformSent(const QByteArray &messageCont
 	Account account = message.messageChat().chatAccount();
 	char *newMessage = 0;
 
-	gcry_error_t err = otrl_message_sending(userState, AppOpsWrapper.data()->ops(), &opData,
+	gcry_error_t err = otrl_message_sending(userState, AppOpsService.data()->appOps(), &opData,
 			account.id().toUtf8().data(), account.protocolName().toUtf8().data(),
 			receiver.id().toUtf8().data(), OTRL_INSTAG_BEST,
 			messageContent.data(), 0,

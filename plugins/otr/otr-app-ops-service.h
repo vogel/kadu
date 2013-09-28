@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_APP_OPS_WRAPPER_H
-#define OTR_APP_OPS_WRAPPER_H
+#ifndef OTR_APP_OPS_SERVICE_H
+#define OTR_APP_OPS_SERVICE_H
 
 #include <QtCore/QObject>
 
@@ -27,18 +27,18 @@ extern "C" {
 #	include <libotr/message.h>
 }
 
-class OtrAppOpsWrapper : public QObject
+class OtrAppOpsService : public QObject
 {
 	Q_OBJECT
 
-	OtrlMessageAppOps Ops;
+	OtrlMessageAppOps AppOps;
 
 public:
-	explicit OtrAppOpsWrapper();
-	virtual ~OtrAppOpsWrapper();
+	explicit OtrAppOpsService();
+	virtual ~OtrAppOpsService();
 
-	const OtrlMessageAppOps * ops() const;
+	const OtrlMessageAppOps * appOps() const;
 
 };
 
-#endif // OTR_APP_OPS_WRAPPER_H
+#endif // OTR_APP_OPS_SERVICE_H

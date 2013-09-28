@@ -19,7 +19,7 @@
 
 #include "contacts/contact.h"
 
-#include "otr-app-ops-wrapper.h"
+#include "otr-app-ops-service.h"
 #include "otr-context-converter.h"
 #include "otr-op-data.h"
 #include "otr-op-data-factory.h"
@@ -47,9 +47,9 @@ OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 {
 }
 
-void OtrPeerIdentityVerificationService::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrPeerIdentityVerificationService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsWrapper = appOpsWrapper;
+	AppOpsService = appOpsService;
 }
 
 void OtrPeerIdentityVerificationService::setContextConverter(OtrContextConverter *contextConverter)
@@ -80,10 +80,12 @@ void OtrPeerIdentityVerificationService::startQuestionAndAnswerVerification(cons
 	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || question.isEmpty() || answer.isEmpty())
 		return;
 
+	OtrlUserState userState = UserStateService.data()->userState();
+	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_initiate_smp_q(UserStateService.data()->userState(), AppOpsWrapper.data()->ops(), &opData,
-		context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
+
+	otrl_message_initiate_smp_q(userState, appOps, &opData, context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
 }
 
 void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Contact &contact, const QString &sharedSecret)
@@ -91,10 +93,12 @@ void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Con
 	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || sharedSecret.isEmpty())
 		return;
 
+	OtrlUserState userState = UserStateService.data()->userState();
+	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_initiate_smp(UserStateService.data()->userState(), AppOpsWrapper.data()->ops(), &opData,
-		context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
+
+	otrl_message_initiate_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
 }
 
 void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)
@@ -102,9 +106,11 @@ void OtrPeerIdentityVerificationService::cancelVerification(const Contact &conta
 	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact)
 		return;
 
+	OtrlUserState userState = UserStateService.data()->userState();
+	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
-	otrl_message_abort_smp(UserStateService.data()->userState(), AppOpsWrapper.data()->ops(), &opData, context);
+	otrl_message_abort_smp(userState, appOps, &opData, context);
 }
 
 void OtrPeerIdentityVerificationService::handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question)

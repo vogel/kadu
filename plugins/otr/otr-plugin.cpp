@@ -29,7 +29,7 @@
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
-#include "otr-app-ops-wrapper.h"
+#include "otr-app-ops-service.h"
 #include "otr-context-converter.h"
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
@@ -74,14 +74,14 @@ void OtrPlugin::unregisterOtrAcountConfigurationWidgetFactory()
 	AccountConfigurationWidgetFactory.reset();
 }
 
-void OtrPlugin::registerOtrAppOpsWrapper()
+void OtrPlugin::registerOtrAppOpsService()
 {
-	AppOpsWrapper.reset(new OtrAppOpsWrapper());
+	AppOpsService.reset(new OtrAppOpsService());
 }
 
-void OtrPlugin::unregisterOtrAppOpsWrapper()
+void OtrPlugin::unregisterOtrAppOpsService()
 {
-	AppOpsWrapper.reset();
+	AppOpsService.reset();
 }
 
 void OtrPlugin::registerOtrChatTopBarWidgetFactory()
@@ -312,7 +312,7 @@ int OtrPlugin::init(bool firstLoad)
 		return 1;
 
 	registerOtrAcountConfigurationWidgetFactory();
-	registerOtrAppOpsWrapper();
+	registerOtrAppOpsService();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
 	registerOtrErrorMessageService();
@@ -367,7 +367,7 @@ int OtrPlugin::init(bool firstLoad)
 	OpDataFactory->setTimerService(TimerService.data());
 	OpDataFactory->setTrustLevelService(TrustLevelService.data());
 
-	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
+	PeerIdentityVerificationService->setAppOpsService(AppOpsService.data());
 	PeerIdentityVerificationService->setContextConverter(ContextConverter.data());
 	PeerIdentityVerificationService->setOpDataFactory(OpDataFactory.data());
 	PeerIdentityVerificationService->setUserStateService(UserStateService.data());
@@ -385,14 +385,14 @@ int OtrPlugin::init(bool firstLoad)
 	connect(PrivateKeyService.data(), SIGNAL(createPrivateKeyFinished(Account,bool)),
 			Notifier.data(), SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
 
-	RawMessageTransformer->setAppOpsWrapper(AppOpsWrapper.data());
+	RawMessageTransformer->setAppOpsService(AppOpsService.data());
 	RawMessageTransformer->setOpDataFactory(OpDataFactory.data());
 	RawMessageTransformer->setSessionService(SessionService.data());
 	RawMessageTransformer->setUserStateService(UserStateService.data());
 
 	connect(RawMessageTransformer.data(), SIGNAL(peerEndedSession(Contact)), Notifier.data(), SLOT(notifyPeerEndedSession(Contact)));
 
-	SessionService->setAppOpsWrapper(AppOpsWrapper.data());
+	SessionService->setAppOpsService(AppOpsService.data());
 	SessionService->setMessageManager(MessageManager::instance());
 	SessionService->setOpDataFactory(OpDataFactory.data());
 	SessionService->setPolicyService(PolicyService.data());
@@ -404,7 +404,7 @@ int OtrPlugin::init(bool firstLoad)
 	connect(SessionService.data(), SIGNAL(goneInsecure(Contact)), Notifier.data(), SLOT(notifyGoneInsecure(Contact)));
 	connect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));
 
-	TimerService->setAppOpsWrapper(AppOpsWrapper.data());
+	TimerService->setAppOpsService(AppOpsService.data());
 	TimerService->setOpDataFactory(OpDataFactory.data());
 	TimerService->setUserStateService(UserStateService.data());
 
@@ -425,7 +425,7 @@ void OtrPlugin::done()
 
 	TimerService->setUserStateService(0);
 	TimerService->setOpDataFactory(0);
-	TimerService->setAppOpsWrapper(0);
+	TimerService->setAppOpsService(0);
 
 	disconnect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
 	disconnect(SessionService.data(), SIGNAL(goneSecure(Contact)), Notifier.data(), SLOT(notifyGoneSecure(Contact)));
@@ -437,14 +437,14 @@ void OtrPlugin::done()
 	SessionService->setPolicyService(0);
 	SessionService->setOpDataFactory(0);
 	SessionService->setMessageManager(0);
-	SessionService->setAppOpsWrapper(0);
+	SessionService->setAppOpsService(0);
 
 	disconnect(RawMessageTransformer.data(), SIGNAL(peerEndedSession(Contact)), Notifier.data(), SLOT(notifyPeerEndedSession(Contact)));
 
 	RawMessageTransformer->setUserStateService(0);
 	RawMessageTransformer->setSessionService(0);
 	RawMessageTransformer->setOpDataFactory(0);
-	RawMessageTransformer->setAppOpsWrapper(0);
+	RawMessageTransformer->setAppOpsService(0);
 
 	disconnect(PrivateKeyService.data(), SIGNAL(createPrivateKeyStarted(Account)),
 			   Notifier.data(), SLOT(notifyCreatePrivateKeyStarted(Account)));
@@ -461,7 +461,7 @@ void OtrPlugin::done()
 	PeerIdentityVerificationService->setUserStateService(0);
 	PeerIdentityVerificationService->setOpDataFactory(0);
 	PeerIdentityVerificationService->setContextConverter(0);
-	PeerIdentityVerificationService->setAppOpsWrapper(0);
+	PeerIdentityVerificationService->setAppOpsService(0);
 
 	OpDataFactory->setTrustLevelService(0);
 	OpDataFactory->setTimerService(0);
@@ -515,7 +515,7 @@ void OtrPlugin::done()
 	unregisterOtrErrorMessageService();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
-	unregisterOtrAppOpsWrapper();
+	unregisterOtrAppOpsService();
 	unregisterOtrAcountConfigurationWidgetFactory();
 }
 

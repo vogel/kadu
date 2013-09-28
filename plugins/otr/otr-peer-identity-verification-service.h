@@ -31,7 +31,7 @@ extern "C" {
 
 class Contact;
 
-class OtrAppOpsWrapper;
+class OtrAppOpsService;
 class OtrContextConverter;
 class OtrOpDataFactory;
 class OtrUserStateService;
@@ -41,7 +41,7 @@ class OtrPeerIdentityVerificationService : public QObject
 {
 	Q_OBJECT
 
-	QWeakPointer<OtrAppOpsWrapper> AppOpsWrapper;
+	QWeakPointer<OtrAppOpsService> AppOpsService;
 	QWeakPointer<OtrContextConverter> ContextConverter;
 	QWeakPointer<OtrOpDataFactory> OpDataFactory;
 	QWeakPointer<OtrUserStateService> UserStateService;
@@ -54,7 +54,7 @@ public:
 	explicit OtrPeerIdentityVerificationService(QObject *parent = 0);
 	virtual ~OtrPeerIdentityVerificationService();
 
-	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
+	void setAppOpsService(OtrAppOpsService *appOpsService);
 	void setContextConverter(OtrContextConverter *contextConverter);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);
 	void setUserStateService(OtrUserStateService *userStateService);
