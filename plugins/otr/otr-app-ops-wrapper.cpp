@@ -42,23 +42,6 @@ extern "C" {
 
 #include "otr-app-ops-wrapper.h"
 
-const char * kadu_otr_resent_msg_prefix(void *opdata, ConnContext *context)
-{
-	Q_UNUSED(opdata);
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	QString resentMessagePrefix = opData->appOpsWrapper()->resentMessagePrefix();
-	return strdup(resentMessagePrefix.toUtf8().constData());
-}
-
-void kadu_otr_resent_msg_prefix_free(void *opdata, const char *prefix)
-{
-	Q_UNUSED(opdata);
-
-	free((char *)prefix);
-}
-
 void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnContext *context,
 								 const char *message, gcry_error_t err)
 {
@@ -90,8 +73,8 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.received_symkey = 0;
 	Ops.otr_error_message = OtrErrorMessageService::wrapperOtrErrorMessage;
 	Ops.otr_error_message_free = OtrErrorMessageService::wrapperOtrErrorMessageFree;
-	Ops.resent_msg_prefix = kadu_otr_resent_msg_prefix;
-	Ops.resent_msg_prefix_free = kadu_otr_resent_msg_prefix_free;
+	Ops.resent_msg_prefix = OtrMessageService::wrapperOtrResentMessagePrefix;
+	Ops.resent_msg_prefix_free = OtrMessageService::wrapperOtrResentMessagePrefixFree;
 	Ops.handle_msg_event = kadu_otr_handle_msg_event;
 	Ops.handle_smp_event = OtrPeerIdentityVerificationService::wrapperHandleSmpEvent;
 	Ops.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
@@ -107,11 +90,6 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-QString OtrAppOpsWrapper::resentMessagePrefix() const
-{
-	return tr("[resent]");
 }
 
 void OtrAppOpsWrapper::handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event,

@@ -43,7 +43,6 @@ class OtrAppOpsWrapper : public QObject
 
 	OtrlMessageAppOps Ops;
 
-	QString resentMessagePrefix() const;
 	void handleMsgEvent(OtrOpData *opData, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
 	QString gpgErrorString(gcry_error_t errorCode) const;

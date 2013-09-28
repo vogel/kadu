@@ -50,6 +50,25 @@ int OtrMessageService::wrapperOtrMaxMessageSize(void *data, ConnContext *context
 		return 0;
 }
 
+const char * OtrMessageService::wrapperOtrResentMessagePrefix(void *data, ConnContext *context)
+{
+	Q_UNUSED(data);
+	Q_UNUSED(context);
+
+	OtrOpData *opData = static_cast<OtrOpData *>(data);
+	if (opData->messageService())
+		return strdup(qPrintable(opData->messageService()->resentMessagePrefix()));
+	else
+		return 0;
+}
+
+void OtrMessageService::wrapperOtrResentMessagePrefixFree(void *data, const char *prefix)
+{
+	Q_UNUSED(data);
+
+	free(const_cast<char *>(prefix));
+}
+
 OtrMessageService::OtrMessageService(QObject *parent) :
 		QObject(parent)
 {
@@ -82,4 +101,9 @@ int OtrMessageService::maxMessageSize(const Account &account) const
 	if (!chatService)
 		return 0;
 	return chatService->maxMessageLength();
+}
+
+QString OtrMessageService::resentMessagePrefix() const
+{
+	return tr("[resent]");
 }

@@ -40,6 +40,8 @@ class OtrMessageService : public QObject
 public:
 	static void wrapperOtrInjectMessage(void *data, const char *accountName, const char *protocol, const char *recipient, const char *message);
 	static int wrapperOtrMaxMessageSize(void *data, ConnContext *context);
+	static const char * wrapperOtrResentMessagePrefix(void *data, ConnContext *context);
+	static void wrapperOtrResentMessagePrefixFree(void *data, const char *prefix);
 
 	explicit OtrMessageService(QObject *parent = 0);
 	virtual ~OtrMessageService();
@@ -48,6 +50,7 @@ public:
 
 	void injectMessage(const Contact &contact, const QByteArray &message) const;
 	int maxMessageSize(const Account &account) const;
+	QString resentMessagePrefix() const;
 
 };
 
