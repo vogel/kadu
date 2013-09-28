@@ -28,6 +28,7 @@ class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsWrapper;
 class OtrChatTopBarWidgetFactory;
 class OtrContextConverter;
+class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
 class OtrIsLoggedInService;
@@ -56,6 +57,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrAppOpsWrapper> AppOpsWrapper;
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
 	QScopedPointer<OtrContextConverter> ContextConverter;
+	QScopedPointer<OtrErrorMessageService> ErrorMessageService;
 	QScopedPointer<OtrFingerprintService> FingerprintService;
 	QScopedPointer<OtrInstanceTagService> InstanceTagService;
 	QScopedPointer<OtrIsLoggedInService> IsLoggedInService;
@@ -84,6 +86,9 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	void registerOtrContextConverter();
 	void unregisterOtrContextConverter();
+
+	void registerOtrErrorMessageService();
+	void unregisterOtrErrorMessageService();
 
 	void registerOtrFingerprintService();
 	void unregisterOtrFingerprintService();

@@ -26,6 +26,7 @@ extern "C" {
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 
+#include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-is-logged-in-service.h"
 #include "otr-message-service.h"
@@ -40,22 +41,6 @@ extern "C" {
 #include "otr-trust-level-service.h"
 
 #include "otr-app-ops-wrapper.h"
-
-const char * kadu_otr_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
-{
-	Q_UNUSED(context);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	QString errorMessage = opData->appOpsWrapper()->errorMessage(opData, err_code);
-	return strdup(errorMessage.toUtf8().constData());
-}
-
-void kadu_otr_otr_error_message_free(void *opdata, const char *err_msg)
-{
-	Q_UNUSED(opdata);
-
-	free((char *)err_msg);
-}
 
 const char * kadu_otr_resent_msg_prefix(void *opdata, ConnContext *context)
 {
@@ -103,8 +88,8 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.account_name = 0;
 	Ops.account_name_free = 0;
 	Ops.received_symkey = 0;
-	Ops.otr_error_message = kadu_otr_otr_error_message;
-	Ops.otr_error_message_free = kadu_otr_otr_error_message_free;
+	Ops.otr_error_message = OtrErrorMessageService::wrapperOtrErrorMessage;
+	Ops.otr_error_message_free = OtrErrorMessageService::wrapperOtrErrorMessageFree;
 	Ops.resent_msg_prefix = kadu_otr_resent_msg_prefix;
 	Ops.resent_msg_prefix_free = kadu_otr_resent_msg_prefix_free;
 	Ops.handle_msg_event = kadu_otr_handle_msg_event;
@@ -122,26 +107,6 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-QString OtrAppOpsWrapper::errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const
-{
-	Account account = opData->contact().contactAccount();
-	Contact receiver = opData->contact();
-
-	switch (errorCode)
-	{
-		case OTRL_ERRCODE_ENCRYPTION_ERROR:
-			return tr("Error occurred during message encryption");
-		case OTRL_ERRCODE_MSG_NOT_IN_PRIVATE:
-			return tr("You sent encrypted data to %1, who wasn't expecting it").arg(receiver.display(true));
-		case OTRL_ERRCODE_MSG_UNREADABLE:
-			return tr("You transmitted an unreadable encrypted message");
-		case OTRL_ERRCODE_MSG_MALFORMED:
-			return tr("You transmitted a malformed data message");
-		default:
-			return QString();
-	}
 }
 
 QString OtrAppOpsWrapper::resentMessagePrefix() const

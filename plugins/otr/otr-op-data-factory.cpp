@@ -18,6 +18,7 @@
  */
 
 #include "otr-app-ops-wrapper.h"
+#include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
@@ -44,6 +45,11 @@ OtrOpDataFactory::~OtrOpDataFactory()
 void OtrOpDataFactory::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
 	AppOpsWrapper = appOpsWrapper;
+}
+
+void OtrOpDataFactory::setErrorMessageService(OtrErrorMessageService *errorMessageService)
+{
+	ErrorMessageService = errorMessageService;
 }
 
 void OtrOpDataFactory::setFingerprintService(OtrFingerprintService *fingerprintService)
@@ -100,6 +106,7 @@ OtrOpData OtrOpDataFactory::opData()
 {
 	OtrOpData result;
 	result.setAppOpsWrapper(AppOpsWrapper.data());
+	result.setErrorMessageService(ErrorMessageService.data());
 	result.setFingerprintService(FingerprintService.data());
 	result.setInstanceTagService(InstanceTagService.data());
 	result.setIsLoggedInService(IsLoggedInService.data());

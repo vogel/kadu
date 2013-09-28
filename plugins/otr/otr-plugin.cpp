@@ -31,6 +31,7 @@
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
 #include "otr-app-ops-wrapper.h"
 #include "otr-context-converter.h"
+#include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
@@ -103,6 +104,16 @@ void OtrPlugin::registerOtrContextConverter()
 void OtrPlugin::unregisterOtrContextConverter()
 {
 	ContextConverter.reset();
+}
+
+void OtrPlugin::registerOtrErrorMessageService()
+{
+	ErrorMessageService.reset(new OtrErrorMessageService());
+}
+
+void OtrPlugin::unregisterOtrErrorMessageService()
+{
+	ErrorMessageService.reset();
 }
 
 void OtrPlugin::registerOtrFingerprintService()
@@ -292,6 +303,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrAppOpsWrapper();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
+	registerOtrErrorMessageService();
 	registerOtrFingerprintService();
 	registerOtrInstanceTagService();
 	registerOtrIsLoggedInService();
@@ -330,6 +342,7 @@ int OtrPlugin::init(bool firstLoad)
 	MessageService->setMessageManager(MessageManager::instance());
 
 	OpDataFactory->setAppOpsWrapper(AppOpsWrapper.data());
+	OpDataFactory->setErrorMessageService(ErrorMessageService.data());
 	OpDataFactory->setFingerprintService(FingerprintService.data());
 	OpDataFactory->setInstanceTagService(InstanceTagService.data());
 	OpDataFactory->setIsLoggedInService(IsLoggedInService.data());
@@ -446,6 +459,7 @@ void OtrPlugin::done()
 	OpDataFactory->setIsLoggedInService(0);
 	OpDataFactory->setInstanceTagService(0);
 	OpDataFactory->setFingerprintService(0);
+	OpDataFactory->setErrorMessageService(0);
 	OpDataFactory->setAppOpsWrapper(0);
 
 	MessageService->setMessageManager(0);
@@ -480,9 +494,10 @@ void OtrPlugin::done()
 	unregisterOtrOpDataFactory();
 	unregisterOtrNotifier();
 	unregisterOtrMessageService();
-	unregisterOtrFingerprintService();
 	unregisterOtrIsLoggedInService();
 	unregisterOtrInstanceTagService();
+	unregisterOtrFingerprintService();
+	unregisterOtrErrorMessageService();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
 	unregisterOtrAppOpsWrapper();

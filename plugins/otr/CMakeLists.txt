@@ -25,6 +25,7 @@ set (SOURCES
 	otr-context-converter.cpp
 	otr-create-private-key-job.cpp
 	otr-create-private-key-worker.cpp
+	otr-error-message-service.cpp
 	otr-fingerprint-service.cpp
 	otr-instance-tag-service.cpp
 	otr-is-logged-in-service.cpp
@@ -63,6 +64,7 @@ set (MOC_SOURCES
 	otr-context-converter.h
 	otr-create-private-key-job.h
 	otr-create-private-key-worker.h
+	otr-error-message-service.h
 	otr-fingerprint-service.h
 	otr-instance-tag-service.h
 	otr-is-logged-in-service.h

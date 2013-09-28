@@ -23,6 +23,7 @@
 #include "contacts/contact.h"
 
 class OtrAppOpsWrapper;
+class OtrErrorMessageService;
 class OtrFingerprintService;
 class OtrInstanceTagService;
 class OtrIsLoggedInService;
@@ -37,6 +38,7 @@ class OtrTrustLevelService;
 class OtrOpData
 {
 	OtrAppOpsWrapper *AppOpsWrapper;
+	OtrErrorMessageService *ErrorMessageService;
 	OtrFingerprintService *FingerprintService;
 	OtrInstanceTagService *InstanceTagService;
 	OtrIsLoggedInService *IsLoggedInService;
@@ -59,6 +61,9 @@ public:
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	OtrAppOpsWrapper * appOpsWrapper() const;
+
+	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
+	OtrErrorMessageService * errorMessageService() const;
 
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	OtrFingerprintService * fingerprintService() const;
