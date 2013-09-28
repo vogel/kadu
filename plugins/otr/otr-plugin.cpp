@@ -149,13 +149,13 @@ void OtrPlugin::registerOtrNotifier()
 {
 	Notifier.reset(new OtrNotifier());
 
-	foreach (NotifyEvent *notifyEvent, Notifier.data()->notifyEvents())
+	foreach (NotifyEvent *notifyEvent, Notifier->notifyEvents())
 		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
 }
 
 void OtrPlugin::unregisterOtrNotifier()
 {
-	foreach (NotifyEvent *notifyEvent, Notifier.data()->notifyEvents())
+	foreach (NotifyEvent *notifyEvent, Notifier->notifyEvents())
 		NotificationManager::instance()->unregisterNotifyEvent(notifyEvent);
 
 	Notifier.reset(0);
@@ -224,7 +224,7 @@ void OtrPlugin::unregisterOtrPrivateKeyService()
 void OtrPlugin::registerOtrRawMessageTransformer()
 {
 	RawMessageTransformer.reset(new OtrRawMessageTransformer());
-	RawMessageTransformer.data()->setEnableFragments(fragmentsFixAvailable());
+	RawMessageTransformer->setEnableFragments(fragmentsFixAvailable());
 
 	Core::instance()->rawMessageTransformerService()->registerTransformer(RawMessageTransformer.data());
 }
@@ -329,17 +329,17 @@ int OtrPlugin::init(bool firstLoad)
 
 	MessageService->setMessageManager(MessageManager::instance());
 
-	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
-	OpDataFactory.data()->setFingerprintService(FingerprintService.data());
-	OpDataFactory.data()->setInstanceTagService(InstanceTagService.data());
-	OpDataFactory.data()->setIsLoggedInService(IsLoggedInService.data());
-	OpDataFactory.data()->setMessageService(MessageService.data());
-	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
-	OpDataFactory.data()->setPolicyService(PolicyService.data());
-	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
-	OpDataFactory.data()->setSessionService(SessionService.data());
-	OpDataFactory.data()->setTimer(Timer.data());
-	OpDataFactory.data()->setTrustLevelService(TrustLevelService.data());
+	OpDataFactory->setAppOpsWrapper(AppOpsWrapper.data());
+	OpDataFactory->setFingerprintService(FingerprintService.data());
+	OpDataFactory->setInstanceTagService(InstanceTagService.data());
+	OpDataFactory->setIsLoggedInService(IsLoggedInService.data());
+	OpDataFactory->setMessageService(MessageService.data());
+	OpDataFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	OpDataFactory->setPolicyService(PolicyService.data());
+	OpDataFactory->setPrivateKeyService(PrivateKeyService.data());
+	OpDataFactory->setSessionService(SessionService.data());
+	OpDataFactory->setTimer(Timer.data());
+	OpDataFactory->setTrustLevelService(TrustLevelService.data());
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
 	PeerIdentityVerificationService->setContextConverter(ContextConverter.data());
@@ -437,16 +437,16 @@ void OtrPlugin::done()
 	PeerIdentityVerificationService->setContextConverter(0);
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
-	OpDataFactory.data()->setTrustLevelService(0);
-	OpDataFactory.data()->setTimer(0);
-	OpDataFactory.data()->setSessionService(0);
-	OpDataFactory.data()->setPrivateKeyService(0);
-	OpDataFactory.data()->setPolicyService(0);
-	OpDataFactory.data()->setPeerIdentityVerificationService(0);
-	OpDataFactory.data()->setIsLoggedInService(0);
-	OpDataFactory.data()->setInstanceTagService(0);
-	OpDataFactory.data()->setFingerprintService(0);
-	OpDataFactory.data()->setAppOpsWrapper(0);
+	OpDataFactory->setTrustLevelService(0);
+	OpDataFactory->setTimer(0);
+	OpDataFactory->setSessionService(0);
+	OpDataFactory->setPrivateKeyService(0);
+	OpDataFactory->setPolicyService(0);
+	OpDataFactory->setPeerIdentityVerificationService(0);
+	OpDataFactory->setIsLoggedInService(0);
+	OpDataFactory->setInstanceTagService(0);
+	OpDataFactory->setFingerprintService(0);
+	OpDataFactory->setAppOpsWrapper(0);
 
 	MessageService->setMessageManager(0);
 
