@@ -38,20 +38,12 @@ class OtrAppOpsWrapper : public QObject
 {
 	Q_OBJECT
 
-	enum IsLoggedInStatus {
-		NotSure = -1,
-		NotLoggedIn = 0,
-		LoggedIn = 1
-	};
-
-	friend int kadu_otr_is_logged_in(void *, const char *, const char *, const char *);
 	friend const char * kadu_otr_otr_error_message(void *, ConnContext *, OtrlErrorCode);
 	friend const char * kadu_otr_resent_msg_prefix(void *, ConnContext *);
 	friend void kadu_otr_handle_msg_event(void *, OtrlMessageEvent, ConnContext *, const char *, gcry_error_t);
 
 	OtrlMessageAppOps Ops;
 
-	IsLoggedInStatus isLoggedIn(OtrOpData *opData, const QString &contactId) const;
 	int maxMessageSize(OtrOpData *opData) const;
 	QString errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const;
 	QString resentMessagePrefix() const;

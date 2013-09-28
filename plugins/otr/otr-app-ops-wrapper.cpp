@@ -27,6 +27,7 @@ extern "C" {
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "otr-fingerprint-service.h"
+#include "otr-is-logged-in-service.h"
 #include "otr-message-service.h"
 #include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
@@ -39,15 +40,6 @@ extern "C" {
 #include "otr-trust-level-service.h"
 
 #include "otr-app-ops-wrapper.h"
-
-int kadu_otr_is_logged_in(void *opdata, const char *accountname, const char *protocol, const char *recipient)
-{
-	Q_UNUSED(accountname);
-	Q_UNUSED(protocol);
-
-	OtrOpData *opData = static_cast<OtrOpData *>(opdata);
-	return (int)opData->appOpsWrapper()->isLoggedIn(opData, recipient);
-}
 
 const char * kadu_otr_otr_error_message(void *opdata, ConnContext *context, OtrlErrorCode err_code)
 {
@@ -114,7 +106,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 {
 	Ops.policy = OtrPolicyService::wrapperOtrPolicy;
 	Ops.create_privkey = OtrPrivateKeyService::wrapperOtrCreatePrivateKey;
-	Ops.is_logged_in = kadu_otr_is_logged_in;
+	Ops.is_logged_in = OtrIsLoggedInService::wrapperOtrIsLoggedIn;
 	Ops.inject_message = OtrMessageService::wrapperOtrInjectMessage;
 	Ops.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
 	Ops.new_fingerprint = 0;
@@ -145,20 +137,6 @@ OtrAppOpsWrapper::~OtrAppOpsWrapper()
 const OtrlMessageAppOps * OtrAppOpsWrapper::ops() const
 {
 	return &Ops;
-}
-
-OtrAppOpsWrapper::IsLoggedInStatus OtrAppOpsWrapper::isLoggedIn(OtrOpData *opData, const QString &contactId) const
-{
-	Account account = opData->contact().contactAccount();
-	Contact contact = ContactManager::instance()->byId(account, contactId, ActionReturnNull);
-
-	if (!contact)
-		return NotSure;
-
-	if (contact.currentStatus().isDisconnected())
-		return NotLoggedIn;
-	else
-		return LoggedIn;
 }
 
 QString OtrAppOpsWrapper::errorMessage(OtrOpData *opData, OtrlErrorCode errorCode) const

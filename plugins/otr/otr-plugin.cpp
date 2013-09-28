@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
@@ -32,6 +33,7 @@
 #include "otr-context-converter.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
+#include "otr-is-logged-in-service.h"
 #include "otr-message-service.h"
 #include "otr-notifier.h"
 #include "otr-op-data-factory.h"
@@ -45,7 +47,6 @@
 #include "otr-user-state-service.h"
 
 #include "otr-plugin.h"
-#include <qvarlengtharray.h>
 
 OtrPlugin * OtrPlugin::Instance = 0;
 
@@ -129,6 +130,16 @@ void OtrPlugin::unregisterOtrFingerprintService()
 void OtrPlugin::registerOtrInstanceTagService()
 {
 	InstanceTagService.reset(new OtrInstanceTagService());
+}
+
+void OtrPlugin::registerOtrIsLoggedInService()
+{
+	IsLoggedInService.reset(new OtrIsLoggedInService());
+}
+
+void OtrPlugin::unregisterOtrIsLoggedInService()
+{
+	IsLoggedInService.reset(0);
 }
 
 void OtrPlugin::unregisterOtrInstanceTagService()
@@ -295,6 +306,7 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrContextConverter();
 	registerOtrFingerprintService();
 	registerOtrInstanceTagService();
+	registerOtrIsLoggedInService();
 	registerOtrMessageService();
 	registerOtrNotifier();
 	registerOtrOpDataFactory();
@@ -325,11 +337,14 @@ int OtrPlugin::init(bool firstLoad)
 	InstanceTagService->setUserStateService(UserStateService.data());
 	InstanceTagService->readInstanceTags();
 
+	IsLoggedInService->setContactManager(ContactManager::instance());
+
 	MessageService->setMessageManager(MessageManager::instance());
 
 	OpDataFactory.data()->setAppOpsWrapper(AppOpsWrapper.data());
 	OpDataFactory.data()->setFingerprintService(FingerprintService.data());
 	OpDataFactory.data()->setInstanceTagService(InstanceTagService.data());
+	OpDataFactory.data()->setIsLoggedInService(IsLoggedInService.data());
 	OpDataFactory.data()->setMessageService(MessageService.data());
 	OpDataFactory.data()->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
@@ -436,11 +451,14 @@ void OtrPlugin::done()
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setPolicyService(0);
 	OpDataFactory.data()->setPeerIdentityVerificationService(0);
+	OpDataFactory.data()->setIsLoggedInService(0);
 	OpDataFactory.data()->setInstanceTagService(0);
 	OpDataFactory.data()->setFingerprintService(0);
 	OpDataFactory.data()->setAppOpsWrapper(0);
 
 	MessageService->setMessageManager(0);
+
+	IsLoggedInService->setContactManager(0);
 
 	InstanceTagService->writeInstanceTags();
 	InstanceTagService->setUserStateService(0);
@@ -471,6 +489,7 @@ void OtrPlugin::done()
 	unregisterOtrNotifier();
 	unregisterOtrMessageService();
 	unregisterOtrFingerprintService();
+	unregisterOtrIsLoggedInService();
 	unregisterOtrInstanceTagService();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();

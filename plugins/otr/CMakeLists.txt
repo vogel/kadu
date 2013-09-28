@@ -27,6 +27,7 @@ set (SOURCES
 	otr-create-private-key-worker.cpp
 	otr-fingerprint-service.cpp
 	otr-instance-tag-service.cpp
+	otr-is-logged-in-service.cpp
 	otr-message-service.cpp
 	otr-notifier.cpp
 	otr-op-data.cpp
@@ -64,6 +65,7 @@ set (MOC_SOURCES
 	otr-create-private-key-worker.h
 	otr-fingerprint-service.h
 	otr-instance-tag-service.h
+	otr-is-logged-in-service.h
 	otr-message-service.h
 	otr-notifier.h
 	otr-op-data-factory.h

@@ -20,6 +20,7 @@
 #include "otr-app-ops-wrapper.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
+#include "otr-is-logged-in-service.h"
 #include "otr-message-service.h"
 #include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
@@ -52,6 +53,11 @@ void OtrOpDataFactory::setFingerprintService(OtrFingerprintService *fingerprintS
 void OtrOpDataFactory::setInstanceTagService(OtrInstanceTagService *instanceTagService)
 {
 	InstanceTagService = instanceTagService;
+}
+
+void OtrOpDataFactory::setIsLoggedInService(OtrIsLoggedInService *isLoggedInService)
+{
+	IsLoggedInService = isLoggedInService;
 }
 
 void OtrOpDataFactory::setMessageService(OtrMessageService *messageService)
@@ -91,6 +97,7 @@ OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 	result.setContact(contact);
 	result.setFingerprintService(FingerprintService.data());
 	result.setInstanceTagService(InstanceTagService.data());
+	result.setIsLoggedInService(IsLoggedInService.data());
 	result.setMessageService(MessageService.data());
 	result.setPeerDisplay(contact.display(true));
 	result.setPeerIdentityVerificationService(PeerIdentityVerificationService.data());

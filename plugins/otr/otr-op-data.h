@@ -25,6 +25,7 @@
 class OtrAppOpsWrapper;
 class OtrFingerprintService;
 class OtrInstanceTagService;
+class OtrIsLoggedInService;
 class OtrMessageService;
 class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
@@ -37,6 +38,7 @@ class OtrOpData
 	OtrAppOpsWrapper *AppOpsWrapper;
 	OtrFingerprintService *FingerprintService;
 	OtrInstanceTagService *InstanceTagService;
+	OtrIsLoggedInService *IsLoggedInService;
 	OtrMessageService *MessageService;
 	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
 	OtrPolicyService *PolicyService;
@@ -61,6 +63,9 @@ public:
 
 	void setInstanceTagService(OtrInstanceTagService *instanceTagService);
 	OtrInstanceTagService * instanceTagService() const;
+
+	void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+	OtrIsLoggedInService * isLoggedInService() const;
 
 	void setMessageService(OtrMessageService *messageService);
 	OtrMessageService * messageService() const;
