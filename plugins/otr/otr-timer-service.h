@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_TIMER_H
-#define OTR_TIMER_H
+#ifndef OTR_TIMER_SERVICE_H
+#define OTR_TIMER_SERVICE_H
 
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
@@ -56,4 +56,4 @@ public:
 
 };
 
-#endif // OTR_TIMER_H
+#endif // OTR_TIMER_SERVICE_H
