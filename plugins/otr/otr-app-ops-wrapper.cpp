@@ -87,21 +87,6 @@ void kadu_otr_handle_msg_event(void *opdata, OtrlMessageEvent msg_event, ConnCon
 	opData->appOpsWrapper()->handleMsgEvent(opData, msg_event, message, err);
 }
 
-void kadu_otr_timer_control(void *opdata, unsigned int interval)
-{
-	Q_UNUSED(opdata);
-
-	OtrPlugin *plugin = OtrPlugin::instance();
-	if (!plugin)
-		return;
-
-	OtrTimer *otrTimer = plugin->otrTimer();
-	if (!otrTimer)
-		return;
-
-	otrTimer->timerControl(interval);
-}
-
 OtrAppOpsWrapper::OtrAppOpsWrapper()
 {
 	Ops.policy = OtrPolicyService::wrapperOtrPolicy;
@@ -127,7 +112,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
 	Ops.convert_msg = 0;
 	Ops.convert_free = 0;
-	Ops.timer_control = kadu_otr_timer_control;
+	Ops.timer_control = OtrTimer::wrapperOtrTimerControl;
 }
 
 OtrAppOpsWrapper::~OtrAppOpsWrapper()

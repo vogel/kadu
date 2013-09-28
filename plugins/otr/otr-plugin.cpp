@@ -350,6 +350,7 @@ int OtrPlugin::init(bool firstLoad)
 	OpDataFactory.data()->setPolicyService(PolicyService.data());
 	OpDataFactory.data()->setPrivateKeyService(PrivateKeyService.data());
 	OpDataFactory.data()->setSessionService(SessionService.data());
+	OpDataFactory.data()->setTimer(Timer.data());
 	OpDataFactory.data()->setTrustLevelService(TrustLevelService.data());
 
 	PeerIdentityVerificationService->setAppOpsWrapper(AppOpsWrapper.data());
@@ -390,6 +391,7 @@ int OtrPlugin::init(bool firstLoad)
 	connect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));
 
 	Timer->setAppOpsWrapper(AppOpsWrapper.data());
+	Timer->setOpDataFactory(OpDataFactory.data());
 	Timer->setUserStateService(UserStateService.data());
 
 	TrustLevelService->setContextConverter(ContextConverter.data());
@@ -408,6 +410,7 @@ void OtrPlugin::done()
 	TrustLevelService->setContextConverter(ContextConverter.data());
 
 	Timer->setUserStateService(0);
+	Timer->setOpDataFactory(0);
 	Timer->setAppOpsWrapper(0);
 
 	disconnect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
@@ -447,6 +450,7 @@ void OtrPlugin::done()
 	PeerIdentityVerificationService->setAppOpsWrapper(0);
 
 	OpDataFactory.data()->setTrustLevelService(0);
+	OpDataFactory.data()->setTimer(0);
 	OpDataFactory.data()->setSessionService(0);
 	OpDataFactory.data()->setPrivateKeyService(0);
 	OpDataFactory.data()->setPolicyService(0);

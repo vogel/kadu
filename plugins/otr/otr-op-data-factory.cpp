@@ -27,6 +27,7 @@
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
+#include "otr-timer.h"
 #include "otr-trust-level-service.h"
 
 #include "otr-op-data-factory.h"
@@ -85,26 +86,39 @@ void OtrOpDataFactory::setSessionService(OtrSessionService *sessionService)
 	SessionService = sessionService;
 }
 
+void OtrOpDataFactory::setTimer(OtrTimer *timer)
+{
+	Timer = timer;
+}
+
 void OtrOpDataFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
 	TrustLevelService = trustLevelService;
 }
 
-OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
+OtrOpData OtrOpDataFactory::opData()
 {
 	OtrOpData result;
 	result.setAppOpsWrapper(AppOpsWrapper.data());
-	result.setContact(contact);
 	result.setFingerprintService(FingerprintService.data());
 	result.setInstanceTagService(InstanceTagService.data());
 	result.setIsLoggedInService(IsLoggedInService.data());
 	result.setMessageService(MessageService.data());
-	result.setPeerDisplay(contact.display(true));
 	result.setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	result.setPolicyService(PolicyService.data());
 	result.setPrivateKeyService(PrivateKeyService.data());
 	result.setSessionService(SessionService.data());
+	result.setTimer(Timer.data());
 	result.setTrustLevelService(TrustLevelService.data());
+
+	return result;
+}
+
+OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
+{
+	OtrOpData result = opData();
+	result.setContact(contact);
+	result.setPeerDisplay(contact.display(true));
 
 	return result;
 }

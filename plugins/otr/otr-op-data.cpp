@@ -22,7 +22,7 @@
 OtrOpData::OtrOpData() :
 		AppOpsWrapper(0), FingerprintService(0), InstanceTagService(0), IsLoggedInService(0),
 		MessageService(0), PeerIdentityVerificationService(0), PolicyService(0),
-		PrivateKeyService(0), SessionService(0), TrustLevelService(0)
+		PrivateKeyService(0), SessionService(0), Timer(0), TrustLevelService(0)
 {
 }
 
@@ -47,6 +47,7 @@ OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
 	PolicyService = copyMe.PolicyService;
 	PrivateKeyService = copyMe.PrivateKeyService;
 	SessionService = copyMe.SessionService;
+	Timer = copyMe.Timer;
 	TrustLevelService = copyMe.TrustLevelService;
 	MyContact = copyMe.MyContact;
 	PeerDisplay = copyMe.PeerDisplay;
@@ -142,6 +143,16 @@ void OtrOpData::setSessionService(OtrSessionService *sessionService)
 OtrSessionService * OtrOpData::sessionService() const
 {
 	return SessionService;
+}
+
+void OtrOpData::setTimer(OtrTimer *timer)
+{
+	Timer = timer;
+}
+
+OtrTimer * OtrOpData::timer() const
+{
+	return Timer;
 }
 
 void OtrOpData::setTrustLevelService(OtrTrustLevelService *trustLevelService)
