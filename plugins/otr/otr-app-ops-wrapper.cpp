@@ -36,7 +36,7 @@ extern "C" {
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
 #include "otr-instance-tag-service.h"
-#include "otr-timer.h"
+#include "otr-timer-service.h"
 #include "otr-trust-level-service.h"
 
 #include "otr-app-ops-wrapper.h"
@@ -112,7 +112,7 @@ OtrAppOpsWrapper::OtrAppOpsWrapper()
 	Ops.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
 	Ops.convert_msg = 0;
 	Ops.convert_free = 0;
-	Ops.timer_control = OtrTimer::wrapperOtrTimerControl;
+	Ops.timer_control = OtrTimerService::wrapperOtrTimerControl;
 }
 
 OtrAppOpsWrapper::~OtrAppOpsWrapper()

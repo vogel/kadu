@@ -31,36 +31,35 @@ extern "C" {
 #include "otr-op-data-factory.h"
 #include "otr-user-state-service.h"
 
-#include "otr-timer.h"
+#include "otr-timer-service.h"
 
-void OtrTimer::wrapperOtrTimerControl(void *data, unsigned int interval)
+void OtrTimerService::wrapperOtrTimerControl(void *data, unsigned int interval)
 {
 	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->timer())
-		opData->timer()->timerControl(interval);
+	if (opData->timerService())
+		opData->timerService()->timerControl(interval);
 }
 
-OtrTimer::OtrTimer(QObject *parent) :
+OtrTimerService::OtrTimerService(QObject *parent) :
 		QObject(parent), Timer(0)
 {
 }
 
-OtrTimer::~OtrTimer()
+OtrTimerService::~OtrTimerService()
 {
-
 }
 
-void OtrTimer::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
+void OtrTimerService::setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper)
 {
 	AppOpsWrapper = appOpsWrapper;
 }
 
-void OtrTimer::setOpDataFactory(OtrOpDataFactory *opDataFactory)
+void OtrTimerService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
 	OpDataFactory = opDataFactory;
 }
 
-void OtrTimer::setUserStateService(OtrUserStateService *userStateService)
+void OtrTimerService::setUserStateService(OtrUserStateService *userStateService)
 {
 	if (UserStateService)
 	{
@@ -77,7 +76,7 @@ void OtrTimer::setUserStateService(OtrUserStateService *userStateService)
 	}
 }
 
-void OtrTimer::otrTimerTimeout()
+void OtrTimerService::otrTimerTimeout()
 {
 	if (!AppOpsWrapper || !OpDataFactory || !UserStateService)
 		return;
@@ -89,7 +88,7 @@ void OtrTimer::otrTimerTimeout()
 	otrl_message_poll(userState, ops, &opData);
 }
 
-void OtrTimer::timerControl(int intervalInSeconds)
+void OtrTimerService::timerControl(int intervalInSeconds)
 {
 	if (!Timer)
 		return;

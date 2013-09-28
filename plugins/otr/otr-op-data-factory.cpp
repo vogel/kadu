@@ -27,7 +27,7 @@
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
-#include "otr-timer.h"
+#include "otr-timer-service.h"
 #include "otr-trust-level-service.h"
 
 #include "otr-op-data-factory.h"
@@ -86,9 +86,9 @@ void OtrOpDataFactory::setSessionService(OtrSessionService *sessionService)
 	SessionService = sessionService;
 }
 
-void OtrOpDataFactory::setTimer(OtrTimer *timer)
+void OtrOpDataFactory::setTimerService(OtrTimerService *timerService)
 {
-	Timer = timer;
+	TimerService = timerService;
 }
 
 void OtrOpDataFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
@@ -108,7 +108,7 @@ OtrOpData OtrOpDataFactory::opData()
 	result.setPolicyService(PolicyService.data());
 	result.setPrivateKeyService(PrivateKeyService.data());
 	result.setSessionService(SessionService.data());
-	result.setTimer(Timer.data());
+	result.setTimerService(TimerService.data());
 	result.setTrustLevelService(TrustLevelService.data());
 
 	return result;

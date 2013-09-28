@@ -35,7 +35,7 @@ class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
-class OtrTimer;
+class OtrTimerService;
 class OtrTrustLevelService;
 
 class OtrOpDataFactory : public QObject
@@ -51,7 +51,7 @@ class OtrOpDataFactory : public QObject
 	QWeakPointer<OtrPolicyService> PolicyService;
 	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
 	QWeakPointer<OtrSessionService> SessionService;
-	QWeakPointer<OtrTimer> Timer;
+	QWeakPointer<OtrTimerService> TimerService;
 	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 
 public:
@@ -67,7 +67,7 @@ public:
 	void setPolicyService(OtrPolicyService *policyService);
 	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
 	void setSessionService(OtrSessionService *sessionService);
-	void setTimer(OtrTimer *timer);
+	void setTimerService(OtrTimerService *timerService);
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	OtrOpData opData();

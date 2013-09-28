@@ -29,7 +29,7 @@ class OtrAppOpsWrapper;
 class OtrOpDataFactory;
 class OtrUserStateService;
 
-class OtrTimer : public QObject
+class OtrTimerService : public QObject
 {
 	Q_OBJECT
 
@@ -47,8 +47,8 @@ private slots:
 public:
 	static void wrapperOtrTimerControl(void *data, unsigned int interval);
 
-	explicit OtrTimer(QObject *parent = 0);
-	virtual ~OtrTimer();
+	explicit OtrTimerService(QObject *parent = 0);
+	virtual ~OtrTimerService();
 
 	void setAppOpsWrapper(OtrAppOpsWrapper *appOpsWrapper);
 	void setOpDataFactory(OtrOpDataFactory *opDataFactory);

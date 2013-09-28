@@ -31,7 +31,7 @@ class OtrPeerIdentityVerificationService;
 class OtrPolicyService;
 class OtrPrivateKeyService;
 class OtrSessionService;
-class OtrTimer;
+class OtrTimerService;
 class OtrTrustLevelService;
 
 class OtrOpData
@@ -45,7 +45,7 @@ class OtrOpData
 	OtrPolicyService *PolicyService;
 	OtrPrivateKeyService *PrivateKeyService;
 	OtrSessionService *SessionService;
-	OtrTimer *Timer;
+	OtrTimerService *TimerService;
 	OtrTrustLevelService *TrustLevelService;
 	Contact MyContact;
 	QString PeerDisplay;
@@ -84,8 +84,8 @@ public:
 	void setSessionService(OtrSessionService *sessionService);
 	OtrSessionService * sessionService() const;
 
-	void setTimer(OtrTimer *timer);
-	OtrTimer * timer() const;
+	void setTimerService(OtrTimerService *timerService);
+	OtrTimerService * timerService() const;
 
 	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 	OtrTrustLevelService * trustLevelService() const;

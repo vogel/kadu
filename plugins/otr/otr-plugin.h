@@ -41,7 +41,7 @@ class OtrPrivateKeyService;
 class OtrPolicyService;
 class OtrRawMessageTransformer;
 class OtrSessionService;
-class OtrTimer;
+class OtrTimerService;
 class OtrTrustLevelService;
 class OtrUserStateService;
 
@@ -69,7 +69,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrPrivateKeyService> PrivateKeyService;
 	QScopedPointer<OtrRawMessageTransformer> RawMessageTransformer;
 	QScopedPointer<OtrSessionService> SessionService;
-	QScopedPointer<OtrTimer> Timer;
+	QScopedPointer<OtrTimerService> TimerService;
 	QScopedPointer<OtrTrustLevelService> TrustLevelService;
 	QScopedPointer<OtrUserStateService> UserStateService;
 
@@ -140,8 +140,6 @@ public:
 
 	virtual int init(bool firstLoad);
 	virtual void done();
-
-	OtrTimer * otrTimer() const;
 
 };
 
