@@ -50,7 +50,6 @@ class OtrPlugin : public QObject, public GenericPlugin
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
-	static OtrPlugin *Instance; // ugly, but required by otr unfortunately
 	bool OtrAvailable;
 
 	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
@@ -136,8 +135,6 @@ class OtrPlugin : public QObject, public GenericPlugin
 	void unregisterOtrUserStateService();
 
 public:
-	static OtrPlugin * instance();
-
 	explicit OtrPlugin();
 	virtual ~OtrPlugin();
 

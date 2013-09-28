@@ -48,25 +48,13 @@
 
 #include "otr-plugin.h"
 
-OtrPlugin * OtrPlugin::Instance = 0;
-
-OtrPlugin * OtrPlugin::instance()
-{
-	return Instance;
-}
-
 OtrPlugin::OtrPlugin()
 {
-	Q_ASSERT(!Instance);
-	Instance = this;
-
 	OtrAvailable = otrl_init(OTRL_VERSION_MAJOR, OTRL_VERSION_MINOR, OTRL_VERSION_SUB) == 0;
 }
 
 OtrPlugin::~OtrPlugin()
 {
-	Q_ASSERT(Instance);
-	Instance = 0;
 }
 
 void OtrPlugin::registerOtrAcountConfigurationWidgetFactory()
