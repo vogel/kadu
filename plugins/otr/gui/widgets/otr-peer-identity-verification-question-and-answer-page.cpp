@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
@@ -43,16 +43,19 @@ OtrPeerIdentityVerificationQuestionAndAnswerPage::~OtrPeerIdentityVerificationQu
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 {
+	setButtonText(QWizard::CommitButton, tr("Ask Question"));
 	setCommitPage(true);
 	setTitle(tr("Question and Answer"));
 
-	QFormLayout *layout = new QFormLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	QLineEdit *questionEdit = new QLineEdit();
 	QLineEdit *answerEdit = new QLineEdit();
 
-	layout->addRow(new QLabel(tr("Question:")), questionEdit);
-	layout->addRow(new QLabel(tr("Answer:")), answerEdit);
+	layout->addWidget(new QLabel(tr("Question that only %1 can answer:").arg(MyContact.display(1))));
+	layout->addWidget(questionEdit);
+	layout->addWidget(new QLabel(tr("Answer:")));
+	layout->addWidget(answerEdit);
 
 	registerField("question*", questionEdit);
 	registerField("answer*", answerEdit);
