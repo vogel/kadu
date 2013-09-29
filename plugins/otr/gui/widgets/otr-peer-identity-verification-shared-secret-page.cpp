@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
@@ -43,14 +43,16 @@ OtrPeerIdentityVerificationSharedSecretPage::~OtrPeerIdentityVerificationSharedS
 
 void OtrPeerIdentityVerificationSharedSecretPage::createGui()
 {
+	setButtonText(QWizard::CommitButton, tr("Ask for Shared Secret"));
 	setCommitPage(true);
 	setTitle(tr("Shared Secret"));
 
-	QFormLayout *layout = new QFormLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	QLineEdit *sharedSecretEdit = new QLineEdit();
 
-	layout->addRow(new QLabel(tr("Shared Secret:")), sharedSecretEdit);
+	layout->addWidget(new QLabel(tr("Shared Secret that is known only for you and %1:").arg(MyContact.display(true))));
+	layout->addWidget(sharedSecretEdit);
 
 	registerField("sharedSecret*", sharedSecretEdit);
 }
