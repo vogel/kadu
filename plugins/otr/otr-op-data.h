@@ -37,18 +37,18 @@ class OtrTrustLevelService;
 
 class OtrOpData
 {
-	OtrErrorMessageService *ErrorMessageService;
-	OtrFingerprintService *FingerprintService;
-	OtrInstanceTagService *InstanceTagService;
-	OtrIsLoggedInService *IsLoggedInService;
-	OtrMessageEventService *MessageEventService;
-	OtrMessageService *MessageService;
-	OtrPeerIdentityVerificationService *PeerIdentityVerificationService;
-	OtrPolicyService *PolicyService;
-	OtrPrivateKeyService *PrivateKeyService;
-	OtrSessionService *SessionService;
-	OtrTimerService *TimerService;
-	OtrTrustLevelService *TrustLevelService;
+	QWeakPointer<OtrErrorMessageService> ErrorMessageService;
+	QWeakPointer<OtrFingerprintService> FingerprintService;
+	QWeakPointer<OtrInstanceTagService> InstanceTagService;
+	QWeakPointer<OtrIsLoggedInService> IsLoggedInService;
+	QWeakPointer<OtrMessageEventService> MessageEventService;
+	QWeakPointer<OtrMessageService> MessageService;
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QWeakPointer<OtrPolicyService> PolicyService;
+	QWeakPointer<OtrPrivateKeyService> PrivateKeyService;
+	QWeakPointer<OtrSessionService> SessionService;
+	QWeakPointer<OtrTimerService> TimerService;
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
 	Contact MyContact;
 	QString PeerDisplay;
 

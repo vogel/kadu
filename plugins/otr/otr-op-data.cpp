@@ -17,13 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "otr-error-message-service.h"
+#include "otr-fingerprint-service.h"
+#include "otr-instance-tag-service.h"
+#include "otr-is-logged-in-service.h"
+#include "otr-message-event-service.h"
+#include "otr-message-service.h"
+#include "otr-op-data.h"
+#include "otr-peer-identity-verification-service.h"
+#include "otr-policy-service.h"
+#include "otr-private-key-service.h"
+#include "otr-session-service.h"
+#include "otr-timer-service.h"
+#include "otr-trust-level-service.h"
+
 #include "otr-op-data.h"
 
-OtrOpData::OtrOpData() :
-		ErrorMessageService(0), FingerprintService(0), InstanceTagService(0),
-		IsLoggedInService(0), MessageEventService(0), MessageService(0),
-		PeerIdentityVerificationService(0), PolicyService(0), PrivateKeyService(0), SessionService(0),
-		TimerService(0), TrustLevelService(0)
+OtrOpData::OtrOpData()
 {
 }
 
@@ -64,7 +74,7 @@ void OtrOpData::setErrorMessageService(OtrErrorMessageService *errorMessageServi
 
 OtrErrorMessageService * OtrOpData::errorMessageService() const
 {
-	return ErrorMessageService;
+	return ErrorMessageService.data();
 }
 
 void OtrOpData::setFingerprintService(OtrFingerprintService *fingerprintService)
@@ -74,7 +84,7 @@ void OtrOpData::setFingerprintService(OtrFingerprintService *fingerprintService)
 
 OtrFingerprintService * OtrOpData::fingerprintService() const
 {
-	return FingerprintService;
+	return FingerprintService.data();
 }
 
 void OtrOpData::setInstanceTagService(OtrInstanceTagService *instanceTagService)
@@ -84,7 +94,7 @@ void OtrOpData::setInstanceTagService(OtrInstanceTagService *instanceTagService)
 
 OtrInstanceTagService * OtrOpData::instanceTagService() const
 {
-	return InstanceTagService;
+	return InstanceTagService.data();
 }
 
 void OtrOpData::setIsLoggedInService(OtrIsLoggedInService *isLoggedInService)
@@ -94,7 +104,7 @@ void OtrOpData::setIsLoggedInService(OtrIsLoggedInService *isLoggedInService)
 
 OtrIsLoggedInService * OtrOpData::isLoggedInService() const
 {
-	return IsLoggedInService;
+	return IsLoggedInService.data();
 }
 
 void OtrOpData::setMessageEventService(OtrMessageEventService *messageEventService)
@@ -104,7 +114,7 @@ void OtrOpData::setMessageEventService(OtrMessageEventService *messageEventServi
 
 OtrMessageEventService * OtrOpData::messageEventService() const
 {
-	return MessageEventService;
+	return MessageEventService.data();
 }
 
 void OtrOpData::setMessageService(OtrMessageService *messageService)
@@ -114,7 +124,7 @@ void OtrOpData::setMessageService(OtrMessageService *messageService)
 
 OtrMessageService * OtrOpData::messageService() const
 {
-	return MessageService;
+	return MessageService.data();
 }
 
 void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
@@ -124,7 +134,7 @@ void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationSe
 
 OtrPeerIdentityVerificationService * OtrOpData::peerIdentityVerificationService() const
 {
-	return PeerIdentityVerificationService;
+	return PeerIdentityVerificationService.data();
 }
 
 void OtrOpData::setPolicyService(OtrPolicyService *policyService)
@@ -134,7 +144,7 @@ void OtrOpData::setPolicyService(OtrPolicyService *policyService)
 
 OtrPolicyService * OtrOpData::policyService() const
 {
-	return PolicyService;
+	return PolicyService.data();
 }
 
 void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
@@ -144,7 +154,7 @@ void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
 
 OtrPrivateKeyService * OtrOpData::privateKeyService() const
 {
-	return PrivateKeyService;
+	return PrivateKeyService.data();
 }
 
 void OtrOpData::setSessionService(OtrSessionService *sessionService)
@@ -154,7 +164,7 @@ void OtrOpData::setSessionService(OtrSessionService *sessionService)
 
 OtrSessionService * OtrOpData::sessionService() const
 {
-	return SessionService;
+	return SessionService.data();
 }
 
 void OtrOpData::setTimerService(OtrTimerService *timerService)
@@ -164,7 +174,7 @@ void OtrOpData::setTimerService(OtrTimerService *timerService)
 
 OtrTimerService * OtrOpData::timerService() const
 {
-	return TimerService;
+	return TimerService.data();
 }
 
 void OtrOpData::setTrustLevelService(OtrTrustLevelService *trustLevelService)
@@ -174,7 +184,7 @@ void OtrOpData::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 
 OtrTrustLevelService * OtrOpData::trustLevelService() const
 {
-	return TrustLevelService;
+	return TrustLevelService.data();
 }
 
 void OtrOpData::setContact(const Contact &contact)
@@ -196,4 +206,3 @@ QString OtrOpData::peerDisplay() const
 {
 	return PeerDisplay;
 }
-
