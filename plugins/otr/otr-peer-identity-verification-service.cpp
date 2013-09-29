@@ -101,6 +101,19 @@ void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Con
 	otrl_message_initiate_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
 }
 
+void OtrPeerIdentityVerificationService::respondVerification(const Contact &contact, const QString &answer)
+{
+	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || answer.isEmpty())
+		return;
+
+	OtrlUserState userState = UserStateService.data()->userState();
+	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
+	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+
+	otrl_message_respond_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(answer), answer.length());
+}
+
 void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)
 {
 	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact)
@@ -110,6 +123,7 @@ void OtrPeerIdentityVerificationService::cancelVerification(const Contact &conta
 	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+
 	otrl_message_abort_smp(userState, appOps, &opData, context);
 }
 
