@@ -36,12 +36,15 @@ public:
 		SelectMethodPage,
 		QuestionAndAnswerPage,
 		SharedSecretPage,
+		RespondQuestionAndAnswerPage,
 		FingerprintExchangePage,
 		ProgressPage
 	};
 
 	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationWindow();
+
+	void showRespondQuestionAndAnswer(const QString &question);
 
 public slots:
 	virtual void reject();

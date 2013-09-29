@@ -20,6 +20,7 @@
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-progress-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
+#include "gui/widgets/otr-peer-identity-verification-respond-question-and-answer-page.h"
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
 #include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
@@ -64,6 +65,10 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 	OtrPeerIdentityVerificationSharedSecretPage *sharedSecretPage = new OtrPeerIdentityVerificationSharedSecretPage(contact, result);
 	sharedSecretPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::SharedSecretPage, sharedSecretPage);
+
+	OtrPeerIdentityVerificationRespondQuestionAndAnswerPage *respondQuestionAndAnswerPage = new OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(contact, result);
+	respondQuestionAndAnswerPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	result->setPage(OtrPeerIdentityVerificationWindow::RespondQuestionAndAnswerPage, respondQuestionAndAnswerPage);
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);
 	progressPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());

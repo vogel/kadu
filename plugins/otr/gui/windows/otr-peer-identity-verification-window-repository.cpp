@@ -57,6 +57,13 @@ void OtrPeerIdentityVerificationWindowRepository::windowDestroyed(const Contact 
 	Windows.remove(contact);
 }
 
+void OtrPeerIdentityVerificationWindowRepository::showRespondQuestionAndAnswerVerificationWindow(const Contact &contact, const QString &question)
+{
+	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);
+	if (window)
+		window->showRespondQuestionAndAnswer(question);
+}
+
 void OtrPeerIdentityVerificationWindowRepository::showVerificationWindow(const Contact &contact)
 {
 	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);

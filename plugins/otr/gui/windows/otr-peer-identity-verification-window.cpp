@@ -31,6 +31,13 @@ OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 	emit destroyed(MyContact);
 }
 
+void OtrPeerIdentityVerificationWindow::showRespondQuestionAndAnswer(const QString &question)
+{
+	setStartId(RespondQuestionAndAnswerPage);
+	setField("respondQuestion", question);
+	show();
+}
+
 void OtrPeerIdentityVerificationWindow::reject()
 {
 	emit aboutToBeRejected();

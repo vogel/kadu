@@ -46,6 +46,7 @@ public:
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
 public slots:
+	void showRespondQuestionAndAnswerVerificationWindow(const Contact &contact, const QString &question);
 	void showVerificationWindow(const Contact &contact);
 
 };

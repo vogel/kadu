@@ -372,6 +372,9 @@ int OtrPlugin::init(bool firstLoad)
 	PeerIdentityVerificationService->setOpDataFactory(OpDataFactory.data());
 	PeerIdentityVerificationService->setUserStateService(UserStateService.data());
 
+	connect(PeerIdentityVerificationService.data(), SIGNAL(questionAnswerRequested(Contact,QString)),
+			PeerIdentityVerificationWindowRepository.data(), SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact,QString)));
+
 	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
 	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
 
@@ -457,6 +460,9 @@ void OtrPlugin::done()
 	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
 
 	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(0);
+
+	disconnect(PeerIdentityVerificationService.data(), SIGNAL(questionAnswerRequested(Contact,QString)),
+			   PeerIdentityVerificationWindowRepository.data(), SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact,QString)));
 
 	PeerIdentityVerificationService->setUserStateService(0);
 	PeerIdentityVerificationService->setOpDataFactory(0);
