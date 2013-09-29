@@ -69,9 +69,6 @@ void OtrPeerIdentityVerificationService::setUserStateService(OtrUserStateService
 
 void OtrPeerIdentityVerificationService::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
-	if (OtrPeerIdentityVerificationState::StateFailed == state.state())
-		cancelVerification(contact);
-
 	emit contactStateUpdated(contact, state);
 }
 
