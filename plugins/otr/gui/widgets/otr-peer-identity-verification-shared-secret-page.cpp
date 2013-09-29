@@ -52,7 +52,7 @@ void OtrPeerIdentityVerificationSharedSecretPage::createGui()
 
 	layout->addRow(new QLabel(tr("Shared Secret:")), sharedSecretEdit);
 
-	registerField("sharedSecret", sharedSecretEdit);
+	registerField("sharedSecret*", sharedSecretEdit);
 }
 
 void OtrPeerIdentityVerificationSharedSecretPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
@@ -73,6 +73,9 @@ void OtrPeerIdentityVerificationSharedSecretPage::initializePage()
 bool OtrPeerIdentityVerificationSharedSecretPage::validatePage()
 {
 	QString sharedSecret = field("sharedSecret").toString();
+
+	if (sharedSecret.isEmpty())
+		return false;
 
 	if (PeerIdentityVerificationService)
 		PeerIdentityVerificationService.data()->startSharedSecretVerficiation(MyContact, field("sharedSecret").toString());
