@@ -47,6 +47,7 @@ public:
 
 public slots:
 	void showRespondQuestionAndAnswerVerificationWindow(const Contact &contact, const QString &question);
+	void showRespondSharedSecretVerificationWindow(const Contact &contact);
 	void showVerificationWindow(const Contact &contact);
 
 };

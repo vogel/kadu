@@ -17,44 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
-#define OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_RESPOND_SHARED_SECRET_PAGE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_RESPOND_SHARED_SECRET_PAGE_H
 
-#include <QtGui/QWizard>
+#include <QtGui/QWizardPage>
 
 #include "contacts/contact.h"
 
-class OtrPeerIdentityVerificationWindow : public QWizard
+class OtrPeerIdentityVerificationService;
+
+class OtrPeerIdentityVerificationRespondSharedSecretPage : public QWizardPage
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+
 	Contact MyContact;
 
+	void createGui();
+
 public:
-	enum
-	{
-		SelectMethodPage,
-		QuestionAndAnswerPage,
-		SharedSecretPage,
-		RespondQuestionAndAnswerPage,
-		RespondSharedSecretPage,
-		FingerprintExchangePage,
-		ProgressPage
-	};
+	explicit OtrPeerIdentityVerificationRespondSharedSecretPage(const Contact &contact, QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationRespondSharedSecretPage();
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);
-	virtual ~OtrPeerIdentityVerificationWindow();
+	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
-	void showRespondQuestionAndAnswer(const QString &question);
-	void showRespondSharedSecret();
-
-public slots:
-	virtual void reject();
-
-signals:
-	void aboutToBeRejected();
-	void destroyed(const Contact &contact);
+	virtual int nextId() const;
+	virtual void initializePage();
+	virtual bool validatePage();
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_RESPOND_SHARED_SECRET_PAGE_H

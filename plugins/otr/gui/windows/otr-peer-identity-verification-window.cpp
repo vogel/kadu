@@ -38,6 +38,12 @@ void OtrPeerIdentityVerificationWindow::showRespondQuestionAndAnswer(const QStri
 	show();
 }
 
+void OtrPeerIdentityVerificationWindow::showRespondSharedSecret()
+{
+	setStartId(RespondSharedSecretPage);
+	show();
+}
+
 void OtrPeerIdentityVerificationWindow::reject()
 {
 	emit aboutToBeRejected();
