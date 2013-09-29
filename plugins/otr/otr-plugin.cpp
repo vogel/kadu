@@ -405,6 +405,7 @@ int OtrPlugin::init(bool firstLoad)
 	SessionService->setUserStateService(UserStateService.data());
 
 	connect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
+	connect(SessionService.data(), SIGNAL(tryingToRefreshSession(Contact)), Notifier.data(), SLOT(notifyTryingToRefreshSession(Contact)));
 	connect(SessionService.data(), SIGNAL(goneSecure(Contact)), Notifier.data(), SLOT(notifyGoneSecure(Contact)));
 	connect(SessionService.data(), SIGNAL(goneInsecure(Contact)), Notifier.data(), SLOT(notifyGoneInsecure(Contact)));
 	connect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));
@@ -433,6 +434,7 @@ void OtrPlugin::done()
 	TimerService->setAppOpsService(0);
 
 	disconnect(SessionService.data(), SIGNAL(tryingToStartSession(Contact)), Notifier.data(), SLOT(notifyTryingToStartSession(Contact)));
+	disconnect(SessionService.data(), SIGNAL(tryingToRefreshSession(Contact)), Notifier.data(), SLOT(notifyTryingToRefreshSession(Contact)));
 	disconnect(SessionService.data(), SIGNAL(goneSecure(Contact)), Notifier.data(), SLOT(notifyGoneSecure(Contact)));
 	disconnect(SessionService.data(), SIGNAL(goneInsecure(Contact)), Notifier.data(), SLOT(notifyGoneInsecure(Contact)));
 	disconnect(SessionService.data(), SIGNAL(stillSecure(Contact)), Notifier.data(), SLOT(notifyStillSecure(Contact)));

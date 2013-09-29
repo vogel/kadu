@@ -46,10 +46,10 @@ void OtrChatTopBarWidget::createGui()
 	layout->addStretch(1);
 
 	QMenu *otrMenu = new QMenu(OtrStatusButton);
-	QAction *startAction = otrMenu->addAction(tr("Start Private Conversation"));
-	connect(startAction, SIGNAL(triggered(bool)), this, SLOT(startSession()));
-	QAction *endAction = otrMenu->addAction(tr("End Private Conversation"));
-	connect(endAction, SIGNAL(triggered(bool)), this, SLOT(endSession()));
+	StartAction = otrMenu->addAction(tr("Start Private Conversation"));
+	connect(StartAction, SIGNAL(triggered(bool)), this, SLOT(startSession()));
+	EndAction = otrMenu->addAction(tr("End Private Conversation"));
+	connect(EndAction, SIGNAL(triggered(bool)), this, SLOT(endSession()));
 	otrMenu->addSeparator();
 	VerifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
 	connect(VerifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
@@ -75,7 +75,15 @@ void OtrChatTopBarWidget::trustLevelUpdated()
 	OtrTrustLevelService::TrustLevel level = trustLevel();
 
 	OtrStatusButton->setText(trustStatusString(level));
-	VerifyAction->setEnabled(level >= OtrTrustLevelService::TrustLevelUnverified);
+	bool isPrivate = level >= OtrTrustLevelService::TrustLevelUnverified;
+
+	if (isPrivate)
+		StartAction->setText(tr("Refresh Private Conversation"));
+	else
+		StartAction->setText(tr("Start Private Conversation"));
+
+	EndAction->setEnabled(isPrivate);
+	VerifyAction->setEnabled(isPrivate);
 }
 
 OtrTrustLevelService::TrustLevel OtrChatTopBarWidget::trustLevel() const

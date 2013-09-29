@@ -27,6 +27,7 @@
 
 QString OtrNotifier::OtrNotifyTopic("OTR");
 QString OtrNotifier::TryingToStartSessionNotifyTopic("OTR/TryingToStartSession");
+QString OtrNotifier::TryingToRefreshSessionNotifyTopic("OTR/TryingToRefreshSession");
 QString OtrNotifier::PeerClosedSessionNotifyTopic("OTR/PeerClosedStartSession");
 QString OtrNotifier::GoneSecureNotifyTopic("OTR/GoneSecure");
 QString OtrNotifier::GoneInsecureNotifyTopic("OTR/GoneInsecure");
@@ -41,6 +42,8 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
 	TryingToStartSessionNotifyEvent.reset(new NotifyEvent(TryingToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Trying to start private conversation")));
+	TryingToStartSessionNotifyEvent.reset(new NotifyEvent(TryingToRefreshSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "Trying to refresh private conversation")));
 	PeerClosedSessionNotifyEvent.reset(new NotifyEvent(PeerClosedSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Peer closed private conversation")));
 	GoneSecureNotifyEvent.reset(new NotifyEvent(GoneSecureNotifyTopic, NotifyEvent::CallbackNotRequired,
@@ -64,6 +67,7 @@ QList<NotifyEvent *> OtrNotifier::notifyEvents()
 	return QList<NotifyEvent *>()
 			<< OtrNotifyEvent.data()
 			<< TryingToStartSessionNotifyEvent.data()
+			<< TryingToRefreshSessionNotifyEvent.data()
 			<< GoneSecureNotifyEvent.data()
 			<< GoneInsecureNotifyEvent.data()
 			<< StillSecureNotifyEvent.data()
@@ -94,6 +98,12 @@ void OtrNotifier::notifyTryingToStartSession(const Contact &contact)
 {
 	notify(TryingToStartSessionNotifyTopic, contact,
 		   tr("%1: trying to start private conversation").arg(contact.display(true)));
+}
+
+void OtrNotifier::notifyTryingToRefreshSession(const Contact &contact)
+{
+	notify(TryingToRefreshSessionNotifyTopic, contact,
+		   tr("%1: trying to refresh private conversation").arg(contact.display(true)));
 }
 
 void OtrNotifier::notifyPeerEndedSession(const Contact &contact)

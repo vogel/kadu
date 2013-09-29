@@ -32,6 +32,7 @@ class OtrNotifier : public QObject
 
 	static QString OtrNotifyTopic;
 	static QString TryingToStartSessionNotifyTopic;
+	static QString TryingToRefreshSessionNotifyTopic;
 	static QString PeerClosedSessionNotifyTopic;
 	static QString GoneSecureNotifyTopic;
 	static QString GoneInsecureNotifyTopic;
@@ -41,6 +42,7 @@ class OtrNotifier : public QObject
 
 	QScopedPointer<NotifyEvent> OtrNotifyEvent;
 	QScopedPointer<NotifyEvent> TryingToStartSessionNotifyEvent;
+	QScopedPointer<NotifyEvent> TryingToRefreshSessionNotifyEvent;
 	QScopedPointer<NotifyEvent> PeerClosedSessionNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneSecureNotifyEvent;
 	QScopedPointer<NotifyEvent> GoneInsecureNotifyEvent;
@@ -59,6 +61,7 @@ public:
 
 public slots:
 	void notifyTryingToStartSession(const Contact &contact);
+	void notifyTryingToRefreshSession(const Contact &contact);
 	void notifyPeerEndedSession(const Contact &contact);
 	void notifyGoneSecure(const Contact &contact);
 	void notifyGoneInsecure(const Contact &contact);

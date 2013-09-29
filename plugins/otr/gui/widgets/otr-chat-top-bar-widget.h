@@ -36,6 +36,8 @@ class OtrChatTopBarWidget : public QWidget
 
 	Contact MyContact;
 	QPushButton *OtrStatusButton;
+	QAction *StartAction;
+	QAction *EndAction;
 	QAction *VerifyAction;
 
 	void createGui();

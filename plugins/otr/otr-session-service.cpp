@@ -110,14 +110,16 @@ void OtrSessionService::startSession(const Contact &contact)
 		return;
 
 	OtrTrustLevelService::TrustLevel level = TrustLevelService.data()->loadTrustLevelFromContact(contact);
-	if (OtrTrustLevelService::TrustLevelPrivate == level)
-		return;
 
 	Account account = contact.contactAccount();
 	OtrPolicy otrPolicy = PolicyService.data()->accountPolicy(account);
 	QString message = QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()));
 
-	emit tryingToStartSession(contact);
+	if (level == OtrTrustLevelService::TrustLevelNotPrivate)
+		emit tryingToStartSession(contact);
+	else
+		emit tryingToRefreshSession(contact);
+
 	CurrentMessageManager.data()->sendMessage(ChatTypeContact::findChat(contact, ActionCreateAndAdd), message, true);
 }
 

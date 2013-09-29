@@ -68,6 +68,7 @@ public slots:
 
 signals:
 	void tryingToStartSession(const Contact &contact) const;
+	void tryingToRefreshSession(const Contact &contact) const;
 
 	void goneSecure(const Contact &contact) const;
 	void goneInsecure(const Contact &contact) const;
