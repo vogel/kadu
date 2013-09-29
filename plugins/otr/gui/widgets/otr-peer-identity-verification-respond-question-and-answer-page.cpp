@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QFormLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
@@ -43,16 +43,25 @@ OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::~OtrPeerIdentityVerific
 
 void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::createGui()
 {
+	setButtonText(QWizard::CommitButton, tr("Answer Question"));
 	setCommitPage(true);
 	setTitle(tr("Respond to Question and Answer"));
 
-	QFormLayout *layout = new QFormLayout(this);
+	QGridLayout *layout = new QGridLayout(this);
 
 	QuestionLabel = new QLabel();
+	QuestionLabel->setWordWrap(true);
+
 	QLineEdit *answerEdit = new QLineEdit();
 
-	layout->addRow(new QLabel(tr("Question:")), QuestionLabel);
-	layout->addRow(new QLabel(tr("Answer:")), answerEdit);
+	layout->setColumnStretch(0, 1);
+	layout->setColumnStretch(1, 100);
+
+	layout->addWidget(new QLabel(tr("%1 wants to verify your identity using Question and Answer method.").arg(MyContact.display(true))), 0, 0, 1, 2);
+	layout->addWidget(new QLabel(tr("%1 question:").arg(MyContact.display(true))), 1, 0, 1, 1, Qt::AlignTop);
+	layout->addWidget(QuestionLabel, 1, 1, 1, 1);
+	layout->addWidget(new QLabel(tr("Answer:")), 2, 0, 1, 2);
+	layout->addWidget(answerEdit, 3, 0, 1, 2);
 
 	registerField("respondQuestion", QuestionLabel, "text");
 	registerField("respondAnswer*", answerEdit);
