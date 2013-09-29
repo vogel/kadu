@@ -17,8 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtGui/QLabel>
+#include <QtGui/QGridLayout>
 #include <QtGui/QRadioButton>
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QStyle>
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
 
@@ -46,12 +48,25 @@ void OtrPeerIdentityVerificationSelectMethodPage::createGui()
 	registerField("sharedSecread", sharedSecread);
 	registerField("fingerprintExchange", fingerprintExchange);
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(questionAndAnswer);
-	layout->addWidget(sharedSecread);
-	layout->addWidget(fingerprintExchange);
+	QGridLayout *layout = new QGridLayout(this);
+	layout->setColumnMinimumWidth(0, style()->pixelMetric(QStyle::PM_ExclusiveIndicatorWidth));
+	layout->addWidget(questionAndAnswer, 0, 0, 1, 2);
+	layout->addWidget(createDescirptionLabel("Ask peer a question that only you and he/she know the answer for. If your peer answer it properly, he/she will be marked as verified."), 1, 1, 1, 1);
+	layout->setRowMinimumHeight(2, 8);
+	layout->addWidget(sharedSecread, 3, 0, 1, 2);
+	layout->addWidget(createDescirptionLabel("Exchange a secret message with peer. This message should be agreed to on another secure channel (face-to-face conversation or a phone)."), 4, 1, 1, 1);
+	layout->setRowMinimumHeight(5, 8);
+	layout->addWidget(fingerprintExchange, 6, 0, 1, 2);
+	layout->addWidget(createDescirptionLabel("Check your peer's fingerprint manually. Fingreprint information shoud be exchanged on another secure channel (face-to-face conversation or a phone)."), 7, 1, 1, 1);
 
 	questionAndAnswer->setChecked(true);
+}
+
+QLabel * OtrPeerIdentityVerificationSelectMethodPage::createDescirptionLabel(const QString &text)
+{
+	QLabel *result = new QLabel(text);
+	result->setWordWrap(true);
+	return result;
 }
 
 int OtrPeerIdentityVerificationSelectMethodPage::nextId() const

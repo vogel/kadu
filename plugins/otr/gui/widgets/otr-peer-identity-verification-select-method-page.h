@@ -25,7 +25,9 @@
 class OtrPeerIdentityVerificationSelectMethodPage : public QWizardPage
 {
 	Q_OBJECT
+
 	void createGui();
+	QLabel * createDescirptionLabel(const QString &text);
 
 public:
 	explicit OtrPeerIdentityVerificationSelectMethodPage(QWidget *parent = 0);
