@@ -60,6 +60,15 @@ void OtrPeerIdentityVerificationRespondSharedSecretPage::setPeerIdentityVerifica
 	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
+void OtrPeerIdentityVerificationRespondSharedSecretPage::rejected()
+{
+	if (!PeerIdentityVerificationService)
+		return;
+
+	if (wizard()->currentPage() == this)
+		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+}
+
 int OtrPeerIdentityVerificationRespondSharedSecretPage::nextId() const
 {
 	return OtrPeerIdentityVerificationWindow::ProgressPage;

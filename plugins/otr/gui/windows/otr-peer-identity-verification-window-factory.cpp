@@ -69,10 +69,12 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 
 	OtrPeerIdentityVerificationRespondQuestionAndAnswerPage *respondQuestionAndAnswerPage = new OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(contact, result);
 	respondQuestionAndAnswerPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	connect(result, SIGNAL(aboutToBeRejected()), respondQuestionAndAnswerPage, SLOT(rejected()));
 	result->setPage(OtrPeerIdentityVerificationWindow::RespondQuestionAndAnswerPage, respondQuestionAndAnswerPage);
 
 	OtrPeerIdentityVerificationRespondSharedSecretPage *respondSharedSecretPage = new OtrPeerIdentityVerificationRespondSharedSecretPage(contact, result);
 	respondSharedSecretPage->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	connect(result, SIGNAL(aboutToBeRejected()), respondQuestionAndAnswerPage, SLOT(rejected()));
 	result->setPage(OtrPeerIdentityVerificationWindow::RespondSharedSecretPage, respondSharedSecretPage);
 
 	OtrPeerIdentityVerificationProgressPage *progressPage = new OtrPeerIdentityVerificationProgressPage(contact, result);

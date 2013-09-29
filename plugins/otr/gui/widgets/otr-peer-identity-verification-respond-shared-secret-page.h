@@ -46,6 +46,9 @@ public:
 	virtual void initializePage();
 	virtual bool validatePage();
 
+public slots:
+	void rejected();
+
 };
 
 #endif // OTR_PEER_IDENTITY_VERIFICATION_RESPOND_SHARED_SECRET_PAGE_H
