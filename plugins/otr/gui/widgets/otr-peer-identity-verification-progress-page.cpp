@@ -43,6 +43,8 @@ void OtrPeerIdentityVerificationProgressPage::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	StateLabel = new QLabel();
+	StateLabel->setWordWrap(true);
+
 	StateProgress = new QProgressBar();
 	StateProgress->setMaximum(100);
 
@@ -55,6 +57,7 @@ void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVeri
 	State = state;
 	StateLabel->setText(stateToString(State));
 	StateProgress->setValue(State.percentCompleted());
+	StateProgress->setVisible(OtrPeerIdentityVerificationState::StateFailed != State.state());
 }
 
 QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIdentityVerificationState &state)
@@ -62,15 +65,15 @@ QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIden
 	switch (state.state())
 	{
 		case OtrPeerIdentityVerificationState::StateNotStarted:
-			return tr("Verification not started");
+			return tr("Verification not started.");
 		case OtrPeerIdentityVerificationState::StateInProgress:
 			return tr("Verification in progres...");
 		case OtrPeerIdentityVerificationState::StateFailed:
-			return tr("Verification failed");
+			return tr("Verification failed. You are probably talking to an imposter. Either close conversation or try other verification method.");
 		case OtrPeerIdentityVerificationState::StateSucceeded:
-			return tr("Verification succeeded");
+			return tr("Verification succeeded.");
 		default:
-			return tr("Unknown");
+			return tr("Unknown.");
 	}
 }
 
