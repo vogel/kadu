@@ -67,6 +67,8 @@ public slots:
 	void cancelVerification(const Contact &contact);
 
 signals:
+	void questionAnswerRequested(const Contact &contact, const QString &question);
+	void sharedSecretRequested(const Contact &contact);
 	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 };

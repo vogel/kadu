@@ -140,6 +140,14 @@ void OtrPeerIdentityVerificationService::handleSmpEvent(const Contact &contact, 
 		case OTRL_SMPEVENT_IN_PROGRESS:
 			state = OtrPeerIdentityVerificationState::StateInProgress;
 			break;
+		case OTRL_SMPEVENT_ASK_FOR_ANSWER:
+			state = OtrPeerIdentityVerificationState::StateInProgress;
+			emit questionAnswerRequested(contact, question);
+			break;
+		case OTRL_SMPEVENT_ASK_FOR_SECRET:
+			state = OtrPeerIdentityVerificationState::StateInProgress;
+			emit sharedSecretRequested(contact);
+			break;
 		case OTRL_SMPEVENT_CHEATED:
 		case OTRL_SMPEVENT_ERROR:
 		case OTRL_SMPEVENT_FAILURE:
