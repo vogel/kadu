@@ -44,7 +44,7 @@ OtrPeerIdentityVerificationSharedSecretPage::~OtrPeerIdentityVerificationSharedS
 void OtrPeerIdentityVerificationSharedSecretPage::createGui()
 {
 	setCommitPage(true);
-	setTitle(tr("Question and Answer"));
+	setTitle(tr("Shared Secret"));
 
 	QFormLayout *layout = new QFormLayout(this);
 
