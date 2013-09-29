@@ -46,7 +46,6 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	layout->addSpacing(8);
 	layout->addWidget(new QLabel(tr("Your Key Fingerprint (%1: %2):")
 			.arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
 			.arg(MyContact.contactAccount().id())));
@@ -69,7 +68,6 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
 	registerField("fingerprintExchangeNotConfirm", FingerprintExchangeNotConfirm);
 	registerField("fingerprintExchangeConfirm", FingerprintExchangeConfirm);
 
-	layout->addSpacing(8);
 	layout->addWidget(FingerprintExchangeNotConfirm);
 	layout->addWidget(FingerprintExchangeConfirm);
 }
