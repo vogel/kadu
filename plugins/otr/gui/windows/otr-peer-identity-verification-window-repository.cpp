@@ -61,19 +61,28 @@ void OtrPeerIdentityVerificationWindowRepository::showRespondQuestionAndAnswerVe
 {
 	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);
 	if (window)
+	{
 		window->showRespondQuestionAndAnswer(question);
+		window->raise();
+	}
 }
 
 void OtrPeerIdentityVerificationWindowRepository::showRespondSharedSecretVerificationWindow(const Contact &contact)
 {
 	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);
 	if (window)
+	{
 		window->showRespondSharedSecret();
+		window->raise();
+	}
 }
 
 void OtrPeerIdentityVerificationWindowRepository::showVerificationWindow(const Contact &contact)
 {
 	OtrPeerIdentityVerificationWindow *window = windowForContact(contact);
 	if (window)
+	{
 		window->show();
+		window->raise();
+	}
 }
