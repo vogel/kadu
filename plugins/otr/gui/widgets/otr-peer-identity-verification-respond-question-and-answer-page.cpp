@@ -55,7 +55,7 @@ void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::createGui()
 	layout->addRow(new QLabel(tr("Answer:")), answerEdit);
 
 	registerField("respondQuestion", QuestionLabel, "text");
-	registerField("respondAnswer", answerEdit);
+	registerField("respondAnswer*", answerEdit);
 }
 
 void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
@@ -84,8 +84,13 @@ void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::initializePage()
 
 bool OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::validatePage()
 {
+	QString respondAnswer = field("respondAnswer").toString();
+
+	if (respondAnswer.isEmpty())
+		return false;
+
 	if (PeerIdentityVerificationService)
-		PeerIdentityVerificationService.data()->respondVerification(MyContact, field("respondAnswer").toString());
+		PeerIdentityVerificationService.data()->respondVerification(MyContact, respondAnswer);
 
 	return true;
 }
