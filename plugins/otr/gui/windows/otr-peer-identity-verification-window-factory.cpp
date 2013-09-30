@@ -22,6 +22,7 @@
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
 #include "gui/widgets/otr-peer-identity-verification-respond-question-and-answer-page.h"
 #include "gui/widgets/otr-peer-identity-verification-respond-shared-secret-page.h"
+#include "gui/widgets/otr-peer-identity-verification-result-page.h"
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
 #include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
 #include "gui/windows/otr-peer-identity-verification-window.h"
@@ -82,7 +83,11 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 	connect(PeerIdentityVerificationService.data(), SIGNAL(contactStateUpdated(Contact,OtrPeerIdentityVerificationState)),
 			progressPage, SLOT(updateContactState(Contact,OtrPeerIdentityVerificationState)));
 	connect(result, SIGNAL(aboutToBeRejected()), progressPage, SLOT(rejected()));
+	connect(progressPage, SIGNAL(finished()), result, SLOT(next()));
 	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
+
+	OtrPeerIdentityVerificationResultPage *resultPage = new OtrPeerIdentityVerificationResultPage(result);
+	result->setPage(OtrPeerIdentityVerificationWindow::ResultPage, resultPage);
 
 	return result;
 }

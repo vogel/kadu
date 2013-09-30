@@ -26,7 +26,6 @@
 
 #include "otr-peer-identity-verification-state.h"
 
-class QLabel;
 class QProgressBar;
 
 class OtrPeerIdentityVerificationService;
@@ -40,7 +39,6 @@ class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 	Contact MyContact;
 	OtrPeerIdentityVerificationState State;
 
-	QLabel *StateLabel;
 	QProgressBar *StateProgress;
 
 	void createGui();
@@ -62,6 +60,9 @@ public:
 public slots:
 	void rejected();
 	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+
+signals:
+	void finished();
 
 };
 

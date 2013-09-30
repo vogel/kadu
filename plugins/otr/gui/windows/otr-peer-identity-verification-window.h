@@ -39,7 +39,8 @@ public:
 		RespondQuestionAndAnswerPage,
 		RespondSharedSecretPage,
 		FingerprintExchangePage,
-		ProgressPage
+		ProgressPage,
+		ResultPage
 	};
 
 	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = 0);

@@ -17,35 +17,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_STATE_H
-#define OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+#ifndef OTR_PEER_IDENTITY_VERIFICATION_RESULT_PAGE_H
+#define OTR_PEER_IDENTITY_VERIFICATION_RESULT_PAGE_H
 
-class OtrPeerIdentityVerificationState
+#include <QtGui/QWizardPage>
+
+class OtrPeerIdentityVerificationResultPage : public QWizardPage
 {
+	Q_OBJECT
+
+	void createGui();
 
 public:
-	enum State
-	{
-		StateNotStarted,
-		StateInProgress,
-		StateFailed,
-		StateSucceeded
-	};
+	explicit OtrPeerIdentityVerificationResultPage(QWidget *parent = 0);
+	virtual ~OtrPeerIdentityVerificationResultPage();
 
-private:
-	State MyState;
-	int PercentCompleted;
-
-public:
-	OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
-	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
-
-	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
-
-	bool isFinished() const;
-	State state() const;
-	int percentCompleted() const;
+	virtual int nextId() const;
 
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+#endif // OTR_PEER_IDENTITY_VERIFICATION_RESULT_PAGE_H

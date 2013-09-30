@@ -37,6 +37,11 @@ OtrPeerIdentityVerificationState & OtrPeerIdentityVerificationState::operator = 
 	return *this;
 }
 
+bool OtrPeerIdentityVerificationState::isFinished() const
+{
+	return (StateSucceeded == MyState) || (StateFailed == MyState);
+}
+
 OtrPeerIdentityVerificationState::State OtrPeerIdentityVerificationState::state() const
 {
 	return MyState;

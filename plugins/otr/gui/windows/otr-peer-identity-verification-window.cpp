@@ -24,6 +24,8 @@ OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Conta
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
+
+	setOption(QWizard::NoBackButtonOnLastPage, true);
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()

@@ -21,6 +21,7 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-peer-identity-verification-state.h"
 
@@ -42,32 +43,33 @@ void OtrPeerIdentityVerificationProgressPage::createGui()
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	StateLabel = new QLabel();
-	StateLabel->setWordWrap(true);
+	QLabel *stateLabel = new QLabel(tr("Verification in progres..."));
+	stateLabel->setWordWrap(true);
 
 	StateProgress = new QProgressBar();
 	StateProgress->setMaximum(100);
 
-	layout->addWidget(StateLabel);
+	layout->addWidget(stateLabel);
 	layout->addWidget(StateProgress);
 }
 
 void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVerificationState &state)
 {
 	State = state;
-	StateLabel->setText(stateToString(State));
 	StateProgress->setValue(State.percentCompleted());
 	StateProgress->setVisible(OtrPeerIdentityVerificationState::StateFailed != State.state());
+
+	if (state.isFinished())
+	{
+		setField("resultText", stateToString(state));
+		emit finished();
+	}
 }
 
 QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIdentityVerificationState &state)
 {
 	switch (state.state())
 	{
-		case OtrPeerIdentityVerificationState::StateNotStarted:
-			return tr("Verification not started.");
-		case OtrPeerIdentityVerificationState::StateInProgress:
-			return tr("Verification in progres...");
 		case OtrPeerIdentityVerificationState::StateFailed:
 			return tr("Verification failed. You are probably talking to an imposter. Either close conversation or try other verification method.");
 		case OtrPeerIdentityVerificationState::StateSucceeded:
@@ -89,7 +91,7 @@ void OtrPeerIdentityVerificationProgressPage::cancelVerification()
 
 bool OtrPeerIdentityVerificationProgressPage::canCancelVerification() const
 {
-	return OtrPeerIdentityVerificationState::StateInProgress == State.state() || OtrPeerIdentityVerificationState::StateNotStarted == State.state();
+	return State.isFinished();
 }
 
 void OtrPeerIdentityVerificationProgressPage::rejected()
@@ -106,7 +108,7 @@ void OtrPeerIdentityVerificationProgressPage::updateContactState(const Contact &
 
 int OtrPeerIdentityVerificationProgressPage::nextId() const
 {
-	return -1;
+	return OtrPeerIdentityVerificationWindow::ResultPage;
 }
 
 void OtrPeerIdentityVerificationProgressPage::initializePage()
@@ -119,8 +121,5 @@ bool OtrPeerIdentityVerificationProgressPage::validatePage()
 	if (!PeerIdentityVerificationService)
 		return true;
 
-	if (canCancelVerification())
-		cancelVerification();
-
-	return true;
+	return State.isFinished();
 }

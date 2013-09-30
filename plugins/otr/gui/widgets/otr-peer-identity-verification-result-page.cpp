@@ -17,35 +17,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_PEER_IDENTITY_VERIFICATION_STATE_H
-#define OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+#include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
 
-class OtrPeerIdentityVerificationState
+#include "gui/windows/otr-peer-identity-verification-window.h"
+
+#include "otr-peer-identity-verification-result-page.h"
+
+OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(QWidget *parent) :
+		QWizardPage(parent)
 {
+	setTitle(tr("Verification Result"));
 
-public:
-	enum State
-	{
-		StateNotStarted,
-		StateInProgress,
-		StateFailed,
-		StateSucceeded
-	};
+	createGui();
+}
 
-private:
-	State MyState;
-	int PercentCompleted;
+OtrPeerIdentityVerificationResultPage::~OtrPeerIdentityVerificationResultPage()
+{
+}
 
-public:
-	OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
-	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
+void OtrPeerIdentityVerificationResultPage::createGui()
+{
+	QLabel *resultLabel = new QLabel();
+	resultLabel->setWordWrap(true);
 
-	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
+	registerField("resultText", resultLabel, "text");
 
-	bool isFinished() const;
-	State state() const;
-	int percentCompleted() const;
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addWidget(resultLabel);
+}
 
-};
-
-#endif // OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+int OtrPeerIdentityVerificationResultPage::nextId() const
+{
+	return -1;
+}
