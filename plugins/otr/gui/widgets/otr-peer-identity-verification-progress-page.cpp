@@ -46,22 +46,23 @@ void OtrPeerIdentityVerificationProgressPage::createGui()
 	QLabel *stateLabel = new QLabel(tr("Verification in progres..."));
 	stateLabel->setWordWrap(true);
 
-	StateProgress = new QProgressBar();
-	StateProgress->setMaximum(100);
+	QProgressBar *stateProgress = new QProgressBar();
+	stateProgress->setMaximum(100);
+
+	registerField("progress", stateProgress, "value");
 
 	layout->addWidget(stateLabel);
-	layout->addWidget(StateProgress);
+	layout->addWidget(stateProgress);
 }
 
 void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVerificationState &state)
 {
 	State = state;
-	StateProgress->setValue(State.percentCompleted());
-	StateProgress->setVisible(OtrPeerIdentityVerificationState::StateFailed != State.state());
+	setField("progress", State.percentCompleted());
 
-	if (state.isFinished())
+	if (State.isFinished())
 	{
-		setField("resultText", stateToString(state));
+		setField("resultText", stateToString(State));
 		emit finished();
 	}
 }
