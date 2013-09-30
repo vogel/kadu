@@ -25,8 +25,8 @@
 
 #include "otr-peer-identity-verification-result-page.h"
 
-OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(QWidget *parent) :
-		QWizardPage(parent)
+OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent) :
+		QWizardPage(parent), MyContact(contact)
 {
 	setTitle(tr("Verification Result"));
 
@@ -49,6 +49,11 @@ void OtrPeerIdentityVerificationResultPage::createGui()
 	layout->addWidget(resultLabel);
 }
 
+void OtrPeerIdentityVerificationResultPage::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	TrustLevelService = trustLevelService;
+}
+
 int OtrPeerIdentityVerificationResultPage::nextId() const
 {
 	return -1;
@@ -56,18 +61,22 @@ int OtrPeerIdentityVerificationResultPage::nextId() const
 
 void OtrPeerIdentityVerificationResultPage::initializePage()
 {
-	setField("resultText", stateToString(static_cast<OtrPeerIdentityVerificationState::State>(field("result").toInt())));
+	OtrPeerIdentityVerificationState::State result = static_cast<OtrPeerIdentityVerificationState::State>(field("result").toInt());
+	OtrTrustLevelService::TrustLevel trustLevel = TrustLevelService
+			? TrustLevelService.data()->loadTrustLevelFromContact(MyContact)
+			: OtrTrustLevelService::TrustLevelUnknown;
+	
+	setField("resultText", stateToString(result, trustLevel));
 }
 
-QString OtrPeerIdentityVerificationResultPage::stateToString(const OtrPeerIdentityVerificationState::State &state)
+QString OtrPeerIdentityVerificationResultPage::stateToString(const OtrPeerIdentityVerificationState::State &state,
+															 OtrTrustLevelService::TrustLevel trustLevel)
 {
-	switch (state)
-	{
-		case OtrPeerIdentityVerificationState::StateFailed:
-			return tr("Verification failed. You are probably talking to an imposter. Either close conversation or try other verification method.");
-		case OtrPeerIdentityVerificationState::StateSucceeded:
-			return tr("Verification succeeded.");
-		default:
-			return tr("Unknown.");
-	}
+	if (OtrPeerIdentityVerificationState::StateFailed == state)
+		return tr("Verificationof %1 failed. You are probably talking to an imposter. Either close conversation or try other verification method.").arg(MyContact.display(true));
+	if (OtrPeerIdentityVerificationState::StateSucceeded == state && OtrTrustLevelService::TrustLevelPrivate != trustLevel)
+		return tr("%1 has verified you. You should do the same.").arg(MyContact.display(true));
+	if (OtrPeerIdentityVerificationState::StateSucceeded == state)
+		return tr("Verification of %1 succeeded.").arg(MyContact.display(true));
+	return tr("Unknown.");
 }

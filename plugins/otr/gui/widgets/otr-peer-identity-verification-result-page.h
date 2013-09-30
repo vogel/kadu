@@ -22,18 +22,28 @@
 
 #include <QtGui/QWizardPage>
 
+#include "contacts/contact.h"
+
+#include "otr-trust-level-service.h"
+
 #include "otr-peer-identity-verification-state.h"
 
 class OtrPeerIdentityVerificationResultPage : public QWizardPage
 {
 	Q_OBJECT
 
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+
+	Contact MyContact;
+
 	void createGui();
-	QString stateToString(const OtrPeerIdentityVerificationState::State &state);
+	QString stateToString(const OtrPeerIdentityVerificationState::State &state, OtrTrustLevelService::TrustLevel trustLevel);
 
 public:
-	explicit OtrPeerIdentityVerificationResultPage(QWidget *parent = 0);
+	explicit OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationResultPage();
+
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	virtual int nextId() const;
 	virtual void initializePage();

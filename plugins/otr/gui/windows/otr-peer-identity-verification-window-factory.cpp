@@ -50,6 +50,11 @@ void OtrPeerIdentityVerificationWindowFactory::setPeerIdentityVerificationServic
 	PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
+void OtrPeerIdentityVerificationWindowFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
+{
+	TrustLevelService = trustLevelService;
+}
+
 OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::windowForContact(const Contact &contact)
 {
 	OtrPeerIdentityVerificationWindow *result = new OtrPeerIdentityVerificationWindow(contact);
@@ -86,7 +91,8 @@ OtrPeerIdentityVerificationWindow * OtrPeerIdentityVerificationWindowFactory::wi
 	connect(progressPage, SIGNAL(finished()), result, SLOT(next()));
 	result->setPage(OtrPeerIdentityVerificationWindow::ProgressPage, progressPage);
 
-	OtrPeerIdentityVerificationResultPage *resultPage = new OtrPeerIdentityVerificationResultPage(result);
+	OtrPeerIdentityVerificationResultPage *resultPage = new OtrPeerIdentityVerificationResultPage(contact, result);
+	resultPage->setTrustLevelService(TrustLevelService.data());
 	result->setPage(OtrPeerIdentityVerificationWindow::ResultPage, resultPage);
 
 	return result;

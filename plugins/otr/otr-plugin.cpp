@@ -379,6 +379,7 @@ int OtrPlugin::init(bool firstLoad)
 
 	PeerIdentityVerificationWindowFactory->setFingerprintService(FingerprintService.data());
 	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(PeerIdentityVerificationService.data());
+	PeerIdentityVerificationWindowFactory->setTrustLevelService(TrustLevelService.data());
 
 	PeerIdentityVerificationWindowRepository->setPeerIdentityVerificationWindowFactory(PeerIdentityVerificationWindowFactory.data());
 
@@ -460,6 +461,7 @@ void OtrPlugin::done()
 
 	PrivateKeyService->setUserStateService(0);
 
+	PeerIdentityVerificationWindowFactory->setTrustLevelService(0);
 	PeerIdentityVerificationWindowFactory->setPeerIdentityVerificationService(0);
 	PeerIdentityVerificationWindowFactory->setFingerprintService(0);
 

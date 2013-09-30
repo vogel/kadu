@@ -27,6 +27,7 @@
 class OtrFingerprintService;
 class OtrPeerIdentityVerificationService;
 class OtrPeerIdentityVerificationWindow;
+class OtrTrustLevelService;
 
 class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
@@ -34,6 +35,8 @@ class OtrPeerIdentityVerificationWindowFactory : public QObject
 
 	QWeakPointer<OtrFingerprintService> FingerprintService;
 	QWeakPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+	QWeakPointer<OtrTrustLevelService> TrustLevelService;
+
 	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 public:
@@ -42,6 +45,7 @@ public:
 
 	void setFingerprintService(OtrFingerprintService *fingerprintService);
 	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
 
