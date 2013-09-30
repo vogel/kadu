@@ -21,6 +21,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
+#include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-result-page.h"
 
@@ -41,6 +42,7 @@ void OtrPeerIdentityVerificationResultPage::createGui()
 	QLabel *resultLabel = new QLabel();
 	resultLabel->setWordWrap(true);
 
+	registerField("result", resultLabel);
 	registerField("resultText", resultLabel, "text");
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
@@ -50,4 +52,22 @@ void OtrPeerIdentityVerificationResultPage::createGui()
 int OtrPeerIdentityVerificationResultPage::nextId() const
 {
 	return -1;
+}
+
+void OtrPeerIdentityVerificationResultPage::initializePage()
+{
+	setField("resultText", stateToString(static_cast<OtrPeerIdentityVerificationState::State>(field("result").toInt())));
+}
+
+QString OtrPeerIdentityVerificationResultPage::stateToString(const OtrPeerIdentityVerificationState::State &state)
+{
+	switch (state)
+	{
+		case OtrPeerIdentityVerificationState::StateFailed:
+			return tr("Verification failed. You are probably talking to an imposter. Either close conversation or try other verification method.");
+		case OtrPeerIdentityVerificationState::StateSucceeded:
+			return tr("Verification succeeded.");
+		default:
+			return tr("Unknown.");
+	}
 }

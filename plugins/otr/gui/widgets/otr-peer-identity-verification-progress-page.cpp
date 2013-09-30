@@ -62,21 +62,8 @@ void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVeri
 
 	if (State.isFinished())
 	{
-		setField("resultText", stateToString(State));
+		setField("result", static_cast<int>(State.state()));
 		emit finished();
-	}
-}
-
-QString OtrPeerIdentityVerificationProgressPage::stateToString(const OtrPeerIdentityVerificationState &state)
-{
-	switch (state.state())
-	{
-		case OtrPeerIdentityVerificationState::StateFailed:
-			return tr("Verification failed. You are probably talking to an imposter. Either close conversation or try other verification method.");
-		case OtrPeerIdentityVerificationState::StateSucceeded:
-			return tr("Verification succeeded.");
-		default:
-			return tr("Unknown.");
 	}
 }
 

@@ -22,17 +22,21 @@
 
 #include <QtGui/QWizardPage>
 
+#include "otr-peer-identity-verification-state.h"
+
 class OtrPeerIdentityVerificationResultPage : public QWizardPage
 {
 	Q_OBJECT
 
 	void createGui();
+	QString stateToString(const OtrPeerIdentityVerificationState::State &state);
 
 public:
 	explicit OtrPeerIdentityVerificationResultPage(QWidget *parent = 0);
 	virtual ~OtrPeerIdentityVerificationResultPage();
 
 	virtual int nextId() const;
+	virtual void initializePage();
 
 };
 
