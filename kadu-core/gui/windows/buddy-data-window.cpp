@@ -76,17 +76,16 @@
 
 QMap<Buddy, BuddyDataWindow *> BuddyDataWindow::Instances;
 
-BuddyDataWindow * BuddyDataWindow::instance(const Buddy &buddy, QWidget *parent)
+BuddyDataWindow * BuddyDataWindow::instance(const Buddy &buddy)
 {
 	if (Instances.contains(buddy))
-		// TODO: it might be useful someday to reparent in case the new parent is different than the old
 		return Instances.value(buddy);
 	else
-		return new BuddyDataWindow(buddy, parent);
+		return new BuddyDataWindow(buddy);
 }
 
-BuddyDataWindow::BuddyDataWindow(const Buddy &buddy, QWidget *parent) :
-		QWidget(parent, Qt::Dialog), MyBuddy(buddy)
+BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
+		QWidget(0, Qt::Dialog), MyBuddy(buddy)
 {
 	kdebugf();
 

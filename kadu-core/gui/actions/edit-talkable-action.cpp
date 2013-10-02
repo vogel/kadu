@@ -161,7 +161,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (buddy.isAnonymous())
 		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
 	else
-		BuddyDataWindow::instance(buddy, Core::instance()->kaduWindow())->show();
+		BuddyDataWindow::instance(buddy)->show();
 }
 
 void EditTalkableAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

@@ -75,7 +75,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
 
-	BuddyDataWindow(const Buddy &buddy, QWidget *parent);
+	explicit BuddyDataWindow(const Buddy &buddy);
 
 	void createGui();
 	void createTabs(QLayout *layout);
@@ -98,7 +98,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	static BuddyDataWindow * instance(const Buddy &buddy, QWidget *parent = 0);
+	static BuddyDataWindow * instance(const Buddy &buddy);
 
 	virtual ~BuddyDataWindow();
 
