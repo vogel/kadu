@@ -60,7 +60,6 @@ protected:
 	void cancelAccountConfigurationWidgets();
 
 	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
-	CompositeConfigurationValueStateNotifier * compositeStateNotifier() const;
 
 public:
 	explicit AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository,

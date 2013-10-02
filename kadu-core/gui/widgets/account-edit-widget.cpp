@@ -34,7 +34,7 @@ AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository
 		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
-	compositeStateNotifier()->addConfigurationValueStateNotifier(StateNotifier);
+	CompositeStateNotifier->addConfigurationValueStateNotifier(StateNotifier);
 
 	if (MyAccountConfigurationWidgetFactoryRepository)
 	{
@@ -101,11 +101,6 @@ void AccountEditWidget::cancelAccountConfigurationWidgets()
 SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier() const
 {
 	return StateNotifier;
-}
-
-CompositeConfigurationValueStateNotifier * AccountEditWidget::compositeStateNotifier() const
-{
-	return CompositeStateNotifier;
 }
 
 const ConfigurationValueStateNotifier * AccountEditWidget::stateNotifier() const
