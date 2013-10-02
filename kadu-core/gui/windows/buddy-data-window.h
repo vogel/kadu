@@ -80,7 +80,7 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
-	bool isValid();
+	bool isValid() const;
 
 private slots:
 	void updateButtons();

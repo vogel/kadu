@@ -61,6 +61,7 @@
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
+#include "gui/widgets/configuration-value-state-notifier.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/change-notifier.h"
@@ -131,7 +132,7 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
 	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
-	connect(ContactTab, SIGNAL(validChanged()), this, SLOT(updateButtons()));
+	connect(ContactTab->valueStateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(updateButtons()));
 
 	tabWidget->addTab(ContactTab, tr("General"));
 }
@@ -216,9 +217,9 @@ void BuddyDataWindow::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-bool BuddyDataWindow::isValid()
+bool BuddyDataWindow::isValid() const
 {
-	return (MyBuddy != Core::instance()->myself()) && ContactTab->isValid();
+	return (MyBuddy != Core::instance()->myself()) && ContactTab->valueStateNotifier()->state() != StateChangedDataInvalid;
 }
 
 void BuddyDataWindow::updateButtons()

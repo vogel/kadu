@@ -42,8 +42,11 @@ class QLineEdit;
 
 class BuddyAvatarWidget;
 class BuddyContactsTable;
+class CompositeConfigurationValueStateNotifier;
+class ConfigurationValueStateNotifier;
 class Contact;
 class ContactManager;
+class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 {
@@ -54,6 +57,9 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
+
+	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+	SimpleConfigurationValueStateNotifier *SimpleValueStateNotifier;
 
 	BuddyAvatarWidget *AvatarWidget;
 	BuddyContactsTable *ContactsTable;
@@ -66,15 +72,18 @@ class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 	void removeBuddyAvatar();
 	void setBuddyAvatar(const QPixmap &avatar);
 
+	bool isValid() const;
+
+private slots:
+	void updateStateNotifier();
+
 public:
 	explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = 0);
 	virtual ~BuddyGeneralConfigurationWidget();
 
-	bool isValid();
-	void save();
+	const ConfigurationValueStateNotifier * valueStateNotifier() const;
 
-signals:
-	void validChanged();
+	void save();
 
 };
 
