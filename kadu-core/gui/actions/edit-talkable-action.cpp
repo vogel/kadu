@@ -27,6 +27,7 @@
 #include "gui/actions/action.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/buddy-data-window.h"
+#include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window.h"
 #include "gui/windows/kadu-window.h"
 
@@ -161,7 +162,7 @@ void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 	if (buddy.isAnonymous())
 		(new AddBuddyWindow(Core::instance()->kaduWindow(), buddy, true))->show();
 	else
-		BuddyDataWindow::instance(buddy)->show();
+		Core::instance()->buddyDataWindowRepository()->showBuddyWindow(buddy);
 }
 
 void EditTalkableAction::triggered(QWidget *widget, ActionContext *context, bool toggled)

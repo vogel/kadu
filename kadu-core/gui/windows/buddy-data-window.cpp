@@ -74,22 +74,10 @@
 
 #include "buddy-data-window.h"
 
-QMap<Buddy, BuddyDataWindow *> BuddyDataWindow::Instances;
-
-BuddyDataWindow * BuddyDataWindow::instance(const Buddy &buddy)
-{
-	if (Instances.contains(buddy))
-		return Instances.value(buddy);
-	else
-		return new BuddyDataWindow(buddy);
-}
-
 BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
 		QWidget(0, Qt::Dialog), MyBuddy(buddy)
 {
 	kdebugf();
-
-	Instances.insert(MyBuddy, this);
 
 	setWindowRole("kadu-buddy-data");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -110,7 +98,7 @@ BuddyDataWindow::~BuddyDataWindow()
 {
 	kdebugf();
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
-	Instances.remove(MyBuddy);
+	emit destroyed(MyBuddy);
 	kdebugf2();
 }
 

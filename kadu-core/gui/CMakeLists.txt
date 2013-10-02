@@ -150,6 +150,7 @@ set (gui_SRCS
 	windows/add-room-chat-window.cpp
 	windows/buddy-data-window.cpp
 	windows/buddy-data-window-aware-object.cpp
+	windows/buddy-data-window-repository.cpp
 	windows/buddy-delete-window.cpp
 	windows/chat-data-window.cpp
 	windows/chat-data-window-aware-object.cpp
@@ -333,6 +334,7 @@ set (gui_MOC_SRCS
 	windows/add-conference-window.h
 	windows/add-room-chat-window.h
 	windows/buddy-data-window.h
+	windows/buddy-data-window-repository.h
 	windows/buddy-delete-window.h
 	windows/chat-data-window.h
 	windows/chat-window.h

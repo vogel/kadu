@@ -62,9 +62,6 @@ class KADUAPI BuddyDataWindow : public QWidget
 
 	Q_OBJECT
 
-	static QMap<Buddy, BuddyDataWindow *> Instances;
-	static const QMap<Buddy, BuddyDataWindow *> & instances() { return Instances; }
-
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
 	BuddyGroupsConfigurationWidget *GroupsTab;
@@ -74,8 +71,6 @@ class KADUAPI BuddyDataWindow : public QWidget
 	QTabWidget *TabWidget;
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
-
-	explicit BuddyDataWindow(const Buddy &buddy);
 
 	void createGui();
 	void createTabs(QLayout *layout);
@@ -98,8 +93,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	static BuddyDataWindow * instance(const Buddy &buddy);
-
+	explicit BuddyDataWindow(const Buddy &buddy);
 	virtual ~BuddyDataWindow();
 
 	void show();
@@ -109,6 +103,7 @@ public:
 	QWidget * optionsTab() const { return OptionsTab; }
 
 signals:
+	void destroyed(const Buddy &buddy);
 	void save();
 
 };

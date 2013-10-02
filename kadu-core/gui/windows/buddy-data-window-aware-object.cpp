@@ -17,7 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/windows/buddy-data-window.h"
+#include "gui/windows/buddy-data-window-repository.h"
 
 #include "buddy-data-window-aware-object.h"
 
@@ -60,7 +62,7 @@ void BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(BuddyDataWindow 
  */
 void BuddyDataWindowAwareObject::triggerAllBuddyDataWindowsCreated()
 {
-	foreach (BuddyDataWindow *buddydatawindow, BuddyDataWindow::instances())
+	foreach (BuddyDataWindow *buddydatawindow, Core::instance()->buddyDataWindowRepository()->windows())
 		buddyDataWindowCreated(buddydatawindow);
 }
 
@@ -73,6 +75,6 @@ void BuddyDataWindowAwareObject::triggerAllBuddyDataWindowsCreated()
  */
 void BuddyDataWindowAwareObject::triggerAllBuddyDataWindowsDestroyed()
 {
-	foreach (BuddyDataWindow *buddydatawindow, BuddyDataWindow::instances())
+	foreach (BuddyDataWindow *buddydatawindow, Core::instance()->buddyDataWindowRepository()->windows())
 		buddyDataWindowDestroyed(buddydatawindow);
 }

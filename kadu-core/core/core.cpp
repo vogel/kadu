@@ -53,6 +53,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
@@ -545,6 +546,7 @@ void Core::createGui()
 
 void Core::runServices()
 {
+	CurrentBuddyDataWindowRepository = new BuddyDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
 	CurrentDomProcessorService = new DomProcessorService(this);
 	CurrentImageStorageService = new ImageStorageService(this);
@@ -580,6 +582,11 @@ void Core::runServices()
 void Core::runGuiServices()
 {
 	CurrentNotificationService = new NotificationService(this);
+}
+
+BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
+{
+	return CurrentBuddyDataWindowRepository;
 }
 
 ChatImageRequestService * Core::chatImageRequestService() const
