@@ -175,19 +175,19 @@ void BuddyDataWindow::createButtons(QLayout *layout)
 
 void BuddyDataWindow::updateBuddy()
 {
-	if (isValid())
-	{
-		if (MyBuddy)
-			MyBuddy.changeNotifier()->block();
+	if (!isValid())
+		return;
 
-		ContactTab->save();
-		GroupsTab->save();
-		OptionsTab->save();
-		emit save();
+	if (MyBuddy)
+		MyBuddy.changeNotifier()->block();
 
-		if (MyBuddy)
-			MyBuddy.changeNotifier()->unblock();
-	}
+	ContactTab->save();
+	GroupsTab->save();
+	OptionsTab->save();
+	emit save();
+
+	if (MyBuddy)
+		MyBuddy.changeNotifier()->unblock();
 }
 
 void BuddyDataWindow::updateBuddyAndClose()
