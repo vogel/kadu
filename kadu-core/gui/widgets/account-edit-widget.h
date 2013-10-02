@@ -54,9 +54,6 @@ private slots:
 	virtual void removeAccount() = 0;
 
 protected:
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
-
 	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
 
 	void applyAccountConfigurationWidgets();
