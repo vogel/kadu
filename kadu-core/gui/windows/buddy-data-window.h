@@ -38,6 +38,7 @@
 
 #include "buddies/buddy.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
+#include "gui/widgets/configuration-value-state-notifier.h"
 
 #include "exports.h"
 
@@ -55,6 +56,7 @@ class Buddy;
 class BuddyGeneralConfigurationWidget;
 class BuddyGroupsConfigurationWidget;
 class BuddyPersonalInfoConfigurationWidget;
+class CompositeConfigurationValueStateNotifier;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
@@ -68,9 +70,12 @@ class KADUAPI BuddyDataWindow : public QWidget
 	BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
 	BuddyOptionsConfigurationWidget *OptionsTab;
 
+	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+
 	QTabWidget *TabWidget;
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
+	QPushButton *CancelButton;
 
 	void createGui();
 	void createTabs(QLayout *layout);
@@ -80,10 +85,8 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
-	bool isValid() const;
-
 private slots:
-	void updateButtons();
+	void stateChangedSlot(ConfigurationValueState state);
 
 	void updateBuddy();
 	void updateBuddyAndClose();

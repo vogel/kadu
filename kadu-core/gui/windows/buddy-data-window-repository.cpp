@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
@@ -35,6 +36,9 @@ BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 {
 	if (Windows.contains(buddy))
 		return Windows.value(buddy);
+
+	if (buddy == Core::instance()->myself())
+		return 0;
 
 	BuddyDataWindow *result = new BuddyDataWindow(buddy);
 	connect(result, SIGNAL(destroyed(Buddy)), this, SLOT(windowDestroyed(Buddy)));

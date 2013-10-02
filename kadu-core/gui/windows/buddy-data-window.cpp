@@ -61,7 +61,7 @@
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
-#include "gui/widgets/configuration-value-state-notifier.h"
+#include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/change-notifier.h"
@@ -76,8 +76,11 @@
 #include "buddy-data-window.h"
 
 BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
-		QWidget(0, Qt::Dialog), MyBuddy(buddy)
+		QWidget(0, Qt::Dialog), MyBuddy(buddy),
+		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
+	Q_ASSERT(MyBuddy != Core::instance()->myself());
+
 	kdebugf();
 
 	setWindowRole("kadu-buddy-data");
@@ -85,7 +88,6 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
 	setWindowTitle(tr("Buddy Properties - %1").arg(MyBuddy.display()));
 
 	createGui();
-	updateButtons();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
@@ -93,6 +95,9 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
 
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)),
 			this, SLOT(buddyRemoved(Buddy)));
+
+	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
+	stateChangedSlot(ValueStateNotifier->state());
 }
 
 BuddyDataWindow::~BuddyDataWindow()
@@ -132,7 +137,7 @@ void BuddyDataWindow::createTabs(QLayout *layout)
 void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
 	ContactTab = new BuddyGeneralConfigurationWidget(MyBuddy, this);
-	connect(ContactTab->valueStateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(updateButtons()));
+	ValueStateNotifier->addConfigurationValueStateNotifier(ContactTab->valueStateNotifier());
 
 	tabWidget->addTab(ContactTab, tr("General"));
 }
@@ -164,19 +169,19 @@ void BuddyDataWindow::createButtons(QLayout *layout)
 	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
 	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
 
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
 
 	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddyAndClose()));
 	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddy()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
 }
 
 void BuddyDataWindow::updateBuddy()
 {
-	if (!isValid())
+	if (ValueStateNotifier->state() == StateChangedDataInvalid)
 		return;
 
 	if (MyBuddy)
@@ -193,11 +198,11 @@ void BuddyDataWindow::updateBuddy()
 
 void BuddyDataWindow::updateBuddyAndClose()
 {
-	if (isValid())
-	{
-		updateBuddy();
-		close();
-	}
+	if (ValueStateNotifier->state() == StateChangedDataInvalid)
+		return;
+
+	updateBuddy();
+	close();
 }
 
 void BuddyDataWindow::buddyRemoved(const Buddy &buddy)
@@ -217,16 +222,11 @@ void BuddyDataWindow::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-bool BuddyDataWindow::isValid() const
+void BuddyDataWindow::stateChangedSlot(ConfigurationValueState state)
 {
-	return (MyBuddy != Core::instance()->myself()) && ContactTab->valueStateNotifier()->state() != StateChangedDataInvalid;
-}
-
-void BuddyDataWindow::updateButtons()
-{
-	bool valid = isValid();
-	OkButton->setEnabled(valid);
-	ApplyButton->setEnabled(valid);
+	OkButton->setEnabled(state == StateChangedDataValid);
+	ApplyButton->setEnabled(state == StateChangedDataValid);
+	CancelButton->setEnabled(state != StateNotChanged);
 }
 
 #include "moc_buddy-data-window.cpp"
