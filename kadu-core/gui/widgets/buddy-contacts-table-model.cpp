@@ -26,6 +26,7 @@
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/buddy-contacts-table-item.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
 #include "model/roles.h"
@@ -37,16 +38,23 @@
 #include "buddy-contacts-table-model.h"
 
 BuddyContactsTableModel::BuddyContactsTableModel(Buddy buddy, QObject *parent) :
-		QAbstractTableModel(parent), ModelBuddy(buddy), CurrentMaxPriority(-1)
+		QAbstractTableModel(parent), ModelBuddy(buddy),
+		StateNotifier(new SimpleConfigurationValueStateNotifier(this)), CurrentMaxPriority(-1)
 {
 	contactsFromBuddy();
+	updateStateNotifier();
 }
 
 BuddyContactsTableModel::~BuddyContactsTableModel()
 {
 }
 
-bool BuddyContactsTableModel::isValid()
+const ConfigurationValueStateNotifier * BuddyContactsTableModel::valueStateNotifier() const
+{
+	return StateNotifier;
+}
+
+bool BuddyContactsTableModel::isValid() const
 {
 	foreach (BuddyContactsTableItem *item, Contacts)
 		if (!item->isValid())
@@ -233,8 +241,13 @@ void BuddyContactsTableModel::itemUpdated(BuddyContactsTableItem *item)
 	if (index != -1)
 	{
 		emit dataChanged(createIndex(index, 0), createIndex(index, 1));
-		emit validChanged();
+		updateStateNotifier();
 	}
+}
+
+void BuddyContactsTableModel::updateStateNotifier()
+{
+	StateNotifier->setState(isValid() ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 int BuddyContactsTableModel::columnCount(const QModelIndex &parent) const

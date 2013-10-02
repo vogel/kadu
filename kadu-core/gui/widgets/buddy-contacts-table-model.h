@@ -27,6 +27,8 @@
 #include "buddies/buddy.h"
 
 class BuddyContactsTableItem;
+class ConfigurationValueStateNotifier;
+class SimpleConfigurationValueStateNotifier;
 
 class BuddyContactsTableModel : public QAbstractTableModel
 {
@@ -34,6 +36,7 @@ class BuddyContactsTableModel : public QAbstractTableModel
 
 	Buddy ModelBuddy;
 	QList<BuddyContactsTableItem *> Contacts;
+	SimpleConfigurationValueStateNotifier *StateNotifier;
 
 	int CurrentMaxPriority;
 
@@ -49,6 +52,9 @@ class BuddyContactsTableModel : public QAbstractTableModel
 
 	void sendAuthorization(const Contact &contact);
 
+	bool isValid() const;
+	void updateStateNotifier();
+
 private slots:
 	void itemUpdated(BuddyContactsTableItem *item);
 
@@ -56,7 +62,8 @@ public:
 	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = 0);
 	virtual ~BuddyContactsTableModel();
 
-	bool isValid();
+	const ConfigurationValueStateNotifier * valueStateNotifier() const;
+
 	void save();
 
 	BuddyContactsTableItem * item(int row);
@@ -74,9 +81,6 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-
-signals:
-	void validChanged();
 
 };
 

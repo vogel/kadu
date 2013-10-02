@@ -110,9 +110,9 @@ void BuddyContactsTable::createGui()
 	layout->addWidget(buttons);
 }
 
-bool BuddyContactsTable::isValid()
+const ConfigurationValueStateNotifier * BuddyContactsTable::valueStateNotifier() const
 {
-	return Model->isValid();
+	return Model->valueStateNotifier();
 }
 
 void BuddyContactsTable::save()

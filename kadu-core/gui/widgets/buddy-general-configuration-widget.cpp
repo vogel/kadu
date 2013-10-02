@@ -46,6 +46,7 @@
 #include "contacts/contact.h"
 #include "gui/widgets/buddy-avatar-widget.h"
 #include "gui/widgets/buddy-contacts-table.h"
+#include "gui/widgets/configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/misc.h"
@@ -99,7 +100,7 @@ void BuddyGeneralConfigurationWidget::createGui()
 	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);
 	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
 	ContactsTable = new BuddyContactsTable(MyBuddy, contactsBox);
-	connect(ContactsTable, SIGNAL(validChanged()), this, SIGNAL(validChanged()));
+	connect(ContactsTable->valueStateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(validChanged()));
 	contactsLayout->addWidget(ContactsTable);
 
 	PreferHigherStatusCheck = new QCheckBox(tr("Prefer the most available contact"), contactsBox);
@@ -144,7 +145,7 @@ bool BuddyGeneralConfigurationWidget::isValid()
 	if (buddy && buddy != MyBuddy)
 		return false;
 
-	return ContactsTable->isValid();
+	return ContactsTable->valueStateNotifier()->state() != StateChangedDataInvalid;
 }
 
 void BuddyGeneralConfigurationWidget::save()

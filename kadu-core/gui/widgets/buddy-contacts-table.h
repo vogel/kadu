@@ -34,6 +34,7 @@ class QTableView;
 class BuddyContactsTableDelegate;
 class BuddyContactsTableModel;
 class BuddyContactsTableModelProxy;
+class ConfigurationValueStateNotifier;
 
 class BuddyContactsTable : public QWidget
 {
@@ -67,11 +68,9 @@ public:
 	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = 0);
 	virtual ~BuddyContactsTable();
 
-	bool isValid();
-	void save();
+	const ConfigurationValueStateNotifier * valueStateNotifier() const;
 
-signals:
-	void validChanged();
+	void save();
 
 };
 
