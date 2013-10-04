@@ -21,6 +21,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 
+#include "icons/kadu-icon.h"
+
 #include "otr-policy.h"
 
 #include "otr-chat-top-bar-widget.h"
@@ -28,6 +30,8 @@
 OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) :
 		QWidget(parent), MyContact(contact)
 {
+	setFocusPolicy(Qt::NoFocus);
+
 	createGui();
 }
 
@@ -42,6 +46,7 @@ void OtrChatTopBarWidget::createGui()
 	layout->setSpacing(0);
 
 	OtrStatusButton = new QPushButton();
+	OtrStatusButton->setFlat(true);
 	layout->addWidget(OtrStatusButton);
 	layout->addStretch(1);
 
@@ -78,9 +83,15 @@ void OtrChatTopBarWidget::trustLevelUpdated()
 	bool isPrivate = level >= OtrTrustLevelService::TrustLevelUnverified;
 
 	if (isPrivate)
+	{
+		OtrStatusButton->setIcon(KaduIcon("security-high").icon());
 		StartAction->setText(tr("Refresh Private Conversation"));
+	}
 	else
+	{
+		OtrStatusButton->setIcon(KaduIcon("security-low").icon());
 		StartAction->setText(tr("Start Private Conversation"));
+	}
 
 	EndAction->setEnabled(isPrivate);
 	VerifyAction->setEnabled(isPrivate);
@@ -98,14 +109,12 @@ QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevelService::TrustLevel 
 {
 	switch (level)
 	{
-		case OtrTrustLevelService::TrustLevelUnknown:
-			return tr("Unknown");
-		case OtrTrustLevelService::TrustLevelNotPrivate:
-			return tr("Not Private");
 		case OtrTrustLevelService::TrustLevelUnverified:
 			return tr("Unverified");
 		case OtrTrustLevelService::TrustLevelPrivate:
 			return tr("Private");
+		case OtrTrustLevelService::TrustLevelNotPrivate:
+		case OtrTrustLevelService::TrustLevelUnknown:
 		default:
 			return tr("Not Private");
 	}
