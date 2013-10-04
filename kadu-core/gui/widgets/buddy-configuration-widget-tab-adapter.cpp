@@ -31,7 +31,6 @@ BuddyConfigurationWidgetTabAdapter::BuddyConfigurationWidgetTabAdapter(BuddyData
 	Q_ASSERT(MyTabWidget);
 
 	connect(MyBuddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
-	connect(MyBuddyDataWindow, SIGNAL(widgetRemoved(BuddyConfigurationWidget*)), this, SLOT(widgetRemoved(BuddyConfigurationWidget*)));
 
 	foreach (BuddyConfigurationWidget *widget, MyBuddyDataWindow->buddyConfigurationWidgets())
 		widgetAdded(widget);

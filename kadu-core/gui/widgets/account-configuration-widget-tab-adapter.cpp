@@ -30,7 +30,6 @@ AccountConfigurationWidgetTabAdapter::AccountConfigurationWidgetTabAdapter(Accou
 	Q_ASSERT(MyTabWidget);
 
 	connect(MyAccountEditWidget, SIGNAL(widgetAdded(AccountConfigurationWidget*)), this, SLOT(widgetAdded(AccountConfigurationWidget*)));
-	connect(MyAccountEditWidget, SIGNAL(widgetRemoved(AccountConfigurationWidget*)), this, SLOT(widgetRemoved(AccountConfigurationWidget*)));
 
 	foreach (AccountConfigurationWidget *widget, MyAccountEditWidget->accountConfigurationWidgets())
 		widgetAdded(widget);
