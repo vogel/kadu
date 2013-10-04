@@ -9,6 +9,8 @@ include (FindPkgConfig)
 set (SOURCES
 	gui/widgets/otr-account-configuration-widget-factory.cpp
 	gui/widgets/otr-account-configuration-widget.cpp
+	gui/widgets/otr-buddy-configuration-widget-factory.cpp
+	gui/widgets/otr-buddy-configuration-widget.cpp
 	gui/widgets/otr-chat-top-bar-widget-factory.cpp
 	gui/widgets/otr-chat-top-bar-widget.cpp
 	gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.cpp
@@ -52,6 +54,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	gui/widgets/otr-account-configuration-widget.h
+	gui/widgets/otr-buddy-configuration-widget.h
 	gui/widgets/otr-chat-top-bar-widget-factory.h
 	gui/widgets/otr-chat-top-bar-widget.h
 	gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h

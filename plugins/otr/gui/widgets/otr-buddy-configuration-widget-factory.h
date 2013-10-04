@@ -17,38 +17,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_POLICY_SERVICE_H
-#define OTR_POLICY_SERVICE_H
+#ifndef OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
+#define OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H
 
-#include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
 
-extern "C" {
-#	include <libotr/proto.h>
-}
+#include "gui/widgets/buddy-configuration-widget-factory.h"
 
-class Account;
-class Buddy;
-class Contact;
-class OtrPolicy;
+class OtrPolicyService;
 
-class OtrPolicyService : public QObject
+class OtrBuddyConfigurationWidgetFactory : public BuddyConfigurationWidgetFactory
 {
-	Q_OBJECT
+	QWeakPointer<OtrPolicyService> PolicyService;
 
 public:
-	static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
+	virtual ~OtrBuddyConfigurationWidgetFactory();
 
-	explicit OtrPolicyService(QObject *parent = 0);
-	virtual ~OtrPolicyService();
+	void setPolicyService(OtrPolicyService *policyService);
 
-	void setAccountPolicy(const Account &account, const OtrPolicy &policy);
-	OtrPolicy accountPolicy(const Account &account) const;
-
-	void setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy);
-	OtrPolicy buddyPolicy(const Buddy &buddy) const;
-
-	OtrPolicy contactPolicy(const Contact &contact) const;
+	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
 
 };
 
-#endif // OTR_POLICY_SERVICE_H
+#endif // OTR_BUDDY_CONFIGURATION_WIDGET_FACTORY_H

@@ -26,6 +26,7 @@
 
 class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsService;
+class OtrBuddyConfigurationWidgetFactory;
 class OtrChatTopBarWidgetFactory;
 class OtrContextConverter;
 class OtrErrorMessageService;
@@ -56,6 +57,7 @@ class OtrPlugin : public QObject, public GenericPlugin
 
 	QScopedPointer<OtrAccountConfigurationWidgetFactory> AccountConfigurationWidgetFactory;
 	QScopedPointer<OtrAppOpsService> AppOpsService;
+	QScopedPointer<OtrBuddyConfigurationWidgetFactory> BuddyConfigurationWidgetFactory;
 	QScopedPointer<OtrChatTopBarWidgetFactory> ChatTopBarWidgetFactory;
 	QScopedPointer<OtrContextConverter> ContextConverter;
 	QScopedPointer<OtrErrorMessageService> ErrorMessageService;
@@ -77,11 +79,14 @@ class OtrPlugin : public QObject, public GenericPlugin
 	QScopedPointer<OtrTrustLevelService> TrustLevelService;
 	QScopedPointer<OtrUserStateService> UserStateService;
 
-	void registerOtrAcountConfigurationWidgetFactory();
-	void unregisterOtrAcountConfigurationWidgetFactory();
+	void registerOtrAccountConfigurationWidgetFactory();
+	void unregisterOtrAccountConfigurationWidgetFactory();
 
 	void registerOtrAppOpsService();
 	void unregisterOtrAppOpsService();
+
+	void registerOtrBuddyConfigurationWidgetFactory();
+	void unregisterOtrBuddyConfigurationWidgetFactory();
 
 	void registerOtrChatTopBarWidgetFactory();
 	void unregisterOtrChatTopBarWidgetFactory();

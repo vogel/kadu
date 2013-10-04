@@ -20,12 +20,14 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
+#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "notify/notification-manager.h"
 #include "message/message-manager.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
+#include "gui/widgets/otr-buddy-configuration-widget-factory.h"
 #include "gui/widgets/otr-chat-top-bar-widget-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
 #include "gui/windows/otr-peer-identity-verification-window-repository.h"
@@ -60,14 +62,14 @@ OtrPlugin::~OtrPlugin()
 {
 }
 
-void OtrPlugin::registerOtrAcountConfigurationWidgetFactory()
+void OtrPlugin::registerOtrAccountConfigurationWidgetFactory()
 {
 	AccountConfigurationWidgetFactory.reset(new OtrAccountConfigurationWidgetFactory());
 
 	Core::instance()->accountConfigurationWidgetFactoryRepository()->registerFactory(AccountConfigurationWidgetFactory.data());
 }
 
-void OtrPlugin::unregisterOtrAcountConfigurationWidgetFactory()
+void OtrPlugin::unregisterOtrAccountConfigurationWidgetFactory()
 {
 	Core::instance()->accountConfigurationWidgetFactoryRepository()->unregisterFactory(AccountConfigurationWidgetFactory.data());
 
@@ -82,6 +84,20 @@ void OtrPlugin::registerOtrAppOpsService()
 void OtrPlugin::unregisterOtrAppOpsService()
 {
 	AppOpsService.reset();
+}
+
+void OtrPlugin::registerOtrBuddyConfigurationWidgetFactory()
+{
+	BuddyConfigurationWidgetFactory.reset(new OtrBuddyConfigurationWidgetFactory());
+
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(BuddyConfigurationWidgetFactory.data());
+}
+
+void OtrPlugin::unregisterOtrBuddyConfigurationWidgetFactory()
+{
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(BuddyConfigurationWidgetFactory.data());
+
+	BuddyConfigurationWidgetFactory.reset();
 }
 
 void OtrPlugin::registerOtrChatTopBarWidgetFactory()
@@ -311,8 +327,9 @@ int OtrPlugin::init(bool firstLoad)
 	if (!OtrAvailable)
 		return 1;
 
-	registerOtrAcountConfigurationWidgetFactory();
+	registerOtrAccountConfigurationWidgetFactory();
 	registerOtrAppOpsService();
+	registerOtrBuddyConfigurationWidgetFactory();
 	registerOtrChatTopBarWidgetFactory();
 	registerOtrContextConverter();
 	registerOtrErrorMessageService();
@@ -335,6 +352,8 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrUserStateService();
 
 	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
+
+	BuddyConfigurationWidgetFactory->setPolicyService(PolicyService.data());
 
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 	ChatTopBarWidgetFactory->setSessionService(SessionService.data());
@@ -507,6 +526,8 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setSessionService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
 
+	BuddyConfigurationWidgetFactory->setPolicyService(0);
+
 	AccountConfigurationWidgetFactory->setPolicyService(0);
 
 	unregisterOtrUserStateService();
@@ -529,8 +550,9 @@ void OtrPlugin::done()
 	unregisterOtrErrorMessageService();
 	unregisterOtrContextConverter();
 	unregisterOtrChatTopBarWidgetFactory();
+	unregisterOtrBuddyConfigurationWidgetFactory();
 	unregisterOtrAppOpsService();
-	unregisterOtrAcountConfigurationWidgetFactory();
+	unregisterOtrAccountConfigurationWidgetFactory();
 }
 
 Q_EXPORT_PLUGIN2(otr, OtrPlugin)

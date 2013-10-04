@@ -17,38 +17,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef OTR_POLICY_SERVICE_H
-#define OTR_POLICY_SERVICE_H
+#include "gui/widgets/otr-buddy-configuration-widget.h"
+#include "otr-policy-service.h"
 
-#include <QtCore/QObject>
+#include "otr-buddy-configuration-widget-factory.h"
 
-extern "C" {
-#	include <libotr/proto.h>
+OtrBuddyConfigurationWidgetFactory::~OtrBuddyConfigurationWidgetFactory()
+{
 }
 
-class Account;
-class Buddy;
-class Contact;
-class OtrPolicy;
-
-class OtrPolicyService : public QObject
+void OtrBuddyConfigurationWidgetFactory::setPolicyService(OtrPolicyService *policyService)
 {
-	Q_OBJECT
+	PolicyService = policyService;
+}
 
-public:
-	static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
+BuddyConfigurationWidget * OtrBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
+{
+	OtrBuddyConfigurationWidget *result = new OtrBuddyConfigurationWidget(buddy, parent);
+	result->setPolicyService(PolicyService.data());
 
-	explicit OtrPolicyService(QObject *parent = 0);
-	virtual ~OtrPolicyService();
-
-	void setAccountPolicy(const Account &account, const OtrPolicy &policy);
-	OtrPolicy accountPolicy(const Account &account) const;
-
-	void setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy);
-	OtrPolicy buddyPolicy(const Buddy &buddy) const;
-
-	OtrPolicy contactPolicy(const Contact &contact) const;
-
-};
-
-#endif // OTR_POLICY_SERVICE_H
+	return result;
+}

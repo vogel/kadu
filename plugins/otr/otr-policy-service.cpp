@@ -55,6 +55,16 @@ OtrPolicy OtrPolicyService::accountPolicy(const Account &account) const
 	return OtrPolicy::fromString(account.property("otr:policy", QVariant()).toString());
 }
 
+void OtrPolicyService::setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy)
+{
+	buddy.addProperty("otr:policy", policy.toString(), CustomProperties::Storable);
+}
+
+OtrPolicy OtrPolicyService::buddyPolicy(const Buddy &buddy) const
+{
+	return OtrPolicy::fromString(buddy.property("otr:policy", QVariant()).toString());
+}
+
 OtrPolicy OtrPolicyService::contactPolicy(const Contact &contact) const
 {
 	return accountPolicy(contact.contactAccount());
