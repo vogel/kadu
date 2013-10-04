@@ -67,5 +67,9 @@ OtrPolicy OtrPolicyService::buddyPolicy(const Buddy &buddy) const
 
 OtrPolicy OtrPolicyService::contactPolicy(const Contact &contact) const
 {
-	return accountPolicy(contact.contactAccount());
+	OtrPolicy fromBuddy = buddyPolicy(contact.ownerBuddy());
+	if (OtrPolicy::UNDEFINED == fromBuddy)
+		return accountPolicy(contact.contactAccount());
+	else
+		return fromBuddy; 
 }

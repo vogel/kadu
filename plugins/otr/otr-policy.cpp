@@ -19,12 +19,14 @@
 
 #include "otr-policy.h"
 
+OtrPolicy OtrPolicy::UNDEFINED(OTRL_POLICY_MANUAL, "undefined");
 OtrPolicy OtrPolicy::NEVER(OTRL_POLICY_NEVER, "never");
 OtrPolicy OtrPolicy::MANUAL(OTRL_POLICY_MANUAL, "manual");
 OtrPolicy OtrPolicy::OPPORTUNISTIC(OTRL_POLICY_OPPORTUNISTIC, "opportunistic");
 OtrPolicy OtrPolicy::ALWAYS(OTRL_POLICY_ALWAYS, "always");
 
 QList<OtrPolicy> OtrPolicy::Values = QList<OtrPolicy>()
+		<< OtrPolicy::UNDEFINED
 		<< OtrPolicy::MANUAL
 		<< OtrPolicy::OPPORTUNISTIC
 		<< OtrPolicy::ALWAYS
@@ -68,7 +70,7 @@ OtrPolicy & OtrPolicy::operator = (const OtrPolicy &copyFrom)
 
 bool OtrPolicy::operator == (const OtrPolicy &compareTo) const
 {
-	return Policy == compareTo.Policy;
+	return PolicyString == compareTo.PolicyString;
 }
 
 OtrlPolicy OtrPolicy::toOtrPolicy() const

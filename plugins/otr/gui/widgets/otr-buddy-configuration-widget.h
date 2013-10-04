@@ -35,6 +35,7 @@ class OtrBuddyConfigurationWidget : public BuddyConfigurationWidget
 
 	QWeakPointer<OtrPolicyService> PolicyService;
 
+	QCheckBox *UseAccountPolicyCheckBox;
 	QCheckBox *EnableCheckBox;
 	QCheckBox *AutomaticallyInitiateCheckBox;
 	QCheckBox *RequireCheckBox;
