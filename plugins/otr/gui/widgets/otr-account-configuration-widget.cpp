@@ -69,12 +69,12 @@ void OtrAccountConfigurationWidget::setPolicyService(OtrPolicyService *policySer
 OtrPolicy OtrAccountConfigurationWidget::policy()
 {
 	if (!EnableCheckBox->isChecked())
-		return OtrPolicy::NEVER;
+		return OtrPolicy::PolicyNever;
 	if (!AutomaticallyInitiateCheckBox->isChecked())
-		return OtrPolicy::MANUAL;
+		return OtrPolicy::PolicyManual;
 	if (!RequireCheckBox->isChecked())
-		return OtrPolicy::OPPORTUNISTIC;
-	return OtrPolicy::ALWAYS;
+		return OtrPolicy::PolicyOpportunistic;
+	return OtrPolicy::PolicyAlways;
 }
 
 void OtrAccountConfigurationWidget::loadValues()
@@ -84,19 +84,19 @@ void OtrAccountConfigurationWidget::loadValues()
 
 	OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
 
-	if (accountPolicy == OtrPolicy::MANUAL)
+	if (accountPolicy == OtrPolicy::PolicyManual)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(false);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (accountPolicy == OtrPolicy::OPPORTUNISTIC)
+	else if (accountPolicy == OtrPolicy::PolicyOpportunistic)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (accountPolicy == OtrPolicy::ALWAYS)
+	else if (accountPolicy == OtrPolicy::PolicyAlways)
 	{
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);

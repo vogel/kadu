@@ -72,14 +72,14 @@ void OtrBuddyConfigurationWidget::setPolicyService(OtrPolicyService *policyServi
 OtrPolicy OtrBuddyConfigurationWidget::policy()
 {
 	if (UseAccountPolicyCheckBox->isCheckable())
-		return OtrPolicy::UNDEFINED;
+		return OtrPolicy::PolicyUndefined;
 	if (!EnableCheckBox->isChecked())
-		return OtrPolicy::NEVER;
+		return OtrPolicy::PolicyNever;
 	if (!AutomaticallyInitiateCheckBox->isChecked())
-		return OtrPolicy::MANUAL;
+		return OtrPolicy::PolicyManual;
 	if (!RequireCheckBox->isChecked())
-		return OtrPolicy::OPPORTUNISTIC;
-	return OtrPolicy::ALWAYS;
+		return OtrPolicy::PolicyOpportunistic;
+	return OtrPolicy::PolicyAlways;
 }
 
 void OtrBuddyConfigurationWidget::loadValues()
@@ -89,28 +89,28 @@ void OtrBuddyConfigurationWidget::loadValues()
 
 	OtrPolicy buddyPolicy = PolicyService.data()->buddyPolicy(buddy());
 
-	if (buddyPolicy == OtrPolicy::UNDEFINED)
+	if (buddyPolicy == OtrPolicy::PolicyUndefined)
 	{
 		UseAccountPolicyCheckBox->setChecked(true);
 		EnableCheckBox->setChecked(false);
 		AutomaticallyInitiateCheckBox->setChecked(false);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (buddyPolicy == OtrPolicy::MANUAL)
+	else if (buddyPolicy == OtrPolicy::PolicyManual)
 	{
 		UseAccountPolicyCheckBox->setChecked(false);
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(false);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (buddyPolicy == OtrPolicy::OPPORTUNISTIC)
+	else if (buddyPolicy == OtrPolicy::PolicyOpportunistic)
 	{
 		UseAccountPolicyCheckBox->setChecked(false);
 		EnableCheckBox->setChecked(true);
 		AutomaticallyInitiateCheckBox->setChecked(true);
 		RequireCheckBox->setChecked(false);
 	}
-	else if (buddyPolicy == OtrPolicy::ALWAYS)
+	else if (buddyPolicy == OtrPolicy::PolicyAlways)
 	{
 		UseAccountPolicyCheckBox->setChecked(false);
 		EnableCheckBox->setChecked(true);

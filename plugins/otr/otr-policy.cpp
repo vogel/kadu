@@ -19,18 +19,18 @@
 
 #include "otr-policy.h"
 
-OtrPolicy OtrPolicy::UNDEFINED(OTRL_POLICY_MANUAL, "undefined");
-OtrPolicy OtrPolicy::NEVER(OTRL_POLICY_NEVER, "never");
-OtrPolicy OtrPolicy::MANUAL(OTRL_POLICY_MANUAL, "manual");
-OtrPolicy OtrPolicy::OPPORTUNISTIC(OTRL_POLICY_OPPORTUNISTIC, "opportunistic");
-OtrPolicy OtrPolicy::ALWAYS(OTRL_POLICY_ALWAYS, "always");
+OtrPolicy OtrPolicy::PolicyUndefined(OTRL_POLICY_MANUAL, "undefined");
+OtrPolicy OtrPolicy::PolicyNever(OTRL_POLICY_NEVER, "never");
+OtrPolicy OtrPolicy::PolicyManual(OTRL_POLICY_MANUAL, "manual");
+OtrPolicy OtrPolicy::PolicyOpportunistic(OTRL_POLICY_OPPORTUNISTIC, "opportunistic");
+OtrPolicy OtrPolicy::PolicyAlways(OTRL_POLICY_ALWAYS, "always");
 
 QList<OtrPolicy> OtrPolicy::Values = QList<OtrPolicy>()
-		<< OtrPolicy::UNDEFINED
-		<< OtrPolicy::MANUAL
-		<< OtrPolicy::OPPORTUNISTIC
-		<< OtrPolicy::ALWAYS
-		<< OtrPolicy::NEVER;
+		<< OtrPolicy::PolicyUndefined
+		<< OtrPolicy::PolicyManual
+		<< OtrPolicy::PolicyOpportunistic
+		<< OtrPolicy::PolicyAlways
+		<< OtrPolicy::PolicyNever;
 
 OtrPolicy OtrPolicy::fromPolicy(OtrlPolicy otrPolicy)
 {

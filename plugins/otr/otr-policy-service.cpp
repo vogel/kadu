@@ -33,7 +33,7 @@ OtrlPolicy OtrPolicyService::wrapperOtrPolicy(void *data, ConnContext *context)
 	if (opData->policyService())
 		return opData->policyService()->contactPolicy(opData->contact()).toOtrPolicy();
 	else
-		return OtrPolicy::MANUAL.toOtrPolicy();
+		return OtrPolicy::PolicyManual.toOtrPolicy();
 }
 
 OtrPolicyService::OtrPolicyService(QObject *parent) :
@@ -68,8 +68,8 @@ OtrPolicy OtrPolicyService::buddyPolicy(const Buddy &buddy) const
 OtrPolicy OtrPolicyService::contactPolicy(const Contact &contact) const
 {
 	OtrPolicy fromBuddy = buddyPolicy(contact.ownerBuddy());
-	if (OtrPolicy::UNDEFINED == fromBuddy)
+	if (OtrPolicy::PolicyUndefined == fromBuddy)
 		return accountPolicy(contact.contactAccount());
 	else
-		return fromBuddy; 
+		return fromBuddy;
 }

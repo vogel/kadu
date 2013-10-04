@@ -37,11 +37,11 @@ class OtrPolicy
 	explicit OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
 
 public:
-	static OtrPolicy UNDEFINED;
-	static OtrPolicy NEVER;
-	static OtrPolicy MANUAL;
-	static OtrPolicy OPPORTUNISTIC;
-	static OtrPolicy ALWAYS;
+	static OtrPolicy PolicyUndefined;
+	static OtrPolicy PolicyNever;
+	static OtrPolicy PolicyManual;
+	static OtrPolicy PolicyOpportunistic;
+	static OtrPolicy PolicyAlways;
 
 	static OtrPolicy fromPolicy(OtrlPolicy otrPolicy);
 	static OtrPolicy fromString(const QString &policyString);
