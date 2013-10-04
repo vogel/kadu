@@ -42,7 +42,7 @@ OtrNotifier::OtrNotifier(QObject *parent) :
 			QT_TRANSLATE_NOOP("@default", "OTR Encryption")));
 	TryingToStartSessionNotifyEvent.reset(new NotifyEvent(TryingToStartSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Trying to start private conversation")));
-	TryingToStartSessionNotifyEvent.reset(new NotifyEvent(TryingToRefreshSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
+	TryingToRefreshSessionNotifyEvent.reset(new NotifyEvent(TryingToRefreshSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Trying to refresh private conversation")));
 	PeerClosedSessionNotifyEvent.reset(new NotifyEvent(PeerClosedSessionNotifyTopic, NotifyEvent::CallbackNotRequired,
 			QT_TRANSLATE_NOOP("@default", "Peer closed private conversation")));
