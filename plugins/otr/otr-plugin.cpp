@@ -65,14 +65,10 @@ OtrPlugin::~OtrPlugin()
 void OtrPlugin::registerOtrAccountConfigurationWidgetFactory()
 {
 	AccountConfigurationWidgetFactory.reset(new OtrAccountConfigurationWidgetFactory());
-
-	Core::instance()->accountConfigurationWidgetFactoryRepository()->registerFactory(AccountConfigurationWidgetFactory.data());
 }
 
 void OtrPlugin::unregisterOtrAccountConfigurationWidgetFactory()
 {
-	Core::instance()->accountConfigurationWidgetFactoryRepository()->unregisterFactory(AccountConfigurationWidgetFactory.data());
-
 	AccountConfigurationWidgetFactory.reset();
 }
 
@@ -89,28 +85,20 @@ void OtrPlugin::unregisterOtrAppOpsService()
 void OtrPlugin::registerOtrBuddyConfigurationWidgetFactory()
 {
 	BuddyConfigurationWidgetFactory.reset(new OtrBuddyConfigurationWidgetFactory());
-
-	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(BuddyConfigurationWidgetFactory.data());
 }
 
 void OtrPlugin::unregisterOtrBuddyConfigurationWidgetFactory()
 {
-	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(BuddyConfigurationWidgetFactory.data());
-
 	BuddyConfigurationWidgetFactory.reset();
 }
 
 void OtrPlugin::registerOtrChatTopBarWidgetFactory()
 {
 	ChatTopBarWidgetFactory.reset(new OtrChatTopBarWidgetFactory());
-
-	Core::instance()->chatTopBarWidgetFactoryRepository()->registerFactory(ChatTopBarWidgetFactory.data());
 }
 
 void OtrPlugin::unregisterOtrChatTopBarWidgetFactory()
 {
-	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(ChatTopBarWidgetFactory.data());
-
 	ChatTopBarWidgetFactory.reset();
 }
 
@@ -352,12 +340,15 @@ int OtrPlugin::init(bool firstLoad)
 	registerOtrUserStateService();
 
 	AccountConfigurationWidgetFactory->setPolicyService(PolicyService.data());
+	Core::instance()->accountConfigurationWidgetFactoryRepository()->registerFactory(AccountConfigurationWidgetFactory.data());
 
 	BuddyConfigurationWidgetFactory->setPolicyService(PolicyService.data());
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(BuddyConfigurationWidgetFactory.data());
 
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(PeerIdentityVerificationWindowRepository.data());
 	ChatTopBarWidgetFactory->setSessionService(SessionService.data());
 	ChatTopBarWidgetFactory->setTrustLevelService(TrustLevelService.data());
+	Core::instance()->chatTopBarWidgetFactoryRepository()->registerFactory(ChatTopBarWidgetFactory.data());
 
 	ContextConverter->setUserStateService(UserStateService.data());
 
@@ -525,10 +516,13 @@ void OtrPlugin::done()
 	ChatTopBarWidgetFactory->setTrustLevelService(0);
 	ChatTopBarWidgetFactory->setSessionService(0);
 	ChatTopBarWidgetFactory->setPeerIdentityVerificationWindowRepository(0);
+	Core::instance()->chatTopBarWidgetFactoryRepository()->unregisterFactory(ChatTopBarWidgetFactory.data());
 
 	BuddyConfigurationWidgetFactory->setPolicyService(0);
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(BuddyConfigurationWidgetFactory.data());
 
 	AccountConfigurationWidgetFactory->setPolicyService(0);
+	Core::instance()->accountConfigurationWidgetFactoryRepository()->unregisterFactory(AccountConfigurationWidgetFactory.data());
 
 	unregisterOtrUserStateService();
 	unregisterOtrTrustLevelService();
