@@ -53,6 +53,9 @@ class QTabWidget;
 class QVBoxLayout;
 
 class Buddy;
+class BuddyConfigurationWidget;
+class BuddyConfigurationWidgetFactory;
+class BuddyConfigurationWidgetFactoryRepository;
 class BuddyGeneralConfigurationWidget;
 class BuddyGroupsConfigurationWidget;
 class BuddyPersonalInfoConfigurationWidget;
@@ -63,6 +66,9 @@ class KADUAPI BuddyDataWindow : public QWidget
 	friend class BuddyDataWindowAwareObject;
 
 	Q_OBJECT
+
+	BuddyConfigurationWidgetFactoryRepository *MyBuddyConfigurationWidgetFactoryRepository;
+	QMap<BuddyConfigurationWidgetFactory *, BuddyConfigurationWidget *> BuddyConfigurationWidgets;
 
 	Buddy MyBuddy;
 	BuddyGeneralConfigurationWidget *ContactTab;
@@ -85,7 +91,12 @@ class KADUAPI BuddyDataWindow : public QWidget
 	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
+	void applyBuddyConfigurationWidgets();
+
 private slots:
+	void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
+	void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
+
 	void stateChangedSlot(ConfigurationValueState state);
 
 	void updateBuddy();
@@ -96,8 +107,10 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit BuddyDataWindow(const Buddy &buddy);
+	explicit BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository, const Buddy &buddy);
 	virtual ~BuddyDataWindow();
+
+	QList<BuddyConfigurationWidget *> buddyConfigurationWidgets() const;
 
 	void show();
 
@@ -106,6 +119,9 @@ public:
 	QWidget * optionsTab() const { return OptionsTab; }
 
 signals:
+	void widgetAdded(BuddyConfigurationWidget *widget);
+	void widgetRemoved(BuddyConfigurationWidget *widget);
+
 	void destroyed(const Buddy &buddy);
 	void save();
 

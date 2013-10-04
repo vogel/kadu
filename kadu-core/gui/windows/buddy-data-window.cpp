@@ -57,6 +57,10 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
+#include "gui/widgets/buddy-configuration-widget.h"
+#include "gui/widgets/buddy-configuration-widget-factory.h"
+#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/buddy-configuration-widget-tab-adapter.h"
 #include "gui/widgets/buddy-general-configuration-widget.h"
 #include "gui/widgets/buddy-groups-configuration-widget.h"
 #include "gui/widgets/buddy-options-configuration-widget.h"
@@ -75,8 +79,8 @@
 
 #include "buddy-data-window.h"
 
-BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
-		QWidget(0, Qt::Dialog), MyBuddy(buddy),
+BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository, const Buddy &buddy) :
+		QWidget(0, Qt::Dialog), MyBuddyConfigurationWidgetFactoryRepository(buddyConfigurationWidgetFactoryRepository), MyBuddy(buddy),
 		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
 	Q_ASSERT(MyBuddy != Core::instance()->myself());
@@ -98,6 +102,17 @@ BuddyDataWindow::BuddyDataWindow(const Buddy &buddy) :
 
 	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 	stateChangedSlot(ValueStateNotifier->state());
+
+	if (MyBuddyConfigurationWidgetFactoryRepository)
+	{
+		connect(MyBuddyConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(BuddyConfigurationWidgetFactory*)),
+				this, SLOT(factoryRegistered(BuddyConfigurationWidgetFactory*)));
+		connect(MyBuddyConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(BuddyConfigurationWidgetFactory*)),
+				this, SLOT(factoryUnregistered(BuddyConfigurationWidgetFactory*)));
+
+		foreach (BuddyConfigurationWidgetFactory *factory, MyBuddyConfigurationWidgetFactoryRepository->factories())
+			factoryRegistered(factory);
+	}
 }
 
 BuddyDataWindow::~BuddyDataWindow()
@@ -106,6 +121,41 @@ BuddyDataWindow::~BuddyDataWindow()
 	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
 	emit destroyed(MyBuddy);
 	kdebugf2();
+}
+
+void BuddyDataWindow::factoryRegistered(BuddyConfigurationWidgetFactory *factory)
+{
+	BuddyConfigurationWidget *widget = factory->createWidget(buddy(), this);
+	if (widget)
+	{
+		if (widget->stateNotifier())
+			ValueStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
+		BuddyConfigurationWidgets.insert(factory, widget);
+		emit widgetAdded(widget);
+	}
+}
+
+void BuddyDataWindow::factoryUnregistered(BuddyConfigurationWidgetFactory *factory)
+{
+	if (BuddyConfigurationWidgets.contains(factory))
+	{
+		BuddyConfigurationWidget *widget = BuddyConfigurationWidgets.value(factory);
+		if (widget->stateNotifier())
+			ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+		emit widgetRemoved(widget);
+		widget->deleteLater();
+	}
+}
+
+QList<BuddyConfigurationWidget *> BuddyDataWindow::buddyConfigurationWidgets() const
+{
+	return BuddyConfigurationWidgets.values();
+}
+
+void BuddyDataWindow::applyBuddyConfigurationWidgets()
+{
+	foreach (BuddyConfigurationWidget *widget, BuddyConfigurationWidgets)
+		widget->apply();
 }
 
 void BuddyDataWindow::show()
@@ -126,6 +176,8 @@ void BuddyDataWindow::createGui()
 void BuddyDataWindow::createTabs(QLayout *layout)
 {
 	TabWidget = new QTabWidget(this);
+
+	new BuddyConfigurationWidgetTabAdapter(this, TabWidget, this);
 
 	createGeneralTab(TabWidget);
 	createGroupsTab(TabWidget);
@@ -186,6 +238,8 @@ void BuddyDataWindow::updateBuddy()
 
 	if (MyBuddy)
 		MyBuddy.changeNotifier()->block();
+
+	applyBuddyConfigurationWidgets();
 
 	ContactTab->save();
 	GroupsTab->save();

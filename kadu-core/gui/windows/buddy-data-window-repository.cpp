@@ -40,7 +40,7 @@ BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 	if (buddy == Core::instance()->myself())
 		return 0;
 
-	BuddyDataWindow *result = new BuddyDataWindow(buddy);
+	BuddyDataWindow *result = new BuddyDataWindow(Core::instance()->buddyConfigurationWidgetFactoryRepository(), buddy);
 	connect(result, SIGNAL(destroyed(Buddy)), this, SLOT(windowDestroyed(Buddy)));
 	Windows.insert(buddy, result);
 

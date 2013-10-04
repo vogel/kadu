@@ -66,7 +66,7 @@ public:
 							   Account account, QWidget *parent = 0);
 	virtual ~AccountEditWidget();
 
-    virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
 
 	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
 
