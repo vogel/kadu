@@ -78,6 +78,7 @@ void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *f
 			CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
 		emit widgetRemoved(widget);
 		widget->deleteLater();
+		AccountConfigurationWidgets.remove(factory);
 	}
 }
 
