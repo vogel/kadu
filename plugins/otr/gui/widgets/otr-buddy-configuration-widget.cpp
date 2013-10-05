@@ -131,11 +131,8 @@ void OtrBuddyConfigurationWidget::updateState()
 	if (!PolicyService)
 	{
 		StateNotifier->setState(StateNotChanged);
-		hide();
 		return;
 	}
-	else
-		show();
 
 	EnableCheckBox->setEnabled(false);
 	AutomaticallyInitiateCheckBox->setEnabled(false);

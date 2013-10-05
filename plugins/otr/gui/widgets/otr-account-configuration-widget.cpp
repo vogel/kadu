@@ -115,11 +115,8 @@ void OtrAccountConfigurationWidget::updateState()
 	if (!PolicyService)
 	{
 		StateNotifier->setState(StateNotChanged);
-		hide();
 		return;
 	}
-	else
-		show();
 
 	AutomaticallyInitiateCheckBox->setEnabled(false);
 	RequireCheckBox->setEnabled(false);
