@@ -25,24 +25,26 @@ KADU_AWARE_CLASS(ChatDataWindowAwareObject)
 
 void ChatDataWindowAwareObject::notifyChatDataWindowCreated(ChatDataWindow *chatDataWindow)
 {
-	foreach (ChatDataWindowAwareObject *object, Objects)
-		object->chatDataWindowCreated(chatDataWindow);
+	Q_UNUSED(chatDataWindow);
+//	foreach (ChatDataWindowAwareObject *object, Objects)
+//		object->chatDataWindowCreated(chatDataWindow);
 }
 
 void ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(ChatDataWindow *chatDataWindow)
 {
-	foreach (ChatDataWindowAwareObject *object, Objects)
-		object->chatDataWindowDestroyed(chatDataWindow);
+	Q_UNUSED(chatDataWindow);
+//	foreach (ChatDataWindowAwareObject *object, Objects)
+//		object->chatDataWindowDestroyed(chatDataWindow);
 }
 
 void ChatDataWindowAwareObject::triggerAllChatDataWindowsCreated()
 {
-	foreach (ChatDataWindow *chatDataWindow, ChatDataWindow::instances())
-		chatDataWindowCreated(chatDataWindow);
+//	foreach (ChatDataWindow *chatDataWindow, ChatDataWindow::instances())
+//		chatDataWindowCreated(chatDataWindow);
 }
 
 void ChatDataWindowAwareObject::triggerAllChatDataWindowsDestroyed()
 {
-	foreach (ChatDataWindow *chatDataWindow, ChatDataWindow::instances())
-		chatDataWindowDestroyed(chatDataWindow);
+//	foreach (ChatDataWindow *chatDataWindow, ChatDataWindow::instances())
+//		chatDataWindowDestroyed(chatDataWindow);
 }

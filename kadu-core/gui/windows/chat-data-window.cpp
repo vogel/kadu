@@ -45,22 +45,9 @@
 
 #include "chat-data-window.h"
 
-QMap<Chat, ChatDataWindow *> ChatDataWindow::Instances;
-
-ChatDataWindow * ChatDataWindow::instance(const Chat &chat, QWidget *parent)
+ChatDataWindow::ChatDataWindow(const Chat &chat) :
+		QWidget(0, Qt::Dialog), MyChat(chat), EditWidget(0)
 {
-	if (Instances.contains(chat))
-		// TODO: it might be useful someday to reparent in case the new parent is different than the old
-		return Instances.value(chat);
-	else
-		return new ChatDataWindow(chat, parent);
-}
-
-ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
-		QWidget(parent, Qt::Dialog), MyChat(chat), EditWidget(0)
-{
-	Instances.insert(MyChat, this);
-
 	setWindowRole("kadu-chat-data");
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Chat Properties - %1").arg(MyChat.display()));
@@ -79,8 +66,7 @@ ChatDataWindow::ChatDataWindow(const Chat &chat, QWidget *parent) :
 ChatDataWindow::~ChatDataWindow()
 {
 	ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(this);
-
-	Instances.remove(MyChat);
+	emit destroyed(MyChat);
 }
 
 void ChatDataWindow::show()

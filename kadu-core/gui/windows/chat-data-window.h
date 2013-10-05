@@ -47,9 +47,6 @@ class KADUAPI ChatDataWindow : public QWidget
 
 	friend class ChatDataWindowAwareObject;
 
-	static QMap<Chat, ChatDataWindow *> Instances;
-	static const QMap<Chat, ChatDataWindow *> & instances() { return Instances; }
-
 	Chat MyChat;
 
 	QTabWidget *TabWidget;
@@ -62,9 +59,6 @@ class KADUAPI ChatDataWindow : public QWidget
 
 	QPushButton *OkButton;
 	QPushButton *ApplyButton;
-
-	ChatDataWindow(const Chat &chat, QWidget *parent);
-	virtual ~ChatDataWindow();
 
 	void createGui();
 	void createButtons(QVBoxLayout *layout);
@@ -82,7 +76,8 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	static ChatDataWindow * instance(const Chat &chat, QWidget *parent = 0);
+	explicit ChatDataWindow(const Chat &chat);
+	virtual ~ChatDataWindow();
 
 	void show();
 
@@ -91,6 +86,7 @@ public:
 	QWidget * generalTab() const { return GeneralTab; }
 
 signals:
+	void destroyed(const Chat &chat);
 	void save();
 
 };

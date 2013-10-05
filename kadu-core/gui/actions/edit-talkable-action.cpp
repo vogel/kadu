@@ -29,6 +29,7 @@
 #include "gui/windows/buddy-data-window.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window.h"
+#include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/kadu-window.h"
 
 #include "edit-talkable-action.h"
@@ -151,7 +152,7 @@ void EditTalkableAction::chatActionTriggered(ActionContext *context)
 	if (!chat)
 		return;
 
-	ChatDataWindow::instance(chat, Core::instance()->kaduWindow())->show();
+	Core::instance()->chatDataWindowRepository()->showChatWindow(chat);
 }
 
 void EditTalkableAction::buddyActionTriggered(ActionContext *context)

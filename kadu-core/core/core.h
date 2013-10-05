@@ -52,6 +52,7 @@ namespace QCA
 class AccountConfigurationWidgetFactoryRepository;
 class BuddyConfigurationWidgetFactoryRepository;
 class BuddyDataWindowRepository;
+class ChatDataWindowRepository;
 class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
 class ClipboardHtmlTransformerService;
@@ -79,6 +80,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	QSharedPointer<DefaultProvider<QWidget *> > MainWindowProvider;
 
 	BuddyDataWindowRepository *CurrentBuddyDataWindowRepository;
+	ChatDataWindowRepository *CurrentChatDataWindowRepository;
 	ChatImageRequestService *CurrentChatImageRequestService;
 	DomProcessorService *CurrentDomProcessorService;
 	ImageStorageService *CurrentImageStorageService;
@@ -143,6 +145,7 @@ public:
 	void runGuiServices();
 
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
+	ChatDataWindowRepository * chatDataWindowRepository() const;
 	ChatImageRequestService * chatImageRequestService() const;
 	DomProcessorService * domProcessorService() const;
 	ImageStorageService * imageStorageService() const;

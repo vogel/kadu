@@ -155,6 +155,7 @@ set (gui_SRCS
 	windows/buddy-data-window-repository.cpp
 	windows/buddy-delete-window.cpp
 	windows/chat-data-window.cpp
+	windows/chat-data-window-repository.cpp
 	windows/chat-data-window-aware-object.cpp
 	windows/chat-window.cpp
 	windows/configuration-window.cpp
@@ -342,6 +343,7 @@ set (gui_MOC_SRCS
 	windows/buddy-data-window-repository.h
 	windows/buddy-delete-window.h
 	windows/chat-data-window.h
+	windows/chat-data-window-repository.h
 	windows/chat-window.h
 	windows/configuration-window.h
 	windows/file-transfer-window.h
