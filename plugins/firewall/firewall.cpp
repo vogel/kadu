@@ -217,7 +217,7 @@ bool Firewall::acceptIncomingMessage(const Message &message)
 			if (History::instance()->currentStorage())
 			{
 				Message msg = Message::create();
-				msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(message.htmlContent()));
+				msg.setContent(CurrentFormattedStringFactory.data()->fromHtml(message.htmlContent()));
 				msg.setType(MessageTypeReceived);
 				msg.setReceiveDate(QDateTime::currentDateTime());
 				msg.setSendDate(QDateTime::currentDateTime());

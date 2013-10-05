@@ -159,7 +159,7 @@ void HistoryImportThread::importEntry(const Chat &chat, const HistoryEntry &entr
 			msg.setMessageSender(outgoing
 					? GaduAccount.accountContact()
 					: ContactManager::instance()->byId(GaduAccount, QString::number(entry.Uin), ActionCreateAndAdd));
-			msg.setContent(CurrentFormattedStringFactory.data()->fromHTML(entry.Content));
+			msg.setContent(CurrentFormattedStringFactory.data()->fromHtml(entry.Content));
 			msg.setSendDate(entry.SendDate);
 			msg.setReceiveDate(entry.Date);
 			msg.setType(outgoing ? MessageTypeSent : MessageTypeReceived);

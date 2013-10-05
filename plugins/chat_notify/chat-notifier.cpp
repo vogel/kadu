@@ -61,7 +61,7 @@ void ChatNotifier::sendNotificationToChatWidget(Notification *notification, Chat
 	if (!notification->details().isEmpty())
 		content += "<br/> <small>" + notification->details().join("<br/>") + "</small>";
 
-	chatWidget->appendSystemMessage(CurrentFormattedStringFactory.data()->fromHTML(content));
+	chatWidget->appendSystemMessage(CurrentFormattedStringFactory.data()->fromHtml(content));
 }
 
 void ChatNotifier::notify(Notification *notification)

@@ -645,7 +645,7 @@ QVector<HistoryQueryResult> HistorySqlStorage::syncChatDates(const HistoryQuery 
 			QString title;
 			if (CurrentFormattedStringFactory)
 			{
-				QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHTML(message));
+				QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromHtml(message));
 
 				FormattedStringPlainTextVisitor plainTextVisitor;
 				formattedString->accept(&plainTextVisitor);
@@ -1049,7 +1049,7 @@ QVector<Message> HistorySqlStorage::messagesFromQuery(QSqlQuery &query)
 		message.setMessageChat(ChatsMapping->chatById(query.value(0).toInt()));
 		message.setType(type);
 		message.setMessageSender(sender);
-		message.setContent(CurrentFormattedStringFactory.data()->fromHTML(stripAllScriptTags(query.value(2).toString())));
+		message.setContent(CurrentFormattedStringFactory.data()->fromHtml(stripAllScriptTags(query.value(2).toString())));
 		message.setSendDate(query.value(3).toDateTime());
 		message.setReceiveDate(query.value(4).toDateTime());
 		message.setStatus(outgoing ? MessageStatusDelivered : MessageStatusReceived);
@@ -1078,7 +1078,7 @@ QVector<Message> HistorySqlStorage::statusesFromQuery(const Contact &contact, QS
 				? Qt::escape(typeData.name())
 				: Qt::escape(QString("%1 with description: %2").arg(typeData.name()).arg(description));
 
-		message.setContent(CurrentFormattedStringFactory.data()->fromHTML(htmlContent));
+		message.setContent(CurrentFormattedStringFactory.data()->fromHtml(htmlContent));
 		message.setStatus(MessageStatusReceived);
 		message.setType(MessageTypeSystem);
 		message.setMessageSender(contact);

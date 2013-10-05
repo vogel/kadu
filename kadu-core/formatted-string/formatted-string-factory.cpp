@@ -92,7 +92,7 @@ QList<FormattedString *> FormattedStringFactory::partsFromQTextBlock(const QText
 	return result;
 }
 
-FormattedString * FormattedStringFactory::fromHTML(const QString &html)
+FormattedString * FormattedStringFactory::fromHtml(const QString &html)
 {
 	QTextDocument document;
 	document.setHtml(html);
@@ -123,12 +123,17 @@ FormattedString * FormattedStringFactory::fromTextDocument(QTextDocument *textDo
 FormattedString * FormattedStringFactory::fromText(const QString &text)
 {
 	QScopedPointer<QTextDocument> document(new QTextDocument());
-	if (text.contains('<'))
+	if (isHtml(text))
 		document->setHtml(text);
 	else
 		document->setPlainText(text);
 
 	return fromTextDocument(document.data());
+}
+
+bool FormattedStringFactory::isHtml(const QString &text) const
+{
+	return text.contains('<');
 }
 
 #include "moc_formatted-string-factory.cpp"

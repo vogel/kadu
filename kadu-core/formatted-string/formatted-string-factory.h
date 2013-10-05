@@ -87,7 +87,7 @@ public:
 	 *
 	 * This method never returns null.
 	 */
-	FormattedString * fromHTML(const QString &html);
+	FormattedString * fromHtml(const QString &html);
 
 	/**
 	 * @short Create FormattedString instance from text document.
@@ -111,6 +111,13 @@ public:
 	 * This method never returns null.
 	 */
 	FormattedString * fromText(const QString &text);
+
+	/**
+	 * @short Check if given text is in HTML format.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param text text to check
+	 */
+	bool isHtml(const QString &text) const;
 
 };
 

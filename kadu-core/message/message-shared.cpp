@@ -97,7 +97,7 @@ void MessageShared::load()
 	*MessageSender = ContactManager::instance()->byUuid(loadValue<QString>("Sender"));
 
 	if (CurrentFormattedStringFactory)
-		setContent(CurrentFormattedStringFactory.data()->fromHTML(loadValue<QString>("Content")));
+		setContent(CurrentFormattedStringFactory.data()->fromHtml(loadValue<QString>("Content")));
 
 	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
 	SendDate = loadValue<QDateTime>("SendDate");
