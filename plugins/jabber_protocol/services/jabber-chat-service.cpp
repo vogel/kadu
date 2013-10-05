@@ -377,7 +377,11 @@ void JabberChatService::handleReceivedMessage(const XMPP::Message &msg)
 	if (rawMessageTransformerService())
 		body = QString::fromUtf8(rawMessageTransformerService()->transform(body.toUtf8(), message));
 
-	message.setContent(CurrentFormattedStringFactory.data()->fromPlainText(body));
+	QScopedPointer<FormattedString> formattedString(CurrentFormattedStringFactory.data()->fromPlainText(body));
+	if (formattedString->isEmpty())
+		return;
+
+	message.setContent(formattedString.take());
 
 	QString messageType = msg.type().isEmpty()
 	        ? "message"
