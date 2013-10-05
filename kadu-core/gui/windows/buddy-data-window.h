@@ -123,7 +123,6 @@ signals:
 	void widgetRemoved(BuddyConfigurationWidget *widget);
 
 	void destroyed(const Buddy &buddy);
-	void save();
 
 };
 

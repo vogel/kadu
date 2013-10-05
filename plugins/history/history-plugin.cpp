@@ -21,17 +21,20 @@
  */
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "gui/history-buddy-data-window-addons.h"
 #include "gui/history-chat-data-window-addons.h"
+#include "gui/widgets/history-buddy-configuration-widget-factory.h"
 #include "gui/windows/history-window.h"
 #include "misc/kadu-paths.h"
+#include <core/core.h>
+#include <gui/widgets/buddy-configuration-widget-factory-repository.h>
 
 #include "buddy-history-delete-handler.h"
 #include "history.h"
 
 #include "history-plugin.h"
 
-HistoryPlugin::HistoryPlugin()
+HistoryPlugin::HistoryPlugin() :
+		MyBuddyConfigurationWidgetFactory(0)
 {
 }
 
@@ -50,14 +53,17 @@ int HistoryPlugin::init(bool firstLoad)
 	BuddyHistoryDeleteHandler::createInstance();
 	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 
-	new HistoryBuddyDataWindowAddons(this);
 	new HistoryChatDataWindowAddons(this);
+
+	registerServices();
 
 	return 0;
 }
 
 void HistoryPlugin::done()
 {
+	unregisterServices();
+
 	BuddyAdditionalDataDeleteHandlerManager::instance()->unregisterAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
 	BuddyHistoryDeleteHandler::destroyInstance();
 
@@ -67,6 +73,19 @@ void HistoryPlugin::done()
 	MainConfigurationWindow::unregisterUiHandler(History::instance());
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/history.ui"));
 	History::destroyInstance();
+}
+
+void HistoryPlugin::registerServices()
+{
+	MyBuddyConfigurationWidgetFactory = new HistoryBuddyConfigurationWidgetFactory();
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(MyBuddyConfigurationWidgetFactory);
+}
+
+void HistoryPlugin::unregisterServices()
+{
+	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(MyBuddyConfigurationWidgetFactory);
+	delete MyBuddyConfigurationWidgetFactory;
+	MyBuddyConfigurationWidgetFactory = 0;
 }
 
 Q_EXPORT_PLUGIN2(history, HistoryPlugin)

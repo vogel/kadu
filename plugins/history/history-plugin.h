@@ -30,10 +30,17 @@
 
 #include "plugins/generic-plugin.h"
 
+class HistoryBuddyConfigurationWidgetFactory;
+
 class HistoryPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	HistoryBuddyConfigurationWidgetFactory *MyBuddyConfigurationWidgetFactory;
+
+	void registerServices();
+	void unregisterServices();
 
 public:
 	HistoryPlugin();

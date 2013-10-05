@@ -66,7 +66,6 @@
 #include "gui/widgets/buddy-options-configuration-widget.h"
 #include "gui/widgets/buddy-personal-info-configuration-widget.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
-#include "gui/windows/buddy-data-window-aware-object.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/change-notifier.h"
 #include "protocols/protocol-factory.h"
@@ -95,8 +94,6 @@ BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *budd
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ManageUsersDialogGeometry"), QRect(0, 50, 425, 500), this);
 
-	BuddyDataWindowAwareObject::notifyBuddyDataWindowCreated(this);
-
 	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)),
 			this, SLOT(buddyRemoved(Buddy)));
 
@@ -118,7 +115,6 @@ BuddyDataWindow::BuddyDataWindow(BuddyConfigurationWidgetFactoryRepository *budd
 BuddyDataWindow::~BuddyDataWindow()
 {
 	kdebugf();
-	BuddyDataWindowAwareObject::notifyBuddyDataWindowDestroyed(this);
 	emit destroyed(MyBuddy);
 	kdebugf2();
 }
@@ -144,6 +140,7 @@ void BuddyDataWindow::factoryUnregistered(BuddyConfigurationWidgetFactory *facto
 			ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
 		emit widgetRemoved(widget);
 		widget->deleteLater();
+		BuddyConfigurationWidgets.remove(factory);
 	}
 }
 
@@ -244,7 +241,6 @@ void BuddyDataWindow::updateBuddy()
 	ContactTab->save();
 	GroupsTab->save();
 	OptionsTab->save();
-	emit save();
 
 	if (MyBuddy)
 		MyBuddy.changeNotifier()->unblock();
