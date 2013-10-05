@@ -33,6 +33,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
@@ -73,6 +74,11 @@ void GaduChatService::setGaduChatImageService(GaduChatImageService *gaduChatImag
 void GaduChatService::setImageStorageService(ImageStorageService *imageStorageService)
 {
 	CurrentImageStorageService = imageStorageService;
+}
+
+void GaduChatService::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
+{
+	CurrentFormattedStringFactory = formattedStringFactory;
 }
 
 void GaduChatService::setConnection(GaduConnection *connection)
@@ -223,11 +229,15 @@ bool GaduChatService::ignoreRichText(Contact sender)
 
 FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
+	return CurrentFormattedStringFactory.data()->fromText(content);
+
 	if (!richText)
 		return GaduFormatter::createMessage(content, 0, 0);
-	else
-		return GaduFormatter::createMessage(content,
-				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
+
+	if (CurrentFormattedStringFactory.data()->isHtml(content))
+		return CurrentFormattedStringFactory.data()->fromHtml(content);
+
+	return GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)

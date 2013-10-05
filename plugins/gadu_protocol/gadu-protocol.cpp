@@ -89,6 +89,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentChatService = new GaduChatService(account, this);
 	CurrentChatService->setConnection(Connection);
+	CurrentChatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 	CurrentChatService->setGaduChatImageService(CurrentChatImageService);
 	CurrentChatService->setImageStorageService(Core::instance()->imageStorageService());
 	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());

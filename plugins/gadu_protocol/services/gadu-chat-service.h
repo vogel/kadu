@@ -35,6 +35,7 @@
 
 class QTimer;
 
+class FormattedStringFactory;
 class GaduChatImageService;
 class GaduConnection;
 class ImageStorageService;
@@ -58,6 +59,7 @@ class GaduChatService : public ChatService
 
 	QWeakPointer<GaduChatImageService> CurrentGaduChatImageService;
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
+	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	QWeakPointer<GaduConnection> Connection;
 
@@ -100,6 +102,13 @@ public:
 	 * This service is used to get full file paths of chat images.
 	 */
 	void setImageStorageService(ImageStorageService *imageStorageService);
+
+	/**
+	 * @short Set formatted string factory for this service.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @param formattedStringFactory formatted string factory for this service
+	 */
+	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	/**
 	 * @short Set connection for this service.
