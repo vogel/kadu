@@ -51,6 +51,7 @@
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/widgets/account-configuration-widget-factory-repository.h"
 #include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -561,6 +562,7 @@ void Core::runServices()
 	CurrentClipboardHtmlTransformerService = new ClipboardHtmlTransformerService(this);
 	CurrentAccountConfigurationWidgetFactoryRepository = new AccountConfigurationWidgetFactoryRepository(this);
 	CurrentBuddyConfigurationWidgetFactoryRepository = new BuddyConfigurationWidgetFactoryRepository(this);
+	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
 	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
 
 	// this instance lives forever
@@ -656,6 +658,11 @@ AccountConfigurationWidgetFactoryRepository * Core::accountConfigurationWidgetFa
 BuddyConfigurationWidgetFactoryRepository * Core::buddyConfigurationWidgetFactoryRepository() const
 {
 	return CurrentBuddyConfigurationWidgetFactoryRepository;
+}
+
+ChatConfigurationWidgetFactoryRepository * Core::chatConfigurationWidgetFactoryRepository() const
+{
+	return CurrentChatConfigurationWidgetFactoryRepository;
 }
 
 ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const

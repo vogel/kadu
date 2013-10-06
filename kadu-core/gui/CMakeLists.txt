@@ -48,6 +48,9 @@ set (gui_SRCS
 	widgets/buddy-info-panel.cpp
 	widgets/categorized-list-view.cpp
 	widgets/categorized-list-view-painter.cpp
+	widgets/chat-configuration-widget.cpp
+	widgets/chat-configuration-widget-factory-repository.cpp
+	widgets/chat-configuration-widget-tab-adapter.cpp
 	widgets/chat-edit-box.cpp
 	widgets/chat-edit-box-size-manager.cpp
 	widgets/chat-edit-widget.cpp
@@ -241,6 +244,9 @@ set (gui_MOC_SRCS
 	widgets/buddy-info-panel.h
 	widgets/categorized-list-view.h
 	widgets/categorized-list-view-painter.h
+	widgets/chat-configuration-widget.h
+	widgets/chat-configuration-widget-factory-repository.h
+	widgets/chat-configuration-widget-tab-adapter.h
 	widgets/chat-edit-box.h
 	widgets/chat-edit-box-size-manager.h
 	widgets/chat-edit-widget.h

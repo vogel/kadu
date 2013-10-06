@@ -38,6 +38,9 @@ class QPushButton;
 class QTabWidget;
 class QVBoxLayout;
 
+class ChatConfigurationWidget;
+class ChatConfigurationWidgetFactory;
+class ChatConfigurationWidgetFactoryRepository;
 class ChatEditWidget;
 class CompositeConfigurationValueStateNotifier;
 class GroupList;
@@ -48,6 +51,9 @@ class KADUAPI ChatDataWindow : public QWidget
 	Q_OBJECT
 
 	friend class ChatDataWindowAwareObject;
+
+	ChatConfigurationWidgetFactoryRepository *MyChatConfigurationWidgetFactoryRepository;
+	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
 	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
 	SimpleConfigurationValueStateNotifier *SimpleStateNotifier;
@@ -68,7 +74,12 @@ class KADUAPI ChatDataWindow : public QWidget
 	void createGui();
 	void createButtons(QVBoxLayout *layout);
 
+	void applyChatConfigurationWidgets();
+
 private slots:
+	void factoryRegistered(ChatConfigurationWidgetFactory *factory);
+	void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
+
 	void displayEditChanged();
 	void stateChangedSlot(ConfigurationValueState state);
 
@@ -80,8 +91,10 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit ChatDataWindow(const Chat &chat);
+	explicit ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository, const Chat &chat);
 	virtual ~ChatDataWindow();
+
+	QList<ChatConfigurationWidget *> chatConfigurationWidgets() const;
 
 	void show();
 
@@ -90,6 +103,9 @@ public:
 	QWidget * generalTab() const { return GeneralTab; }
 
 signals:
+	void widgetAdded(ChatConfigurationWidget *widget);
+	void widgetRemoved(ChatConfigurationWidget *widget);
+
 	void destroyed(const Chat &chat);
 	void save();
 

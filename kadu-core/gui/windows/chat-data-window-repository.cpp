@@ -37,7 +37,7 @@ ChatDataWindow * ChatDataWindowRepository::windowForChat(const Chat &chat)
 	if (Windows.contains(chat))
 		return Windows.value(chat);
 
-	ChatDataWindow *result = new ChatDataWindow(chat);
+	ChatDataWindow *result = new ChatDataWindow(Core::instance()->chatConfigurationWidgetFactoryRepository(), chat);
 	connect(result, SIGNAL(destroyed(Chat)), this, SLOT(windowDestroyed(Chat)));
 	Windows.insert(chat, result);
 

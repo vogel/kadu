@@ -38,6 +38,10 @@
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/group-list.h"
 #include "gui/windows/chat-data-window-aware-object.h"
+#include "gui/widgets/chat-configuration-widget.h"
+#include "gui/widgets/chat-configuration-widget-factory.h"
+#include "gui/widgets/chat-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-configuration-widget-tab-adapter.h"
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
@@ -47,8 +51,9 @@
 
 #include "chat-data-window.h"
 
-ChatDataWindow::ChatDataWindow(const Chat &chat) :
-		QWidget(0, Qt::Dialog), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
+ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository, const Chat &chat) :
+		QWidget(0, Qt::Dialog), MyChatConfigurationWidgetFactoryRepository(chatConfigurationWidgetFactoryRepository),
+		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
 		SimpleStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
 		MyChat(chat), EditWidget(0)
 {
@@ -70,12 +75,59 @@ ChatDataWindow::ChatDataWindow(const Chat &chat) :
 
 	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
 	stateChangedSlot(ValueStateNotifier->state());
+
+	if (MyChatConfigurationWidgetFactoryRepository)
+	{
+		connect(MyChatConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatConfigurationWidgetFactory*)),
+				this, SLOT(factoryRegistered(ChatConfigurationWidgetFactory*)));
+		connect(MyChatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory*)),
+				this, SLOT(factoryUnregistered(ChatConfigurationWidgetFactory*)));
+
+		foreach (ChatConfigurationWidgetFactory *factory, MyChatConfigurationWidgetFactoryRepository->factories())
+			factoryRegistered(factory);
+	}
 }
 
 ChatDataWindow::~ChatDataWindow()
 {
 	ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(this);
 	emit destroyed(MyChat);
+}
+
+void ChatDataWindow::factoryRegistered(ChatConfigurationWidgetFactory *factory)
+{
+	ChatConfigurationWidget *widget = factory->createWidget(chat(), this);
+	if (widget)
+	{
+		if (widget->stateNotifier())
+			ValueStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
+		ChatConfigurationWidgets.insert(factory, widget);
+		emit widgetAdded(widget);
+	}
+}
+
+void ChatDataWindow::factoryUnregistered(ChatConfigurationWidgetFactory *factory)
+{
+	if (ChatConfigurationWidgets.contains(factory))
+	{
+		ChatConfigurationWidget *widget = ChatConfigurationWidgets.value(factory);
+		if (widget->stateNotifier())
+			ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+		emit widgetRemoved(widget);
+		widget->deleteLater();
+		ChatConfigurationWidgets.remove(factory);
+	}
+}
+
+QList<ChatConfigurationWidget *> ChatDataWindow::chatConfigurationWidgets() const
+{
+	return ChatConfigurationWidgets.values();
+}
+
+void ChatDataWindow::applyChatConfigurationWidgets()
+{
+	foreach (ChatConfigurationWidget *widget, ChatConfigurationWidgets)
+		widget->apply();
 }
 
 void ChatDataWindow::show()
@@ -90,6 +142,8 @@ void ChatDataWindow::createGui()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	TabWidget = new QTabWidget(this);
+
+	new ChatConfigurationWidgetTabAdapter(this, TabWidget, this);
 
 	GeneralTab = new QWidget(TabWidget);
 	QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
@@ -165,6 +219,8 @@ void ChatDataWindow::updateChat()
 
 	if (EditWidget)
 		EditWidget->apply();
+
+	applyChatConfigurationWidgets();
 
 	MyChat.setDisplay(DisplayEdit->text());
 	MyChat.setGroups(ChatGroupList->checkedGroups());
