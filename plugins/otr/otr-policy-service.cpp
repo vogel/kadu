@@ -52,7 +52,11 @@ void OtrPolicyService::setAccountPolicy(const Account &account, const OtrPolicy 
 
 OtrPolicy OtrPolicyService::accountPolicy(const Account &account) const
 {
-	return OtrPolicy::fromString(account.property("otr:policy", QVariant()).toString());
+	OtrPolicy fromAccount = OtrPolicy::fromString(account.property("otr:policy", QVariant()).toString());
+	if (OtrPolicy::PolicyUndefined == fromAccount)
+		return OtrPolicy::PolicyManual;
+	else
+		return fromAccount;
 }
 
 void OtrPolicyService::setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy)
