@@ -21,6 +21,8 @@ set (SOURCES
 	gui/widgets/chat-history-tab.cpp
 	gui/widgets/history-buddy-configuration-widget.cpp
 	gui/widgets/history-buddy-configuration-widget-factory.cpp
+	gui/widgets/history-chat-configuration-widget.cpp
+	gui/widgets/history-chat-configuration-widget-factory.cpp
 	gui/widgets/history-messages-tab.cpp
 	gui/widgets/history-tab.cpp
 	gui/widgets/history-talkable-combo-box.cpp
@@ -28,8 +30,6 @@ set (SOURCES
 	gui/widgets/timeline-chat-messages-view.cpp
 
 	gui/windows/history-window.cpp
-
-	gui/history-chat-data-window-addons.cpp
 
 	model/history-query-results-model.cpp
 	model/history-query-results-proxy-model.cpp
@@ -52,6 +52,7 @@ set (MOC_SOURCES
 
 	gui/widgets/chat-history-tab.h
 	gui/widgets/history-buddy-configuration-widget.h
+	gui/widgets/history-chat-configuration-widget.h
 	gui/widgets/history-messages-tab.h
 	gui/widgets/history-tab.h
 	gui/widgets/history-talkable-combo-box.h
@@ -59,8 +60,6 @@ set (MOC_SOURCES
 	gui/widgets/timeline-chat-messages-view.h
 
 	gui/windows/history-window.h
-
-	gui/history-chat-data-window-addons.h
 
 	model/history-query-results-model.h
 	model/history-query-results-proxy-model.h

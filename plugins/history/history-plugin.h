@@ -31,6 +31,7 @@
 #include "plugins/generic-plugin.h"
 
 class HistoryBuddyConfigurationWidgetFactory;
+class HistoryChatConfigurationWidgetFactory;
 
 class HistoryPlugin : public QObject, public GenericPlugin
 {
@@ -38,6 +39,7 @@ class HistoryPlugin : public QObject, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	HistoryBuddyConfigurationWidgetFactory *MyBuddyConfigurationWidgetFactory;
+	HistoryChatConfigurationWidgetFactory *MyChatConfigurationWidgetFactory;
 
 	void registerServices();
 	void unregisterServices();

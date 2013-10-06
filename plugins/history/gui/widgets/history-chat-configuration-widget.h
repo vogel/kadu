@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,37 +17,43 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_CHAT_DATA_WINDOW_ADDONS_H
-#define HISTORY_CHAT_DATA_WINDOW_ADDONS_H
-
-#include <QtCore/QMap>
-#include <QtCore/QObject>
+#ifndef HISTORY_CHAT_CONFIGURATION_WIDGET_H
+#define HISTORY_CHAT_CONFIGURATION_WIDGET_H
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/windows/chat-data-window-aware-object.h"
+#include "gui/widgets/chat-configuration-widget.h"
 
 class QCheckBox;
 
-class HistoryChatDataWindowAddons : public QObject, ConfigurationAwareObject, ChatDataWindowAwareObject
+class SimpleConfigurationValueStateNotifier;
+
+class HistoryChatConfigurationWidget : public ChatConfigurationWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	bool StoreHistory;
-	QMap<ChatDataWindow *, QCheckBox *> StoreHistoryCheckBoxes;
+	bool GlobalStoreHistory;
+	QCheckBox *StoreHistoryCheckBox;
+
+	SimpleConfigurationValueStateNotifier *StateNotifier;
+
+	void createGui();
+	void loadValues();
 
 private slots:
-	void save();
+	void updateState();
 
 protected:
 	virtual void configurationUpdated();
 
-	virtual void chatDataWindowCreated(ChatDataWindow *chatDataWindow);
-	virtual void chatDataWindowDestroyed(ChatDataWindow *chatDataWindow);
-
 public:
-	explicit HistoryChatDataWindowAddons(QObject *parent);
-	virtual ~HistoryChatDataWindowAddons();
+	explicit HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent = 0);
+	virtual ~HistoryChatConfigurationWidget();
+
+	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+
+	virtual void apply();
+	virtual void cancel();
 
 };
 
-#endif // HISTORY_CHAT_DATA_WINDOW_ADDONS_H
+#endif // HISTORY_CHAT_CONFIGURATION_WIDGET_H

@@ -21,20 +21,21 @@
  */
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
-#include "gui/history-chat-data-window-addons.h"
-#include "gui/widgets/history-buddy-configuration-widget-factory.h"
-#include "gui/windows/history-window.h"
+#include "core/core.h"
+#include "gui/widgets/buddy-configuration-widget-factory-repository.h"
+#include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "misc/kadu-paths.h"
-#include <core/core.h>
-#include <gui/widgets/buddy-configuration-widget-factory-repository.h>
 
+#include "gui/widgets/history-buddy-configuration-widget-factory.h"
+#include "gui/widgets/history-chat-configuration-widget-factory.h"
+#include "gui/windows/history-window.h"
 #include "buddy-history-delete-handler.h"
 #include "history.h"
 
 #include "history-plugin.h"
 
 HistoryPlugin::HistoryPlugin() :
-		MyBuddyConfigurationWidgetFactory(0)
+		MyBuddyConfigurationWidgetFactory(0), MyChatConfigurationWidgetFactory(0)
 {
 }
 
@@ -52,8 +53,6 @@ int HistoryPlugin::init(bool firstLoad)
 
 	BuddyHistoryDeleteHandler::createInstance();
 	BuddyAdditionalDataDeleteHandlerManager::instance()->registerAdditionalDataDeleteHandler(BuddyHistoryDeleteHandler::instance());
-
-	new HistoryChatDataWindowAddons(this);
 
 	registerServices();
 
@@ -78,12 +77,19 @@ void HistoryPlugin::done()
 void HistoryPlugin::registerServices()
 {
 	MyBuddyConfigurationWidgetFactory = new HistoryBuddyConfigurationWidgetFactory();
+	MyChatConfigurationWidgetFactory = new HistoryChatConfigurationWidgetFactory();
+
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->registerFactory(MyBuddyConfigurationWidgetFactory);
+	Core::instance()->chatConfigurationWidgetFactoryRepository()->registerFactory(MyChatConfigurationWidgetFactory);
 }
 
 void HistoryPlugin::unregisterServices()
 {
+	Core::instance()->chatConfigurationWidgetFactoryRepository()->unregisterFactory(MyChatConfigurationWidgetFactory);
 	Core::instance()->buddyConfigurationWidgetFactoryRepository()->unregisterFactory(MyBuddyConfigurationWidgetFactory);
+
+	delete MyChatConfigurationWidgetFactory;
+	MyChatConfigurationWidgetFactory = 0;
 	delete MyBuddyConfigurationWidgetFactory;
 	MyBuddyConfigurationWidgetFactory = 0;
 }
