@@ -63,8 +63,6 @@ class CompositeConfigurationValueStateNotifier;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
-	friend class BuddyDataWindowAwareObject;
-
 	Q_OBJECT
 
 	BuddyConfigurationWidgetFactoryRepository *MyBuddyConfigurationWidgetFactoryRepository;
