@@ -71,7 +71,7 @@ void OtrBuddyConfigurationWidget::setPolicyService(OtrPolicyService *policyServi
 
 OtrPolicy OtrBuddyConfigurationWidget::policy()
 {
-	if (UseAccountPolicyCheckBox->isCheckable())
+	if (UseAccountPolicyCheckBox->isChecked())
 		return OtrPolicy::PolicyUndefined;
 	if (!EnableCheckBox->isChecked())
 		return OtrPolicy::PolicyNever;
