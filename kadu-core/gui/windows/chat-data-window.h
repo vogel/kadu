@@ -39,13 +39,18 @@ class QTabWidget;
 class QVBoxLayout;
 
 class ChatEditWidget;
+class CompositeConfigurationValueStateNotifier;
 class GroupList;
+class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI ChatDataWindow : public QWidget
 {
 	Q_OBJECT
 
 	friend class ChatDataWindowAwareObject;
+
+	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+	SimpleConfigurationValueStateNotifier *SimpleStateNotifier;
 
 	Chat MyChat;
 
@@ -63,14 +68,13 @@ class KADUAPI ChatDataWindow : public QWidget
 	void createGui();
 	void createButtons(QVBoxLayout *layout);
 
-	bool isValid();
-
 private slots:
-	void updateButtons();
+	void displayEditChanged();
+	void stateChangedSlot(ConfigurationValueState state);
+
 	void updateChat();
 	void updateChatAndClose();
 	void chatRemoved(const Chat &buddy);
-	void editChatStateChanged(ConfigurationValueState state);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

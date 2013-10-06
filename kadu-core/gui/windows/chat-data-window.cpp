@@ -38,6 +38,8 @@
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/group-list.h"
 #include "gui/windows/chat-data-window-aware-object.h"
+#include "gui/widgets/composite-configuration-value-state-notifier.h"
+#include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
 #include "misc/change-notifier.h"
 #include "os/generic/window-geometry-manager.h"
@@ -46,14 +48,15 @@
 #include "chat-data-window.h"
 
 ChatDataWindow::ChatDataWindow(const Chat &chat) :
-		QWidget(0, Qt::Dialog), MyChat(chat), EditWidget(0)
+		QWidget(0, Qt::Dialog), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
+		SimpleStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
+		MyChat(chat), EditWidget(0)
 {
 	setWindowRole("kadu-chat-data");
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Chat Properties - %1").arg(MyChat.display()));
 
 	createGui();
-	updateButtons();
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
 
@@ -61,6 +64,12 @@ ChatDataWindow::ChatDataWindow(const Chat &chat) :
 			this, SLOT(chatRemoved(Chat)));
 
 	ChatDataWindowAwareObject::notifyChatDataWindowCreated(this);
+
+	SimpleStateNotifier->setState(StateNotChanged);
+	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleStateNotifier);
+
+	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
+	stateChangedSlot(ValueStateNotifier->state());
 }
 
 ChatDataWindow::~ChatDataWindow()
@@ -117,7 +126,7 @@ void ChatDataWindow::createGui()
 		{
 			TabWidget->addTab(EditWidget, tr("Chat"));
 			if (EditWidget->stateNotifier())
-				connect(EditWidget->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(editChatStateChanged(ConfigurationValueState)));
+				ValueStateNotifier->addConfigurationValueStateNotifier(EditWidget->stateNotifier());
 		}
 	}
 
@@ -125,7 +134,7 @@ void ChatDataWindow::createGui()
 
 	createButtons(layout);
 
-	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(updateButtons()));
+	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(displayEditChanged()));
 }
 
 void ChatDataWindow::createButtons(QVBoxLayout *layout)
@@ -178,12 +187,6 @@ void ChatDataWindow::chatRemoved(const Chat &chat)
 		close();
 }
 
-void ChatDataWindow::editChatStateChanged(ConfigurationValueState state)
-{
-	OkButton->setEnabled(state != StateChangedDataInvalid);
-	ApplyButton->setEnabled(state != StateChangedDataInvalid);
-}
-
 void ChatDataWindow::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
@@ -195,20 +198,25 @@ void ChatDataWindow::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-bool ChatDataWindow::isValid()
+void ChatDataWindow::displayEditChanged()
 {
-	const Chat &chat = ChatManager::instance()->byDisplay(DisplayEdit->text());
-	if (!chat)
-		return true;
+	if (MyChat.display() == DisplayEdit->text())
+	{
+		SimpleStateNotifier->setState(StateNotChanged);
+		return;
+	}
 
-	return chat == MyChat;
+	const Chat &chat = ChatManager::instance()->byDisplay(DisplayEdit->text());
+	if (chat)
+		SimpleStateNotifier->setState(StateChangedDataInvalid);
+	else
+		SimpleStateNotifier->setState(StateChangedDataValid);
 }
 
-void ChatDataWindow::updateButtons()
+void ChatDataWindow::stateChangedSlot(ConfigurationValueState state)
 {
-	bool valid = isValid();
-	OkButton->setEnabled(valid);
-	ApplyButton->setEnabled(valid);
+	OkButton->setEnabled(state != StateChangedDataInvalid);
+	ApplyButton->setEnabled(state != StateChangedDataInvalid);
 }
 
 #include "moc_chat-data-window.cpp"
