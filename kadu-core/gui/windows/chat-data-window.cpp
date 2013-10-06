@@ -37,7 +37,6 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/chat-edit-widget.h"
 #include "gui/widgets/group-list.h"
-#include "gui/windows/chat-data-window-aware-object.h"
 #include "gui/widgets/chat-configuration-widget.h"
 #include "gui/widgets/chat-configuration-widget-factory.h"
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
@@ -68,8 +67,6 @@ ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatCon
 	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)),
 			this, SLOT(chatRemoved(Chat)));
 
-	ChatDataWindowAwareObject::notifyChatDataWindowCreated(this);
-
 	SimpleStateNotifier->setState(StateNotChanged);
 	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleStateNotifier);
 
@@ -90,7 +87,6 @@ ChatDataWindow::ChatDataWindow(ChatConfigurationWidgetFactoryRepository *chatCon
 
 ChatDataWindow::~ChatDataWindow()
 {
-	ChatDataWindowAwareObject::notifyChatDataWindowDestroyed(this);
 	emit destroyed(MyChat);
 }
 

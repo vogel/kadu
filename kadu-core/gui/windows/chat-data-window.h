@@ -50,8 +50,6 @@ class KADUAPI ChatDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	friend class ChatDataWindowAwareObject;
-
 	ChatConfigurationWidgetFactoryRepository *MyChatConfigurationWidgetFactoryRepository;
 	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
