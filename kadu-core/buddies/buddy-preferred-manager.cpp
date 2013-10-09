@@ -21,14 +21,14 @@
  */
 
 #include "accounts/account-manager.h"
-#include "buddy.h"
 #include "buddies/buddy-set.h"
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "status/status-container.h"
+#include "buddy.h"
 
 #include "buddies/buddy-preferred-manager.h"
 

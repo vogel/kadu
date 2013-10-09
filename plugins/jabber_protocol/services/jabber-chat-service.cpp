@@ -24,9 +24,9 @@
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-set.h"
-#include "chat/chat.h"
-#include "chat/chat-manager.h"
 #include "chat/chat-details-room.h"
+#include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-manager.h"
 #include "configuration/configuration-file.h"
@@ -39,8 +39,8 @@
 #include "gui/windows/message-dialog.h"
 #include "message/message.h"
 #include "misc/misc.h"
-#include "resource/jabber-resource.h"
 #include "resource/jabber-resource-pool.h"
+#include "resource/jabber-resource.h"
 #include "services/raw-message-transformer-service.h"
 
 #include "debug.h"

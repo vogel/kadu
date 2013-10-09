@@ -22,12 +22,12 @@
 #include <QtGui/QTextDocument>
 
 #include "chat/type/chat-type-contact.h"
-#include "debug.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "identities/identity.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
+#include "debug.h"
 
 #include "file-transfer-notifications.h"
 

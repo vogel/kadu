@@ -23,8 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QUrl>
 #include <QtCore/QTimer>
+#include <QtCore/QUrl>
 
 #include <bsocket.h>
 #include <xmpp_tasks.h>

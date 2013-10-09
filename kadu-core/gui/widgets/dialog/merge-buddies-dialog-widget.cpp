@@ -26,12 +26,12 @@
 #include <QtGui/QIcon>
 #include <QtGui/QLabel>
 
-#include "icons/kadu-icon.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
 #include "core/core.h"
 #include "gui/widgets/select-talkable-combo-box.h"
+#include "icons/kadu-icon.h"
 #include "talkable/filter/exclude-buddy-talkable-filter.h"
 
 

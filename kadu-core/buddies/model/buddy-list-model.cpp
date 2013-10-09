@@ -22,18 +22,18 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-list-mime-data-helper.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 #include "contacts/model/contact-data-extractor.h"
 #include "model/roles.h"
 #include "protocols/protocol.h"
 #include "talkable/talkable.h"
 
-#include "buddy-list-model.h"
 #include "buddy-data-extractor.h"
+#include "buddy-list-model.h"
 
 BuddyListModel::BuddyListModel(QObject *parent) :
 		QAbstractItemModel(parent), Checkable(false)

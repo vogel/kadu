@@ -18,8 +18,8 @@
  */
 
 #include "configuration/configuration-file.h"
-#include "services/chat-image-request-service.h"
 #include "services/chat-image-request-service-configuration.h"
+#include "services/chat-image-request-service.h"
 
 #include "chat-image-request-service-configurator.h"
 

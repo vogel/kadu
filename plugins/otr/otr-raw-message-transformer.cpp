@@ -23,16 +23,16 @@ extern "C" {
 }
 
 #include "accounts/account.h"
-#include "chat/chat.h"
 #include "chat/chat-details.h"
-#include "contacts/contact.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 #include "formatted-string/formatted-string.h"
 #include "message/message.h"
 
 #include "otr-app-ops-service.h"
-#include "otr-op-data.h"
 #include "otr-op-data-factory.h"
+#include "otr-op-data.h"
 #include "otr-session-service.h"
 #include "otr-user-state-service.h"
 

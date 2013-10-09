@@ -18,8 +18,8 @@
  */
 
 #include <QtGui/QFrame>
-#include <QtGui/QLabel>
 #include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
 #include <QtGui/QVBoxLayout>
 
 #include "title-widget.h"

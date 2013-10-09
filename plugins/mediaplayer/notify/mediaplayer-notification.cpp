@@ -29,8 +29,8 @@
 
 #include <QtGui/QTextDocument>
 
-#include "notify/notify-event.h"
 #include "notify/notification-manager.h"
+#include "notify/notify-event.h"
 
 #include "mediaplayer-notification.h"
 

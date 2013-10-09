@@ -21,12 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// #include <QtGui/QIcon>
-// #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-// #include <QtGui/QFormLayout>
-
-// #include "icons/kadu-icon.h"
 
 #include "buddies/group-manager.h"
 

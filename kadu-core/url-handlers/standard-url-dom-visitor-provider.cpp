@@ -18,8 +18,8 @@
  */
 
 #include "dom/ignore-links-dom-visitor.h"
-#include "url-handlers/standard-url-expander.h"
 #include "url-handlers/standard-url-expander-configurator.h"
+#include "url-handlers/standard-url-expander.h"
 
 #include "standard-url-dom-visitor-provider.h"
 

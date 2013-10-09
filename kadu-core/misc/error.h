@@ -22,8 +22,8 @@
 
 #include <QtCore/QString>
 
-#include "exports.h"
 #include "misc/error-severity.h"
+#include "exports.h"
 
 /**
  * @addtogroup Misc

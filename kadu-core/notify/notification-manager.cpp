@@ -32,13 +32,13 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
-#include "debug.h"
 #include "gui/windows/message-dialog.h"
 #include "notify/notification/aggregate-notification.h"
 #include "notify/notifier.h"
-#include "protocols/protocol.h"
 #include "protocols/connection-error-notification.h"
+#include "protocols/protocol.h"
 #include "status/status-container-manager.h"
+#include "debug.h"
 
 #include "notify/notification-manager.h"
 

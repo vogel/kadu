@@ -27,15 +27,13 @@
 #include "accounts/filter/protocol-filter.h"
 #include "buddies/model/buddy-list-model.h"
 #include "buddies/model/buddy-manager-adapter.h"
-// will be used when Qt 4.8 .is required
-// #include "buddies/model/checkable-buddies-proxy-model.h"
-#include "configuration/config-file-variant-wrapper.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
-#include "gui/widgets/accounts-combo-box.h"
+#include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/account-buddy-list-widget.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
@@ -46,6 +44,8 @@
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
+// will be used when Qt 4.8 .is required
+// #include "buddies/model/checkable-buddies-proxy-model.h"
 
 #include "add-conference-window.h"
 

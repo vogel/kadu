@@ -23,9 +23,9 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
+#include <QtGui/QFormLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QFormLayout>
 
 #include "icons/kadu-icon.h"
 

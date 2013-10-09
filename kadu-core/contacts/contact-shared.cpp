@@ -30,8 +30,8 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "misc/change-notifier.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 #include "protocols/services/roster/roster-entry.h"
 

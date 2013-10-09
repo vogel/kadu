@@ -26,8 +26,8 @@
 
 #include <QtGui/QTreeView>
 
-#include "exports.h"
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 
 class QTemporaryFile;
 

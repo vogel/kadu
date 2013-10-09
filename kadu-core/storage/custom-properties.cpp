@@ -19,9 +19,9 @@
 
 #include <QtCore/QVariant>
 
+#include <configuration/xml-configuration-file.h>
 #include "custom-properties.h"
 #include "storage-point.h"
-#include <configuration/xml-configuration-file.h>
 
 CustomProperties::CustomProperties(QObject *parent) :
 		QObject(parent)

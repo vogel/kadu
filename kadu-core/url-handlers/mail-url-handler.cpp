@@ -23,8 +23,8 @@
 
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
-#include "url-handlers/mail-url-expander.h"
 #include "os/generic/url-opener.h"
+#include "url-handlers/mail-url-expander.h"
 
 #include "mail-url-handler.h"
 

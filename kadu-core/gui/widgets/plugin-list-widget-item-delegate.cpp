@@ -34,19 +34,19 @@
 #include <QtGui/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
-#include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/categorized-list-view-painter.h"
+#include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/plugin-list-view-delegate.h"
 #include "gui/widgets/plugin-list-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-model.h"
-#include "plugins/model/plugin-proxy-model.h"
-#include "plugins/plugin.h"
-#include "plugins/plugin-info.h"
-#include "plugins/plugins-manager.h"
 #include "plugins/model/plugin-model.h"
+#include "plugins/model/plugin-proxy-model.h"
+#include "plugins/plugin-info.h"
+#include "plugins/plugin.h"
+#include "plugins/plugins-manager.h"
 
 #include "plugin-list-widget-item-delegate.h"
 

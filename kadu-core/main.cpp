@@ -44,11 +44,11 @@
 #include <errno.h>
 #include <time.h>
 #ifndef Q_WS_WIN
-#include <unistd.h>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include <unistd.h>
 #else // !Q_WS_WIN
 #include <winsock2.h>
 #endif // !Q_WS_WIN

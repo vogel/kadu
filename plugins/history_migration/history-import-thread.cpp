@@ -25,8 +25,8 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
-#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"

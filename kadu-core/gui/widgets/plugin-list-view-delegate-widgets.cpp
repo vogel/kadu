@@ -25,18 +25,18 @@
 
 #include <math.h>
 
-#include <QtCore/qobjectdefs.h>
-#include <QtCore/QMetaObject>
-#include <QtCore/QMetaMethod>
-#include <QtCore/QMetaProperty>
-#include <QtCore/QPair>
 #include <QtCore/QHash>
 #include <QtCore/QList>
-#include <QtGui/QWidget>
+#include <QtCore/QMetaMethod>
+#include <QtCore/QMetaObject>
+#include <QtCore/QMetaProperty>
+#include <QtCore/QPair>
+#include <QtCore/qobjectdefs.h>
 #include <QtGui/QAbstractItemView>
+#include <QtGui/QAbstractProxyModel>
 #include <QtGui/QApplication>
 #include <QtGui/QInputEvent>
-#include <QtGui/QAbstractProxyModel>
+#include <QtGui/QWidget>
 
 #include "gui/widgets/plugin-list-view-delegate.h"
 

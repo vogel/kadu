@@ -21,9 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/group.h"
-#include "buddies/group-manager.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/group-manager.h"
+#include "buddies/group.h"
 #include "configuration/configuration-file.h"
 #include "services/notification-service.h"
 

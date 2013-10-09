@@ -19,6 +19,7 @@
 
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
+#include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
 #include "otr-message-event-service.h"
 #include "otr-message-service.h"
@@ -26,7 +27,6 @@
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
 #include "otr-session-service.h"
-#include "otr-instance-tag-service.h"
 #include "otr-timer-service.h"
 #include "otr-trust-level-service.h"
 

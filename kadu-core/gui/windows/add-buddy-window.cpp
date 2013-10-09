@@ -62,8 +62,8 @@
 #include "protocols/protocol.h"
 #include "protocols/roster.h"
 #include "protocols/services/roster-service.h"
-#include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "protocols/services/subscription-service.h"
+#include "talkable/filter/exclude-buddy-talkable-filter.h"
 #include "url-handlers/url-handler-manager.h"
 
 #include "add-buddy-window.h"

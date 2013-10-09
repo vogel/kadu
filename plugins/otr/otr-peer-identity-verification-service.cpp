@@ -21,10 +21,10 @@
 
 #include "otr-app-ops-service.h"
 #include "otr-context-converter.h"
-#include "otr-op-data.h"
 #include "otr-op-data-factory.h"
-#include "otr-user-state-service.h"
+#include "otr-op-data.h"
 #include "otr-peer-identity-verification-state.h"
+#include "otr-user-state-service.h"
 
 #include "otr-peer-identity-verification-service.h"
 

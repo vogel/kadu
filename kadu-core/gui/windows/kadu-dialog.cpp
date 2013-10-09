@@ -24,18 +24,18 @@
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QFormLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QFormLayout>
 
-#include "icons/icons-manager.h"
-#include "icons/kadu-icon.h"
 #include "gui/widgets/dialog/dialog-widget.h"
 #include "gui/widgets/dialog/title-widget.h"
+#include "icons/icons-manager.h"
+#include "icons/kadu-icon.h"
 
 #include "kadu-dialog.h"
 

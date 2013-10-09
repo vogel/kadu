@@ -21,8 +21,8 @@ extern "C" {
 #   include <libotr/privkey.h>
 }
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 #include "misc/kadu-paths.h"
 
 #include "otr-create-private-key-job.h"

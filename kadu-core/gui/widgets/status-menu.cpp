@@ -26,8 +26,8 @@
 #include <QtGui/QMenu>
 
 #include "core/core.h"
-#include "gui/windows/status-window.h"
 #include "gui/window-manager.h"
+#include "gui/windows/status-window.h"
 #include "protocols/protocol.h"
 #include "status/status-actions.h"
 #include "status/status-container.h"

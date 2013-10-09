@@ -24,12 +24,12 @@
 #include <QtSql/QSqlQuery>
 
 #include "accounts/account.h"
-#include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"

@@ -24,7 +24,6 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
-#include "debug.h"
 #include "multilogon/multilogon-session.h"
 #include "notify/notification/multilogon-notification.h"
 #include "notify/notification/status-changed-notification.h"
@@ -32,6 +31,7 @@
 #include "services/notification-service.h"
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
+#include "debug.h"
 
 #include "account-event-listener.h"
 

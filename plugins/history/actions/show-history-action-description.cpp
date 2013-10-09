@@ -30,8 +30,8 @@
 #include "gui/widgets/chat-widget.h"
 
 #include "gui/windows/history-window.h"
-#include "history-query.h"
 #include "history-messages-prepender.h"
+#include "history-query.h"
 #include "history.h"
 
 #include "show-history-action-description.h"

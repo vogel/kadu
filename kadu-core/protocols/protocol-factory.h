@@ -33,8 +33,8 @@
 #include <QtGui/QValidator>
 
 #include "contacts/contact-details.h"
-#include "exports.h"
 #include "status/status-adapter.h"
+#include "exports.h"
 
 class Account;
 class AccountDetails;

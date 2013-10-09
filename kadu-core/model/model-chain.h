@@ -29,8 +29,8 @@
 #include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
-#include "exports.h"
 #include "model/kadu-abstract-model.h"
+#include "exports.h"
 
 class QAbstractItemModel;
 class QAbstractProxyModel;

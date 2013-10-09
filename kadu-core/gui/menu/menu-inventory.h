@@ -25,8 +25,8 @@
 
 #include <QtCore/QObject>
 
-#include "kadu-menu.h"
 #include "exports.h"
+#include "kadu-menu.h"
 
 class QMenu;
 class QWidget;

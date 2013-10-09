@@ -22,8 +22,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat-details-contact.h"
 #include "chat/chat-details-contact-set.h"
+#include "chat/chat-details-contact.h"
 #include "chat/type/chat-type-manager.h"
 #include "message/message-manager.h"
 

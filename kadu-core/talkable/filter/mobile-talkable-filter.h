@@ -20,8 +20,8 @@
 #ifndef MOBILE_TALKABLE_FILTER_H
 #define MOBILE_TALKABLE_FILTER_H
 
-#include "exports.h"
 #include "talkable/filter/talkable-filter.h"
+#include "exports.h"
 
 /**
  * @addtogroup Talkable

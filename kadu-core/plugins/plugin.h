@@ -24,9 +24,9 @@
 
 #include <QtCore/QObject>
 
-#include "exports.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
+#include "exports.h"
 
 #include "storage/named-storable-object.h"
 

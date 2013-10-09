@@ -24,11 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QPoint>
+#include <QtCore/QVariant>
 #include <QtGui/QDrag>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QMenu>
-#include <QtCore/QPoint>
-#include <QtCore/QVariant>
 
 #include "chat/chat.h"
 #include "chat/model/chat-data-extractor.h"
@@ -36,8 +36,8 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/recent-chats-menu.h"
 #include "gui/windows/message-dialog.h"

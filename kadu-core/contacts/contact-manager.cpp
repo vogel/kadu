@@ -23,8 +23,8 @@
 #include <QtCore/QPair>
 #include <QtCore/QTimer>
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"

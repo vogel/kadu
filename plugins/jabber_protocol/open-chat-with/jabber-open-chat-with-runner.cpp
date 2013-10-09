@@ -22,8 +22,8 @@
  */
 
 #include "accounts/account.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
 #include "debug.h"
 

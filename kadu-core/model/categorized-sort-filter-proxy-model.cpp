@@ -24,8 +24,8 @@
 #include <limits.h>
 
 #include <QItemSelection>
-#include <QStringList>
 #include <QSize>
+#include <QStringList>
 
 // #include <kstringhandler.h>
 

@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/model/buddy-list-model.h"
 #include "buddies/buddy-manager.h"
+#include "buddies/model/buddy-list-model.h"
 
 #include "buddy-manager-adapter.h"
 

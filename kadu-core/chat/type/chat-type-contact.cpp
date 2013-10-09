@@ -24,9 +24,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "icons/kadu-icon.h"
 

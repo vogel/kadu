@@ -20,11 +20,11 @@
 #include <QtSql/QSqlQuery>
 
 #include "accounts/account.h"
-#include "chat/chat.h"
 #include "chat/chat-details-room.h"
 #include "chat/chat-manager.h"
-#include "chat/type/chat-type-contact.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-room.h"
 #include "contacts/contact-set.h"
 

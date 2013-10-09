@@ -24,8 +24,8 @@
 
 #include "misc/kadu-paths.h"
 
-#include "image-storage-service.h"
 #include <icons/kadu-icon.h>
+#include "image-storage-service.h"
 
 ImageStorageService::ImageStorageService(QObject *parent) :
 		QObject(parent)

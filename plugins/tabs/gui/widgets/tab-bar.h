@@ -25,9 +25,9 @@
 #ifndef TAB_BAR_H
 #define TAB_BAR_H
 
+#include <QtCore/QPoint>
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
-#include <QtCore/QPoint>
 #include <QtGui/QTabBar>
 
 

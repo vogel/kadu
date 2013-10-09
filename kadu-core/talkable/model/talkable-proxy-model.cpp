@@ -23,8 +23,8 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
-#include "chat/model/chat-data-extractor.h"
 #include "chat/chat.h"
+#include "chat/model/chat-data-extractor.h"
 #include "contacts/contact.h"
 #include "model/roles.h"
 #include "status/status-type.h"

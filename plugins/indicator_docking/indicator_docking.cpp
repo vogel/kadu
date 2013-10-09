@@ -44,9 +44,9 @@
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
 #include "misc/kadu-paths.h"
+#include "notify/notification-manager.h"
 #include "notify/notification/new-message-notification.h"
 #include "notify/notification/notification.h"
-#include "notify/notification-manager.h"
 #include "services/notification-service.h"
 
 #include "plugins/docking/docking.h"

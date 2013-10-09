@@ -26,8 +26,8 @@
 #include <QtCore/QScopedArrayPointer>
 #include <QtCore/QTimer>
 
-#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"

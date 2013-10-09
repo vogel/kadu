@@ -22,8 +22,8 @@
  */
 
 #include "gui/windows/window-notifier-window.h"
-#include "notify/notification/notification.h"
 #include "notify/notification-manager.h"
+#include "notify/notification/notification.h"
 
 #include "configuration/configuration-file.h"
 

@@ -24,8 +24,8 @@
 #ifndef X11_SCREEN_MODE_CHECKER_H
 #define X11_SCREEN_MODE_CHECKER_H
 
-#include <time.h>
 #include <X11/Xlib.h>
+#include <time.h>
 
 #ifdef Q_WS_X11
 #include "os/x11tools.h" // this should be included as last one,

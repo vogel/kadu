@@ -23,8 +23,8 @@
 #include <QtGui/QAction>
 #include <QtGui/QMenu>
 
-#include "core/core.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"

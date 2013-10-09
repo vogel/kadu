@@ -27,8 +27,8 @@ extern "C" {
 }
 
 #include "otr-app-ops-service.h"
-#include "otr-op-data.h"
 #include "otr-op-data-factory.h"
+#include "otr-op-data.h"
 #include "otr-user-state-service.h"
 
 #include "otr-timer-service.h"

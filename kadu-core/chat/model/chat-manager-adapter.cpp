@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/model/chat-list-model.h"
 #include "chat/chat-manager.h"
+#include "chat/model/chat-list-model.h"
 
 #include "chat-manager-adapter.h"
 

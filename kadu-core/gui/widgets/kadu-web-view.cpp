@@ -58,8 +58,8 @@
 #	include <QtWebKit/QWebInspector>
 #endif
 
-#include "core/core.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/services/clipboard-html-transformer-service.h"
 #include "gui/windows/message-dialog.h"
 #include "protocols/services/chat-image-service.h"

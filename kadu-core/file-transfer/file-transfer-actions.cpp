@@ -23,12 +23,12 @@
 
 #include <QtGui/QFileDialog>
 
-#include "gui/actions/action-context.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer-handler.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "gui/actions/action-context.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"

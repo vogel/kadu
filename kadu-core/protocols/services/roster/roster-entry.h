@@ -22,8 +22,8 @@
 
 #include <QtCore/QObject>
 
-#include "exports.h"
 #include "protocols/services/roster/roster-entry-state.h"
+#include "exports.h"
 
 class ChangeNotifier;
 

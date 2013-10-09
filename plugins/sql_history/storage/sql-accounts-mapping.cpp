@@ -19,8 +19,8 @@
 
 #include <QtSql/QSqlQuery>
 
-#include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/account.h"
 
 #include "sql-accounts-mapping.h"
 

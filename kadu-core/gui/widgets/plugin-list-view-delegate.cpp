@@ -21,25 +21,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QIcon>
-#include <QSize>
-#include <QStyle>
-#include <QEvent>
-#include <QHoverEvent>
-#include <QFocusEvent>
-#include <QCursor>
-#include <QTimer>
-#include <QBitmap>
-#include <QLayout>
-#include <QPainter>
-#include <QScrollBar>
-#include <QKeyEvent>
-#include <QApplication>
-#include <QStyleOption>
-#include <QPaintEngine>
-#include <QCoreApplication>
 #include <QAbstractItemView>
 #include <QAbstractProxyModel>
+#include <QApplication>
+#include <QBitmap>
+#include <QCoreApplication>
+#include <QCursor>
+#include <QEvent>
+#include <QFocusEvent>
+#include <QHoverEvent>
+#include <QIcon>
+#include <QKeyEvent>
+#include <QLayout>
+#include <QPaintEngine>
+#include <QPainter>
+#include <QScrollBar>
+#include <QSize>
+#include <QStyle>
+#include <QStyleOption>
+#include <QTimer>
 #include <QTreeView>
 
 #include "gui/widgets/plugin-list-view-delegate-widgets.h"

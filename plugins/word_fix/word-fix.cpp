@@ -36,8 +36,8 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "configuration/configuration-file.h"
-#include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-html-visitor.h"
+#include "formatted-string/formatted-string.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -46,8 +46,9 @@
 #include "misc/kadu-paths.h"
 #include "debug.h"
 
-#include "word-fix.h"
 #include "word-fix-formatted-string-visitor.h"
+
+#include "word-fix.h"
 
 
 WordFix::WordFix(QObject *parent) :

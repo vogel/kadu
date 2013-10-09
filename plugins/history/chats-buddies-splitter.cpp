@@ -21,8 +21,8 @@
 
 #include "buddies/buddy-manager.h"
 #include "chat/buddy-chat-manager.h"
-#include "chat/chat.h"
 #include "chat/chat-details-buddy.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
 #include "talkable/talkable.h"

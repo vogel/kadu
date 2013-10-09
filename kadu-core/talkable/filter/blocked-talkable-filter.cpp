@@ -18,8 +18,8 @@
  */
 
 #include "chat/chat.h"
-#include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "contacts/contact.h"
 
 #include "blocked-talkable-filter.h"
 

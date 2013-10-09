@@ -66,8 +66,8 @@
 
 #include "actions/show-history-action-description.h"
 #include "gui/windows/history-window.h"
-#include "history-query.h"
 #include "history-messages-prepender.h"
+#include "history-query.h"
 #include "history-save-thread.h"
 
 #include "history.h"

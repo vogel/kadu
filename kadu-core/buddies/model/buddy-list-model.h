@@ -27,8 +27,8 @@
 #include "accounts/accounts-aware-object.h"
 
 #include "buddies/buddy-list.h"
-#include "buddies/buddy.h"
 #include "buddies/buddy-set.h"
+#include "buddies/buddy.h"
 #include "status/status.h"
 #include "exports.h"
 

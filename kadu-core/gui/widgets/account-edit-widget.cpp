@@ -26,8 +26,8 @@
 
 #include "account-configuration-widget-factory-repository.h"
 
-#include "account-edit-widget.h"
 #include "account-configuration-widget-factory.h"
+#include "account-edit-widget.h"
 
 AccountEditWidget::AccountEditWidget(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository, Account account, QWidget *parent) :
 		AccountConfigurationWidget(account, parent), MyAccountConfigurationWidgetFactoryRepository(accountConfigurationWidgetFactoryRepository),

@@ -22,8 +22,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
-#include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-service.h"

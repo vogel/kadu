@@ -27,8 +27,8 @@
 #include <QtGui/QSystemTrayIcon>
 #include <QtGui/QTextDocument>
 
-#include "notify/notification/chat-notification.h"
 #include "notify/notification-manager.h"
+#include "notify/notification/chat-notification.h"
 #include "notify/notification/notification.h"
 
 #include "configuration/configuration-file.h"

@@ -57,8 +57,8 @@
 
 #include "plugins/docking/docking.h"
 
-#include "mp_status_changer.h"
 #include "notify/mediaplayer-notification.h"
+#include "mp_status_changer.h"
 #include "player_commands.h"
 #include "player_info.h"
 

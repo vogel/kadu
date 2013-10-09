@@ -21,8 +21,8 @@
 
 #include "configuration/configuration-file.h"
 
-#include "url-handlers/standard-url-expander.h"
 #include "url-handlers/standard-url-expander-configuration.h"
+#include "url-handlers/standard-url-expander.h"
 
 #include "standard-url-expander-configurator.h"
 

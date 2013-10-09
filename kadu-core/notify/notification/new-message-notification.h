@@ -23,9 +23,9 @@
 #ifndef NEW_MESSAGE_NOTIFICATION_H
 #define NEW_MESSAGE_NOTIFICATION_H
 
-#include "exports.h"
 #include "message/message.h"
 #include "chat-notification.h"
+#include "exports.h"
 
 class NotifyEvent;
 

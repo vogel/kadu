@@ -26,10 +26,10 @@
 #include "gui/actions/action-context.h"
 #include "gui/actions/action.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/buddy-data-window.h"
 #include "gui/windows/buddy-data-window-repository.h"
-#include "gui/windows/chat-data-window.h"
+#include "gui/windows/buddy-data-window.h"
 #include "gui/windows/chat-data-window-repository.h"
+#include "gui/windows/chat-data-window.h"
 #include "gui/windows/kadu-window.h"
 
 #include "edit-talkable-action.h"

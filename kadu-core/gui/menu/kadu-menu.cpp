@@ -24,12 +24,12 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
-#include "menu-item.h"
+#include "gui/windows/kadu-window.h"
 #include "protocols/protocol-menu-manager.h"
+#include "menu-item.h"
 
 #include "kadu-menu.h"
 

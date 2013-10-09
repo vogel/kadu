@@ -22,8 +22,8 @@
 
 #include <QtCore/QString>
 
-#include "exports.h"
 #include "protocols/services/roster/roster-task-type.h"
+#include "exports.h"
 
 /**
  * @addtogroup Protocol

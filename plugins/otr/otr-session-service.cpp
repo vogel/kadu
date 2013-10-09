@@ -28,10 +28,10 @@ extern "C" {
 #include "message/message-manager.h"
 
 #include "otr-app-ops-service.h"
-#include "otr-op-data.h"
 #include "otr-op-data-factory.h"
-#include "otr-policy.h"
+#include "otr-op-data.h"
 #include "otr-policy-service.h"
+#include "otr-policy.h"
 #include "otr-trust-level-service.h"
 #include "otr-user-state-service.h"
 

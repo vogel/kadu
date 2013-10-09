@@ -17,11 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 
 #include "hide-offline-talkable-filter.h"
 

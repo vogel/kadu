@@ -27,7 +27,6 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
-#include "activate.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "chat/type/chat-type-contact.h"
@@ -46,6 +45,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "storage/storage-point.h"
+#include "activate.h"
 #include "debug.h"
 
 #include "file-transfer-manager.h"

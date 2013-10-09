@@ -24,9 +24,9 @@
 #ifndef PLUGIN_LIST_WIDGET_DELEGATE_WIDGETS_H
 #define PLUGIN_LIST_WIDGET_DELEGATE_WIDGETS_H
 
-#include <QtCore/QModelIndex>
 #include <QtCore/QHash>
 #include <QtCore/QList>
+#include <QtCore/QModelIndex>
 
 class QWidget;
 class QStyleOptionViewItem;

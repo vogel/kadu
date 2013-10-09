@@ -36,10 +36,10 @@ KNOWN ISSUES:
 	#define X11TOOLS_H
 
 
+#include <X11/Xlib.h>
 #include <stdint.h>
 #include <string>
 #include <utility>
-#include <X11/Xlib.h>
 
 
 #ifdef X11TOOLSDEBUG

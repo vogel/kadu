@@ -19,8 +19,8 @@
 
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/chat-top-bar-widget-factory.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "gui/widgets/chat-top-bar-widget-factory.h"
 
 #include "chat-top-bar-container-widget.h"
 

@@ -21,13 +21,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "activate.h"
-#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "message/message.h"
+#include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
+#include "message/message.h"
 #include "notify/notification/new-message-notification.h"
 #include "services/notification-service.h"
+#include "activate.h"
 
 #include "chat-event-listener.h"
 

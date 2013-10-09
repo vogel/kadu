@@ -45,8 +45,8 @@
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
 #include "misc/misc.h"
-#include "notify/notification/chat-notification.h"
 #include "notify/notification-manager.h"
+#include "notify/notification/chat-notification.h"
 #include "parser/parser.h"
 
 #include "icons/icons-manager.h"

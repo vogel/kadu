@@ -20,8 +20,8 @@
 #include <QtSql/QSqlQuery>
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact.h"
 
 #include "storage/sql-accounts-mapping.h"
 

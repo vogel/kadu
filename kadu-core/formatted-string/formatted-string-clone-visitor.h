@@ -24,8 +24,8 @@
 #include <QtCore/QStack>
 #include <QtCore/QString>
 
-#include "exports.h"
 #include "formatted-string/formatted-string-visitor.h"
+#include "exports.h"
 
 class FormattedString;
 

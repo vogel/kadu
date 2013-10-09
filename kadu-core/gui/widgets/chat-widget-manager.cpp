@@ -40,8 +40,8 @@
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
-#include "services/notification-service.h"
 #include "protocols/protocol-factory.h"
+#include "services/notification-service.h"
 #include "activate.h"
 
 #include "chat-widget-manager.h"

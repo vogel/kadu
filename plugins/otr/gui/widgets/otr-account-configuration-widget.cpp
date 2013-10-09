@@ -23,8 +23,8 @@
 
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 
-#include "otr-policy.h"
 #include "otr-policy-service.h"
+#include "otr-policy.h"
 
 #include "otr-account-configuration-widget.h"
 

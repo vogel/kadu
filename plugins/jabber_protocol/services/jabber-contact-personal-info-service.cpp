@@ -25,8 +25,8 @@
 #include <xmpp_jid.h>
 #include <xmpp_vcard.h>
 
-#include "contacts/contact.h"
 #include "buddies/buddy-manager.h"
+#include "contacts/contact.h"
 
 #include "jabber-vcard-downloader.h"
 #include "jabber-vcard-service.h"

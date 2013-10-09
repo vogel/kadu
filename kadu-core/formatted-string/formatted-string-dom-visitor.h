@@ -23,8 +23,8 @@
 #include <QtCore/QString>
 #include <QtXml/QDomDocument>
 
-#include "exports.h"
 #include "formatted-string/formatted-string-visitor.h"
+#include "exports.h"
 
 /**
  * @addtogroup FormattedString

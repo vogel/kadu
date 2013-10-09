@@ -52,8 +52,8 @@
 #include "dom/dom-processor-service.h"
 #include "icons/kadu-icon.h"
 #include "misc/kadu-paths.h"
-#include "os/generic/window-geometry-manager.h"
 #include "os/generic/url-opener.h"
+#include "os/generic/window-geometry-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "debug.h"
 

@@ -26,30 +26,30 @@
 #include <QtGui/QTreeView>
 #include <QtGui/QVBoxLayout>
 
+#include "buddies/model/buddy-list-model.h"
 #include "chat/buddy-chat-manager.h"
 #include "chat/model/chat-list-model.h"
-#include "buddies/model/buddy-list-model.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/timeline-chat-messages-view.h"
-#include "gui/widgets/wait-overlay.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/search-bar.h"
 #include "gui/widgets/talkable-delegate-configuration.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/timeline-chat-messages-view.h"
+#include "gui/widgets/wait-overlay.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
+#include "talkable/filter/hide-temporary-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
-#include <talkable/filter/hide-temporary-talkable-filter.h>
 #include "talkable/model/talkable-proxy-model.h"
 
 #include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
-#include "history-query.h"
 #include "history-query-result.h"
+#include "history-query.h"
 
 #include "history-messages-tab.h"
 

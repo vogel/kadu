@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
-#include "chat/chat-manager.h"
 #include "chat/chat-details-room.h"
+#include "chat/chat-manager.h"
+#include "chat/chat.h"
 #include "gui/widgets/chat-room-edit-widget.h"
 #include "icons/kadu-icon.h"
 

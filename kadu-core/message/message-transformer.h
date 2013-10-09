@@ -21,8 +21,8 @@
 #define MESSAGE_TRANSFORMER_H
 
 #include "core/transformer.h"
-#include "exports.h"
 #include "message/message.h"
+#include "exports.h"
 
 /**
  * @addtogroup Message

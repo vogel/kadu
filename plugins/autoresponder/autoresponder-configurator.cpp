@@ -21,8 +21,8 @@
 
 #include "configuration/configuration-file.h"
 
-#include "autoresponder.h"
 #include "autoresponder-configuration.h"
+#include "autoresponder.h"
 
 #include "autoresponder-configurator.h"
 

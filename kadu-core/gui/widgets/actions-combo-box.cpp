@@ -22,9 +22,9 @@
 
 #include "model/action-filter-proxy-model.h"
 #include "model/action-list-model.h"
-#include "model/roles.h"
 #include "model/merged-proxy-model-factory.h"
 #include "model/model-chain.h"
+#include "model/roles.h"
 
 #include "actions-combo-box.h"
 

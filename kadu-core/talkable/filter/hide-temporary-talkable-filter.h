@@ -22,8 +22,8 @@
 
 #include <QtCore/QMetaType>
 
-#include "exports.h"
 #include "talkable/filter/talkable-filter.h"
+#include "exports.h"
 
 /**
  * @addtogroup Talkable

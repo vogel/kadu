@@ -27,8 +27,8 @@
 #include <QtCore/QEvent>
 #include <QtCore/QTimer>
 #include <QtGui/QMenu>
-#include <QtGui/QWidgetAction>
 #include <QtGui/QTextDocument>
+#include <QtGui/QWidgetAction>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"

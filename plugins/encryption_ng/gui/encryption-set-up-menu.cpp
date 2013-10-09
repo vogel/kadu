@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/actions/action.h"
 #include "gui/actions/action-context.h"
+#include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 

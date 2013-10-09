@@ -23,9 +23,9 @@
 #include <QtCore/QString>
 #include <QtCore/QWeakPointer>
 
-#include "exports.h"
 #include "misc/variant-wrapper.h"
 #include "storage/custom-properties.h"
+#include "exports.h"
 
 /**
  * @addtogroup Storage

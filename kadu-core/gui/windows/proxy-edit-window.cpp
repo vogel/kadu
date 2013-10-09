@@ -32,10 +32,10 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration/config-file-variant-wrapper.h"
-#include "model/action-list-model.h"
 #include "model/action-filter-proxy-model.h"
-#include "model/roles.h"
+#include "model/action-list-model.h"
 #include "model/merged-proxy-model-factory.h"
+#include "model/roles.h"
 #include "network/proxy/model/network-proxy-model.h"
 #include "network/proxy/model/network-proxy-proxy-model.h"
 #include "network/proxy/network-proxy-manager.h"

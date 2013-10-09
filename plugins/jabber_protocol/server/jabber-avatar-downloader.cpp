@@ -23,11 +23,11 @@
 #include <xmpp_client.h>
 
 #include "accounts/account-manager.h"
-#include "jabber-protocol.h"
 #include "server/jabber-avatar-pep-downloader.h"
 #include "server/jabber-avatar-vcard-downloader.h"
 #include "services/jabber-pep-service.h"
 #include "services/jabber-vcard-service.h"
+#include "jabber-protocol.h"
 
 #include "jabber-avatar-downloader.h"
 

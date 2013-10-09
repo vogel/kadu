@@ -19,8 +19,8 @@
 
 #include "configuration/chat-configuration-holder.h"
 #include "dom/dom-processor-service.h"
-#include "formatted-string/formatted-string.h"
 #include "formatted-string/formatted-string-dom-visitor.h"
+#include "formatted-string/formatted-string.h"
 #include "message/message.h"
 
 #include "message-html-renderer-service.h"

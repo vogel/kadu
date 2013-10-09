@@ -22,8 +22,8 @@
 
 #include <QtCore/QString>
 
-#include "exports.h"
 #include "misc/variant-wrapper.h"
+#include "exports.h"
 
 /**
  * @addtogroup Configuration

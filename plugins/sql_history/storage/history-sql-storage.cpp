@@ -34,8 +34,8 @@
 #include "accounts/account.h"
 #include "buddies/buddy-manager.h"
 #include "chat/buddy-chat-manager.h"
-#include "chat/chat-details.h"
 #include "chat/chat-details-buddy.h"
+#include "chat/chat-details.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
 #include "configuration/configuration-file.h"
@@ -44,7 +44,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
-#include <formatted-string/formatted-string-plain-text-visitor.h>
+#include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
@@ -55,10 +55,10 @@
 #include "talkable/talkable.h"
 #include "debug.h"
 
+#include "plugins/history/history-query-result.h"
+#include "plugins/history/history-query.h"
 #include "plugins/history/history.h"
 #include "plugins/history/search/history-search-parameters.h"
-#include "plugins/history/history-query.h"
-#include "plugins/history/history-query-result.h"
 
 #include "storage/sql-accounts-mapping.h"
 #include "storage/sql-chats-mapping.h"

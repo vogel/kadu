@@ -24,10 +24,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
-#include <QtCore/QCoreApplication>
 
 #ifdef Q_OS_WIN
 #include <shlobj.h>

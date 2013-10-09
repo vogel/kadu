@@ -20,8 +20,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
 #include <QtGui/QAction>
+#include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QFormLayout>
@@ -51,8 +51,8 @@
 
 #include "mobile-number-manager.h"
 #include "sms-external-sender.h"
-#include "sms-gateway.h"
 #include "sms-gateway-manager.h"
+#include "sms-gateway.h"
 #include "sms-internal-sender.h"
 
 #include "sms-dialog.h"

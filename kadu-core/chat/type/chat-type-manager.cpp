@@ -21,8 +21,8 @@
 
 #include "chat/type/chat-type-aware-object.h"
 #include "chat/type/chat-type-buddy.h"
-#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-room.h"
 #include "icons/icons-manager.h"
 

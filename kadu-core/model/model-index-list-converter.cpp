@@ -19,8 +19,8 @@
 
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/type/chat-type-contact.h"
 #include "chat/type/chat-type-contact-set.h"
+#include "chat/type/chat-type-contact.h"
 #include "message/message-manager.h"
 #include "model/roles.h"
 

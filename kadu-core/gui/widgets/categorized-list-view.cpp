@@ -33,9 +33,9 @@
 
 #include <math.h> // trunc on C99 compliant systems
 
+#include <QPaintEvent>
 #include <QPainter>
 #include <QScrollBar>
-#include <QPaintEvent>
 
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "model/categorized-sort-filter-proxy-model.h"

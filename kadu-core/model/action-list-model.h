@@ -22,8 +22,8 @@
 
 #include <QtCore/QAbstractItemModel>
 
-#include "exports.h"
 #include "model/kadu-abstract-model.h"
+#include "exports.h"
 
 class QAction;
 class QModelIndex;

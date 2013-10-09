@@ -20,8 +20,8 @@
 #include <QtXml/QDomDocument>
 
 #include "dom/dom-processor.h"
-#include "dom/dom-visitor.h"
 #include "dom/dom-visitor-provider.h"
+#include "dom/dom-visitor.h"
 
 #include "dom-processor-service.h"
 
