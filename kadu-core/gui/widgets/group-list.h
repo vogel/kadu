@@ -1,5 +1,6 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2012 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2004 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2002, 2003, 2004, 2005 Adrian Smarzewski (adrian@kadu.net)
  * Copyright 2002, 2003, 2004 Tomasz Chiliński (chilek@chilan.com)

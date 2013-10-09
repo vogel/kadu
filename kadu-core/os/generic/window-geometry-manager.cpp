@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or

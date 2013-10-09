@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
  * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010, 2010 Przemysław Rudy (prudy1@o2.pl)
+ * Copyright 2010, 2010, 2011 Przemysław Rudy (prudy1@o2.pl)
  * Copyright 2011 Piotr Dąbrowski (ultr@ultr.pl)
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)

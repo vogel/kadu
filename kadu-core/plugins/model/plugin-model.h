@@ -1,6 +1,8 @@
 /*
  * %kadu copyright begin%
  * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
+ * Copyright 2012 Piotr Dąbrowski (ultr@ultr.pl)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This file is derived from part of the KDE project

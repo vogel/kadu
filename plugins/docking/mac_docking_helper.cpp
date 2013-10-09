@@ -4,6 +4,7 @@
  * Copyright 2010, 2011 Tomasz Rostanski (rozteck@interia.pl)
  * Copyright 2010 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * %kadu copyright end%
  *
  * Copyright 2011 Adam "Vertex" Makświej (vertexbz@gmail.com)

@@ -1,5 +1,12 @@
 /*
  * %kadu copyright begin%
+ * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
+ * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)
+ * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
+ * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2010, 2011, 2012 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
  * %kadu copyright end%
  * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
  * Copyright 2009 Bartłomiej Zimoń (uzi18@o2.pl)

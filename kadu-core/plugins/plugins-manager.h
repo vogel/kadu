@@ -2,6 +2,7 @@
  * %kadu copyright begin%
  * Copyright 2010 Tomasz Rostanski (rozteck@interia.pl)
  * Copyright 2008, 2009, 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
+ * Copyright 2012 Wojciech Treter (juzefwt@gmail.com)
  * Copyright 2009 Tomasz Rostański (rozteck@interia.pl)
  * Copyright 2004, 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2004 Roman Krzystyniak (Ron_K@tlen.pl)

@@ -5,6 +5,7 @@
  * Copyright 2008 Michał Podsiadlik (michal@kadu.net)
  * Copyright 2010 Maciej Płaza (plaza.maciej@gmail.com)
  * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2007, 2008 Dawid Stawiarski (neeo@kadu.net)
  * %kadu copyright end%
  *
