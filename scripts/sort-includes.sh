@@ -7,5 +7,5 @@ echo "Sorting includes for $FILE"
 
 AWK_SORT=$BASEDIR/sort-includes.awk
 
-awk -f $AWK_SORT $FILE > $FILE.sorted-includes
+gawk -f $AWK_SORT $FILE > $FILE.sorted-includes
 mv $FILE.sorted-includes $FILE
