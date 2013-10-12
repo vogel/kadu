@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -6,16 +8,8 @@
         <translation>Screenshot</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
         <source>General Settings</source>
         <translation>Ogólne ustawienia</translation>
-    </message>
-    <message>
-        <source>File format</source>
-        <translation>Format pliku</translation>
     </message>
     <message>
         <source>Select image format, which screenshots will be stored and sent in.</source>
@@ -38,14 +32,6 @@
         <translation>-1 to autodetekcja, 0 to najlepsza kompresja, 100 to najlepsza jakość.</translation>
     </message>
     <message>
-        <source>Paste [IMAGE] clause automatically</source>
-        <translation>Wklejaj polecenie [IMAGE] automatycznie</translation>
-    </message>
-    <message>
-        <source>When enabled, module will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation>Kiedy włączone, moduł automatycznie wklei polecenie [IMAGE] do okna rozmowy, aby było gotowe do wysłania.</translation>
-    </message>
-    <message>
         <source>Directory</source>
         <translation>Katalog</translation>
     </message>
@@ -62,16 +48,8 @@
         <translation>Kontroluj rozmiar katalogu</translation>
     </message>
     <message>
-        <source>When enabled, module will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation>Kiedy włączone, moduł będzie sprawdzał rozmiar katalogu zrzutów i ostrzeże cię, jeśli będzie on większy niż ten podany niżej.</translation>
-    </message>
-    <message>
         <source>Maximum directory size</source>
         <translation>Maksymalny rozmiar katalogu</translation>
-    </message>
-    <message>
-        <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
-        <translation>Określa, ile kilobajtów mogą zajmować zrzuty w katalogu, zanim moduł cię ostrzeże.</translation>
     </message>
     <message>
         <source> kB</source>
@@ -80,6 +58,30 @@
     <message>
         <source>ScreenShot images size limit</source>
         <translation>Limit rozmiaru katalogu ze zrzutami</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshot file format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste image to chat window automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -104,7 +106,7 @@
         <translation>Nie można utworzyć katalogu %1 dla zapisywania zrzutów ekranu!</translation>
     </message>
     <message>
-        <source>Can't write file %1.
+        <source>Can&apos;t write file %1.
 Access denied or other problem!</source>
         <translation>Nie można pisać do pliku %1.
 Brak dostępu lub inny problem!</translation>

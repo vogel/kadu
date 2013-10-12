@@ -8,15 +8,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>General Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -40,14 +32,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Paste [IMAGE] clause automatically</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>When enabled, module will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -64,15 +48,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>When enabled, module will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Maximum directory size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -81,6 +57,30 @@
     </message>
     <message>
         <source>ScreenShot images size limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshot file format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste image to chat window automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

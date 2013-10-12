@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -6,16 +8,8 @@
         <translation>Capture d&apos;écran</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Général</translation>
-    </message>
-    <message>
         <source>General Settings</source>
         <translation>Paramètres généraux</translation>
-    </message>
-    <message>
-        <source>File format</source>
-        <translation>Format de fichier</translation>
     </message>
     <message>
         <source>Select image format, which screenshots will be stored and sent in.</source>
@@ -38,14 +32,6 @@
         <translation>-1 pour l&apos;auto-détection, 0 pour une compression optimal, 100 pour une image de qualité maximum.</translation>
     </message>
     <message>
-        <source>Paste [IMAGE] clause automatically</source>
-        <translation>Coller [IMAGE] prise automatiquement</translation>
-    </message>
-    <message>
-        <source>When enabled, module will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation>Si activé, le module collera automatiquement l&apos;[IMAGE] prête à envoyée dans la fenêtre de conversation.</translation>
-    </message>
-    <message>
         <source>Directory</source>
         <translation>Répertoire</translation>
     </message>
@@ -62,16 +48,8 @@
         <translation>Activer le contrôle de la taille du répertoire</translation>
     </message>
     <message>
-        <source>When enabled, module will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation>Si activé, le module vérifiera la taille du répertoire des captures et vous avertir si elle atteint la taille indiquée ci-dessous.</translation>
-    </message>
-    <message>
         <source>Maximum directory size</source>
         <translation>Taille maximum du répertoire</translation>
-    </message>
-    <message>
-        <source>Define, how many kbytes can shots take in the directory before module will warn you.</source>
-        <translation>Définir combien de kilo-octets les captures peuvent occuper dans le répertoire avant d&apos;être averti par le module.</translation>
     </message>
     <message>
         <source> kB</source>
@@ -80,6 +58,30 @@
     <message>
         <source>ScreenShot images size limit</source>
         <translation>Limite de la taille des images de captures d&apos;écran</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Screenshot file format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paste image to chat window automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -104,7 +106,7 @@
         <translation>Impossible de créer le répertoire %1 pour y stocker les captures d&apos;écran !</translation>
     </message>
     <message>
-        <source>Can't write file %1.
+        <source>Can&apos;t write file %1.
 Access denied or other problem!</source>
         <translation>Impossible d&apos;écrire le fichier %1.
 Accès refusé ou autre problème !</translation>
