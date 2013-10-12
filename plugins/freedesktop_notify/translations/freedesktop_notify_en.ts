@@ -1,46 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifications</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n second</numerusform>
-            <numerusform>%n seconds</numerusform>
-        </translation>
+        <translation><numerusform>%n second</numerusform><numerusform>%n seconds</numerusform></translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"></translation>
+        <translation>Number of quoted characters</translation>
     </message>
     <message>
         <source>System notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>System notifications</translation>
     </message>
     <message>
         <source>Use custom expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Use custom expiration timeout</translation>
     </message>
     <message>
         <source>Expiration timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Expiration timeout</translation>
     </message>
     <message>
         <source>Show message content</source>
-        <translation type="unfinished"></translation>
+        <translation>Show message content</translation>
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Never</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Options</translation>
     </message>
 </context>
 </TS>
