@@ -12,31 +12,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Notify</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Notification syntax</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%u - uin, %m - message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Write to history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Write log to file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -56,15 +36,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>When invisible silently drop chats with unknown persons</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Automatic question</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>After right answer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -73,46 +45,6 @@
     </message>
     <message>
         <source>Confirmation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DoS attack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Protect against flooding DoS attack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Attack caused by many messages, sent in short time.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Min delay between two messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Emoticons DoS attack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Protect against emoticons DoS attack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Attack caused by many emoticons, sent in short time.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Max number of emoticons in one message</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow if known contact</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>People from your list can send you unlimited number of emoticons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -127,19 +59,36 @@
         <source>You must confirm each message sent to these people</source>
         <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
-        <source>%n millisecond(s)</source>
-        <translation>
-            <numerusform>%n millisecond</numerusform>
-            <numerusform>%n milliseconds</numerusform>
-        </translation>
-    </message>
     <message>
         <source>Message was firewalled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Module will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <source>Anonymous chat attempt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save anonymous chat attempt in history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save anonymous chat attempt in log file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log file path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drop chats with unknown person when I am invisible/unavailable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reaction on right answer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
