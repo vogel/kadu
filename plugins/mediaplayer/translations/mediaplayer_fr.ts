@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -53,7 +51,7 @@
     </message>
     <message>
         <source>Enables pseudo-OSD done by Kadu hints. Shows currently played title in hint.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enables pseudo-OSD done by Kadu hints. Shows currently played title in hint.</translation>
     </message>
     <message>
         <source>Enable MediaPlayer keyboard shortcuts in chat window</source>
@@ -61,11 +59,11 @@
     </message>
     <message>
         <source>Put statuses switch to dock menu</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable this to put MediaPlayer statuses switch into docked icon menu.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Signature Cutting</source>
@@ -76,7 +74,7 @@
         <translation>Autres paramètres</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Avec cette option activée vous serez capable de contrôler 
@@ -84,7 +82,7 @@ MediaPlayer dans la fenêtre de conversation grâce aux raccourcis clavier :
 Ctrl+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Avec cette option activée vous serez capable de contrôler 
@@ -105,23 +103,23 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable signature cutting</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -148,7 +146,7 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Enable MediaPlayer statuses</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>MediaPlayer</source>
@@ -216,15 +214,15 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

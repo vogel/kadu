@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -75,7 +73,7 @@
         <translation>Jiná nastavení</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Při povolení této volby budete moci ovládat svůj
@@ -83,7 +81,7 @@ přehrávač v okně pro rozhovor klávesovými zkratkami:
 Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Při povolení této volby budete moci ovládat svůj
@@ -104,23 +102,23 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable signature cutting</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -215,15 +213,15 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

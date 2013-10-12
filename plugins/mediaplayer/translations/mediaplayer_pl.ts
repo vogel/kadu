@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -76,7 +74,7 @@
         <translation>Inne ustawienia</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Po włączeniu tej opcji będziesz móc kontrolować
@@ -84,7 +82,7 @@ swój odtwarzacz z okna rozmowy za pomocą następujących skrótów:
 Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
-        <source>With this option enabled you&apos;ll be able to control
+        <source>With this option enabled you'll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Po włączeniu tej opcji będziesz móc kontrolować
@@ -105,23 +103,23 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatki</translation>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"></translation>
+        <translation>Odtwarzacz</translation>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Format wiadomości w oknie rozmowy</translation>
     </message>
     <message>
         <source>Enable signature cutting</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz usuwanie sygnatur</translation>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz usuwanie nieistotnych fragmentów z tytułów plików</translation>
     </message>
 </context>
 <context>
@@ -216,15 +214,15 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
