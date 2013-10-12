@@ -53,7 +53,7 @@
 <context>
     <name>ConfigWizardConfigurationUiHandler</name>
     <message>
-        <source>Start Configuration Wizard...</source>
+        <source>Start Configuration Wizard</source>
         <translation>Inizia Configurazione Guidata</translation>
     </message>
 </context>
