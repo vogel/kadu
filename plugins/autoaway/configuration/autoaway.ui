@@ -3,8 +3,6 @@
 		<tab name="Inactivity">
 			<group-box name="Status">
 				<spin-box caption="Check idle every" config-section="General" config-item="AutoAwayCheckTime" min-value="1" max-value="600" suffix="%n second(s)" />
-				<spin-box caption="Refresh status every" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="600" suffix="%n second(s)"
-					id="autoaway/autoRefresh" />
 				<check-box caption="Switch to 'away'" config-section="General" config-item="AutoAway"
 					id="autoaway/enableAutoAway" />
 				<spin-box caption="Set status to away after" config-section="General" config-item="AutoAwayTimeMinutes" min-value="1" max-value="600" suffix="%n minute(s)"
@@ -31,6 +29,8 @@
 					<item value="3" caption="Append" />
 				</combo-box>
 				<line-edit caption="New description" config-section="General" config-item="AutoStatusText" id="autoaway/descriptionText" />
+				<spin-box caption="Refresh status every" config-section="General" config-item="AutoRefreshStatusTime" min-value="0" max-value="600" suffix="%n second(s)"
+					id="autoaway/autoRefresh" />
 			</group-box>
 		</tab>
 	</section>
