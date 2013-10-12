@@ -1,71 +1,71 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>default</source>
-        <translation>default</translation>
+        <translation>domyślny</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation>Look</translation>
+        <translation>Wygląd</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation>Icons</translation>
+        <translation>Ikony</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation>Emoticons</translation>
+        <translation>Emotikony</translation>
     </message>
     <message>
         <source>Enable emoticons</source>
-        <translation>Enable emoticons</translation>
+        <translation>Włącz emotikony</translation>
     </message>
     <message>
         <source>Animate emoticons</source>
-        <translation>Animate emoticons</translation>
+        <translation>Animuj emotikony</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation>Icon theme</translation>
+        <translation>Zestaw emotikon</translation>
     </message>
     <message>
         <source>Choose emoticons theme</source>
-        <translation>Choose emoticons theme</translation>
+        <translation>Wybierz zestaw emotikon</translation>
     </message>
     <message>
         <source>Install new emoticons...</source>
-        <translation>Install new emoticons...</translation>
+        <translation>Zainstaluj nowe emotikony...</translation>
     </message>
 </context>
 <context>
     <name>EmoticonsConfigurationUiHandler</name>
     <message>
         <source>Open icon theme archive</source>
-        <translation>Open icon theme archive</translation>
+        <translation>Otwórz plik ze schematem emotikon</translation>
     </message>
     <message>
         <source>XZ archive (*.tar.xz)</source>
-        <translation>XZ archive (*.tar.xz)</translation>
+        <translation>Archiwum XZ (*.tar.xz)</translation>
     </message>
     <message>
         <source>Installation failed</source>
-        <translation>Installation failed</translation>
+        <translation>Instalacja się nie powiodła</translation>
     </message>
 </context>
 <context>
     <name>InsertEmoticonAction</name>
     <message>
         <source>Insert Emoticon</source>
-        <translation>Insert Emoticon</translation>
+        <translation>Wstaw emotikonę</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Insert emoticon</translation>
+        <translation>Wstaw emotikonę</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Insert emoticon - enable in configuration</translation>
+        <translation>Wstaw emotikonę - włącz w konfiguracji</translation>
     </message>
 </context>
 </TS>

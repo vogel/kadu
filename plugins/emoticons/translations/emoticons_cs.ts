@@ -1,71 +1,71 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>default</source>
-        <translation>default</translation>
+        <translation>Výchozí</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation>Look</translation>
+        <translation>Vzhled</translation>
     </message>
     <message>
         <source>Icons</source>
-        <translation>Icons</translation>
+        <translation>Ikony</translation>
     </message>
     <message>
         <source>Emoticons</source>
-        <translation>Emoticons</translation>
+        <translation>Obličeje</translation>
     </message>
     <message>
         <source>Enable emoticons</source>
-        <translation>Enable emoticons</translation>
+        <translation>Povolit obličeje</translation>
     </message>
     <message>
         <source>Animate emoticons</source>
-        <translation>Animate emoticons</translation>
+        <translation>Pohybovat obličeji</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation>Icon theme</translation>
+        <translation>Podoba ikon</translation>
     </message>
     <message>
         <source>Choose emoticons theme</source>
-        <translation>Choose emoticons theme</translation>
+        <translation>Vybrat podobu výrazů obličeje</translation>
     </message>
     <message>
         <source>Install new emoticons...</source>
-        <translation>Install new emoticons...</translation>
+        <translation>Nainstalovat nové obličeje...</translation>
     </message>
 </context>
 <context>
     <name>EmoticonsConfigurationUiHandler</name>
     <message>
         <source>Open icon theme archive</source>
-        <translation>Open icon theme archive</translation>
+        <translation>Archiv s motivem ikon</translation>
     </message>
     <message>
         <source>XZ archive (*.tar.xz)</source>
-        <translation>XZ archive (*.tar.xz)</translation>
+        <translation>Archiv XZ (*.tar.xz)</translation>
     </message>
     <message>
         <source>Installation failed</source>
-        <translation>Installation failed</translation>
+        <translation>Instalace se nezdařila</translation>
     </message>
 </context>
 <context>
     <name>InsertEmoticonAction</name>
     <message>
         <source>Insert Emoticon</source>
-        <translation>Insert Emoticon</translation>
+        <translation>Vložit obličej</translation>
     </message>
     <message>
         <source>Insert emoticon</source>
-        <translation>Insert emoticon</translation>
+        <translation>Vložit obličej</translation>
     </message>
     <message>
         <source>Insert emoticon - enable in configuration</source>
-        <translation>Insert emoticon - enable in configuration</translation>
+        <translation>Vložit obličej - povolit v nastavení</translation>
     </message>
 </context>
 </TS>
