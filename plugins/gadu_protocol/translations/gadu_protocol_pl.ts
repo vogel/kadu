@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -162,11 +160,11 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     <name>GaduChatImageService</name>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten obrazek ma %1 KiB i jest większy niż maksymalny dopuszczalny rozmiar %2 KiB. Niektóre klienty mogą niepoprawnie obsługiwać zbyt duże obrazki.</translation>
     </message>
     <message>
         <source>Do you really want to send this image?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
 </context>
 <context>
@@ -177,7 +175,7 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     </message>
     <message>
         <source>Message too long (%1 &gt;= %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wiadomość zbyt długa (%1&gt;=%2)</translation>
     </message>
 </context>
 <context>
@@ -386,88 +384,89 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"></translation>
+        <translation>Obrazki</translation>
     </message>
     <message>
         <source>Receive images also when I am Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Odbieraj obrazki także gdy jestem niewidoczny</translation>
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
-        <translation type="unfinished"></translation>
+        <translation>Ostrzeż przed wysyłaniem zbyt dużych obrazków</translation>
     </message>
     <message>
         <source>Some clients may have trouble with too large images (over 256 KiB).</source>
-        <translation type="unfinished"></translation>
+        <translation>Niektóry klienty mogą niepoprawnie obsługiwać zbyt duże obrazki (ponad 256 KiB).</translation>
     </message>
     <message>
         <source>Show my status only to buddies on my list</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokazuj status tylko znajomym</translation>
     </message>
     <message>
         <source>When disabled, anyone can see your status.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gdy nie jest zaznaczone, każdy może oglądać twój status</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz powiadomienia o pisaniu</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twój rozmówca będzie informowany o tym, że piszesz wiadomość. Działa także w drugą stronę.</translation>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokuj linki od nieznajomych</translation>
     </message>
     <message>
         <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>Chroni przed potencjalnie groźnymi linkami w wiadomościach od nieznajomych</translation>
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer Gadu-Gadu</translation>
     </message>
     <message>
         <source>Custom server IP addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Własne adresy IP serwerów</translation>
     </message>
     <message>
         <source>Enable file transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz transfery plików</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Sieć</translation>
     </message>
     <message>
         <source>External IP</source>
-        <translation type="unfinished"></translation>
+        <translation>Zewnętrzny adres IP</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć konto %1 (%2)?</translation>
     </message>
     <message>
         <source>Status Visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Widoczność Statusu</translation>
     </message>
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastąpi ujawnienie statusu niektórym znajomym, którzy aktualnie go nie widzą.
+Czy na pewno chcesz im ujawnić swoją dostępność?</translation>
     </message>
     <message>
         <source>Make my status visible anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Ujawnij mój status mimo wszystko</translation>
     </message>
     <message>
         <source>Stay with private status</source>
-        <translation type="unfinished"></translation>
+        <translation>Uruchom ze statusem widocznym tylko dla znajomych</translation>
     </message>
 </context>
 <context>
@@ -582,7 +581,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Your password has been sent on your email</source>
-        <translation type="unfinished"></translation>
+        <translation>Twoje hasło zostało wysłane na adres e-mailowy</translation>
     </message>
 </context>
 <context>
@@ -660,7 +659,7 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     </message>
     <message>
         <source>Registering new Gadu-Gadu account</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejestrowanie nowego konta Gadu-Gadu</translation>
     </message>
 </context>
 </TS>
