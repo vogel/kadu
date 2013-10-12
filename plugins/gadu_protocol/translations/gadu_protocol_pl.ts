@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -52,30 +54,6 @@
     <message>
         <source>Disconnection has occurred</source>
         <translation>Nastąpiło rozłączenie</translation>
-    </message>
-    <message>
-        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
-        <translation>OBRAZEK WYSŁANY PRZEZ ZNAJOMEGO ZOSTAŁ ZABLOKOWANY</translation>
-    </message>
-    <message>
-        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
-This exceeds your configured limits.
-Do you want to accept this image anyway?</source>
-        <translation>Znajomy %1 chce wysłać ci obrazek o rozmiarze %2 KiB.
-To więcej niż limit ustawiony w konfiguracji
-Czy chcesz mimo to odebrać ten obrazek?</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Incoming Image</source>
-        <translation>Przychodzący obrazek</translation>
-    </message>
-    <message>
-        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
-        <translation>ZNAJOMY WYSŁAŁ CI OBRAZEK, KTÓRY JEST ZBYT DUŻY BY GO ODEBRAĆ</translation>
     </message>
 </context>
 <context>
@@ -181,14 +159,25 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     </message>
 </context>
 <context>
+    <name>GaduChatImageService</name>
+    <message>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GaduChatService</name>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation>Wiadomość zbyt długa (%1&gt;=%2)</translation>
+        <source>Message too long (%1 &gt;= %2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -360,44 +349,16 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
         <translation>Połączenie</translation>
     </message>
     <message>
-        <source>Allow file transfers</source>
-        <translation>Zezwól na transfery plików</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opcje</translation>
-    </message>
-    <message>
-        <source>Show my status to everyone</source>
-        <translation>Pokaż wszystkim mój status</translation>
-    </message>
-    <message>
-        <source>When disabled, you&apos;re visible only to buddies on your list</source>
-        <translation>Gdy wyłączone, jesteś widoczny tylko dla znajomych z twojej listy</translation>
-    </message>
-    <message>
-        <source>Send composing events</source>
-        <translation>Wysyłaj powiadomienia o pisaniu</translation>
     </message>
     <message>
         <source>Use default servers</source>
         <translation>Użyj domyślnych serwerów</translation>
     </message>
     <message>
-        <source>IP addresses</source>
-        <translation>Adres IP</translation>
-    </message>
-    <message>
         <source>Use encrypted connection</source>
         <translation>Używaj szyfrowanego połączenia</translation>
-    </message>
-    <message>
-        <source>Confirm account removal</source>
-        <translation>Potwierdź usunięcie konta</translation>
-    </message>
-    <message>
-        <source>Are you sure do you want to remove account %1 (%2)</source>
-        <translation>Czy na pewno chcesz usunąć konto %1 (%2)</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -406,46 +367,6 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
     <message>
         <source>Remove account and unregister from server</source>
         <translation>Usuń konto i wyrejestruj z serwera</translation>
-    </message>
-    <message>
-        <source>Incoming Images</source>
-        <translation>Odbieranie obrazków</translation>
-    </message>
-    <message>
-        <source>Limit incoming images&apos; size</source>
-        <translation>Ograniczaj rozmiar przychodzących obrazków</translation>
-    </message>
-    <message>
-        <source>Maximum images&apos; size that you accept</source>
-        <translation>Maksymalny rozmiar obrazków, jaki akceptujesz</translation>
-    </message>
-    <message>
-        <source>Maximum incoming images&apos; size</source>
-        <translation>Maksymalny rozmiar obrazków przychodzących</translation>
-    </message>
-    <message>
-        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
-        <translation>Pytaj o potwierdzenie, gdy rozmiar obrazka przekracza limit</translation>
-    </message>
-    <message>
-        <source>Receive images also when Invisible</source>
-        <translation>Odbieraj obrazki także gdy jesteś niewidoczny</translation>
-    </message>
-    <message>
-        <source>Limit numbers of images received per minute</source>
-        <translation>Ograniczaj ilość odbieranych obrazków na minutę</translation>
-    </message>
-    <message>
-        <source>Outgoing Images</source>
-        <translation>Wysyłanie obrazków</translation>
-    </message>
-    <message>
-        <source>Show a warning when the image is larger then 256 KiB</source>
-        <translation>Pokaż ostrzeżenie gdy obrazek jest więszy niż 256 KiB</translation>
-    </message>
-    <message>
-        <source>External ip</source>
-        <translation>Zewnętrzny adres IP</translation>
     </message>
     <message>
         <source>External port</source>
@@ -460,24 +381,93 @@ Hasło wpisane w polach (&quot;Hasło&quot; i &quot;Powtórz hasło&quot;) musz�
         <translation>Inne</translation>
     </message>
     <message>
-        <source>Receive URLs from anonymous buddies</source>
-        <translation>Odbieraj linki od nieznajomych</translation>
-    </message>
-    <message>
         <source>Proxy configuration</source>
         <translation>Konfiguracja proxy</translation>
     </message>
     <message>
-        <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
-        <translation>Potwierdź włączenie opcji &quot;Pokaż wszystkim mój status&quot; </translation>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
-You have several buddies which are not allowed to see your status.
-Enabling this option will allow them to know you are available.</source>
-        <translation>Jesteś pewny, że chcesz włączyć opcję &quot;Pokaż wszystkim mój status&quot;?
-Dla kilku znajomych na liście jest włączona opcja nie udostępniania statusu.
-Po włączeniu &quot;Pokaż wszystkim mój status&quot; będą oni mogli zobaczyć twój status. </translation>
+        <source>Receive images also when I am Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn me when the image being sent may be too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some clients may have trouble with too large images (over 256 KiB).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show my status only to buddies on my list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When disabled, anyone can see your status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable composing events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block links from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu-Gadu Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom server IP addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable file transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confrim Account Removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to remove account %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
+Are you sure to allow them to know you are available?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make my status visible anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay with private status</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -587,12 +577,12 @@ Po włączeniu &quot;Pokaż wszystkim mój status&quot; będą oni mogli zobaczy
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Your password has been send on your email</source>
-        <translation>Twoje hasło zostało wysłane na maila</translation>
-    </message>
-    <message>
         <source>Error during remind password</source>
         <translation>Bład podczas przypominania hasła</translation>
+    </message>
+    <message>
+        <source>Your password has been sent on your email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -667,6 +657,10 @@ Teraz możesz dodać znajomych do listy kontaktów.</translation>
     <message>
         <source>An error has occurred during registration. Please try again later.</source>
         <translation>Wystąpił błąd podczas rejestracji. Proszę spróbować później.</translation>
+    </message>
+    <message>
+        <source>Registering new Gadu-Gadu account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

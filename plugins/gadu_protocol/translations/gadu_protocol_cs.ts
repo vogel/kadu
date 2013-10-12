@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -52,30 +54,6 @@
     <message>
         <source>Disconnection has occurred</source>
         <translation>Vyskytlo se odpojení</translation>
-    </message>
-    <message>
-        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
-        <translation>OBRÁZEK POSLANÝ TÍMTO KAMARÁDEM BYL ZABLOKOVÁN</translation>
-    </message>
-    <message>
-        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
-This exceeds your configured limits.
-Do you want to accept this image anyway?</source>
-        <translation>Kamarád %1 se vám pokouší poslat obrázek o velikosti %2 KiB.
-Tento překračuje vámi nastavená omezení.
-Přesto tento obrázek chcete přijmout?</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Incoming Image</source>
-        <translation>Příchozí obrázek</translation>
-    </message>
-    <message>
-        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
-        <translation>KAMARÁD VÁM POSLAL OBRÁZEK, KTERÝ JE PŘÍLIŠ VELKÝ NA TO, ABY BYL PŘIJAT</translation>
     </message>
 </context>
 <context>
@@ -181,14 +159,25 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
     </message>
 </context>
 <context>
+    <name>GaduChatImageService</name>
+    <message>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GaduChatService</name>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Filtered message too long (%1&gt;=%2)</source>
-        <translation>Filtrovaná zpráva je příliš dlouhá (%1&gt;=%2)</translation>
+        <source>Message too long (%1 &gt;= %2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -360,44 +349,16 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
         <translation>Připojení</translation>
     </message>
     <message>
-        <source>Allow file transfers</source>
-        <translation>Povolit přenosy souborů</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Volby</translation>
-    </message>
-    <message>
-        <source>Show my status to everyone</source>
-        <translation>Ukázat můj stav komukoli</translation>
-    </message>
-    <message>
-        <source>When disabled, you&apos;re visible only to buddies on your list</source>
-        <translation>Když je zakázáno, jste viditelný jen kamarádům ve svém seznamu</translation>
-    </message>
-    <message>
-        <source>Send composing events</source>
-        <translation>Poslat složené události</translation>
     </message>
     <message>
         <source>Use default servers</source>
         <translation>Použít výchozí servery</translation>
     </message>
     <message>
-        <source>IP addresses</source>
-        <translation>Adresy IP</translation>
-    </message>
-    <message>
         <source>Use encrypted connection</source>
         <translation>Použít šifrované připojení</translation>
-    </message>
-    <message>
-        <source>Confirm account removal</source>
-        <translation>Potvrdit odstranění účtu</translation>
-    </message>
-    <message>
-        <source>Are you sure do you want to remove account %1 (%2)</source>
-        <translation>Jste si jistý, že chcete odstranit účet %1 (%2)</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -406,46 +367,6 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
     <message>
         <source>Remove account and unregister from server</source>
         <translation>Odstranit účet a odhlásit se ze serveru</translation>
-    </message>
-    <message>
-        <source>Incoming Images</source>
-        <translation>Příchozí obrázky</translation>
-    </message>
-    <message>
-        <source>Limit incoming images&apos; size</source>
-        <translation>Omezení pro velikost příchozího obrázku</translation>
-    </message>
-    <message>
-        <source>Maximum images&apos; size that you accept</source>
-        <translation>Největší velikost obrázku, kterou přijímáte</translation>
-    </message>
-    <message>
-        <source>Maximum incoming images&apos; size</source>
-        <translation>Největší velikost příchozího obrázku</translation>
-    </message>
-    <message>
-        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
-        <translation>Zažádat o potvrzení, překročí-li velikost obrázku omezení</translation>
-    </message>
-    <message>
-        <source>Receive images also when Invisible</source>
-        <translation>Přijímat obrázky i ve stavu neviditelnosti</translation>
-    </message>
-    <message>
-        <source>Limit numbers of images received per minute</source>
-        <translation>Omezit počet obrázků přijatých za minutu</translation>
-    </message>
-    <message>
-        <source>Outgoing Images</source>
-        <translation>Odchozí obrázky</translation>
-    </message>
-    <message>
-        <source>Show a warning when the image is larger then 256 KiB</source>
-        <translation>Ukázat varování, když je obrázek větší než 256 KiB</translation>
-    </message>
-    <message>
-        <source>External ip</source>
-        <translation>Vnější IP</translation>
     </message>
     <message>
         <source>External port</source>
@@ -460,24 +381,93 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
         <translation>Jiné</translation>
     </message>
     <message>
-        <source>Receive URLs from anonymous buddies</source>
-        <translation>Přijímat adresy (URL) od nepodepsaných kamarádů</translation>
-    </message>
-    <message>
         <source>Proxy configuration</source>
         <translation>Nastavení proxy</translation>
     </message>
     <message>
-        <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
-        <translation>Potvrdit zaškrtnutí volby &quot;Ukázat můj stav každému&quot;</translation>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
-You have several buddies which are not allowed to see your status.
-Enabling this option will allow them to know you are available.</source>
-        <translation>Jste si jistý, že chcete zaškrtnout volbu &quot;Ukázat můj stav každému&quot;?
-Máte několik kamarádů, kterým není povoleno vidět váš stav.
-Povolením této volby jim umožníte vědět, že jste dostupný.</translation>
+        <source>Receive images also when I am Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn me when the image being sent may be too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some clients may have trouble with too large images (over 256 KiB).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show my status only to buddies on my list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When disabled, anyone can see your status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable composing events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block links from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu-Gadu Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom server IP addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable file transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confrim Account Removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to remove account %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
+Are you sure to allow them to know you are available?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make my status visible anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay with private status</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -587,12 +577,12 @@ Povolením této volby jim umožníte vědět, že jste dostupný.</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Your password has been send on your email</source>
-        <translation>Vaše heslo bylo posláno na vaši adresu elektronické pošty</translation>
-    </message>
-    <message>
         <source>Error during remind password</source>
         <translation>Chyba během připomínání hesla</translation>
+    </message>
+    <message>
+        <source>Your password has been sent on your email</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -667,6 +657,10 @@ Nyní přidejte své přátele do seznamu uživatelů.</translation>
     <message>
         <source>An error has occurred during registration. Please try again later.</source>
         <translation>Při přihlašování se vyskytla chyba. Zkuste to, prosím, znovu později.</translation>
+    </message>
+    <message>
+        <source>Registering new Gadu-Gadu account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

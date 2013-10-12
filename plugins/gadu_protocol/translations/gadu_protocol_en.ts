@@ -55,28 +55,6 @@
         <source>Disconnection has occurred</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>IMAGE SENT BY THIS BUDDY HAS BEEN BLOCKED</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
-This exceeds your configured limits.
-Do you want to accept this image anyway?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incoming Image</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>THIS BUDDY HAS SENT YOU AN IMAGE THAT IS TOO BIG TO BE RECEIVED</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>GaduAddAccountWidget</name>
@@ -179,13 +157,24 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     </message>
 </context>
 <context>
+    <name>GaduChatImageService</name>
+    <message>
+        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you really want to send this image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GaduChatService</name>
     <message>
         <source>Kadu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Filtered message too long (%1&gt;=%2)</source>
+        <source>Message too long (%1 &gt;= %2)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -356,23 +345,7 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Allow file transfers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show my status to everyone</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>When disabled, you&apos;re visible only to buddies on your list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Send composing events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -380,19 +353,7 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>IP addresses</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Confirm account removal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure do you want to remove account %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -401,46 +362,6 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
     </message>
     <message>
         <source>Remove account and unregister from server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Incoming Images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Limit incoming images&apos; size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum images&apos; size that you accept</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum incoming images&apos; size</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ask for confirmation if an image&apos;s size exceeds the limit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Receive images also when Invisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Limit numbers of images received per minute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Outgoing Images</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show a warning when the image is larger then 256 KiB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>External ip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -456,21 +377,92 @@ Passwords typed in both fields (&quot;Password&quot; and &quot;Retype Password&q
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Receive URLs from anonymous buddies</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Proxy configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Confirm checking &quot;Show my status to everyone&quot; option</source>
+        <source>Images</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure do you want to check &quot;Show my status to everyone&quot; option?
-You have several buddies which are not allowed to see your status.
-Enabling this option will allow them to know you are available.</source>
+        <source>Receive images also when I am Invisible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn me when the image being sent may be too large</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Some clients may have trouble with too large images (over 256 KiB).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show my status only to buddies on my list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When disabled, anyone can see your status.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable composing events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block links from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gadu-Gadu Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom server IP addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable file transfers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confrim Account Removal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure do you want to remove account %1 (%2)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Visibility</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
+Are you sure to allow them to know you are available?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make my status visible anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay with private status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -581,11 +573,11 @@ Enabling this option will allow them to know you are available.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Your password has been send on your email</source>
+        <source>Error during remind password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error during remind password</source>
+        <source>Your password has been sent on your email</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -658,6 +650,10 @@ Now add your friends to the userlist.</source>
     </message>
     <message>
         <source>An error has occurred during registration. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Registering new Gadu-Gadu account</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
