@@ -15,6 +15,10 @@
         <source>Enable word fix</source>
         <translation>Habilitar fijación de palabra</translation>
     </message>
+    <message>
+        <source>Spelling</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>WordFix</name>
