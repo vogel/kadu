@@ -4,8 +4,8 @@
 <context>
     <name>Infos</name>
     <message>
-        <source>&amp;Show infos about buddies...</source>
-        <translation>Arkadaşların bilgilerini &amp;gösterir...</translation>
+        <source>&amp;Show infos about buddies</source>
+        translation>Arkadaşların bilgilerini &amp;gösterir</translation>
     </message>
 </context>
 <context>

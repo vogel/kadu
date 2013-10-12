@@ -4,7 +4,7 @@
 <context>
     <name>Infos</name>
     <message>
-        <source>&amp;Show infos about buddies...</source>
+        <source>&amp;Show infos about buddies</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
