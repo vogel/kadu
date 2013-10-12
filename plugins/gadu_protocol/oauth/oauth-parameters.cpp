@@ -20,6 +20,7 @@
  */
 
 #include <QtCore/QStringList>
+#include <QtCore/QUrl>
 #include <QtCrypto>
 
 #include "oauth-parameters.h"
@@ -180,13 +181,13 @@ QByteArray OAuthParameters::toSignatureBase()
 	result += Consumer.consumerKey();
 	result += '&';
 	result += "oauth_nonce=";
-	result += Nonce;
+	result += QUrl::toPercentEncoding(Nonce);
 	result += '&';
 	result +="oauth_signature_method=";
-	result += SignatureMethod;
+	result += QUrl::toPercentEncoding(SignatureMethod);
 	result += '&';
 	result += "oauth_timestamp=";
-	result += Timestamp;
+	result += QUrl::toPercentEncoding(Timestamp);
 	result += '&';
 
 	if (!Token.token().isEmpty())
@@ -197,7 +198,7 @@ QByteArray OAuthParameters::toSignatureBase()
 	}
 
 	result += "oauth_version=";
-	result += Version;
+	result += QUrl::toPercentEncoding(Version);
 
 	return result.toPercentEncoding();
 }
@@ -207,22 +208,22 @@ QByteArray OAuthParameters::toAuthorizationHeader()
 	QByteArray result;
 	result += "OAuth ";
 	result += "realm=\"";
-	result += Realm;
+	result += QUrl::toPercentEncoding(Realm);
 	result += "\", ";
 	result += "oauth_nonce=\"";
-	result += Nonce;
+	result += QUrl::toPercentEncoding(Nonce);
 	result += "\", ";
 	result += "oauth_timestamp=\"";
-	result += Timestamp;
+	result += QUrl::toPercentEncoding(Timestamp);
 	result += "\", ";
 	result += "oauth_consumer_key=\"";
 	result += Consumer.consumerKey();
 	result += "\", ";
 	result += "oauth_signature_method=\"";
-	result += SignatureMethod;
+	result += QUrl::toPercentEncoding(SignatureMethod);
 	result += "\", ";
 	result += "oauth_version=\"";
-	result += Version;
+	result += QUrl::toPercentEncoding(Version);
 	result += "\", ";
 
 	if (!Token.token().isEmpty())
