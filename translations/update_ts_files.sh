@@ -33,71 +33,67 @@ if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "k
 
 fi
 
-for main_dir in plugins;
-do
-	pushd ../$main_dir/ >> $LOG
-	for PLUGIN in *; do
-		if [ ! -d $PLUGIN ]; then
-			continue
-		fi
+pushd ../plugins/ >> $LOG
+for PLUGIN in *; do
+	if [ ! -d $PLUGIN ]; then
+		continue
+	fi
 
-		if [ ! -f $PLUGIN/$PLUGIN.desc ]; then
-			continue;
-		fi
+	if [ ! -f $PLUGIN/$PLUGIN.desc ]; then
+		continue;
+	fi
 
-		if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$PLUGIN" ]; then
-			continue;
-		fi
+	if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$PLUGIN" ]; then
+		continue;
+	fi
 
-		echo "Updating plugin $PLUGIN translations"
+	echo "Updating plugin $PLUGIN translations"
 
-		UI_TRANS=
+	UI_TRANS=
 
-		pushd $PLUGIN >> $LOG 2>&1
+	pushd $PLUGIN >> $LOG 2>&1
 
-		if [ -d configuration ]; then
-			UI_TRANS=.configuration-ui-translations.cpp
+	if [ -d configuration ]; then
+		UI_TRANS=.configuration-ui-translations.cpp
 
-			pushd configuration >> $LOG 2>&1
-			echo > ../.configuration-ui-translations.cpp
-			for i in *.ui; do
-				$XSLT_PROCESSOR $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
-			done
-			popd >> $LOG 2>&1
-		fi
-
-		if [ -x ./translations/extract-custom-strings.js ]; then
-			./translations/extract-custom-strings.js
-		fi
-
-		if [ -d data/configuration ]; then
-			UI_TRANS=.configuration-ui-translations.cpp
-
-			pushd data/configuration >> $LOG 2>&1
-			echo > ../.configuration-ui-translations.cpp
-			for i in *.ui; do
-				$XSLT_PROCESSOR $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
-			done
-			popd >> $LOG 2>&1
-		fi
-
-		if [ ! -d translations ]; then
-			mkdir translations;
-		fi
-
-		SRC_FILES=`find . -type f -name "*.cpp"`
-
-		for ts in translations/*.ts; do
-			$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts || \
-			( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts )
+		pushd configuration >> $LOG 2>&1
+		echo > ../.configuration-ui-translations.cpp
+		for i in *.ui; do
+			$XSLT_PROCESSOR $i ../../../translations/configuration-ui.xsl >> ../.configuration-ui-translations.cpp 2>> $LOG
 		done
-		if [ ! -f translations/${module}_en.ts ]; then
-			$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts || \
-			( rm translations/${module}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${module}_en.ts )
-		fi
-
 		popd >> $LOG 2>&1
+	fi
+
+	if [ -x ./translations/extract-custom-strings.js ]; then
+		./translations/extract-custom-strings.js
+	fi
+
+	if [ -d data/configuration ]; then
+		UI_TRANS=.configuration-ui-translations.cpp
+
+		pushd data/configuration >> $LOG 2>&1
+		echo > ../.configuration-ui-translations.cpp
+		for i in *.ui; do
+			$XSLT_PROCESSOR $i ../../../../translations/configuration-ui.xsl >> ../../.configuration-ui-translations.cpp 2>> $LOG
+		done
+		popd >> $LOG 2>&1
+	fi
+
+	if [ ! -d translations ]; then
+		mkdir translations;
+	fi
+
+	SRC_FILES=`find . -type f -name "*.cpp"`
+
+	for ts in translations/*.ts; do
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts || \
+		( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts )
 	done
+	if [ ! -f translations/${PLUGIN}_en.ts ]; then
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts || \
+		( rm translations/${PLUGIN}_en.ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts )
+	fi
+
 	popd >> $LOG 2>&1
 done
 popd >> $LOG 2>&1
