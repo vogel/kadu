@@ -1,13 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
         <translation>Rozhovor</translation>
-    </message>
-    <message>
-        <source>SpellChecker</source>
-        <translation>Program na ověření pravopisu</translation>
     </message>
     <message>
         <source>Misspelled Words Marking Options</source>
@@ -48,6 +46,10 @@
     <message>
         <source>Maximum number of suggested words</source>
         <translation>Nejvyšší počet navržených slov</translation>
+    </message>
+    <message>
+        <source>Spelling</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

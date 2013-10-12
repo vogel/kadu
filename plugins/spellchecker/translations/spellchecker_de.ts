@@ -8,10 +8,6 @@
         <translation>Chat</translation>
     </message>
     <message>
-        <source>SpellChecker</source>
-        <translation>Rechtschreibprüfungsprogramm</translation>
-    </message>
-    <message>
         <source>Misspelled Words Marking Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -49,6 +45,10 @@
     </message>
     <message>
         <source>Maximum number of suggested words</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spelling</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

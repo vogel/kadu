@@ -1,13 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
         <translation>Rozmowa</translation>
-    </message>
-    <message>
-        <source>SpellChecker</source>
-        <translation>SpellChecker</translation>
     </message>
     <message>
         <source>Misspelled Words Marking Options</source>
@@ -48,6 +46,10 @@
     <message>
         <source>Maximum number of suggested words</source>
         <translation>Maksymalna ilość sugerowanych słów</translation>
+    </message>
+    <message>
+        <source>Spelling</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
