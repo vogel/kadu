@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -33,15 +31,15 @@
     </message>
     <message>
         <source>Auto Responder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Auto answer text</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Choose Status</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -55,7 +53,7 @@
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">Ich bin beschäftigt.</translation>
+        <translation>Ich bin beschäftigt.</translation>
     </message>
 </context>
 </TS>

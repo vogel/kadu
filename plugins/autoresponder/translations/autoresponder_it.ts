@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="it" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -55,7 +53,7 @@
     <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished">Sono occupato.</translation>
+        <translation>Sono occupato.</translation>
     </message>
 </context>
 </TS>
