@@ -1,84 +1,84 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Chat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Misspelled Words Marking Options</source>
-        <translation>Misspelled Words Marking Options</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Bold</source>
-        <translation>Bold</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Italic</source>
-        <translation>Italic</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Underline</source>
-        <translation>Underline</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Spell Checker Options</source>
-        <translation>Spell Checker Options</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ignore case</source>
-        <translation>Ignore case</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Spelling Suggestions Options</source>
-        <translation>Spelling Suggestions Options</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show suggestions</source>
-        <translation>Show suggestions</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Maximum number of suggested words</source>
-        <translation>Maximum number of suggested words</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Spelling</source>
-        <translation>Spelling</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SpellChecker</name>
     <message>
         <source>Kadu</source>
-        <translation>Kadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Could not find dictionary for %1 language.</source>
-        <translation>Could not find dictionary for %1 language.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move to &apos;Checked&apos;</source>
-        <translation>Move to &apos;Checked&apos;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Available languages</source>
-        <translation>Available languages</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move to &apos;Available languages&apos;</source>
-        <translation>Move to &apos;Available languages&apos;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Checked</source>
-        <translation>Checked</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Details</source>
-        <translation>Details</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
