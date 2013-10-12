@@ -1,26 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>HistoryImportWindow</name>
     <message>
         <source>History is now being imported into new format. Please wait until this task is finished.</source>
-        <translation type="unfinished"></translation>
+        <translation>History is now being imported into new format. Please wait until this task is finished.</translation>
     </message>
     <message>
         <source>Chats progress:</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats progress:</translation>
     </message>
     <message>
         <source>Messages progress:</source>
-        <translation type="unfinished"></translation>
+        <translation>Messages progress:</translation>
     </message>
 </context>
 <context>
     <name>HistoryMigrationActions</name>
     <message>
         <source>Import history...</source>
-        <translation type="unfinished"></translation>
+        <translation>Import history...</translation>
     </message>
 </context>
 </TS>
