@@ -1,55 +1,55 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation>MediaPlayer</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>MPRIS Player</source>
-        <translation>MPRIS Player</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MPRISPlayerConfigurationUiHandler</name>
     <message>
         <source>Select Player:</source>
-        <translation>Select Player:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add Player</source>
-        <translation>Add Player</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation>Edit Player</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete Player</source>
-        <translation>Delete Player</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MPRISPlayerDialog</name>
     <message>
         <source>Add Player</source>
-        <translation>Add Player</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Edit Player</source>
-        <translation>Edit Player</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Player:</source>
-        <translation>Player:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Service:</source>
-        <translation>Service:</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
