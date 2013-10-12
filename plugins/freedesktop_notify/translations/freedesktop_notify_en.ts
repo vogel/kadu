@@ -7,10 +7,6 @@
         <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message numerus="yes">
         <source>%n second(s)</source>
         <translation>
@@ -40,6 +36,10 @@
     </message>
     <message>
         <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
