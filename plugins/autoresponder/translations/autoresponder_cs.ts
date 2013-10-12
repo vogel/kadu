@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -48,9 +50,12 @@
         <source>KADU AUTORESPONDER:</source>
         <translation>AUTOMATICKÁ ODPOVĚĎ KADU:</translation>
     </message>
+</context>
+<context>
+    <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation>Jsem zaneprázdněn.</translation>
+        <translation type="unfinished">Jsem zaneprázdněn.</translation>
     </message>
 </context>
 </TS>

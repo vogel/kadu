@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -48,9 +50,12 @@
         <source>KADU AUTORESPONDER:</source>
         <translation>RÉPONDEUR AUTOMATIQUE KADU :</translation>
     </message>
+</context>
+<context>
+    <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation>Je suis occupé.</translation>
+        <translation type="unfinished">Je suis occupé.</translation>
     </message>
 </context>
 </TS>

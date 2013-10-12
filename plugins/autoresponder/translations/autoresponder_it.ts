@@ -50,9 +50,12 @@
         <source>KADU AUTORESPONDER:</source>
         <translation>RISPOSTA AUTOMATICA:</translation>
     </message>
+</context>
+<context>
+    <name>AutoresponderConfigurator</name>
     <message>
         <source>I am busy.</source>
-        <translation>Sono occupato.</translation>
+        <translation type="unfinished">Sono occupato.</translation>
     </message>
 </context>
 </TS>
