@@ -1,67 +1,67 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi_VN" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Chat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cenzor</source>
-        <translation>Cenzor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable cenzor</source>
-        <translation>Enable cenzor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Admonition</source>
-        <translation>Admonition</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Swearwords</source>
-        <translation>Swearwords</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Exclusions</source>
-        <translation>Exclusions</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Message was cenzored</source>
-        <translation>Message was cenzored</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>CenzorNotification</name>
     <message>
         <source>Message was cenzored</source>
-        <translation>Message was cenzored</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor used obscene word and became admonished</source>
-        <translation>Your interlocutor used obscene word and became admonished</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cenzor</source>
-        <translation>Cenzor</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ListEditWidget</name>
     <message>
         <source>Add</source>
-        <translation>Add</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Change</source>
-        <translation>Change</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Delete</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

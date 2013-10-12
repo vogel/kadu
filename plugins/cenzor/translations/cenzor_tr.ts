@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -33,7 +31,7 @@
     </message>
     <message>
         <source>Message was cenzored</source>
-        <translation type="unfinished">Mesaj sansürlendi</translation>
+        <translation>Mesaj sansürlendi</translation>
     </message>
 </context>
 <context>
@@ -48,7 +46,7 @@
     </message>
     <message>
         <source>Cenzor</source>
-        <translation type="unfinished">Sansü</translation>
+        <translation>Sansü</translation>
     </message>
 </context>
 <context>
