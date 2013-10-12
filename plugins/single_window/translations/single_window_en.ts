@@ -1,70 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Look</translation>
     </message>
     <message>
         <source>SingleWindow</source>
-        <translation type="unfinished"></translation>
+        <translation>SingleWindow</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Roster position</source>
-        <translation type="unfinished"></translation>
+        <translation>Roster position</translation>
     </message>
     <message>
         <source>Choose position of roster in Single Window mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose position of roster in Single Window mode</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Left</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Right</translation>
     </message>
     <message>
         <source>Show number of messages on tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Show number of messages on tab</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Shortcuts</translation>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Switch to previous tab</translation>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Switch to next tab</translation>
     </message>
     <message>
         <source>Show/hide roster</source>
-        <translation type="unfinished"></translation>
+        <translation>Show/hide roster</translation>
     </message>
     <message>
         <source>Switch focus between roster and tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Switch focus between roster and tabs</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Behaviour</translation>
     </message>
 </context>
 <context>
     <name>SingleWindow</name>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Conference [%1]</translation>
     </message>
 </context>
 </TS>

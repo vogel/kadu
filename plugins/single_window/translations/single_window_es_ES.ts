@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="es_ES">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -57,14 +55,14 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SingleWindow</name>
     <message>
         <source>Conference [%1]</source>
-        <translation type="unfinished"></translation>
+        <translation>Conferencia [%1]</translation>
     </message>
 </context>
 </TS>
