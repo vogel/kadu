@@ -1,45 +1,45 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="szl" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Antistring</source>
-        <translation>Antyłańcuszek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>Ogólne</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable Antistring</source>
-        <translation>Włącz antyłańcuszek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Block message</source>
-        <translation>Blokuj wiadomość</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Admonition</source>
-        <translation>Pouczenie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Log</source>
-        <translation>Logowanie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Write log to file</source>
-        <translation>Loguj wiadomości do pliku</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Conditions</source>
-        <translation>Warunki</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation>Powiadomienia antyłańcuszka</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -47,46 +47,45 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation>     DATA I CZAS      ::   ID   ::    WIADOMOŚĆ
-</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
-        <translation>Warunek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Don&apos;t use</source>
-        <translation>Nie używaj</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Factor</source>
-        <translation>Współczynnik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Add</source>
-        <translation>Dodaj</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Change</source>
-        <translation>Zmień</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>AntistringNotification</name>
     <message>
         <source>Antistring</source>
-        <translation>Antyłańcuszek</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation>Twój rozmówca wysłał Ci łańcuszek szczęścia</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

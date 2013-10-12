@@ -1,45 +1,45 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Rozmowa</translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Antistring</source>
-        <translation>Antyłańcuszek</translation>
+        <translation>Antistring</translation>
     </message>
     <message>
         <source>General</source>
-        <translation>Ogólne</translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Enable Antistring</source>
-        <translation>Włącz antyłańcuszek</translation>
+        <translation>Activar Antistring</translation>
     </message>
     <message>
         <source>Block message</source>
-        <translation>Blokuj wiadomość</translation>
+        <translation>Bloquear mensaje</translation>
     </message>
     <message>
         <source>Admonition</source>
-        <translation>Pouczenie</translation>
+        <translation>Amonestación</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation>Logowanie</translation>
+        <translation>Log</translation>
     </message>
     <message>
         <source>Write log to file</source>
-        <translation>Loguj wiadomości do pliku</translation>
+        <translation>Escribir log en un archivo</translation>
     </message>
     <message>
         <source>Conditions</source>
-        <translation>Warunki</translation>
+        <translation>Condiciones</translation>
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation>Powiadomienia antyłańcuszka</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -47,7 +47,7 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation>     DATA I CZAS      ::   ID   ::    WIADOMOŚĆ
+        <translation>     FECHA Y HORA      ::   ID   ::    MENSAJE
 </translation>
     </message>
 </context>
@@ -55,38 +55,38 @@
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
-        <translation>Warunek</translation>
+        <translation>Condición</translation>
     </message>
     <message>
         <source>Don&apos;t use</source>
-        <translation>Nie używaj</translation>
+        <translation>No usar</translation>
     </message>
     <message>
         <source>Factor</source>
-        <translation>Współczynnik</translation>
+        <translation>Factor</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Dodaj</translation>
+        <translation>Añadir</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation>Zmień</translation>
+        <translation>Cambiar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Usuń</translation>
+        <translation>Eliminar</translation>
     </message>
 </context>
 <context>
     <name>AntistringNotification</name>
     <message>
         <source>Antistring</source>
-        <translation>Antyłańcuszek</translation>
+        <translation>Antistring</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation>Twój rozmówca wysłał Ci łańcuszek szczęścia</translation>
+        <translation>Tu interlocutor te envio una carta de amor</translation>
     </message>
 </context>
 </TS>

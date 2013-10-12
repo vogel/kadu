@@ -1,47 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation>Antistring</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Enable Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable Antistring</translation>
     </message>
     <message>
         <source>Block message</source>
-        <translation type="unfinished"></translation>
+        <translation>Block message</translation>
     </message>
     <message>
         <source>Admonition</source>
-        <translation type="unfinished"></translation>
+        <translation>Admonition</translation>
     </message>
     <message>
         <source>Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Log</translation>
     </message>
     <message>
         <source>Write log to file</source>
-        <translation type="unfinished"></translation>
+        <translation>Write log to file</translation>
     </message>
     <message>
         <source>Conditions</source>
-        <translation type="unfinished"></translation>
+        <translation>Conditions</translation>
     </message>
     <message>
         <source>Antistring notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Antistring notifications</translation>
     </message>
 </context>
 <context>
@@ -49,45 +47,46 @@
     <message>
         <source>     DATA AND TIME      ::   ID   ::    MESSAGE
 </source>
-        <translation type="unfinished"></translation>
+        <translation>     DATA AND TIME      ::   ID   ::    MESSAGE
+</translation>
     </message>
 </context>
 <context>
     <name>AntistringConfigurationUiHandler</name>
     <message>
         <source>Condition</source>
-        <translation type="unfinished"></translation>
+        <translation>Condition</translation>
     </message>
     <message>
         <source>Don&apos;t use</source>
-        <translation type="unfinished"></translation>
+        <translation>Don&apos;t use</translation>
     </message>
     <message>
         <source>Factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Factor</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Add</translation>
     </message>
     <message>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Change</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete</translation>
     </message>
 </context>
 <context>
     <name>AntistringNotification</name>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"></translation>
+        <translation>Antistring</translation>
     </message>
     <message>
         <source>Your interlocutor send you love letter</source>
-        <translation type="unfinished"></translation>
+        <translation>Your interlocutor send you love letter</translation>
     </message>
 </context>
 </TS>
