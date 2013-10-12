@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -6,20 +8,20 @@
         <translation>Rozmowa</translation>
     </message>
     <message>
-        <source>Imagelink</source>
-        <translation>Imagelink</translation>
-    </message>
-    <message>
         <source>Show YouTube movies in chat window</source>
         <translation>Pokaż filmy z YouTube w oknie rozmowy</translation>
     </message>
     <message>
-        <source>Autoplay movies</source>
-        <translation>Automatycznie odtwarzaj filmy</translation>
-    </message>
-    <message>
         <source>Show images in chat window</source>
         <translation>Pokaż obrazki w oknie rozmowy</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messages</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

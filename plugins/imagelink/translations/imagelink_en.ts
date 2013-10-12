@@ -8,19 +8,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Imagelink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show YouTube movies in chat window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autoplay movies</source>
+        <source>Show images in chat window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show images in chat window</source>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Messages</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
