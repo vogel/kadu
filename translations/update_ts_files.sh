@@ -33,27 +33,27 @@ if [ -z "$PROCESSONLY" ] || [ "$PROCESSONLY" = "kadu" ] || [ "$PROCESSONLY" = "k
 
 fi
 
-for main_dir in modules plugins;
+for main_dir in plugins;
 do
 	pushd ../$main_dir/ >> $LOG
-	for module in *; do
-		if [ ! -d $module ]; then
+	for PLUGIN in *; do
+		if [ ! -d $PLUGIN ]; then
 			continue
 		fi
 
-		if [ ! -f $module/$module.desc ]; then
+		if [ ! -f $PLUGIN/$PLUGIN.desc ]; then
 			continue;
 		fi
 
-		if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$module" ]; then
+		if [ -n "$PROCESSONLY" ] && [ "$PROCESSONLY" != "$PLUGIN" ]; then
 			continue;
 		fi
 
-		echo "Updating plugin $module translations"
+		echo "Updating plugin $PLUGIN translations"
 
 		UI_TRANS=
 
-		pushd $module >> $LOG 2>&1
+		pushd $PLUGIN >> $LOG 2>&1
 
 		if [ -d configuration ]; then
 			UI_TRANS=.configuration-ui-translations.cpp
