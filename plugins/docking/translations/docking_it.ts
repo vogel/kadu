@@ -4,28 +4,12 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
         <source>Tray</source>
         <translation>Barra</translation>
     </message>
     <message>
         <source>General</source>
         <translation>Generale</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Parti minimizzato</translation>
-    </message>
-    <message>
-        <source>Show tooltip in tray</source>
-        <translation>Visualizza notifiche sulla barra</translation>
-    </message>
-    <message>
-        <source>New chat tray icon</source>
-        <translation>Icona del nuovo chat sulla barra</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
@@ -39,25 +23,25 @@
         <source>Animated Envelope</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tooltip over tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tray icon indicating new message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
-    <message>
-        <source>Current status:
-%1</source>
-        <translation>Stato corrente
-%1</translation>
-    </message>
-    <message>
-        <source>
-
-Description:
-%2</source>
-        <translation>
-
-Descrizione:
-%2</translation>
-    </message>
     <message>
         <source>&amp;Restore</source>
         <translation type="unfinished"></translation>
@@ -69,6 +53,26 @@ Descrizione:
     <message>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Esci da Kadu</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silent mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

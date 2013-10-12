@@ -1,10 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
     <message>
         <source>Tray</source>
         <translation>Oznamovací oblast panelu</translation>
@@ -12,18 +10,6 @@
     <message>
         <source>General</source>
         <translation>Obecné</translation>
-    </message>
-    <message>
-        <source>Start docked</source>
-        <translation>Spustit ukotvení v panelu</translation>
-    </message>
-    <message>
-        <source>Show tooltip in tray</source>
-        <translation>Ukázat v oznamovací oblasti panelu radu k nástroji</translation>
-    </message>
-    <message>
-        <source>New chat tray icon</source>
-        <translation>Ikona v panelu pro nový rozhovor</translation>
     </message>
     <message>
         <source>Blinking Envelope</source>
@@ -37,25 +23,25 @@
         <source>Animated Envelope</source>
         <translation>Pohybující se obálka</translation>
     </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start minimized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show tooltip over tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tray icon indicating new message</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
-    <message>
-        <source>Current status:
-%1</source>
-        <translation>Současný stav:
-%1</translation>
-    </message>
-    <message>
-        <source>
-
-Description:
-%2</source>
-        <translation>
-
-Popis:
-%2</translation>
-    </message>
     <message>
         <source>&amp;Restore</source>
         <translation>&amp;Obnovit</translation>
@@ -67,6 +53,26 @@ Popis:
     <message>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Ukončit Kadu</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statuses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silent mode</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
