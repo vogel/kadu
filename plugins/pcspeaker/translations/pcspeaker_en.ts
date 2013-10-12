@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>PC Speaker</source>
-        <translation type="unfinished"></translation>
+        <translation>PC Speaker</translation>
     </message>
 </context>
 <context>
