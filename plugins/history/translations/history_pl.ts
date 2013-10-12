@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -49,43 +47,43 @@
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisuj historię rozmów</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Historia w oknie rozmowy</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż wiadomości z historii od</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz okres z którego będą wyświetlone wiadomości w oknie rozmowy</translation>
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>wczoraj</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"></translation>
+        <translation>ostatniego tygodnia</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"></translation>
+        <translation>ostatniego miesiąca</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit ilości wiadomości z historii</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowanie</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno rozmowy</translation>
     </message>
 </context>
 <context>
@@ -106,22 +104,22 @@
     <name>HistoryBuddyConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished">Historia</translation>
+        <translation>Historia</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished">Przechowywanie historii rozmów</translation>
+        <translation>Zapisuj historię rozmów</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished">Historia</translation>
+        <translation>Historia</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished">Przechowywanie historii rozmów</translation>
+        <translation>Zapisuj historię rozmów</translation>
     </message>
 </context>
 <context>
@@ -144,11 +142,11 @@
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń historię</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>

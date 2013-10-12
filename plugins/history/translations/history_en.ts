@@ -1,297 +1,295 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>History</translation>
     </message>
     <message>
         <source>Chats History</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats History</translation>
     </message>
     <message>
         <source>Save messages in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Save messages in history</translation>
     </message>
     <message>
         <source>Save chats with anonymous users</source>
-        <translation type="unfinished"></translation>
+        <translation>Save chats with anonymous users</translation>
     </message>
     <message>
         <source>Status Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Status Changes</translation>
     </message>
     <message>
         <source>Save status changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Save status changes</translation>
     </message>
     <message>
         <source>Save status changes in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Save status changes in history</translation>
     </message>
     <message>
         <source>Save status only with description</source>
-        <translation type="unfinished"></translation>
+        <translation>Save status only with description</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Shortcuts</translation>
     </message>
     <message>
         <source>View history</source>
-        <translation type="unfinished"></translation>
+        <translation>View history</translation>
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Save chats in history</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>History in chat window</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"></translation>
+        <translation>Show messages from history since</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose time period in which messages can be quoted in chat window</translation>
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>yesterday</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"></translation>
+        <translation>last week</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"></translation>
+        <translation>last month</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"></translation>
+        <translation>Limit number of messages from history</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Behaviour</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat window</translation>
     </message>
 </context>
 <context>
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clear Chat History</translation>
     </message>
 </context>
 <context>
     <name>History</name>
     <message>
         <source>Clear History</source>
-        <translation type="unfinished"></translation>
+        <translation>Clear History</translation>
     </message>
 </context>
 <context>
     <name>HistoryBuddyConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>History</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Store history</translation>
     </message>
 </context>
 <context>
     <name>HistoryChatConfigurationWidget</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>History</translation>
     </message>
     <message>
         <source>Store history</source>
-        <translation type="unfinished"></translation>
+        <translation>Store history</translation>
     </message>
 </context>
 <context>
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Remove entries</translation>
     </message>
     <message>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation type="unfinished"></translation>
+        <translation>Do you really want to delete history?</translation>
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete history</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 <context>
     <name>HistoryQueryResultsModel</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished"></translation>
+        <translation>Length</translation>
     </message>
     <message>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Title</translation>
     </message>
 </context>
 <context>
     <name>HistoryWindow</name>
     <message>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>History</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
     <message>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clear Status History</translation>
     </message>
     <message>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Clear SMS History</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Statuses</translation>
     </message>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
 </context>
 <context>
     <name>QApplication</name>
     <message>
         <source>Chat history</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat history</translation>
     </message>
 </context>
 <context>
     <name>SearchTab</name>
     <message>
         <source>Search for:</source>
-        <translation type="unfinished"></translation>
+        <translation>Search for:</translation>
     </message>
     <message>
         <source>Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Chats</translation>
     </message>
     <message>
         <source> - All chats - </source>
-        <translation type="unfinished"></translation>
+        <translation> - All chats - </translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Statuses</translation>
     </message>
     <message>
         <source> - All buddies - </source>
-        <translation type="unfinished"></translation>
+        <translation> - All buddies - </translation>
     </message>
     <message>
         <source>Smses</source>
-        <translation type="unfinished"></translation>
+        <translation>Smses</translation>
     </message>
     <message>
         <source> - All recipients - </source>
-        <translation type="unfinished"></translation>
+        <translation> - All recipients - </translation>
     </message>
     <message>
         <source>By date</source>
-        <translation type="unfinished"></translation>
+        <translation>By date</translation>
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"></translation>
+        <translation>to</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Search</translation>
     </message>
     <message>
         <source>Found</source>
-        <translation type="unfinished"></translation>
+        <translation>Found</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Buddy</translation>
     </message>
     <message>
         <source>Recipient</source>
-        <translation type="unfinished"></translation>
+        <translation>Recipient</translation>
     </message>
 </context>
 <context>
     <name>ShowHistoryActionDescription</name>
     <message>
         <source>View Chat History</source>
-        <translation type="unfinished"></translation>
+        <translation>View Chat History</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Show last %1 messages</translation>
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Show messages since yesterday</translation>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Show messages from last 7 days</translation>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation type="unfinished"></translation>
+        <translation>Show messages from last 30 days</translation>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation type="unfinished"></translation>
+        <translation>Show whole history</translation>
     </message>
 </context>
 </TS>
