@@ -34,7 +34,7 @@
 OtrBuddyConfigurationWidget::OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent) :
 		BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("OTR Encyption"));
+	setWindowTitle(tr("OTR Encryption"));
 
 	createGui();
 }

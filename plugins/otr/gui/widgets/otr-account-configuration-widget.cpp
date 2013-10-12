@@ -34,7 +34,7 @@
 OtrAccountConfigurationWidget::OtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
 		AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("OTR Encyption"));
+	setWindowTitle(tr("OTR Encryption"));
 
 	createGui();
 }
