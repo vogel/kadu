@@ -85,9 +85,9 @@ for PLUGIN in *; do
 
 	SRC_FILES=`find . -type f -name "*.cpp"`
 
-	for ts in translations/*.ts; do
-		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts || \
-		( rm $ts && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $ts )
+	for TS in `ls translations/*.ts`; do
+		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS || \
+		( rm $TS && $LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts $TS )
 	done
 	if [ ! -f translations/${PLUGIN}_en.ts ]; then
 		$LUPDATE -locations none -noobsolete -verbose $SRC_FILES ${UI_TRANS} -ts translations/${PLUGIN}_en.ts || \
