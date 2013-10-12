@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -25,19 +23,19 @@
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Spuštění</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>Spustit zmenšený</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat nástrojovou radu nad ikonou v oznamovací oblasti panelu</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikona v oznamovací oblasti panelu oznamující novou zprávu</translation>
     </message>
 </context>
 <context>
@@ -56,23 +54,23 @@
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Popis</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Stavy</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tichý režim</translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -25,19 +23,19 @@
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Uruchamianie</translation>
     </message>
     <message>
         <source>Start minimized</source>
-        <translation type="unfinished"></translation>
+        <translation>Uruchom zminimalizowany</translation>
     </message>
     <message>
         <source>Show tooltip over tray icon</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż podpowiedź w tacce systemowej</translation>
     </message>
     <message>
         <source>Tray icon indicating new message</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowanie ikony w tacce systemowej po otrzymaniu nowej wiadomości</translation>
     </message>
 </context>
 <context>
@@ -56,23 +54,23 @@
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Opis</translation>
     </message>
     <message>
         <source>Statuses</source>
-        <translation type="unfinished"></translation>
+        <translation>Statusy</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"></translation>
+        <translation>Opisy</translation>
     </message>
     <message>
         <source>Silent mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryb cichy</translation>
     </message>
 </context>
 </TS>
