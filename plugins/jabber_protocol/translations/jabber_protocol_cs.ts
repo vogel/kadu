@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -9,187 +7,187 @@
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished">Odpojeno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>XML Parsing Error</source>
-        <translation type="unfinished">Chyba při zpracování XML</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished">Chyba protokolu XMPP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Generic stream error</source>
-        <translation type="unfinished">Chyba generického proudu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Conflict(remote login replacing this one)</source>
-        <translation type="unfinished">Střet (vzdálené přihlášení nahrazující toto)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished">Vypršelo z důvodu nečinnosti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished">Vnitřní chyba serveru</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Invalid XML</source>
-        <translation type="unfinished">Neplatné XML</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Policy violation</source>
-        <translation type="unfinished">Porušení politiky</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server out of resources</source>
-        <translation type="unfinished">Server beze zdrojů</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server is shutting down</source>
-        <translation type="unfinished">Server se vypíná</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished">Chyba proudu XMPPr: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to connect to server</source>
-        <translation type="unfinished">Nepodařilo se navázat spojení se serverem</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished">Nepodařilo se najít server</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished">Chyba při připojování se k proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished">Chyba během vyjednávání proxy</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished">Ověření proxy bylo neúspěšné</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Socket/stream error</source>
-        <translation type="unfinished">Chyba zásuvky/proudu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection Error: %1</source>
-        <translation type="unfinished">Chyba spojení: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Host no longer hosted</source>
-        <translation type="unfinished">Hostitel není více hostěn</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Host unknown</source>
-        <translation type="unfinished">Hostitel neznámý</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>A required remote connection failed</source>
-        <translation type="unfinished">Požadované vzdálené spojení se nezdařilo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>See other host: %1</source>
-        <translation type="unfinished">Podívejte se na jiného hostitele: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished">Server nepodporuje správnou verzi XMPP</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished">Chyba při vyjednání proudu: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server rejected STARTTLS</source>
-        <translation type="unfinished">Server odmítl STARTTLS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>TLS handshake error</source>
-        <translation type="unfinished">Chyba při potřesení rukou TLS</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Broken security layer (TLS)</source>
-        <translation type="unfinished">Poškozená bezpečnostní vrstva (TLS)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unable to login</source>
-        <translation type="unfinished">Nelze se přihlásit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished">Pro daná bezpečnostní nastavení není dostupný žádný vhodný mechanismus (např. knihovna SASL je příliš slabá, nebo ověření prostým textem není povoleno)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Bad server response</source>
-        <translation type="unfinished">Špatná odpověď serveru</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished">Serveru se nepodařilo vzájemné ověření</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
-        <translation type="unfinished">Pro vybraný mechanismus SASL je požadováno šifrování</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Invalid account information</source>
-        <translation type="unfinished">Neplatné informace o účtu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Invalid SASL mechanism</source>
-        <translation type="unfinished">Neplatný mechanismus SASL</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Invalid realm</source>
-        <translation type="unfinished">Neplatný prostor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>SASL mechanism too weak for this account</source>
-        <translation type="unfinished">Mechanismus SASL je pro tento účet příliš slabý</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished">Neoprávněno</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Temporary auth failure</source>
-        <translation type="unfinished">Dočasné selhání ověřování pravosti</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Authentication error: %1</source>
-        <translation type="unfinished">Chyba při ověřování pravosti: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Broken security layer (SASL)</source>
-        <translation type="unfinished">Poškozená bezpečnostní vrstva (SASL)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Obecné</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>XMPP/Jabber</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Port for data transfers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -732,59 +730,59 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>XMPP Server</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Use custom server address/port</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Only in older version</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Use computer name as a resource</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable chat activity events</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Others can see your system name/version</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -862,7 +860,7 @@ Nyní, prosím, přidejte své přátele do seznamu kamarádů.</translation>
     </message>
     <message>
         <source>Registering new XMPP account</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1142,33 +1140,33 @@ Opravte, prosím, a zkuste to znovu..</translation>
     <name>XMPP::JabberConnectionService</name>
     <message>
         <source>security problem</source>
-        <translation type="unfinished">Bezpečnostní problém</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>TLS certificate not accepted</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished">Server nepodporuje šifrování TLS.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Connection error.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Account disconnected.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-        <translation type="unfinished">Podporu SSL se nepodařilo spustit pro účet %1. Nejpravděpodobněji je to proto, že přídavný modul QCA TLS není nainstalován ve vašem systému.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

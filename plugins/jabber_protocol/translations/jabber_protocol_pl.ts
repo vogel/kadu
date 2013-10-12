@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -9,187 +7,187 @@
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished">Rozłączony</translation>
+        <translation>Rozłączony</translation>
     </message>
     <message>
         <source>XML Parsing Error</source>
-        <translation type="unfinished">Błąd Parsowania XML</translation>
+        <translation>Błąd Parsowania XML</translation>
     </message>
     <message>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished">Błąd Protokołu XMPP</translation>
+        <translation>Błąd Protokołu XMPP</translation>
     </message>
     <message>
         <source>Generic stream error</source>
-        <translation type="unfinished">Błąd strumienia</translation>
+        <translation>Błąd strumienia</translation>
     </message>
     <message>
         <source>Conflict(remote login replacing this one)</source>
-        <translation type="unfinished">Konflikt (zdalne logowanie zastępuje bieżące)</translation>
+        <translation>Konflikt (zdalne logowanie zastępuje bieżące)</translation>
     </message>
     <message>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished">Przekroczono limit czasu z powodu nieaktywności</translation>
+        <translation>Przekroczono limit czasu z powodu nieaktywności</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd wewnętrzny serwera</translation>
     </message>
     <message>
         <source>Invalid XML</source>
-        <translation type="unfinished">Nieprawidłowy XML</translation>
+        <translation>Nieprawidłowy XML</translation>
     </message>
     <message>
         <source>Policy violation</source>
-        <translation type="unfinished">Naruszenie zasad</translation>
+        <translation>Naruszenie zasad</translation>
     </message>
     <message>
         <source>Server out of resources</source>
-        <translation type="unfinished">Serwer wyczerpał zasoby</translation>
+        <translation>Serwer wyczerpał zasoby</translation>
     </message>
     <message>
         <source>Server is shutting down</source>
-        <translation type="unfinished">Serwer został wyłączony</translation>
+        <translation>Serwer został wyłączony</translation>
     </message>
     <message>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished">Błąd Strumienia XMPP: %1</translation>
+        <translation>Błąd Strumienia XMPP: %1</translation>
     </message>
     <message>
         <source>Unable to connect to server</source>
-        <translation type="unfinished">Nie można połączyć się z serwerem</translation>
+        <translation>Nie można połączyć się z serwerem</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie odnaleziono hosta</translation>
     </message>
     <message>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished">Nie można połączyć się z serwerem proxy</translation>
+        <translation>Nie można połączyć się z serwerem proxy</translation>
     </message>
     <message>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished">Błąd podczas negocjacji proxy</translation>
+        <translation>Błąd podczas negocjacji proxy</translation>
     </message>
     <message>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished">Uwierzytelnianie serwera proxy nie powiodło się</translation>
+        <translation>Uwierzytelnianie serwera proxy nie powiodło się</translation>
     </message>
     <message>
         <source>Socket/stream error</source>
-        <translation type="unfinished">Błąd strumienia/portu</translation>
+        <translation>Błąd strumienia/portu</translation>
     </message>
     <message>
         <source>Connection Error: %1</source>
-        <translation type="unfinished">Błąd Połączenia: %1</translation>
+        <translation>Błąd Połączenia: %1</translation>
     </message>
     <message>
         <source>Host no longer hosted</source>
-        <translation type="unfinished">Host nie jest już utrzymywany</translation>
+        <translation>Host nie jest już utrzymywany</translation>
     </message>
     <message>
         <source>Host unknown</source>
-        <translation type="unfinished">Nieznany host</translation>
+        <translation>Nieznany host</translation>
     </message>
     <message>
         <source>A required remote connection failed</source>
-        <translation type="unfinished">Wymagane zdalne połączenie nie powiodło się</translation>
+        <translation>Wymagane zdalne połączenie nie powiodło się</translation>
     </message>
     <message>
         <source>See other host: %1</source>
-        <translation type="unfinished">Użyj innego hosta: %1</translation>
+        <translation>Użyj innego hosta: %1</translation>
     </message>
     <message>
         <source>Server does not support proper XMPP version</source>
-        <translation type="unfinished">Serwer nie wspiera wymaganej wersji XMPP</translation>
+        <translation>Serwer nie wspiera wymaganej wersji XMPP</translation>
     </message>
     <message>
         <source>Stream Negotiation Error: %1</source>
-        <translation type="unfinished">Błąd Negocjacji Strumienia: %1</translation>
+        <translation>Błąd Negocjacji Strumienia: %1</translation>
     </message>
     <message>
         <source>Server rejected STARTTLS</source>
-        <translation type="unfinished">Serwer odrzucił STARTTLS</translation>
+        <translation>Serwer odrzucił STARTTLS</translation>
     </message>
     <message>
         <source>TLS handshake error</source>
-        <translation type="unfinished">Błąd uzgadniania TLS</translation>
+        <translation>Błąd uzgadniania TLS</translation>
     </message>
     <message>
         <source>Broken security layer (TLS)</source>
-        <translation type="unfinished">Niesprawna warstwa zabezpieczeń (TLS)</translation>
+        <translation>Niesprawna warstwa zabezpieczeń (TLS)</translation>
     </message>
     <message>
         <source>Unable to login</source>
-        <translation type="unfinished">Nie można się zalogować</translation>
+        <translation>Nie można się zalogować</translation>
     </message>
     <message>
         <source>No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)</source>
-        <translation type="unfinished">Brak odpowiedniego mechanizmu dla wybranych ustawień zabezpieczeń (np. zbyt słaba biblioteka SASL lub niewłączona autoryzacja otwartym tekstem)</translation>
+        <translation>Brak odpowiedniego mechanizmu dla wybranych ustawień zabezpieczeń (np. zbyt słaba biblioteka SASL lub niewłączona autoryzacja otwartym tekstem)</translation>
     </message>
     <message>
         <source>Bad server response</source>
-        <translation type="unfinished">Błędna odpowiedź serwera</translation>
+        <translation>Błędna odpowiedź serwera</translation>
     </message>
     <message>
         <source>Server failed mutual authentication</source>
-        <translation type="unfinished">Serwer nie przeszedł autentykacji</translation>
+        <translation>Serwer nie przeszedł autentykacji</translation>
     </message>
     <message>
         <source>Encryption required for chosen SASL mechanism</source>
-        <translation type="unfinished">Wybrany mechanizm SASL wymaga szyfrowania</translation>
+        <translation>Wybrany mechanizm SASL wymaga szyfrowania</translation>
     </message>
     <message>
         <source>Invalid account information</source>
-        <translation type="unfinished">Nieprawidłowe informacje o koncie</translation>
+        <translation>Nieprawidłowe informacje o koncie</translation>
     </message>
     <message>
         <source>Invalid SASL mechanism</source>
-        <translation type="unfinished">Nieprawidłowy mechanizm SASL</translation>
+        <translation>Nieprawidłowy mechanizm SASL</translation>
     </message>
     <message>
         <source>Invalid realm</source>
-        <translation type="unfinished">Nieprawidłowa domena</translation>
+        <translation>Nieprawidłowa domena</translation>
     </message>
     <message>
         <source>SASL mechanism too weak for this account</source>
-        <translation type="unfinished">Mechanizm SASL jest za słaby dla tego konta</translation>
+        <translation>Mechanizm SASL jest za słaby dla tego konta</translation>
     </message>
     <message>
         <source>Not authorized</source>
-        <translation type="unfinished">Nieautoryzowany</translation>
+        <translation>Nieautoryzowany</translation>
     </message>
     <message>
         <source>Temporary auth failure</source>
-        <translation type="unfinished">Chwilowy problem przy uwierzytelnianiu</translation>
+        <translation>Chwilowy problem przy uwierzytelnianiu</translation>
     </message>
     <message>
         <source>Authentication error: %1</source>
-        <translation type="unfinished">Błąd uwierzytelniania: %1</translation>
+        <translation>Błąd uwierzytelniania: %1</translation>
     </message>
     <message>
         <source>Broken security layer (SASL)</source>
-        <translation type="unfinished">Niesprawna warstwa zabezpieczeń (SASL)</translation>
+        <translation>Niesprawna warstwa zabezpieczeń (SASL)</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Żaden</translation>
+        <translation>Żaden</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Ogólne</translation>
+        <translation>Ogólne</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaawansowane</translation>
     </message>
     <message>
         <source>XMPP/Jabber</source>
-        <translation type="unfinished"></translation>
+        <translation>XMPP/Jabber</translation>
     </message>
     <message>
         <source>Port for data transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Port transferu danych</translation>
     </message>
 </context>
 <context>
@@ -732,59 +730,59 @@ Hasło w obu polach (&quot;Nowe Hasło&quot; oraz &quot;Powtórz hasło&quot;) m
     </message>
     <message>
         <source>XMPP Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Serwer XMPP</translation>
     </message>
     <message>
         <source>Use custom server address/port</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj własnego adresu i portu</translation>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres serwera</translation>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj szyfrowanego połączenia</translation>
     </message>
     <message>
         <source>Only in older version</source>
-        <translation type="unfinished"></translation>
+        <translation>Tylko w starszej wersj</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"></translation>
+        <translation>Sieć</translation>
     </message>
     <message>
         <source>Use computer name as a resource</source>
-        <translation type="unfinished"></translation>
+        <translation>Użyj nazwy komputera jako zasobu</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz powiadomienia o pisaniu</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twój rozmówca będzie informowany o tym, że piszesz wiadomość. Działa także w drugą stronę.</translation>
     </message>
     <message>
         <source>Enable chat activity events</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz powiadomienia o aktywności rozmowy</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you suspend or end conversation. And vice versa.</source>
-        <translation type="unfinished"></translation>
+        <translation>Twój rozmówca będzie informowany o tym, że wstrzymałęs pisanie lub zakończyłeś rozmowę. Działa także w drugą stronę.</translation>
     </message>
     <message>
         <source>Others can see your system name/version</source>
-        <translation type="unfinished"></translation>
+        <translation>Znajomi będą widzieć nazwę i wersję twojego systemu operacyjnego</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź usunięcie konta</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy na pewno chcesz usunąć konto %1 (%2)?</translation>
     </message>
 </context>
 <context>
@@ -862,7 +860,7 @@ Teraz możesz dodać przyjaciół do listy kontaktów.</translation>
     </message>
     <message>
         <source>Registering new XMPP account</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejestrowanie nowego konta XMPP</translation>
     </message>
 </context>
 <context>
@@ -1142,33 +1140,35 @@ Proszę poprawić i spróbować ponownie.</translation>
     <name>XMPP::JabberConnectionService</name>
     <message>
         <source>security problem</source>
-        <translation type="unfinished">Problem bezpieczeństwa</translation>
+        <translation>Problem bezpieczeństwa</translation>
     </message>
     <message>
         <source>TLS certificate not accepted</source>
-        <translation type="unfinished"></translation>
+        <translation>Certyfikat TLS nie został zaakceptowany</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieznany błąd</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
-        <translation type="unfinished">Serwer nie wspiera szyfrowania TLS.</translation>
+        <translation>Serwer nie wspiera szyfrowania TLS.</translation>
     </message>
     <message>
         <source>Connection error.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd połączenia.
+Szczegóły: %1</translation>
     </message>
     <message>
         <source>Account disconnected.
 Details: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto rozłączone.
+Szczegóły: %1</translation>
     </message>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>
-        <translation type="unfinished">Nie można zainicjalizować obsługi SSL dla konta %1. Sprawdź, czy wtyczka QCA TLS jest zainstalowana w Twoim systemie.</translation>
+        <translation>Nie można zainicjalizować obsługi SSL dla konta %1. Sprawdź, czy wtyczka QCA TLS jest zainstalowana w Twoim systemie.</translation>
     </message>
 </context>
 <context>
