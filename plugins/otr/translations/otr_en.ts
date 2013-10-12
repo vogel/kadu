@@ -41,10 +41,6 @@
 <context>
     <name>OtrAccountConfigurationWidget</name>
     <message>
-        <source>OTR Encyption</source>
-        <translation>OTR Encyption</translation>
-    </message>
-    <message>
         <source>Enable private messaging</source>
         <translation>Enable private messaging</translation>
     </message>
@@ -56,13 +52,13 @@
         <source>Require private messaging</source>
         <translation>Require private messaging</translation>
     </message>
+    <message>
+        <source>OTR Encryption</source>
+        <translation>OTR Encryption</translation>
+    </message>
 </context>
 <context>
     <name>OtrBuddyConfigurationWidget</name>
-    <message>
-        <source>OTR Encyption</source>
-        <translation>OTR Encyption</translation>
-    </message>
     <message>
         <source>Use account&apos;s policy</source>
         <translation>Use account&apos;s policy</translation>
@@ -78,6 +74,10 @@
     <message>
         <source>Require private messaging</source>
         <translation>Require private messaging</translation>
+    </message>
+    <message>
+        <source>OTR Encryption</source>
+        <translation>OTR Encryption</translation>
     </message>
 </context>
 <context>
