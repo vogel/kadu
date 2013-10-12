@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -6,36 +8,16 @@
         <translation>État</translation>
     </message>
     <message>
-        <source>Autoaway</source>
-        <translation>Autoaway</translation>
-    </message>
-    <message>
         <source>Check idle every</source>
         <translation>Vérifier l&apos;inactivité tous les</translation>
-    </message>
-    <message>
-        <source>Enable autoaway</source>
-        <translation>Activer Autoaway</translation>
     </message>
     <message>
         <source>Set status to away after</source>
         <translation>Mettre en veille après</translation>
     </message>
     <message>
-        <source>Enable autoinvisible</source>
-        <translation>Activer l&apos;invisibilité automatique</translation>
-    </message>
-    <message>
         <source>Set status to invisible after</source>
         <translation>Mettre en invisible après</translation>
-    </message>
-    <message>
-        <source>Enable autodisconnect</source>
-        <translation>Activer la déconnexion automatique</translation>
-    </message>
-    <message>
-        <source>Disconnect after</source>
-        <translation>Déconnexion après</translation>
     </message>
     <message>
         <source>Description</source>
@@ -50,44 +32,70 @@
         <translation>Nouvelle description</translation>
     </message>
     <message>
-        <source>Parse AutoStatus</source>
-        <translation>Analyser AutoStatus</translation>
-    </message>
-    <message>
-        <source>Enable auto extended away</source>
-        <translation>Activer la veille prolongée automatique</translation>
-    </message>
-    <message>
         <source>Set status to extended away after</source>
         <translation>Mettre en veille prolongée après</translation>
     </message>
-    <message>
-        <source>Auto refresh status</source>
-        <translation>État du rafraîchissement automatique</translation>
-    </message>
-    <message numerus="yes">
-        <source>[every] %n second(s)</source>
-        <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>[after] %n second(s)</source>
-        <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
-    </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
+        <translation>
+            <numerusform>%n seconde</numerusform>
+            <numerusform>%n secondes</numerusform>
+        </translation>
     </message>
     <message>
         <source>Do Not Change</source>
         <translation>Ne pas modifier</translation>
     </message>
     <message>
-        <source>Add in the Front</source>
-        <translation>Ajouter devant</translation>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add at the Back</source>
-        <translation>Ajouter derrière</translation>
+        <source>Inactivity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh status every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;away&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Switch to &apos;auto extended away&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;invisible&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to offline after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status description when inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prepend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Append</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

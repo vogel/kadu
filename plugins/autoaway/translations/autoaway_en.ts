@@ -8,15 +8,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Autoaway</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Check idle every</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable autoaway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -24,19 +16,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Enable autoinvisible</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Set status to invisible after</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable autodisconnect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Disconnect after</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -52,34 +32,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parse AutoStatus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable auto extended away</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Set status to extended away after</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auto refresh status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <source>[every] %n second(s)</source>
-        <translation>
-            <numerusform>%n second</numerusform>
-            <numerusform>%n seconds</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>[after] %n second(s)</source>
-        <translation>
-            <numerusform>%n second</numerusform>
-            <numerusform>%n seconds</numerusform>
-        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
@@ -93,11 +47,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add in the Front</source>
+        <source>Behaviour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add at the Back</source>
+        <source>Inactivity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh status every</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;away&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Switch to &apos;auto extended away&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;invisible&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch to &apos;offline&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to offline after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status description when inactive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prepend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Append</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
