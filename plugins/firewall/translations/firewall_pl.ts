@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -65,31 +63,31 @@
     </message>
     <message>
         <source>Anonymous chat attempt</source>
-        <translation type="unfinished"></translation>
+        <translation>Próba nawiązania rozmowy przez anonima</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in history</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisuj próby nawiązania rozmowy przez anonimów w historii</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in log file</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapisuj próby nawiązania rozmowy przez anonimów w pliku logu</translation>
     </message>
     <message>
         <source>Log file path</source>
-        <translation type="unfinished"></translation>
+        <translation>Ścieżka pliku logu</translation>
     </message>
     <message>
         <source>Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kadu zada poniższe pytanie osobie próbującej nawiązać rozmowę, jeżeli nie masz jej na liście.</translation>
     </message>
     <message>
         <source>Drop chats with unknown person when I am invisible/unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoruj rozmowy z anonimami kiedy jestem niewidzialny/niedostępny</translation>
     </message>
     <message>
         <source>Reaction on right answer</source>
-        <translation type="unfinished"></translation>
+        <translation>Reakcja na poprawną odpowiedź</translation>
     </message>
 </context>
 <context>
