@@ -1,10 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
-    <message>
-        <source>Chat</source>
-        <translation>Conversation</translation>
-    </message>
     <message>
         <source>Encryption</source>
         <translation>Cryptage</translation>
@@ -20,21 +18,6 @@
     <message>
         <source>Encryption error has occured</source>
         <translation>Une erreur de cryptage est survenue</translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation>Messages</translation>
-    </message>
-    <message>
-        <source>Encrypt after receiving encrypted message</source>
-        <translation>Crypter après avoir reçu un message crypté</translation>
-    </message>
-</context>
-<context>
-    <name>EnableEncryptionActionDescription</name>
-    <message>
-        <source>Encrypt</source>
-        <translation>Crypter</translation>
     </message>
 </context>
 <context>
@@ -79,6 +62,32 @@ Voulez-vous l&apos;enregistrer ?</translation>
         <source>Encryption</source>
         <translation>Cryptage</translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EncryptionSetUpActionDescription</name>
+    <message>
+        <source>Encrypt</source>
+        <translation type="unfinished">Crypter</translation>
+    </message>
+</context>
+<context>
+    <name>EncryptionSetUpMenu</name>
+    <message>
+        <source>No Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GenerateKeysActionDescription</name>
@@ -91,14 +100,6 @@ Voulez-vous l&apos;enregistrer ?</translation>
         <translation>Cryptage</translation>
     </message>
     <message>
-        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation>Impossible de générer les clefs. Vérifier si le module encryption_simlite est chargé</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Les clefs existent déjà. Voulez-vous les écraser ?</translation>
-    </message>
-    <message>
         <source>Keys have been generated</source>
         <translation>Les clefs ont été générées</translation>
     </message>
@@ -106,16 +107,21 @@ Voulez-vous l&apos;enregistrer ?</translation>
         <source>Error generating keys</source>
         <translation>Erreur de génération des clefs</translation>
     </message>
-</context>
-<context>
-    <name>SendPublicKeyActionDescription</name>
     <message>
-        <source>Send My Public Key</source>
-        <translation>S&apos;envoyer la clef publique</translation>
+        <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
+        <translation>Impossible de générer les clefs. Vérifier si le module encryption_ng_simlite est chargé</translation>
     </message>
     <message>
-        <source>No public key available</source>
-        <translation>Aucune clef publique disponible</translation>
+        <source>Keys already exist. Do you want to overwrite them?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

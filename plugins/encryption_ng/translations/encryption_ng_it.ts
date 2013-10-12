@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Chat</source>
-        <translation>Chat</translation>
-    </message>
-    <message>
         <source>Encryption</source>
         <translation>Cifratura</translation>
     </message>
@@ -21,21 +17,6 @@
     </message>
     <message>
         <source>Encryption error has occured</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Messages</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encrypt after receiving encrypted message</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EnableEncryptionActionDescription</name>
-    <message>
-        <source>Encrypt</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -80,6 +61,32 @@ Do you want to save it?</source>
         <source>Encryption</source>
         <translation>Cifratura</translation>
     </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EncryptionSetUpActionDescription</name>
+    <message>
+        <source>Encrypt</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EncryptionSetUpMenu</name>
+    <message>
+        <source>No Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 Encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GenerateKeysActionDescription</name>
@@ -92,14 +99,6 @@ Do you want to save it?</source>
         <translation>Cifratura</translation>
     </message>
     <message>
-        <source>Cannot generate keys. Check if encryption_simlite module is loaded</source>
-        <translation>Non generare chiavi. Controlla che il modulo encryption_simlite sia caricato</translation>
-    </message>
-    <message>
-        <source>Keys exist. Do you want to overwrite them?</source>
-        <translation>Chiavi esistenti. Vuoi sovrascrivere?</translation>
-    </message>
-    <message>
         <source>Keys have been generated</source>
         <translation>La chiave è stata generata</translation>
     </message>
@@ -107,15 +106,20 @@ Do you want to save it?</source>
         <source>Error generating keys</source>
         <translation>Errore nella generazione delle chiavi</translation>
     </message>
-</context>
-<context>
-    <name>SendPublicKeyActionDescription</name>
     <message>
-        <source>Send My Public Key</source>
+        <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
+        <translation>Non generare chiavi. Controlla che il modulo encryption_ng_simlite sia caricato</translation>
+    </message>
+    <message>
+        <source>Keys already exist. Do you want to overwrite them?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No public key available</source>
+        <source>Overwrite keys</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
