@@ -2,7 +2,7 @@ project (emoticons)
 
 cmake_minimum_required (VERSION 2.8)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 kadu_api_directories (plugins/emoticons
 	configuration

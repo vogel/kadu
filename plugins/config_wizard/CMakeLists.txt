@@ -2,7 +2,7 @@ project (config_wizard)
 
 cmake_minimum_required (VERSION 2.8)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	gui/widgets/config-wizard-choose-network-page.cpp

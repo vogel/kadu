@@ -2,7 +2,7 @@ project (phonon_sound)
 
 cmake_minimum_required (VERSION 2.8)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	phonon-player.cpp

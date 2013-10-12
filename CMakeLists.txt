@@ -255,7 +255,7 @@ write_basic_package_version_file ("${CMAKE_BINARY_DIR}/KaduConfigVersion.cmake"
 # Include the generated file
 
 set (Kadu_DIR "${CMAKE_BINARY_DIR}")
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 if (NOT WIN32)
 	include (CheckIncludeFiles)

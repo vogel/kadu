@@ -2,7 +2,7 @@ project (qt4_docking)
 
 cmake_minimum_required (VERSION 2.8)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 kadu_api_directories (plugins/qt4_docking
 	.

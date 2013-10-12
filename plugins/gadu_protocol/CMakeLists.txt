@@ -10,7 +10,7 @@ set (QT_USE_QTXMLPATTERNS 1)
 set (QT_USE_QTNETWORK 1)
 set (QT_USE_QTWEBKIT 1)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 set (LIBGADU_MIN_VERSION "1.11.1")
 

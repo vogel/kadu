@@ -9,7 +9,7 @@ set (QT_USE_QTSCRIPT 1)
 # Only needed for script debugger
 #set (QT_USE_QTSCRIPTTOOLS 1)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	gui/windows/sms-dialog.cpp

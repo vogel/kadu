@@ -2,7 +2,7 @@ project (mprisplayer_mediaplayer)
 
 cmake_minimum_required (VERSION 2.8)
 
-find_package (Kadu REQUIRED)
+find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	gui/windows/mpris-player-dialog.cpp
