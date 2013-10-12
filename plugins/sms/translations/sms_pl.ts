@@ -1,17 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
         <source>SMS</source>
         <translation>SMS</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>SMS Nick</source>
-        <translation>Pseudonim SMS</translation>
     </message>
     <message>
         <source>Application</source>
@@ -24,14 +18,6 @@
     <message>
         <source>Custom SMS application</source>
         <translation>Własna aplikacja SMS</translation>
-    </message>
-    <message>
-        <source>Use SMS custom string</source>
-        <translation>Używaj własnych argumentów SMS</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Argumenty SMS</translation>
     </message>
     <message>
         <source>Gateways</source>
@@ -74,6 +60,26 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     <message>
         <source>SMS proxy for built-in application</source>
         <translation>Proxy dla wbudowanej aplikacji SMS</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your nick for SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use application custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -8,14 +8,6 @@
         <translation>SMS</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Generale</translation>
-    </message>
-    <message>
-        <source>SMS Nick</source>
-        <translation>SMS Nickname</translation>
-    </message>
-    <message>
         <source>Application</source>
         <translation>Programma</translation>
     </message>
@@ -26,14 +18,6 @@
     <message>
         <source>Custom SMS application</source>
         <translation>Applicazione SMS esterna</translation>
-    </message>
-    <message>
-        <source>Use SMS custom string</source>
-        <translation>Usa stringa personalizzata SMS</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Stringa personalizzata SMS</translation>
     </message>
     <message>
         <source>Gateways</source>
@@ -74,6 +58,26 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
     <message>
         <source>SMS proxy for built-in application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your nick for SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use application custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

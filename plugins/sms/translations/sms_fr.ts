@@ -1,17 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
         <source>SMS</source>
         <translation>SMS</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Général</translation>
-    </message>
-    <message>
-        <source>SMS Nick</source>
-        <translation>Pseudonyme SMS</translation>
     </message>
     <message>
         <source>Application</source>
@@ -24,14 +18,6 @@
     <message>
         <source>Custom SMS application</source>
         <translation>Application SMS personnalisée</translation>
-    </message>
-    <message>
-        <source>Use SMS custom string</source>
-        <translation>Utiliser une chaîne SMS personnalisée</translation>
-    </message>
-    <message>
-        <source>SMS custom string</source>
-        <translation>Chaîne SMS personnalisée</translation>
     </message>
     <message>
         <source>Gateways</source>
@@ -74,6 +60,26 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     <message>
         <source>SMS proxy for built-in application</source>
         <translation>Proxy SMS pour l&apos;application intégrée</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your nick for SMS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use application custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SMS custom arguments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -188,31 +194,31 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     <name>SmsTokenReadJob</name>
     <message>
         <source>Invalid paremeters for token read job.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Downloading token image...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to fetch token image.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unable to read token image.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Waiting for entry of token value...</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No token value provided.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Received token value.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
