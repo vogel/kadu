@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>FileDesc</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20,10 +16,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Force status to be &apos;with description&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>If you choose status without description, module will set it automatically to similar but with description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -33,6 +25,18 @@
     </message>
     <message>
         <source>Allows you to set some custom description manualy, until file contents does not change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always add description to status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
