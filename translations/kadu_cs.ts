@@ -1,12 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
-    <message>
-        <source>Please do not run Kadu as a root!
-It&apos;s a high security risk!</source>
-        <translation>Nespouštějte, prosím, Kadu jako správce.
-Je to vysoce bezpečnostně rizikové!</translation>
-    </message>
     <message>
         <source>Description</source>
         <translation>Popis</translation>
@@ -140,16 +136,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Filtry</translation>
     </message>
     <message>
-        <source>Anonymous</source>
-        <translation>Nepodepsaní</translation>
-    </message>
-    <message>
         <source>Ignore messages from anonymous users</source>
         <translation>Přehlížet zprávy od nepodepsaných uživatelů</translation>
-    </message>
-    <message>
-        <source>Ignore messages from anonymous users also in conferences</source>
-        <translation>Přehlížet zprávy od nepodepsaných uživatelů také na poradách</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
@@ -180,32 +168,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Nepřipojený</translation>
     </message>
     <message>
-        <source>On startup, set last description</source>
-        <translation>Při spuštění nastavit poslední popis</translation>
-    </message>
-    <message>
-        <source>Last decription will be set on startup</source>
-        <translation>Při spuštění bude nastaven poslední popis</translation>
-    </message>
-    <message>
-        <source>On startup, set description</source>
-        <translation>Při spuštění nastavit popis</translation>
-    </message>
-    <message>
         <source>Define description which will be set on startup</source>
         <translation>Stanovit stav, který bude nastaven při spuštění</translation>
-    </message>
-    <message>
-        <source>On shutdown, keep current description</source>
-        <translation>Při vypnutí zachovat nynější popis</translation>
-    </message>
-    <message>
-        <source>Current description will be set on shutdown</source>
-        <translation>Při vypnutí bude nastaven nynější popis</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description</source>
-        <translation>Při vypnutí nastavit popis</translation>
     </message>
     <message>
         <source>Define description which will be set on shutdown</source>
@@ -226,14 +190,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Choose icon theme</source>
         <translation>Vybrat podobu ikon</translation>
-    </message>
-    <message>
-        <source>Icon paths</source>
-        <translation>Cesty k ikonám</translation>
-    </message>
-    <message>
-        <source>Definie icons paths</source>
-        <translation>Stanovit cesty k ikonám</translation>
     </message>
     <message>
         <source>Show status changing button</source>
@@ -272,16 +228,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Písma</translation>
     </message>
     <message>
-        <source>Flash chat title on new message</source>
-        <translation>Při nové zprávě rychle ukázat název rozhovoru</translation>
-    </message>
-    <message>
         <source>Show number of new messages on chat title</source>
         <translation>Ukázat v názvu rozhovoru ukázatpočet nových zpráv</translation>
-    </message>
-    <message>
-        <source>Nice date format</source>
-        <translation>Formát data nice</translation>
     </message>
     <message>
         <source>Style</source>
@@ -296,76 +244,12 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Náhled</translation>
     </message>
     <message>
-        <source>Emoticons</source>
-        <translation>Obličeje</translation>
-    </message>
-    <message>
-        <source>Choose emoticons style</source>
-        <translation>Vybrat styl obličejů</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Pohyblivé</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Nehybné</translation>
-    </message>
-    <message>
-        <source>Emoticons theme</source>
-        <translation>Podoba obličejů</translation>
-    </message>
-    <message>
-        <source>Choose emoticons theme</source>
-        <translation>Vybrat podobu obličejů</translation>
-    </message>
-    <message>
-        <source>Emoticons paths</source>
-        <translation>Cesty k obličejům</translation>
-    </message>
-    <message>
-        <source>Define emoticons paths</source>
-        <translation>Stanovit cesty k obličejům</translation>
-    </message>
-    <message>
-        <source>Selector behavior</source>
-        <translation>Chování voliče</translation>
-    </message>
-    <message>
-        <source>Choose the way emoticons are scaled in the selector</source>
-        <translation>Vybrat způsob, jakým se mění velikost obličejů ve voliči</translation>
-    </message>
-    <message>
-        <source>Advanced...</source>
-        <translation>Pokročilé...</translation>
-    </message>
-    <message>
         <source>Display group tabs</source>
         <translation>Zobrazit karty skupin</translation>
     </message>
     <message>
-        <source>Top</source>
-        <translation>Nahoře</translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation>Ve středu</translation>
-    </message>
-    <message>
-        <source>Tool tip style</source>
-        <translation>Styl nástrojových rad</translation>
-    </message>
-    <message>
         <source>Descriptions</source>
         <translation>Popisy</translation>
-    </message>
-    <message>
-        <source>Show descriptions</source>
-        <translation>Ukázat popisy</translation>
-    </message>
-    <message>
-        <source>Allow multiline descriptions</source>
-        <translation>Povolit víceřádkové popisy</translation>
     </message>
     <message>
         <source>Use background image</source>
@@ -390,26 +274,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Stretched</source>
         <translation>Roztaženo</translation>
-    </message>
-    <message>
-        <source>Show information panel</source>
-        <translation>Ukázat informační panel</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar</source>
-        <translation>Ukázat svislý posuvník</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar in information panel</source>
-        <translation>Ukázat v informačním panelu svislý posuvník</translation>
-    </message>
-    <message>
-        <source>Show emoticons in panel</source>
-        <translation>Ukázat obličeje v panelu</translation>
-    </message>
-    <message>
-        <source>Show emoticons in information panel</source>
-        <translation>Ukázat obličeje v informačním panelu</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
@@ -472,76 +336,16 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Otevřít okno pro rozhovor, jen když jsem připojen</translation>
     </message>
     <message>
-        <source>&apos;Enter&apos; in chat send message</source>
-        <translation>Enter do zprávy poslání rozhovoru</translation>
-    </message>
-    <message>
-        <source>Confirm clearing chat window</source>
-        <translation>Potvrdit vyprázdnění okna rozhovoru</translation>
-    </message>
-    <message>
-        <source>Ask before clearing chat window</source>
-        <translation>Zeptat se před vyprázdněním okna pro rozhovor</translation>
-    </message>
-    <message>
-        <source>Save opened windows on exit</source>
-        <translation>Uložit otevřená okna při ukončení</translation>
-    </message>
-    <message>
-        <source>Save opened chat windows when exiting</source>
-        <translation>Uložit otevřená okna pro rozhovor při ukončení</translation>
-    </message>
-    <message>
-        <source>Remember recent chats for</source>
-        <translation>Zapamatovat si poslední rozhovory po</translation>
-    </message>
-    <message>
         <source>Clear recent chats list on exit</source>
         <translation>Vyprázdnit seznam s posledními rozhovory při ukončení</translation>
-    </message>
-    <message>
-        <source>Closing</source>
-        <translation>Zavření</translation>
-    </message>
-    <message>
-        <source>Block window close on new message</source>
-        <translation>Bránit zavření okna při nové zprávě</translation>
     </message>
     <message>
         <source>Block chat window when a new message arrives</source>
         <translation>Bránit okno pro rozhovor, když přijde nová zpráva</translation>
     </message>
     <message>
-        <source>Max time to block window close</source>
-        <translation>Nejvíce času pro bránění zavření okna </translation>
-    </message>
-    <message>
         <source>Messages</source>
         <translation>Zprávy</translation>
-    </message>
-    <message>
-        <source>Automatically prune chat messages</source>
-        <translation>Automaticky seškrtat zprávy rozhovoru</translation>
-    </message>
-    <message>
-        <source>If enabled, messages are pruning</source>
-        <translation>Je-li povoleno, zprávy jsou seškrtávány</translation>
-    </message>
-    <message>
-        <source>Reduce the number of visible messages in chat window to</source>
-        <translation>Omezit počet viditelných zpráv v okně pro rozhovor na</translation>
-    </message>
-    <message>
-        <source>Number of visible messages</source>
-        <translation>Počet viditelných zpráv</translation>
-    </message>
-    <message>
-        <source>Automatically fold links</source>
-        <translation>Automaticky skládat odkazy</translation>
-    </message>
-    <message>
-        <source>Fold links longer than</source>
-        <translation>Složit odkazy delší než</translation>
     </message>
     <message>
         <source>default</source>
@@ -558,10 +362,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
         <translation>Zobrazit zprávy od nepodepsaných uživatelů bez formátování (barvy, obrázky, váha písma...).</translation>
-    </message>
-    <message>
-        <source>Display dates is nice format, like Today, Yesterday or Friday</source>
-        <translation>Zobrazit data ve formátu nice, jako Dnes, Včera nebo Pátek</translation>
     </message>
     <message>
         <source>Connection error</source>
@@ -608,10 +408,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Uvědomit o nových zprávách, jen když okno není v činnosti</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to busy/available</source>
-        <translation>Přehlížet změny stavů z dostupný/zaneprázdněný na zaneprázdněný/dostupný</translation>
-    </message>
-    <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Přehlížet změny hned po připojení k serveru</translation>
     </message>
@@ -654,10 +450,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
     <message>
         <source>to offline</source>
         <translation>Na nepřipojený</translation>
-    </message>
-    <message>
-        <source>Buddies</source>
-        <translation>Kamarádi</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -708,10 +500,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Použít systémového klienta pro elektronickou poštu</translation>
     </message>
     <message>
-        <source>Updates and Startup</source>
-        <translation>Aktualizace a spuštění</translation>
-    </message>
-    <message>
         <source>Check for updates when Kadu is opened</source>
         <translation>Podívat se po aktualizacích, když je Kadu spuštěn</translation>
     </message>
@@ -744,14 +532,6 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Seznam kamarádů</translation>
     </message>
     <message>
-        <source>New Messages Notifications</source>
-        <translation>Oznámení nových zpráv</translation>
-    </message>
-    <message>
-        <source>Turn on transparency</source>
-        <translation>Zapnout průhlednost</translation>
-    </message>
-    <message>
         <source>Displays group tabs on the buddy list</source>
         <translation>Zobrazí na seznamu kamarádů skupinové karty</translation>
     </message>
@@ -764,32 +544,8 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Ukázat připojené kamarády tučně</translation>
     </message>
     <message>
-        <source>Displays buddies that are not offline using a bold font</source>
-        <translation>Zobrazí kamarády, kteří nejsou nepřipojeni tučným písmem</translation>
-    </message>
-    <message>
-        <source>Align buddy icon to</source>
-        <translation>Zarovnat kamarádovu ikonu</translation>
-    </message>
-    <message>
-        <source>Align icon next to buddy&apos;s name</source>
-        <translation>Zarovnat ikonu vedle kamarádova jména</translation>
-    </message>
-    <message>
-        <source>Choose buddy list tool-tip style</source>
-        <translation>Vybrat styl nástrojových rad pro seznam kamarádů</translation>
-    </message>
-    <message>
         <source>Buddy Photos</source>
         <translation>Fotografie kamarádů</translation>
-    </message>
-    <message>
-        <source>Show photos</source>
-        <translation>Ukázat fotografie</translation>
-    </message>
-    <message>
-        <source>Add border</source>
-        <translation>Přidat okraj</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
@@ -808,20 +564,12 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Zobrazí víceřádkové popisy v seznamu kamarádů</translation>
     </message>
     <message>
-        <source>Alpha</source>
-        <translation>Alfa</translation>
-    </message>
-    <message>
         <source>Define background file for the buddy list</source>
         <translation>Stanovit soubor pozadí pro seznam kamarádů</translation>
     </message>
     <message>
         <source>Choose buddy list background style</source>
         <translation>Vybrat styl pozadí pro seznam kamarádů</translation>
-    </message>
-    <message>
-        <source>Displays information panel below the buddy list</source>
-        <translation>Zobrazí informační panel pod seznamem kamarádů</translation>
     </message>
     <message>
         <source>Add buddy</source>
@@ -848,30 +596,14 @@ Je to vysoce bezpečnostně rizikové!</translation>
         <translation>Ukázat/Skrýt kamarády bez popisu</translation>
     </message>
     <message>
-        <source>Message Pruning</source>
-        <translation>Seškrtání zpráv</translation>
-    </message>
-    <message>
-        <source>Link Folding</source>
-        <translation>Skládání odkazů</translation>
-    </message>
-    <message>
-        <source>New Messages</source>
-        <translation>Nové zprávy</translation>
-    </message>
-    <message>
         <source>Status Change</source>
         <translation>Změna stavu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Tato volba nahradí nástrojové rady změnami změnami ve stavu kamarádů
 ihned po zřízení spojení se serverem</translation>
-    </message>
-    <message>
-        <source>Notify about all buddies</source>
-        <translation>Uvědomit o všech kamarádech</translation>
     </message>
     <message>
         <source>File transfer</source>
@@ -903,15 +635,19 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>[for] %n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -950,14 +686,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Nastavit stav</translation>
     </message>
     <message>
-        <source>Per Account</source>
-        <translation>Podle účtu</translation>
-    </message>
-    <message>
-        <source>Per Identity</source>
-        <translation>Podle totožnosti</translation>
-    </message>
-    <message>
         <source>For All Accounts</source>
         <translation>Pro všechny účty</translation>
     </message>
@@ -972,14 +700,6 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Do Not Disturb</source>
         <translation>Nerušit</translation>
-    </message>
-    <message>
-        <source>My font color</source>
-        <translation>Barva mého písma</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s font color</source>
-        <translation>Barva kamarádova písma</translation>
     </message>
     <message>
         <source>My nick color</source>
@@ -1018,32 +738,8 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Písmo pro úpravu textu</translation>
     </message>
     <message>
-        <source>Force custom font in chat window</source>
-        <translation>Vynutit vlastní písmo v okně pro rozhovor</translation>
-    </message>
-    <message>
-        <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
-        <translation>Vynutit vlastní písmo i pro styly rozhovoru, které stanovují jejich vlastní písma (dělá to většina stylů Adium)</translation>
-    </message>
-    <message>
         <source>Information panel</source>
         <translation>Informační panel</translation>
-    </message>
-    <message>
-        <source>Scale All Emoticons</source>
-        <translation>Měnit velikost všech obličejů</translation>
-    </message>
-    <message>
-        <source>Scale Only Static Emoticons</source>
-        <translation>Měnit velikost jen u nehybných obličejů</translation>
-    </message>
-    <message>
-        <source>Do Not Scale Emoticons</source>
-        <translation>Neměnit velikost obličejů</translation>
-    </message>
-    <message>
-        <source>Show expanding control</source>
-        <translation>Ukázat rozšiřující ovládání</translation>
     </message>
     <message>
         <source>Tiled and Centered</source>
@@ -1052,34 +748,6 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Open chat window only when I am online</source>
         <translation>Otevřít okno pro rozhovor, jen když jsem připojen</translation>
-    </message>
-    <message>
-        <source>Never Remove Recent Chats</source>
-        <translation>Nikdy neodstraňovat nedávné rozhovory</translation>
-    </message>
-    <message>
-        <source>Contacts&apos; states</source>
-        <translation>Stavy spojení</translation>
-    </message>
-    <message>
-        <source>Show state notifications in chats</source>
-        <translation>Ukázat oznámení stavů v rozhovorech</translation>
-    </message>
-    <message>
-        <source>Show state notifications in windows&apos; titles</source>
-        <translation>Ukázat oznámení stavů v názvech oken</translation>
-    </message>
-    <message>
-        <source>Syntax:
-%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
-#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in 'Remove repeated headers' mode,
-&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
-        <translation>Skladba:
-%s - stav, %d - popis, %i - ip, %n - přezdívka, %a - stará přezdívka, %f - křestní jméno, %r - příjmení, %m - mobil, %u - uin, %g - skupina, %h - gg verze, %v - revDNS, %p - přípojka, %e - e-mail, %x - největší velikost obrázku, %z - pohlaví (0/1/2),
-#{message} - obsah zprávy, #{messageId} - id zprávy, #{messageStatus} - hodnota stavu zprávy, #{backgroundColor} - barva pozadí zprávy, #{fontColor} - barva písma zprávy, #{nickColor} - barva písma přezdívky, #{sentDate} - kdy byla zpráva poslána, #{receivedDate} - kdy byla zpráva přijata, #{separator} - oddělovač mezi zprávami,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - obsah nebude zobrazen v režimu &apos;Odstranit opakovaná záhlaví&apos;,
-&lt;kadu:top&gt;...&lt;/kadu:top&gt; - obsah bude zahrnut jednou na začátku dokumentu</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1126,8 +794,312 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Zapnout rozmazání</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Žádná</translation>
+        <source>Background colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile Inaccessible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Launch Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inform about new versions of Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu main window will not be visible in window list on your taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install new icons...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your system does not support transparency.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add border to buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split long descriptions into multiple lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit visible messages in chat window to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of messages visible in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fold links in messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shorten ugly, long links to save space in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use descriptive date format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddy information panel below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays status changing buttons below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tooltip over buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy expanding button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show an icon at each buddy that allows viewing contacts attached to this buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddies that are online using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy icon position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy icon alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the buddy&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list information style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flash chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore status changes available - busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember opened chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save opened chat windows when exiting and restore them on next statup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sending message by hitting &apos;Enter&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hitting &apos;Enter&apos; while typing in chat window sends message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before clearing messages in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask for confirmation before clearing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per account separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per identity separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every description you set will be saved for further use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1228,10 +1200,25 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
+    <name>AccountEventListener</name>
+    <message>
+        <source>Multilogon</source>
+        <translation type="unfinished">Více přihlášení</translation>
+    </message>
+    <message>
+        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished">Sezení s více přihlášeními spojeno od %1 na %2 s %3 pro %4 účet</translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished">Sezení s více přihlášeními odpojeno od %1 na %2 s %3 pro %4 účet</translation>
+    </message>
+</context>
+<context>
     <name>AccountManager</name>
     <message>
-        <source>Please provide valid password for %1 (%2) account</source>
-        <translation>Poskytněte, prosím, platné heslo pro účet %1 (%2)</translation>
+        <source>Please provide password for %1 (%2) account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1415,6 +1402,17 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
+    <name>AddGroupDialogWidget</name>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished">Přidat skupinu</translation>
+    </message>
+    <message>
+        <source>Group Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
@@ -1581,6 +1579,14 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation>Jste si jistý, že chcete smazat toto spojení z kamaráda &lt;b&gt;%1&lt;/b&gt;?</translation>
+    </message>
+    <message>
+        <source>Delete contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1785,14 +1791,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Soubor není čitelný</translation>
     </message>
     <message>
-        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
-        <translation>Tento obrázek má %1 KiB a překračuje omezení pro protokol %2 KiB.</translation>
-    </message>
-    <message>
-        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
-        <translation>Tento obrázek má %1 KiB a překračuje doporučenou největší velikost %2 KiB.</translation>
-    </message>
-    <message>
         <source>Do you really want to send this image?</source>
         <translation>Opravdu chcete poslat tento obrázek?</translation>
     </message>
@@ -1815,6 +1813,41 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
         <translation>Obrázky (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;Všechny soubory (*)</translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>ChatImageRequestService</name>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>@default</source>
+        <comment>Kadu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>@default</source>
+        <comment>Incoming Image</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1850,28 +1883,12 @@ ihned po zřízení spojení se serverem</translation>
 <context>
     <name>ChatStylesManager</name>
     <message>
-        <source>Edit</source>
-        <translation>Upravit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Smazat</translation>
-    </message>
-    <message>
         <source>Your message</source>
         <translation>Vaše zpráva</translation>
     </message>
     <message>
         <source>Message from Your friend</source>
         <translation>Zpráva od vašeho přítele</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Unable to remove style: %1</source>
-        <translation>Nelze odstranit styl: %1</translation>
     </message>
 </context>
 <context>
@@ -1911,6 +1928,14 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>(Inactive)</source>
         <translation>(Nečinný)</translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -1960,20 +1985,8 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Otevřít rozhovor</translation>
     </message>
     <message>
-        <source>Insert Emoticon</source>
-        <translation>Vložit obličej</translation>
-    </message>
-    <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Vložit obličej - povolit v nastavení</translation>
-    </message>
-    <message>
         <source>More</source>
         <translation>Více</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Vložit obličej</translation>
     </message>
 </context>
 <context>
@@ -1985,6 +1998,14 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2019,6 +2040,10 @@ ihned po zřízení spojení se serverem</translation>
         <source>Connection error on account: %1 (%2)</source>
         <translation>Chyba spojení u účtu: %1 (%2)</translation>
     </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished">Přehlížet</translation>
+    </message>
 </context>
 <context>
     <name>ContactListService</name>
@@ -2049,6 +2074,22 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
         <translation>Chcete použít změny udělané výše na váš místní seznam spojení? Bez ohledu na vaši volbu, bude po provedení možných změn poslán serveru.</translation>
+    </message>
+    <message>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave contact list unchanged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Odstranit</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2107,16 +2148,24 @@ ihned po zřízení spojení se serverem</translation>
 <context>
     <name>DeleteTalkableAction</name>
     <message>
-        <source>Delete Buddy...</source>
-        <translation>Smazat kamaráda...</translation>
-    </message>
-    <message>
         <source>Delete Chat</source>
         <translation>Smazat rozhovor</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
         <translation> Rozhovor &lt;b&gt;%1&lt;/b&gt; bude smazán.&lt;br/&gt;Jste si jistý?</translation>
+    </message>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2233,6 +2282,10 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Start</source>
         <translation>Spustit</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2394,22 +2447,32 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Přidat do skupiny %1</translation>
     </message>
     <message>
-        <source>Please enter a new name for this group</source>
-        <translation>Zadejte, prosím, nový název pro tuto skupinu</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Selected group:
-%0 will be deleted. Are you sure?</source>
-        <translation>Vybraná skupina:
-%0 bude smazána. Jste si jistý?</translation>
-    </message>
-    <message>
         <source>Add Group</source>
         <translation>Přidat skupinu</translation>
+    </message>
+    <message>
+        <source>Please enter a new name for the &lt;i&gt;%0&lt;/i&gt; group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group &lt;i&gt;%0&lt;/i&gt; will be deleted, but without buddies. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2492,6 +2555,24 @@ ihned po zřízení spojení se serverem</translation>
     </message>
 </context>
 <context>
+    <name>KaduDialog</name>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>KaduMenu</name>
+    <message>
+        <source>More Actions...</source>
+        <translation type="unfinished">Více činností...</translation>
+    </message>
+</context>
+<context>
     <name>KaduWebView</name>
     <message>
         <source>Save image</source>
@@ -2533,16 +2614,24 @@ ihned po zřízení spojení se serverem</translation>
         <source>Copy Link Address</source>
         <translation>Kopírovat adresu odkazu</translation>
     </message>
+    <message>
+        <source>Run Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="unfinished">Přepsat</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>KaduWindow</name>
     <message>
         <source>General</source>
         <translation>Obecné</translation>
-    </message>
-    <message>
-        <source>Recent chats</source>
-        <translation>Poslední rozhovory</translation>
     </message>
     <message>
         <source>&amp;Buddies</source>
@@ -2568,22 +2657,6 @@ ihned po zřízení spojení se serverem</translation>
         <translation>Zobrazit vlastnosti kamaráda</translation>
     </message>
     <message>
-        <source>Preferences...</source>
-        <translation>Nastavení...</translation>
-    </message>
-    <message>
-        <source>Your Accounts...</source>
-        <translation>Vaše účty...</translation>
-    </message>
-    <message>
-        <source>Multilogons...</source>
-        <translation>Více přihlášení...</translation>
-    </message>
-    <message>
-        <source>Plugins...</source>
-        <translation>Přídavné moduly...</translation>
-    </message>
-    <message>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
@@ -2594,22 +2667,6 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Search for Buddy...</source>
         <translation>Hledat kamaráda...</translation>
-    </message>
-    <message>
-        <source>Getting H&amp;elp...</source>
-        <translation>Získání &amp;nápovědy...</translation>
-    </message>
-    <message>
-        <source>Report a Bug...</source>
-        <translation>Nahlášení chyby...</translation>
-    </message>
-    <message>
-        <source>Get Involved...</source>
-        <translation>Zapojte se...</translation>
-    </message>
-    <message>
-        <source>Translate Kadu...</source>
-        <translation>Přeložte Kadu...</translation>
     </message>
     <message>
         <source>A&amp;bout Kadu</source>
@@ -2630,10 +2687,6 @@ ihned po zřízení spojení se serverem</translation>
     <message>
         <source>Copy Personal Info</source>
         <translation>Kopírovat osobní informace</translation>
-    </message>
-    <message>
-        <source>Open Description Link in Browser...</source>
-        <translation>Otevřít odkaz na popis v prohlížeči...</translation>
     </message>
     <message>
         <source>Send E-Mail</source>
@@ -2665,30 +2718,6 @@ ihned po zřízení spojení se serverem</translation>
 Sloučit kamarády...</translation>
     </message>
     <message>
-        <source>Delete Buddy...</source>
-        <translation>Smazat kamaráda...</translation>
-    </message>
-    <message>
-        <source>New Group</source>
-        <translation>Nová skupina</translation>
-    </message>
-    <message>
-        <source>Please enter the name for the new group:</source>
-        <translation>Zadejte, prosím, název pro novou skupinu:</translation>
-    </message>
-    <message>
-        <source>Contact: %a[ (%u)]
-[First name: %f
-][Last name: %r
-][Mobile: %m
-]</source>
-        <translation>Spojení: %a[ (%u)]
-[Křestní jméno: %f
-][Příjmení: %r
-][Přenosný telefon: %m
-]</translation>
-    </message>
-    <message>
         <source>Show Myself Buddy</source>
         <translation>Ukázat sebe kamarádovi</translation>
     </message>
@@ -2697,8 +2726,76 @@ Sloučit kamarády...</translation>
         <translation>Zobrazit vlastnosti rozhovoru</translation>
     </message>
     <message>
-        <source>Delete Chat...</source>
-        <translation>Smazat rozhovor...</translation>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting H&amp;elp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report a Bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get Involved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translate Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Description Link in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation type="unfinished">Sloučit</translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished">Přidat skupinu</translation>
+    </message>
+    <message>
+        <source>Contact:</source>
+        <translation type="unfinished">Spojení:</translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished">Křestní jméno:</translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished">Příjmení:</translation>
+    </message>
+    <message>
+        <source>Mobile:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished">Smazat rozhovor</translation>
+    </message>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2716,6 +2813,14 @@ Sloučit kamarády...</translation>
 from now on. Are you sure you want to leave this conference?</source>
         <translation>Všechny zprávy přijaté na této poradě se budou od nynějška
 přehlížet. Opravdu chcete opustit tuto poradu?</translation>
+    </message>
+    <message>
+        <source>Leave conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2739,6 +2844,18 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
         <source>Advanced chat&apos;s look configuration</source>
         <translation>Pokročilé nastavení vzhledu rozhovoru</translation>
     </message>
+    <message>
+        <source>Open icon theme archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XZ archive (*.tar.xz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -2748,26 +2865,18 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
     </message>
 </context>
 <context>
-    <name>MergeBuddiesWindow</name>
+    <name>MergeBuddiesDialogWidget</name>
     <message>
-        <source>&lt;i&gt;Choose which contact would you like to merge with &lt;b&gt;%1&lt;/b&gt;&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Vyberte si, které spojení byste chtěl sloučit s &lt;b&gt;%1&lt;/b&gt;&lt;/i&gt;</translation>
+        <source>Merge Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact:</source>
-        <translation>Spojení:</translation>
-    </message>
-    <message>
-        <source>Merge</source>
-        <translation>Sloučit</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <source>Buddy to merge</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> - Select buddy - </source>
-        <translation> - Vybrat kamaráda - </translation>
+        <translation type="unfinished"> - Vybrat kamaráda - </translation>
     </message>
 </context>
 <context>
@@ -2813,18 +2922,6 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
     <message>
         <source>Disconnect session</source>
         <translation>Odpojit sezení</translation>
-    </message>
-    <message>
-        <source>Multilogon</source>
-        <translation>Více přihlášení</translation>
-    </message>
-    <message>
-        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
-        <translation>Sezení s více přihlášeními spojeno od %1 na %2 s %3 pro %4 účet</translation>
-    </message>
-    <message>
-        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
-        <translation>Sezení s více přihlášeními odpojeno od %1 na %2 s %3 pro %4 účet</translation>
     </message>
 </context>
 <context>
@@ -2884,14 +2981,6 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
 <context>
     <name>NotificationManager</name>
     <message>
-        <source>Notify About Buddy</source>
-        <translation>Upozornit na kamaráda</translation>
-    </message>
-    <message>
-        <source>Enable Notifications</source>
-        <translation>Povolit oznámení</translation>
-    </message>
-    <message>
         <source>Unable to find notifier for %1 event</source>
         <translation>Nelze najít oznamovatele pro %1 událost</translation>
     </message>
@@ -2901,23 +2990,18 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
     </message>
 </context>
 <context>
+    <name>NotificationService</name>
+    <message>
+        <source>Notify About Buddy</source>
+        <translation type="unfinished">Upozornit na kamaráda</translation>
+    </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished">Tichý režim</translation>
+    </message>
+</context>
+<context>
     <name>NotifyConfigurationUiHandler</name>
-    <message>
-        <source>Move to &apos;Notify List&apos;</source>
-        <translation>Přesunout na Seznam oznámení</translation>
-    </message>
-    <message>
-        <source>Buddy List</source>
-        <translation>Seznam kamarádů</translation>
-    </message>
-    <message>
-        <source>Move to &apos;Buddy List&apos;</source>
-        <translation>Přesunout do Seznam kamarádů</translation>
-    </message>
-    <message>
-        <source>Notify List</source>
-        <translation>Seznam oznámení</translation>
-    </message>
     <message>
         <source>Use custom settings</source>
         <translation>Použít vlastní nastavení</translation>
@@ -2954,18 +3038,18 @@ přehlížet. Opravdu chcete opustit tuto poradu?</translation>
     </message>
 </context>
 <context>
-    <name>PasswordWindow</name>
+    <name>PasswordDialogWidget</name>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Heslo</translation>
+    </message>
     <message>
         <source>Store this password</source>
-        <translation>Uložit toto heslo</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="unfinished">Uložit toto heslo</translation>
     </message>
 </context>
 <context>
@@ -3087,52 +3171,18 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>PluginsWindow</name>
-    <message>
-        <source>Configure Plugins</source>
-        <translation>Nastavit přídavné moduly</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Použít</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Zavřít</translation>
-    </message>
-</context>
-<context>
     <name>ProgressWindow</name>
-    <message>
-        <source>Plase wait. New Gadu-Gadu account is being registered.</source>
-        <translation>Počkejte, prosím. Je zapisován nový účet Gadu-Gadu.</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Zavřít</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušit</translation>
-    </message>
-</context>
-<context>
-    <name>ProgressWindow2</name>
     <message>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
         <source>Progress:</source>
-        <translation>Postup:</translation>
+        <translation type="unfinished">Postup:</translation>
     </message>
     <message>
         <source>Show details &gt;&gt;&gt;</source>
-        <translation>Ukázat podrobnosti &gt;&gt;&gt;</translation>
+        <translation type="unfinished">Ukázat podrobnosti &gt;&gt;&gt;</translation>
     </message>
 </context>
 <context>
@@ -3246,6 +3296,20 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
         <translation>Máte neuložené změny v nynější proxy.&lt;br /&gt;Tato data jsou neplatná, takže ztratíte všechny změny.&lt;br /&gt;Chcete jít zpět, abyste je mohl upravit?</translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsAction</name>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsMenu</name>
+    <message>
+        <source>Recent chats</source>
+        <translation type="unfinished">Poslední rozhovory</translation>
     </message>
 </context>
 <context>
@@ -3467,6 +3531,25 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>StatusButton</name>
+    <message>
+        <source>Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished">Účet</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished">Stav</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Popis</translation>
+    </message>
+</context>
+<context>
     <name>StatusChangedNotification</name>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
@@ -3530,6 +3613,14 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
         <source>do not change</source>
         <translation>Neměnit</translation>
     </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
 </context>
 <context>
     <name>SubscriptionWindow</name>
@@ -3556,75 +3647,6 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
     <message>
         <source>Allow and add buddy...</source>
         <translation>Povolit a přidat kamaráda...</translation>
-    </message>
-</context>
-<context>
-    <name>SyntaxEditor</name>
-    <message>
-        <source>Edit</source>
-        <translation>Upravit</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Smazat</translation>
-    </message>
-    <message>
-        <source>Unable to remove syntax: %1</source>
-        <translation>Nelze odstranit skladbu: %1</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-</context>
-<context>
-    <name>SyntaxEditorWindow</name>
-    <message>
-        <source>Kadu syntax editor</source>
-        <translation>Editor skladby pro Kadu</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Uložit</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Zrušit</translation>
-    </message>
-    <message>
-        <source>New syntax name</source>
-        <translation>Název nové skladby</translation>
-    </message>
-    <message>
-        <source>Enter new syntax name</source>
-        <translation>Zadejte název nové skladby</translation>
-    </message>
-    <message>
-        <source>Syntax %1 already exists and cannot be modified</source>
-        <translation>Skladba %1 již existuje a nelze ji změnit</translation>
-    </message>
-    <message>
-        <source>Overwrite %1 syntax?</source>
-        <translation>Přepsat %1 skladbu?</translation>
-    </message>
-    <message>
-        <source>Save as...</source>
-        <translation>Uložit jako...</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Refresh Preview</source>
-        <translation>Obnovit náhled</translation>
-    </message>
-</context>
-<context>
-    <name>TalkableMenuManager</name>
-    <message>
-        <source>More Actions...</source>
-        <translation>Více činností...</translation>
     </message>
 </context>
 <context>
@@ -3713,8 +3735,16 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Do you really want to remove selected toolbar?</source>
-        <translation>Opravdu chcete odstranit vybraný nástrojový pruh?</translation>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
     </message>
 </context>
 <context>
@@ -3805,20 +3835,48 @@ Možná že to není přídavný modul slučitelný s Kadu.</translation>
         <translation>Síť IM</translation>
     </message>
     <message>
-        <source>Account</source>
-        <translation>Účet</translation>
-    </message>
-    <message>
-        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to editing?</source>
-        <translation>V nynějším účtu máte neuložené změny.&lt;br /&gt;Chcete se vrátit k úpravám?</translation>
-    </message>
-    <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to save them?</source>
         <translation>V nynějším účtu máte neuložené změny.&lt;br /&gt;Chcete je uložit?</translation>
     </message>
     <message>
-        <source>You have unsaved changes in current account.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
-        <translation>V nynějším účtu máte neuložené změny.&lt;br /&gt;Tato data jsou neplatná, takže ztratíte všechny změny.&lt;br /&gt;Chcete se vrátit zpět, abyste je upravil?</translation>
+        <source>Unsaved changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return to edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Save changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have invalid changes in current account, which cannot be saved.&lt;br /&gt;Do you want to stay in edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay in edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

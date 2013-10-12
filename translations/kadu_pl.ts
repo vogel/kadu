@@ -1,12 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
-    <message>
-        <source>Please do not run Kadu as a root!
-It&apos;s a high security risk!</source>
-        <translation>Proszę nie uruchamiać Kadu jako root!
-To poważne zagrożenie bezpieczeństwa!</translation>
-    </message>
     <message>
         <source>Description</source>
         <translation>Opis</translation>
@@ -140,16 +136,8 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Filtry</translation>
     </message>
     <message>
-        <source>Anonymous</source>
-        <translation>Nieznajomi</translation>
-    </message>
-    <message>
         <source>Ignore messages from anonymous users</source>
         <translation>Ignoruj wiadomości od nieznajomych użytkowników</translation>
-    </message>
-    <message>
-        <source>Ignore messages from anonymous users also in conferences</source>
-        <translation>Ignoruj wiadomości od nieznajomych użytkowników także w konferencjach</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
@@ -180,32 +168,8 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Niedostępny</translation>
     </message>
     <message>
-        <source>On startup, set last description</source>
-        <translation>Na starcie ustaw ostatni opis</translation>
-    </message>
-    <message>
-        <source>Last decription will be set on startup</source>
-        <translation>Ostatni opis będzie ustawiony na starcie programu</translation>
-    </message>
-    <message>
-        <source>On startup, set description</source>
-        <translation>Na starcie ustaw opis</translation>
-    </message>
-    <message>
         <source>Define description which will be set on startup</source>
         <translation>Podaj opis, jaki będzie ustawiony na starcie programu</translation>
-    </message>
-    <message>
-        <source>On shutdown, keep current description</source>
-        <translation>Pozostaw opis po zamknięciu programu</translation>
-    </message>
-    <message>
-        <source>Current description will be set on shutdown</source>
-        <translation>Aktualny opis będzie ustawiony przy wychodzeniu z programu</translation>
-    </message>
-    <message>
-        <source>On shutdown, set description</source>
-        <translation>Przy wyłączaniu ustaw opis</translation>
     </message>
     <message>
         <source>Define description which will be set on shutdown</source>
@@ -226,14 +190,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     <message>
         <source>Choose icon theme</source>
         <translation>Wybierz zestaw ikon</translation>
-    </message>
-    <message>
-        <source>Icon paths</source>
-        <translation>Ścieżki do zestawów</translation>
-    </message>
-    <message>
-        <source>Definie icons paths</source>
-        <translation>Podaj ścieżki do zestawów</translation>
     </message>
     <message>
         <source>Show status changing button</source>
@@ -272,16 +228,8 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Czcionki</translation>
     </message>
     <message>
-        <source>Flash chat title on new message</source>
-        <translation>Mrugaj tytułem okna gdy nadejdzie nowa wiadomość</translation>
-    </message>
-    <message>
         <source>Show number of new messages on chat title</source>
         <translation>Pokazuj liczbę nowych wiadomości w tytule okna</translation>
-    </message>
-    <message>
-        <source>Nice date format</source>
-        <translation>Elegancki format daty</translation>
     </message>
     <message>
         <source>Style</source>
@@ -296,76 +244,12 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Podgląd</translation>
     </message>
     <message>
-        <source>Emoticons</source>
-        <translation>Emotikony</translation>
-    </message>
-    <message>
-        <source>Choose emoticons style</source>
-        <translation>Wybierz styl emotikon</translation>
-    </message>
-    <message>
-        <source>Animated</source>
-        <translation>Animowane</translation>
-    </message>
-    <message>
-        <source>Static</source>
-        <translation>Statyczne</translation>
-    </message>
-    <message>
-        <source>Emoticons theme</source>
-        <translation>Zestaw</translation>
-    </message>
-    <message>
-        <source>Choose emoticons theme</source>
-        <translation>Wybierz zestaw emotikon</translation>
-    </message>
-    <message>
-        <source>Emoticons paths</source>
-        <translation>Ścieżki do zestawów</translation>
-    </message>
-    <message>
-        <source>Define emoticons paths</source>
-        <translation>Podaj ścieżki do zestawów emotikon</translation>
-    </message>
-    <message>
-        <source>Selector behavior</source>
-        <translation>Zachowanie selektora</translation>
-    </message>
-    <message>
-        <source>Choose the way emoticons are scaled in the selector</source>
-        <translation>Wybierz, jak emotikony mają być skalowane w oknie selektora</translation>
-    </message>
-    <message>
-        <source>Advanced...</source>
-        <translation>Zaawansowane...</translation>
-    </message>
-    <message>
         <source>Display group tabs</source>
         <translation>Wyświetlaj zakładki grup</translation>
     </message>
     <message>
-        <source>Top</source>
-        <translation>Góra</translation>
-    </message>
-    <message>
-        <source>Center</source>
-        <translation>Środek</translation>
-    </message>
-    <message>
-        <source>Tool tip style</source>
-        <translation>Styl podpowiedzi kontaktu</translation>
-    </message>
-    <message>
         <source>Descriptions</source>
         <translation>Opisy</translation>
-    </message>
-    <message>
-        <source>Show descriptions</source>
-        <translation>Pokazuj opisy</translation>
-    </message>
-    <message>
-        <source>Allow multiline descriptions</source>
-        <translation>Zezwól na wielolinijkowe opisy</translation>
     </message>
     <message>
         <source>Use background image</source>
@@ -390,26 +274,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     <message>
         <source>Stretched</source>
         <translation>Rozciągnięty</translation>
-    </message>
-    <message>
-        <source>Show information panel</source>
-        <translation>Pokazuj panel informacyjny</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar</source>
-        <translation>Pokazuj pionowy pasek przewijania</translation>
-    </message>
-    <message>
-        <source>Show vertical scrollbar in information panel</source>
-        <translation>Pokazuje pionowy pasek przewijania w panelu informacyjnym</translation>
-    </message>
-    <message>
-        <source>Show emoticons in panel</source>
-        <translation>Pokazuj emotikonki</translation>
-    </message>
-    <message>
-        <source>Show emoticons in information panel</source>
-        <translation>Pokazuje emotikonki w panelu informacyjnym</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
@@ -472,76 +336,16 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Otwiera okno rozmowy tylko gdy jesteś dostępny</translation>
     </message>
     <message>
-        <source>&apos;Enter&apos; in chat send message</source>
-        <translation>&apos;Enter&apos; w oknie rozmowy wysyła wiadomość</translation>
-    </message>
-    <message>
-        <source>Confirm clearing chat window</source>
-        <translation>Potwierdzaj czyszczenie rozmowy</translation>
-    </message>
-    <message>
-        <source>Ask before clearing chat window</source>
-        <translation>Pyta przed wyczyszczeniem rozmowy</translation>
-    </message>
-    <message>
-        <source>Save opened windows on exit</source>
-        <translation>Zapamiętaj otwarte okna przy zamykaniu programu</translation>
-    </message>
-    <message>
-        <source>Save opened chat windows when exiting</source>
-        <translation>Zapamiętuje, które okna były otwarte przy wychodzeniu z programu</translation>
-    </message>
-    <message>
-        <source>Remember recent chats for</source>
-        <translation>Pamiętaj ostatnie rozmowy przez</translation>
-    </message>
-    <message>
         <source>Clear recent chats list on exit</source>
         <translation>Wyczyść listę ostatnich rozmów przy wychodzeniu z programu</translation>
-    </message>
-    <message>
-        <source>Closing</source>
-        <translation>Zamykanie</translation>
-    </message>
-    <message>
-        <source>Block window close on new message</source>
-        <translation>Blokuj zamykanie okna, gdy nadejdzie nowa wiadomość</translation>
     </message>
     <message>
         <source>Block chat window when a new message arrives</source>
         <translation>Uniemożliwia zamknięcie okna na pewien czas po otrzymaniu nowej wiadomości</translation>
     </message>
     <message>
-        <source>Max time to block window close</source>
-        <translation>Maksymalny czas blokowania</translation>
-    </message>
-    <message>
         <source>Messages</source>
         <translation>Wiadomości</translation>
-    </message>
-    <message>
-        <source>Automatically prune chat messages</source>
-        <translation>Limituj liczbę wyświetlanych wiadomości</translation>
-    </message>
-    <message>
-        <source>If enabled, messages are pruning</source>
-        <translation>Gdy włączone, liczba wyświetlanych wiadomości w oknie jest limitowana</translation>
-    </message>
-    <message>
-        <source>Reduce the number of visible messages in chat window to</source>
-        <translation>Maksymalna liczba wiadomości w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>Number of visible messages</source>
-        <translation>Liczba widzianych wiadomości</translation>
-    </message>
-    <message>
-        <source>Automatically fold links</source>
-        <translation>Automatycznie skracaj linki</translation>
-    </message>
-    <message>
-        <source>Fold links longer than</source>
-        <translation>Skracaj linki dłuższe niż</translation>
     </message>
     <message>
         <source>default</source>
@@ -558,10 +362,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
         <translation>Wyświetla tekst od anonimów bez formatowania (kolory, obrazki, czcionka).</translation>
-    </message>
-    <message>
-        <source>Display dates is nice format, like Today, Yesterday or Friday</source>
-        <translation>Wyświetla daty w eleganckim formacie, na przykład: Dzisiaj, Wczoraj, Piątek</translation>
     </message>
     <message>
         <source>Connection error</source>
@@ -608,10 +408,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Informuj o nowych wiadomościach tylko gdy okno rozmowy jest nieaktywne</translation>
     </message>
     <message>
-        <source>Ignore status changes from available/busy to busy/available</source>
-        <translation>Ignoruj zmiany statusów z dostępny/zajęty na zajęty/dostępny</translation>
-    </message>
-    <message>
         <source>Ignore changes right after connection to the server</source>
         <translation>Ignoruj zmiany statusów po połączeniu z serwerem</translation>
     </message>
@@ -654,10 +450,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
     <message>
         <source>to offline</source>
         <translation>na rozłączony</translation>
-    </message>
-    <message>
-        <source>Buddies</source>
-        <translation>Znajomi</translation>
     </message>
     <message>
         <source>Blocked</source>
@@ -708,10 +500,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Użyj systemowego klienta poczty</translation>
     </message>
     <message>
-        <source>Updates and Startup</source>
-        <translation>Aktualizacje</translation>
-    </message>
-    <message>
         <source>Check for updates when Kadu is opened</source>
         <translation>Sprawdzaj aktualizacje</translation>
     </message>
@@ -744,14 +532,6 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Lista znajomych</translation>
     </message>
     <message>
-        <source>New Messages Notifications</source>
-        <translation>Powiadomienia o nowych wiadomościach</translation>
-    </message>
-    <message>
-        <source>Turn on transparency</source>
-        <translation>Włącz przezroczystość</translation>
-    </message>
-    <message>
         <source>Displays group tabs on the buddy list</source>
         <translation>Wyświetlaj zakładki grup</translation>
     </message>
@@ -764,32 +544,8 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Użyj pogrubionej czcionki dla dostępnych znajomych</translation>
     </message>
     <message>
-        <source>Displays buddies that are not offline using a bold font</source>
-        <translation>Oznacz znajomych którzy nie są niedostępni używając pogrubionej czcionki</translation>
-    </message>
-    <message>
-        <source>Align buddy icon to</source>
-        <translation>Ustawienie ikon znajomych</translation>
-    </message>
-    <message>
-        <source>Align icon next to buddy&apos;s name</source>
-        <translation>Ustawienie ikon znajomych w stosunku do nazw</translation>
-    </message>
-    <message>
-        <source>Choose buddy list tool-tip style</source>
-        <translation>Styl podpowiedzi znajomego</translation>
-    </message>
-    <message>
         <source>Buddy Photos</source>
         <translation>Zdjęcia znajomych</translation>
-    </message>
-    <message>
-        <source>Show photos</source>
-        <translation>Wyświetlaj zdjęcia</translation>
-    </message>
-    <message>
-        <source>Add border</source>
-        <translation>Dodaj obramowanie</translation>
     </message>
     <message>
         <source>Grey out offline buddies&apos; photos</source>
@@ -808,20 +564,12 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Zezwól na wielolinijkowe opisy</translation>
     </message>
     <message>
-        <source>Alpha</source>
-        <translation>Alfa</translation>
-    </message>
-    <message>
         <source>Define background file for the buddy list</source>
         <translation>Zdefiniuj obrazek tła listy znajomych</translation>
     </message>
     <message>
         <source>Choose buddy list background style</source>
         <translation>Wybierz styl wyświetlania tła</translation>
-    </message>
-    <message>
-        <source>Displays information panel below the buddy list</source>
-        <translation>Pokazuj panel informacyjny</translation>
     </message>
     <message>
         <source>Add buddy</source>
@@ -848,30 +596,14 @@ To poważne zagrożenie bezpieczeństwa!</translation>
         <translation>Pokaż / ukryj znajomych bez opisu</translation>
     </message>
     <message>
-        <source>Message Pruning</source>
-        <translation>Limit wyświetlanych wiadomości</translation>
-    </message>
-    <message>
-        <source>Link Folding</source>
-        <translation>Skracanie linków</translation>
-    </message>
-    <message>
-        <source>New Messages</source>
-        <translation>Nowe wiadomości</translation>
-    </message>
-    <message>
         <source>Status Change</source>
         <translation>Zmiana statusu</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>Ta opcja spowoduje nie wyświetlenie dymków o zmianie statusu
 znajomych po połączeniu się z serwerem</translation>
-    </message>
-    <message>
-        <source>Notify about all buddies</source>
-        <translation>Informuj o wszystkich znajomych</translation>
     </message>
     <message>
         <source>File transfer</source>
@@ -903,15 +635,19 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n minuta</numerusform>
+            <numerusform>%n minuty</numerusform>
+            <numerusform>%n minut</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>[for] %n minute(s)</source>
-        <translation><numerusform>[przez] %n minutę</numerusform><numerusform>[przez] %n minuty</numerusform><numerusform>[przez] %n minut</numerusform></translation>
+        <translation>
+            <numerusform>%n sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -950,14 +686,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Zmieniaj status</translation>
     </message>
     <message>
-        <source>Per Account</source>
-        <translation>dla poszczególnych kont</translation>
-    </message>
-    <message>
-        <source>Per Identity</source>
-        <translation>dla poszczególnych tożsamości</translation>
-    </message>
-    <message>
         <source>For All Accounts</source>
         <translation>dla wszystkich kont</translation>
     </message>
@@ -972,14 +700,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Do Not Disturb</source>
         <translation>Nie przeszkadzać</translation>
-    </message>
-    <message>
-        <source>My font color</source>
-        <translation>Mój kolor czcionki</translation>
-    </message>
-    <message>
-        <source>Buddy&apos;s font color</source>
-        <translation>Kolor czcionki znajomego</translation>
     </message>
     <message>
         <source>My nick color</source>
@@ -1018,32 +738,8 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Czcionka pola edycji</translation>
     </message>
     <message>
-        <source>Force custom font in chat window</source>
-        <translation>Wymuś własną czcionkę w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>Force custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
-        <translation>Wymuś własną czcionkę także w stylach rozmów definiujących własne czcionki (robi to większość styli Adium)</translation>
-    </message>
-    <message>
         <source>Information panel</source>
         <translation>Panel informacyjny</translation>
-    </message>
-    <message>
-        <source>Scale All Emoticons</source>
-        <translation>Skaluj wszystkie emotikony</translation>
-    </message>
-    <message>
-        <source>Scale Only Static Emoticons</source>
-        <translation>Skaluj tylko statyczne emotikony</translation>
-    </message>
-    <message>
-        <source>Do Not Scale Emoticons</source>
-        <translation>Nie skaluj emotikon</translation>
-    </message>
-    <message>
-        <source>Show expanding control</source>
-        <translation>Pokaż kontrolkę rozwijania</translation>
     </message>
     <message>
         <source>Tiled and Centered</source>
@@ -1052,34 +748,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Open chat window only when I am online</source>
         <translation>Otwieraj okno rozmowy tylko gdy jestem dostępny</translation>
-    </message>
-    <message>
-        <source>Never Remove Recent Chats</source>
-        <translation>Nigdy nie usuwaj ostatnich rozmów</translation>
-    </message>
-    <message>
-        <source>Contacts&apos; states</source>
-        <translation>Stan kontaktów</translation>
-    </message>
-    <message>
-        <source>Show state notifications in chats</source>
-        <translation>Pokazuj powiadomienia o zmianie stanu podczas rozmowy</translation>
-    </message>
-    <message>
-        <source>Show state notifications in windows&apos; titles</source>
-        <translation>Pokazuj powiadomienia o zmianie stanu w tytule okna</translation>
-    </message>
-    <message>
-        <source>Syntax:
-%s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name, %r - surname, %m - mobile, %u - uin, %g - group, %h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size, %z - gender (0/1/2),
-#{message} - message content, #{messageId} - message id, #{messageStatus} - message status value, #{backgroundColor} - background color of message, #{fontColor} - font color of message, #{nickColor} - font color of nick, #{sentDate} - when message was sent, #{receivedDate} - when message was received, #{separator} - separator between messages,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - content will not be displayed in 'Remove repeated headers' mode,
-&lt;kadu:top&gt;...&lt;/kadu:top&gt; - content will be included once at the begining of the document</source>
-        <translation>Składnia:
-%s - status, %d - opis, %i - adres IP, %n - nick, %a - nazwa na liście kontaktów, %f - imię, %r - nazwisko, %m - numer telefonu komórkowego, %u - identyfikator użytkownika w sieci, %g - grupa, %e - adres e-mail, %z - płeć (0/1/2),
-#{message} - treść wiadomości, #{messageId} - identyfikator wiadomości, #{messageStatus} - status wiadomości, #{backgroundColor} - kolor tła wiadomości, #{fontColor} - kolor czcionki, #{nickColor} - kolor czcionki nicka, #{sentDate} - data wysłania wiadomości, #{receivedDate} - data otrzymania wiadomości, #{separator} - separator wiadomości,
-&lt;kadu:header&gt;...&lt;/kadu:header&gt; - treść nie będzie wyświetlana w trybie &apos;Usuń powtarzające się nagłówki&apos;,
-&lt;kadu:top&gt;...&lt;/kadu:top&gt; - treść będzie dołączona raz, na początku dokumentu</translation>
     </message>
     <message>
         <source>Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name
@@ -1122,8 +790,312 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Włącz rozmycie tła</translation>
     </message>
     <message>
-        <source>None</source>
-        <translation>Brak</translation>
+        <source>Background colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We&apos;re sorry, but Kadu cannot be loaded. Profile is inaccessible. Please check permissions in the &apos;%1&apos; directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile Inaccessible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Launch Kadu at startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inform about new versions of Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kadu main window will not be visible in window list on your taskbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Parser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Misc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Install new icons...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your system does not support transparency.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add border to buddies&apos; photos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddies&apos; descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Split long descriptions into multiple lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable transparency in buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transparency level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy&apos;s message font color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use custom font even for chat styles which define their own fonts (most Adium styles do that)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit visible messages in chat window to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maximum number of messages visible in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fold links in messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shorten ugly, long links to save space in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use descriptive date format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates like Today, Yesterday or Friday, 2:30PM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat syntax</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy information panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddy information panel below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays status changing buttons below the buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tooltip over buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show buddy expanding button</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show an icon at each buddy that allows viewing contacts attached to this buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Displays buddies that are online using a bold font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy icon position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose buddy icon alignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At the buddy&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddy list information style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose how buddy information is presented when cursor is hovering over buddy list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about chat events in windows&apos; titles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block window close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flash chat title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignore status changes available - busy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember opened chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save opened chat windows when exiting and restore them on next statup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sending message by hitting &apos;Enter&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hitting &apos;Enter&apos; while typing in chat window sends message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask before clearing messages in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ask for confirmation before clearing chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per account separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per identity separately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On shutdown, set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose description which will be set on shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Store descriptions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Every description you set will be saved for further use.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plugins</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1224,10 +1196,31 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>AccountEventListener</name>
+    <message>
+        <source>Multilogon</source>
+        <translation type="unfinished">Multilogowanie</translation>
+    </message>
+    <message>
+        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished">Inny klient połączył się z kontem %4
+IP: %1
+Czas: %2
+Klient: %3</translation>
+    </message>
+    <message>
+        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
+        <translation type="unfinished">Inny klient rozłączył się od konta %4
+IP: %1
+Czas: %2
+Klient: %3</translation>
+    </message>
+</context>
+<context>
     <name>AccountManager</name>
     <message>
-        <source>Please provide valid password for %1 (%2) account</source>
-        <translation>Proszę podać prawidłowe hasło dla konta %1 (%2)</translation>
+        <source>Please provide password for %1 (%2) account</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1411,6 +1404,17 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>AddGroupDialogWidget</name>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished">Dodaj grupę</translation>
+    </message>
+    <message>
+        <source>Group Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
@@ -1577,6 +1581,14 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Are you sure do you want to delete this contact from buddy &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation>Czy na pewno chcesz usunąc tego znajomego z użytkownia &lt;b&gt;%1&lt;/b&gt;?</translation>
+    </message>
+    <message>
+        <source>Delete contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1781,14 +1793,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Nie da się odczytać pliku</translation>
     </message>
     <message>
-        <source>This image has %1 KiB and exceeds the protocol limit of %2 KiB.</source>
-        <translation>Ten obrazek ma %1 KiB i przekracza limit protokołu wynoszący %2 KiB.</translation>
-    </message>
-    <message>
-        <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB.</source>
-        <translation>Ten obrazek ma %1 KiB i przekracza zalecany maksymalny rozmiar %2 KiB.</translation>
-    </message>
-    <message>
         <source>Do you really want to send this image?</source>
         <translation>Czy na pewno chcesz wysłać ten obrazek?</translation>
     </message>
@@ -1811,6 +1815,41 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Images (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;All Files (*)</source>
         <translation>Obrazy (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP);;Wszyskite pliki (*) </translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>ChatImageRequestService</name>
+    <message>
+        <source>Buddy %1 is attempting to send you an image of %2 KiB in size.
+This exceeds your configured limits.
+Do you want to accept this image anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>@default</source>
+        <comment>Kadu</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>@default</source>
+        <comment>Incoming Image</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accept image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deny</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1846,28 +1885,12 @@ znajomych po połączeniu się z serwerem</translation>
 <context>
     <name>ChatStylesManager</name>
     <message>
-        <source>Edit</source>
-        <translation>Edytuj</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Usuń</translation>
-    </message>
-    <message>
         <source>Your message</source>
         <translation>Twoja wiadomość</translation>
     </message>
     <message>
         <source>Message from Your friend</source>
         <translation>Wiadomość od znajomego</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Unable to remove style: %1</source>
-        <translation>Nie można usunąć stylu %1</translation>
     </message>
 </context>
 <context>
@@ -1907,6 +1930,14 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>(Inactive)</source>
         <translation>(Nieaktywny)</translation>
+    </message>
+    <message>
+        <source>Clear chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -1956,20 +1987,8 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Rozpocznij rozmowę z ...</translation>
     </message>
     <message>
-        <source>Insert Emoticon</source>
-        <translation>Wstaw emotikonę</translation>
-    </message>
-    <message>
-        <source>Insert emoticon - enable in configuration</source>
-        <translation>Wstaw emotikonę - włącz w konfiguracji</translation>
-    </message>
-    <message>
         <source>More</source>
         <translation>Więcej</translation>
-    </message>
-    <message>
-        <source>Insert emoticon</source>
-        <translation>Wstaw emotikonę</translation>
     </message>
 </context>
 <context>
@@ -1981,6 +2000,14 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Kadu</source>
         <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2015,6 +2042,10 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Connection error on account: %1 (%2)</source>
         <translation>Błąd połączenia konta %1 (%2)</translation>
     </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished">Ignoruj</translation>
+    </message>
 </context>
 <context>
     <name>ContactListService</name>
@@ -2045,6 +2076,22 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Do you want to apply the above changes to your local contact list? Regardless of your choice, it will be sent to the server after making possible changes.</source>
         <translation>Czy chcesz wprowadzić powyższe zmiany do lokalnej listy kontaków? Niezależnie od wyboru, zostanie ona po dokonaniu ewentualnych zmian wysłana na serwer.</translation>
+    </message>
+    <message>
+        <source>Apply changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Leave contact list unchanged</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished">Usuń</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2103,16 +2150,24 @@ znajomych po połączeniu się z serwerem</translation>
 <context>
     <name>DeleteTalkableAction</name>
     <message>
-        <source>Delete Buddy...</source>
-        <translation>Usuń znajomego...</translation>
-    </message>
-    <message>
         <source>Delete Chat</source>
         <translation>Usuń rozmowę</translation>
     </message>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; chat will be deleted.&lt;br/&gt;Are you sure?</source>
         <translation>Rozmowa &lt;b&gt;%1&lt;/b&gt; zostanie usunięta z listy kontaktów.&lt;br/&gt;Jesteś pewny?</translation>
+    </message>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2229,6 +2284,10 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Start</source>
         <translation>Rozpocznij</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2390,22 +2449,32 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Dodaj do grupy %1</translation>
     </message>
     <message>
-        <source>Please enter a new name for this group</source>
-        <translation>Podaj nową nazwę dla grupy</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Selected group:
-%0 will be deleted. Are you sure?</source>
-        <translation>Wybrana grupa:
-%0 zostanie usunięta. Jesteś pewien?</translation>
-    </message>
-    <message>
         <source>Add Group</source>
         <translation>Dodaj grupę</translation>
+    </message>
+    <message>
+        <source>Please enter a new name for the &lt;i&gt;%0&lt;/i&gt; group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group &lt;i&gt;%0&lt;/i&gt; will be deleted, but without buddies. Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2488,6 +2557,24 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>KaduDialog</name>
+    <message>
+        <source>Ok</source>
+        <translation type="unfinished">Ok</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>KaduMenu</name>
+    <message>
+        <source>More Actions...</source>
+        <translation type="unfinished">Więcej operacji...</translation>
+    </message>
+</context>
+<context>
     <name>KaduWebView</name>
     <message>
         <source>Save image</source>
@@ -2529,16 +2616,24 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Copy Link Address</source>
         <translation>Kopiuj adres linku</translation>
     </message>
+    <message>
+        <source>Run Inspector</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite</source>
+        <translation type="unfinished">Nadpisz</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
 </context>
 <context>
     <name>KaduWindow</name>
     <message>
         <source>General</source>
         <translation>Ogólne</translation>
-    </message>
-    <message>
-        <source>Recent chats</source>
-        <translation>Ostatnie rozmowy</translation>
     </message>
     <message>
         <source>&amp;Buddies</source>
@@ -2554,13 +2649,6 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
-    <name>RecentChatsMenu</name>
-    <message>
-        <source>Recent chats</source>
-        <translation>Ostatnie rozmowy</translation>
-    </message>
-</context>
-<context>
     <name>KaduWindowActions</name>
     <message>
         <source>Add Buddy...</source>
@@ -2569,22 +2657,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>View Buddy Properties</source>
         <translation>Dane znajomego</translation>
-    </message>
-    <message>
-        <source>Preferences...</source>
-        <translation>Ustawienia...</translation>
-    </message>
-    <message>
-        <source>Your Accounts...</source>
-        <translation>Twoje konta...</translation>
-    </message>
-    <message>
-        <source>Multilogons...</source>
-        <translation>Multilogowania...</translation>
-    </message>
-    <message>
-        <source>Plugins...</source>
-        <translation>Wtyczki...</translation>
     </message>
     <message>
         <source>&amp;Quit</source>
@@ -2597,22 +2669,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Search for Buddy...</source>
         <translation>Znajdź znajomego...</translation>
-    </message>
-    <message>
-        <source>Getting H&amp;elp...</source>
-        <translation>&amp;Pomoc...</translation>
-    </message>
-    <message>
-        <source>Report a Bug...</source>
-        <translation>Zgłoś błąd...</translation>
-    </message>
-    <message>
-        <source>Get Involved...</source>
-        <translation>Dołącz...</translation>
-    </message>
-    <message>
-        <source>Translate Kadu...</source>
-        <translation>Przetłumacz Kadu...</translation>
     </message>
     <message>
         <source>A&amp;bout Kadu</source>
@@ -2633,10 +2689,6 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Copy Personal Info</source>
         <translation>Kopiuj informacje osobiste</translation>
-    </message>
-    <message>
-        <source>Open Description Link in Browser...</source>
-        <translation>Otwórz opis w przeglądarce WWW...</translation>
     </message>
     <message>
         <source>Send E-Mail</source>
@@ -2667,30 +2719,6 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Połącz znajomych...</translation>
     </message>
     <message>
-        <source>Delete Buddy...</source>
-        <translation>Usuń znajomego...</translation>
-    </message>
-    <message>
-        <source>New Group</source>
-        <translation>Nowa grupa</translation>
-    </message>
-    <message>
-        <source>Please enter the name for the new group:</source>
-        <translation>Podaj nazwę dla nowej grupy:</translation>
-    </message>
-    <message>
-        <source>Contact: %a[ (%u)]
-[First name: %f
-][Last name: %r
-][Mobile: %m
-]</source>
-        <translation>Kontakt: %a[ (%u)]
-[Imię: %f
-]Nazwisko: %r
-][Tel. kom.: %m
-]</translation>
-    </message>
-    <message>
         <source>Show Myself Buddy</source>
         <translation>Pokaż mnie na liście znajomych</translation>
     </message>
@@ -2699,8 +2727,76 @@ znajomych po połączeniu się z serwerem</translation>
         <translation>Dane rozmowy</translation>
     </message>
     <message>
-        <source>Delete Chat...</source>
-        <translation>Usuń rozmowę...</translation>
+        <source>Preferences</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multilogons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting H&amp;elp</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report a Bug</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Get Involved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translate Kadu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Description Link in Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation type="unfinished">Połącz</translation>
+    </message>
+    <message>
+        <source>Please enter the name for the new group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add Group</source>
+        <translation type="unfinished">Dodaj grupę</translation>
+    </message>
+    <message>
+        <source>Contact:</source>
+        <translation type="unfinished">Kontakt:</translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished">Imię:</translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished">Nazwisko:</translation>
+    </message>
+    <message>
+        <source>Mobile:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Chat</source>
+        <translation type="unfinished">Usuń rozmowę</translation>
+    </message>
+    <message>
+        <source>Delete Buddy</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2718,6 +2814,14 @@ znajomych po połączeniu się z serwerem</translation>
 from now on. Are you sure you want to leave this conference?</source>
         <translation>Wszystkie wiadomości w tej konferencji od tego momentu
 zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
+    </message>
+    <message>
+        <source>Leave conference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -2741,6 +2845,18 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>Advanced chat&apos;s look configuration</source>
         <translation>Zaawansowana konfiguracja wyglądu okna rozmowy</translation>
     </message>
+    <message>
+        <source>Open icon theme archive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>XZ archive (*.tar.xz)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Installation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>
@@ -2750,26 +2866,18 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>MergeBuddiesWindow</name>
+    <name>MergeBuddiesDialogWidget</name>
     <message>
-        <source>&lt;i&gt;Choose which contact would you like to merge with &lt;b&gt;%1&lt;/b&gt;&lt;/i&gt;</source>
-        <translation>&lt;i&gt;Wybierz kontakt z którym chcesz połączyć &lt;b&gt;%1&lt;/b&gt;&lt;/i&gt;</translation>
+        <source>Merge Buddies</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contact:</source>
-        <translation>Kontakt:</translation>
-    </message>
-    <message>
-        <source>Merge</source>
-        <translation>Połącz</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <source>Buddy to merge</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source> - Select buddy - </source>
-        <translation>- Wybierz znajomego -</translation>
+        <translation type="unfinished">- Wybierz znajomego -</translation>
     </message>
 </context>
 <context>
@@ -2815,24 +2923,6 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Disconnect session</source>
         <translation>Rozłącz sesję</translation>
-    </message>
-    <message>
-        <source>Multilogon</source>
-        <translation>Multilogowanie</translation>
-    </message>
-    <message>
-        <source>Multilogon session connected from %1 at %2 with %3 for %4 account</source>
-        <translation>Inny klient połączył się z kontem %4
-IP: %1
-Czas: %2
-Klient: %3</translation>
-    </message>
-    <message>
-        <source>Multilogon session disconnected from %1 at %2 with %3 for %4 account</source>
-        <translation>Inny klient rozłączył się od konta %4
-IP: %1
-Czas: %2
-Klient: %3</translation>
     </message>
 </context>
 <context>
@@ -2892,14 +2982,6 @@ Klient: %3</translation>
 <context>
     <name>NotificationManager</name>
     <message>
-        <source>Notify About Buddy</source>
-        <translation>Powiadom o znajomym</translation>
-    </message>
-    <message>
-        <source>Enable Notifications</source>
-        <translation>Włącz powiadomienia</translation>
-    </message>
-    <message>
         <source>Unable to find notifier for %1 event</source>
         <translation>Nie znaleziono modułu powiadamiającego dla zdarzenia %1</translation>
     </message>
@@ -2909,23 +2991,18 @@ Klient: %3</translation>
     </message>
 </context>
 <context>
+    <name>NotificationService</name>
+    <message>
+        <source>Notify About Buddy</source>
+        <translation type="unfinished">Powiadom o znajomym</translation>
+    </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished">Tryb cichy</translation>
+    </message>
+</context>
+<context>
     <name>NotifyConfigurationUiHandler</name>
-    <message>
-        <source>Move to &apos;Notify List&apos;</source>
-        <translation>Przesuń do &quot;Listy powiadomień&quot;</translation>
-    </message>
-    <message>
-        <source>Buddy List</source>
-        <translation>Lista znajomych</translation>
-    </message>
-    <message>
-        <source>Move to &apos;Buddy List&apos;</source>
-        <translation>Przesuń do &quot;Listy znajomych&quot;</translation>
-    </message>
-    <message>
-        <source>Notify List</source>
-        <translation>Lista powiadomień</translation>
-    </message>
     <message>
         <source>Use custom settings</source>
         <translation>Użyj ustawień użytkownika</translation>
@@ -2962,18 +3039,18 @@ Klient: %3</translation>
     </message>
 </context>
 <context>
-    <name>PasswordWindow</name>
+    <name>PasswordDialogWidget</name>
+    <message>
+        <source>Incorrect password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished">Hasło</translation>
+    </message>
     <message>
         <source>Store this password</source>
-        <translation>Zapisz hasło</translation>
-    </message>
-    <message>
-        <source>Ok</source>
-        <translation>Ok</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation type="unfinished">Zapisz hasło</translation>
     </message>
 </context>
 <context>
@@ -3095,52 +3172,18 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
 </context>
 <context>
-    <name>PluginsWindow</name>
-    <message>
-        <source>Configure Plugins</source>
-        <translation>Konfiguruj wtyczki</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation>OK</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Zastosuj</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Zamknij</translation>
-    </message>
-</context>
-<context>
     <name>ProgressWindow</name>
-    <message>
-        <source>Plase wait. New Gadu-Gadu account is being registered.</source>
-        <translation>Proszę czekać. Nowe konto Gadu-Gadu jest rejestrowane.</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Zamknij</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-</context>
-<context>
-    <name>ProgressWindow2</name>
     <message>
         <source>Close</source>
         <translation>Zamknij</translation>
     </message>
     <message>
         <source>Progress:</source>
-        <translation>Postęp:</translation>
+        <translation type="unfinished">Postęp:</translation>
     </message>
     <message>
         <source>Show details &gt;&gt;&gt;</source>
-        <translation>Pokaż szczegóły &gt;&gt;&gt;</translation>
+        <translation type="unfinished">Pokaż szczegóły &gt;&gt;&gt;</translation>
     </message>
 </context>
 <context>
@@ -3254,6 +3297,20 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>You have unsaved changes in current proxy.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
         <translation>Aktualne proxy ma niezapisane zmiany.&lt;br/&gt;Dane są nieprawidłowe, więc wszystkie zmiany zostaną utracone.&lt;br/&gt;Powrócić do edycji proxy?</translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsAction</name>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RecentChatsMenu</name>
+    <message>
+        <source>Recent chats</source>
+        <translation>Ostatnie rozmowy</translation>
     </message>
 </context>
 <context>
@@ -3475,6 +3532,25 @@ Być może nie jest zgodna z Kadu.</translation>
     </message>
 </context>
 <context>
+    <name>StatusButton</name>
+    <message>
+        <source>Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished">Konto</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished">Status</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">Opis</translation>
+    </message>
+</context>
+<context>
     <name>StatusChangedNotification</name>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
@@ -3538,6 +3614,14 @@ Być może nie jest zgodna z Kadu.</translation>
         <source>do not change</source>
         <translation>nie zmieniaj</translation>
     </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
 </context>
 <context>
     <name>SubscriptionWindow</name>
@@ -3564,75 +3648,6 @@ Być może nie jest zgodna z Kadu.</translation>
     <message>
         <source>Allow and add buddy...</source>
         <translation>Zezwól i dodaj znajomego...</translation>
-    </message>
-</context>
-<context>
-    <name>SyntaxEditor</name>
-    <message>
-        <source>Edit</source>
-        <translation>Edytuj</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation>Usuń</translation>
-    </message>
-    <message>
-        <source>Unable to remove syntax: %1</source>
-        <translation>Nie można usunąć składni %1</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-</context>
-<context>
-    <name>SyntaxEditorWindow</name>
-    <message>
-        <source>Kadu syntax editor</source>
-        <translation>Edytor składni Kadu</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Zapisz</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
-    </message>
-    <message>
-        <source>New syntax name</source>
-        <translation>Nowa nazwa składni</translation>
-    </message>
-    <message>
-        <source>Enter new syntax name</source>
-        <translation>Podaj nową nazwę składni</translation>
-    </message>
-    <message>
-        <source>Syntax %1 already exists and cannot be modified</source>
-        <translation>Składnia %1 juz istnieje i nie może być zmodyfikowana</translation>
-    </message>
-    <message>
-        <source>Overwrite %1 syntax?</source>
-        <translation>Nadpisać składnię %1?</translation>
-    </message>
-    <message>
-        <source>Save as...</source>
-        <translation>Zapisz jako...</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Refresh Preview</source>
-        <translation>Odśwież podgląd</translation>
-    </message>
-</context>
-<context>
-    <name>TalkableMenuManager</name>
-    <message>
-        <source>More Actions...</source>
-        <translation>Więcej operacji...</translation>
     </message>
 </context>
 <context>
@@ -3721,8 +3736,16 @@ Być może nie jest zgodna z Kadu.</translation>
         <translation>Kadu</translation>
     </message>
     <message>
-        <source>Do you really want to remove selected toolbar?</source>
-        <translation>Czy na pewno chcesz usunąć ten pasek narzędziowy?</translation>
+        <source>Do you really want to remove this toolbar?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
     </message>
 </context>
 <context>
@@ -3813,20 +3836,48 @@ Być może nie jest zgodna z Kadu.</translation>
         <translation>Sieć</translation>
     </message>
     <message>
-        <source>Account</source>
-        <translation>Konto</translation>
-    </message>
-    <message>
-        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to editing?</source>
-        <translation>Nie zapisałeś ustawień konta.&lt;br /&gt;Chcesz powrócić do edycji?</translation>
-    </message>
-    <message>
         <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to save them?</source>
         <translation>Nie zapisałeś ustawień konta.&lt;br /&gt;Chcesz zapisać ustawienia?</translation>
     </message>
     <message>
-        <source>You have unsaved changes in current account.&lt;br /&gt;This data is invalid, so you will loose all changes.&lt;br /&gt;Do you want to go back to edit them?</source>
-        <translation>Nie zapisałeś ustawień konta.&lt;br /&gt;Ustawienia są niepoprawne. Stracisz wszystkie zmiany.&lt;br /&gt;Chcesz powrócić do edycji?</translation>
+        <source>Unsaved changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have unsaved changes in current account.&lt;br /&gt;Do you want to return to edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return to edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Anuluj</translation>
+    </message>
+    <message>
+        <source>Save changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have invalid changes in current account, which cannot be saved.&lt;br /&gt;Do you want to stay in edit or discard changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stay in edit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
