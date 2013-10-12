@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -13,19 +11,19 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatki</translation>
     </message>
     <message>
         <source>Simple View</source>
-        <translation type="unfinished"></translation>
+        <translation>Widok uproszczony</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opcje</translation>
     </message>
     <message>
         <source>Hide window borders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj obramowanie okna</translation>
     </message>
 </context>
 <context>

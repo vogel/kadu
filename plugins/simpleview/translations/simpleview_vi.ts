@@ -1,13 +1,13 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Keep contact list size</source>
-        <translation>Conserver la taille de la liste de contact</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Hide scroll bar</source>
-        <translation>Masquer la barre de défilement</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Extras</source>
@@ -30,7 +30,7 @@
     <name>SimpleView</name>
     <message>
         <source>Simple view</source>
-        <translation>Vue simplifiée</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
