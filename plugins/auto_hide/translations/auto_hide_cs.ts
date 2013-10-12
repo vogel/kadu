@@ -1,29 +1,35 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Pokročilé</translation>
-    </message>
-    <message>
-        <source>Kadu&apos;s Main Window Autohide</source>
-        <translation>Automaticky skrývat hlavní okno Kadu</translation>
-    </message>
-    <message>
-        <source>Use autohide</source>
-        <translation>Používat automatické skrývání</translation>
-    </message>
     <message>
         <source>Autohide idle time</source>
         <translation>Délka nečinnosti</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation>
+            <numerusform>1 sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide buddy list window when unused</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

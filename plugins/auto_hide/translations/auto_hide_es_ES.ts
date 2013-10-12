@@ -4,22 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation>Avanzado</translation>
-    </message>
-    <message>
-        <source>Kadu&apos;s Main Window Autohide</source>
-        <translation>Ocultar automáticamente la ventana principal de Kadu</translation>
-    </message>
-    <message>
-        <source>Use autohide</source>
-        <translation>Ocultar automáticamente</translation>
-    </message>
-    <message>
         <source>Autohide idle time</source>
         <translation>Tiempo de inactividad de ocultado automático</translation>
     </message>
@@ -29,6 +13,22 @@
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide buddy list window when unused</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
