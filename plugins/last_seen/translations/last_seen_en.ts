@@ -1,58 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Show infos about buddies</translation>
     </message>
 </context>
 <context>
     <name>InfosDialog</name>
     <message>
         <source>Buddies Information</source>
-        <translation type="unfinished"></translation>
+        <translation>Buddies Information</translation>
     </message>
     <message>
         <source>Buddy</source>
-        <translation type="unfinished"></translation>
+        <translation>Buddy</translation>
     </message>
     <message>
         <source>Protocol</source>
-        <translation type="unfinished"></translation>
+        <translation>Protocol</translation>
     </message>
     <message>
         <source>Nick</source>
-        <translation type="unfinished"></translation>
+        <translation>Nick</translation>
     </message>
     <message>
         <source>IP</source>
-        <translation type="unfinished"></translation>
+        <translation>IP</translation>
     </message>
     <message>
         <source>Domain name</source>
-        <translation type="unfinished"></translation>
+        <translation>Domain name</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>State</translation>
     </message>
     <message>
         <source>Last time seen on</source>
-        <translation type="unfinished"></translation>
+        <translation>Last time seen on</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Close</translation>
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Username</translation>
     </message>
 </context>
 </TS>

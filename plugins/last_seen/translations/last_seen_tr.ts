@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.0">
 <context>
     <name>Infos</name>
     <message>
         <source>&amp;Show infos about buddies</source>
-        translation>Arkadaşların bilgilerini &amp;gösterir</translation>
+        <translation>Arkadaşların bilgilerini &amp;gösterir</translation>
     </message>
 </context>
 <context>
@@ -52,7 +50,7 @@
     </message>
     <message>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
