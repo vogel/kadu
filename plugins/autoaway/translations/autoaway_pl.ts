@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -13,11 +11,11 @@
     </message>
     <message>
         <source>Set status to away after</source>
-        <translation>Ustaw status na &apos;Zajęty&apos; po</translation>
+        <translation>Ustaw status na &apos;zajęty&apos; po</translation>
     </message>
     <message>
         <source>Set status to invisible after</source>
-        <translation>Ustaw status na &apos;Niewidzialny&apos; po</translation>
+        <translation>Ustaw status na &apos;niewidzialny&apos; po</translation>
     </message>
     <message>
         <source>Description</source>
@@ -33,15 +31,11 @@
     </message>
     <message>
         <source>Set status to extended away after</source>
-        <translation>Ustaw status na &apos;Nieobecny&apos; po</translation>
+        <translation>Ustaw status &apos;nieobecny&apos; po</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Do Not Change</source>
@@ -49,55 +43,51 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowanie</translation>
     </message>
     <message>
         <source>Inactivity</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieaktywność</translation>
     </message>
     <message>
         <source>Refresh status every</source>
-        <translation type="unfinished"></translation>
+        <translation>Odśwież opis co</translation>
     </message>
     <message>
         <source>Switch to &apos;away&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw status &apos;zajęty&apos;</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation><numerusform>%n minucie</numerusform><numerusform>%n minutach</numerusform><numerusform>%n minutach</numerusform></translation>
     </message>
     <message>
         <source>Switch to &apos;auto extended away&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw status &apos;nieobecny&apos;</translation>
     </message>
     <message>
         <source>Switch to &apos;invisible&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw status &apos;niewidzialny&apos;</translation>
     </message>
     <message>
         <source>Switch to &apos;offline&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw status &apos;niedostępny&apos;</translation>
     </message>
     <message>
         <source>Set status to offline after</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustaw status &apos;niedostępny&apos; po</translation>
     </message>
     <message>
         <source>Status description when inactive</source>
-        <translation type="unfinished"></translation>
+        <translation>Opis w czasie nieaktywności</translation>
     </message>
     <message>
         <source>Prepend</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz przed</translation>
     </message>
     <message>
         <source>Append</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz po</translation>
     </message>
 </context>
 <context>
