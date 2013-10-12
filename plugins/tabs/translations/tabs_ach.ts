@@ -1,163 +1,163 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="ach" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Tabs</source>
-        <translation>Tabs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>General</source>
-        <translation>General</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Look</source>
-        <translation>Look</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation>Shortcuts</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move tab left</source>
-        <translation>Move tab left</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Move tab right</source>
-        <translation>Move tab right</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Switch to previous tab</source>
-        <translation>Switch to previous tab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Switch to next tab</source>
-        <translation>Switch to next tab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Chat</source>
-        <translation>Chat</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation>Enable tabs in chat window</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation>With this option, each chat will be opened in a separate tab in single window</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation>Closing window closes current tab only</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation>Tab bar position</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation>Choose where you want the tab bar to be placed in chat window</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Top</source>
-        <translation>Top</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Bottom</source>
-        <translation>Bottom</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation>Behaviour</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation>Reopen closed tab</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
-        <translation>Kadu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>New message received, close window anyway?</source>
-        <translation>New message received, close window anyway?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Recent Chats</source>
-        <translation>Recent Chats</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation>Open Chat with...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tabs</source>
-        <translation>Tabs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Close Tab</source>
-        <translation>Close Tab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Close window</source>
-        <translation>Close window</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>TabsManager</name>
     <message>
         <source>Chat in New Window</source>
-        <translation>Chat in New Window</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Chat in New Tab</source>
-        <translation>Chat in New Tab</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Attach Chat to Tabs</source>
-        <translation>Attach Chat to Tabs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>NEW MESSAGE(S)</source>
-        <translation>NEW MESSAGE(S)</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Detach</source>
-        <translation>Detach</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Detach all</source>
-        <translation>Detach all</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Close</source>
-        <translation>Close</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Close all</source>
-        <translation>Close all</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Conference [%1]</source>
-        <translation>Conference [%1]</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation>Close other tabs</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation>Reopen closed tab</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

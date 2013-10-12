@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -41,43 +39,43 @@
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Włącz karty w oknie rozmowy</translation>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie rozmowy będą otwierane w tym samym oknie, ale w różnych kartach</translation>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij tylko aktualną kartę przy zamykaniu okna</translation>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation type="unfinished"></translation>
+        <translation>Przy włączonej tej opcji zamykanie okna będzie skutkowało zamknięciem tylko aktualnej karty a nie wszystkich kart wraz z oknem</translation>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozycja paska kart</translation>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz miejsce, w którym będzie się znajdował pasek kart</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Góra</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Dół</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowanie</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz zamkniętą kartę</translation>
     </message>
 </context>
 <context>
@@ -91,28 +89,28 @@
         <translation>Otrzymano nową wiadomość, zamknąć mimo to?</translation>
     </message>
     <message>
+        <source>Recent Chats</source>
+        <translation>Ostatnie rozmowy</translation>
+    </message>
+    <message>
         <source>Open Chat with...</source>
         <translation>Rozpocznij rozmowę z ...</translation>
     </message>
     <message>
-        <source>Recent Chats</source>
-        <translation>Ostatnie rozmowy</translation>
+        <source>Tabs</source>
+        <translation>Karty</translation>
     </message>
     <message>
         <source>Close Tab</source>
         <translation>Zamknij kartę</translation>
     </message>
     <message>
-        <source>Tabs</source>
-        <translation type="unfinished">Karty</translation>
-    </message>
-    <message>
         <source>Close window</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij okno</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Anuluj</translation>
     </message>
 </context>
 <context>
@@ -155,11 +153,11 @@
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation type="unfinished"></translation>
+        <translation>Zamknij pozostałe karty</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz zamkniętą kartę</translation>
     </message>
 </context>
 </TS>
