@@ -1,50 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>MediaPlayer</source>
-        <translation type="unfinished"></translation>
+        <translation>MediaPlayer</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Media Player Daemon Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Media Player Daemon Settings</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Host</translation>
     </message>
     <message>
         <source>Media Player Daemon server address</source>
-        <translation type="unfinished"></translation>
+        <translation>Media Player Daemon server address</translation>
     </message>
     <message>
         <source>Port</source>
-        <translation type="unfinished"></translation>
+        <translation>Port</translation>
     </message>
     <message>
         <source>Port number MPD is listening on</source>
-        <translation type="unfinished"></translation>
+        <translation>Port number MPD is listening on</translation>
     </message>
     <message>
         <source>Connection timeout (seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Connection timeout (seconds)</translation>
     </message>
     <message>
         <source>Number of seconds before the connection is terminated</source>
-        <translation type="unfinished"></translation>
+        <translation>Number of seconds before the connection is terminated</translation>
     </message>
 </context>
 <context>
     <name>MPDMediaPlayer</name>
     <message>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Unknown</translation>
     </message>
 </context>
 </TS>
