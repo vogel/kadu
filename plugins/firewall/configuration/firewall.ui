@@ -21,7 +21,7 @@
 			</group-box>
 			<group-box name="Reaction on right answer">
 				<check-box caption="Send confirmation" config-section="Firewall" config-item="confirmation" id="firewall/confirmation" />
-			<line-edit caption="Confirmation" config-section="Firewall" config-item="confirmation_text" id="firewall/confirmation_text" parent-widget="firewall/confirmation" />
+				<line-edit caption="Confirmation" config-section="Firewall" config-item="confirmation_text" id="firewall/confirmation_text" parent-widget="firewall/confirmation" />
 			</group-box>
 		</tab>
 
