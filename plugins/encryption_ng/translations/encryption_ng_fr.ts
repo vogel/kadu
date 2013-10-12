@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -64,29 +62,29 @@ Voulez-vous l&apos;enregistrer ?</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpActionDescription</name>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished">Crypter</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpMenu</name>
     <message>
         <source>No Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>%1 Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -109,19 +107,19 @@ Voulez-vous l&apos;enregistrer ?</translation>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation>Impossible de générer les clefs. Vérifier si le module encryption_ng_simlite est chargé</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Keys already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Overwrite keys</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

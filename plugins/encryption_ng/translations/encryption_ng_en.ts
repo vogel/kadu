@@ -1,53 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <source>Public key has been sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Public key has been sent</translation>
     </message>
     <message>
         <source>Error during sending public key</source>
-        <translation type="unfinished"></translation>
+        <translation>Error during sending public key</translation>
     </message>
     <message>
         <source>Encryption error has occured</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption error has occured</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgNotification</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <source>Public key has been send to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Public key has been send to: %1 (%2)</translation>
     </message>
     <message>
         <source>Error sending public key to: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Error sending public key to: %1 (%2)</translation>
     </message>
     <message>
         <source>Error occured during encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Error occured during encryption</translation>
     </message>
 </context>
 <context>
     <name>EncryptionNgPlugin</name>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <source>The QCA OSSL plugin for libqca2 is not present!</source>
-        <translation type="unfinished"></translation>
+        <translation>The QCA OSSL plugin for libqca2 is not present!</translation>
     </message>
 </context>
 <context>
@@ -55,72 +53,73 @@
     <message>
         <source>Buddy %1 is sending you his public key.
 Do you want to save it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Buddy %1 is sending you his public key.
+Do you want to save it?</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Save</translation>
     </message>
     <message>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignore</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpActionDescription</name>
     <message>
         <source>Encrypt</source>
-        <translation type="unfinished"></translation>
+        <translation>Encrypt</translation>
     </message>
 </context>
 <context>
     <name>EncryptionSetUpMenu</name>
     <message>
         <source>No Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>No Encryption</translation>
     </message>
     <message>
         <source>%1 Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Encryption</translation>
     </message>
 </context>
 <context>
     <name>GenerateKeysActionDescription</name>
     <message>
         <source>Generate Encryption Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Generate Encryption Keys</translation>
     </message>
     <message>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption</translation>
     </message>
     <message>
         <source>Keys have been generated</source>
-        <translation type="unfinished"></translation>
+        <translation>Keys have been generated</translation>
     </message>
     <message>
         <source>Error generating keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Error generating keys</translation>
     </message>
     <message>
         <source>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Cannot generate keys. Check if encryption_ng_simlite plugin is loaded</translation>
     </message>
     <message>
         <source>Keys already exist. Do you want to overwrite them?</source>
-        <translation type="unfinished"></translation>
+        <translation>Keys already exist. Do you want to overwrite them?</translation>
     </message>
     <message>
         <source>Overwrite keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Overwrite keys</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancel</translation>
     </message>
 </context>
 </TS>
