@@ -1,35 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Autohide idle time</source>
-        <translation>Délka nečinnosti</translation>
+        <translation>Délka nečinnosti pro automatické skrytí</translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>1 sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"></translation>
+        <translation>Seznam kamarádů</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Obecné</translation>
     </message>
     <message>
         <source>Buddies window</source>
-        <translation type="unfinished"></translation>
+        <translation>Okno s kamarády</translation>
     </message>
     <message>
         <source>Hide buddy list window when unused</source>
-        <translation type="unfinished"></translation>
+        <translation>Skrýt okno se seznamem kamarádů, když se nepoužívá</translation>
     </message>
 </context>
 <context>
