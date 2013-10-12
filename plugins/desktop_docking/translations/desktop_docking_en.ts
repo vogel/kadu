@@ -1,54 +1,52 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Tray</translation>
     </message>
     <message>
         <source>Desktop Docking</source>
-        <translation type="unfinished"></translation>
+        <translation>Desktop Docking</translation>
     </message>
     <message>
         <source>Horizontal position</source>
-        <translation type="unfinished"></translation>
+        <translation>Horizontal position</translation>
     </message>
     <message>
         <source>Vertical position</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertical position</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>Transparent</translation>
     </message>
     <message>
         <source>Background color</source>
-        <translation type="unfinished"></translation>
+        <translation>Background color</translation>
     </message>
     <message>
         <source>Enable Move entry in docklet&apos;s menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable Move entry in docklet&apos;s menu</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Move</translation>
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</translation>
     </message>
     <message>
         <source>Buddies list</source>
-        <translation type="unfinished"></translation>
+        <translation>Buddies list</translation>
     </message>
 </context>
 <context>
     <name>DesktopDock</name>
     <message>
         <source>Move</source>
-        <translation type="unfinished"></translation>
+        <translation>Move</translation>
     </message>
 </context>
 </TS>
