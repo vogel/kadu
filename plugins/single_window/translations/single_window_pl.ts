@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -38,10 +40,6 @@
         <translation>Skróty</translation>
     </message>
     <message>
-        <source>Tabs</source>
-        <translation>Zakładki</translation>
-    </message>
-    <message>
         <source>Switch to previous tab</source>
         <translation>Przełącz na poprzednią zakładkę</translation>
     </message>
@@ -56,6 +54,10 @@
     <message>
         <source>Switch focus between roster and tabs</source>
         <translation>Przełącz focus pomiędzy listą kontaktów a zakładkami</translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -40,10 +40,6 @@
         <translation>Atajos</translation>
     </message>
     <message>
-        <source>Tabs</source>
-        <translation>Pestañas</translation>
-    </message>
-    <message>
         <source>Switch to previous tab</source>
         <translation>Cambiar a pestaña anterior</translation>
     </message>
@@ -58,6 +54,10 @@
     <message>
         <source>Switch focus between roster and tabs</source>
         <translation>Cambiar el foco entre lista y pestañas </translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

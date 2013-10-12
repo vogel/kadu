@@ -40,10 +40,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switch to previous tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -57,6 +53,10 @@
     </message>
     <message>
         <source>Switch focus between roster and tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -38,10 +40,6 @@
         <translation>Raccourcis</translation>
     </message>
     <message>
-        <source>Tabs</source>
-        <translation>Onglets</translation>
-    </message>
-    <message>
         <source>Switch to previous tab</source>
         <translation>Aller à l&apos;onglet précédent</translation>
     </message>
@@ -56,6 +54,10 @@
     <message>
         <source>Switch focus between roster and tabs</source>
         <translation>Basculer le focus entre roster et les onglets</translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
