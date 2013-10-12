@@ -1,102 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Speech</source>
-        <translation type="unfinished"></translation>
+        <translation>Speech</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifications</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Maximum number of spoken letters</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximum number of spoken letters</translation>
     </message>
     <message>
         <source>Message too long (male)</source>
-        <translation type="unfinished"></translation>
+        <translation>Message too long (male)</translation>
     </message>
     <message>
         <source>Message too long (female)</source>
-        <translation type="unfinished"></translation>
+        <translation>Message too long (female)</translation>
     </message>
     <message>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Voice</translation>
     </message>
     <message>
         <source>Frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Frequency</translation>
     </message>
     <message>
         <source>Base frequency</source>
-        <translation type="unfinished"></translation>
+        <translation>Base frequency</translation>
     </message>
     <message>
         <source>Tempo</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempo</translation>
     </message>
     <message>
         <source>Melody</source>
-        <translation type="unfinished"></translation>
+        <translation>Melody</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound</translation>
     </message>
     <message>
         <source>Sound system</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound system</translation>
     </message>
     <message>
         <source>aRts</source>
-        <translation type="unfinished"></translation>
+        <translation>aRts</translation>
     </message>
     <message>
         <source>Esd</source>
-        <translation type="unfinished"></translation>
+        <translation>Esd</translation>
     </message>
     <message>
         <source>Dsp</source>
-        <translation type="unfinished"></translation>
+        <translation>Dsp</translation>
     </message>
     <message>
         <source>Dsp device</source>
-        <translation type="unfinished"></translation>
+        <translation>Dsp device</translation>
     </message>
     <message>
         <source>Klatt synthesizer (requires dsp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Klatt synthesizer (requires dsp)</translation>
     </message>
     <message>
         <source>Speech program</source>
-        <translation type="unfinished"></translation>
+        <translation>Speech program</translation>
     </message>
     <message>
         <source>Test</source>
-        <translation type="unfinished"></translation>
+        <translation>Test</translation>
     </message>
     <message>
         <source>Read a text</source>
-        <translation type="unfinished"></translation>
+        <translation>Read a text</translation>
     </message>
 </context>
 <context>
     <name>SpeechConfigurationWidget</name>
     <message>
         <source>Male format</source>
-        <translation type="unfinished"></translation>
+        <translation>Male format</translation>
     </message>
     <message>
         <source>Female format</source>
-        <translation type="unfinished"></translation>
+        <translation>Female format</translation>
     </message>
 </context>
 </TS>
