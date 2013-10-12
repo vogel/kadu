@@ -1,17 +1,17 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es_ES" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation>Rozhovor</translation>
+        <translation>Conversación</translation>
     </message>
     <message>
         <source>Show YouTube movies in chat window</source>
-        <translation>Ukázat filmy z YouTube v okně s rozhovorem</translation>
+        <translation>Mostrar vídeos de YouTube en la ventana de conversación</translation>
     </message>
     <message>
         <source>Show images in chat window</source>
-        <translation>Ukázat obrázky v okně s rozhovorem</translation>
+        <translation>Mostrar Imágenes en la ventana de conversación</translation>
     </message>
     <message>
         <source>General</source>
