@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -38,36 +40,52 @@
         <translation>Enregistrer l&apos;état uniquement avec la description</translation>
     </message>
     <message>
-        <source>Quotation</source>
-        <translation>Citation</translation>
-    </message>
-    <message>
-        <source>Quote message in chat window</source>
-        <translation>Citer le message dans la fenêtre de conversation</translation>
-    </message>
-    <message>
-        <source>.</source>
-        <translation>.</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Raccourcis</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Général</translation>
     </message>
     <message>
         <source>View history</source>
         <translation>Voir l&apos;historique</translation>
     </message>
     <message>
-        <source>Do not quote messages older than</source>
-        <translation>Ne pas citer les message âgés de plus de </translation>
+        <source>Save chats in history</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>History in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages from history since</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose time period in which messages can be quoted in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit number of messages from history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -83,23 +101,27 @@
         <source>Clear History</source>
         <translation>Effacer l&apos;historique</translation>
     </message>
+</context>
+<context>
+    <name>HistoryBuddyConfigurationWidget</name>
     <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 jour(s) %2 heure(s)</translation>
+        <source>History</source>
+        <translation type="unfinished">Historique</translation>
+    </message>
+    <message>
+        <source>Store history</source>
+        <translation type="unfinished">Historique de la boutique</translation>
     </message>
 </context>
 <context>
-    <name>HistoryBuddyDataWindowAddons</name>
+    <name>HistoryChatConfigurationWidget</name>
     <message>
-        <source>Store history</source>
-        <translation>Historique de la boutique</translation>
+        <source>History</source>
+        <translation type="unfinished">Historique</translation>
     </message>
-</context>
-<context>
-    <name>HistoryChatDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation>Historique de la boutique</translation>
+        <translation type="unfinished">Historique de la boutique</translation>
     </message>
 </context>
 <context>
@@ -119,6 +141,14 @@
     <message>
         <source>Do you really want to delete history?</source>
         <translation>Voulez-vous réellement supprimer l&apos;historique ?</translation>
+    </message>
+    <message>
+        <source>Delete history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

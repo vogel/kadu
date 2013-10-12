@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -38,36 +40,52 @@
         <translation>Uložit stav pouze s popisem</translation>
     </message>
     <message>
-        <source>Quotation</source>
-        <translation>Citace</translation>
-    </message>
-    <message>
-        <source>Quote message in chat window</source>
-        <translation>Citovat zprávu v okně s rozhovorem</translation>
-    </message>
-    <message>
-        <source>.</source>
-        <translation>.</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Zkratky</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Obecné</translation>
     </message>
     <message>
         <source>View history</source>
         <translation>Zobrazit historii</translation>
     </message>
     <message>
-        <source>Do not quote messages older than</source>
-        <translation>Necitovat zprávy starší než</translation>
+        <source>Save chats in history</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
+        <source>History in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages from history since</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose time period in which messages can be quoted in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit number of messages from history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -83,23 +101,27 @@
         <source>Clear History</source>
         <translation>Smazat historii</translation>
     </message>
+</context>
+<context>
+    <name>HistoryBuddyConfigurationWidget</name>
     <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation>%1 den/dny/dnů %2 hodinu/hodiny/hodin</translation>
+        <source>History</source>
+        <translation type="unfinished">Historie</translation>
+    </message>
+    <message>
+        <source>Store history</source>
+        <translation type="unfinished">Uchovávat historii</translation>
     </message>
 </context>
 <context>
-    <name>HistoryBuddyDataWindowAddons</name>
+    <name>HistoryChatConfigurationWidget</name>
     <message>
-        <source>Store history</source>
-        <translation>Uchovávat historii</translation>
+        <source>History</source>
+        <translation type="unfinished">Historie</translation>
     </message>
-</context>
-<context>
-    <name>HistoryChatDataWindowAddons</name>
     <message>
         <source>Store history</source>
-        <translation>Uchovávat historii</translation>
+        <translation type="unfinished">Uchovávat historii</translation>
     </message>
 </context>
 <context>
@@ -119,6 +141,14 @@
     <message>
         <source>Do you really want to delete history?</source>
         <translation>Opravdu chcete smazat historii</translation>
+    </message>
+    <message>
+        <source>Delete history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

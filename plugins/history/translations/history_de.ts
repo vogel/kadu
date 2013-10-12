@@ -40,35 +40,51 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Quotation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quote message in chat window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>.</source>
-        <translation>.</translation>
-    </message>
-    <message>
         <source>Shortcuts</source>
         <translation>Tastenkürzel</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Allgemein</translation>
     </message>
     <message>
         <source>View history</source>
         <translation>Verlauf zeigen</translation>
     </message>
     <message>
-        <source>Do not quote messages older than</source>
+        <source>Save chats in history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Kadu</source>
+        <source>History in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show messages from history since</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose time period in which messages can be quoted in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>yesterday</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last week</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last month</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Limit number of messages from history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -85,20 +101,24 @@
         <source>Clear History</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1 day(s) %2 hour(s)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>HistoryBuddyDataWindowAddons</name>
+    <name>HistoryBuddyConfigurationWidget</name>
+    <message>
+        <source>History</source>
+        <translation type="unfinished">Verlauf</translation>
+    </message>
     <message>
         <source>Store history</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>HistoryChatDataWindowAddons</name>
+    <name>HistoryChatConfigurationWidget</name>
+    <message>
+        <source>History</source>
+        <translation type="unfinished">Verlauf</translation>
+    </message>
     <message>
         <source>Store history</source>
         <translation type="unfinished"></translation>
@@ -120,6 +140,14 @@
     </message>
     <message>
         <source>Do you really want to delete history?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete history</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
