@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -63,23 +61,23 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatki</translation>
     </message>
     <message>
         <source>Your nick for SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>Podpis</translation>
     </message>
     <message>
         <source>Use application custom arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>Używaj własnych argumentów dla aplikacji SMS</translation>
     </message>
     <message>
         <source>SMS custom arguments</source>
-        <translation type="unfinished"></translation>
+        <translation>Własne argumenty dla aplikacji SMS</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"></translation>
+        <translation>Zachowanie</translation>
     </message>
 </context>
 <context>
