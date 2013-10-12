@@ -4,18 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Look</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Simple view</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Keep contact list size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -24,7 +12,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Borderless</source>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simple View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide window borders</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

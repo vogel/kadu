@@ -1,18 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
-    <message>
-        <source>Look</source>
-        <translation>Vzhled</translation>
-    </message>
-    <message>
-        <source>Simple view</source>
-        <translation>Jednoduchý pohled</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Obecné</translation>
-    </message>
     <message>
         <source>Keep contact list size</source>
         <translation>Zachovat velikost seznamu spojení</translation>
@@ -22,8 +12,20 @@
         <translation>Skrýt posuvník</translation>
     </message>
     <message>
-        <source>Borderless</source>
-        <translation>Bez okrajů</translation>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simple View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide window borders</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

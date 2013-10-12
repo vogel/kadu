@@ -1,18 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
-    <message>
-        <source>Look</source>
-        <translation>Apparence</translation>
-    </message>
-    <message>
-        <source>Simple view</source>
-        <translation>Vue simplifiée</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Général</translation>
-    </message>
     <message>
         <source>Keep contact list size</source>
         <translation>Conserver la taille de la liste de contact</translation>
@@ -22,8 +12,20 @@
         <translation>Masquer la barre de défilement</translation>
     </message>
     <message>
-        <source>Borderless</source>
-        <translation>Sans bordure</translation>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Simple View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide window borders</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
