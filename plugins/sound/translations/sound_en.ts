@@ -16,14 +16,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use sounds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Theme</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Sound theme</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37,6 +29,10 @@
     </message>
     <message>
         <source>Play a sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable sound notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

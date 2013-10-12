@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -12,14 +14,6 @@
     <message>
         <source>General</source>
         <translation>Obecné</translation>
-    </message>
-    <message>
-        <source>Use sounds</source>
-        <translation>Použít zvuky</translation>
-    </message>
-    <message>
-        <source>Theme</source>
-        <translation>Téma</translation>
     </message>
     <message>
         <source>Sound theme</source>
@@ -36,6 +30,10 @@
     <message>
         <source>Play a sound</source>
         <translation>Přehrát zvuk</translation>
+    </message>
+    <message>
+        <source>Enable sound notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

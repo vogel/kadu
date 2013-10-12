@@ -16,14 +16,6 @@
         <translation>Allgemein</translation>
     </message>
     <message>
-        <source>Use sounds</source>
-        <translation>Benutze Klänge</translation>
-    </message>
-    <message>
-        <source>Theme</source>
-        <translation>Thema</translation>
-    </message>
-    <message>
         <source>Sound theme</source>
         <translation>Klang-Thema</translation>
     </message>
@@ -38,6 +30,10 @@
     <message>
         <source>Play a sound</source>
         <translation>Spiele einen Klang ab</translation>
+    </message>
+    <message>
+        <source>Enable sound notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -12,14 +14,6 @@
     <message>
         <source>General</source>
         <translation>Général</translation>
-    </message>
-    <message>
-        <source>Use sounds</source>
-        <translation>Utilise les bruitages</translation>
-    </message>
-    <message>
-        <source>Theme</source>
-        <translation>Thème</translation>
     </message>
     <message>
         <source>Sound theme</source>
@@ -36,6 +30,10 @@
     <message>
         <source>Play a sound</source>
         <translation>Jouer un son</translation>
+    </message>
+    <message>
+        <source>Enable sound notifications</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
