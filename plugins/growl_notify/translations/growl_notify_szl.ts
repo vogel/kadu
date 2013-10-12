@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="de" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="szl" version="2.0">
 <context>
     <name>GrowlNotify</name>
     <message>
@@ -16,15 +16,15 @@
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation>%&amp;t - Titel (z.B neue Nachricht) %&amp;m - Inhalt der Benachrichtigung (z.B. Nachricht von neo), %&amp;d - Details (z.B. Nachrichteninhalt),%&amp;i - Smiley</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Syntax</source>
-        <translation>Syntax</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

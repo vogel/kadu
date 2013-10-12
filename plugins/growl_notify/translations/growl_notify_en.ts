@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>GrowlNotify</name>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error</translation>
     </message>
     <message>
         <source>Growl is not installed in your system</source>
-        <translation type="unfinished"></translation>
+        <translation>Growl is not installed in your system</translation>
     </message>
 </context>
 <context>
@@ -18,15 +16,17 @@
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation type="unfinished"></translation>
+        <translation>
+%&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
+%&amp;i - notification icon</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Title</translation>
     </message>
     <message>
         <source>Syntax</source>
-        <translation type="unfinished"></translation>
+        <translation>Syntax</translation>
     </message>
 </context>
 </TS>
