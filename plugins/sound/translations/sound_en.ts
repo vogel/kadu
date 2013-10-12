@@ -1,53 +1,51 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound</translation>
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Notifications</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <source>Sound theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound theme</translation>
     </message>
     <message>
         <source>Sound paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Sound paths</translation>
     </message>
     <message>
         <source>Test sound playing</source>
-        <translation type="unfinished"></translation>
+        <translation>Test sound playing</translation>
     </message>
     <message>
         <source>Play a sound</source>
-        <translation type="unfinished"></translation>
+        <translation>Play a sound</translation>
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Enable sound notifications</translation>
     </message>
 </context>
 <context>
     <name>SoundActions</name>
     <message>
         <source>Play Sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>Play Sounds</translation>
     </message>
 </context>
 <context>
     <name>SoundConfigurationUiHandler</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished"></translation>
+        <translation>Custom</translation>
     </message>
 </context>
 </TS>
