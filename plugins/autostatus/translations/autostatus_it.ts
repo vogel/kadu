@@ -8,14 +8,6 @@
         <translation>Stato</translation>
     </message>
     <message>
-        <source>Autostatus</source>
-        <translation>Autostatus</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Generale</translation>
-    </message>
-    <message>
         <source>Autostatus file</source>
         <translation>Autostatus File</translation>
     </message>
@@ -41,6 +33,18 @@
     <message>
         <source>Invisible</source>
         <translation>Invisibile</translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AutoStatus</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
