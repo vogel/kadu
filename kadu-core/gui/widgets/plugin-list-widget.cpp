@@ -93,7 +93,8 @@ PluginListWidget::PluginListWidget(MainConfigurationWindow *window) :
 	layout->addWidget(ListView);
 
 	ConfigSection *pluginsSection = window->widget()->configSection("Plugins");
-	pluginsSection->addFullPageWidget("Plugins", this);
+	if (pluginsSection)
+		pluginsSection->addFullPageWidget("Plugins", this);
 
 	connect(window, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }

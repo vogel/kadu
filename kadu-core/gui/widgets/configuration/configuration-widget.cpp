@@ -428,7 +428,7 @@ QWidget * ConfigurationWidget::widgetById(const QString &id)
 
 ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigSection *s = configSection(qApp->translate("@default", section.toUtf8().constData()));
+	ConfigSection *s = configSection(section);
 	if (!s)
 		return 0;
 
@@ -437,7 +437,7 @@ ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, con
 
 ConfigSection * ConfigurationWidget::configSection(const QString &name)
 {
-	return ConfigSections.value(name);
+	return ConfigSections.value(qApp->translate("@default", name.toUtf8().constData()));
 }
 
 ConfigSection * ConfigurationWidget::configSection(const KaduIcon &icon, const QString &name, bool create)
