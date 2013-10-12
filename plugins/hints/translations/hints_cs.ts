@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -150,20 +152,12 @@
         <translation>64px</translation>
     </message>
     <message>
-        <source>Show buttons only when necessary</source>
-        <translation>Ukázat tlačítka, jen pokud je to nutné</translation>
-    </message>
-    <message>
         <source>New Chat/Message</source>
         <translation>Nový rozhovor/zpráva</translation>
     </message>
     <message>
         <source>Advanced</source>
         <translation>Pokročilé</translation>
-    </message>
-    <message>
-        <source>Advanced...</source>
-        <translation>Pokročilé...</translation>
     </message>
     <message>
         <source> px</source>
@@ -175,7 +169,11 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation>
+            <numerusform>1 sekunda</numerusform>
+            <numerusform>%n sekundy</numerusform>
+            <numerusform>%n sekund</numerusform>
+        </translation>
     </message>
     <message>
         <source>Margin size</source>
@@ -224,6 +222,14 @@
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
         <translation>&lt;b&gt;Zde&lt;/b&gt; si můžete prohlédnout náhled</translation>
+    </message>
+    <message>
+        <source>Show buttons only if notification requires user&apos;s action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints size and position...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

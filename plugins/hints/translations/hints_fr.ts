@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -19,7 +21,7 @@
     </message>
     <message>
         <source>New hints go</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Auto</source>
@@ -27,7 +29,7 @@
     </message>
     <message>
         <source>Own hints position</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>X</source>
@@ -47,7 +49,7 @@
     </message>
     <message>
         <source>Hints position preview</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Timeout</source>
@@ -83,27 +85,27 @@
     </message>
     <message>
         <source>&apos;Open chat&apos; works on all events</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show message content in hint</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Number of quoted characters</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete pending message when user deletes hint</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Buddy List</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Hint Over Buddy</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Border color</source>
@@ -150,20 +152,12 @@
         <translation>64px</translation>
     </message>
     <message>
-        <source>Show buttons only when necessary</source>
-        <translation>Afficher les boutons seulement au moment nécessaire</translation>
-    </message>
-    <message>
         <source>New Chat/Message</source>
         <translation>Nouvelle conversation / Nouveau message</translation>
     </message>
     <message>
         <source>Advanced</source>
         <translation>Avancé</translation>
-    </message>
-    <message>
-        <source>Advanced...</source>
-        <translation>Avancé...</translation>
     </message>
     <message>
         <source> px</source>
@@ -175,7 +169,10 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n seconde</numerusform><numerusform>%n secondes</numerusform></translation>
+        <translation>
+            <numerusform>%n seconde</numerusform>
+            <numerusform>%n secondes</numerusform>
+        </translation>
     </message>
     <message>
         <source>Margin size</source>
@@ -183,7 +180,7 @@
     </message>
     <message>
         <source>Hint&apos;s corner</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>On Top</source>
@@ -215,15 +212,23 @@
     </message>
     <message>
         <source>Delete Hint</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete All Hints</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&lt;b&gt;Here&lt;/b&gt; you can see the preview</source>
         <translation>Vous pouvez voir l&apos;aperçu &lt;b&gt;ici&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Show buttons only if notification requires user&apos;s action</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hints size and position...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -237,7 +242,7 @@
     <name>HintOverUserConfigurationWindow</name>
     <message>
         <source>Hint Over Buddy Configuration</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Update preview</source>
@@ -256,11 +261,11 @@
     </message>
     <message>
         <source>Hint over buddy list: </source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Advanced hints&apos; configuration</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -278,7 +283,7 @@
     <name>HintsConfigurationWindow</name>
     <message>
         <source>Hints configuration</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Don&apos;t hide</source>
