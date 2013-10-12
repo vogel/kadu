@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Kadu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -41,6 +37,10 @@
     </message>
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

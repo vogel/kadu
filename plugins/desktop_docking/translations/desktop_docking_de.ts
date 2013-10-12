@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
         <source>Tray</source>
         <translation>Papierkorb</translation>
     </message>
@@ -42,6 +38,10 @@
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
         <translation>Verschiebung eines Icons auf dem Desktop ermöglichen. Nach Drücken bewege den Mauszeiger über das angedockte Icon und bewege es anschließend. Drücke irgendeine Maustaste wenn das Icon am gewünschten Platz ist.</translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

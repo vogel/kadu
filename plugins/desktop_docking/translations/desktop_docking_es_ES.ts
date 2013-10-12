@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
         <source>Tray</source>
         <translation>Bandeja del sistema</translation>
     </message>
@@ -42,6 +38,10 @@
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
         <translation>Habilitar el icono en movimiento en el escritorio. Tras pulsar mueve el cursor sobre el icono de conexión y luego muevelo. Pulse cualquier tecla del ratón cuando el icono está en su lugar correcto.</translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

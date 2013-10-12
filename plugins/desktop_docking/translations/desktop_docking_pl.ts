@@ -1,10 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
     <message>
         <source>Tray</source>
         <translation>Tacka systemowa</translation>
@@ -40,6 +38,10 @@
     <message>
         <source>Enable icon moving on desktop. After pressing move cursor over docking icon and then move. Press any mouse key when the icon is in right place.</source>
         <translation>Zezwól na przesuwanie ikony po pulpicie. Po wciśnięciu przycisku myszy zacznj przesuwać kursor. Naciśnij przycisk myszy gdy ikona znajdzie się na pożądanej pozycji.</translation>
+    </message>
+    <message>
+        <source>Buddies list</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
