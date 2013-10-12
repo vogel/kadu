@@ -16,15 +16,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>MediaPlayer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MediaPlayer message format for chat windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -41,10 +33,6 @@
     </message>
     <message>
         <source>Here specify format which will replace &apos;#{player}&apos; tag when you will use it in description while setting status.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -76,15 +64,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>General Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Signature Cutting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shall I cut this crap?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -113,6 +93,26 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MediaPlayer message format in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable signature cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable removing non-essential stuff from audio file titles</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -204,6 +204,18 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
     </message>
     <message>
         <source>Player isn&apos;t running!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

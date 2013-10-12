@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
     <message>
@@ -17,16 +19,8 @@
         <translation>Nepravé zobrazení textu na obrazovce (OSD) pro MediaPlayer</translation>
     </message>
     <message>
-        <source>MediaPlayer</source>
-        <translation>MediaPlayer</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Obecné</translation>
-    </message>
-    <message>
-        <source>MediaPlayer message format for chat windows</source>
-        <translation>Formát zprávy MediaPlayeru pro okno s rozhovorem</translation>
     </message>
     <message>
         <source>MediaPlayer statuses in description</source>
@@ -43,10 +37,6 @@
     <message>
         <source>Here specify format which will replace &apos;#{player}&apos; tag when you will use it in description while setting status.</source>
         <translation>Zde zadejte formátování, které nahradí značku &apos;#{player}&apos;, když ji použijete v popisu při nastavování stavu.</translation>
-    </message>
-    <message>
-        <source>Enable</source>
-        <translation>Povolit</translation>
     </message>
     <message>
         <source>Signatures to cut</source>
@@ -77,23 +67,15 @@
         <translation>Povolte, když hodláte popisy stavu zapínat a vypínat přes nabídku symbolu v oznamovací oblasti panelu.</translation>
     </message>
     <message>
-        <source>General Settings</source>
-        <translation>Obecná nastavení</translation>
-    </message>
-    <message>
         <source>Signature Cutting</source>
         <translation>Vyjmutí podpisu</translation>
-    </message>
-    <message>
-        <source>Shall I cut this crap?</source>
-        <translation>Mám vyjmout tuhle blbost?</translation>
     </message>
     <message>
         <source>Other Settings</source>
         <translation>Jiná nastavení</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Při povolení této volby budete moci ovládat svůj
@@ -101,7 +83,7 @@ přehrávač v okně pro rozhovor klávesovými zkratkami:
 Control+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Při povolení této volby budete moci ovládat svůj
@@ -119,6 +101,26 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
         <translation>Nahradit značku &apos;#{player}&apos;</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MediaPlayer message format in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable signature cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable removing non-essential stuff from audio file titles</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -210,6 +212,18 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     <message>
         <source>Player isn&apos;t running!</source>
         <translation>Přehrávač neběží</translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

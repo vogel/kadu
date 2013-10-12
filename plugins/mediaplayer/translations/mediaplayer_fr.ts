@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
     <message>
@@ -18,16 +20,8 @@
         <translation>Pseudo-OSD pour MediaPlayer</translation>
     </message>
     <message>
-        <source>MediaPlayer</source>
-        <translation>MediaPlayer</translation>
-    </message>
-    <message>
         <source>General</source>
         <translation>Général</translation>
-    </message>
-    <message>
-        <source>MediaPlayer message format for chat windows</source>
-        <translation>Format de message MediaPlayer pour la fenêtre de conversation</translation>
     </message>
     <message>
         <source>MediaPlayer statuses in description</source>
@@ -46,10 +40,6 @@
         <translation>Indiquez ici le format qui remplacera le mot clef &apos;#{player}&apos; quand vous l&apos;utiliserez dans la description lors du réglage de l&apos;état.</translation>
     </message>
     <message>
-        <source>Enable</source>
-        <translation>Activer</translation>
-    </message>
-    <message>
         <source>Signatures to cut</source>
         <translation>Signatures à couper</translation>
     </message>
@@ -63,7 +53,7 @@
     </message>
     <message>
         <source>Enables pseudo-OSD done by Kadu hints. Shows currently played title in hint.</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable MediaPlayer keyboard shortcuts in chat window</source>
@@ -71,30 +61,22 @@
     </message>
     <message>
         <source>Put statuses switch to dock menu</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Enable this to put MediaPlayer statuses switch into docked icon menu.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>General Settings</source>
-        <translation>Paramètres généraux</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Signature Cutting</source>
         <translation>Coupure de la signature</translation>
     </message>
     <message>
-        <source>Shall I cut this crap?</source>
-        <translation>Dois-je couper cette partie inutile ?</translation>
-    </message>
-    <message>
         <source>Other Settings</source>
         <translation>Autres paramètres</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Control+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Avec cette option activée vous serez capable de contrôler 
@@ -102,7 +84,7 @@ MediaPlayer dans la fenêtre de conversation grâce aux raccourcis clavier :
 Ctrl+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
-        <source>With this option enabled you'll be able to control
+        <source>With this option enabled you&apos;ll be able to control
 your MediaPlayer in chat window by keyboard shortcuts:
 Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation>Avec cette option activée vous serez capable de contrôler 
@@ -120,6 +102,26 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     <message>
         <source>Replace &apos;#{player}&apos; Tag</source>
         <translation>Remplacer &apos;#{player}&apos; mot-clef</translation>
+    </message>
+    <message>
+        <source>Extras</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Media Player</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MediaPlayer message format in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable signature cutting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable removing non-essential stuff from audio file titles</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -146,7 +148,7 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     </message>
     <message>
         <source>Enable MediaPlayer statuses</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>MediaPlayer</source>
@@ -211,6 +213,18 @@ Meta+Entrée/Espace/Gauche/Droite/Haut/Bas.</translation>
     <message>
         <source>Player isn&apos;t running!</source>
         <translation>Le lecteur n&apos;est pas en cours de lecture !</translation>
+    </message>
+    <message>
+        <source>Send anyway</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
