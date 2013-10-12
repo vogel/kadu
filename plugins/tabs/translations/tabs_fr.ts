@@ -1,10 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>@default</name>
-    <message>
-        <source>Chat Window</source>
-        <translation>Fenêtre de conversation</translation>
-    </message>
     <message>
         <source>Tabs</source>
         <translation>Onglets</translation>
@@ -14,36 +12,8 @@
         <translation>Général</translation>
     </message>
     <message>
-        <source>Use tabs by default</source>
-        <translation>Utiliser les onglets par défaut</translation>
-    </message>
-    <message>
-        <source>Minimum number of tabs</source>
-        <translation>Nombre minimum d&apos;onglets</translation>
-    </message>
-    <message>
-        <source>Tabs at the bottom of the window</source>
-        <translation>Onglets au bas de la fenêtre</translation>
-    </message>
-    <message>
-        <source>Conferences in tabs</source>
-        <translation>Conférences dans les onglets</translation>
-    </message>
-    <message>
-        <source>Closing tabs using button from titlebar</source>
-        <translation>Fermer les onglets en utilisant le bouton de la barre de titre</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
-        <translation>&lt;nobr&gt;&lt;b&gt;Attention : Cette option a un bogue connu !&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;Si plus d&apos;un onglet est ouvert, alors vous serez empêché de quitter KDE par ce module.</translation>
-    </message>
-    <message>
         <source>Look</source>
         <translation>Apparence</translation>
-    </message>
-    <message>
-        <source>Show Close button on each tab</source>
-        <translation>Afficher le bouton Fermer sur chaque onglet</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -69,6 +39,46 @@
         <source>Chat</source>
         <translation>Conversation</translation>
     </message>
+    <message>
+        <source>Enable tabs in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option, each chat will be opened in a separate tab in single window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Closing window closes current tab only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tab bar position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose where you want the tab bar to be placed in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -79,6 +89,30 @@
     <message>
         <source>New message received, close window anyway?</source>
         <translation>Nouveau message reçu, fermer le fenêtre tout de même ?</translation>
+    </message>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation type="unfinished">Onglets</translation>
+    </message>
+    <message>
+        <source>Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -120,8 +154,12 @@
         <translation>Conférence [%1]</translation>
     </message>
     <message>
-        <source>Close all but active</source>
-        <translation>Fermer tout sauf celui actif</translation>
+        <source>Close other tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

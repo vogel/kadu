@@ -1,10 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>@default</name>
-    <message>
-        <source>Chat Window</source>
-        <translation>Okno pro rozhovor</translation>
-    </message>
     <message>
         <source>Tabs</source>
         <translation>Karty</translation>
@@ -14,36 +12,8 @@
         <translation>Obecné</translation>
     </message>
     <message>
-        <source>Use tabs by default</source>
-        <translation>Použít karty ve výchozím nastavení</translation>
-    </message>
-    <message>
-        <source>Minimum number of tabs</source>
-        <translation>Nejmenší počet karet</translation>
-    </message>
-    <message>
-        <source>Tabs at the bottom of the window</source>
-        <translation>Karty ve spodní části okna</translation>
-    </message>
-    <message>
-        <source>Conferences in tabs</source>
-        <translation>Porady v kartách</translation>
-    </message>
-    <message>
-        <source>Closing tabs using button from titlebar</source>
-        <translation>Zavírat karty pomocí rlačítka v titulkovém pruhu</translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
-        <translation>&lt;nobr&gt;&lt;b&gt;Pozor: Tato volba má jednu známou chybu&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;Když je otevřeno více karet než jedna, je pokus o opuštění KDE zastaven tímto modulem.</translation>
-    </message>
-    <message>
         <source>Look</source>
         <translation>Pohled</translation>
-    </message>
-    <message>
-        <source>Show Close button on each tab</source>
-        <translation>Ukázat tlačítko pro zavření na každé kartě</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -69,6 +39,46 @@
         <source>Chat</source>
         <translation>Rozhovor</translation>
     </message>
+    <message>
+        <source>Enable tabs in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option, each chat will be opened in a separate tab in single window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Closing window closes current tab only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tab bar position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose where you want the tab bar to be placed in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -79,6 +89,30 @@
     <message>
         <source>New message received, close window anyway?</source>
         <translation>Přijata nová zpráva, přesto okno zavřít?</translation>
+    </message>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation type="unfinished">Karty</translation>
+    </message>
+    <message>
+        <source>Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -120,8 +154,12 @@
         <translation>Porada [%1]</translation>
     </message>
     <message>
-        <source>Close all but active</source>
-        <translation>Zavřít vše kromě činného</translation>
+        <source>Close other tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

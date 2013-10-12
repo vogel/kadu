@@ -4,10 +4,6 @@
 <context>
     <name>@default</name>
     <message>
-        <source>Chat Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Tabs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16,35 +12,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use tabs by default</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Minimum number of tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Tabs at the bottom of the window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conferences in tabs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Closing tabs using button from titlebar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;nobr&gt;&lt;b&gt;Warning: This option has know bug!&lt;/b&gt;&lt;/nobr&gt;&lt;br&gt;If there is open more than one tab then exiting from KDE will be stopped by this module.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Close button on each tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -71,6 +39,46 @@
         <source>Chat</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable tabs in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>With this option, each chat will be opened in a separate tab in single window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Closing window closes current tab only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tab bar position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Choose where you want the tab bar to be placed in chat window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Top</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bottom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Behaviour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TabWidget</name>
@@ -80,6 +88,30 @@
     </message>
     <message>
         <source>New message received, close window anyway?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recent Chats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close Tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -122,7 +154,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close all but active</source>
+        <source>Close other tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reopen closed tab</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
