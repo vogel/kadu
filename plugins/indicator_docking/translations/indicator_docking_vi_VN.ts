@@ -1,9 +1,9 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="vi_VN" version="2.0">
 <context>
     <name>@default</name>
     <message>
         <source>Indicator</source>
-        <translation>Indicator</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
