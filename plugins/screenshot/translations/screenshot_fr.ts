@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="fr" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -61,27 +59,27 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Screenshot file format</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Paste image to chat window automatically</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -106,7 +104,7 @@
         <translation>Impossible de créer le répertoire %1 pour y stocker les captures d&apos;écran !</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>Impossible d&apos;écrire le fichier %1.
 Accès refusé ou autre problème !</translation>

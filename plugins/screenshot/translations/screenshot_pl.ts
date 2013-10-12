@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -61,27 +59,27 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodatki</translation>
     </message>
     <message>
         <source>Screenshot file format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format pliku</translation>
     </message>
     <message>
         <source>Paste image to chat window automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatycznie wklej obrazek do okna rozmowy</translation>
     </message>
     <message>
         <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiedy włączone, wtyczka automatycznie wklei polecenie [IMAGE] do okna rozmowy, aby było gotowe do wysłania.</translation>
     </message>
     <message>
         <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kiedy włączone, wtyczka będzie sprawdzała rozmiar katalogu zrzutów i ostrzeże cię, jeśli będzie on większy niż ten podany niżej.</translation>
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Określa, ile kilobajtów mogą zajmować zrzuty w katalogu, zanim wtyczka cię ostrzeże.</translation>
     </message>
 </context>
 <context>
@@ -106,7 +104,7 @@
         <translation>Nie można utworzyć katalogu %1 dla zapisywania zrzutów ekranu!</translation>
     </message>
     <message>
-        <source>Can&apos;t write file %1.
+        <source>Can't write file %1.
 Access denied or other problem!</source>
         <translation>Nie można pisać do pliku %1.
 Brak dostępu lub inny problem!</translation>
