@@ -375,6 +375,18 @@
         <source>Fingerprint Exchange</source>
         <translation>Ręczna wymiana odcisków kluczy publicznych</translation>
     </message>
+    <message>
+        <source>Ask peer a question that only you and he/she know the answer for. If your peer answer it properly, he/she will be marked as verified.</source>
+        <translation>Zadaj rozmówcy pytanie, na które znacie odpowiedź tylko oraz on/ona. Jeżeli rozmówca odpowie poprawnie, zostanie oznaczony jako zweryfikowany.</translation>
+    </message>
+    <message>
+        <source>Exchange a secret message with peer. This message should be agreed to on another secure channel (face-to-face conversation or a phone).</source>
+        <translation>Wymień wspólny sekret z rozmówcą. Ten sekret powinien zostać wybrany wcześniej za pomocą innego bezpiecznego kanału komunikacji (na przykład bezpośrednia lub telefoniczna rozmowa).</translation>
+    </message>
+    <message>
+        <source>Check your peer&apos;s fingerprint manually. Fingreprint information shoud be exchanged on another secure channel (face-to-face conversation or a phone).</source>
+        <translation>Sprawdź ręcznie odcisk klucza rozmówcy. Informacje o odciskach powinny zostać wcześniej wymienione za pomocą innego bezpiecznego kanału komunikacji (na przykład bezpośrednia lub telefoniczna rozmowa).</translation>
+    </message>
 </context>
 <context>
     <name>OtrPeerIdentityVerificationSharedSecretPage</name>
