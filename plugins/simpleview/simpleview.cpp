@@ -27,7 +27,7 @@
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/buddy-info-panel.h"
-#include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -47,7 +47,7 @@ SimpleView::SimpleView() :
 	SimpleViewActive(false)
 {
 	RosterWidget *roster;
-	
+
 	SimpleViewConfigUi::createInstance();
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/simpleview.ui"));

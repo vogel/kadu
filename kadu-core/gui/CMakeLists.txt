@@ -21,6 +21,8 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
+	widgets/group-tab-bar/group-tab-bar.cpp
+
 	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/account-buddy-list-widget.cpp
@@ -75,7 +77,6 @@ set (gui_SRCS
 	widgets/filter-widget.cpp
 	widgets/filtered-tree-view.cpp
 	widgets/group-list.cpp
-	widgets/group-tab-bar.cpp
 	widgets/groups-combo-box.cpp
 	widgets/identities-combo-box.cpp
 	widgets/kadu-text-edit.cpp
@@ -267,7 +268,6 @@ set (gui_MOC_SRCS
 	widgets/filter-widget.h
 	widgets/filtered-tree-view.h
 	widgets/group-list.h
-	widgets/group-tab-bar.h
 	widgets/groups-combo-box.h
 	widgets/identities-combo-box.h
 	widgets/kadu-text-edit.h

@@ -28,7 +28,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
-#include "gui/widgets/group-tab-bar.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
