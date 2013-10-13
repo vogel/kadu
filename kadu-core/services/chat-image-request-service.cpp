@@ -117,7 +117,7 @@ bool ChatImageRequestService::acceptImage(const Account &account, const QString 
 
 	MessageDialog *dialog = MessageDialog::create(
 			KaduIcon("dialog-question"),
-			tr("@default", "Kadu") + " - " + tr("@default", "Incoming Image"),
+			tr("Kadu") + " - " + tr("Incoming Image"),
 			question);
 	dialog->addButton(QMessageBox::Yes, tr("Accept image"));
 	dialog->addButton(QMessageBox::No, tr("Deny"));

@@ -1820,21 +1820,19 @@ Do you want to accept this image anyway?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>@default</source>
-        <comment>Kadu</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>@default</source>
-        <comment>Incoming Image</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Accept image</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <source>Deny</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Incoming Image</source>
         <translation type="unfinished"/>
     </message>
 </context>

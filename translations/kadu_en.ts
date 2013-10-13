@@ -1824,22 +1824,20 @@ This exceeds your configured limits.
 Do you want to accept this image anyway?</translation>
     </message>
     <message>
-        <source>@default</source>
-        <comment>Kadu</comment>
-        <translation>@default</translation>
-    </message>
-    <message>
-        <source>@default</source>
-        <comment>Incoming Image</comment>
-        <translation>@default</translation>
-    </message>
-    <message>
         <source>Accept image</source>
         <translation>Accept image</translation>
     </message>
     <message>
         <source>Deny</source>
         <translation>Deny</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation>Incoming Image</translation>
     </message>
 </context>
 <context>

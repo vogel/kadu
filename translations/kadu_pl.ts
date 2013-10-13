@@ -1826,22 +1826,20 @@ To więcej niż limit ustawiony w konfiguracji
 Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
     <message>
-        <source>@default</source>
-        <comment>Kadu</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>@default</source>
-        <comment>Incoming Image</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Accept image</source>
         <translation>Akceptuj obrazek</translation>
     </message>
     <message>
         <source>Deny</source>
         <translation>Odrzuć</translation>
+    </message>
+    <message>
+        <source>Kadu</source>
+        <translation>Kadu</translation>
+    </message>
+    <message>
+        <source>Incoming Image</source>
+        <translation>Przychodzący obrazek</translation>
     </message>
 </context>
 <context>
