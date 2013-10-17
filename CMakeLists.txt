@@ -25,6 +25,9 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE "${default}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
+# Enable C++11 support
+add_definitions (-std=c++11)
+
 # Warnings and other flags
 
 set (DEFINITIONS QT_USE_QSTRINGBUILDER QT_NO_CAST_TO_ASCII)
