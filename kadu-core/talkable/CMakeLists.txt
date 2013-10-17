@@ -2,6 +2,7 @@ set (talkable_SRCS
 	filter/account-talkable-filter.cpp
 	filter/blocked-talkable-filter.cpp
 	filter/exclude-buddy-talkable-filter.cpp
+	filter/group-filter.cpp
 	filter/group-talkable-filter.cpp
 	filter/hide-anonymous-talkable-filter.cpp
 	filter/hide-contact-chats-talkable-filter.cpp
