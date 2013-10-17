@@ -50,7 +50,7 @@ RosterWidget::RosterWidget(QWidget *parent) :
 	createGui();
 
 	Context->setForwardActionContext(TalkableTree->actionContext());
-	GroupFilter->setGroup(GroupBar->group());
+	MyGroupFilter->setGroupFilter(GroupBar->groupFilter());
 
 	configurationUpdated();
 }
@@ -121,12 +121,7 @@ void RosterWidget::configurationUpdated()
 		TalkableTree->setBackground(bgColor, alternateBgColor);
 	}
 
-	triggerCompositingStateChanged();
-
-	if (config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-		GroupFilter->setAllGroupShown(config_file.readBoolEntry("Look", "ShowGroupAll", true));
-	else
-		GroupFilter->setAllGroupShown(true);
+	triggerCompositingStateChanged();;
 }
 
 void RosterWidget::compositingEnabled()
@@ -181,9 +176,9 @@ ModelChain * RosterWidget::createModelChain()
 	connect(TalkableWidget, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
 	ProxyModel->addFilter(nameTalkableFilter);
 
-	GroupFilter = new GroupTalkableFilter(ProxyModel);
-	connect(GroupBar, SIGNAL(currentGroupChanged(Group)), GroupFilter, SLOT(setGroup(Group)));
-	ProxyModel->addFilter(GroupFilter);
+	MyGroupFilter = new GroupTalkableFilter(ProxyModel);
+	connect(GroupBar, SIGNAL(currentGroupFilterChanged(GroupFilter)), MyGroupFilter, SLOT(setGroupFilter(GroupFilter)));
+	ProxyModel->addFilter(MyGroupFilter);
 
 	chain->addProxyModel(ProxyModel);
 

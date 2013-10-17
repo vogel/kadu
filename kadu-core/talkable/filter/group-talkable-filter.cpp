@@ -25,7 +25,7 @@
 #include "group-talkable-filter.h"
 
 GroupTalkableFilter::GroupTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), AllGroupShown(true)
+		TalkableFilter(parent)
 {
 }
 
@@ -33,13 +33,21 @@ GroupTalkableFilter::~GroupTalkableFilter()
 {
 }
 
-bool GroupTalkableFilter::acceptGroupList(const QSet<Group> &groups, bool showInAllGroup)
+bool GroupTalkableFilter::acceptGroupList(const QSet<Group> &groups, bool showInEverybodyGroup)
 {
-	if (CurrentGroup)
-		return groups.contains(CurrentGroup);
-	if (AllGroupShown)
-		return showInAllGroup;
-	return groups.isEmpty();
+	switch (CurrentGroupFilter.filterType())
+	{
+		case GroupFilterInvalid:
+			return true;
+		case GroupFilterRegular:
+			return groups.contains(CurrentGroupFilter.group());
+		case GroupFilterEverybody:
+			return showInEverybodyGroup;
+		case GroupFilterUngroupped:
+			return groups.isEmpty();
+	}
+
+	return false;
 }
 
 TalkableFilter::FilterResult GroupTalkableFilter::filterChat(const Chat &chat)
@@ -58,21 +66,12 @@ TalkableFilter::FilterResult GroupTalkableFilter::filterBuddy(const Buddy &buddy
 		return Rejected;
 }
 
-void GroupTalkableFilter::setGroup(const Group &group)
+void GroupTalkableFilter::setGroupFilter(const GroupFilter &groupFilter)
 {
-	if (CurrentGroup == group)
+	if (CurrentGroupFilter == groupFilter)
 		return;
 
-	CurrentGroup = group;
-	emit filterChanged();
-}
-
-void GroupTalkableFilter::setAllGroupShown(bool shown)
-{
-	if (AllGroupShown == shown)
-		return;
-
-	AllGroupShown = shown;
+	CurrentGroupFilter = groupFilter;
 	emit filterChanged();
 }
 

@@ -50,6 +50,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/kadu-icon.h"
+#include "talkable/filter/group-filter.h"
 
 #include "debug.h"
 
@@ -198,14 +199,23 @@ void GroupTabBar::addGroup(const Group &group)
 	updateGroup(group);
 }
 
-Group GroupTabBar::group() const
+GroupFilter GroupTabBar::groupFilter() const
 {
-	return GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
+	if (!isVisible())
+		return GroupFilter(GroupFilterEverybody);
+
+	const Group &group = GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
+	if (group)
+		return GroupFilter(group);
+	else
+		return ShowAllGroup ? GroupFilter(GroupFilterEverybody) : GroupFilter(GroupFilterUngroupped);
 }
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	emit currentGroupChanged(GroupManager::instance()->byUuid(tabData(index).toString()));
+	Q_UNUSED(index);
+
+	emit currentGroupFilterChanged(groupFilter());
 }
 
 void GroupTabBar::groupAdded(Group group)

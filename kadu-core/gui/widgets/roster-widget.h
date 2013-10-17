@@ -45,7 +45,7 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 	GroupTabBar *GroupBar;
 
 	TalkableProxyModel *ProxyModel;
-	GroupTalkableFilter *GroupFilter;
+	GroupTalkableFilter *MyGroupFilter;
 
 	FilteredTreeView *TalkableWidget;
 	TalkableTreeView *TalkableTree;

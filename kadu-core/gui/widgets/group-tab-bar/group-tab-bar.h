@@ -31,6 +31,7 @@
 #include "configuration/configuration-aware-object.h"
 
 class Chat;
+class GroupFilter;
 
 class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
@@ -84,10 +85,10 @@ public:
 
 	void addGroup(const Group &group);
 
-	Group group() const;
+	GroupFilter groupFilter() const;
 
 signals:
-	void currentGroupChanged(const Group &group);
+	void currentGroupFilterChanged(const GroupFilter &groupFilter);
 
 };
 
