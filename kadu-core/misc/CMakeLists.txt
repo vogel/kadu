@@ -1,5 +1,6 @@
 set (misc_SRCS
 	change-notifier.cpp
+	change-notifier-lock.cpp
 	date-time.cpp
 	date-time-parser-tags.cpp
 	error.cpp
