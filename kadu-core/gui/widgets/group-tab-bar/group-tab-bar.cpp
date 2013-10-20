@@ -80,7 +80,12 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
+	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy)), this, SLOT(updateUngrouppedTab()));
+	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)), this, SLOT(updateUngrouppedTab()));
 	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(updateUngrouppedTab()));
+
+	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(updateUngrouppedTab()));
+	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(updateUngrouppedTab()));
 	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(updateUngrouppedTab()));
 }
 
@@ -137,7 +142,7 @@ bool GroupTabBar::shouldShowUngrouppedTab() const
 		if (buddy.groups().empty())
 			return true;
 	foreach (const auto &chat, ChatManager::instance()->items())
-		if (chat.groups().empty())
+		if (!chat.display().isEmpty() && chat.groups().empty())
 			return true;
 
 	return false;
