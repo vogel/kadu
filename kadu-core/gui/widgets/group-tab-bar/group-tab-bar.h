@@ -48,6 +48,8 @@ class KADUAPI GroupTabBar : public QTabBar
 	void removeGroupFilter(GroupFilter groupFilter);
 	void updateTabData(int tabIndex, GroupFilter groupFilter);
 
+	bool shouldShowUngrouppedTab() const;
+
 private slots:
 	void addGroup(Group group);
 	void removeGroup(Group group);
@@ -63,6 +65,8 @@ private slots:
 
  	void addToGroup();
  	void moveToGroup();
+
+	void updateUngrouppedTab();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);

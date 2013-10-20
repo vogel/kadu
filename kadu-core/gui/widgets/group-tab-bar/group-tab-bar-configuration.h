@@ -28,7 +28,7 @@ class GroupTabBarConfiguration
 {
 	bool DisplayGroupTabs;
 	bool ShowGroupTabEverybody;
-	bool ShowGroupTabUngroupped;
+	bool AlwaysShowGroupTabUngroupped;
 	int CurrentGroupTab;
 	QVector<GroupFilter> GroupFilters;
 
@@ -44,8 +44,8 @@ public:
 	void setShowGroupTabEverybody(int showGroupTabEverybody);
 	int showGroupTabEverybody() const;
 
-	void setShowGroupTabUngroupped(int showGroupTabUngroupped);
-	bool showGroupTabUngroupped() const;
+	void setAlwaysShowGroupTabUngroupped(int alwaysShowGroupTabUngroupped);
+	bool alwaysShowGroupTabUngroupped() const;
 
 	void setCurrentGroupTab(int currentGroupTab);
 	int currentGroupTab() const;

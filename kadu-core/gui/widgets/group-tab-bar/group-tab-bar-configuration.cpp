@@ -20,7 +20,7 @@
 #include "group-tab-bar-configuration.h"
 
 GroupTabBarConfiguration::GroupTabBarConfiguration() :
-		DisplayGroupTabs(true), ShowGroupTabEverybody(true), ShowGroupTabUngroupped(false)
+		DisplayGroupTabs(true), ShowGroupTabEverybody(true), AlwaysShowGroupTabUngroupped(false)
 {
 }
 void GroupTabBarConfiguration::setDisplayGroupTabs(bool displayGroupTabs)
@@ -43,14 +43,14 @@ int GroupTabBarConfiguration::showGroupTabEverybody() const
 	return ShowGroupTabEverybody;
 }
 
-void GroupTabBarConfiguration::setShowGroupTabUngroupped(int showGroupTabUngroupped)
+void GroupTabBarConfiguration::setAlwaysShowGroupTabUngroupped(int alwaysShowGroupTabUngroupped)
 {
-	ShowGroupTabUngroupped = showGroupTabUngroupped;
+	AlwaysShowGroupTabUngroupped = alwaysShowGroupTabUngroupped;
 }
 
-bool GroupTabBarConfiguration::showGroupTabUngroupped() const
+bool GroupTabBarConfiguration::alwaysShowGroupTabUngroupped() const
 {
-	return ShowGroupTabUngroupped;
+	return AlwaysShowGroupTabUngroupped;
 }
 
 void GroupTabBarConfiguration::setCurrentGroupTab(int currentGroupTab)

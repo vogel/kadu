@@ -60,7 +60,7 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 
 	configuration.setDisplayGroupTabs(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
 	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true));
-	configuration.setShowGroupTabUngroupped(config_file.readBoolEntry("Look", "ShowGroupTabUngroupped", true));
+	configuration.setAlwaysShowGroupTabUngroupped(config_file.readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
 	configuration.setCurrentGroupTab(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters());
 
