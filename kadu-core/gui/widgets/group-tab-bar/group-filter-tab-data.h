@@ -28,9 +28,6 @@ class GroupFilterTabData
 
 public:
 	explicit GroupFilterTabData(const GroupFilter &filter);
-	GroupFilterTabData(const GroupFilterTabData &) = default;
-
-	GroupFilterTabData & operator = (const GroupFilterTabData &groupFilterTab) = default;
 
 	GroupFilter filter() const;
 

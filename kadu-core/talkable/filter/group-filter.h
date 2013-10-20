@@ -30,11 +30,9 @@ class GroupFilter
 
 public:
 	GroupFilter();
-	GroupFilter(const GroupFilter &) = default;
 	explicit GroupFilter(GroupFilterType filterType);
 	explicit GroupFilter(const Group &group);
 
-	GroupFilter & operator = (const GroupFilter &groupFilter) = default;
 	bool operator == (const GroupFilter &groupFilter) const;
 
 	bool isValid() const;
