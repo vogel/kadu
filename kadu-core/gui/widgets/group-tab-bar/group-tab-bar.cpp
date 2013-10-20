@@ -56,11 +56,6 @@
 #include "group-tab-bar.h"
 #include "group-filter-tab-data.h"
 
-static bool compareGroups(Group g1, Group g2)
-{
-	return g1.tabPosition() < g2.tabPosition();
-}
-
 GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent) :
 		QTabBar(parent), HadAnyUngrouppedBuddy(false)
 {
@@ -78,22 +73,23 @@ GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent
 	setShape(QTabBar::RoundedWest);
 	setIconSize(QSize(16, 16));
 
-	QList<Group> groups = GroupManager::instance()->items().toList();
-	qStableSort(groups.begin(), groups.end(), compareGroups);
-	foreach (const Group &group, groups)
-		addGroup(group);
-
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
 
 	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
+	foreach (const auto &groupFilter, configuration.groupFilters())
+		insertGroupFilter(count(), groupFilter);
+
+	foreach (const Group &group, GroupManager::instance()->items())
+		addGroup(group);
+
 	setConfiguration(configuration);
-	if (currentIndex() == Configuration.currentGroupTab())
-		currentChangedSlot(Configuration.currentGroupTab());
+	if (currentIndex() == configuration.currentGroupTab())
+		currentChangedSlot(configuration.currentGroupTab());
 	else
-		setCurrentIndex(Configuration.currentGroupTab());
+		setCurrentIndex(configuration.currentGroupTab());
 }
 
 GroupTabBar::~GroupTabBar()

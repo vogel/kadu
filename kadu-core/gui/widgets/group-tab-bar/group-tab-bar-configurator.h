@@ -26,6 +26,7 @@
 
 class QDomElement;
 
+class GroupFilter;
 class GroupTabBar;
 class GroupTabBarConfiguration;
 
@@ -35,7 +36,10 @@ class GroupTabBarConfigurator : private ConfigurationAwareObject
 
 	void createDefaultConfiguration();
 
-	void storeGroupFilters(const GroupTabBarConfiguration &configuration);
+	QVector<GroupFilter> loadGroupFilters() const;
+	GroupFilter loadGroupFilter(QDomElement element) const;
+
+	void storeGroupFilters(const QVector<GroupFilter> &groupFilters);
 	void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
 
 protected:

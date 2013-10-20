@@ -19,6 +19,7 @@
 
 #include <QtGui/QApplication>
 
+#include "buddies/group-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
@@ -57,6 +58,7 @@ GroupTabBarConfiguration GroupTabBarConfigurator::configuration() const
 	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true));
 	configuration.setShowGroupTabUngroupped(config_file.readBoolEntry("Look", "ShowGroupTabUngroupped", true));
 	configuration.setCurrentGroupTab(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
+	configuration.setGroupFilters(loadGroupFilters());
 
 	return configuration;
 }
@@ -69,13 +71,47 @@ void GroupTabBarConfigurator::storeConfiguration()
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
 	config_file.writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
 
+	storeGroupFilters(configuration.groupFilters());
+
 	config_file.sync(); // TODO: fix whole configuration system
 }
 
-void GroupTabBarConfigurator::storeGroupFilters(const GroupTabBarConfiguration &configuration)
+QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters() const
+{
+	auto result = QVector<GroupFilter>();
+	auto groupTabBarNode = xml_config_file->getNode("GroupTabBar", XmlConfigFile::ModeGet);
+	if (groupTabBarNode.isNull())
+		return result;
+
+	auto groupFilterNodes = xml_config_file->getNodes(groupTabBarNode, "GroupFilter");
+	foreach (const auto &groupFilterNode, groupFilterNodes)
+	{
+		auto groupFilter = loadGroupFilter(groupFilterNode);
+		if (GroupFilterInvalid != groupFilter.filterType())
+			result.append(groupFilter);
+	}
+
+	return result;
+}
+
+GroupFilter GroupTabBarConfigurator::loadGroupFilter(QDomElement element) const
+{
+	auto type = xml_config_file->getTextNode(element, "Type");
+	auto groupUuid = xml_config_file->getTextNode(element, "Group");
+
+	if (type == "Regular")
+		return GroupFilter(GroupManager::instance()->byUuid(groupUuid));
+	if (type == "Everybody")
+		return GroupFilter(GroupFilterEverybody);
+	if (type == "Ungroupped")
+		return GroupFilter(GroupFilterUngroupped);
+	return GroupFilter();
+}
+
+void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)
 {
 	auto groupTabBarNode = xml_config_file->getNode("GroupTabBar", XmlConfigFile::ModeCreate);
-	foreach (const auto &groupFilter, configuration.groupFilters())
+	foreach (const auto &groupFilter, groupFilters)
 		storeGroupFilter(groupTabBarNode, groupFilter);
 }
 
