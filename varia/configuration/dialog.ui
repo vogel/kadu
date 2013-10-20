@@ -164,7 +164,8 @@
 			<group-box name="Buddy groups">
 				<check-box caption="Display group tabs" config-section="Look" config-item="DisplayGroupTabs" id="displayGroupTabs"
 					tool-tip="Displays group tabs on the buddy list" />
-				<check-box caption="Show group All" config-section="Look" config-item="ShowGroupAll" id="showGroupAll" parent-widget="displayGroupTabs" />
+				<check-box caption="Show tab Everybody" config-section="Look" config-item="ShowGroupTabEverybody" id="showGroupTabEverybody" parent-widget="displayGroupTabs" />
+				<check-box caption="Show tab Ungroupped" config-section="Look" config-item="ShowGroupTabUngroupped" id="showGroupTabUngroupped" parent-widget="displayGroupTabs" />
 			</group-box>
 			<group-box name="Filters">
 				<check-box caption="Show offline buddies" config-section="General" config-item="ShowOffline" />

@@ -55,6 +55,7 @@
 #include "debug.h"
 
 #include "group-tab-bar.h"
+#include "group-filter-tab-data.h"
 
 static bool compareGroups(Group g1, Group g2)
 {
@@ -62,7 +63,7 @@ static bool compareGroups(Group g1, Group g2)
 }
 
 GroupTabBar::GroupTabBar(QWidget *parent) :
-		QTabBar(parent), ShowAllGroup(true), HadAnyUngrouppedBuddy(false), AutoGroupTabPosition(-1)
+		QTabBar(parent), HadAnyUngrouppedBuddy(false)
 {
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -85,118 +86,23 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
 
-	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(groupAdded(Group)));
-	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(groupRemoved(Group)));
-	connect(GroupManager::instance(), SIGNAL(saveGroupData()), this, SLOT(saveGroupTabsPosition()));
+	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
+	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
+	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
-	ShowAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
-	// !ShowAllGroup to force update
-	updateAutoGroupTab(!ShowAllGroup);
-
-	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-	{
-		setCurrentIndex(AutoGroupTabPosition);
-		setVisible(false);
-		return;
-	}
+	initializeConfiguration();
+	configurationUpdated();
 
 	int currentGroup = config_file.readNumEntry("Look", "CurrentGroupTab", 0);
 	if (currentGroup == currentIndex())
 		currentChangedSlot(currentGroup);
 	else
 		setCurrentIndex(currentGroup);
-
-	if (!ShowAllGroup)
-		connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
 }
 
 GroupTabBar::~GroupTabBar()
 {
-	if (ShowAllGroup)
-		config_file.writeEntry("Look", "AllGroupTabPosition", AutoGroupTabPosition);
-	else
-		config_file.writeEntry("Look", "UngroupedGroupTabPosition", AutoGroupTabPosition);
-
-	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
-}
-
-void GroupTabBar::updateAutoGroupTab(bool oldShowAllGroup)
-{
-	// update only if we care about hasAnyUngrouppedBuddy() or ShowAllGroup has changed
-	if (ShowAllGroup == true && oldShowAllGroup == true)
-		return;
-
-	if (AutoGroupTabPosition != -1)
-	{
-		if (oldShowAllGroup)
-			config_file.writeEntry("Look", "AllGroupTabPosition", AutoGroupTabPosition);
-		else
-			config_file.writeEntry("Look", "UngroupedGroupTabPosition", AutoGroupTabPosition);
-	}
-
-	bool haveAnyUngroupedBuddy = hasAnyUngrouppedBuddy();
-	bool currentWasAutoGroup = false;
-	if (-1 != AutoGroupTabPosition && tabData(AutoGroupTabPosition) == "AutoTab")
-	{
-		if (AutoGroupTabPosition == currentIndex())
-			currentWasAutoGroup = true;
-		if (!ShowAllGroup && !haveAnyUngroupedBuddy)
-			removeTab(AutoGroupTabPosition);
-	}
-	else
-		AutoGroupTabPosition = -1;
-
-	if (ShowAllGroup)
-	{
-		int oldAutoGroupTabPosition = AutoGroupTabPosition;
-		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
-
-		if (oldAutoGroupTabPosition == -1)
-			insertTab(AutoGroupTabPosition, KaduIcon("x-office-address-book").icon(), tr("All"));
-		else
-		{
-			moveTab(oldAutoGroupTabPosition, AutoGroupTabPosition);
-			setTabIcon(AutoGroupTabPosition, KaduIcon("x-office-address-book").icon());
-			setTabText(AutoGroupTabPosition, tr("All"));
-		}
-	}
-	else if (haveAnyUngroupedBuddy)
-	{
-		int oldAutoGroupTabPosition = AutoGroupTabPosition;
-		AutoGroupTabPosition = config_file.readNumEntry("Look", "UngroupedGroupTabPosition", -1);
-
-		if (oldAutoGroupTabPosition == -1)
-			insertTab(AutoGroupTabPosition, tr("Ungrouped"));
-		else
-		{
-			moveTab(oldAutoGroupTabPosition, AutoGroupTabPosition);
-			setTabIcon(AutoGroupTabPosition, QIcon());
-			setTabText(AutoGroupTabPosition, tr("Ungrouped"));
-		}
-	}
-	else
-		AutoGroupTabPosition = -1;
-
-	if (-1 != AutoGroupTabPosition)
-	{
-		setTabData(AutoGroupTabPosition, "AutoTab");
-		if (currentWasAutoGroup)
-		{
-			if (AutoGroupTabPosition == currentIndex())
-				currentChangedSlot(AutoGroupTabPosition);
-			else
-				setCurrentIndex(AutoGroupTabPosition);
-		}
-	}
-}
-
-void GroupTabBar::addGroup(const Group &group)
-{
-	int index = addTab(group.name());
-	setTabData(index, group.uuid().toString());
-	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
-
-	updateGroup(group);
+	storeConfiguration();
 }
 
 GroupFilter GroupTabBar::groupFilter() const
@@ -204,91 +110,17 @@ GroupFilter GroupTabBar::groupFilter() const
 	if (!isVisible())
 		return GroupFilter(GroupFilterEverybody);
 
-	const Group &group = GroupManager::instance()->byUuid(tabData(currentIndex()).toString());
-	if (group)
-		return GroupFilter(group);
-	else
-		return ShowAllGroup ? GroupFilter(GroupFilterEverybody) : GroupFilter(GroupFilterUngroupped);
+	return groupFilterAt(currentIndex());
+}
+
+GroupFilter GroupTabBar::groupFilterAt(int index) const
+{
+	return tabData(index).value<GroupFilter>();
 }
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	Q_UNUSED(index);
-
-	emit currentGroupFilterChanged(groupFilter());
-}
-
-void GroupTabBar::groupAdded(Group group)
-{
-	QString groupUuid = group.uuid().toString();
-	for (int i = 0; i < count(); ++i)
-		if (tabData(i).toString() == groupUuid) //group is already in tabbar
-			return;
-	addGroup(group);
-}
-
-void GroupTabBar::groupRemoved(Group group)
-{
-	QString groupUuid = group.uuid().toString();
-	for (int i = 0; i < count(); ++i)
-		if (tabData(i).toString() == groupUuid)
-		{
-			removeTab(i);
-			return;
-		}
-}
-
-void GroupTabBar::updateGroup(Group group)
-{
-	QString groupUuid = group.uuid().toString();
-	int groupId = -1;
-	for (int i = 0; i < count(); ++i)
-		if (tabData(i).toString() == groupUuid)
-			groupId = i;
-
-	if (-1 == groupId)
-		return;
-
-	setTabIcon(groupId, QIcon(group.showIcon() ? group.icon() : QString()));
-	setTabText(groupId, group.showName() ? group.name() : QString());
-
-	if (group.showName())
-		setTabText(groupId, group.name());
-	else
-		setTabText(groupId, QString());
-}
-
-bool GroupTabBar::hasAnyUngrouppedBuddy()
-{
-	foreach (const Buddy &buddy, BuddyManager::instance()->items())
-		if (!buddy.isAnonymous() && buddy.groups().isEmpty())
-		{
-			HadAnyUngrouppedBuddy = true;
-			return true;
-		}
-
-	HadAnyUngrouppedBuddy = false;
-	return false;
-}
-
-void GroupTabBar::checkForUngroupedBuddies()
-{
-	// hasAnyUngrouppedBuddy() overwrites HadAnyUngrouppedBuddy
-	bool oldHadAnyUngrouppedBuddy = HadAnyUngrouppedBuddy;
-	if (oldHadAnyUngrouppedBuddy != hasAnyUngrouppedBuddy())
-	{
-		saveGroupTabsPosition();
-		updateAutoGroupTab(ShowAllGroup);
-	}
-}
-
-void GroupTabBar::groupUpdated()
-{
-	Group group = sender();
-	if (group.isNull())
-		return;
-
-	updateGroup(group);
+	emit currentGroupFilterChanged(groupFilterAt(index));
 }
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
@@ -534,50 +366,82 @@ void GroupTabBar::moveToGroup()
 	}
 }
 
-void GroupTabBar::saveGroupTabsPosition()
+void GroupTabBar::initializeConfiguration()
 {
-	AutoGroupTabPosition = -1;
-	for (int i = 0; i < count(); ++i)
-	{
-		Group group(GroupManager::instance()->byUuid(tabData(i).toString()));
-		if (group)
-			group.setTabPosition(i);
-		else
-			AutoGroupTabPosition = i;
-	}
+	config_file.addVariable("Look", "ShowGroupTabEverybody", true);
+	config_file.addVariable("Look", "ShowGroupTabUngroupped", false);
+	config_file.addVariable("Look", "DisplayGroupTabs", true);
+}
+
+void GroupTabBar::storeConfiguration()
+{
+	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
 }
 
 void GroupTabBar::configurationUpdated()
 {
-	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs", true))
-	{
-		disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
+	setVisible(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
 
-		for (int i = 0; i < count(); ++i)
-			if (!GroupManager::instance()->byUuid(tabData(i).toString()))
-			{
-				setCurrentIndex(i);
-				break;
-			}
+	if (config_file.readBoolEntry("Look", "ShowGroupTabUngroupped", true))
+		insertGroupFilter(0, GroupFilter(GroupFilterUngroupped));
+	else
+		removeGroupFilter(GroupFilter(GroupFilterUngroupped));
 
-		setVisible(false);
+	if (config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true))
+		insertGroupFilter(0, GroupFilter(GroupFilterEverybody));
+	else
+		removeGroupFilter(GroupFilter(GroupFilterEverybody));
+}
+
+int GroupTabBar::indexOf(GroupFilter groupFilter)
+{
+	auto tabsCount = count();
+	for (auto i = 0; i < tabsCount; i++)
+		if (groupFilter == tabData(i).value<GroupFilter>())
+			return i;
+	return -1;
+}
+
+void GroupTabBar::addGroup(Group group)
+{
+	insertGroupFilter(count(), GroupFilter(group));
+}
+
+void GroupTabBar::insertGroupFilter(int index, GroupFilter groupFilter)
+{
+	if (indexOf(groupFilter) >= 0)
 		return;
-	}
 
-	setVisible(true);
+	auto newTabIndex = insertTab(index, QString());
+	setTabData(newTabIndex, QVariant::fromValue(groupFilter));
+	updateTabData(newTabIndex, groupFilter);
+}
 
-	saveGroupTabsPosition();
-	bool oldShowAllGroup = ShowAllGroup;
-	ShowAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
-	if (oldShowAllGroup != ShowAllGroup)
-	{
-		updateAutoGroupTab(oldShowAllGroup);
+void GroupTabBar::removeGroup(Group group)
+{
+	removeGroupFilter(GroupFilter(group));
+}
 
-		if (ShowAllGroup)
-			disconnect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
-		else
-			connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(checkForUngroupedBuddies()));
-	}
+void GroupTabBar::removeGroupFilter(GroupFilter groupFilter)
+{
+	auto index = indexOf(groupFilter);
+	if (index >= 0)
+		removeTab(index);
+}
+
+void GroupTabBar::updateGroup(Group group)
+{
+	auto groupFilter = GroupFilter(group);
+	auto index = indexOf(groupFilter);
+	if (index >= 0)
+		updateTabData(index, groupFilter);
+}
+
+void GroupTabBar::updateTabData(int tabIndex, GroupFilter groupFilter)
+{
+	auto tabData = GroupFilterTabData(groupFilter);
+	setTabText(tabIndex, tabData.tabName());
+	setTabIcon(tabIndex, tabData.tabIcon());
 }
 
 #include "moc_group-tab-bar.cpp"

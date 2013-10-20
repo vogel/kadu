@@ -21,6 +21,7 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
+	widgets/group-tab-bar/group-filter-tab-data.cpp
 	widgets/group-tab-bar/group-tab-bar.cpp
 
 	widgets/account-add-widget.cpp

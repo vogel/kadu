@@ -41,23 +41,24 @@ class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 	BuddyList DNDBuddies;
 	QList<Chat> DNDChats;
 
-	bool ShowAllGroup;
 	bool HadAnyUngrouppedBuddy;
 
-	int AutoGroupTabPosition;
-
-	void updateGroup(Group group);
 	bool hasAnyUngrouppedBuddy();
 
-	void updateAutoGroupTab(bool oldShowAllGroup);
+	void initializeConfiguration();
+	void storeConfiguration();
+
+	int indexOf(GroupFilter groupFilter);
+	void insertGroupFilter(int index, GroupFilter groupFilter);
+	void removeGroupFilter(GroupFilter groupFilter);
+	void updateTabData(int tabIndex, GroupFilter groupFilter);
 
 private slots:
-	void checkForUngroupedBuddies();
-	void currentChangedSlot(int index);
-	void groupAdded(Group group);
-	void groupRemoved(Group group);
+	void addGroup(Group group);
+	void removeGroup(Group group);
+	void updateGroup(Group group);
 
-	void groupUpdated();
+	void currentChangedSlot(int index);
 
 	void addBuddy();
 	void renameGroup();
@@ -67,8 +68,6 @@ private slots:
 
  	void addToGroup();
  	void moveToGroup();
-
-	void saveGroupTabsPosition();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
@@ -83,9 +82,8 @@ public:
 	explicit GroupTabBar(QWidget *parent = 0);
 	virtual ~GroupTabBar();
 
-	void addGroup(const Group &group);
-
 	GroupFilter groupFilter() const;
+	GroupFilter groupFilterAt(int index) const;
 
 signals:
 	void currentGroupFilterChanged(const GroupFilter &groupFilter);
