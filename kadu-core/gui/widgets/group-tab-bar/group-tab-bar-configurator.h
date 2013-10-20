@@ -49,8 +49,8 @@ public:
 	GroupTabBarConfigurator();
 
 	void setGroupTabBar(GroupTabBar *groupTabBar);
-	GroupTabBarConfiguration configuration() const;
 
+	GroupTabBarConfiguration loadConfiguration() const;
 	void storeConfiguration();
 
 };

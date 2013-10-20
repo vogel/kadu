@@ -36,7 +36,7 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 {
 	ConfigurableGroupTabBar = groupTabBar;
 	if (ConfigurableGroupTabBar)
-		ConfigurableGroupTabBar.data()->setInitialConfiguration(configuration());
+		ConfigurableGroupTabBar.data()->setInitialConfiguration(loadConfiguration());
 }
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
@@ -51,10 +51,10 @@ void GroupTabBarConfigurator::configurationUpdated()
 	if (!ConfigurableGroupTabBar)
 		return;
 
-	ConfigurableGroupTabBar.data()->setConfiguration(configuration());
+	ConfigurableGroupTabBar.data()->setConfiguration(loadConfiguration());
 }
 
-GroupTabBarConfiguration GroupTabBarConfigurator::configuration() const
+GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 {
 	auto configuration = GroupTabBarConfiguration();
 
