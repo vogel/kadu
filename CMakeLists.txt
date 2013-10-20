@@ -25,10 +25,7 @@ if (NOT DEFINED CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE "${default}" CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif ()
 
-# Enable C++11 support
-add_definitions (-std=c++11)
-
-# Warnings and other flags
+# C++11 support, warnings and other flags
 
 set (DEFINITIONS QT_USE_QSTRINGBUILDER QT_NO_CAST_TO_ASCII)
 if (BUILD_TESTING)
@@ -42,7 +39,7 @@ if (MSVC)
 else ()
 	set (COMMON_COMPILE_FLAGS "-Wall -Wextra -Wundef -Wcast-align -Wpointer-arith -fno-common")
 	set (C_FLAGS "-Wwrite-strings")
-	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -fno-exceptions")
+	set (CXX_FLAGS "-std=c++0x -Woverloaded-virtual -Wnon-virtual-dtor -fno-exceptions")
 	list (APPEND DEFINITIONS QT_NO_EXCEPTIONS)
 	if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
 		set (LINK_FLAGS "-Wl,--no-undefined")
