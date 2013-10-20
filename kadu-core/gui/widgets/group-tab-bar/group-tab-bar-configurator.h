@@ -24,6 +24,8 @@
 
 #include "configuration/configuration-aware-object.h"
 
+class QDomElement;
+
 class GroupTabBar;
 class GroupTabBarConfiguration;
 
@@ -32,6 +34,9 @@ class GroupTabBarConfigurator : private ConfigurationAwareObject
 	QWeakPointer<GroupTabBar> ConfigurableGroupTabBar;
 
 	void createDefaultConfiguration();
+
+	void storeGroupFilters(const GroupTabBarConfiguration &configuration);
+	void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
 
 protected:
 	virtual void configurationUpdated();

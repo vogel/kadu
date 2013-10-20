@@ -117,8 +117,9 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 		removeGroupFilter(GroupFilter(GroupFilterEverybody));
 }
 
-GroupTabBarConfiguration GroupTabBar::configuration() const
+GroupTabBarConfiguration GroupTabBar::configuration()
 {
+	Configuration.setGroupFilters(groupFilters()); // update only if needed
 	return Configuration;
 }
 

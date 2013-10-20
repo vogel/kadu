@@ -62,3 +62,13 @@ int GroupTabBarConfiguration::currentGroupTab() const
 {
 	return CurrentGroupTab;
 }
+
+void GroupTabBarConfiguration::setGroupFilters(QVector<GroupFilter> groupFilters)
+{
+	GroupFilters = groupFilters;
+}
+
+QVector<GroupFilter> GroupTabBarConfiguration::groupFilters() const
+{
+	return GroupFilters;
+}

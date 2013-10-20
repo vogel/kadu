@@ -20,7 +20,9 @@
 #ifndef GROUP_TAB_BAR_CONFIGURATION_H
 #define GROUP_TAB_BAR_CONFIGURATION_H
 
-#include <QtCore/QString>
+#include <QtCore/QVector>
+
+#include "talkable/filter/group-filter.h"
 
 class GroupTabBarConfiguration
 {
@@ -28,6 +30,7 @@ class GroupTabBarConfiguration
 	bool ShowGroupTabEverybody;
 	bool ShowGroupTabUngroupped;
 	int CurrentGroupTab;
+	QVector<GroupFilter> GroupFilters;
 
 public:
 	GroupTabBarConfiguration();
@@ -46,6 +49,9 @@ public:
 
 	void setCurrentGroupTab(int currentGroupTab);
 	int currentGroupTab() const;
+
+	void setGroupFilters(QVector<GroupFilter> groupFilters);
+	QVector<GroupFilter> groupFilters() const;
 
 };
 

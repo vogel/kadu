@@ -20,6 +20,7 @@
 #include <QtGui/QApplication>
 
 #include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 
@@ -67,5 +68,36 @@ void GroupTabBarConfigurator::storeConfiguration()
 
 	auto configuration = ConfigurableGroupTabBar.data()->configuration();
 	config_file.writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+
 	config_file.sync(); // TODO: fix whole configuration system
+}
+
+void GroupTabBarConfigurator::storeGroupFilters(const GroupTabBarConfiguration &configuration)
+{
+	auto groupTabBarNode = xml_config_file->getNode("GroupTabBar", XmlConfigFile::ModeCreate);
+	foreach (const auto &groupFilter, configuration.groupFilters())
+		storeGroupFilter(groupTabBarNode, groupFilter);
+}
+
+void GroupTabBarConfigurator::storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter)
+{
+	if (GroupFilterInvalid == groupFilter.filterType())
+		return;
+
+	auto groupFilterNode = xml_config_file->getNode(parentElement, "GroupFilter", XmlConfigFile::ModeAppend);
+	switch (groupFilter.filterType())
+	{
+		case GroupFilterRegular:
+			xml_config_file->createTextNode(groupFilterNode, "Type", "Regular");
+			xml_config_file->createTextNode(groupFilterNode, "Group", groupFilter.group().uuid().toString());
+			break;
+		case GroupFilterEverybody:
+			xml_config_file->createTextNode(groupFilterNode, "Type", "Everybody");
+			break;
+		case GroupFilterUngroupped:
+			xml_config_file->createTextNode(groupFilterNode, "Type", "Ungroupped");
+			break;
+		default:
+			break;
+	}
 }

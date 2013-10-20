@@ -80,7 +80,7 @@ public:
 	virtual ~GroupTabBar();
 
 	void setConfiguration(GroupTabBarConfiguration configuration);
-	GroupTabBarConfiguration configuration() const;
+	GroupTabBarConfiguration configuration();
 
 	GroupFilter groupFilter() const;
 	GroupFilter groupFilterAt(int index) const;
