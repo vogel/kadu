@@ -29,6 +29,7 @@
 #include "gui/widgets/filter-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/group-tab-bar/group-tab-bar.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar-configurator.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/proxy-action-context.h"
 #include "model/model-chain.h"
@@ -68,6 +69,9 @@ void RosterWidget::createGui()
 	layout->setSpacing(0);
 
 	GroupBar = new GroupTabBar(this);
+	TabBarConfigurator.reset(new GroupTabBarConfigurator());
+	TabBarConfigurator->setGroupTabBar(GroupBar);
+
 	createTalkableWidget(this);
 
 	layout->addWidget(GroupBar);

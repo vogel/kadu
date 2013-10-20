@@ -23,6 +23,8 @@ set (gui_SRCS
 
 	widgets/group-tab-bar/group-filter-tab-data.cpp
 	widgets/group-tab-bar/group-tab-bar.cpp
+	widgets/group-tab-bar/group-tab-bar-configuration.cpp
+	widgets/group-tab-bar/group-tab-bar-configurator.cpp
 
 	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp

@@ -32,6 +32,7 @@
 
 class FilteredTreeView;
 class GroupTabBar;
+class GroupTabBarConfigurator;
 class GroupTalkableFilter;
 class ProxyActionContext;
 class ModelChain;
@@ -43,6 +44,7 @@ class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, Confi
 	Q_OBJECT
 
 	GroupTabBar *GroupBar;
+	QScopedPointer<GroupTabBarConfigurator> TabBarConfigurator;
 
 	TalkableProxyModel *ProxyModel;
 	GroupTalkableFilter *MyGroupFilter;

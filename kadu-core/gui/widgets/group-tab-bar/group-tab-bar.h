@@ -28,14 +28,16 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/group.h"
-#include "configuration/configuration-aware-object.h"
+#include "gui/widgets/group-tab-bar/group-tab-bar-configuration.h"
 
 class Chat;
 class GroupFilter;
 
-class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
+class KADUAPI GroupTabBar : public QTabBar
 {
 	Q_OBJECT
+
+	GroupTabBarConfiguration Configuration;
 
 	// for dnd support
 	BuddyList DNDBuddies;
@@ -45,7 +47,6 @@ class KADUAPI GroupTabBar : public QTabBar, ConfigurationAwareObject
 
 	bool hasAnyUngrouppedBuddy();
 
-	void initializeConfiguration();
 	void storeConfiguration();
 
 	int indexOf(GroupFilter groupFilter);
@@ -76,11 +77,11 @@ protected:
 	virtual void dragMoveEvent(QDragMoveEvent *event);
 	virtual void dropEvent(QDropEvent *event);
 
-	virtual void configurationUpdated();
-
 public:
 	explicit GroupTabBar(QWidget *parent = 0);
 	virtual ~GroupTabBar();
+
+	void setConfiguration(GroupTabBarConfiguration configuration);
 
 	GroupFilter groupFilter() const;
 	GroupFilter groupFilterAt(int index) const;

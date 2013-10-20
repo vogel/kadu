@@ -90,9 +90,6 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
-	initializeConfiguration();
-	configurationUpdated();
-
 	int currentGroup = config_file.readNumEntry("Look", "CurrentGroupTab", 0);
 	if (currentGroup == currentIndex())
 		currentChangedSlot(currentGroup);
@@ -103,6 +100,23 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 GroupTabBar::~GroupTabBar()
 {
 	storeConfiguration();
+}
+
+void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
+{
+	Configuration = configuration;
+
+	setVisible(Configuration.displayGroupTabs());
+
+	if (Configuration.showGroupTabUngroupped())
+		insertGroupFilter(0, GroupFilter(GroupFilterUngroupped));
+	else
+		removeGroupFilter(GroupFilter(GroupFilterUngroupped));
+
+	if (Configuration.showGroupTabEverybody())
+		insertGroupFilter(0, GroupFilter(GroupFilterEverybody));
+	else
+		removeGroupFilter(GroupFilter(GroupFilterEverybody));
 }
 
 GroupFilter GroupTabBar::groupFilter() const
@@ -366,31 +380,9 @@ void GroupTabBar::moveToGroup()
 	}
 }
 
-void GroupTabBar::initializeConfiguration()
-{
-	config_file.addVariable("Look", "ShowGroupTabEverybody", true);
-	config_file.addVariable("Look", "ShowGroupTabUngroupped", false);
-	config_file.addVariable("Look", "DisplayGroupTabs", true);
-}
-
 void GroupTabBar::storeConfiguration()
 {
 	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
-}
-
-void GroupTabBar::configurationUpdated()
-{
-	setVisible(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
-
-	if (config_file.readBoolEntry("Look", "ShowGroupTabUngroupped", true))
-		insertGroupFilter(0, GroupFilter(GroupFilterUngroupped));
-	else
-		removeGroupFilter(GroupFilter(GroupFilterUngroupped));
-
-	if (config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true))
-		insertGroupFilter(0, GroupFilter(GroupFilterEverybody));
-	else
-		removeGroupFilter(GroupFilter(GroupFilterEverybody));
 }
 
 int GroupTabBar::indexOf(GroupFilter groupFilter)
