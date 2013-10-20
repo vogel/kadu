@@ -62,8 +62,8 @@ static bool compareGroups(Group g1, Group g2)
 	return g1.tabPosition() < g2.tabPosition();
 }
 
-GroupTabBar::GroupTabBar(QWidget *parent) :
-		QTabBar(parent), HadAnyUngrouppedBuddy(false)
+GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent) :
+		QTabBar(parent), Configuration(configuration), HadAnyUngrouppedBuddy(false)
 {
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -90,11 +90,10 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
-	int currentGroup = config_file.readNumEntry("Look", "CurrentGroupTab", 0);
-	if (currentGroup == currentIndex())
-		currentChangedSlot(currentGroup);
+	if (currentIndex() == Configuration.currentGroupTab())
+		currentChangedSlot(Configuration.currentGroupTab());
 	else
-		setCurrentIndex(currentGroup);
+		setCurrentIndex(Configuration.currentGroupTab());
 }
 
 GroupTabBar::~GroupTabBar()

@@ -45,11 +45,17 @@ void GroupTabBarConfigurator::configurationUpdated()
 	if (!ConfigurableGroupTabBar)
 		return;
 
+	ConfigurableGroupTabBar.data()->setConfiguration(configuration());
+}
+
+GroupTabBarConfiguration GroupTabBarConfigurator::configuration() const
+{
 	auto configuration = GroupTabBarConfiguration();
 
 	configuration.setDisplayGroupTabs(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
 	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true));
 	configuration.setShowGroupTabUngroupped(config_file.readBoolEntry("Look", "ShowGroupTabUngroupped", true));
+	configuration.setCurrentGroupTab(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
 
-	ConfigurableGroupTabBar.data()->setConfiguration(configuration);
+	return configuration;
 }

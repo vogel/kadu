@@ -27,6 +27,7 @@ class GroupTabBarConfiguration
 	bool DisplayGroupTabs;
 	bool ShowGroupTabEverybody;
 	bool ShowGroupTabUngroupped;
+	int CurrentGroupTab;
 
 public:
 	GroupTabBarConfiguration();
@@ -42,6 +43,9 @@ public:
 
 	void setShowGroupTabUngroupped(int showGroupTabUngroupped);
 	bool showGroupTabUngroupped() const;
+
+	void setCurrentGroupTab(int currentGroupTab);
+	int currentGroupTab() const;
 
 };
 

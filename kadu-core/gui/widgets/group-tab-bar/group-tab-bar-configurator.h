@@ -25,6 +25,7 @@
 #include "configuration/configuration-aware-object.h"
 
 class GroupTabBar;
+class GroupTabBarConfiguration;
 
 class GroupTabBarConfigurator : private ConfigurationAwareObject
 {
@@ -37,6 +38,7 @@ protected:
 
 public:
 	void setGroupTabBar(GroupTabBar *groupTabBar);
+	GroupTabBarConfiguration configuration() const;
 
 };
 

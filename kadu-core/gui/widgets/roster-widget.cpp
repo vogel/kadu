@@ -68,8 +68,8 @@ void RosterWidget::createGui()
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	GroupBar = new GroupTabBar(this);
 	TabBarConfigurator.reset(new GroupTabBarConfigurator());
+	GroupBar = new GroupTabBar(TabBarConfigurator->configuration(), this);
 	TabBarConfigurator->setGroupTabBar(GroupBar);
 
 	createTalkableWidget(this);

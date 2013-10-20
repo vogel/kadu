@@ -78,7 +78,7 @@ protected:
 	virtual void dropEvent(QDropEvent *event);
 
 public:
-	explicit GroupTabBar(QWidget *parent = 0);
+	explicit GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent = 0);
 	virtual ~GroupTabBar();
 
 	void setConfiguration(GroupTabBarConfiguration configuration);

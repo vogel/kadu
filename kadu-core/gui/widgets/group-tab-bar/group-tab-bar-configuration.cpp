@@ -52,3 +52,13 @@ bool GroupTabBarConfiguration::showGroupTabUngroupped() const
 {
 	return ShowGroupTabUngroupped;
 }
+
+void GroupTabBarConfiguration::setCurrentGroupTab(int currentGroupTab)
+{
+	CurrentGroupTab = currentGroupTab;
+}
+
+int GroupTabBarConfiguration::currentGroupTab() const
+{
+	return CurrentGroupTab;
+}
