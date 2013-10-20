@@ -131,6 +131,17 @@ GroupFilter GroupTabBar::groupFilterAt(int index) const
 	return tabData(index).value<GroupFilter>();
 }
 
+QVector<GroupFilter> GroupTabBar::groupFilters() const
+{
+	auto tabsCount = count();
+	auto result = QVector<GroupFilter>(tabsCount);
+
+	for (auto i = 0; i < tabsCount; i++)
+		result.append(tabData(i).value<GroupFilter>());
+
+	return result;
+}
+
 void GroupTabBar::currentChangedSlot(int index)
 {
 	emit currentGroupFilterChanged(groupFilterAt(index));

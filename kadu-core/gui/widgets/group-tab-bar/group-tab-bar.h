@@ -85,6 +85,7 @@ public:
 
 	GroupFilter groupFilter() const;
 	GroupFilter groupFilterAt(int index) const;
+	QVector<GroupFilter> groupFilters() const;
 
 signals:
 	void currentGroupFilterChanged(const GroupFilter &groupFilter);
