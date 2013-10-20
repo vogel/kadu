@@ -41,7 +41,7 @@ void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
 {
-	config_file.addVariable("Look", "ShowGroupTabEverybody", true);
+	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowGroupTabUngroupped", false);
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 }
@@ -59,7 +59,7 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
 	auto configuration = GroupTabBarConfiguration();
 
 	configuration.setDisplayGroupTabs(config_file.readBoolEntry("Look", "DisplayGroupTabs", true));
-	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupTabEverybody", true));
+	configuration.setShowGroupTabEverybody(config_file.readBoolEntry("Look", "ShowGroupAll", true));
 	configuration.setAlwaysShowGroupTabUngroupped(config_file.readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
 	configuration.setCurrentGroupTab(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
 	configuration.setGroupFilters(loadGroupFilters());
