@@ -46,6 +46,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
+	GroupTabBarConfigurator();
+
 	void setGroupTabBar(GroupTabBar *groupTabBar);
 	GroupTabBarConfiguration configuration() const;
 

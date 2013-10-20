@@ -56,7 +56,7 @@
 #include "group-tab-bar.h"
 #include "group-filter-tab-data.h"
 
-GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent) :
+GroupTabBar::GroupTabBar(QWidget *parent) :
 		QTabBar(parent)
 {
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
@@ -78,7 +78,14 @@ GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent
 	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
+}
 
+GroupTabBar::~GroupTabBar()
+{
+}
+
+void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration)
+{
 	foreach (const auto &groupFilter, configuration.groupFilters())
 		insertGroupFilter(count(), groupFilter);
 
@@ -86,14 +93,11 @@ GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent
 		addGroup(group);
 
 	setConfiguration(configuration);
+
 	if (currentIndex() == configuration.currentGroupTab())
 		currentChangedSlot(configuration.currentGroupTab());
 	else
 		setCurrentIndex(configuration.currentGroupTab());
-}
-
-GroupTabBar::~GroupTabBar()
-{
 }
 
 void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)

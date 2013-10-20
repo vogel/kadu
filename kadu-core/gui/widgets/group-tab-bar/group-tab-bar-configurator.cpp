@@ -27,12 +27,16 @@
 
 #include "group-tab-bar-configurator.h"
 
+GroupTabBarConfigurator::GroupTabBarConfigurator()
+{
+	createDefaultConfiguration();
+}
+
 void GroupTabBarConfigurator::setGroupTabBar(GroupTabBar *groupTabBar)
 {
 	ConfigurableGroupTabBar = groupTabBar;
-
-	createDefaultConfiguration();
-	configurationUpdated();
+	if (ConfigurableGroupTabBar)
+		ConfigurableGroupTabBar.data()->setInitialConfiguration(configuration());
 }
 
 void GroupTabBarConfigurator::createDefaultConfiguration()
