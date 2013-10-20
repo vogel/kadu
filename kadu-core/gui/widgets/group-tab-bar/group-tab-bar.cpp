@@ -149,6 +149,11 @@ GroupTabBarConfiguration GroupTabBar::configuration()
 	return Configuration;
 }
 
+Group GroupTabBar::groupAt(int index) const
+{
+	return groupFilterAt(index).group();
+}
+
 GroupFilter GroupTabBar::groupFilter() const
 {
 	if (!isVisible())
@@ -181,11 +186,7 @@ void GroupTabBar::currentChangedSlot(int index)
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 {
-	int tabIndex = tabAt(event->pos());
-
-	const Group &group = tabIndex == -1
-	        ? Group::null
-	        : GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+	auto group = groupAt(tabAt(event->pos()));
 
 	QMenu menu;
 
@@ -299,7 +300,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 		return;
 	}
 
-	Group clickedGroup = GroupManager::instance()->byUuid(tabData(tabIndex).toString());
+	auto clickedGroup = groupAt(tabIndex);
 
 	DNDBuddies = buddies;
 	DNDChats = chats;

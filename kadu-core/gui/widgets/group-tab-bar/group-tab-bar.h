@@ -83,6 +83,7 @@ public:
 	void setConfiguration(GroupTabBarConfiguration configuration);
 	GroupTabBarConfiguration configuration();
 
+	Group groupAt(int index) const;
 	GroupFilter groupFilter() const;
 	GroupFilter groupFilterAt(int index) const;
 	QVector<GroupFilter> groupFilters() const;
