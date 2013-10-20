@@ -57,7 +57,7 @@
 #include "group-filter-tab-data.h"
 
 GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent) :
-		QTabBar(parent), HadAnyUngrouppedBuddy(false)
+		QTabBar(parent)
 {
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 

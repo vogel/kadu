@@ -43,10 +43,6 @@ class KADUAPI GroupTabBar : public QTabBar
 	BuddyList DNDBuddies;
 	QList<Chat> DNDChats;
 
-	bool HadAnyUngrouppedBuddy;
-
-	bool hasAnyUngrouppedBuddy();
-
 	int indexOf(GroupFilter groupFilter);
 	void insertGroupFilter(int index, GroupFilter groupFilter);
 	void removeGroupFilter(GroupFilter groupFilter);
