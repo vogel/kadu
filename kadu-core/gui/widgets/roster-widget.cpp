@@ -58,6 +58,8 @@ RosterWidget::RosterWidget(QWidget *parent) :
 
 RosterWidget::~RosterWidget()
 {
+	storeConfiguration();
+
 	delete Context;
 	Context = 0;
 }
@@ -126,6 +128,12 @@ void RosterWidget::configurationUpdated()
 	}
 
 	triggerCompositingStateChanged();;
+}
+
+void RosterWidget::storeConfiguration()
+{
+	if (TabBarConfigurator)
+		TabBarConfigurator->storeConfiguration();
 }
 
 void RosterWidget::compositingEnabled()

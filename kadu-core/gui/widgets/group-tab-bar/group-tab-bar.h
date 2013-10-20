@@ -47,8 +47,6 @@ class KADUAPI GroupTabBar : public QTabBar
 
 	bool hasAnyUngrouppedBuddy();
 
-	void storeConfiguration();
-
 	int indexOf(GroupFilter groupFilter);
 	void insertGroupFilter(int index, GroupFilter groupFilter);
 	void removeGroupFilter(GroupFilter groupFilter);
@@ -82,6 +80,7 @@ public:
 	virtual ~GroupTabBar();
 
 	void setConfiguration(GroupTabBarConfiguration configuration);
+	GroupTabBarConfiguration configuration() const;
 
 	GroupFilter groupFilter() const;
 	GroupFilter groupFilterAt(int index) const;

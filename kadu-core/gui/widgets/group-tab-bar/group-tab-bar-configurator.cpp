@@ -59,3 +59,13 @@ GroupTabBarConfiguration GroupTabBarConfigurator::configuration() const
 
 	return configuration;
 }
+
+void GroupTabBarConfigurator::storeConfiguration()
+{
+	if (!ConfigurableGroupTabBar)
+		return;
+
+	auto configuration = ConfigurableGroupTabBar.data()->configuration();
+	config_file.writeEntry("Look", "CurrentGroupTab", configuration.currentGroupTab());
+	config_file.sync(); // TODO: fix whole configuration system
+}

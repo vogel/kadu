@@ -40,6 +40,8 @@ public:
 	void setGroupTabBar(GroupTabBar *groupTabBar);
 	GroupTabBarConfiguration configuration() const;
 
+	void storeConfiguration();
+
 };
 
 #endif // GROUP_TAB_BAR_CONFIGURATOR_H

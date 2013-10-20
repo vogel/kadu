@@ -40,7 +40,6 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-helper.h"
-#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/dialog/add-group-dialog-widget.h"
 #include "gui/widgets/dialog/edit-group-dialog-widget.h"
@@ -63,7 +62,7 @@ static bool compareGroups(Group g1, Group g2)
 }
 
 GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent) :
-		QTabBar(parent), Configuration(configuration), HadAnyUngrouppedBuddy(false)
+		QTabBar(parent), HadAnyUngrouppedBuddy(false)
 {
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -90,6 +89,7 @@ GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
 
+	setConfiguration(configuration);
 	if (currentIndex() == Configuration.currentGroupTab())
 		currentChangedSlot(Configuration.currentGroupTab());
 	else
@@ -98,7 +98,6 @@ GroupTabBar::GroupTabBar(GroupTabBarConfiguration configuration, QWidget *parent
 
 GroupTabBar::~GroupTabBar()
 {
-	storeConfiguration();
 }
 
 void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
@@ -116,6 +115,11 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 		insertGroupFilter(0, GroupFilter(GroupFilterEverybody));
 	else
 		removeGroupFilter(GroupFilter(GroupFilterEverybody));
+}
+
+GroupTabBarConfiguration GroupTabBar::configuration() const
+{
+	return Configuration;
 }
 
 GroupFilter GroupTabBar::groupFilter() const
@@ -144,6 +148,7 @@ QVector<GroupFilter> GroupTabBar::groupFilters() const
 
 void GroupTabBar::currentChangedSlot(int index)
 {
+	Configuration.setCurrentGroupTab(index);
 	emit currentGroupFilterChanged(groupFilterAt(index));
 }
 
@@ -388,11 +393,6 @@ void GroupTabBar::moveToGroup()
 		chat.removeFromGroup(removeFromGroup);
 		chat.addToGroup(group);
 	}
-}
-
-void GroupTabBar::storeConfiguration()
-{
-	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
 }
 
 int GroupTabBar::indexOf(GroupFilter groupFilter)
