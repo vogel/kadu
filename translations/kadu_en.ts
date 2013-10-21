@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="en" version="2.0">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="en">
 <context>
     <name>@default</name>
     <message>
@@ -534,10 +536,6 @@
         <translation>Displays group tabs on the buddy list</translation>
     </message>
     <message>
-        <source>Show group All</source>
-        <translation>Show group All</translation>
-    </message>
-    <message>
         <source>Show connected buddies in bold</source>
         <translation>Show connected buddies in bold</translation>
     </message>
@@ -598,7 +596,7 @@
         <translation>Status Change</translation>
     </message>
     <message>
-        <source>This option will supersede tooltips with buddies' status
+        <source>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</source>
         <translation>This option will supersede tooltips with buddies&apos; status
 changes upon establishing connection to the server</translation>
@@ -633,11 +631,17 @@ changes upon establishing connection to the server</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minute</numerusform><numerusform>%n minutes</numerusform></translation>
+        <translation>
+            <numerusform>%n minute</numerusform>
+            <numerusform>%n minutes</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n second</numerusform><numerusform>%n seconds</numerusform></translation>
+        <translation>
+            <numerusform>%n second</numerusform>
+            <numerusform>%n seconds</numerusform>
+        </translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1090,6 +1094,14 @@ changes upon establishing connection to the server</translation>
     <message>
         <source>Plugins</source>
         <translation>Plugins</translation>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2301,6 +2313,17 @@ Do you want to accept this image anyway?</translation>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished">Ungrouped</translation>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2396,14 +2419,6 @@ Do you want to accept this image anyway?</translation>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation>All</translation>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation>Ungrouped</translation>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation>Add Buddy</translation>

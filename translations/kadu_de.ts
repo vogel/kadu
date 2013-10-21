@@ -534,10 +534,6 @@
         <translation>Zeige Reiter für Kontaktgruppen</translation>
     </message>
     <message>
-        <source>Show group All</source>
-        <translation>Zeige Gruppe &quot;Alle&quot;</translation>
-    </message>
-    <message>
         <source>Show connected buddies in bold</source>
         <translation>Zeige Kontakte, die online sind, in Fettschrift an</translation>
     </message>
@@ -1081,6 +1077,14 @@ wenn Kontakte sich mit dem Server verbinden</translation>
     </message>
     <message>
         <source>Plugins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2291,6 +2295,17 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2386,14 +2401,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation>Alle</translation>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation>Nicht gruppiert</translation>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation>Kontakt hinzufügen</translation>

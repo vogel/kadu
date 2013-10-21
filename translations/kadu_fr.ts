@@ -534,10 +534,6 @@
         <translation>Afficher le groupe d&apos;onglets dans la liste des amis</translation>
     </message>
     <message>
-        <source>Show group All</source>
-        <translation>Afficher tous les groupes</translation>
-    </message>
-    <message>
         <source>Show connected buddies in bold</source>
         <translation type="unfinished"/>
     </message>
@@ -1088,6 +1084,14 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Plugins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2298,6 +2302,17 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2393,14 +2408,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation>Tout</translation>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation>Dégrouper</translation>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation>Ajouter un ami</translation>

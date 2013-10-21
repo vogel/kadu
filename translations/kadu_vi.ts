@@ -3,359 +3,359 @@
     <name>@default</name>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Mô tả</translation>
     </message>
     <message>
         <source>Yesterday at </source>
-        <translation type="unfinished"/>
+        <translation>Vào ngày hôm qua lúc</translation>
     </message>
     <message>
         <source>dddd at </source>
-        <translation type="unfinished"/>
+        <translation>dddd tại</translation>
     </message>
     <message>
         <source>%1 weeks ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 tuần trước tại</translation>
     </message>
     <message>
         <source>%1 weeks and %2 days ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 tuần và %2 ngày trước lúc</translation>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
-        <translation type="unfinished"/>
+        <translation>%1 tuần và một \ngày trước lúc</translation>
     </message>
     <message>
         <source>week ago at </source>
-        <translation type="unfinished"/>
+        <translation>tuần trước lúc</translation>
     </message>
     <message>
         <source>week and day ago at </source>
-        <translation type="unfinished"/>
+        <translation>một tuần và một ngày trước lúc</translation>
     </message>
     <message>
         <source>week and %2 days ago at </source>
-        <translation type="unfinished"/>
+        <translation>một tuần và %2 ngày trước lúc</translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
-        <translation type="unfinished"/>
+        <translation>d MMMM yyyy tại</translation>
     </message>
     <message>
         <source>Look</source>
-        <translation type="unfinished"/>
+        <translation>Giao diện</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Trò chuyện</translation>
     </message>
     <message>
         <source>Chat header separators height</source>
-        <translation type="unfinished"/>
+        <translation>Độ cao phần tách biệt ở vị trí đầu cuộc trò chuyện</translation>
     </message>
     <message>
         <source>Message separators height</source>
-        <translation type="unfinished"/>
+        <translation>Độ cao phần tách biệt tin nhắn</translation>
     </message>
     <message>
         <source>Remove chat header repetitions</source>
-        <translation type="unfinished"/>
+        <translation>Loại bỏ phần lặp lại ở phần đầu của cuộc trò chuyện</translation>
     </message>
     <message>
         <source>Interval between header removal</source>
-        <translation type="unfinished"/>
+        <translation>Khoảng thời gian giữa hai thao tác loại bỏ tiêu đề</translation>
     </message>
     <message>
         <source>Hide server time</source>
-        <translation type="unfinished"/>
+        <translation>Ẩn thời gian phía máy chủ</translation>
     </message>
     <message>
         <source>Maximum time difference</source>
-        <translation type="unfinished"/>
+        <translation>Điểm khác biệt tối đa về thời gian</translation>
     </message>
     <message>
         <source>Chat window title syntax</source>
-        <translation type="unfinished"/>
+        <translation>Cú pháp tiêu đề cửa sổ trò chuyện</translation>
     </message>
     <message>
         <source>Conference window title prefix</source>
-        <translation type="unfinished"/>
+        <translation>Tiền tố tiêu đề cửa sổ hội nghị</translation>
     </message>
     <message>
         <source>Conference window title syntax</source>
-        <translation type="unfinished"/>
+        <translation>Cú pháp của tiêu đề trên cửa sổ hội nghị</translation>
     </message>
     <message>
         <source>Kadu</source>
-        <translation type="unfinished"/>
+        <translation>Kadu</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>Ngôn ngữ</translation>
     </message>
     <message>
         <source>Choose your language</source>
-        <translation type="unfinished"/>
+        <translation>Chọn ngôn ngữ của bạn</translation>
     </message>
     <message>
         <source>Applications</source>
-        <translation type="unfinished"/>
+        <translation>Ứng dụng</translation>
     </message>
     <message>
         <source>Custom browser</source>
-        <translation type="unfinished"/>
+        <translation>Trình duyệt web riêng:</translation>
     </message>
     <message>
         <source>Write specific path to your browser</source>
-        <translation type="unfinished"/>
+        <translation>Điền vào đường dẫn chỉ định trình duyệt của bạn</translation>
     </message>
     <message>
         <source>Custom e-mail client</source>
-        <translation type="unfinished"/>
+        <translation>Phần email máy phía client tự chọn</translation>
     </message>
     <message>
         <source>Write specific path to your email client</source>
-        <translation type="unfinished"/>
+        <translation>Điền vào đường dẫn chỉ định phần email phía client của bạn</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Nâng cao</translation>
     </message>
     <message>
         <source>Allow executing commands by parser</source>
-        <translation type="unfinished"/>
+        <translation>Cho phép thực hiện lệnh bằng cách phân tích cú pháp</translation>
     </message>
     <message>
         <source>Debugging mask</source>
-        <translation type="unfinished"/>
+        <translation>Phần mặt nạ dành cho gỡ rối</translation>
     </message>
     <message>
         <source>Filters</source>
-        <translation type="unfinished"/>
+        <translation>Lọc dữ liệu</translation>
     </message>
     <message>
         <source>Ignore messages from anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Bỏ qua các tin nhắn từ những người dùng ẩn danh</translation>
     </message>
     <message>
         <source>Ignore richtext from anonymous users</source>
-        <translation type="unfinished"/>
+        <translation>Bỏ qua các đoạn văn bản phức tạp từ người dùng ẩn danh</translation>
     </message>
     <message>
         <source>Status</source>
-        <translation type="unfinished"/>
+        <translation>Trạng thái</translation>
     </message>
     <message>
         <source>On startup, set</source>
-        <translation type="unfinished"/>
+        <translation>Khi khởi động, đặt chế độ</translation>
     </message>
     <message>
         <source>Choose status which will be set on startup</source>
-        <translation type="unfinished"/>
+        <translation>Chọn chế độ hiển thị khi vừa khởi động</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Đang có mặt</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Ẩn mặt</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Không có trên mạng</translation>
     </message>
     <message>
         <source>Define description which will be set on startup</source>
-        <translation type="unfinished"/>
+        <translation>Chỉ định phần mô tả thông tin được hiển thị khi khởi chạy</translation>
     </message>
     <message>
         <source>Define description which will be set on shutdown</source>
-        <translation type="unfinished"/>
+        <translation>Xác định phần mô tả thông tin được đặt khi thoát chương trình</translation>
     </message>
     <message>
         <source>Number of kept descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Số lượng lưu lại các phần mô tả thông tin</translation>
     </message>
     <message>
         <source>Allow using variables in status</source>
-        <translation type="unfinished"/>
+        <translation>Cho phép sử dụng việc biến đổi trạng thái</translation>
     </message>
     <message>
         <source>Icon theme</source>
-        <translation type="unfinished"/>
+        <translation>Giao diện biểu tượng</translation>
     </message>
     <message>
         <source>Choose icon theme</source>
-        <translation type="unfinished"/>
+        <translation>Chọn giao diện biểu tượng</translation>
     </message>
     <message>
         <source>Show status changing button</source>
-        <translation type="unfinished"/>
+        <translation>Hiển thị trạng thái của nút thay đổi</translation>
     </message>
     <message>
         <source>Colors</source>
-        <translation type="unfinished"/>
+        <translation>Màu sắc</translation>
     </message>
     <message>
         <source>Chat window</source>
-        <translation type="unfinished"/>
+        <translation>Cửa sổ Trò chuyện</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished"/>
+        <translation>Màu nền</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Kiểu chữ</translation>
     </message>
     <message>
         <source>Descriptions font</source>
-        <translation type="unfinished"/>
+        <translation>Mô tả về kiểu chữ</translation>
     </message>
     <message>
         <source>Information Panel</source>
-        <translation type="unfinished"/>
+        <translation>Bảng thông tin</translation>
     </message>
     <message>
         <source>Use custom background color</source>
-        <translation type="unfinished"/>
+        <translation>Sử dụng màu nền tự lựa chọn</translation>
     </message>
     <message>
         <source>Fonts</source>
-        <translation type="unfinished"/>
+        <translation>Kiểu chữ</translation>
     </message>
     <message>
         <source>Show number of new messages on chat title</source>
-        <translation type="unfinished"/>
+        <translation>Hiển thị số lượng các tin nhắn mới chưa đọc trên tiêu đề cửa sổ</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"/>
+        <translation>Kiểu trang trí</translation>
     </message>
     <message>
         <source>Choose style of chat window</source>
-        <translation type="unfinished"/>
+        <translation>Chọn kiểu trang trí của cửa sổ trò chuyện</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"/>
+        <translation>Xem thử</translation>
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation type="unfinished"/>
+        <translation>Hiển thị các tab được gom nhóm</translation>
     </message>
     <message>
         <source>Descriptions</source>
-        <translation type="unfinished"/>
+        <translation>Mô tả</translation>
     </message>
     <message>
         <source>Use background image</source>
-        <translation type="unfinished"/>
+        <translation>Sử dụng hình nền</translation>
     </message>
     <message>
         <source>Background file</source>
-        <translation type="unfinished"/>
+        <translation>Tập tin hình nền</translation>
     </message>
     <message>
         <source>Display style</source>
-        <translation type="unfinished"/>
+        <translation>Kiểu hiển thị trang trí</translation>
     </message>
     <message>
         <source>Tiled</source>
-        <translation type="unfinished"/>
+        <translation>Nhiều ô nhỏ</translation>
     </message>
     <message>
         <source>Centered</source>
-        <translation type="unfinished"/>
+        <translation>Ở giữa</translation>
     </message>
     <message>
         <source>Stretched</source>
-        <translation type="unfinished"/>
+        <translation>Trải rộng ra</translation>
     </message>
     <message>
         <source>Choose information panel style</source>
-        <translation type="unfinished"/>
+        <translation>Chọn kiểu trang trí khung thông tin</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Các phím tắt</translation>
     </message>
     <message>
         <source>Configuration</source>
-        <translation type="unfinished"/>
+        <translation>Cấu hình</translation>
     </message>
     <message>
         <source>Manage modules</source>
-        <translation type="unfinished"/>
+        <translation>Quản lý mô-đun</translation>
     </message>
     <message>
         <source>Open chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Mở phần trò chuyện với...</translation>
     </message>
     <message>
         <source>Clear chat</source>
-        <translation type="unfinished"/>
+        <translation>Xóa nội dung trò chuyện</translation>
     </message>
     <message>
         <source>Close chat</source>
-        <translation type="unfinished"/>
+        <translation>Đóng lại phần nội dung trò chuyện</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished"/>
+        <translation>Văn bản được in đậm</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished"/>
+        <translation>Văn bản được in nghiêng</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished"/>
+        <translation>Văn bản được gạch dưới</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Tác động</translation>
     </message>
     <message>
         <source>Remember chat windows positions</source>
-        <translation type="unfinished"/>
+        <translation>Ghi nhớ vị trí của cửa sổ trò chuyện</translation>
     </message>
     <message>
         <source>Open chat window on new message</source>
-        <translation type="unfinished"/>
+        <translation>Mở cửa sổ trò chuyện khi có tin nhắn mới</translation>
     </message>
     <message>
         <source>Open chat window when a new message arrives</source>
-        <translation type="unfinished"/>
+        <translation>Mở cửa sổ trò chuyện khi một tin nhắn mới được gửi đến</translation>
     </message>
     <message>
         <source>Open chat window on new message only when online</source>
-        <translation type="unfinished"/>
+        <translation>Mở cửa sổ trò chuyện đối với tin nhắn mới chỉ khi đang chat</translation>
     </message>
     <message>
         <source>Clear recent chats list on exit</source>
-        <translation type="unfinished"/>
+        <translation>Dọn dẹp danh sách chat gần đây và thoát</translation>
     </message>
     <message>
         <source>Block chat window when a new message arrives</source>
-        <translation type="unfinished"/>
+        <translation>Khóa lại cửa sổ trò chuyện khi có tin nhắn mới</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"/>
+        <translation>Tin nhắn</translation>
     </message>
     <message>
         <source>default</source>
-        <translation type="unfinished"/>
+        <translation>mặc định</translation>
     </message>
     <message>
         <source>Properties</source>
-        <translation type="unfinished"/>
+        <translation>Thuộc tính</translation>
     </message>
     <message>
         <source>Set invisible if last status was &apos;Offline&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Đặt chế độ ẩn khi trạng thái là &apos;Không có trên mạng&apos;</translation>
     </message>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...).</source>
@@ -531,10 +531,6 @@
     </message>
     <message>
         <source>Displays group tabs on the buddy list</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Show group All</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1080,6 +1076,14 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Plugins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2290,6 +2294,17 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2385,14 +2400,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation type="unfinished"/>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation type="unfinished"/>

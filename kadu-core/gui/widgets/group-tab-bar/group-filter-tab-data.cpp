@@ -41,7 +41,7 @@ QString GroupFilterTabData::tabName() const
 		case GroupFilterRegular:
 			return Filter.group().showName() ? Filter.group().name() : QString();
 		case GroupFilterEverybody:
-			return qApp->translate("GroupFilterTabData", "All");
+			return qApp->translate("GroupFilterTabData", "Everybody");
 		case GroupFilterUngroupped:
 			return qApp->translate("GroupFilterTabData", "Ungrouped");
 		case GroupFilterInvalid:

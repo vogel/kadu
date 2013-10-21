@@ -534,10 +534,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Show group All</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Show connected buddies in bold</source>
         <translation type="unfinished"/>
     </message>
@@ -1080,6 +1076,14 @@ changes upon establishing connection to the server</source>
     </message>
     <message>
         <source>Plugins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2290,6 +2294,17 @@ Do you want to accept this image anyway?</source>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2385,14 +2400,6 @@ Do you want to accept this image anyway?</source>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation type="unfinished"/>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation type="unfinished"/>

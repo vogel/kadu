@@ -243,7 +243,7 @@
     </message>
     <message>
         <source>Display group tabs</source>
-        <translation>Wyświetlaj zakładki grup</translation>
+        <translation>Wyświetlaj karty grup</translation>
     </message>
     <message>
         <source>Descriptions</source>
@@ -531,11 +531,7 @@
     </message>
     <message>
         <source>Displays group tabs on the buddy list</source>
-        <translation>Wyświetlaj zakładki grup</translation>
-    </message>
-    <message>
-        <source>Show group All</source>
-        <translation>Wyświetl grupę Wszyscy</translation>
+        <translation>Wyświetla karty grup na liście znajomych</translation>
     </message>
     <message>
         <source>Show connected buddies in bold</source>
@@ -1086,6 +1082,14 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Plugins</source>
         <translation>Wtyczki</translation>
+    </message>
+    <message>
+        <source>Show tab Everybody</source>
+        <translation>Pokaż kartę Wszyscy</translation>
+    </message>
+    <message>
+        <source>Always show tab Ungroupped</source>
+        <translation>Zawsze pokazuj kartę Niepogrupowani</translation>
     </message>
 </context>
 <context>
@@ -2303,6 +2307,17 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>GroupFilterTabData</name>
+    <message>
+        <source>Ungrouped</source>
+        <translation>Niepogrupowani</translation>
+    </message>
+    <message>
+        <source>Everybody</source>
+        <translation>Wszyscy</translation>
+    </message>
+</context>
+<context>
     <name>GroupManager</name>
     <message>
         <source>Kadu</source>
@@ -2398,14 +2413,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
 </context>
 <context>
     <name>GroupTabBar</name>
-    <message>
-        <source>All</source>
-        <translation>Wszyscy</translation>
-    </message>
-    <message>
-        <source>Ungrouped</source>
-        <translation>Niepogrupowani</translation>
-    </message>
     <message>
         <source>Add Buddy</source>
         <translation>Dodaj znajomego</translation>
