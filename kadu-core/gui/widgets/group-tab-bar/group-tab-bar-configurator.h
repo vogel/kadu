@@ -36,8 +36,9 @@ class GroupTabBarConfigurator : private ConfigurationAwareObject
 
 	void createDefaultConfiguration();
 
-	QVector<GroupFilter> loadGroupFilters() const;
+	QVector<GroupFilter> loadGroupFilters(bool showGroupTabEverybody) const;
 	GroupFilter loadGroupFilter(QDomElement element) const;
+	QVector<GroupFilter> import_0_12_groupFilters(bool showGroupTabEverybody) const;
 
 	void storeGroupFilters(const QVector<GroupFilter> &groupFilters);
 	void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
