@@ -92,11 +92,6 @@ void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration
 		addGroup(group);
 
 	setConfiguration(configuration);
-
-	if (currentIndex() == configuration.currentGroupTab())
-		currentChangedSlot(configuration.currentGroupTab());
-	else
-		setCurrentIndex(configuration.currentGroupTab());
 }
 
 void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
@@ -111,6 +106,11 @@ void GroupTabBar::setConfiguration(GroupTabBarConfiguration configuration)
 		removeGroupFilter(GroupFilter(GroupFilterEverybody));
 
 	updateUngrouppedTab();
+
+	if (currentIndex() == configuration.currentGroupTab())
+		currentChangedSlot(configuration.currentGroupTab());
+	else
+		setCurrentIndex(configuration.currentGroupTab());
 }
 
 void GroupTabBar::updateUngrouppedTab()
