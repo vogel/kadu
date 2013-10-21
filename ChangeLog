@@ -1,3 +1,6 @@
++++ version 1.0-alpha2
+* gui: #2621 fixed: lots of Ungroupped tabs could appear in Group Tab Bar (Vogel)
+
 +++ version 1.0-alpha1
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)
 * gui: do not scale up avatars smaller than 32x32 on buddy list (beevvy)
