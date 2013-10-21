@@ -36,11 +36,9 @@
 #include <QtGui/QMenu>
 
 #include "buddies/buddy-list-mime-data-helper.h"
-#include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 #include "chat/chat-list-mime-data-helper.h"
-#include "chat/chat-manager.h"
 #include "core/core.h"
 #include "gui/widgets/dialog/add-group-dialog-widget.h"
 #include "gui/widgets/dialog/edit-group-dialog-widget.h"
@@ -79,14 +77,6 @@ GroupTabBar::GroupTabBar(QWidget *parent) :
 	connect(GroupManager::instance(), SIGNAL(groupAdded(Group)), this, SLOT(addGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(removeGroup(Group)));
 	connect(GroupManager::instance(), SIGNAL(groupUpdated(Group)), this, SLOT(updateGroup(Group)));
-
-	connect(BuddyManager::instance(), SIGNAL(buddyAdded(Buddy)), this, SLOT(updateUngrouppedTab()));
-	connect(BuddyManager::instance(), SIGNAL(buddyRemoved(Buddy)), this, SLOT(updateUngrouppedTab()));
-	connect(BuddyManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(updateUngrouppedTab()));
-
-	connect(ChatManager::instance(), SIGNAL(chatAdded(Chat)), this, SLOT(updateUngrouppedTab()));
-	connect(ChatManager::instance(), SIGNAL(chatRemoved(Chat)), this, SLOT(updateUngrouppedTab()));
-	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(updateUngrouppedTab()));
 }
 
 GroupTabBar::~GroupTabBar()
@@ -133,19 +123,9 @@ void GroupTabBar::updateUngrouppedTab()
 
 bool GroupTabBar::shouldShowUngrouppedTab() const
 {
-	if (Configuration.alwaysShowGroupTabUngroupped())
-		return true;
-	if (Configuration.showGroupTabEverybody())
-		return false;
-
-	foreach (const auto &buddy, BuddyManager::instance()->items())
-		if (buddy.groups().empty())
-			return true;
-	foreach (const auto &chat, ChatManager::instance()->items())
-		if (!chat.display().isEmpty() && chat.groups().empty())
-			return true;
-
-	return false;
+	return Configuration.alwaysShowGroupTabUngroupped()
+			? true
+			: !Configuration.showGroupTabEverybody();
 }
 
 GroupTabBarConfiguration GroupTabBar::configuration()
