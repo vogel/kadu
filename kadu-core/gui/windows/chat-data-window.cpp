@@ -46,6 +46,7 @@
 #include "gui/widgets/simple-configuration-value-state-notifier.h"
 #include "icons/icons-manager.h"
 #include "misc/change-notifier.h"
+#include "misc/change-notifier-lock.h"
 #include "os/generic/window-geometry-manager.h"
 #include "activate.h"
 
@@ -211,8 +212,7 @@ void ChatDataWindow::createButtons(QVBoxLayout *layout)
 
 void ChatDataWindow::updateChat()
 {
-	if (MyChat)
-		MyChat.changeNotifier()->block();
+	ChangeNotifierLock lock(MyChat.changeNotifier());
 
 	if (EditWidget)
 		EditWidget->apply();
@@ -223,9 +223,6 @@ void ChatDataWindow::updateChat()
 	MyChat.setGroups(ChatGroupList->checkedGroups());
 
 	emit save();
-
-	if (MyChat)
-		MyChat.changeNotifier()->unblock();
 }
 
 void ChatDataWindow::updateChatAndClose()

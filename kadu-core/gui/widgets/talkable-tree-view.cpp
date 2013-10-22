@@ -62,6 +62,7 @@
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"
+#include "misc/change-notifier-lock.h"
 #include "model/model-chain.h"
 #include "model/model-index-list-converter.h"
 #include "model/roles.h"
@@ -268,15 +269,13 @@ void TalkableTreeView::updateContext()
 
 	ModelIndexListConverter converter(selectedIndexes());
 
-	Context->changeNotifier()->block();
+	ChangeNotifierLock lock(Context->changeNotifier());
 
 	Context->setRoles(converter.roles());
 	Context->setBuddies(converter.buddies());
 	Context->setContacts(converter.contacts());
 	Context->setChat(converter.chat());
 	Context->setStatusContainer(statusContainerForChat(converter.chat()));
-
-	Context->changeNotifier()->unblock();
 }
 
 ActionContext * TalkableTreeView::actionContext()

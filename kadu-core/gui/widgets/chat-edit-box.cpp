@@ -48,6 +48,7 @@
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
+#include "misc/change-notifier-lock.h"
 #include "misc/error.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
@@ -69,7 +70,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 	Context = static_cast<BaseActionContext *>(actionContext());
 
-	Context->changeNotifier()->block();;
+	ChangeNotifierLock lock(Context->changeNotifier());
 
 	RoleSet roles;
 	if (CurrentChat.contacts().size() > 1)
@@ -82,8 +83,6 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	Context->setContacts(CurrentChat.contacts());
 	Context->setBuddies(CurrentChat.contacts().toBuddySet());
 	updateContext();
-
-	Context->changeNotifier()->unblock();
 
 	connect(MainConfigurationHolder::instance(), SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 

@@ -35,9 +35,9 @@
 
 #include "buddies/group.h"
 #include "configuration/configuration-file.h"
-
 #include "icons/kadu-icon.h"
 #include "misc/change-notifier.h"
+#include "misc/change-notifier-lock.h"
 #include "misc/misc.h"
 
 #include "group-properties-window.h"
@@ -152,8 +152,7 @@ void GroupPropertiesWindow::selectIcon()
 
 void GroupPropertiesWindow::applyClicked()
 {
-	if (group)
-		group.changeNotifier()->block();
+	ChangeNotifierLock lock(group.changeNotifier());
 
 	group.setShowName(nameCheckBox->isChecked());
 	group.setShowIcon(iconCheckBox->isChecked());
@@ -161,9 +160,6 @@ void GroupPropertiesWindow::applyClicked()
 	group.setNotifyAboutStatusChanges(notifyCheckBox->isChecked());
 	group.setOfflineToGroup(offlineCheckBox->isChecked());
 	group.setShowInAllGroup(allGroupCheckBox->isChecked());
-
-	if (group)
-		group.changeNotifier()->unblock();
 }
 
 void GroupPropertiesWindow::okClicked()

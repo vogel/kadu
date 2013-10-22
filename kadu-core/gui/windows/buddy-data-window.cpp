@@ -68,6 +68,7 @@
 #include "gui/widgets/composite-configuration-value-state-notifier.h"
 #include "gui/windows/message-dialog.h"
 #include "misc/change-notifier.h"
+#include "misc/change-notifier-lock.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -233,17 +234,13 @@ void BuddyDataWindow::updateBuddy()
 	if (ValueStateNotifier->state() == StateChangedDataInvalid)
 		return;
 
-	if (MyBuddy)
-		MyBuddy.changeNotifier()->block();
+	ChangeNotifierLock lock(MyBuddy.changeNotifier());
 
 	applyBuddyConfigurationWidgets();
 
 	ContactTab->save();
 	GroupsTab->save();
 	OptionsTab->save();
-
-	if (MyBuddy)
-		MyBuddy.changeNotifier()->unblock();
 }
 
 void BuddyDataWindow::updateBuddyAndClose()

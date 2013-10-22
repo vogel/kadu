@@ -44,6 +44,7 @@
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/change-notifier.h"
+#include "misc/change-notifier-lock.h"
 #include "misc/misc.h"
 #include "debug.h"
 
@@ -622,7 +623,7 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 {
 	kdebugf();
 
-	MyChangeNotifier->block();
+	ChangeNotifierLock lock(MyChangeNotifier, ChangeNotifierLock::ModeForget);
 
 //	QString align = toolbar_element.attribute("align");
 //	if (align == "right")
@@ -684,9 +685,6 @@ void ToolBar::loadFromConfig(const QDomElement &toolbar_element)
 
 		addAction(actionName, buttonStyle, 0);
 	}
-
-	MyChangeNotifier->forget();
-	MyChangeNotifier->unblock();
 
 	kdebugf2();
 }
