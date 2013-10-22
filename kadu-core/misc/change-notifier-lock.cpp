@@ -21,13 +21,24 @@
 
 #include "change-notifier-lock.h"
 
-ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier &notifier)
-		: Notifier(notifier)
+ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier *notifier, Mode mode)
+		: Notifier(notifier), NotifierMode(mode)
 {
-	Notifier.block();
+	if (Notifier)
+		Notifier->block();
 }
 
 ChangeNotifierLock::~ChangeNotifierLock()
 {
-	Notifier.unblock();
+	if (!Notifier)
+		return;
+
+	if (ModeForget == NotifierMode)
+		Notifier->forget();
+	Notifier->unblock();
+}
+
+void ChangeNotifierLock::setMode(ChangeNotifierLock::Mode mode)
+{
+	NotifierMode = mode;
 }
