@@ -246,7 +246,6 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "ShowEditWindowLabel", true);
 
 	config_file.addVariable("General", "AllowExecutingFromParser", false);
-	config_file.addVariable("General", "AutoRaise", false);
 	config_file.addVariable("General", "CheckUpdates", true);
 	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
 	config_file.addVariable("General", "DescriptionHeight", 60);

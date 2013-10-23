@@ -61,7 +61,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	QHash<Chat, ChatWidget *> Chats;
 
-	bool AutoRaise;
 	bool OpenChatOnMessage;
 	bool OpenChatOnMessageOnlyWhenOnline;
 
