@@ -63,7 +63,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	bool AutoRaise;
 	bool OpenChatOnMessage;
-	bool OpenChatOnMessageWhenOnline;
+	bool OpenChatOnMessageOnlyWhenOnline;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();

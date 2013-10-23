@@ -270,7 +270,7 @@ void ChatWidgetManager::configurationUpdated()
 {
 	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
 	AutoRaise = config_file.readBoolEntry("General","AutoRaise");
-	OpenChatOnMessageWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");;
+	OpenChatOnMessageOnlyWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");;
 }
 
 bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
@@ -278,14 +278,14 @@ bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
 	if (!OpenChatOnMessage)
 		return false;
 
-	if ((OpenChatOnMessage || OpenChatOnMessageWhenOnline) && Core::instance()->notificationService()->silentMode())
+	if ((OpenChatOnMessage || OpenChatOnMessageOnlyWhenOnline) && Core::instance()->notificationService()->silentMode())
 		return false;
 
 	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();
 	if (!handler)
 		return false;
 
-	if (!OpenChatOnMessageWhenOnline)
+	if (!OpenChatOnMessageOnlyWhenOnline)
 		return true;
 
 	return StatusTypeGroupOnline == handler->status().group();
