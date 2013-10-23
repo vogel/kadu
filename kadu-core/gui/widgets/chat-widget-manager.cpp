@@ -315,7 +315,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 void ChatWidgetManager::messageSent(const Message &message)
 {
 	const Chat &chat = message.messageChat();
-	ChatWidget * const chatWidget = byChat(chat, true);
+	ChatWidget * const chatWidget = byChat(chat, false);
 	if (!chatWidget)
 		return;
 
