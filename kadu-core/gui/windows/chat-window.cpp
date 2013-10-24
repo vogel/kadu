@@ -233,12 +233,11 @@ void ChatWindow::changeEvent(QEvent *event)
 	}
 }
 
-void ChatWindow::setWindowTitle(const QString &title)
+void ChatWindow::setWindowTitle(QString title)
 {
 	// qt treats [*] as 'modified placeholder'
 	// we escape each [*] with double [*][*] so it gets properly handled
-	QString escaped = title;
-	QWidget::setWindowTitle(escaped.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
+	QWidget::setWindowTitle(title.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
 void ChatWindow::activateChatWidget(ChatWidget *chatWidget)

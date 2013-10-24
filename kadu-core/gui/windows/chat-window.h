@@ -59,7 +59,7 @@ public:
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget);
 
-	void setWindowTitle(const QString &title);
+	void setWindowTitle(QString title);
 
 public slots:
 	// TODO: rename
