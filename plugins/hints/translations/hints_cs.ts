@@ -219,11 +219,11 @@
     </message>
     <message>
         <source>Show buttons only if notification requires user&apos;s action</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat tlačítka, jen když oznámení vyžaduje činnost uživatele</translation>
     </message>
     <message>
         <source>Hints size and position...</source>
-        <translation type="unfinished"/>
+        <translation>Velikost a umístění rad...</translation>
     </message>
 </context>
 <context>

@@ -102,23 +102,23 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Navíc</translation>
     </message>
     <message>
         <source>Media Player</source>
-        <translation type="unfinished"/>
+        <translation>Přehrávač</translation>
     </message>
     <message>
         <source>MediaPlayer message format in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Formát zprávy přehrávače v okně pro rozhovor</translation>
     </message>
     <message>
         <source>Enable signature cutting</source>
-        <translation type="unfinished"/>
+        <translation>Povolit oddělení podpisu</translation>
     </message>
     <message>
         <source>Enable removing non-essential stuff from audio file titles</source>
-        <translation type="unfinished"/>
+        <translation>Povolit odstranění nepodstatných věcí z názvů zvukových souborů</translation>
     </message>
 </context>
 <context>
@@ -213,15 +213,15 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     </message>
     <message>
         <source>Send anyway</source>
-        <translation type="unfinished"/>
+        <translation>Poslat tak jako tak</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <source>Send</source>
-        <translation type="unfinished"/>
+        <translation>Poslat</translation>
     </message>
 </context>
 </TS>

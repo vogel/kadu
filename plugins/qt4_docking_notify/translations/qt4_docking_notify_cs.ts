@@ -47,7 +47,7 @@
     </message>
     <message>
         <source>Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Oznámení</translation>
     </message>
 </context>
 <context>

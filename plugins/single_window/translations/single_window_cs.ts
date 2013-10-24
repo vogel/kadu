@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Chování</translation>
     </message>
 </context>
 <context>

@@ -11,19 +11,19 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Navíc</translation>
     </message>
     <message>
         <source>Simple View</source>
-        <translation type="unfinished"/>
+        <translation>Jednoduchý pohled</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Volby</translation>
     </message>
     <message>
         <source>Hide window borders</source>
-        <translation type="unfinished"/>
+        <translation>Skrýt okraje okna</translation>
     </message>
 </context>
 <context>

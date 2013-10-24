@@ -39,43 +39,43 @@
     </message>
     <message>
         <source>Enable tabs in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Povolit karty v okně pro rozhovor</translation>
     </message>
     <message>
         <source>With this option, each chat will be opened in a separate tab in single window</source>
-        <translation type="unfinished"/>
+        <translation>S touto volbou bude každý rozhovor otevřen v samostatné kartě v jednom okně</translation>
     </message>
     <message>
         <source>Closing window closes current tab only</source>
-        <translation type="unfinished"/>
+        <translation>Zavření okna zavře pouze nynější kartu</translation>
     </message>
     <message>
         <source>When enabled, closing chat window will cause closing only current tab, instead of all tabs and the window itself</source>
-        <translation type="unfinished"/>
+        <translation>Je-li povoleno, zavření okna pro rozhovor povede místo zavření všech karet a okna pouze k zavření nynější karty</translation>
     </message>
     <message>
         <source>Tab bar position</source>
-        <translation type="unfinished"/>
+        <translation>Poloha pruhu s kartami</translation>
     </message>
     <message>
         <source>Choose where you want the tab bar to be placed in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte, kde chcete, aby byl pruh s kartami v okně pro rozhovor umístěn</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"/>
+        <translation>Nahoře</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"/>
+        <translation>Dole</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Chování</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít znovu zavřenou kartu</translation>
     </message>
 </context>
 <context>
@@ -90,27 +90,27 @@
     </message>
     <message>
         <source>Recent Chats</source>
-        <translation type="unfinished"/>
+        <translation>Poslední rozhovory</translation>
     </message>
     <message>
         <source>Open Chat with...</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít rozhovor s...</translation>
     </message>
     <message>
         <source>Tabs</source>
-        <translation type="unfinished"/>
+        <translation>Karty</translation>
     </message>
     <message>
         <source>Close Tab</source>
-        <translation type="unfinished"/>
+        <translation>Zavřít kartu</translation>
     </message>
     <message>
         <source>Close window</source>
-        <translation type="unfinished"/>
+        <translation>Zavřít okno</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
@@ -153,11 +153,11 @@
     </message>
     <message>
         <source>Close other tabs</source>
-        <translation type="unfinished"/>
+        <translation>Zavřít jiné karty</translation>
     </message>
     <message>
         <source>Reopen closed tab</source>
-        <translation type="unfinished"/>
+        <translation>Otevřít znovu zavřenou kartu</translation>
     </message>
 </context>
 </TS>

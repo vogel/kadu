@@ -7,87 +7,87 @@
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Odpojeno</translation>
     </message>
     <message>
         <source>XML Parsing Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při zpracování XML</translation>
     </message>
     <message>
         <source>XMPP Protocol Error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba protokolu XMPP</translation>
     </message>
     <message>
         <source>Generic stream error</source>
-        <translation type="unfinished"/>
+        <translation>Obecná chyba proudu</translation>
     </message>
     <message>
         <source>Conflict(remote login replacing this one)</source>
-        <translation type="unfinished"/>
+        <translation>Rozpor (vzdálené přihlášení nahrazující toto)</translation>
     </message>
     <message>
         <source>Timed out from inactivity</source>
-        <translation type="unfinished"/>
+        <translation>Překročení času kvůli nečinnosti</translation>
     </message>
     <message>
         <source>Internal server error</source>
-        <translation type="unfinished"/>
+        <translation>Vnitřní chyba serveru</translation>
     </message>
     <message>
         <source>Invalid XML</source>
-        <translation type="unfinished"/>
+        <translation>Neplatné XML</translation>
     </message>
     <message>
         <source>Policy violation</source>
-        <translation type="unfinished"/>
+        <translation>Nedodržení politiky</translation>
     </message>
     <message>
         <source>Server out of resources</source>
-        <translation type="unfinished"/>
+        <translation>Server nemá dostatek prostředků</translation>
     </message>
     <message>
         <source>Server is shutting down</source>
-        <translation type="unfinished"/>
+        <translation>Server se vypíná</translation>
     </message>
     <message>
         <source>XMPP Stream Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba proudu XMPP: %1</translation>
     </message>
     <message>
         <source>Unable to connect to server</source>
-        <translation type="unfinished"/>
+        <translation>Nelze se připojit k serveru</translation>
     </message>
     <message>
         <source>Host not found</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se najít počítač</translation>
     </message>
     <message>
         <source>Error connecting to proxy</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při připojování se k proxy</translation>
     </message>
     <message>
         <source>Error during proxy negotiation</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při jednání s proxy</translation>
     </message>
     <message>
         <source>Proxy authentication failed</source>
-        <translation type="unfinished"/>
+        <translation>Autentizace u proxy serveru se nezdařila</translation>
     </message>
     <message>
         <source>Socket/stream error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zásuvky (socket)/proudu</translation>
     </message>
     <message>
         <source>Connection Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba ve spojení: %1</translation>
     </message>
     <message>
         <source>Host no longer hosted</source>
-        <translation type="unfinished"/>
+        <translation>Počítač není nadále hostěn</translation>
     </message>
     <message>
         <source>Host unknown</source>
-        <translation type="unfinished"/>
+        <translation>Počítač neznámý</translation>
     </message>
     <message>
         <source>A required remote connection failed</source>
@@ -171,15 +171,15 @@
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"/>
+        <translation>Žádný</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Obecné</translation>
     </message>
     <message>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Pokročilé</translation>
     </message>
     <message>
         <source>XMPP/Jabber</source>
@@ -730,27 +730,27 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>XMPP Server</source>
-        <translation type="unfinished"/>
+        <translation>Server XMPP</translation>
     </message>
     <message>
         <source>Use custom server address/port</source>
-        <translation type="unfinished"/>
+        <translation>Použít vlastní adresu/přípojku serveru</translation>
     </message>
     <message>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Adresa serveru</translation>
     </message>
     <message>
         <source>Use encrypted connection</source>
-        <translation type="unfinished"/>
+        <translation>Použít šifrované připojení</translation>
     </message>
     <message>
         <source>Only in older version</source>
-        <translation type="unfinished"/>
+        <translation>Jen ve starší verzi</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Síť</translation>
     </message>
     <message>
         <source>Use computer name as a resource</source>
@@ -758,11 +758,11 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Povolit složené události</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Účastník vašeho hovoru bude upozorněn, když budete psát zprávu, předtím než bude poslána. A naopak.</translation>
     </message>
     <message>
         <source>Enable chat activity events</source>
@@ -778,11 +778,11 @@ Heslo zadané do obou polí (nové heslo a nové zadání hesla) se musí shodov
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdit odstranění účtu</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete odstranit účet %1 (%2)?</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1140,7 @@ Opravte, prosím, a zkuste to znovu..</translation>
     <name>XMPP::JabberConnectionService</name>
     <message>
         <source>security problem</source>
-        <translation type="unfinished"/>
+        <translation>Bezpečnostní problém</translation>
     </message>
     <message>
         <source>TLS certificate not accepted</source>
@@ -1148,7 +1148,7 @@ Opravte, prosím, a zkuste to znovu..</translation>
     </message>
     <message>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba</translation>
     </message>
     <message>
         <source>The server does not support TLS encryption.</source>
@@ -1157,12 +1157,14 @@ Opravte, prosím, a zkuste to znovu..</translation>
     <message>
         <source>Connection error.
 Details: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba spojení.
+Podrobnosti: %1</translation>
     </message>
     <message>
         <source>Account disconnected.
 Details: %1</source>
-        <translation type="unfinished"/>
+        <translation>Účet odpojen.
+Podrobnosti: %1</translation>
     </message>
     <message>
         <source>SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.</source>

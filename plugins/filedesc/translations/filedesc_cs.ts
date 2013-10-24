@@ -27,15 +27,15 @@
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Chování</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Popis</translation>
     </message>
     <message>
         <source>Always add description to status</source>
-        <translation type="unfinished"/>
+        <translation>Vždy přidat popis do stavu</translation>
     </message>
 </context>
 </TS>

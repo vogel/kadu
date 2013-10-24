@@ -31,7 +31,7 @@
     </message>
     <message>
         <source>Enable sound notifications</source>
-        <translation type="unfinished"/>
+        <translation>Povolit zvuková oznámení</translation>
     </message>
 </context>
 <context>

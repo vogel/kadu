@@ -47,35 +47,35 @@
     </message>
     <message>
         <source>Save chats in history</source>
-        <translation type="unfinished"/>
+        <translation>Ukládat rozhovory v historii</translation>
     </message>
     <message>
         <source>History in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Historie v okně s rozhovorem</translation>
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat zprávy z historie od</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Zvolit časové období, pro které mohou být zprávy uvedeny v okně s rozhovorem</translation>
     </message>
     <message>
         <source>yesterday</source>
-        <translation type="unfinished"/>
+        <translation>Včera</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation type="unfinished"/>
+        <translation>Minulý týden</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation type="unfinished"/>
+        <translation>Minulý měsíc</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"/>
+        <translation>Omezit počet zpráv z historie</translation>
     </message>
     <message>
         <source>Behaviour</source>
@@ -108,7 +108,7 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation>Uchovávat historii</translation>
+        <translation>Ukládat historii</translation>
     </message>
 </context>
 <context>
@@ -119,7 +119,7 @@
     </message>
     <message>
         <source>Store history</source>
-        <translation>Uchovávat historii</translation>
+        <translation>Ukládat historii</translation>
     </message>
 </context>
 <context>
@@ -138,11 +138,11 @@
     </message>
     <message>
         <source>Do you really want to delete history?</source>
-        <translation>Opravdu chcete smazat historii</translation>
+        <translation>Opravdu chcete smazat historii?</translation>
     </message>
     <message>
         <source>Delete history</source>
-        <translation type="unfinished"/>
+        <translation>Smazat historii</translation>
     </message>
     <message>
         <source>Cancel</source>

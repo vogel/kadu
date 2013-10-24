@@ -61,23 +61,23 @@ Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Navíc</translation>
     </message>
     <message>
         <source>Your nick for SMS</source>
-        <translation type="unfinished"/>
+        <translation>Vaše přezdívka pro SMS</translation>
     </message>
     <message>
         <source>Use application custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Použíz vlastní argumenty programu</translation>
     </message>
     <message>
         <source>SMS custom arguments</source>
-        <translation type="unfinished"/>
+        <translation>Vlastní argumenty SMS</translation>
     </message>
     <message>
         <source>Behaviour</source>
-        <translation type="unfinished"/>
+        <translation>Chování</translation>
     </message>
 </context>
 <context>

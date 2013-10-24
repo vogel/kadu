@@ -59,27 +59,27 @@
     </message>
     <message>
         <source>Extras</source>
-        <translation type="unfinished"/>
+        <translation>Navíc</translation>
     </message>
     <message>
         <source>Screenshot file format</source>
-        <translation type="unfinished"/>
+        <translation>Souborový formát snímku obrazovky</translation>
     </message>
     <message>
         <source>Paste image to chat window automatically</source>
-        <translation type="unfinished"/>
+        <translation>Vložit obrázek do okna pro rozhovor automaticky</translation>
     </message>
     <message>
         <source>When enabled, plugin will automatically paste ready to send [IMAGE] clause in chat window.</source>
-        <translation type="unfinished"/>
+        <translation>Je-li povoleno, přídavný modul do okna pro rozhovor automaticky vloží doložku [OBRÁZEK] připraven k poslání.</translation>
     </message>
     <message>
         <source>When enabled, plugin will check for shots directory size and warn you if it gets size specified below.</source>
-        <translation type="unfinished"/>
+        <translation>Je-li povoleno, přídavný modul přezkouší velikost adresáře se snímky obrazovky a bude vás varovat, pokud bude mít velikost stanovenou níže.</translation>
     </message>
     <message>
         <source>Define, how many kbytes can shots take in the directory before plugin will warn you.</source>
-        <translation type="unfinished"/>
+        <translation>Stanovte, kolik kB může v adresáři být obsazeno snímky obrazovky, předtím než vás přídavný modul bude varovat.</translation>
     </message>
 </context>
 <context>

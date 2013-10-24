@@ -1089,11 +1089,11 @@ ihned po zřízení spojení se serverem</translation>
     </message>
     <message>
         <source>Show tab Everybody</source>
-        <translation type="unfinished"/>
+        <translation>Ukázat kartu Každý</translation>
     </message>
     <message>
         <source>Always show tab Ungroupped</source>
-        <translation type="unfinished"/>
+        <translation>Vždy ukázat kartu Neseskupeno</translation>
     </message>
 </context>
 <context>
@@ -2308,11 +2308,11 @@ Chcete přesto tento obrázek přijmout?</translation>
     <name>GroupFilterTabData</name>
     <message>
         <source>Ungrouped</source>
-        <translation type="unfinished"/>
+        <translation>Neseskupeno</translation>
     </message>
     <message>
         <source>Everybody</source>
-        <translation type="unfinished"/>
+        <translation>Každý</translation>
     </message>
 </context>
 <context>

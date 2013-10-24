@@ -63,31 +63,31 @@
     </message>
     <message>
         <source>Anonymous chat attempt</source>
-        <translation type="unfinished"/>
+        <translation>Nepodepsaný pokus o rozhovor</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in history</source>
-        <translation type="unfinished"/>
+        <translation>Uložit nepodepsaný pokus o rozhovor do historie</translation>
     </message>
     <message>
         <source>Save anonymous chat attempt in log file</source>
-        <translation type="unfinished"/>
+        <translation>Uložit nepodepsaný pokus o rozhovor do souboru se zápisem</translation>
     </message>
     <message>
         <source>Log file path</source>
-        <translation type="unfinished"/>
+        <translation>Cesta k souboru se zápisem</translation>
     </message>
     <message>
         <source>Kadu will ask the question typed below, if someone wants talk to you and you do not have him on your list.</source>
-        <translation type="unfinished"/>
+        <translation>Kadu položí otázku napsanou níže, pokud s vámi bude chtít někdo mluvit a vy jej nebudete mít ve svém seznamu.</translation>
     </message>
     <message>
         <source>Drop chats with unknown person when I am invisible/unavailable</source>
-        <translation type="unfinished"/>
+        <translation>Vynechat rozhovory s neznámou osobou, když jsem neviditelný/nedostupný</translation>
     </message>
     <message>
         <source>Reaction on right answer</source>
-        <translation type="unfinished"/>
+        <translation>Reakce na správnou odpověď</translation>
     </message>
 </context>
 <context>

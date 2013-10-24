@@ -160,11 +160,11 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
     <name>GaduChatImageService</name>
     <message>
         <source>This image has %1 KiB and exceeds recommended maximum size of %2 KiB. Some clients may have trouble with too large images.</source>
-        <translation type="unfinished"/>
+        <translation>Tento obrázek má %1 KiB a překračuje doporučenou největší velikost %2 KiB. Někteří klienti mají potíže s příliš velkými obrázky.</translation>
     </message>
     <message>
         <source>Do you really want to send this image?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete poslat tento obrázek?</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
     </message>
     <message>
         <source>Message too long (%1 &gt;= %2)</source>
-        <translation type="unfinished"/>
+        <translation>Zpráva příliš dlouhá (%1 &gt;= %2)</translation>
     </message>
 </context>
 <context>
@@ -384,88 +384,89 @@ Hesla zapsaná v obou polích (&quot;Heslo&quot; a &quot;Napište heslo znovu&qu
     </message>
     <message>
         <source>Images</source>
-        <translation type="unfinished"/>
+        <translation>Obrázky</translation>
     </message>
     <message>
         <source>Receive images also when I am Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Přijímat obrázky, i když jsem neviditelný</translation>
     </message>
     <message>
         <source>Warn me when the image being sent may be too large</source>
-        <translation type="unfinished"/>
+        <translation>Varovat, když je posílaný obrázek příliš velký</translation>
     </message>
     <message>
         <source>Some clients may have trouble with too large images (over 256 KiB).</source>
-        <translation type="unfinished"/>
+        <translation>Někteří klienti mají potíže s příliš velkými obrázky (nad 256 KiB).</translation>
     </message>
     <message>
         <source>Show my status only to buddies on my list</source>
-        <translation type="unfinished"/>
+        <translation>Ukazovat můj stav jen kamarádům v mém seznamu</translation>
     </message>
     <message>
         <source>When disabled, anyone can see your status.</source>
-        <translation type="unfinished"/>
+        <translation>Když je zakázáno, kdokoli může vidět váš stav.</translation>
     </message>
     <message>
         <source>Enable composing events</source>
-        <translation type="unfinished"/>
+        <translation>Povolit složené události</translation>
     </message>
     <message>
         <source>Your interlocutor will be notified when you are typing a message, before it is sent. And vice versa.</source>
-        <translation type="unfinished"/>
+        <translation>Účastník vašeho hovoru bude upozorněn, když budete psát zprávu, předtím než bude poslána. A naopak.</translation>
     </message>
     <message>
         <source>Block links from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Blokovat odkazy od nepodepsaných kamarádů</translation>
     </message>
     <message>
         <source>Protects you from potentially malicious links in messages from anonymous buddies</source>
-        <translation type="unfinished"/>
+        <translation>Chrání vás před možnými škodlivými odkazy ve zprávách od nepodepsaných kamarádů</translation>
     </message>
     <message>
         <source>Gadu-Gadu Server</source>
-        <translation type="unfinished"/>
+        <translation>Server Gadu-Gadu</translation>
     </message>
     <message>
         <source>Custom server IP addresses</source>
-        <translation type="unfinished"/>
+        <translation>Vlastní serverové adresy IP</translation>
     </message>
     <message>
         <source>Enable file transfers</source>
-        <translation type="unfinished"/>
+        <translation>Povolit přenosy souborů</translation>
     </message>
     <message>
         <source>Network</source>
-        <translation type="unfinished"/>
+        <translation>Síť</translation>
     </message>
     <message>
         <source>External IP</source>
-        <translation type="unfinished"/>
+        <translation>Vnější IP</translation>
     </message>
     <message>
         <source>Confrim Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdit odstranění účtu</translation>
     </message>
     <message>
         <source>Are you sure do you want to remove account %1 (%2)?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete odstranit účet %1 (%2)?</translation>
     </message>
     <message>
         <source>Status Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Viditelnost stavu</translation>
     </message>
     <message>
         <source>You are going to reveal your status to several buddies which are currently not allowed to see it.
 Are you sure to allow them to know you are available?</source>
-        <translation type="unfinished"/>
+        <translation>Chystáte se odhalit svůj stav několika kamarádům, kterým není v současnosti dovoleno jej vidět.
+Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translation>
     </message>
     <message>
         <source>Make my status visible anyway</source>
-        <translation type="unfinished"/>
+        <translation>Učinit můj stav viditelný tak jako tak</translation>
     </message>
     <message>
         <source>Stay with private status</source>
-        <translation type="unfinished"/>
+        <translation>Zůstat u soukromého stavu</translation>
     </message>
 </context>
 <context>
@@ -580,7 +581,7 @@ Are you sure to allow them to know you are available?</source>
     </message>
     <message>
         <source>Your password has been sent on your email</source>
-        <translation type="unfinished"/>
+        <translation>Vaše heslo bylo posláno na vaši e-mailovou adresu</translation>
     </message>
 </context>
 <context>
@@ -658,7 +659,7 @@ Nyní přidejte své přátele do seznamu uživatelů.</translation>
     </message>
     <message>
         <source>Registering new Gadu-Gadu account</source>
-        <translation type="unfinished"/>
+        <translation>Přihlašuje se nový účet Gadu-Gadu</translation>
     </message>
 </context>
 </TS>

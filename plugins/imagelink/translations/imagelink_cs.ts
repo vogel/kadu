@@ -15,11 +15,11 @@
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Obecné</translation>
     </message>
     <message>
         <source>Messages</source>
-        <translation type="unfinished"/>
+        <translation>Zprávy</translation>
     </message>
 </context>
 </TS>
