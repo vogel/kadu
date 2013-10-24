@@ -443,6 +443,8 @@ void ChatWidget::refreshTitle()
 		}
 	}
 
+	title.replace("\n", " ");
+	title.replace("\r", " ");
 	title.replace("<br/>", " ");
 	title.replace("&nbsp;", " ");
 
