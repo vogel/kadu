@@ -11,9 +11,9 @@ set (protocols_SRCS
 	services/chat-service.cpp
 	services/chat-state-service.cpp
 	services/contact-list-service.cpp
-	services/roster-service.cpp
 
 	services/roster/roster-entry.cpp
+	services/roster/roster-service.cpp
 	services/roster/roster-task.cpp
 
 	connection-error-notification.cpp
@@ -42,11 +42,8 @@ set (protocols_MOC_SRCS
 	services/file-transfer-service.h
 	services/multilogon-service.h
 	services/personal-info-service.h
-	services/roster-service.h
 	services/search-service.h
 	services/subscription-service.h
-
-	services/roster/roster-entry.h
 
 	connection-error-notification.h
 	protocol.h

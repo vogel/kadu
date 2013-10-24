@@ -20,7 +20,7 @@
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
-#include "protocols/services/roster-service.h"
+#include "protocols/services/roster/roster-service.h"
 
 #include "roster.h"
 

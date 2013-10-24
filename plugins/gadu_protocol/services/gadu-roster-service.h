@@ -26,7 +26,7 @@
 
 #include <libgadu.h>
 
-#include "protocols/services/roster-service.h"
+#include "protocols/services/roster/roster-service.h"
 
 class GaduProtocol;
 

@@ -36,7 +36,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
-#include "protocols/services/roster-service.h"
+#include "protocols/services/roster/roster-service.h"
 #include "debug.h"
 
 #include "account-manager.h"

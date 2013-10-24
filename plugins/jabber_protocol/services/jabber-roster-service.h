@@ -26,7 +26,7 @@
 
 #include <QtCore/QWeakPointer>
 
-#include "protocols/services/roster-service.h"
+#include "protocols/services/roster/roster-service.h"
 
 class Buddy;
 class Contact;
