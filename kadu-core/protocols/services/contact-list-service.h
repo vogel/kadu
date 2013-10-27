@@ -54,9 +54,6 @@ public:
 	// TODO 0.14: remove
 	virtual bool haveToAskForAddingContacts() const = 0;
 
-	virtual void exportContactList() = 0;
-	virtual void exportContactList(const BuddyList &buddies) = 0;
-
 	virtual void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source) = 0;
 
 	virtual QList<Buddy> loadBuddyList(QTextStream &dataStream) = 0;
