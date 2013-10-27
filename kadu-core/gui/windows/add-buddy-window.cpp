@@ -341,12 +341,6 @@ void AddBuddyWindow::validateData()
 		return;
 	}
 
-	if (account.protocolHandler()->rosterService() && !account.protocolHandler()->isConnected())
-	{
-		displayErrorMessage(tr("You must be connected to add contacts to this account"));
-		return;
-	}
-
 	if (account.protocolHandler()->protocolFactory()->validateId(UserNameEdit->text()) != QValidator::Acceptable)
 	{
 		if (!UserNameEdit->text().isEmpty())
