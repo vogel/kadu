@@ -67,7 +67,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (!accountDetails)
 	{
 		emit stateMachineInternalError();
-		emit contactListImported(false, BuddyList());
 		return;
 	}
 
@@ -75,7 +74,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
 		emit stateMachineInternalError();
-		emit contactListImported(false, BuddyList());
 		return;
 	}
 
@@ -84,7 +82,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
 		emit stateMachineInternalError();
-		emit contactListImported(false, BuddyList());
 		return;
 	}
 
@@ -95,7 +92,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		QByteArray content2(content);
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), content2);
 		emit stateMachineSucceededImporting();
-		emit contactListImported(true, buddies);
+		setBuddiesList(buddies, true);
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
 
@@ -114,7 +111,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
 
 		emit stateMachineSucceededImporting();
-		emit contactListImported(false, BuddyList());
 	}
 
 	if (!ContactManager::instance()->dirtyContacts(Protocol->account()).isEmpty())
@@ -201,17 +197,12 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
-	ContactListService::importContactList();
-
 	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	int ret = gg_userlist100_request(Protocol->gaduSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 
 	if (-1 == ret)
-	{
 		emit stateMachineInternalError();
-		emit contactListImported(false, BuddyList());
-	}
 }
 
 void GaduContactListService::exportContactList()

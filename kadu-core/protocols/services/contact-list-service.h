@@ -54,7 +54,6 @@ public:
 	// TODO 0.14: remove
 	virtual bool haveToAskForAddingContacts() const = 0;
 
-	virtual void importContactList();
 	virtual void exportContactList() = 0;
 	virtual void exportContactList(const BuddyList &buddies) = 0;
 
@@ -64,12 +63,6 @@ public:
 	virtual QByteArray storeBuddyList(const BuddyList &buddies) = 0;
 
 	void setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically);
-
-public slots:
-	virtual void contactListImportedSlot(bool ok, const BuddyList &buddies);
-
-signals:
-	void contactListImported(bool ok, const BuddyList &buddies);
 
 };
 
