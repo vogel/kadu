@@ -106,6 +106,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService->setConnection(Connection);
 
 	CurrentSearchService = new GaduSearchService(account, this);
+	CurrentSearchService->setConnection(Connection);
 
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 	CurrentMultilogonService->setConnection(Connection);

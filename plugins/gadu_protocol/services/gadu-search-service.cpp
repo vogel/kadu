@@ -25,16 +25,25 @@
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "gadu-contact-details.h"
-#include "gadu-protocol.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-search-service.h"
 
-GaduSearchService::GaduSearchService(Account account, GaduProtocol *protocol) :
-		SearchService(account, protocol), Protocol(protocol), Query(BuddySearchCriteria()),
+GaduSearchService::GaduSearchService(Account account, QObject *parent) :
+		SearchService(account, parent), Query(BuddySearchCriteria()),
 		SearchSeq(0), From(0), Stopped(false)
 {
+}
+
+GaduSearchService::~GaduSearchService()
+{
+}
+
+void GaduSearchService::setConnection(GaduConnection *connection)
+{
+	Connection = connection;
 }
 
 void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
@@ -46,6 +55,9 @@ void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 
 void GaduSearchService::searchNext()
 {
+	if (!Connection)
+		return;
+
 	Stopped = false;
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
@@ -83,8 +95,8 @@ void GaduSearchService::searchNext()
 
 	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(From).toUtf8().constData());
 
-	GaduProtocolLock lock(Protocol);
-	SearchSeq = gg_pubdir50(Protocol->gaduSession(), req);
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	SearchSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
 	gg_pubdir50_free(req);
 }
 

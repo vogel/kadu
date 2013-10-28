@@ -32,13 +32,13 @@
 
 #include "protocols/services/search-service.h"
 
-class GaduProtocol;
+class GaduConnection;
 
 class GaduSearchService : public SearchService
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
+	QWeakPointer<GaduConnection> Connection;
 	BuddySearchCriteria Query;
 	unsigned int SearchSeq;
 	unsigned int From;
@@ -48,7 +48,11 @@ class GaduSearchService : public SearchService
 	void handleEventPubdir50SearchReply(struct gg_event *e);
 
 public:
-	GaduSearchService(Account account, GaduProtocol *protocol);
+	explicit GaduSearchService(Account account, QObject *parent = 0);
+	virtual ~GaduSearchService();
+
+	void setConnection(GaduConnection *connection);
+
 	virtual void searchFirst(BuddySearchCriteria criteria);
 	virtual void searchNext();
 	virtual void stop();
