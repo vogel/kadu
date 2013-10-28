@@ -34,15 +34,15 @@
 #include "debug.h"
 
 #include "helpers/gadu-list-helper.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "services/gadu-contact-list-state-machine.h"
 #include "gadu-account-details.h"
-#include "gadu-protocol.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-contact-list-service.h"
 
-GaduContactListService::GaduContactListService(const Account &account, GaduProtocol *protocol) :
-		ContactListService(protocol), MyAccount(account), Protocol(protocol), StateMachine(new GaduContactListStateMachine(this))
+GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
+		ContactListService(protocol), MyAccount(account), StateMachine(new GaduContactListStateMachine(this))
 {
 	connect(StateMachine, SIGNAL(awaitingServerGetResponseStateEntered()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(awaitingServerPutResponseStateEntered()), SLOT(exportContactList()));
@@ -54,6 +54,11 @@ GaduContactListService::GaduContactListService(const Account &account, GaduProto
 
 GaduContactListService::~GaduContactListService()
 {
+}
+
+void GaduContactListService::setConnection(GaduConnection *connection)
+{
+	Connection = connection;
 }
 
 void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
@@ -194,8 +199,8 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
-	GaduProtocolLock lock(static_cast<GaduProtocol *>(protocol()));
-	int ret = gg_userlist100_request(Protocol->gaduSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_userlist100_request(writableSessionToken.get()->rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 }
 
 void GaduContactListService::exportContactList()
@@ -205,6 +210,9 @@ void GaduContactListService::exportContactList()
 
 void GaduContactListService::exportContactList(const BuddyList &buddies)
 {
+	if (!Connection)
+		return;
+
 	QByteArray contacts = GaduListHelper::buddyListToByteArray(MyAccount, buddies);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
@@ -213,8 +221,8 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	if (!accountDetails)
 		return;
 
-	GaduProtocolLock lock(static_cast<GaduProtocol *>(protocol()));
-	int ret = gg_userlist100_request(Protocol->gaduSession(),
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_userlist100_request(writableSessionToken.get()->rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 }
 

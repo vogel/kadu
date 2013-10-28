@@ -31,15 +31,14 @@
 #include "protocols/services/contact-list-service.h"
 
 class GaduContactListStateMachine;
-class GaduProtocol;
-class GaduProtocolSocketNotifiers;
+class GaduConnection;
 
 class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
 	Account MyAccount;
-	GaduProtocol *Protocol;
+	QWeakPointer<GaduConnection> Connection;
 	GaduContactListStateMachine *StateMachine;
 
 	friend class GaduProtocolSocketNotifiers;
@@ -52,8 +51,10 @@ private slots:
 	void dirtyContactAdded(Contact contact);
 
 public:
-	explicit GaduContactListService(const Account &account, GaduProtocol *protocol);
+	explicit GaduContactListService(const Account &account, Protocol *protocol);
 	virtual ~GaduContactListService();
+
+	void setConnection(GaduConnection *connection);
 
 	virtual bool haveToAskForAddingContacts() const;
 
