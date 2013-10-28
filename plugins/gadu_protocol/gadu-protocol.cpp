@@ -69,10 +69,10 @@
 #include "helpers/gadu-importer.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "helpers/gadu-proxy-helper.h"
+#include "server/gadu-writable-session-token.h"
 #include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-protocol.h"
 
@@ -175,11 +175,11 @@ void GaduProtocol::sendStatusToServer()
 
 	setStatusFlags();
 
-	GaduProtocolLock lock(this);
+	auto writableSessionToken = Connection->writableSessionToken();
 	if (hasDescription)
-		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8().constData());
+		gg_change_status_descr(writableSessionToken.get()->rawSession(), type | friends, newStatus.description().toUtf8().constData());
 	else
-		gg_change_status(GaduSession, type | friends);
+		gg_change_status(writableSessionToken.get()->rawSession(), type | friends);
 
 	account().accountContact().setCurrentStatus(status());
 }
@@ -203,8 +203,8 @@ void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
 
-	GaduProtocolLock lock(this);
-	gg_ping(GaduSession);
+	auto writableSessionToken = Connection->writableSessionToken();
+	gg_ping(writableSessionToken.get()->rawSession());
 }
 
 void GaduProtocol::configureServices()
