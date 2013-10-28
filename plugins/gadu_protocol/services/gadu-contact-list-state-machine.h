@@ -24,6 +24,8 @@
 #include <QtCore/QStateMachine>
 #include <QtCore/QTimer>
 
+class Protocol;
+
 class GaduContactListService;
 
 class GaduContactListStateMachine : public QStateMachine
@@ -41,7 +43,7 @@ private slots:
 	void printConfiguration();
 
 public:
-	explicit GaduContactListStateMachine(GaduContactListService *service);
+	explicit GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol);
 	virtual ~GaduContactListStateMachine();
 
 	bool awaitingServerGetResponse() const;

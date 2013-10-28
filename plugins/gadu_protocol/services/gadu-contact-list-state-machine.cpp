@@ -28,7 +28,7 @@
 
 #include "gadu-contact-list-state-machine.h"
 
-GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service) :
+GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol) :
 		QStateMachine(service), CurrentService(service)
 {
 	OfflineState = new QState(this);
@@ -43,8 +43,6 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 
 	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SIGNAL(awaitingServerGetResponseStateEntered()));
 	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SIGNAL(awaitingServerPutResponseStateEntered()));
-
-	Protocol *protocol = CurrentService->protocol();
 
 	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), AwaitingServerGetResponseState);
 
