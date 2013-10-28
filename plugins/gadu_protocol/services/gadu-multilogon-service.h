@@ -31,10 +31,13 @@
 
 #include "protocols/services/multilogon-service.h"
 
+class GaduConnection;
+
 class GaduMultilogonService : public MultilogonService
 {
 	Q_OBJECT
 
+	QWeakPointer<GaduConnection> Connection;
 	QList<MultilogonSession *> Sessions;
 
 	friend class GaduProtocolSocketNotifiers;
@@ -51,6 +54,8 @@ class GaduMultilogonService : public MultilogonService
 public:
 	explicit GaduMultilogonService(Account account, QObject *parent);
 	virtual ~GaduMultilogonService();
+
+	void setConnection(GaduConnection *connection);
 
 	virtual const QList<MultilogonSession *> & sessions() const;
 	virtual void killSession(MultilogonSession *session);

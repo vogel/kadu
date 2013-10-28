@@ -27,9 +27,9 @@
 
 #include "protocols/protocol.h"
 
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "services/multilogon/gadu-multilogon-session.h"
-#include "gadu-protocol.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-multilogon-service.h"
 
@@ -51,6 +51,11 @@ GaduMultilogonService::~GaduMultilogonService()
 {
 }
 
+void GaduMultilogonService::setConnection(GaduConnection *connection)
+{
+	Connection = connection;
+}
+
 const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 {
 	return Sessions;
@@ -58,18 +63,15 @@ const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 
 void GaduMultilogonService::killSession(MultilogonSession *session)
 {
-	Q_UNUSED(session)
-
-	GaduProtocol *gaduProtocolHandler = dynamic_cast<GaduProtocol *>(account().protocolHandler());
-	if (!gaduProtocolHandler || !gaduProtocolHandler->gaduSession())
+	if (!Connection)
 		return;
 
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
 	if (!gaduSession)
 		return;
 
-	GaduProtocolLock lock(gaduProtocolHandler);
-	gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_multilogon_disconnect(writableSessionToken.get()->rawSession(), gaduSession->id());
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)
