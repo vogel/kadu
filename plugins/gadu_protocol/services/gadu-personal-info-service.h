@@ -28,13 +28,14 @@
 
 #include "protocols/services/personal-info-service.h"
 
-class GaduProtocol;
+class GaduConnection;
 
 class GaduPersonalInfoService : public PersonalInfoService
 {
 	Q_OBJECT
 
-	GaduProtocol *Protocol;
+	QWeakPointer<GaduConnection> Connection;
+
 	unsigned int FetchSeq;
 	unsigned int UpdateSeq;
 
@@ -46,8 +47,10 @@ class GaduPersonalInfoService : public PersonalInfoService
 	void handleEventPubdir50Write(struct gg_event *e);
 
 public:
-	explicit GaduPersonalInfoService(Account account, GaduProtocol *protocol);
+	explicit GaduPersonalInfoService(Account account, QObject *parent = 0);
 	virtual ~GaduPersonalInfoService();
+
+	void setConnection(GaduConnection *connection);
 
 	virtual void fetchPersonalInfo(const QString &id);
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy);

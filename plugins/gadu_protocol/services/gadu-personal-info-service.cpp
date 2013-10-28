@@ -24,19 +24,24 @@
 #include "misc/misc.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "gadu-contact-details.h"
-#include "gadu-protocol.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-personal-info-service.h"
 
-GaduPersonalInfoService::GaduPersonalInfoService(Account account, GaduProtocol *protocol) :
-		PersonalInfoService(account, protocol), Protocol(protocol), FetchSeq(0), UpdateSeq(0)
+GaduPersonalInfoService::GaduPersonalInfoService(Account account, QObject *parent) :
+		PersonalInfoService(account, parent), FetchSeq(0), UpdateSeq(0)
 {
 }
 
 GaduPersonalInfoService::~GaduPersonalInfoService()
 {
+}
+
+void GaduPersonalInfoService::setConnection(GaduConnection *connection)
+{
+	Connection = connection;
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
@@ -79,9 +84,13 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
 	Q_UNUSED(id)
 
+	if (!Connection)
+		return;
+
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	GaduProtocolLock lock(Protocol);
-	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
+
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	FetchSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
 	//gg_pubdir50_free(req);
 }
 
@@ -114,8 +123,8 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 	if (!buddy.familyCity().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
-	GaduProtocolLock lock(Protocol);
-	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	UpdateSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
 	//gg_pubdir50_free(req);
 }
 
