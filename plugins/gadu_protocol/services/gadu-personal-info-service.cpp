@@ -30,8 +30,12 @@
 
 #include "gadu-personal-info-service.h"
 
-GaduPersonalInfoService::GaduPersonalInfoService(GaduProtocol *protocol) :
-		PersonalInfoService(protocol), Protocol(protocol), FetchSeq(0), UpdateSeq(0)
+GaduPersonalInfoService::GaduPersonalInfoService(Account account, GaduProtocol *protocol) :
+		PersonalInfoService(account, protocol), Protocol(protocol), FetchSeq(0), UpdateSeq(0)
+{
+}
+
+GaduPersonalInfoService::~GaduPersonalInfoService()
 {
 }
 
@@ -49,7 +53,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(Protocol->account(), res, 0);
+	Buddy result = GaduProtocolHelper::searchResultToBuddy(account(), res, 0);
 
 	// inverted values for "self" data
 	// this is why gadu protocol suxx

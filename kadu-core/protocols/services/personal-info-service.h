@@ -30,12 +30,14 @@
 #include "buddies/buddy.h"
 #include "exports.h"
 
-class KADUAPI PersonalInfoService : public QObject
+#include "account-service.h"
+
+class KADUAPI PersonalInfoService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit PersonalInfoService(QObject *parent) : QObject(parent) {}
+	explicit PersonalInfoService(Account account, QObject *parent) : AccountService(account, parent) {}
 
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy) = 0;
 	virtual void fetchPersonalInfo(const QString &id) = 0;

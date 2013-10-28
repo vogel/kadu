@@ -29,8 +29,8 @@
 
 #include "jabber-personal-info-service.h"
 
-JabberPersonalInfoService::JabberPersonalInfoService(QObject *parent) :
-		PersonalInfoService(parent)
+JabberPersonalInfoService::JabberPersonalInfoService(Account account, QObject *parent) :
+		PersonalInfoService(account, parent)
 {
 }
 

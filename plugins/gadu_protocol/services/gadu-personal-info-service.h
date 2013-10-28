@@ -46,7 +46,8 @@ class GaduPersonalInfoService : public PersonalInfoService
 	void handleEventPubdir50Write(struct gg_event *e);
 
 public:
-	GaduPersonalInfoService(GaduProtocol *protocol);
+	explicit GaduPersonalInfoService(Account account, GaduProtocol *protocol);
+	virtual ~GaduPersonalInfoService();
 
 	virtual void fetchPersonalInfo(const QString &id);
 	virtual void updatePersonalInfo(const QString &id, Buddy buddy);

@@ -46,7 +46,7 @@ private slots:
 	virtual void vCardDownloaded(bool ok, XMPP::VCard vCard);
 
 public:
-	explicit JabberPersonalInfoService(QObject *parent = 0);
+	explicit JabberPersonalInfoService(Account account, QObject *parent = 0);
 	virtual ~JabberPersonalInfoService();
 
 	void setVCardService(XMPP::JabberVCardService *vCardService);
