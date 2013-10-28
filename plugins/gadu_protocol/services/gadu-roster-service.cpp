@@ -26,6 +26,7 @@
 
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-contact-details.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-roster-service.h"
 
@@ -82,11 +83,8 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 
 	if (sendList.isEmpty())
 	{
-		if (CurrentProtocol)
-			CurrentProtocol.data()->disableSocketNotifiers();
+		GaduProtocolLock lock(CurrentProtocol.data());
 		gg_notify_ex(GaduSession, 0, 0, 0);
-		if (CurrentProtocol)
-			CurrentProtocol.data()->enableSocketNotifiers();
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		setState(StateInitialized);
@@ -114,11 +112,8 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 		++i;
 	}
 
-	if (CurrentProtocol)
-		CurrentProtocol.data()->disableSocketNotifiers();
+	GaduProtocolLock lock(CurrentProtocol.data());
 	gg_notify_ex(GaduSession, uins.data(), types.data(), count);
-	if (CurrentProtocol)
-		CurrentProtocol.data()->enableSocketNotifiers();
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	setState(StateInitialized);
@@ -150,13 +145,10 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 	details->setGaduFlags(newFlags);
 
-	if (CurrentProtocol)
-		CurrentProtocol.data()->disableSocketNotifiers();
+	GaduProtocolLock lock(CurrentProtocol.data());
 	updateFlag(uin, newFlags, oldFlags, 0x01);
 	updateFlag(uin, newFlags, oldFlags, 0x02);
 	updateFlag(uin, newFlags, oldFlags, 0x04);
-	if (CurrentProtocol)
-		CurrentProtocol.data()->enableSocketNotifiers();
 }
 
 void GaduRosterService::executeTask(const RosterTask &task)

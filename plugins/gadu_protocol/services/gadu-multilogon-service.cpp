@@ -29,6 +29,7 @@
 
 #include "services/multilogon/gadu-multilogon-session.h"
 #include "gadu-protocol.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-multilogon-service.h"
 
@@ -67,9 +68,8 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 	if (!gaduSession)
 		return;
 
-	gaduProtocolHandler->disableSocketNotifiers();
+	GaduProtocolLock lock(gaduProtocolHandler);
 	gg_multilogon_disconnect(gaduProtocolHandler->gaduSession(), gaduSession->id());
-	gaduProtocolHandler->enableSocketNotifiers();
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)

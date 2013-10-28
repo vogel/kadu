@@ -99,6 +99,7 @@ set (SOURCES
 	gadu-id-validator.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
+	gadu-protocol-lock.cpp
 	gadu-protocol-plugin.cpp
 	gadu-status-adapter.cpp
 	gadu-url-dom-visitor-provider.cpp

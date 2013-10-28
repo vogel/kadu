@@ -26,6 +26,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-personal-info-service.h"
 
@@ -75,9 +76,8 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 	Q_UNUSED(id)
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	Protocol->disableSocketNotifiers();
+	GaduProtocolLock lock(Protocol);
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	Protocol->enableSocketNotifiers();
 	//gg_pubdir50_free(req);
 }
 
@@ -110,9 +110,8 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 	if (!buddy.familyCity().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
-	Protocol->disableSocketNotifiers();
+	GaduProtocolLock lock(Protocol);
 	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	Protocol->enableSocketNotifiers();
 	//gg_pubdir50_free(req);
 }
 

@@ -37,6 +37,7 @@
 #include "services/gadu-contact-list-state-machine.h"
 #include "gadu-account-details.h"
 #include "gadu-protocol.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-contact-list-service.h"
 
@@ -193,9 +194,8 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
-	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
+	GaduProtocolLock lock(static_cast<GaduProtocol *>(protocol()));
 	int ret = gg_userlist100_request(Protocol->gaduSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
-	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 }
 
 void GaduContactListService::exportContactList()
@@ -213,10 +213,9 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	if (!accountDetails)
 		return;
 
-	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
+	GaduProtocolLock lock(static_cast<GaduProtocol *>(protocol()));
 	int ret = gg_userlist100_request(Protocol->gaduSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
-	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
 }
 
 void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

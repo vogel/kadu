@@ -28,6 +28,7 @@
 #include "helpers/gadu-protocol-helper.h"
 #include "gadu-contact-details.h"
 #include "gadu-protocol.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-contact-personal-info-service.h"
 
@@ -59,9 +60,8 @@ void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 	Id = contact.id();
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 	gg_pubdir50_add(req, GG_PUBDIR50_UIN, Id.toUtf8().constData());
-	Protocol->disableSocketNotifiers();
+	GaduProtocolLock lock(Protocol);
 	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
-	Protocol->enableSocketNotifiers();
 	//gg_pubdir50_free(req);
 }
 

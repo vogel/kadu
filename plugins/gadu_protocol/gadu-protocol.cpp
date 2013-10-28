@@ -72,6 +72,7 @@
 #include "services/gadu-roster-service.h"
 #include "gadu-account-details.h"
 #include "gadu-contact-details.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-protocol.h"
 
@@ -174,12 +175,11 @@ void GaduProtocol::sendStatusToServer()
 
 	setStatusFlags();
 
-	disableSocketNotifiers();
+	GaduProtocolLock lock(this);
 	if (hasDescription)
 		gg_change_status_descr(GaduSession, type | friends, newStatus.description().toUtf8().constData());
 	else
 		gg_change_status(GaduSession, type | friends);
-	enableSocketNotifiers();
 
 	account().accountContact().setCurrentStatus(status());
 }
@@ -203,9 +203,8 @@ void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
 
-	disableSocketNotifiers();
+	GaduProtocolLock lock(this);
 	gg_ping(GaduSession);
-	enableSocketNotifiers();
 }
 
 void GaduProtocol::configureServices()

@@ -22,6 +22,7 @@
 #include "contacts/contact-manager.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "gadu-protocol-lock.h"
 
 #include "gadu-chat-state-service.h"
 
@@ -78,7 +79,7 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!CurrentProtocol)
 		return;
 
-	CurrentProtocol.data()->disableSocketNotifiers();
+	GaduProtocolLock lock(CurrentProtocol.data());
 	switch (state)
 	{
 		case StateComposing:
@@ -91,7 +92,6 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 		default:
 			break;
 	}
-	CurrentProtocol.data()->enableSocketNotifiers();
 }
 
 #include "moc_gadu-chat-state-service.cpp"
