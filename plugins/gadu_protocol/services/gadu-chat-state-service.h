@@ -25,20 +25,17 @@
 #ifndef GADU_CHAT_STATE_SERVICE_H
 #define GADU_CHAT_STATE_SERVICE_H
 
-#include <libgadu.h>
-
 #include "message/message.h"
 
 #include "protocols/services/chat-state-service.h"
 
-class GaduProtocol;
+class GaduConnection;
 
 class GaduChatStateService : public ChatStateService
 {
 	Q_OBJECT
 
-	gg_session *GaduSession;
-	QWeakPointer<GaduProtocol> CurrentProtocol;
+	QWeakPointer<GaduConnection> Connection;
 
 	bool SendTypingNotifications;
 
@@ -46,15 +43,13 @@ public:
 	explicit GaduChatStateService(Account account, QObject *parent = 0);
 	virtual ~GaduChatStateService();
 
-	void setGaduProtocol(GaduProtocol *protocol);
+	void setConnection(GaduConnection *connection);
 
 	virtual void sendState(const Contact &contact, State state);
 
 	void setSendTypingNotifications(bool sendTypingNotifications);
 
 public slots:
-	void setGaduSession(gg_session *gaduSession);
-
 	void handleEventTypingNotify(struct gg_event *e);
 
 	void messageReceived(const Message & message);

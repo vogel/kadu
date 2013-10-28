@@ -22,12 +22,13 @@
 #include "contacts/contact-manager.h"
 
 #include "helpers/gadu-protocol-helper.h"
-#include "gadu-protocol-lock.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 
 #include "gadu-chat-state-service.h"
 
 GaduChatStateService::GaduChatStateService(Account account, QObject *parent) :
-		ChatStateService(account, parent), GaduSession(0), SendTypingNotifications(false)
+		ChatStateService(account, parent), SendTypingNotifications(false)
 {
 }
 
@@ -35,14 +36,9 @@ GaduChatStateService::~GaduChatStateService()
 {
 }
 
-void GaduChatStateService::setGaduProtocol(GaduProtocol *protocol)
+void GaduChatStateService::setConnection(GaduConnection *connection)
 {
-	CurrentProtocol = protocol;
-}
-
-void GaduChatStateService::setGaduSession(gg_session *gaduSession)
-{
-	GaduSession = gaduSession;
+	Connection = connection;
 }
 
 void GaduChatStateService::setSendTypingNotifications(bool sendTypingNotifications)
@@ -73,21 +69,18 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!SendTypingNotifications || !contact)
 		return;
 
-	if (!GaduSession)
+	if (!Connection)
 		return;
 
-	if (!CurrentProtocol)
-		return;
-
-	GaduProtocolLock lock(CurrentProtocol.data());
+	auto writableSessionToken = Connection.data()->writableSessionToken();
 	switch (state)
 	{
 		case StateComposing:
-			gg_typing_notification(GaduSession, GaduProtocolHelper::uin(contact), 0x0001);
+			gg_typing_notification(writableSessionToken.get()->rawSession(), GaduProtocolHelper::uin(contact), 0x0001);
 			break;
 		case StatePaused:
 		case StateGone:
-			gg_typing_notification(GaduSession, GaduProtocolHelper::uin(contact), 0x0000);
+			gg_typing_notification(writableSessionToken.get()->rawSession(), GaduProtocolHelper::uin(contact), 0x0000);
 			break;
 		default:
 			break;

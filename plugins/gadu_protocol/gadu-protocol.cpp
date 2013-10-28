@@ -103,7 +103,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentMultilogonService = new GaduMultilogonService(account, this);
 
 	CurrentChatStateService = new GaduChatStateService(account, this);
-	CurrentChatStateService->setGaduProtocol(this);
+	CurrentChatStateService->setConnection(Connection);
 
 	connect(CurrentChatService, SIGNAL(messageReceived(Message)),
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
@@ -117,8 +117,6 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	configureServices();
 
-	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
-	        CurrentChatStateService, SLOT(setGaduSession(gg_session*)));
 	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
 	        rosterService, SLOT(setGaduSession(gg_session*)));
 
