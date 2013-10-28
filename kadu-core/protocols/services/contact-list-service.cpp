@@ -25,15 +25,14 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/windows/message-dialog.h"
-#include "protocols/protocol.h"
 #include "protocols/roster.h"
 #include "protocols/services/roster/roster-entry.h"
 #include "debug.h"
 
 #include "contact-list-service.h"
 
-ContactListService::ContactListService(Protocol *protocol) :
-		QObject(protocol), CurrentProtocol(protocol)
+ContactListService::ContactListService(Account account, QObject *parent) :
+		AccountService(account, parent)
 {
 }
 
@@ -139,9 +138,9 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 			targetBuddy = BuddyManager::instance()->byDisplay(buddy.display(), ActionCreate);
 		targetBuddy.setAnonymous(false);
 
-		foreach (const Contact &contact, buddy.contacts(CurrentProtocol->account()))
+		foreach (const Contact &contact, buddy.contacts(account()))
 		{
-			Contact knownContact = ContactManager::instance()->byId(CurrentProtocol->account(), contact.id(), ActionReturnNull);
+			Contact knownContact = ContactManager::instance()->byId(account(), contact.id(), ActionReturnNull);
 			if (knownContact)
 			{
 				// do not import dirty removed contacts unless we will be asking the user
@@ -194,9 +193,9 @@ QVector<Contact> ContactListService::registerBuddies(const BuddyList &buddies)
 
 void ContactListService::setBuddiesList(const BuddyList &buddies, bool removeOldAutomatically)
 {
-	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(CurrentProtocol->account()).toList();
+	QList<Contact> unImportedContacts = ContactManager::instance()->contacts(account()).toList();
 
-	foreach (const Contact &myselfContact, Core::instance()->myself().contacts(CurrentProtocol->account()))
+	foreach (const Contact &myselfContact, Core::instance()->myself().contacts(account()))
 		unImportedContacts.removeAll(myselfContact);
 
 	// now buddies = SERVER_CONTACTS, unImportedContacts = ALL_EVER_HAD_LOCALLY_CONTACTS

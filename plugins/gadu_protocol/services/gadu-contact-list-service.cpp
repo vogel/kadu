@@ -42,7 +42,7 @@
 #include "gadu-contact-list-service.h"
 
 GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
-		ContactListService(protocol), MyAccount(account), StateMachine(new GaduContactListStateMachine(this, protocol))
+		ContactListService(account, protocol), StateMachine(new GaduContactListStateMachine(this, protocol))
 {
 	connect(StateMachine, SIGNAL(awaitingServerGetResponseStateEntered()), SLOT(importContactList()));
 	connect(StateMachine, SIGNAL(awaitingServerPutResponseStateEntered()), SLOT(exportContactList()));
@@ -69,7 +69,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		return;
 	}
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(MyAccount.details());
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 		return;
 
@@ -91,7 +91,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (accountDetails->userlistVersion() != (int)e->event.userlist100_reply.version)
 	{
 		QByteArray content2(content);
-		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(MyAccount, content2);
+		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
 		emit stateMachineFinishedImporting();
 
 		setBuddiesList(buddies, true);
@@ -115,7 +115,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 		emit stateMachineFinishedImporting();
 	}
 
-	if (!ContactManager::instance()->dirtyContacts(MyAccount).isEmpty())
+	if (!ContactManager::instance()->dirtyContacts(account()).isEmpty())
 		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
 }
 
@@ -129,14 +129,14 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 
 	if (e->event.userlist100_reply.type == GG_USERLIST100_REPLY_ACK)
 	{
-		GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(MyAccount.details());
+		GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 		if (accountDetails)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
 			// there is potential possibility that something changed after we sent request but before getting reply
 			// TODO: fix it
-			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(MyAccount))
+			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(account()))
 				contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 			emit stateMachineSucceededExporting();
@@ -168,20 +168,20 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "new version of userlist available: %d\n", e->event.userlist100_version.version);
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(MyAccount.details());
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
 		emit stateMachineNewVersionAvailable();
 }
 
 void GaduContactListService::dirtyContactAdded(Contact contact)
 {
-	if (contact.contactAccount() == MyAccount)
+	if (contact.contactAccount() == account())
 		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
 }
 
 bool GaduContactListService::haveToAskForAddingContacts() const
 {
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(MyAccount.details());
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails) // assert?
 		return true;
 
@@ -205,7 +205,7 @@ void GaduContactListService::importContactList()
 
 void GaduContactListService::exportContactList()
 {
-	exportContactList(BuddyManager::instance()->buddies(MyAccount));
+	exportContactList(BuddyManager::instance()->buddies(account()));
 }
 
 void GaduContactListService::exportContactList(const BuddyList &buddies)
@@ -213,11 +213,11 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	if (!Connection)
 		return;
 
-	QByteArray contacts = GaduListHelper::buddyListToByteArray(MyAccount, buddies);
+	QByteArray contacts = GaduListHelper::buddyListToByteArray(account(), buddies);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
-	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(MyAccount.details());
+	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 		return;
 
@@ -233,12 +233,12 @@ void GaduContactListService::copySupportedBuddyInformation(const Buddy &destinat
 
 QList<Buddy> GaduContactListService::loadBuddyList(QTextStream &dataStream)
 {
-	return GaduListHelper::streamToBuddyList(MyAccount, dataStream);
+	return GaduListHelper::streamToBuddyList(account(), dataStream);
 }
 
 QByteArray GaduContactListService::storeBuddyList(const BuddyList &buddies)
 {
-	return GaduListHelper::buddyListToByteArray(MyAccount, buddies);
+	return GaduListHelper::buddyListToByteArray(account(), buddies);
 }
 
 #include "moc_gadu-contact-list-service.cpp"

@@ -25,19 +25,16 @@
 #ifndef CONTAT_LIST_SERVICE_H
 #define CONTAT_LIST_SERVICE_H
 
-#include <QtCore/QObject>
-
 #include "buddies/buddy-list.h"
 #include "exports.h"
 
-class Contact;
-class Protocol;
+#include "account-service.h"
 
-class KADUAPI ContactListService : public QObject
+class Contact;
+
+class KADUAPI ContactListService : public AccountService
 {
 	Q_OBJECT
-
-	Protocol *CurrentProtocol;
 
 	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
 	QVector<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
@@ -45,7 +42,7 @@ class KADUAPI ContactListService : public QObject
 	QVector<Contact> registerBuddies(const BuddyList &buddies);
 
 public:
-	explicit ContactListService(Protocol *protocol);
+	explicit ContactListService(Account account, QObject *parent = 0);
 	virtual ~ContactListService();
 
 	// it is useful when migrating from 0.9.x to a newer version

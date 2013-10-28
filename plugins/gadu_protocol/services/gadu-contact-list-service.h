@@ -37,7 +37,6 @@ class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
-	Account MyAccount;
 	QWeakPointer<GaduConnection> Connection;
 	GaduContactListStateMachine *StateMachine;
 
