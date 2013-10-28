@@ -43,7 +43,7 @@ static bool operator == (const gg_multilogon_id_t &left, const gg_multilogon_id_
 }
 
 GaduMultilogonService::GaduMultilogonService(Account account, QObject *parent) :
-		MultilogonService(parent), MyAccount(account)
+		MultilogonService(account, parent)
 {
 }
 
@@ -60,7 +60,7 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 {
 	Q_UNUSED(session)
 
-	GaduProtocol *gaduProtocolHandler = dynamic_cast<GaduProtocol *>(MyAccount.protocolHandler());
+	GaduProtocol *gaduProtocolHandler = dynamic_cast<GaduProtocol *>(account().protocolHandler());
 	if (!gaduProtocolHandler || !gaduProtocolHandler->gaduSession())
 		return;
 
@@ -100,7 +100,7 @@ void GaduMultilogonService::addNewSessions(const gg_event_multilogon_info &multi
 	for (int i = 0; i < multilogonInfo.count; i++)
 		if (!containsSession(multilogonInfo.sessions[i]))
 		{
-			GaduMultilogonSession *session = new GaduMultilogonSession(MyAccount, multilogonInfo.sessions[i]);
+			GaduMultilogonSession *session = new GaduMultilogonSession(account(), multilogonInfo.sessions[i]);
 			emit multilogonSessionAboutToBeConnected(session);
 			Sessions.append(session);
 			emit multilogonSessionConnected(session);

@@ -29,16 +29,18 @@
 
 #include <QtCore/QObject>
 
+#include "account-service.h"
+
 #include "exports.h"
 
 class MultilogonSession;
 
-class KADUAPI MultilogonService : public QObject
+class KADUAPI MultilogonService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit MultilogonService(QObject *parent) : QObject(parent) {}
+	explicit MultilogonService(Account account, QObject *parent) : AccountService(account, parent) {}
 
 	virtual const QList<MultilogonSession *> & sessions() const = 0;
 	virtual void killSession(MultilogonSession *session) = 0;
