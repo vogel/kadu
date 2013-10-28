@@ -42,7 +42,7 @@ class GaduContactPersonalInfoService : public ContactPersonalInfoService
 	void handleEventPubdir50Read(struct gg_event *e);
 
 public:
-	GaduContactPersonalInfoService(GaduProtocol *protocol);
+	GaduContactPersonalInfoService(Account account, GaduProtocol *protocol);
 
 	virtual void fetchPersonalInfo(Contact contact);
 

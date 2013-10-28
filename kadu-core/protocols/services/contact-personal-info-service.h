@@ -26,17 +26,17 @@
 #ifndef CONTACT_PERSONAL_INFO_SERVICE_H
 #define CONTACT_PERSONAL_INFO_SERVICE_H
 
-#include <QtCore/QObject>
-
 #include "buddies/buddy.h"
 #include "exports.h"
 
-class KADUAPI ContactPersonalInfoService : public QObject
+#include "protocols/services/account-service.h"
+
+class KADUAPI ContactPersonalInfoService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit ContactPersonalInfoService(QObject *parent) : QObject(parent) {}
+	explicit ContactPersonalInfoService(Account account, QObject *parent) : AccountService(account, parent) {}
 
 	virtual void fetchPersonalInfo(Contact contact) = 0;
 

@@ -99,7 +99,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentContactListService = new GaduContactListService(account, this);
 	CurrentContactListService->setConnection(Connection);
 
-	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(this);
+	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account, this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 	CurrentMultilogonService = new GaduMultilogonService(account, this);

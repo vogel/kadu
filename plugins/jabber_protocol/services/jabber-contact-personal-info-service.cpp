@@ -33,8 +33,8 @@
 
 #include "jabber-contact-personal-info-service.h"
 
-JabberContactPersonalInfoService::JabberContactPersonalInfoService(QObject *parent) :
-		ContactPersonalInfoService(parent)
+JabberContactPersonalInfoService::JabberContactPersonalInfoService(Account account, QObject *parent) :
+		ContactPersonalInfoService(account, parent)
 {
 }
 

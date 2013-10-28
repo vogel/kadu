@@ -32,8 +32,8 @@
 
 #include "gadu-contact-personal-info-service.h"
 
-GaduContactPersonalInfoService::GaduContactPersonalInfoService(GaduProtocol *protocol) :
-		ContactPersonalInfoService(protocol), Protocol(protocol), FetchSeq(0)
+GaduContactPersonalInfoService::GaduContactPersonalInfoService(Account account, GaduProtocol *protocol) :
+		ContactPersonalInfoService(account, protocol), Protocol(protocol), FetchSeq(0)
 {
 }
 
