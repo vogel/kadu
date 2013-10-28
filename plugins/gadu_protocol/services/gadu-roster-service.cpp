@@ -25,8 +25,9 @@
 #include "debug.h"
 
 #include "helpers/gadu-protocol-helper.h"
+#include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "gadu-contact-details.h"
-#include "gadu-protocol-lock.h"
 
 #include "gadu-roster-service.h"
 
@@ -46,31 +47,26 @@ int GaduRosterService::notifyTypeFromContact(const Contact &contact)
 }
 
 GaduRosterService::GaduRosterService(Account account, QObject *parent) :
-		RosterService(account, parent), GaduSession(0)
+		RosterService(account, parent)
 {
 }
 
 GaduRosterService::~GaduRosterService()
 {
 }
-
-void GaduRosterService::setGaduProtocol(GaduProtocol *protocol)
+void GaduRosterService::setConnection(GaduConnection *connection)
 {
-	CurrentProtocol = protocol;
-	RosterService::setProtocol(protocol);
-}
-
-void GaduRosterService::setGaduSession(gg_session *gaduSession)
-{
-	GaduSession = gaduSession;
+	Connection = connection;
 }
 
 void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
+	if (!Connection)
+		return;
+
 	RosterService::prepareRoster(contacts);
 
 	Q_ASSERT(StateNonInitialized == state());
-	Q_ASSERT(GaduSession);
 
 	setState(StateInitializing);
 
@@ -83,8 +79,8 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 
 	if (sendList.isEmpty())
 	{
-		GaduProtocolLock lock(CurrentProtocol.data());
-		gg_notify_ex(GaduSession, 0, 0, 0);
+		auto writableSessionToken = Connection.data()->writableSessionToken();
+		gg_notify_ex(writableSessionToken.get()->rawSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		setState(StateInitialized);
@@ -112,23 +108,22 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 		++i;
 	}
 
-	GaduProtocolLock lock(CurrentProtocol.data());
-	gg_notify_ex(GaduSession, uins.data(), types.data(), count);
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_notify_ex(writableSessionToken.get()->rawSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	setState(StateInitialized);
 	emit rosterReady(true);
 }
 
-void GaduRosterService::updateFlag(int uin, int newFlags, int oldFlags, int flag) const
+void GaduRosterService::updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const
 {
-	if (!GaduSession)
-		return;
+	Q_ASSERT(session);
 
 	if (!(oldFlags & flag) && (newFlags & flag))
-		gg_add_notify_ex(GaduSession, uin, flag);
+		gg_add_notify_ex(session, uin, flag);
 	if ((oldFlags & flag) && !(newFlags & flag))
-		gg_remove_notify_ex(GaduSession, uin, flag);
+		gg_remove_notify_ex(session, uin, flag);
 }
 
 void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
@@ -145,10 +140,10 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 
 	details->setGaduFlags(newFlags);
 
-	GaduProtocolLock lock(CurrentProtocol.data());
-	updateFlag(uin, newFlags, oldFlags, 0x01);
-	updateFlag(uin, newFlags, oldFlags, 0x02);
-	updateFlag(uin, newFlags, oldFlags, 0x04);
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x01);
+	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x02);
+	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x04);
 }
 
 void GaduRosterService::executeTask(const RosterTask &task)

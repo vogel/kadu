@@ -177,8 +177,6 @@ signals:
 	**/
 	void userStatusChangeIgnored(Buddy);
 
-	void gaduSessionChanged(gg_session *newSession);
-
 };
 
 #endif // GADU_PROTOCOL_H

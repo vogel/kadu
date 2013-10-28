@@ -24,20 +24,19 @@
 #ifndef GADU_USERLIST_HANDLER_H
 #define GADU_USERLIST_HANDLER_H
 
-#include <libgadu.h>
-
 #include "protocols/services/roster/roster-service.h"
 
-class GaduProtocol;
+struct gg_session;
+
+class GaduConnection;
 
 class GaduRosterService : public RosterService
 {
 	Q_OBJECT
 
-	gg_session *GaduSession;
-	QWeakPointer<GaduProtocol> CurrentProtocol;
+	QWeakPointer<GaduConnection> Connection;
 
-	void updateFlag(int uin, int newFlags, int oldFlags, int flag) const;
+	void updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const;
 	void sendNewFlags(const Contact &contact, int newFlags) const;
 
 protected:
@@ -49,12 +48,9 @@ public:
 	explicit GaduRosterService(Account account, QObject *parent = 0);
 	virtual ~GaduRosterService();
 
-	void setGaduProtocol(GaduProtocol *protocol);
+	void setConnection(GaduConnection *connection);
 
 	virtual void prepareRoster(const QVector<Contact> &contacts);
-
-public slots:
-	void setGaduSession(gg_session *gaduSession);
 
 };
 

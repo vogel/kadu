@@ -118,16 +118,14 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	        CurrentChatStateService, SLOT(messageReceived(Message)));
 
 	GaduRosterService *rosterService = new GaduRosterService(account, this);
-	rosterService->setGaduProtocol(this);
+	rosterService->setConnection(Connection);
+	rosterService->setProtocol(this);
 
 	setChatService(CurrentChatService);
 	setChatStateService(CurrentChatStateService);
 	setRosterService(rosterService);
 
 	configureServices();
-
-	connect(this, SIGNAL(gaduSessionChanged(gg_session*)),
-	        rosterService, SLOT(setGaduSession(gg_session*)));
 
 	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
 
@@ -263,7 +261,6 @@ void GaduProtocol::login()
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 
-		emit gaduSessionChanged(GaduSession);
 		// here was return... do not re-add it ;)
 	}
 
@@ -287,7 +284,6 @@ void GaduProtocol::login()
 	setupLoginParams();
 
 	GaduSession = gg_login(&GaduLoginParams);
-	emit gaduSessionChanged(GaduSession);
 
 	cleanUpLoginParams();
 
@@ -371,7 +367,6 @@ void GaduProtocol::disconnectedCleanup()
 	{
 		gg_free_session(GaduSession);
 		GaduSession = 0;
-		emit gaduSessionChanged(GaduSession);
 	}
 
 	CurrentMultilogonService->removeAllSessions();
