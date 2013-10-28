@@ -96,7 +96,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 	CurrentChatService->setRawMessageTransformerService(Core::instance()->rawMessageTransformerService());
 	CurrentChatImageService->setGaduChatService(CurrentChatService);
 
-	CurrentContactListService = new GaduContactListService(this);
+	CurrentContactListService = new GaduContactListService(account, this);
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);

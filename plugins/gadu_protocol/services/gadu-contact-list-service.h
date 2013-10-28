@@ -26,6 +26,7 @@
 #ifndef GADU_CONTACT_LIST_SERVICE_H
 #define GADU_CONTACT_LIST_SERVICE_H
 
+#include "accounts/account.h"
 #include "contacts/contact.h"
 #include "protocols/services/contact-list-service.h"
 
@@ -37,6 +38,7 @@ class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
+	Account MyAccount;
 	GaduProtocol *Protocol;
 	GaduContactListStateMachine *StateMachine;
 
@@ -50,7 +52,7 @@ private slots:
 	void dirtyContactAdded(Contact contact);
 
 public:
-	explicit GaduContactListService(GaduProtocol *protocol);
+	explicit GaduContactListService(const Account &account, GaduProtocol *protocol);
 	virtual ~GaduContactListService();
 
 	virtual bool haveToAskForAddingContacts() const;
