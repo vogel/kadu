@@ -33,12 +33,15 @@
 
 #include "exports.h"
 
-class KADUAPI SearchService : public QObject
+#include "account-service.h"
+
+class KADUAPI SearchService : public AccountService
 {
 	Q_OBJECT
 
 public:
-	explicit SearchService(QObject *parent) : QObject(parent) {}
+	explicit SearchService(Account account, QObject *parent) : AccountService(account, parent) {}
+	virtual ~SearchService() {}
 
 	virtual void searchFirst(BuddySearchCriteria criteria) = 0;
 	virtual void searchNext() = 0;

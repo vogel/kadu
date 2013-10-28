@@ -48,7 +48,7 @@ class GaduSearchService : public SearchService
 	void handleEventPubdir50SearchReply(struct gg_event *e);
 
 public:
-	GaduSearchService(GaduProtocol *protocol);
+	GaduSearchService(Account account, GaduProtocol *protocol);
 	virtual void searchFirst(BuddySearchCriteria criteria);
 	virtual void searchNext();
 	virtual void stop();

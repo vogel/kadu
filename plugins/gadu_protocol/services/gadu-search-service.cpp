@@ -31,8 +31,8 @@
 
 #include "gadu-search-service.h"
 
-GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
-		SearchService(protocol), Protocol(protocol), Query(BuddySearchCriteria()),
+GaduSearchService::GaduSearchService(Account account, GaduProtocol *protocol) :
+		SearchService(account, protocol), Protocol(protocol), Query(BuddySearchCriteria()),
 		SearchSeq(0), From(0), Stopped(false)
 {
 }
@@ -49,8 +49,8 @@ void GaduSearchService::searchNext()
 	Stopped = false;
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (Query.SearchBuddy.hasContact(Protocol->account()))
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, Query.SearchBuddy.id(Protocol->account()).toUtf8().constData());
+	if (Query.SearchBuddy.hasContact(account()))
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, Query.SearchBuddy.id(account()).toUtf8().constData());
 	if (!Query.SearchBuddy.firstName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, Query.SearchBuddy.firstName().toUtf8().constData());
 	if (!Query.SearchBuddy.lastName().isEmpty())
@@ -103,7 +103,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
 	for (int i = 0; i < count; i++)
-		results.append(GaduProtocolHelper::searchResultToBuddy(Protocol->account(), res, i));
+		results.append(GaduProtocolHelper::searchResultToBuddy(account(), res, i));
 
 	From = gg_pubdir50_next(res);
 
