@@ -26,6 +26,7 @@
 #include "debug.h"
 
 #include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 #include "gadu-account-details.h"
 
 #include "gadu-chat-image-service.h"
@@ -76,10 +77,9 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 	if (content.isEmpty())
 		return;
 
-	Connection.data()->beginWrite();
-	gg_image_reply(Connection.data()->session(), e->event.image_request.sender, key.toString().toUtf8().constData(),
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_image_reply(writableSessionToken.get()->rawSession(), e->event.image_request.sender, key.toString().toUtf8().constData(),
 			content.constData(), content.length());
-	Connection.data()->endWrite();
 }
 
 void GaduChatImageService::handleEventImageReply(struct gg_event *e)
@@ -111,9 +111,8 @@ void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKe
 	if (id.isEmpty() || imageKey.isNull())
 		return;
 
-	Connection.data()->beginWrite();
-	gg_image_request(Connection.data()->session(), id.toUInt(), imageKey.size(), imageKey.crc32());
-	Connection.data()->endWrite();
+	auto writableSessionToken = Connection.data()->writableSessionToken();
+	gg_image_request(writableSessionToken.get()->rawSession(), id.toUInt(), imageKey.size(), imageKey.crc32());
 }
 
 ChatImageKey GaduChatImageService::prepareImageToBeSent(const QByteArray &imageData)

@@ -46,6 +46,7 @@
 #include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
+#include "server/gadu-writable-session-token.h"
 
 #include "gadu-chat-service.h"
 
@@ -96,8 +97,7 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
 
-	Connection.data()->beginWrite();
-	gg_session *session = Connection.data()->session();
+	auto writableSessionToken = Connection.data()->writableSessionToken();
 
 	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
@@ -106,24 +106,22 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 
 		if (!formats.isEmpty())
-			messageId = gg_send_message_confer_richtext(session, GG_CLASS_CHAT, uinsCount, uins.data(),
+			messageId = gg_send_message_confer_richtext(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
 														(const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message_confer(session, GG_CLASS_CHAT, uinsCount, uins.data(),
+			messageId = gg_send_message_confer(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
 											   (const unsigned char *) rawMessage.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
 		if (!formats.isEmpty())
-			messageId = gg_send_message_richtext(session, GG_CLASS_CHAT, uin,
+			messageId = gg_send_message_richtext(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uin,
 												 (const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message(session, GG_CLASS_CHAT, uin,
+			messageId = gg_send_message(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uin,
 										(const unsigned char *) rawMessage.constData());
 	}
-
-	Connection.data()->endWrite();
 
 	return messageId;
 }

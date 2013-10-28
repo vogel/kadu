@@ -20,9 +20,11 @@
 #ifndef GADU_CONNECTION_H
 #define GADU_CONNECTION_H
 
+#include <memory>
 #include <QtCore/QObject>
 
 struct gg_session;
+class GaduWritableSessionToken;
 
 /**
  * @addtogroup Gadu
@@ -41,24 +43,18 @@ class GaduConnection : public QObject
 {
 	Q_OBJECT
 
+	friend class GaduWritableSessionToken;
+
 protected:
 	explicit GaduConnection(QObject *parent = 0) : QObject(parent) {}
 	virtual ~GaduConnection() {}
-
-public:
-	/**
-	 * @short Return true if connection is valid and has session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if connection is valid and has session
-	 */
-	virtual bool hasSession() = 0;
 
 	/**
 	 * @short Return current libgadu session.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return libgadu session
 	 */
-	virtual gg_session * session() = 0;
+	virtual gg_session * rawSession() = 0;
 
 	/**
 	 * @short Call before writing to connection session.
@@ -73,6 +69,24 @@ public:
 	 * @return true if operation succeeded
 	 */
 	virtual bool endWrite() = 0;
+
+public:
+	/**
+	 * @short Return true if connection is valid and has session.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if connection is valid and has session
+	 */
+	virtual bool hasSession() = 0;
+
+	/**
+	 * @short Return instance of writable session.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return libgadu session
+	 *
+	 * It is safe to send any message to session until object is valid. Sockets will be
+	 * handled properly in meantime.
+	 */
+	virtual std::unique_ptr<GaduWritableSessionToken> writableSessionToken() = 0;
 
 };
 

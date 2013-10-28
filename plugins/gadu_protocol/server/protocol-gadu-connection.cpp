@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "server/gadu-writable-session-token.h"
 #include "gadu-protocol.h"
 
 #include "protocol-gadu-connection.h"
@@ -44,7 +45,7 @@ bool ProtocolGaduConnection::hasSession()
 		return false;
 }
 
-gg_session * ProtocolGaduConnection::session()
+gg_session * ProtocolGaduConnection::rawSession()
 {
 	if (ConnectionProtocol)
 		return ConnectionProtocol.data()->gaduSession();
@@ -68,6 +69,11 @@ bool ProtocolGaduConnection::endWrite()
 
 	ConnectionProtocol.data()->enableSocketNotifiers();
 	return true;
+}
+
+std::unique_ptr<GaduWritableSessionToken> ProtocolGaduConnection::writableSessionToken()
+{
+	return std::unique_ptr<GaduWritableSessionToken>(new GaduWritableSessionToken(this));
 }
 
 #include "moc_protocol-gadu-connection.cpp"

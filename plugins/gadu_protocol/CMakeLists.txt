@@ -73,6 +73,7 @@ set (SOURCES
 	server/gadu-server-unregister-account.cpp
 	server/gadu-servers-manager.cpp
 	server/gadu-token-fetcher.cpp
+	server/gadu-writable-session-token.cpp
 	server/protocol-gadu-connection.cpp
 
 	services/gadu-avatar-service.cpp
@@ -162,7 +163,6 @@ set (MOC_SOURCES
 	gadu-id-validator.h
 	gadu-protocol-factory.h
 	gadu-protocol-plugin.h
-	gadu-protocol.h
 	gadu-url-handler.h
 )
 

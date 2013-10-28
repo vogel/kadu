@@ -45,6 +45,11 @@ class ProtocolGaduConnection : public GaduConnection
 
 	QWeakPointer<GaduProtocol> ConnectionProtocol;
 
+protected:
+	virtual gg_session * rawSession();
+	virtual bool beginWrite();
+	virtual bool endWrite();
+
 public:
 	/**
 	 * @short Create new instance of ProtocolGaduConnection class.
@@ -62,10 +67,7 @@ public:
 	void setConnectionProtocol(GaduProtocol *protocol);
 
 	virtual bool hasSession();
-	virtual gg_session * session();
-
-	virtual bool beginWrite();
-	virtual bool endWrite();
+	virtual std::unique_ptr<GaduWritableSessionToken> writableSessionToken();
 
 };
 
