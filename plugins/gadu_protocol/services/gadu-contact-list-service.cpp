@@ -65,15 +65,11 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!accountDetails)
-	{
-		emit stateMachineInternalError();
 		return;
-	}
 
 	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
-		emit stateMachineInternalError();
 		return;
 	}
 
@@ -81,7 +77,6 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (!content)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
-		emit stateMachineInternalError();
 		return;
 	}
 
@@ -91,7 +86,8 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		QByteArray content2(content);
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(Protocol->account(), content2);
-		emit stateMachineSucceededImporting();
+		emit stateMachineFinishedImporting();
+
 		setBuddiesList(buddies, true);
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 		accountDetails->setInitialRosterImport(false);
@@ -110,7 +106,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
 
-		emit stateMachineSucceededImporting();
+		emit stateMachineFinishedImporting();
 	}
 
 	if (!ContactManager::instance()->dirtyContacts(Protocol->account()).isEmpty())
@@ -200,9 +196,6 @@ void GaduContactListService::importContactList()
 	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	int ret = gg_userlist100_request(Protocol->gaduSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
-
-	if (-1 == ret)
-		emit stateMachineInternalError();
 }
 
 void GaduContactListService::exportContactList()
@@ -218,18 +211,12 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!accountDetails)
-	{
-		emit stateMachineInternalError();
 		return;
-	}
 
 	static_cast<GaduProtocol *>(protocol())->disableSocketNotifiers();
 	int ret = gg_userlist100_request(Protocol->gaduSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	static_cast<GaduProtocol *>(protocol())->enableSocketNotifiers();
-
-	if (-1 == ret)
-		emit stateMachineInternalError();
 }
 
 void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

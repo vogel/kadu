@@ -68,9 +68,8 @@ public slots:
 
 signals:
 	// state machine signals
-	void stateMachineInternalError();
 	void stateMachineNewVersionAvailable();
-	void stateMachineSucceededImporting();
+	void stateMachineFinishedImporting();
 	void stateMachineSucceededExporting();
 	void stateMachineFailedExporting();
 	void stateMachineHasDirtyContacts();

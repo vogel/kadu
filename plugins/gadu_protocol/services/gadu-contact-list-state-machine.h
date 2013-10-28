@@ -32,12 +32,9 @@ class GaduContactListStateMachine : public QStateMachine
 
 	GaduContactListService *CurrentService;
 
-	QTimer RetryTimer;
-
 	QState *OfflineState;
 	QState *AwaitingServerGetResponseState;
 	QState *AwaitingServerPutResponseState;
-	QState *InternalErrorState;
 	QState *NormalState;
 
 private slots:

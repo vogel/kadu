@@ -31,45 +31,29 @@
 GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service) :
 		QStateMachine(service), CurrentService(service)
 {
-	RetryTimer.setInterval(3000);
-	RetryTimer.setSingleShot(true);
-
-	QState *awaitingServerResponseState = new QState(this);
-	QHistoryState *awaitingServerResponseHistoryState = new QHistoryState(awaitingServerResponseState);
-
 	OfflineState = new QState(this);
-	AwaitingServerGetResponseState = new QState(awaitingServerResponseState);
-	AwaitingServerPutResponseState = new QState(awaitingServerResponseState);
-	InternalErrorState = new QState(this);
+	AwaitingServerGetResponseState = new QState(this);
+	AwaitingServerPutResponseState = new QState(this);
 	NormalState = new QState(this);
 
 	connect(OfflineState, SIGNAL(entered()), SLOT(printConfiguration()));
 	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SLOT(printConfiguration()));
 	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SLOT(printConfiguration()));
-	connect(InternalErrorState, SIGNAL(entered()), SLOT(printConfiguration()));
 	connect(NormalState, SIGNAL(entered()), SLOT(printConfiguration()));
 
 	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SIGNAL(awaitingServerGetResponseStateEntered()));
 	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SIGNAL(awaitingServerPutResponseStateEntered()));
-
-	connect(InternalErrorState, SIGNAL(entered()), &RetryTimer, SLOT(start()));
-	connect(InternalErrorState, SIGNAL(exited()), &RetryTimer, SLOT(stop()));
 
 	Protocol *protocol = CurrentService->protocol();
 
 	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), AwaitingServerGetResponseState);
 
 	AwaitingServerGetResponseState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	AwaitingServerGetResponseState->addTransition(CurrentService, SIGNAL(stateMachineInternalError()), InternalErrorState);
-	AwaitingServerGetResponseState->addTransition(CurrentService, SIGNAL(stateMachineSucceededImporting()), NormalState);
+	AwaitingServerGetResponseState->addTransition(CurrentService, SIGNAL(stateMachineFinishedImporting()), NormalState);
 
 	AwaitingServerPutResponseState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	AwaitingServerPutResponseState->addTransition(CurrentService, SIGNAL(stateMachineInternalError()), InternalErrorState);
 	AwaitingServerPutResponseState->addTransition(CurrentService, SIGNAL(stateMachineSucceededExporting()), NormalState);
 	AwaitingServerPutResponseState->addTransition(CurrentService, SIGNAL(stateMachineFailedExporting()), AwaitingServerGetResponseState);
-
-	InternalErrorState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	InternalErrorState->addTransition(&RetryTimer, SIGNAL(timeout()), awaitingServerResponseHistoryState);
 
 	NormalState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
 	NormalState->addTransition(CurrentService, SIGNAL(stateMachineNewVersionAvailable()), AwaitingServerGetResponseState);
@@ -95,8 +79,6 @@ void GaduContactListStateMachine::printConfiguration()
 		states.append("awaiting-server-get-response");
 	if (configuration().contains(AwaitingServerPutResponseState))
 		states.append("awaiting-server-put-response");
-	if (configuration().contains(InternalErrorState))
-		states.append("internal-error");
 	if (configuration().contains(NormalState))
 		states.append("normal");
 
