@@ -48,8 +48,6 @@ public:
 	explicit ContactListService(Protocol *protocol);
 	virtual ~ContactListService();
 
-	Protocol * protocol() const { return CurrentProtocol; }
-
 	// it is useful when migrating from 0.9.x to a newer version
 	// TODO 0.14: remove
 	virtual bool haveToAskForAddingContacts() const = 0;
