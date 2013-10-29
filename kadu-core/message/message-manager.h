@@ -44,7 +44,7 @@ class MessageTransformerService;
  * @short Manager of messages used in Kadu.
  * @author Rafał 'Vogel' Malinowski
  *
- * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permament storage.
+ * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permanent storage.
  * Pending message is an incoming message that have not ever been displayed to user.
  */
 class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAwareObject
