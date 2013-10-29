@@ -44,8 +44,8 @@
 GaduContactListService::GaduContactListService(const Account &account, Protocol *protocol) :
 		ContactListService(account, protocol), StateMachine(new GaduContactListStateMachine(this, protocol))
 {
-	connect(StateMachine, SIGNAL(awaitingServerGetResponseStateEntered()), SLOT(importContactList()));
-	connect(StateMachine, SIGNAL(awaitingServerPutResponseStateEntered()), SLOT(exportContactList()));
+	connect(StateMachine, SIGNAL(performGet()), SLOT(importContactList()));
+	connect(StateMachine, SIGNAL(performPut()), SLOT(exportContactList()));
 
 	connect(ContactManager::instance(), SIGNAL(dirtyContactAdded(Contact)), SLOT(dirtyContactAdded(Contact)));
 
@@ -63,7 +63,7 @@ void GaduContactListService::setConnection(GaduConnection *connection)
 
 void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 {
-	if (!StateMachine->awaitingServerGetResponse())
+	if (!StateMachine->isPerformingGet())
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 get reply, ignoring\n");
 		return;
@@ -71,11 +71,15 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
+	{
+		emit stateMachineGetFailed();
 		return;
+	}
 
 	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
+		emit stateMachineGetFailed();
 		return;
 	}
 
@@ -83,6 +87,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (!content)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
+		emit stateMachineGetFailed();
 		return;
 	}
 
@@ -92,7 +97,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		QByteArray content2(content);
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
-		emit stateMachineFinishedImporting();
+		emit stateMachineGetFinished();
 
 		setBuddiesList(buddies, true);
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
@@ -112,16 +117,13 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
 
-		emit stateMachineFinishedImporting();
+		emit stateMachineGetFinished();
 	}
-
-	if (!ContactManager::instance()->dirtyContacts(account()).isEmpty())
-		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
 }
 
 void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 {
-	if (!StateMachine->awaitingServerPutResponse())
+	if (!StateMachine->isPerformingPut())
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got unexpected userlist 100 put reply, ignoring\n");
 		return;
@@ -139,13 +141,13 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(account()))
 				contact.rosterEntry()->setState(RosterEntrySynchronized);
 
-			emit stateMachineSucceededExporting();
+			emit stateMachinePutFinished();
 
 			return;
 		}
 	}
 
-	emit stateMachineFailedExporting();
+	emit stateMachinePutFailed();
 }
 
 void GaduContactListService::handleEventUserlist100Reply(struct gg_event *e)
@@ -170,13 +172,13 @@ void GaduContactListService::handleEventUserlist100Version(gg_event *e)
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (accountDetails && accountDetails->userlistVersion() != (int)e->event.userlist100_version.version)
-		emit stateMachineNewVersionAvailable();
+		emit stateMachineRemoteDirty();
 }
 
 void GaduContactListService::dirtyContactAdded(Contact contact)
 {
 	if (contact.contactAccount() == account())
-		QMetaObject::invokeMethod(this, "stateMachineHasDirtyContacts", Qt::QueuedConnection);
+		QMetaObject::invokeMethod(this, "stateMachineLocalDirty", Qt::QueuedConnection);
 }
 
 bool GaduContactListService::haveToAskForAddingContacts() const
@@ -199,8 +201,12 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
+	emit stateMachineGetStarted();
+
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_userlist100_request(writableSessionToken.get()->rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
+	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
+	if (-1 == ret)
+		emit stateMachineGetFailed();
 }
 
 void GaduContactListService::exportContactList()
@@ -213,17 +219,24 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	if (!Connection)
 		return;
 
+	emit stateMachinePutStarted();
+
 	QByteArray contacts = GaduListHelper::buddyListToByteArray(account(), buddies);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", contacts.constData());
 
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
+	{
+		emit stateMachinePutFailed();
 		return;
+	}
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_userlist100_request(writableSessionToken.get()->rawSession(),
+	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
+	if (-1 == ret)
+		emit stateMachinePutFailed();
 }
 
 void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

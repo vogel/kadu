@@ -31,36 +31,71 @@
 GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol) :
 		QStateMachine(service), CurrentService(service)
 {
-	OfflineState = new QState(this);
-	AwaitingServerGetResponseState = new QState(this);
-	AwaitingServerPutResponseState = new QState(this);
-	NormalState = new QState(this);
+	auto globalState = new QState(ParallelStates);
 
-	connect(OfflineState, SIGNAL(entered()), SLOT(printConfiguration()));
-	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SLOT(printConfiguration()));
-	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SLOT(printConfiguration()));
-	connect(NormalState, SIGNAL(entered()), SLOT(printConfiguration()));
+	WorkState = new QState(globalState);
+	OfflineState = new QState(WorkState);
+	IdleState = new QState(WorkState);
+	PutState = new QState(WorkState);
+	GetState = new QState(WorkState);
 
-	connect(AwaitingServerGetResponseState, SIGNAL(entered()), SIGNAL(awaitingServerGetResponseStateEntered()));
-	connect(AwaitingServerPutResponseState, SIGNAL(entered()), SIGNAL(awaitingServerPutResponseStateEntered()));
+	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), IdleState);
+	IdleState->addTransition(service, SIGNAL(stateMachinePutStarted()), PutState);
+	IdleState->addTransition(service, SIGNAL(stateMachineGetStarted()), GetState);
+	IdleState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
+	PutState->addTransition(service, SIGNAL(stateMachinePutFinished()), IdleState);
+	PutState->addTransition(service, SIGNAL(stateMachinePutFailed()), IdleState);
+	PutState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
+	GetState->addTransition(service, SIGNAL(stateMachineGetFinished()), IdleState);
+	GetState->addTransition(service, SIGNAL(stateMachineGetFailed()), IdleState);
+	GetState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
 
-	OfflineState->addTransition(protocol, SIGNAL(connected(Account)), AwaitingServerGetResponseState);
+	LocalState = new QState(globalState);
+	LocalCleanState = new QState(LocalState);
+	LocalDirtyState = new QState(LocalState);
+	LocalFailedState = new QState(LocalState);
 
-	AwaitingServerGetResponseState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	AwaitingServerGetResponseState->addTransition(CurrentService, SIGNAL(stateMachineFinishedImporting()), NormalState);
+	LocalCleanState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
+	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalCleanState);
+	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalFailedState);
+	LocalFailedState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
+	LocalFailedState->addTransition(protocol, SIGNAL(connected(Account)), LocalDirtyState);
+	LocalFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
 
-	AwaitingServerPutResponseState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	AwaitingServerPutResponseState->addTransition(CurrentService, SIGNAL(stateMachineSucceededExporting()), NormalState);
-	AwaitingServerPutResponseState->addTransition(CurrentService, SIGNAL(stateMachineFailedExporting()), AwaitingServerGetResponseState);
+	RemoteState = new QState(globalState);
+	RemoteCleanState = new QState(RemoteState);
+	RemoteDirtyState = new QState(RemoteState);
+	RemoteFailedState = new QState(RemoteState);
 
-	NormalState->addTransition(protocol, SIGNAL(disconnected(Account)), OfflineState);
-	NormalState->addTransition(CurrentService, SIGNAL(stateMachineNewVersionAvailable()), AwaitingServerGetResponseState);
-	NormalState->addTransition(CurrentService, SIGNAL(stateMachineHasDirtyContacts()), AwaitingServerPutResponseState);
+	RemoteCleanState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
+	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteCleanState);
+	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteFailedState);
+	RemoteFailedState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
+	RemoteFailedState->addTransition(protocol, SIGNAL(connected(Account)), RemoteDirtyState);
+	RemoteFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
 
-	if (protocol->isConnected())
-		setInitialState(AwaitingServerGetResponseState);
-	else
-		setInitialState(OfflineState);
+	LocalState->setInitialState(LocalCleanState);
+	RemoteState->setInitialState(RemoteDirtyState);
+	WorkState->setInitialState(protocol->isConnected() ? IdleState : OfflineState);
+
+	connect(IdleState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+	connect(LocalDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+	connect(RemoteDirtyState, SIGNAL(entered()), this, SLOT(checkIfSynchronizationRequired()));
+
+	connect(OfflineState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(IdleState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(PutState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(GetState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LocalCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LocalDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LocalFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(RemoteCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(RemoteDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(RemoteFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+
+	addState(globalState);
+
+	setInitialState(globalState);
 }
 
 GaduContactListStateMachine::~GaduContactListStateMachine()
@@ -73,24 +108,54 @@ void GaduContactListStateMachine::printConfiguration()
 
 	if (configuration().contains(OfflineState))
 		states.append("offline");
-	if (configuration().contains(AwaitingServerGetResponseState))
-		states.append("awaiting-server-get-response");
-	if (configuration().contains(AwaitingServerPutResponseState))
-		states.append("awaiting-server-put-response");
-	if (configuration().contains(NormalState))
-		states.append("normal");
+	if (configuration().contains(IdleState))
+		states.append("idle");
+	if (configuration().contains(PutState))
+		states.append("put");
+	if (configuration().contains(GetState))
+		states.append("get");
+	if (configuration().contains(LocalCleanState))
+		states.append("local-clean");
+	if (configuration().contains(LocalDirtyState))
+		states.append("local-dirty");
+	if (configuration().contains(LocalFailedState))
+		states.append("local-failed");
+	if (configuration().contains(RemoteCleanState))
+		states.append("remote-clean");
+	if (configuration().contains(RemoteDirtyState))
+		states.append("remote-dirty");
+	if (configuration().contains(RemoteFailedState))
+		states.append("remote-failed");
 
 	kdebugm(KDEBUG_INFO, "Gadu contact list state machine: [%s]\n", qPrintable(states.join(", ")));
 }
 
-bool GaduContactListStateMachine::awaitingServerGetResponse() const
+void GaduContactListStateMachine::checkIfSynchronizationRequired()
 {
-	return configuration().contains(AwaitingServerGetResponseState);
+	if (shouldPerformGet())
+		emit performGet();
+	else if (shouldPerformPut())
+		emit performPut();
 }
 
-bool GaduContactListStateMachine::awaitingServerPutResponse() const
+bool GaduContactListStateMachine::shouldPerformPut() const
 {
-	return configuration().contains(AwaitingServerPutResponseState);
+	return configuration().contains(IdleState) && configuration().contains(LocalDirtyState) && !configuration().contains(RemoteDirtyState);
+}
+
+bool GaduContactListStateMachine::isPerformingPut() const
+{
+	return configuration().contains(PutState);
+}
+
+bool GaduContactListStateMachine::shouldPerformGet() const
+{
+	return configuration().contains(IdleState) && configuration().contains(RemoteDirtyState);
+}
+
+bool GaduContactListStateMachine::isPerformingGet() const
+{
+	return configuration().contains(GetState);
 }
 
 #include "moc_gadu-contact-list-state-machine.cpp"

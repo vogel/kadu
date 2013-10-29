@@ -34,24 +34,39 @@ class GaduContactListStateMachine : public QStateMachine
 
 	GaduContactListService *CurrentService;
 
+	QState *WorkState;
 	QState *OfflineState;
-	QState *AwaitingServerGetResponseState;
-	QState *AwaitingServerPutResponseState;
-	QState *NormalState;
+	QState *IdleState;
+	QState *PutState;
+	QState *GetState;
+
+	QState *LocalState;
+	QState *LocalCleanState;
+	QState *LocalDirtyState;
+	QState *LocalFailedState;
+
+	QState *RemoteState;
+	QState *RemoteCleanState;
+	QState *RemoteDirtyState;
+	QState *RemoteFailedState;
 
 private slots:
+	void checkIfSynchronizationRequired();
 	void printConfiguration();
 
 public:
 	explicit GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol);
 	virtual ~GaduContactListStateMachine();
 
-	bool awaitingServerGetResponse() const;
-	bool awaitingServerPutResponse() const;
+	bool shouldPerformPut() const;
+	bool isPerformingPut() const;
+
+	bool shouldPerformGet() const;
+	bool isPerformingGet() const;
 
 signals:
-	void awaitingServerGetResponseStateEntered();
-	void awaitingServerPutResponseStateEntered();
+	void performPut();
+	void performGet();
 
 };
 

@@ -70,11 +70,16 @@ public slots:
 
 signals:
 	// state machine signals
-	void stateMachineNewVersionAvailable();
-	void stateMachineFinishedImporting();
-	void stateMachineSucceededExporting();
-	void stateMachineFailedExporting();
-	void stateMachineHasDirtyContacts();
+	void stateMachinePutStarted();
+	void stateMachinePutFinished();
+	void stateMachinePutFailed();
+
+	void stateMachineGetStarted();
+	void stateMachineGetFinished();
+	void stateMachineGetFailed();
+
+	void stateMachineLocalDirty();
+	void stateMachineRemoteDirty();
 
 };
 
