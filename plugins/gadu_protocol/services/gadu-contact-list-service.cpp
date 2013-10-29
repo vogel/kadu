@@ -50,6 +50,9 @@ GaduContactListService::GaduContactListService(const Account &account, Protocol 
 	connect(ContactManager::instance(), SIGNAL(dirtyContactAdded(Contact)), SLOT(dirtyContactAdded(Contact)));
 
 	StateMachine->start();
+
+	if (!ContactManager::instance()->dirtyContacts(account).isEmpty())
+		emit stateMachineLocalDirty();
 }
 
 GaduContactListService::~GaduContactListService()
