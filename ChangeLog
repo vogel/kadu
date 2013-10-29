@@ -3,6 +3,7 @@
 * chat: #2696 fixed: do not open chat window when message is sent for Gadu-Gadu multilogon (Vogel)
 * gui: #2678 fixed: remove new line characters from window title (Vogel)
 * imagelink: #2676 fixed: improve image links recognition (Vogel)
+* hints: #2677 fixed: allow wrapping text inside tool tip (Vogel)
 
 +++ version 1.0-alpha1
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)

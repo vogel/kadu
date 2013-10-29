@@ -547,9 +547,10 @@ void HintManager::showToolTip(const QPoint &point, Talkable talkable)
 	lay->setSizeConstraint(QLayout::SetFixedSize);
 
 	QLabel *tipLabel = new QLabel(tipFrame);
-	tipLabel->setTextFormat(Qt::RichText);
 	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	tipLabel->setContentsMargins(10, 10, 10, 10);
+	tipLabel->setTextFormat(Qt::RichText);
+	tipLabel->setWordWrap(true);
 
 	lay->addWidget(tipLabel);
 
