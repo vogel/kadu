@@ -62,8 +62,10 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	LocalCleaningState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalCleaningDirtyState);
 	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalCleanState);
 	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalFailedState);
+	LocalCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
 	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalDirtyState);
 	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalDirtyState);
+	LocalCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
 	LocalFailedState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
 	LocalFailedState->addTransition(protocol, SIGNAL(connected(Account)), LocalDirtyState);
 	LocalFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
@@ -80,8 +82,10 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteCleaningDirtyState);
 	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteCleanState);
 	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteFailedState);
+	RemoteCleaningState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
 	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteDirtyState);
 	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteDirtyState);
+	RemoteCleaningDirtyState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
 	RemoteFailedState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
 	RemoteFailedState->addTransition(protocol, SIGNAL(connected(Account)), RemoteDirtyState);
 	RemoteFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
