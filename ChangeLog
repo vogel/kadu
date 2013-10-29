@@ -4,6 +4,7 @@
 * gui: #2678 fixed: remove new line characters from window title (Vogel)
 * imagelink: #2676 fixed: improve image links recognition (Vogel)
 * hints: #2677 fixed: allow wrapping text inside tool tip (Vogel)
+* history: #2681 fixed: allow to maximize history windows on all Window Managers (Vogel)
 
 +++ version 1.0-alpha1
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)

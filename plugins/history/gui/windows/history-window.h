@@ -24,7 +24,7 @@
 #ifndef HISTORY_WINDOW_H
 #define HISTORY_WINDOW_H
 
-#include <QtGui/QDialog>
+#include <QtGui/QWidget>
 
 class QTabWidget;
 
@@ -38,7 +38,7 @@ class SearchTab;
 \class HistoryWindow
 \author Juzef, Vogel
 */
-class HistoryWindow : public QDialog
+class HistoryWindow : public QWidget
 {
 	Q_OBJECT
 
@@ -64,6 +64,9 @@ class HistoryWindow : public QDialog
 private slots:
 	void currentTabChanged(int newTabIndex);
 	void storageChanged(HistoryStorage *historyStorage);
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	static HistoryWindow * instance();

@@ -66,7 +66,7 @@ void HistoryWindow::show(const Chat &chat)
 }
 
 HistoryWindow::HistoryWindow(QWidget *parent) :
-		QDialog(parent), CurrentTab(-1)
+		QWidget(parent), CurrentTab(-1)
 {
 	setWindowRole("kadu-history");
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -130,6 +130,14 @@ void HistoryWindow::createGui()
 	layout->addWidget(buttons);
 
 	ChatTab->setFocus();
+}
+
+void HistoryWindow::keyPressEvent(QKeyEvent *event)
+{
+	QWidget::keyPressEvent(event);
+
+	if (event->key() == Qt::Key_Escape)
+		close();
 }
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
