@@ -79,7 +79,7 @@ static void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(QObject *parent) :
-		ConfigurationUiHandler(parent), NoTabs(false), ForceTabs(false), TargetTabs(-1)
+		ConfigurationUiHandler(parent), ForceTabs(false), TargetTabs(-1)
 {
 	kdebugf();
 
@@ -166,9 +166,8 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chatWidget->chat().addProperty("tabs:fix2626", true, CustomProperties::Storable);
 
-	if (NoTabs)
+	if (chatWidget->chat().property("tabs:detached", false).toBool())
 	{
-		NoTabs = false;
 		DetachedChats.append(chatWidget);
 		return;
 	}
@@ -308,7 +307,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	else
 	{
 		if (ConfigDefaultTabs)
-			NoTabs = true;
+			chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 		// w miejsce recznego dodawania chata do kart automatyczne ;)
 		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
@@ -322,6 +321,8 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 void TabsManager::insertTab(ChatWidget *chatWidget)
 {
 	kdebugf();
+
+	chatWidget->chat().removeProperty("tabs:detached");
 
 	bool restoreChatGeometry = true;
 
@@ -562,11 +563,11 @@ bool TabsManager::detachChat(ChatWidget *chatWidget)
 	kdebugf();
 	if (TabDialog->indexOf(chatWidget) == -1)
 		return false;
-	const Chat &chat = chatWidget->chat();
+	auto chat = chatWidget->chat();
 	delete chatWidget;
 
 	// omg this is bad
-	NoTabs = true;
+	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 	ChatWidget * const detachedChatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (detachedChatWidget)
 		detachedChatWidget->activate();
@@ -602,7 +603,7 @@ void TabsManager::load()
 			if (element.attribute("type") == "tab")
 				ForceTabs = true;
 			else if (element.attribute("type") == "detachedChat")
-				NoTabs = true;
+				chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 			ChatWidgetManager::instance()->byChat(chat, true);
 		}
 		else if (element.attribute("type") == "tab")

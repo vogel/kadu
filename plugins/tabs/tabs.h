@@ -65,7 +65,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QList<ChatWidget *> NewChats;
 	QList<ChatWidget *> DetachedChats;
 	QList<Chat> ClosedChats;
-	bool NoTabs;
 	bool ForceTabs;
 
 	int TargetTabs;
