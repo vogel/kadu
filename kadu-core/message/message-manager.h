@@ -88,9 +88,6 @@ protected:
 public:
 	static MessageManager * instance();
 
-	virtual StorableObject * storageParent() { return 0; }
-	virtual QString storageNodeName() { return QLatin1String("Messages"); }
-
 	/**
 	 * @short Set message filter service for this service.
 	 * @author Rafał 'Vogel' Malinowski
@@ -155,15 +152,6 @@ public:
 	 */
 	bool sendRawMessage(const Chat &chat, const QByteArray &content);
 
-	/**
-	 * @short Returns count of unread messages in manager.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return count of unread messages in manager
-	 *
-	 * Returns count of unread messages in manager.
-	 */
-	quint16 unreadMessagesCount() const;
-
 signals:
 	/**
 	 * @short Signal emited every time a message is received from one of registered acocunts.
@@ -183,24 +171,6 @@ signals:
 	 * This signal is emited every time a message is sent trought one of registered acocunts.
 	 */
 	void messageSent(const Message &message);
-
-	/**
-	 * @short Signal emited every time an unread message is added to manager.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message added unread message
-	 *
-	 * This signal is emited every time an unread message is added to manager.
-	 */
-	void unreadMessageAdded(const Message &message);
-
-	/**
-	 * @short Signal emited every time an unread message is removed from manager.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message removed unread message
-	 *
-	 * This signal is emited every time an unread message is removed from manager.
-	 */
-	void unreadMessageRemoved(const Message &message);
 
 };
 
