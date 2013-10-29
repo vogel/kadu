@@ -36,11 +36,12 @@
 #include "chat/type/chat-type.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
 #include "storage/custom-properties-variant-wrapper.h"
 
@@ -48,6 +49,7 @@
 #include "debug.h"
 
 #include "chat-window.h"
+#include <core/core.h>
 
 ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 		QWidget(parent), DesktopAwareObject(this), currentChatWidget(chatWidget),
@@ -225,7 +227,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		if (_isActiveWindow(this))
 		{
 
-			MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
+			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(currentChatWidget->chat());
 			setWindowTitle(currentChatWidget->title());
 			title_timer->stop();
 		}
@@ -256,7 +258,7 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		MessageManager::instance()->markAllMessagesAsRead(currentChatWidget->chat());
+		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(currentChatWidget->chat());
 		return;
 	}
 

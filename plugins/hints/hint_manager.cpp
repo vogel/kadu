@@ -44,6 +44,7 @@
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/chat-notification.h"
@@ -328,11 +329,11 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 		case 2:
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 			{
-				QList<Message> unreadMessages = MessageManager::instance()->chatUnreadMessages(hint->chat());
+				QList<Message> unreadMessages = Core::instance()->unreadMessageRepository()->chatUnreadMessages(hint->chat());
 				foreach (const Message &message, unreadMessages)
 				{
 					message.setStatus(MessageStatusRead);
-					MessageManager::instance()->removeUnreadMessage(message);
+					Core::instance()->unreadMessageRepository()->removeUnreadMessage(message);
 				}
 			}
 

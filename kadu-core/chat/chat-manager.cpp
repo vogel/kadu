@@ -25,7 +25,8 @@
 #include "chat/chat-details-contact-set.h"
 #include "chat/chat-details-contact.h"
 #include "chat/type/chat-type-manager.h"
-#include "message/message-manager.h"
+#include "core/core.h"
+#include "message/unread-message-repository.h"
 
 #include "chat-manager.h"
 
@@ -53,20 +54,20 @@ ChatManager::ChatManager()
 
 ChatManager::~ChatManager()
 {
-	disconnect(MessageManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
 
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageRemoved(message);
 }
 
 void ChatManager::init()
 {
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageAdded(message);
 
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
 	        this, SLOT(unreadMessageAdded(Message)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 

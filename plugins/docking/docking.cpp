@@ -51,7 +51,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "services/notification-service.h"
@@ -115,9 +115,9 @@ DockingManager::DockingManager() :
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
 	        this, SLOT(unreadMessageAdded()));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
 	        this, SLOT(unreadMessageRemoved()));
 
 	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(searchingForTrayPosition(QPoint&)));
@@ -175,7 +175,7 @@ DockingManager::~DockingManager()
 void DockingManager::changeIcon()
 {
 	kdebugf();
-	if (!MessageManager::instance()->hasUnreadMessages() && !icon_timer->isActive())
+	if (!Core::instance()->unreadMessageRepository()->hasUnreadMessages() && !icon_timer->isActive())
 		return;
 
 	switch (newMessageIcon)
@@ -226,7 +226,7 @@ void DockingManager::unreadMessageRemoved()
 	MacDockingHelper::instance()->overlay(MessageManager::instance()->unreadMessagesCount());
 	MacDockingHelper::instance()->stopBounce();
 #endif
-	if (!MessageManager::instance()->hasUnreadMessages())
+	if (!Core::instance()->unreadMessageRepository()->hasUnreadMessages())
 		if (CurrentDocker)
 			CurrentDocker->changeTrayIcon(defaultIcon());
 }
@@ -400,7 +400,7 @@ void DockingManager::hideKaduWindow()
 
 void DockingManager::openUnreadMessages()
 {
-	const Message &message = MessageManager::instance()->unreadMessage();
+	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), true);
 	if (chatWidget)
 		chatWidget->activate();
@@ -423,7 +423,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 
-		if (MessageManager::instance()->hasUnreadMessages() && (e->modifiers() != Qt::ControlModifier))
+		if (Core::instance()->unreadMessageRepository()->hasUnreadMessages() && (e->modifiers() != Qt::ControlModifier))
 		{
 			openUnreadMessages();
 			return;
@@ -457,7 +457,7 @@ void DockingManager::statusIconChanged(const KaduIcon &icon)
 {
 	kdebugf();
 
-	if (MessageManager::instance()->hasUnreadMessages() || icon_timer->isActive())
+	if (Core::instance()->unreadMessageRepository()->hasUnreadMessages() || icon_timer->isActive())
 		return;
 
 	if (CurrentDocker)
@@ -684,7 +684,7 @@ void DockingManager::dockIconClicked()
 {
 	QWidget *kadu = Core::instance()->kaduWindow()->window();
 
-	if (MessageManager::instance()->hasUnreadMessages())
+	if (Core::instance()->unreadMessageRepository()->hasUnreadMessages())
 	{
 		openUnreadMessages();
 		return;

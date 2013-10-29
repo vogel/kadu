@@ -34,6 +34,7 @@
 #include "formatted-string/formatted-string.h"
 #include "message/message-manager.h"
 #include "message/message.h"
+#include "message/unread-message-repository.h"
 #include "misc/change-notifier.h"
 
 #include "message-shared.h"
@@ -78,7 +79,7 @@ void MessageShared::setFormattedStringFactory(FormattedStringFactory *formattedS
 
 StorableObject * MessageShared::storageParent()
 {
-	return MessageManager::instance();
+	return Core::instance()->unreadMessageRepository();
 }
 
 QString MessageShared::storageNodeName()

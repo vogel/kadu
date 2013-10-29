@@ -23,7 +23,7 @@
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/kadu-icon.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
 #include "provider/default-provider.h"
 #include "activate.h"
@@ -170,7 +170,7 @@ void SingleWindow::changeEvent(QEvent *event)
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
 		if (chatWidget && _isActiveWindow(this))
 		{
-			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 			updateTabIcon(chatWidget);
 			updateTabName(chatWidget);
 		}
@@ -312,7 +312,7 @@ void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 		return;
 	}
 
@@ -341,7 +341,7 @@ void SingleWindow::onTabChange(int index)
 		return;
 
 	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
-	MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+	Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
 }

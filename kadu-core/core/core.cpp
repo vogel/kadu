@@ -63,6 +63,7 @@
 #include "icons/kadu-icon.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
@@ -440,10 +441,10 @@ void Core::init()
 	AccountManager::instance()->ensureLoaded();
 	BuddyManager::instance()->ensureLoaded();
 	ContactManager::instance()->ensureLoaded();
-	// Without that MessageManager is loaded while filtering buddies list for the first time.
-	// It has to happen earlier because MessageManager::loaded() might add buddies to the BuddyManager
+	// Without that UnreadMessageRepository is loaded while filtering buddies list for the first time.
+	// It has to happen earlier because UnreadMessageRepository::loaded() might add buddies to the BuddyManager
 	// which (the buddies) otherwise will not be taken into account by buddies list before its next update.
-	MessageManager::instance()->ensureLoaded();
+	CurrentUnreadMessageRepository->ensureLoaded();
 	AvatarManager::instance(); // initialize that
 
 #if WITH_LIBINDICATE_QT
@@ -563,6 +564,7 @@ void Core::runServices()
 	CurrentBuddyConfigurationWidgetFactoryRepository = new BuddyConfigurationWidgetFactoryRepository(this);
 	CurrentChatConfigurationWidgetFactoryRepository = new ChatConfigurationWidgetFactoryRepository(this);
 	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
+	CurrentUnreadMessageRepository = new UnreadMessageRepository(this);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -582,6 +584,8 @@ void Core::runServices()
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
+
+	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), CurrentUnreadMessageRepository, SLOT(addUnreadMessage(Message)));
 }
 
 void Core::runGuiServices()
@@ -667,6 +671,11 @@ ChatConfigurationWidgetFactoryRepository * Core::chatConfigurationWidgetFactoryR
 ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() const
 {
 	return CurrentChatTopBarWidgetFactoryRepository;
+}
+
+UnreadMessageRepository * Core::unreadMessageRepository() const
+{
+	return CurrentUnreadMessageRepository;
 }
 
 void Core::showMainWindow()

@@ -45,7 +45,7 @@
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "icons/kadu-icon.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "activate.h"
 #include "kadu-application.h"
@@ -208,7 +208,7 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 		return;
 	}
 
@@ -428,7 +428,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
-			MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 		kdebugf2();
 	}
 }

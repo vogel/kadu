@@ -29,7 +29,7 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-parser-tags.h"
 #include "core/core.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 #include "protocols/services/roster/roster-entry.h"
@@ -62,9 +62,9 @@ ContactManager::ContactManager()
 
 ContactManager::~ContactManager()
 {
-	disconnect(MessageManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
 
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageRemoved(message);
 
 	ContactParserTags::unregisterParserTags();
@@ -77,12 +77,12 @@ void ContactManager::init()
 
 	ContactParserTags::registerParserTags();
 
-	foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+	foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 		unreadMessageAdded(message);
 
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)),
 	        this, SLOT(unreadMessageAdded(Message)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)),
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)),
 	        this, SLOT(unreadMessageRemoved(Message)));
 }
 

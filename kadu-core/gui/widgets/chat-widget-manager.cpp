@@ -40,6 +40,7 @@
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
+#include "message/unread-message-repository.h"
 #include "protocols/protocol-factory.h"
 #include "services/notification-service.h"
 #include "activate.h"
@@ -238,7 +239,7 @@ QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 {
 	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 	const Chat &unreadChat = buddyChat ? buddyChat : chat;
-	const QList<Message> &unreadMessages = MessageManager::instance()->chatUnreadMessages(unreadChat);
+	const QList<Message> &unreadMessages = Core::instance()->unreadMessageRepository()->chatUnreadMessages(unreadChat);
 
 	foreach (const Message &message, unreadMessages)
 	{

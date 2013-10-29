@@ -25,11 +25,9 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "message/message.h"
-#include "storage/simple-manager.h"
 
 #include "exports.h"
 
-class Buddy;
 class FormattedStringFactory;
 class MessageFilterService;
 class MessageTransformerService;
@@ -47,7 +45,7 @@ class MessageTransformerService;
  * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permanent storage.
  * Pending message is an incoming message that have not ever been displayed to user.
  */
-class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAwareObject
+class KADUAPI MessageManager : public QObject, public AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(MessageManager)
@@ -58,12 +56,8 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 	QWeakPointer<MessageTransformerService> CurrentMessageTransformerService;
 	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
-	QList<Message> UnreadMessages;
-
 	MessageManager();
 	virtual ~MessageManager();
-
-	void init();
 
 	/**
 	 * @short Create outoing message for given chat and given content.
@@ -72,16 +66,6 @@ class KADUAPI MessageManager : public QObject, public StorableObject, AccountsAw
 	 * @param content content of outgoing message
 	 */
 	Message createOutgoingMessage(const Chat &chat, FormattedString *content);
-
-	/**
-	 * @short Imports list of pending messages from < 0.10.0 configurations.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if there was something to import
-	 *
-	 * This methods import list of pending messages from < 0.10.0 configurations. If there was no such
-	 * list false is returned.
-	 */
-	bool importFromPendingMessages();
 
 private slots:
 	/**
@@ -98,9 +82,6 @@ private slots:
 	void messageReceivedSlot(const Message &message);
 
 protected:
-	virtual void load();
-	virtual void store();
-
 	virtual void accountRegistered(Account account);
 	virtual void accountUnregistered(Account account);
 
@@ -175,54 +156,6 @@ public:
 	bool sendRawMessage(const Chat &chat, const QByteArray &content);
 
 	/**
-	 * @short Adds new unread message to the list.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message new unread message
-	 *
-	 * Adds new unread message to the list. Message's pending status is set to true if no applicable
-	 * chat widget is found. Signal unreadMessageAdded is emited.
-	 */
-	void addUnreadMessage(const Message &message);
-
-	/**
-	 * @short Remove unread message to the list.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message unread message to remove
-	 *
-	 * Removes unread message to the list. Message's pending status is set to false.
-	 * Signal unreadMessageRemoved is emited.
-	 */
-	void removeUnreadMessage(const Message &message);
-
-	/**
-	 * @short Returns list of all unread messages.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return list of all unread messages
-	 *
-	 * Returns list of all unread messages.
-	 */
-	const QList<Message> & allUnreadMessages() const;
-
-	/**
-	 * @short Returns list of all unread messages for given chat.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat to get unread messages for
-	 * @return list of all unread messages for given chat
-	 *
-	 * Returns list of all unread messages for given chat.
-	 */
-	QList<Message> chatUnreadMessages(const Chat &chat) const;
-
-	/**
-	 * @short Returns true if there is any unread message in manager.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if there is any unread message in manager
-	 *
-	 * Returns true if there is any unread message in manager.
-	 */
-	bool hasUnreadMessages() const;
-
-	/**
 	 * @short Returns count of unread messages in manager.
 	 * @author Rafał 'Vogel' Malinowski
 	 * @return count of unread messages in manager
@@ -230,46 +163,6 @@ public:
 	 * Returns count of unread messages in manager.
 	 */
 	quint16 unreadMessagesCount() const;
-
-	/**
-	 * @short Marks all unread messages of given chat as read.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat to operate on
-	 *
-	 * Marks all unread messages of given chat as read. Messages are removed from unread list, its statuses
-	 * are updated to MessageStatusRead and its pending statues are set to false.
-	 * Signal unreadMessageRemoved is emited for each changed message.
-	 */
-	void markAllMessagesAsRead(const Chat &chat);
-
-	/**
-	 * @short Returns one of unread messages.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return one of unread messages
-	 *
-	 * Returns one of unread messages. If no unread messages are available, returns null message.
-	 */
-	Message unreadMessage() const;
-
-	/**
-	 * @short Returns one of unread messages sent by given buddy.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param buddy sender of message
-	 * @return one of unread messages sent by given buddy
-	 *
-	 * Returns one of unread messages sent by given buddy. If no applicable messages are available, returns null message.
-	 */
-	Message unreadMessageForBuddy(const Buddy &buddy) const;
-
-	/**
-	 * @short Returns one of unread messages sent by given contact.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param contact sender of message
-	 * @return one of unread messages sent by given contact
-	 *
-	 * Returns one of unread messages sent by given contact. If no applicable messages are available, returns null message.
-	 */
-	Message unreadMessageForContact(const Contact &contact) const;
 
 signals:
 	/**

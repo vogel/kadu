@@ -45,6 +45,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "notify/notification/new-message-notification.h"
@@ -123,7 +124,7 @@ IndicatorDocking::~IndicatorDocking()
 void IndicatorDocking::indicateUnreadMessages()
 {
 	if (config_file.readBoolEntry("Notify", "NewChat_IndicatorNotify") && !Core::instance()->notificationService()->silentMode())
-		foreach (const Message &message, MessageManager::instance()->allUnreadMessages())
+		foreach (const Message &message, Core::instance()->unreadMessageRepository()->allUnreadMessages())
 			notify(new MessageNotification(MessageNotification::NewChat, message));
 }
 

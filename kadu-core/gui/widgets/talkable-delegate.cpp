@@ -31,8 +31,9 @@
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 #include "gui/widgets/talkable-painter.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "model/kadu-abstract-model.h"
 #include "model/model-chain.h"
 
@@ -43,15 +44,15 @@ TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
 {
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 	connect(BuddyPreferredManager::instance(), SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	connect(MessageManager::instance(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+	connect(Core::instance()->unreadMessageRepository(), SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 TalkableDelegate::~TalkableDelegate()
 {
 	disconnect(ContactManager::instance(), 0, this, 0);
 	disconnect(BuddyPreferredManager::instance(), 0, this, 0);
-	disconnect(MessageManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->unreadMessageRepository(), 0, this, 0);
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)

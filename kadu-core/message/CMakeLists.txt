@@ -5,6 +5,7 @@ set (message_SRCS
 	message-manager.cpp
 	message-render-info.cpp
 	message-shared.cpp
+	unread-message-repository.cpp
 )
 
 set (message_MOC_SRCS

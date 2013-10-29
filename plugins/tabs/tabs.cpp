@@ -55,7 +55,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
 #include "icons/kadu-icon.h"
-#include "message/message-manager.h"
+#include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -270,7 +270,7 @@ void TabsManager::onTabChange(int index)
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
 	{
-		MessageManager::instance()->markAllMessagesAsRead(chat);
+		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chat);
 		updateTabName(chatWidget);
 
 		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
@@ -410,7 +410,7 @@ void TabsManager::onTimer()
 			{
 				if (currentChatWidget == chatWidget)
 				{
-					MessageManager::instance()->markAllMessagesAsRead(chatWidget->chat());
+					Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 				}
 
