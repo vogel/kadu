@@ -29,7 +29,7 @@
 #include "gadu-contact-list-state-machine.h"
 
 GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService *service, Protocol *protocol) :
-		QStateMachine(service), CurrentService(service)
+		QStateMachine(service)
 {
 	auto globalState = new QState(ParallelStates);
 
@@ -53,11 +53,17 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	LocalState = new QState(globalState);
 	LocalCleanState = new QState(LocalState);
 	LocalDirtyState = new QState(LocalState);
+	LocalCleaningState = new QState(LocalState);
+	LocalCleaningDirtyState = new QState(LocalState);
 	LocalFailedState = new QState(LocalState);
 
 	LocalCleanState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
-	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalCleanState);
-	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalFailedState);
+	LocalDirtyState->addTransition(service, SIGNAL(stateMachinePutStarted()), LocalCleaningState);
+	LocalCleaningState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalCleaningDirtyState);
+	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalCleanState);
+	LocalCleaningState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalFailedState);
+	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFinished()), LocalDirtyState);
+	LocalCleaningDirtyState->addTransition(service, SIGNAL(stateMachinePutFailed()), LocalDirtyState);
 	LocalFailedState->addTransition(service, SIGNAL(stateMachineLocalDirty()), LocalDirtyState);
 	LocalFailedState->addTransition(protocol, SIGNAL(connected(Account)), LocalDirtyState);
 	LocalFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), LocalDirtyState);
@@ -65,11 +71,17 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	RemoteState = new QState(globalState);
 	RemoteCleanState = new QState(RemoteState);
 	RemoteDirtyState = new QState(RemoteState);
+	RemoteCleaningState = new QState(RemoteState);
+	RemoteCleaningDirtyState = new QState(RemoteState);
 	RemoteFailedState = new QState(RemoteState);
 
 	RemoteCleanState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
-	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteCleanState);
-	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteFailedState);
+	RemoteDirtyState->addTransition(service, SIGNAL(stateMachineGetStarted()), RemoteCleaningState);
+	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteCleaningDirtyState);
+	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteCleanState);
+	RemoteCleaningState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteFailedState);
+	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFinished()), RemoteDirtyState);
+	RemoteCleaningDirtyState->addTransition(service, SIGNAL(stateMachineGetFailed()), RemoteDirtyState);
 	RemoteFailedState->addTransition(service, SIGNAL(stateMachineRemoteDirty()), RemoteDirtyState);
 	RemoteFailedState->addTransition(protocol, SIGNAL(connected(Account)), RemoteDirtyState);
 	RemoteFailedState->addTransition(protocol, SIGNAL(disconnected(Account)), RemoteDirtyState);
@@ -88,9 +100,13 @@ GaduContactListStateMachine::GaduContactListStateMachine(GaduContactListService 
 	connect(GetState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LocalCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LocalDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LocalCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(LocalCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(LocalFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(RemoteCleanState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(RemoteDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(RemoteCleaningState, SIGNAL(entered()), this, SLOT(printConfiguration()));
+	connect(RemoteCleaningDirtyState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 	connect(RemoteFailedState, SIGNAL(entered()), this, SLOT(printConfiguration()));
 
 	addState(globalState);
@@ -118,12 +134,20 @@ void GaduContactListStateMachine::printConfiguration()
 		states.append("local-clean");
 	if (configuration().contains(LocalDirtyState))
 		states.append("local-dirty");
+	if (configuration().contains(LocalCleaningState))
+		states.append("local-cleaning");
+	if (configuration().contains(LocalCleaningDirtyState))
+		states.append("local-cleaning-dirty");
 	if (configuration().contains(LocalFailedState))
 		states.append("local-failed");
 	if (configuration().contains(RemoteCleanState))
 		states.append("remote-clean");
 	if (configuration().contains(RemoteDirtyState))
 		states.append("remote-dirty");
+	if (configuration().contains(RemoteCleaningState))
+		states.append("remote-cleaning");
+	if (configuration().contains(RemoteCleaningDirtyState))
+		states.append("remote-cleaning-dirty");
 	if (configuration().contains(RemoteFailedState))
 		states.append("remote-failed");
 

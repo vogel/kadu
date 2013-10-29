@@ -32,8 +32,6 @@ class GaduContactListStateMachine : public QStateMachine
 {
 	Q_OBJECT
 
-	GaduContactListService *CurrentService;
-
 	QState *WorkState;
 	QState *OfflineState;
 	QState *IdleState;
@@ -43,11 +41,15 @@ class GaduContactListStateMachine : public QStateMachine
 	QState *LocalState;
 	QState *LocalCleanState;
 	QState *LocalDirtyState;
+	QState *LocalCleaningState;
+	QState *LocalCleaningDirtyState;
 	QState *LocalFailedState;
 
 	QState *RemoteState;
 	QState *RemoteCleanState;
 	QState *RemoteDirtyState;
+	QState *RemoteCleaningState;
+	QState *RemoteCleaningDirtyState;
 	QState *RemoteFailedState;
 
 private slots:
