@@ -22,8 +22,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_WIDGET_MANAGER_H
-#define CHAT_WIDGET_MANAGER_H
+#pragma once
 
 #include "buddies/buddy.h"
 #include "configuration/configuration-aware-object.h"
@@ -222,5 +221,3 @@ signals:
 /**
  * @}
  */
-
-#endif // CHAT_WIDGET_MANAGER_H

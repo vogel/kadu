@@ -207,12 +207,6 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		chatWindow->show();
 	}
 
-//	if (chatWidget->chat().contacts().count() == 1)
-//	{
-//		Contact contact = chatWidget->chat().contacts().toContact();
-//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-//	}
-
 	emit chatWidgetCreated(chatWidget);
 
 	return chatWidget;
@@ -225,12 +219,6 @@ void ChatWidgetManager::chatWidgetDestroyed(ChatWidget *chatWidget)
 
 	if (Chats.remove(chatWidget->chat()) <= 0)
 		return;
-
-//	if (chatwidget->chat().contacts().count() == 1)
-//	{
-//		Contact contact = chatwidget->chat().contacts().toContact();
-//		BuddyPreferredManager::instance()->updatePreferred(contact.ownerBuddy());
-//	}
 
 	emit chatWidgetDestroying(chatWidget);
 }
@@ -308,8 +296,6 @@ void ChatWidgetManager::messageReceived(const Message &message)
 		return;
 	}
 
-	// createChatWidget() method takes care of appending unread messages
-	// to the chat view, so no need to do that here.
 	byChat(chat, true);
 }
 
