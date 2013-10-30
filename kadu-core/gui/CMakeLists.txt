@@ -21,6 +21,10 @@ set (gui_SRCS
 
 	services/clipboard-html-transformer-service.cpp
 
+	widgets/chat-widget/chat-widget.cpp
+	widgets/chat-widget/chat-widget-actions.cpp
+	widgets/chat-widget/chat-widget-manager.cpp
+
 	widgets/group-tab-bar/group-filter-tab-data.cpp
 	widgets/group-tab-bar/group-tab-bar.cpp
 	widgets/group-tab-bar/group-tab-bar-configuration.cpp
@@ -64,9 +68,6 @@ set (gui_SRCS
 	widgets/chat-top-bar-container-widget.cpp
 	widgets/chat-top-bar-widget-factory-repository.cpp
 	widgets/chat-view-network-access-manager.cpp
-	widgets/chat-widget.cpp
-	widgets/chat-widget-actions.cpp
-	widgets/chat-widget-manager.cpp
 	widgets/choose-identity-widget.cpp
 	widgets/color-button.cpp
 	widgets/color-selector.cpp
@@ -256,9 +257,6 @@ set (gui_MOC_SRCS
 	widgets/chat-messages-view.h
 	widgets/chat-room-edit-widget.h
 	widgets/chat-view-network-access-manager.h
-	widgets/chat-widget.h
-	widgets/chat-widget-actions.h
-	widgets/chat-widget-manager.h
 	widgets/choose-identity-widget.h
 	widgets/color-button.h
 	widgets/color-selector.h

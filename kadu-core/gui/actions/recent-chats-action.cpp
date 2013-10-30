@@ -24,8 +24,8 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/recent-chats-menu.h"
 
 #include "recent-chats-action.h"

@@ -35,8 +35,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/chat-widget-manager.h"
-
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
@@ -45,7 +43,8 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"

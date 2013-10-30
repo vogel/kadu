@@ -33,8 +33,8 @@
 
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "parser/parser.h"
 #include "protocols/protocol.h"

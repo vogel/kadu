@@ -40,15 +40,14 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/custom-input.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 #include "model/roles.h"
-
-#include "custom-input.h"
 #include "debug.h"
 
 #include "chat-widget-actions.h"

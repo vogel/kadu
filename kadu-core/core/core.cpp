@@ -54,7 +54,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
-#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/kadu-window.h"

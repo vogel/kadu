@@ -42,10 +42,13 @@
 #include "gui/actions/action.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-edit-box-size-manager.h"
-#include "gui/widgets/chat-widget-actions.h"
-#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
+#include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"
+#include "gui/widgets/toolbar.h"
 #include "gui/windows/message-dialog.h"
 #include "identities/identity.h"
 #include "misc/change-notifier-lock.h"
@@ -53,11 +56,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/chat-image-service.h"
 #include "status/status-container-manager.h"
-
-#include "chat-widget.h"
-#include "custom-input.h"
 #include "debug.h"
-#include "toolbar.h"
 
 #include "chat-edit-box.h"
 

@@ -30,7 +30,7 @@
 #include <QtGui/QStyle>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "pixmap-grabber.h"
 

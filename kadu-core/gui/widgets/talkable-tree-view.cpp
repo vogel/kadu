@@ -54,7 +54,7 @@
 #include "gui/actions/edit-talkable-action.h"
 #include "gui/hot-key.h"
 #include "gui/menu/menu-inventory.h"
-#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-delegate.h"
 #include "gui/widgets/tool-tip-class-manager.h"

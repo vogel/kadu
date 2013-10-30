@@ -18,8 +18,8 @@
  */
 
 #include "chat/type/chat-type-contact.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "otr-op-data.h"
 

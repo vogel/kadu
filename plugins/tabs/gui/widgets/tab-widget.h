@@ -35,7 +35,7 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/chat-widget-container.h"
+#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/custom-input.h"
 
 #include "os/generic/compositing-aware-object.h"

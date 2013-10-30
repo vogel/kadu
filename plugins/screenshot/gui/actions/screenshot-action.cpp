@@ -25,7 +25,7 @@
 #include "accounts/account.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "protocols/protocol.h"
 
 #include "screenshot.h"

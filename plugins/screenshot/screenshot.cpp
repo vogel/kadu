@@ -27,7 +27,7 @@
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
 
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
 #include "activate.h"

@@ -28,7 +28,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "gui/windows/history-window.h"
 #include "history-messages-prepender.h"

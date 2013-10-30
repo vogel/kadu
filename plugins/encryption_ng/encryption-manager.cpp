@@ -20,8 +20,8 @@
  */
 
 #include "core/core.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
 #include "services/raw-message-transformer-service.h"

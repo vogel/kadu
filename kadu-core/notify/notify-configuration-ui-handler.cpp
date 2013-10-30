@@ -32,7 +32,7 @@
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"

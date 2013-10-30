@@ -46,7 +46,7 @@
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
 #include "message/message.h"

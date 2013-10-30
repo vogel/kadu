@@ -44,7 +44,7 @@
 #include "buddies/buddy-set.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
-#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "debug.h"
 

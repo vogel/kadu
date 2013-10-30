@@ -29,7 +29,7 @@
 #include "gui/actions/action.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"

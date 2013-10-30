@@ -37,7 +37,7 @@
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-messages-view.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/preview.h"
 #include "icons/kadu-icon.h"
 #include "identities/identity.h"

@@ -4,7 +4,7 @@
 #include <QtGui/QWidget>
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/chat-widget-container.h"
+#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "os/generic/compositing-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"

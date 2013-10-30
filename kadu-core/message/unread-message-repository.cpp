@@ -19,8 +19,8 @@
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
-#include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "unread-message-repository.h"
 
