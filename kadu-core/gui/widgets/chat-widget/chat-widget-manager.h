@@ -33,6 +33,7 @@
 
 class ChatWidget;
 class ChatWidgetActions;
+class ChatWidgetFactory;
 class Protocol;
 
 /**
@@ -55,6 +56,8 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	Q_DISABLE_COPY(ChatWidgetManager)
 
 	static ChatWidgetManager *Instance;
+
+	QWeakPointer<ChatWidgetFactory> CurrentChatWidgetFactory;
 
 	ChatWidgetActions *Actions;
 
@@ -121,6 +124,8 @@ public:
 	 * Returns manager's singleton instance.
 	 */
 	static ChatWidgetManager * instance();
+
+	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

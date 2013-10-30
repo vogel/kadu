@@ -54,6 +54,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
@@ -571,6 +572,10 @@ void Core::runServices()
 	foreach (const auto &notifyEvent, CurrentRosterNotifier->notifyEvents())
 		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
 
+	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
+	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
+	ChatWidgetManager::instance()->setChatWidgetFactory(CurrentChatWidgetFactory);
+
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
@@ -686,6 +691,11 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 RosterNotifier * Core::rosterNotifier() const
 {
 	return CurrentRosterNotifier;
+}
+
+ChatWidgetFactory * Core::chatWidgetFactory() const
+{
+	return CurrentChatWidgetFactory;
 }
 
 void Core::showMainWindow()

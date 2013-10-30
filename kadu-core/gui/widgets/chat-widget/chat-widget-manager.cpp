@@ -34,6 +34,7 @@
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
@@ -85,6 +86,11 @@ ChatWidgetManager::~ChatWidgetManager()
 	disconnect(MessageManager::instance(), 0, this, 0);
 
 	closeAllWindows();
+}
+
+void ChatWidgetManager::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
+{
+	CurrentChatWidgetFactory = chatWidgetFactory;
 }
 
 StorableObject * ChatWidgetManager::storageParent()
@@ -185,11 +191,11 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 
 ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 {
-	if (!chat)
+	if (!chat || !CurrentChatWidgetFactory)
 		return 0;
 
-	ChatWidget *chatWidget = new ChatWidget(chat);
-	chatWidget->setFormattedStringFactory(Core::instance()->formattedStringFactory());
+	// kdevelop cannot handle auto here
+	ChatWidget *chatWidget = CurrentChatWidgetFactory.data()->createChatWidget(chat).release();
 
 	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 	Chats.insert(chat, chatWidget);

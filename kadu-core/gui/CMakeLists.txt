@@ -23,6 +23,7 @@ set (gui_SRCS
 
 	widgets/chat-widget/chat-widget.cpp
 	widgets/chat-widget/chat-widget-actions.cpp
+	widgets/chat-widget/chat-widget-factory.cpp
 	widgets/chat-widget/chat-widget-manager.cpp
 
 	widgets/group-tab-bar/group-filter-tab-data.cpp
