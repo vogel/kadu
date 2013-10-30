@@ -32,12 +32,14 @@
 
 class GaduContactListStateMachine;
 class GaduConnection;
+class RosterNotifier;
 
 class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
 	QWeakPointer<GaduConnection> Connection;
+	QWeakPointer<RosterNotifier> MyRosterNotifier;
 	GaduContactListStateMachine *StateMachine;
 
 	friend class GaduProtocolSocketNotifiers;
@@ -45,6 +47,9 @@ class GaduContactListService : public ContactListService
 	void handleEventUserlist100PutReply(struct gg_event *e);
 	void handleEventUserlist100GetReply(struct gg_event *e);
 	void handleEventUserlist100Reply(struct gg_event *e);
+
+	void putFinished(bool ok);
+	void getFinished(bool ok);
 
 private slots:
 	void dirtyContactAdded(Contact contact);
@@ -54,6 +59,7 @@ public:
 	virtual ~GaduContactListService();
 
 	void setConnection(GaduConnection *connection);
+	void setRosterNotifier(RosterNotifier *rosterNotifier);
 
 	virtual bool haveToAskForAddingContacts() const;
 

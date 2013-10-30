@@ -13,6 +13,7 @@ set (protocols_SRCS
 	services/contact-list-service.cpp
 
 	services/roster/roster-entry.cpp
+	services/roster/roster-notifier.cpp
 	services/roster/roster-service.cpp
 	services/roster/roster-task.cpp
 

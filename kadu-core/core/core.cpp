@@ -71,6 +71,7 @@
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
+#include "protocols/services/roster/roster-notifier.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
 #include "services/chat-image-request-service-configurator.h"
@@ -566,6 +567,10 @@ void Core::runServices()
 	CurrentChatTopBarWidgetFactoryRepository = new ChatTopBarWidgetFactoryRepository(this);
 	CurrentUnreadMessageRepository = new UnreadMessageRepository(this);
 
+	CurrentRosterNotifier = new RosterNotifier(this);
+	foreach (const auto &notifyEvent, CurrentRosterNotifier->notifyEvents())
+		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
+
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
 	ChatImageRequestServiceConfigurator *configurator = new ChatImageRequestServiceConfigurator();
@@ -676,6 +681,11 @@ ChatTopBarWidgetFactoryRepository * Core::chatTopBarWidgetFactoryRepository() co
 UnreadMessageRepository * Core::unreadMessageRepository() const
 {
 	return CurrentUnreadMessageRepository;
+}
+
+RosterNotifier * Core::rosterNotifier() const
+{
+	return CurrentRosterNotifier;
 }
 
 void Core::showMainWindow()

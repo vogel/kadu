@@ -98,6 +98,7 @@ GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 
 	CurrentContactListService = new GaduContactListService(account, this);
 	CurrentContactListService->setConnection(Connection);
+	CurrentContactListService->setRosterNotifier(Core::instance()->rosterNotifier());
 
 	CurrentContactPersonalInfoService = new GaduContactPersonalInfoService(account, this);
 	CurrentContactPersonalInfoService->setConnection(Connection);

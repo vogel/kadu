@@ -385,6 +385,10 @@ void FreedesktopNotify::createDefaultConfiguration()
 	config_file.addVariable("Notify", "multilogon_FreedesktopNotify", true);
 	config_file.addVariable("Notify", "multilogon/sessionConnected_FreedesktopNotify", true);
 	config_file.addVariable("Notify", "multilogon/sessionDisconnected_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	config_file.addVariable("Notify", "Roster/ImportFailed_FreedesktopNotify", true);
+	config_file.addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	config_file.addVariable("Notify", "Roster/ExportFailed_FreedesktopNotify", true);
 
 	config_file.addVariable("FreedesktopNotify", "CustomTimeout", false);
 	config_file.addVariable("FreedesktopNotify", "Timeout", 10);

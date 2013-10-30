@@ -31,6 +31,7 @@
 #include "core/core.h"
 #include "misc/misc.h"
 #include "protocols/services/roster/roster-entry.h"
+#include "protocols/services/roster/roster-notifier.h"
 #include "debug.h"
 
 #include "helpers/gadu-list-helper.h"
@@ -64,6 +65,43 @@ void GaduContactListService::setConnection(GaduConnection *connection)
 	Connection = connection;
 }
 
+void GaduContactListService::setRosterNotifier(RosterNotifier *rosterNotifier)
+{
+	MyRosterNotifier = rosterNotifier;
+}
+
+void GaduContactListService::putFinished(bool ok)
+{
+	if (ok)
+	{
+		emit stateMachinePutFinished();
+		if (MyRosterNotifier)
+			MyRosterNotifier.data()->notifyExportSucceeded(account());
+	}
+	else
+	{
+		emit stateMachinePutFailed();
+		if (MyRosterNotifier)
+			MyRosterNotifier.data()->notifyExportFailed(account());
+	}
+}
+
+void GaduContactListService::getFinished(bool ok)
+{
+	if (ok)
+	{
+		emit stateMachineGetFinished();
+		if (MyRosterNotifier)
+			MyRosterNotifier.data()->notifyImportSucceeded(account());
+	}
+	else
+	{
+		emit stateMachineGetFailed();
+		if (MyRosterNotifier)
+			MyRosterNotifier.data()->notifyImportFailed(account());
+	}
+}
+
 void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 {
 	if (!StateMachine->isPerformingGet())
@@ -75,14 +113,14 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 	{
-		emit stateMachineGetFailed();
+		getFinished(false);
 		return;
 	}
 
 	if (e->event.userlist100_reply.format_type != GG_USERLIST100_FORMAT_TYPE_GG70)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply with unwanted format type (%d)\n", (int)e->event.userlist100_reply.format_type);
-		emit stateMachineGetFailed();
+		getFinished(false);
 		return;
 	}
 
@@ -90,7 +128,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	if (!content)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "got userlist 100 reply without any content\n");
-		emit stateMachineGetFailed();
+		getFinished(false);
 		return;
 	}
 
@@ -100,7 +138,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		QByteArray content2(content);
 		BuddyList buddies = GaduListHelper::byteArrayToBuddyList(account(), content2);
-		emit stateMachineGetFinished();
+		getFinished(true);
 
 		setBuddiesList(buddies, true);
 		accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
@@ -120,7 +158,7 @@ void GaduContactListService::handleEventUserlist100GetReply(struct gg_event *e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "ignoring userlist 100 reply as we already know that version\n");
 
-		emit stateMachineGetFinished();
+		getFinished(true);
 	}
 }
 
@@ -142,12 +180,12 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(account()))
 				contact.rosterEntry()->setState(RosterEntrySynchronized);
 
-			emit stateMachinePutFinished();
+			putFinished(true);
 			return;
 		}
 	}
 
-	emit stateMachinePutFailed();
+	putFinished(false);
 }
 
 void GaduContactListService::handleEventUserlist100Reply(struct gg_event *e)
@@ -206,7 +244,7 @@ void GaduContactListService::importContactList()
 	auto writableSessionToken = Connection.data()->writableSessionToken();
 	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	if (-1 == ret)
-		emit stateMachineGetFailed();
+		getFinished(false);
 }
 
 void GaduContactListService::exportContactList()
@@ -228,7 +266,7 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	GaduAccountDetails *accountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!accountDetails)
 	{
-		emit stateMachinePutFailed();
+		putFinished(false);
 		return;
 	}
 
@@ -236,7 +274,7 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	if (-1 == ret)
-		emit stateMachinePutFailed();
+		putFinished(false);
 }
 
 void GaduContactListService::copySupportedBuddyInformation(const Buddy &destination, const Buddy &source)

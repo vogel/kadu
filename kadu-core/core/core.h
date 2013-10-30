@@ -69,6 +69,7 @@ class MessageHtmlRendererService;
 class MessageTransformerService;
 class NotificationService;
 class RawMessageTransformerService;
+class RosterNotifier;
 class UnreadMessageRepository;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
@@ -98,6 +99,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatConfigurationWidgetFactoryRepository *CurrentChatConfigurationWidgetFactoryRepository;
 	ChatTopBarWidgetFactoryRepository *CurrentChatTopBarWidgetFactoryRepository;
 	UnreadMessageRepository *CurrentUnreadMessageRepository;
+	RosterNotifier *CurrentRosterNotifier;
 
 	KaduWindow *Window;
 
@@ -165,6 +167,7 @@ public:
 	ChatConfigurationWidgetFactoryRepository * chatConfigurationWidgetFactoryRepository() const;
 	ChatTopBarWidgetFactoryRepository * chatTopBarWidgetFactoryRepository() const;
 	UnreadMessageRepository * unreadMessageRepository() const;
+	RosterNotifier * rosterNotifier() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

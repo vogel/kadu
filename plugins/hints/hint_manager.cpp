@@ -696,6 +696,10 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "multilogon_Hints", true);
 	config_file.addVariable("Notify", "multilogon/sessionConnected_Hints", true);
 	config_file.addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+	config_file.addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+	config_file.addVariable("Notify", "Roster/ImportFailed_Hints", true);
+	config_file.addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+	config_file.addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
 	config_file.addVariable("Hints", "CiteSign", 50);
