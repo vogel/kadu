@@ -102,11 +102,8 @@ private slots:
 	 * @short Slot called when message is sent from Kadu.
 	 * @param message sent message
 	 *
-	 * This slot is called everytime a message is sent from Kadu. It opens chat widget if it is not opened
-	 * already, and then puts new message in this window.
-	 *
-	 * In multilogon protocols this will automatically open new chat widget when a chat is started on one of
-	 * other instances of IM with the same account logged.
+	 * This slot is called everytime a message is sent from Kadu. If chat widget is open
+	 * it puts new message in this window.
 	 */
 	void messageSent(const Message &message);
 
