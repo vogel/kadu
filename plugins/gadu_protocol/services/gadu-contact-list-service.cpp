@@ -139,13 +139,10 @@ void GaduContactListService::handleEventUserlist100PutReply(struct gg_event *e)
 		{
 			accountDetails->setUserlistVersion(e->event.userlist100_reply.version);
 
-			// there is potential possibility that something changed after we sent request but before getting reply
-			// TODO: fix it
 			foreach (const Contact &contact, ContactManager::instance()->dirtyContacts(account()))
 				contact.rosterEntry()->setState(RosterEntrySynchronized);
 
 			emit stateMachinePutFinished();
-
 			return;
 		}
 	}
