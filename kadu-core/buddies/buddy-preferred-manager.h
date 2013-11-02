@@ -38,6 +38,7 @@
 class Account;
 class Buddy;
 class BuddySet;
+class ChatWidgetRepository;
 class Contact;
 class ContactSet;
 
@@ -45,16 +46,6 @@ class KADUAPI BuddyPreferredManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(BuddyPreferredManager)
-
-	static BuddyPreferredManager *Instance;
-
-	//QMap<Buddy, Contact> Preferreds;
-
-	BuddyPreferredManager();
-	~BuddyPreferredManager();
-
-	bool isAccountCommon(const Account &account, const BuddySet &buddies);
-	Account getCommonAccount(const BuddySet &buddies);
 
 public:
 	static BuddyPreferredManager *instance();
@@ -77,6 +68,19 @@ public:
 
 signals:
 	void buddyUpdated(const Buddy &buddy);
+
+private:
+	static BuddyPreferredManager *m_instance;
+
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+	BuddyPreferredManager();
+	~BuddyPreferredManager();
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
+	bool isAccountCommon(const Account &account, const BuddySet &buddies);
+	Account getCommonAccount(const BuddySet &buddies);
 
 };
 

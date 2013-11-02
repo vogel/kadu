@@ -27,8 +27,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef HISTORY_H
-#define HISTORY_H
+#pragma once
 
 #include <QtCore/QDateTime>
 #include <QtCore/QMap>
@@ -58,6 +57,7 @@
 
 class Account;
 class ChatWidget;
+class ChatWidgetRepository;
 class HistorySaveThread;
 class HistoryWindow;
 class ShowHistoryActionDescription;
@@ -67,6 +67,8 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	Q_OBJECT
 
 	static History *Instance;
+
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	bool SaveChats;
 	bool SaveChatsWithAnonymous;
@@ -122,7 +124,7 @@ private slots:
 
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
 
-	void chatCreated(ChatWidget *chatWidget);
+	void chatWidgetCreated(ChatWidget *chatWidget);
 
 protected:
 	virtual void crash();
@@ -131,6 +133,8 @@ public:
 	static void createInstance();
 	static void destroyInstance();
 	static History * instance();
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);
@@ -145,5 +149,3 @@ signals:
 };
 
 void disableNonHistoryContacts(Action *action);
-
-#endif // HISTORY_H

@@ -1,5 +1,4 @@
-#ifndef MEDIA_PLAYER_H
-#define MEDIA_PLAYER_H
+#pragma once
 
 #include "gui/windows/main-configuration-window.h"
 
@@ -11,6 +10,7 @@ class QTimer;
 
 class ActionDescription;
 class ChatWidget;
+class ChatWidgetRepository;
 class CustomInput;
 class PlayerCommands;
 class PlayerInfo;
@@ -25,6 +25,8 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	Q_OBJECT
 
 	static MediaPlayer *Instance;
+
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	MediaPlayerStatusChanger *Changer;
 	PlayerInfo *playerInfo;
@@ -116,7 +118,8 @@ private slots:
 	/*
 		Removes all needed functions from Chat window being destroyed.
 	*/
-	void chatWidgetDestroying(ChatWidget *);
+	void chatWidgetDestroyed(ChatWidget *);
+
 	void checkTitle();
 	void chatKeyPressed(QKeyEvent *, CustomInput *, bool &);
 	void chatKeyReleased(QKeyEvent *, CustomInput *, bool &);
@@ -133,6 +136,8 @@ public:
 	static void destroyInstance();
 
 	static MediaPlayer * instance() { return Instance; }
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	/*
 		Looks for special tags in string 'str' and replaces it by
@@ -203,5 +208,3 @@ public slots:
 	void insertPlaylistFilenames();
 
 };
-
-#endif

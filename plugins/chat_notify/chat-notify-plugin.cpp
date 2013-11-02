@@ -39,6 +39,7 @@ int ChatNotifyPlugin::init(bool firstLoad)
 		createDefaultConfiguration();
 
 	NotifierInstance = new ChatNotifier(this);
+	NotifierInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	NotifierInstance->setFormattedStringFactory(Core::instance()->formattedStringFactory());
 
 	NotificationManager::instance()->registerNotifier(NotifierInstance);

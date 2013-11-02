@@ -19,6 +19,7 @@
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/kadu-window.h"
@@ -34,30 +35,31 @@
 
 SingleWindowManager::SingleWindowManager(QObject *parent) :
 		ConfigurationUiHandler(parent),
-		WindowProvider(new SimpleProvider<QWidget *>(0))
+		m_windowProvider(new SimpleProvider<QWidget *>(0))
 {
 	config_file.addVariable("SingleWindow", "RosterPosition", 0);
 	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
 
-	Window = new SingleWindow();
-	WindowProvider->provideValue(Window);
+	m_window = new SingleWindow();
+	m_window->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	m_windowProvider->provideValue(m_window);
 
-	Core::instance()->mainWindowProvider()->installCustomProvider(WindowProvider);
+	Core::instance()->mainWindowProvider()->installCustomProvider(m_windowProvider);
 }
 
 SingleWindowManager::~SingleWindowManager()
 {
-	Core::instance()->mainWindowProvider()->removeCustomProvider(WindowProvider);
+	Core::instance()->mainWindowProvider()->removeCustomProvider(m_windowProvider);
 
-	WindowProvider->provideValue(0);
-	delete Window;
+	m_windowProvider->provideValue(0);
+	delete m_window;
 }
 
 void SingleWindowManager::configurationUpdated()
 {
 	int newRosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
-	if (Window->rosterPosition() != newRosterPos)
-		Window->changeRosterPos(newRosterPos);
+	if (m_window->rosterPosition() != newRosterPos)
+		m_window->changeRosterPos(newRosterPos);
 }
 
 SingleWindow::SingleWindow()
@@ -67,65 +69,53 @@ SingleWindow::SingleWindow()
 	KaduWindow *kadu = Core::instance()->kaduWindow();
 	bool visible = kadu->isVisible();
 
-	split = new QSplitter(Qt::Horizontal, this);
+	m_split = new QSplitter(Qt::Horizontal, this);
 
-	tabs = new QTabWidget(this);
-	tabs->setTabsClosable(true);
+	m_tabs = new QTabWidget(this);
+	m_tabs->setTabsClosable(true);
 
-	rosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
-	if (rosterPos == 0)
+	m_rosterPos = config_file.readNumEntry("SingleWindow", "RosterPosition", 0);
+	if (m_rosterPos == 0)
 	{
-		split->addWidget(kadu);
-		split->addWidget(tabs);
+		m_split->addWidget(kadu);
+		m_split->addWidget(m_tabs);
 	}
 	else
 	{
-		split->addWidget(tabs);
-		split->addWidget(kadu);
+		m_split->addWidget(m_tabs);
+		m_split->addWidget(kadu);
 	}
 
 	kadu->setMaximumWidth(QWIDGETSIZE_MAX);
-	tabs->setMaximumWidth(QWIDGETSIZE_MAX);
+	m_tabs->setMaximumWidth(QWIDGETSIZE_MAX);
 	kadu->setMinimumWidth(170);
-	tabs->setMinimumWidth(200);
+	m_tabs->setMinimumWidth(200);
 
 	new WindowGeometryManager(new ConfigFileVariantWrapper("SingleWindow", "WindowGeometry"), QRect(0, 0, 800, 440), this);
 
 	int kaduwidth = config_file.readNumEntry("SingleWindow", "KaduWindowWidth", 205);
 
-	if (rosterPos == 0)
+	if (m_rosterPos == 0)
 	{
-		splitSizes.append(kaduwidth);
-		splitSizes.append(width() - kaduwidth);
+		m_splitSizes.append(kaduwidth);
+		m_splitSizes.append(width() - kaduwidth);
 	}
 	else
 	{
-		splitSizes.append(width() - kaduwidth);
-		splitSizes.append(kaduwidth);
+		m_splitSizes.append(width() - kaduwidth);
+		m_splitSizes.append(kaduwidth);
 	}
-	split->setSizes(splitSizes);
+	m_split->setSizes(m_splitSizes);
 
 	setWindowTitle(kadu->windowTitle());
 
-	connect(tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
-	connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
+	connect(m_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+	connect(m_tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
-
-	/* conquer all already open chats ;) */
-	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
-	{
-		if (chatWidget->parentWidget())
-			chatWidget->parentWidget()->deleteLater();
-		else
-			chatWidget->kaduRestoreGeometry();
-
-		bool dummy;
-		onNewChat(chatWidget, dummy);
-	}
 
 	setFocusProxy(kadu);
 	kadu->show();
@@ -142,16 +132,16 @@ SingleWindow::~SingleWindow()
 	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
-	disconnect(tabs, 0, this, 0);
+	disconnect(m_tabs, 0, this, 0);
 	disconnect(kadu, 0, this, 0);
 
 	if (!Core::instance()->isClosing())
 	{
-		for (int i = tabs->count()-1; i >= 0; --i)
+		for (int i = m_tabs->count()-1; i >= 0; --i)
 		{
-			ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->widget(i));
+			ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(i));
 			const Chat &chat = chatWidget->chat();
-			tabs->removeTab(i);
+			m_tabs->removeTab(i);
 			delete chatWidget;
 			ChatWidgetManager::instance()->byChat(chat, true);
 		}
@@ -162,12 +152,32 @@ SingleWindow::~SingleWindow()
 		kadu->setVisible(visible);
 }
 
+void SingleWindow::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+	{
+		/* conquer all already open chats ;) */
+		foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+		{
+			if (chatWidget->parentWidget())
+				chatWidget->parentWidget()->deleteLater();
+			else
+				chatWidget->kaduRestoreGeometry();
+
+			bool dummy;
+			onNewChat(chatWidget, dummy);
+		}
+	}
+}
+
 void SingleWindow::changeEvent(QEvent *event)
 {
 	QWidget::changeEvent(event);
 	if (event->type() == QEvent::ActivationChange)
 	{
-		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
+		ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->currentWidget());
 		if (chatWidget && _isActiveWindow(this))
 		{
 			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
@@ -179,8 +189,8 @@ void SingleWindow::changeEvent(QEvent *event)
 
 void SingleWindow::changeRosterPos(int newRosterPos)
 {
-	rosterPos = newRosterPos;
-	split->insertWidget(rosterPos, Core::instance()->kaduWindow());
+	m_rosterPos = newRosterPos;
+	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
 }
 
 void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
@@ -188,7 +198,7 @@ void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 	handled = true;
 	chatWidget->setContainer(this);
 
-	tabs->addTab(chatWidget, chatWidget->icon(), QString());
+	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
@@ -203,20 +213,20 @@ void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
 {
 	Q_ASSERT(chatWidget);
 
-	const int i = tabs->indexOf(chatWidget);
+	const int i = m_tabs->indexOf(chatWidget);
 	if (-1 == i)
 		return;
 
 	if (chatWidget->chat().unreadMessagesCount() > 0)
-		tabs->setTabIcon(i, KaduIcon("protocols/common/message").icon());
+		m_tabs->setTabIcon(i, KaduIcon("protocols/common/message").icon());
 	else
-		tabs->setTabIcon(i, chatWidget->icon());
+		m_tabs->setTabIcon(i, chatWidget->icon());
 }
 
 // TODO: share with tabs
 void SingleWindow::updateTabName(ChatWidget *chatWidget)
 {
-	const int i = tabs->indexOf(chatWidget);
+	const int i = m_tabs->indexOf(chatWidget);
 	if (-1 == i)
 		return;
 
@@ -235,25 +245,25 @@ void SingleWindow::updateTabName(ChatWidget *chatWidget)
 
 	if (config_file.readBoolEntry("SingleWindow", "NumMessagesInTab", false) && chat.unreadMessagesCount() > 0)
 	{
-		tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()));
-		tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
+		m_tabs->setTabText(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()));
+		m_tabs->setTabToolTip(i, QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	}
 	else
 	{
-		tabs->setTabText(i, baseTabName);
-		tabs->setTabToolTip(i, chatWidget->title());
+		m_tabs->setTabText(i, baseTabName);
+		m_tabs->setTabToolTip(i, chatWidget->title());
 	}
 }
 
 void SingleWindow::closeTab(int index)
 {
-	ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->widget(index));
+	ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(index));
 
 	disconnect(chatWidget->edit(), 0, this, 0);
 	disconnect(chatWidget, 0, this, 0);
 
-	tabs->widget(index)->deleteLater();
-	tabs->removeTab(index);
+	m_tabs->widget(index)->deleteLater();
+	m_tabs->removeTab(index);
 }
 
 void SingleWindow::closeEvent(QCloseEvent *event)
@@ -291,18 +301,18 @@ void SingleWindow::keyPressEvent(QKeyEvent *event)
 void SingleWindow::resizeEvent(QResizeEvent *event)
 {
 	QSize newSize = event->size();
-	split->resize(newSize);
+	m_split->resize(newSize);
 }
 
 void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
 {
-	int index = tabs->indexOf(chatWidget);
+	int index = m_tabs->indexOf(chatWidget);
 	if (index < 0)
 		return;
 
 	_activateWindow(this);
 
-	tabs->setCurrentIndex(index);
+	m_tabs->setCurrentIndex(index);
 	chatWidget->edit()->setFocus();
 }
 
@@ -325,14 +335,14 @@ void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 	if (!chatWidget)
 		return;
 
-	int index = tabs->indexOf(chatWidget);
+	int index = m_tabs->indexOf(chatWidget);
 	if (index >= 0)
 		closeTab(index);
 }
 
 bool SingleWindow::isChatWidgetActive(ChatWidget *chatWidget)
 {
-	return tabs->currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
+	return m_tabs->currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
 }
 
 void SingleWindow::onTabChange(int index)
@@ -340,7 +350,7 @@ void SingleWindow::onTabChange(int index)
 	if (index == -1)
 		return;
 
-	ChatWidget *chatWidget = (ChatWidget *)tabs->widget(index);
+	ChatWidget *chatWidget = (ChatWidget *)m_tabs->widget(index);
 	Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
@@ -351,7 +361,7 @@ void SingleWindow::onkaduKeyPressed(QKeyEvent *e)
 	/* unfortunatelly does not work correctly */
 	if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
 	{
-		ChatWidget *chatWidget = static_cast<ChatWidget *>(tabs->currentWidget());
+		ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->currentWidget());
 		if (chatWidget)
 			chatWidget->edit()->setFocus();
 	}
@@ -374,30 +384,30 @@ void SingleWindow::onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled)
 
 	if (HotKey::shortCut(e, "ShortCuts", "SwitchTabLeft"))
 	{
-		int index = tabs->currentIndex();
+		int index = m_tabs->currentIndex();
 		if (index > 0)
 		{
-			tabs->setCurrentIndex(index-1);
+			m_tabs->setCurrentIndex(index-1);
 		}
 		handled = true;
 	}
 	else if (HotKey::shortCut(e, "ShortCuts", "SwitchTabRight"))
 	{
-		int index = tabs->currentIndex();
-		if (index < tabs->count())
+		int index = m_tabs->currentIndex();
+		if (index < m_tabs->count())
 		{
-			tabs->setCurrentIndex(index+1);
+			m_tabs->setCurrentIndex(index+1);
 		}
 		handled = true;
 	}
 	else if (HotKey::shortCut(e, "ShortCuts", "HideShowRoster"))
 	{
-		QList<int> sizes = split->sizes();
-		if (sizes[rosterPos] != 0)
-			sizes[rosterPos] = 0;
+		QList<int> sizes = m_split->sizes();
+		if (sizes[m_rosterPos] != 0)
+			sizes[m_rosterPos] = 0;
 		else
-			sizes = splitSizes;
-		split->setSizes(sizes);
+			sizes = m_splitSizes;
+		m_split->setSizes(sizes);
 		handled = true;
 	}
 	else if (HotKey::shortCut(e, "ShortCuts", "FocusOnRosterTab"))
@@ -417,7 +427,7 @@ void SingleWindow::onTitleChanged(ChatWidget *chatWidget, const QString &newTitl
 {
 	Q_UNUSED(newTitle)
 
-	int chatIndex = tabs->indexOf(chatWidget);
+	int chatIndex = m_tabs->indexOf(chatWidget);
 
 	if (-1 == chatIndex || !chatWidget)
 		return;

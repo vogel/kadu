@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ENCRYPTION_MANAGER_H
-#define ENCRYPTION_MANAGER_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtGui/QAction>
@@ -34,6 +33,7 @@
 class ActionDescription;
 class Chat;
 class ChatWidget;
+class ChatWidgetRepository;
 class Contact;
 class EncryptionChatData;
 class EncryptionProvider;
@@ -44,23 +44,11 @@ class ENCRYPTIONAPI EncryptionManager : public QObject, public RawMessageTransfo
 	Q_OBJECT
 	Q_DISABLE_COPY(EncryptionManager)
 
-	static EncryptionManager *Instance;
-
-	QMap<Chat, EncryptionChatData *> ChatEnryptions;
-	KeyGenerator *Generator;
-
-	EncryptionManager();
-	virtual ~EncryptionManager();
-
-private slots:
-	void chatWidgetCreated(ChatWidget *chatWidget);
-	void chatWidgetDestroying(ChatWidget *chatWidget);
-
 public:
 	static void createInstance();
 	static void destroyInstance();
 
-	static EncryptionManager * instance() { return Instance; }
+	static EncryptionManager * instance() { return m_instance; }
 
 	void setGenerator(KeyGenerator *generator);
 	KeyGenerator * generator();
@@ -75,6 +63,21 @@ public:
 
 	virtual QByteArray transform(const QByteArray &rawMessage, const Message &message);
 
-};
+private:
+	static EncryptionManager *m_instance;
 
-#endif // ENCRYPTION_MANAGER_H
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+	QMap<Chat, EncryptionChatData *> m_chatEnryptions;
+	KeyGenerator *m_generator;
+
+	EncryptionManager();
+	virtual ~EncryptionManager();
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
+private slots:
+	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetDestroying(ChatWidget *chatWidget);
+
+};

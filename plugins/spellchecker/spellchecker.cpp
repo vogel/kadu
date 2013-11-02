@@ -41,7 +41,7 @@
 #endif
 
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -76,9 +76,6 @@ static void enchantDictDescribe(const char * const langTag, const char * const p
 SpellChecker::SpellChecker(QObject *parent) :
 		ConfigurationUiHandler(parent)
 {
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
-			this, SLOT(chatCreated(ChatWidget *)));
-
 #if defined(HAVE_ASPELL)
 	// prepare configuration of spellchecker
 	SpellConfig = new_aspell_config();
@@ -97,7 +94,8 @@ SpellChecker::SpellChecker(QObject *parent) :
 
 SpellChecker::~SpellChecker()
 {
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	if (m_chatWidgetRepository)
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
 	Highlighter::removeAll();
 
@@ -112,6 +110,14 @@ SpellChecker::~SpellChecker()
 #elif defined(Q_WS_MAC)
 	qDeleteAll(MyCheckers);
 #endif
+}
+
+void SpellChecker::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
 }
 
 QStringList SpellChecker::notCheckedLanguages()
@@ -190,9 +196,9 @@ bool SpellChecker::addCheckedLang(const QString &name)
 		return false;
 	}
 
-	if (MyCheckers.size() == 1)
-		foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
-			chatCreated(chat);
+	if ((MyCheckers.size() == 1) && m_chatWidgetRepository)
+		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
+			chatWidgetCreated(chat);
 
 	return true;
 }
@@ -262,7 +268,7 @@ void SpellChecker::buildMarkTag()
 	Highlighter::rehighlightAll();
 }
 
-void SpellChecker::chatCreated(ChatWidget *chat)
+void SpellChecker::chatWidgetCreated(ChatWidget *chat)
 {
 	if (!MyCheckers.isEmpty())
 	{

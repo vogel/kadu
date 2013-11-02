@@ -34,25 +34,22 @@
 #include <QtGui/QToolTip>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/actions/action-description.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
-
 #include "icons/kadu-icon.h"
-
 #include "notify/notification-manager.h"
 #include "notify/notification/notification.h"
 #include "notify/notify-event.h"
-
 #include "status/status-changer-manager.h"
-
 #include "debug.h"
 
 #include "plugins/docking/docking.h"
@@ -105,7 +102,10 @@ MediaPlayer * MediaPlayer::Instance = 0;
 void MediaPlayer::createInstance()
 {
 	if (!Instance)
+	{
 		Instance = new MediaPlayer();
+		Instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	}
 }
 
 void MediaPlayer::destroyInstance()
@@ -134,13 +134,6 @@ MediaPlayer::MediaPlayer()
 	// Title checking timer
 	timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-
-	// Monitor of creating chats
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatWidgetDestroying(ChatWidget *)));
-
-	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
-		chatWidgetCreated(it);
 
 	enableMediaPlayerStatuses = new ActionDescription(
 		this, ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
@@ -218,14 +211,15 @@ MediaPlayer::~MediaPlayer()
 
 	StatusChangerManager::instance()->unregisterStatusChanger(Changer);
 
-	// Stop timer for checking titles
 	timer->stop();
 
-	// Disconnect all slots
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	if (m_chatWidgetRepository)
+	{
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-	foreach (ChatWidget *it, ChatWidgetManager::instance()->chats())
-		chatWidgetDestroying(it);
+		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
+			chatWidgetDestroyed(it);
+	}
 
 	delete menu;
 
@@ -237,6 +231,21 @@ MediaPlayer::~MediaPlayer()
 
 	if (DockedMediaplayerStatus)
 		DockingManager::instance()->dockMenu()->removeAction(DockedMediaplayerStatus);
+}
+
+void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+	{
+		// Monitor of creating chats
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget *)), this, SLOT(chatWidgetDestroyed(ChatWidget *)));
+
+		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
+			chatWidgetCreated(it);
+	}
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
@@ -283,7 +292,7 @@ void MediaPlayer::chatWidgetCreated(ChatWidget *chat)
 	connect(chat->edit(), SIGNAL(keyReleased(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyReleased(QKeyEvent *, CustomInput *, bool &)));
 }
 
-void MediaPlayer::chatWidgetDestroying(ChatWidget *chat)
+void MediaPlayer::chatWidgetDestroyed(ChatWidget *chat)
 {
 	kdebugf();
 	disconnect(chat->edit(), 0, this, 0);
@@ -659,9 +668,12 @@ ChatWidget *MediaPlayer::getCurrentChat()
 {
 	kdebugf();
 
+	if (!m_chatWidgetRepository)
+		return 0;
+
 	// Now for each chat window we check,
 	// if it's an active one.
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+	foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
 	{
 		//if (chat->isActiveWindow())
 		if (chat->edit() == QApplication::focusWidget() || chat->hasFocus())

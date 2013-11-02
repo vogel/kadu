@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TABS_TABS_H
-#define TABS_TABS_H
+#pragma once
 
 /*
  * autor
@@ -44,8 +43,10 @@
 
 class QAction;
 class QMenu;
+
 class Action;
 class ActionDescription;
+class ChatWidgetRepository;
 
 class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, StorableObject
 {
@@ -54,6 +55,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	// just for fun, this code is so bad already
 	// that one more friend class wont do a difference
 	friend class TabWidget;
+
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	void createDefaultConfiguration();
 
@@ -110,6 +113,8 @@ public:
 	explicit TabsManager(QObject *parent = 0);
 	virtual ~TabsManager();
 
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	bool detachChat(ChatWidget *chatWidget);
@@ -141,5 +146,3 @@ public slots:
 	void closeChat();
 
 };
-
-#endif // TABS_TABS_H

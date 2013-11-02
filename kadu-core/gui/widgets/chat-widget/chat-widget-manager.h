@@ -33,7 +33,7 @@
 
 class ChatWidget;
 class ChatWidgetActions;
-class ChatWidgetFactory;
+class ChatWidgetRepository;
 class Protocol;
 
 /**
@@ -57,29 +57,15 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 
 	static ChatWidgetManager *Instance;
 
-	QWeakPointer<ChatWidgetFactory> CurrentChatWidgetFactory;
+	QWeakPointer<ChatWidgetRepository> CurrentChatWidgetRepository;
 
 	ChatWidgetActions *Actions;
-
-	QHash<Chat, ChatWidget *> Chats;
 
 	bool OpenChatOnMessage;
 	bool OpenChatOnMessageOnlyWhenOnline;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
-
-	/**
-	 * @short Creates new instance of ChatWidget for given chat.
-	 * @param chat chat that will be associated with new ChatWidget
-	 * @return new ChatWidget instance for given chat.
-	 * @todo refactor, simplify - reading pending messages should be out of scope of this class
-	 *
-	 * This method creates new instance of ChatWidget for given chat. Signal handleNewChatWidget is emited
-	 * to find ChatWidgetContainer for this new object. Content of PendingMessages for given chat is loaded
-	 * into widget.
-	 */
-	ChatWidget * createChatWidget(const Chat &chat);
 
 	/**
 	 * @todo remove - reading pending messages should be out of scope of this class
@@ -89,14 +75,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	bool shouldOpenChatWidget(const Message &message);
 
 private slots:
-	/**
-	 * @short Slot called when ChatWidget is destroyed.
-	 * @param chatWidget ChatWidget object which is being destroyed
-	 *
-	 * Slot called when ChatWidget is destroyed. Removes mapping Chat-ChatWidget map entry for destroyed
-	 * widget. Emits chatWidgetDestroying signal.
-	 */
-	void chatWidgetDestroyed(ChatWidget *chatWidget);
+	void chatWidgetCreated(ChatWidget *chatWidget);
 
 	/**
 	 * @short Slot called when message is sent from Kadu.
@@ -122,21 +101,13 @@ public:
 	 */
 	static ChatWidgetManager * instance();
 
-	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();
 	virtual QString storageItemNodeName();
 
 	ChatWidgetActions * actions() { return Actions; }
-
-	/**
-	 * @short Returns Chat-ChatWidget map.
-	 * @return Chat-ChatWidget map
-	 *
-	 * Returns Chat-ChatWidget map.
-	 */
-	const QHash<Chat, ChatWidget *> & chats() const;
 
 	/**
 	 * @short Returns ChatWidget for given chat.
@@ -201,22 +172,6 @@ signals:
 	 * default ChatWidgetContainer in form of ChatWindow.
 	 */
 	void handleNewChatWidget(ChatWidget *chatWidget, bool &handled);
-
-	/**
-	 * @short Signal emited every time a new ChatWidget is created.
-	 * @param chatWidget new ChatWidget
-	 *
-	 * This signal is emited every time a new ChatWidget is created.
-	 */
-	void chatWidgetCreated(ChatWidget *chatWidget);
-
-	/**
-	 * @short Signal emited every time a ChatWidget is about to be destroyed.
-	 * @param chatWidget ChatWidget that is about to be destroyed
-	 *
-	 * This signal emited every time a ChatWidget is about to be destroyed.
-	 */
-	void chatWidgetDestroying(ChatWidget *chatWidget);
 
 };
 

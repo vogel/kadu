@@ -1,5 +1,4 @@
-#ifndef SINGLE_WINDOW_H
-#define SINGLE_WINDOW_H
+#pragma once
 
 #include <QtCore/QList>
 #include <QtGui/QWidget>
@@ -15,26 +14,17 @@
 class QSplitter;
 class QTabWidget;
 
+class ChatWidgetRepository;
+
 class SingleWindow : public QWidget, public ChatWidgetContainer
 {
 	Q_OBJECT
 
-	QSplitter *split;
-	QTabWidget *tabs;
-	QList<int> splitSizes;
-	int rosterPos;
-
-	void updateTabIcon(ChatWidget *chatWidget);
-	void updateTabName(ChatWidget *chatWidget);
-
-protected:
-	void closeEvent(QCloseEvent *event);
-	void keyPressEvent(QKeyEvent *event);
-	void resizeEvent(QResizeEvent *event);
-
 public:
 	SingleWindow();
 	~SingleWindow();
+
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	virtual void changeEvent(QEvent *event);
 
@@ -43,7 +33,7 @@ public:
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget);
 
-	int rosterPosition() { return rosterPos; }
+	int rosterPosition() { return m_rosterPos; }
 	void changeRosterPos(int newRosterPos);
 
 public slots:
@@ -56,17 +46,27 @@ public slots:
 	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);
 	void closeChat();
 
+protected:
+	void closeEvent(QCloseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
+	void resizeEvent(QResizeEvent *event);
+
+private:
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+	QSplitter *m_split;
+	QTabWidget *m_tabs;
+	QList<int> m_splitSizes;
+	int m_rosterPos;
+
+	void updateTabIcon(ChatWidget *chatWidget);
+	void updateTabName(ChatWidget *chatWidget);
+
 };
 
 class SingleWindowManager : public ConfigurationUiHandler, public ConfigurationAwareObject
 {
 	Q_OBJECT
-
-	QSharedPointer<SimpleProvider<QWidget *> > WindowProvider;
-	SingleWindow *Window;
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	explicit SingleWindowManager(QObject *parent = 0);
@@ -74,6 +74,11 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/) {};
 
-};
+protected:
+	virtual void configurationUpdated();
 
-#endif /* SingleWindow_H */
+private:
+	QSharedPointer<SimpleProvider<QWidget *>> m_windowProvider;
+	SingleWindow *m_window;
+
+};

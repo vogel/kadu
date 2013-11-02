@@ -35,6 +35,7 @@
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
@@ -88,9 +89,14 @@ ChatWidgetManager::~ChatWidgetManager()
 	closeAllWindows();
 }
 
-void ChatWidgetManager::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
+void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	CurrentChatWidgetFactory = chatWidgetFactory;
+	CurrentChatWidgetRepository = chatWidgetRepository;
+
+	connect(CurrentChatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+			this, SLOT(chatWidgetCreated(ChatWidget*)));
+	connect(CurrentChatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
+			this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 }
 
 StorableObject * ChatWidgetManager::storageParent()
@@ -112,17 +118,14 @@ void ChatWidgetManager::closeAllWindows()
 {
 	ensureStored();
 
-	QHash<Chat, ChatWidget *>::iterator i = Chats.begin();
-	while (i != Chats.end())
+	if (!CurrentChatWidgetRepository)
+		return;
+
+	auto chatWidget = CurrentChatWidgetRepository.data()->widgets().begin();
+	while (chatWidget != CurrentChatWidgetRepository.data()->widgets().end())
 	{
-		ChatWindow *window = qobject_cast<ChatWindow *>(i.value()->window());
-		if (window)
-		{
-			i = Chats.erase(i);
-			delete window;
-			continue;
-		}
-		++i;
+		delete chatWidget.value();
+		chatWidget = CurrentChatWidgetRepository.data()->widgets().begin();
 	}
 }
 
@@ -151,9 +154,10 @@ void ChatWidgetManager::store()
 
 	StringList.clear();
 
-	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (CurrentChatWidgetRepository && config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 	{
-		for (QHash<Chat , ChatWidget *>::const_iterator it = Chats.constBegin(), end = Chats.constEnd(); it != end; ++it)
+		auto end = CurrentChatWidgetRepository.data()->widgets().constEnd();
+		for (auto it = CurrentChatWidgetRepository.data()->widgets().constBegin(); it != end; ++it)
 		{
 			Protocol *protocolHandler = it.key().chatAccount().protocolHandler();
 			if (!protocolHandler || !protocolHandler->protocolFactory() || !qobject_cast<ChatWindow *>(it.value()->window()))
@@ -166,42 +170,21 @@ void ChatWidgetManager::store()
 	StorableStringList::store();
 }
 
-const QHash<Chat, ChatWidget *> & ChatWidgetManager::chats() const
-{
-	return Chats;
-}
-
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 {
-	if (!chat)
+	if (!chat || !CurrentChatWidgetRepository)
 		return 0;
 
-	if (Chats.contains(chat))
-		return Chats.value(chat);
+	if (CurrentChatWidgetRepository.data()->hasWidgetForChat(chat) || create)
+		return CurrentChatWidgetRepository.data()->widgetForChat(chat);
 
-	if (!create)
-		return 0;
-
-	ChatWidget * const chatWidget = createChatWidget(chat);
-	if (chatWidget)
-		Chats.insert(chat, chatWidget);
-
-	return chatWidget;
+	return 0;
 }
 
-ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
+void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	if (!chat || !CurrentChatWidgetFactory)
-		return 0;
-
-	// kdevelop cannot handle auto here
-	ChatWidget *chatWidget = CurrentChatWidgetFactory.data()->createChatWidget(chat).release();
-
-	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
-	Chats.insert(chat, chatWidget);
-
 	// We need to append unread messages before chat widget container could mark them as read.
-	const QList<Message> &messages = loadUnreadMessages(chat);
+	const QList<Message> &messages = loadUnreadMessages(chatWidget->chat());
 	chatWidget->appendMessages(messages);
 
 	bool handled = false;
@@ -212,21 +195,6 @@ ChatWidget * ChatWidgetManager::createChatWidget(const Chat &chat)
 		chatWidget->setContainer(chatWindow);
 		chatWindow->show();
 	}
-
-	emit chatWidgetCreated(chatWidget);
-
-	return chatWidget;
-}
-
-void ChatWidgetManager::chatWidgetDestroyed(ChatWidget *chatWidget)
-{
-	if (!chatWidget)
-		return;
-
-	if (Chats.remove(chatWidget->chat()) <= 0)
-		return;
-
-	emit chatWidgetDestroying(chatWidget);
 }
 
 QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)

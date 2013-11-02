@@ -20,34 +20,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_NOTIFIER_H
-#define CHAT_NOTIFIER_H
+#pragma once
 
 #include <QtCore/QWeakPointer>
 
 #include "notify/notifier.h"
 
 class ChatWidget;
+class ChatWidgetRepository;
 class FormattedStringFactory;
 
 class ChatNotifier : public Notifier
 {
 	Q_OBJECT
 
-	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
-
-	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
-
 public:
 	explicit ChatNotifier(QObject *parent = 0);
 	virtual ~ChatNotifier();
 
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
 	virtual void notify(Notification *notification);
 
-};
+private:
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QWeakPointer<FormattedStringFactory> m_formattedStringFactory;
 
-#endif // CHAT_NOTIFIER_H
+	void sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget);
+
+};

@@ -23,7 +23,7 @@
 
 #include "contacts/contact-set.h"
 #include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
@@ -41,9 +41,14 @@ ChatNotifier::~ChatNotifier()
 {
 }
 
+void ChatNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
 void ChatNotifier::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	CurrentFormattedStringFactory = formattedStringFactory;
+	m_formattedStringFactory = formattedStringFactory;
 }
 
 NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* parent)
@@ -54,31 +59,34 @@ NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* p
 
 void ChatNotifier::sendNotificationToChatWidget(Notification *notification, ChatWidget *chatWidget)
 {
-	if (!CurrentFormattedStringFactory)
+	if (!m_formattedStringFactory)
 		return;
 
-	QString content = notification->text();
+	auto content = notification->text();
 	if (!notification->details().isEmpty())
 		content += "<br/> <small>" + notification->details().join("<br/>") + "</small>";
 
-	chatWidget->appendSystemMessage(CurrentFormattedStringFactory.data()->fromHtml(content));
+	chatWidget->appendSystemMessage(m_formattedStringFactory.data()->fromHtml(content));
 }
 
 void ChatNotifier::notify(Notification *notification)
 {
-	AggregateNotification *aggregateNotification = qobject_cast<AggregateNotification *>(notification);
+	if (!m_chatWidgetRepository)
+		return;
+
+	auto aggregateNotification = qobject_cast<AggregateNotification *>(notification);
 	if (!aggregateNotification)
 		return;
 
-	Notification *latestNotification = aggregateNotification->notifications().last();
+	auto latestNotification = aggregateNotification->notifications().last();
 
-	BuddySet buddies;
-	ChatNotification *chatNotification = qobject_cast<ChatNotification *>(latestNotification);
+	auto buddies = BuddySet();
+	auto chatNotification = qobject_cast<ChatNotification *>(latestNotification);
 	if (chatNotification)
 		buddies = chatNotification->chat().contacts().toBuddySet();
 
-	QHash<Chat, ChatWidget *>::const_iterator i = ChatWidgetManager::instance()->chats().constBegin();
-	QHash<Chat, ChatWidget *>::const_iterator end = ChatWidgetManager::instance()->chats().constEnd();
+	auto i = m_chatWidgetRepository.data()->widgets().constBegin();
+	auto end = m_chatWidgetRepository.data()->widgets().constEnd();
 
 	while (i != end)
 	{

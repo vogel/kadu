@@ -36,9 +36,10 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -57,14 +58,6 @@ WordFix::WordFix(QObject *parent) :
 	kdebugf();
 
 	ExtractBody.setPattern("<body[^>]*>.*</body>");
-
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)),
-		this, SLOT(chatCreated(ChatWidget *)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-		this, SLOT(chatDestroying(ChatWidget *)));
-
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
-		connectToChat(chat);
 
 	// Loading list
 	QString data = config_file.readEntry("word_fix", "WordFix_list");
@@ -110,12 +103,32 @@ WordFix::WordFix(QObject *parent) :
 WordFix::~WordFix()
 {
 	kdebugf();
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
-		disconnectFromChat(chat);
+	if (chatWidgetRepository)
+	{
+		disconnect(chatWidgetRepository.data(), 0, this, 0);
+
+		foreach (ChatWidget *chat, chatWidgetRepository.data()->widgets())
+			chatWidgetDestroyed(chat);
+	}
 
 	kdebugf2();
+}
+
+void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	this->chatWidgetRepository = chatWidgetRepository;
+
+	if (this->chatWidgetRepository)
+	{
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)),
+			this, SLOT(chatWidgetCreated(ChatWidget *)));
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
+			this, SLOT(chatWidgetDestroyed(ChatWidget *)));
+
+		foreach (ChatWidget *chatWidget, this->chatWidgetRepository.data()->widgets())
+			chatWidgetCreated(chatWidget);
+	}
 }
 
 int WordFix::init(bool firstLoad)
@@ -125,6 +138,9 @@ int WordFix::init(bool firstLoad)
 	kdebugf();
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/word_fix.ui"));
 	MainConfigurationWindow::registerUiHandler(this);
+
+	setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+
 	kdebugf2();
 	return 0;
 }
@@ -137,28 +153,14 @@ void WordFix::done()
 	kdebugf2();
 }
 
-void WordFix::chatCreated(ChatWidget *chat)
+void WordFix::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	connectToChat(chat);
+	connect(chatWidget, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
 }
 
-void WordFix::chatDestroying(ChatWidget *chat)
+void WordFix::chatWidgetDestroyed(ChatWidget *chatWidget)
 {
-	disconnectFromChat(chat);
-}
-
-void WordFix::connectToChat(const ChatWidget *chat)
-{
-	kdebugf();
-	connect(chat, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
-	kdebugf2();
-}
-
-void WordFix::disconnectFromChat(const ChatWidget *chat)
-{
-	kdebugf();
-	disconnect(chat, 0, this, 0);
-	kdebugf2();
+	disconnect(chatWidget, 0, this, 0);
 }
 
 void WordFix::sendRequest(ChatWidget* chat)

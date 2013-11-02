@@ -51,6 +51,7 @@
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
@@ -90,8 +91,6 @@ TabsManager::TabsManager(QObject *parent) :
 
 	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *, bool &)),
 			this, SLOT(onNewChat(ChatWidget *, bool &)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
-			this, SLOT(onDestroyingChat(ChatWidget *)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
@@ -142,6 +141,9 @@ TabsManager::~TabsManager()
 	Timer.stop();
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
+	if (m_chatWidgetRepository)
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
+
 	// Call it before we close tab window.
 	ConfigurationManager::instance()->unregisterStorableObject(this);
 
@@ -157,6 +159,17 @@ TabsManager::~TabsManager()
 	Menu = 0;
 
 	kdebugf2();
+}
+
+void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+	{
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
+				this, SLOT(onDestroyingChat(ChatWidget *)));
+	}
 }
 
 void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
@@ -623,7 +636,10 @@ void TabsManager::store()
 
 	storageFile->removeChildren(point);
 
-	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
+	if (!m_chatWidgetRepository)
+		return;
+
+	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
 	{
 		if (!chatWidget)
 			continue;

@@ -26,21 +26,25 @@
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "core/core.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "status/status-container.h"
 #include "buddy.h"
 
 #include "buddies/buddy-preferred-manager.h"
 
-BuddyPreferredManager *BuddyPreferredManager::Instance = 0;
+BuddyPreferredManager *BuddyPreferredManager::m_instance = 0;
 
 BuddyPreferredManager *BuddyPreferredManager::instance()
 {
-	if (0 == Instance)
-		Instance = new BuddyPreferredManager();
+	if (0 == m_instance)
+	{
+		m_instance = new BuddyPreferredManager();
+		m_instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	}
 
-	return Instance;
+	return m_instance;
 }
 
 BuddyPreferredManager::BuddyPreferredManager()
@@ -51,7 +55,11 @@ BuddyPreferredManager::~BuddyPreferredManager()
 {
 }
 
-// TODO: 0.10 do a big review
+void BuddyPreferredManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+}
+
 Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Account &account, bool includechats)
 {
 	Q_UNUSED(includechats)
@@ -62,28 +70,7 @@ Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Accoun
 	if (!buddy.preferHigherStatuses())
 		return preferredContactByPriority(buddy, account);
 
-// 	if (!includechats)
-		return preferredContactByStatus(buddy, account);
-/*
-	if (!account)
-	{
-		if (Preferreds.contains(buddy))
-			return Preferreds.value(buddy);
-		return preferredContactByStatus(buddy);
-	}
-
-	Contact contact;
-	contact = preferredContactByUnreadMessages(buddy, account);
-	if (contact)
-		return contact;
-
-	contact = preferredContactByChatWidgets(buddy, account);
-	if (contact)
-		return contact;
-
-	contact = preferredContactByStatus(buddy, account);
-
-	return contact;*/
+	return preferredContactByStatus(buddy, account);
 }
 
 Contact BuddyPreferredManager::preferredContact2(const Buddy &buddy)
@@ -140,21 +127,6 @@ Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool include
 	return contact.contactAccount();
 }
 
-/*void BuddyPreferredManager::updatePreferred(Buddy buddy)
-{
-	Contact contact;
-	contact = preferredContactByUnreadMessages(buddy);
-	if (!contact)
-		contact = preferredContactByChatWidgets(buddy);
-
-	if (contact)
-		Preferreds.insert(buddy, contact);
-	else
-		Preferreds.remove(buddy);
-
-	emit buddyUpdated(buddy);
-}*/
-
 Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &buddy, const Account &account)
 {
 	Contact result;
@@ -168,8 +140,11 @@ Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &bud
 
 Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy, const Account &account)
 {
+	if (!m_chatWidgetRepository)
+		return Contact::null;
+
 	Contact result;
-	foreach (ChatWidget *chatwidget, ChatWidgetManager::instance()->chats())
+	foreach (ChatWidget *chatwidget, m_chatWidgetRepository.data()->widgets())
 	{
 		Chat chat = chatwidget->chat();
 		if (chat.contacts().isEmpty())

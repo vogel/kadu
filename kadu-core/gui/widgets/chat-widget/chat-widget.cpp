@@ -153,6 +153,7 @@ ChatWidget::~ChatWidget()
 	kdebugf();
 	ComposingTimer.stop();
 
+	emit widgetDestroyed(CurrentChat);
 	emit widgetDestroyed(this);
 
 	if (currentProtocol() && currentProtocol()->chatStateService() && chat().contacts().toContact())

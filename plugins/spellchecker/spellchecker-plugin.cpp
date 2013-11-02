@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "misc/kadu-paths.h"
 
 #include "configuration/spellchecker-configuration.h"
@@ -46,6 +47,8 @@ int SpellCheckerPlugin::init(bool firstLoad)
 	Q_UNUSED(firstLoad)
 
 	SpellCheckerInstance = new SpellChecker(this);
+	SpellCheckerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+
 	SpellcheckerConfiguration::createInstance();
 
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/spellchecker.ui"));

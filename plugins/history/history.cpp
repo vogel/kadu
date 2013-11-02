@@ -54,7 +54,7 @@
 #include "gui/actions/actions.h"
 #include "gui/menu/menu-inventory.h"
 #include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -100,7 +100,10 @@ History * History::Instance = 0;
 void History::createInstance()
 {
 	if (!Instance)
+	{
 		Instance = new History();
+		Instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	}
 }
 
 void History::destroyInstance()
@@ -128,8 +131,6 @@ History::History() :
 	connect(MessageManager::instance(), SIGNAL(messageSent(Message)),
 		this, SLOT(enqueueMessage(Message)));
 
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
-
 	createDefaultConfiguration();
 	configurationUpdated();
 	kdebugf2();
@@ -145,6 +146,14 @@ History::~History()
 	deleteActionDescriptions();
 
 	kdebugf2();
+}
+
+void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (m_chatWidgetRepository)
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
 }
 
 void History::createActionDescriptions()
@@ -200,7 +209,7 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
-void History::chatCreated(ChatWidget *chatWidget)
+void History::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	kdebugf();
 
@@ -398,8 +407,9 @@ void History::registerStorage(HistoryStorage *storage)
 
 	startSaveThread();
 
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
-		chatCreated(chat);
+	if (m_chatWidgetRepository)
+		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
+			chatWidgetCreated(chat);
 
 	foreach (const Account &account, AccountManager::instance()->items())
 		accountRegistered(account);

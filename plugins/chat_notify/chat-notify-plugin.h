@@ -23,8 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CHAT_NOTIFY_PLUGIN_H
-#define CHAT_NOTIFY_PLUGIN_H
+#pragma once
 
 #include "plugins/generic-plugin.h"
 
@@ -46,5 +45,3 @@ public:
 	virtual void done();
 
 };
-
-#endif // CHAT_NOTIFY_PLUGIN_H

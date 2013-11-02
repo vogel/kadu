@@ -23,8 +23,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SPELLCHECKER_H
-#define SPELLCHECKER_H
+#pragma once
 
 #include <QtCore/QMap>
 #include <QtCore/QString>
@@ -35,6 +34,7 @@ class QListWidget;
 class QListWidgetItem;
 
 class ChatWidget;
+class ChatWidgetRepository;
 
 #if defined(HAVE_ASPELL)
 struct AspellSpeller;
@@ -60,6 +60,8 @@ public:
 #endif // Q_WS_MAC
 
 private:
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
 #if defined(HAVE_ASPELL)
 	AspellConfig *SpellConfig;
 #elif defined(HAVE_ENCHANT)
@@ -80,6 +82,8 @@ public:
 	explicit SpellChecker(QObject *parent = 0);
 	virtual ~SpellChecker();
 
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	QStringList notCheckedLanguages();
 	QStringList checkedLanguages();
 	bool addCheckedLang(const QString &name);
@@ -92,12 +96,10 @@ public:
 public slots:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	void chatCreated(ChatWidget *chatWidget);
+	void chatWidgetCreated(ChatWidget *chatWidget);
 	void configForward();
 	void configBackward();
 	void configForward2(QListWidgetItem *item);
 	void configBackward2(QListWidgetItem *item);
 
 };
-
-#endif // SPELLCHECKER_H

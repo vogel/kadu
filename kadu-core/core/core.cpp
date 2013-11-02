@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/kadu-window.h"
@@ -574,7 +575,11 @@ void Core::runServices()
 
 	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
 	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
-	ChatWidgetManager::instance()->setChatWidgetFactory(CurrentChatWidgetFactory);
+
+	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
+	CurrentChatWidgetRepository->setChatWidgetFactory(CurrentChatWidgetFactory);
+
+	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -696,6 +701,11 @@ RosterNotifier * Core::rosterNotifier() const
 ChatWidgetFactory * Core::chatWidgetFactory() const
 {
 	return CurrentChatWidgetFactory;
+}
+
+ChatWidgetRepository * Core::chatWidgetRepository() const
+{
+	return CurrentChatWidgetRepository;
 }
 
 void Core::showMainWindow()

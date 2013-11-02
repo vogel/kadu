@@ -20,7 +20,7 @@
  */
 
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
@@ -34,31 +34,26 @@
 
 #include "encryption-manager.h"
 
-EncryptionManager * EncryptionManager::Instance = 0;
+EncryptionManager * EncryptionManager::m_instance = 0;
 
 void EncryptionManager::createInstance()
 {
-	if (!Instance)
+	if (!m_instance)
+	{
 		new EncryptionManager();
+		m_instance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	}
 }
 
 void EncryptionManager::destroyInstance()
 {
-	delete Instance;
+	delete m_instance;
 }
 
 EncryptionManager::EncryptionManager() :
-		Generator(0)
+		m_generator(0)
 {
-	Instance = this;
-
-	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
-		chatWidgetCreated(chatWidget);
-
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)),
-			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
-			this, SLOT(chatWidgetDestroying(ChatWidget*)));
+	m_instance = this;
 
 	Core::instance()->rawMessageTransformerService()->registerTransformer(this);
 }
@@ -67,20 +62,39 @@ EncryptionManager::~EncryptionManager()
 {
 	Core::instance()->rawMessageTransformerService()->unregisterTransformer(this);
 
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	if (m_chatWidgetRepository)
+	{
+		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-	foreach (ChatWidget *chatWidget, ChatWidgetManager::instance()->chats())
-		chatWidgetDestroying(chatWidget);
+		foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+			chatWidgetDestroying(chatWidget);
+	}
 
-	Instance = 0;
+	m_instance = 0;
+}
+
+void EncryptionManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
+{
+	m_chatWidgetRepository = chatWidgetRepository;
+
+	if (!m_chatWidgetRepository)
+		return;
+
+	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+		chatWidgetCreated(chatWidget);
+
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+			this, SLOT(chatWidgetCreated(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
+			this, SLOT(chatWidgetDestroying(ChatWidget*)));
 }
 
 EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)
 {
-	if (!ChatEnryptions.contains(chat))
-		ChatEnryptions.insert(chat, new EncryptionChatData(chat, this));
+	if (!m_chatEnryptions.contains(chat))
+		m_chatEnryptions.insert(chat, new EncryptionChatData(chat, this));
 
-	return ChatEnryptions.value(chat);
+	return m_chatEnryptions.value(chat);
 }
 
 void EncryptionManager::setEncryptionProvider(const Chat &chat, EncryptionProvider *encryptionProvider)
@@ -153,12 +167,12 @@ void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
 
 void EncryptionManager::setGenerator(KeyGenerator *generator)
 {
-	Generator = generator;
+	m_generator = generator;
 }
 
 KeyGenerator * EncryptionManager::generator()
 {
-	return Generator;
+	return m_generator;
 }
 
 QByteArray EncryptionManager::transformIncomingMessage(const QByteArray &rawMessage, const Message &message)

@@ -5,6 +5,7 @@
 #include "plugins/generic-plugin.h"
 
 class ChatWidget;
+class ChatWidgetRepository;
 class UserGroup;
 class QTreeWidgetItem;
 class QTreeWidget;
@@ -23,6 +24,8 @@ class WordFix : public ConfigurationUiHandler, GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	QWeakPointer<ChatWidgetRepository> chatWidgetRepository;
 
 	/*!
 	 * \var QMap<QString,QString> wordsList
@@ -49,7 +52,7 @@ private slots:
 	 * the object to chat "<i>send message</i>" signal.
 	 * \param chat Pointer to the created chat window.
 	 */
-	void chatCreated(ChatWidget *chat);
+	void chatWidgetCreated(ChatWidget *chat);
 
 	/*!
 	 * \fn void chatDestroying(ChatWidget *chat)
@@ -57,7 +60,7 @@ private slots:
 	 * the object from chat "<i>send message</i>" signal.
 	 * \param chat Pointer to the chat window.
 	 */
-	void chatDestroying(ChatWidget *chat);
+	void chatWidgetDestroyed(ChatWidget *chat);
 
 	/*!
 	 * \fn void sendRequest(Chat* chat)
@@ -83,24 +86,12 @@ public:
 	 */
 	virtual ~WordFix();
 
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	virtual int init(bool firstLoad);
 	virtual void done();
-
-	/*!
-	 * \fn void connectToChat(const Chat* chat)
-	 * Connects handling slot to given chat signal.
-	 * \param chat Chat to connect slot to.
-	 */
-	void connectToChat(const ChatWidget* chat);
-
-	/*!
-	 * \fn void disconnectFromChat(const Chat* chat)
-	 * Disconnects handling slot from given chat signal.
-	 * \param chat Chat to disconnect slot from.
-	 */
-	void disconnectFromChat(const ChatWidget* chat);
 
 public slots:
 	/*!
