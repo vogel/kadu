@@ -44,6 +44,9 @@ bool ChatWidgetRepository::hasWidgetForChat(const Chat &chat) const
 
 ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 {
+	if (!chat)
+		return nullptr;
+
 	if (hasWidgetForChat(chat))
 		return m_widgets.value(chat);
 
