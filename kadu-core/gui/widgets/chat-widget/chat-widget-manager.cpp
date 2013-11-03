@@ -80,7 +80,6 @@ ChatWidgetManager::ChatWidgetManager()
 	configurationUpdated();
 }
 
-
 ChatWidgetManager::~ChatWidgetManager()
 {
 	MessageRenderInfo::unregisterParserTags();
@@ -96,8 +95,6 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
 			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
-			this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 }
 
 void ChatWidgetManager::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
