@@ -19,6 +19,8 @@
 
 #pragma once
 
+#include "gui/widgets/chat-widget/chat-widget-message-handler-configuration.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
@@ -27,6 +29,8 @@ class Chat;
 class ChatWidget;
 class ChatWidgetRepository;
 class Message;
+class MessageManager;
+class NotificationService;
 class UnreadMessageRepository;
 
 class ChatWidgetMessageHandler : public QObject
@@ -39,18 +43,30 @@ public:
 
 	void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	void setMessageManager(MessageManager *messageManager);
+	void setNotificationService(NotificationService *notificationService);
 	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+
+	void setConfiguration(ChatWidgetMessageHandlerConfiguration configuration);
 
 private:
 	QWeakPointer<BuddyChatManager> m_buddyChatManager;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QWeakPointer<MessageManager> m_messageManager;
+	QWeakPointer<NotificationService> m_notificationService;
 	QWeakPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
+	ChatWidgetMessageHandlerConfiguration m_configuration;
+
 	QVector<Message> loadAllUnreadMessages(const Chat &chat) const;
+	bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:
 	void chatWidgetCreated(ChatWidget *chatWidget);
 	void chatWidgetDestroyed(ChatWidget *chatWidget);
 	void chatWidgetActivated(ChatWidget *chatWidget);
+
+	void messageReceived(const Message &message);
+	void messageSent(const Message &message);
 
 };

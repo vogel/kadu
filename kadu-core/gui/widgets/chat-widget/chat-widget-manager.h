@@ -25,7 +25,6 @@
 #pragma once
 
 #include "buddies/buddy.h"
-#include "configuration/configuration-aware-object.h"
 #include "message/message.h"
 
 #include "exports.h"
@@ -50,7 +49,7 @@ class Protocol;
  *
  * This singleton is responsible for all ChatWidget instances in Kadu.
  */
-class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
+class KADUAPI ChatWidgetManager : public QObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatWidgetManager)
@@ -85,18 +84,6 @@ public:
 	ChatWidget * byChat(const Chat &chat, const bool create);
 
 public slots:
-	/**
-	 * @short Slot called when new message is received.
-	 * @param message received message
-	 * @todo make private again or move somewhere else, it is only required by imagelink plugin
-	 * @todo best option - move to new MessageManager class
-	 *
-	 * This slot is called every time a new message is received. New message is added to ChatWidget, if it is
-	 * already opened. If not, action depends on user configuration - new ChatWidget can be opened or message
-	 * will be added to list of pending messages.
-	 */
-	void messageReceived(const Message &message);
-
 	/**
 	 * @short Close ChatWidget for given chat.
 	 * @param chat chat to close chat widget for
@@ -134,9 +121,6 @@ signals:
 	 */
 	void handleNewChatWidget(ChatWidget *chatWidget, bool &handled);
 
-protected:
-	virtual void configurationUpdated() override;
-
 private:
 	static ChatWidgetManager *m_instance;
 
@@ -147,26 +131,13 @@ private:
 	ChatWidgetActions *m_actions;
 	bool m_persistedChatWindowsOpened;
 
-	bool m_openChatOnMessage;
-	bool m_openChatOnMessageOnlyWhenOnline;
-
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
 
 	void openPersistedChatWindows();
-	bool shouldOpenChatWidget(const Message &message);
 
 private slots:
 	void chatWidgetCreated(ChatWidget *chatWidget);
-
-	/**
-	 * @short Slot called when message is sent from Kadu.
-	 * @param message sent message
-	 *
-	 * This slot is called everytime a message is sent from Kadu. If chat widget is open
-	 * it puts new message in this window.
-	 */
-	void messageSent(const Message &message);
 
 };
 

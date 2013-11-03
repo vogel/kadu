@@ -44,7 +44,6 @@
 #include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
-#include "message/message-manager.h"
 #include "message/message-render-info.h"
 #include "protocols/protocol-factory.h"
 #include "services/notification-service.h"
@@ -65,21 +64,12 @@ ChatWidgetManager::ChatWidgetManager() :
 {
 	MessageRenderInfo::registerParserTags();
 
-	connect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
-			this, SLOT(messageReceived(const Message &)));
-	connect(MessageManager::instance(), SIGNAL(messageSent(const Message &)),
-			this, SLOT(messageSent(const Message &)));
-
 	m_actions = new ChatWidgetActions(this);
-
-	configurationUpdated();
 }
 
 ChatWidgetManager::~ChatWidgetManager()
 {
 	MessageRenderInfo::unregisterParserTags();
-
-	disconnect(MessageManager::instance(), nullptr, this, nullptr);
 
 	closeAllWindows();
 }
@@ -173,60 +163,6 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 		if (chat)
 			closeChat(chat);
 	}
-}
-
-void ChatWidgetManager::configurationUpdated()
-{
-	m_openChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
-	m_openChatOnMessageOnlyWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
-}
-
-bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
-{
-	if (!m_openChatOnMessage)
-		return false;
-
-	if ((m_openChatOnMessage || m_openChatOnMessageOnlyWhenOnline) && Core::instance()->notificationService()->silentMode())
-		return false;
-
-	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();
-	if (!handler)
-		return false;
-
-	if (!m_openChatOnMessageOnlyWhenOnline)
-		return true;
-
-	return StatusTypeGroupOnline == handler->status().group();
-}
-
-void ChatWidgetManager::messageReceived(const Message &message)
-{
-	const Chat &chat = message.messageChat();
-	ChatWidget *alreadyOpenedChatWidget = byChat(chat, false);
-
-	if (alreadyOpenedChatWidget)
-	{
-		alreadyOpenedChatWidget->appendMessage(message);
-		return;
-	}
-
-	if (!shouldOpenChatWidget(message))
-	{
-		qApp->alert(Core::instance()->kaduWindow());
-		return;
-	}
-
-	byChat(chat, true);
-}
-
-void ChatWidgetManager::messageSent(const Message &message)
-{
-	const Chat &chat = message.messageChat();
-	ChatWidget * const chatWidget = byChat(chat, false);
-	if (!chatWidget)
-		return;
-
-	chatWidget->appendMessage(message);
 }
 
 #include "moc_chat-widget-manager.cpp"

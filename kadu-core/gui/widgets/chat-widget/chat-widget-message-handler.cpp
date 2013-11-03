@@ -20,9 +20,16 @@
 #include "chat-widget-message-handler.h"
 
 #include "chat/buddy-chat-manager.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
+#include "gui/windows/kadu-window.h"
+#include "message/message-manager.h"
 #include "message/unread-message-repository.h"
+#include "protocols/protocol.h"
+#include "services/notification-service.h"
+
+#include <QtGui/QApplication>
 
 ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) :
 		QObject(parent)
@@ -52,9 +59,30 @@ void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *cha
 		chatWidgetCreated(chatWidget);
 }
 
+void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
+{
+	m_messageManager = messageManager;
+
+	if (!m_messageManager)
+		return;
+
+	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)));
+	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)));
+}
+
+void ChatWidgetMessageHandler::setNotificationService(NotificationService *notificationService)
+{
+	m_notificationService = notificationService;
+}
+
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
+}
+
+void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfiguration configuration)
+{
+	m_configuration = configuration;
 }
 
 void ChatWidgetMessageHandler::chatWidgetCreated(ChatWidget *chatWidget)
@@ -94,3 +122,56 @@ QVector<Message> ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &cha
 	auto unreadChat = buddyChat ? buddyChat : chat;
 	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }
+
+void ChatWidgetMessageHandler::messageReceived(const Message &message)
+{
+	if (!m_chatWidgetRepository)
+		return;
+
+	auto chat = message.messageChat();
+	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat))
+	{
+		auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+		chatWidget->appendMessage(message);
+		return;
+	}
+
+	if (shouldOpenChatWidget(chat))
+		m_chatWidgetRepository.data()->widgetForChat(chat);
+	else
+		qApp->alert(Core::instance()->kaduWindow());
+}
+
+bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
+{
+	if (!m_configuration.openChatOnMessage())
+		return false;
+
+	auto silentMode = m_notificationService ? m_notificationService.data()->silentMode() : false;
+	if ((m_configuration.openChatOnMessage() || m_configuration.openChatOnMessageOnlyWhenOnline()) && silentMode)
+		return false;
+
+	auto handler = chat.chatAccount().protocolHandler();
+	if (!handler)
+		return false;
+
+	if (m_configuration.openChatOnMessageOnlyWhenOnline())
+		return StatusTypeGroupOnline == handler->status().group();
+	else
+		return true;
+}
+
+void ChatWidgetMessageHandler::messageSent(const Message &message)
+{
+	if (!m_chatWidgetRepository)
+		return;
+
+	auto chat = message.messageChat();
+	if (!m_chatWidgetRepository.data()->hasWidgetForChat(chat))
+		return;
+
+	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	chatWidget->appendMessage(message);
+}
+
+#include "moc_chat-widget-message-handler.cpp"

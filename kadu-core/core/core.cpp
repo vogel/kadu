@@ -59,6 +59,7 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
+#include "gui/widgets/chat-widget/chat-widget-message-handler-configurator.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
@@ -589,7 +590,10 @@ void Core::runServices()
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
+	auto chatWidgetMessageHandler = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
+	chatWidgetMessageHandler->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 
@@ -632,6 +636,7 @@ void Core::runServices()
 void Core::runGuiServices()
 {
 	CurrentNotificationService = new NotificationService(this);
+	CurrentChatWidgetMessageHandler->setNotificationService(CurrentNotificationService);
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
