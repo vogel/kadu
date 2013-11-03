@@ -25,6 +25,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-window.h"
+
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
@@ -48,12 +50,9 @@
 #include "activate.h"
 #include "debug.h"
 
-#include "chat-window.h"
-#include <core/core.h>
-
 ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
-		QWidget(parent), DesktopAwareObject(this), currentChatWidget(chatWidget),
-		title_timer(new QTimer(this)), showNewMessagesNum(false), blinkChatTitle(true)
+		QWidget(parent), DesktopAwareObject(this), m_chatWidget(chatWidget),
+		m_titleTimer(new QTimer(this)), m_showNewMessagesNum(false), m_blinkChatTitle(true)
 {
 	kdebugf();
 
@@ -66,13 +65,13 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 #endif
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	currentChatWidget->setParent(this);
-	currentChatWidget->show();
-	currentChatWidget->edit()->setFocus();
-	currentChatWidget->kaduRestoreGeometry();
+	m_chatWidget->setParent(this);
+	m_chatWidget->show();
+	m_chatWidget->edit()->setFocus();
+	m_chatWidget->kaduRestoreGeometry();
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(currentChatWidget);
+	layout->addWidget(m_chatWidget);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
@@ -82,29 +81,29 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	configurationUpdated();
 
 	CustomPropertiesVariantWrapper *variantWrapper = new CustomPropertiesVariantWrapper(
-			currentChatWidget->chat().data()->customProperties(),
+			m_chatWidget->chat().data()->customProperties(),
 			"chat-geometry:WindowGeometry", CustomProperties::Storable);
 	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
-	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
-	connect(currentChatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
-	connect(currentChatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
-	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
+	connect(m_chatWidget, SIGNAL(closed()), this, SLOT(close()));
+	connect(m_chatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
+	connect(m_chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
+	connect(m_titleTimer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 }
 
 ChatWindow::~ChatWindow()
 {
-	currentChatWidget->kaduStoreGeometry();
+	m_chatWidget->kaduStoreGeometry();
 }
 
 void ChatWindow::configurationUpdated()
 {
 	triggerCompositingStateChanged();
 
-	showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
-	blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
+	m_showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle", false);
+	m_blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle", true);
 
-	if (currentChatWidget->chat().unreadMessagesCount())
+	if (m_chatWidget->chat().unreadMessagesCount())
 		blinkTitle();
 }
 
@@ -132,7 +131,7 @@ QRect ChatWindow::defaultGeometry() const
 	int x, y;
 	x = pos().x();
 	y = pos().y();
-	if (currentChatWidget->chat().contacts().count() > 1)
+	if (m_chatWidget->chat().contacts().count() > 1)
 		size.setWidth(550);
 	else
 		size.setWidth(400);
@@ -159,7 +158,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 		unsigned int period = config_file.readUnsignedNumEntry("Chat",
 			"ChatCloseTimerPeriod", 2);
 
-		if (QDateTime::currentDateTime() < currentChatWidget->lastReceivedMessageTime().addSecs(period))
+		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{
 			MessageDialog *dialog = MessageDialog::create(KaduIcon("dialog-question"), tr("Kadu"), tr("New message received, close window anyway?"));
 			dialog->addButton(QMessageBox::Yes, tr("Close window"));
@@ -178,15 +177,15 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 void ChatWindow::updateIcon()
 {
-	setWindowIcon(currentChatWidget->icon());
+	setWindowIcon(m_chatWidget->icon());
 }
 
 void ChatWindow::updateTitle()
 {
-	setWindowTitle(currentChatWidget->title());
+	setWindowTitle(m_chatWidget->title());
 
 	// TODO 0.10.0: is that really needed here? this method is called only on chat widget title change
-	if (showNewMessagesNum && currentChatWidget->chat().unreadMessagesCount()) // if we don't have new messages or don't want them to be shown
+	if (m_showNewMessagesNum && m_chatWidget->chat().unreadMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
 }
 
@@ -194,20 +193,20 @@ void ChatWindow::blinkTitle()
 {
  	if (!_isActiveWindow(this))
   	{
-		if (!windowTitle().contains(currentChatWidget->title()) || !blinkChatTitle)
+		if (!windowTitle().contains(m_chatWidget->title()) || !m_blinkChatTitle)
 		{
-  			if (!showNewMessagesNum) // if we don't show number od new messages waiting
-  				setWindowTitle(currentChatWidget->title());
+  			if (!m_showNewMessagesNum) // if we don't show number od new messages waiting
+  				setWindowTitle(m_chatWidget->title());
   			else
 				showNewMessagesNumInTitle();
 		}
 		else
-			setWindowTitle(QString(currentChatWidget->title().length() + 5, ' '));
+			setWindowTitle(QString(m_chatWidget->title().length() + 5, ' '));
 
-		if (blinkChatTitle) // timer will not be started, if configuration option was changed
+		if (m_blinkChatTitle) // timer will not be started, if configuration option was changed
 		{
-			title_timer->setSingleShot(true);
-			title_timer->start(500);
+			m_titleTimer->setSingleShot(true);
+			m_titleTimer->start(500);
 		}
 	}
 }
@@ -215,7 +214,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!_isActiveWindow(this))
-		setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->title());
+		setWindowTitle('[' + QString::number(m_chatWidget->chat().unreadMessagesCount()) + "] " + m_chatWidget->title());
 }
 
 void ChatWindow::changeEvent(QEvent *event)
@@ -227,9 +226,9 @@ void ChatWindow::changeEvent(QEvent *event)
 		if (_isActiveWindow(this))
 		{
 
-			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(currentChatWidget->chat());
-			setWindowTitle(currentChatWidget->title());
-			title_timer->stop();
+			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(m_chatWidget->chat());
+			setWindowTitle(m_chatWidget->title());
+			m_titleTimer->stop();
 		}
 		kdebugf2();
 	}
@@ -245,7 +244,7 @@ void ChatWindow::setWindowTitle(QString title)
 void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == currentChatWidget);
+	Q_ASSERT(chatWidget == m_chatWidget);
 
 	// we can be embeded in other window...
 	_activateWindow(window());
@@ -254,29 +253,29 @@ void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
 void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == currentChatWidget);
+	Q_ASSERT(chatWidget == m_chatWidget);
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(currentChatWidget->chat());
+		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(m_chatWidget->chat());
 		return;
 	}
 
 	qApp->alert(this); // TODO: make notifier from this
 
-	if (blinkChatTitle)
+	if (m_blinkChatTitle)
 	{
-		if (!title_timer->isActive())
+		if (!m_titleTimer->isActive())
 			blinkTitle(); // blinking is able to show new messages also...
 	}
-	else if (showNewMessagesNum) // ... so we check this condition as 'else'
+	else if (m_showNewMessagesNum) // ... so we check this condition as 'else'
 		showNewMessagesNumInTitle();
 }
 
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == currentChatWidget);
+	Q_ASSERT(chatWidget == m_chatWidget);
 
 	close();
 }
@@ -284,10 +283,9 @@ void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 bool ChatWindow::isChatWidgetActive(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == currentChatWidget);
+	Q_ASSERT(chatWidget == m_chatWidget);
 
 	return _isWindowActiveOrFullyVisible(this);
 }
-
 
 #include "moc_chat-window.cpp"

@@ -43,47 +43,16 @@ class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, Configura
 {
 	Q_OBJECT
 
-private:
-	ChatWidget *currentChatWidget;
-	QTimer *title_timer;  /*!< zmienna przechowująca czas od ostatniego odświeżenia tytułu okna */
-
-	bool showNewMessagesNum; /*!< czy pokazujemy liczbę nowych wiadomości w tytule nieaktywnego okna */
-	bool blinkChatTitle; /*!< czy tytuł nieaktywnego okna z nieprzeczytanymi wiadomościami powinien mrugać */
-
-	QRect defaultGeometry() const;
-
-private slots:
-	void updateIcon();
-	void updateTitle();
-
-protected:
-	/**
-		\fn virtual void closeEvent(QCloseEvent* e)
-		Funkcja obsługująca zamknięcie okna
-	**/
-	virtual void closeEvent(QCloseEvent *e);
-
-	/**
-		\fn virtual void changeEvent(QEvent *event)
-		Funkcja sterująca mruganiem napisu okna
-	**/
-	virtual void changeEvent(QEvent *event);
-
-	virtual void configurationUpdated();
-
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
-
 public:
 	explicit ChatWindow(ChatWidget *chatWidget, QWidget *parent = 0);
 	virtual ~ChatWindow();
 
-	ChatWidget * chatWidget() const { return currentChatWidget; }
+	ChatWidget * chatWidget() const { return m_chatWidget; }
 
-	virtual void activateChatWidget(ChatWidget *chatWidget);
-	virtual void alertChatWidget(ChatWidget *chatWidget);
-	virtual void closeChatWidget(ChatWidget *chatWidget);
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget);
+	virtual void activateChatWidget(ChatWidget *chatWidget) override;
+	virtual void alertChatWidget(ChatWidget *chatWidget) override;
+	virtual void closeChatWidget(ChatWidget *chatWidget) override;
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 
 	void setWindowTitle(QString title);
 
@@ -91,5 +60,27 @@ public slots:
 	// TODO: rename
 	void blinkTitle();
 	void showNewMessagesNumInTitle();
+
+protected:
+	virtual void closeEvent(QCloseEvent *e) override;
+	virtual void changeEvent(QEvent *event) override;
+
+	virtual void configurationUpdated() override;
+
+	virtual void compositingEnabled() override;
+	virtual void compositingDisabled() override;
+
+private:
+	ChatWidget *m_chatWidget;
+	QTimer *m_titleTimer;
+
+	bool m_showNewMessagesNum;
+	bool m_blinkChatTitle;
+
+	QRect defaultGeometry() const;
+
+private slots:
+	void updateIcon();
+	void updateTitle();
 
 };
