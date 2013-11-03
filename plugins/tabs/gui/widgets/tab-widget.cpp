@@ -208,7 +208,8 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
+		auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
+		Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
 		return;
 	}
 
@@ -428,7 +429,10 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
-			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
+		{
+			auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
+			Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+		}
 		kdebugf2();
 	}
 }

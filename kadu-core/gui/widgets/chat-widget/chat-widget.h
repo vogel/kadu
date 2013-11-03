@@ -163,7 +163,7 @@ public:
 	void close();
 
 public slots:
-	void appendMessages(const QList<Message> &messages);
+	void appendMessages(const QVector<Message> &messages);
 	void appendMessage(const Message &message);
 
 	void sendMessage();

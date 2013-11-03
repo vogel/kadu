@@ -135,9 +135,9 @@ const QList<Message> & UnreadMessageRepository::allUnreadMessages() const
 	return UnreadMessages;
 }
 
-QList<Message> UnreadMessageRepository::chatUnreadMessages(const Chat &chat) const
+QVector<Message> UnreadMessageRepository::unreadMessagesForChat(const Chat &chat) const
 {
-	auto result = QList<Message>();
+	auto result = QVector<Message>();
 	auto chats = QSet<Chat>();
 
 	auto details = chat.details();
@@ -166,20 +166,17 @@ quint16 UnreadMessageRepository::unreadMessagesCount() const
 	return UnreadMessages.count();
 }
 
-void UnreadMessageRepository::markAllMessagesAsRead(const Chat &chat)
+void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &messages)
 {
-	auto messages = chatUnreadMessages(chat);
-
 	foreach (const auto &message, messages)
-	{
-		UnreadMessages.removeAll(message);
+		if (UnreadMessages.removeAll(message) > 0)
+		{
+			message.setStatus(MessageStatusRead);
+			message.setPending(false);
+			message.data()->removeFromStorage();
 
-		message.setStatus(MessageStatusRead);
-		message.setPending(false);
-		message.data()->removeFromStorage();
-
-		emit unreadMessageRemoved(message);
-	}
+			emit unreadMessageRemoved(message);
+		}
 }
 
 Message UnreadMessageRepository::unreadMessage() const

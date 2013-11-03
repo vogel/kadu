@@ -329,7 +329,7 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 		case 2:
 			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
 			{
-				QList<Message> unreadMessages = Core::instance()->unreadMessageRepository()->chatUnreadMessages(hint->chat());
+				auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(hint->chat());
 				foreach (const Message &message, unreadMessages)
 				{
 					message.setStatus(MessageStatusRead);

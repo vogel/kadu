@@ -237,7 +237,11 @@ void ChatWindow::changeEvent(QEvent *event)
 		if (_isActiveWindow(this))
 		{
 			if (m_unreadMessageRepository)
-				m_unreadMessageRepository.data()->markAllMessagesAsRead(m_chatWidget->chat());
+			{
+				auto messages = m_unreadMessageRepository.data()->unreadMessagesForChat(m_chatWidget->chat());
+				m_unreadMessageRepository.data()->markMessagesAsRead(messages);
+			}
+
 			setWindowTitle(m_chatWidget->title());
 			m_titleTimer->stop();
 		}
@@ -269,7 +273,10 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 	if (isChatWidgetActive(chatWidget))
 	{
 		if (m_unreadMessageRepository)
-			m_unreadMessageRepository.data()->markAllMessagesAsRead(m_chatWidget->chat());
+		{
+			auto messages = m_unreadMessageRepository.data()->unreadMessagesForChat(m_chatWidget->chat());
+			m_unreadMessageRepository.data()->markMessagesAsRead(messages);
+		}
 		return;
 	}
 

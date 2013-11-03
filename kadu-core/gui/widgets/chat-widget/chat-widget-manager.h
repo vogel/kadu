@@ -156,7 +156,7 @@ private:
 	/**
 	 * @todo remove - reading pending messages should be out of scope of this class
 	 */
-	QList<Message> loadUnreadMessages(const Chat &chat);
+	QVector<Message> loadUnreadMessages(const Chat &chat);
 
 	void openPersistedChatWindows();
 	bool shouldOpenChatWidget(const Message &message);

@@ -88,7 +88,7 @@ public:
 	 *
 	 * Returns list of all unread messages for given chat.
 	 */
-	QList<Message> chatUnreadMessages(const Chat &chat) const;
+	QVector<Message> unreadMessagesForChat(const Chat &chat) const;
 
 	/**
 	 * @short Returns true if there is any unread message in manager.
@@ -109,15 +109,15 @@ public:
 	quint16 unreadMessagesCount() const;
 
 	/**
-	 * @short Marks all unread messages of given chat as read.
+	 * @short Marks messages from list as read.
 	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat to operate on
+	 * @param messages list of messages to be marked as read
 	 *
-	 * Marks all unread messages of given chat as read. Messages are removed from unread list, its statuses
+	 * Marks given messages as read. Messages are removed from unread list, its statuses
 	 * are updated to MessageStatusRead and its pending statues are set to false.
 	 * Signal unreadMessageRemoved is emited for each changed message.
 	 */
-	void markAllMessagesAsRead(const Chat &chat);
+	void markMessagesAsRead(const QVector<Message> &messages);
 
 	/**
 	 * @short Returns one of unread messages.

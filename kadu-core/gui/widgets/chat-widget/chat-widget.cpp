@@ -477,7 +477,7 @@ QIcon ChatWidget::icon()
 	return KaduIcon("internet-group-chat").icon();
 }
 
-void ChatWidget::appendMessages(const QList<Message> &messages)
+void ChatWidget::appendMessages(const QVector<Message> &messages)
 {
 	if (messages.isEmpty())
 		return;

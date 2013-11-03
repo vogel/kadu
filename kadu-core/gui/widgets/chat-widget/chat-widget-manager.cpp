@@ -147,7 +147,7 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
 	// We need to append unread messages before chat widget container could mark them as read.
-	const QList<Message> &messages = loadUnreadMessages(chatWidget->chat());
+	auto messages = loadUnreadMessages(chatWidget->chat());
 	chatWidget->appendMessages(messages);
 
 	bool handled = false;
@@ -163,11 +163,11 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 	}
 }
 
-QList<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
+QVector<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 {
-	const Chat &buddyChat = BuddyChatManager::instance()->buddyChat(chat);
-	const Chat &unreadChat = buddyChat ? buddyChat : chat;
-	const QList<Message> &unreadMessages = Core::instance()->unreadMessageRepository()->chatUnreadMessages(unreadChat);
+	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
+	auto unreadChat = buddyChat ? buddyChat : chat;
+	auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(unreadChat);
 
 	foreach (const Message &message, unreadMessages)
 	{

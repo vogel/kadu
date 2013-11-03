@@ -283,7 +283,8 @@ void TabsManager::onTabChange(int index)
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
 	{
-		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chat);
+		auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chat);
+		Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
 		updateTabName(chatWidget);
 
 		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
@@ -423,7 +424,8 @@ void TabsManager::onTimer()
 			{
 				if (currentChatWidget == chatWidget)
 				{
-					Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(chatWidget->chat());
+					auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
+					Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
 					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 				}
 
