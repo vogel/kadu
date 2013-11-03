@@ -34,7 +34,6 @@ class ChatWidgetActions;
 class ChatWidgetRepository;
 class ChatWindowStorage;
 class ChatWindowRepository;
-class Protocol;
 
 /**
  * @addtogroup Gui

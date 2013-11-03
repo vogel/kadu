@@ -27,27 +27,15 @@
 
 #include <QtGui/QApplication>
 
-#include "chat/buddy-chat-manager.h"
-#include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact.h"
-#include "configuration/configuration-file.h"
-#include "contacts/contact-set.h"
-#include "contacts/contact.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window.h"
-#include "gui/windows/kadu-window.h"
-#include "icons/icons-manager.h"
 #include "message/message-render-info.h"
-#include "protocols/protocol-factory.h"
-#include "services/notification-service.h"
-#include "activate.h"
 
 ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
 
