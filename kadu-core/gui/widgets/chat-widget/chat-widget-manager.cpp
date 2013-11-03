@@ -37,7 +37,7 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window.h"
+#include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"

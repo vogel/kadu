@@ -157,6 +157,8 @@ set (gui_SRCS
 	widgets/dialog/password-dialog-widget.cpp
 	widgets/dialog/title-widget.cpp
 
+	windows/chat-window/chat-window.cpp
+
 	windows/about.cpp
 	windows/add-buddy-window.cpp
 	windows/add-conference-window.cpp
@@ -166,7 +168,6 @@ set (gui_SRCS
 	windows/buddy-delete-window.cpp
 	windows/chat-data-window.cpp
 	windows/chat-data-window-repository.cpp
-	windows/chat-window.cpp
 	windows/configuration-window.cpp
 	windows/file-transfer-window.cpp
 	windows/group-properties-window.cpp
@@ -352,7 +353,6 @@ set (gui_MOC_SRCS
 	windows/buddy-delete-window.h
 	windows/chat-data-window.h
 	windows/chat-data-window-repository.h
-	windows/chat-window.h
 	windows/configuration-window.h
 	windows/file-transfer-window.h
 	windows/group-properties-window.h
