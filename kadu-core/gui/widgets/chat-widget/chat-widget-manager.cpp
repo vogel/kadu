@@ -23,6 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-widget-manager.h"
+
 #include <QtGui/QApplication>
 
 #include "chat/buddy-chat-manager.h"
@@ -48,20 +50,18 @@
 #include "services/notification-service.h"
 #include "activate.h"
 
-#include "chat-widget-manager.h"
-
-ChatWidgetManager * ChatWidgetManager::Instance = 0;
+ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
 
 ChatWidgetManager * ChatWidgetManager::instance()
 {
-	if (0 == Instance)
+	if (!m_instance)
 	{
-		Instance = new ChatWidgetManager();
-		// Load configuration in constructor creates loop because Instance == 0
-		Instance->ensureLoaded();
+		m_instance = new ChatWidgetManager();
+		// Load configuration in constructor creates loop because Instance == nullptr
+		m_instance->ensureLoaded();
 	}
 
-	return Instance;
+	return m_instance;
 }
 
 ChatWidgetManager::ChatWidgetManager()
@@ -75,7 +75,7 @@ ChatWidgetManager::ChatWidgetManager()
 	connect(MessageManager::instance(), SIGNAL(messageSent(const Message &)),
 			this, SLOT(messageSent(const Message &)));
 
-	Actions = new ChatWidgetActions(this);
+	m_actions = new ChatWidgetActions(this);
 
 	configurationUpdated();
 }
@@ -85,29 +85,29 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 	MessageRenderInfo::unregisterParserTags();
 
-	disconnect(MessageManager::instance(), 0, this, 0);
+	disconnect(MessageManager::instance(), nullptr, this, nullptr);
 
 	closeAllWindows();
 }
 
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	CurrentChatWidgetRepository = chatWidgetRepository;
+	m_chatWidgetRepository = chatWidgetRepository;
 
-	connect(CurrentChatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
 			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(CurrentChatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
 			this, SLOT(chatWidgetDestroyed(ChatWidget*)));
 }
 
 void ChatWidgetManager::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
 {
-	CurrentChatWindowFactory = chatWindowFactory;
+	m_chatWindowFactory = chatWindowFactory;
 }
 
 StorableObject * ChatWidgetManager::storageParent()
 {
-	return 0;
+	return nullptr;
 }
 
 QString ChatWidgetManager::storageNodeName()
@@ -124,11 +124,11 @@ void ChatWidgetManager::closeAllWindows()
 {
 	ensureStored();
 
-	if (!CurrentChatWidgetRepository)
+	if (!m_chatWidgetRepository)
 		return;
 
-	auto chatWindows = QVector<ChatWindow *>(CurrentChatWidgetRepository.data()->widgets().size());
-	std::transform(CurrentChatWidgetRepository.data()->widgets().begin(), CurrentChatWidgetRepository.data()->widgets().end(),
+	auto chatWindows = QVector<ChatWindow *>(m_chatWidgetRepository.data()->widgets().size());
+	std::transform(m_chatWidgetRepository.data()->widgets().begin(), m_chatWidgetRepository.data()->widgets().end(),
 		chatWindows.begin(), [](ChatWidget *chatWidget){ return qobject_cast<ChatWindow *>(chatWidget->window()); });
 	qDeleteAll(chatWindows);
 }
@@ -158,10 +158,10 @@ void ChatWidgetManager::store()
 
 	StringList.clear();
 
-	if (CurrentChatWidgetRepository && config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+	if (m_chatWidgetRepository && config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 	{
-		auto end = CurrentChatWidgetRepository.data()->widgets().constEnd();
-		for (auto it = CurrentChatWidgetRepository.data()->widgets().constBegin(); it != end; ++it)
+		auto end = m_chatWidgetRepository.data()->widgets().constEnd();
+		for (auto it = m_chatWidgetRepository.data()->widgets().constBegin(); it != end; ++it)
 		{
 			Protocol *protocolHandler = it.key().chatAccount().protocolHandler();
 			if (!protocolHandler || !protocolHandler->protocolFactory() || !qobject_cast<ChatWindow *>(it.value()->window()))
@@ -176,13 +176,13 @@ void ChatWidgetManager::store()
 
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 {
-	if (!chat || !CurrentChatWidgetRepository)
-		return 0;
+	if (!chat || !m_chatWidgetRepository)
+		return nullptr;
 
-	if (CurrentChatWidgetRepository.data()->hasWidgetForChat(chat) || create)
-		return CurrentChatWidgetRepository.data()->widgetForChat(chat);
+	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat) || create)
+		return m_chatWidgetRepository.data()->widgetForChat(chat);
 
-	return 0;
+	return nullptr;
 }
 
 void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
@@ -193,9 +193,9 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
-	if (!handled && CurrentChatWindowFactory)
+	if (!handled && m_chatWindowFactory)
 	{
-		auto chatWindow = CurrentChatWindowFactory.data()->createChatWindow(chatWidget);
+		auto chatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget);
 		chatWidget->setContainer(chatWindow.get());
 		chatWindow.get()->show();
 		chatWindow.release();
@@ -236,23 +236,23 @@ void ChatWidgetManager::closeAllChats(const Buddy &buddy)
 
 void ChatWidgetManager::configurationUpdated()
 {
-	OpenChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
-	OpenChatOnMessageOnlyWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
+	m_openChatOnMessage = config_file.readBoolEntry("Chat", "OpenChatOnMessage");
+	m_openChatOnMessageOnlyWhenOnline = config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline");
 }
 
 bool ChatWidgetManager::shouldOpenChatWidget(const Message &message)
 {
-	if (!OpenChatOnMessage)
+	if (!m_openChatOnMessage)
 		return false;
 
-	if ((OpenChatOnMessage || OpenChatOnMessageOnlyWhenOnline) && Core::instance()->notificationService()->silentMode())
+	if ((m_openChatOnMessage || m_openChatOnMessageOnlyWhenOnline) && Core::instance()->notificationService()->silentMode())
 		return false;
 
 	const Protocol * const handler = message.messageChat().chatAccount().protocolHandler();
 	if (!handler)
 		return false;
 
-	if (!OpenChatOnMessageOnlyWhenOnline)
+	if (!m_openChatOnMessageOnlyWhenOnline)
 		return true;
 
 	return StatusTypeGroupOnline == handler->status().group();

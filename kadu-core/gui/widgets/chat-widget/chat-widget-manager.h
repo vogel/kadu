@@ -56,44 +56,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatWidgetManager)
 
-	static ChatWidgetManager *Instance;
-
-	QWeakPointer<ChatWidgetRepository> CurrentChatWidgetRepository;
-	QWeakPointer<ChatWindowFactory> CurrentChatWindowFactory;
-
-	ChatWidgetActions *Actions;
-
-	bool OpenChatOnMessage;
-	bool OpenChatOnMessageOnlyWhenOnline;
-
-	ChatWidgetManager();
-	virtual ~ChatWidgetManager();
-
-	/**
-	 * @todo remove - reading pending messages should be out of scope of this class
-	 */
-	QList<Message> loadUnreadMessages(const Chat &chat);
-
-	bool shouldOpenChatWidget(const Message &message);
-
-private slots:
-	void chatWidgetCreated(ChatWidget *chatWidget);
-
-	/**
-	 * @short Slot called when message is sent from Kadu.
-	 * @param message sent message
-	 *
-	 * This slot is called everytime a message is sent from Kadu. If chat widget is open
-	 * it puts new message in this window.
-	 */
-	void messageSent(const Message &message);
-
-protected:
-	virtual void load();
-	virtual void store();
-
-	virtual void configurationUpdated();
-
 public:
 	/**
 	 * @short Returns manager's singleton instance.
@@ -106,11 +68,11 @@ public:
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
-	virtual QString storageItemNodeName();
+	virtual StorableObject * storageParent() override;
+	virtual QString storageNodeName() override;
+	virtual QString storageItemNodeName() override;
 
-	ChatWidgetActions * actions() { return Actions; }
+	ChatWidgetActions * actions() { return m_actions; }
 
 	/**
 	 * @short Returns ChatWidget for given chat.
@@ -175,6 +137,45 @@ signals:
 	 * default ChatWidgetContainer in form of ChatWindow.
 	 */
 	void handleNewChatWidget(ChatWidget *chatWidget, bool &handled);
+
+protected:
+	virtual void load() override;
+	virtual void store() override;
+
+	virtual void configurationUpdated() override;
+
+private:
+	static ChatWidgetManager *m_instance;
+
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
+
+	ChatWidgetActions *m_actions;
+
+	bool m_openChatOnMessage;
+	bool m_openChatOnMessageOnlyWhenOnline;
+
+	ChatWidgetManager();
+	virtual ~ChatWidgetManager();
+
+	/**
+	 * @todo remove - reading pending messages should be out of scope of this class
+	 */
+	QList<Message> loadUnreadMessages(const Chat &chat);
+
+	bool shouldOpenChatWidget(const Message &message);
+
+private slots:
+	void chatWidgetCreated(ChatWidget *chatWidget);
+
+	/**
+	 * @short Slot called when message is sent from Kadu.
+	 * @param message sent message
+	 *
+	 * This slot is called everytime a message is sent from Kadu. If chat widget is open
+	 * it puts new message in this window.
+	 */
+	void messageSent(const Message &message);
 
 };
 
