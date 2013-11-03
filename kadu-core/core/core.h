@@ -59,6 +59,8 @@ class ChatTopBarWidgetFactoryRepository;
 class ChatWidgetFactory;
 class ChatWidgetRepository;
 class ChatWindowFactory;
+class ChatWindowStorage;
+class ChatWindowRepository;
 class ClipboardHtmlTransformerService;
 class DomProcessorService;
 class FormattedStringFactory;
@@ -106,6 +108,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetFactory *CurrentChatWidgetFactory;
 	ChatWidgetRepository *CurrentChatWidgetRepository;
 	ChatWindowFactory *CurrentChatWindowFactory;
+	ChatWindowStorage *CurrentChatWindowStorage;
+	ChatWindowRepository *CurrentChatWindowRepository;
 
 	KaduWindow *Window;
 
@@ -177,6 +181,8 @@ public:
 	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ChatWindowFactory * chatWindowFactory() const;
+	ChatWindowStorage * chatWindowStorage() const;
+	ChatWindowRepository * chatWindowRepository() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

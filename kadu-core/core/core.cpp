@@ -40,6 +40,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/chat-manager.h"
 #include "chat/chat-styles-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
@@ -60,6 +61,9 @@
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
+#include "gui/windows/chat-window/chat-window-storage.h"
+#include "gui/windows/chat-window/chat-window-storage-configurator.h"
+#include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
@@ -583,8 +587,19 @@ void Core::runServices()
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowFactory->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 
+	CurrentChatWindowRepository = new ChatWindowRepository(this);
+	CurrentChatWindowRepository->setChatWindowFactory(CurrentChatWindowFactory);
+
+	CurrentChatWindowStorage = new ChatWindowStorage(this);
+	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
+	CurrentChatWindowStorage->setChatWindowRepository(CurrentChatWindowRepository);
+	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
+	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
+	CurrentChatWindowStorage->ensureLoaded();
+
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
-	ChatWidgetManager::instance()->setChatWindowFactory(CurrentChatWindowFactory);
+	ChatWidgetManager::instance()->setChatWindowRepository(CurrentChatWindowRepository);
+	ChatWidgetManager::instance()->setChatWindowStorage(CurrentChatWindowStorage);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -716,6 +731,11 @@ ChatWidgetRepository * Core::chatWidgetRepository() const
 ChatWindowFactory * Core::chatWindowFactory() const
 {
 	return CurrentChatWindowFactory;
+}
+
+ChatWindowRepository * Core::chatWindowRepository() const
+{
+	return CurrentChatWindowRepository;
 }
 
 void Core::showMainWindow()

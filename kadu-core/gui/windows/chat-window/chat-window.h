@@ -37,6 +37,7 @@
 
 class QTimer;
 
+class Chat;
 class ChatWidget;
 class UnreadMessageRepository;
 
@@ -50,6 +51,7 @@ public:
 
 	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
+	Chat chat() const;
 	ChatWidget * chatWidget() const { return m_chatWidget; }
 
 	virtual void activateChatWidget(ChatWidget *chatWidget) override;
@@ -63,6 +65,9 @@ public slots:
 	// TODO: rename
 	void blinkTitle();
 	void showNewMessagesNumInTitle();
+
+signals:
+	void windowDestroyed(ChatWidget * const chatWidget);
 
 protected:
 	virtual void closeEvent(QCloseEvent *e) override;

@@ -93,6 +93,8 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 ChatWindow::~ChatWindow()
 {
 	m_chatWidget->kaduStoreGeometry();
+
+	emit windowDestroyed(m_chatWidget);
 }
 
 void ChatWindow::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
@@ -151,6 +153,11 @@ QRect ChatWindow::defaultGeometry() const
 	if (y < 50) y = 50;
 
 	return QRect(QPoint(x, y), size);
+}
+
+Chat ChatWindow::chat() const
+{
+	return m_chatWidget ? m_chatWidget->chat() : Chat::null;
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

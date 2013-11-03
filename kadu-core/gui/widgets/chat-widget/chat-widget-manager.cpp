@@ -39,7 +39,8 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
+#include "gui/windows/chat-window/chat-window-storage.h"
+#include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
@@ -55,19 +56,14 @@ ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
 ChatWidgetManager * ChatWidgetManager::instance()
 {
 	if (!m_instance)
-	{
 		m_instance = new ChatWidgetManager();
-		// Load configuration in constructor creates loop because Instance == nullptr
-		m_instance->ensureLoaded();
-	}
 
 	return m_instance;
 }
 
-ChatWidgetManager::ChatWidgetManager()
+ChatWidgetManager::ChatWidgetManager() :
+		m_persistedChatWindowsOpened(false)
 {
-	setState(StateNotLoaded);
-
 	MessageRenderInfo::registerParserTags();
 
 	connect(MessageManager::instance(), SIGNAL(messageReceived(const Message &)),
@@ -93,33 +89,40 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 {
 	m_chatWidgetRepository = chatWidgetRepository;
 
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
-			this, SLOT(chatWidgetCreated(ChatWidget*)));
+	if (m_chatWidgetRepository)
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
+				this, SLOT(chatWidgetCreated(ChatWidget*)));
 }
 
-void ChatWidgetManager::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
+void ChatWidgetManager::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
-	m_chatWindowFactory = chatWindowFactory;
+	m_chatWindowRepository = chatWindowRepository;
+	openPersistedChatWindows();
 }
 
-StorableObject * ChatWidgetManager::storageParent()
+void ChatWidgetManager::setChatWindowStorage(ChatWindowStorage *chatWindowPeristence)
 {
-	return nullptr;
+	m_chatWindowStorage = chatWindowPeristence;
+	openPersistedChatWindows();
 }
 
-QString ChatWidgetManager::storageNodeName()
+void ChatWidgetManager::openPersistedChatWindows()
 {
-	return QLatin1String("ChatWindows");
-}
+	if (m_persistedChatWindowsOpened || !m_chatWindowStorage || !m_chatWindowRepository)
+		return;
 
-QString ChatWidgetManager::storageItemNodeName()
-{
-	return QLatin1String("Chat");
+	m_persistedChatWindowsOpened = true;
+
+	m_chatWindowStorage.data()->ensureLoaded();
+	auto chats = m_chatWindowStorage.data()->loadedChats();
+	foreach (const auto &chat, chats)
+		byChat(chat, true);
 }
 
 void ChatWidgetManager::closeAllWindows()
 {
-	ensureStored();
+	if (m_chatWindowStorage)
+		m_chatWindowStorage.data()->ensureStored();
 
 	if (!m_chatWidgetRepository)
 		return;
@@ -128,47 +131,6 @@ void ChatWidgetManager::closeAllWindows()
 	std::transform(m_chatWidgetRepository.data()->widgets().begin(), m_chatWidgetRepository.data()->widgets().end(),
 		chatWindows.begin(), [](ChatWidget *chatWidget){ return qobject_cast<ChatWindow *>(chatWidget->window()); });
 	qDeleteAll(chatWindows);
-}
-
-void ChatWidgetManager::load()
-{
-	if (!isValidStorage())
-		return;
-
-	StorableStringList::load();
-
-	foreach (const QString &uuid, content())
-	{
-		QUuid chatId(uuid);
-
-		if (chatId.isNull())
-			continue;
-
-		byChat(ChatManager::instance()->byUuid(chatId), true);
-	}
-}
-
-void ChatWidgetManager::store()
-{
-	if (!isValidStorage())
-		return;
-
-	StringList.clear();
-
-	if (m_chatWidgetRepository && config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-	{
-		auto end = m_chatWidgetRepository.data()->widgets().constEnd();
-		for (auto it = m_chatWidgetRepository.data()->widgets().constBegin(); it != end; ++it)
-		{
-			Protocol *protocolHandler = it.key().chatAccount().protocolHandler();
-			if (!protocolHandler || !protocolHandler->protocolFactory() || !qobject_cast<ChatWindow *>(it.value()->window()))
-					continue;
-
-			StringList.append(it.key().uuid().toString());
-		}
-	}
-
-	StorableStringList::store();
 }
 
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
@@ -190,12 +152,14 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
-	if (!handled && m_chatWindowFactory)
+	if (!handled && m_chatWindowRepository)
 	{
-		auto chatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget);
-		chatWidget->setContainer(chatWindow.get());
-		chatWindow.get()->show();
-		chatWindow.release();
+		auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+		if (chatWindow)
+		{
+			chatWidget->setContainer(chatWindow);
+			chatWindow->show();
+		}
 	}
 }
 

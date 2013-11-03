@@ -27,14 +27,14 @@
 #include "buddies/buddy.h"
 #include "configuration/configuration-aware-object.h"
 #include "message/message.h"
-#include "storage/storable-string-list.h"
 
 #include "exports.h"
 
 class ChatWidget;
 class ChatWidgetActions;
 class ChatWidgetRepository;
-class ChatWindowFactory;
+class ChatWindowStorage;
+class ChatWindowRepository;
 class Protocol;
 
 /**
@@ -47,11 +47,10 @@ class Protocol;
  * @short Manager of all ChatWidget instances.
  * @todo replace handleNewChatWidget with better mechanism
  * @todo create some kind of per-container manager than can store its own configuration
- * @todo remove StorableStringList inheritance
  *
  * This singleton is responsible for all ChatWidget instances in Kadu.
  */
-class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, StorableStringList
+class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatWidgetManager)
@@ -66,11 +65,8 @@ public:
 	static ChatWidgetManager * instance();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
-
-	virtual StorableObject * storageParent() override;
-	virtual QString storageNodeName() override;
-	virtual QString storageItemNodeName() override;
+	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 	ChatWidgetActions * actions() { return m_actions; }
 
@@ -139,18 +135,17 @@ signals:
 	void handleNewChatWidget(ChatWidget *chatWidget, bool &handled);
 
 protected:
-	virtual void load() override;
-	virtual void store() override;
-
 	virtual void configurationUpdated() override;
 
 private:
 	static ChatWidgetManager *m_instance;
 
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
+	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
+	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
 
 	ChatWidgetActions *m_actions;
+	bool m_persistedChatWindowsOpened;
 
 	bool m_openChatOnMessage;
 	bool m_openChatOnMessageOnlyWhenOnline;
@@ -163,6 +158,7 @@ private:
 	 */
 	QList<Message> loadUnreadMessages(const Chat &chat);
 
+	void openPersistedChatWindows();
 	bool shouldOpenChatWidget(const Message &message);
 
 private slots:

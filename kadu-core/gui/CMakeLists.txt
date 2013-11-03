@@ -159,6 +159,10 @@ set (gui_SRCS
 
 	windows/chat-window/chat-window.cpp
 	windows/chat-window/chat-window-factory.cpp
+	windows/chat-window/chat-window-repository.cpp
+	windows/chat-window/chat-window-storage.cpp
+	windows/chat-window/chat-window-storage-configuration.cpp
+	windows/chat-window/chat-window-storage-configurator.cpp
 
 	windows/about.cpp
 	windows/add-buddy-window.cpp
