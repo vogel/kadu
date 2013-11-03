@@ -121,12 +121,10 @@ void ChatWidgetManager::closeAllWindows()
 	if (!CurrentChatWidgetRepository)
 		return;
 
-	auto chatWidget = CurrentChatWidgetRepository.data()->widgets().begin();
-	while (chatWidget != CurrentChatWidgetRepository.data()->widgets().end())
-	{
-		delete chatWidget.value();
-		chatWidget = CurrentChatWidgetRepository.data()->widgets().begin();
-	}
+	auto chatWindows = QVector<ChatWindow *>(CurrentChatWidgetRepository.data()->widgets().size());
+	std::transform(CurrentChatWidgetRepository.data()->widgets().begin(), CurrentChatWidgetRepository.data()->widgets().end(),
+		chatWindows.begin(), [](ChatWidget *chatWidget){ return qobject_cast<ChatWindow *>(chatWidget->window()); });
+	qDeleteAll(chatWindows);
 }
 
 void ChatWidgetManager::load()
