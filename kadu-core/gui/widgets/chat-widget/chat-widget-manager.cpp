@@ -37,6 +37,7 @@
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "icons/icons-manager.h"
@@ -97,6 +98,11 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 			this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(CurrentChatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
 			this, SLOT(chatWidgetDestroyed(ChatWidget*)));
+}
+
+void ChatWidgetManager::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
+{
+	CurrentChatWindowFactory = chatWindowFactory;
 }
 
 StorableObject * ChatWidgetManager::storageParent()
@@ -187,12 +193,12 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
-	if (!handled)
+	if (!handled && CurrentChatWindowFactory)
 	{
-		ChatWindow *chatWindow = new ChatWindow(chatWidget);
-		chatWindow->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
-		chatWidget->setContainer(chatWindow);
-		chatWindow->show();
+		auto chatWindow = CurrentChatWindowFactory.data()->createChatWindow(chatWidget);
+		chatWidget->setContainer(chatWindow.get());
+		chatWindow.get()->show();
+		chatWindow.release();
 	}
 }
 

@@ -158,6 +158,7 @@ set (gui_SRCS
 	widgets/dialog/title-widget.cpp
 
 	windows/chat-window/chat-window.cpp
+	windows/chat-window/chat-window-factory.cpp
 
 	windows/about.cpp
 	windows/add-buddy-window.cpp

@@ -59,6 +59,7 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
+#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
@@ -579,7 +580,11 @@ void Core::runServices()
 	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
 	CurrentChatWidgetRepository->setChatWidgetFactory(CurrentChatWidgetFactory);
 
+	CurrentChatWindowFactory = new ChatWindowFactory(this);
+	CurrentChatWindowFactory->setUnreadMessageRepository(CurrentUnreadMessageRepository);
+
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
+	ChatWidgetManager::instance()->setChatWindowFactory(CurrentChatWindowFactory);
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -706,6 +711,11 @@ ChatWidgetFactory * Core::chatWidgetFactory() const
 ChatWidgetRepository * Core::chatWidgetRepository() const
 {
 	return CurrentChatWidgetRepository;
+}
+
+ChatWindowFactory * Core::chatWindowFactory() const
+{
+	return CurrentChatWindowFactory;
 }
 
 void Core::showMainWindow()

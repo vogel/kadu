@@ -34,6 +34,7 @@
 class ChatWidget;
 class ChatWidgetActions;
 class ChatWidgetRepository;
+class ChatWindowFactory;
 class Protocol;
 
 /**
@@ -58,6 +59,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, Stor
 	static ChatWidgetManager *Instance;
 
 	QWeakPointer<ChatWidgetRepository> CurrentChatWidgetRepository;
+	QWeakPointer<ChatWindowFactory> CurrentChatWindowFactory;
 
 	ChatWidgetActions *Actions;
 
@@ -102,6 +104,7 @@ public:
 	static ChatWidgetManager * instance();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 
 	virtual StorableObject * storageParent();
 	virtual QString storageNodeName();

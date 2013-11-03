@@ -26,6 +26,8 @@
 #include "exports.h"
 
 class Buddy;
+class Chat;
+class Contact;
 class Message;
 
 /**

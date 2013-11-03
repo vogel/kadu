@@ -58,6 +58,7 @@ class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
 class ChatWidgetFactory;
 class ChatWidgetRepository;
+class ChatWindowFactory;
 class ClipboardHtmlTransformerService;
 class DomProcessorService;
 class FormattedStringFactory;
@@ -104,6 +105,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	RosterNotifier *CurrentRosterNotifier;
 	ChatWidgetFactory *CurrentChatWidgetFactory;
 	ChatWidgetRepository *CurrentChatWidgetRepository;
+	ChatWindowFactory *CurrentChatWindowFactory;
 
 	KaduWindow *Window;
 
@@ -174,6 +176,7 @@ public:
 	RosterNotifier * rosterNotifier() const;
 	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
+	ChatWindowFactory * chatWindowFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);
