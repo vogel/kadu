@@ -190,6 +190,7 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 	if (!handled)
 	{
 		ChatWindow *chatWindow = new ChatWindow(chatWidget);
+		chatWindow->setUnreadMessageRepository(Core::instance()->unreadMessageRepository());
 		chatWidget->setContainer(chatWindow);
 		chatWindow->show();
 	}

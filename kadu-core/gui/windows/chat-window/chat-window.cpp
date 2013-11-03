@@ -38,7 +38,6 @@
 #include "chat/type/chat-type.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-set.h"
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
@@ -94,6 +93,11 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 ChatWindow::~ChatWindow()
 {
 	m_chatWidget->kaduStoreGeometry();
+}
+
+void ChatWindow::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
+{
+	m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void ChatWindow::configurationUpdated()
@@ -225,8 +229,8 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-
-			Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(m_chatWidget->chat());
+			if (m_unreadMessageRepository)
+				m_unreadMessageRepository.data()->markAllMessagesAsRead(m_chatWidget->chat());
 			setWindowTitle(m_chatWidget->title());
 			m_titleTimer->stop();
 		}
@@ -257,7 +261,8 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		Core::instance()->unreadMessageRepository()->markAllMessagesAsRead(m_chatWidget->chat());
+		if (m_unreadMessageRepository)
+			m_unreadMessageRepository.data()->markAllMessagesAsRead(m_chatWidget->chat());
 		return;
 	}
 

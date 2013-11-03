@@ -38,6 +38,7 @@
 class QTimer;
 
 class ChatWidget;
+class UnreadMessageRepository;
 
 class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
@@ -46,6 +47,8 @@ class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, Configura
 public:
 	explicit ChatWindow(ChatWidget *chatWidget, QWidget *parent = 0);
 	virtual ~ChatWindow();
+
+	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 	ChatWidget * chatWidget() const { return m_chatWidget; }
 
@@ -71,6 +74,8 @@ protected:
 	virtual void compositingDisabled() override;
 
 private:
+	QWeakPointer<UnreadMessageRepository> m_unreadMessageRepository;
+
 	ChatWidget *m_chatWidget;
 	QTimer *m_titleTimer;
 
