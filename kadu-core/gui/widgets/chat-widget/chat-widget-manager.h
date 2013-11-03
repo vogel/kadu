@@ -83,6 +83,8 @@ public:
 	ChatWidget * byChat(const Chat &chat, const bool create);
 
 public slots:
+	void openChat(const Chat &chat);
+
 	/**
 	 * @short Close ChatWidget for given chat.
 	 * @param chat chat to close chat widget for

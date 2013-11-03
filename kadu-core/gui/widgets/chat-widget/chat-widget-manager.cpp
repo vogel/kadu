@@ -93,7 +93,7 @@ void ChatWidgetManager::openPersistedChatWindows()
 	m_chatWindowStorage.data()->ensureLoaded();
 	auto chats = m_chatWindowStorage.data()->loadedChats();
 	foreach (const auto &chat, chats)
-		byChat(chat, true);
+		m_chatWidgetRepository.data()->widgetForChat(chat);
 }
 
 void ChatWidgetManager::closeAllWindows()
@@ -134,6 +134,15 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 			chatWindow->show();
 		}
 	}
+}
+
+void ChatWidgetManager::openChat(const Chat &chat)
+{
+	if (!m_chatWindowRepository)
+		return;
+
+	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	chatWidget->tryActivate();
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

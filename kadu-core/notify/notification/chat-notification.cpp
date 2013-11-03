@@ -24,7 +24,6 @@
 
 #include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "chat-notification.h"
 
@@ -39,9 +38,7 @@ void ChatNotification::openChat()
 {
 	close();
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(chat());
 }
 
 void ChatNotification::callbackAccept()

@@ -25,7 +25,6 @@
 #include "accounts/account.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/recent-chats-menu.h"
 
 #include "recent-chats-action.h"
@@ -59,9 +58,7 @@ void RecentChatsAction::actionInstanceCreated(Action *action)
 
 void RecentChatsAction::openRecentChats(QAction *action)
 {
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(action->data().value<Chat>());
 }
 
 #include "moc_recent-chats-action.cpp"

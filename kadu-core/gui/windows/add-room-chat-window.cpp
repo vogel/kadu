@@ -33,7 +33,6 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "os/generic/window-geometry-manager.h"
 #include "protocols/protocol.h"
@@ -228,9 +227,7 @@ void AddRoomChatWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(computeChat(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(computeChat());
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);

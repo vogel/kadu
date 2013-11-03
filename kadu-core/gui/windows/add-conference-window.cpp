@@ -34,7 +34,6 @@
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/talkable-tree-view.h"
 #include "icons/kadu-icon.h"
@@ -277,10 +276,7 @@ void AddConferenceWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(computeChat(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
-
+	ChatWidgetManager::instance()->openChat(computeChat());
 	QDialog::accept();
 }
 

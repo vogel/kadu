@@ -51,7 +51,6 @@
 #include "core/core.h"
 #include "gui/actions/base-action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/toolbar.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/kadu-window.h"
@@ -338,9 +337,7 @@ void SearchWindow::chatFound()
 		const Chat &chat = 1 == contacts.size()
 				? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
 				: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-		if (chatWidget)
-			chatWidget->tryActivate();
+		ChatWidgetManager::instance()->openChat(chat);
 	}
 }
 

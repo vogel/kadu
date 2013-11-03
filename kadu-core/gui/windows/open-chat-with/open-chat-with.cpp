@@ -41,7 +41,6 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
 #include "misc/kadu-paths.h"
@@ -225,10 +224,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!chat)
 		return;
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-	if (chatWidget)
-		chatWidget->tryActivate();
-
+	ChatWidgetManager::instance()->openChat(chat);
 	deleteLater();
 }
 

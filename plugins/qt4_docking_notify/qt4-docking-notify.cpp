@@ -33,7 +33,6 @@
 
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
 #include "debug.h"
@@ -134,9 +133,7 @@ void Qt4Notify::notify(Notification *notification)
 
 void Qt4Notify::messageClicked()
 {
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(chat);
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)

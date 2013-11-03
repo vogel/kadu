@@ -57,7 +57,6 @@
 #include "gui/widgets/buddy-info-panel.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/recent-chats-menu.h"
 #include "gui/widgets/roster-widget.h"
 #include "gui/widgets/status-buttons.h"
@@ -297,9 +296,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	const Chat &chat = talkable.toChat();
 	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
-		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-		if (chatWidget)
-			chatWidget->tryActivate();
+		ChatWidgetManager::instance()->openChat(chat);
 		return;
 	}
 

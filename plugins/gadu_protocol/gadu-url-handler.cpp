@@ -32,7 +32,6 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "status/status-container.h"
@@ -72,9 +71,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
-			ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-			if (chatWidget)
-				chatWidget->tryActivate();
+			ChatWidgetManager::instance()->openChat(chat);
 			return;
 		}
 	}
@@ -111,9 +108,7 @@ void GaduUrlHandler::accountSelected(QAction *action)
 
 	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(chat);
 }
 
 #include "moc_gadu-url-handler.cpp"

@@ -41,7 +41,6 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "message/message-manager.h"
 #include "message/unread-message-repository.h"
@@ -376,9 +375,7 @@ void HintManager::openChat(Hint *hint)
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(hint->chat(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(hint->chat());
 
 	deleteHintAndUpdate(hint);
 

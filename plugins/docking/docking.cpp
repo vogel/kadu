@@ -43,7 +43,6 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/kadu-window.h"
@@ -400,9 +399,7 @@ void DockingManager::hideKaduWindow()
 void DockingManager::openUnreadMessages()
 {
 	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
-	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), true);
-	if (chatWidget)
-		chatWidget->tryActivate();
+	ChatWidgetManager::instance()->openChat(message.messageChat());
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)
