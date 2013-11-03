@@ -57,6 +57,7 @@
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-message-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
@@ -583,6 +584,10 @@ void Core::runServices()
 
 	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
 	CurrentChatWidgetRepository->setChatWidgetFactory(CurrentChatWidgetFactory);
+
+	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
+	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowFactory->setUnreadMessageRepository(CurrentUnreadMessageRepository);

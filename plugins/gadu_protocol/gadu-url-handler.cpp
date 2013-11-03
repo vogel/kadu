@@ -74,7 +74,7 @@ void GaduUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		{
 			ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 			if (chatWidget)
-				chatWidget->activate();
+				chatWidget->tryActivate();
 			return;
 		}
 	}
@@ -113,7 +113,7 @@ void GaduUrlHandler::accountSelected(QAction *action)
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 }
 
 #include "moc_gadu-url-handler.cpp"

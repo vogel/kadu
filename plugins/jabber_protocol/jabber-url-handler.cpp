@@ -93,7 +93,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		{
 			ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 			if (chatWidget)
-				chatWidget->activate();
+				chatWidget->tryActivate();
 			return;
 		}
 	}
@@ -132,7 +132,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 }
 
 #include "moc_jabber-url-handler.cpp"

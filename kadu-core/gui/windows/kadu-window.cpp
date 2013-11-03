@@ -299,7 +299,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	{
 		ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 		if (chatWidget)
-			chatWidget->activate();
+			chatWidget->tryActivate();
 		return;
 	}
 

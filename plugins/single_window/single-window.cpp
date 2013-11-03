@@ -180,8 +180,7 @@ void SingleWindow::changeEvent(QEvent *event)
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->currentWidget());
 		if (chatWidget && _isActiveWindow(this))
 		{
-			auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-			Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+			chatWidget->markActive();
 			updateTabIcon(chatWidget);
 			updateTabName(chatWidget);
 		}
@@ -305,7 +304,7 @@ void SingleWindow::resizeEvent(QResizeEvent *event)
 	m_split->resize(newSize);
 }
 
-void SingleWindow::activateChatWidget(ChatWidget *chatWidget)
+void SingleWindow::tryActivateChatWidget(ChatWidget *chatWidget)
 {
 	int index = m_tabs->indexOf(chatWidget);
 	if (index < 0)
@@ -323,8 +322,7 @@ void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-		Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+		chatWidget->markActive();
 		return;
 	}
 
@@ -353,10 +351,7 @@ void SingleWindow::onTabChange(int index)
 		return;
 
 	ChatWidget *chatWidget = (ChatWidget *)m_tabs->widget(index);
-
-	auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-	Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
-
+	chatWidget->markActive();
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
 }

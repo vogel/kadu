@@ -236,12 +236,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-			if (m_unreadMessageRepository)
-			{
-				auto messages = m_unreadMessageRepository.data()->unreadMessagesForChat(m_chatWidget->chat());
-				m_unreadMessageRepository.data()->markMessagesAsRead(messages);
-			}
-
+			m_chatWidget->markActive();
 			setWindowTitle(m_chatWidget->title());
 			m_titleTimer->stop();
 		}
@@ -256,7 +251,7 @@ void ChatWindow::setWindowTitle(QString title)
 	QWidget::setWindowTitle(title.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
-void ChatWindow::activateChatWidget(ChatWidget *chatWidget)
+void ChatWindow::tryActivateChatWidget(ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
 	Q_ASSERT(chatWidget == m_chatWidget);
@@ -272,11 +267,7 @@ void ChatWindow::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		if (m_unreadMessageRepository)
-		{
-			auto messages = m_unreadMessageRepository.data()->unreadMessagesForChat(m_chatWidget->chat());
-			m_unreadMessageRepository.data()->markMessagesAsRead(messages);
-		}
+		m_chatWidget->markActive();
 		return;
 	}
 

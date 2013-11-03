@@ -402,7 +402,7 @@ void DockingManager::openUnreadMessages()
 	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)

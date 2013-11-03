@@ -190,7 +190,7 @@ void TabWidget::tabsMenuSelected(QAction *action)
 	tabBar()->setCurrentIndex(action->data().toInt());
 }
 
-void TabWidget::activateChatWidget(ChatWidget *chatWidget)
+void TabWidget::tryActivateChatWidget(ChatWidget *chatWidget)
 {
 	int index = indexOf(chatWidget);
 	if (index < 0)
@@ -208,8 +208,7 @@ void TabWidget::alertChatWidget(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-		Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+		chatWidget->markActive();
 		return;
 	}
 
@@ -429,10 +428,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
-		{
-			auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-			Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
-		}
+			chatWidget->markActive();
 		kdebugf2();
 	}
 }
@@ -467,7 +463,7 @@ void TabWidget::openRecentChat(QAction *action)
 {
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 }
 
 void TabWidget::deleteTab()

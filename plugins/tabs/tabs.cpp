@@ -283,8 +283,7 @@ void TabsManager::onTabChange(int index)
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
 	{
-		auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chat);
-		Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+		chatWidget->markActive();
 		updateTabName(chatWidget);
 
 		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
@@ -424,8 +423,7 @@ void TabsManager::onTimer()
 			{
 				if (currentChatWidget == chatWidget)
 				{
-					auto messages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(chatWidget->chat());
-					Core::instance()->unreadMessageRepository()->markMessagesAsRead(messages);
+					chatWidget->markActive();
 					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 				}
 
@@ -585,7 +583,7 @@ bool TabsManager::detachChat(ChatWidget *chatWidget)
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 	ChatWidget * const detachedChatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (detachedChatWidget)
-		detachedChatWidget->activate();
+		detachedChatWidget->tryActivate();
 	return true;
 }
 
@@ -788,7 +786,7 @@ void TabsManager::reopenClosedChat()
 
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(ClosedChats.takeFirst(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 
 	ReopenClosedTabMenuAction->setEnabled(ClosedChats.isEmpty());
 }

@@ -489,7 +489,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->context()->chat(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 
 	kdebugf2();
 }

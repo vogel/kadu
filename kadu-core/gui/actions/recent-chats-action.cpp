@@ -61,7 +61,7 @@ void RecentChatsAction::openRecentChats(QAction *action)
 {
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(action->data().value<Chat>(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 }
 
 #include "moc_recent-chats-action.cpp"

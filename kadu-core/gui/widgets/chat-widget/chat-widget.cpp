@@ -682,10 +682,15 @@ Protocol *ChatWidget::currentProtocol() const
 	return CurrentChat.chatAccount().protocolHandler();
 }
 
-void ChatWidget::activate()
+void ChatWidget::tryActivate()
 {
 	if (Container)
-		Container->activateChatWidget(this);
+		Container->tryActivateChatWidget(this);
+}
+
+void ChatWidget::markActive()
+{
+	emit activated(this);
 }
 
 bool ChatWidget::isActive()

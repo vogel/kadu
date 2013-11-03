@@ -227,7 +227,7 @@ void OpenChatWith::itemActivated(int index)
 
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(chat, true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 
 	deleteLater();
 }

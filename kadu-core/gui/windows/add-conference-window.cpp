@@ -279,7 +279,7 @@ void AddConferenceWindow::start()
 
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(computeChat(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 
 	QDialog::accept();
 }

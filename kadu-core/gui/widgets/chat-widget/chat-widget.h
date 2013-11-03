@@ -170,7 +170,8 @@ public slots:
 	void colorSelectorAboutToClose();
 	void clearChatWindow();
 
-	void activate();
+	void tryActivate();
+	void markActive();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -189,6 +190,8 @@ signals:
 
 	void widgetDestroyed(Chat chat);
 	void widgetDestroyed(ChatWidget *widget);
+
+	void activated(ChatWidget *chatWidget);
 	void closed();
 
 };

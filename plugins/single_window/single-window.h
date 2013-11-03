@@ -28,7 +28,7 @@ public:
 
 	virtual void changeEvent(QEvent *event);
 
-	virtual void activateChatWidget(ChatWidget *chatWidget);
+	virtual void tryActivateChatWidget(ChatWidget *chatWidget);
 	virtual void alertChatWidget(ChatWidget *chatWidget);
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget);

@@ -378,7 +378,7 @@ void HintManager::openChat(Hint *hint)
 
 	ChatWidget * const chatWidget = ChatWidgetManager::instance()->byChat(hint->chat(), true);
 	if (chatWidget)
-		chatWidget->activate();
+		chatWidget->tryActivate();
 
 	deleteHintAndUpdate(hint);
 

@@ -43,7 +43,7 @@ public:
 	 * Activates given chat widget in this ChatWidgetContainer. This container window will be
 	 * activated if neccessary.
 	 */
-	virtual void activateChatWidget(ChatWidget *chatWidget) = 0;
+	virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
 
 	/**
 	 * @short Send alert about given chat widget in this ChatWidgetContainer.
