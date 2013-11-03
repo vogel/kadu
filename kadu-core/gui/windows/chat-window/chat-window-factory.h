@@ -21,13 +21,11 @@
 
 #include <memory>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
 
 #include "exports.h"
 
 class ChatWidget;
 class ChatWindow;
-class UnreadMessageRepository;
 
 /**
  * @addtogroup Gui
@@ -46,12 +44,7 @@ public:
 	explicit ChatWindowFactory(QObject *parent = 0);
 	virtual ~ChatWindowFactory();
 
-	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-
 	std::unique_ptr<ChatWindow> createChatWindow(ChatWidget *chatWidget);
-
-private:
-	QWeakPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 };
 

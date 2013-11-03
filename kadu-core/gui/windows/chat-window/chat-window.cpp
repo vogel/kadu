@@ -42,7 +42,6 @@
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/message-dialog.h"
-#include "message/unread-message-repository.h"
 #include "os/generic/window-geometry-manager.h"
 #include "storage/custom-properties-variant-wrapper.h"
 
@@ -95,11 +94,6 @@ ChatWindow::~ChatWindow()
 	m_chatWidget->kaduStoreGeometry();
 
 	emit windowDestroyed(m_chatWidget);
-}
-
-void ChatWindow::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
-{
-	m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void ChatWindow::configurationUpdated()

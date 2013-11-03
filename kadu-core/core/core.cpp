@@ -590,7 +590,6 @@ void Core::runServices()
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
-	CurrentChatWindowFactory->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 	CurrentChatWindowRepository->setChatWindowFactory(CurrentChatWindowFactory);

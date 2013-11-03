@@ -20,7 +20,6 @@
 #include "chat-window-factory.h"
 
 #include "gui/windows/chat-window/chat-window.h"
-#include "message/unread-message-repository.h"
 
 ChatWindowFactory::ChatWindowFactory(QObject *parent) :
 		QObject(parent)
@@ -31,15 +30,7 @@ ChatWindowFactory::~ChatWindowFactory()
 {
 }
 
-void ChatWindowFactory::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
-{
-	m_unreadMessageRepository = unreadMessageRepository;
-}
-
 std::unique_ptr<ChatWindow> ChatWindowFactory::createChatWindow(ChatWidget *chatWidget)
 {
-	auto result = std::unique_ptr<ChatWindow>(new ChatWindow(chatWidget));
-	result.get()->setUnreadMessageRepository(m_unreadMessageRepository.data());
-
-	return result;
+	return std::unique_ptr<ChatWindow>(new ChatWindow(chatWidget));
 }
