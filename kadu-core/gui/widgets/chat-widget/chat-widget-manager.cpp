@@ -168,13 +168,7 @@ QVector<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
 	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 	auto unreadChat = buddyChat ? buddyChat : chat;
 	auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(unreadChat);
-
-	foreach (const Message &message, unreadMessages)
-	{
-		message.setPending(false);
-		message.data()->removeFromStorage();
-	}
-
+	Core::instance()->unreadMessageRepository()->markMessagesAsRead(unreadMessages);
 	return unreadMessages;
 }
 
