@@ -19,6 +19,7 @@
 
 #include "chat-widget-message-handler.h"
 
+#include "chat/buddy-chat-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "message/unread-message-repository.h"
@@ -30,6 +31,11 @@ ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) :
 
 ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 {
+}
+
+void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
+{
+	m_buddyChatManager = buddyChatManager;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -58,6 +64,9 @@ void ChatWidgetMessageHandler::chatWidgetCreated(ChatWidget *chatWidget)
 
 void ChatWidgetMessageHandler::chatWidgetDestroyed(ChatWidget *chatWidget)
 {
+	auto chat = chatWidget->chat();
+	chat.removeProperty("message:unreadMessagesAppended");
+
 	disconnect(chatWidget, SIGNAL(activated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 }
 
@@ -67,6 +76,21 @@ void ChatWidgetMessageHandler::chatWidgetActivated(ChatWidget *chatWidget)
 		return;
 
 	auto chat = chatWidget->chat();
-	auto messages = m_unreadMessageRepository.data()->unreadMessagesForChat(chat);
+	auto unreadMessagesAppended = chat.property("message:unreadMessagesAppended", false).toBool();
+
+	auto messages = unreadMessagesAppended ? m_unreadMessageRepository.data()->unreadMessagesForChat(chat) : loadAllUnreadMessages(chat);
 	m_unreadMessageRepository.data()->markMessagesAsRead(messages);
+
+	if (!unreadMessagesAppended)
+	{
+		chatWidget->appendMessages(messages);
+		chat.addProperty("message:unreadMessagesAppended", true, CustomProperties::NonStorable);
+	}
+}
+
+QVector<Message> ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
+{
+	auto buddyChat = m_buddyChatManager ? m_buddyChatManager.data()->buddyChat(chat) : Chat::null;
+	auto unreadChat = buddyChat ? buddyChat : chat;
+	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }

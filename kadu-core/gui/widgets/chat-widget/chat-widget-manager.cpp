@@ -46,7 +46,6 @@
 #include "icons/icons-manager.h"
 #include "message/message-manager.h"
 #include "message/message-render-info.h"
-#include "message/unread-message-repository.h"
 #include "protocols/protocol-factory.h"
 #include "services/notification-service.h"
 #include "activate.h"
@@ -146,10 +145,6 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
 
 void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	// We need to append unread messages before chat widget container could mark them as read.
-	auto messages = loadUnreadMessages(chatWidget->chat());
-	chatWidget->appendMessages(messages);
-
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);
 	if (!handled && m_chatWindowRepository)
@@ -161,15 +156,6 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 			chatWindow->show();
 		}
 	}
-}
-
-QVector<Message> ChatWidgetManager::loadUnreadMessages(const Chat &chat)
-{
-	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
-	auto unreadChat = buddyChat ? buddyChat : chat;
-	auto unreadMessages = Core::instance()->unreadMessageRepository()->unreadMessagesForChat(unreadChat);
-	Core::instance()->unreadMessageRepository()->markMessagesAsRead(unreadMessages);
-	return unreadMessages;
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

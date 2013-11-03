@@ -22,8 +22,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+class BuddyChatManager;
+class Chat;
 class ChatWidget;
 class ChatWidgetRepository;
+class Message;
 class UnreadMessageRepository;
 
 class ChatWidgetMessageHandler : public QObject
@@ -34,12 +37,16 @@ public:
 	explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
 	virtual ~ChatWidgetMessageHandler();
 
+	void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
 private:
+	QWeakPointer<BuddyChatManager> m_buddyChatManager;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QWeakPointer<UnreadMessageRepository> m_unreadMessageRepository;
+
+	QVector<Message> loadAllUnreadMessages(const Chat &chat) const;
 
 private slots:
 	void chatWidgetCreated(ChatWidget *chatWidget);

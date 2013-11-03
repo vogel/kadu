@@ -153,11 +153,6 @@ private:
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
 
-	/**
-	 * @todo remove - reading pending messages should be out of scope of this class
-	 */
-	QVector<Message> loadUnreadMessages(const Chat &chat);
-
 	void openPersistedChatWindows();
 	bool shouldOpenChatWidget(const Message &message);
 

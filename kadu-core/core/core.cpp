@@ -40,6 +40,7 @@
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
+#include "chat/buddy-chat-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-styles-manager.h"
 #include "configuration/configuration-file.h"
@@ -586,6 +587,7 @@ void Core::runServices()
 	CurrentChatWidgetRepository->setChatWidgetFactory(CurrentChatWidgetFactory);
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
+	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
 
