@@ -23,6 +23,8 @@
 
 #include "storable-string-list.h"
 
+#include "storage/string-list-storage.h"
+
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Contructs empty object.
@@ -49,15 +51,10 @@ void StorableStringList::load()
 
 	StorableObject::load();
 
-	StringList.clear();
-
-	XmlConfigFile *storageFile = storage()->storage();
-	QDomElement point = storage()->point();
-
-	QVector<QDomElement> elements = storageFile->getNodes(point, storageItemNodeName());
-	StringList.reserve(elements.size());
-	foreach (const QDomElement &element, elements)
-		StringList.append(element.text());
+	auto storageFile = storage()->storage();
+	auto point = storage()->point();
+	auto stringListStorage = StringListStorage(storageFile, point, storageItemNodeName());
+	StringList = stringListStorage.load();
 }
 
 /**
@@ -72,13 +69,10 @@ void StorableStringList::store()
 	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *storageFile = storage()->storage();
-	QDomElement point = storage()->point();
-
-	storageFile->removeChildren(point);
-
-	foreach (const QString &value, content())
-		storageFile->appendTextNode(point, storageItemNodeName(), value);
+	auto storageFile = storage()->storage();
+	auto point = storage()->point();
+	auto stringListStorage = StringListStorage(storageFile, point, storageItemNodeName());
+	stringListStorage.store(content());
 }
 
 /**
