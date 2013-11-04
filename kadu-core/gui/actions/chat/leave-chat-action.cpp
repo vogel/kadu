@@ -50,7 +50,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
 	if (!chatWidget)
 		return;
 

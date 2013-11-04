@@ -78,15 +78,10 @@ public:
 	 * @short Returns ChatWidget for given chat.
 	 * @return ChatWidget for given chat
 	 * @param chat chat for returned ChatWidget
-	 * @param create if set to true new widget will be created if one does not exists yet
 	 *
-	 * Returns ChatWidget for given chat. If no ChatWidget exists for particular chat and create is false,
-	 * 0 is returned. If create is true, new ChatWidget will be created (or 0, if chat is null).
-	 *
-	 * Newly created ChatWidget will have all pending messages loaded and will be put in a StatusWidgetContainer
-	 * implementation.
+	 * Returns ChatWidget for given chat.
 	 */
-	ChatWidget * byChat(const Chat &chat, const bool create);
+	ChatWidget * byChat(const Chat &chat);
 
 public slots:
 	void openChat(const Chat &chat, OpenChatActivation activation);

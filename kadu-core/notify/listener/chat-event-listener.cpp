@@ -42,7 +42,7 @@ ChatEventListener::~ChatEventListener()
 
 void ChatEventListener::messageReceived(const Message &message)
 {
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
+	auto chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
 
 	if (!chatWidget)
 		Service->notify(new MessageNotification(MessageNotification::NewChat, message));

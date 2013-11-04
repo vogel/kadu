@@ -109,7 +109,7 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 	// todo: rethink this one
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
-	auto chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat(), false);
+	auto chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
 	// message is pending if chat widget is not open
 	if (!chatWidget)
 		message.setPending(true);

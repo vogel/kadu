@@ -309,7 +309,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!chat)
 		return;
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
 	// exists - bring to front
 	if (chatWidget)
 	{
@@ -325,7 +325,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
 
-		ChatWidgetManager::instance()->byChat(chat, true);
+		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
 	}
 
 	kdebugf2();
@@ -608,7 +608,7 @@ void TabsManager::load()
 		if (!chat)
 			continue;
 
-		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+		auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
 		if (!chatWidget)
 		{
 			if (element.attribute("type") == "tab")

@@ -50,13 +50,13 @@ void OtrMessageEventService::setChatWidgetManager(ChatWidgetManager *chatWidgetM
 
 void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const
 {
-	QString errorMessage = messageString(event, message, errorCode, contact.display(true));
+	auto errorMessage = messageString(event, message, errorCode, contact.display(true));
 
 	if (errorMessage.isEmpty())
 		return;
 
-	Chat chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat, false);
+	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
+	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
 }

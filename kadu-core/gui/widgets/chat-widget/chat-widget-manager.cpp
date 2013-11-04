@@ -104,12 +104,12 @@ void ChatWidgetManager::closeAllWindows()
 	qDeleteAll(chatWindows);
 }
 
-ChatWidget * ChatWidgetManager::byChat(const Chat &chat, const bool create)
+ChatWidget * ChatWidgetManager::byChat(const Chat &chat)
 {
 	if (!chat || !m_chatWidgetRepository)
 		return nullptr;
 
-	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat) || create)
+	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat))
 		return m_chatWidgetRepository.data()->widgetForChat(chat);
 
 	return nullptr;
@@ -142,7 +142,7 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
-	ChatWidget * const chatWidget = byChat(chat, false);
+	auto chatWidget = byChat(chat);
 	if (chatWidget && chatWidget->container())
 		chatWidget->container()->closeChatWidget(chatWidget);
 }
