@@ -60,7 +60,7 @@ public:
 	/**
 	 * @short Return list of chats loaded from storage.
 	 */
-	QVector<Chat> loadedChats() const;
+	QVector<Chat> loadedChats();
 
 	virtual StorableObject * storageParent() override;
 	virtual QString storageNodeName() override;

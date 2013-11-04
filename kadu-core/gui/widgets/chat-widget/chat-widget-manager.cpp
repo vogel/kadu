@@ -90,7 +90,6 @@ void ChatWidgetManager::openPersistedChatWindows()
 
 	m_persistedChatWindowsOpened = true;
 
-	m_chatWindowStorage.data()->ensureLoaded();
 	auto chats = m_chatWindowStorage.data()->loadedChats();
 	foreach (const auto &chat, chats)
 		m_chatWidgetRepository.data()->widgetForChat(chat);

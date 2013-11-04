@@ -50,8 +50,10 @@ void ChatWindowStorage::setConfiguration(ChatWindowStorageConfiguration configur
 	m_configuration = configuration;
 }
 
-QVector<Chat> ChatWindowStorage::loadedChats() const
+QVector<Chat> ChatWindowStorage::loadedChats()
 {
+	ensureLoaded();
+
 	return m_loadedChats;
 }
 
