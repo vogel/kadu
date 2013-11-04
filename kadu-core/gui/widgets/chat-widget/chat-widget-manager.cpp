@@ -132,7 +132,7 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 
 void ChatWidgetManager::openChat(const Chat &chat)
 {
-	if (!m_chatWindowRepository)
+	if (!m_chatWidgetRepository)
 		return;
 
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
