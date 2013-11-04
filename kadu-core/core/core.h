@@ -77,6 +77,7 @@ class MessageTransformerService;
 class NotificationService;
 class RawMessageTransformerService;
 class RosterNotifier;
+class StoragePointFactory;
 class UnreadMessageRepository;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
@@ -114,6 +115,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWindowManager *CurrentChatWindowManager;
 	ChatWindowStorage *CurrentChatWindowStorage;
 	ChatWindowRepository *CurrentChatWindowRepository;
+	StoragePointFactory *CurrentStoragePointFactory;
 
 	KaduWindow *Window;
 
@@ -188,6 +190,7 @@ public:
 	ChatWindowManager * chatWindowManager() const;
 	ChatWindowStorage * chatWindowStorage() const;
 	ChatWindowRepository * chatWindowRepository() const;
+	StoragePointFactory * storagePointFactory() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

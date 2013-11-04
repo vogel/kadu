@@ -97,6 +97,7 @@
 #include "status/status-setter.h"
 #include "status/status-type-manager.h"
 #include "status/status-type.h"
+#include "storage/storage-point-factory.h"
 #include "themes/icon-theme-manager.h"
 #include "url-handlers/url-handler-manager.h"
 #include "activate.h"
@@ -564,6 +565,10 @@ void Core::createGui()
 
 void Core::runServices()
 {
+	// must be created first
+	CurrentStoragePointFactory = new StoragePointFactory(this);
+	CurrentStoragePointFactory->setConfigurationFile(xml_config_file);
+
 	CurrentBuddyDataWindowRepository = new BuddyDataWindowRepository(this);
 	CurrentChatDataWindowRepository = new ChatDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
@@ -760,6 +765,11 @@ ChatWindowManager * Core::chatWindowManager() const
 ChatWindowRepository * Core::chatWindowRepository() const
 {
 	return CurrentChatWindowRepository;
+}
+
+StoragePointFactory * Core::storagePointFactory() const
+{
+	return CurrentStoragePointFactory;
 }
 
 void Core::showMainWindow()

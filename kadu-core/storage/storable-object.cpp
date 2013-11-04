@@ -24,7 +24,9 @@
 
 #include <QtCore/QtAlgorithms>
 
+#include "core/core.h"
 #include "storage/custom-properties.h"
+#include "storage/storage-point-factory.h"
 
 #include "storable-object.h"
 
@@ -41,19 +43,10 @@ StorableObject::~StorableObject()
 
 QSharedPointer<StoragePoint> StorableObject::createStoragePoint()
 {
-	if (storageNodeName().isEmpty())
-		return QSharedPointer<StoragePoint>();
+	auto parent = storageParent();
+	auto result = Core::instance()->storagePointFactory()->createStoragePoint(storageNodeName(), parent ? parent->storage().data() : nullptr);
 
-	StorableObject *parent = storageParent();
-	if (!parent)
-		return QSharedPointer<StoragePoint>(new StoragePoint(xml_config_file, xml_config_file->getNode(storageNodeName())));
-
-	QSharedPointer<StoragePoint> parentStoragePoint(storageParent()->storage());
-	if (!parentStoragePoint)
-		return QSharedPointer<StoragePoint>();
-
-	QDomElement node = parentStoragePoint->storage()->getNode(parentStoragePoint->point(), storageNodeName());
-	return QSharedPointer<StoragePoint>(new StoragePoint(parentStoragePoint->storage(), node));
+	return QSharedPointer<StoragePoint>(result.release());
 }
 
 void StorableObject::setStorage(const QSharedPointer<StoragePoint> &storage)
