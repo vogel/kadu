@@ -19,14 +19,17 @@
 
 #pragma once
 
-#include "storage/storable-string-list.h"
 #include "gui/windows/chat-window/chat-window-storage-configuration.h"
 
+#include <memory>
+#include <QtCore/QObject>
 #include <QtCore/QVector>
+#include <QtCore/QWeakPointer>
 
 class Chat;
 class ChatManager;
-class ChatWindowRepository;
+class StoragePoint;
+class StoragePointFactory;
 
 /**
  * @addtogroup Gui
@@ -44,7 +47,7 @@ class ChatWindowRepository;
  * List of chats to store is fetched from @see ChatWindowRepository object.
  * Mapping from stored ids to chats is done using @see ChatManager object.
  */
-class ChatWindowStorage : public QObject, public StorableStringList
+class ChatWindowStorage : public QObject
 {
 	Q_OBJECT
 
@@ -53,28 +56,28 @@ public:
 	virtual ~ChatWindowStorage();
 
 	void setChatManager(ChatManager *chatManager);
-	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 	void setConfiguration(ChatWindowStorageConfiguration configuration);
 
 	/**
-	 * @short Return list of chats loaded from storage.
+	 * @short Return list of chats loaded from persistent storage.
 	 */
-	QVector<Chat> loadedChats();
+	QVector<Chat> loadChats();
 
-	virtual StorableObject * storageParent() override;
-	virtual QString storageNodeName() override;
-	virtual QString storageItemNodeName() override;
-
-protected:
-	virtual void load() override;
-	virtual void store() override;
+	/**
+	 * @short Stored list of chats to persistent storage.
+	 */
+	void storeChats(const QVector<Chat> &chats);
 
 private:
 	QWeakPointer<ChatManager> m_chatManager;
-	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
+	QWeakPointer<StoragePointFactory> m_storagePointFactory;
 	ChatWindowStorageConfiguration m_configuration;
-	QVector<Chat> m_loadedChats;
+
+	std::unique_ptr<StoragePoint> storagePoint() const;
+	QVector<Chat> chatsFromUuids(const QStringList &uuids) const;
+	QStringList uuidsFromChats(const QVector<Chat> &chats);
 
 };
 

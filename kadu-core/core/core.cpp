@@ -611,10 +611,9 @@ void Core::runServices()
 
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
-	CurrentChatWindowStorage->setChatWindowRepository(CurrentChatWindowRepository);
+	CurrentChatWindowStorage->setStoragePointFactory(CurrentStoragePointFactory);
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
-	CurrentChatWindowStorage->ensureLoaded();
 
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
 	ChatWidgetManager::instance()->setChatWindowRepository(CurrentChatWindowRepository);

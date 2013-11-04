@@ -19,16 +19,13 @@
 
 #include "chat-window-storage.h"
 
-#include "accounts/account.h"
 #include "chat/chat-manager.h"
-#include "gui/windows/chat-window/chat-window.h"
-#include "gui/windows/chat-window/chat-window-repository.h"
-#include "protocols/protocol.h"
+#include "storage/storage-point-factory.h"
+#include "storage/string-list-storage.h"
 
 ChatWindowStorage::ChatWindowStorage(QObject *parent) :
 		QObject(parent)
 {
-	setState(StateNotLoaded);
 }
 
 ChatWindowStorage::~ChatWindowStorage()
@@ -40,9 +37,9 @@ void ChatWindowStorage::setChatManager(ChatManager *chatManager)
 	m_chatManager = chatManager;
 }
 
-void ChatWindowStorage::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
+void ChatWindowStorage::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
-	m_chatWindowRepository = chatWindowRepository;
+	m_storagePointFactory = storagePointFactory;
 }
 
 void ChatWindowStorage::setConfiguration(ChatWindowStorageConfiguration configuration)
@@ -50,67 +47,52 @@ void ChatWindowStorage::setConfiguration(ChatWindowStorageConfiguration configur
 	m_configuration = configuration;
 }
 
-QVector<Chat> ChatWindowStorage::loadedChats()
+std::unique_ptr<StoragePoint> ChatWindowStorage::storagePoint() const
 {
-	ensureLoaded();
-
-	return m_loadedChats;
+	if (!m_storagePointFactory)
+		return {};
+	return m_storagePointFactory.data()->createStoragePoint(QLatin1String("ChatWindows"));
 }
 
-StorableObject * ChatWindowStorage::storageParent()
+QVector<Chat> ChatWindowStorage::loadChats()
 {
-	return nullptr;
+	auto storage = storagePoint();
+	if (!storage)
+		return {};
+
+	auto stringListStorage = StringListStorage(storage.get(), QLatin1String("Chat"));
+	return chatsFromUuids(stringListStorage.load());
 }
 
-QString ChatWindowStorage::storageNodeName()
+QVector<Chat> ChatWindowStorage::chatsFromUuids(const QStringList &uuids) const
 {
-	return QLatin1String("ChatWindows");
+	if (!m_chatManager)
+		return {};
+
+	auto result = QVector<Chat>();
+	std::transform(uuids.begin(), uuids.end(), std::back_inserter(result), [this](const QString &uuid){
+		return m_chatManager.data()->byUuid(uuid);
+	});
+	return result;
 }
 
-QString ChatWindowStorage::storageItemNodeName()
+void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
 {
-	return QLatin1String("Chat");
-}
-
-void ChatWindowStorage::load()
-{
-	if (!isValidStorage())
+	auto storage = storagePoint();
+	if (!storage)
 		return;
 
-	m_loadedChats.clear();
-	StorableStringList::load();
-
-	if (m_chatManager && m_configuration.storeOpenedChatWindows())
-	{
-		foreach (const auto &uuid, content())
-		{
-			auto chatUuid = QUuid(uuid);
-			auto chat = m_chatManager.data()->byUuid(chatUuid);
-			if (chat)
-				m_loadedChats.append(chat);
-		}
-	}
+	auto stringListStorage = StringListStorage(storage.get(), QLatin1String("Chat"));
+	stringListStorage.store(uuidsFromChats(chats));
 }
 
-void ChatWindowStorage::store()
+QStringList ChatWindowStorage::uuidsFromChats(const QVector<Chat> &chats)
 {
-	if (!isValidStorage())
-		return;
-
-	StringList.clear();
-
-	if (m_chatWindowRepository && m_configuration.storeOpenedChatWindows())
-	{
-		foreach (const auto &window, m_chatWindowRepository.data()->windows())
-		{
-			auto chat = window->chat();
-			auto protocolHandler = chat.chatAccount().protocolHandler();
-			if (protocolHandler && protocolHandler->protocolFactory())
-				StringList.append(chat.uuid().toString());
-		}
-	}
-
-	StorableStringList::store();
+	auto result = QStringList();
+	std::transform(chats.begin(), chats.end(), std::back_inserter(result), [this](const Chat &chat){
+		return chat.uuid().toString();
+	});
+	return result;
 }
 
 #include "moc_chat-window-storage.cpp"

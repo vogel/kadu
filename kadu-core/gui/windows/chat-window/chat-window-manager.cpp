@@ -21,6 +21,7 @@
 
 #include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 
@@ -48,13 +49,22 @@ void ChatWindowManager::openStoredChatWindows()
 	if (!m_chatWindowStorage || !m_chatWindowRepository)
 		return;
 
-	auto chats = m_chatWindowStorage.data()->loadedChats();
+	auto chats = m_chatWindowStorage.data()->loadChats();
 	for (const auto &chat : chats)
 		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
 }
 
 void ChatWindowManager::storeOpenedChatWindows()
 {
+	if (!m_chatWindowRepository)
+		return;
+
+	const auto &windows = m_chatWindowRepository.data()->windows();
+	auto chats = QVector<Chat>{};
+	std::transform(windows.begin(), windows.end(), std::back_inserter(chats), [](ChatWindow *window) {
+		return window->chat();
+	});
+
 	if (m_chatWindowStorage)
-		m_chatWindowStorage.data()->ensureStored();
+		m_chatWindowStorage.data()->storeChats(chats);
 }
