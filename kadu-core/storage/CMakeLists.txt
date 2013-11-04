@@ -6,6 +6,7 @@ set (storage_SRCS
 	storable-object.cpp
 	storable-string-list.cpp
 	storage-point.cpp
+	string-list-storage.cpp
 	uuid-storable-object.cpp
 )
 
