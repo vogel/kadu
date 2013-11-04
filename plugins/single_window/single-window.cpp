@@ -143,7 +143,7 @@ SingleWindow::~SingleWindow()
 			const Chat &chat = chatWidget->chat();
 			m_tabs->removeTab(i);
 			delete chatWidget;
-			ChatWidgetManager::instance()->byChat(chat, true);
+			ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 	}
 
