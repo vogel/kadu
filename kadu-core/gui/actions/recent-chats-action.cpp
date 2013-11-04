@@ -58,7 +58,7 @@ void RecentChatsAction::actionInstanceCreated(Action *action)
 
 void RecentChatsAction::openRecentChats(QAction *action)
 {
-	ChatWidgetManager::instance()->openChat(action->data().value<Chat>());
+	ChatWidgetManager::instance()->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
 
 #include "moc_recent-chats-action.cpp"

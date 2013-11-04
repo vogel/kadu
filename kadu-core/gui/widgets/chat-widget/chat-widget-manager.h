@@ -35,6 +35,12 @@ class ChatWidgetRepository;
 class ChatWindowStorage;
 class ChatWindowRepository;
 
+enum class OpenChatActivation
+{
+	DoNotActivate,
+	Activate
+};
+
 /**
  * @addtogroup Gui
  * @{
@@ -83,7 +89,7 @@ public:
 	ChatWidget * byChat(const Chat &chat, const bool create);
 
 public slots:
-	void openChat(const Chat &chat);
+	void openChat(const Chat &chat, OpenChatActivation activation);
 
 	/**
 	 * @short Close ChatWidget for given chat.

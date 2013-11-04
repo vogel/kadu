@@ -581,7 +581,7 @@ bool TabsManager::detachChat(ChatWidget *chatWidget)
 
 	// omg this is bad
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
-	ChatWidgetManager::instance()->openChat(chat);
+	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
 	return true;
 }
 
@@ -782,7 +782,7 @@ void TabsManager::reopenClosedChat()
 	if (ClosedChats.isEmpty())
 		return;
 
-	ChatWidgetManager::instance()->openChat(ClosedChats.takeFirst());
+	ChatWidgetManager::instance()->openChat(ClosedChats.takeFirst(), OpenChatActivation::Activate);
 	ReopenClosedTabMenuAction->setEnabled(ClosedChats.isEmpty());
 }
 

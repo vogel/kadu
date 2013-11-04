@@ -130,13 +130,14 @@ void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 	}
 }
 
-void ChatWidgetManager::openChat(const Chat &chat)
+void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
 {
 	if (!m_chatWidgetRepository)
 		return;
 
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	chatWidget->tryActivate();
+	if (activation == OpenChatActivation::Activate)
+		chatWidget->tryActivate();
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

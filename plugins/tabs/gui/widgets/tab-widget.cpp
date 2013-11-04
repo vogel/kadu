@@ -461,7 +461,7 @@ void TabWidget::openTabsList()
 
 void TabWidget::openRecentChat(QAction *action)
 {
-	ChatWidgetManager::instance()->openChat(action->data().value<Chat>());
+	ChatWidgetManager::instance()->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
 
 void TabWidget::deleteTab()

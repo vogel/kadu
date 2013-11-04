@@ -276,7 +276,7 @@ void AddConferenceWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidgetManager::instance()->openChat(computeChat());
+	ChatWidgetManager::instance()->openChat(computeChat(), OpenChatActivation::Activate);
 	QDialog::accept();
 }
 

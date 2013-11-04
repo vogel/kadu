@@ -227,7 +227,7 @@ void AddRoomChatWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidgetManager::instance()->openChat(computeChat());
+	ChatWidgetManager::instance()->openChat(computeChat(), OpenChatActivation::Activate);
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);

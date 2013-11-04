@@ -399,7 +399,7 @@ void DockingManager::hideKaduWindow()
 void DockingManager::openUnreadMessages()
 {
 	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
-	ChatWidgetManager::instance()->openChat(message.messageChat());
+	ChatWidgetManager::instance()->openChat(message.messageChat(), OpenChatActivation::Activate);
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)

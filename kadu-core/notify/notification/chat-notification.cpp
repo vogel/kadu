@@ -38,7 +38,7 @@ void ChatNotification::openChat()
 {
 	close();
 
-	ChatWidgetManager::instance()->openChat(chat());
+	ChatWidgetManager::instance()->openChat(chat(), OpenChatActivation::Activate);
 }
 
 void ChatNotification::callbackAccept()

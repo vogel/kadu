@@ -224,7 +224,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!chat)
 		return;
 
-	ChatWidgetManager::instance()->openChat(chat);
+	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
 	deleteLater();
 }
 
