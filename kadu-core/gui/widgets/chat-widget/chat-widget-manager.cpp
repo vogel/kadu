@@ -35,7 +35,6 @@
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window.h"
-#include "message/message-render-info.h"
 
 ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
 
@@ -50,15 +49,11 @@ ChatWidgetManager * ChatWidgetManager::instance()
 ChatWidgetManager::ChatWidgetManager() :
 		m_persistedChatWindowsOpened(false)
 {
-	MessageRenderInfo::registerParserTags();
-
 	m_actions = new ChatWidgetActions(this);
 }
 
 ChatWidgetManager::~ChatWidgetManager()
 {
-	MessageRenderInfo::unregisterParserTags();
-
 	closeAllWindows();
 }
 

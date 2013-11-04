@@ -73,6 +73,7 @@
 #include "icons/kadu-icon.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-manager.h"
+#include "message/message-render-info.h"
 #include "message/unread-message-repository.h"
 #include "misc/date-time-parser-tags.h"
 #include "misc/kadu-paths.h"
@@ -431,6 +432,8 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
+	MessageRenderInfo::registerParserTags();
+
 	runServices();
 
 	// protocol modules should be loaded before gui
