@@ -151,7 +151,7 @@ public:
 	 */
 	QIcon icon();
 
-	bool isActive();
+	bool isActive() const;
 
 	const QDateTime & lastReceivedMessageTime() const { return LastReceivedMessageTime; }
 

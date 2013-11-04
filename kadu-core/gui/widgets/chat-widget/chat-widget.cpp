@@ -693,7 +693,7 @@ void ChatWidget::markActive()
 	emit activated(this);
 }
 
-bool ChatWidget::isActive()
+bool ChatWidget::isActive() const
 {
 	return Container && Container->isChatWidgetActive(this);
 }

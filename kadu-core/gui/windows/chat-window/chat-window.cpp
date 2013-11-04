@@ -284,7 +284,7 @@ void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
 	close();
 }
 
-bool ChatWindow::isChatWidgetActive(ChatWidget *chatWidget)
+bool ChatWindow::isChatWidgetActive(const ChatWidget *chatWidget)
 {
 	Q_UNUSED(chatWidget)
 	Q_ASSERT(chatWidget == m_chatWidget);

@@ -340,7 +340,7 @@ void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
 		closeTab(index);
 }
 
-bool SingleWindow::isChatWidgetActive(ChatWidget *chatWidget)
+bool SingleWindow::isChatWidgetActive(const ChatWidget *chatWidget)
 {
 	return m_tabs->currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
 }

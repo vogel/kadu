@@ -245,7 +245,7 @@ void TabWidget::closeChatWidget(ChatWidget *chatWidget)
 	delete chatWidget;
 }
 
-bool TabWidget::isChatWidgetActive(ChatWidget *chatWidget)
+bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)
 {
 	return currentWidget() == chatWidget && _isWindowActiveOrFullyVisible(this);
 }

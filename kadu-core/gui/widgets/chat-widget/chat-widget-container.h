@@ -68,7 +68,7 @@ public:
 	 *
 	 * Check if given chat widget is active in this ChatWidgetContainer.
 	 */
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;
+	virtual bool isChatWidgetActive(const ChatWidget *chatWidget) = 0;
 };
 
 #endif // CHAT_WIDGET_CONTAINER_H
