@@ -40,12 +40,8 @@ class StoragePointFactory;
  * @class ChatWindowStorage
  * @short Class for storing and loading list of active ChatWindows.
  *
- * This class stores and loads lists of chats that have opened ChatWindow instances from
- * persistent storage. It uses ChatWindowStorageConfiguration to check if list
- * should be stored or not.
- *
- * List of chats to store is fetched from @see ChatWindowRepository object.
- * Mapping from stored ids to chats is done using @see ChatManager object.
+ * This class stores and loads lists of chats from ChatWindows configuration node.
+ * It uses ChatWindowStorageConfiguration to check if list should be stored or not.
  */
 class ChatWindowStorage : public QObject
 {
