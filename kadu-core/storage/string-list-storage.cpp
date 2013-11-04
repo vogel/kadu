@@ -20,28 +20,29 @@
 #include "string-list-storage.h"
 
 #include "configuration/xml-configuration-file.h"
+#include "storage/storage-point.h"
 
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 
-StringListStorage::StringListStorage(XmlConfigFile *storageFile, QDomElement storagePoint, QString nodeName) :
-		m_storageFile(storageFile), m_storagePoint(storagePoint), m_nodeName(nodeName)
+StringListStorage::StringListStorage(StoragePoint *storagePoint, QString nodeName) :
+		m_storagePoint(storagePoint), m_nodeName(nodeName)
 {
 }
 
 QStringList StringListStorage::load() const
 {
 	auto result = QStringList();
-	auto elements = m_storageFile->getNodes(m_storagePoint, m_nodeName);
+	auto elements = m_storagePoint->storage()->getNodes(m_storagePoint->point(), m_nodeName);
 	for (const auto &element : elements)
 		result.append(element.text());
 	return result;
 }
 
-void StringListStorage::store(const QStringList &value) const
+void StringListStorage::store(const QStringList &values) const
 {
-	m_storageFile->removeChildren(m_storagePoint);
+	m_storagePoint->storage()->removeChildren(m_storagePoint->point());
 
-	for (const auto &value : value)
-		m_storageFile->appendTextNode(m_storagePoint, m_nodeName, value);
+	for (const auto &value : values)
+		m_storagePoint->storage()->appendTextNode(m_storagePoint->point(), m_nodeName, value);
 }

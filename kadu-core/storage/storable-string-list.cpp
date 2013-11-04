@@ -51,9 +51,7 @@ void StorableStringList::load()
 
 	StorableObject::load();
 
-	auto storageFile = storage()->storage();
-	auto point = storage()->point();
-	auto stringListStorage = StringListStorage(storageFile, point, storageItemNodeName());
+	auto stringListStorage = StringListStorage(storage().data(), storageItemNodeName());
 	StringList = stringListStorage.load();
 }
 
@@ -69,9 +67,7 @@ void StorableStringList::store()
 	if (!isValidStorage())
 		return;
 
-	auto storageFile = storage()->storage();
-	auto point = storage()->point();
-	auto stringListStorage = StringListStorage(storageFile, point, storageItemNodeName());
+	auto stringListStorage = StringListStorage(storage().data(), storageItemNodeName());
 	stringListStorage.store(content());
 }
 

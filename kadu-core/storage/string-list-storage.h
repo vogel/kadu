@@ -19,21 +19,20 @@
 
 #pragma once
 
-#include <QtXml/QDomElement>
+#include <QtCore/QString>
 
-class XmlConfigFile;
+class StoragePoint;
 
 class StringListStorage
 {
 public:
-	StringListStorage(XmlConfigFile *storageFile, QDomElement storagePoint, QString nodeName);
+	StringListStorage(StoragePoint *storagePoint, QString nodeName);
 
 	QStringList load() const;
-	void store(const QStringList &value) const;
+	void store(const QStringList &values) const;
 
 private:
-	XmlConfigFile *m_storageFile;
-	QDomElement m_storagePoint;
+	StoragePoint *m_storagePoint;
 	QString m_nodeName;
 
 };
