@@ -147,14 +147,4 @@ void ChatWidgetManager::closeChat(const Chat &chat)
 		chatWidget->container()->closeChatWidget(chatWidget);
 }
 
-void ChatWidgetManager::closeAllChats(const Buddy &buddy)
-{
-	foreach (const Contact &contact, buddy.contacts())
-	{
-		const Chat &chat = ChatTypeContact::findChat(contact, ActionReturnNull);
-		if (chat)
-			closeChat(chat);
-	}
-}
-
 #include "moc_chat-widget-manager.cpp"

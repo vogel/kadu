@@ -95,14 +95,6 @@ public slots:
 	void closeChat(const Chat &chat);
 
 	/**
-	 * @short Close ChatWidget for given buddy.
-	 * @param buddy buddy to close chat widget for
-	 *
-	 * This method closes ChatWidget for all chats that contains only this buddy.
-	 */
-	void closeAllChats(const Buddy &buddy);
-
-	/**
 	 * @short Close all ChatWindow windows.
 	 * @todo move to ChatWindowManager or something like that
 	 *
