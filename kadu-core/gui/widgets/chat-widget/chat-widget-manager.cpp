@@ -25,16 +25,15 @@
 
 #include "chat-widget-manager.h"
 
-#include <QtGui/QApplication>
-
 #include "chat/type/chat-type-contact.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 #include "gui/windows/chat-window/chat-window.h"
+
+#include <QtGui/QApplication>
 
 ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
 
@@ -46,15 +45,13 @@ ChatWidgetManager * ChatWidgetManager::instance()
 	return m_instance;
 }
 
-ChatWidgetManager::ChatWidgetManager() :
-		m_persistedChatWindowsOpened(false)
+ChatWidgetManager::ChatWidgetManager()
 {
 	m_actions = new ChatWidgetActions(this);
 }
 
 ChatWidgetManager::~ChatWidgetManager()
 {
-	closeAllWindows();
 }
 
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -69,39 +66,6 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 void ChatWidgetManager::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
 	m_chatWindowRepository = chatWindowRepository;
-	openPersistedChatWindows();
-}
-
-void ChatWidgetManager::setChatWindowStorage(ChatWindowStorage *chatWindowPeristence)
-{
-	m_chatWindowStorage = chatWindowPeristence;
-	openPersistedChatWindows();
-}
-
-void ChatWidgetManager::openPersistedChatWindows()
-{
-	if (m_persistedChatWindowsOpened || !m_chatWindowStorage || !m_chatWindowRepository)
-		return;
-
-	m_persistedChatWindowsOpened = true;
-
-	auto chats = m_chatWindowStorage.data()->loadedChats();
-	foreach (const auto &chat, chats)
-		m_chatWidgetRepository.data()->widgetForChat(chat);
-}
-
-void ChatWidgetManager::closeAllWindows()
-{
-	if (m_chatWindowStorage)
-		m_chatWindowStorage.data()->ensureStored();
-
-	if (!m_chatWidgetRepository)
-		return;
-
-	auto chatWindows = QVector<ChatWindow *>(m_chatWidgetRepository.data()->widgets().size());
-	std::transform(m_chatWidgetRepository.data()->widgets().begin(), m_chatWidgetRepository.data()->widgets().end(),
-		chatWindows.begin(), [](ChatWidget *chatWidget){ return qobject_cast<ChatWindow *>(chatWidget->window()); });
-	qDeleteAll(chatWindows);
 }
 
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat)

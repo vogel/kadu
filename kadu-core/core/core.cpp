@@ -64,6 +64,7 @@
 #include "gui/windows/buddy-data-window-repository.h"
 #include "gui/windows/chat-data-window-repository.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
+#include "gui/windows/chat-window/chat-window-manager.h"
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
@@ -175,7 +176,7 @@ Core::~Core()
 
 	// unloading modules does that
 	/*StatusContainerManager::instance()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
-	ChatWidgetManager::instance()->closeAllWindows();
+	CurrentChatWindowManager->storeOpenedChatWindows();
 	ConfigurationManager::instance()->flush();
 // 	delete Configuration;
 // 	Configuration = 0;
@@ -612,7 +613,11 @@ void Core::runServices()
 
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
 	ChatWidgetManager::instance()->setChatWindowRepository(CurrentChatWindowRepository);
-	ChatWidgetManager::instance()->setChatWindowStorage(CurrentChatWindowStorage);
+
+	CurrentChatWindowManager = new ChatWindowManager(this);
+	CurrentChatWindowManager->setChatWindowRepository(CurrentChatWindowRepository);
+	CurrentChatWindowManager->setChatWindowStorage(CurrentChatWindowStorage);
+	CurrentChatWindowManager->openStoredChatWindows();
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -745,6 +750,11 @@ ChatWidgetRepository * Core::chatWidgetRepository() const
 ChatWindowFactory * Core::chatWindowFactory() const
 {
 	return CurrentChatWindowFactory;
+}
+
+ChatWindowManager * Core::chatWindowManager() const
+{
+	return CurrentChatWindowManager;
 }
 
 ChatWindowRepository * Core::chatWindowRepository() const

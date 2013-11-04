@@ -60,6 +60,7 @@ class ChatWidgetFactory;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ChatWindowFactory;
+class ChatWindowManager;
 class ChatWindowStorage;
 class ChatWindowRepository;
 class ClipboardHtmlTransformerService;
@@ -110,6 +111,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 	ChatWidgetRepository *CurrentChatWidgetRepository;
 	ChatWindowFactory *CurrentChatWindowFactory;
+	ChatWindowManager *CurrentChatWindowManager;
 	ChatWindowStorage *CurrentChatWindowStorage;
 	ChatWindowRepository *CurrentChatWindowRepository;
 
@@ -183,6 +185,7 @@ public:
 	ChatWidgetFactory * chatWidgetFactory() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ChatWindowFactory * chatWindowFactory() const;
+	ChatWindowManager * chatWindowManager() const;
 	ChatWindowStorage * chatWindowStorage() const;
 	ChatWindowRepository * chatWindowRepository() const;
 

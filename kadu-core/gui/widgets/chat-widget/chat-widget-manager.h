@@ -32,7 +32,6 @@
 class ChatWidget;
 class ChatWidgetActions;
 class ChatWidgetRepository;
-class ChatWindowStorage;
 class ChatWindowRepository;
 
 enum class OpenChatActivation
@@ -70,7 +69,6 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
-	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 	ChatWidgetActions * actions() { return m_actions; }
 
@@ -94,14 +92,6 @@ public slots:
 	 */
 	void closeChat(const Chat &chat);
 
-	/**
-	 * @short Close all ChatWindow windows.
-	 * @todo move to ChatWindowManager or something like that
-	 *
-	 * This method closes all ChatWindow windows.
-	 */
-	void closeAllWindows();
-
 signals:
 	/**
 	 * @short Signal emited every time a new ChatWidget is created.
@@ -119,16 +109,12 @@ private:
 	static ChatWidgetManager *m_instance;
 
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
 	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
 
 	ChatWidgetActions *m_actions;
-	bool m_persistedChatWindowsOpened;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
-
-	void openPersistedChatWindows();
 
 private slots:
 	void chatWidgetCreated(ChatWidget *chatWidget);
