@@ -1,4 +1,5 @@
 set (storage_SRCS
+	chat-list-storage.cpp
 	custom-properties.cpp
 	custom-properties-variant-wrapper.cpp
 	named-storable-object.cpp
