@@ -59,7 +59,7 @@ public:
 	/**
 	 * @short Return list of chats loaded from persistent storage.
 	 */
-	QVector<Chat> loadChats();
+	QVector<Chat> loadChats() const;
 
 	/**
 	 * @short Stored list of chats to persistent storage.
@@ -72,8 +72,6 @@ private:
 	ChatWindowStorageConfiguration m_configuration;
 
 	std::unique_ptr<StoragePoint> storagePoint() const;
-	QVector<Chat> chatsFromUuids(const QStringList &uuids) const;
-	QStringList uuidsFromChats(const QVector<Chat> &chats);
 
 };
 
