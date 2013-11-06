@@ -30,6 +30,7 @@
 
 #include "plugins/generic-plugin.h"
 
+class TabsChatWidgetContainerHandler;
 class TabsManager;
 
 class TabsPlugin : public QObject, public GenericPlugin
@@ -38,6 +39,7 @@ class TabsPlugin : public QObject, public GenericPlugin
 	Q_INTERFACES(GenericPlugin)
 
 	TabsManager *TabsManagerInstance;
+	QScopedPointer<TabsChatWidgetContainerHandler> ChatWidgetContainerHandler;
 
 public:
 	virtual ~TabsPlugin();

@@ -21,10 +21,12 @@
  */
 
 #include "core/core.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 
 #include "tabs.h"
+#include "tabs-chat-widget-container-handler.h"
 
 #include "tabs-plugin.h"
 
@@ -36,20 +38,27 @@ int TabsPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
+	ChatWidgetContainerHandler.reset(new TabsChatWidgetContainerHandler());
 	TabsManagerInstance = new TabsManager(this);
 	TabsManagerInstance->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
+
+	ChatWidgetContainerHandler.data()->setTabsManager(TabsManagerInstance);
+	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
 
 	return 0;
 }
 
 void TabsPlugin::done()
 {
+	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
+
 	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/tabs.ui"));
 	delete TabsManagerInstance;
 	TabsManagerInstance = 0;
+	ChatWidgetContainerHandler.reset();
 }
 
 Q_EXPORT_PLUGIN2(tabs, TabsPlugin)

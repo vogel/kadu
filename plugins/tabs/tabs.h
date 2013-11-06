@@ -127,8 +127,9 @@ public:
 	void addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget);
 	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
 
+	bool containChatWidget(ChatWidget *chatWidget);
+
 public slots:
-	void onNewChat(ChatWidget *chatWidget, bool &handled);
 	void onDestroyingChat(ChatWidget *chatWidget);
 	void onIconChanged();
 	void onTitleChanged(ChatWidget *chatWidget, const QString &newTitle);

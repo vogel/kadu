@@ -6,6 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	tabs.cpp
+	tabs-chat-widget-container-handler.cpp
 	tabs-plugin.cpp
 	gui/widgets/tab-bar.cpp
 	gui/widgets/tab-widget.cpp

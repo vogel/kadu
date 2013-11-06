@@ -10,6 +10,7 @@
  * Copyright 2010, 2011, 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2009 Dawid Stawiarski (neeo@kadu.net)
  * %kadu copyright end%
+ * Copyright Michal Podsiadlik (michal at gov.one.pl)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -23,12 +24,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
-
-/*
- * autor
- * Michal Podsiadlik
- * michal at gov.one.pl
  */
 
 #include <QtGui/QApplication>
@@ -88,9 +83,6 @@ TabsManager::TabsManager(QObject *parent) :
 	ConfigurationManager::instance()->registerStorableObject(this);
 
 	createDefaultConfiguration();
-
-	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *, bool &)),
-			this, SLOT(onNewChat(ChatWidget *, bool &)));
 
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(onTimer()));
 
@@ -172,7 +164,7 @@ void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 	}
 }
 
-void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
+bool TabsManager::containChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
 
@@ -182,16 +174,15 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
 	{
 		DetachedChats.append(chatWidget);
-		return;
+		return false;
 	}
 
 	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
 	if (ForceTabs)
 	{
 		ForceTabs = false;
-		handled = true;
 		insertTab(chatWidget);
-		return;
+		return true;
 	}
 
 	if (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1))
@@ -199,7 +190,6 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 		// jesli jest juz otwarte okno z kartami to dodajemy bezwzglednie nowe rozmowy do kart
 		if (TabDialog->count() > 0)
 		{
-			handled = true;
 			insertTab(chatWidget);
 		}
 		else if ((NewChats.count() + 1) >= ConfigMinTabs)
@@ -210,14 +200,17 @@ void TabsManager::onNewChat(ChatWidget *chatWidget, bool &handled)
 				if (ch && TabDialog->indexOf(ch)==-1)
 					insertTab(ch);
 			}
-			handled = true;
 			insertTab(chatWidget);
 			NewChats.clear();
 		}
 		else
+		{
 			NewChats.append(chatWidget);
+			return false;
+		}
 	}
-	kdebugf2();
+
+	return true;
 }
 
 void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
