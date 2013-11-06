@@ -28,7 +28,12 @@ class GaduWritableSessionToken
 
 public:
 	GaduWritableSessionToken(GaduConnection *connection);
+	GaduWritableSessionToken(const GaduWritableSessionToken &copyMe) = delete;
+	GaduWritableSessionToken(GaduWritableSessionToken &&moveMe);
 	~GaduWritableSessionToken();
+
+	GaduWritableSessionToken & operator = (const GaduWritableSessionToken &copyMe) = delete;
+	GaduWritableSessionToken & operator = (GaduWritableSessionToken &&moveMe);
 
 	gg_session * rawSession() const;
 

@@ -78,7 +78,7 @@ void GaduChatImageService::handleEventImageRequest(struct gg_event *e)
 		return;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_image_reply(writableSessionToken.get()->rawSession(), e->event.image_request.sender, key.toString().toUtf8().constData(),
+	gg_image_reply(writableSessionToken.rawSession(), e->event.image_request.sender, key.toString().toUtf8().constData(),
 			content.constData(), content.length());
 }
 
@@ -112,7 +112,7 @@ void GaduChatImageService::requestChatImage(const QString &id, const ChatImageKe
 		return;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_image_request(writableSessionToken.get()->rawSession(), id.toUInt(), imageKey.size(), imageKey.crc32());
+	gg_image_request(writableSessionToken.rawSession(), id.toUInt(), imageKey.size(), imageKey.crc32());
 }
 
 ChatImageKey GaduChatImageService::prepareImageToBeSent(const QByteArray &imageData)

@@ -20,7 +20,6 @@
 #ifndef GADU_CONNECTION_H
 #define GADU_CONNECTION_H
 
-#include <memory>
 #include <QtCore/QObject>
 
 struct gg_session;
@@ -86,7 +85,7 @@ public:
 	 * It is safe to send any message to session until object is valid. Sockets will be
 	 * handled properly in meantime.
 	 */
-	virtual std::unique_ptr<GaduWritableSessionToken> writableSessionToken() = 0;
+	virtual GaduWritableSessionToken writableSessionToken() = 0;
 
 };
 

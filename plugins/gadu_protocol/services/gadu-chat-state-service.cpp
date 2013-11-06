@@ -76,11 +76,11 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	switch (state)
 	{
 		case StateComposing:
-			gg_typing_notification(writableSessionToken.get()->rawSession(), GaduProtocolHelper::uin(contact), 0x0001);
+			gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0001);
 			break;
 		case StatePaused:
 		case StateGone:
-			gg_typing_notification(writableSessionToken.get()->rawSession(), GaduProtocolHelper::uin(contact), 0x0000);
+			gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0000);
 			break;
 		default:
 			break;

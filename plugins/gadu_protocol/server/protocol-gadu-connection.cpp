@@ -71,9 +71,9 @@ bool ProtocolGaduConnection::endWrite()
 	return true;
 }
 
-std::unique_ptr<GaduWritableSessionToken> ProtocolGaduConnection::writableSessionToken()
+GaduWritableSessionToken ProtocolGaduConnection::writableSessionToken()
 {
-	return std::unique_ptr<GaduWritableSessionToken>(new GaduWritableSessionToken(this));
+	return {this};
 }
 
 #include "moc_protocol-gadu-connection.cpp"

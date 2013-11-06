@@ -71,7 +71,7 @@ void GaduMultilogonService::killSession(MultilogonSession *session)
 		return;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_multilogon_disconnect(writableSessionToken.get()->rawSession(), gaduSession->id());
+	gg_multilogon_disconnect(writableSessionToken.rawSession(), gaduSession->id());
 }
 
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)

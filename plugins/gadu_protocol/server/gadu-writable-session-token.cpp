@@ -27,12 +27,27 @@ GaduWritableSessionToken::GaduWritableSessionToken(GaduConnection *connection) :
 	Connection->beginWrite();
 }
 
+GaduWritableSessionToken::GaduWritableSessionToken(GaduWritableSessionToken &&moveMe)
+{
+	Connection = moveMe.Connection;
+	moveMe.Connection = nullptr;
+}
+
 GaduWritableSessionToken::~GaduWritableSessionToken()
 {
-	Connection->endWrite();
+	if (Connection)
+		Connection->endWrite();
+}
+
+GaduWritableSessionToken & GaduWritableSessionToken::operator = (GaduWritableSessionToken &&moveMe)
+{
+	Connection = moveMe.Connection;
+	moveMe.Connection = nullptr;
+
+	return *this;
 }
 
 gg_session * GaduWritableSessionToken::rawSession() const
 {
-	return Connection->rawSession();
+	return Connection ? Connection->rawSession() : nullptr;
 }

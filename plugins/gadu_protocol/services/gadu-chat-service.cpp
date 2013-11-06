@@ -106,20 +106,20 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 
 		if (!formats.isEmpty())
-			messageId = gg_send_message_confer_richtext(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+			messageId = gg_send_message_confer_richtext(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
 														(const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message_confer(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+			messageId = gg_send_message_confer(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
 											   (const unsigned char *) rawMessage.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
 		if (!formats.isEmpty())
-			messageId = gg_send_message_richtext(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uin,
+			messageId = gg_send_message_richtext(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
 												 (const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
 		else
-			messageId = gg_send_message(writableSessionToken.get()->rawSession(), GG_CLASS_CHAT, uin,
+			messageId = gg_send_message(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
 										(const unsigned char *) rawMessage.constData());
 	}
 

@@ -70,7 +70,7 @@ void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 	gg_pubdir50_add(req, GG_PUBDIR50_UIN, Id.toUtf8().constData());
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	FetchSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
+	FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	//gg_pubdir50_free(req);
 }
 

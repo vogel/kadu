@@ -96,7 +96,7 @@ void GaduSearchService::searchNext()
 	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(From).toUtf8().constData());
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	SearchSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
+	SearchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	gg_pubdir50_free(req);
 }
 

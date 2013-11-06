@@ -67,7 +67,7 @@ public:
 	void setConnectionProtocol(GaduProtocol *protocol);
 
 	virtual bool hasSession();
-	virtual std::unique_ptr<GaduWritableSessionToken> writableSessionToken();
+	virtual GaduWritableSessionToken writableSessionToken();
 
 };
 

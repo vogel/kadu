@@ -183,9 +183,9 @@ void GaduProtocol::sendStatusToServer()
 
 	auto writableSessionToken = Connection->writableSessionToken();
 	if (hasDescription)
-		gg_change_status_descr(writableSessionToken.get()->rawSession(), type | friends, newStatus.description().toUtf8().constData());
+		gg_change_status_descr(writableSessionToken.rawSession(), type | friends, newStatus.description().toUtf8().constData());
 	else
-		gg_change_status(writableSessionToken.get()->rawSession(), type | friends);
+		gg_change_status(writableSessionToken.rawSession(), type | friends);
 
 	account().accountContact().setCurrentStatus(status());
 }
@@ -210,7 +210,7 @@ void GaduProtocol::everyMinuteActions()
 	kdebugf();
 
 	auto writableSessionToken = Connection->writableSessionToken();
-	gg_ping(writableSessionToken.get()->rawSession());
+	gg_ping(writableSessionToken.rawSession());
 }
 
 void GaduProtocol::configureServices()

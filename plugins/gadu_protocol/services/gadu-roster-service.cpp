@@ -80,7 +80,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 	if (sendList.isEmpty())
 	{
 		auto writableSessionToken = Connection.data()->writableSessionToken();
-		gg_notify_ex(writableSessionToken.get()->rawSession(), 0, 0, 0);
+		gg_notify_ex(writableSessionToken.rawSession(), 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 
 		setState(StateInitialized);
@@ -109,7 +109,7 @@ void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 	}
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	gg_notify_ex(writableSessionToken.get()->rawSession(), uins.data(), types.data(), count);
+	gg_notify_ex(writableSessionToken.rawSession(), uins.data(), types.data(), count);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	setState(StateInitialized);
@@ -141,9 +141,9 @@ void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 	details->setGaduFlags(newFlags);
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x01);
-	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x02);
-	updateFlag(writableSessionToken.get()->rawSession(), uin, newFlags, oldFlags, 0x04);
+	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x01);
+	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x02);
+	updateFlag(writableSessionToken.rawSession(), uin, newFlags, oldFlags, 0x04);
 }
 
 void GaduRosterService::executeTask(const RosterTask &task)

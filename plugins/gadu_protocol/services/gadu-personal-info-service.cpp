@@ -90,7 +90,7 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	FetchSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
+	FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	//gg_pubdir50_free(req);
 }
 
@@ -124,7 +124,7 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	UpdateSeq = gg_pubdir50(writableSessionToken.get()->rawSession(), req);
+	UpdateSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
 	//gg_pubdir50_free(req);
 }
 

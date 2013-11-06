@@ -242,7 +242,7 @@ void GaduContactListService::importContactList()
 	emit stateMachineGetStarted();
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
+	int ret = gg_userlist100_request(writableSessionToken.rawSession(), GG_USERLIST100_GET, 0, GG_USERLIST100_FORMAT_TYPE_GG70, 0);
 	if (-1 == ret)
 		getFinished(false);
 }
@@ -271,7 +271,7 @@ void GaduContactListService::exportContactList(const BuddyList &buddies)
 	}
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
-	int ret = gg_userlist100_request(writableSessionToken.get()->rawSession(),
+	int ret = gg_userlist100_request(writableSessionToken.rawSession(),
 			GG_USERLIST100_PUT, accountDetails->userlistVersion(), GG_USERLIST100_FORMAT_TYPE_GG70, contacts.constData());
 	if (-1 == ret)
 		putFinished(false);
