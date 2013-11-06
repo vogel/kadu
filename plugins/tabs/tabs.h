@@ -138,8 +138,6 @@ public slots:
 
 	void onNewTab(QAction *sender, bool toggled);
 
-	void openTabWith(QStringList altnicks, int index);
-
 	void onTabAttach(QAction *sender, bool toggled);
 
 	void attachToTabsActionCreated(Action *action);

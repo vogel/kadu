@@ -677,33 +677,12 @@ void TabsManager::configurationUpdated()
 
 	TabDialog->setTabPosition(ConfigTabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
-	// Sprawdzam czy sa jakies konferencje a jesli sa to ustawiam w nich poprawnie przyciski w zaleznosci
-	// czy opcja "Konferencje w kartach" jest wlaczona/wylaczona
-	/*
-	ChatList chList = ChatManager::instance()->chats();
-	for (int i = chList.count()-1; i>=0; i--)
-	{
-		KaduAction *action = attachToTabsActionDescription->action(chList[i]->getChatEditBox());
-		if (!action || tabdialog->indexOf(chList[i])!=-1)
-			continue;
-
-		if (action->contacts().count() > 1)
-				action->setEnabled(config_conferencesInTabs);
-
-	}
-	*/
 	TabDialog->configurationUpdated();
 
 	DetachTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-detach").icon());
 	CloseTabMenuAction->setIcon(KaduIcon("kadu_icons/tab-close").icon());
 
 	kdebugf2();
-}
-
-void TabsManager::openTabWith(QStringList altnicks, int index)
-{
-	Q_UNUSED(altnicks)
-	Q_UNUSED(index)
 }
 
 void TabsManager::setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip)
