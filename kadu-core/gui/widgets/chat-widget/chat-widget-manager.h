@@ -31,8 +31,8 @@
 
 class ChatWidget;
 class ChatWidgetActions;
+class ChatWidgetContainerHandlerRepository;
 class ChatWidgetRepository;
-class ChatWindowRepository;
 
 enum class OpenChatActivation
 {
@@ -67,8 +67,8 @@ public:
 	 */
 	static ChatWidgetManager * instance();
 
+	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
 	ChatWidgetActions * actions() { return m_actions; }
 
@@ -92,24 +92,11 @@ public slots:
 	 */
 	void closeChat(const Chat &chat);
 
-signals:
-	/**
-	 * @short Signal emited every time a new ChatWidget is created.
-	 * @param chatWidget new ChatWidget
-	 * @param handled receiver should set this to true if ChatWidgetContainer was created for given ChatWidget
-	 * @todo refactor
-	 *
-	 * This signal is emited every time a new ChatWidget is created. A received can create ChatWidgetContainer and
-	 * take over this ChatWidget. If so, handled should be set to true. If not, ChatWidgetManager will create
-	 * default ChatWidgetContainer in form of ChatWindow.
-	 */
-	void handleNewChatWidget(ChatWidget *chatWidget, bool &handled);
-
 private:
 	static ChatWidgetManager *m_instance;
 
+	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
 
 	ChatWidgetActions *m_actions;
 

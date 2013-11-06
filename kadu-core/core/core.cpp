@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-message-handler.h"
@@ -68,6 +69,7 @@
 #include "gui/windows/chat-window/chat-window-storage.h"
 #include "gui/windows/chat-window/chat-window-storage-configurator.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
+#include "gui/windows/chat-window/window-chat-widget-container-handler.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
 #include "icons/icons-manager.h"
@@ -609,14 +611,20 @@ void Core::runServices()
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 	CurrentChatWindowRepository->setChatWindowFactory(CurrentChatWindowFactory);
 
+	auto windowChatWidgetContainerHandler = new WindowChatWidgetContainerHandler(this);
+	windowChatWidgetContainerHandler->setChatWindowRepository(CurrentChatWindowRepository);
+
+	CurrentChatWidgetContainerHandlerRepository = new ChatWidgetContainerHandlerRepository(this);
+	CurrentChatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(windowChatWidgetContainerHandler);
+
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
 	CurrentChatWindowStorage->setStoragePointFactory(CurrentStoragePointFactory);
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
 
+	ChatWidgetManager::instance()->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
-	ChatWidgetManager::instance()->setChatWindowRepository(CurrentChatWindowRepository);
 
 	CurrentChatWindowManager = new ChatWindowManager(this);
 	CurrentChatWindowManager->setChatWindowRepository(CurrentChatWindowRepository);
@@ -739,6 +747,11 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 RosterNotifier * Core::rosterNotifier() const
 {
 	return CurrentRosterNotifier;
+}
+
+ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepository() const
+{
+	return CurrentChatWidgetContainerHandlerRepository;
 }
 
 ChatWidgetFactory * Core::chatWidgetFactory() const

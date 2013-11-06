@@ -28,10 +28,10 @@
 #include "chat/type/chat-type-contact.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/windows/chat-window/chat-window-repository.h"
-#include "gui/windows/chat-window/chat-window.h"
 
 #include <QtGui/QApplication>
 
@@ -54,6 +54,11 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 }
 
+void ChatWidgetManager::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+}
+
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
 	m_chatWidgetRepository = chatWidgetRepository;
@@ -61,11 +66,6 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 	if (m_chatWidgetRepository)
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
 				this, SLOT(chatWidgetCreated(ChatWidget*)));
-}
-
-void ChatWidgetManager::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
-{
-	m_chatWindowRepository = chatWindowRepository;
 }
 
 ChatWidget * ChatWidgetManager::byChat(const Chat &chat)
@@ -81,17 +81,13 @@ ChatWidget * ChatWidgetManager::byChat(const Chat &chat)
 
 void ChatWidgetManager::chatWidgetCreated(ChatWidget *chatWidget)
 {
-	bool handled = false;
-	emit handleNewChatWidget(chatWidget, handled);
-	if (!handled && m_chatWindowRepository)
-	{
-		auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
-		if (chatWindow)
-		{
-			chatWidget->setContainer(chatWindow);
-			chatWindow->show();
-		}
-	}
+	if (!m_chatWidgetContainerHandlerRepository)
+		return;
+
+	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
+	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
+		if (chatWidgetContainerHandler->containChatWidget(chatWidget))
+			return;
 }
 
 void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
