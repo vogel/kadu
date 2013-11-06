@@ -113,6 +113,8 @@ public:
 	explicit TabsManager(QObject *parent = 0);
 	virtual ~TabsManager();
 
+	void openStoredChatTabs();
+
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

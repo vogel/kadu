@@ -116,9 +116,6 @@ TabsManager::TabsManager(QObject *parent) :
 	);
 	connect(AttachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
-	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		ensureLoaded(); //loadTabs();
-
 	kdebugf2();
 }
 
@@ -162,6 +159,12 @@ void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
 				this, SLOT(onDestroyingChat(ChatWidget *)));
 	}
+}
+
+void TabsManager::openStoredChatTabs()
+{
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		ensureLoaded();
 }
 
 bool TabsManager::containChatWidget(ChatWidget *chatWidget)
