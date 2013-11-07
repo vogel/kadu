@@ -44,7 +44,6 @@ ChatWidgetManager * ChatWidgetManager::instance()
 
 ChatWidgetManager::ChatWidgetManager()
 {
-	m_actions = new ChatWidgetActions(this);
 }
 
 ChatWidgetManager::~ChatWidgetManager()

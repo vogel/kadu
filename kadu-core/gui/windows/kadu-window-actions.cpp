@@ -373,7 +373,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	MenuInventory::instance()
 		->menu("buddy-list")
-		->addAction(ChatWidgetManager::instance()->actions()->blockUser(), KaduMenu::SectionManagement, 500);
+		->addAction(Core::instance()->chatWidgetActions()->blockUser(), KaduMenu::SectionManagement, 500);
 
 	DeleteTalkable = new DeleteTalkableAction(this);
 

@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
@@ -593,6 +594,8 @@ void Core::runServices()
 	foreach (const auto &notifyEvent, CurrentRosterNotifier->notifyEvents())
 		NotificationManager::instance()->registerNotifyEvent(notifyEvent);
 
+	CurrentChatWidgetActions = new ChatWidgetActions(this);
+
 	CurrentChatWidgetFactory = new ChatWidgetFactory(this);
 	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
 
@@ -761,6 +764,11 @@ ChatWidgetContainerHandlerMapper * Core::chatWidgetContainerHandlerMapper() cons
 ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepository() const
 {
 	return CurrentChatWidgetContainerHandlerRepository;
+}
+
+ChatWidgetActions * Core::chatWidgetActions() const
+{
+	return CurrentChatWidgetActions;
 }
 
 ChatWidgetFactory * Core::chatWidgetFactory() const

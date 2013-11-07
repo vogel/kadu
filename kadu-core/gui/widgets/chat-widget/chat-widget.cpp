@@ -532,15 +532,15 @@ void ChatWidget::resetEditBox()
 	InputBox->inputBox()->clear();
 
 	Action *action;
-	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox->actionContext());
+	action = Core::instance()->chatWidgetActions()->bold()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox->actionContext());
+	action = Core::instance()->chatWidgetActions()->italic()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox->actionContext());
+	action = Core::instance()->chatWidgetActions()->underline()->action(InputBox->actionContext());
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 }

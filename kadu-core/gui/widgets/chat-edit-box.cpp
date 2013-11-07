@@ -44,7 +44,6 @@
 #include "gui/widgets/chat-edit-box-size-manager.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
-#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/widgets/talkable-tree-view.h"
@@ -104,7 +103,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 	else
 		loadToolBarsFromConfig(); // load new config
 
-// 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+// 	connect(Core::instance()->chatWidgetActions()->colorSelector(), SIGNAL(actionCreated(Action *)),
 // 			this, SLOT(colorSelectorActionCreated(Action *)));
 	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *,CustomInput *, bool &)),
 			this, SIGNAL(keyPressed(QKeyEvent *,CustomInput *,bool &)));
@@ -116,7 +115,7 @@ ChatEditBox::ChatEditBox(const Chat &chat, QWidget *parent) :
 
 ChatEditBox::~ChatEditBox()
 {
-// 	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), 0, this, 0);
+// 	disconnect(Core::instance()->chatWidgetActions()->colorSelector(), 0, this, 0);
 	disconnect(InputBox, 0, this, 0);
 
 	chatEditBoxes.removeAll(this);
@@ -124,12 +123,12 @@ ChatEditBox::~ChatEditBox()
 
 void ChatEditBox::fontChanged(QFont font)
 {
-	if (ChatWidgetManager::instance()->actions()->bold()->action(actionContext()))
-		ChatWidgetManager::instance()->actions()->bold()->action(actionContext())->setChecked(font.bold());
-	if (ChatWidgetManager::instance()->actions()->italic()->action(actionContext()))
-		ChatWidgetManager::instance()->actions()->italic()->action(actionContext())->setChecked(font.italic());
-	if (ChatWidgetManager::instance()->actions()->underline()->action(actionContext()))
-		ChatWidgetManager::instance()->actions()->underline()->action(actionContext())->setChecked(font.underline());
+	if (Core::instance()->chatWidgetActions()->bold()->action(actionContext()))
+		Core::instance()->chatWidgetActions()->bold()->action(actionContext())->setChecked(font.bold());
+	if (Core::instance()->chatWidgetActions()->italic()->action(actionContext()))
+		Core::instance()->chatWidgetActions()->italic()->action(actionContext())->setChecked(font.italic());
+	if (Core::instance()->chatWidgetActions()->underline()->action(actionContext()))
+		Core::instance()->chatWidgetActions()->underline()->action(actionContext())->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(Action *action)
@@ -315,7 +314,7 @@ void ChatEditBox::changeColor(const QColor &newColor)
 	QPixmap p(12, 12);
 	p.fill(CurrentColor);
 
-// 	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+// 	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
 // 	if (action)
 // 		action->setIcon(p);
 
@@ -324,7 +323,7 @@ void ChatEditBox::changeColor(const QColor &newColor)
 
 void ChatEditBox::setColorFromCurrentText(bool force)
 {
-// 	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+// 	Action *action = Core::instance()->chatWidgetActions()->colorSelector()->action(this);
 
 	Action *action = 0;
 	if (!action || (!force && (InputBox->textColor() == CurrentColor)))

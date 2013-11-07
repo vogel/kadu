@@ -24,13 +24,13 @@
 
 #pragma once
 
-#include "buddies/buddy.h"
-#include "message/message.h"
-
 #include "exports.h"
 
+#include <QtCore/QObject>
+#include <QtCore/QWeakPointer>
+
+class Chat;
 class ChatWidget;
-class ChatWidgetActions;
 class ChatWidgetRepository;
 
 enum class OpenChatActivation
@@ -68,8 +68,6 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	ChatWidgetActions * actions() { return m_actions; }
-
 	/**
 	 * @short Returns ChatWidget for given chat.
 	 * @return ChatWidget for given chat
@@ -94,8 +92,6 @@ private:
 	static ChatWidgetManager *m_instance;
 
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-
-	ChatWidgetActions *m_actions;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();

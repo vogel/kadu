@@ -49,6 +49,7 @@
 #include "gui/windows/main-configuration-window.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
+#include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
