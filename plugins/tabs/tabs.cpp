@@ -305,7 +305,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!chat)
 		return;
 
-	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 	// exists - bring to front
 	if (chatWidget)
 	{
@@ -604,7 +604,7 @@ void TabsManager::load()
 		if (!chat)
 			continue;
 
-		auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 		if (!chatWidget)
 		{
 			if (element.attribute("type") == "tab")

@@ -20,8 +20,10 @@
  */
 
 #include "chat/chat.h"
+#include "core/core.h"
 #include "gui/actions/action-context.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/message-dialog.h"
 
@@ -50,7 +52,7 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
 	if (!chat)
 		return;
 
-	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 	if (!chatWidget)
 		return;
 

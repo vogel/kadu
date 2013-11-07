@@ -25,10 +25,8 @@
 
 #include "chat-widget-manager.h"
 
-#include "chat/type/chat-type-contact.h"
-#include "gui/widgets/chat-widget/chat-widget-actions.h"
 #include "gui/widgets/chat-widget/chat-widget-container.h"
-#include "gui/widgets/chat-widget/chat-widget-container-handler.h"
+#include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
@@ -55,30 +53,33 @@ void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 	m_chatWidgetRepository = chatWidgetRepository;
 }
 
-ChatWidget * ChatWidgetManager::byChat(const Chat &chat)
+void ChatWidgetManager::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
 {
-	if (!chat || !m_chatWidgetRepository)
-		return nullptr;
-
-	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat))
-		return m_chatWidgetRepository.data()->widgetForChat(chat);
-
-	return nullptr;
+	m_chatWidgetFactory = chatWidgetFactory;
 }
 
 void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
 {
-	if (!m_chatWidgetRepository)
+	if (!m_chatWidgetFactory || !m_chatWidgetRepository)
 		return;
 
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	if (!chatWidget)
+	{
+		chatWidget = m_chatWidgetFactory.data()->createChatWidget(chat).release();
+		if (!chatWidget)
+			return;
+
+		m_chatWidgetRepository.data()->addChatWidget(chatWidget);
+	}
+
 	if (activation == OpenChatActivation::Activate)
 		chatWidget->tryActivate();
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
-	auto chatWidget = byChat(chat);
+	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (chatWidget && chatWidget->container())
 		chatWidget->container()->closeChatWidget(chatWidget);
 }

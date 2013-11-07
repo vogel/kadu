@@ -25,7 +25,6 @@
 #include "exports.h"
 
 class ChatWidget;
-class ChatWidgetFactory;
 
 /**
  * @addtogroup Gui
@@ -38,15 +37,14 @@ class ChatWidgetFactory;
  *
  * This repository holds instances of ChatWidget class.
  *
- * New instances are created by provided @see ChatWidgetFactory and can be created by
- * calling widgetForChat(Chat) for a Chat that does not hava an associated ChatWidget yet.
- * If no ChatWidgetFactory is set then no new ChatWidget instances will be created.
- * After creation chatWidgetAdded(ChatWidget*) signal is emitted.
+ * Instances are added and removed by addChatWidget(ChatWidget*) and
+ * removeChatWidget(ChatWidget*) methods.
+ * Access for them is provided by widgetForChat(Chat) and widgets() methods.
  *
- * ChatWidget instances are responsible for their own destruction. When destruction is detected
- * chatWidgetRemoved(ChatWidget*) signal is emitted.
+ * ChatWidget is also automatically removed when it is destroyed.
  *
- * Repository can be tested for its content by hasWidgetForChat(Chat) and widgets() methods.
+ * Signals chatWidgetAdded(ChatWidget*) and chatWidgetRemoved(ChatWidget*)
+ * are used to notify about changing content of this repository.
  */
 class KADUAPI ChatWidgetRepository : public QObject
 {
@@ -57,16 +55,20 @@ public:
 	virtual ~ChatWidgetRepository();
 
 	/**
-	 * @short Set factory for creating new ChatWidget instances.
-	 * @param chatWidgetFactory new factory
+	 * @short Add new chatWidget to repository.
+	 *
+	 * Add new chatWidget to repository only if it is valid and not already in repository.
+	 * Signal chatWidgetAdded(ChatWidget*) is emitted after successfull add.
 	 */
-	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
+	void addChatWidget(ChatWidget *chatWidget);
 
 	/**
-	 * @short Check if repository contains ChatWidget for given chat.
-	 * @param chat chat to check
+	 * @short Remove chatWidget from repository.
+	 *
+	 * Remove chatWidget from repository only if it is  already in repository.
+	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
 	 */
-	bool hasWidgetForChat(const Chat &chat) const;
+	void removeChatWidget(ChatWidget *chatWidget);
 
 	/**
 	 * @short Return ChatWidget for given chat.
@@ -74,9 +76,7 @@ public:
 	 * @return ChatWidget for given chat
 	 *
 	 * If chat is null then nullptr is returned. If repository does contain ChatWidget then
-	 * it is returned. Else, if ChatWidgetFactory is set then new widget is created,
-	 * chatWidgetAdded(ChatWidget*) signal is emitted and this new widget is returned.
-	 * Otherwise nullptr is returned.
+	 * it is returned. Else nullptr is returned.
 	 */
 	ChatWidget * widgetForChat(const Chat &chat);
 
@@ -99,11 +99,10 @@ signals:
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 private:
-	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
 	QMap<Chat, ChatWidget *> m_widgets;
 
 private slots:
-	void widgetDestroyed(const Chat &chat);
+	void widgetDestroyed(ChatWidget *chatWidget);
 
 };
 

@@ -18,7 +18,9 @@
  */
 
 #include "chat/type/chat-type-contact.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "otr-op-data.h"
@@ -56,7 +58,7 @@ void OtrMessageEventService::handleMessageEvent(const Contact &contact, OtrlMess
 		return;
 
 	auto chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	auto chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 	if (chatWidget)
 		chatWidget->appendSystemMessage(errorMessage);
 }

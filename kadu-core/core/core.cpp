@@ -600,10 +600,10 @@ void Core::runServices()
 	CurrentChatWidgetFactory->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
-	CurrentChatWidgetRepository->setChatWidgetFactory(CurrentChatWidgetFactory);
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
+	CurrentChatWidgetMessageHandler->setChatWidgetManager(ChatWidgetManager::instance());
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
@@ -631,6 +631,7 @@ void Core::runServices()
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
 
+	ChatWidgetManager::instance()->setChatWidgetFactory(CurrentChatWidgetFactory);
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
 
 	CurrentChatWindowManager = new ChatWindowManager(this);

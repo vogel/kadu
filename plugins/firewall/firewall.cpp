@@ -436,7 +436,7 @@ bool Firewall::acceptOutgoingMessage(const Message &message)
 		if (!chat)
 			continue;
 
-		if (contact.isAnonymous() && ChatWidgetManager::instance()->byChat(chat))
+		if (contact.isAnonymous() && Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 			Passed.insert(contact);
 	}
 
@@ -454,7 +454,7 @@ bool Firewall::acceptOutgoingMessage(const Message &message)
 
 			if (!SecuredTemporaryAllowed.contains(buddy))
 			{
-				switch (QMessageBox::warning(ChatWidgetManager::instance()->byChat(message.messageChat()), "Kadu",
+				switch (QMessageBox::warning(Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat()), "Kadu",
 						tr("Are you sure you want to send this message?"), tr("&Yes"), tr("Yes and allow until chat closed"), tr("&No"), 2, 2))
 				{
 						default:

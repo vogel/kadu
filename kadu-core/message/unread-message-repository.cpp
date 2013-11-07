@@ -19,7 +19,9 @@
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
 #include "unread-message-repository.h"
@@ -109,7 +111,7 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 	// todo: rethink this one
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
-	auto chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
+	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat());
 	// message is pending if chat widget is not open
 	if (!chatWidget)
 		message.setPending(true);

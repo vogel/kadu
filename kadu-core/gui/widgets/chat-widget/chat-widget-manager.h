@@ -31,6 +31,7 @@
 
 class Chat;
 class ChatWidget;
+class ChatWidgetFactory;
 class ChatWidgetRepository;
 
 enum class OpenChatActivation
@@ -67,15 +68,7 @@ public:
 	static ChatWidgetManager * instance();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
-	/**
-	 * @short Returns ChatWidget for given chat.
-	 * @return ChatWidget for given chat
-	 * @param chat chat for returned ChatWidget
-	 *
-	 * Returns ChatWidget for given chat.
-	 */
-	ChatWidget * byChat(const Chat &chat);
+	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 public slots:
 	void openChat(const Chat &chat, OpenChatActivation activation);
@@ -92,6 +85,7 @@ private:
 	static ChatWidgetManager *m_instance;
 
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();

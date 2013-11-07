@@ -62,7 +62,7 @@ void RecentChatsMenu::checkIfListAvailable()
 {
 	//check if all recent chats are opened -> disable button
 	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat))
+		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 		{
 			emit chatsListAvailable(true);
 			return;
@@ -79,7 +79,7 @@ void RecentChatsMenu::update()
 	clear();
 
 	foreach (const Chat &chat, RecentChatManager::instance()->recentChats())
-		if (!ChatWidgetManager::instance()->byChat(chat))
+		if (!Core::instance()->chatWidgetRepository()->widgetForChat(chat))
 		{
 			ChatType *type = ChatTypeManager::instance()->chatType(chat.type());
 			QAction *action = new QAction(type ? type->icon().icon() : QIcon(),

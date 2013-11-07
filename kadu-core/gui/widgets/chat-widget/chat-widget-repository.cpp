@@ -17,9 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "gui/widgets/chat-widget/chat-widget-factory.h"
 
 #include "chat-widget-repository.h"
 
@@ -32,14 +30,24 @@ ChatWidgetRepository::~ChatWidgetRepository()
 {
 }
 
-void ChatWidgetRepository::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory)
+void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
 {
-	m_chatWidgetFactory = chatWidgetFactory;
+	if (!chatWidget || m_widgets.contains(chatWidget->chat()))
+		return;
+
+	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(widgetDestroyed(ChatWidget*)));
+	m_widgets.insert(chatWidget->chat(), chatWidget);
+	emit chatWidgetAdded(chatWidget);
 }
 
-bool ChatWidgetRepository::hasWidgetForChat(const Chat &chat) const
+void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
 {
-	return m_widgets.contains(chat);
+	if (!chatWidget || !m_widgets.contains(chatWidget->chat()))
+		return;
+
+	disconnect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(widgetDestroyed(ChatWidget*)));
+	m_widgets.remove(chatWidget->chat());
+	emit chatWidgetRemoved(chatWidget);
 }
 
 ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
@@ -47,19 +55,7 @@ ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 	if (!chat)
 		return nullptr;
 
-	if (hasWidgetForChat(chat))
-		return m_widgets.value(chat);
-
-	if (!m_chatWidgetFactory)
-		return nullptr;
-
-	auto result = m_chatWidgetFactory.data()->createChatWidget(chat);
-	connect(result.get(), SIGNAL(widgetDestroyed(Chat)), this, SLOT(widgetDestroyed(Chat)));
-	m_widgets.insert(chat, result.get());
-
-	emit chatWidgetAdded(result.get());
-
-	return result.release();
+	return m_widgets.value(chat);
 }
 
 const QMap<Chat, ChatWidget *> & ChatWidgetRepository::widgets() const
@@ -67,11 +63,7 @@ const QMap<Chat, ChatWidget *> & ChatWidgetRepository::widgets() const
 	return m_widgets;
 }
 
-void ChatWidgetRepository::widgetDestroyed(const Chat &chat)
+void ChatWidgetRepository::widgetDestroyed(ChatWidget *chatWidget)
 {
-	if (!hasWidgetForChat(chat))
-		return;
-
-	emit chatWidgetRemoved(m_widgets.value(chat));
-	m_widgets.remove(chat);
+	removeChatWidget(chatWidget);
 }

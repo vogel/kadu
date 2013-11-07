@@ -22,6 +22,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/kadu-window.h"
 #include "message/message-manager.h"
@@ -43,6 +44,11 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
 	m_buddyChatManager = buddyChatManager;
+}
+
+void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -129,15 +135,15 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 		return;
 
 	auto chat = message.messageChat();
-	if (m_chatWidgetRepository.data()->hasWidgetForChat(chat))
+	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	if (chatWidget)
 	{
-		auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 		chatWidget->appendMessage(message);
 		return;
 	}
 
 	if (shouldOpenChatWidget(chat))
-		m_chatWidgetRepository.data()->widgetForChat(chat);
+		m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::Activate);
 	else
 		qApp->alert(Core::instance()->kaduWindow());
 }
@@ -167,11 +173,9 @@ void ChatWidgetMessageHandler::messageSent(const Message &message)
 		return;
 
 	auto chat = message.messageChat();
-	if (!m_chatWidgetRepository.data()->hasWidgetForChat(chat))
-		return;
-
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	chatWidget->appendMessage(message);
+	if (chatWidget)
+		chatWidget->appendMessage(message);
 }
 
 #include "moc_chat-widget-message-handler.cpp"

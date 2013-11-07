@@ -19,7 +19,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/message.h"
@@ -42,7 +44,7 @@ ChatEventListener::~ChatEventListener()
 
 void ChatEventListener::messageReceived(const Message &message)
 {
-	auto chatWidget = ChatWidgetManager::instance()->byChat(message.messageChat());
+	auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(message.messageChat());
 
 	if (!chatWidget)
 		Service->notify(new MessageNotification(MessageNotification::NewChat, message));

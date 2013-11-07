@@ -27,6 +27,7 @@
 class BuddyChatManager;
 class Chat;
 class ChatWidget;
+class ChatWidgetManager;
 class ChatWidgetRepository;
 class Message;
 class MessageManager;
@@ -42,6 +43,7 @@ public:
 	virtual ~ChatWidgetMessageHandler();
 
 	void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setMessageManager(MessageManager *messageManager);
 	void setNotificationService(NotificationService *notificationService);
@@ -51,6 +53,7 @@ public:
 
 private:
 	QWeakPointer<BuddyChatManager> m_buddyChatManager;
+	QWeakPointer<ChatWidgetManager> m_chatWidgetManager;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QWeakPointer<MessageManager> m_messageManager;
 	QWeakPointer<NotificationService> m_notificationService;

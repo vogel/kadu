@@ -39,6 +39,7 @@
 #include "file-transfer/file-transfer-notifications.h"
 #include "file-transfer/file-transfer.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/file-transfer-window.h"
 #include "gui/windows/kadu-window.h"
@@ -186,7 +187,7 @@ void FileTransferManager::acceptFileTransfer(FileTransfer transfer)
 			QWidget *parent = 0;
 			Chat chat = ChatTypeContact::findChat(transfer.peer(), ActionReturnNull);
 			if (chat)
-				parent = ChatWidgetManager::instance()->byChat(chat);
+				parent = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
 
 			QString question;
 			question = tr("File %1 already exists.").arg(fileName);
