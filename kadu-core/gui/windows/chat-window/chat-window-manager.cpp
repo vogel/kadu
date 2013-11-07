@@ -33,6 +33,10 @@ ChatWindowManager::ChatWindowManager(QObject *parent) :
 ChatWindowManager::~ChatWindowManager()
 {
 }
+void ChatWindowManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
+{
+	m_chatWidgetManager = chatWidgetManager;
+}
 
 void ChatWindowManager::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
@@ -51,7 +55,7 @@ void ChatWindowManager::openStoredChatWindows()
 
 	auto chats = m_chatWindowStorage.data()->loadChats();
 	for (const auto &chat : chats)
-		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
+		m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::DoNotActivate);
 }
 
 void ChatWindowManager::storeOpenedChatWindows()

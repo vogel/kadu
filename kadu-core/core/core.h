@@ -60,6 +60,7 @@ class ChatWidgetActions;
 class ChatWidgetContainerHandlerMapper;
 class ChatWidgetContainerHandlerRepository;
 class ChatWidgetFactory;
+class ChatWidgetManager;
 class ChatWidgetMessageHandler;
 class ChatWidgetRepository;
 class ChatWindowFactory;
@@ -115,6 +116,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWidgetContainerHandlerMapper *CurrentChatWidgetContainerHandlerMapper;
 	ChatWidgetContainerHandlerRepository *CurrentChatWidgetContainerHandlerRepository;
 	ChatWidgetFactory *CurrentChatWidgetFactory;
+	ChatWidgetManager *CurrentChatWidgetManager;
 	ChatWidgetMessageHandler *CurrentChatWidgetMessageHandler;
 	ChatWidgetRepository *CurrentChatWidgetRepository;
 	ChatWindowFactory *CurrentChatWindowFactory;
@@ -194,6 +196,7 @@ public:
 	ChatWidgetContainerHandlerMapper * chatWidgetContainerHandlerMapper() const;
 	ChatWidgetContainerHandlerRepository * chatWidgetContainerHandlerRepository() const;
 	ChatWidgetFactory * chatWidgetFactory() const;
+	ChatWidgetManager * chatWidgetManager() const;
 	ChatWidgetRepository * chatWidgetRepository() const;
 	ChatWindowFactory * chatWindowFactory() const;
 	ChatWindowManager * chatWindowManager() const;

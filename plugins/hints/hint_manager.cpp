@@ -375,7 +375,7 @@ void HintManager::openChat(Hint *hint)
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	ChatWidgetManager::instance()->openChat(hint->chat(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(hint->chat(), OpenChatActivation::Activate);
 
 	deleteHintAndUpdate(hint);
 

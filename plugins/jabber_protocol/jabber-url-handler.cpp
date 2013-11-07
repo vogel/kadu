@@ -30,6 +30,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "dom/dom-processor-service.h"
 #include "dom/dom-processor.h"
 #include "dom/ignore-links-dom-visitor.h"
@@ -90,7 +91,7 @@ void JabberUrlHandler::openUrl(const QByteArray &url, bool disableMenu)
 		const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
 		if (chat)
 		{
-			ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 			return;
 		}
 	}
@@ -127,7 +128,7 @@ void JabberUrlHandler::accountSelected(QAction *action)
 
 	const Contact &contact = ContactManager::instance()->byId(account, ids[1], ActionCreateAndAdd);
 	const Chat &chat = ChatTypeContact::findChat(contact, ActionCreateAndAdd);
-	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 }
 
 #include "moc_jabber-url-handler.cpp"

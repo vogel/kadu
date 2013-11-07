@@ -22,6 +22,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+class ChatWidgetManager;
 class ChatWindowStorage;
 class ChatWindowRepository;
 
@@ -33,14 +34,16 @@ public:
 	explicit ChatWindowManager(QObject *parent = 0);
 	virtual ~ChatWindowManager();
 
-	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
+	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 
 	void openStoredChatWindows();
 	void storeOpenedChatWindows();
 
 private:
-	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
+	QWeakPointer<ChatWidgetManager> m_chatWidgetManager;
 	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
+	QWeakPointer<ChatWindowStorage> m_chatWindowStorage;
 
 };

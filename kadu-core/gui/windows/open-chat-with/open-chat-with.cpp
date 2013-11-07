@@ -40,6 +40,7 @@
 #include "chat/type/chat-type-contact.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/filtered-tree-view.h"
 #include "gui/widgets/line-edit-with-clear-button.h"
@@ -224,7 +225,7 @@ void OpenChatWith::itemActivated(int index)
 	if (!chat)
 		return;
 
-	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 	deleteLater();
 }
 

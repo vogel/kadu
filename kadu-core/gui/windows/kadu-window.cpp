@@ -296,7 +296,7 @@ void KaduWindow::talkableActivatedSlot(const Talkable &talkable)
 	const Chat &chat = talkable.toChat();
 	if (chat && !chat.contacts().toBuddySet().contains(Core::instance()->myself()))
 	{
-		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 		return;
 	}
 

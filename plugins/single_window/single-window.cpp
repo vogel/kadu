@@ -112,7 +112,7 @@ SingleWindow::SingleWindow()
 	connect(m_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	connect(m_tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
-	connect(ChatWidgetManager::instance(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
+	connect(Core::instance()->chatWidgetManager(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
 			this, SLOT(onNewChat(ChatWidget *,bool &)));
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
@@ -131,7 +131,7 @@ SingleWindow::~SingleWindow()
 
 	config_file.writeEntry("SingleWindow", "KaduWindowWidth", kadu->width());
 
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 	disconnect(m_tabs, 0, this, 0);
 	disconnect(kadu, 0, this, 0);
 
@@ -143,7 +143,7 @@ SingleWindow::~SingleWindow()
 			const Chat &chat = chatWidget->chat();
 			m_tabs->removeTab(i);
 			delete chatWidget;
-			ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
+			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 	}
 

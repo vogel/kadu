@@ -23,6 +23,7 @@
  */
 
 #include "chat/chat.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 
 #include "chat-notification.h"
@@ -38,7 +39,7 @@ void ChatNotification::openChat()
 {
 	close();
 
-	ChatWidgetManager::instance()->openChat(chat(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(chat(), OpenChatActivation::Activate);
 }
 
 void ChatNotification::callbackAccept()

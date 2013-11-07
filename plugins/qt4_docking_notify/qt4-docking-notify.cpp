@@ -32,6 +32,7 @@
 #include "notify/notification/notification.h"
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/windows/message-dialog.h"
 #include "parser/parser.h"
@@ -133,7 +134,7 @@ void Qt4Notify::notify(Notification *notification)
 
 void Qt4Notify::messageClicked()
 {
-	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent)

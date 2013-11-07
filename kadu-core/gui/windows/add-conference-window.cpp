@@ -31,6 +31,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-contact-set.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
 #include "gui/widgets/account-buddy-list-widget.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -276,7 +277,7 @@ void AddConferenceWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidgetManager::instance()->openChat(computeChat(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(computeChat(), OpenChatActivation::Activate);
 	QDialog::accept();
 }
 

@@ -128,7 +128,7 @@ TabsManager::~TabsManager()
 		->removeAction(OpenInNewTabActionDescription);
 
 	Timer.stop();
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->chatWidgetManager(), 0, this, 0);
 
 	if (m_chatWidgetRepository)
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
@@ -321,7 +321,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
 			ForceTabs = true;
 
-		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
+		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 	}
 
 	kdebugf2();
@@ -577,7 +577,7 @@ bool TabsManager::detachChat(ChatWidget *chatWidget)
 
 	// omg this is bad
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
-	ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 	return true;
 }
 
@@ -611,7 +611,7 @@ void TabsManager::load()
 				ForceTabs = true;
 			else if (element.attribute("type") == "detachedChat")
 				chat.addProperty("tabs:detached", true, CustomProperties::Storable);
-			ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::DoNotActivate);
+			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 		else if (element.attribute("type") == "tab")
 			insertTab(chatWidget);
@@ -757,7 +757,7 @@ void TabsManager::reopenClosedChat()
 	if (ClosedChats.isEmpty())
 		return;
 
-	ChatWidgetManager::instance()->openChat(ClosedChats.takeFirst(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(ClosedChats.takeFirst(), OpenChatActivation::Activate);
 	ReopenClosedTabMenuAction->setEnabled(ClosedChats.isEmpty());
 }
 

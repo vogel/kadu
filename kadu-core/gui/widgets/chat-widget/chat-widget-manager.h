@@ -47,11 +47,7 @@ enum class OpenChatActivation
 
 /**
  * @class ChatWidgetManager
- * @short Manager of all ChatWidget instances.
- * @todo replace handleNewChatWidget with better mechanism
- * @todo create some kind of per-container manager than can store its own configuration
- *
- * This singleton is responsible for all ChatWidget instances in Kadu.
+ * @short Class for opening and closing chat widgets.
  */
 class KADUAPI ChatWidgetManager : public QObject
 {
@@ -59,25 +55,23 @@ class KADUAPI ChatWidgetManager : public QObject
 	Q_DISABLE_COPY(ChatWidgetManager)
 
 public:
-	/**
-	 * @short Returns manager's singleton instance.
-	 * @return manager's singleton instance
-	 *
-	 * Returns manager's singleton instance.
-	 */
-	static ChatWidgetManager * instance();
+	explicit ChatWidgetManager(QObject *parent = nullptr);
+	virtual ~ChatWidgetManager();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
 public slots:
+	/**
+	 * @short Open given chat.
+	 *
+	 * If activation is set to OpenChatActivation::Activate then newly opened
+	 * chat will be activated.
+	 */
 	void openChat(const Chat &chat, OpenChatActivation activation);
 
 	/**
-	 * @short Close ChatWidget for given chat.
-	 * @param chat chat to close chat widget for
-	 *
-	 * This method closes ChatWidget for given chat.
+	 * @short Close given chat.
 	 */
 	void closeChat(const Chat &chat);
 
@@ -86,9 +80,6 @@ private:
 
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
-
-	ChatWidgetManager();
-	virtual ~ChatWidgetManager();
 
 };
 

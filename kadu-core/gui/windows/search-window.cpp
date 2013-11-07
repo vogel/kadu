@@ -337,7 +337,7 @@ void SearchWindow::chatFound()
 		const Chat &chat = 1 == contacts.size()
 				? ChatTypeContact::findChat(*contacts.constBegin(), ActionCreateAndAdd)
 				: ChatTypeContactSet::findChat(contacts, ActionCreateAndAdd);
-		ChatWidgetManager::instance()->openChat(chat, OpenChatActivation::Activate);
+		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 	}
 }
 

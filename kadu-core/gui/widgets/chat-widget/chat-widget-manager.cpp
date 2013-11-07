@@ -30,17 +30,8 @@
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
-ChatWidgetManager * ChatWidgetManager::m_instance = nullptr;
-
-ChatWidgetManager * ChatWidgetManager::instance()
-{
-	if (!m_instance)
-		m_instance = new ChatWidgetManager();
-
-	return m_instance;
-}
-
-ChatWidgetManager::ChatWidgetManager()
+ChatWidgetManager::ChatWidgetManager(QObject *parent) :
+		QObject{parent}
 {
 }
 

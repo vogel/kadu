@@ -400,7 +400,7 @@ void DockingManager::hideKaduWindow()
 void DockingManager::openUnreadMessages()
 {
 	const Message &message = Core::instance()->unreadMessageRepository()->unreadMessage();
-	ChatWidgetManager::instance()->openChat(message.messageChat(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(message.messageChat(), OpenChatActivation::Activate);
 }
 
 void DockingManager::trayMousePressEvent(QMouseEvent * e)
@@ -673,7 +673,7 @@ void DockingManager::unregisterModuleAction(QAction *action)
 #ifdef Q_OS_MAC
 void DockingManager::showMinimizedChats()
 {
-	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+	foreach (ChatWidget *chat, Core::instance()->chatWidgetManager()->chats())
 		chat->activate();
 }
 

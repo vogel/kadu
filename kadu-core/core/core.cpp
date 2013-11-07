@@ -601,9 +601,13 @@ void Core::runServices()
 
 	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
 
+	CurrentChatWidgetManager = new ChatWidgetManager(this);
+	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
+	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
+
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
-	CurrentChatWidgetMessageHandler->setChatWidgetManager(ChatWidgetManager::instance());
+	CurrentChatWidgetMessageHandler->setChatWidgetManager(CurrentChatWidgetManager);
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
@@ -631,10 +635,8 @@ void Core::runServices()
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
 
-	ChatWidgetManager::instance()->setChatWidgetFactory(CurrentChatWidgetFactory);
-	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
-
 	CurrentChatWindowManager = new ChatWindowManager(this);
+	CurrentChatWindowManager->setChatWidgetManager(CurrentChatWidgetManager);
 	CurrentChatWindowManager->setChatWindowRepository(CurrentChatWindowRepository);
 	CurrentChatWindowManager->setChatWindowStorage(CurrentChatWindowStorage);
 	CurrentChatWindowManager->openStoredChatWindows();
@@ -770,6 +772,11 @@ ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepositor
 ChatWidgetActions * Core::chatWidgetActions() const
 {
 	return CurrentChatWidgetActions;
+}
+
+ChatWidgetManager * Core::chatWidgetManager() const
+{
+	return CurrentChatWidgetManager;
 }
 
 ChatWidgetFactory * Core::chatWidgetFactory() const

@@ -31,6 +31,7 @@
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-room.h"
 #include "configuration/config-file-variant-wrapper.h"
+#include "core/core.h"
 #include "gui/widgets/accounts-combo-box.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "icons/kadu-icon.h"
@@ -227,7 +228,7 @@ void AddRoomChatWindow::start()
 	if (!DisplayNameEdit->text().isEmpty())
 		chat.setDisplay(DisplayNameEdit->text());
 
-	ChatWidgetManager::instance()->openChat(computeChat(), OpenChatActivation::Activate);
+	Core::instance()->chatWidgetManager()->openChat(computeChat(), OpenChatActivation::Activate);
 
 	ChatDetailsRoom *details = qobject_cast<ChatDetailsRoom *>(chat.details());
 	Q_ASSERT(details);
