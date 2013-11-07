@@ -30,11 +30,13 @@ ChatWidgetContainerHandlerRepository::~ChatWidgetContainerHandlerRepository()
 void ChatWidgetContainerHandlerRepository::registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
 	m_chatWidgetContainerHandlers.prepend(chatWidgetContainerHandler);
+	emit chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
 void ChatWidgetContainerHandlerRepository::unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
 	m_chatWidgetContainerHandlers.removeAll(chatWidgetContainerHandler);
+	emit chatWidgetContainerHandlerUnregistered(chatWidgetContainerHandler);
 }
 
 QList<ChatWidgetContainerHandler *> ChatWidgetContainerHandlerRepository::chatWidgetContainerHandlers() const

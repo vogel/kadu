@@ -31,7 +31,6 @@
 
 class ChatWidget;
 class ChatWidgetActions;
-class ChatWidgetContainerHandlerRepository;
 class ChatWidgetRepository;
 
 enum class OpenChatActivation
@@ -67,7 +66,6 @@ public:
 	 */
 	static ChatWidgetManager * instance();
 
-	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	ChatWidgetActions * actions() { return m_actions; }
@@ -95,16 +93,12 @@ public slots:
 private:
 	static ChatWidgetManager *m_instance;
 
-	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
 	ChatWidgetActions *m_actions;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
-
-private slots:
-	void chatWidgetCreated(ChatWidget *chatWidget);
 
 };
 

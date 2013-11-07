@@ -56,6 +56,7 @@
 #include "gui/widgets/chat-configuration-widget-factory-repository.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
@@ -617,13 +618,16 @@ void Core::runServices()
 	CurrentChatWidgetContainerHandlerRepository = new ChatWidgetContainerHandlerRepository(this);
 	CurrentChatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(windowChatWidgetContainerHandler);
 
+	CurrentChatWidgetContainerHandlerMapper = new ChatWidgetContainerHandlerMapper(this);
+	CurrentChatWidgetContainerHandlerMapper->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
+	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(CurrentChatWidgetRepository);
+
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
 	CurrentChatWindowStorage->setStoragePointFactory(CurrentStoragePointFactory);
 	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(); // this is basically a global so we do not care about relesing it
 	chatWindowStorageConfigurator->setChatWindowStorage(CurrentChatWindowStorage);
 
-	ChatWidgetManager::instance()->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 	ChatWidgetManager::instance()->setChatWidgetRepository(CurrentChatWidgetRepository);
 
 	CurrentChatWindowManager = new ChatWindowManager(this);
@@ -747,6 +751,11 @@ UnreadMessageRepository * Core::unreadMessageRepository() const
 RosterNotifier * Core::rosterNotifier() const
 {
 	return CurrentRosterNotifier;
+}
+
+ChatWidgetContainerHandlerMapper * Core::chatWidgetContainerHandlerMapper() const
+{
+	return CurrentChatWidgetContainerHandlerMapper;
 }
 
 ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepository() const

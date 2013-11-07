@@ -24,6 +24,7 @@ set (gui_SRCS
 	widgets/chat-widget/chat-widget.cpp
 	widgets/chat-widget/chat-widget-actions.cpp
 	widgets/chat-widget/chat-widget-container-handler.cpp
+	widgets/chat-widget/chat-widget-container-handler-mapper.cpp
 	widgets/chat-widget/chat-widget-container-handler-repository.cpp
 	widgets/chat-widget/chat-widget-factory.cpp
 	widgets/chat-widget/chat-widget-manager.cpp

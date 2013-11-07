@@ -19,31 +19,38 @@
 
 #pragma once
 
-#include "exports.h"
-
+#include <QtCore/QMap>
 #include <QtCore/QObject>
-#include <QtCore/QList>
+#include <QtCore/QWeakPointer>
 
+class ChatWidget;
 class ChatWidgetContainerHandler;
+class ChatWidgetContainerHandlerRepository;
+class ChatWidgetRepository;
 
-class KADUAPI ChatWidgetContainerHandlerRepository : public QObject
+class ChatWidgetContainerHandlerMapper : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetContainerHandlerRepository(QObject *parent = nullptr);
-	virtual ~ChatWidgetContainerHandlerRepository();
+	explicit ChatWidgetContainerHandlerMapper(QObject *parent = 0);
+	virtual ~ChatWidgetContainerHandlerMapper();
 
-	void registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	QList<ChatWidgetContainerHandler *> chatWidgetContainerHandlers() const;
-
-signals:
-	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+	void mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget);
 
 private:
-	QList<ChatWidgetContainerHandler *> m_chatWidgetContainerHandlers;
+	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
+
+	QMap<ChatWidget *, ChatWidgetContainerHandler *> m_mapping;
+
+private slots:
+	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+
+	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetDestroyed(ChatWidget *chatWidget);
 
 };
