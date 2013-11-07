@@ -53,10 +53,10 @@ void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetReposit
 	if (!m_chatWidgetRepository)
 		return;
 
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
-			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
-			this, SLOT(chatWidgetDestroyed(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)),
+			this, SLOT(chatWidgetAdded(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
+			this, SLOT(chatWidgetRemoved(ChatWidget*)));
 }
 
 void ChatWidgetContainerHandlerMapper::mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget)
@@ -83,12 +83,12 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(Ch
 	}
 }
 
-void ChatWidgetContainerHandlerMapper::chatWidgetCreated(ChatWidget *chatWidget)
+void ChatWidgetContainerHandlerMapper::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	mapChatWidgetToFirstContainerHandler(chatWidget);
 }
 
-void ChatWidgetContainerHandlerMapper::chatWidgetDestroyed(ChatWidget *chatWidget)
+void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)
 {
 	m_mapping.remove(chatWidget);
 }

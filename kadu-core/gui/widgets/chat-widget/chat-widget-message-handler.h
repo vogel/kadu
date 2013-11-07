@@ -62,8 +62,8 @@ private:
 	bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:
-	void chatWidgetCreated(ChatWidget *chatWidget);
-	void chatWidgetDestroyed(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
+	void chatWidgetRemoved(ChatWidget *chatWidget);
 	void chatWidgetActivated(ChatWidget *chatWidget);
 
 	void messageReceived(const Message &message);

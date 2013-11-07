@@ -86,7 +86,7 @@ IndicatorDocking::IndicatorDocking() :
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
 	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
 	createDefaultConfiguration();
@@ -233,7 +233,7 @@ void IndicatorDocking::chatUpdated(const Chat &chat)
 		removeNotification(it.value());
 }
 
-void IndicatorDocking::chatWidgetCreated(ChatWidget *chatWidget)
+void IndicatorDocking::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	// When a chat widget is created, it is filled with all messages from given aggregate chat.
 
@@ -265,7 +265,7 @@ void IndicatorDocking::displayIndicator(QIndicate::Indicator *indicator)
 
 	chatNotification->openChat();
 
-	// chatUpdated() or chatWidgetCreated() slot will take care of deleting indicator
+	// chatUpdated() or chatWidgetAdded() slot will take care of deleting indicator
 }
 
 void IndicatorDocking::removeNotification(ChatNotification *chatNotification)

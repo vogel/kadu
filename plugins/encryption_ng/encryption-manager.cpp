@@ -67,7 +67,7 @@ EncryptionManager::~EncryptionManager()
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
 		foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
-			chatWidgetDestroying(chatWidget);
+			chatWidgetRemoved(chatWidget);
 	}
 
 	m_instance = 0;
@@ -81,12 +81,12 @@ void EncryptionManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 		return;
 
 	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
-		chatWidgetCreated(chatWidget);
+		chatWidgetAdded(chatWidget);
 
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)),
-			this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroying(ChatWidget*)),
-			this, SLOT(chatWidgetDestroying(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)),
+			this, SLOT(chatWidgetAdded(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
+			this, SLOT(chatWidgetRemoved(ChatWidget*)));
 }
 
 EncryptionChatData * EncryptionManager::chatEncryption(const Chat &chat)
@@ -128,7 +128,7 @@ EncryptionProvider * EncryptionManager::encryptionProvider(const Chat &chat)
 	return currentEncryptor->provider();
 }
 
-void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
+void EncryptionManager::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
 	if (!chat.data())
@@ -144,7 +144,7 @@ void EncryptionManager::chatWidgetCreated(ChatWidget *chatWidget)
 	}
 }
 
-void EncryptionManager::chatWidgetDestroying(ChatWidget *chatWidget)
+void EncryptionManager::chatWidgetRemoved(ChatWidget *chatWidget)
 {
 	Chat chat = chatWidget->chat();
 	if (!chat.data())

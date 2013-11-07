@@ -104,7 +104,7 @@ Firewall::Firewall() :
 
 	triggerAllAccountsRegistered();
 
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetDestroyed(ChatWidget *)),
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatDestroyed(ChatWidget *)));
 
 	kdebugf2();

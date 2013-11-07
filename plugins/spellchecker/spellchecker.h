@@ -96,7 +96,7 @@ public:
 public slots:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
 	void configForward();
 	void configBackward();
 	void configForward2(QListWidgetItem *item);

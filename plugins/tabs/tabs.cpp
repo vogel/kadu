@@ -156,7 +156,7 @@ void TabsManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 
 	if (m_chatWidgetRepository)
 	{
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
 				this, SLOT(onDestroyingChat(ChatWidget *)));
 	}
 }

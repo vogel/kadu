@@ -218,7 +218,7 @@ MediaPlayer::~MediaPlayer()
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
 		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetDestroyed(it);
+			chatWidgetRemoved(it);
 	}
 
 	delete menu;
@@ -240,11 +240,11 @@ void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 	if (m_chatWidgetRepository)
 	{
 		// Monitor of creating chats
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget *)), this, SLOT(chatWidgetDestroyed(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
 		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetCreated(it);
+			chatWidgetAdded(it);
 	}
 }
 
@@ -285,14 +285,14 @@ void MediaPlayer::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(qApp->translate("@default", MediaPlayerChatShortCutsText));
 }
 
-void MediaPlayer::chatWidgetCreated(ChatWidget *chat)
+void MediaPlayer::chatWidgetAdded(ChatWidget *chat)
 {
 	kdebugf();
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(chat->edit(), SIGNAL(keyReleased(QKeyEvent *, CustomInput *, bool &)), this, SLOT(chatKeyReleased(QKeyEvent *, CustomInput *, bool &)));
 }
 
-void MediaPlayer::chatWidgetDestroyed(ChatWidget *chat)
+void MediaPlayer::chatWidgetRemoved(ChatWidget *chat)
 {
 	kdebugf();
 	disconnect(chat->edit(), 0, this, 0);

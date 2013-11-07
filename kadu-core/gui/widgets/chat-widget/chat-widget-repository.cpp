@@ -57,7 +57,7 @@ ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 	connect(result.get(), SIGNAL(widgetDestroyed(Chat)), this, SLOT(widgetDestroyed(Chat)));
 	m_widgets.insert(chat, result.get());
 
-	emit chatWidgetCreated(result.get());
+	emit chatWidgetAdded(result.get());
 
 	return result.release();
 }
@@ -72,6 +72,6 @@ void ChatWidgetRepository::widgetDestroyed(const Chat &chat)
 	if (!hasWidgetForChat(chat))
 		return;
 
-	emit chatWidgetDestroyed(m_widgets.value(chat));
+	emit chatWidgetRemoved(m_widgets.value(chat));
 	m_widgets.remove(chat);
 }

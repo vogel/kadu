@@ -51,7 +51,7 @@
 AutoResponder::AutoResponder(QObject *parent) :
 		MessageFilter(parent)
 {
-	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetDestroyed(ChatWidget *)),
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetRemoved(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	UiHandler = new AutoresponderConfigurationUiHolder(this);

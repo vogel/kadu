@@ -153,7 +153,7 @@ void History::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 	m_chatWidgetRepository = chatWidgetRepository;
 
 	if (m_chatWidgetRepository)
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 }
 
 void History::createActionDescriptions()
@@ -209,7 +209,7 @@ void History::clearHistoryActionActivated(QAction *sender, bool toggled)
 		CurrentStorage->clearChatHistory(action->context()->chat());
 }
 
-void History::chatWidgetCreated(ChatWidget *chatWidget)
+void History::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	kdebugf();
 
@@ -409,7 +409,7 @@ void History::registerStorage(HistoryStorage *storage)
 
 	if (m_chatWidgetRepository)
 		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
-			chatWidgetCreated(chat);
+			chatWidgetAdded(chat);
 
 	foreach (const Account &account, AccountManager::instance()->items())
 		accountRegistered(account);

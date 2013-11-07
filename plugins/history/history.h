@@ -124,7 +124,7 @@ private slots:
 
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
 
-	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
 
 protected:
 	virtual void crash();

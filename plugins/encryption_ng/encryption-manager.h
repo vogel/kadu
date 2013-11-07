@@ -77,7 +77,7 @@ private:
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 private slots:
-	void chatWidgetCreated(ChatWidget *chatWidget);
-	void chatWidgetDestroying(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
+	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 };

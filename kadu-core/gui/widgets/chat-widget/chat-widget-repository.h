@@ -41,10 +41,10 @@ class ChatWidgetFactory;
  * New instances are created by provided @see ChatWidgetFactory and can be created by
  * calling widgetForChat(Chat) for a Chat that does not hava an associated ChatWidget yet.
  * If no ChatWidgetFactory is set then no new ChatWidget instances will be created.
- * After creation chatWidgetCreated(ChatWidget*) signal is emitted.
+ * After creation chatWidgetAdded(ChatWidget*) signal is emitted.
  *
  * ChatWidget instances are responsible for their own destruction. When destruction is detected
- * chatWidgetDestroyed(ChatWidget*) signal is emitted.
+ * chatWidgetRemoved(ChatWidget*) signal is emitted.
  *
  * Repository can be tested for its content by hasWidgetForChat(Chat) and widgets() methods.
  */
@@ -75,7 +75,7 @@ public:
 	 *
 	 * If chat is null then nullptr is returned. If repository does contain ChatWidget then
 	 * it is returned. Else, if ChatWidgetFactory is set then new widget is created,
-	 * chatWidgetCreated(ChatWidget*) signal is emitted and this new widget is returned.
+	 * chatWidgetAdded(ChatWidget*) signal is emitted and this new widget is returned.
 	 * Otherwise nullptr is returned.
 	 */
 	ChatWidget * widgetForChat(const Chat &chat);
@@ -90,13 +90,13 @@ signals:
 	 * @short Signal emitted when new ChatWidget was created for this repository.
 	 * @param chatWidget newly created ChatWidget instance
 	 */
-	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
 
 	/**
 	 * @short Signal emitted when new ChatWidget was destroyed in this repository.
 	 * @param chatWidget just destroyed ChatWidget instance
 	 */
-	void chatWidgetDestroyed(ChatWidget *chatWidget);
+	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 private:
 	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;

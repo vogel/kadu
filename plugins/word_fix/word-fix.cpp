@@ -109,7 +109,7 @@ WordFix::~WordFix()
 		disconnect(chatWidgetRepository.data(), 0, this, 0);
 
 		foreach (ChatWidget *chat, chatWidgetRepository.data()->widgets())
-			chatWidgetDestroyed(chat);
+			chatWidgetRemoved(chat);
 	}
 
 	kdebugf2();
@@ -121,13 +121,13 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 
 	if (this->chatWidgetRepository)
 	{
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)),
-			this, SLOT(chatWidgetCreated(ChatWidget *)));
-		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)),
-			this, SLOT(chatWidgetDestroyed(ChatWidget *)));
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)),
+			this, SLOT(chatWidgetAdded(ChatWidget *)));
+		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
+			this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
 		foreach (ChatWidget *chatWidget, this->chatWidgetRepository.data()->widgets())
-			chatWidgetCreated(chatWidget);
+			chatWidgetAdded(chatWidget);
 	}
 }
 
@@ -153,12 +153,12 @@ void WordFix::done()
 	kdebugf2();
 }
 
-void WordFix::chatWidgetCreated(ChatWidget *chatWidget)
+void WordFix::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	connect(chatWidget, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
 }
 
-void WordFix::chatWidgetDestroyed(ChatWidget *chatWidget)
+void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 {
 	disconnect(chatWidget, 0, this, 0);
 }

@@ -113,12 +113,12 @@ private slots:
 	/*
 		Applies all needed functions to newly created Chat window.
 	*/
-	void chatWidgetCreated(ChatWidget *);
+	void chatWidgetAdded(ChatWidget *);
 
 	/*
 		Removes all needed functions from Chat window being destroyed.
 	*/
-	void chatWidgetDestroyed(ChatWidget *);
+	void chatWidgetRemoved(ChatWidget *);
 
 	void checkTitle();
 	void chatKeyPressed(QKeyEvent *, CustomInput *, bool &);

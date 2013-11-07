@@ -73,7 +73,7 @@ private slots:
 	void notificationClosed(Notification *notification);
 
 	void chatUpdated(const Chat &chat);
-	void chatWidgetCreated(ChatWidget *chatWidget);
+	void chatWidgetAdded(ChatWidget *chatWidget);
 
 	void silentModeToggled(bool silentMode);
 

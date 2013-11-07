@@ -52,11 +52,11 @@ void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *cha
 	if (!m_chatWidgetRepository)
 		return;
 
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
+	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
 
 	foreach (auto chatWidget, m_chatWidgetRepository.data()->widgets())
-		chatWidgetCreated(chatWidget);
+		chatWidgetAdded(chatWidget);
 }
 
 void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
@@ -85,12 +85,12 @@ void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfigur
 	m_configuration = configuration;
 }
 
-void ChatWidgetMessageHandler::chatWidgetCreated(ChatWidget *chatWidget)
+void ChatWidgetMessageHandler::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	connect(chatWidget, SIGNAL(activated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 }
 
-void ChatWidgetMessageHandler::chatWidgetDestroyed(ChatWidget *chatWidget)
+void ChatWidgetMessageHandler::chatWidgetRemoved(ChatWidget *chatWidget)
 {
 	auto chat = chatWidget->chat();
 	chat.removeProperty("message:unreadMessagesAppended");

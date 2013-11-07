@@ -117,7 +117,7 @@ void SpellChecker::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepos
 	m_chatWidgetRepository = chatWidgetRepository;
 
 	if (m_chatWidgetRepository)
-		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
+		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 }
 
 QStringList SpellChecker::notCheckedLanguages()
@@ -198,7 +198,7 @@ bool SpellChecker::addCheckedLang(const QString &name)
 
 	if ((MyCheckers.size() == 1) && m_chatWidgetRepository)
 		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
-			chatWidgetCreated(chat);
+			chatWidgetAdded(chat);
 
 	return true;
 }
@@ -268,7 +268,7 @@ void SpellChecker::buildMarkTag()
 	Highlighter::rehighlightAll();
 }
 
-void SpellChecker::chatWidgetCreated(ChatWidget *chat)
+void SpellChecker::chatWidgetAdded(ChatWidget *chat)
 {
 	if (!MyCheckers.isEmpty())
 	{

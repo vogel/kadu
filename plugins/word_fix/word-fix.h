@@ -52,7 +52,7 @@ private slots:
 	 * the object to chat "<i>send message</i>" signal.
 	 * \param chat Pointer to the created chat window.
 	 */
-	void chatWidgetCreated(ChatWidget *chat);
+	void chatWidgetAdded(ChatWidget *chat);
 
 	/*!
 	 * \fn void chatDestroying(ChatWidget *chat)
@@ -60,7 +60,7 @@ private slots:
 	 * the object from chat "<i>send message</i>" signal.
 	 * \param chat Pointer to the chat window.
 	 */
-	void chatWidgetDestroyed(ChatWidget *chat);
+	void chatWidgetRemoved(ChatWidget *chat);
 
 	/*!
 	 * \fn void sendRequest(Chat* chat)
