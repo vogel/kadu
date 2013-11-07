@@ -43,6 +43,7 @@
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "message/unread-message-repository.h"
@@ -85,7 +86,7 @@ IndicatorDocking::IndicatorDocking() :
 
 	connect(Server, SIGNAL(serverDisplay()), this, SLOT(showMainWindow()));
 	connect(ChatManager::instance(), SIGNAL(chatUpdated(Chat)), this, SLOT(chatUpdated(Chat)));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(chatWidgetCreated(ChatWidget*)));
 	connect(Core::instance()->notificationService(), SIGNAL(silentModeToggled(bool)), this, SLOT(silentModeToggled(bool)));
 
 	createDefaultConfiguration();
@@ -103,7 +104,7 @@ IndicatorDocking::~IndicatorDocking()
 
 	disconnect(Server, 0, this, 0);
 	disconnect(ChatManager::instance(), 0, this, 0);
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
 
 	QSet<QIndicate::Indicator *> indicatorsToDelete;
 	IndMMap::const_iterator end = IndicatorsMap.constEnd();

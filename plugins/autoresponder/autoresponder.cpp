@@ -34,6 +34,7 @@
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "message/message-manager.h"
 #include "parser/parser.h"
@@ -50,7 +51,7 @@
 AutoResponder::AutoResponder(QObject *parent) :
 		MessageFilter(parent)
 {
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetDestroyed(ChatWidget *)),
 			this, SLOT(chatWidgetClosed(ChatWidget *)));
 
 	UiHandler = new AutoresponderConfigurationUiHolder(this);
@@ -71,7 +72,7 @@ AutoResponder::~AutoResponder()
 	delete Configurator;
 	Configurator = 0;
 
-	disconnect(ChatWidgetManager::instance(), 0, this, 0);
+	disconnect(Core::instance()->chatWidgetRepository(), 0, this, 0);
 }
 
 int AutoResponder::init(bool firstLoad)

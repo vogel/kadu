@@ -53,6 +53,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "core/core.h"
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/search-window.h"
@@ -103,7 +104,7 @@ Firewall::Firewall() :
 
 	triggerAllAccountsRegistered();
 
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget *)),
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetDestroyed(ChatWidget *)),
 			this, SLOT(chatDestroyed(ChatWidget *)));
 
 	kdebugf2();

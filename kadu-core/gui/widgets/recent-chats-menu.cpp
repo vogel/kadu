@@ -21,7 +21,9 @@
 #include "chat/model/chat-data-extractor.h"
 #include "chat/recent-chat-manager.h"
 #include "chat/type/chat-type-manager.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -38,8 +40,8 @@ RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
 	RecentChatsMenuNeedsUpdate = true;
 
 	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(invalidate()));
-	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetDestroying(ChatWidget*)), this, SLOT(invalidate()));
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetCreated(ChatWidget*)), this, SLOT(invalidate()));
+	connect(Core::instance()->chatWidgetRepository(), SIGNAL(chatWidgetDestroyed(ChatWidget*)), this, SLOT(invalidate()));
 	connect(RecentChatManager::instance(), SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
 	connect(RecentChatManager::instance(), SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
 	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
