@@ -154,7 +154,7 @@ bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 		return false;
 
 	auto silentMode = m_notificationService ? m_notificationService.data()->silentMode() : false;
-	if ((m_configuration.openChatOnMessage() || m_configuration.openChatOnMessageOnlyWhenOnline()) && silentMode)
+	if (silentMode)
 		return false;
 
 	auto handler = chat.chatAccount().protocolHandler();
