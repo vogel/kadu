@@ -6,6 +6,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	single-window.cpp
+	single-window-chat-widget-container-handler.cpp
 	single-window-plugin.cpp
 )
 

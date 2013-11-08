@@ -41,7 +41,6 @@ SingleWindowManager::SingleWindowManager(QObject *parent) :
 	config_file.addVariable("SingleWindow", "KaduWindowWidth", 205);
 
 	m_window = new SingleWindow();
-	m_window->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	m_windowProvider->provideValue(m_window);
 
 	Core::instance()->mainWindowProvider()->installCustomProvider(m_windowProvider);
@@ -112,9 +111,6 @@ SingleWindow::SingleWindow()
 	connect(m_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 	connect(m_tabs, SIGNAL(currentChanged(int)), this, SLOT(onTabChange(int)));
 
-	connect(Core::instance()->chatWidgetManager(), SIGNAL(handleNewChatWidget(ChatWidget *,bool &)),
-			this, SLOT(onNewChat(ChatWidget *,bool &)));
-
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(onkaduKeyPressed(QKeyEvent *)));
 
 	setFocusProxy(kadu);
@@ -166,8 +162,7 @@ void SingleWindow::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepos
 			else
 				chatWidget->kaduRestoreGeometry();
 
-			bool dummy;
-			onNewChat(chatWidget, dummy);
+			containChatWidget(chatWidget);
 		}
 	}
 }
@@ -193,9 +188,8 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
 }
 
-void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
+bool SingleWindow::containChatWidget(ChatWidget *chatWidget)
 {
-	handled = true;
 	chatWidget->setContainer(this);
 
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
@@ -207,6 +201,8 @@ void SingleWindow::onNewChat(ChatWidget *chatWidget, bool &handled)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
+
+	return true;
 }
 
 void SingleWindow::updateTabIcon(ChatWidget *chatWidget)

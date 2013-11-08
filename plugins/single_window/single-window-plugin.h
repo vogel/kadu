@@ -24,13 +24,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SINGLE_WIDOW_PLUGIN_H
-#define SINGLE_WIDOW_PLUGIN_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "plugins/generic-plugin.h"
 
+class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
 
 class SingleWindowPlugin : public QObject, public GenericPlugin
@@ -38,14 +36,14 @@ class SingleWindowPlugin : public QObject, public GenericPlugin
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
 
-	SingleWindowManager *SingleWindowManagerInstance;
-
 public:
 	virtual ~SingleWindowPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
 
-};
+private:
+	QScopedPointer<SingleWindowChatWidgetContainerHandler> m_singleWindowChatWidgetContainerHandler;
+	QScopedPointer<SingleWindowManager> m_singleWindowManager;
 
-#endif // SINGLE_WIDOW_PLUGIN_H
+};

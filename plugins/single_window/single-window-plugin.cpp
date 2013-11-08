@@ -20,10 +20,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "core/core.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/windows/main-configuration-window.h"
 #include "misc/kadu-paths.h"
 
 #include "single-window.h"
+#include "single-window-chat-widget-container-handler.h"
 
 #include "single-window-plugin.h"
 
@@ -35,17 +38,26 @@ int SingleWindowPlugin::init(bool firstLoad)
 {
 	Q_UNUSED(firstLoad)
 
-	SingleWindowManagerInstance = new SingleWindowManager(this);
+	m_singleWindowChatWidgetContainerHandler.reset(new SingleWindowChatWidgetContainerHandler());
+	m_singleWindowManager.reset(new SingleWindowManager());
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
+
+	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(m_singleWindowManager.data()->window());
+	m_singleWindowManager.data()->window()->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
+	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
 
 	return 0;
 }
 
 void SingleWindowPlugin::done()
 {
+	m_singleWindowManager.data()->window()->setChatWidgetRepository(nullptr);
+	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
+	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(nullptr);
+
 	MainConfigurationWindow::unregisterUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
-	delete SingleWindowManagerInstance;
-	SingleWindowManagerInstance = 0;
+	m_singleWindowManager.reset();
+	m_singleWindowChatWidgetContainerHandler.reset();
 }
 
 Q_EXPORT_PLUGIN2(single_window, SingleWindowPlugin)

@@ -26,6 +26,8 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
+	bool containChatWidget(ChatWidget *chatWidget);
+
 	virtual void changeEvent(QEvent *event);
 
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget);
@@ -37,7 +39,6 @@ public:
 	void changeRosterPos(int newRosterPos);
 
 public slots:
-	void onNewChat(ChatWidget *chatWidget, bool &handled);
 	void onTabChange(int index);
 	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);
 	void onkaduKeyPressed(QKeyEvent *e);
@@ -73,6 +74,8 @@ public:
 	virtual ~SingleWindowManager();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow * /*mainConfigurationWindow*/) {};
+
+	SingleWindow * window() const { return m_window; }
 
 protected:
 	virtual void configurationUpdated();
