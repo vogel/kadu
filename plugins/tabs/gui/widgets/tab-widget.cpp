@@ -202,7 +202,7 @@ void TabWidget::tryActivateChatWidget(ChatWidget *chatWidget)
 	chatWidget->edit()->setFocus();
 }
 
-void TabWidget::alertChatWidget(ChatWidget *chatWidget)
+void TabWidget::messageReceived(ChatWidget *chatWidget)
 {
 	Q_ASSERT(chatWidget);
 

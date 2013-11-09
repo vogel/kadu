@@ -504,8 +504,7 @@ void ChatWidget::appendMessage(const Message &message)
 		return;
 
 	LastReceivedMessageTime = QDateTime::currentDateTime();
-	if (Container)
-		Container->alertChatWidget(this);
+	emit messageReceived(this);
 }
 
 void ChatWidget::appendSystemMessage(const QString &content)

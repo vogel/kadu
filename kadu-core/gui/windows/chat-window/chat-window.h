@@ -51,7 +51,6 @@ public:
 	Chat chat() const;
 	ChatWidget * chatWidget() const { return m_chatWidget; }
 
-	virtual void alertChatWidget(ChatWidget *chatWidget) override;
 	virtual void closeChatWidget(ChatWidget *chatWidget) override;
 
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
@@ -86,6 +85,7 @@ private:
 	QRect defaultGeometry() const;
 
 private slots:
+	void messageReceived(ChatWidget *chatWidget);
 	void updateIcon();
 	void updateTitle();
 

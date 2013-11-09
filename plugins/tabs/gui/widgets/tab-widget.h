@@ -171,8 +171,6 @@ public:
 	*/
 	void configurationUpdated();
 
-	virtual void alertChatWidget(ChatWidget *chatWidget);
-
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 	void tryActivateChatWidget(ChatWidget *chatWidget);
 
@@ -184,6 +182,8 @@ public:
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 public slots:
+	void messageReceived(ChatWidget *chatWidget);
+
 	/**
 	* Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji
 	* okna chat. Odpowiada za skórty klawiaturowe modułu, Jeśli handled

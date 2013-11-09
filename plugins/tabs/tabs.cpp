@@ -346,7 +346,7 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	DetachedChats.removeAll(chatWidget);
 
-	foreach (Action *action, AttachToTabsActionDescription->actions())
+	for (Action *action : AttachToTabsActionDescription->actions())
 	{
 		if (action->context()->contacts() == contacts)
 			action->setChecked(true);
@@ -366,6 +366,8 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)),
 			TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
+
+	connect(chatWidget, SIGNAL(messageReceived(ChatWidget*)), TabDialog, SLOT(messageReceived(ChatWidget*)));
 	connect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),

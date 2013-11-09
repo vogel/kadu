@@ -197,6 +197,8 @@ bool SingleWindow::containChatWidget(ChatWidget *chatWidget)
 
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
+
+	connect(chatWidget, SIGNAL(messageReceived(ChatWidget*)), this, SLOT(messageReceived(ChatWidget*)));
 	connect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
@@ -312,7 +314,7 @@ void SingleWindow::tryActivateChatWidget(ChatWidget *chatWidget)
 	chatWidget->edit()->setFocus();
 }
 
-void SingleWindow::alertChatWidget(ChatWidget *chatWidget)
+void SingleWindow::messageReceived(ChatWidget *chatWidget)
 {
 	Q_ASSERT(chatWidget);
 

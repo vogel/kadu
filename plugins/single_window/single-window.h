@@ -30,7 +30,6 @@ public:
 
 	virtual void changeEvent(QEvent *event);
 
-	virtual void alertChatWidget(ChatWidget *chatWidget);
 	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
@@ -63,6 +62,9 @@ private:
 
 	void updateTabIcon(ChatWidget *chatWidget);
 	void updateTabName(ChatWidget *chatWidget);
+
+private slots:
+	void messageReceived(ChatWidget *chatWidget);
 
 };
 
