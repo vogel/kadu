@@ -847,11 +847,6 @@ void ChatWidget::contactActivityChanged(const Contact &contact, ChatStateService
 	}
 }
 
-void ChatWidget::close()
-{
-	emit closed();
-}
-
 void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 {
 	Q_UNUSED(input)
