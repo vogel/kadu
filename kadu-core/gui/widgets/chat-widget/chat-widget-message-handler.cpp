@@ -22,6 +22,7 @@
 #include "chat/buddy-chat-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/windows/kadu-window.h"
@@ -44,6 +45,11 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
 	m_buddyChatManager = buddyChatManager;
+}
+
+void ChatWidgetMessageHandler::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
+{
+	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -136,8 +142,9 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 
 	auto chat = message.messageChat();
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	auto chatIsActive = m_chatWidgetContainerHandlerMapper ? m_chatWidgetContainerHandlerMapper.data()->isChatWidgetActive(chatWidget) : false;
 
-	if (m_unreadMessageRepository && (!chatWidget || !chatWidget->isActive()))
+	if (m_unreadMessageRepository && !chatIsActive)
 		m_unreadMessageRepository.data()->addUnreadMessage(message);
 
 	if (chatWidget)

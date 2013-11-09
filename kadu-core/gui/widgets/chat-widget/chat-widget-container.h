@@ -61,14 +61,6 @@ public:
 	 */
 	virtual void closeChatWidget(ChatWidget *chatWidget) = 0;
 
-	/**
-	 * @short Check if given chat widget is active in this ChatWidgetContainer.
-	 * @param chatWidget chat widget to check
-	 * @return true if given chat widget is active
-	 *
-	 * Check if given chat widget is active in this ChatWidgetContainer.
-	 */
-	virtual bool isChatWidgetActive(const ChatWidget *chatWidget) = 0;
 };
 
 #endif // CHAT_WIDGET_CONTAINER_H

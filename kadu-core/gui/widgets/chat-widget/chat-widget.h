@@ -151,8 +151,6 @@ public:
 	 */
 	QIcon icon();
 
-	bool isActive() const;
-
 	const QDateTime & lastReceivedMessageTime() const { return LastReceivedMessageTime; }
 
 	void kaduStoreGeometry();

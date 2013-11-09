@@ -75,6 +75,9 @@ void ChatWidgetContainerHandlerMapper::mapChatWidgetToFirstContainerHandler(Chat
 
 bool ChatWidgetContainerHandlerMapper::isChatWidgetActive(ChatWidget *chatWidget) const
 {
+	if (!chatWidget)
+		return false;
+
 	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
 	return chatWidgetContainerHandler ? chatWidgetContainerHandler->isChatWidgetActive(chatWidget) : false;
 }

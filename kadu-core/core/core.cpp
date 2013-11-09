@@ -605,17 +605,7 @@ void Core::runServices()
 	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
 	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
 
-	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
-	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
-	CurrentChatWidgetMessageHandler->setChatWidgetManager(CurrentChatWidgetManager);
-	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
-	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
-	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
-	auto chatWidgetMessageHandler = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
-	chatWidgetMessageHandler->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
-
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
-
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 
 	auto windowChatWidgetContainerHandler = new WindowChatWidgetContainerHandler(this);
@@ -628,6 +618,16 @@ void Core::runServices()
 	CurrentChatWidgetContainerHandlerMapper = new ChatWidgetContainerHandlerMapper(this);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(CurrentChatWidgetRepository);
+
+	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
+	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());
+	CurrentChatWidgetMessageHandler->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+	CurrentChatWidgetMessageHandler->setChatWidgetManager(CurrentChatWidgetManager);
+	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
+	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
+	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
+	auto chatWidgetMessageHandler = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
+	chatWidgetMessageHandler->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());

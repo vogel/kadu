@@ -54,7 +54,8 @@ public:
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 	virtual void alertChatWidget(ChatWidget *chatWidget) override;
 	virtual void closeChatWidget(ChatWidget *chatWidget) override;
-	virtual bool isChatWidgetActive(const ChatWidget *chatWidget) override;
+
+	bool isChatWidgetActive(const ChatWidget *chatWidget);
 
 	void setWindowTitle(QString title);
 
