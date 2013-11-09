@@ -100,6 +100,7 @@ void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfigur
 void ChatWidgetMessageHandler::chatWidgetAdded(ChatWidget *chatWidget)
 {
 	connect(chatWidget, SIGNAL(activated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+	appendAllUnreadMessages(chatWidget);
 }
 
 void ChatWidgetMessageHandler::chatWidgetRemoved(ChatWidget *chatWidget)
@@ -111,6 +112,11 @@ void ChatWidgetMessageHandler::chatWidgetRemoved(ChatWidget *chatWidget)
 }
 
 void ChatWidgetMessageHandler::chatWidgetActivated(ChatWidget *chatWidget)
+{
+	appendAllUnreadMessages(chatWidget);
+}
+
+void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 {
 	if (!m_unreadMessageRepository)
 		return;

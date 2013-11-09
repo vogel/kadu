@@ -64,6 +64,7 @@ private:
 
 	ChatWidgetMessageHandlerConfiguration m_configuration;
 
+	void appendAllUnreadMessages(ChatWidget *chatWidget);
 	QVector<Message> loadAllUnreadMessages(const Chat &chat) const;
 	bool shouldOpenChatWidget(const Chat &chat) const;
 
