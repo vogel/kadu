@@ -17,15 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddies/buddy-manager.h"
-#include "chat/chat-details-buddy.h"
-#include "core/core.h"
-#include "message/message.h"
-
 #include "unread-message-repository.h"
 
+#include "buddies/buddy-manager.h"
+#include "chat/chat.h"
+#include "chat/chat-details-buddy.h"
+#include "message/message.h"
+
 UnreadMessageRepository::UnreadMessageRepository(QObject *parent) :
-		QObject(parent)
+		QObject{parent}
 {
 	setState(StateNotLoaded);
 	ConfigurationManager::instance()->registerStorableObject(this);
@@ -43,17 +43,17 @@ bool UnreadMessageRepository::importFromPendingMessages()
 		return false;
 
 	auto messageElements = xml_config_file->getNodes(pendingMessagesNode, "Message");
-	foreach (const auto &messageElement, messageElements)
+	for (const auto &messageElement : messageElements)
 	{
-		auto storagePoint = QSharedPointer<StoragePoint>(new StoragePoint(storage()->storage(), messageElement));
-		auto uuid = QUuid(storagePoint->point().attribute("uuid"));
+		auto storagePoint = QSharedPointer<StoragePoint>{new StoragePoint{storage()->storage(), messageElement}};
+		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{
 			auto message = Message::loadStubFromStorage(storagePoint);
 			addUnreadMessage(message);
 
 			// reset storage for message as it will be stored in other place
-			message.data()->setStorage(QSharedPointer<StoragePoint>());
+			message.data()->setStorage({});
 			message.data()->setState(StateNew);
 		}
 	}
@@ -79,12 +79,12 @@ void UnreadMessageRepository::load()
 		return;
 
 	auto itemElements = storage()->storage()->getNodes(itemsNode, "Message");
-	UnreadMessages.reserve(itemElements.count());
+	m_unreadMessages.reserve(itemElements.count());
 
-	foreach (const auto &itemElement, itemElements)
+	for (const auto &itemElement : itemElements)
 	{
-		auto storagePoint = QSharedPointer<StoragePoint>(new StoragePoint(storage()->storage(), itemElement));
-		auto uuid = QUuid(storagePoint->point().attribute("uuid"));
+		auto storagePoint = QSharedPointer<StoragePoint>{new StoragePoint{storage()->storage(), itemElement}};
+		auto uuid = QUuid{storagePoint->point().attribute("uuid")};
 		if (!uuid.isNull())
 		{
 			auto item = Message::loadStubFromStorage(storagePoint);
@@ -99,7 +99,7 @@ void UnreadMessageRepository::store()
 {
 	ensureLoaded();
 
-	foreach (auto message, UnreadMessages)
+	for (auto message : m_unreadMessages)
 		message.ensureStored();
 }
 
@@ -110,14 +110,14 @@ void UnreadMessageRepository::addUnreadMessage(const Message &message)
 	BuddyManager::instance()->byContact(message.messageSender(), ActionCreateAndAdd);
 
 	message.setPending(true);
-	UnreadMessages.append(message);
+	m_unreadMessages.append(message);
 
 	emit unreadMessageAdded(message);
 }
 
 void UnreadMessageRepository::removeUnreadMessage(const Message &message)
 {
-	UnreadMessages.removeAll(message);
+	m_unreadMessages.removeAll(message);
 	message.setPending(false);
 	message.data()->removeFromStorage();
 
@@ -126,24 +126,24 @@ void UnreadMessageRepository::removeUnreadMessage(const Message &message)
 
 const QList<Message> & UnreadMessageRepository::allUnreadMessages() const
 {
-	return UnreadMessages;
+	return m_unreadMessages;
 }
 
 QVector<Message> UnreadMessageRepository::unreadMessagesForChat(const Chat &chat) const
 {
-	auto result = QVector<Message>();
-	auto chats = QSet<Chat>();
+	auto result = QVector<Message>{};
+	auto chats = QSet<Chat>{};
 
 	auto details = chat.details();
 	auto chatDetailsBuddy = qobject_cast<ChatDetailsBuddy *>(details);
 
 	if (chatDetailsBuddy)
-		foreach (const auto &ch, chatDetailsBuddy->chats())
+		for (const auto &ch : chatDetailsBuddy->chats())
 			chats.insert(ch);
 	else
 		chats.insert(chat);
 
-	foreach (const auto &message, UnreadMessages)
+	for (const auto &message : m_unreadMessages)
 		if (chats.contains(message.messageChat()))
 			result.append(message);
 
@@ -152,18 +152,18 @@ QVector<Message> UnreadMessageRepository::unreadMessagesForChat(const Chat &chat
 
 bool UnreadMessageRepository::hasUnreadMessages() const
 {
-	return !UnreadMessages.isEmpty();
+	return !m_unreadMessages.isEmpty();
 }
 
 quint16 UnreadMessageRepository::unreadMessagesCount() const
 {
-	return UnreadMessages.count();
+	return m_unreadMessages.count();
 }
 
 void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &messages)
 {
-	foreach (const auto &message, messages)
-		if (UnreadMessages.removeAll(message) > 0)
+	for (const auto &message : messages)
+		if (m_unreadMessages.removeAll(message) > 0)
 		{
 			message.setStatus(MessageStatusRead);
 			message.setPending(false);
@@ -175,16 +175,16 @@ void UnreadMessageRepository::markMessagesAsRead(const QVector<Message> &message
 
 Message UnreadMessageRepository::unreadMessage() const
 {
-	if (UnreadMessages.empty())
+	if (m_unreadMessages.empty())
 		return Message::null;
 	else
-		return UnreadMessages.at(0);
+		return m_unreadMessages.at(0);
 }
 
 Message UnreadMessageRepository::unreadMessageForBuddy(const Buddy &buddy) const
 {
 	auto contacts = buddy.contacts();
-	foreach (const auto &message, UnreadMessages)
+	for (const auto &message : m_unreadMessages)
 		if (contacts.contains(message.messageSender()))
 			return message;
 
@@ -193,7 +193,7 @@ Message UnreadMessageRepository::unreadMessageForBuddy(const Buddy &buddy) const
 
 Message UnreadMessageRepository::unreadMessageForContact(const Contact &contact) const
 {
-	foreach (const auto &message, UnreadMessages)
+	for (const auto &message : m_unreadMessages)
 		if (contact == message.messageSender())
 			return message;
 

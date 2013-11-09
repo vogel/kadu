@@ -19,11 +19,11 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "storage/storable-object.h"
 
 #include "exports.h"
+
+#include <QtCore/QObject>
 
 class Buddy;
 class Chat;
@@ -48,28 +48,12 @@ class KADUAPI UnreadMessageRepository : public QObject, public StorableObject
 	Q_OBJECT
 	Q_DISABLE_COPY(UnreadMessageRepository)
 
-	QList<Message> UnreadMessages;
-
-	/**
-	 * @short Imports list of pending messages from < 0.10.0 configurations.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if there was something to import
-	 *
-	 * This methods import list of pending messages from < 0.10.0 configurations. If there was no such
-	 * list false is returned.
-	 */
-	bool importFromPendingMessages();
-
-protected:
-	virtual void load();
-	virtual void store();
-
 public:
-	explicit UnreadMessageRepository(QObject *parent = 0);
+	explicit UnreadMessageRepository(QObject *parent = nullptr);
 	virtual ~UnreadMessageRepository();
 
-	virtual StorableObject * storageParent() { return 0; }
-	virtual QString storageNodeName() { return QLatin1String("Messages"); }
+	virtual StorableObject * storageParent() { return {}; }
+	virtual QString storageNodeName() { return QLatin1String{"Messages"}; }
 
 	/**
 	 * @short Returns list of all unread messages.
@@ -186,6 +170,23 @@ signals:
 	 * This signal is emited every time an unread message is removed from manager.
 	 */
 	void unreadMessageRemoved(const Message &message);
+
+protected:
+	virtual void load();
+	virtual void store();
+
+private:
+	QList<Message> m_unreadMessages;
+
+	/**
+	 * @short Imports list of pending messages from < 0.10.0 configurations.
+	 * @author Rafał 'Vogel' Malinowski
+	 * @return true if there was something to import
+	 *
+	 * This methods import list of pending messages from < 0.10.0 configurations. If there was no such
+	 * list false is returned.
+	 */
+	bool importFromPendingMessages();
 
 };
 
