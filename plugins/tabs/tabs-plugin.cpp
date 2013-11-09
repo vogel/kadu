@@ -45,6 +45,7 @@ int TabsPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiHandler(TabsManagerInstance);
 
 	ChatWidgetContainerHandler.data()->setTabsManager(TabsManagerInstance);
+	ChatWidgetContainerHandler.data()->setTabWidget(TabsManagerInstance->tabWidget());
 	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
 
 	TabsManagerInstance->openStoredChatTabs();

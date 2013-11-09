@@ -19,6 +19,7 @@
 
 #include "tabs-chat-widget-container-handler.h"
 
+#include "gui/widgets/tab-widget.h"
 #include "tabs.h"
 
 TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) :
@@ -35,10 +36,20 @@ void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 	m_tabsManager = tabsManager;
 }
 
+void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
+{
+	m_tabWidget = tabWidget;
+}
+
 bool TabsChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 {
 	if (!m_tabsManager)
 		return false;
 
 	return m_tabsManager.data()->containChatWidget(chatWidget);
+}
+
+bool TabsChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
+{
+	return m_tabWidget ? m_tabWidget.data()->isChatWidgetActive(chatWidget) : false;
 }

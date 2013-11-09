@@ -37,6 +37,7 @@ public:
 	void setSingleWindow(SingleWindow *singleWindow);
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 
 private:
 	QWeakPointer<SingleWindow> m_singleWindow;

@@ -40,6 +40,7 @@ public:
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	void mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget);
+	bool isChatWidgetActive(ChatWidget *chatWidget) const;
 
 private:
 	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;

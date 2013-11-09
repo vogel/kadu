@@ -39,6 +39,7 @@ public:
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 
 private:
 	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;

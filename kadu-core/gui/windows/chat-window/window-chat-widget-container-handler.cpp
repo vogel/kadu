@@ -19,6 +19,7 @@
 
 #include "window-chat-widget-container-handler.h"
 
+#include "activate.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window.h"
 #include "gui/windows/chat-window/chat-window-factory.h"
@@ -62,4 +63,13 @@ bool WindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 	chatWindow->show();
 
 	return true;
+}
+
+bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_chatWindowRepository)
+		return false;
+
+	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	return chatWindow ? _isWindowActiveOrFullyVisible(chatWindow) : false;
 }

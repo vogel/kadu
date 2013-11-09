@@ -45,7 +45,7 @@
 class RecentChatsMenu;
 class TabsManager;
 
-class TabWidget: public QTabWidget, public ChatWidgetContainer, CompositingAwareObject
+class TabWidget : public QTabWidget, public ChatWidgetContainer, CompositingAwareObject
 {
 	Q_OBJECT
 

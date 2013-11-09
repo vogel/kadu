@@ -25,6 +25,7 @@
 #include <QtCore/QWeakPointer>
 
 class TabsManager;
+class TabWidget;
 
 class TabsChatWidgetContainerHandler : public ChatWidgetContainerHandler
 {
@@ -35,10 +36,13 @@ public:
 	virtual ~TabsChatWidgetContainerHandler();
 
 	void setTabsManager(TabsManager *tabsManager);
+	void setTabWidget(TabWidget *tabWidget);
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 
 public:
 	QWeakPointer<TabsManager> m_tabsManager;
+	QWeakPointer<TabWidget> m_tabWidget;
 
 };

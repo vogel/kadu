@@ -113,6 +113,8 @@ public:
 	explicit TabsManager(QObject *parent = 0);
 	virtual ~TabsManager();
 
+	TabWidget * tabWidget() { return TabDialog; }
+
 	void openStoredChatTabs();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
