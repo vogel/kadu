@@ -148,7 +148,6 @@ public:
 	 */
 	Message unreadMessageForContact(const Contact &contact) const;
 
-public slots:
 	/**
 	 * @short Adds new unread message to the list.
 	 * @author Rafał 'Vogel' Malinowski

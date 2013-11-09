@@ -659,8 +659,6 @@ void Core::runServices()
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
-
-	connect(MessageManager::instance(), SIGNAL(messageReceived(Message)), CurrentUnreadMessageRepository, SLOT(addUnreadMessage(Message)));
 }
 
 void Core::runGuiServices()

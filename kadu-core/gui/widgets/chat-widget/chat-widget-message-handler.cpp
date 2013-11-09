@@ -136,6 +136,10 @@ void ChatWidgetMessageHandler::messageReceived(const Message &message)
 
 	auto chat = message.messageChat();
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+
+	if (m_unreadMessageRepository && (!chatWidget || !chatWidget->isActive()))
+		m_unreadMessageRepository.data()->addUnreadMessage(message);
+
 	if (chatWidget)
 	{
 		chatWidget->appendMessage(message);
