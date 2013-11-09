@@ -17,15 +17,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-window-repository.h"
+
 #include "core/core.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window.h"
-#include "gui/windows/chat-window/chat-window-factory.h"
-
-#include "chat-window-repository.h"
 
 ChatWindowRepository::ChatWindowRepository(QObject *parent) :
-		QObject(parent)
+		QObject{parent}
 {
 }
 
@@ -33,14 +32,22 @@ ChatWindowRepository::~ChatWindowRepository()
 {
 }
 
-void ChatWindowRepository::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
+void ChatWindowRepository::addChatWindow(ChatWindow *chatWindow)
 {
-	m_chatWindowFactory = chatWindowFactory;
+	if (!chatWindow || m_windows.contains(chatWindow->chatWidget()))
+		return;
+
+	connect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(windowDestroyed(ChatWindow*)));
+	m_windows.insert(chatWindow->chatWidget(), chatWindow);
 }
 
-bool ChatWindowRepository::hasWindowForChatWidget(ChatWidget * const chatWidget) const
+void ChatWindowRepository::removeChatWindow(ChatWindow *chatWindow)
 {
-	return m_windows.contains(chatWidget);
+	if (!chatWindow || !m_windows.contains(chatWindow->chatWidget()))
+		return;
+
+	disconnect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(windowDestroyed(ChatWindow*)));
+	m_windows.remove(chatWindow->chatWidget());
 }
 
 ChatWindow * ChatWindowRepository::windowForChatWidget(ChatWidget * const chatWidget)
@@ -48,17 +55,7 @@ ChatWindow * ChatWindowRepository::windowForChatWidget(ChatWidget * const chatWi
 	if (!chatWidget)
 		return nullptr;
 
-	if (hasWindowForChatWidget(chatWidget))
-		return m_windows.value(chatWidget);
-
-	if (!m_chatWindowFactory)
-		return nullptr;
-
-	auto result = m_chatWindowFactory.data()->createChatWindow(chatWidget);
-	connect(result.get(), SIGNAL(windowDestroyed(ChatWidget*const)), this, SLOT(windowDestroyed(ChatWidget*const)));
-	m_windows.insert(chatWidget, result.get());
-
-	return result.release();
+	return m_windows.value(chatWidget);
 }
 
 const QMap<ChatWidget *, ChatWindow *> &ChatWindowRepository::windows() const
@@ -66,10 +63,7 @@ const QMap<ChatWidget *, ChatWindow *> &ChatWindowRepository::windows() const
 	return m_windows;
 }
 
-void ChatWindowRepository::windowDestroyed(ChatWidget * const chatWidget)
+void ChatWindowRepository::windowDestroyed(ChatWindow *chatWindow)
 {
-	if (!hasWindowForChatWidget(chatWidget))
-		return;
-
-	m_windows.remove(chatWidget);
+	removeChatWindow(chatWindow);
 }

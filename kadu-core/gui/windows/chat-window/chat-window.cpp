@@ -93,6 +93,7 @@ ChatWindow::~ChatWindow()
 {
 	m_chatWidget->kaduStoreGeometry();
 
+	emit windowDestroyed(this);
 	emit windowDestroyed(m_chatWidget);
 }
 

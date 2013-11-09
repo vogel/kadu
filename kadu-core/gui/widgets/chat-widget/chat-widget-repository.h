@@ -51,7 +51,7 @@ class KADUAPI ChatWidgetRepository : public QObject
 	Q_OBJECT
 
 public:
-	explicit ChatWidgetRepository(QObject *parent = 0);
+	explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
 
 	/**

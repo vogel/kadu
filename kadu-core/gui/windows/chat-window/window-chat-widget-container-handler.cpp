@@ -21,6 +21,7 @@
 
 #include "gui/widgets/chat-widget/chat-widget.h"
 #include "gui/windows/chat-window/chat-window.h"
+#include "gui/windows/chat-window/chat-window-factory.h"
 #include "gui/windows/chat-window/chat-window-repository.h"
 
 WindowChatWidgetContainerHandler::WindowChatWidgetContainerHandler(QObject *parent) :
@@ -32,6 +33,11 @@ WindowChatWidgetContainerHandler::~WindowChatWidgetContainerHandler()
 {
 }
 
+void WindowChatWidgetContainerHandler::setChatWindowFactory(ChatWindowFactory *chatWindowFactory)
+{
+	m_chatWindowFactory = chatWindowFactory;
+}
+
 void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
 	m_chatWindowRepository = chatWindowRepository;
@@ -39,12 +45,18 @@ void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowReposit
 
 bool WindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_chatWindowRepository)
+	if (!m_chatWindowFactory || !m_chatWindowRepository)
 		return false;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
 	if (!chatWindow)
-		return false;
+	{
+		chatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget).release();
+		if (!chatWindow)
+			return false;
+
+		m_chatWindowRepository.data()->addChatWindow(chatWindow);
+	}
 
 	chatWidget->setContainer(chatWindow);
 	chatWindow->show();

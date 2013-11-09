@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+class ChatWindowFactory;
 class ChatWindowRepository;
 
 class WindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
@@ -31,14 +32,16 @@ class WindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
 	Q_OBJECT
 
 public:
-	explicit WindowChatWidgetContainerHandler(QObject *parent = 0);
+	explicit WindowChatWidgetContainerHandler(QObject *parent = nullptr);
 	virtual ~WindowChatWidgetContainerHandler();
 
+	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
 
 private:
+	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
 	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
 
 };

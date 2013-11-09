@@ -64,6 +64,7 @@ public slots:
 	void showNewMessagesNumInTitle();
 
 signals:
+	void windowDestroyed(ChatWindow *chatWindow);
 	void windowDestroyed(ChatWidget * const chatWidget);
 
 protected:

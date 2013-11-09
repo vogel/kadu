@@ -617,9 +617,9 @@ void Core::runServices()
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
-	CurrentChatWindowRepository->setChatWindowFactory(CurrentChatWindowFactory);
 
 	auto windowChatWidgetContainerHandler = new WindowChatWidgetContainerHandler(this);
+	windowChatWidgetContainerHandler->setChatWindowFactory(CurrentChatWindowFactory);
 	windowChatWidgetContainerHandler->setChatWindowRepository(CurrentChatWindowRepository);
 
 	CurrentChatWidgetContainerHandlerRepository = new ChatWidgetContainerHandlerRepository(this);

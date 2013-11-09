@@ -19,13 +19,13 @@
 
 #pragma once
 
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
 #include "exports.h"
 
 class ChatWidget;
 class ChatWindow;
-class ChatWindowFactory;
 
 /**
  * @addtogroup Gui
@@ -38,44 +38,41 @@ class ChatWindowFactory;
  *
  * This repository holds instances of ChatWindow class.
  *
- * New instances are created by provided @see ChatWindowFactory and can be created by
- * calling windowForChatWidget(ChatWidget) for a ChatWidget that does not hava an
- * associated ChatWindow yet. If no ChatWindowFactory is set then no new ChatWindow
- * instances will be created.
+ * Instances are added and removed by addChatWidget(ChatWindow*) and
+ * removeChatWidget(ChatWindow*) methods.
+ * Access for them is provided by windowForChatWidget(Chat) and windows() methods.
  *
- * ChatWindow instances are responsible for their own destruction.
- *
- * Repository can be tested for its content by hasWindowForChatWidget(Chat) and
- * windows() methods.
+ * ChatWindow is also automatically removed when it is destroyed.
  */
 class KADUAPI ChatWindowRepository : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ChatWindowRepository(QObject *parent = 0);
+	explicit ChatWindowRepository(QObject *parent = nullptr);
 	virtual ~ChatWindowRepository();
 
 	/**
-	 * @short Set factory for creating new ChatWindow instances.
-	 * @param chatWindowFactory new factory
-	 */
-	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
-
-	/**
-	 * @short Check if repository contains ChatWindow for given chat widget.
-	 * @param chatWidget chatWidget to check
-	 */
-	bool hasWindowForChatWidget(ChatWidget * const chatWidget) const;
-
-	/**
-	 * @short Return ChatWindow for given chat.
-	 * @param chatWidget chat widget to get ChatWindow for
-	 * @return ChatWindow for given chat widget
+	 * @short Add new chatWindow to repository.
 	 *
-	 * If chatWidget is null then nullptr is returned. If repository does contain ChatWindow then
-	 * it is returned. Else, if ChatWindowFactory is set then new widget is created and returned.
-	 * Otherwise nullptr is returned.
+	 * Add new chatWindow to repository only if it is valid and not already in repository.
+	 */
+	void addChatWindow(ChatWindow *chatWindow);
+
+	/**
+	 * @short Remove chatWindow from repository.
+	 *
+	 * Remove chatWindow from repository only if it is  already in repository.
+	 */
+	void removeChatWindow(ChatWindow *chatWindow);
+
+	/**
+	 * @short Return ChatWindow for given chatWidget.
+	 * @param chatWidget chatWidget to get ChatWindow for
+	 * @return ChatWindow for given chatWidget
+	 *
+	 * If chatWidget is null then nullptr is returned. If repository does contain ChatWidget then
+	 * it is returned. Else nullptr is returned.
 	 */
 	ChatWindow * windowForChatWidget(ChatWidget * const chatWidget);
 
@@ -85,11 +82,10 @@ public:
 	const QMap<ChatWidget *, ChatWindow *> & windows() const;
 
 private:
-	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
 	QMap<ChatWidget *, ChatWindow *> m_windows;
 
 private slots:
-	void windowDestroyed(ChatWidget * const chatWidget);
+	void windowDestroyed(ChatWindow *chatWindow);
 
 };
 
