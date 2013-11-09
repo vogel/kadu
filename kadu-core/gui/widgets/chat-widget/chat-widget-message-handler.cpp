@@ -33,7 +33,7 @@
 #include <QtGui/QApplication>
 
 ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) :
-		QObject(parent)
+		QObject{parent}
 {
 }
 
@@ -61,7 +61,7 @@ void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *cha
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
 
-	foreach (auto chatWidget, m_chatWidgetRepository.data()->widgets())
+	for (auto chatWidget : m_chatWidgetRepository.data()->widgets())
 		chatWidgetAdded(chatWidget);
 }
 
