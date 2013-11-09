@@ -601,10 +601,6 @@ void Core::runServices()
 
 	CurrentChatWidgetRepository = new ChatWidgetRepository(this);
 
-	CurrentChatWidgetManager = new ChatWidgetManager(this);
-	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
-	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
-
 	CurrentChatWindowFactory = new ChatWindowFactory(this);
 	CurrentChatWindowRepository = new ChatWindowRepository(this);
 
@@ -618,6 +614,11 @@ void Core::runServices()
 	CurrentChatWidgetContainerHandlerMapper = new ChatWidgetContainerHandlerMapper(this);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(CurrentChatWidgetRepository);
+
+	CurrentChatWidgetManager = new ChatWidgetManager(this);
+	CurrentChatWidgetManager->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
+	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
 	CurrentChatWidgetMessageHandler->setBuddyChatManager(BuddyChatManager::instance());

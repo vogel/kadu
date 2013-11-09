@@ -41,6 +41,7 @@ public:
 
 	void mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget);
 	bool isChatWidgetActive(ChatWidget *chatWidget) const;
+	void tryActivateChatWidget(ChatWidget *chatWidget);
 
 private:
 	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;

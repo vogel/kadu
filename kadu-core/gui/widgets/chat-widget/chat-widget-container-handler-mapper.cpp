@@ -82,6 +82,16 @@ bool ChatWidgetContainerHandlerMapper::isChatWidgetActive(ChatWidget *chatWidget
 	return chatWidgetContainerHandler ? chatWidgetContainerHandler->isChatWidgetActive(chatWidget) : false;
 }
 
+void ChatWidgetContainerHandlerMapper::tryActivateChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
+	if (chatWidgetContainerHandler)
+		chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
+}
+
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
 	auto chatWidgets = m_mapping.keys(chatWidgetContainerHandler);

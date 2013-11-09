@@ -51,7 +51,6 @@ public:
 	Chat chat() const;
 	ChatWidget * chatWidget() const { return m_chatWidget; }
 
-	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 	virtual void alertChatWidget(ChatWidget *chatWidget) override;
 	virtual void closeChatWidget(ChatWidget *chatWidget) override;
 

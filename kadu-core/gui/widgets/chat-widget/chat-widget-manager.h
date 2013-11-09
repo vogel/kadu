@@ -31,6 +31,7 @@
 
 class Chat;
 class ChatWidget;
+class ChatWidgetContainerHandlerMapper;
 class ChatWidgetFactory;
 class ChatWidgetRepository;
 
@@ -58,6 +59,7 @@ public:
 	explicit ChatWidgetManager(QObject *parent = nullptr);
 	virtual ~ChatWidgetManager();
 
+	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 	void setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactory);
 
@@ -76,8 +78,7 @@ public slots:
 	void closeChat(const Chat &chat);
 
 private:
-	static ChatWidgetManager *m_instance;
-
+	QWeakPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
 

@@ -73,3 +73,13 @@ bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget
 	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
 	return chatWindow ? _isWindowActiveOrFullyVisible(chatWindow) : false;
 }
+
+void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_chatWindowRepository)
+		return;
+
+	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	if (chatWindow)
+		_activateWindow(chatWindow);
+}

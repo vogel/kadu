@@ -26,6 +26,7 @@
 #include "chat-widget-manager.h"
 
 #include "gui/widgets/chat-widget/chat-widget-container.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -37,6 +38,11 @@ ChatWidgetManager::ChatWidgetManager(QObject *parent) :
 
 ChatWidgetManager::~ChatWidgetManager()
 {
+}
+
+void ChatWidgetManager::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
+{
+	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
 }
 
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -64,8 +70,8 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 		m_chatWidgetRepository.data()->addChatWidget(chatWidget);
 	}
 
-	if (activation == OpenChatActivation::Activate)
-		chatWidget->tryActivate();
+	if (activation == OpenChatActivation::Activate && m_chatWidgetContainerHandlerMapper)
+		m_chatWidgetContainerHandlerMapper.data()->tryActivateChatWidget(chatWidget);
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

@@ -40,6 +40,7 @@ public:
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
+	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 
 public:
 	QWeakPointer<TabsManager> m_tabsManager;

@@ -53,3 +53,9 @@ bool TabsChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
 {
 	return m_tabWidget ? m_tabWidget.data()->isChatWidgetActive(chatWidget) : false;
 }
+
+void TabsChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
+{
+	if (m_tabWidget)
+		m_tabWidget.data()->tryActivateChatWidget(chatWidget);
+}

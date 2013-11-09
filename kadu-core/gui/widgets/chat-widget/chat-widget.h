@@ -168,7 +168,6 @@ public slots:
 	void colorSelectorAboutToClose();
 	void clearChatWindow();
 
-	void tryActivate();
 	void markActive();
 
 	/**

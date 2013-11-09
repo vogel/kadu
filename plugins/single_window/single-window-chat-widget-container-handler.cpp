@@ -47,3 +47,9 @@ bool SingleWindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chat
 {
 	return m_singleWindow ? m_singleWindow.data()->isChatWidgetActive(chatWidget) : false;
 }
+
+void SingleWindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
+{
+	if (m_singleWindow)
+		m_singleWindow.data()->tryActivateChatWidget(chatWidget);
+}
