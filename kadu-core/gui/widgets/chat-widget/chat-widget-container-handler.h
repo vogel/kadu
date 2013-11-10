@@ -40,4 +40,7 @@ public:
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
 
+signals:
+	void chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
+
 };

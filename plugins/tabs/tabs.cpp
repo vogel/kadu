@@ -75,7 +75,7 @@ static void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(QObject *parent) :
-		ConfigurationUiHandler(parent), ForceTabs(false), TargetTabs(-1)
+		ConfigurationUiHandler(parent), TargetTabs(-1)
 {
 	kdebugf();
 
@@ -175,9 +175,6 @@ bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
 		return false;
 
-	if (ForceTabs)
-		return true;
-
 	if (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1))
 	{
 		if (TabDialog->count() > 0)
@@ -200,14 +197,6 @@ void TabsManager::addChatWidget(ChatWidget *chatWidget)
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
 	{
 		DetachedChats.append(chatWidget);
-		return;
-	}
-
-	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
-	if (ForceTabs)
-	{
-		ForceTabs = false;
-		insertTab(chatWidget);
 		return;
 	}
 
@@ -340,9 +329,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	else
 	{
 		// w miejsce recznego dodawania chata do kart automatyczne ;)
-		if (ConfigDefaultTabs || (chat.contacts().count() == 1) || ConfigConferencesInTabs)
-			ForceTabs = true;
-		else
+		if (!ConfigDefaultTabs && (chat.contacts().count() > 1) && !ConfigConferencesInTabs)
 			chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 
 		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
@@ -354,8 +341,6 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 void TabsManager::insertTab(ChatWidget *chatWidget)
 {
 	kdebugf();
-
-	chatWidget->chat().removeProperty("tabs:detached");
 
 	bool restoreChatGeometry = true;
 
@@ -505,7 +490,9 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 		if (chatEditBox->actionContext()->contacts().count() != 1 && !ConfigConferencesInTabs)
 			return;
 		NewChats.clear();
-		insertTab(chatWidget);
+		auto chat = chatWidget->chat();
+		chat.removeProperty("tabs:detached");
+		emit chatWidgetAcceptanceChanged(chatWidget);
 	}
 }
 
@@ -590,17 +577,15 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	action->setChecked(TabDialog->indexOf(chatWidget) != -1);
 }
 
-bool TabsManager::detachChat(ChatWidget *chatWidget)
+void TabsManager::detachChat(ChatWidget *chatWidget)
 {
 	kdebugf();
 	if (TabDialog->indexOf(chatWidget) == -1)
-		return false;
-	auto chat = chatWidget->chat();
-	delete chatWidget;
+		return;
 
+	auto chat = chatWidget->chat();
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
-	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
-	return true;
+	emit chatWidgetAcceptanceChanged(chatWidget);
 }
 
 void TabsManager::load()

@@ -59,21 +59,6 @@ void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetReposit
 			this, SLOT(chatWidgetRemoved(ChatWidget*)));
 }
 
-void ChatWidgetContainerHandlerMapper::mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget)
-{
-	if (!m_chatWidgetContainerHandlerRepository)
-		return;
-
-	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
-	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
-		if (chatWidgetContainerHandler->acceptChatWidget(chatWidget))
-		{
-			chatWidgetContainerHandler->addChatWidget(chatWidget);
-			m_mapping.insert(chatWidget, chatWidgetContainerHandler);
-			return;
-		}
-}
-
 bool ChatWidgetContainerHandlerMapper::isChatWidgetActive(ChatWidget *chatWidget) const
 {
 	if (!chatWidget)
@@ -95,30 +80,74 @@ void ChatWidgetContainerHandlerMapper::tryActivateChatWidget(ChatWidget *chatWid
 
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
+	connect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)),
+			this, SLOT(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)));
+
 	auto chatWidgets = m_mapping.keys();
 	for (auto chatWidget : chatWidgets)
 		if (chatWidgetContainerHandler->acceptChatWidget(chatWidget))
 		{
-			auto oldChatWidgetContainerHandler = m_mapping.value(chatWidget);
-			oldChatWidgetContainerHandler->removeChatWidget(chatWidget);
-			chatWidgetContainerHandler->addChatWidget(chatWidget);
-			m_mapping.insert(chatWidget, chatWidgetContainerHandler);
+			unmap(chatWidget);
+			map(chatWidgetContainerHandler, chatWidget);
 		}
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
+	disconnect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)),
+			   this, SLOT(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)));
+
 	auto chatWidgets = m_mapping.keys(chatWidgetContainerHandler);
 	for (auto chatWidget : chatWidgets)
 	{
-		m_mapping.remove(chatWidget);
-		mapChatWidgetToFirstContainerHandler(chatWidget);
+		unmap(chatWidget);
+		mapToDefault(chatWidget);
 	}
+}
+
+void ChatWidgetContainerHandlerMapper::chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget)
+{
+	unmap(chatWidget);
+	mapToDefault(chatWidget);
+}
+
+void ChatWidgetContainerHandlerMapper::mapToDefault(ChatWidget *chatWidget)
+{
+	map(bestContainerHandler(chatWidget), chatWidget);
+}
+
+void ChatWidgetContainerHandlerMapper::map(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget)
+{
+	if (!chatWidgetContainerHandler)
+		return;
+
+	chatWidgetContainerHandler->addChatWidget(chatWidget);
+	m_mapping.insert(chatWidget, chatWidgetContainerHandler);
+}
+
+void ChatWidgetContainerHandlerMapper::unmap(ChatWidget *chatWidget)
+{
+	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
+	if (chatWidgetContainerHandler)
+		chatWidgetContainerHandler->removeChatWidget(chatWidget);
+}
+
+ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::bestContainerHandler(ChatWidget *chatWidget) const
+{
+	if (!m_chatWidgetContainerHandlerRepository)
+		return {};
+
+	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
+	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
+		if (chatWidgetContainerHandler->acceptChatWidget(chatWidget))
+			return chatWidgetContainerHandler;
+
+	return {};
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	mapChatWidgetToFirstContainerHandler(chatWidget);
+	mapToDefault(chatWidget);
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)

@@ -49,4 +49,7 @@ public:
 	QWeakPointer<TabsManager> m_tabsManager;
 	QWeakPointer<TabWidget> m_tabWidget;
 
+private slots:
+	void chatWidgetAcceptanceChangedSlot(ChatWidget *chatWidget);
+
 };

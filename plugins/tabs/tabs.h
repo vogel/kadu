@@ -69,7 +69,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	QList<ChatWidget *> NewChats;
 	QList<ChatWidget *> DetachedChats;
 	QList<Chat> ClosedChats;
-	bool ForceTabs;
 
 	int TargetTabs;
 	void insertTab(ChatWidget *chatWidget);
@@ -122,7 +121,7 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-	bool detachChat(ChatWidget *chatWidget);
+	void detachChat(ChatWidget *chatWidget);
 
 	virtual StorableObject * storageParent() { return 0; }
 	virtual QString storageNodeName() { return QLatin1String("ModuleTabs"); }
@@ -150,5 +149,8 @@ public slots:
 	void attachToTabsActionCreated(Action *action);
 
 	void closeChat();
+
+signals:
+	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
 
 };

@@ -39,7 +39,6 @@ public:
 	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	void mapChatWidgetToFirstContainerHandler(ChatWidget *chatWidget);
 	bool isChatWidgetActive(ChatWidget *chatWidget) const;
 	void tryActivateChatWidget(ChatWidget *chatWidget);
 
@@ -49,9 +48,15 @@ private:
 
 	QMap<ChatWidget *, ChatWidgetContainerHandler *> m_mapping;
 
+	void mapToDefault(ChatWidget *chatWidget);
+	void map(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
+	void unmap(ChatWidget *chatWidget);
+	ChatWidgetContainerHandler * bestContainerHandler(ChatWidget *chatWidget) const;
+
 private slots:
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+	void chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
 
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void chatWidgetRemoved(ChatWidget *chatWidget);
