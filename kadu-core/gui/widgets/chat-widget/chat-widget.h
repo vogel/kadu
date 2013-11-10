@@ -45,7 +45,6 @@ class ChatEditBox;
 class ChatMessagesView;
 class ChatTopBarContainerWidget;
 class ChatWidget;
-class ChatWidgetContainer;
 class CustomInput;
 class FilteredTreeView;
 class FormattedStringFactory;
@@ -62,8 +61,6 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QWeakPointer<FormattedStringFactory> CurrentFormattedStringFactory;
 
 	Chat CurrentChat;
-
-	ChatWidgetContainer *Container;
 
 	ChatTopBarContainerWidget *TopBarContainer;
 	ChatMessagesView *MessagesView;
@@ -119,9 +116,6 @@ public:
 	void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
 	Chat chat() const { return CurrentChat; }
-
-	void setContainer(ChatWidgetContainer *container);
-	ChatWidgetContainer * container() const;
 
 	void appendSystemMessage(const QString &content);
 	void appendSystemMessage(FormattedString *content);

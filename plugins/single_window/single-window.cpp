@@ -190,8 +190,6 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 
 bool SingleWindow::containChatWidget(ChatWidget *chatWidget)
 {
-	chatWidget->setContainer(this);
-
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
 

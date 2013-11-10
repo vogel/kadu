@@ -93,7 +93,7 @@
 #include "chat-widget.h"
 
 ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
-		QWidget(parent), CurrentChat(chat), Container(0),
+		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
 		SplittersInitialized(false)
@@ -169,16 +169,6 @@ ChatWidget::~ChatWidget()
 void ChatWidget::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
 	CurrentFormattedStringFactory = formattedStringFactory;
-}
-
-void ChatWidget::setContainer(ChatWidgetContainer *container)
-{
-	Container = container;
-}
-
-ChatWidgetContainer * ChatWidget::container() const
-{
-	return Container;
 }
 
 void ChatWidget::createGui()

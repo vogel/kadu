@@ -59,7 +59,6 @@ bool WindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 		m_chatWindowRepository.data()->addChatWindow(chatWindow);
 	}
 
-	chatWidget->setContainer(chatWindow);
 	chatWindow->show();
 
 	return true;
