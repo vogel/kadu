@@ -5,6 +5,7 @@
 * imagelink: #2676 fixed: improve image links recognition (Vogel)
 * hints: #2677 fixed: allow wrapping text inside tool tip (Vogel)
 * history: #2681 fixed: allow to maximize history windows on all Window Managers (Vogel)
+* tabs: #2646 fixed: content of conversation disappears after detaching tab (Vogel)
 
 +++ version 1.0-alpha1
 * core: #2058 fixed: avoid notifications flood on connection error (Juzef, beevvy)
