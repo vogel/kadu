@@ -155,7 +155,7 @@ void SingleWindow::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepos
 	if (m_chatWidgetRepository)
 	{
 		/* conquer all already open chats ;) */
-		foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+		for (auto chatWidget : m_chatWidgetRepository.data()->widgets())
 		{
 			if (chatWidget->parentWidget())
 				chatWidget->parentWidget()->deleteLater();
