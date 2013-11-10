@@ -46,6 +46,7 @@ class QMenu;
 
 class Action;
 class ActionDescription;
+class ChatWidget;
 class ChatWidgetRepository;
 
 class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, StorableObject

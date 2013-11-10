@@ -25,7 +25,6 @@
 
 #include "chat-widget-manager.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"

@@ -68,7 +68,6 @@
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-top-bar-container-widget.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
-#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/chat-widget/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/custom-input.h"

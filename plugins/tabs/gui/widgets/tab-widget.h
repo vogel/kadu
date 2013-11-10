@@ -35,17 +35,17 @@
 #include <QtGui/QToolButton>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "gui/widgets/custom-input.h"
 
 #include "os/generic/compositing-aware-object.h"
 
 #include "debug.h"
 
+class ChatWidget;
 class RecentChatsMenu;
 class TabsManager;
 
-class TabWidget : public QTabWidget, public ChatWidgetContainer, CompositingAwareObject
+class TabWidget : public QTabWidget, CompositingAwareObject
 {
 	Q_OBJECT
 

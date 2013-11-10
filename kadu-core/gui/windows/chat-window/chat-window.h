@@ -30,7 +30,6 @@
 #include <QtGui/QWidget>
 
 #include "configuration/configuration-aware-object.h"
-#include "gui/widgets/chat-widget/chat-widget-container.h"
 #include "os/generic/compositing-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
 #include "exports.h"
@@ -40,7 +39,7 @@ class QTimer;
 class Chat;
 class ChatWidget;
 
-class KADUAPI ChatWindow : public QWidget, public ChatWidgetContainer, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
+class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
 	Q_OBJECT
 
