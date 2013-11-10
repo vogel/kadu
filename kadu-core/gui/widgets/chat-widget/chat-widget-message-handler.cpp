@@ -42,11 +42,6 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 {
 }
 
-void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
-{
-	m_buddyChatManager = buddyChatManager;
-}
-
 void ChatWidgetMessageHandler::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
 {
 	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
@@ -136,7 +131,8 @@ void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 
 QVector<Message> ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
 {
-	auto buddyChat = m_buddyChatManager ? m_buddyChatManager.data()->buddyChat(chat) : Chat::null;
+	// TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
+	auto buddyChat = BuddyChatManager::instance()->buddyChat(chat);
 	auto unreadChat = buddyChat ? buddyChat : chat;
 	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }

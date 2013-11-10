@@ -24,7 +24,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
-class BuddyChatManager;
 class Chat;
 class ChatWidget;
 class ChatWidgetContainerHandlerMapper;
@@ -43,7 +42,6 @@ public:
 	explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
 	virtual ~ChatWidgetMessageHandler();
 
-	void setBuddyChatManager(BuddyChatManager *buddyChatManager);
 	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
 	void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
@@ -54,7 +52,6 @@ public:
 	void setConfiguration(ChatWidgetMessageHandlerConfiguration configuration);
 
 private:
-	QWeakPointer<BuddyChatManager> m_buddyChatManager;
 	QWeakPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 	QWeakPointer<ChatWidgetManager> m_chatWidgetManager;
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
