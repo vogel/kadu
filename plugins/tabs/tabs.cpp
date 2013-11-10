@@ -339,11 +339,11 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	}
 	else
 	{
-		if (ConfigDefaultTabs)
-			chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 		// w miejsce recznego dodawania chata do kart automatyczne ;)
-		else if (chat.contacts().count() == 1 || ConfigConferencesInTabs)
+		if (ConfigDefaultTabs || (chat.contacts().count() == 1) || ConfigConferencesInTabs)
 			ForceTabs = true;
+		else
+			chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 
 		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 	}
@@ -598,7 +598,6 @@ bool TabsManager::detachChat(ChatWidget *chatWidget)
 	auto chat = chatWidget->chat();
 	delete chatWidget;
 
-	// omg this is bad
 	chat.addProperty("tabs:detached", true, CustomProperties::Storable);
 	Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::Activate);
 	return true;
@@ -627,19 +626,10 @@ void TabsManager::load()
 		if (!chat)
 			continue;
 
-		auto chatWidget = Core::instance()->chatWidgetRepository()->widgetForChat(chat);
-		if (!chatWidget)
-		{
-			if (element.attribute("type") == "tab")
-				ForceTabs = true;
-			else if (element.attribute("type") == "detachedChat")
-				chat.addProperty("tabs:detached", true, CustomProperties::Storable);
-			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
-		}
-		else if (element.attribute("type") == "tab")
-			insertTab(chatWidget);
-		else if (element.attribute("type") == "detachedChat")
-			DetachedChats.append(chatWidget);
+		if (element.attribute("type") == "detachedChat")
+			chat.addProperty("tabs:detached", true, CustomProperties::Storable);
+
+		Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 	}
 }
 
