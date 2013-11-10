@@ -174,13 +174,6 @@ public:
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 	void tryActivateChatWidget(ChatWidget *chatWidget);
 
-	/**
-	* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
-	* Informuje, który chat powinien zostać zamknięty
-	* @param chat który powinien zostać zamknięty
-	*/
-	virtual void closeChatWidget(ChatWidget *chatWidget);
-
 public slots:
 	void messageReceived(ChatWidget *chatWidget);
 

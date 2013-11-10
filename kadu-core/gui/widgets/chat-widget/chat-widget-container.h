@@ -36,14 +36,6 @@ class ChatWidgetContainer
 public:
 	virtual ~ChatWidgetContainer() {}
 
-	/**
-	 * @short Closes given chat widget in this ChatWidgetContainer.
-	 * @param chatWidget chat widget to close
-	 *
-	 * Closes given chat widget in this ChatWidgetContainer.
-	 */
-	virtual void closeChatWidget(ChatWidget *chatWidget) = 0;
-
 };
 
 #endif // CHAT_WIDGET_CONTAINER_H

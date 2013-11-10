@@ -82,6 +82,9 @@ private:
 	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
 	QWeakPointer<ChatWidgetFactory> m_chatWidgetFactory;
 
+private slots:
+	void closeChatWidget(ChatWidget *chatWidget);
+
 };
 
 /**

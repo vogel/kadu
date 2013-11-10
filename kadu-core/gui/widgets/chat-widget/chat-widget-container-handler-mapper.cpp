@@ -109,5 +109,9 @@ void ChatWidgetContainerHandlerMapper::chatWidgetAdded(ChatWidget *chatWidget)
 
 void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)
 {
+	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
+	if (chatWidgetContainerHandler)
+		chatWidgetContainerHandler->removeChatWidget(chatWidget);
+
 	m_mapping.remove(chatWidget);
 }

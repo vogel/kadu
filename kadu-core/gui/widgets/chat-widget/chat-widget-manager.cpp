@@ -68,6 +68,7 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 			return;
 
 		m_chatWidgetRepository.data()->addChatWidget(chatWidget);
+		connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeChatWidget(ChatWidget*)));
 	}
 
 	if (activation == OpenChatActivation::Activate && m_chatWidgetContainerHandlerMapper)
@@ -77,8 +78,17 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 void ChatWidgetManager::closeChat(const Chat &chat)
 {
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	if (chatWidget && chatWidget->container())
-		chatWidget->container()->closeChatWidget(chatWidget);
+	if (chatWidget)
+		closeChatWidget(chatWidget);
+}
+
+void ChatWidgetManager::closeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_chatWidgetRepository)
+		return;
+
+	m_chatWidgetRepository.data()->removeChatWidget(chatWidget);
+	delete chatWidget;
 }
 
 #include "moc_chat-widget-manager.cpp"

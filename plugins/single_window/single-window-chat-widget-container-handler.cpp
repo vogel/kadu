@@ -37,10 +37,18 @@ void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singl
 
 bool SingleWindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_singleWindow)
+	if (!chatWidget || !m_singleWindow)
 		return false;
 
 	return m_singleWindow.data()->containChatWidget(chatWidget);
+}
+
+void SingleWindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_singleWindow)
+		return;
+
+	m_singleWindow.data()->removeChatWidget(chatWidget);
 }
 
 bool SingleWindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)

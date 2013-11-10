@@ -217,6 +217,8 @@ void TabWidget::messageReceived(ChatWidget *chatWidget)
 
 void TabWidget::closeTab(QWidget *tabWidget)
 {
+	printf("void TabWidget::closeTab(QWidget *tabWidget)\n");
+
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);
 	if (!chatWidget)
 		return;
@@ -237,12 +239,7 @@ void TabWidget::closeTab(QWidget *tabWidget)
 		}
 	}
 
-	delete chatWidget;
-}
-
-void TabWidget::closeChatWidget(ChatWidget *chatWidget)
-{
-	delete chatWidget;
+	chatWidget->requestClose();
 }
 
 bool TabWidget::isChatWidgetActive(const ChatWidget *chatWidget)

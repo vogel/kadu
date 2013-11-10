@@ -23,7 +23,7 @@
 #include "tabs.h"
 
 TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) :
-		ChatWidgetContainerHandler(parent)
+		ChatWidgetContainerHandler{parent}
 {
 }
 
@@ -43,10 +43,18 @@ void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
 
 bool TabsChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_tabsManager)
+	if (!chatWidget || !m_tabsManager)
 		return false;
 
 	return m_tabsManager.data()->containChatWidget(chatWidget);
+}
+
+void TabsChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_tabsManager)
+		return;
+
+	return m_tabsManager.data()->removeChatWidget(chatWidget);
 }
 
 bool TabsChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)

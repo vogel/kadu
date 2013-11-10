@@ -132,6 +132,7 @@ public:
 	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
 
 	bool containChatWidget(ChatWidget *chatWidget);
+	void removeChatWidget(ChatWidget *chatWidget);
 
 public slots:
 	void onDestroyingChat(ChatWidget *chatWidget);

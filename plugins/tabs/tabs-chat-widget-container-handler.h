@@ -32,13 +32,15 @@ class TabsChatWidgetContainerHandler : public ChatWidgetContainerHandler
 	Q_OBJECT
 
 public:
-	explicit TabsChatWidgetContainerHandler(QObject *parent = 0);
+	explicit TabsChatWidgetContainerHandler(QObject *parent = nullptr);
 	virtual ~TabsChatWidgetContainerHandler();
 
 	void setTabsManager(TabsManager *tabsManager);
 	void setTabWidget(TabWidget *tabWidget);
 
 	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual void removeChatWidget(ChatWidget *chatWidget) override;
+
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
 

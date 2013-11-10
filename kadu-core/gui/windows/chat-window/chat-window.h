@@ -51,8 +51,6 @@ public:
 	Chat chat() const;
 	ChatWidget * chatWidget() const { return m_chatWidget; }
 
-	virtual void closeChatWidget(ChatWidget *chatWidget) override;
-
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 
 	void setWindowTitle(QString title);
@@ -64,7 +62,6 @@ public slots:
 
 signals:
 	void windowDestroyed(ChatWindow *chatWindow);
-	void windowDestroyed(ChatWidget * const chatWidget);
 
 protected:
 	virtual void closeEvent(QCloseEvent *e) override;

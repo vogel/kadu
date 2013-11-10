@@ -153,6 +153,8 @@ ChatWidget::~ChatWidget()
 	kdebugf();
 	ComposingTimer.stop();
 
+	kaduStoreGeometry();
+
 	emit widgetDestroyed(CurrentChat);
 	emit widgetDestroyed(this);
 
@@ -348,7 +350,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 	if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 	{
-		emit closed();
+		emit closeRequested(this);
 		return true;
 	}
 
@@ -679,6 +681,11 @@ void ChatWidget::dropEvent(QDropEvent *e)
 Protocol *ChatWidget::currentProtocol() const
 {
 	return CurrentChat.chatAccount().protocolHandler();
+}
+
+void ChatWidget::requestClose()
+{
+	emit closeRequested(this);
 }
 
 void ChatWidget::markActive()

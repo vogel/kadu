@@ -138,7 +138,7 @@ SingleWindow::~SingleWindow()
 			ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->widget(i));
 			const Chat &chat = chatWidget->chat();
 			m_tabs->removeTab(i);
-			delete chatWidget;
+			chatWidget->requestClose();
 			Core::instance()->chatWidgetManager()->openChat(chat, OpenChatActivation::DoNotActivate);
 		}
 	}
@@ -199,12 +199,22 @@ bool SingleWindow::containChatWidget(ChatWidget *chatWidget)
 		this, SLOT(onChatKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 
 	connect(chatWidget, SIGNAL(messageReceived(ChatWidget*)), this, SLOT(messageReceived(ChatWidget*)));
-	connect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
 
 	return true;
+}
+
+void SingleWindow::removeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	chatWidget->setParent(nullptr);
+	int index = m_tabs->indexOf(chatWidget);
+	if (index >= 0)
+		closeTab(index);
 }
 
 void SingleWindow::updateTabIcon(ChatWidget *chatWidget)
@@ -260,7 +270,7 @@ void SingleWindow::closeTab(int index)
 	disconnect(chatWidget->edit(), 0, this, 0);
 	disconnect(chatWidget, 0, this, 0);
 
-	m_tabs->widget(index)->deleteLater();
+	chatWidget->requestClose();
 	m_tabs->removeTab(index);
 }
 
@@ -326,16 +336,6 @@ void SingleWindow::messageReceived(ChatWidget *chatWidget)
 
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
-}
-
-void SingleWindow::closeChatWidget(ChatWidget *chatWidget)
-{
-	if (!chatWidget)
-		return;
-
-	int index = m_tabs->indexOf(chatWidget);
-	if (index >= 0)
-		closeTab(index);
 }
 
 bool SingleWindow::isChatWidgetActive(const ChatWidget *chatWidget)

@@ -46,7 +46,7 @@ void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowReposit
 
 bool WindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_chatWindowFactory || !m_chatWindowRepository)
+	if (!chatWidget || !m_chatWindowFactory || !m_chatWindowRepository)
 		return false;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
@@ -63,6 +63,17 @@ bool WindowChatWidgetContainerHandler::containChatWidget(ChatWidget *chatWidget)
 	chatWindow->show();
 
 	return true;
+}
+
+void WindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget || !m_chatWindowRepository)
+		return;
+
+	chatWidget->setParent(nullptr);
+	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
+	if (chatWindow)
+		chatWindow->deleteLater();
 }
 
 bool WindowChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)

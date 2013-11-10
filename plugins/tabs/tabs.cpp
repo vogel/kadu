@@ -216,6 +216,17 @@ bool TabsManager::containChatWidget(ChatWidget *chatWidget)
 	return true;
 }
 
+void TabsManager::removeChatWidget(ChatWidget *chatWidget)
+{
+	if (!chatWidget)
+		return;
+
+	chatWidget->setParent(nullptr);
+	auto index = TabDialog->indexOf(chatWidget);
+	if (index >= 0)
+		TabDialog->removeTab(index);
+}
+
 void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 {
 	kdebugf();
@@ -223,12 +234,7 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 	chatWidget->chat().removeProperty("tabs:fix2626");
 
 	if (TabDialog->indexOf(chatWidget) != -1)
-	{
-		// zapamietuje wewnetrzne rozmiary chata
-		chatWidget->kaduStoreGeometry();
-
 		TabDialog->removeTab(TabDialog->indexOf(chatWidget));
-	}
 
 	NewChats.removeAll(chatWidget);
 	DetachedChats.removeAll(chatWidget);
@@ -368,7 +374,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 			TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 
 	connect(chatWidget, SIGNAL(messageReceived(ChatWidget*)), TabDialog, SLOT(messageReceived(ChatWidget*)));
-	connect(chatWidget, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
@@ -647,8 +652,6 @@ void TabsManager::store()
 
 		if ((TabDialog->indexOf(chatWidget) == -1) && (DetachedChats.indexOf(chatWidget) == -1))
 			continue;
-
-		chatWidget->kaduStoreGeometry();
 
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
 

@@ -27,10 +27,9 @@ public:
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	bool containChatWidget(ChatWidget *chatWidget);
+	void removeChatWidget(ChatWidget *chatWidget);
 
 	virtual void changeEvent(QEvent *event);
-
-	virtual void closeChatWidget(ChatWidget *chatWidget);
 
 	bool isChatWidgetActive(const ChatWidget *chatWidget);
 	void tryActivateChatWidget(ChatWidget *chatWidget);

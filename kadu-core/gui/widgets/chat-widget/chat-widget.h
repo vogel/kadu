@@ -166,6 +166,7 @@ public slots:
 	void colorSelectorAboutToClose();
 	void clearChatWindow();
 
+	void requestClose();
 	void markActive();
 
 	/**
@@ -188,7 +189,7 @@ signals:
 	void widgetDestroyed(ChatWidget *widget);
 
 	void activated(ChatWidget *chatWidget);
-	void closed();
+	void closeRequested(ChatWidget *chatWidget);
 
 };
 

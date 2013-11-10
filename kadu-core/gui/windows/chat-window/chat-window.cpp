@@ -84,7 +84,6 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
 	connect(m_chatWidget, SIGNAL(messageReceived(ChatWidget*)), this, SLOT(messageReceived(ChatWidget*)));
-	connect(m_chatWidget, SIGNAL(closed()), this, SLOT(close()));
 	connect(m_chatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
 	connect(m_chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(m_titleTimer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
@@ -92,10 +91,7 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 
 ChatWindow::~ChatWindow()
 {
-	m_chatWidget->kaduStoreGeometry();
-
 	emit windowDestroyed(this);
-	emit windowDestroyed(m_chatWidget);
 }
 
 void ChatWindow::configurationUpdated()
@@ -267,14 +263,6 @@ void ChatWindow::messageReceived(ChatWidget *chatWidget)
 	}
 	else if (m_showNewMessagesNum) // ... so we check this condition as 'else'
 		showNewMessagesNumInTitle();
-}
-
-void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
-{
-	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == m_chatWidget);
-
-	close();
 }
 
 bool ChatWindow::isChatWidgetActive(const ChatWidget *chatWidget)
