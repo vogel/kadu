@@ -41,12 +41,12 @@ void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
 	m_tabWidget = tabWidget;
 }
 
-bool TabsChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) const
+bool TabsChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const
 {
 	if (!chatWidget || !m_tabsManager)
 		return false;
 
-	return m_tabsManager.data()->wantChatWidget(chatWidget);
+	return m_tabsManager.data()->acceptChatWidget(chatWidget);
 }
 
 void TabsChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)

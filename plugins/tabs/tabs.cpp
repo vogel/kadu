@@ -167,7 +167,7 @@ void TabsManager::openStoredChatTabs()
 		ensureLoaded();
 }
 
-bool TabsManager::wantChatWidget(ChatWidget *chatWidget) const
+bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const
 {
 	if (!chatWidget)
 		return false;

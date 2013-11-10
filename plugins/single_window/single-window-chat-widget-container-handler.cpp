@@ -35,7 +35,7 @@ void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singl
 	m_singleWindow = singleWindow;
 }
 
-bool SingleWindowChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) const
+bool SingleWindowChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const
 {
 	Q_UNUSED(chatWidget);
 

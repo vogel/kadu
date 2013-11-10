@@ -44,7 +44,7 @@ void WindowChatWidgetContainerHandler::setChatWindowRepository(ChatWindowReposit
 	m_chatWindowRepository = chatWindowRepository;
 }
 
-bool WindowChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) const
+bool WindowChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const
 {
 	return m_chatWindowFactory && m_chatWindowRepository;
 }
