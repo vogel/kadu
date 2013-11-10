@@ -167,7 +167,7 @@ void TabsManager::openStoredChatTabs()
 		ensureLoaded();
 }
 
-bool TabsManager::containChatWidget(ChatWidget *chatWidget)
+bool TabsManager::addChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
 

@@ -38,7 +38,7 @@ public:
 	void setChatWindowFactory(ChatWindowFactory *chatWindowFactory);
 	void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
 
-	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool addChatWidget(ChatWidget *chatWidget) override;
 	virtual void removeChatWidget(ChatWidget *chatWidget) override;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;

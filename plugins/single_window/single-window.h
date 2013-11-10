@@ -26,7 +26,7 @@ public:
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	bool containChatWidget(ChatWidget *chatWidget);
+	bool addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
 
 	virtual void changeEvent(QEvent *event);

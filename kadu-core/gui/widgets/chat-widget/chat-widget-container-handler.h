@@ -33,7 +33,7 @@ public:
 	explicit ChatWidgetContainerHandler(QObject *parent = nullptr);
 	virtual ~ChatWidgetContainerHandler();
 
-	virtual bool containChatWidget(ChatWidget *chatWidget) = 0;
+	virtual bool addChatWidget(ChatWidget *chatWidget) = 0;
 	virtual void removeChatWidget(ChatWidget *chatWidget) = 0;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;

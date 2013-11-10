@@ -66,7 +66,7 @@ void ChatWidgetContainerHandlerMapper::mapChatWidgetToFirstContainerHandler(Chat
 
 	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
 	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
-		if (chatWidgetContainerHandler->containChatWidget(chatWidget))
+		if (chatWidgetContainerHandler->addChatWidget(chatWidget))
 		{
 			m_mapping.insert(chatWidget, chatWidgetContainerHandler);
 			return;

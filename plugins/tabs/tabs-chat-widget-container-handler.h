@@ -38,7 +38,7 @@ public:
 	void setTabsManager(TabsManager *tabsManager);
 	void setTabWidget(TabWidget *tabWidget);
 
-	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool addChatWidget(ChatWidget *chatWidget) override;
 	virtual void removeChatWidget(ChatWidget *chatWidget) override;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;

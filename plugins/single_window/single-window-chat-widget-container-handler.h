@@ -36,7 +36,7 @@ public:
 
 	void setSingleWindow(SingleWindow *singleWindow);
 
-	virtual bool containChatWidget(ChatWidget *chatWidget) override;
+	virtual bool addChatWidget(ChatWidget *chatWidget) override;
 	virtual void removeChatWidget(ChatWidget *chatWidget) override;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;

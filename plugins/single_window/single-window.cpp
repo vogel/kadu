@@ -162,7 +162,7 @@ void SingleWindow::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepos
 			else
 				chatWidget->kaduRestoreGeometry();
 
-			containChatWidget(chatWidget);
+			addChatWidget(chatWidget);
 		}
 	}
 }
@@ -188,7 +188,7 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
 }
 
-bool SingleWindow::containChatWidget(ChatWidget *chatWidget)
+bool SingleWindow::addChatWidget(ChatWidget *chatWidget)
 {
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
