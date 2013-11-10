@@ -133,7 +133,7 @@ public:
 	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
 
 	bool wantChatWidget(ChatWidget *chatWidget) const;
-	bool addChatWidget(ChatWidget *chatWidget);
+	void addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
 
 public slots:

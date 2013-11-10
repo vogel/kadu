@@ -49,12 +49,12 @@ bool TabsChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) cons
 	return m_tabsManager.data()->wantChatWidget(chatWidget);
 }
 
-bool TabsChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
+void TabsChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 {
 	if (!chatWidget || !m_tabsManager)
-		return false;
+		return;
 
-	return m_tabsManager.data()->addChatWidget(chatWidget);
+	m_tabsManager.data()->addChatWidget(chatWidget);
 }
 
 void TabsChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)

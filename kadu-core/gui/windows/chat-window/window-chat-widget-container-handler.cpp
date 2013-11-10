@@ -49,24 +49,22 @@ bool WindowChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) co
 	return m_chatWindowFactory && m_chatWindowRepository;
 }
 
-bool WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
+void WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 {
 	if (!chatWidget || !m_chatWindowFactory || !m_chatWindowRepository)
-		return false;
+		return;
 
 	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
 	if (!chatWindow)
 	{
 		chatWindow = m_chatWindowFactory.data()->createChatWindow(chatWidget).release();
 		if (!chatWindow)
-			return false;
+			return;
 
 		m_chatWindowRepository.data()->addChatWindow(chatWindow);
 	}
 
 	chatWindow->show();
-
-	return true;
 }
 
 void WindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)

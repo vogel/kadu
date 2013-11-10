@@ -23,7 +23,7 @@ public:
 	SingleWindow();
 	~SingleWindow();
 
-	bool addChatWidget(ChatWidget *chatWidget);
+	void addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
 
 	virtual void changeEvent(QEvent *event);

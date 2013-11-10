@@ -190,7 +190,7 @@ bool TabsManager::wantChatWidget(ChatWidget *chatWidget) const
 		return true;
 }
 
-bool TabsManager::addChatWidget(ChatWidget *chatWidget)
+void TabsManager::addChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
 
@@ -200,7 +200,7 @@ bool TabsManager::addChatWidget(ChatWidget *chatWidget)
 	if (chatWidget->chat().property("tabs:detached", false).toBool())
 	{
 		DetachedChats.append(chatWidget);
-		return false;
+		return;
 	}
 
 	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
@@ -208,7 +208,7 @@ bool TabsManager::addChatWidget(ChatWidget *chatWidget)
 	{
 		ForceTabs = false;
 		insertTab(chatWidget);
-		return true;
+		return;
 	}
 
 	if (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1))
@@ -230,13 +230,8 @@ bool TabsManager::addChatWidget(ChatWidget *chatWidget)
 			NewChats.clear();
 		}
 		else
-		{
 			NewChats.append(chatWidget);
-			return false;
-		}
 	}
-
-	return true;
 }
 
 void TabsManager::removeChatWidget(ChatWidget *chatWidget)

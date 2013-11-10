@@ -169,7 +169,7 @@ void SingleWindow::changeRosterPos(int newRosterPos)
 	m_split->insertWidget(m_rosterPos, Core::instance()->kaduWindow());
 }
 
-bool SingleWindow::addChatWidget(ChatWidget *chatWidget)
+void SingleWindow::addChatWidget(ChatWidget *chatWidget)
 {
 	m_tabs->addTab(chatWidget, chatWidget->icon(), QString());
 	updateTabName(chatWidget);
@@ -181,8 +181,6 @@ bool SingleWindow::addChatWidget(ChatWidget *chatWidget)
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
-
-	return true;
 }
 
 void SingleWindow::removeChatWidget(ChatWidget *chatWidget)

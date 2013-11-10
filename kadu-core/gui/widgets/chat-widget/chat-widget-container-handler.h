@@ -34,7 +34,7 @@ public:
 	virtual ~ChatWidgetContainerHandler();
 
 	virtual bool wantChatWidget(ChatWidget *chatWidget) const = 0;
-	virtual bool addChatWidget(ChatWidget *chatWidget) = 0;
+	virtual void addChatWidget(ChatWidget *chatWidget) = 0;
 	virtual void removeChatWidget(ChatWidget *chatWidget) = 0;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;

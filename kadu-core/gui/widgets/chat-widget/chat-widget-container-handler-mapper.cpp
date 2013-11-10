@@ -66,8 +66,9 @@ void ChatWidgetContainerHandlerMapper::mapChatWidgetToFirstContainerHandler(Chat
 
 	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
 	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
-		if (chatWidgetContainerHandler->addChatWidget(chatWidget))
+		if (chatWidgetContainerHandler->wantChatWidget(chatWidget))
 		{
+			chatWidgetContainerHandler->addChatWidget(chatWidget);
 			m_mapping.insert(chatWidget, chatWidgetContainerHandler);
 			return;
 		}
@@ -101,9 +102,7 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(Chat
 		{
 			auto oldChatWidgetContainerHandler = m_mapping.value(chatWidget);
 			oldChatWidgetContainerHandler->removeChatWidget(chatWidget);
-			auto added = chatWidgetContainerHandler->addChatWidget(chatWidget);
-			if (!added)
-				mapChatWidgetToFirstContainerHandler(chatWidget);
+			chatWidgetContainerHandler->addChatWidget(chatWidget);
 		}
 	}
 }

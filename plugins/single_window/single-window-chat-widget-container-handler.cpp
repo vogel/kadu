@@ -37,15 +37,17 @@ void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singl
 
 bool SingleWindowChatWidgetContainerHandler::wantChatWidget(ChatWidget *chatWidget) const
 {
+	Q_UNUSED(chatWidget);
+
 	return m_singleWindow;
 }
 
-bool SingleWindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
+void SingleWindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 {
 	if (!chatWidget || !m_singleWindow)
-		return false;
+		return;
 
-	return m_singleWindow.data()->addChatWidget(chatWidget);
+	m_singleWindow.data()->addChatWidget(chatWidget);
 }
 
 void SingleWindowChatWidgetContainerHandler::removeChatWidget(ChatWidget *chatWidget)

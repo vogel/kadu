@@ -37,7 +37,7 @@ public:
 	void setSingleWindow(SingleWindow *singleWindow);
 
 	virtual bool wantChatWidget(ChatWidget *chatWidget) const override;
-	virtual bool addChatWidget(ChatWidget *chatWidget) override;
+	virtual void addChatWidget(ChatWidget *chatWidget) override;
 	virtual void removeChatWidget(ChatWidget *chatWidget) override;
 
 	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
