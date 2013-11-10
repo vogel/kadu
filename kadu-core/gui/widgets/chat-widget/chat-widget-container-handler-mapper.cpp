@@ -92,6 +92,22 @@ void ChatWidgetContainerHandlerMapper::tryActivateChatWidget(ChatWidget *chatWid
 		chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
 }
 
+void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+{
+	auto chatWidgets = m_mapping.keys();
+	for (auto chatWidget : chatWidgets)
+	{
+		if (chatWidgetContainerHandler->wantChatWidget(chatWidget))
+		{
+			auto oldChatWidgetContainerHandler = m_mapping.value(chatWidget);
+			oldChatWidgetContainerHandler->removeChatWidget(chatWidget);
+			auto added = chatWidgetContainerHandler->addChatWidget(chatWidget);
+			if (!added)
+				mapChatWidgetToFirstContainerHandler(chatWidget);
+		}
+	}
+}
+
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
 	auto chatWidgets = m_mapping.keys(chatWidgetContainerHandler);

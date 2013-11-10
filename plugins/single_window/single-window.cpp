@@ -148,25 +148,6 @@ SingleWindow::~SingleWindow()
 		kadu->setVisible(visible);
 }
 
-void SingleWindow::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
-{
-	m_chatWidgetRepository = chatWidgetRepository;
-
-	if (m_chatWidgetRepository)
-	{
-		/* conquer all already open chats ;) */
-		for (auto chatWidget : m_chatWidgetRepository.data()->widgets())
-		{
-			if (chatWidget->parentWidget())
-				chatWidget->parentWidget()->deleteLater();
-			else
-				chatWidget->kaduRestoreGeometry();
-
-			addChatWidget(chatWidget);
-		}
-	}
-}
-
 void SingleWindow::changeEvent(QEvent *event)
 {
 	QWidget::changeEvent(event);

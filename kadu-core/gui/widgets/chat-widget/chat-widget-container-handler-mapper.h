@@ -50,6 +50,7 @@ private:
 	QMap<ChatWidget *, ChatWidgetContainerHandler *> m_mapping;
 
 private slots:
+	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 
 	void chatWidgetAdded(ChatWidget *chatWidget);

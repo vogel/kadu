@@ -14,7 +14,6 @@ class QSplitter;
 class QTabWidget;
 
 class ChatWidget;
-class ChatWidgetRepository;
 
 class SingleWindow : public QWidget
 {
@@ -23,8 +22,6 @@ class SingleWindow : public QWidget
 public:
 	SingleWindow();
 	~SingleWindow();
-
-	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
 	bool addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
@@ -52,8 +49,6 @@ protected:
 	void resizeEvent(QResizeEvent *event);
 
 private:
-	QWeakPointer<ChatWidgetRepository> m_chatWidgetRepository;
-
 	QSplitter *m_split;
 	QTabWidget *m_tabs;
 	QList<int> m_splitSizes;

@@ -43,7 +43,6 @@ int SingleWindowPlugin::init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(KaduPaths::instance()->dataPath() + QLatin1String("plugins/configuration/single_window.ui"));
 
 	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(m_singleWindowManager.data()->window());
-	m_singleWindowManager.data()->window()->setChatWidgetRepository(Core::instance()->chatWidgetRepository());
 	Core::instance()->chatWidgetContainerHandlerRepository()->registerChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
 
 	return 0;
@@ -51,7 +50,6 @@ int SingleWindowPlugin::init(bool firstLoad)
 
 void SingleWindowPlugin::done()
 {
-	m_singleWindowManager.data()->window()->setChatWidgetRepository(nullptr);
 	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(m_singleWindowChatWidgetContainerHandler.data());
 	m_singleWindowChatWidgetContainerHandler.data()->setSingleWindow(nullptr);
 
