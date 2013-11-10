@@ -132,6 +132,7 @@ public:
 	void addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget);
 	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
 
+	bool wantChatWidget(ChatWidget *chatWidget) const;
 	bool addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
 

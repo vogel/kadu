@@ -167,6 +167,29 @@ void TabsManager::openStoredChatTabs()
 		ensureLoaded();
 }
 
+bool TabsManager::wantChatWidget(ChatWidget *chatWidget) const
+{
+	if (!chatWidget)
+		return false;
+
+	if (chatWidget->chat().property("tabs:detached", false).toBool())
+		return false;
+
+	if (ForceTabs)
+		return true;
+
+	if (ConfigDefaultTabs && (ConfigConferencesInTabs || chatWidget->chat().contacts().count() == 1))
+	{
+		if (TabDialog->count() > 0)
+			return true;
+		if ((NewChats.count() + 1) >= ConfigMinTabs)
+			return true;
+		return false;
+	}
+	else
+		return true;
+}
+
 bool TabsManager::addChatWidget(ChatWidget *chatWidget)
 {
 	kdebugf();
