@@ -28,6 +28,9 @@ ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 
 ChatWidgetRepository::~ChatWidgetRepository()
 {
+	// neeed to emit signals on finish
+	while (!m_widgets.empty())
+		removeChatWidget((*m_widgets.begin()).second.get());
 }
 
 ChatWidgetRepositoryIterator ChatWidgetRepository::begin()
@@ -40,37 +43,35 @@ ChatWidgetRepositoryIterator ChatWidgetRepository::end()
 	return ChatWidgetRepositoryIterator{m_widgets.end()};
 }
 
-void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
+void ChatWidgetRepository::addChatWidget(std::unique_ptr<ChatWidget> chatWidget)
 {
-	if (!chatWidget || m_widgets.contains(chatWidget->chat()))
+	if (!chatWidget || hasWidgetForChat(chatWidget.get()->chat()))
 		return;
 
-	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(widgetDestroyed(ChatWidget*)));
-	m_widgets.insert(chatWidget->chat(), chatWidget);
-	emit chatWidgetAdded(chatWidget);
+	emit chatWidgetAdded(chatWidget.get());
+	m_widgets.emplace(chatWidget->chat(), std::move(chatWidget));
 }
 
 void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
 {
-	if (!chatWidget || !m_widgets.contains(chatWidget->chat()))
+	if (!chatWidget || !hasWidgetForChat(chatWidget->chat()))
 		return;
 
-	disconnect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(widgetDestroyed(ChatWidget*)));
-	m_widgets.remove(chatWidget->chat());
 	emit chatWidgetRemoved(chatWidget);
+	m_widgets.erase(chatWidget->chat());
+}
+
+bool ChatWidgetRepository::hasWidgetForChat(const Chat &chat) const
+{
+	return m_widgets.end() != m_widgets.find(chat);
 }
 
 ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 {
-	if (!chat)
+	if (!chat || !hasWidgetForChat(chat))
 		return nullptr;
 
-	return m_widgets.value(chat);
-}
-
-void ChatWidgetRepository::widgetDestroyed(ChatWidget *chatWidget)
-{
-	removeChatWidget(chatWidget);
+	return m_widgets.at(chat).get();
 }
 
 #include "moc_chat-widget-repository.cpp"

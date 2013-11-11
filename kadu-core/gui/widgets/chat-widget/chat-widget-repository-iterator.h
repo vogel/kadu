@@ -19,14 +19,15 @@
 
 #pragma once
 
-#include <QtCore/QMap>
+#include <map>
+#include <memory>
 
 class Chat;
 class ChatWidget;
 
 class ChatWidgetRepositoryIterator
 {
-	using Iterator = QMap<Chat, ChatWidget *>::iterator;
+	using Iterator = std::map<Chat, std::unique_ptr<ChatWidget>>::iterator;
 
 public:
 	inline explicit ChatWidgetRepositoryIterator(Iterator iterator) : m_iterator{iterator} {}
@@ -51,7 +52,7 @@ public:
 
 	inline ChatWidget * operator*() const
 	{
-		return *m_iterator;
+		return m_iterator->second.get();
 	}
 
 private:

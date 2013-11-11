@@ -19,11 +19,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "chat/chat.h"
 #include "gui/widgets/chat-widget/chat-widget-repository-iterator.h"
 #include "exports.h"
+
+#include <map>
+#include <memory>
+#include <QtCore/QObject>
 
 class ChatWidget;
 
@@ -64,7 +66,7 @@ public:
 	 * Add new chatWidget to repository only if it is valid and not already in repository.
 	 * Signal chatWidgetAdded(ChatWidget*) is emitted after successfull add.
 	 */
-	void addChatWidget(ChatWidget *chatWidget);
+	void addChatWidget(std::unique_ptr<ChatWidget> chatWidget);
 
 	/**
 	 * @short Remove chatWidget from repository.
@@ -73,6 +75,8 @@ public:
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
 	 */
 	void removeChatWidget(ChatWidget *chatWidget);
+
+	bool hasWidgetForChat(const Chat &chat) const;
 
 	/**
 	 * @short Return ChatWidget for given chat.
@@ -98,10 +102,7 @@ signals:
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 private:
-	QMap<Chat, ChatWidget *> m_widgets;
-
-private slots:
-	void widgetDestroyed(ChatWidget *chatWidget);
+	std::map<Chat, std::unique_ptr<ChatWidget>> m_widgets;
 
 };
 

@@ -672,6 +672,12 @@ void Core::runGuiServices()
 	CurrentChatWindowManager->openStoredChatWindows();
 }
 
+void Core::stopServices()
+{
+	delete CurrentChatWidgetRepository;
+	CurrentChatWidgetRepository = 0;
+}
+
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
 {
 	return CurrentBuddyDataWindowRepository;
@@ -851,6 +857,8 @@ void Core::receivedSignal(const QString &signal)
 
 void Core::quit()
 {
+	stopServices();
+
 	if (!Instance)
 		return;
 

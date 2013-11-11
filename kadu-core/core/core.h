@@ -175,6 +175,7 @@ public:
 	void createGui();
 	void runServices();
 	void runGuiServices();
+	void stopServices();
 
 	BuddyDataWindowRepository * buddyDataWindowRepository() const;
 	ChatDataWindowRepository * chatDataWindowRepository() const;
