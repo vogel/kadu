@@ -116,6 +116,7 @@ public:
 	TabWidget * tabWidget() { return TabDialog; }
 
 	void openStoredChatTabs();
+	void storeOpenedChatTabs();
 
 	void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 

@@ -37,7 +37,6 @@
 #include "buddies/buddy.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
@@ -80,7 +79,6 @@ TabsManager::TabsManager(QObject *parent) :
 	kdebugf();
 
 	setState(StateNotLoaded);
-	ConfigurationManager::instance()->registerStorableObject(this);
 
 	createDefaultConfiguration();
 
@@ -133,9 +131,6 @@ TabsManager::~TabsManager()
 	if (m_chatWidgetRepository)
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-	// Call it before we close tab window.
-	ConfigurationManager::instance()->unregisterStorableObject(this);
-
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	if (!Core::instance()->isClosing())
 		for (int i = TabDialog->count() - 1; i >= 0; i--)
@@ -165,6 +160,12 @@ void TabsManager::openStoredChatTabs()
 {
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		ensureLoaded();
+}
+
+void TabsManager::storeOpenedChatTabs()
+{
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		ensureStored();
 }
 
 bool TabsManager::acceptChatWidget(ChatWidget *chatWidget) const

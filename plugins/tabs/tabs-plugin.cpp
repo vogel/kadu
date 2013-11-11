@@ -55,6 +55,8 @@ int TabsPlugin::init(bool firstLoad)
 
 void TabsPlugin::done()
 {
+	TabsManagerInstance->storeOpenedChatTabs();
+
 	Core::instance()->chatWidgetContainerHandlerRepository()->unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler.data());
 
 	MainConfigurationWindow::unregisterUiHandler(TabsManagerInstance);
