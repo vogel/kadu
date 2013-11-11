@@ -54,7 +54,7 @@ else ()
 		# -pipe can speed up the build
 		# -ftrapv generates trap on signed integer overflow, which is undefined by C/C++
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
-		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -pipe -ftrapv -fno-omit-frame-pointer")
+		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -Wno-deprecated -pipe -ftrapv -fno-omit-frame-pointer")
 
 		# TODO: uncomment for Clang 3.3
 		#if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
