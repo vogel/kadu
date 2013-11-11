@@ -24,6 +24,8 @@
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 
+#include <algorithm>
+
 ChatWidgetContainerHandlerMapper::ChatWidgetContainerHandlerMapper(QObject *parent) :
 		QObject{parent}
 {
@@ -126,11 +128,9 @@ ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::bestContainerHand
 		return {};
 
 	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
-	for (auto chatWidgetContainerHandler : chatWidgetContainerHandlers)
-		if (chatWidgetContainerHandler->acceptChatWidget(chatWidget))
-			return chatWidgetContainerHandler;
-
-	return {};
+	auto accepted = [chatWidget](ChatWidgetContainerHandler *chatWidgetContainerHandler){ return chatWidgetContainerHandler->acceptChatWidget(chatWidget); };
+	auto result = std::find_if(chatWidgetContainerHandlers.begin(), chatWidgetContainerHandlers.end(), accepted);
+	return result == chatWidgetContainerHandlers.end() ? nullptr : *result;
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetAdded(ChatWidget *chatWidget)
