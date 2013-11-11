@@ -630,8 +630,8 @@ void Core::runServices()
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
 	CurrentChatWidgetMessageHandler->setUnreadMessageRepository(CurrentUnreadMessageRepository);
-	auto chatWidgetMessageHandler = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
-	chatWidgetMessageHandler->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
+	auto chatWidgetMessageHandlerConfigurator = new ChatWidgetMessageHandlerConfigurator(); // this is basically a global so we do not care about relesing it
+	chatWidgetMessageHandlerConfigurator->setChatWidgetMessageHandler(CurrentChatWidgetMessageHandler);
 
 	CurrentChatWindowStorage = new ChatWindowStorage(this);
 	CurrentChatWindowStorage->setChatManager(ChatManager::instance());
@@ -643,7 +643,6 @@ void Core::runServices()
 	CurrentChatWindowManager->setChatWidgetManager(CurrentChatWidgetManager);
 	CurrentChatWindowManager->setChatWindowRepository(CurrentChatWindowRepository);
 	CurrentChatWindowManager->setChatWindowStorage(CurrentChatWindowStorage);
-	CurrentChatWindowManager->openStoredChatWindows();
 
 	// this instance lives forever
 	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
@@ -669,6 +668,8 @@ void Core::runGuiServices()
 {
 	CurrentNotificationService = new NotificationService(this);
 	CurrentChatWidgetMessageHandler->setNotificationService(CurrentNotificationService);
+
+	CurrentChatWindowManager->openStoredChatWindows();
 }
 
 BuddyDataWindowRepository * Core::buddyDataWindowRepository() const
