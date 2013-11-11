@@ -57,6 +57,7 @@ class ChatDataWindowRepository;
 class ChatImageRequestService;
 class ChatTopBarWidgetFactoryRepository;
 class ChatWidgetActions;
+class ChatWidgetActivationService;
 class ChatWidgetContainerHandlerMapper;
 class ChatWidgetContainerHandlerRepository;
 class ChatWidgetFactory;
@@ -113,6 +114,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	UnreadMessageRepository *CurrentUnreadMessageRepository;
 	RosterNotifier *CurrentRosterNotifier;
 	ChatWidgetActions *CurrentChatWidgetActions;
+	ChatWidgetActivationService *CurrentChatWidgetActivationService;
 	ChatWidgetContainerHandlerMapper *CurrentChatWidgetContainerHandlerMapper;
 	ChatWidgetContainerHandlerRepository *CurrentChatWidgetContainerHandlerRepository;
 	ChatWidgetFactory *CurrentChatWidgetFactory;
@@ -193,6 +195,7 @@ public:
 	UnreadMessageRepository * unreadMessageRepository() const;
 	RosterNotifier * rosterNotifier() const;
 	ChatWidgetActions * chatWidgetActions() const;
+	ChatWidgetActivationService * chatWidgetActivationService() const;
 	ChatWidgetContainerHandlerMapper * chatWidgetContainerHandlerMapper() const;
 	ChatWidgetContainerHandlerRepository * chatWidgetContainerHandlerRepository() const;
 	ChatWidgetFactory * chatWidgetFactory() const;

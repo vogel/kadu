@@ -59,23 +59,11 @@ void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetReposit
 			this, SLOT(chatWidgetRemoved(ChatWidget*)));
 }
 
-bool ChatWidgetContainerHandlerMapper::isChatWidgetActive(ChatWidget *chatWidget) const
+ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerForWidget(ChatWidget *chatWidget) const
 {
 	if (!chatWidget)
-		return false;
-
-	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
-	return chatWidgetContainerHandler ? chatWidgetContainerHandler->isChatWidgetActive(chatWidget) : false;
-}
-
-void ChatWidgetContainerHandlerMapper::tryActivateChatWidget(ChatWidget *chatWidget)
-{
-	if (!chatWidget)
-		return;
-
-	auto chatWidgetContainerHandler = m_mapping.value(chatWidget);
-	if (chatWidgetContainerHandler)
-		chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
+		return {};
+	return m_mapping.value(chatWidget);
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
@@ -107,6 +95,8 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(Ch
 
 void ChatWidgetContainerHandlerMapper::chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget)
 {
+	Q_UNUSED(chatWidgetContainerHandler);
+
 	unmap(chatWidget);
 	mapToDefault(chatWidget);
 }

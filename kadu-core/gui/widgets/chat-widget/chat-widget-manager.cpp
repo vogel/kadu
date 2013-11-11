@@ -25,7 +25,7 @@
 
 #include "chat-widget-manager.h"
 
-#include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
+#include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
 #include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
@@ -39,9 +39,9 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 }
 
-void ChatWidgetManager::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
+void ChatWidgetManager::setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService)
 {
-	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
+	m_chatWidgetActivationService = chatWidgetActivationService;
 }
 
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -70,8 +70,8 @@ void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation
 		connect(chatWidget, SIGNAL(closeRequested(ChatWidget*)), this, SLOT(closeChatWidget(ChatWidget*)));
 	}
 
-	if (activation == OpenChatActivation::Activate && m_chatWidgetContainerHandlerMapper)
-		m_chatWidgetContainerHandlerMapper.data()->tryActivateChatWidget(chatWidget);
+	if (activation == OpenChatActivation::Activate && m_chatWidgetActivationService)
+		m_chatWidgetActivationService.data()->tryActivateChatWidget(chatWidget);
 }
 
 void ChatWidgetManager::closeChat(const Chat &chat)

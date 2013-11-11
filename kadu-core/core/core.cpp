@@ -57,6 +57,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-top-bar-widget-factory-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-actions.h"
+#include "gui/widgets/chat-widget/chat-widget-activation-service.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 #include "gui/widgets/chat-widget/chat-widget-factory.h"
@@ -615,13 +616,16 @@ void Core::runServices()
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 	CurrentChatWidgetContainerHandlerMapper->setChatWidgetRepository(CurrentChatWidgetRepository);
 
+	CurrentChatWidgetActivationService = new ChatWidgetActivationService(this);
+	CurrentChatWidgetActivationService->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+
 	CurrentChatWidgetManager = new ChatWidgetManager(this);
-	CurrentChatWidgetManager->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+	CurrentChatWidgetManager->setChatWidgetActivationService(CurrentChatWidgetActivationService);
 	CurrentChatWidgetManager->setChatWidgetFactory(CurrentChatWidgetFactory);
 	CurrentChatWidgetManager->setChatWidgetRepository(CurrentChatWidgetRepository);
 
 	CurrentChatWidgetMessageHandler = new ChatWidgetMessageHandler(this);
-	CurrentChatWidgetMessageHandler->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+	CurrentChatWidgetMessageHandler->setChatWidgetActivationService(CurrentChatWidgetActivationService);
 	CurrentChatWidgetMessageHandler->setChatWidgetManager(CurrentChatWidgetManager);
 	CurrentChatWidgetMessageHandler->setChatWidgetRepository(CurrentChatWidgetRepository);
 	CurrentChatWidgetMessageHandler->setMessageManager(MessageManager::instance());
@@ -770,6 +774,11 @@ ChatWidgetContainerHandlerRepository * Core::chatWidgetContainerHandlerRepositor
 ChatWidgetActions * Core::chatWidgetActions() const
 {
 	return CurrentChatWidgetActions;
+}
+
+ChatWidgetActivationService * Core::chatWidgetActivationService() const
+{
+	return CurrentChatWidgetActivationService;
 }
 
 ChatWidgetManager * Core::chatWidgetManager() const
