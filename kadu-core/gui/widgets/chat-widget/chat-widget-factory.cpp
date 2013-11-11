@@ -18,8 +18,8 @@
  */
 
 #include "chat-widget-factory.h"
-#include "formatted-string/formatted-string-factory.h"
 
+#include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
 
 ChatWidgetFactory::ChatWidgetFactory(QObject *parent) :
@@ -43,3 +43,5 @@ std::unique_ptr<ChatWidget> ChatWidgetFactory::createChatWidget(Chat chat)
 
 	return result;
 }
+
+#include "moc_chat-widget-factory.cpp"

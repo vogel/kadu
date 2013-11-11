@@ -43,3 +43,5 @@ QList<ChatWidgetContainerHandler *> ChatWidgetContainerHandlerRepository::chatWi
 {
 	return m_chatWidgetContainerHandlers;
 }
+
+#include "moc_chat-widget-container-handler-repository.cpp"

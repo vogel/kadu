@@ -72,3 +72,5 @@ void ChatWindowManager::storeOpenedChatWindows()
 	if (m_chatWindowStorage)
 		m_chatWindowStorage.data()->storeChats(chats);
 }
+
+#include "moc_chat-window-manager.cpp"

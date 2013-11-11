@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/widgets/chat-widget/chat-widget.h"
-
 #include "chat-widget-repository.h"
+
+#include "gui/widgets/chat-widget/chat-widget.h"
 
 ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
 		QObject(parent)
@@ -67,3 +67,5 @@ void ChatWidgetRepository::widgetDestroyed(ChatWidget *chatWidget)
 {
 	removeChatWidget(chatWidget);
 }
+
+#include "moc_chat-widget-repository.cpp"

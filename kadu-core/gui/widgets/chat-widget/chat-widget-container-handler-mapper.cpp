@@ -146,3 +146,5 @@ void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)
 
 	m_mapping.remove(chatWidget);
 }
+
+#include "moc_chat-widget-container-handler-mapper.cpp"

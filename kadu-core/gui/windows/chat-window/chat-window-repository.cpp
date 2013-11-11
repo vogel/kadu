@@ -67,3 +67,5 @@ void ChatWindowRepository::windowDestroyed(ChatWindow *chatWindow)
 {
 	removeChatWindow(chatWindow);
 }
+
+#include "moc_chat-window-repository.cpp"

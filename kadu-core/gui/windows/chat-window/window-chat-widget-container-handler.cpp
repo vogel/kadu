@@ -96,3 +96,5 @@ void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWid
 	if (chatWindow)
 		_activateWindow(chatWindow);
 }
+
+#include "moc_window-chat-widget-container-handler.cpp"

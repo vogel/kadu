@@ -34,3 +34,5 @@ std::unique_ptr<ChatWindow> ChatWindowFactory::createChatWindow(ChatWidget *chat
 {
 	return std::unique_ptr<ChatWindow>(new ChatWindow(chatWidget));
 }
+
+#include "moc_chat-window-factory.cpp"
