@@ -26,6 +26,18 @@
 class ChatWidgetMessageHandler;
 class ChatWidgetMessageHandlerConfiguration;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetMessageHandlerConfigurator
+ * @short Configurator for @see ChatWidgetMessageHandler.
+ *
+ * Sets configuration on @see ChatWidgetMessageHandler after each configuration
+ * file update.
+ */
 class ChatWidgetMessageHandlerConfigurator : private ConfigurationAwareObject
 {
 
@@ -44,3 +56,7 @@ private:
 	void createDefaultConfiguration() const;
 
 };
+
+/**
+ * @}
+ */

@@ -25,6 +25,15 @@
 class Chat;
 class ChatWidget;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetRepositoryIterator
+ * @short Iterator for ChatWidget* instances in ChatWidgetRepository.
+ */
 class ChatWidgetRepositoryIterator
 {
 	using Iterator = std::map<Chat, std::unique_ptr<ChatWidget>>::iterator;
@@ -59,3 +68,7 @@ private:
 	Iterator m_iterator;
 
 };
+
+/**
+ * @}
+ */

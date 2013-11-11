@@ -26,6 +26,18 @@
 
 class ChatWidgetContainerHandler;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetContainerHandlerRepository
+ * @short Repository of @see ChatWidgetContainerHandler.
+ *
+ * This repository holds instances of ChatWidgetContainerHandler.
+ * These instances are not owned by this repository.
+ */
 class KADUAPI ChatWidgetContainerHandlerRepository : public QObject
 {
 	Q_OBJECT
@@ -47,3 +59,7 @@ private:
 	QList<ChatWidgetContainerHandler *> m_chatWidgetContainerHandlers;
 
 };
+
+/**
+ * @}
+ */

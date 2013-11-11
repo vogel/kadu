@@ -25,6 +25,19 @@
 class ChatWidget;
 class ChatWidgetContainerHandlerMapper;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetActivationService
+ * @short Class for handling activation of chat widgets.
+ *
+ * Activation of chat widget is not deterministic so it can only be done by
+ * tryActivateChatWidget(ChatWidget*) method. Chat activity status can be checked
+ * by isChatWidgetActive(ChatWidget*).
+ */
 class ChatWidgetActivationService : public QObject
 {
 	Q_OBJECT
@@ -42,3 +55,7 @@ private:
 	QWeakPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
 
 };
+
+/**
+ * @}
+ */

@@ -34,6 +34,24 @@ class MessageManager;
 class NotificationService;
 class UnreadMessageRepository;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetMessageHandler
+ * @short Bridge between chat widgets and messages.
+ *
+ * This class appends messages received from @see MessageManager and appends them
+ * to proper @see ChatWidget instances stored in @see ChatWidgetRepository. It can
+ * also request creation of new ChatWidget by @see ChatWidgetManager and activation
+ * by @see ChatWidgetActivationService if configured to do so.
+ *
+ * Configuration is passed as @see ChatWidgetMessageHandlerConfiguration.
+ * @see ChatWidgetMessageHandlerConfigurator can be used to automatically configure
+ * it based on configuration file.
+ */
 class ChatWidgetMessageHandler : public QObject
 {
 	Q_OBJECT
@@ -74,3 +92,7 @@ private slots:
 	void messageSent(const Message &message);
 
 };
+
+/**
+ * @}
+ */

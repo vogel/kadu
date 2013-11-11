@@ -38,16 +38,18 @@ class ChatWidget;
  * @class ChatWidgetRepository
  * @short Repository of ChatWidget instances.
  *
- * This repository holds instances of ChatWidget class.
+ * This repository holds instances of ChatWidget. All instances are owned
+ * by this class and can only be deleted by it.
  *
- * Instances are added and removed by addChatWidget(ChatWidget*) and
- * removeChatWidget(ChatWidget*) methods.
- * Access for them is provided by widgetForChat(Chat) and widgets() methods.
+ * Instances are added by addChatWidget(std::unique_ptr&lt;ChatWidget&gt;) which
+ * transfers ownership of chat widget to repository. It also emits
+ * chatWidgetAdded(ChatWidget*) signals.
  *
- * ChatWidget is also automatically removed when it is destroyed.
+ * Instances are removed by removeChatWidget(ChatWidget*) methods. Signal
+ * chatWidgetRemoved(ChatWidget*) is removed and chat widget is destroyed.
  *
- * Signals chatWidgetAdded(ChatWidget*) and chatWidgetRemoved(ChatWidget*)
- * are used to notify about changing content of this repository.
+ * Instances can be enumerated as ChatWidget* in standard for-range loop as
+ * begin() and end() iterators are provided.
  */
 class KADUAPI ChatWidgetRepository : public QObject
 {
@@ -57,25 +59,39 @@ public:
 	explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
 
+	/**
+	 * @short Begin iterator that returns ChatWidget *.
+	 */
 	ChatWidgetRepositoryIterator begin();
+
+	/**
+	 * @short Begin iterator that returns ChatWidget *.
+	 */
 	ChatWidgetRepositoryIterator end();
 
 	/**
 	 * @short Add new chatWidget to repository.
 	 *
-	 * Add new chatWidget to repository only if it is valid and not already in repository.
-	 * Signal chatWidgetAdded(ChatWidget*) is emitted after successfull add.
+	 * Add new chatWidget to repository only if it is valid and chat widget for given
+	 * chat is not already in repository. In other case argument is destroyed.
+	 *
+	 * In case of successfull addition ownership of chatWidget is taken by repository
+	 * and chatWidgetAdded(ChatWidget*) signal is emitted.
 	 */
 	void addChatWidget(std::unique_ptr<ChatWidget> chatWidget);
 
 	/**
-	 * @short Remove chatWidget from repository.
+	 * @short Remove chatWidget from repository and destroy it.
 	 *
 	 * Remove chatWidget from repository only if it is  already in repository.
 	 * Signal chatWidgetRemoved(ChatWidget*) is emitted after successfull removal.
+	 * Then provided chat widget is destroyed.
 	 */
 	void removeChatWidget(ChatWidget *chatWidget);
 
+	/**
+	 * @short Return true if repository has chat widget for given chat.
+	 */
 	bool hasWidgetForChat(const Chat &chat) const;
 
 	/**

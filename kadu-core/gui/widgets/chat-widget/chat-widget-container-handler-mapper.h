@@ -28,6 +28,25 @@ class ChatWidgetContainerHandler;
 class ChatWidgetContainerHandlerRepository;
 class ChatWidgetRepository;
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetContainerHandlerMapper
+ * @short Mapper between @see ChatWidget and @see ChatWidgetContainerHandler.
+ *
+ * This class maps all @see ChatWidget from given @see ChatWidgetRepository to
+ * @see ChatWidgetContainerHandler from given @see ChatWidgetContainerHandlerRepository.
+ *
+ * It reacts on changes of content of two provided repositories and adds/removes
+ * mapping as neccessary. It also reacts on chatWidgetAcceptanceChanged(ChatWidget*)
+ * from @see ChatWidgetContainerHandlerRepository to update mapping.
+ *
+ * When mapping is applied, @see ChatWidget is added to @see ChatWidgetContainerHandler.
+ * When mapping is removed, @see ChatWidget is removed to @see ChatWidgetContainerHandler.
+ */
 class ChatWidgetContainerHandlerMapper : public QObject
 {
 	Q_OBJECT
@@ -61,3 +80,7 @@ private slots:
 	void chatWidgetRemoved(ChatWidget *chatWidget);
 
 };
+
+/**
+ * @}
+ */

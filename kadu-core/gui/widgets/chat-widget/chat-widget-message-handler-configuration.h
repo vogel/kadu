@@ -19,6 +19,15 @@
 
 #pragma once
 
+/**
+ * @addtogroup Gui
+ * @{
+ */
+
+/**
+ * @class ChatWidgetMessageHandlerConfiguration
+ * @short Configuration for @see ChatWidgetMessageHandler.
+ */
 class ChatWidgetMessageHandlerConfiguration
 {
 
@@ -36,3 +45,7 @@ private:
 	bool m_openChatOnMessageOnlyWhenOnline;
 
 };
+
+/**
+ * @}
+ */
