@@ -84,11 +84,6 @@ public:
 	 */
 	ChatWidget * widgetForChat(const Chat &chat);
 
-	/**
-	 * @short Return complete mapping of Chat to ChatWidget* instances
-	 */
-	const QMap<Chat, ChatWidget *> & widgets() const;
-
 signals:
 	/**
 	 * @short Signal emitted when new ChatWidget was created for this repository.
