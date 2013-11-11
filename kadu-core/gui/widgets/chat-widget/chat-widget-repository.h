@@ -22,6 +22,7 @@
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
+#include "gui/widgets/chat-widget/chat-widget-repository-iterator.h"
 #include "exports.h"
 
 class ChatWidget;
@@ -53,6 +54,9 @@ class KADUAPI ChatWidgetRepository : public QObject
 public:
 	explicit ChatWidgetRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetRepository();
+
+	ChatWidgetRepositoryIterator begin();
+	ChatWidgetRepositoryIterator end();
 
 	/**
 	 * @short Add new chatWidget to repository.
@@ -105,6 +109,16 @@ private slots:
 	void widgetDestroyed(ChatWidget *chatWidget);
 
 };
+
+inline ChatWidgetRepositoryIterator begin(ChatWidgetRepository *chatWidgetRepository)
+{
+	return chatWidgetRepository->begin();
+}
+
+inline ChatWidgetRepositoryIterator end(ChatWidgetRepository *chatWidgetRepository)
+{
+	return chatWidgetRepository->end();
+}
 
 /**
  * @}

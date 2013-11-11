@@ -30,6 +30,16 @@ ChatWidgetRepository::~ChatWidgetRepository()
 {
 }
 
+ChatWidgetRepositoryIterator ChatWidgetRepository::begin()
+{
+	return ChatWidgetRepositoryIterator{m_widgets.begin()};
+}
+
+ChatWidgetRepositoryIterator ChatWidgetRepository::end()
+{
+	return ChatWidgetRepositoryIterator{m_widgets.end()};
+}
+
 void ChatWidgetRepository::addChatWidget(ChatWidget *chatWidget)
 {
 	if (!chatWidget || m_widgets.contains(chatWidget->chat()))
