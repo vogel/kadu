@@ -108,8 +108,8 @@ WordFix::~WordFix()
 	{
 		disconnect(chatWidgetRepository.data(), 0, this, 0);
 
-		foreach (ChatWidget *chat, chatWidgetRepository.data()->widgets())
-			chatWidgetRemoved(chat);
+		for (auto chatWidget : chatWidgetRepository.data())
+			chatWidgetRemoved(chatWidget);
 	}
 
 	kdebugf2();
@@ -126,7 +126,7 @@ void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository
 		connect(this->chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
 			this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
-		foreach (ChatWidget *chatWidget, this->chatWidgetRepository.data()->widgets())
+		for (auto chatWidget : this->chatWidgetRepository.data())
 			chatWidgetAdded(chatWidget);
 	}
 }

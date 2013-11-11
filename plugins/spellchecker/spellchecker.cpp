@@ -197,8 +197,8 @@ bool SpellChecker::addCheckedLang(const QString &name)
 	}
 
 	if ((MyCheckers.size() == 1) && m_chatWidgetRepository)
-		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
-			chatWidgetAdded(chat);
+		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
+			chatWidgetAdded(chatWidget);
 
 	return true;
 }

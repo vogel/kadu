@@ -66,7 +66,7 @@ EncryptionManager::~EncryptionManager()
 	{
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-		foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
 			chatWidgetRemoved(chatWidget);
 	}
 
@@ -80,7 +80,7 @@ void EncryptionManager::setChatWidgetRepository(ChatWidgetRepository *chatWidget
 	if (!m_chatWidgetRepository)
 		return;
 
-	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+	for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
 		chatWidgetAdded(chatWidget);
 
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)),

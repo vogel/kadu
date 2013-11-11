@@ -217,8 +217,8 @@ MediaPlayer::~MediaPlayer()
 	{
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetRemoved(it);
+		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
+			chatWidgetRemoved(chatWidget);
 	}
 
 	delete menu;
@@ -243,8 +243,8 @@ void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
-		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetAdded(it);
+		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
+			chatWidgetAdded(chatWidget);
 	}
 }
 
@@ -673,11 +673,11 @@ ChatWidget *MediaPlayer::getCurrentChat()
 
 	// Now for each chat window we check,
 	// if it's an active one.
-	foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
+	for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
 	{
 		//if (chat->isActiveWindow())
-		if (chat->edit() == QApplication::focusWidget() || chat->hasFocus())
-			return chat;
+		if (chatWidget->edit() == QApplication::focusWidget() || chatWidget->hasFocus())
+			return chatWidget;
 	}
 
 	return 0;

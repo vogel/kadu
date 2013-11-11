@@ -27,8 +27,8 @@
 #include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
-#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
+#include "gui/widgets/chat-widget/chat-widget-repository.h"
 #include "status/status-container.h"
 #include "buddy.h"
 
@@ -144,7 +144,7 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy,
 		return Contact::null;
 
 	Contact result;
-	foreach (ChatWidget *chatwidget, m_chatWidgetRepository.data()->widgets())
+	for (auto chatwidget : m_chatWidgetRepository.data())
 	{
 		Chat chat = chatwidget->chat();
 		if (chat.contacts().isEmpty())

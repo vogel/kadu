@@ -632,7 +632,7 @@ void TabsManager::store()
 	if (!m_chatWidgetRepository)
 		return;
 
-	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+	for (auto *chatWidget : m_chatWidgetRepository.data())
 	{
 		if (!chatWidget)
 			continue;

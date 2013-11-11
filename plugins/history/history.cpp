@@ -408,7 +408,7 @@ void History::registerStorage(HistoryStorage *storage)
 	startSaveThread();
 
 	if (m_chatWidgetRepository)
-		foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
+		for (ChatWidget *chat : m_chatWidgetRepository.data())
 			chatWidgetAdded(chat);
 
 	foreach (const Account &account, AccountManager::instance()->items())
