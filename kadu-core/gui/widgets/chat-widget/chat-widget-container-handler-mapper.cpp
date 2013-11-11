@@ -68,8 +68,8 @@ ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::chatWidgetContain
 
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	connect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)),
-			this, SLOT(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)));
+	connect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)),
+			this, SLOT(chatWidgetAcceptanceChanged(ChatWidget*)));
 
 	auto chatWidgets = m_mapping.keys();
 	for (auto chatWidget : chatWidgets)
@@ -82,8 +82,8 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(Chat
 
 void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	disconnect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)),
-			   this, SLOT(chatWidgetAcceptanceChanged(ChatWidgetContainerHandler*,ChatWidget*)));
+	disconnect(chatWidgetContainerHandler, SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)),
+			   this, SLOT(chatWidgetAcceptanceChanged(ChatWidget*)));
 
 	auto chatWidgets = m_mapping.keys(chatWidgetContainerHandler);
 	for (auto chatWidget : chatWidgets)
@@ -93,10 +93,8 @@ void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(Ch
 	}
 }
 
-void ChatWidgetContainerHandlerMapper::chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget)
+void ChatWidgetContainerHandlerMapper::chatWidgetAcceptanceChanged(ChatWidget *chatWidget)
 {
-	Q_UNUSED(chatWidgetContainerHandler);
-
 	unmap(chatWidget);
 	mapToDefault(chatWidget);
 }

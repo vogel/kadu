@@ -36,7 +36,7 @@ void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 	m_tabsManager = tabsManager;
 
 	connect(m_tabsManager.data(), SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)),
-			this, SLOT(chatWidgetAcceptanceChangedSlot(ChatWidget*)));
+			this, SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)));
 }
 
 void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
@@ -77,9 +77,4 @@ void TabsChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidge
 {
 	if (m_tabWidget)
 		m_tabWidget.data()->tryActivateChatWidget(chatWidget);
-}
-
-void TabsChatWidgetContainerHandler::chatWidgetAcceptanceChangedSlot(ChatWidget *chatWidget)
-{
-	emit chatWidgetAcceptanceChanged(this, chatWidget);
 }

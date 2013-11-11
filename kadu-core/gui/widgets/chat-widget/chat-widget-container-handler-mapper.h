@@ -55,7 +55,7 @@ private:
 private slots:
 	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
+	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
 
 	void chatWidgetAdded(ChatWidget *chatWidget);
 	void chatWidgetRemoved(ChatWidget *chatWidget);

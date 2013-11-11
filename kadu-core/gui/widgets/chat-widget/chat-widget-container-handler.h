@@ -41,6 +41,6 @@ public:
 	virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
 
 signals:
-	void chatWidgetAcceptanceChanged(ChatWidgetContainerHandler *chatWidgetContainerHandler, ChatWidget *chatWidget);
+	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
 
 };
