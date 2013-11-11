@@ -17,32 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat-widget-factory.h"
+#pragma once
 
-#include "formatted-string/formatted-string-factory.h"
-#include "gui/widgets/chat-widget/chat-widget.h"
-#include "misc/misc-memory.h"
+#include <memory>
 
-ChatWidgetFactory::ChatWidgetFactory(QObject *parent) :
-		QObject(parent)
+template<typename T, typename ...Args>
+std::unique_ptr<T> make_unique(Args&& ...args)
 {
+	return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
-
-ChatWidgetFactory::~ChatWidgetFactory()
-{
-}
-
-void ChatWidgetFactory::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
-{
-	m_formattedStringFactory = formattedStringFactory;
-}
-
-std::unique_ptr<ChatWidget> ChatWidgetFactory::createChatWidget(Chat chat)
-{
-	auto result = make_unique<ChatWidget>(chat);
-	result.get()->setFormattedStringFactory(m_formattedStringFactory.data());
-
-	return result;
-}
-
-#include "moc_chat-widget-factory.cpp"
