@@ -40,7 +40,7 @@ class ChatWidget;
  *
  * Instances are added and removed by addChatWidget(ChatWidget*) and
  * removeChatWidget(ChatWidget*) methods.
- * Access for them is provided by widgetForChat(Chat).
+ * Access for them is provided by widgetForChat(Chat) and widgets() methods.
  *
  * ChatWidget is also automatically removed when it is destroyed.
  *
@@ -80,6 +80,11 @@ public:
 	 * it is returned. Else nullptr is returned.
 	 */
 	ChatWidget * widgetForChat(const Chat &chat);
+
+	/**
+	 * @short Return complete mapping of Chat to ChatWidget* instances
+	 */
+	const QMap<Chat, ChatWidget *> & widgets() const;
 
 	void forEach(std::function<void(ChatWidget *)> function) const;
 
