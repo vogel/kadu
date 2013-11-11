@@ -19,10 +19,11 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include "chat/chat.h"
 #include "exports.h"
+
+#include <functional>
+#include <QtCore/QObject>
 
 class ChatWidget;
 
@@ -84,6 +85,8 @@ public:
 	 * @short Return complete mapping of Chat to ChatWidget* instances
 	 */
 	const QMap<Chat, ChatWidget *> & widgets() const;
+
+	void forEach(std::function<void(ChatWidget *)> function) const;
 
 signals:
 	/**

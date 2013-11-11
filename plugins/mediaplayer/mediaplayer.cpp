@@ -217,8 +217,7 @@ MediaPlayer::~MediaPlayer()
 	{
 		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetRemoved(it);
+		m_chatWidgetRepository.data()->forEach([this](ChatWidget *chatWidget){ chatWidgetRemoved(chatWidget); });
 	}
 
 	delete menu;
@@ -243,8 +242,7 @@ void MediaPlayer::setChatWidgetRepository(ChatWidgetRepository *chatWidgetReposi
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
 		connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
-		foreach (ChatWidget *it, m_chatWidgetRepository.data()->widgets())
-			chatWidgetAdded(it);
+		m_chatWidgetRepository.data()->forEach([this](ChatWidget *chatWidget){ chatWidgetAdded(chatWidget); });
 	}
 }
 
@@ -664,23 +662,14 @@ QString MediaPlayer::formatLength(int length)
 	return ms;
 }
 
-ChatWidget *MediaPlayer::getCurrentChat()
+ChatWidget * MediaPlayer::getCurrentChat()
 {
 	kdebugf();
 
 	if (!m_chatWidgetRepository)
 		return 0;
 
-	// Now for each chat window we check,
-	// if it's an active one.
-	foreach (ChatWidget *chat, m_chatWidgetRepository.data()->widgets())
-	{
-		//if (chat->isActiveWindow())
-		if (chat->edit() == QApplication::focusWidget() || chat->hasFocus())
-			return chat;
-	}
-
-	return 0;
+	return qobject_cast<ChatWidget *>(QApplication::focusWidget());
 }
 
 void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggled)

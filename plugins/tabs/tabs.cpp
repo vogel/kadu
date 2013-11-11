@@ -632,18 +632,18 @@ void TabsManager::store()
 	if (!m_chatWidgetRepository)
 		return;
 
-	foreach (ChatWidget *chatWidget, m_chatWidgetRepository.data()->widgets())
+	m_chatWidgetRepository.data()->forEach([this,storageFile,point](ChatWidget *chatWidget)
 	{
 		if (!chatWidget)
-			continue;
+			return;
 
 		Chat chat = chatWidget->chat();
 
 		if (!chat)
-			continue;
+			return;
 
 		if ((TabDialog->indexOf(chatWidget) == -1) && (DetachedChats.indexOf(chatWidget) == -1))
-			continue;
+			return;
 
 		QDomElement window_elem = storageFile->createElement(point, "Tab");
 
@@ -652,7 +652,7 @@ void TabsManager::store()
 			window_elem.setAttribute("type", "tab");
 		else if (DetachedChats.indexOf(chatWidget) != -1)
 			window_elem.setAttribute("type", "detachedChat");
-	}
+	});
 }
 
 bool TabsManager::shouldStore()
