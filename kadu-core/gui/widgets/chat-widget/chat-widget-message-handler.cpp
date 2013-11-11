@@ -62,7 +62,8 @@ void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *cha
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
 
-	m_chatWidgetRepository.data()->forEach([this](ChatWidget *chatWidget){ chatWidgetAdded(chatWidget); });
+	for (auto chatWidget : m_chatWidgetRepository.data()->widgets())
+		chatWidgetAdded(chatWidget);
 }
 
 void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)

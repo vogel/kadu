@@ -85,11 +85,17 @@ void ChatNotifier::notify(Notification *notification)
 	if (chatNotification)
 		buddies = chatNotification->chat().contacts().toBuddySet();
 
-	m_chatWidgetRepository.data()->forEach([=,&buddies](ChatWidget *chatWidget)
+	auto i = m_chatWidgetRepository.data()->widgets().constBegin();
+	auto end = m_chatWidgetRepository.data()->widgets().constEnd();
+
+	while (i != end)
 	{
-		if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
-			sendNotificationToChatWidget(latestNotification, chatWidget);
-	});
+		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
+		if (buddies.isEmpty() || !i.key().contacts().toBuddySet().intersect(buddies).isEmpty())
+			sendNotificationToChatWidget(latestNotification, i.value());
+
+		i++;
+	}
 }
 
 #include "moc_chat-notifier.cpp"

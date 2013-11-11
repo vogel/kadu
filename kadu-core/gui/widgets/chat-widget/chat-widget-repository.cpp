@@ -63,12 +63,6 @@ const QMap<Chat, ChatWidget *> & ChatWidgetRepository::widgets() const
 	return m_widgets;
 }
 
-void ChatWidgetRepository::forEach(std::function<void(ChatWidget *)> function) const
-{
-	for (auto chatWidget : m_widgets)
-		function(chatWidget);
-}
-
 void ChatWidgetRepository::widgetDestroyed(ChatWidget *chatWidget)
 {
 	removeChatWidget(chatWidget);

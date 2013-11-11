@@ -144,16 +144,16 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy,
 		return Contact::null;
 
 	Contact result;
-	m_chatWidgetRepository.data()->forEach([=,&result](ChatWidget *chatWidget)
+	foreach (ChatWidget *chatwidget, m_chatWidgetRepository.data()->widgets())
 	{
-		Chat chat = chatWidget->chat();
+		Chat chat = chatwidget->chat();
 		if (chat.contacts().isEmpty())
-			return;
+			continue;
 		Contact contact = *chat.contacts().constBegin();
 		if (contact.ownerBuddy() != buddy)
-			return;
+			continue;
 		result = morePreferredContactByStatus(result, contact, account);
-	});
+	}
 	return result;
 }
 
