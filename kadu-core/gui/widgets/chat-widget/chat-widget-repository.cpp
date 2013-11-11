@@ -58,11 +58,6 @@ ChatWidget * ChatWidgetRepository::widgetForChat(const Chat &chat)
 	return m_widgets.value(chat);
 }
 
-const QMap<Chat, ChatWidget *> & ChatWidgetRepository::widgets() const
-{
-	return m_widgets;
-}
-
 void ChatWidgetRepository::forEach(std::function<void(ChatWidget *)> function) const
 {
 	for (auto chatWidget : m_widgets)
