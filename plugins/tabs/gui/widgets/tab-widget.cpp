@@ -217,8 +217,6 @@ void TabWidget::messageReceived(ChatWidget *chatWidget)
 
 void TabWidget::closeTab(QWidget *tabWidget)
 {
-	printf("void TabWidget::closeTab(QWidget *tabWidget)\n");
-
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);
 	if (!chatWidget)
 		return;
