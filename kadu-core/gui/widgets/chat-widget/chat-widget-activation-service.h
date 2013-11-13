@@ -23,7 +23,9 @@
 #include <QtCore/QWeakPointer>
 
 class ChatWidget;
+class ChatWidgetContainerHandler;
 class ChatWidgetContainerHandlerMapper;
+class ChatWidgetContainerHandlerRepository;
 
 /**
  * @addtogroup Gui
@@ -47,12 +49,21 @@ public:
 	virtual ~ChatWidgetActivationService();
 
 	void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
+	void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 
 	bool isChatWidgetActive(ChatWidget *chatWidget) const;
 	void tryActivateChatWidget(ChatWidget *chatWidget);
 
+signals:
+	void chatWidgetActivated(ChatWidget *chatWidget);
+
 private:
 	QWeakPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
+	QWeakPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+
+private slots:
+	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 
 };
 

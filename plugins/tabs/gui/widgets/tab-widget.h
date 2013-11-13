@@ -194,6 +194,7 @@ public slots:
 	virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 signals:
+	void chatWidgetActivated(ChatWidget *chatWidget);
 	void contextMenu(QWidget *w, const QPoint &pos);
 	void openTab(QStringList altnicks, int index);
 

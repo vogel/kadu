@@ -208,7 +208,7 @@ void TabWidget::messageReceived(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		chatWidget->markActive();
+		emit chatWidgetActivated(chatWidget);
 		return;
 	}
 
@@ -423,7 +423,7 @@ void TabWidget::changeEvent(QEvent *event)
 		kdebugf();
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(currentWidget());
 		if (chatWidget && _isActiveWindow(this))
-			chatWidget->markActive();
+			emit chatWidgetActivated(chatWidget);
 		kdebugf2();
 	}
 }

@@ -156,7 +156,7 @@ void SingleWindow::changeEvent(QEvent *event)
 		ChatWidget *chatWidget = static_cast<ChatWidget *>(m_tabs->currentWidget());
 		if (chatWidget && _isActiveWindow(this))
 		{
-			chatWidget->markActive();
+			emit chatWidgetActivated(chatWidget);
 			updateTabIcon(chatWidget);
 			updateTabName(chatWidget);
 		}
@@ -307,7 +307,7 @@ void SingleWindow::messageReceived(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		chatWidget->markActive();
+		emit chatWidgetActivated(chatWidget);
 		return;
 	}
 
@@ -326,7 +326,8 @@ void SingleWindow::onTabChange(int index)
 		return;
 
 	ChatWidget *chatWidget = (ChatWidget *)m_tabs->widget(index);
-	chatWidget->markActive();
+	if (isChatWidgetActive(chatWidget))
+		emit chatWidgetActivated(chatWidget);
 	updateTabIcon(chatWidget);
 	updateTabName(chatWidget);
 }

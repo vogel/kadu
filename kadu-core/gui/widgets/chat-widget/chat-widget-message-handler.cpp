@@ -45,6 +45,12 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 void ChatWidgetMessageHandler::setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService)
 {
 	m_chatWidgetActivationService = chatWidgetActivationService;
+
+	if (!m_chatWidgetActivationService)
+		return;
+
+	connect(m_chatWidgetActivationService.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
+			this, SLOT(chatWidgetActivated(ChatWidget*)));
 }
 
 void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
@@ -94,7 +100,6 @@ void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfigur
 
 void ChatWidgetMessageHandler::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	connect(chatWidget, SIGNAL(activated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 	appendAllUnreadMessages(chatWidget);
 }
 
@@ -102,8 +107,6 @@ void ChatWidgetMessageHandler::chatWidgetRemoved(ChatWidget *chatWidget)
 {
 	auto chat = chatWidget->chat();
 	chat.removeProperty("message:unreadMessagesAppended");
-
-	disconnect(chatWidget, SIGNAL(activated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
 }
 
 void ChatWidgetMessageHandler::chatWidgetActivated(ChatWidget *chatWidget)

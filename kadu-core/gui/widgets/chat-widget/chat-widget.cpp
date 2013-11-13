@@ -677,11 +677,6 @@ void ChatWidget::requestClose()
 	emit closeRequested(this);
 }
 
-void ChatWidget::markActive()
-{
-	emit activated(this);
-}
-
 void ChatWidget::verticalSplitterMoved(int pos, int index)
 {
 	Q_UNUSED(pos)

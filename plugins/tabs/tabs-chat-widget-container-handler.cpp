@@ -37,11 +37,15 @@ void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 
 	connect(m_tabsManager.data(), SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)),
 			this, SIGNAL(chatWidgetAcceptanceChanged(ChatWidget*)));
+	connect(m_tabsManager.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
+			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
 void TabsChatWidgetContainerHandler::setTabWidget(TabWidget *tabWidget)
 {
 	m_tabWidget = tabWidget;
+	connect(m_tabWidget.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
+			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
 bool TabsChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const

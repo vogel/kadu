@@ -21,6 +21,7 @@
 
 #include "gui/widgets/chat-widget/chat-widget-container-handler.h"
 #include "gui/widgets/chat-widget/chat-widget-container-handler-mapper.h"
+#include "gui/widgets/chat-widget/chat-widget-container-handler-repository.h"
 
 ChatWidgetActivationService::ChatWidgetActivationService(QObject *parent) :
 		QObject{parent}
@@ -34,6 +35,31 @@ ChatWidgetActivationService::~ChatWidgetActivationService()
 void ChatWidgetActivationService::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
 {
 	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
+}
+
+void ChatWidgetActivationService::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+
+	if (!m_chatWidgetContainerHandlerRepository)
+		return;
+
+	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)),
+			this, SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)));
+	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)),
+			this, SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)));
+}
+
+void ChatWidgetActivationService::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+{
+	connect(chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget*)),
+			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+}
+
+void ChatWidgetActivationService::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+{
+	disconnect(chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget*)),
+			   this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
 bool ChatWidgetActivationService::isChatWidgetActive(ChatWidget *chatWidget) const

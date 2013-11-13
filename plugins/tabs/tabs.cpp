@@ -293,7 +293,7 @@ void TabsManager::onTabChange(int index)
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
 	{
-		chatWidget->markActive();
+		emit chatWidgetActivated(chatWidget);
 		updateTabName(chatWidget);
 
 		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
@@ -428,7 +428,7 @@ void TabsManager::onTimer()
 			{
 				if (currentChatWidget == chatWidget)
 				{
-					chatWidget->markActive();
+					emit chatWidgetActivated(chatWidget);
 					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
 				}
 

@@ -62,6 +62,7 @@ void WindowChatWidgetContainerHandler::addChatWidget(ChatWidget *chatWidget)
 			return;
 
 		m_chatWindowRepository.data()->addChatWindow(chatWindow);
+		connect(chatWindow, SIGNAL(activated(ChatWindow*)), this, SLOT(chatWindowActivated(ChatWindow*)));
 	}
 
 	chatWindow->show();
@@ -95,6 +96,12 @@ void WindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWid
 	auto chatWindow = m_chatWindowRepository.data()->windowForChatWidget(chatWidget);
 	if (chatWindow)
 		_activateWindow(chatWindow);
+}
+
+void WindowChatWidgetContainerHandler::chatWindowActivated(ChatWindow *chatWindow)
+{
+	if (chatWindow && chatWindow->chatWidget())
+		emit chatWidgetActivated(chatWindow->chatWidget());
 }
 
 #include "moc_window-chat-widget-container-handler.cpp"

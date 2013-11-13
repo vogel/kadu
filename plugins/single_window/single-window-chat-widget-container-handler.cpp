@@ -33,6 +33,9 @@ SingleWindowChatWidgetContainerHandler::~SingleWindowChatWidgetContainerHandler(
 void SingleWindowChatWidgetContainerHandler::setSingleWindow(SingleWindow *singleWindow)
 {
 	m_singleWindow = singleWindow;
+
+	connect(m_singleWindow.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
+			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
 }
 
 bool SingleWindowChatWidgetContainerHandler::acceptChatWidget(ChatWidget *chatWidget) const

@@ -24,6 +24,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+class ChatWindow;
 class ChatWindowFactory;
 class ChatWindowRepository;
 
@@ -48,5 +49,8 @@ public:
 private:
 	QWeakPointer<ChatWindowFactory> m_chatWindowFactory;
 	QWeakPointer<ChatWindowRepository> m_chatWindowRepository;
+
+private slots:
+	void chatWindowActivated(ChatWindow *chatWindow);
 
 };

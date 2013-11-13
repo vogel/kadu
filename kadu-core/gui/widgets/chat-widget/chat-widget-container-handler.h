@@ -88,6 +88,11 @@ public:
 
 signals:
 	/**
+	 * @short Signal emitted when given chat widget was activated.
+	 */
+	void chatWidgetActivated(ChatWidget *chatWidget);
+
+	/**
 	 * @short Signal emitted when acceptance state for given chat widget changes.
 	 */
 	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);

@@ -60,6 +60,7 @@ public slots:
 	void showNewMessagesNumInTitle();
 
 signals:
+	void activated(ChatWindow *chatWindow);
 	void windowDestroyed(ChatWindow *chatWindow);
 
 protected:

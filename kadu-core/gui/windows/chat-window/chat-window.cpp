@@ -228,7 +228,7 @@ void ChatWindow::changeEvent(QEvent *event)
 		kdebugf();
 		if (_isActiveWindow(this))
 		{
-			m_chatWidget->markActive();
+			emit activated(this);
 			setWindowTitle(m_chatWidget->title());
 			m_titleTimer->stop();
 		}
@@ -250,7 +250,7 @@ void ChatWindow::messageReceived(ChatWidget *chatWidget)
 
 	if (isChatWidgetActive(chatWidget))
 	{
-		m_chatWidget->markActive();
+		emit activated(this);
 		return;
 	}
 

@@ -34,6 +34,9 @@ public:
 	int rosterPosition() { return m_rosterPos; }
 	void changeRosterPos(int newRosterPos);
 
+signals:
+	void chatWidgetActivated(ChatWidget *chatWidget);
+
 public slots:
 	void onTabChange(int index);
 	void onChatKeyPressed(QKeyEvent *e, CustomInput *w, bool &handled);

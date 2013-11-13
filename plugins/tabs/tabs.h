@@ -152,6 +152,7 @@ public slots:
 	void closeChat();
 
 signals:
+	void chatWidgetActivated(ChatWidget *chatWidget);
 	void chatWidgetAcceptanceChanged(ChatWidget *chatWidget);
 
 };

@@ -618,6 +618,7 @@ void Core::runServices()
 
 	CurrentChatWidgetActivationService = new ChatWidgetActivationService(this);
 	CurrentChatWidgetActivationService->setChatWidgetContainerHandlerMapper(CurrentChatWidgetContainerHandlerMapper);
+	CurrentChatWidgetActivationService->setChatWidgetContainerHandlerRepository(CurrentChatWidgetContainerHandlerRepository);
 
 	CurrentChatWidgetManager = new ChatWidgetManager(this);
 	CurrentChatWidgetManager->setChatWidgetActivationService(CurrentChatWidgetActivationService);

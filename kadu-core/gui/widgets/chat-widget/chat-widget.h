@@ -161,7 +161,6 @@ public slots:
 	void clearChatWindow();
 
 	void requestClose();
-	void markActive();
 
 	/**
 	 * @author Rafal 'Vogel' Malinowski
@@ -182,7 +181,6 @@ signals:
 	void widgetDestroyed(Chat chat);
 	void widgetDestroyed(ChatWidget *widget);
 
-	void activated(ChatWidget *chatWidget);
 	void closeRequested(ChatWidget *chatWidget);
 
 };
