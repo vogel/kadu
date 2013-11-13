@@ -247,7 +247,7 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 	NewChats.removeAll(chatWidget);
 	DetachedChats.removeAll(chatWidget);
 
-	removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
+	setChatWidgetNeedAttention(chatWidget, false);
 
 	disconnect(chatWidget->edit(), 0, TabDialog, 0);
 	disconnect(chatWidget, 0, this, 0);
@@ -296,7 +296,7 @@ void TabsManager::onTabChange(int index)
 		emit chatWidgetActivated(chatWidget);
 		updateTabName(chatWidget);
 
-		removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
+		setChatWidgetNeedAttention(chatWidget, false);
 	}
 
 	TabDialog->setWindowTitle(chatWidget->title());
@@ -385,25 +385,12 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	kdebugf2();
 }
 
-void TabsManager::addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget)
+void TabsManager::setChatWidgetNeedAttention(ChatWidget *chatWidget, bool attention)
 {
-	if (ChatsWithNewMessages.contains(chatWidget))
-		return;
-
-	ChatsWithNewMessages.append(chatWidget);
 	updateTabIcon(chatWidget);
 
-	if (!Timer.isActive())
+	if (attention && !Timer.isActive())
 		QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
-}
-
-void TabsManager::removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget)
-{
-	if (!ChatsWithNewMessages.contains(chatWidget))
-		return;
-
-	ChatsWithNewMessages.removeAll(chatWidget);
-	updateTabIcon(chatWidget);
 }
 
 // uff, troche dziwne to ale dziala tak jak trzeba
@@ -420,16 +407,16 @@ void TabsManager::onTimer()
 	for (int i = TabDialog->count() -1; i >= 0; i--)
 	{
 		chatWidget = static_cast<ChatWidget *>(TabDialog->widget(i));
+		auto chat = chatWidget->chat();
 
-		// czy trzeba cos robia ?
-		if (ChatsWithNewMessages.contains(chatWidget))
+		if (chat.unreadMessagesCount() > 0)
 		{
 			if (tabsActive)
 			{
 				if (currentChatWidget == chatWidget)
 				{
 					emit chatWidgetActivated(chatWidget);
-					removeChatWidgetFromChatWidgetsWithMessage(chatWidget);
+					setChatWidgetNeedAttention(chatWidget, false);
 				}
 
 				TabDialog->setWindowTitle(currentChatWidget->title());
@@ -466,12 +453,30 @@ void TabsManager::onTimer()
 
 	msg = !msg;
 
-	if (!ChatsWithNewMessages.isEmpty() && !Timer.isActive())
+	bool shouldRunTimer = hasChatWidgetWithUnreadMessages();
+	if (shouldRunTimer && !Timer.isActive())
 		Timer.start(500);
-	else if (ChatsWithNewMessages.isEmpty() && Timer.isActive())
+	else if (!shouldRunTimer && Timer.isActive())
 		Timer.stop();
 
 	kdebugf2();
+}
+
+bool TabsManager::hasChatWidgetWithUnreadMessages() const
+{
+	auto count = TabDialog->count();
+	for (auto i = 0; i < count; i++)
+	{
+		auto chatWidget = qobject_cast<ChatWidget *>(TabDialog->widget(i));
+		if (chatWidget)
+		{
+			auto chat = chatWidget->chat();
+			if (chat.unreadMessagesCount() > 0)
+				return true;
+		}
+	}
+
+	return false;
 }
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)

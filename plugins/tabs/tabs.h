@@ -65,7 +65,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	ActionDescription *AttachToTabsActionDescription;
 	TabWidget *TabDialog;
 	QTimer Timer;
-	QList<ChatWidget *> ChatsWithNewMessages;
 	QList<ChatWidget *> NewChats;
 	QList<ChatWidget *> DetachedChats;
 	QList<Chat> ClosedChats;
@@ -92,6 +91,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	int ConfigMinTabs;
 	bool ConfigBlinkChatTitle;
 	bool ConfigShowNewMessagesNum;
+
+	bool hasChatWidgetWithUnreadMessages() const;
 
 private slots:
 	void onTimer();
@@ -129,8 +130,7 @@ public:
 
 	void setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip);
 
-	void addChatWidgetToChatWidgetsWithMessage(ChatWidget *chatWidget);
-	void removeChatWidgetFromChatWidgetsWithMessage(ChatWidget *chatWidget);
+	void setChatWidgetNeedAttention(ChatWidget *chatWidget, bool attention);
 
 	bool acceptChatWidget(ChatWidget *chatWidget) const;
 	void addChatWidget(ChatWidget *chatWidget);

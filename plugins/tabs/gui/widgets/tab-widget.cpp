@@ -212,7 +212,7 @@ void TabWidget::messageReceived(ChatWidget *chatWidget)
 		return;
 	}
 
-	Manager->addChatWidgetToChatWidgetsWithMessage(chatWidget);
+	Manager->setChatWidgetNeedAttention(chatWidget, true);
 }
 
 void TabWidget::closeTab(QWidget *tabWidget)
