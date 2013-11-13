@@ -62,7 +62,7 @@ public:
 	QVector<Chat> loadChats() const;
 
 	/**
-	 * @short Stored list of chats to persistent storage.
+	 * @short Store list of chats to persistent storage.
 	 */
 	void storeChats(const QVector<Chat> &chats);
 
