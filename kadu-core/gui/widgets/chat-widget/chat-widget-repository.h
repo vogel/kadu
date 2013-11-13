@@ -37,6 +37,7 @@ class ChatWidget;
 /**
  * @class ChatWidgetRepository
  * @short Repository of ChatWidget instances.
+ * @note This class is experimental in Kadu, watch for unique_ptr!
  *
  * This repository holds instances of ChatWidget. All instances are owned
  * by this class and can only be deleted by it.
