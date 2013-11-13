@@ -20,10 +20,11 @@
 #include "storage-point-factory.h"
 
 #include "configuration/xml-configuration-file.h"
+#include "misc/misc-memory.h"
 #include "storage/storage-point.h"
 
 StoragePointFactory::StoragePointFactory(QObject *parent) :
-		QObject(parent), m_configurationFile(0)
+		QObject{parent}, m_configurationFile{}
 {
 }
 
@@ -39,13 +40,13 @@ void StoragePointFactory::setConfigurationFile(XmlConfigFile *configurationFile)
 std::unique_ptr<StoragePoint> StoragePointFactory::createStoragePoint(const QString &nodeName, StoragePoint *parent)
 {
 	if (!m_configurationFile || nodeName.isEmpty())
-		return std::unique_ptr<StoragePoint>();
+		return {};
 
 	if (!parent)
-		return std::unique_ptr<StoragePoint>(new StoragePoint(m_configurationFile, m_configurationFile->getNode(nodeName)));
+		return make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
 
 	Q_ASSERT(parent->storage() == m_configurationFile);
 
 	auto node = m_configurationFile->getNode(parent->point(), nodeName);
-	return std::unique_ptr<StoragePoint>(new StoragePoint(m_configurationFile, node));
+	return make_unique<StoragePoint>(m_configurationFile, node);
 }
