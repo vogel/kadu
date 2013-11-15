@@ -202,19 +202,6 @@ void TabWidget::tryActivateChatWidget(ChatWidget *chatWidget)
 	chatWidget->edit()->setFocus();
 }
 
-void TabWidget::messageReceived(ChatWidget *chatWidget)
-{
-	Q_ASSERT(chatWidget);
-
-	if (isChatWidgetActive(chatWidget))
-	{
-		emit chatWidgetActivated(chatWidget);
-		return;
-	}
-
-	Manager->setChatWidgetNeedAttention(chatWidget, true);
-}
-
 void TabWidget::closeTab(QWidget *tabWidget)
 {
 	ChatWidget *chatWidget = qobject_cast<ChatWidget *>(tabWidget);

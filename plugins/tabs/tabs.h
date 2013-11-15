@@ -130,8 +130,6 @@ public:
 
 	void setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip);
 
-	void setChatWidgetNeedAttention(ChatWidget *chatWidget, bool attention);
-
 	bool acceptChatWidget(ChatWidget *chatWidget) const;
 	void addChatWidget(ChatWidget *chatWidget);
 	void removeChatWidget(ChatWidget *chatWidget);
@@ -150,6 +148,7 @@ public slots:
 	void attachToTabsActionCreated(Action *action);
 
 	void closeChat();
+	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 
 signals:
 	void chatWidgetActivated(ChatWidget *chatWidget);

@@ -175,8 +175,6 @@ public:
 	void tryActivateChatWidget(ChatWidget *chatWidget);
 
 public slots:
-	void messageReceived(ChatWidget *chatWidget);
-
 	/**
 	* Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji
 	* okna chat. Odpowiada za skórty klawiaturowe modułu, Jeśli handled

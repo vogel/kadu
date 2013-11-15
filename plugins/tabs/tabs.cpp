@@ -247,8 +247,6 @@ void TabsManager::onDestroyingChat(ChatWidget *chatWidget)
 	NewChats.removeAll(chatWidget);
 	DetachedChats.removeAll(chatWidget);
 
-	setChatWidgetNeedAttention(chatWidget, false);
-
 	disconnect(chatWidget->edit(), 0, TabDialog, 0);
 	disconnect(chatWidget, 0, this, 0);
 
@@ -292,12 +290,7 @@ void TabsManager::onTabChange(int index)
 
 	const Chat &chat = chatWidget->chat();
 	if (chat.unreadMessagesCount() > 0)
-	{
 		emit chatWidgetActivated(chatWidget);
-		updateTabName(chatWidget);
-
-		setChatWidgetNeedAttention(chatWidget, false);
-	}
 
 	TabDialog->setWindowTitle(chatWidget->title());
 	TabDialog->setWindowIcon(chatWidget->icon());
@@ -375,7 +368,8 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	connect(chatWidget->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)),
 			TabDialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 
-	connect(chatWidget, SIGNAL(messageReceived(ChatWidget*)), TabDialog, SLOT(messageReceived(ChatWidget*)));
+	connect(chatWidget, SIGNAL(unreadMessagesCountChanged(ChatWidget*)),
+			this, SLOT(unreadMessagesCountChanged(ChatWidget*)));
 	connect(chatWidget, SIGNAL(iconChanged()), this, SLOT(onIconChanged()));
 	connect(chatWidget, SIGNAL(titleChanged(ChatWidget * , const QString &)),
 			this, SLOT(onTitleChanged(ChatWidget *, const QString &)));
@@ -383,14 +377,6 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 	CloseOtherTabsMenuAction->setEnabled(TabDialog->count() > 1);
 
 	kdebugf2();
-}
-
-void TabsManager::setChatWidgetNeedAttention(ChatWidget *chatWidget, bool attention)
-{
-	updateTabIcon(chatWidget);
-
-	if (attention && !Timer.isActive())
-		QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
 }
 
 // uff, troche dziwne to ale dziala tak jak trzeba
@@ -414,10 +400,7 @@ void TabsManager::onTimer()
 			if (tabsActive)
 			{
 				if (currentChatWidget == chatWidget)
-				{
 					emit chatWidgetActivated(chatWidget);
-					setChatWidgetNeedAttention(chatWidget, false);
-				}
 
 				TabDialog->setWindowTitle(currentChatWidget->title());
 			}
@@ -723,7 +706,7 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 			? baseTabName.left(tabTextLimit) + "..."
 			: baseTabName;
 
-	if (chat.unreadMessagesCount() > 0)
+	if (chatWidget->unreadMessagesCount() > 0)
 		setTabTextAndTooltipIfDiffer(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),
 		                             QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	else
@@ -738,7 +721,7 @@ void TabsManager::updateTabIcon(ChatWidget *chatWidget)
 	if (-1 == i)
 		return;
 
-	if (chatWidget->chat().unreadMessagesCount() > 0)
+	if (chatWidget->unreadMessagesCount() > 0)
 		TabDialog->setTabIcon(i, KaduIcon("protocols/common/message").icon());
 	else
 		TabDialog->setTabIcon(i, chatWidget->icon());
@@ -778,6 +761,17 @@ void TabsManager::createDefaultConfiguration()
 	config_file.addVariable("Tabs", "OpenChatButton", "true");
 	config_file.addVariable("Tabs", "OldStyleClosing", "false");
 	config_file.addVariable("Tabs", "CloseButtonOnTab", "false");
+}
+
+void TabsManager::unreadMessagesCountChanged(ChatWidget *chatWidget)
+{
+	Q_ASSERT(chatWidget);
+
+	updateTabIcon(chatWidget);
+	updateTabName(chatWidget);
+
+	if (chatWidget->unreadMessagesCount() > 0 && !Timer.isActive())
+		QMetaObject::invokeMethod(this, "onTimer", Qt::QueuedConnection);
 }
 
 #include "moc_tabs.cpp"
