@@ -95,7 +95,7 @@ ChatWidget::ChatWidget(const Chat &chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		BuddiesWidget(0), ProxyModel(0), InputBox(0), HorizontalSplitter(0),
 		IsComposing(false), CurrentContactActivity(ChatStateService::StateNone),
-		SplittersInitialized(false)
+		SplittersInitialized(false), UnreadMessagesCount(0)
 {
 	kdebugf();
 
@@ -851,6 +851,20 @@ void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 		return;
 
 	handled = keyPressEventHandled(e);
+}
+
+void ChatWidget::setUnreadMessagesCount(quint16 unreadMessagesCount)
+{
+	if (UnreadMessagesCount == unreadMessagesCount)
+		return;
+
+	UnreadMessagesCount = unreadMessagesCount;
+	emit unreadMessagesCountChanged(this);
+}
+
+quint16 ChatWidget::unreadMessagesCount() const
+{
+	return UnreadMessagesCount;
 }
 
 #include "moc_chat-widget.cpp"

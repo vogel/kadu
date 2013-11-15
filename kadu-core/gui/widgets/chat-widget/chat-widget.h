@@ -80,6 +80,7 @@ class KADUAPI ChatWidget : public QWidget, public ConfigurationAwareObject
 	QString Title;
 
 	QDateTime LastReceivedMessageTime;
+	quint16 UnreadMessagesCount;
 
 	void createGui();
 	void createContactsList();
@@ -152,6 +153,9 @@ public:
 
 	unsigned int countMessages() const;
 
+	void setUnreadMessagesCount(quint16 unreadMessagesCount);
+	quint16 unreadMessagesCount() const;
+
 public slots:
 	void appendMessages(const QVector<Message> &messages);
 	void appendMessage(const Message &message);
@@ -182,6 +186,7 @@ signals:
 	void widgetDestroyed(ChatWidget *widget);
 
 	void closeRequested(ChatWidget *chatWidget);
+	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 
 };
 

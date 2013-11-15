@@ -91,6 +91,14 @@ void ChatWidgetMessageHandler::setNotificationService(NotificationService *notif
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
 	m_unreadMessageRepository = unreadMessageRepository;
+
+	if (!m_unreadMessageRepository)
+		return;
+
+	connect(m_unreadMessageRepository.data(), SIGNAL(unreadMessageAdded(Message)),
+			this, SLOT(handleUnreadMessageChange(Message)));
+	connect(m_unreadMessageRepository.data(), SIGNAL(unreadMessageRemoved(Message)),
+			this, SLOT(handleUnreadMessageChange(Message)));
 }
 
 void ChatWidgetMessageHandler::setConfiguration(ChatWidgetMessageHandlerConfiguration configuration)
@@ -192,6 +200,17 @@ void ChatWidgetMessageHandler::messageSent(const Message &message)
 	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
 	if (chatWidget)
 		chatWidget->appendMessage(message);
+}
+
+void ChatWidgetMessageHandler::handleUnreadMessageChange(const Message &message)
+{
+	if (!m_unreadMessageRepository || !m_chatWidgetRepository)
+		return;
+
+	auto chat = message.messageChat();
+	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+	if (chatWidget)
+		chatWidget->setUnreadMessagesCount(m_unreadMessageRepository.data()->unreadMessagesForChat(chat).count());
 }
 
 #include "moc_chat-widget-message-handler.cpp"
