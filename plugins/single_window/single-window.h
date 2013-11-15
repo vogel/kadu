@@ -61,7 +61,7 @@ private:
 	void updateTabName(ChatWidget *chatWidget);
 
 private slots:
-	void messageReceived(ChatWidget *chatWidget);
+	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 
 };
 
