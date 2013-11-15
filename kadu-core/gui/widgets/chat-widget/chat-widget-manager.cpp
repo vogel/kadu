@@ -56,7 +56,7 @@ void ChatWidgetManager::setChatWidgetFactory(ChatWidgetFactory *chatWidgetFactor
 
 void ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
 {
-	if (!m_chatWidgetFactory || !m_chatWidgetRepository)
+	if (!chat || !m_chatWidgetFactory || !m_chatWidgetRepository)
 		return;
 
 	auto chatWidget = getOrCreateChatWidget(chat);
