@@ -39,6 +39,16 @@ void ChatWidgetContainerHandlerRepository::unregisterChatWidgetContainerHandler(
 	emit chatWidgetContainerHandlerUnregistered(chatWidgetContainerHandler);
 }
 
+ChatWidgetContainerHandlerRepository::iterator ChatWidgetContainerHandlerRepository::begin()
+{
+	return m_chatWidgetContainerHandlers.begin();
+}
+
+ChatWidgetContainerHandlerRepository::iterator ChatWidgetContainerHandlerRepository::end()
+{
+	return m_chatWidgetContainerHandlers.end();
+}
+
 QList<ChatWidgetContainerHandler *> ChatWidgetContainerHandlerRepository::chatWidgetContainerHandlers() const
 {
 	return m_chatWidgetContainerHandlers;

@@ -43,11 +43,16 @@ class KADUAPI ChatWidgetContainerHandlerRepository : public QObject
 	Q_OBJECT
 
 public:
+	using iterator = QList<ChatWidgetContainerHandler *>::iterator;
+
 	explicit ChatWidgetContainerHandlerRepository(QObject *parent = nullptr);
 	virtual ~ChatWidgetContainerHandlerRepository();
 
 	void registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 	void unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+
+	iterator begin();
+	iterator end();
 
 	QList<ChatWidgetContainerHandler *> chatWidgetContainerHandlers() const;
 
@@ -59,6 +64,16 @@ private:
 	QList<ChatWidgetContainerHandler *> m_chatWidgetContainerHandlers;
 
 };
+
+inline ChatWidgetContainerHandlerRepository::iterator begin(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	return chatWidgetContainerHandlerRepository->begin();
+}
+
+inline ChatWidgetContainerHandlerRepository::iterator end(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+{
+	return chatWidgetContainerHandlerRepository->end();
+}
 
 /**
  * @}

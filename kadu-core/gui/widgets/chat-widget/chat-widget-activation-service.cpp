@@ -48,6 +48,9 @@ void ChatWidgetActivationService::setChatWidgetContainerHandlerRepository(ChatWi
 			this, SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)));
 	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)),
 			this, SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)));
+
+	for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
+		chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
 void ChatWidgetActivationService::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)

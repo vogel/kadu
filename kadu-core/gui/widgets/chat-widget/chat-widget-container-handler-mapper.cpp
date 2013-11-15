@@ -46,6 +46,9 @@ void ChatWidgetContainerHandlerMapper::setChatWidgetContainerHandlerRepository(C
 			this, SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)));
 	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)),
 			this, SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)));
+
+	for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
+		chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
 void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
@@ -59,6 +62,9 @@ void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetReposit
 			this, SLOT(chatWidgetAdded(ChatWidget*)));
 	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)),
 			this, SLOT(chatWidgetRemoved(ChatWidget*)));
+
+	for (auto chatWidget : m_chatWidgetRepository.data())
+		chatWidgetAdded(chatWidget);
 }
 
 ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerForWidget(ChatWidget *chatWidget) const
