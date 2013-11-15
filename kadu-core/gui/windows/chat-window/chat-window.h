@@ -82,7 +82,7 @@ private:
 	QRect defaultGeometry() const;
 
 private slots:
-	void messageReceived(ChatWidget *chatWidget);
+	void unreadMessagesCountChanged(ChatWidget *chatWidget);
 	void updateIcon();
 	void updateTitle();
 

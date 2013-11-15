@@ -83,7 +83,8 @@ ChatWindow::ChatWindow(ChatWidget *chatWidget, QWidget *parent) :
 			"chat-geometry:WindowGeometry", CustomProperties::Storable);
 	new WindowGeometryManager(variantWrapper, defaultGeometry(), this);
 
-	connect(m_chatWidget, SIGNAL(messageReceived(ChatWidget*)), this, SLOT(messageReceived(ChatWidget*)));
+	connect(m_chatWidget, SIGNAL(unreadMessagesCountChanged(ChatWidget*)),
+			this, SLOT(unreadMessagesCountChanged(ChatWidget*)));
 	connect(m_chatWidget, SIGNAL(iconChanged()), this, SLOT(updateIcon()));
 	connect(m_chatWidget, SIGNAL(titleChanged(ChatWidget *, const QString &)), this, SLOT(updateTitle()));
 	connect(m_titleTimer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
@@ -223,17 +224,8 @@ void ChatWindow::showNewMessagesNumInTitle()
 void ChatWindow::changeEvent(QEvent *event)
 {
 	QWidget::changeEvent(event);
-	if (event->type() == QEvent::ActivationChange)
-	{
-		kdebugf();
-		if (_isActiveWindow(this))
-		{
-			emit activated(this);
-			setWindowTitle(m_chatWidget->title());
-			m_titleTimer->stop();
-		}
-		kdebugf2();
-	}
+	if (event->type() == QEvent::ActivationChange && _isActiveWindow(this))
+		emit activated(this);
 }
 
 void ChatWindow::setWindowTitle(QString title)
@@ -243,14 +235,12 @@ void ChatWindow::setWindowTitle(QString title)
 	QWidget::setWindowTitle(title.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
-void ChatWindow::messageReceived(ChatWidget *chatWidget)
+void ChatWindow::unreadMessagesCountChanged(ChatWidget *chatWidget)
 {
-	Q_UNUSED(chatWidget)
-	Q_ASSERT(chatWidget == m_chatWidget);
-
-	if (isChatWidgetActive(chatWidget))
+	if (chatWidget->unreadMessagesCount() == 0)
 	{
-		emit activated(this);
+		m_titleTimer->stop();
+		setWindowTitle(m_chatWidget->title());
 		return;
 	}
 
