@@ -49,7 +49,7 @@ void ChatWidgetRepository::addChatWidget(std::unique_ptr<ChatWidget> chatWidget)
 		return;
 
 	emit chatWidgetAdded(chatWidget.get());
-	m_widgets.emplace(chatWidget->chat(), std::move(chatWidget));
+	m_widgets.insert(std::make_pair(chatWidget->chat(), std::move(chatWidget)));
 }
 
 void ChatWidgetRepository::removeChatWidget(ChatWidget *chatWidget)
