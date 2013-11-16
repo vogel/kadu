@@ -160,6 +160,11 @@ Core::Core() :
 		Myself(Buddy::create()), IsClosing(false),
 		ShowMainWindowOnStart(true), QcaInit(new QCA::Initializer())
 {
+	// must be created first
+	CurrentStoragePointFactory = new StoragePointFactory(this);
+	CurrentStoragePointFactory->setConfigurationFile(xml_config_file);
+	Instance = this; // TODO: fix this hack
+
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
 	import_0_6_5_configuration();
@@ -570,10 +575,6 @@ void Core::createGui()
 
 void Core::runServices()
 {
-	// must be created first
-	CurrentStoragePointFactory = new StoragePointFactory(this);
-	CurrentStoragePointFactory->setConfigurationFile(xml_config_file);
-
 	CurrentBuddyDataWindowRepository = new BuddyDataWindowRepository(this);
 	CurrentChatDataWindowRepository = new ChatDataWindowRepository(this);
 	CurrentChatImageRequestService = new ChatImageRequestService(this);
