@@ -1,3 +1,5 @@
++++ version 1.0-alpha3
+
 +++ version 1.0-alpha2
 * gui: #2621 fixed: lots of Ungroupped tabs could appear in Group Tab Bar (Vogel)
 * chat: #2696 fixed: do not open chat window when message is sent for Gadu-Gadu multilogon (Vogel)
