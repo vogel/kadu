@@ -44,7 +44,7 @@
 #include <QTimer>
 #include <QTreeView>
 
-#include "gui/widgets/plugin-list-view-delegate-widgets.h"
+#include "gui/widgets/plugin-list/plugin-list-view-delegate-widgets.h"
 
 #include "plugin-list-view-delegate.h"
 

@@ -25,7 +25,7 @@
 #ifndef PLUGIN_LIST_WIDGET_DELEGATE_H
 #define PLUGIN_LIST_WIDGET_DELEGATE_H
 
-#include "gui/widgets/plugin-list-view-delegate.h"
+#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 
 class QCheckBox;
 class QPushButton;

@@ -58,7 +58,7 @@
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/plugin-list-widget.h"
+#include "gui/widgets/plugin-list/plugin-list-widget.h"
 #include "gui/widgets/proxy-combo-box.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"

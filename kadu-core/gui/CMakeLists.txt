@@ -39,6 +39,11 @@ set (gui_SRCS
 	widgets/group-tab-bar/group-tab-bar-configuration.cpp
 	widgets/group-tab-bar/group-tab-bar-configurator.cpp
 
+	widgets/plugin-list/plugin-list-widget.cpp
+	widgets/plugin-list/plugin-list-view-delegate.cpp
+	widgets/plugin-list/plugin-list-view-delegate-widgets.cpp
+	widgets/plugin-list/plugin-list-widget-item-delegate.cpp
+
 	widgets/account-add-widget.cpp
 	widgets/account-avatar-widget.cpp
 	widgets/account-buddy-list-widget.cpp
@@ -101,10 +106,6 @@ set (gui_SRCS
 	widgets/modal-configuration-widget.cpp
 	widgets/path-edit.cpp
 	widgets/path-list-edit.cpp
-	widgets/plugin-list-widget.cpp
-	widgets/plugin-list-view-delegate.cpp
-	widgets/plugin-list-view-delegate-widgets.cpp
-	widgets/plugin-list-widget-item-delegate.cpp
 	widgets/protocols-combo-box.cpp
 	widgets/proxy-combo-box.cpp
 	widgets/preview.cpp
@@ -239,6 +240,10 @@ set (gui_MOC_SRCS
 
 	services/clipboard-html-transformer-service.h
 
+	widgets/plugin-list/plugin-list-widget.h
+	widgets/plugin-list/plugin-list-view-delegate.h
+	widgets/plugin-list/plugin-list-widget-item-delegate.h
+
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
 	widgets/account-buddy-list-widget.h
@@ -297,9 +302,6 @@ set (gui_MOC_SRCS
 	widgets/modal-configuration-widget.h
 	widgets/path-edit.h
 	widgets/path-list-edit.h
-	widgets/plugin-list-widget.h
-	widgets/plugin-list-view-delegate.h
-	widgets/plugin-list-widget-item-delegate.h
 	widgets/preview.h
 	widgets/proxy-combo-box.h
 	widgets/protocols-combo-box.h

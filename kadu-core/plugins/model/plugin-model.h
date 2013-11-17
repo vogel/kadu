@@ -31,7 +31,7 @@
 #include <QtGui/QAbstractItemDelegate>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/plugin-list-view-delegate.h"
+#include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
 #include "model/categorized-sort-filter-proxy-model.h"
 
 class QCheckBox;
