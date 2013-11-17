@@ -240,10 +240,6 @@ set (gui_MOC_SRCS
 
 	services/clipboard-html-transformer-service.h
 
-	widgets/plugin-list/plugin-list-widget.h
-	widgets/plugin-list/plugin-list-view-delegate.h
-	widgets/plugin-list/plugin-list-widget-item-delegate.h
-
 	widgets/account-add-widget.h
 	widgets/account-avatar-widget.h
 	widgets/account-buddy-list-widget.h
