@@ -29,16 +29,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGINS_MANAGER_H
-#define PLUGINS_MANAGER_H
+#pragma once
+
+#include "plugins/plugins-common.h"
+#include "storage/storable-object.h"
+#include "exports.h"
 
 #include <QtCore/QLibrary>
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "plugins/plugins-common.h"
-#include "storage/storable-object.h"
-#include "exports.h"
+class GenericPlugin;
+class PluginsWindow;
+class Plugin;
 
 class QCheckBox;
 class QLabel;
@@ -46,10 +49,6 @@ class QPluginLoader;
 class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
-
-class GenericPlugin;
-class PluginsWindow;
-class Plugin;
 
 /**
  * @addtogroup Plugins
@@ -85,36 +84,14 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 	Q_OBJECT
 	Q_DISABLE_COPY(PluginsManager)
 
-	static PluginsManager *Instance;
-
-	QMap<QString, Plugin *> Plugins;
-
-	PluginsManager();
-	virtual ~PluginsManager();
-
-	void incDependenciesUsageCount(Plugin *plugin);
-
-	void importFrom09();
-
-	QStringList installedPlugins() const;
-
-	QString findActiveConflict(Plugin *plugin) const;
-	bool activateDependencies(Plugin *plugin);
-
-	QString activeDependentPluginNames(const QString &pluginName) const;
-
-protected:
-	virtual void load();
-	virtual void store();
-
 public:
 	static PluginsManager * instance();
 
 	// storage implementation
-	virtual StorableObject * storageParent() { return 0; }
+	virtual StorableObject * storageParent() { return nullptr; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
 
-	const QMap<QString, Plugin *> & plugins() const { return Plugins; }
+	const QMap<QString, Plugin *> & plugins() const { return m_plugins; }
 	QList<Plugin *> activePlugins() const;
 
 	void activateProtocolPlugins();
@@ -131,10 +108,31 @@ signals:
 	void pluginAdded(const Plugin *plugin);
 	void pluginRemoved(const Plugin *plugin);
 
+protected:
+	virtual void load();
+	virtual void store();
+
+private:
+	static PluginsManager *m_instance;
+
+	QMap<QString, Plugin *> m_plugins;
+
+	PluginsManager();
+	virtual ~PluginsManager();
+
+	void incDependenciesUsageCount(Plugin *plugin);
+
+	void importFrom09();
+
+	QStringList installedPlugins() const;
+
+	QString findActiveConflict(Plugin *plugin) const;
+	bool activateDependencies(Plugin *plugin);
+
+	QString activeDependentPluginNames(const QString &pluginName) const;
+
 };
 
 /**
  * @}
  */
-
-#endif // PLUGINS_MANAGER_H

@@ -18,41 +18,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "plugin-info.h"
+
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
-#include "plugin-info.h"
-
 PluginInfo::PluginInfo(const QString &fileName) :
-		LoadByDefault(false)
+		m_loadByDefault{false}
 {
-	PlainConfigFile file(fileName, "UTF-8");
+	PlainConfigFile file{fileName, "UTF-8"};
+	auto const lang = config_file.readEntry("General", "Language");
 
-	const QString lang = config_file.readEntry("General", "Language");
+	m_displayName = file.readEntry("Module", "DisplayName[" + lang + ']');
+	if (m_displayName.isEmpty())
+		m_displayName = file.readEntry("Module", "DisplayName");
 
-	DisplayName = file.readEntry("Module", "DisplayName[" + lang + ']');
-	if (DisplayName.isEmpty())
-		DisplayName = file.readEntry("Module", "DisplayName");
+	m_type = file.readEntry("Module", "Type");
+	m_category = file.readEntry("Module", "Category");
+	m_description = file.readEntry("Module", "Description[" + lang + ']');
+	if (m_description.isEmpty())
+		m_description = file.readEntry("Module", "Description");
 
-	Type = file.readEntry("Module", "Type");
-	Category = file.readEntry("Module", "Category");
-	Description = file.readEntry("Module", "Description[" + lang + ']');
-	if (Description.isEmpty())
-		Description = file.readEntry("Module", "Description");
-
-	Author = file.readEntry("Module", "Author");
+	m_author = file.readEntry("Module", "Author");
 
 	if (file.readEntry("Module", "Version") == "core")
-		Version = Core::version();
+		m_version = Core::version();
 	else
-		Version = file.readEntry("Module", "Version");
+		m_version = file.readEntry("Module", "Version");
 
-	Dependencies = file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
-	Conflicts = file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
-	Provides = file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
-	Replaces = file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
+	m_dependencies = file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
+	m_conflicts = file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
+	m_provides = file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
+	m_replaces = file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
 
-	LoadByDefault = file.readBoolEntry("Module", "LoadByDefault");
+	m_loadByDefault = file.readBoolEntry("Module", "LoadByDefault");
 }
 
 PluginInfo::~PluginInfo()

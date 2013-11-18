@@ -24,8 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_INFO_H
-#define PLUGIN_INFO_H
+#pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -48,17 +47,6 @@
  */
 class PluginInfo
 {
-	QString DisplayName;
-	QString Category;
-	QString Type;
-	QStringList Dependencies;
-	QStringList Conflicts;
-	QStringList Provides;
-	QStringList Replaces;
-	QString Description;
-	QString Author;
-	QString Version;
-	bool LoadByDefault;
 
 public:
 	/**
@@ -69,7 +57,7 @@ public:
 	 * Creates new object with data loaded from given .desc file. File must be present
 	 * and valid, otherwise object will contain invalid (empty) data.
 	 */
-	PluginInfo(const QString &fileName);
+	explicit PluginInfo(const QString &fileName);
 	~PluginInfo();
 
 	/**
@@ -84,7 +72,7 @@ public:
 	 * Plugins with type Protocol are activated before all other plugins (see
 	 * PluginsManager::activateProtocolPlugins()).
 	 */
-	const QString & type() const { return Type; }
+	const QString & type() const { return m_type; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -95,7 +83,7 @@ public:
 	 * activated before this plugin. If any of plugins in this list is not available or could not
 	 * be activated, this plugin wont get activated.
 	 */
-	const QStringList & dependencies() const { return Dependencies; }
+	const QStringList & dependencies() const { return m_dependencies; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -106,7 +94,7 @@ public:
 	 * that conflicts with this plugin. If any plugin from this list is active or "provides" string that
 	 * is in this list, this plugin can not be activated.
 	 */
-	const QStringList & conflicts() const { return Conflicts; }
+	const QStringList & conflicts() const { return m_conflicts; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -117,7 +105,7 @@ public:
 	 * Returns list of features of this plugin. Two active plugins can not have the same string in their
 	 * "provides" lists.
 	 */
-	const QStringList & provides() const { return Provides; }
+	const QStringList & provides() const { return m_provides; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -128,7 +116,7 @@ public:
 	 * run of Kadu and is no longer avilable, this plugin will be activated instead. This allows us to
 	 * change name of plugins and to create more generic plugins from less generic.
 	 */
-	const QStringList & replaces() const { return Replaces; }
+	const QStringList & replaces() const { return m_replaces; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -138,7 +126,7 @@ public:
 	 * Returns description of plugin. If no description in current system language is available
 	 * default one will be used.
 	 */
-	const QString & description() const { return Description; }
+	const QString & description() const { return m_description; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -147,7 +135,7 @@ public:
 	 *
 	 * Returns name of plugin's author.
 	 */
-	const QString & author() const { return Author; }
+	const QString & author() const { return m_author; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -156,7 +144,7 @@ public:
 	 *
 	 * Returns plugin's version.
 	 */
-	const QString & version() const { return Version; }
+	const QString & version() const { return m_version; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -169,15 +157,29 @@ public:
 	 * important, like new protocols plugns or plugins that imports data from older Kadu
 	 * version.
 	 */
-	bool loadByDefault() const { return LoadByDefault; }
+	bool loadByDefault() const { return m_loadByDefault; }
 
-	const QString & category() const { return Category; }
+	const QString & category() const { return m_category; }
 
-	const QString & displayName() const { return DisplayName; }
+	const QString & displayName() const { return m_displayName; }
+
+private:
+	QString m_displayName;
+	QString m_category;
+	QString m_type;
+	QStringList m_dependencies;
+	QStringList m_conflicts;
+	QStringList m_provides;
+	QStringList m_replaces;
+	QString m_description;
+	QString m_author;
+	QString m_version;
+	bool m_loadByDefault;
+
 };
 
 /**
  * @}
  */
 
-#endif // PLUGIN_INFO_H
+

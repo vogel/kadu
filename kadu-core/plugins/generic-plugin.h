@@ -24,8 +24,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GENERIC_PLUGIN_H
-#define GENERIC_PLUGIN_H
+#pragma once
 
 #include <QtCore/QtPlugin>
 
@@ -80,5 +79,3 @@ Q_DECLARE_INTERFACE(GenericPlugin, "im.kadu.GenericPlugin/0.1")
 /**
  * @}
  */
-
-#endif // GENERIC_PLUGIN_H

@@ -30,6 +30,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "plugins-manager.h"
+
+#include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
+#include "gui/hot-key.h"
+#include "gui/windows/main-configuration-window.h"
+#include "gui/windows/message-dialog.h"
+#include "icons/icons-manager.h"
+#include "misc/kadu-paths.h"
+#include "plugins/generic-plugin.h"
+#include "plugins/plugin-info.h"
+#include "plugins/plugin.h"
+#include "activate.h"
+#include "debug.h"
+
 #include <QtCore/QDir>
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
@@ -46,34 +61,19 @@
 #include <QtGui/QTreeWidgetItem>
 #include <QtGui/QVBoxLayout>
 
-#include "configuration/configuration-file.h"
-#include "configuration/configuration-manager.h"
-#include "gui/hot-key.h"
-#include "gui/windows/main-configuration-window.h"
-#include "gui/windows/message-dialog.h"
-#include "icons/icons-manager.h"
-#include "misc/kadu-paths.h"
-#include "plugins/generic-plugin.h"
-#include "plugins/plugin-info.h"
-#include "plugins/plugin.h"
-#include "activate.h"
-#include "debug.h"
-
-#include "plugins-manager.h"
-
-PluginsManager * PluginsManager::Instance = 0;
+PluginsManager * PluginsManager::m_instance = nullptr;
 
 PluginsManager * PluginsManager::instance()
 {
-	if (0 == Instance)
+	if (0 == m_instance)
 	{
-		Instance = new PluginsManager();
+		m_instance = new PluginsManager();
 		// do not move to contructor
 		// Instance variable must be available PluginsManager::load method
-		Instance->ensureLoaded();
+		m_instance->ensureLoaded();
 	}
 
-	return Instance;
+	return m_instance;
 }
 
 /**
@@ -120,10 +120,10 @@ void PluginsManager::load()
 
 	StorableObject::load();
 
-	foreach (const QString &pluginName, installedPlugins())
+	for (auto const &pluginName : installedPlugins())
 	{
-		Q_ASSERT(!Plugins.contains(pluginName));
-		Plugins.insert(pluginName, new Plugin(pluginName, this));
+		Q_ASSERT(!m_plugins.contains(pluginName));
+		m_plugins.insert(pluginName, new Plugin(pluginName, this));
 	}
 
 	if (!loadAttribute<bool>("imported_from_09", false))
@@ -149,7 +149,7 @@ void PluginsManager::store()
 
 	StorableObject::store();
 
-	foreach (Plugin *plugin, Plugins)
+	for (auto plugin : m_plugins)
 		plugin->ensureStored();
 }
 
@@ -162,20 +162,20 @@ void PluginsManager::store()
  */
 void PluginsManager::importFrom09()
 {
-	QStringList everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
-	QString loaded = config_file.readEntry("General", "LoadedModules");
+	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+	auto loaded = config_file.readEntry("General", "LoadedModules");
 
-	QStringList loadedPlugins = loaded.split(',', QString::SkipEmptyParts);
+	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts);
 	everLoaded += loadedPlugins;
-	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	QStringList unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
+	auto unloaded_str = config_file.readEntry("General", "UnloadedModules");
+	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
 
-	QStringList allPlugins = everLoaded + unloadedPlugins; // just in case...
+	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
-	foreach (const QString &pluginName, allPlugins)
-		if (!Plugins.contains(pluginName) && !oldPlugins.contains(pluginName))
+	for (auto const &pluginName : allPlugins)
+		if (!m_plugins.contains(pluginName) && !oldPlugins.contains(pluginName))
 		{
-			Plugin *plugin = new Plugin(pluginName, this);
+			auto plugin = new Plugin(pluginName, this);
 			oldPlugins.insert(pluginName, plugin);
 		}
 
@@ -192,7 +192,7 @@ void PluginsManager::importFrom09()
 			loadedPlugins.append("hints");
 	}
 
-	foreach (Plugin *plugin, Plugins.values() + oldPlugins.values())
+	for (auto plugin : m_plugins.values() + oldPlugins.values())
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
@@ -201,7 +201,7 @@ void PluginsManager::importFrom09()
 				plugin->setState(Plugin::PluginStateDisabled);
 		}
 
-	foreach (Plugin *plugin, oldPlugins)
+	for (auto plugin : oldPlugins)
 	{
 		plugin->ensureStored();
 		plugin->deleteLater();
@@ -218,16 +218,16 @@ void PluginsManager::importFrom09()
  */
 void PluginsManager::activateProtocolPlugins()
 {
-	bool saveList = false;
+	auto saveList = false;
 
-	foreach (Plugin *plugin, Plugins)
+	for (auto plugin : m_plugins)
 	{
 		if (!plugin->isValid() || plugin->info()->type() != "protocol")
 			continue;
 
 		if (plugin->shouldBeActivated())
 		{
-			PluginActivationReason activationReason = (plugin->state() == Plugin::PluginStateNew)
+			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
 					? PluginActivationReasonNewDefault
 					: PluginActivationReasonKnownDefault;
 
@@ -252,12 +252,12 @@ void PluginsManager::activateProtocolPlugins()
  */
 void PluginsManager::activatePlugins()
 {
-	bool saveList = false;
+	auto saveList = false;
 
-	foreach (Plugin *plugin, Plugins)
+	for (auto plugin : m_plugins)
 		if (plugin->shouldBeActivated())
 		{
-			PluginActivationReason activationReason = (plugin->state() == Plugin::PluginStateNew)
+			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
 					? PluginActivationReasonNewDefault
 					: PluginActivationReasonKnownDefault;
 
@@ -265,12 +265,12 @@ void PluginsManager::activatePlugins()
 				saveList = true;
 		}
 
-	foreach (Plugin *pluginToReplace, Plugins)
+	for (auto pluginToReplace : m_plugins)
 	{
 		if (pluginToReplace->isActive() || pluginToReplace->state() != Plugin::PluginStateEnabled)
 			continue;
 
-		foreach (Plugin *replacementPlugin, Plugins)
+		for (auto replacementPlugin : m_plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
 					saveList = true; // list has changed
@@ -293,7 +293,7 @@ void PluginsManager::activatePlugins()
  */
 void PluginsManager::deactivatePlugins()
 {
-	foreach (Plugin *plugin, Plugins)
+	for (auto plugin : m_plugins)
 		if (plugin->isActive())
 		{
 			kdebugm(KDEBUG_INFO, "plugin: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
@@ -305,9 +305,9 @@ void PluginsManager::deactivatePlugins()
 	bool deactivated;
 	do
 	{
-		QList<Plugin *> active = activePlugins();
+		auto active = activePlugins();
 		deactivated = false;
-		foreach (Plugin *plugin, active)
+		for (auto plugin : active)
 			if (plugin->usageCounter() == 0)
 				if (deactivatePlugin(plugin, PluginDeactivationReasonExiting))
 					deactivated = true;
@@ -316,8 +316,8 @@ void PluginsManager::deactivatePlugins()
 
 	// we cannot unload more plugins in normal way
 	// so we are making it brutal ;)
-	QList<Plugin *> active = activePlugins();
-	foreach (Plugin *plugin, active)
+	auto active = activePlugins();
+	for (auto plugin : active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate plugin %s, killing\n", qPrintable(plugin->name()));
 		deactivatePlugin(plugin, PluginDeactivationReasonExitingForce);
@@ -335,8 +335,8 @@ void PluginsManager::deactivatePlugins()
  */
 QList<Plugin *> PluginsManager::activePlugins() const
 {
-	QList<Plugin *> result;
-	foreach (Plugin *plugin, Plugins)
+	auto result = QList<Plugin *>{};
+	for (auto plugin : m_plugins)
 		if (plugin->isActive())
 			result.append(plugin);
 	return result;
@@ -356,7 +356,7 @@ void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 		return;
 
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info()->description()));
-	foreach (const QString &pluginName, plugin->info()->dependencies())
+	for (auto const &pluginName : plugin->info()->dependencies())
 	{
 		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(pluginName));
 		usePlugin(pluginName);
@@ -374,11 +374,11 @@ void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
  */
 QStringList PluginsManager::installedPlugins() const
 {
-	QDir dir(KaduPaths::instance()->dataPath() + QLatin1String("plugins"), "*.desc");
+	auto dir = QDir{KaduPaths::instance()->dataPath() + QLatin1String("plugins"), "*.desc"};
 	dir.setFilter(QDir::Files);
 
-	QStringList installed;
-	foreach (const QString &entry, dir.entryList())
+	auto installed = QStringList{};
+	for (auto const &entry : dir.entryList())
 		installed.append(entry.left(entry.length() - qstrlen(".desc")));
 	return installed;
 }
@@ -398,29 +398,29 @@ QStringList PluginsManager::installedPlugins() const
 QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
 	if (!plugin || !plugin->isValid())
-		return QString();
+		return {};
 
-	foreach (const QString &conflict, plugin->info()->conflicts())
+	for (auto const &conflict : plugin->info()->conflicts())
 	{
 		// note that conflict may be something provided, not necessarily a plugin
-		QMap<QString, Plugin *>::const_iterator it(Plugins.find(conflict));
-		if (it != Plugins.constEnd() && it.value()->isActive())
+		auto it = m_plugins.find(conflict);
+		if (it != m_plugins.constEnd() && it.value()->isActive())
 			return conflict;
 
-		foreach (Plugin *possibleConflict, Plugins)
+		for (auto possibleConflict : m_plugins)
 			if (possibleConflict->isValid() && possibleConflict->isActive())
-				foreach (const QString &provided, possibleConflict->info()->provides())
+				for (auto const &provided : possibleConflict->info()->provides())
 					if (conflict == provided)
 						return possibleConflict->name();
 	}
 
-	foreach (Plugin *possibleConflict, Plugins)
+	for (auto possibleConflict : m_plugins)
 		if (possibleConflict->isValid() && possibleConflict->isActive())
-			foreach (const QString &sit, possibleConflict->info()->conflicts())
+			for (auto const &sit : possibleConflict->info()->conflicts())
 				if (sit == plugin->name())
 					return plugin->name();
 
-	return QString();
+	return {};
 }
 
 /**
@@ -430,23 +430,23 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
  * @return true if all dependencies were activated
  *
  * Activates all dependencies of plugin and dependencies of these dependencies. If any dependency
- * is not found a message will be displayed to the user and false will be returned. * 
+ * is not found a message will be displayed to the user and false will be returned. *
  */
 bool PluginsManager::activateDependencies(Plugin *plugin)
 {
 	if (!plugin || !plugin->isValid())
 		return true; // always true
 
-	foreach (const QString &dependencyName, plugin->info()->dependencies())
+	for (auto const &dependencyName : plugin->info()->dependencies())
 	{
-		Plugin *dependencyPlugin = Plugins.value(dependencyName);
+		auto dependencyPlugin = m_plugins.value(dependencyName);
 		if (!dependencyPlugin || !dependencyPlugin->isValid())
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
 			return false;
 		}
 
-		PluginActivationReason activationReason;
+		auto activationReason = PluginActivationReason{};
 		if (Plugin::PluginStateEnabled == dependencyPlugin->state())
 			activationReason = PluginActivationReasonKnownDefault;
 		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info()->loadByDefault())
@@ -473,9 +473,9 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
  */
 QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
 {
-	QString plugins;
+	auto plugins = QString{};
 
-	foreach (Plugin *possibleDependentPlugin, Plugins)
+	for (auto possibleDependentPlugin : m_plugins)
 		if (possibleDependentPlugin->isValid() && possibleDependentPlugin->isActive())
 			if (possibleDependentPlugin->info()->dependencies().contains(pluginName))
 				plugins += "\n- " + possibleDependentPlugin->name();
@@ -505,9 +505,9 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	if (plugin->isActive())
 		return true;
 
-	bool result;
+	auto result = bool{};
 
-	QString conflict = findActiveConflict(plugin);
+	auto conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
 		plugin->activationError(tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
@@ -550,7 +550,7 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 		return false;
 	}
 
-	foreach (const QString &i, plugin->info()->dependencies())
+	for (auto const &i : plugin->info()->dependencies())
 		releasePlugin(i);
 
 	plugin->deactivate(reason);
@@ -572,8 +572,8 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
  */
 void PluginsManager::usePlugin(const QString &pluginName)
 {
-	if (Plugins.contains(pluginName))
-		Plugins.value(pluginName)->incUsage();
+	if (m_plugins.contains(pluginName))
+		m_plugins.value(pluginName)->incUsage();
 }
 
 /**
@@ -589,8 +589,8 @@ void PluginsManager::usePlugin(const QString &pluginName)
  */
 void PluginsManager::releasePlugin(const QString &pluginName)
 {
-	if (Plugins.contains(pluginName))
-		Plugins.value(pluginName)->decUsage();
+	if (m_plugins.contains(pluginName))
+		m_plugins.value(pluginName)->decUsage();
 }
 
 #include "moc_plugins-manager.cpp"

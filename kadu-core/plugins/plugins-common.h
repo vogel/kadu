@@ -21,8 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGINS_COMMON_H
-#define PLUGINS_COMMON_H
+#pragma once
 
 enum PluginActivationReason
 {
@@ -38,5 +37,3 @@ enum PluginDeactivationReason
 	PluginDeactivationReasonExiting,
 	PluginDeactivationReasonExitingForce,
 };
-
-#endif // PLUGINS_COMMON_H

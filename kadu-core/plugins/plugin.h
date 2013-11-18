@@ -19,10 +19,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PLUGIN_H
-#define PLUGIN_H
-
-#include <QtCore/QObject>
+#pragma once
 
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
@@ -30,12 +27,14 @@
 
 #include "storage/named-storable-object.h"
 
-class QLibrary;
-class QPluginLoader;
-class QTranslator;
+#include <QtCore/QObject>
 
 class GenericPlugin;
 class PluginInfo;
+
+class QLibrary;
+class QPluginLoader;
+class QTranslator;
 
 /**
  * @addtogroup Plugins
@@ -104,37 +103,14 @@ public:
 		PluginStateEnabled
 	};
 
-private:
-	QString Name;
-	bool Active;
-	PluginState State;
-
-	QPluginLoader *PluginLoader;
-	GenericPlugin *PluginObject;
-
-	QTranslator *Translator;
-	PluginInfo *Info;
-	int UsageCounter;
-
-	void loadTranslations();
-	void unloadTranslations();
-
-private slots:
-	void setStateEnabledIfInactive(bool enable);
-
-protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
-
 public:
-	Plugin(const QString &name, QObject *parent = 0);
+	explicit Plugin(const QString &name, QObject *parent = nullptr);
 	virtual ~Plugin();
 
 	// storage implementation
-	virtual StorableObject* storageParent() { return PluginsManager::instance(); }
-	virtual QString storageNodeName() { return QLatin1String("Plugin"); }
-	virtual QString name() const { return Name; }
+	virtual StorableObject* storageParent() override { return PluginsManager::instance(); }
+	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
+	virtual QString name() const override { return m_name; }
 
 	bool shouldBeActivated();
 
@@ -150,7 +126,7 @@ public:
 	 *
 	 * Returns true if plugin is valid. Plugin is valid when it has a .desc file.
 	 */
-	bool isValid() const { return 0 != Info; }
+	bool isValid() const { return 0 != m_info; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -160,7 +136,7 @@ public:
 	 * Returns true if plugin is active. Plugin is active when its library file is loaded
 	 * and object is created and available.
 	 */
-	bool isActive() const { return Active; }
+	bool isActive() const { return m_active; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -172,7 +148,7 @@ public:
 	 * Note that plugin state describes only its state on configuration. All combinations
 	 * of state() and isActive() are possible, except state PluginStateNew and plugin active.
 	 */
-	PluginState state() { ensureLoaded(); return State; }
+	PluginState state() { ensureLoaded(); return m_state; }
 	void setState(PluginState state);
 
 	/**
@@ -182,7 +158,7 @@ public:
 	 *
 	 * Returns PluginInfo object for this plugin.
 	 */
-	PluginInfo * info() const { return Info; }
+	PluginInfo * info() const { return m_info; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -193,7 +169,7 @@ public:
 	 * cannot be safely deactivated, because it is either dependency of another active plugin, of
 	 * its code is currenly in use.
 	 */
-	int usageCounter() const { return UsageCounter; }
+	int usageCounter() const { return m_usageCounter; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -201,7 +177,7 @@ public:
 	 *
 	 * Increases usage counter for this plugin.
 	 */
-	void incUsage() { UsageCounter++; }
+	void incUsage() { m_usageCounter++; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -209,12 +185,33 @@ public:
 	 *
 	 * Decreases usage counter for this plugin.
 	 */
-	void decUsage() { UsageCounter--; }
+	void decUsage() { m_usageCounter--; }
+
+protected:
+	virtual void load();
+	virtual void store();
+	virtual bool shouldStore();
+
+private:
+	QString m_name;
+	bool m_active;
+	PluginState m_state;
+
+	QPluginLoader *m_pluginLoader;
+	GenericPlugin *m_pluginObject;
+
+	QTranslator *m_translator;
+	PluginInfo *m_info;
+	int m_usageCounter;
+
+	void loadTranslations();
+	void unloadTranslations();
+
+private slots:
+	void setStateEnabledIfInactive(bool enable);
 
 };
 
 /**
  * @}
  */
-
-#endif // PLUGIN_H

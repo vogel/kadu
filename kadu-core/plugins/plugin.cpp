@@ -21,11 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QPluginLoader>
-#include <QtCore/QTimer>
-#include <QtCore/QTranslator>
-#include <QtGui/QApplication>
+#include "plugin.h"
 
 #include "configuration/configuration-file.h"
 #include "gui/windows/main-configuration-window.h"
@@ -35,7 +31,11 @@
 #include "plugins/plugin-info.h"
 #include "debug.h"
 
-#include "plugin.h"
+#include <QtCore/QFileInfo>
+#include <QtCore/QPluginLoader>
+#include <QtCore/QTimer>
+#include <QtCore/QTranslator>
+#include <QtGui/QApplication>
 
 #ifdef Q_OS_MAC
 	#define SO_PREFIX "lib"
@@ -59,17 +59,17 @@
  * is marked as invalid and will be unable to be activated.
  */
 Plugin::Plugin(const QString &name, QObject *parent) :
-		QObject(parent),
-		Name(name), Active(false), State(PluginStateNew), PluginLoader(0), PluginObject(0),
-		Translator(0), UsageCounter(0)
+		QObject{parent},
+		m_name{name}, m_active{false}, m_state{PluginStateNew}, m_pluginLoader{nullptr}, m_pluginObject{nullptr},
+		m_translator{nullptr}, m_usageCounter{0}
 {
-	QString descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + name + QLatin1String(".desc");
-	QFileInfo descFileInfo(descFilePath);
+	auto descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + name + QLatin1String(".desc");
+	auto descFileInfo = QFileInfo{descFilePath};
 
 	if (descFileInfo.exists())
-		Info = new PluginInfo(descFilePath);
+		m_info = new PluginInfo(descFilePath);
 	else
-		Info = 0;
+		m_info = nullptr;
 
 	StorableObject::setState(StateNotLoaded);
 }
@@ -91,13 +91,13 @@ void Plugin::load()
 
 	StorableObject::load();
 
-	QString stateString = loadValue<QString>("State");
+	auto stateString = loadValue<QString>("State");
 	if (stateString == "Loaded")
-		State = PluginStateEnabled;
+		m_state = PluginStateEnabled;
 	else if (stateString == "NotLoaded")
-		State = PluginStateDisabled;
+		m_state = PluginStateDisabled;
 	else
-		State = PluginStateNew;
+		m_state = PluginStateNew;
 }
 
 /**
@@ -115,7 +115,7 @@ void Plugin::store()
 
 	StorableObject::store();
 
-	switch (State)
+	switch (m_state)
 	{
 		case PluginStateEnabled:
 			storeValue("State", "Loaded");
@@ -160,11 +160,11 @@ bool Plugin::shouldBeActivated()
 	if (!isValid() || isActive())
 		return false;
 
-	if (PluginStateEnabled == State)
+	if (PluginStateEnabled == m_state)
 		return true;
-	if (PluginStateDisabled == State)
+	if (PluginStateDisabled == m_state)
 		return false;
-	return Info->loadByDefault();
+	return m_info->loadByDefault();
 }
 
 /**
@@ -185,22 +185,22 @@ bool Plugin::shouldBeActivated()
  */
 bool Plugin::activate(PluginActivationReason reason)
 {
-	if (Active)
+	if (m_active)
 		return true;
 
 	ensureLoaded();
 
-	PluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + Name + QLatin1String("." SO_EXT));
-	PluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
+	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + m_name + QLatin1String("." SO_EXT));
+	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
-	if (!PluginLoader->load())
+	if (!m_pluginLoader->load())
 	{
-		QString err = PluginLoader->errorString();
-		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(Name), qPrintable(err));
-		activationError(tr("Cannot load %1 plugin library:\n%2").arg(Name, err), reason);
+		QString err = m_pluginLoader->errorString();
+		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(m_name), qPrintable(err));
+		activationError(tr("Cannot load %1 plugin library:\n%2").arg(m_name, err), reason);
 
-		delete PluginLoader;
-		PluginLoader = 0;
+		delete m_pluginLoader;
+		m_pluginLoader = nullptr;
 
 		kdebugf2();
 		return false;
@@ -209,16 +209,16 @@ bool Plugin::activate(PluginActivationReason reason)
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
 	loadTranslations();
 
-	PluginObject = qobject_cast<GenericPlugin *>(PluginLoader->instance());
-	if (!PluginObject)
+	m_pluginObject = qobject_cast<GenericPlugin *>(m_pluginLoader->instance());
+	if (!m_pluginObject)
 	{
-		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(Name), reason);
+		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_name), reason);
 
 		// Refer to deactivate() method for reasons to this.
-		QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
-		PluginLoader->unload();
-		delete PluginLoader;
-		PluginLoader = 0;
+		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		m_pluginLoader->unload();
+		delete m_pluginLoader;
+		m_pluginLoader = nullptr;
 
 		unloadTranslations();
 
@@ -226,25 +226,25 @@ bool Plugin::activate(PluginActivationReason reason)
 		return false;
 	}
 
-	int res = PluginObject->init(PluginStateNew == State);
+	auto res = m_pluginObject->init(PluginStateNew == m_state);
 
 	if (res != 0)
 	{
-		activationError(tr("Module initialization routine for %1 failed.").arg(Name), reason);
+		activationError(tr("Module initialization routine for %1 failed.").arg(m_name), reason);
 
 		// Refer to deactivate() method for reasons to this.
-		QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
-		PluginLoader->unload();
-		delete PluginLoader;
-		PluginLoader = 0;
-		PluginObject = 0;
+		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		m_pluginLoader->unload();
+		delete m_pluginLoader;
+		m_pluginLoader = nullptr;
+		m_pluginObject = nullptr;
 
 		unloadTranslations();
 
 		return false;
 	}
 
-	UsageCounter = 0;
+	m_usageCounter = 0;
 
 	/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
 	 * means that it was never loaded. If the only reason to load the plugin was because some other
@@ -256,7 +256,7 @@ bool Plugin::activate(PluginActivationReason reason)
 	else
 		setState(PluginStateDisabled);
 
-	Active = true;
+	m_active = true;
 
 	kdebugf2();
 
@@ -273,30 +273,30 @@ bool Plugin::activate(PluginActivationReason reason)
  */
 void Plugin::deactivate(PluginDeactivationReason reason)
 {
-	if (!Active)
+	if (!m_active)
 		return;
 
-	if (PluginObject)
-		PluginObject->done();
+	if (m_pluginObject)
+		m_pluginObject->done();
 
 	// We need this because plugins can call deleteLater() just before being
 	// unloaded. In this case control would not return to the event loop before
 	// unloading the plugin and the event loop would try to delete objects
 	// belonging to already unloaded plugins, which can result in segfaults.
-	QApplication::sendPostedEvents(0, QEvent::DeferredDelete);
+	QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 
-	if (PluginLoader)
+	if (m_pluginLoader)
 	{
-		PluginLoader->unload();
-		PluginLoader->deleteLater();
-		PluginLoader = 0;
+		m_pluginLoader->unload();
+		m_pluginLoader->deleteLater();
+		m_pluginLoader = nullptr;
 	}
-	PluginObject = 0;
+	m_pluginObject = nullptr;
 
 	// We cannot unload translations before calling PluginObject->done(), see #2177.
 	unloadTranslations();
 
-	Active = false;
+	m_active = false;
 
 	if (PluginDeactivationReasonUserRequest == reason)
 		setState(PluginStateDisabled);
@@ -311,15 +311,15 @@ void Plugin::deactivate(PluginDeactivationReason reason)
  */
 void Plugin::loadTranslations()
 {
-	Translator = new QTranslator(this);
-	const QString lang = config_file.readEntry("General", "Language");
+	m_translator = new QTranslator{this};
+	auto const lang = config_file.readEntry("General", "Language");
 
-	if (Translator->load(Name + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
-		qApp->installTranslator(Translator);
+	if (m_translator->load(m_name + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
+		qApp->installTranslator(m_translator);
 	else
 	{
-		delete Translator;
-		Translator = 0;
+		delete m_translator;
+		m_translator = nullptr;
 	}
 }
 
@@ -333,11 +333,11 @@ void Plugin::loadTranslations()
  */
 void Plugin::unloadTranslations()
 {
-	if (Translator)
+	if (m_translator)
 	{
-		qApp->removeTranslator(Translator);
-		delete Translator;
-		Translator = 0;
+		qApp->removeTranslator(m_translator);
+		delete m_translator;
+		m_translator = nullptr;
 	}
 }
 
@@ -355,7 +355,7 @@ void Plugin::setState(Plugin::PluginState state)
 {
 	ensureLoaded();
 
-	State = state;
+	m_state = state;
 }
 
 /**
@@ -392,10 +392,10 @@ void Plugin::setStateEnabledIfInactive(bool enable)
  */
 void Plugin::activationError(const QString &errorMessage, PluginActivationReason activationReason)
 {
-	bool offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
+	auto offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
 
 	// TODO: set parent to MainConfigurationWindow is it exists
-	PluginErrorDialog *errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
+	auto errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
 	if (offerLoadInFutureChoice)
 		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
 
