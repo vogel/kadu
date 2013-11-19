@@ -26,6 +26,8 @@
 PluginInfo * PluginInfo::fromFile(const QString &fileName)
 {
 	auto result = new PluginInfo();
+
+	result->m_valid = true;
 	result->m_loadByDefault = false;
 
 	PlainConfigFile file{fileName, "UTF-8"};
@@ -58,12 +60,18 @@ PluginInfo * PluginInfo::fromFile(const QString &fileName)
 	return result;
 }
 
-PluginInfo::PluginInfo()
+PluginInfo::PluginInfo() :
+		m_valid(false)
 {
 }
 
 PluginInfo::~PluginInfo()
 {
+}
+
+bool PluginInfo::isValid() const
+{
+	return m_valid;
 }
 
 QString PluginInfo::type() const

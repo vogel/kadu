@@ -62,6 +62,8 @@ public:
 	PluginInfo();
 	~PluginInfo();
 
+	bool isValid() const;
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns type of plugin.
@@ -166,6 +168,7 @@ public:
 	QString displayName() const;
 
 private:
+	bool m_valid;
 	QString m_displayName;
 	QString m_category;
 	QString m_type;
