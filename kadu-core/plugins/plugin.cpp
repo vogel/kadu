@@ -402,4 +402,9 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
+bool Plugin::isValid() const
+{
+	return m_info ? m_info->isValid() : false;
+}
+
 #include "moc_plugin.cpp"

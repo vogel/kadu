@@ -126,7 +126,7 @@ public:
 	 *
 	 * Returns true if plugin is valid. Plugin is valid when it has a .desc file.
 	 */
-	bool isValid() const { return 0 != m_info; }
+	bool isValid() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski

@@ -268,7 +268,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 		{
         	PluginInfo *pluginInfo = plugin->info();
 
-        	if (pluginInfo)
+        	if (pluginInfo && pluginInfo->isValid())
         	{
                 	info += tr("Author: %1").arg(pluginInfo->author()) + "\n";
                 	info += tr("Version: %1").arg(pluginInfo->version()) + "\n";

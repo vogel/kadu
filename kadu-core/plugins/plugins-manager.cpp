@@ -222,7 +222,7 @@ void PluginsManager::activateProtocolPlugins()
 
 	for (auto plugin : m_plugins)
 	{
-		if (!plugin->isValid() || plugin->info()->type() != "protocol")
+		if (!plugin->isValid() || !plugin->info()->isValid() || plugin->info()->type() != "protocol")
 			continue;
 
 		if (plugin->shouldBeActivated())
@@ -271,7 +271,10 @@ void PluginsManager::activatePlugins()
 			continue;
 
 		for (auto replacementPlugin : m_plugins)
-			if (replacementPlugin->state() == Plugin::PluginStateNew && replacementPlugin->isValid() && replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
+			if (replacementPlugin->state() == Plugin::PluginStateNew
+					&& replacementPlugin->isValid()
+					&& replacementPlugin->info()->isValid()
+					&& replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
 					saveList = true; // list has changed
 	}
