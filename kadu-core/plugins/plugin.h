@@ -104,7 +104,7 @@ public:
 	};
 
 public:
-	explicit Plugin(const QString &name, QObject *parent = nullptr);
+	explicit Plugin(PluginInfo pluginInfo, const QString &name, QObject *parent = nullptr);
 	virtual ~Plugin();
 
 	// storage implementation

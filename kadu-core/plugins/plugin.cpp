@@ -57,17 +57,13 @@
  * is created if dataDir/kadu/plugins/name.desc is found. If this file is not found, plugin
  * is marked as invalid and will be unable to be activated.
  */
-Plugin::Plugin(const QString &name, QObject *parent) :
+Plugin::Plugin(PluginInfo pluginInfo, const QString &name, QObject *parent) :
 		QObject{parent},
 		m_name{name}, m_active{false}, m_state{PluginStateNew}, m_pluginLoader{nullptr}, m_pluginObject{nullptr},
-		m_translator{nullptr}, m_usageCounter{0}
+		m_translator{nullptr},
+		m_info(std::move(pluginInfo)),
+		m_usageCounter{0}
 {
-	auto descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + name + QLatin1String(".desc");
-	auto descFileInfo = QFileInfo{descFilePath};
-
-	if (descFileInfo.exists())
-		m_info = PluginInfo::fromFile(descFilePath);
-
 	StorableObject::setState(StateNotLoaded);
 }
 

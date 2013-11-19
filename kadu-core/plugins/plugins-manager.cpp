@@ -390,7 +390,14 @@ QStringList PluginsManager::installedPlugins() const
 
 Plugin * PluginsManager::loadPlugin(const QString &pluginName)
 {
-	return new Plugin(pluginName, this);
+	auto descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + pluginName + QLatin1String(".desc");
+	auto descFileInfo = QFileInfo{descFilePath};
+
+	if (!descFileInfo.exists())
+		return nullptr;
+
+	auto pluginInfo = PluginInfo::fromFile(descFilePath);
+	return new Plugin(pluginInfo, pluginName, this);
 }
 
 /**
