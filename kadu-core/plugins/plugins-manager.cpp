@@ -123,7 +123,9 @@ void PluginsManager::load()
 	for (auto const &pluginName : installedPlugins())
 	{
 		Q_ASSERT(!m_plugins.contains(pluginName));
-		m_plugins.insert(pluginName, new Plugin(pluginName, this));
+		auto plugin = loadPlugin(pluginName);
+		if (plugin)
+			m_plugins.insert(pluginName, plugin);
 	}
 
 	if (!loadAttribute<bool>("imported_from_09", false))
@@ -175,8 +177,9 @@ void PluginsManager::importFrom09()
 	for (auto const &pluginName : allPlugins)
 		if (!m_plugins.contains(pluginName) && !oldPlugins.contains(pluginName))
 		{
-			auto plugin = new Plugin(pluginName, this);
-			oldPlugins.insert(pluginName, plugin);
+			auto plugin = loadPlugin(pluginName);
+			if (plugin)
+				oldPlugins.insert(pluginName, plugin);
 		}
 
 	if (loadedPlugins.contains("encryption"))
@@ -383,6 +386,11 @@ QStringList PluginsManager::installedPlugins() const
 	for (auto const &entry : dir.entryList())
 		installed.append(entry.left(entry.length() - qstrlen(".desc")));
 	return installed;
+}
+
+Plugin * PluginsManager::loadPlugin(const QString &pluginName)
+{
+	return new Plugin(pluginName, this);
 }
 
 /**
