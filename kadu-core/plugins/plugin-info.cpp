@@ -57,3 +57,58 @@ PluginInfo::PluginInfo(const QString &fileName) :
 PluginInfo::~PluginInfo()
 {
 }
+
+QString PluginInfo::type() const
+{
+	return m_type;
+}
+
+QStringList PluginInfo::dependencies() const
+{
+	return m_dependencies;
+}
+
+QStringList PluginInfo::conflicts() const
+{
+	return m_conflicts;
+}
+
+QStringList PluginInfo::provides() const
+{
+	return m_provides;
+}
+
+QStringList PluginInfo::replaces() const
+{
+	return m_replaces;
+}
+
+QString PluginInfo::description() const
+{
+	return m_description;
+}
+
+QString PluginInfo::author() const
+{
+	return m_author;
+}
+
+QString PluginInfo::version() const
+{
+	return m_version;
+}
+
+bool PluginInfo::loadByDefault() const
+{
+	return m_loadByDefault;
+}
+
+QString PluginInfo::category() const
+{
+	return m_category;
+}
+
+QString PluginInfo::displayName() const
+{
+	return m_displayName;
+}

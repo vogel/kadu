@@ -72,7 +72,7 @@ public:
 	 * Plugins with type Protocol are activated before all other plugins (see
 	 * PluginsManager::activateProtocolPlugins()).
 	 */
-	const QString & type() const { return m_type; }
+	QString type() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -83,7 +83,7 @@ public:
 	 * activated before this plugin. If any of plugins in this list is not available or could not
 	 * be activated, this plugin wont get activated.
 	 */
-	const QStringList & dependencies() const { return m_dependencies; }
+	QStringList dependencies() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -94,7 +94,7 @@ public:
 	 * that conflicts with this plugin. If any plugin from this list is active or "provides" string that
 	 * is in this list, this plugin can not be activated.
 	 */
-	const QStringList & conflicts() const { return m_conflicts; }
+	QStringList conflicts() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -105,7 +105,7 @@ public:
 	 * Returns list of features of this plugin. Two active plugins can not have the same string in their
 	 * "provides" lists.
 	 */
-	const QStringList & provides() const { return m_provides; }
+	QStringList provides() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -116,7 +116,7 @@ public:
 	 * run of Kadu and is no longer avilable, this plugin will be activated instead. This allows us to
 	 * change name of plugins and to create more generic plugins from less generic.
 	 */
-	const QStringList & replaces() const { return m_replaces; }
+	QStringList replaces() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -126,7 +126,7 @@ public:
 	 * Returns description of plugin. If no description in current system language is available
 	 * default one will be used.
 	 */
-	const QString & description() const { return m_description; }
+	QString description() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -135,7 +135,7 @@ public:
 	 *
 	 * Returns name of plugin's author.
 	 */
-	const QString & author() const { return m_author; }
+	QString author() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -144,7 +144,7 @@ public:
 	 *
 	 * Returns plugin's version.
 	 */
-	const QString & version() const { return m_version; }
+	QString version() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -157,11 +157,11 @@ public:
 	 * important, like new protocols plugns or plugins that imports data from older Kadu
 	 * version.
 	 */
-	bool loadByDefault() const { return m_loadByDefault; }
+	bool loadByDefault() const;
 
-	const QString & category() const { return m_category; }
+	QString category() const;
 
-	const QString & displayName() const { return m_displayName; }
+	QString displayName() const;
 
 private:
 	QString m_displayName;
