@@ -392,8 +392,8 @@ Plugin * PluginsManager::loadPlugin(const QString &pluginName)
 	if (!descFileInfo.exists())
 		return nullptr;
 
-	auto pluginInfo = PluginInfo::fromFile(descFilePath);
-	return new Plugin(pluginInfo, pluginName, this);
+	auto pluginInfo = PluginInfo::fromFile(pluginName, descFilePath);
+	return new Plugin(pluginInfo, this);
 }
 
 /**

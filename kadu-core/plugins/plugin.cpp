@@ -57,9 +57,9 @@
  * is created if dataDir/kadu/plugins/name.desc is found. If this file is not found, plugin
  * is marked as invalid and will be unable to be activated.
  */
-Plugin::Plugin(PluginInfo pluginInfo, const QString &name, QObject *parent) :
+Plugin::Plugin(PluginInfo pluginInfo, QObject *parent) :
 		QObject{parent},
-		m_name{name}, m_active{false}, m_state{PluginStateNew}, m_pluginLoader{nullptr}, m_pluginObject{nullptr},
+		m_active{false}, m_state{PluginStateNew}, m_pluginLoader{nullptr}, m_pluginObject{nullptr},
 		m_translator{nullptr},
 		m_info(std::move(pluginInfo)),
 		m_usageCounter{0}
@@ -183,14 +183,14 @@ bool Plugin::activate(PluginActivationReason reason)
 
 	ensureLoaded();
 
-	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + m_name + QLatin1String("." SO_EXT));
+	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + m_info.name() + QLatin1String("." SO_EXT));
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
 	if (!m_pluginLoader->load())
 	{
 		QString err = m_pluginLoader->errorString();
-		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(m_name), qPrintable(err));
-		activationError(tr("Cannot load %1 plugin library:\n%2").arg(m_name, err), reason);
+		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(m_info.name()), qPrintable(err));
+		activationError(tr("Cannot load %1 plugin library:\n%2").arg(m_info.name(), err), reason);
 
 		delete m_pluginLoader;
 		m_pluginLoader = nullptr;
@@ -205,7 +205,7 @@ bool Plugin::activate(PluginActivationReason reason)
 	m_pluginObject = qobject_cast<GenericPlugin *>(m_pluginLoader->instance());
 	if (!m_pluginObject)
 	{
-		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_name), reason);
+		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_info.name()), reason);
 
 		// Refer to deactivate() method for reasons to this.
 		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
@@ -223,7 +223,7 @@ bool Plugin::activate(PluginActivationReason reason)
 
 	if (res != 0)
 	{
-		activationError(tr("Module initialization routine for %1 failed.").arg(m_name), reason);
+		activationError(tr("Module initialization routine for %1 failed.").arg(m_info.name()), reason);
 
 		// Refer to deactivate() method for reasons to this.
 		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
@@ -307,7 +307,7 @@ void Plugin::loadTranslations()
 	m_translator = new QTranslator{this};
 	auto const lang = config_file.readEntry("General", "Language");
 
-	if (m_translator->load(m_name + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
+	if (m_translator->load(m_info.name() + '_' + lang, KaduPaths::instance()->dataPath() + QLatin1String("plugins/translations")))
 		qApp->installTranslator(m_translator);
 	else
 	{

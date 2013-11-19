@@ -104,13 +104,13 @@ public:
 	};
 
 public:
-	explicit Plugin(PluginInfo pluginInfo, const QString &name, QObject *parent = nullptr);
+	explicit Plugin(PluginInfo pluginInfo, QObject *parent = nullptr);
 	virtual ~Plugin();
 
 	// storage implementation
 	virtual StorableObject* storageParent() override { return PluginsManager::instance(); }
 	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
-	virtual QString name() const override { return m_name; }
+	virtual QString name() const override { return m_info.name(); }
 
 	bool shouldBeActivated();
 
@@ -184,7 +184,6 @@ protected:
 	virtual bool shouldStore();
 
 private:
-	QString m_name;
 	bool m_active;
 	PluginState m_state;
 

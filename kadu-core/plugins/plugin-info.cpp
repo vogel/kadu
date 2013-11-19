@@ -23,9 +23,9 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
-PluginInfo PluginInfo::fromFile(const QString &fileName)
+PluginInfo PluginInfo::fromFile(QString name, const QString &fileName)
 {
-	auto result = PluginInfo{};
+	auto result = PluginInfo{std::move(name)};
 
 	result.m_loadByDefault = false;
 
@@ -59,8 +59,8 @@ PluginInfo PluginInfo::fromFile(const QString &fileName)
 	return result;
 }
 
-PluginInfo::PluginInfo() :
-		m_loadByDefault(false)
+PluginInfo::PluginInfo(QString name) :
+		m_name(std::move(name)), m_loadByDefault(false)
 {
 }
 
@@ -116,6 +116,11 @@ bool PluginInfo::loadByDefault() const
 QString PluginInfo::category() const
 {
 	return m_category;
+}
+
+QString PluginInfo::name() const
+{
+	return m_name;
 }
 
 QString PluginInfo::displayName() const

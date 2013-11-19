@@ -57,9 +57,9 @@ public:
 	 * Creates new object with data loaded from given .desc file. File must be present
 	 * and valid, otherwise object will contain invalid (empty) data.
 	 */
-	static PluginInfo fromFile(const QString &fileName);
+	static PluginInfo fromFile(QString m_name, const QString &fileName);
 
-	PluginInfo();
+	PluginInfo(QString m_name);
 	~PluginInfo();
 
 	/**
@@ -163,9 +163,12 @@ public:
 
 	QString category() const;
 
+	QString name() const;
+
 	QString displayName() const;
 
 private:
+	QString m_name;
 	QString m_displayName;
 	QString m_category;
 	QString m_type;
