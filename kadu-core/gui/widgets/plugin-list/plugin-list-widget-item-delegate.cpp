@@ -266,16 +266,13 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
 		if (plugin)
 		{
-        	auto &pluginInfo = plugin->info();
+			auto &pluginInfo = plugin->info();
 
-        	if (pluginInfo.isValid())
-        	{
-                	info += tr("Author: %1").arg(pluginInfo.author()) + "\n";
-                	info += tr("Version: %1").arg(pluginInfo.version()) + "\n";
-                	info += tr("Description: %1").arg(pluginInfo.description()) + "\n";
-                	info += tr("Dependencies: %1").arg(pluginInfo.dependencies().join(", ")) + "\n";
-                	info += tr("Conflicts: %1").arg(pluginInfo.conflicts().join(", "));
-        	}
+			info += tr("Author: %1").arg(pluginInfo.author()) + "\n";
+			info += tr("Version: %1").arg(pluginInfo.version()) + "\n";
+			info += tr("Description: %1").arg(pluginInfo.description()) + "\n";
+			info += tr("Dependencies: %1").arg(pluginInfo.dependencies().join(", ")) + "\n";
+			info += tr("Conflicts: %1").arg(pluginInfo.conflicts().join(", "));
 		}
 
         MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());

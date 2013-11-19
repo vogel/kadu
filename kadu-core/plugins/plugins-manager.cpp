@@ -225,7 +225,7 @@ void PluginsManager::activateProtocolPlugins()
 
 	for (auto plugin : m_plugins)
 	{
-		if (!plugin->info().isValid() || plugin->info().type() != "protocol")
+		if (plugin->info().type() != "protocol")
 			continue;
 
 		if (plugin->shouldBeActivated())
@@ -275,7 +275,6 @@ void PluginsManager::activatePlugins()
 
 		for (auto replacementPlugin : m_plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew
-					&& replacementPlugin->info().isValid()
 					&& replacementPlugin->info().replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
 					saveList = true; // list has changed
@@ -357,9 +356,6 @@ QList<Plugin *> PluginsManager::activePlugins() const
  */
 void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 {
-	if (!plugin->info().isValid())
-		return;
-
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info().description()));
 	for (auto const &pluginName : plugin->info().dependencies())
 	{
@@ -414,7 +410,7 @@ Plugin * PluginsManager::loadPlugin(const QString &pluginName)
  */
 QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
-	if (!plugin || !plugin->info().isValid())
+	if (!plugin)
 		return {};
 
 	for (auto const &conflict : plugin->info().conflicts())
@@ -425,14 +421,14 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 			return conflict;
 
 		for (auto possibleConflict : m_plugins)
-			if (possibleConflict->info().isValid() && possibleConflict->isActive())
+			if (possibleConflict->isActive())
 				for (auto const &provided : possibleConflict->info().provides())
 					if (conflict == provided)
 						return possibleConflict->name();
 	}
 
 	for (auto possibleConflict : m_plugins)
-		if (possibleConflict->info().isValid() && possibleConflict->isActive())
+		if (possibleConflict->isActive())
 			for (auto const &sit : possibleConflict->info().conflicts())
 				if (sit == plugin->name())
 					return plugin->name();
@@ -451,13 +447,13 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
  */
 bool PluginsManager::activateDependencies(Plugin *plugin)
 {
-	if (!plugin || !plugin->info().isValid())
-		return true; // always true
+	if (!plugin)
+		return true;
 
 	for (auto const &dependencyName : plugin->info().dependencies())
 	{
 		auto dependencyPlugin = m_plugins.value(dependencyName);
-		if (!dependencyPlugin || !dependencyPlugin->info().isValid())
+		if (!dependencyPlugin)
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
 			return false;
@@ -493,7 +489,7 @@ QString PluginsManager::activeDependentPluginNames(const QString &pluginName) co
 	auto plugins = QString{};
 
 	for (auto possibleDependentPlugin : m_plugins)
-		if (possibleDependentPlugin->info().isValid() && possibleDependentPlugin->isActive())
+		if (possibleDependentPlugin->isActive())
 			if (possibleDependentPlugin->info().dependencies().contains(pluginName))
 				plugins += "\n- " + possibleDependentPlugin->name();
 

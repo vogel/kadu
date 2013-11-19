@@ -150,7 +150,7 @@ bool Plugin::shouldBeActivated()
 {
 	ensureLoaded();
 
-	if (!m_info.isValid() || isActive())
+	if (isActive())
 		return false;
 
 	if (PluginStateEnabled == m_state)
