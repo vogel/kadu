@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "plugins/plugin-info.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 #include "exports.h"
@@ -30,7 +31,6 @@
 #include <QtCore/QObject>
 
 class GenericPlugin;
-class PluginInfo;
 
 class QLibrary;
 class QPluginLoader;
@@ -121,15 +121,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if plugin is valid.
-	 * @return true if plugin is valid
-	 *
-	 * Returns true if plugin is valid. Plugin is valid when it has a .desc file.
-	 */
-	bool isValid() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns true if plugin is active.
 	 * @return true if plugin is active
 	 *
@@ -158,7 +149,7 @@ public:
 	 *
 	 * Returns PluginInfo object for this plugin.
 	 */
-	PluginInfo * info() const { return m_info; }
+	const PluginInfo & info() const { return m_info; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -201,7 +192,7 @@ private:
 	GenericPlugin *m_pluginObject;
 
 	QTranslator *m_translator;
-	PluginInfo *m_info;
+	PluginInfo m_info;
 	int m_usageCounter;
 
 	void loadTranslations();

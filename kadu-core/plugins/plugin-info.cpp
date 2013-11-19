@@ -23,39 +23,39 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 
-PluginInfo * PluginInfo::fromFile(const QString &fileName)
+PluginInfo PluginInfo::fromFile(const QString &fileName)
 {
-	auto result = new PluginInfo();
+	auto result = PluginInfo{};
 
-	result->m_valid = true;
-	result->m_loadByDefault = false;
+	result.m_valid = true;
+	result.m_loadByDefault = false;
 
 	PlainConfigFile file{fileName, "UTF-8"};
 	auto const lang = config_file.readEntry("General", "Language");
 
-	result->m_displayName = file.readEntry("Module", "DisplayName[" + lang + ']');
-	if (result->m_displayName.isEmpty())
-		result->m_displayName = file.readEntry("Module", "DisplayName");
+	result.m_displayName = file.readEntry("Module", "DisplayName[" + lang + ']');
+	if (result.m_displayName.isEmpty())
+		result.m_displayName = file.readEntry("Module", "DisplayName");
 
-	result->m_type = file.readEntry("Module", "Type");
-	result->m_category = file.readEntry("Module", "Category");
-	result->m_description = file.readEntry("Module", "Description[" + lang + ']');
-	if (result->m_description.isEmpty())
-		result->m_description = file.readEntry("Module", "Description");
+	result.m_type = file.readEntry("Module", "Type");
+	result.m_category = file.readEntry("Module", "Category");
+	result.m_description = file.readEntry("Module", "Description[" + lang + ']');
+	if (result.m_description.isEmpty())
+		result.m_description = file.readEntry("Module", "Description");
 
-	result->m_author = file.readEntry("Module", "Author");
+	result.m_author = file.readEntry("Module", "Author");
 
 	if (file.readEntry("Module", "Version") == "core")
-		result->m_version = Core::version();
+		result.m_version = Core::version();
 	else
-		result->m_version = file.readEntry("Module", "Version");
+		result.m_version = file.readEntry("Module", "Version");
 
-	result->m_dependencies = file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
-	result->m_conflicts = file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
-	result->m_provides = file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
-	result->m_replaces = file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
+	result.m_dependencies = file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
+	result.m_conflicts = file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
+	result.m_provides = file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
+	result.m_replaces = file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
 
-	result->m_loadByDefault = file.readBoolEntry("Module", "LoadByDefault");
+	result.m_loadByDefault = file.readBoolEntry("Module", "LoadByDefault");
 
 	return result;
 }

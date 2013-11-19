@@ -28,7 +28,6 @@
 #include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
-#include "plugins/plugin-info.h"
 #include "debug.h"
 
 #include <QtCore/QFileInfo>
@@ -68,8 +67,6 @@ Plugin::Plugin(const QString &name, QObject *parent) :
 
 	if (descFileInfo.exists())
 		m_info = PluginInfo::fromFile(descFilePath);
-	else
-		m_info = nullptr;
 
 	StorableObject::setState(StateNotLoaded);
 }
@@ -157,14 +154,14 @@ bool Plugin::shouldBeActivated()
 {
 	ensureLoaded();
 
-	if (!isValid() || isActive())
+	if (!m_info.isValid() || isActive())
 		return false;
 
 	if (PluginStateEnabled == m_state)
 		return true;
 	if (PluginStateDisabled == m_state)
 		return false;
-	return m_info->loadByDefault();
+	return m_info.loadByDefault();
 }
 
 /**
@@ -400,11 +397,6 @@ void Plugin::activationError(const QString &errorMessage, PluginActivationReason
 		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
 
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
-}
-
-bool Plugin::isValid() const
-{
-	return m_info ? m_info->isValid() : false;
 }
 
 #include "moc_plugin.cpp"

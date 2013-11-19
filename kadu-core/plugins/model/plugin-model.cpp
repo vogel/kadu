@@ -59,19 +59,19 @@ void PluginModel::loadPluginData()
         foreach (Plugin *plugin, PluginsManager::instance()->plugins())
         {
                 PluginEntry pluginEntry;
-                PluginInfo *pluginInfo = plugin->info();
+                auto &pluginInfo = plugin->info();
 
-                pluginEntry.category = pluginInfo && !pluginInfo->category().isEmpty()
-                        ? pluginInfo->category()
+                pluginEntry.category = pluginInfo.isValid() && !pluginInfo.category().isEmpty()
+                        ? pluginInfo.category()
                         : "Misc";
-                pluginEntry.name = pluginInfo && !pluginInfo->displayName().isEmpty()
-                        ? pluginInfo->displayName()
+                pluginEntry.name = pluginInfo.isValid() && !pluginInfo.displayName().isEmpty()
+                        ? pluginInfo.displayName()
                         : plugin->name();
-                pluginEntry.description = pluginInfo
-                        ? pluginInfo->description()
+                pluginEntry.description = pluginInfo.isValid()
+                        ? pluginInfo.description()
                         : QString();
-                pluginEntry.author = pluginInfo
-                        ? pluginInfo->author()
+                pluginEntry.author = pluginInfo.isValid()
+                        ? pluginInfo.author()
                         : QString();
                 pluginEntry.pluginName = plugin->name();
                 pluginEntry.checked = plugin->isActive();

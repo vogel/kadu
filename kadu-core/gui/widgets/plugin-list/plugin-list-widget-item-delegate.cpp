@@ -266,15 +266,15 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 
 		if (plugin)
 		{
-        	PluginInfo *pluginInfo = plugin->info();
+        	auto &pluginInfo = plugin->info();
 
-        	if (pluginInfo && pluginInfo->isValid())
+        	if (pluginInfo.isValid())
         	{
-                	info += tr("Author: %1").arg(pluginInfo->author()) + "\n";
-                	info += tr("Version: %1").arg(pluginInfo->version()) + "\n";
-                	info += tr("Description: %1").arg(pluginInfo->description()) + "\n";
-                	info += tr("Dependencies: %1").arg(pluginInfo->dependencies().join(", ")) + "\n";
-                	info += tr("Conflicts: %1").arg(pluginInfo->conflicts().join(", "));
+                	info += tr("Author: %1").arg(pluginInfo.author()) + "\n";
+                	info += tr("Version: %1").arg(pluginInfo.version()) + "\n";
+                	info += tr("Description: %1").arg(pluginInfo.description()) + "\n";
+                	info += tr("Dependencies: %1").arg(pluginInfo.dependencies().join(", ")) + "\n";
+                	info += tr("Conflicts: %1").arg(pluginInfo.conflicts().join(", "));
         	}
 		}
 

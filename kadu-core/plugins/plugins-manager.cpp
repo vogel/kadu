@@ -222,7 +222,7 @@ void PluginsManager::activateProtocolPlugins()
 
 	for (auto plugin : m_plugins)
 	{
-		if (!plugin->isValid() || !plugin->info()->isValid() || plugin->info()->type() != "protocol")
+		if (!plugin->info().isValid() || plugin->info().type() != "protocol")
 			continue;
 
 		if (plugin->shouldBeActivated())
@@ -272,9 +272,8 @@ void PluginsManager::activatePlugins()
 
 		for (auto replacementPlugin : m_plugins)
 			if (replacementPlugin->state() == Plugin::PluginStateNew
-					&& replacementPlugin->isValid()
-					&& replacementPlugin->info()->isValid()
-					&& replacementPlugin->info()->replaces().contains(pluginToReplace->name()))
+					&& replacementPlugin->info().isValid()
+					&& replacementPlugin->info().replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
 					saveList = true; // list has changed
 	}
@@ -355,11 +354,11 @@ QList<Plugin *> PluginsManager::activePlugins() const
  */
 void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
 {
-	if (!plugin->isValid())
+	if (!plugin->info().isValid())
 		return;
 
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info()->description()));
-	for (auto const &pluginName : plugin->info()->dependencies())
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info().description()));
+	for (auto const &pluginName : plugin->info().dependencies())
 	{
 		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(pluginName));
 		usePlugin(pluginName);
@@ -400,10 +399,10 @@ QStringList PluginsManager::installedPlugins() const
  */
 QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
-	if (!plugin || !plugin->isValid())
+	if (!plugin || !plugin->info().isValid())
 		return {};
 
-	for (auto const &conflict : plugin->info()->conflicts())
+	for (auto const &conflict : plugin->info().conflicts())
 	{
 		// note that conflict may be something provided, not necessarily a plugin
 		auto it = m_plugins.find(conflict);
@@ -411,15 +410,15 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 			return conflict;
 
 		for (auto possibleConflict : m_plugins)
-			if (possibleConflict->isValid() && possibleConflict->isActive())
-				for (auto const &provided : possibleConflict->info()->provides())
+			if (possibleConflict->info().isValid() && possibleConflict->isActive())
+				for (auto const &provided : possibleConflict->info().provides())
 					if (conflict == provided)
 						return possibleConflict->name();
 	}
 
 	for (auto possibleConflict : m_plugins)
-		if (possibleConflict->isValid() && possibleConflict->isActive())
-			for (auto const &sit : possibleConflict->info()->conflicts())
+		if (possibleConflict->info().isValid() && possibleConflict->isActive())
+			for (auto const &sit : possibleConflict->info().conflicts())
 				if (sit == plugin->name())
 					return plugin->name();
 
@@ -437,13 +436,13 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
  */
 bool PluginsManager::activateDependencies(Plugin *plugin)
 {
-	if (!plugin || !plugin->isValid())
+	if (!plugin || !plugin->info().isValid())
 		return true; // always true
 
-	for (auto const &dependencyName : plugin->info()->dependencies())
+	for (auto const &dependencyName : plugin->info().dependencies())
 	{
 		auto dependencyPlugin = m_plugins.value(dependencyName);
-		if (!dependencyPlugin || !dependencyPlugin->isValid())
+		if (!dependencyPlugin || !dependencyPlugin->info().isValid())
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
 			return false;
@@ -452,7 +451,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 		auto activationReason = PluginActivationReason{};
 		if (Plugin::PluginStateEnabled == dependencyPlugin->state())
 			activationReason = PluginActivationReasonKnownDefault;
-		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info()->loadByDefault())
+		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info().loadByDefault())
 			activationReason = PluginActivationReasonNewDefault;
 		else
 			activationReason = PluginActivationReasonDependency;
@@ -479,8 +478,8 @@ QString PluginsManager::activeDependentPluginNames(const QString &pluginName) co
 	auto plugins = QString{};
 
 	for (auto possibleDependentPlugin : m_plugins)
-		if (possibleDependentPlugin->isValid() && possibleDependentPlugin->isActive())
-			if (possibleDependentPlugin->info()->dependencies().contains(pluginName))
+		if (possibleDependentPlugin->info().isValid() && possibleDependentPlugin->isActive())
+			if (possibleDependentPlugin->info().dependencies().contains(pluginName))
 				plugins += "\n- " + possibleDependentPlugin->name();
 
 	return plugins;
@@ -553,7 +552,7 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 		return false;
 	}
 
-	for (auto const &i : plugin->info()->dependencies())
+	for (auto const &i : plugin->info().dependencies())
 		releasePlugin(i);
 
 	plugin->deactivate(reason);
