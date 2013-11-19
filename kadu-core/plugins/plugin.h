@@ -110,7 +110,7 @@ public:
 	// storage implementation
 	virtual StorableObject* storageParent() override { return PluginsManager::instance(); }
 	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
-	virtual QString name() const override { return m_info.name(); }
+	virtual QString name() const override { return m_pluginInfo.name(); }
 
 	bool shouldBeActivated();
 
@@ -149,7 +149,7 @@ public:
 	 *
 	 * Returns PluginInfo object for this plugin.
 	 */
-	const PluginInfo & info() const { return m_info; }
+	const PluginInfo & info() const { return m_pluginInfo; }
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -184,6 +184,7 @@ protected:
 	virtual bool shouldStore();
 
 private:
+	PluginInfo m_pluginInfo;
 	bool m_active;
 	PluginState m_state;
 
@@ -191,7 +192,6 @@ private:
 	GenericPlugin *m_pluginObject;
 
 	QTranslator *m_translator;
-	PluginInfo m_info;
 	int m_usageCounter;
 
 	void loadTranslations();
