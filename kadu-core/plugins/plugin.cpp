@@ -67,7 +67,7 @@ Plugin::Plugin(const QString &name, QObject *parent) :
 	auto descFileInfo = QFileInfo{descFilePath};
 
 	if (descFileInfo.exists())
-		m_info = new PluginInfo(descFilePath);
+		m_info = PluginInfo::fromFile(descFilePath);
 	else
 		m_info = nullptr;
 

@@ -57,7 +57,9 @@ public:
 	 * Creates new object with data loaded from given .desc file. File must be present
 	 * and valid, otherwise object will contain invalid (empty) data.
 	 */
-	explicit PluginInfo(const QString &fileName);
+	static PluginInfo * fromFile(const QString &fileName);
+
+	PluginInfo();
 	~PluginInfo();
 
 	/**
