@@ -62,6 +62,13 @@ public:
 	PluginInfo(QString m_name);
 	~PluginInfo();
 
+
+	QString name() const;
+
+	QString displayName() const;
+
+	QString category() const;
+
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns type of plugin.
@@ -75,6 +82,34 @@ public:
 	 * PluginsManager::activateProtocolPlugins()).
 	 */
 	QString type() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns description of plugin.
+	 * @return description of plugin
+	 *
+	 * Returns description of plugin. If no description in current system language is available
+	 * default one will be used.
+	 */
+	QString description() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns name of plugin's author.
+	 * @return name of plugin's author
+	 *
+	 * Returns name of plugin's author.
+	 */
+	QString author() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns plugin's version.
+	 * @return plugin's version
+	 *
+	 * Returns plugin's version.
+	 */
+	QString version() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -122,34 +157,6 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns description of plugin.
-	 * @return description of plugin
-	 *
-	 * Returns description of plugin. If no description in current system language is available
-	 * default one will be used.
-	 */
-	QString description() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns name of plugin's author.
-	 * @return name of plugin's author
-	 *
-	 * Returns name of plugin's author.
-	 */
-	QString author() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns plugin's version.
-	 * @return plugin's version
-	 *
-	 * Returns plugin's version.
-	 */
-	QString version() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns load by default value for this plugin.
 	 * @return load by default value for this plugin
 	 *
@@ -161,24 +168,18 @@ public:
 	 */
 	bool loadByDefault() const;
 
-	QString category() const;
-
-	QString name() const;
-
-	QString displayName() const;
-
 private:
 	QString m_name;
 	QString m_displayName;
 	QString m_category;
 	QString m_type;
+	QString m_description;
+	QString m_author;
+	QString m_version;
 	QStringList m_dependencies;
 	QStringList m_conflicts;
 	QStringList m_provides;
 	QStringList m_replaces;
-	QString m_description;
-	QString m_author;
-	QString m_version;
 	bool m_loadByDefault;
 
 };
@@ -186,5 +187,3 @@ private:
 /**
  * @}
  */
-
-

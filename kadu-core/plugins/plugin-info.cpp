@@ -68,9 +68,39 @@ PluginInfo::~PluginInfo()
 {
 }
 
+QString PluginInfo::name() const
+{
+	return m_name;
+}
+
+QString PluginInfo::displayName() const
+{
+	return m_displayName;
+}
+
+QString PluginInfo::category() const
+{
+	return m_category;
+}
+
 QString PluginInfo::type() const
 {
 	return m_type;
+}
+
+QString PluginInfo::description() const
+{
+	return m_description;
+}
+
+QString PluginInfo::author() const
+{
+	return m_author;
+}
+
+QString PluginInfo::version() const
+{
+	return m_version;
 }
 
 QStringList PluginInfo::dependencies() const
@@ -93,37 +123,7 @@ QStringList PluginInfo::replaces() const
 	return m_replaces;
 }
 
-QString PluginInfo::description() const
-{
-	return m_description;
-}
-
-QString PluginInfo::author() const
-{
-	return m_author;
-}
-
-QString PluginInfo::version() const
-{
-	return m_version;
-}
-
 bool PluginInfo::loadByDefault() const
 {
 	return m_loadByDefault;
-}
-
-QString PluginInfo::category() const
-{
-	return m_category;
-}
-
-QString PluginInfo::name() const
-{
-	return m_name;
-}
-
-QString PluginInfo::displayName() const
-{
-	return m_displayName;
 }
