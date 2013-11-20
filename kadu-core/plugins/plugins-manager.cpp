@@ -551,10 +551,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		result = activateDependencies(plugin) && plugin->activate(reason);
 
 	if (result)
-	{
-		emit pluginAdded(plugin);
 		incDependenciesUsageCount(plugin);
-	}
 
 	return result;
 }
@@ -588,7 +585,6 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 		releasePlugin(i);
 
 	plugin->deactivate(reason);
-	emit pluginRemoved(plugin);
 	return true;
 }
 

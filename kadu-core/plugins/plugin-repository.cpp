@@ -51,7 +51,6 @@ void PluginRepository::removePlugin(const QString &name)
 	if (!!hasPlugin(name))
 		return;
 
-	auto plugin = m_plugins.value(name);
 	m_plugins.remove(name);
 }
 

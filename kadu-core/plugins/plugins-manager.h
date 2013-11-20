@@ -103,10 +103,6 @@ public:
 	void usePlugin(const QString &pluginName);
 	void releasePlugin(const QString &pluginName);
 
-signals:
-	void pluginAdded(const Plugin *plugin);
-	void pluginRemoved(const Plugin *plugin);
-
 protected:
 	virtual void load();
 	virtual void store();
