@@ -3,6 +3,7 @@ set (plugins_SRCS
 	model/plugin-proxy-model.cpp
 	plugin.cpp
 	plugin-info.cpp
+	plugin-info-reader.cpp
 	plugins-manager.cpp
 )
 

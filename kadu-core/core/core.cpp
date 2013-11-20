@@ -85,6 +85,7 @@
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
+#include "plugins/plugin-info-reader.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -664,6 +665,8 @@ void Core::runServices()
 	ChatStylesManager::instance()->setFormattedStringFactory(CurrentFormattedStringFactory);
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
+
+	CurrentPluginInfoReader = new PluginInfoReader(this);
 }
 
 void Core::runGuiServices()
@@ -823,6 +826,11 @@ ChatWindowRepository * Core::chatWindowRepository() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return CurrentStoragePointFactory;
+}
+
+PluginInfoReader * Core::pluginInfoReader() const
+{
+	return CurrentPluginInfoReader;
 }
 
 void Core::showMainWindow()

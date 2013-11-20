@@ -49,16 +49,6 @@ class PluginInfo
 {
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new object with data loaded from given .desc file.
-	 * @param fileName full path to .desc file
-	 *
-	 * Creates new object with data loaded from given .desc file. File must be present
-	 * and valid, otherwise object will contain invalid (empty) data.
-	 */
-	static PluginInfo fromFile(QString m_name, const QString &fileName);
-
 	PluginInfo(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault);

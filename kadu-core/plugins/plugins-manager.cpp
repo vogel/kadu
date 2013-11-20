@@ -34,14 +34,18 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
+#include "plugins/plugin-info-reader-exception.h"
+#include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
+#include "plugin-info-reader.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -387,13 +391,20 @@ QStringList PluginsManager::installedPlugins() const
 Plugin * PluginsManager::loadPlugin(const QString &pluginName)
 {
 	auto descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + pluginName + QLatin1String(".desc");
-	auto descFileInfo = QFileInfo{descFilePath};
 
-	if (!descFileInfo.exists())
+	auto pluginInfoReader = Core::instance()->pluginInfoReader();
+	if (!pluginInfoReader)
 		return nullptr;
 
-	auto pluginInfo = PluginInfo::fromFile(pluginName, descFilePath);
-	return new Plugin(pluginInfo, this);
+	try
+	{
+		auto pluginInfo = pluginInfoReader->readPluginInfo(pluginName, descFilePath);
+		return new Plugin{pluginInfo, this};
+	}
+	catch (PluginInfoReaderException &)
+	{
+		return nullptr;
+	}
 }
 
 /**

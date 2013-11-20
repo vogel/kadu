@@ -20,33 +20,6 @@
 
 #include "plugin-info.h"
 
-#include "configuration/configuration-file.h"
-#include "core/core.h"
-
-PluginInfo PluginInfo::fromFile(QString name, const QString &fileName)
-{
-	auto const lang = config_file.readEntry("General", "Language");
-	PlainConfigFile file{fileName, "UTF-8"};
-
-	return
-	{
-		std::move(name),
-		file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")),
-		file.readEntry("Module", "Category"),
-		file.readEntry("Module", "Type"),
-		file.readEntry("Module", "Description[" + lang + ']', file.readEntry("Module", "Description")),
-		file.readEntry("Module", "Author"),
-		file.readEntry("Module", "Version") == "core"
-			? Core::version()
-			: file.readEntry("Module", "Version"),
-		file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts),
-		file.readBoolEntry("Module", "LoadByDefault")
-	};
-}
-
 PluginInfo::PluginInfo(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault) :
