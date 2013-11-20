@@ -25,42 +25,35 @@
 
 PluginInfo PluginInfo::fromFile(QString name, const QString &fileName)
 {
-	auto result = PluginInfo{std::move(name)};
-
-	result.m_loadByDefault = false;
-
-	PlainConfigFile file{fileName, "UTF-8"};
 	auto const lang = config_file.readEntry("General", "Language");
+	PlainConfigFile file{fileName, "UTF-8"};
 
-	result.m_displayName = file.readEntry("Module", "DisplayName[" + lang + ']');
-	if (result.m_displayName.isEmpty())
-		result.m_displayName = file.readEntry("Module", "DisplayName");
-
-	result.m_type = file.readEntry("Module", "Type");
-	result.m_category = file.readEntry("Module", "Category");
-	result.m_description = file.readEntry("Module", "Description[" + lang + ']');
-	if (result.m_description.isEmpty())
-		result.m_description = file.readEntry("Module", "Description");
-
-	result.m_author = file.readEntry("Module", "Author");
-
-	if (file.readEntry("Module", "Version") == "core")
-		result.m_version = Core::version();
-	else
-		result.m_version = file.readEntry("Module", "Version");
-
-	result.m_dependencies = file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
-	result.m_conflicts = file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
-	result.m_provides = file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
-	result.m_replaces = file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
-
-	result.m_loadByDefault = file.readBoolEntry("Module", "LoadByDefault");
-
-	return result;
+	return
+	{
+		std::move(name),
+		file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")),
+		file.readEntry("Module", "Category"),
+		file.readEntry("Module", "Type"),
+		file.readEntry("Module", "Description[" + lang + ']', file.readEntry("Module", "Description")),
+		file.readEntry("Module", "Author"),
+		file.readEntry("Module", "Version") == "core"
+			? Core::version()
+			: file.readEntry("Module", "Version"),
+		file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts),
+		file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts),
+		file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts),
+		file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts),
+		file.readBoolEntry("Module", "LoadByDefault")
+	};
 }
 
-PluginInfo::PluginInfo(QString name) :
-		m_name(std::move(name)), m_loadByDefault(false)
+PluginInfo::PluginInfo(
+			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
+			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault) :
+		m_name(std::move(name)), m_displayName(std::move(displayName)), m_category(std::move(category)), m_type(std::move(type)),
+		m_description(std::move(description)), m_author(std::move(author)), m_version(std::move(version)),
+		m_dependencies(std::move(dependencies)), m_conflicts(std::move(conflicts)), m_provides(std::move(provides)),
+		m_replaces(std::move(replaces)), m_loadByDefault(loadByDefault)
 {
 }
 

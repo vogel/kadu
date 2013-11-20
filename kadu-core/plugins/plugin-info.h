@@ -59,7 +59,9 @@ public:
 	 */
 	static PluginInfo fromFile(QString m_name, const QString &fileName);
 
-	PluginInfo(QString m_name);
+	PluginInfo(
+			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
+			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault);
 	~PluginInfo();
 
 
