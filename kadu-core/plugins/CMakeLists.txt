@@ -4,6 +4,7 @@ set (plugins_SRCS
 	plugin.cpp
 	plugin-info.cpp
 	plugin-info-reader.cpp
+	plugin-repository.cpp
 	plugins-manager.cpp
 )
 

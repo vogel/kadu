@@ -36,6 +36,7 @@
 #include <QtGui/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
@@ -47,6 +48,7 @@
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
@@ -261,8 +263,8 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
         QString info;
         info += tr("Plugin name: %1").arg(model->data(index, PluginModel::NameRole).toString()) + "\n";
 
-        PluginEntry *pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
-		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
+        auto pluginEntry = model->data(index, PluginModel::PluginEntryRole).value<PluginEntry*>();
+		auto plugin = Core::instance()->pluginRepository()->plugin(pluginEntry->pluginName);
 
 		if (plugin)
 		{

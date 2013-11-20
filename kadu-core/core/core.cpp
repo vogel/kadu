@@ -86,6 +86,7 @@
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugins/plugin-info-reader.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugins-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
@@ -667,6 +668,7 @@ void Core::runServices()
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 
 	CurrentPluginInfoReader = new PluginInfoReader(this);
+	CurrentPluginRepository = new PluginRepository(this);
 }
 
 void Core::runGuiServices()
@@ -831,6 +833,11 @@ StoragePointFactory * Core::storagePointFactory() const
 PluginInfoReader * Core::pluginInfoReader() const
 {
 	return CurrentPluginInfoReader;
+}
+
+PluginRepository * Core::pluginRepository() const
+{
+	return CurrentPluginRepository;
 }
 
 void Core::showMainWindow()

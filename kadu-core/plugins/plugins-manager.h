@@ -91,7 +91,6 @@ public:
 	virtual StorableObject * storageParent() { return nullptr; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
 
-	const QMap<QString, Plugin *> & plugins() const { return m_plugins; }
 	QList<Plugin *> activePlugins() const;
 
 	void activateProtocolPlugins();
@@ -114,8 +113,6 @@ protected:
 
 private:
 	static PluginsManager *m_instance;
-
-	QMap<QString, Plugin *> m_plugins;
 
 	PluginsManager();
 	virtual ~PluginsManager();

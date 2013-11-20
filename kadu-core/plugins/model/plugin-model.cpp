@@ -36,6 +36,7 @@
 #include <QtGui/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/plugin-list/plugin-list-view-delegate.h"
@@ -45,6 +46,7 @@
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
@@ -56,7 +58,7 @@ void PluginModel::loadPluginData()
         Plugins.clear();
         QList<PluginEntry> listToAdd;
 
-        foreach (Plugin *plugin, PluginsManager::instance()->plugins())
+        for (Plugin *plugin : Core::instance()->pluginRepository())
         {
                 PluginEntry pluginEntry;
                 auto &pluginInfo = plugin->info();

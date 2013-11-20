@@ -23,8 +23,10 @@
 #include <QtCore/QFile>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/windows/main-configuration-window.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
@@ -85,15 +87,14 @@ void MPRISPlayer::replacePlugin()
 	replaceMap.insert("vlc_mediaplayer", 		"VLC");
 	replaceMap.insert("xmms2_mediaplayer", 		"XMMS2");
 
-	QMap<QString, Plugin *> plugins = PluginsManager::instance()->plugins();
-
 	foreach (const QString &value, replaceMap)
 	{
 		QString key = replaceMap.key(value);
-		if (plugins.contains(key) && (plugins.value(key)->state() == Plugin::PluginStateEnabled))
+		auto plugin = Core::instance()->pluginRepository()->plugin(key);
+		if (plugin && (plugin->state() == Plugin::PluginStateEnabled))
 		{
 			choosePlayer(key, value);
-			plugins.value(key)->setState(Plugin::PluginStateDisabled);
+			plugin->setState(Plugin::PluginStateDisabled);
 			break;
 		}
 	}

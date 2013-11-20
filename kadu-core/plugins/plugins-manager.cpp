@@ -45,6 +45,7 @@
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
+#include "plugin-repository.h"
 #include "plugin-info-reader.h"
 #include "activate.h"
 #include "debug.h"
@@ -129,7 +130,7 @@ void PluginsManager::load()
 		Q_ASSERT(!m_plugins.contains(pluginName));
 		auto plugin = loadPlugin(pluginName);
 		if (plugin)
-			m_plugins.insert(pluginName, plugin);
+			Core::instance()->pluginRepository()->addPlugin(pluginName, plugin);
 	}
 
 	if (!loadAttribute<bool>("imported_from_09", false))
@@ -155,7 +156,7 @@ void PluginsManager::store()
 
 	StorableObject::store();
 
-	for (auto plugin : m_plugins)
+	for (auto plugin : Core::instance()->pluginRepository())
 		plugin->ensureStored();
 }
 
@@ -179,7 +180,7 @@ void PluginsManager::importFrom09()
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
 	for (auto const &pluginName : allPlugins)
-		if (!m_plugins.contains(pluginName) && !oldPlugins.contains(pluginName))
+		if (!Core::instance()->pluginRepository()->hasPlugin(pluginName) && !oldPlugins.contains(pluginName))
 		{
 			auto plugin = loadPlugin(pluginName);
 			if (plugin)
@@ -199,7 +200,16 @@ void PluginsManager::importFrom09()
 			loadedPlugins.append("hints");
 	}
 
-	for (auto plugin : m_plugins.values() + oldPlugins.values())
+	for (auto plugin : Core::instance()->pluginRepository())
+		if (allPlugins.contains(plugin->name()))
+		{
+			if (loadedPlugins.contains(plugin->name()))
+				plugin->setState(Plugin::PluginStateEnabled);
+			else if (everLoaded.contains(plugin->name()))
+				plugin->setState(Plugin::PluginStateDisabled);
+		}
+
+	for (auto plugin : oldPlugins.values())
 		if (allPlugins.contains(plugin->name()))
 		{
 			if (loadedPlugins.contains(plugin->name()))
@@ -227,7 +237,7 @@ void PluginsManager::activateProtocolPlugins()
 {
 	auto saveList = false;
 
-	for (auto plugin : m_plugins)
+	for (auto plugin : Core::instance()->pluginRepository())
 	{
 		if (plugin->info().type() != "protocol")
 			continue;
@@ -261,7 +271,7 @@ void PluginsManager::activatePlugins()
 {
 	auto saveList = false;
 
-	for (auto plugin : m_plugins)
+	for (auto plugin : Core::instance()->pluginRepository())
 		if (plugin->shouldBeActivated())
 		{
 			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
@@ -272,12 +282,12 @@ void PluginsManager::activatePlugins()
 				saveList = true;
 		}
 
-	for (auto pluginToReplace : m_plugins)
+	for (auto pluginToReplace : Core::instance()->pluginRepository())
 	{
 		if (pluginToReplace->isActive() || pluginToReplace->state() != Plugin::PluginStateEnabled)
 			continue;
 
-		for (auto replacementPlugin : m_plugins)
+		for (auto replacementPlugin : Core::instance()->pluginRepository())
 			if (replacementPlugin->state() == Plugin::PluginStateNew
 					&& replacementPlugin->info().replaces().contains(pluginToReplace->name()))
 				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
@@ -301,7 +311,7 @@ void PluginsManager::activatePlugins()
  */
 void PluginsManager::deactivatePlugins()
 {
-	for (auto plugin : m_plugins)
+	for (auto plugin : Core::instance()->pluginRepository())
 		if (plugin->isActive())
 		{
 			kdebugm(KDEBUG_INFO, "plugin: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
@@ -344,7 +354,7 @@ void PluginsManager::deactivatePlugins()
 QList<Plugin *> PluginsManager::activePlugins() const
 {
 	auto result = QList<Plugin *>{};
-	for (auto plugin : m_plugins)
+	for (auto plugin : Core::instance()->pluginRepository())
 		if (plugin->isActive())
 			result.append(plugin);
 	return result;
@@ -427,18 +437,18 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	for (auto const &conflict : plugin->info().conflicts())
 	{
 		// note that conflict may be something provided, not necessarily a plugin
-		auto it = m_plugins.find(conflict);
-		if (it != m_plugins.constEnd() && it.value()->isActive())
+		auto conflictingPlugin = Core::instance()->pluginRepository()->plugin(conflict);
+		if (conflictingPlugin && conflictingPlugin->isActive())
 			return conflict;
 
-		for (auto possibleConflict : m_plugins)
+		for (auto possibleConflict : Core::instance()->pluginRepository())
 			if (possibleConflict->isActive())
 				for (auto const &provided : possibleConflict->info().provides())
 					if (conflict == provided)
 						return possibleConflict->name();
 	}
 
-	for (auto possibleConflict : m_plugins)
+	for (auto possibleConflict : Core::instance()->pluginRepository())
 		if (possibleConflict->isActive())
 			for (auto const &sit : possibleConflict->info().conflicts())
 				if (sit == plugin->name())
@@ -463,7 +473,7 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 
 	for (auto const &dependencyName : plugin->info().dependencies())
 	{
-		auto dependencyPlugin = m_plugins.value(dependencyName);
+		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependencyName);
 		if (!dependencyPlugin)
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
@@ -499,7 +509,7 @@ QString PluginsManager::activeDependentPluginNames(const QString &pluginName) co
 {
 	auto plugins = QString{};
 
-	for (auto possibleDependentPlugin : m_plugins)
+	for (auto possibleDependentPlugin : Core::instance()->pluginRepository())
 		if (possibleDependentPlugin->isActive())
 			if (possibleDependentPlugin->info().dependencies().contains(pluginName))
 				plugins += "\n- " + possibleDependentPlugin->name();
@@ -596,8 +606,9 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
  */
 void PluginsManager::usePlugin(const QString &pluginName)
 {
-	if (m_plugins.contains(pluginName))
-		m_plugins.value(pluginName)->incUsage();
+	auto plugin = Core::instance()->pluginRepository()->plugin(pluginName);
+	if (plugin)
+		plugin->incUsage();
 }
 
 /**
@@ -613,8 +624,9 @@ void PluginsManager::usePlugin(const QString &pluginName)
  */
 void PluginsManager::releasePlugin(const QString &pluginName)
 {
-	if (m_plugins.contains(pluginName))
-		m_plugins.value(pluginName)->decUsage();
+	auto plugin = Core::instance()->pluginRepository()->plugin(pluginName);
+	if (plugin)
+		plugin->decUsage();
 }
 
 #include "moc_plugins-manager.cpp"

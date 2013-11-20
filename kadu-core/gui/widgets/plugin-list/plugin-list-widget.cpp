@@ -35,6 +35,7 @@
 #include <QtGui/QStyleOptionViewItemV4>
 
 #include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "gui/widgets/categorized-list-view-painter.h"
 #include "gui/widgets/categorized-list-view.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -49,6 +50,7 @@
 #include "plugins/model/plugin-model.h"
 #include "plugins/model/plugin-proxy-model.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-manager.h"
 
@@ -123,8 +125,8 @@ void PluginListWidget::applyChanges()
 
 	for (int i = 0; i < count; i++)
 	{
-		PluginEntry *pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
-		Plugin *plugin = PluginsManager::instance()->plugins().value(pluginEntry->pluginName);
+		auto pluginEntry = static_cast<PluginEntry*>(Model->index(i, 0).internalPointer());
+		auto plugin = Core::instance()->pluginRepository()->plugin(pluginEntry->pluginName);
 
 		if (!plugin)
 			continue;
