@@ -41,13 +41,6 @@ public:
 		return *this;
 	}
 
-	inline PluginRepositoryIterator operator++() const
-	{
-		PluginRepositoryIterator result = *this;
-		++result.m_iterator;
-		return result;
-	}
-
 	inline Plugin * operator*() const
 	{
 		return *m_iterator;

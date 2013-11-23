@@ -52,13 +52,6 @@ public:
 		return *this;
 	}
 
-	inline ChatWidgetRepositoryIterator operator++() const
-	{
-		ChatWidgetRepositoryIterator result = *this;
-		++result.m_iterator;
-		return result;
-	}
-
 	inline ChatWidget * operator*() const
 	{
 		return m_iterator->second.get();
