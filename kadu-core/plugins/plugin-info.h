@@ -26,6 +26,8 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
@@ -45,7 +47,7 @@
  * New instances of this class are created with existing file name as paremeters. Otherwise,
  * object will contain invalid (empty) data.
  */
-class PluginInfo
+class KADUAPI PluginInfo
 {
 
 public:
@@ -53,7 +55,6 @@ public:
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
 			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault);
 	~PluginInfo();
-
 
 	QString name() const;
 
