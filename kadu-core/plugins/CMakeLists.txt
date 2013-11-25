@@ -1,4 +1,7 @@
 set (plugins_SRCS
+	dependency-graph/plugin-dependency-graph.cpp
+	dependency-graph/plugin-dependency-graph-builder.cpp
+	dependency-graph/plugin-dependency-graph-node.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	plugin.cpp

@@ -85,6 +85,7 @@
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
+#include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-repository.h"
 #include "plugins/plugins-manager.h"
@@ -669,6 +670,9 @@ void Core::runServices()
 
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginRepository = new PluginRepository(this);
+
+	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
+	CurrentPluginDependencyGraphBuilder->setPluginRepository(CurrentPluginRepository);
 }
 
 void Core::runGuiServices()
@@ -828,6 +832,11 @@ ChatWindowRepository * Core::chatWindowRepository() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return CurrentStoragePointFactory;
+}
+
+PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
+{
+	return CurrentPluginDependencyGraphBuilder;
 }
 
 PluginInfoReader * Core::pluginInfoReader() const
