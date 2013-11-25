@@ -46,7 +46,8 @@ void tst_StringUtils::ellipsisTest_data()
 
 void tst_StringUtils::ellipsisTest()
 {
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++)
+	{
 		QFETCH(QString, input);
 		QFETCH(int, maxLen);
 		QFETCH(QString, expected);
