@@ -326,7 +326,8 @@ QModelIndex MergedProxyModel::mappedSourceParent(const QModelIndex &proxyIndex) 
 	Q_ASSERT(proxyIndex.model() == this);
 
 	const void *p = proxyIndex.internalPointer();
-	Q_ASSERT(p);
+	if (!p)
+		return QModelIndex();
 
 	const QModelIndex *mapping = static_cast<const QModelIndex *>(p);
 	return *mapping;
@@ -336,6 +337,9 @@ QModelIndex MergedProxyModel::index(int row, int column, const QModelIndex &pare
 {
 	if (row < 0 || column < 0)
 		return QModelIndex();
+
+	if (!parent.isValid())
+		return createIndex(row, column);
 
 	const QModelIndex &sourceParent = mapToSource(parent); // parent is already mapped
 	QModelIndex *mapping = createMapping(sourceParent); // map children for this parent
