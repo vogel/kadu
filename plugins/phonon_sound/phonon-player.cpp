@@ -21,6 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QtCore/QFileInfo>
+#include <QtCore/QUrl>
+
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 #include <phonon/phononnamespace.h>
@@ -89,6 +92,10 @@ void PhononPlayer::playSound(const QString &path)
 {
 	kdebugf();
 
+	auto fileInfo = QFileInfo{path};
+	if (!fileInfo.exists())
+		return;
+
 	if (!Media)
 	{
 		MediaObjectMutex.lock();
@@ -107,7 +114,7 @@ void PhononPlayer::playSound(const QString &path)
 		MediaObjectMutex.unlock();
 	}
 
-	Media->setCurrentSource(path);
+	Media->setCurrentSource(QUrl::fromLocalFile(fileInfo.absoluteFilePath()));
 	Media->play();
 
 	kdebugf2();
