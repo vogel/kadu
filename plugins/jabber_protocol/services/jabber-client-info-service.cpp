@@ -40,8 +40,8 @@ JabberClientInfoService::JabberClientInfoService(JabberProtocol *protocol) :
 	DiscoItem::Identity identity;
 
 	identity.category = "client";
-	identity.name = "pc";
-	identity.type = "Kadu";
+	identity.type = "pc";
+	identity.name = "Kadu";
 
 	if (XmppClient)
 		XmppClient.data()->setIdentity(identity);
