@@ -104,7 +104,7 @@ void MessageShared::load()
 	SendDate = loadValue<QDateTime>("SendDate");
 	Status = (MessageStatus)loadValue<int>("Status");
 	Type = (MessageType)loadValue<int>("Type");
-	Pending = (MessageType)loadValue<bool>("Pending");
+	Pending = loadValue<bool>("Pending");
 	Id = loadValue<QString>("Id");
 }
 
