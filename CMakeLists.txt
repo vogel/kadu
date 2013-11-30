@@ -1,6 +1,6 @@
 project (Kadu)
 
-cmake_minimum_required (VERSION 2.8.9)
+cmake_minimum_required (VERSION 2.8.10)
 
 # Options (some of them)
 
