@@ -239,6 +239,9 @@ bool GaduContactListService::haveToAskForAddingContacts() const
 
 void GaduContactListService::importContactList()
 {
+	if (!Connection || !Connection.data()->hasSession())
+		return;
+
 	emit stateMachineGetStarted();
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
@@ -254,7 +257,7 @@ void GaduContactListService::exportContactList()
 
 void GaduContactListService::exportContactList(const BuddyList &buddies)
 {
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	emit stateMachinePutStarted();

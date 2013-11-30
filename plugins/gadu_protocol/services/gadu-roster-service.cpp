@@ -61,7 +61,7 @@ void GaduRosterService::setConnection(GaduConnection *connection)
 
 void GaduRosterService::prepareRoster(const QVector<Contact> &contacts)
 {
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	RosterService::prepareRoster(contacts);
@@ -128,6 +128,15 @@ void GaduRosterService::updateFlag(gg_session *session, int uin, int newFlags, i
 
 void GaduRosterService::sendNewFlags(const Contact &contact, int newFlags) const
 {
+	// TODO: This is broken... Complete lack of error handling. This method is called
+	// from executeTask() which assumes the task is always actually executed and removes
+	// it from the list. While there are two returns for error conditions in this
+	// method, and also gg_add_notify_ex() or gg_remove_notify_ex() in updateFlag()
+	// could fail.
+
+	if (!Connection || !Connection.data()->hasSession())
+		return;
+
 	GaduContactDetails *details = GaduProtocolHelper::gaduContactDetails(contact);
 	if (!details)
 		return;

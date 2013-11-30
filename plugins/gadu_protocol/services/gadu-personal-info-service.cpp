@@ -84,7 +84,7 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
 	Q_UNUSED(id)
 
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
@@ -97,6 +97,9 @@ void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
 	Q_UNUSED(id)
+
+	if (!Connection || !Connection.data()->hasSession())
+		return;
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 

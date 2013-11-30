@@ -69,7 +69,7 @@ void GaduChatStateService::sendState(const Contact &contact, State state)
 	if (!SendTypingNotifications || !contact)
 		return;
 
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();

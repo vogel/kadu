@@ -55,7 +55,7 @@ void GaduSearchService::searchFirst(BuddySearchCriteria criteria)
 
 void GaduSearchService::searchNext()
 {
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	Stopped = false;

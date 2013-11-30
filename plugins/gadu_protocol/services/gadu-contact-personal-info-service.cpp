@@ -62,7 +62,7 @@ void GaduContactPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 
 void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	Id = contact.id();

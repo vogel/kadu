@@ -63,7 +63,7 @@ const QList<MultilogonSession *> & GaduMultilogonService::sessions() const
 
 void GaduMultilogonService::killSession(MultilogonSession *session)
 {
-	if (!Connection)
+	if (!Connection || !Connection.data()->hasSession())
 		return;
 
 	GaduMultilogonSession *gaduSession = dynamic_cast<GaduMultilogonSession *>(session);
