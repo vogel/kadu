@@ -42,9 +42,6 @@ else ()
 	set (CXX_FLAGS "-Woverloaded-virtual -Wnon-virtual-dtor -std=c++0x")
 	set (CMAKE_CXX_FLAGS "-std=c++0x")
 	list (APPEND DEFINITIONS QT_NO_EXCEPTIONS)
-	if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
-		set (LINK_FLAGS "-Wl,--no-undefined")
-	endif ()
 
 	if (NOT WIN32)
 		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fvisibility=hidden")
@@ -57,16 +54,23 @@ else ()
 		# -fno-omit-frame-pointer gives potentially better stack traces at the cost of negligible performance drop
 		set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -Werror -Wno-deprecated -pipe -ftrapv -fno-omit-frame-pointer")
 
-		# TODO: uncomment for Clang 3.3
-		#if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-		#	# run-time checks for undefined or suspicious behavior
-		#	set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} -fsanitize=undefined")
-		#endif ()
+		if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+			set (SANITIZE_OPTIONS "-fsanitize=integer -fsanitize=undefined-trap -fsanitize=unsigned-integer-overflow")
+			set (COMMON_COMPILE_FLAGS "${COMMON_COMPILE_FLAGS} ${SANITIZE_OPTIONS} -fsanitize-blacklist=${CMAKE_SOURCE_DIR}/sanitize-blacklist.txt")
+			set (LINK_FLAGS "${LINK_FLAGS} ${SANITIZE_OPTIONS}")
+			# Clang is links its sanitizer libraries only to executables,
+			# even though they are actually needed all over the code. :-(
+			set (ALLOW_UNDEFINED ON)
+		endif ()
 
 		if (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU")
 			# -z now checks there are no unresolved symbols at executalbe/library load time, instead of that specific symbol load time
-			set (LINK_FLAGS "${LINK_FLAGS} -Wl,-z,now -Wl,--fatal-warnings -Wl,--as-needed")
+			set (LINK_FLAGS "${LINK_FLAGS} -Wl,-z,now -Wl,--as-needed")
 		endif ()
+	endif ()
+
+	if (NOT ALLOW_UNDEFINED AND (CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "GNU"))
+		set (LINK_FLAGS "${LINK_FLAGS} -Wl,--no-undefined")
 	endif ()
 endif ()
 
