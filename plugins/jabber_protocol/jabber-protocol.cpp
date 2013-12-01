@@ -40,7 +40,6 @@
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
 #include "certificates/trusted-certificates-manager.h"
-#include "client/pong-server.h"
 #include "iris/filetransfer.h"
 #include "iris/irisnetglobal.h"
 #include "resource/jabber-resource-pool.h"
@@ -81,8 +80,6 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 	connect(XmppClient, SIGNAL(resourceAvailable(Jid,Resource)), this, SLOT(clientAvailableResourceReceived(Jid,Resource)));
 	connect(XmppClient, SIGNAL(resourceUnavailable(Jid,Resource)), this, SLOT(clientUnavailableResourceReceived(Jid,Resource)));
 
-	new PongServer(XmppClient->rootTask());
-
 	CurrentAvatarService = new JabberAvatarService(account, this);
 	XMPP::JabberChatService *chatService = new XMPP::JabberChatService(account, this);
 	chatService->setFormattedStringFactory(Core::instance()->formattedStringFactory());
@@ -119,18 +116,12 @@ JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
 
 	QStringList features;
 	features
-			<< "http://jabber.org/protocol/bytestreams"	// file transfer
 			<< "http://jabber.org/protocol/chatstates"
-			<< "http://jabber.org/protocol/disco#info"
-			<< "http://jabber.org/protocol/ibb"	// file transfer
-			<< "http://jabber.org/protocol/si"	// file transfer
-			<< "http://jabber.org/protocol/si/profile/file-transfer" // file transfer
 			<< "jabber:iq:version"
 			<< "jabber:x:data"
 			<< "urn:xmpp:avatar:data"
 			<< "urn:xmpp:avatar:metadata"
-			<< "urn:xmpp:avatar:metadata+notify"
-			<< "urn:xmpp:ping";
+			<< "urn:xmpp:avatar:metadata+notify";
 
 	CurrentClientInfoService->setFeatures(features);
 

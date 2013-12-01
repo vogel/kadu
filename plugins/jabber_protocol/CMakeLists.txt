@@ -67,7 +67,6 @@ set (SOURCES
 	certificates/trusted-certificates-manager.cpp
 
 	client/mini-client.cpp
-	client/pong-server.cpp
 
 	file-transfer/jabber-file-transfer-handler.cpp
 	file-transfer/s5b-server-manager.cpp
@@ -141,7 +140,6 @@ set (MOC_SOURCES
 	certificates/trusted-certificates-manager.h
 
 	client/mini-client.h
-	client/pong-server.h
 
 	file-transfer/jabber-file-transfer-handler.h
 	file-transfer/s5b-server-manager.h

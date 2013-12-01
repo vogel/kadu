@@ -61,12 +61,11 @@ bool PEPGetTask::take(const QDomElement &x)
 
 	if (x.attribute("type") == "result")
 	{
-		bool found;
 		// FIXME Check namespace...
-		QDomElement e = findSubTag(x, "pubsub", &found);
-		if (found) {
-			QDomElement i = findSubTag(e, "items", &found);
-			if (found) {
+		QDomElement e = x.firstChildElement("pubsub");
+		if (!e.isNull()) {
+			QDomElement i = e.firstChildElement("items");
+			if (!i.isNull()) {
 				for (QDomNode n1 = i.firstChild(); !n1.isNull(); n1 = n1.nextSibling()) {
 					QDomElement e1 = n1.toElement();
 					if  (!e1.isNull() && e1.tagName() == "item") {

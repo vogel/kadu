@@ -10,6 +10,8 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/bytestream.cpp
 	libiris/src/irisnet/noncore/cutestuff/bsocket.cpp
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.cpp
+	libiris/src/irisnet/noncore/cutestuff/networkaccessmanager.cpp
+	libiris/src/irisnet/noncore/cutestuff/httpstream.cpp
 	libiris/src/xmpp/xmpp-im/xmpp_discoitem.cpp
 	libiris/src/xmpp/xmpp-im/xmpp_bytestream.cpp
 	libiris/src/xmpp/xmpp-im/xmpp_bitsofbinary.cpp
@@ -28,6 +30,9 @@ set (SOURCES_IRIS
 	libiris/src/xmpp/sasl/digestmd5proplist.cpp
 	libiris/src/xmpp/sasl/digestmd5response.cpp
 	libiris/src/xmpp/sasl/plainmessage.cpp
+	libiris/src/xmpp/sasl/scramsha1message.cpp
+	libiris/src/xmpp/sasl/scramsha1response.cpp
+	libiris/src/xmpp/sasl/scramsha1signature.cpp
 	libiris/src/xmpp/zlib/zlibcompressor.cpp
 	libiris/src/xmpp/zlib/zlibdecompressor.cpp
 	libiris/src/xmpp/base64/base64.cpp
@@ -82,6 +87,8 @@ set (SOURCES_IRIS
 	libiris/src/irisnet/noncore/cutestuff/httpconnect.h
 	libiris/src/irisnet/noncore/cutestuff/bsocket.h
 	libiris/src/irisnet/noncore/cutestuff/httppoll.h
+	libiris/src/irisnet/noncore/cutestuff/networkaccessmanager.h
+	libiris/src/irisnet/noncore/cutestuff/httpstream.h
 	libiris/src/xmpp/xmpp-im/xmpp_bytestream.h
 	libiris/src/xmpp/xmpp-im/xmpp_bitsofbinary.h
 	libiris/src/xmpp/xmpp-im/xmpp_tasks.h
@@ -91,6 +98,12 @@ set (SOURCES_IRIS
 	libiris/src/xmpp/xmpp-im/s5b.h
 	libiris/src/xmpp/xmpp-im/xmpp_task.h
 	libiris/src/xmpp/xmpp-im/filetransfer.h
+	libiris/src/xmpp/sasl/digestmd5proplist.h
+	libiris/src/xmpp/sasl/digestmd5response.h
+	libiris/src/xmpp/sasl/plainmessage.h
+	libiris/src/xmpp/sasl/scramsha1message.h
+	libiris/src/xmpp/sasl/scramsha1response.h
+	libiris/src/xmpp/sasl/scramsha1signature.h
 	libiris/src/xmpp/zlib/zlibdecompressor.h
 	libiris/src/xmpp/zlib/zlibcompressor.h
 	libiris/src/xmpp/xmpp-core/securestream.h
@@ -138,7 +151,8 @@ include_directories (
 
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include/iris
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/irisnet/corelib
-	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/xmpp-core/
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/jdns
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src/xmpp/xmpp-core
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/src
 )
 

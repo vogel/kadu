@@ -150,7 +150,7 @@ void JabberFileTransferHandler::send()
 	transfer().setTransferStatus(StatusWaitingForAccept);
 	InProgress = true;
 
-	JabberTransfer->sendFile(PeerJid, transfer().remoteFileName(), transfer().fileSize(), QString());
+	JabberTransfer->sendFile(PeerJid, transfer().remoteFileName(), transfer().fileSize(), QString(), XMPP::FTThumbnail());
 }
 
 void JabberFileTransferHandler::stop()
