@@ -31,7 +31,7 @@ class tst_PluginDependencyGraphCycleFinder : public QObject
 
 private slots:
 	void noCyclesTest();
-	// void oneCycleTest();
+	void oneCycleTest();
 	// void multipleCycleTest();
 
 };
@@ -67,6 +67,44 @@ void tst_PluginDependencyGraphCycleFinder::noCyclesTest()
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
 	QCOMPARE(nodesInCycle.size(), 0UL);
+}
+
+void tst_PluginDependencyGraphCycleFinder::oneCycleTest()
+{
+	auto p1 = make_unique<PluginDependencyGraphNode>("p1");
+	auto p2 = make_unique<PluginDependencyGraphNode>("p2");
+	auto p3 = make_unique<PluginDependencyGraphNode>("p3");
+	auto p4 = make_unique<PluginDependencyGraphNode>("p4");
+
+	p1.get()->addDependency(p2.get());
+	p2.get()->addDependent(p1.get());
+	p1.get()->addDependency(p3.get());
+	p3.get()->addDependent(p1.get());
+	p1.get()->addDependency(p4.get());
+	p4.get()->addDependent(p1.get());
+	p2.get()->addDependency(p3.get());
+	p3.get()->addDependent(p2.get());
+	p2.get()->addDependency(p4.get());
+	p4.get()->addDependent(p2.get());
+	p3.get()->addDependency(p4.get());
+	p4.get()->addDependent(p3.get());
+	p4.get()->addDependency(p2.get());
+	p2.get()->addDependent(p4.get());
+
+	auto nodes = std::vector<decltype(p1)>{};
+	nodes.push_back(std::move(p1));
+	nodes.push_back(std::move(p2));
+	nodes.push_back(std::move(p3));
+	nodes.push_back(std::move(p4));
+
+	PluginDependencyGraph pluginDependencyGraph{std::move(nodes)};
+	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
+
+	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
+	QCOMPARE(nodesInCycle.size(), 3UL);
+	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p2")), 1UL);
+	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p3")), 1UL);
+	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p4")), 1UL);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphCycleFinder)
