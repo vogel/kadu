@@ -18,7 +18,6 @@
  */
 
 #include "misc/misc-memory.h"
-#include "misc/string-utils.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-node.h"
