@@ -52,7 +52,7 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 
 std::set< QString > PluginDependencyGraphBuilder::getPluginNames() const
 {
-	std::set<QString> pluginNames;
+	auto pluginNames = std::set<QString>{};
 	for (auto plugin : m_pluginRepository.data())
 	{
 		pluginNames.insert(plugin->info().name());
