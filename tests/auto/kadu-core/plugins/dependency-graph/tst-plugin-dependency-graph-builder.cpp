@@ -38,6 +38,7 @@ private:
 
 private slots:
 	void simpleDependencyTest();
+	void selfDependencyTest();
 
 };
 
@@ -120,6 +121,27 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	QVERIFY(p4->dependents().contains(p3));
 	QCOMPARE(p4->dependencies().size(), 0);
 	QCOMPARE(p4->dependents().size(), 3);
+}
+
+void tst_PluginDependencyGraphBuilder::selfDependencyTest()
+{
+	auto plugins = QVector<QPair<QString, QStringList>>{};
+	plugins.append(qMakePair(QString("p1"), QStringList() << "p1"));
+
+	auto pluginRepository = createPluginRepository(plugins);
+	PluginDependencyGraphBuilder pluginDependencyGraphBuilder;
+	pluginDependencyGraphBuilder.setPluginRepository(pluginRepository.get());
+
+	auto graph = pluginDependencyGraphBuilder.buildGraph();
+
+	QCOMPARE(graph.get()->nodes().size(), 1UL);
+
+	auto p1 = graph.get()->node("p1");
+
+	QVERIFY(p1);
+
+	QCOMPARE(p1->dependencies().size(), 0);
+	QCOMPARE(p1->dependents().size(), 0);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
