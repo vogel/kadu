@@ -101,15 +101,26 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	QVERIFY(p1->dependencies().contains(p2));
 	QVERIFY(p1->dependencies().contains(p3));
 	QVERIFY(p1->dependencies().contains(p4));
+	QCOMPARE(p1->dependencies().size(), 3);
+	QCOMPARE(p1->dependents().size(), 0);
 
 	QVERIFY(p2->dependencies().contains(p3));
 	QVERIFY(p2->dependencies().contains(p4));
 	QVERIFY(p2->dependents().contains(p1));
+	QCOMPARE(p2->dependencies().size(), 2);
+	QCOMPARE(p2->dependents().size(), 1);
 
 	QVERIFY(p3->dependencies().contains(p4));
+	QVERIFY(p3->dependents().contains(p1));
 	QVERIFY(p3->dependents().contains(p2));
+	QCOMPARE(p3->dependencies().size(), 1);
+	QCOMPARE(p3->dependents().size(), 2);
 
+	QVERIFY(p4->dependents().contains(p1));
+	QVERIFY(p4->dependents().contains(p2));
 	QVERIFY(p4->dependents().contains(p3));
+	QCOMPARE(p4->dependencies().size(), 0);
+	QCOMPARE(p4->dependents().size(), 3);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
