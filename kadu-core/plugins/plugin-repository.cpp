@@ -48,7 +48,7 @@ void PluginRepository::addPlugin(const QString &name, Plugin *plugin)
 
 void PluginRepository::removePlugin(const QString &name)
 {
-	if (!!hasPlugin(name))
+	if (!hasPlugin(name))
 		return;
 
 	m_plugins.remove(name);
