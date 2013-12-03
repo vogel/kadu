@@ -40,12 +40,16 @@
 #include "gui/windows/message-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
+#include "plugin-repository.h"
+#include "plugins/dependency-graph/plugin-dependency-graph.h"
+#include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
+#include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
+#include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-info-reader-exception.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
-#include "plugin-repository.h"
 #include "plugin-info-reader.h"
 #include "activate.h"
 #include "debug.h"
@@ -132,6 +136,11 @@ void PluginsManager::load()
 		if (plugin)
 			Core::instance()->pluginRepository()->addPlugin(pluginName, plugin);
 	}
+
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
+	auto nodesInCycle = Core::instance()->pluginDependencyGraphCycleFinder()->findNodesInCycle(dependencyGraph.get());
+	for (auto &nodeInCycle : nodesInCycle)
+		Core::instance()->pluginRepository()->removePlugin(nodeInCycle->pluginName());
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{

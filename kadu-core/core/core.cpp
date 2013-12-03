@@ -86,6 +86,7 @@
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
+#include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-repository.h"
 #include "plugins/plugins-manager.h"
@@ -673,6 +674,8 @@ void Core::runServices()
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 	CurrentPluginDependencyGraphBuilder->setPluginRepository(CurrentPluginRepository);
+
+	CurrentPluginDependencyGraphCycleFinder = new PluginDependencyGraphCycleFinder(this);
 }
 
 void Core::runGuiServices()
@@ -837,6 +840,11 @@ StoragePointFactory * Core::storagePointFactory() const
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 {
 	return CurrentPluginDependencyGraphBuilder;
+}
+
+PluginDependencyGraphCycleFinder * Core::pluginDependencyGraphCycleFinder() const
+{
+	return CurrentPluginDependencyGraphCycleFinder;
 }
 
 PluginInfoReader * Core::pluginInfoReader() const
