@@ -137,7 +137,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 	kdebugf();
 	QStringList strlist;
 	QString token;
-	unsigned int idx = 0, strlength = str.length();
+	int idx = 0, strlength = str.length();
 	bool inString = false;
 
 	int pos1, pos2;
