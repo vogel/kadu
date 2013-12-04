@@ -659,7 +659,7 @@ void TabsManager::configurationUpdated()
 	ConfigConferencesInTabs = config_file.readBoolEntry("Chat", "ConferencesInTabs");
 	ConfigTabsBelowChats = config_file.readBoolEntry("Chat", "TabsBelowChats");
 	ConfigDefaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
-	ConfigMinTabs = config_file.readUnsignedNumEntry("Chat", "MinTabs");
+	ConfigMinTabs = config_file.readNumEntry("Chat", "MinTabs");
 	ConfigBlinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
 	ConfigShowNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle");
 
