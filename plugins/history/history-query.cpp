@@ -111,12 +111,12 @@ QDateTime HistoryQuery::toDateTime() const
 	return ToDateTime;
 }
 
-void HistoryQuery::setLimit(quint16 limit)
+void HistoryQuery::setLimit(int limit)
 {
 	Limit = limit;
 }
 
-quint16 HistoryQuery::limit() const
+int HistoryQuery::limit() const
 {
 	return Limit;
 }

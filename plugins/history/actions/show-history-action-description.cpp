@@ -163,7 +163,7 @@ void ShowHistoryActionDescription::showDaysMessages(QAction *action, int days)
 	query.setTalkable(messagesChat);
 
 	if (0 == days)
-		query.setLimit(config_file.readNumEntry("History", "ChatHistoryCitation", 10));
+		query.setLimit(config_file.readUnsignedNumEntry("History", "ChatHistoryCitation", 10));
 	else
 		query.setFromDate(QDate::currentDate().addDays(-days));
 

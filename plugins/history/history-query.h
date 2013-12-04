@@ -55,7 +55,7 @@ class HISTORYAPI HistoryQuery
 	QDate ToDate;
 	QDateTime FromDateTime;
 	QDateTime ToDateTime;
-	quint16 Limit;
+	int Limit;
 
 public:
 	/**
@@ -181,14 +181,14 @@ public:
 	 *
 	 * Maximum limit items will be returned.
 	 */
-	void setLimit(quint16 limit);
+	void setLimit(int limit);
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
 	 * @short Return limit.
 	 * @return limit
 	 */
-	quint16 limit() const;
+	int limit() const;
 
 };
 
