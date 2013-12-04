@@ -33,10 +33,10 @@ void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
 	Q_ASSERT(Root);
 
 	QString text = emoticon.triggerText().toLower();
-	unsigned int length = text.length();
+	int length = text.length();
 
 	EmoticonPrefixTree *node = Root.data();
-	for (unsigned int i = 0; i < length; i++)
+	for (int i = 0; i < length; i++)
 	{
 		QChar c = extractLetter(text.at(i));
 

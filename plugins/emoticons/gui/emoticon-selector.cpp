@@ -90,7 +90,7 @@ void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QW
 	}
 
 	if (total_height < selector_width - 80)
-		selector_width = sqrt((float)selector_width * total_height) * 1.1f;
+		selector_width = static_cast<int>(sqrt(static_cast<float>(selector_width) * total_height) * 1.1f);
 	else if (total_height > selector_width + 40)
 		selector_width += 40;
 
