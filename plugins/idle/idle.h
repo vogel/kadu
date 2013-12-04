@@ -36,7 +36,8 @@ public:
 	explicit Idle(QObject *parent = 0);
 	virtual ~Idle();
 
-	int secondsIdle();
+	long secondsIdle();
+
 };
 
 #endif // IDLE_H

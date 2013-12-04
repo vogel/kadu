@@ -55,7 +55,7 @@ Idle::~Idle()
 	}
 }
 
-int Idle::secondsIdle()
+long Idle::secondsIdle()
 {
 	if (!ss_info)
 		return -1;
