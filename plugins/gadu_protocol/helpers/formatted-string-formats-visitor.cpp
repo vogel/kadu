@@ -129,9 +129,9 @@ void FormattedStringFormatsVisitor::visit(const FormattedStringTextBlock * const
 	{
 		struct gg_msg_richtext_color color;
 
-		color.red = formattedStringTextBlock->color().red();
-		color.green = formattedStringTextBlock->color().green();
-		color.blue = formattedStringTextBlock->color().blue();
+		color.red = static_cast<uint8_t>(formattedStringTextBlock->color().red());
+		color.green = static_cast<uint8_t>(formattedStringTextBlock->color().green());
+		color.blue = static_cast<uint8_t>(formattedStringTextBlock->color().blue());
 
 		Result.append((const char *)&color, sizeof(color));
 	}
@@ -143,7 +143,7 @@ QByteArray FormattedStringFormatsVisitor::result()
 {
 	struct gg_msg_richtext header;
 	header.flag = 2;
-	header.length = gg_fix16(Result.size() - sizeof(struct gg_msg_richtext));
+	header.length = gg_fix16(static_cast<uint16_t>(Result.size()) - sizeof(struct gg_msg_richtext));
 
 	Result.replace(0, sizeof(header), (const char *)&header, sizeof(header));
 

@@ -272,7 +272,7 @@ bool DccSocketNotifiers::acceptFileTransfer(const QString &fileName, bool resume
 		return false;
 
 	Socket7->file_fd = dup(file.handle());
-	Socket7->offset = file.size();
+	Socket7->offset = static_cast<unsigned int>(file.size());
 	disable();
 	gg_dcc7_accept(Socket7, Socket7->offset);
 	if (FileTransferHandler)

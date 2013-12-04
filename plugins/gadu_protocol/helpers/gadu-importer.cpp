@@ -108,7 +108,7 @@ Account GaduImporter::import065Account(QXmlQuery &xmlQuery)
 	QString address = readEntry(xmlQuery, "Network", "ProxyHost").toString();
 	if (!address.isEmpty())
 	{
-		int port = readEntry(xmlQuery, "Network", "ProxyPort").toUInt();
+		int port = readEntry(xmlQuery, "Network", "ProxyPort").toInt();
 		QString user = readEntry(xmlQuery, "Network", "ProxyUser").toString();
 		QString password = readEntry(xmlQuery, "Network", "ProxyPassword").toString();
 

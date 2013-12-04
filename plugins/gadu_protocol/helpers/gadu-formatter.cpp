@@ -130,7 +130,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 	{
 		quint16 textPosition = (i < len)
 				? formatList.at(i).format.position
-				: content.length();
+				: static_cast<quint16>(content.length());
 
 		if (hasStrayText && strayTextPosition < textPosition)
 			items.append(new FormattedStringTextBlock(content.mid(strayTextPosition, textPosition - strayTextPosition), false, false, false, QColor()));
@@ -159,7 +159,7 @@ FormattedString * createMessage(const QString &content, const unsigned char *for
 		{
 			quint16 nextTextPosition = (i + 1 < len)
 					? formatList.at(i + 1).format.position
-					: content.length();
+					: static_cast<quint16>(content.length());
 
 			items.append(messagePart(content.mid(textPosition, nextTextPosition - textPosition), format.format, format.color));
 		}

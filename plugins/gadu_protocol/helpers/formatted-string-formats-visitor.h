@@ -48,7 +48,7 @@ class FormattedStringFormatsVisitor : public FormattedStringVisitor
 	QWeakPointer<ImageStorageService> CurrentImageStorageService;
 
 	bool First;
-	unsigned int TextPosition;
+	unsigned short TextPosition;
 	QByteArray Result;
 
 public:
