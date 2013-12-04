@@ -40,7 +40,7 @@ public:
 	static void registerNotifications();
 	static void unregisterNotifiactions();
 
-	static void notifySizeLimit(int size);
+	static void notifySizeLimit(long size);
 
 	explicit ScreenshotNotification();
 	virtual ~ScreenshotNotification();

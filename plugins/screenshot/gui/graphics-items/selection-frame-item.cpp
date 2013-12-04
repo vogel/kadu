@@ -57,14 +57,14 @@ void SelectionFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	left.setLeft(0);
 	left.setTop(0);
 	left.setRight(Selection.left() - 1);
-	left.setBottom(boundingRect().height());
+	left.setBottom(static_cast<int>(boundingRect().height()));
 	painter->fillRect(left, Shadow);
 
 	QRect right;
 	right.setLeft(Selection.right() + 1);
 	right.setTop(0);
-	right.setRight(boundingRect().right());
-	right.setBottom(boundingRect().height());
+	right.setRight(static_cast<int>(boundingRect().right()));
+	right.setBottom(static_cast<int>(boundingRect().height()));
 	painter->fillRect(right, Shadow);
 
 	QRect top;
@@ -78,6 +78,6 @@ void SelectionFrameItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	bottom.setLeft(Selection.left());
 	bottom.setTop(Selection.bottom() + 1);
 	bottom.setRight(Selection.right());
-	bottom.setBottom(boundingRect().bottom());
+	bottom.setBottom(static_cast<int>(boundingRect().bottom()));
 	painter->fillRect(bottom, Shadow);
 }

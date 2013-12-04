@@ -46,7 +46,7 @@ void ScreenshotNotification::unregisterNotifiactions()
 	SizeLimitNotification = 0;
 }
 
-void ScreenshotNotification::notifySizeLimit(int size)
+void ScreenshotNotification::notifySizeLimit(long size)
 {
 	ScreenshotNotification *notification = new ScreenshotNotification();
 	notification->setTitle(tr("ScreenShot size limit"));

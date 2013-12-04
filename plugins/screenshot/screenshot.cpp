@@ -142,9 +142,9 @@ void ScreenShot::checkShotsSize()
 	if (!ScreenShotConfiguration::instance()->warnAboutDirectorySize())
 		return;
 
-	int size = 0;
+	long size = 0;
 
-	int limit = ScreenShotConfiguration::instance()->directorySizeLimit();
+	long limit = ScreenShotConfiguration::instance()->directorySizeLimit();
 	QDir dir(ScreenShotConfiguration::instance()->imagePath());
 
 	QString prefix = ScreenShotConfiguration::instance()->fileNamePrefix();

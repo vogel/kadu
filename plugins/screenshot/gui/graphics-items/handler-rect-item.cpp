@@ -73,7 +73,7 @@ void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		return;
 	}
 
-	emit movedTo(Type, event->scenePos().x(), event->scenePos().y());
+	emit movedTo(Type, static_cast<int>(event->scenePos().x()), static_cast<int>(event->scenePos().y()));
 }
 
 QRectF HandlerRectItem::boundingRect() const
