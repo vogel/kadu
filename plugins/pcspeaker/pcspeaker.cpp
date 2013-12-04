@@ -81,7 +81,7 @@ void PCSpeaker::beep(int pitch, int duration)
 void PCSpeaker::beep(int pitch, int duration)
 {
 	if (pitch == 0)
-		usleep(duration * 200);
+		usleep(static_cast<__useconds_t>(duration * 200));
 	else
 	{
 		XKeyboardState s;			//save previous sound config
@@ -93,10 +93,10 @@ void PCSpeaker::beep(int pitch, int duration)
 		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //set sound config
 		XBell(xdisplay, volume);  		//put sound to buffer
 		XFlush(xdisplay);			//flush buffer (beep)
-		usleep(pitch * 100);			//wait until sound is played
-		v.bell_pitch = s.bell_pitch;		//restore previous sound config
-		v.bell_duration = s.bell_duration;
-		v.bell_percent = s.bell_percent;
+		usleep(static_cast<__useconds_t>(pitch * 100));			//wait until sound is played
+		v.bell_pitch = static_cast<int>(s.bell_pitch);		//restore previous sound config
+		v.bell_duration = static_cast<int>(s.bell_duration);
+		v.bell_percent = static_cast<int>(s.bell_percent);
 		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //set restored sound config
 	}
 }
@@ -157,11 +157,11 @@ void PCSpeaker::notify(Notification *notification)
 
 void PCSpeaker::ParseStringToSound(QString line, int tab[21], int tab2[21])
 {
-	unsigned int length = line.length();
+	int length = line.length();
 	line = line.toUpper();
 	int tmp, k = 0;
 	char znak, tmp3;
-	unsigned int i;
+	int i;
 	if (length > 0)
 	{
 		for (i=0; i<length; ++i)					//for each sound
