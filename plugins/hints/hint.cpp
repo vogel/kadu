@@ -315,7 +315,7 @@ void Hint::mouseOut()
 	setStyleSheet(style);
 }
 
-void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
+void Hint::getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
 	text = label->text().remove(' ');
 

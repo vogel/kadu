@@ -52,8 +52,8 @@ class Hint : public QFrame, ConfigurationAwareObject
 	QLabel *label;
 	QColor bcolor; //kolor t�a
 	QColor fcolor;
-	unsigned int secs;
-	unsigned int startSecs;
+	int secs;
+	int startSecs;
 
 	Notification *notification;
 	QStringList details;
@@ -85,7 +85,7 @@ public:
 	void mouseOut();
 	void notificationUpdated();
 
-	void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
+	void getData(QString &text, QPixmap &pixmap, int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 	bool requireManualClosing();
 	bool isDeprecated();
 
