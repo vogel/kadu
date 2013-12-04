@@ -90,7 +90,7 @@ public:
 	 *
 	 * Returns count of unread messages in manager.
 	 */
-	quint16 unreadMessagesCount() const;
+	int unreadMessagesCount() const;
 
 	/**
 	 * @short Marks messages from list as read.

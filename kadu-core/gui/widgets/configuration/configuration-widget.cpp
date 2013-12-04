@@ -176,9 +176,9 @@ QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileNam
 	}
 
 	QDomNodeList children = kaduConfigurationUi.childNodes();
-	int length = children.length();
-	for (int i = 0; i < length; i++)
-		result += processUiSectionFromDom(children.item(i), append);
+	uint length = children.length();
+	for (uint i = 0; i < length; i++)
+		result += processUiSectionFromDom(children.item(static_cast<int>(i)), append);
 
 	kdebugf2();
 	return result;
@@ -212,13 +212,13 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 	QString iconPath = sectionElement.attribute("icon");
 	// Additional slash is needed so that QUrl would treat the rest as _path_, which is desired here.
 	if (iconPath.startsWith("datapath:///"))
-		iconPath = KaduPaths::instance()->dataPath() + iconPath.midRef(qstrlen("datapath:///"));
+		iconPath = KaduPaths::instance()->dataPath() + iconPath.midRef(static_cast<int>(qstrlen("datapath:///")));
 	configSection(KaduIcon(iconPath), qApp->translate("@default", sectionName.toUtf8().constData()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
-	int length = children.length();
-	for (int i = 0; i < length; i++)
-		result += processUiTabFromDom(children.item(i), sectionName, append);
+	uint length = children.length();
+	for (uint i = 0; i < length; i++)
+		result += processUiTabFromDom(children.item(static_cast<int>(i)), sectionName, append);
 
 	kdebugf2();
 	return result;
@@ -251,9 +251,9 @@ QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode,
 	}
 
 	const QDomNodeList &children = tabElement.childNodes();
-	int length = children.length();
-	for (int i = 0; i < length; i++)
-		result += processUiGroupBoxFromDom(children.item(i), sectionName, tabName, append);
+	uint length = children.length();
+	for (uint i = 0; i < length; i++)
+		result += processUiGroupBoxFromDom(children.item(static_cast<int>(i)), sectionName, tabName, append);
 
 	kdebugf2();
 	return result;
@@ -300,12 +300,12 @@ QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode gro
 		Widgets.insert(groupBoxId, configGroupBoxWidget->widget());
 
 	const QDomNodeList &children = groupBoxElement.childNodes();
-	int length = children.length();
-	for (int i = 0; i < length; i++)
+	uint length = children.length();
+	for (uint i = 0; i < length; i++)
 		if (append)
-			result.append(appendUiElementFromDom(children.item(i), configGroupBoxWidget));
+			result.append(appendUiElementFromDom(children.item(static_cast<int>(i)), configGroupBoxWidget));
 		else
-			removeUiElementFromDom(children.item(i), configGroupBoxWidget);
+			removeUiElementFromDom(children.item(static_cast<int>(i)), configGroupBoxWidget);
 
 	// delete unused even if length == 0
 	if (!append)

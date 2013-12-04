@@ -98,7 +98,7 @@ QString DomProcessorService::process(const QString &xml)
 	// remove <div></div>
 	Q_ASSERT(result.startsWith(QLatin1String("<div>")));
 	Q_ASSERT(result.endsWith(QLatin1String("</div>")));
-	return result.mid(qstrlen("<div>"), result.length() - qstrlen("<div></div>"));
+	return result.mid(static_cast<int>(qstrlen("<div>")), result.length() - static_cast<int>(qstrlen("<div></div>")));
 }
 
 #include "moc_dom-processor-service.cpp"

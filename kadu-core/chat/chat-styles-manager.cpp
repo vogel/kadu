@@ -137,11 +137,11 @@ void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
 void ChatStylesManager::configurationUpdated()
 {
 	if (config_file.readBoolEntry("Chat", "ChatPrune"))
-		Prune = config_file.readUnsignedNumEntry("Chat", "ChatPruneLen");
+		Prune = config_file.readNumEntry("Chat", "ChatPruneLen");
 	else
 		Prune = 0;
 
-	ParagraphSeparator = config_file.readUnsignedNumEntry("Look", "ParagraphSeparator");
+	ParagraphSeparator = config_file.readNumEntry("Look", "ParagraphSeparator");
 
 	QFont font = config_file.readFontEntry("Look","ChatFont");
 
@@ -190,8 +190,8 @@ void ChatStylesManager::configurationUpdated()
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
 	{
-		CfgHeaderSeparatorHeight = config_file.readUnsignedNumEntry("Look", "HeaderSeparatorHeight");
-		CfgNoHeaderInterval = config_file.readUnsignedNumEntry("Look", "NoHeaderInterval");
+		CfgHeaderSeparatorHeight = config_file.readNumEntry("Look", "HeaderSeparatorHeight");
+		CfgNoHeaderInterval = config_file.readNumEntry("Look", "NoHeaderInterval");
 	}
 	else
 	{
@@ -200,7 +200,7 @@ void ChatStylesManager::configurationUpdated()
 	}
 
 	NoServerTime = config_file.readBoolEntry("Look", "NoServerTime");
-	NoServerTimeDiff = config_file.readUnsignedNumEntry("Look", "NoServerTimeDiff");
+	NoServerTimeDiff = config_file.readNumEntry("Look", "NoServerTimeDiff");
 
 	QString newStyleName = config_file.readEntry("Look", "Style");
 	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");

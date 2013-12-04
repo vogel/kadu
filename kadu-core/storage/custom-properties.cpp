@@ -47,10 +47,10 @@ void CustomProperties::loadFromModuleData(const QDomNode &node)
 		return;
 
 	const QDomNodeList &propertyNodes = element.childNodes();
-	const int propertyNodesCount = propertyNodes.length();
-	for (int i = 0; i < propertyNodesCount; i++)
+	const unsigned int propertyNodesCount = propertyNodes.length();
+	for (unsigned int i = 0; i < propertyNodesCount; i++)
 	{
-		const QDomElement &propertyElement = propertyNodes.at(i).toElement();
+		const QDomElement &propertyElement = propertyNodes.at(static_cast<const int>(i)).toElement();
 		if (!propertyElement.isElement())
 			continue;
 
@@ -68,17 +68,17 @@ void CustomProperties::loadFrom(const QSharedPointer<StoragePoint> &storagePoint
 
 	QDomElement element = storagePoint->point();
 	const QDomNodeList &moduleDataNodes = element.elementsByTagName("ModuleData");
-	const int moduleDataNodesCount = moduleDataNodes.length();
-	for (int i = 0; i < moduleDataNodesCount; i++)
-		loadFromModuleData(moduleDataNodes.at(i));
-	for (int i = 0; i < moduleDataNodesCount; i++)
-		element.removeChild(moduleDataNodes.at(i));
+	const unsigned int moduleDataNodesCount = moduleDataNodes.length();
+	for (unsigned int i = 0; i < moduleDataNodesCount; i++)
+		loadFromModuleData(moduleDataNodes.at(static_cast<const int>(i)));
+	for (unsigned int i = 0; i < moduleDataNodesCount; i++)
+		element.removeChild(moduleDataNodes.at(static_cast<const int>(i)));
 
 	const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
-	const int customPropertiesCount = customProperties.length();
-	for (int i = 0; i < customPropertiesCount; i++)
+	const unsigned int customPropertiesCount = customProperties.length();
+	for (unsigned int i = 0; i < customPropertiesCount; i++)
 	{
-		const QDomElement &propertyElement = customProperties.at(i).toElement();
+		const QDomElement &propertyElement = customProperties.at(static_cast<int>(i)).toElement();
 		if (!propertyElement.isElement())
 			continue;
 
@@ -97,9 +97,9 @@ void CustomProperties::storeTo(const QSharedPointer<StoragePoint> &storagePoint)
 
 	QDomElement element = storagePoint->point();
 	const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
-	const int customPropertiesCount = customProperties.length();
-	for (int i = 0; i < customPropertiesCount; i++)
-		element.removeChild(customProperties.at(i));
+	const unsigned int customPropertiesCount = customProperties.length();
+	for (unsigned int i = 0; i < customPropertiesCount; i++)
+		element.removeChild(customProperties.at(static_cast<int>(i)));
 
 	foreach (const QString &propertyName, StorableProperties)
 		storagePoint->storage()->createNamedTextNode(storagePoint->point(), "CustomProperty",

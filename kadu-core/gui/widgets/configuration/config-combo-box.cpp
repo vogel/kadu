@@ -132,10 +132,10 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 	saveIndexNotCaption = QVariant(domElement.attribute("save-index", "false")).toBool();
 
 	QDomNodeList children = domElement.childNodes();
-	int length = children.length();
-	for (int i = 0; i < length; i++)
+	uint length = children.length();
+	for (uint i = 0; i < length; i++)
 	{
-		QDomNode node = children.item(i);
+		QDomNode node = children.item(static_cast<int>(i));
 		if (node.isElement())
 		{
 			QDomElement element = node.toElement();

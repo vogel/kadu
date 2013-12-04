@@ -192,7 +192,7 @@ void PathListEditWindow::okClicked()
 {
 	QStringList result;
 
-	for (unsigned int i = 0, count = PathListWidget->count(); i < count; i++)
+	for (int i = 0, count = PathListWidget->count(); i < count; i++)
 		result.append(PathListWidget->item(i)->text());
 
 	emit changed(result);

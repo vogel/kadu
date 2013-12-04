@@ -78,8 +78,8 @@ OpenChatWith::OpenChatWith() :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QRect availableGeometry = qApp->desktop()->availableGeometry(this);
-	int width = 0.25f * availableGeometry.width();
-	int height = 0.6f * availableGeometry.height();
+	int width = static_cast<int>(0.25f * availableGeometry.width());
+	int height = static_cast<int>(0.6f * availableGeometry.height());
 	setGeometry(availableGeometry.center().x() - width / 2, availableGeometry.center().y() - height / 2, width, height);
 
 	MainLayout = new QVBoxLayout(this);

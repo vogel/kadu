@@ -72,9 +72,9 @@ class KADUAPI ChatStylesManager : public QObject, ConfigurationAwareObject, Comp
 	bool CompositingEnabled;
 
 	bool CfgNoHeaderRepeat; /*!< Remove repeated message headers. */
-	unsigned int CfgHeaderSeparatorHeight; /*!< Header separator height. */
-	unsigned int CfgNoHeaderInterval; /*!< Time Interval, in which headers will not be repeated*/
-	unsigned int ParagraphSeparator; /*!< Message separator height. */
+	int CfgHeaderSeparatorHeight; /*!< Header separator height. */
+	int CfgNoHeaderInterval; /*!< Time Interval, in which headers will not be repeated*/
+	int ParagraphSeparator; /*!< Message separator height. */
 
 	int Prune; /*!< Maximal number of visible messages. */
 
@@ -128,9 +128,9 @@ public:
 	void loadStyles();
 
 	bool cfgNoHeaderRepeat() { return CfgNoHeaderRepeat; }
-	unsigned int cfgHeaderSeparatorHeight() { return CfgHeaderSeparatorHeight; }
-	unsigned int cfgNoHeaderInterval() { return CfgNoHeaderInterval; }
-	unsigned int paragraphSeparator() { return ParagraphSeparator; }
+	int cfgHeaderSeparatorHeight() { return CfgHeaderSeparatorHeight; }
+	int cfgNoHeaderInterval() { return CfgNoHeaderInterval; }
+	int paragraphSeparator() { return ParagraphSeparator; }
 
 	bool noServerTime() { return NoServerTime; }
 	int noServerTimeDiff() { return NoServerTimeDiff; }

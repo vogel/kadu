@@ -69,7 +69,7 @@ typedef struct
 } MotifWMHints;
 
 
-bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, uint32_t *value, unsigned long offset = 0L );
+bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, uint32_t *value, long offset = 0L );
 bool X11_getFirstPropertyAtom( Display *display, Window window, const char *propertyName, Atom *value );
 bool X11_isPropertyAtomSet( Display *display, Window window, const char *propertyName, const char *atomName );
 
@@ -98,7 +98,7 @@ std::pair<int,int> X11_getWindowSize( Display *display, Window window );
 std::pair<int,int> X11_getWindowFramelessSize( Display *display, Window window );
 void X11_moveWindow( Display *display, Window window, int x, int y );
 void X11_centerWindow( Display *display, Window window, uint32_t desktop = X11_NODESKTOP, bool forceFreeDesktop = false );
-void X11_resizeWindow( Display *display, Window window, int width, int height );
+void X11_resizeWindow( Display *display, Window window, unsigned int width, unsigned int height );
 void X11_setSizeHintsOfWindow( Display *display, Window window, int minwidth, int minheight, int maxwidth, int maxheight );
 
 Window X11_getActiveWindow( Display *display );

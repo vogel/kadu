@@ -93,7 +93,7 @@ void FileTransfer::createHandler()
 unsigned int FileTransfer::percent()
 {
 	if (fileSize() != 0)
-		return (100 * transferredSize()) / fileSize();
+		return static_cast<unsigned int>((100 * transferredSize()) / fileSize());
 	else
 		return 0;
 }

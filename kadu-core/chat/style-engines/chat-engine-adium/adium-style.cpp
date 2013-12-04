@@ -112,7 +112,7 @@ void AdiumStyle::readConfiugrationFile()
 	QSettings styleSettings(BaseHref + "../Info.plist", plistFormat);
 
 	bool ok = false;
-	QRgb color = styleSettings.value("DefaultBackgroundColor", "ffffff").toString().toInt(&ok, 16);
+	QRgb color = styleSettings.value("DefaultBackgroundColor", "ffffff").toString().toUInt(&ok, 16);
 	DefaultBackgroundColor = QColor(ok ? color : 0xffffff);
 
 	DefaultBackgroundIsTransparent = styleSettings.value("DefaultBackgroundIsTransparent", false).toBool();

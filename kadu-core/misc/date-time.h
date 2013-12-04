@@ -29,6 +29,6 @@ class QDateTime;
 class QString;
 
 QString printDateTime(const QDateTime &datetime);
-void KADUAPI getTime(time_t *sec, int *msec);
+void KADUAPI getTime(time_t *sec, long int *msec);
 
 #endif // DATE_TIME

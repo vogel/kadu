@@ -264,13 +264,13 @@ void ProxyEditWindow::saveProxy(NetworkProxy proxy)
 	{
 		proxy.setType(Type->itemData(Type->currentIndex()).toString());
 		proxy.setAddress(Host->text());
-		proxy.setPort(Port->text().toUInt());
+		proxy.setPort(Port->text().toInt());
 		proxy.setUser(User->text());
 		proxy.setPassword(Password->text());
 		proxy.setPollingUrl(PollingUrl->text());
 	}
 	else
-		proxy = NetworkProxyManager::instance()->byConfiguration(Host->text(), Port->text().toUInt(), User->text(), Password->text(),
+		proxy = NetworkProxyManager::instance()->byConfiguration(Host->text(), Port->text().toInt(), User->text(), Password->text(),
 		                                                 ActionCreateAndAdd);
 
 	ForceProxyChange = true;

@@ -92,7 +92,7 @@ public:
 	void appendMessages(const QVector<Message> &messages);
 	void appendMessages(const QList<MessageRenderInfo *> &messages);
 
-	unsigned int countMessages();
+	int countMessages();
 
 	void updateBackgroundsAndColors();
 

@@ -178,7 +178,7 @@ MessageRenderInfo::~MessageRenderInfo()
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
 	ShowServerTime = (MyMessage.sendDate().isValid()
-			&& (!noServerTime || (abs((qint64)MyMessage.receiveDate().toTime_t() - (qint64)MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
+			&& (!noServerTime || (abs(static_cast<int>(MyMessage.receiveDate().toTime_t()) - static_cast<int>(MyMessage.sendDate().toTime_t()))) > noServerTimeDiff));
 	return *this;
 }
 

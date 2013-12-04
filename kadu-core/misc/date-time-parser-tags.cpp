@@ -94,13 +94,13 @@ static QString getUptime(bool formatted)
 	 	uptime = QString::number(upTime) + "s ";
 	else
 	{
-		int days = upTime / (60 * 60 * 24);
+		time_t days = upTime / (60 * 60 * 24);
 		upTime -= days * (60 * 60 * 24);
-		int hours = upTime / (60 * 60);
+		time_t hours = upTime / (60 * 60);
 		upTime -= hours * (60 * 60);
-		int mins = upTime / 60;
+		time_t mins = upTime / 60;
 		upTime -= mins * 60;
-		int secs = upTime;
+		time_t secs = upTime;
 
 		uptime = QString::number(days) + "d " +
 				QString::number(hours) + "h " +

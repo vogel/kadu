@@ -269,7 +269,7 @@ void AdiumChatStyleEngine::appendChatMessage(HtmlMessagesRenderer *renderer, Mes
 			msg.type() == MessageTypeSystem ||
 			last.type() == MessageTypeSystem ||
 			msg.messageSender() != last.messageSender() ||
-			msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
+			static_cast<int>(msg.receiveDate().toTime_t() - last.receiveDate().toTime_t()) > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60);
 	}
 	switch (msg.type())
 	{
@@ -349,7 +349,7 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer, bool useT
 	QString styleBaseHtml = preprocessStyleBaseHtml(CurrentStyle, renderer->chat());
 
 	if (useTransparency && !CurrentStyle.defaultBackgroundIsTransparent())
-		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), qstrlen("==bodyBackground=="), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
+		styleBaseHtml.replace(styleBaseHtml.lastIndexOf("==bodyBackground=="), static_cast<int>(qstrlen("==bodyBackground==")), "background-image: none; background: none; background-color: rgba(0, 0, 0, 0)");
 
 	if (CurrentRefreshHacks.contains(renderer))
 		CurrentRefreshHacks.value(renderer)->cancel();
@@ -550,7 +550,7 @@ QString AdiumChatStyleEngine::replaceKeywords(const QString &styleHref, const QS
 		int light = 100;
 		bool doLight = false;
 		if (senderColorRegExp.numCaptures() >= 1)
-			light = senderColorRegExp.cap(1).toUInt(&doLight);
+			light = senderColorRegExp.cap(1).toInt(&doLight);
 
 		if (doLight && lightColorName.isNull())
 			lightColorName = QColor(colorName).light(light).name();

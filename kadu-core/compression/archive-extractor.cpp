@@ -246,7 +246,7 @@ void ArchiveExtractor::copyData(struct archive *source, struct archive *dest)
 	readBytes = archive_read_data(source, buff, sizeof(buff));
 	while (readBytes > 0)
 	{
-		archive_write_data(dest, buff, readBytes);
+		archive_write_data(dest, buff, static_cast<size_t>(readBytes));
 		if (archive_errno(dest) != ARCHIVE_OK)
 		{
 			qDebug() << "Error while extracting..." << archive_error_string(dest) << "(error nb =" << archive_errno(dest) << ')';

@@ -212,7 +212,7 @@ static void printQtOptions()
 int main(int argc, char *argv[])
 {
 	bool ok;
-	int msec;
+	long msec;
 	time_t sec;
 	FILE *logFile = 0;
 	QStringList ids;

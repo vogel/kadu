@@ -159,8 +159,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 	if (config_file.readBoolEntry("Chat", "ChatCloseTimer"))
 	{
-		unsigned int period = config_file.readUnsignedNumEntry("Chat",
-			"ChatCloseTimerPeriod", 2);
+		int period = config_file.readNumEntry("Chat", "ChatCloseTimerPeriod", 2);
 
 		if (QDateTime::currentDateTime() < m_chatWidget->lastReceivedMessageTime().addSecs(period))
 		{

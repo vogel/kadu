@@ -41,7 +41,7 @@ DelayedLineEdit::~DelayedLineEdit()
 {
 }
 
-void DelayedLineEdit::setDelay(unsigned int delay)
+void DelayedLineEdit::setDelay(int delay)
 {
 	Timer.setInterval(delay);
 }

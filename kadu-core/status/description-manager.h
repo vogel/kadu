@@ -34,7 +34,7 @@ class KADUAPI DescriptionManager : public QObject, public StorableStringList, pr
 
 	static DescriptionManager *Instance;
 
-	quint16 MaxNumberOfDescriptions;
+	int MaxNumberOfDescriptions;
 
 	DescriptionManager();
 	virtual ~DescriptionManager();

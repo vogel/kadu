@@ -155,7 +155,7 @@ bool UnreadMessageRepository::hasUnreadMessages() const
 	return !m_unreadMessages.isEmpty();
 }
 
-quint16 UnreadMessageRepository::unreadMessagesCount() const
+int UnreadMessageRepository::unreadMessagesCount() const
 {
 	return m_unreadMessages.count();
 }

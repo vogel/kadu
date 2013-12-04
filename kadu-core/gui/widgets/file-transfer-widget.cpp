@@ -201,7 +201,7 @@ void FileTransferWidget::fileTransferUpdate()
 	}
 
 	if (StatusFinished != CurrentTransfer.transferStatus())
-		ProgressBar->setValue(CurrentTransfer.percent());
+		ProgressBar->setValue(static_cast<int>(CurrentTransfer.percent()));
 	else
 		ProgressBar->setValue(100);
 
@@ -210,7 +210,7 @@ void FileTransferWidget::fileTransferUpdate()
 		if (LastUpdateTime.isValid())
 		{
 			QDateTime now = QDateTime::currentDateTime();
-			int timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
+			uint timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
 			if (0 < timeDiff)
 			{
 				Speed = ((CurrentTransfer.transferredSize() - LastTransferredSize) / 1024) / timeDiff;

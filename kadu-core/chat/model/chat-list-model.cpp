@@ -135,7 +135,7 @@ QModelIndex ChatListModel::parent(const QModelIndex &child) const
 	if (-1 == child.internalId())
 		return QModelIndex();
 	else
-		return index(child.internalId(), 0, QModelIndex());
+		return index(static_cast<int>(child.internalId()), 0, QModelIndex());
 }
 
 QVariant ChatListModel::data(const QModelIndex &index, int role) const

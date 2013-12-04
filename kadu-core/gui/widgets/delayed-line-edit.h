@@ -42,7 +42,7 @@ public:
 	DelayedLineEdit(QWidget *parent = 0);
 	virtual ~DelayedLineEdit();
 
-	void setDelay(unsigned int delay);
+	void setDelay(int delay);
 
 signals:
 	void delayedTextChanged(const QString &text);

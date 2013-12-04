@@ -108,8 +108,8 @@ QRect properGeometry(const QRect &rect)
 QString pwHash(const QString &text)
 {
 	QString newText = text;
-	for (unsigned int i = 0, textLength = text.length(); i < textLength; ++i)
-		newText[i] = QChar(text.at(i).unicode() ^ i ^ 1);
+	for (int i = 0, textLength = text.length(); i < textLength; ++i)
+		newText[i] = QChar(text.at(i).unicode() ^ static_cast<uint>(i) ^ 1);
 	return newText;
 }
 

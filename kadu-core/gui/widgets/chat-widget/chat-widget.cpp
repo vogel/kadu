@@ -607,7 +607,7 @@ TalkableProxyModel * ChatWidget::talkableProxyModel() const
 	return ProxyModel;
 }
 
-unsigned int ChatWidget::countMessages() const
+int ChatWidget::countMessages() const
 {
 	return MessagesView ? MessagesView->countMessages() : 0;
 }
@@ -853,7 +853,7 @@ void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled)
 	handled = keyPressEventHandled(e);
 }
 
-void ChatWidget::setUnreadMessagesCount(quint16 unreadMessagesCount)
+void ChatWidget::setUnreadMessagesCount(int unreadMessagesCount)
 {
 	if (UnreadMessagesCount == unreadMessagesCount)
 		return;
@@ -862,7 +862,7 @@ void ChatWidget::setUnreadMessagesCount(quint16 unreadMessagesCount)
 	emit unreadMessagesCountChanged(this);
 }
 
-quint16 ChatWidget::unreadMessagesCount() const
+int ChatWidget::unreadMessagesCount() const
 {
 	return UnreadMessagesCount;
 }

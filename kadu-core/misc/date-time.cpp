@@ -40,9 +40,9 @@ QString printDateTime(const QDateTime &datetime)
 {
 	QString ret;
 	QDateTime current_date;
-	unsigned int delta;
+	int delta;
 
-	current_date.setTime_t(time(NULL));
+	current_date.setTime_t(static_cast<uint>(time(NULL)));
 //	current_date.setTime(QTime(0, 0));
 
 	delta = datetime.daysTo(current_date);
@@ -88,7 +88,7 @@ QString printDateTime(const QDateTime &datetime)
 	return ret;
 }
 
-void getTime(time_t *sec, int *msec)
+void getTime(time_t *sec, long int *msec)
 {
 #ifdef Q_OS_WIN
 	struct _timeb timebuffer;

@@ -358,7 +358,7 @@ void ChatMessagesView::clearMessages()
 	AtBottom = true;
 }
 
-unsigned int ChatMessagesView::countMessages()
+int ChatMessagesView::countMessages()
 {
 	return Renderer->messages().count();
 }

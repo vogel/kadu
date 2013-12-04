@@ -39,8 +39,8 @@
 		// window & desktop
 		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
 		{
-			unsigned long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
-			unsigned long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
+			auto desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), window->winId() );
+			auto currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
 			if( ( desktopofwindow != currentdesktop ) && ( desktopofwindow != X11_ALLDESKTOPS ) )
 			{
 				if( ( action == 1 ) && ( desktopofwindow != X11_NODESKTOP ) )

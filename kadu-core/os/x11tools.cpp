@@ -33,7 +33,7 @@
 
 
 
-bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, uint32_t *value, unsigned long offset )
+bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, uint32_t *value, long offset )
 {
 	Atom property = XInternAtom( display, propertyName, False );
 	if( property == None )
@@ -201,7 +201,7 @@ uint32_t X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
 	{
 		std::pair<int,int> resolution  = X11_getResolution(  display );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
-		return ( desktopsize.second / resolution.second ) * ( desktopsize.first / resolution.first ) ;
+		return static_cast<uint32_t>(( desktopsize.second / resolution.second ) * ( desktopsize.first / resolution.first ));
 	}
 	else
 	{
@@ -222,7 +222,7 @@ uint32_t X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
 		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dy, 1 );
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
-		uint32_t desktop = ( dy / resolution.second ) * ( desktopsize.first / resolution.first ) + ( dx / resolution.first );
+		uint32_t desktop = static_cast<uint32_t>(( static_cast<int>(dy) / resolution.second ) * ( desktopsize.first / resolution.first ) + ( static_cast<int>(dx) / resolution.first ));
 		return desktop;
 	}
 	else
@@ -271,8 +271,8 @@ void X11_setCurrentDesktop( Display *display, uint32_t desktop, bool forceFreeDe
 		{
 			std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 			std::pair<int,int> resolution = X11_getResolution( display );
-			uint32_t dx = ( desktop % ( desktopsize.first / resolution.first ) ) * resolution.first;
-			uint32_t dy = ( desktop / ( desktopsize.first / resolution.first ) ) * resolution.second;
+			uint32_t dx = ( desktop % ( static_cast<uint32_t>(desktopsize.first / resolution.first) ) ) * static_cast<uint32_t>(resolution.first);
+			uint32_t dy = ( desktop / ( static_cast<uint32_t>(desktopsize.first / resolution.first) ) ) * static_cast<uint32_t>(resolution.second);
 			XEvent xev;
 			xev.type                 = ClientMessage;
 			xev.xclient.type         = ClientMessage;
@@ -327,11 +327,12 @@ uint32_t X11_getDesktopOfWindow( Display *display, Window window, bool forceFree
 			pos.second += size.second / 2;
 			pos.second %= desktopsize.second;
 		}
-		uint32_t desktopofwindow = currentdesktop + ( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first );
+		uint32_t desktopofwindow = currentdesktop
+			+ static_cast<uint32_t>(( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first ));
 		if( pos.first < 0 )
 			desktopofwindow -= 1;
 		if( pos.second < 0 )
-			desktopofwindow -= ( desktopsize.first / resolution.first );
+			desktopofwindow -= static_cast<uint32_t>( desktopsize.first / resolution.first );
 		desktopofwindow %= X11_getDesktopsCount( display, forceFreeDesktop );
 		return desktopofwindow;
 	}
@@ -353,8 +354,8 @@ void X11_moveWindowToDesktop( Display *display, Window window, uint32_t desktop,
 		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
 		std::pair<int,int> resolution = X11_getResolution( display );
 		uint32_t desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
-		uint32_t ddx = ( desktop % ( desktopsize.first / resolution.first ) ) - ( desktopofwindow % ( desktopsize.first / resolution.first ) );
-		uint32_t ddy = ( desktop / ( desktopsize.first / resolution.first ) ) - ( desktopofwindow / ( desktopsize.first / resolution.first ) );
+		uint32_t ddx = ( desktop % static_cast<uint32_t>( desktopsize.first / resolution.first ) ) - ( desktopofwindow % static_cast<uint32_t>( desktopsize.first / resolution.first ) );
+		uint32_t ddy = ( desktop / static_cast<uint32_t>( desktopsize.first / resolution.first ) ) - ( desktopofwindow / static_cast<uint32_t>( desktopsize.first / resolution.first ) );
 		int newx, newy;
 		if( position )
 		{
@@ -364,13 +365,13 @@ void X11_moveWindowToDesktop( Display *display, Window window, uint32_t desktop,
 			int oldy = pos.second % resolution.second;
 			if( oldy < 0 )
 				oldy += resolution.second;
-			newx = ( pos.first  - oldx + x ) + ddx * resolution.first;
-			newy = ( pos.second - oldy + y ) + ddy * resolution.second;
+			newx = ( pos.first  - oldx + x ) + static_cast<int>(ddx) * resolution.first;
+			newy = ( pos.second - oldy + y ) + static_cast<int>(ddy) * resolution.second;
 		}
 		else
 		{
-			newx = pos.first  + ddx * resolution.first;
-			newy = pos.second + ddy * resolution.second;
+			newx = pos.first  + static_cast<int>(ddx) * resolution.first;
+			newy = pos.second + static_cast<int>(ddy) * resolution.second;
 		}
 		X11_moveWindow( display, window, newx, newy );
 	}
@@ -452,8 +453,8 @@ bool X11_isWindowCovered( Display *display, Window window )
 	XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth );
 	int x1 = x;
 	int y1 = y;
-	int x2 = x + width;
-	int y2 = y + height;
+	int x2 = x + static_cast<int>(width);
+	int y2 = y + static_cast<int>(height);
 	XQueryTree( display, DefaultRootWindow( display ), &root, &parent, &children, &nchildren );
 	if( children != NULL )
 	{
@@ -512,8 +513,10 @@ bool X11_isWindowCovered( Display *display, Window window )
 					XQueryTree( display, w, &root, &parent, &children2, &nchildren2 );
 					if( ( nchildren2 > 0 ) && ( children2 != NULL ) )
 					{
-						for( int k2 = nchildren2 - 1; k2 >= 0; --k2 )
-							windows.push_back( children2[k2] );
+						unsigned int k2 = nchildren2;
+						while (k2 > 0)
+							windows.push_back(children2[--k2]);
+
 						XFree( children2 );
 						children2 = NULL;
 					}
@@ -647,7 +650,7 @@ void X11_centerWindow( Display *display, Window window, uint32_t desktop, bool f
 }
 
 
-void X11_resizeWindow( Display *display, Window window, int width, int height )
+void X11_resizeWindow( Display *display, Window window, unsigned int width, unsigned int height )
 {
 	XResizeWindow( display, window, width, height );
 	XFlush( display );
@@ -878,7 +881,7 @@ void X11_windowSendXEvent( Display *display, Window window, const char *type, co
 	xev.xclient.message_type = atomtype;
 	xev.xclient.format       = 32;
 	xev.xclient.data.l[0]    = ( set ? 1 : 0 );
-	xev.xclient.data.l[1]    = atommessage;
+	xev.xclient.data.l[1]    = static_cast<long>(atommessage);
 	xev.xclient.data.l[2]    = 0;
 	xev.xclient.data.l[3]    = 0;
 	xev.xclient.data.l[4]    = 0;

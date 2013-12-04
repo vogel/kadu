@@ -403,7 +403,7 @@ QStringList PluginsManager::installedPlugins() const
 
 	auto installed = QStringList{};
 	for (auto const &entry : dir.entryList())
-		installed.append(entry.left(entry.length() - qstrlen(".desc")));
+		installed.append(entry.left(entry.length() - static_cast<int>(qstrlen(".desc"))));
 	return installed;
 }
 

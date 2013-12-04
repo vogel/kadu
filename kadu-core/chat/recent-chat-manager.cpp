@@ -105,7 +105,7 @@ void RecentChatManager::load()
 			continue;
 
 		QString uuid = element.attribute("uuid");
-		int time = element.attribute("time").toInt();
+		uint time = element.attribute("time").toUInt();
 		Chat chat = ChatManager::instance()->byUuid(uuid);
 		if (chat)
 			addRecentChat(chat, QDateTime::fromTime_t(time));

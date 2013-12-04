@@ -72,7 +72,7 @@ QVector<Contact> BuddySet::getAllContacts() const
 
 uint qHash(const BuddySet &buddySet)
 {
-	int hash = 0;
+	uint hash = 0;
 	foreach (const Buddy &buddy, buddySet)
 		hash = hash ^ qHash(buddy);
 
