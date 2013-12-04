@@ -88,13 +88,13 @@ void OtrTimerService::otrTimerTimeout()
 	otrl_message_poll(userState, ops, &opData);
 }
 
-void OtrTimerService::timerControl(int intervalInSeconds)
+void OtrTimerService::timerControl(unsigned int intervalInSeconds)
 {
 	if (!Timer)
 		return;
 
 	if (intervalInSeconds)
-		Timer->start(intervalInSeconds * 1000);
+		Timer->start(static_cast<int>(intervalInSeconds * 1000));
 	else
 		Timer->stop();
 }

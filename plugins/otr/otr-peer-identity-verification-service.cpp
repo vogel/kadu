@@ -86,7 +86,8 @@ void OtrPeerIdentityVerificationService::startQuestionAndAnswerVerification(cons
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_initiate_smp_q(userState, appOps, &opData, context, qPrintable(question), (const unsigned char *) qPrintable(answer), answer.length());
+	otrl_message_initiate_smp_q(userState, appOps, &opData, context, qPrintable(question), (const unsigned char *) qPrintable(answer),
+								static_cast<size_t>(answer.length()));
 }
 
 void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Contact &contact, const QString &sharedSecret)
@@ -99,7 +100,8 @@ void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Con
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_initiate_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(sharedSecret), sharedSecret.length());
+	otrl_message_initiate_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(sharedSecret),
+							  static_cast<size_t>(sharedSecret.length()));
 }
 
 void OtrPeerIdentityVerificationService::respondVerification(const Contact &contact, const QString &answer)
@@ -112,7 +114,8 @@ void OtrPeerIdentityVerificationService::respondVerification(const Contact &cont
 	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
 	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_respond_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(answer), answer.length());
+	otrl_message_respond_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(answer),
+							 static_cast<size_t>(answer.length()));
 }
 
 void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)

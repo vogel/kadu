@@ -43,7 +43,7 @@ class OtrTimerService : public QObject
 
 	QTimer *Timer;
 
-	void timerControl(int intervalInSeconds);
+	void timerControl(unsigned int intervalInSeconds);
 
 private slots:
 	void otrTimerTimeout();
