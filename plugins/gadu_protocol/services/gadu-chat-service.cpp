@@ -42,7 +42,6 @@
 #include "status/status-type.h"
 #include "debug.h"
 
-#include "helpers/formatted-string-formats-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
@@ -92,48 +91,27 @@ int GaduChatService::maxMessageLength() const
 	return 10000;
 }
 
-int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage, const QByteArray &formats)
+int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage)
 {
 	if (!Connection || !Connection.data()->hasSession())
 		return -1;
 
 	auto writableSessionToken = Connection.data()->writableSessionToken();
 
-	int messageId = -1;
 	unsigned int uinsCount = contacts.count();
 	if (uinsCount > 1)
 	{
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
-
-		if (!formats.isEmpty())
-			messageId = gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
-					(const unsigned char *) rawMessage.constData());
-		else
-			messageId = gg_send_message_confer(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
-											   (const unsigned char *) rawMessage.constData());
+		return gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+				(const unsigned char *) rawMessage.constData());
 	}
 	else if (uinsCount == 1)
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
-		if (!formats.isEmpty())
-			messageId = gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
-												 (const unsigned char *) rawMessage.constData());
-		else
-			messageId = gg_send_message(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
-										(const unsigned char *) rawMessage.constData());
+		return gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin, (const unsigned char *) rawMessage.constData());
 	}
 
-	return messageId;
-}
-
-QByteArray GaduChatService::formattedStringToFormats(FormattedString *formattedString) const
-{
-	FormattedStringFormatsVisitor formatsVisitor;
-	formatsVisitor.setChatImageService(CurrentGaduChatImageService.data());
-	formatsVisitor.setImageStorageService(CurrentImageStorageService.data());
-	formattedString->accept(&formatsVisitor);
-
-	return formatsVisitor.result();
+	return -1;
 }
 
 UinType * GaduChatService::contactsToUins(const QVector<Contact> &contacts) const
@@ -166,7 +144,7 @@ bool GaduChatService::sendMessage(const Message &message)
 		return false;
 	}
 
-	int messageId = sendRawMessage(message.messageChat().contacts().toContactVector(), rawMessage, formattedStringToFormats(message.content()));
+	int messageId = sendRawMessage(message.messageChat().contacts().toContactVector(), rawMessage);
 
 	if (-1 == messageId)
 		return false;
@@ -179,7 +157,7 @@ bool GaduChatService::sendMessage(const Message &message)
 
 bool GaduChatService::sendRawMessage(const Chat &chat, const QByteArray &rawMessage)
 {
-	int messageId = sendRawMessage(chat.contacts().toContactVector(), rawMessage, QByteArray());
+	int messageId = sendRawMessage(chat.contacts().toContactVector(), rawMessage);
 	return messageId != -1;
 }
 
