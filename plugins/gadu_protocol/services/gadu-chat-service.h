@@ -71,7 +71,6 @@ class GaduChatService : public ChatService
 	ContactSet getRecipients(struct gg_event *e);
 	QByteArray getRawContent(struct gg_event *e);
 	bool ignoreRichText(Contact sender);
-	std::unique_ptr<FormattedString> createFormattedString(struct gg_event *e, const QString &content, bool richText);
 
 	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
 	int sendRawMessage(const QVector<Contact> &contacts, const QByteArray &rawMessage, const QByteArray &formats);

@@ -34,6 +34,7 @@
 #include "core/core.h"
 #include "formatted-string/composite-formatted-string.h"
 #include "formatted-string/formatted-string-factory.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 #include "formatted-string/formatted-string-plain-text-visitor.h"
 #include "gui/windows/message-dialog.h"
 #include "services/image-storage-service.h"
@@ -43,7 +44,6 @@
 
 #include "helpers/formatted-string-formats-visitor.h"
 #include "helpers/formatted-string-image-key-received-visitor.h"
-#include "helpers/gadu-formatter.h"
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
 #include "server/gadu-writable-session-token.h"
@@ -106,8 +106,8 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 		QScopedArrayPointer<UinType> uins(contactsToUins(contacts));
 
 		if (!formats.isEmpty())
-			messageId = gg_send_message_confer_richtext(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
-														(const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
+			messageId = gg_send_message_confer_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
+					(const unsigned char *) rawMessage.constData());
 		else
 			messageId = gg_send_message_confer(writableSessionToken.rawSession(), GG_CLASS_CHAT, uinsCount, uins.data(),
 											   (const unsigned char *) rawMessage.constData());
@@ -116,8 +116,8 @@ int GaduChatService::sendRawMessage(const QVector<Contact> &contacts, const QByt
 	{
 		UinType uin = GaduProtocolHelper::uin(contacts.at(0));
 		if (!formats.isEmpty())
-			messageId = gg_send_message_richtext(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
-												 (const unsigned char *) rawMessage.constData(), (const unsigned char *) formats.constData(), formats.size());
+			messageId = gg_send_message_html(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
+												 (const unsigned char *) rawMessage.constData());
 		else
 			messageId = gg_send_message(writableSessionToken.rawSession(), GG_CLASS_CHAT, uin,
 										(const unsigned char *) rawMessage.constData());
@@ -152,10 +152,10 @@ bool GaduChatService::sendMessage(const Message &message)
 	if (!Connection || !Connection.data()->hasSession())
 		return false;
 
-	FormattedStringPlainTextVisitor plainTextVisitor;
-	message.content()->accept(&plainTextVisitor);
+	FormattedStringHtmlVisitor htmlVisitor;
+	message.content()->accept(&htmlVisitor);
 
-	QByteArray rawMessage = plainTextVisitor.result().toUtf8();
+	QByteArray rawMessage = htmlVisitor.result().toUtf8();
 	if (rawMessageTransformerService())
 		rawMessage = rawMessageTransformerService()->transform(rawMessage, message);
 
@@ -217,19 +217,12 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 
 QByteArray GaduChatService::getRawContent(gg_event *e)
 {
-	return (const char *)e->event.msg.message;
+	return (const char *)e->event.msg.xhtml_message;
 }
 
 bool GaduChatService::ignoreRichText(Contact sender)
 {
 	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
-}
-
-std::unique_ptr<FormattedString> GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
-{
-	return richText
-			? GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length)
-			: GaduFormatter::createMessage(content, 0, 0);
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)
@@ -263,7 +256,14 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	if (rawMessageTransformerService())
 		rawContent = rawMessageTransformerService()->transform(rawContent, message);
 
-	auto formattedString = createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender));
+	auto formattedString = CurrentFormattedStringFactory->fromHtml(QString::fromUtf8(rawContent));
+	if (ignoreRichText(sender))
+	{
+		FormattedStringPlainTextVisitor visitor;
+		formattedString->accept(&visitor);
+		formattedString = CurrentFormattedStringFactory->fromPlainText(visitor.result());
+	}
+
 	if (formattedString->isEmpty())
 		return;
 
