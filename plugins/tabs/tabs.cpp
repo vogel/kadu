@@ -673,7 +673,7 @@ void TabsManager::configurationUpdated()
 	kdebugf2();
 }
 
-void TabsManager::setTabTextAndTooltipIfDiffer(int index, const QString &text, const QString &tooltip)
+void TabsManager::updateTabTextAndTooltip(int index, const QString &text, const QString &tooltip)
 {
 	if (TabDialog->tabText(index) != text)
 		TabDialog->setTabText(index, text);
@@ -707,10 +707,10 @@ void TabsManager::updateTabName(ChatWidget *chatWidget)
 			: baseTabName;
 
 	if (chatWidget->unreadMessagesCount() > 0)
-		setTabTextAndTooltipIfDiffer(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),
-		                             QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
+		updateTabTextAndTooltip(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),
+				QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
 	else
-		setTabTextAndTooltipIfDiffer(i, baseTabName, baseTabName);
+		updateTabTextAndTooltip(i, baseTabName, baseTabName);
 }
 
 void TabsManager::updateTabIcon(ChatWidget *chatWidget)
