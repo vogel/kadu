@@ -215,27 +215,16 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	return recipients;
 }
 
-QByteArray GaduChatService::getRawContent(gg_event *e)
+QByteArray GaduChatService::getRawContent(gg_event *e, bool acceptHtml)
 {
-	return (const char *)e->event.msg.message;
+	return acceptHtml
+			? (const char *)e->event.msg.xhtml_message
+			:  (const char *)e->event.msg.message;
 }
 
-bool GaduChatService::ignoreRichText(Contact sender)
+bool GaduChatService::acceptRichText(Contact sender)
 {
-	return sender.isAnonymous() && config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
-}
-
-FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
-{
-	return CurrentFormattedStringFactory.data()->fromText(content);
-
-	if (!richText)
-		return GaduFormatter::createMessage(content, 0, 0);
-
-	if (CurrentFormattedStringFactory.data()->isHtml(content))
-		return CurrentFormattedStringFactory.data()->fromHtml(content);
-
-	return GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
+	return !sender.isAnonymous() || !config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)
@@ -265,11 +254,14 @@ void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageTy
 	message.setSendDate(QDateTime::fromTime_t(e->event.msg.time));
 	message.setReceiveDate(QDateTime::currentDateTime());
 
-	QByteArray rawContent = getRawContent(e);
+	auto richText = acceptRichText(sender);
+	QByteArray rawContent = getRawContent(e, richText);
 	if (rawMessageTransformerService())
 		rawContent = rawMessageTransformerService()->transform(rawContent, message);
 
-	QScopedPointer<FormattedString> formattedString(createFormattedString(e, QString::fromUtf8(rawContent), !ignoreRichText(sender)));
+	QScopedPointer<FormattedString> formattedString(richText
+			? CurrentFormattedStringFactory.data()->fromText(QString::fromUtf8(rawContent))
+			: CurrentFormattedStringFactory.data()->fromPlainText(QString::fromUtf8(rawContent)));
 	if (formattedString->isEmpty())
 		return;
 
