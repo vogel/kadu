@@ -684,33 +684,35 @@ void TabsManager::updateTabTextAndTooltip(int index, const QString &text, const 
 // TODO: share with single_window
 void TabsManager::updateTabName(ChatWidget *chatWidget)
 {
-	const int i = TabDialog->indexOf(chatWidget);
-	if (-1 == i)
+	auto const index = TabDialog->indexOf(chatWidget);
+	if (-1 == index)
 		return;
 
-	const Chat &chat = chatWidget->chat();
-	QString baseTabName;
-	if (!chat.display().isEmpty())
-		baseTabName = chat.display();
-	else
-	{
-		int contactsCount = chat.contacts().count();
-		if (contactsCount > 1)
-			baseTabName = tr("Conference [%1]").arg(contactsCount);
-		else
-			baseTabName = chat.name();
-	}
-
-	int tabTextLimit = 15;
-	baseTabName = baseTabName.length() > tabTextLimit
-			? baseTabName.left(tabTextLimit) + "..."
-			: baseTabName;
-
+	auto chatTitle = shortChatTitle(defaultChatTitle(chatWidget->chat()));
 	if (chatWidget->unreadMessagesCount() > 0)
-		updateTabTextAndTooltip(i, QString("%1 [%2]").arg(baseTabName).arg(chat.unreadMessagesCount()),
-				QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chat.unreadMessagesCount()));
+		updateTabTextAndTooltip(index, QString("%1 [%2]").arg(chatTitle).arg(chatWidget->unreadMessagesCount()),
+				QString("%1\n%2 new message(s)").arg(chatWidget->title()).arg(chatWidget->unreadMessagesCount()));
 	else
-		updateTabTextAndTooltip(i, baseTabName, baseTabName);
+		updateTabTextAndTooltip(index, chatTitle, chatTitle);
+}
+
+QString TabsManager::defaultChatTitle(const Chat &chat) const
+{
+	if (!chat.display().isEmpty())
+		return chat.display();
+
+	auto contactsCount = chat.contacts().count();
+	return contactsCount > 1
+			? tr("Conference [%1]").arg(contactsCount)
+			: chat.name();
+}
+
+QString TabsManager::shortChatTitle(const QString &chatTitle) const
+{
+	auto const tabTextLimit = 15;
+	return  chatTitle.length() > tabTextLimit
+			? chatTitle.left(tabTextLimit) + "..."
+			: chatTitle;
 }
 
 void TabsManager::updateTabIcon(ChatWidget *chatWidget)

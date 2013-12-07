@@ -94,6 +94,9 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 
 	bool hasChatWidgetWithUnreadMessages() const;
 
+	QString defaultChatTitle(const Chat &chat) const;
+	QString shortChatTitle(const QString &chatTitle) const;
+
 private slots:
 	void onTimer();
 	void onContextMenu(QWidget *w, const QPoint &pos);
