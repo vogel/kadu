@@ -92,7 +92,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Sto
 	bool ConfigBlinkChatTitle;
 	bool ConfigShowNewMessagesNum;
 
-	bool hasChatWidgetWithUnreadMessages() const;
+	ChatWidget * chatWidgetWithUnreadMessage() const;
 
 	QString defaultChatTitle(const Chat &chat) const;
 	QString shortChatTitle(const QString &chatTitle) const;

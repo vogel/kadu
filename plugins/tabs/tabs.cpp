@@ -384,68 +384,46 @@ void TabsManager::insertTab(ChatWidget *chatWidget)
 void TabsManager::onTimer()
 {
 	kdebugf();
-	ChatWidget *chatWidget;
 	static bool msg = true;
 
 	bool tabsActive = _isWindowActiveOrFullyVisible(TabDialog);
 	ChatWidget *currentChatWidget = static_cast<ChatWidget *>(TabDialog->currentWidget());
 
-	for (int i = TabDialog->count() -1; i >= 0; i--)
+	auto unreadChatWidget = chatWidgetWithUnreadMessage();
+	if (unreadChatWidget && !tabsActive)
 	{
-		chatWidget = static_cast<ChatWidget *>(TabDialog->widget(i));
-		auto chat = chatWidget->chat();
+		qApp->alert(TabDialog);
 
-		if (chat.unreadMessagesCount() > 0)
+		if (currentChatWidget->unreadMessagesCount() > 0)
 		{
-			if (tabsActive)
-			{
-				if (currentChatWidget == chatWidget)
-					emit chatWidgetActivated(chatWidget);
-
-				TabDialog->setWindowTitle(currentChatWidget->title());
-			}
+			if (ConfigBlinkChatTitle)
+				TabDialog->setWindowTitle(msg
+						? QString(currentChatWidget->title().length() + 5, ' ')
+						: currentChatWidget->title());
+			else if (ConfigShowNewMessagesNum)
+				TabDialog->setWindowTitle('[' + QString::number(currentChatWidget->chat().unreadMessagesCount()) + "] " + currentChatWidget->title());
 			else
-			{
-				qApp->alert(TabDialog);
-				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
-				if (currentChatWidget == chatWidget)
-				{
-					if (msg)
-					{
-						if (ConfigBlinkChatTitle)
-							TabDialog->setWindowTitle(QString(chatWidget->title().length() + 5, ' '));
-					}
-					else
-					{
-						if (ConfigShowNewMessagesNum)
-							TabDialog->setWindowTitle('[' + QString::number(chatWidget->chat().unreadMessagesCount()) + "] " + chatWidget->title());
-						else
-							TabDialog->setWindowTitle(chatWidget->title());
-					}
-				}
-				// jesli nie w zaleznosci od konfiguracji wystepuje "miganie" lub nie
-				else if (ConfigBlinkChatTitle && !msg)
-					TabDialog->setWindowTitle(tr("NEW MESSAGE(S)"));
-				else
-					TabDialog->setWindowTitle(chatWidget->title());
-			}
-
-			updateTabName(chatWidget);
+				TabDialog->setWindowTitle(currentChatWidget->title());
 		}
+		else if (ConfigBlinkChatTitle && !msg)
+			TabDialog->setWindowTitle(tr("NEW MESSAGE(S)"));
+		else
+			TabDialog->setWindowTitle(unreadChatWidget->title());
 	}
+	else
+		TabDialog->setWindowTitle(currentChatWidget->title());
 
 	msg = !msg;
 
-	bool shouldRunTimer = hasChatWidgetWithUnreadMessages();
-	if (shouldRunTimer && !Timer.isActive())
+	if (unreadChatWidget && !Timer.isActive())
 		Timer.start(500);
-	else if (!shouldRunTimer && Timer.isActive())
+	else if (!unreadChatWidget && Timer.isActive())
 		Timer.stop();
 
 	kdebugf2();
 }
 
-bool TabsManager::hasChatWidgetWithUnreadMessages() const
+ChatWidget * TabsManager::chatWidgetWithUnreadMessage() const
 {
 	auto count = TabDialog->count();
 	for (auto i = 0; i < count; i++)
@@ -455,11 +433,11 @@ bool TabsManager::hasChatWidgetWithUnreadMessages() const
 		{
 			auto chat = chatWidget->chat();
 			if (chat.unreadMessagesCount() > 0)
-				return true;
+				return chatWidget;
 		}
 	}
 
-	return false;
+	return {};
 }
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)
