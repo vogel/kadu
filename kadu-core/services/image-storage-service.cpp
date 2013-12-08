@@ -45,12 +45,7 @@ QString ImageStorageService::storagePath() const
 
 QString ImageStorageService::fullPath(const QString &imageFilePath)
 {
-	if (imageFilePath.isEmpty())
-		return QString();
-
-	return QFileInfo(imageFilePath).isAbsolute()
-			? imageFilePath
-			: storagePath() + imageFilePath;
+	return toFileUrl(QUrl(imageFilePath)).toLocalFile();
 }
 
 QString ImageStorageService::storeImage(const QString &imageFilePath)
@@ -100,7 +95,7 @@ QString ImageStorageService::storeImage(const QString &imageFileName, const QByt
 
 QUrl ImageStorageService::toFileUrl(const QUrl &url)
 {
-	if (url.scheme() != "kaduimg")
+	if (url.scheme() != "kaduimg" && !url.scheme().isEmpty())
 		return url;
 
 	QString filePath = storagePath() + url.path();
