@@ -55,7 +55,7 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
 	if (domDocument.documentElement().childNodes().isEmpty())
 		return QString();
 
-	QString result = domDocument.toString(0).trimmed();
+	QString result = domDocument.toString(-1).trimmed();
 	// remove <message></message>
 	Q_ASSERT(result.startsWith(QLatin1String("<message>")));
 	Q_ASSERT(result.endsWith(QLatin1String("</message>")));
