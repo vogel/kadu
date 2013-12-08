@@ -129,8 +129,9 @@ void PluginsManager::load()
 
 	StorableObject::load();
 
-	for (auto const &pluginName : installedPlugins())
+	for (auto pluginName : installedPlugins())
 	{
+		printf("plugin: %s\n", qPrintable(pluginName));
 		Q_ASSERT(!m_plugins.contains(pluginName));
 		auto plugin = loadPlugin(pluginName);
 		if (plugin)
@@ -188,7 +189,7 @@ void PluginsManager::importFrom09()
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
-	for (auto const &pluginName : allPlugins)
+	for (auto pluginName : allPlugins)
 		if (!Core::instance()->pluginRepository()->hasPlugin(pluginName) && !oldPlugins.contains(pluginName))
 		{
 			auto plugin = loadPlugin(pluginName);
@@ -409,8 +410,7 @@ QStringList PluginsManager::installedPlugins() const
 
 Plugin * PluginsManager::loadPlugin(const QString &pluginName)
 {
-	auto descFilePath = KaduPaths::instance()->dataPath() + QLatin1String("plugins/") + pluginName + QLatin1String(".desc");
-
+	auto descFilePath = QString("%1plugins/%2.desc").arg(KaduPaths::instance()->dataPath()).arg(pluginName);
 	auto pluginInfoReader = Core::instance()->pluginInfoReader();
 	if (!pluginInfoReader)
 		return nullptr;
