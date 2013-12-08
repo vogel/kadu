@@ -227,13 +227,9 @@ bool GaduChatService::ignoreRichText(Contact sender)
 
 FormattedString * GaduChatService::createFormattedString(struct gg_event *e, const QString &content, bool richText)
 {
-	if (!richText)
-		return GaduFormatter::createMessage(content, 0, 0);
-
-	if (CurrentFormattedStringFactory.data()->isHtml(content))
-		return CurrentFormattedStringFactory.data()->fromHtml(content);
-
-	return GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length);
+	return richText
+			? GaduFormatter::createMessage(content, (unsigned char *)e->event.msg.formats, e->event.msg.formats_length)
+			: GaduFormatter::createMessage(content, 0, 0);
 }
 
 void GaduChatService::handleMsg(Contact sender, ContactSet recipients, MessageType type, gg_event *e)

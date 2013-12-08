@@ -1,5 +1,6 @@
 +++ version 1.0-alpha3
 * gadu: #2710 fixed: sending images works again (Vogel)
+* message: #2717 fixed: invalid < and > handling (Vogel)
 
 +++ version 1.0-alpha2
 * gui: #2621 fixed: lots of Ungroupped tabs could appear in Group Tab Bar (Vogel)
