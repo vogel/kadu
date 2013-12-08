@@ -200,6 +200,8 @@ Core::~Core()
 
 	PluginsManager::instance()->deactivatePlugins();
 
+	stopServices();
+
 #ifdef Q_OS_MAC
 	QApplication::setWindowIcon(KaduIcon("kadu_icons/kadu").icon());
 #endif // Q_OS_MAC
@@ -891,8 +893,6 @@ void Core::receivedSignal(const QString &signal)
 
 void Core::quit()
 {
-	stopServices();
-
 	if (!Instance)
 		return;
 
