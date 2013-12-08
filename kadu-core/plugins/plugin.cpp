@@ -182,7 +182,7 @@ bool Plugin::activate(PluginActivationReason reason)
 
 	ensureLoaded();
 
-	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + QLatin1String(SO_PREFIX) + m_pluginInfo.name() + QLatin1String("." SO_EXT));
+	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + m_pluginInfo.name() + QLatin1String("." SO_EXT));
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
 
 	if (!m_pluginLoader->load())
