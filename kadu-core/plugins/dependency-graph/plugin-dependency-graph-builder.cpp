@@ -81,7 +81,7 @@ void PluginDependencyGraphBuilder::connectNodes(std::map<QString, std::unique_pt
 
 		for (auto const &dependency : plugin->info().dependencies())
 		{
-			Q_ASSERT(nodes.contains(dependency));
+			Q_ASSERT(nodes.find(dependency) != nodes.end());
 			auto dependencyNode = nodes.at(dependency).get();
 			if (node != dependencyNode)
 			{

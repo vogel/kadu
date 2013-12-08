@@ -131,8 +131,6 @@ void PluginsManager::load()
 
 	for (auto pluginName : installedPlugins())
 	{
-		printf("plugin: %s\n", qPrintable(pluginName));
-		Q_ASSERT(!m_plugins.contains(pluginName));
 		auto plugin = loadPlugin(pluginName);
 		if (plugin)
 			Core::instance()->pluginRepository()->addPlugin(pluginName, plugin);
