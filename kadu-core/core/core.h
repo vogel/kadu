@@ -80,6 +80,7 @@ class MessageFilterService;
 class MessageHtmlRendererService;
 class MessageTransformerService;
 class NotificationService;
+class PluginActivationService;
 class PluginDependencyGraphBuilder;
 class PluginDependencyGraphCycleFinder;
 class PluginInfoReader;
@@ -130,6 +131,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	ChatWindowStorage *CurrentChatWindowStorage;
 	ChatWindowRepository *CurrentChatWindowRepository;
 	StoragePointFactory *CurrentStoragePointFactory;
+	PluginActivationService *CurrentPluginActivationService;
 	PluginDependencyGraphBuilder *CurrentPluginDependencyGraphBuilder;
 	PluginDependencyGraphCycleFinder *CurrentPluginDependencyGraphCycleFinder;
 	PluginInfoReader *CurrentPluginInfoReader;
@@ -215,6 +217,7 @@ public:
 	ChatWindowStorage * chatWindowStorage() const;
 	ChatWindowRepository * chatWindowRepository() const;
 	StoragePointFactory * storagePointFactory() const;
+	PluginActivationService * pluginActivationService() const;
 	PluginDependencyGraphBuilder * pluginDependencyGraphBuilder() const;
 	PluginDependencyGraphCycleFinder * pluginDependencyGraphCycleFinder() const;
 	PluginInfoReader * pluginInfoReader() const;

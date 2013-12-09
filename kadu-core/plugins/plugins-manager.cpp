@@ -46,6 +46,8 @@
 #include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 #include "plugins/generic-plugin.h"
+#include "plugins/plugin-activation-action.h"
+#include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader-exception.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
@@ -109,6 +111,11 @@ PluginsManager::PluginsManager()
 PluginsManager::~PluginsManager()
 {
 	ConfigurationManager::instance()->unregisterStorableObject(this);
+}
+
+void PluginsManager::setPluginActivationService(PluginActivationService *pluginActivationService)
+{
+	m_pluginActivationService = pluginActivationService;
 }
 
 /**
@@ -547,21 +554,28 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	if (plugin->isActive())
 		return true;
 
-	auto result = bool{};
-
 	auto conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
 		plugin->activationError(tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
-		result = false;
+		return false;
 	}
 	else
-		result = activateDependencies(plugin) && plugin->activate(reason);
+	{
+		if (!activateDependencies(plugin))
+			return false;
 
-	if (result)
-		incDependenciesUsageCount(plugin);
+		if (m_pluginActivationService)
+		{
+			if (m_pluginActivationService.data()->performActivationAction({plugin, reason}))
+			{
+				incDependenciesUsageCount(plugin);
+				return true;
+			}
+		}
+	}
 
-	return result;
+	return false;
 }
 
 /**
@@ -592,8 +606,9 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 	for (auto const &i : plugin->info().dependencies())
 		releasePlugin(i);
 
-	plugin->deactivate(reason);
-	return true;
+	if (m_pluginActivationService)
+		return m_pluginActivationService.data()->performActivationAction({plugin, reason});
+	return false;
 }
 
 /**

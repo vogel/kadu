@@ -87,6 +87,7 @@
 #include "parser/parser.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
+#include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-repository.h"
 #include "plugins/plugins-manager.h"
@@ -671,6 +672,8 @@ void Core::runServices()
 
 	CurrentMessageHtmlRendererService->setDomProcessorService(CurrentDomProcessorService);
 
+	CurrentPluginActivationService = new PluginActivationService(this);
+
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginRepository = new PluginRepository(this);
 
@@ -678,6 +681,8 @@ void Core::runServices()
 	CurrentPluginDependencyGraphBuilder->setPluginRepository(CurrentPluginRepository);
 
 	CurrentPluginDependencyGraphCycleFinder = new PluginDependencyGraphCycleFinder(this);
+
+	PluginsManager::instance()->setPluginActivationService(CurrentPluginActivationService);
 }
 
 void Core::runGuiServices()
@@ -837,6 +842,11 @@ ChatWindowRepository * Core::chatWindowRepository() const
 StoragePointFactory * Core::storagePointFactory() const
 {
 	return CurrentStoragePointFactory;
+}
+
+PluginActivationService * Core::pluginActivationService() const
+{
+	return CurrentPluginActivationService;
 }
 
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const

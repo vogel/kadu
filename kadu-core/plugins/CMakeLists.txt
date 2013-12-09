@@ -7,6 +7,8 @@ set (plugins_SRCS
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	plugin.cpp
+	plugin-activation-action.cpp
+	plugin-activation-service.cpp
 	plugin-info.cpp
 	plugin-info-reader.cpp
 	plugin-repository.cpp

@@ -1,10 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2004 Adrian Smarzewski (adrian@kadu.net)
- * Copyright 2007, 2008, 2009, 2010, 2011 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
- * Copyright 2011 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2004, 2006 Marcin Ślusarz (joi@kadu.net)
+ * Copyright 2013 Rafał Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -23,23 +19,26 @@
 
 #pragma once
 
-enum class PluginActivationType
-{
-	Activation,
-	Deactivation
-};
+#include <QtCore/QObject>
 
-enum class PluginActivationReason
-{
-	Dependency,
-	NewDefault,
-	KnownDefault,
-	UserRequest,
-};
+class Plugin;
+class PluginActivationAction;
 
-enum class PluginDeactivationReason
+enum class PluginActivationReason;
+enum class PluginDeactivationReason;
+
+class PluginActivationService : public QObject
 {
-	UserRequest,
-	Exiting,
-	ExitingForce,
+	Q_OBJECT
+
+public:
+	explicit PluginActivationService(QObject *parent = nullptr);
+	virtual ~PluginActivationService();
+
+	bool performActivationAction(const PluginActivationAction &action);
+
+private:
+	bool activatePlugin(Plugin *plugin, PluginActivationReason activationReason);
+	bool deactivatePlugin(Plugin *plugin, PluginDeactivationReason deactivationReason);
+
 };

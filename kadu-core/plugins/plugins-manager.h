@@ -39,6 +39,7 @@
 #include <QtGui/QWidget>
 
 class GenericPlugin;
+class PluginActivationService;
 class PluginsWindow;
 class Plugin;
 
@@ -89,6 +90,8 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 public:
 	static PluginsManager * instance();
 
+	void setPluginActivationService(PluginActivationService *pluginActivationService);
+
 	// storage implementation
 	virtual StorableObject * storageParent() { return nullptr; }
 	virtual QString storageNodeName() { return QLatin1String("Plugins"); }
@@ -111,6 +114,8 @@ protected:
 
 private:
 	static PluginsManager *m_instance;
+
+	QWeakPointer<PluginActivationService> m_pluginActivationService;
 
 	PluginsManager();
 	virtual ~PluginsManager();
