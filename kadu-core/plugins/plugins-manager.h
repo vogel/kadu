@@ -31,7 +31,6 @@
 
 #pragma once
 
-#include "plugins/plugins-common.h"
 #include "storage/storable-object.h"
 #include "exports.h"
 
@@ -49,6 +48,9 @@ class QPluginLoader;
 class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
+
+enum class PluginActivationReason;
+enum class PluginDeactivationReason;
 
 /**
  * @addtogroup Plugins

@@ -22,7 +22,6 @@
 #pragma once
 
 #include "plugins/plugin-info.h"
-#include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 #include "exports.h"
 
@@ -35,6 +34,9 @@ class GenericPlugin;
 class QLibrary;
 class QPluginLoader;
 class QTranslator;
+
+enum class PluginActivationReason;
+enum class PluginDeactivationReason;
 
 /**
  * @addtogroup Plugins

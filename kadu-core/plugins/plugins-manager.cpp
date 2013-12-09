@@ -50,6 +50,7 @@
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin.h"
+#include "plugins/plugins-common.h"
 #include "plugin-info-reader.h"
 #include "activate.h"
 #include "debug.h"
@@ -253,8 +254,8 @@ void PluginsManager::activateProtocolPlugins()
 		if (plugin->shouldBeActivated())
 		{
 			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
-					? PluginActivationReasonNewDefault
-					: PluginActivationReasonKnownDefault;
+					? PluginActivationReason::NewDefault
+					: PluginActivationReason::KnownDefault;
 
 			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
@@ -283,8 +284,8 @@ void PluginsManager::activatePlugins()
 		if (plugin->shouldBeActivated())
 		{
 			auto activationReason = (plugin->state() == Plugin::PluginStateNew)
-					? PluginActivationReasonNewDefault
-					: PluginActivationReasonKnownDefault;
+					? PluginActivationReason::NewDefault
+					: PluginActivationReason::KnownDefault;
 
 			if (!activatePlugin(plugin, activationReason))
 				saveList = true;
@@ -298,7 +299,7 @@ void PluginsManager::activatePlugins()
 		for (auto replacementPlugin : Core::instance()->pluginRepository())
 			if (replacementPlugin->state() == Plugin::PluginStateNew
 					&& replacementPlugin->info().replaces().contains(pluginToReplace->name()))
-				if (activatePlugin(replacementPlugin, PluginActivationReasonNewDefault))
+				if (activatePlugin(replacementPlugin, PluginActivationReason::NewDefault))
 					saveList = true; // list has changed
 	}
 
@@ -335,7 +336,7 @@ void PluginsManager::deactivatePlugins()
 		deactivated = false;
 		for (auto plugin : active)
 			if (plugin->usageCounter() == 0)
-				if (deactivatePlugin(plugin, PluginDeactivationReasonExiting))
+				if (deactivatePlugin(plugin, PluginDeactivationReason::Exiting))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -346,7 +347,7 @@ void PluginsManager::deactivatePlugins()
 	for (auto plugin : active)
 	{
 		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate plugin %s, killing\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin, PluginDeactivationReasonExitingForce);
+		deactivatePlugin(plugin, PluginDeactivationReason::ExitingForce);
 	}
 
 }
@@ -483,17 +484,17 @@ bool PluginsManager::activateDependencies(Plugin *plugin)
 		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependencyName);
 		if (!dependencyPlugin)
 		{
-			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReasonDependency);
+			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReason::Dependency);
 			return false;
 		}
 
 		auto activationReason = PluginActivationReason{};
 		if (Plugin::PluginStateEnabled == dependencyPlugin->state())
-			activationReason = PluginActivationReasonKnownDefault;
+			activationReason = PluginActivationReason::KnownDefault;
 		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info().loadByDefault())
-			activationReason = PluginActivationReasonNewDefault;
+			activationReason = PluginActivationReason::NewDefault;
 		else
-			activationReason = PluginActivationReasonDependency;
+			activationReason = PluginActivationReason::Dependency;
 
 		if (!activatePlugin(dependencyPlugin, activationReason))
 			return false;
@@ -572,7 +573,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
  * @todo remove message box
  *
  * This method deactivates given plugin. Deactivation can be performed only when plugin is no longed in use (its
- * Plugin::usageCounter() returns 0) or \p reason is PluginDeactivationReasonExitingForce.
+ * Plugin::usageCounter() returns 0) or \p reason is ExitingForce.
  *
  * After successfull deactivation all dependenecies are released - their Plugin::usageCounter() is decreaced.
  */
@@ -580,7 +581,7 @@ bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason r
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' reason:%d usage: %d\n", qPrintable(plugin->name()), (int)reason, plugin->usageCounter());
 
-	if (plugin->usageCounter() > 0 && PluginDeactivationReasonExitingForce != reason)
+	if (plugin->usageCounter() > 0 && PluginDeactivationReason::ExitingForce != reason)
 	{
 		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
 				QMessageBox::Ok, MainConfigurationWindow::instance());

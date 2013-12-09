@@ -28,6 +28,7 @@
 #include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
+#include "plugins/plugins-common.h"
 #include "debug.h"
 
 #include <QtCore/QFileInfo>
@@ -243,7 +244,7 @@ bool Plugin::activate(PluginActivationReason reason)
 	 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 	 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 	 */
-	if (PluginActivationReasonDependency != reason)
+	if (PluginActivationReason::Dependency != reason)
 		setState(PluginStateEnabled);
 	else
 		setState(PluginStateDisabled);
@@ -290,7 +291,7 @@ void Plugin::deactivate(PluginDeactivationReason reason)
 
 	m_active = false;
 
-	if (PluginDeactivationReasonUserRequest == reason)
+	if (PluginDeactivationReason::UserRequest == reason)
 		setState(PluginStateDisabled);
 }
 
@@ -384,7 +385,7 @@ void Plugin::setStateEnabledIfInactive(bool enable)
  */
 void Plugin::activationError(const QString &errorMessage, PluginActivationReason activationReason)
 {
-	auto offerLoadInFutureChoice = (PluginActivationReasonKnownDefault == activationReason);
+	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
 
 	// TODO: set parent to MainConfigurationWindow is it exists
 	auto errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);

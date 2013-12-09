@@ -23,17 +23,17 @@
 
 #pragma once
 
-enum PluginActivationReason
+enum class PluginActivationReason
 {
-	PluginActivationReasonDependency,
-	PluginActivationReasonNewDefault,
-	PluginActivationReasonKnownDefault,
-	PluginActivationReasonUserRequest,
+	Dependency,
+	NewDefault,
+	KnownDefault,
+	UserRequest,
 };
 
-enum PluginDeactivationReason
+enum class PluginDeactivationReason
 {
-	PluginDeactivationReasonUserRequest,
-	PluginDeactivationReasonExiting,
-	PluginDeactivationReasonExitingForce,
+	UserRequest,
+	Exiting,
+	ExitingForce,
 };

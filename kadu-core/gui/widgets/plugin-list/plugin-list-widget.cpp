@@ -52,6 +52,7 @@
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
+#include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
 
 #include "plugin-list-widget.h"
@@ -142,10 +143,10 @@ void PluginListWidget::applyChanges()
 	}
 
 	foreach (Plugin *plugin, pluginsToDeactivate)
-		PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReasonUserRequest);
+		PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReason::UserRequest);
 
 	foreach (Plugin *plugin, pluginsToActivate)
-		PluginsManager::instance()->activatePlugin(plugin, PluginActivationReasonUserRequest);
+		PluginsManager::instance()->activatePlugin(plugin, PluginActivationReason::UserRequest);
 
 	Model->loadPluginData();
 
