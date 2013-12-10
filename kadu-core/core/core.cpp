@@ -199,7 +199,7 @@ Core::~Core()
 
 	xml_config_file->makeBackup();
 
-	PluginsManager::instance()->deactivatePlugins();
+	CurrentPluginsManager->deactivatePlugins();
 
 	stopServices();
 
@@ -457,7 +457,7 @@ void Core::init()
 
 	// protocol modules should be loaded before gui
 	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	PluginsManager::instance()->activateProtocolPlugins();
+	CurrentPluginsManager->activateProtocolPlugins();
 
 	Myself.setAnonymous(false);
 	Myself.setDisplay(config_file.readEntry("General", "Nick", tr("Me")));
@@ -682,7 +682,9 @@ void Core::runServices()
 
 	CurrentPluginDependencyGraphCycleFinder = new PluginDependencyGraphCycleFinder(this);
 
-	PluginsManager::instance()->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginsManager = new PluginsManager(this);
+	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
+	CurrentPluginsManager->ensureLoaded();
 }
 
 void Core::runGuiServices()
@@ -867,6 +869,11 @@ PluginInfoReader * Core::pluginInfoReader() const
 PluginRepository * Core::pluginRepository() const
 {
 	return CurrentPluginRepository;
+}
+
+PluginsManager * Core::pluginsManager() const
+{
+	return CurrentPluginsManager;
 }
 
 void Core::showMainWindow()

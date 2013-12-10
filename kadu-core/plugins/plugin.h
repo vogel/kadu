@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "core/core.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugins-manager.h"
 #include "exports.h"
@@ -110,7 +111,7 @@ public:
 	virtual ~Plugin();
 
 	// storage implementation
-	virtual StorableObject* storageParent() override { return PluginsManager::instance(); }
+	virtual StorableObject* storageParent() override { return Core::instance()->pluginsManager(); }
 	virtual QString storageNodeName() override { return QLatin1String{"Plugin"}; }
 	virtual QString name() const override { return m_pluginInfo.name(); }
 

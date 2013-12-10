@@ -88,7 +88,8 @@ class KADUAPI PluginsManager : public QObject, public StorableObject
 	Q_DISABLE_COPY(PluginsManager)
 
 public:
-	static PluginsManager * instance();
+	explicit PluginsManager(QObject *parent = nullptr);
+	virtual ~PluginsManager();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
 
@@ -113,12 +114,7 @@ protected:
 	virtual void store();
 
 private:
-	static PluginsManager *m_instance;
-
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
-
-	PluginsManager();
-	virtual ~PluginsManager();
 
 	void incDependenciesUsageCount(Plugin *plugin);
 

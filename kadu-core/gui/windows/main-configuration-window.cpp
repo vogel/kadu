@@ -232,6 +232,7 @@ MainConfigurationWindow::MainConfigurationWindow() :
 	buddyColors = new BuddyListBackgroundColorsWidget(this);
 
 	PluginList = new PluginListWidget(this);
+	PluginList->setPluginsManager(Core::instance()->pluginsManager());
 	PluginList->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 
 	triggerCompositingStateChanged();

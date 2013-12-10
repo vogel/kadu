@@ -73,21 +73,6 @@
 #include <QtGui/QTreeWidgetItem>
 #include <QtGui/QVBoxLayout>
 
-PluginsManager * PluginsManager::m_instance = nullptr;
-
-PluginsManager * PluginsManager::instance()
-{
-	if (0 == m_instance)
-	{
-		m_instance = new PluginsManager();
-		// do not move to contructor
-		// Instance variable must be available PluginsManager::load method
-		m_instance->ensureLoaded();
-	}
-
-	return m_instance;
-}
-
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Creates new PluginsManager and registers it in ConfigurationManager singleton.
@@ -95,7 +80,8 @@ PluginsManager * PluginsManager::instance()
  * Creates new PluginsManager, registers it in ConfigurationManager singleton.
  * Storage status is set to Storage::StateNotLoaded.
  */
-PluginsManager::PluginsManager()
+PluginsManager::PluginsManager(QObject *parent) :
+		QObject{parent}
 {
 	ConfigurationManager::instance()->registerStorableObject(this);
 

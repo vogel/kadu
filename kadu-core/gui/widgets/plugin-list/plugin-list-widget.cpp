@@ -54,6 +54,7 @@
 #include "plugins/plugin.h"
 #include "plugins/plugins-common.h"
 #include "plugins/plugins-manager.h"
+#include <plugins/plugin-activation-service.h>
 
 #include "plugin-list-widget.h"
 
@@ -109,6 +110,11 @@ PluginListWidget::~PluginListWidget()
 	delete CategoryDrawer;
 }
 
+void PluginListWidget::setPluginsManager(PluginsManager *pluginsManager)
+{
+	m_pluginsManager = pluginsManager;
+}
+
 int PluginListWidget::dependantLayoutValue(int value, int width, int totalWidth) const
 {
 	if (ListView->layoutDirection() == Qt::LeftToRight)
@@ -142,11 +148,14 @@ void PluginListWidget::applyChanges()
 		}
 	}
 
-	foreach (Plugin *plugin, pluginsToDeactivate)
-		PluginsManager::instance()->deactivatePlugin(plugin, PluginDeactivationReason::UserRequest);
+	if (m_pluginsManager)
+	{
+		for (Plugin *plugin : pluginsToDeactivate)
+			m_pluginsManager.data()->deactivatePlugin(plugin, PluginDeactivationReason::UserRequest);
 
-	foreach (Plugin *plugin, pluginsToActivate)
-		PluginsManager::instance()->activatePlugin(plugin, PluginActivationReason::UserRequest);
+		for (Plugin *plugin : pluginsToActivate)
+			m_pluginsManager.data()->activatePlugin(plugin, PluginActivationReason::UserRequest);
+	}
 
 	Model->loadPluginData();
 

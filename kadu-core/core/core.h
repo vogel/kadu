@@ -85,6 +85,7 @@ class PluginDependencyGraphBuilder;
 class PluginDependencyGraphCycleFinder;
 class PluginInfoReader;
 class PluginRepository;
+class PluginsManager;
 class RawMessageTransformerService;
 class RosterNotifier;
 class StoragePointFactory;
@@ -136,6 +137,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	PluginDependencyGraphCycleFinder *CurrentPluginDependencyGraphCycleFinder;
 	PluginInfoReader *CurrentPluginInfoReader;
 	PluginRepository *CurrentPluginRepository;
+	PluginsManager *CurrentPluginsManager;
 
 	KaduWindow *Window;
 
@@ -222,6 +224,7 @@ public:
 	PluginDependencyGraphCycleFinder * pluginDependencyGraphCycleFinder() const;
 	PluginInfoReader * pluginInfoReader() const;
 	PluginRepository * pluginRepository() const;
+	PluginsManager * pluginsManager() const;
 
 	void setShowMainWindowOnStart(bool show);
 	void setMainWindow(QWidget *window);

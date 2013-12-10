@@ -36,6 +36,7 @@ class MainConfigurationWindow;
 class PluginModel;
 class PluginListWidgetItemDelegate;
 class PluginProxyModel;
+class PluginsManager;
 
 /**
   * @short A widget to select what plugins to load and configure the plugins.
@@ -53,6 +54,8 @@ class PluginListWidget : public QWidget
 	friend class PluginModel;
 	friend class PluginProxyModel;
 
+	QWeakPointer<PluginsManager> m_pluginsManager;
+
 	FilterWidget *LineEdit;
 	CategorizedListView *ListView;
 	CategorizedListViewPainter *CategoryDrawer;
@@ -67,6 +70,8 @@ private slots:
 public:
 	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
 	virtual ~PluginListWidget();
+
+	void setPluginsManager(PluginsManager *pluginsManager);
 
 	void applyChanges();
 

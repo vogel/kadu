@@ -38,6 +38,7 @@
 #include "buddies/model/buddy-manager-adapter.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/widgets/select-talkable-combo-box.h"
 #include "gui/windows/message-dialog.h"
 #include "gui/windows/progress-window.h"
@@ -74,13 +75,13 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 	RecipientEdit->setFocus();
 
-	PluginsManager::instance()->usePlugin("sms");
+	Core::instance()->pluginsManager()->usePlugin("sms");
 	kdebugf2();
 }
 
 SmsDialog::~SmsDialog()
 {
-	PluginsManager::instance()->releasePlugin("sms");
+	Core::instance()->pluginsManager()->releasePlugin("sms");
 }
 
 void SmsDialog::createGui()
