@@ -47,7 +47,7 @@ int SqlHistoryPlugin::init(bool firstLoad)
 
 void SqlHistoryPlugin::done()
 {
-	if (Storage)
+	if (Storage && History::instance())
 		History::instance()->unregisterStorage(Storage.data());
 
 	QSqlDatabase::removeDatabase("kadu-history");
