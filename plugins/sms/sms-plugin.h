@@ -29,16 +29,21 @@
 
 #include "plugins/generic-plugin.h"
 
+class SmsDialogRepository;
+
 class SMSPlugin : public QObject, public GenericPlugin
 {
 	Q_OBJECT
 	Q_INTERFACES(GenericPlugin)
+
+	QScopedPointer<SmsDialogRepository> m_smsDialogRepository;
 
 public:
 	virtual ~SMSPlugin();
 
 	virtual int init(bool firstLoad);
 	virtual void done();
+
 };
 
 #endif // SMS_PLUGIN_H

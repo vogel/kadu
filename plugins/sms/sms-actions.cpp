@@ -35,6 +35,7 @@
 #include "debug.h"
 
 #include "gui/windows/sms-dialog.h"
+#include "gui/windows/sms-dialog-repository.h"
 
 #include "sms-actions.h"
 
@@ -93,9 +94,17 @@ SmsActions::~SmsActions()
 		->removeAction(sendSmsActionDescription);
 }
 
+void SmsActions::setSmsDialogRepository(SmsDialogRepository *smsDialogRepository)
+{
+	m_smsDialogRepository = smsDialogRepository;
+}
+
 void SmsActions::newSms(const QString &mobile)
 {
 	SmsDialog *smsDialog = new SmsDialog();
+	if (m_smsDialogRepository)
+		m_smsDialogRepository.data()->addDialog(smsDialog);
+
 	smsDialog->setRecipient(mobile);
 	smsDialog->show();
 }

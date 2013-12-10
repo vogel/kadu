@@ -34,6 +34,7 @@ class QAction;
 
 class ActionDescription;
 class ChatWidget;
+class SmsDialogRepository;
 
 class SmsActions : public QObject
 {
@@ -41,6 +42,8 @@ class SmsActions : public QObject
 	Q_DISABLE_COPY(SmsActions)
 
 	static SmsActions *Instance;
+
+	QWeakPointer<SmsDialogRepository> m_smsDialogRepository;
 
 	ActionDescription *sendSmsActionDescription;
 
@@ -57,6 +60,8 @@ public:
 	static void unregisterActions();
 
 	static SmsActions * instance();
+
+	void setSmsDialogRepository(SmsDialogRepository *smsDialogRepository);
 
 };
 

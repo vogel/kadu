@@ -13,6 +13,7 @@ find_package (Kadu REQUIRED CONFIG)
 
 set (SOURCES
 	gui/windows/sms-dialog.cpp
+	gui/windows/sms-dialog-repository.cpp
 	scripts/network-access-manager-wrapper.cpp
 	scripts/network-reply-wrapper.cpp
 	scripts/sms-script-manager.cpp

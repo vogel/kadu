@@ -75,13 +75,11 @@ SmsDialog::SmsDialog(QWidget* parent) :
 
 	RecipientEdit->setFocus();
 
-	Core::instance()->pluginsManager()->usePlugin("sms");
 	kdebugf2();
 }
 
 SmsDialog::~SmsDialog()
 {
-	Core::instance()->pluginsManager()->releasePlugin("sms");
 }
 
 void SmsDialog::createGui()
