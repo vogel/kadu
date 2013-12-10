@@ -472,42 +472,27 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	return {};
 }
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Activates (recursively) all dependencies.
- * @param plugin plugin for which dependencies will be activated
- * @return true if all dependencies were activated
- *
- * Activates all dependencies of plugin and dependencies of these dependencies. If any dependency
- * is not found a message will be displayed to the user and false will be returned. *
- */
-bool PluginsManager::activateDependencies(Plugin *plugin)
+QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 {
 	if (!plugin)
-		return true;
+		return {};
 
+	auto result = QVector<Plugin *>{};
 	for (auto const &dependencyName : plugin->info().dependencies())
 	{
 		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependencyName);
 		if (!dependencyPlugin)
 		{
 			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReason::Dependency);
-			return false;
+			return {};
 		}
 
-		auto activationReason = PluginActivationReason{};
-		if (Plugin::PluginStateEnabled == dependencyPlugin->state())
-			activationReason = PluginActivationReason::KnownDefault;
-		else if (Plugin::PluginStateNew == dependencyPlugin->state() && dependencyPlugin->info().loadByDefault())
-			activationReason = PluginActivationReason::NewDefault;
-		else
-			activationReason = PluginActivationReason::Dependency;
-
-		if (!activatePlugin(dependencyPlugin, activationReason))
-			return false;
+		auto dependencies = allDependencies(dependencyPlugin);
+		result += dependencies;
+		result += dependencyPlugin;
 	}
 
-	return true;
+	return result;
 }
 
 /**
@@ -562,17 +547,26 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	}
 	else
 	{
-		if (!activateDependencies(plugin))
-			return false;
-
-		if (m_pluginActivationService)
+		auto actions = QVector<PluginActivationAction>{};
+		for (auto dependency : allDependencies(plugin))
 		{
-			if (m_pluginActivationService.data()->performActivationAction({plugin, reason}))
-			{
-				incDependenciesUsageCount(plugin);
-				return true;
-			}
+			auto activationReason = PluginActivationReason{};
+			if (Plugin::PluginStateEnabled == dependency->state())
+				activationReason = PluginActivationReason::KnownDefault;
+			else if (Plugin::PluginStateNew == dependency->state() && dependency->info().loadByDefault())
+				activationReason = PluginActivationReason::NewDefault;
+			else
+				activationReason = PluginActivationReason::Dependency;
+
+			actions.append({dependency, activationReason});
 		}
+		actions.append({plugin, reason});
+
+		for (auto const &action : actions)
+			if (!m_pluginActivationService.data()->performActivationAction(action))
+				return false;
+
+		incDependenciesUsageCount(plugin);
 	}
 
 	return false;

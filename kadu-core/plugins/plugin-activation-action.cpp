@@ -21,6 +21,11 @@
 
 #include "plugins/plugins-common.h"
 
+PluginActivationAction::PluginActivationAction() :
+		m_plugin{}
+{
+}
+
 PluginActivationAction::PluginActivationAction(Plugin *plugin, PluginActivationReason activationReason) :
 		m_plugin{plugin}, m_type{PluginActivationType::Activation}, m_activationReason{activationReason}
 {

@@ -29,6 +29,7 @@ class PluginActivationAction
 {
 
 public:
+	PluginActivationAction();
 	PluginActivationAction(Plugin *plugin, PluginActivationReason activationReason);
 	PluginActivationAction(Plugin *plugin, PluginDeactivationReason deactivationReason);
 

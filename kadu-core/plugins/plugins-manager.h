@@ -128,7 +128,7 @@ private:
 
 	Plugin * loadPlugin(const QString &pluginName);
 	QString findActiveConflict(Plugin *plugin) const;
-	bool activateDependencies(Plugin *plugin);
+	QVector<Plugin *> allDependencies(Plugin *plugin);
 
 	QString activeDependentPluginNames(const QString &pluginName) const;
 
