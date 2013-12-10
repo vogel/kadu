@@ -41,6 +41,8 @@
 #include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
 #include "plugin-repository.h"
+#include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
+#include "plugins/dependency-graph/plugin-dependency-finder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
@@ -104,6 +106,11 @@ void PluginsManager::setPluginActivationService(PluginActivationService *pluginA
 	m_pluginActivationService = pluginActivationService;
 }
 
+void PluginsManager::setPluginDependencyFinder(PluginDependencyFinder *pluginDependencyFinder)
+{
+	m_pluginDependencyFinder = pluginDependencyFinder;
+}
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Loads PluginsManager and all Plugin configurations.
@@ -134,6 +141,8 @@ void PluginsManager::load()
 	auto nodesInCycle = Core::instance()->pluginDependencyGraphCycleFinder()->findNodesInCycle(dependencyGraph.get());
 	for (auto &nodeInCycle : nodesInCycle)
 		Core::instance()->pluginRepository()->removePlugin(nodeInCycle->pluginName());
+
+	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{
@@ -460,21 +469,21 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 
 QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 {
-	if (!plugin)
+	if (!plugin || !m_pluginDependencyFinder)
 		return {};
 
 	auto result = QVector<Plugin *>{};
-	for (auto const &dependencyName : plugin->info().dependencies())
+	auto dependencies = m_pluginDependencyFinder.data()->findDependencies(m_pluginDependencyGraph.get(), plugin->name());
+	for (auto dependency : dependencies)
 	{
-		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependencyName);
+		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency->pluginName());
 		if (!dependencyPlugin)
 		{
-			plugin->activationError(tr("Required plugin %1 was not found").arg(dependencyName), PluginActivationReason::Dependency);
+			// TODO: throw exception
+			plugin->activationError(tr("Required plugin %1 was not found").arg(dependency->pluginName()), PluginActivationReason::Dependency);
 			return {};
 		}
 
-		auto dependencies = allDependencies(dependencyPlugin);
-		result += dependencies;
 		result += dependencyPlugin;
 	}
 
@@ -531,10 +540,13 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		plugin->activationError(tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
 		return false;
 	}
-	else
+
+	try
 	{
+		auto dependencies = allDependencies(plugin);
+
 		auto actions = QVector<PluginActivationAction>{};
-		for (auto dependency : allDependencies(plugin))
+		for (auto dependency : dependencies)
 		{
 			auto activationReason = PluginActivationReason{};
 			if (Plugin::PluginStateEnabled == dependency->state())
@@ -554,8 +566,14 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 		incDependenciesUsageCount(plugin);
 	}
+	catch (PluginDependencyCycleException &e)
+	{
+		Q_UNUSED(e); // TODO: log? rethrow and use in GUI?
 
-	return false;
+		return false;
+	}
+
+	return true;
 }
 
 /**
