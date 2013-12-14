@@ -21,7 +21,6 @@
 
 #include "exports.h"
 
-#include <type_traits>
 #include <vector>
 
 template<typename P, typename... SuccessorTypeTags>

@@ -19,14 +19,37 @@
 
 #pragma once
 
-#include "misc/graph/graph.h"
+#include "misc/graph/graph-node.h"
 #include "exports.h"
 
 #include <memory>
-#include <vector>
 
-struct PluginDependencyTag {};
-struct PluginDependentTag {};
+template<typename P, typename... SuccessorTypeTags>
+class Graph
+{
 
-using PluginDependencyGraph = Graph<QString, PluginDependencyTag, PluginDependentTag>;
-using PluginDependencyGraphNode = PluginDependencyGraph::NodeType;
+public:
+	using Type = Graph<P, SuccessorTypeTags...>;
+	using Pointer = Type*;
+	using NodeType = GraphNode<P, SuccessorTypeTags...>;
+
+	explicit Graph(std::vector<std::unique_ptr<NodeType>> nodes) : m_nodes{std::move(nodes)} {}
+
+	const std::vector<std::unique_ptr<NodeType>> & nodes() const
+	{
+		return m_nodes;;
+	}
+
+	NodeType * node(const P &payload) const
+	{
+		auto match = [&payload](const std::unique_ptr<NodeType> &node) { return node.get()->payload() == payload; };
+		auto result = std::find_if(m_nodes.cbegin(), m_nodes.cend(), match);
+		return result != m_nodes.end()
+				? (*result).get()
+				: nullptr;
+	}
+
+private:
+	std::vector<std::unique_ptr<NodeType>> m_nodes;
+
+};

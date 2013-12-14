@@ -31,6 +31,7 @@
 
 #pragma once
 
+#include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "storage/storable-object.h"
 #include "exports.h"
 
@@ -42,7 +43,6 @@
 class GenericPlugin;
 class PluginActivationService;
 class PluginDependencyFinder;
-class PluginDependencyGraph;
 class PluginsWindow;
 class Plugin;
 
