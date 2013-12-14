@@ -19,7 +19,8 @@
 
 #include "plugin-dependency-finder.h"
 
-#include "plugin-dependency-finder-job.h"
+#include "misc/graph/graph-algotithm.h"
+#include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 
 PluginDependencyFinder::PluginDependencyFinder(QObject *parent) :
 		QObject{parent}
@@ -32,6 +33,15 @@ PluginDependencyFinder::~PluginDependencyFinder()
 
 std::vector<PluginDependencyGraphNode *> PluginDependencyFinder::findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
 {
-	auto job = PluginDependencyFinderJob{pluginDependencyGraph, pluginName};
-	return job.result();
+	if (!pluginDependencyGraph)
+		return {};
+
+	try
+	{
+		return graph_sort_successors<PluginDependencyTag>(*pluginDependencyGraph, pluginName);
+	}
+	catch (GraphCycleException &e)
+	{
+		throw PluginDependencyCycleException();
+	}
 }

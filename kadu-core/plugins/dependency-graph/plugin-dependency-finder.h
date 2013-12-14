@@ -33,6 +33,6 @@ public:
 	explicit PluginDependencyFinder(QObject *parent = nullptr);
 	virtual ~PluginDependencyFinder();
 
-	std::vector<PluginDependencyGraphNode *> findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);;
+	std::vector<PluginDependencyGraphNode *> findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);
 
 };

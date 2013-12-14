@@ -31,6 +31,7 @@ class Graph
 public:
 	using Type = Graph<P, SuccessorTypeTags...>;
 	using Pointer = Type*;
+	using PayloadType = P;
 	using NodeType = GraphNode<P, SuccessorTypeTags...>;
 	using NodePointer = NodeType*;
 
