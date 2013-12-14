@@ -17,6 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
@@ -32,8 +33,6 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
-	template<typename T>
-	bool contains(const std::vector<T> &v, T value);
 	std::unique_ptr<PluginRepository> createPluginRepository(const QVector<QPair<QString, QStringList>> &plugins);
 	std::unique_ptr<Plugin> createPlugin(const QPair<QString, QStringList> &plugin);
 
@@ -42,12 +41,6 @@ private slots:
 	void selfDependencyTest();
 
 };
-
-template<typename T>
-bool tst_PluginDependencyGraphBuilder::contains(const std::vector<T> &v, T value)
-{
-	return std::find(v.begin(), v.end(), value) != v.end();
-}
 
 std::unique_ptr<PluginRepository> tst_PluginDependencyGraphBuilder::createPluginRepository(const QVector<QPair<QString, QStringList>> &plugins)
 {
