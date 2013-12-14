@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <set>
 #include <QtCore/QObject>
+#include <QtCore/QSet>
 
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
@@ -33,6 +33,6 @@ public:
 	explicit PluginDependencyGraphCycleFinder(QObject *parent = nullptr);
 	virtual ~PluginDependencyGraphCycleFinder();
 
-	std::set<PluginDependencyGraphNode *> findNodesInCycle(PluginDependencyGraph *pluginDependencyGraph);
+	QSet<QString> findNodesInCycle(PluginDependencyGraph *pluginDependencyGraph);
 
 };

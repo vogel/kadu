@@ -31,14 +31,19 @@ PluginDependencyFinder::~PluginDependencyFinder()
 {
 }
 
-std::vector<PluginDependencyGraphNode *> PluginDependencyFinder::findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
+QVector<QString> PluginDependencyFinder::findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
 {
 	if (!pluginDependencyGraph)
 		return {};
 
 	try
 	{
-		return graph_sort_successors<PluginDependencyTag>(*pluginDependencyGraph, pluginName);
+		auto sortedSuccessors = graph_sort_successors<PluginDependencyTag>(*pluginDependencyGraph, pluginName);
+		auto result = QVector<QString>{};
+
+		auto extractPayload = [](decltype(sortedSuccessors[0]) &v){ return v->payload(); };
+		std::transform(sortedSuccessors.begin(), sortedSuccessors.end(), std::back_inserter(result), extractPayload);
+		return result;
 	}
 	catch (GraphCycleException &e)
 	{

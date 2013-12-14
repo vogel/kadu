@@ -30,10 +30,15 @@ PluginDependencyGraphCycleFinder::~PluginDependencyGraphCycleFinder()
 {
 }
 
-std::set<PluginDependencyGraphNode *> PluginDependencyGraphCycleFinder::findNodesInCycle(PluginDependencyGraph *pluginDependencyGraph)
+QSet<QString> PluginDependencyGraphCycleFinder::findNodesInCycle(PluginDependencyGraph *pluginDependencyGraph)
 {
 	if (!pluginDependencyGraph)
 		return {};
-	else
-		return graph_find_cycles<PluginDependencyTag>(*pluginDependencyGraph);
+
+	auto cycleNodes = graph_find_cycles<PluginDependencyTag>(*pluginDependencyGraph);
+	auto result = QSet<QString>{};
+
+	for (auto const &node : cycleNodes)
+		result.insert(node->payload());
+	return result;
 }

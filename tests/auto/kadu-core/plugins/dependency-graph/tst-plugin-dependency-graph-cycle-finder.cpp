@@ -70,7 +70,7 @@ void tst_PluginDependencyGraphCycleFinder::noCyclesTest()
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
-	QCOMPARE(nodesInCycle.size(), 0UL);
+	QVERIFY(nodesInCycle.empty());
 }
 
 void tst_PluginDependencyGraphCycleFinder::oneCycleTest()
@@ -98,10 +98,10 @@ void tst_PluginDependencyGraphCycleFinder::oneCycleTest()
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
-	QCOMPARE(nodesInCycle.size(), 3UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p2")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p3")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p4")), 1UL);
+	QCOMPARE(nodesInCycle.size(), 3);
+	QVERIFY(nodesInCycle.contains("p2"));
+	QVERIFY(nodesInCycle.contains("p3"));
+	QVERIFY(nodesInCycle.contains("p4"));
 }
 
 void tst_PluginDependencyGraphCycleFinder::multipleCycleTest()
@@ -150,15 +150,15 @@ void tst_PluginDependencyGraphCycleFinder::multipleCycleTest()
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
-	QCOMPARE(nodesInCycle.size(), 8UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p1")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p2")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p4")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p5")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p6")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p7")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p9")), 1UL);
-	QCOMPARE(nodesInCycle.count(pluginDependencyGraph.node("p10")), 1UL);
+	QCOMPARE(nodesInCycle.size(), 8);
+	QVERIFY(nodesInCycle.contains("p1"));
+	QVERIFY(nodesInCycle.contains("p2"));
+	QVERIFY(nodesInCycle.contains("p4"));
+	QVERIFY(nodesInCycle.contains("p5"));
+	QVERIFY(nodesInCycle.contains("p6"));
+	QVERIFY(nodesInCycle.contains("p7"));
+	QVERIFY(nodesInCycle.contains("p9"));
+	QVERIFY(nodesInCycle.contains("p10"));
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphCycleFinder)

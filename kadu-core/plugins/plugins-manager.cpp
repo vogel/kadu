@@ -139,7 +139,7 @@ void PluginsManager::load()
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
 	auto nodesInCycle = Core::instance()->pluginDependencyGraphCycleFinder()->findNodesInCycle(dependencyGraph.get());
 	for (auto &nodeInCycle : nodesInCycle)
-		Core::instance()->pluginRepository()->removePlugin(nodeInCycle->payload());
+		Core::instance()->pluginRepository()->removePlugin(nodeInCycle);
 
 	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
 
@@ -475,11 +475,11 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 	auto dependencies = m_pluginDependencyFinder.data()->findDependencies(m_pluginDependencyGraph.get(), plugin->name());
 	for (auto dependency : dependencies)
 	{
-		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency->payload());
+		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency);
 		if (!dependencyPlugin)
 		{
 			// TODO: throw exception
-			plugin->activationError(tr("Required plugin %1 was not found").arg(dependency->payload()), PluginActivationReason::Dependency);
+			plugin->activationError(tr("Required plugin %1 was not found").arg(dependency), PluginActivationReason::Dependency);
 			return {};
 		}
 

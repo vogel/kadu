@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include <set>
 #include <QtCore/QObject>
+#include <QtCore/QVector>
 
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
@@ -33,6 +33,6 @@ public:
 	explicit PluginDependencyFinder(QObject *parent = nullptr);
 	virtual ~PluginDependencyFinder();
 
-	std::vector<PluginDependencyGraphNode *> findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);
+	QVector<QString> findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);
 
 };
