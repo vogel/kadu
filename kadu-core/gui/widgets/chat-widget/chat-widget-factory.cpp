@@ -21,7 +21,7 @@
 
 #include "formatted-string/formatted-string-factory.h"
 #include "gui/widgets/chat-widget/chat-widget.h"
-#include "misc/misc-memory.h"
+#include "misc/memory.h"
 
 ChatWidgetFactory::ChatWidgetFactory(QObject *parent) :
 		QObject(parent)

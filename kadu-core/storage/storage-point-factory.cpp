@@ -20,7 +20,7 @@
 #include "storage-point-factory.h"
 
 #include "configuration/xml-configuration-file.h"
-#include "misc/misc-memory.h"
+#include "misc/memory.h"
 #include "storage/storage-point.h"
 
 StoragePointFactory::StoragePointFactory(QObject *parent) :

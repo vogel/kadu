@@ -19,7 +19,7 @@
 
 #include "plugin-dependency-graph-builder.h"
 
-#include "misc/misc-memory.h"
+#include "misc/memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-repository.h"

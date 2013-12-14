@@ -17,7 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc-memory.h"
+#include "misc/memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
 
