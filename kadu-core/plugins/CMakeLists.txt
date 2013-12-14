@@ -3,7 +3,6 @@ set (plugins_SRCS
 	dependency-graph/plugin-dependency-finder-job.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
 	dependency-graph/plugin-dependency-graph-cycle-finder.cpp
-	dependency-graph/plugin-dependency-graph-cycle-finder-job.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	plugin.cpp

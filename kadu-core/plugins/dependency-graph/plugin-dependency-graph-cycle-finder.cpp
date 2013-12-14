@@ -19,7 +19,7 @@
 
 #include "plugin-dependency-graph-cycle-finder.h"
 
-#include "plugin-dependency-graph-cycle-finder-job.h"
+#include "misc/graph/graph-algotithm.h"
 
 PluginDependencyGraphCycleFinder::PluginDependencyGraphCycleFinder(QObject *parent) :
 		QObject{parent}
@@ -32,6 +32,8 @@ PluginDependencyGraphCycleFinder::~PluginDependencyGraphCycleFinder()
 
 std::set<PluginDependencyGraphNode *> PluginDependencyGraphCycleFinder::findNodesInCycle(PluginDependencyGraph *pluginDependencyGraph)
 {
-	auto job = PluginDependencyGraphCycleFinderJob{pluginDependencyGraph};
-	return job.result();
+	if (!pluginDependencyGraph)
+		return {};
+	else
+		return graph_find_cycles<PluginDependencyTag>(*pluginDependencyGraph);
 }

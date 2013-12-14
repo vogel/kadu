@@ -21,8 +21,8 @@
 
 #include <algorithm>
 
-template<typename T>
-bool contains(const std::vector<T> &v, const T &value)
+template<typename C, typename T>
+bool contains(const C &c, const T &v)
 {
-	return std::find(v.begin(), v.end(), value) != v.end();
+	return std::find(c.begin(), c.end(), v) != c.end();
 }

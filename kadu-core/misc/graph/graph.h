@@ -32,6 +32,7 @@ public:
 	using Type = Graph<P, SuccessorTypeTags...>;
 	using Pointer = Type*;
 	using NodeType = GraphNode<P, SuccessorTypeTags...>;
+	using NodePointer = NodeType*;
 
 	explicit Graph(std::vector<std::unique_ptr<NodeType>> nodes) : m_nodes{std::move(nodes)} {}
 
@@ -40,7 +41,7 @@ public:
 		return m_nodes;;
 	}
 
-	NodeType * node(const P &payload) const
+	NodePointer node(const P &payload) const
 	{
 		auto match = [&payload](const std::unique_ptr<NodeType> &node) { return node.get()->payload() == payload; };
 		auto result = std::find_if(m_nodes.cbegin(), m_nodes.cend(), match);
