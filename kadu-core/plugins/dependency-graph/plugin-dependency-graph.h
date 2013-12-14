@@ -19,12 +19,16 @@
 
 #pragma once
 
+#include "misc/graph/graph-node.h"
 #include "exports.h"
 
 #include <memory>
 #include <vector>
 
-class PluginDependencyGraphNode;
+struct PluginDependencyTag {};
+struct PluginDependentTag {};
+
+using PluginDependencyGraphNode = GraphNode<QString, PluginDependencyTag, PluginDependentTag>;
 
 class KADUAPI PluginDependencyGraph
 {

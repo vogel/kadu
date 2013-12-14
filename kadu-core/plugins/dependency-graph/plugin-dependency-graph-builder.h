@@ -25,11 +25,10 @@
 #include <QtCore/QObject>
 #include <QtCore/QWeakPointer>
 
+#include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
 
 class PluginInfo;
-class PluginDependencyGraph;
-class PluginDependencyGraphNode;
 class PluginRepository;
 
 class KADUAPI PluginDependencyGraphBuilder : public QObject

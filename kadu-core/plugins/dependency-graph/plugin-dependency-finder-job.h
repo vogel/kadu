@@ -22,10 +22,8 @@
 #include <map>
 #include <vector>
 
+#include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
-
-class PluginDependencyGraph;
-class PluginDependencyGraphNode;
 
 class KADUAPI PluginDependencyFinderJob
 {

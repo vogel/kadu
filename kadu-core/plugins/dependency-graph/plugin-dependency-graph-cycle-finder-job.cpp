@@ -20,12 +20,12 @@
 #include "plugin-dependency-graph-cycle-finder-job.h"
 
 #include "plugin-dependency-graph.h"
-#include "plugin-dependency-graph-node.h"
 
 #include <algorithm>
 #include <map>
 #include <stack>
 #include <vector>
+#include <QtCore/QString>
 
 PluginDependencyGraphCycleFinderJob::PluginDependencyGraphCycleFinderJob(PluginDependencyGraph *pluginDependencyGraph) :
 		m_result{}
@@ -46,7 +46,7 @@ void PluginDependencyGraphCycleFinderJob::strongConnect(PluginDependencyGraphNod
 	m_index++;
 	m_currnentPath.push_back(node);
 
-	for (auto dependencyNode : node->dependencies())
+	for (auto dependencyNode : node->successors<PluginDependencyTag>())
 	{
 		if (!isVisited(dependencyNode))
 		{

@@ -21,7 +21,6 @@
 
 #include "misc/misc-memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-repository.h"
 
@@ -75,7 +74,7 @@ void PluginDependencyGraphBuilder::connectNodes(std::map<QString, std::unique_pt
 	for (auto const &item : nodes)
 	{
 		auto node = item.second.get();
-		auto plugin = m_pluginRepository.data()->plugin(node->pluginName());
+		auto plugin = m_pluginRepository.data()->plugin(node->payload());
 		if (!plugin)
 			continue;
 
@@ -85,8 +84,8 @@ void PluginDependencyGraphBuilder::connectNodes(std::map<QString, std::unique_pt
 			auto dependencyNode = nodes.at(dependency).get();
 			if (node != dependencyNode)
 			{
-				node->addDependency(dependencyNode);
-				dependencyNode->addDependent(node);
+				node->addSuccessor<PluginDependencyTag>(dependencyNode);
+				dependencyNode->addSuccessor<PluginDependentTag>(node);
 			}
 		}
 	}

@@ -20,7 +20,6 @@
 #include "misc/misc-memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
 #include "plugins/plugin-repository.h"
@@ -33,6 +32,8 @@ class tst_PluginDependencyGraphBuilder : public QObject
 	Q_OBJECT
 
 private:
+	template<typename T>
+	bool contains(const std::vector<T> &v, T value);
 	std::unique_ptr<PluginRepository> createPluginRepository(const QVector<QPair<QString, QStringList>> &plugins);
 	std::unique_ptr<Plugin> createPlugin(const QPair<QString, QStringList> &plugin);
 
@@ -41,6 +42,12 @@ private slots:
 	void selfDependencyTest();
 
 };
+
+template<typename T>
+bool tst_PluginDependencyGraphBuilder::contains(const std::vector<T> &v, T value)
+{
+	return std::find(v.begin(), v.end(), value) != v.end();
+}
 
 std::unique_ptr<PluginRepository> tst_PluginDependencyGraphBuilder::createPluginRepository(const QVector<QPair<QString, QStringList>> &plugins)
 {
@@ -98,29 +105,29 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 	QVERIFY(p4);
 	QVERIFY(!p5);
 
-	QVERIFY(p1->dependencies().contains(p2));
-	QVERIFY(p1->dependencies().contains(p3));
-	QVERIFY(p1->dependencies().contains(p4));
-	QCOMPARE(p1->dependencies().size(), 3);
-	QCOMPARE(p1->dependents().size(), 0);
+	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p2));
+	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p3));
+	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p4));
+	QCOMPARE(p1->successors<PluginDependencyTag>().size(), 3UL);
+	QCOMPARE(p1->successors<PluginDependentTag>().size(), 0UL);
 
-	QVERIFY(p2->dependencies().contains(p3));
-	QVERIFY(p2->dependencies().contains(p4));
-	QVERIFY(p2->dependents().contains(p1));
-	QCOMPARE(p2->dependencies().size(), 2);
-	QCOMPARE(p2->dependents().size(), 1);
+	QVERIFY(contains(p2->successors<PluginDependencyTag>(), p3));
+	QVERIFY(contains(p2->successors<PluginDependencyTag>(), p4));
+	QVERIFY(contains(p2->successors<PluginDependentTag>(), p1));
+	QCOMPARE(p2->successors<PluginDependencyTag>().size(), 2UL);
+	QCOMPARE(p2->successors<PluginDependentTag>().size(), 1UL);
 
-	QVERIFY(p3->dependencies().contains(p4));
-	QVERIFY(p3->dependents().contains(p1));
-	QVERIFY(p3->dependents().contains(p2));
-	QCOMPARE(p3->dependencies().size(), 1);
-	QCOMPARE(p3->dependents().size(), 2);
+	QVERIFY(contains(p3->successors<PluginDependencyTag>(), p4));
+	QVERIFY(contains(p3->successors<PluginDependentTag>(), p1));
+	QVERIFY(contains(p3->successors<PluginDependentTag>(), p2));
+	QCOMPARE(p3->successors<PluginDependencyTag>().size(), 1UL);
+	QCOMPARE(p3->successors<PluginDependentTag>().size(), 2UL);
 
-	QVERIFY(p4->dependents().contains(p1));
-	QVERIFY(p4->dependents().contains(p2));
-	QVERIFY(p4->dependents().contains(p3));
-	QCOMPARE(p4->dependencies().size(), 0);
-	QCOMPARE(p4->dependents().size(), 3);
+	QVERIFY(contains(p4->successors<PluginDependentTag>(), p1));
+	QVERIFY(contains(p4->successors<PluginDependentTag>(), p2));
+	QVERIFY(contains(p4->successors<PluginDependentTag>(), p3));
+	QCOMPARE(p4->successors<PluginDependencyTag>().size(), 0UL);
+	QCOMPARE(p4->successors<PluginDependentTag>().size(), 3UL);
 }
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
@@ -140,8 +147,8 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 	QVERIFY(p1);
 
-	QCOMPARE(p1->dependencies().size(), 0);
-	QCOMPARE(p1->dependents().size(), 0);
+	QCOMPARE(p1->successors<PluginDependencyTag>().size(), 0UL);
+	QCOMPARE(p1->successors<PluginDependentTag>().size(), 0UL);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)

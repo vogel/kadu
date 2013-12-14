@@ -19,7 +19,7 @@
 
 #include "plugin-dependency-graph.h"
 
-#include "plugin-dependency-graph-node.h"
+#include <QtCore/QString>
 
 PluginDependencyGraph::PluginDependencyGraph(std::vector<std::unique_ptr<PluginDependencyGraphNode>> nodes) :
 		m_nodes(std::move(nodes))
@@ -33,7 +33,7 @@ const std::vector<std::unique_ptr<PluginDependencyGraphNode>> & PluginDependency
 
 PluginDependencyGraphNode * PluginDependencyGraph::node(const QString &name) const
 {
-	auto matchName = [&name](const std::unique_ptr<PluginDependencyGraphNode> &node) { return node.get()->pluginName() == name; };
+	auto matchName = [&name](const std::unique_ptr<PluginDependencyGraphNode> &node) { return node.get()->payload() == name; };
 	auto result = std::find_if(m_nodes.cbegin(), m_nodes.cend(), matchName);
 	return result != m_nodes.end()
 			? (*result).get()

@@ -20,7 +20,6 @@
 #include "misc/misc-memory.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
@@ -43,8 +42,8 @@ private slots:
 void tst_PluginDependencyGraphCycleFinder::addDependency(std::unique_ptr<PluginDependencyGraphNode> &dependent,
 														 std::unique_ptr<PluginDependencyGraphNode> &dependency)
 {
-	dependent.get()->addDependency(dependency.get());
-	dependency.get()->addDependent(dependent.get());
+	dependent.get()->addSuccessor<PluginDependencyTag>(dependency.get());
+	dependency.get()->addSuccessor<PluginDependentTag>(dependent.get());
 }
 
 void tst_PluginDependencyGraphCycleFinder::noCyclesTest()

@@ -21,10 +21,10 @@
 
 #include "plugins/dependency-graph//plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-node.h"
 
 #include <algorithm>
 #include <vector>
+#include <QtCore/QString>
 
 PluginDependencyFinderJob::PluginDependencyFinderJob(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
 {
@@ -39,7 +39,7 @@ std::vector<PluginDependencyGraphNode *> PluginDependencyFinderJob::result() con
 void PluginDependencyFinderJob::visitNode(PluginDependencyGraphNode *node)
 {
 	m_visitStates.insert({node, VisitState::BeingVisited});
-	for (auto dependency : node->dependencies())
+	for (auto dependency : node->successors<PluginDependencyTag>())
 		findDependencies(dependency);
 	m_visitStates.at(node) = VisitState::Visited;
 }
