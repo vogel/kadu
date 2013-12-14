@@ -33,12 +33,18 @@ PluginDependencyFinder::~PluginDependencyFinder()
 
 QVector<QString> PluginDependencyFinder::findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
 {
+	return findSuccessors<PluginDependencyTag>(pluginDependencyGraph, pluginName);
+}
+
+template<typename SuccessorTypeTag>
+QVector<QString> PluginDependencyFinder::findSuccessors(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName)
+{
 	if (!pluginDependencyGraph)
 		return {};
 
 	try
 	{
-		auto sortedSuccessors = graph_sort_successors<PluginDependencyTag>(*pluginDependencyGraph, pluginName);
+		auto sortedSuccessors = graph_sort_successors<SuccessorTypeTag>(*pluginDependencyGraph, pluginName);
 		auto result = QVector<QString>{};
 
 		auto extractPayload = [](decltype(sortedSuccessors[0]) &v){ return v->payload(); };

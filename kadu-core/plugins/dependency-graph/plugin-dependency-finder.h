@@ -35,4 +35,8 @@ public:
 
 	QVector<QString> findDependencies(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);
 
+private:
+	template<typename SuccessorTypeTag>
+	QVector<QString> findSuccessors(PluginDependencyGraph *pluginDependencyGraph, const QString &pluginName) noexcept(false);
+
 };
