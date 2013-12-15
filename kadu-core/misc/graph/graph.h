@@ -20,6 +20,7 @@
 #pragma once
 
 #include "misc/graph/graph-node.h"
+#include "misc/memory.h"
 #include "exports.h"
 
 #include <memory>
@@ -35,11 +36,27 @@ public:
 	using NodeType = GraphNode<P, SuccessorTypeTags...>;
 	using NodePointer = NodeType*;
 
-	explicit Graph(std::vector<std::unique_ptr<NodeType>> nodes) : m_nodes{std::move(nodes)} {}
-
 	const std::vector<std::unique_ptr<NodeType>> & nodes() const
 	{
-		return m_nodes;;
+		return m_nodes;
+	}
+
+	void addNode(P payload)
+	{
+		m_nodes.push_back(make_unique<NodeType>(payload));
+	}
+
+	template<typename SuccessorTypeTag>
+	bool addEdge(const P &from, const P &to)
+	{
+		auto nodeFrom = node(from);
+		auto nodeTo = node(to);
+
+		if (!nodeFrom || !nodeTo)
+			return false;
+
+		nodeFrom->template addSuccessor<SuccessorTypeTag>(nodeTo);
+		return true;
 	}
 
 	NodePointer node(const P &payload) const

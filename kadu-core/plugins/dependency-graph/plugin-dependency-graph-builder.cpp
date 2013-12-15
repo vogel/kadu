@@ -43,10 +43,27 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 	if (!m_pluginRepository)
 		return {};
 
+	auto result = make_unique<PluginDependencyGraph>();
+
 	auto pluginNames = getPluginNames();
-	auto nodes = createNodes(pluginNames);
-	connectNodes(nodes);
-	return make_unique<PluginDependencyGraph>(convertToVector(nodes));
+	for (auto pluginName : pluginNames)
+		result.get()->addNode(pluginName);
+
+	for (auto pluginName : pluginNames)
+	{
+		auto plugin = m_pluginRepository.data()->plugin(pluginName);
+		if (!plugin)
+			continue;
+
+		for (auto const &dependency : plugin->info().dependencies())
+			if (dependency != pluginName)
+			{
+				result.get()->addEdge<PluginDependencyTag>(pluginName, dependency);
+				result.get()->addEdge<PluginDependentTag>(dependency, pluginName);
+			}
+	}
+
+	return std::move(result);
 }
 
 std::set< QString > PluginDependencyGraphBuilder::getPluginNames() const
@@ -59,42 +76,4 @@ std::set< QString > PluginDependencyGraphBuilder::getPluginNames() const
 			pluginNames.insert(dependency);
 	}
 	return pluginNames;
-}
-
-std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> PluginDependencyGraphBuilder::createNodes(std::set<QString> pluginNames) const
-{
-	std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> nodes;
-	for (auto pluginName : pluginNames)
-		nodes.insert(std::make_pair(pluginName, make_unique<PluginDependencyGraphNode>(pluginName)));
-	return nodes;
-}
-
-void PluginDependencyGraphBuilder::connectNodes(std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> &nodes) const
-{
-	for (auto const &item : nodes)
-	{
-		auto node = item.second.get();
-		auto plugin = m_pluginRepository.data()->plugin(node->payload());
-		if (!plugin)
-			continue;
-
-		for (auto const &dependency : plugin->info().dependencies())
-		{
-			Q_ASSERT(nodes.find(dependency) != nodes.end());
-			auto dependencyNode = nodes.at(dependency).get();
-			if (node != dependencyNode)
-			{
-				node->addSuccessor<PluginDependencyTag>(dependencyNode);
-				dependencyNode->addSuccessor<PluginDependentTag>(node);
-			}
-		}
-	}
-}
-
-std::vector<std::unique_ptr<PluginDependencyGraphNode>> PluginDependencyGraphBuilder::convertToVector(std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> &nodes) const
-{
-	auto nodesVector = std::vector<std::unique_ptr<PluginDependencyGraphNode>>{};
-	for (auto &item : nodes)
-		nodesVector.push_back(std::move(item.second));
-	return std::move(nodesVector);
 }

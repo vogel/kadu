@@ -47,8 +47,5 @@ private:
 	QWeakPointer<PluginRepository> m_pluginRepository;
 
 	std::set<QString> getPluginNames() const;
-	std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> createNodes(std::set<QString> pluginNames) const;
-	void connectNodes(std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> &nodes) const;
-	std::vector<std::unique_ptr<PluginDependencyGraphNode>> convertToVector(std::map<QString, std::unique_ptr<PluginDependencyGraphNode>> &nodes) const;
 
 };

@@ -29,8 +29,7 @@ class tst_PluginDependencyGraphCycleFinder : public QObject
 	Q_OBJECT
 
 private:
-	void addDependency(std::unique_ptr<PluginDependencyGraphNode> &dependent,
-					   std::unique_ptr<PluginDependencyGraphNode> &dependency);
+	void addDependency(PluginDependencyGraph &graph, const QString &dependent, const QString &dependency);
 
 private slots:
 	void noCyclesTest();
@@ -39,34 +38,28 @@ private slots:
 
 };
 
-void tst_PluginDependencyGraphCycleFinder::addDependency(std::unique_ptr<PluginDependencyGraphNode> &dependent,
-														 std::unique_ptr<PluginDependencyGraphNode> &dependency)
+void tst_PluginDependencyGraphCycleFinder::addDependency(PluginDependencyGraph &graph, const QString &dependent, const QString &dependency)
 {
-	dependent.get()->addSuccessor<PluginDependencyTag>(dependency.get());
-	dependency.get()->addSuccessor<PluginDependentTag>(dependent.get());
+	graph.addEdge<PluginDependencyTag>(dependent, dependency);
+	graph.addEdge<PluginDependentTag>(dependency, dependent);
 }
 
 void tst_PluginDependencyGraphCycleFinder::noCyclesTest()
 {
-	auto p1 = make_unique<PluginDependencyGraphNode>("p1");
-	auto p2 = make_unique<PluginDependencyGraphNode>("p2");
-	auto p3 = make_unique<PluginDependencyGraphNode>("p3");
-	auto p4 = make_unique<PluginDependencyGraphNode>("p4");
+	auto pluginDependencyGraph = PluginDependencyGraph{};
 
-	addDependency(p1, p2);
-	addDependency(p1, p3);
-	addDependency(p1, p4);
-	addDependency(p2, p3);
-	addDependency(p2, p4);
-	addDependency(p3, p4);
+	pluginDependencyGraph.addNode("p1");
+	pluginDependencyGraph.addNode("p2");
+	pluginDependencyGraph.addNode("p3");
+	pluginDependencyGraph.addNode("p4");
 
-	auto nodes = std::vector<decltype(p1)>{};
-	nodes.emplace_back(std::move(p1));
-	nodes.emplace_back(std::move(p2));
-	nodes.emplace_back(std::move(p3));
-	nodes.emplace_back(std::move(p4));
+	addDependency(pluginDependencyGraph, "p1", "p2");
+	addDependency(pluginDependencyGraph, "p1", "p3");
+	addDependency(pluginDependencyGraph, "p1", "p4");
+	addDependency(pluginDependencyGraph, "p2", "p3");
+	addDependency(pluginDependencyGraph, "p2", "p4");
+	addDependency(pluginDependencyGraph, "p3", "p4");
 
-	PluginDependencyGraph pluginDependencyGraph{std::move(nodes)};
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
@@ -75,26 +68,21 @@ void tst_PluginDependencyGraphCycleFinder::noCyclesTest()
 
 void tst_PluginDependencyGraphCycleFinder::oneCycleTest()
 {
-	auto p1 = make_unique<PluginDependencyGraphNode>("p1");
-	auto p2 = make_unique<PluginDependencyGraphNode>("p2");
-	auto p3 = make_unique<PluginDependencyGraphNode>("p3");
-	auto p4 = make_unique<PluginDependencyGraphNode>("p4");
+	auto pluginDependencyGraph = PluginDependencyGraph{};
 
-	addDependency(p1, p2);
-	addDependency(p1, p3);
-	addDependency(p1, p4);
-	addDependency(p2, p3);
-	addDependency(p2, p4);
-	addDependency(p3, p4);
-	addDependency(p4, p2);
+	pluginDependencyGraph.addNode("p1");
+	pluginDependencyGraph.addNode("p2");
+	pluginDependencyGraph.addNode("p3");
+	pluginDependencyGraph.addNode("p4");
 
-	auto nodes = std::vector<decltype(p1)>{};
-	nodes.emplace_back(std::move(p1));
-	nodes.emplace_back(std::move(p2));
-	nodes.emplace_back(std::move(p3));
-	nodes.emplace_back(std::move(p4));
+	addDependency(pluginDependencyGraph, "p1", "p2");
+	addDependency(pluginDependencyGraph, "p1", "p3");
+	addDependency(pluginDependencyGraph, "p1", "p4");
+	addDependency(pluginDependencyGraph, "p2", "p3");
+	addDependency(pluginDependencyGraph, "p2", "p4");
+	addDependency(pluginDependencyGraph, "p3", "p4");
+	addDependency(pluginDependencyGraph, "p4", "p2");
 
-	PluginDependencyGraph pluginDependencyGraph{std::move(nodes)};
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
@@ -106,47 +94,36 @@ void tst_PluginDependencyGraphCycleFinder::oneCycleTest()
 
 void tst_PluginDependencyGraphCycleFinder::multipleCycleTest()
 {
-	auto p1 = make_unique<PluginDependencyGraphNode>("p1");
-	auto p2 = make_unique<PluginDependencyGraphNode>("p2");
-	auto p3 = make_unique<PluginDependencyGraphNode>("p3");
-	auto p4 = make_unique<PluginDependencyGraphNode>("p4");
-	auto p5 = make_unique<PluginDependencyGraphNode>("p5");
-	auto p6 = make_unique<PluginDependencyGraphNode>("p6");
-	auto p7 = make_unique<PluginDependencyGraphNode>("p7");
-	auto p8 = make_unique<PluginDependencyGraphNode>("p8");
-	auto p9 = make_unique<PluginDependencyGraphNode>("p9");
-	auto p10 = make_unique<PluginDependencyGraphNode>("p10");
+	auto pluginDependencyGraph = PluginDependencyGraph{};
 
-	addDependency(p1, p2);
-	addDependency(p2, p1);
+	pluginDependencyGraph.addNode("p1");
+	pluginDependencyGraph.addNode("p2");
+	pluginDependencyGraph.addNode("p3");
+	pluginDependencyGraph.addNode("p4");
+	pluginDependencyGraph.addNode("p5");
+	pluginDependencyGraph.addNode("p6");
+	pluginDependencyGraph.addNode("p7");
+	pluginDependencyGraph.addNode("p8");
+	pluginDependencyGraph.addNode("p9");
+	pluginDependencyGraph.addNode("p10");
 
-	addDependency(p2, p3);
-	addDependency(p3, p4);
+	addDependency(pluginDependencyGraph, "p1", "p2");
+	addDependency(pluginDependencyGraph, "p2", "p1");
 
-	addDependency(p4, p5);
-	addDependency(p5, p6);
-	addDependency(p6, p7);
-	addDependency(p7, p4);
+	addDependency(pluginDependencyGraph, "p2", "p3");
+	addDependency(pluginDependencyGraph, "p3", "p4");
 
-	addDependency(p7, p8);
+	addDependency(pluginDependencyGraph, "p4", "p5");
+	addDependency(pluginDependencyGraph, "p5", "p6");
+	addDependency(pluginDependencyGraph, "p6", "p7");
+	addDependency(pluginDependencyGraph, "p7", "p4");
 
-	addDependency(p4, p9);
-	addDependency(p9, p10);
-	addDependency(p10, p4);
+	addDependency(pluginDependencyGraph, "p7", "p8");
 
-	auto nodes = std::vector<decltype(p1)>{};
-	nodes.emplace_back(std::move(p1));
-	nodes.emplace_back(std::move(p2));
-	nodes.emplace_back(std::move(p3));
-	nodes.emplace_back(std::move(p4));
-	nodes.emplace_back(std::move(p5));
-	nodes.emplace_back(std::move(p6));
-	nodes.emplace_back(std::move(p7));
-	nodes.emplace_back(std::move(p8));
-	nodes.emplace_back(std::move(p9));
-	nodes.emplace_back(std::move(p10));
+	addDependency(pluginDependencyGraph, "p4", "p9");
+	addDependency(pluginDependencyGraph, "p9", "p10");
+	addDependency(pluginDependencyGraph, "p10", "p4");
 
-	PluginDependencyGraph pluginDependencyGraph{std::move(nodes)};
 	PluginDependencyGraphCycleFinder pluginDependencyGraphCycleFinder{};
 
 	auto nodesInCycle = pluginDependencyGraphCycleFinder.findNodesInCycle(&pluginDependencyGraph);
