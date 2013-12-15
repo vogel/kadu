@@ -112,10 +112,17 @@ private:
 };
 
 template<typename SuccessorTypeTag, typename GraphType>
-std::set<typename GraphType::NodePointer> graph_find_cycles(const GraphType &graph)
+std::set<typename GraphType::PayloadType> graph_find_cycles(const GraphType &graph)
 {
+	auto result = std::set<typename GraphType::PayloadType>{};
 	auto cycleFinder = GraphCycleFinder<GraphType, SuccessorTypeTag>{graph};
-	return cycleFinder.result();
+	auto cycleNodes = cycleFinder.result();
+
+	std::transform(cycleNodes.begin(), cycleNodes.end(), std::inserter(result, result.begin()), [](typename GraphType::NodePointer node){
+		return node->payload();
+	});
+
+	return result;
 }
 
 class GraphCycleException : public std::exception

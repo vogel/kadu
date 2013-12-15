@@ -39,6 +39,6 @@ QSet<QString> PluginDependencyGraphCycleFinder::findNodesInCycle(PluginDependenc
 	auto result = QSet<QString>{};
 
 	for (auto const &node : cycleNodes)
-		result.insert(node->payload());
+		result.insert(node);
 	return result;
 }
