@@ -38,6 +38,7 @@ private slots:
 	void noCyclesTest();
 	void oneCycleTest();
 	void multipleCycleTest();
+	void multipleCycleMultipleTagsTest();
 
 };
 
@@ -127,6 +128,54 @@ void tst_GraphFindCycles::multipleCycleTest()
 	QVERIFY(contains(nodesInCycle, "p7"));
 	QVERIFY(contains(nodesInCycle, "p9"));
 	QVERIFY(contains(nodesInCycle, "p10"));
+}
+
+void tst_GraphFindCycles::multipleCycleMultipleTagsTest()
+{
+	auto graph = TestGraph{};
+
+	graph.addNode("p1");
+	graph.addNode("p2");
+	graph.addNode("p3");
+	graph.addNode("p4");
+	graph.addNode("p5");
+	graph.addNode("p6");
+	graph.addNode("p7");
+	graph.addNode("p8");
+	graph.addNode("p9");
+	graph.addNode("p10");
+
+	graph.addEdge<Tag1>("p1", "p2");
+	graph.addEdge<Tag1>("p2", "p1");
+
+	graph.addEdge<Tag1>("p3", "p4");
+	graph.addEdge<Tag1>("p4", "p5");
+	graph.addEdge<Tag1>("p5", "p3");
+
+	graph.addEdge<Tag2>("p1", "p3");
+	graph.addEdge<Tag2>("p3", "p5");
+	graph.addEdge<Tag2>("p5", "p7");
+	graph.addEdge<Tag2>("p7", "p1");
+
+	graph.addEdge<Tag2>("p4", "p2");
+	graph.addEdge<Tag2>("p2", "p4");
+
+	auto nodesInCycleTag1 = graph_find_cycles<Tag1>(graph);
+	QCOMPARE(nodesInCycleTag1.size(), 5UL);
+	QVERIFY(contains(nodesInCycleTag1, "p1"));
+	QVERIFY(contains(nodesInCycleTag1, "p2"));
+	QVERIFY(contains(nodesInCycleTag1, "p3"));
+	QVERIFY(contains(nodesInCycleTag1, "p4"));
+	QVERIFY(contains(nodesInCycleTag1, "p5"));
+
+	auto nodesInCycleTag2 = graph_find_cycles<Tag2>(graph);
+	QCOMPARE(nodesInCycleTag2.size(), 6UL);
+	QVERIFY(contains(nodesInCycleTag2, "p1"));
+	QVERIFY(contains(nodesInCycleTag2, "p2"));
+	QVERIFY(contains(nodesInCycleTag2, "p3"));
+	QVERIFY(contains(nodesInCycleTag2, "p4"));
+	QVERIFY(contains(nodesInCycleTag2, "p5"));
+	QVERIFY(contains(nodesInCycleTag2, "p7"));
 }
 
 QTEST_APPLESS_MAIN(tst_GraphFindCycles)
