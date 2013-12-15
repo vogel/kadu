@@ -19,7 +19,7 @@
 
 #include "plugin-dependency-graph-cycle-finder.h"
 
-#include "misc/graph/graph-algotithm.h"
+#include "misc/graph/graph-algorithm.h"
 
 PluginDependencyGraphCycleFinder::PluginDependencyGraphCycleFinder(QObject *parent) :
 		QObject{parent}
