@@ -36,6 +36,23 @@ public:
 	using NodeType = GraphNode<P, SuccessorTypeTags...>;
 	using NodePointer = NodeType*;
 
+	Graph() = default;
+	Graph(const Graph &) = delete;
+
+	Graph(Graph &&moveMe) :
+			m_nodes{std::move(moveMe.m_nodes)}
+	{
+	}
+
+	Graph & operator = (const Graph &) = delete;
+
+	Graph & operator = (Graph &&moveMe)
+	{
+		using std::swap;
+		swap(m_nodes, moveMe.m_nodes);
+		return *this;
+	}
+
 	const std::vector<std::unique_ptr<NodeType>> & nodes() const
 	{
 		return m_nodes;
