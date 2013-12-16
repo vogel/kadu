@@ -32,6 +32,11 @@ class KADUAPI PluginDependencyGraph
 
 public:
 	PluginDependencyGraph();
+	PluginDependencyGraph(const PluginDependencyGraph &copyMe) = delete;
+	PluginDependencyGraph(PluginDependencyGraph &&moveMe);
+
+	PluginDependencyGraph & operator = (const PluginDependencyGraph &copyMe) = delete;
+	PluginDependencyGraph & operator = (PluginDependencyGraph &&moveMe);
 
 	void addPlugin(const QString &pluginName);
 	void addDependency(const QString &dependentPluginName, const QString &dependencyPluginName);
@@ -42,6 +47,7 @@ public:
 
 	QSet<QString> findPluginsInDependencyCycle() const;
 	QVector<QString> findDependencies(const QString &pluginName) const noexcept(false);
+	QVector<QString> findDependents(const QString &pluginName) const noexcept(false);
 
 private:
 	Graph<QString, PluginDependencyTag, PluginDependentTag> m_graph;

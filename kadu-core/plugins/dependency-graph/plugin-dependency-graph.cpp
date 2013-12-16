@@ -26,6 +26,18 @@ PluginDependencyGraph::PluginDependencyGraph()
 {
 }
 
+PluginDependencyGraph::PluginDependencyGraph(PluginDependencyGraph &&moveMe) :
+		m_graph{std::move(moveMe.m_graph)}
+{
+}
+
+PluginDependencyGraph & PluginDependencyGraph::operator = (PluginDependencyGraph &&moveMe)
+{
+	using std::swap;
+	swap(m_graph, moveMe.m_graph);
+	return *this;
+}
+
 void PluginDependencyGraph::addPlugin(const QString &pluginName)
 {
 	m_graph.addNode(pluginName);
@@ -79,6 +91,11 @@ QSet<QString> PluginDependencyGraph::findPluginsInDependencyCycle() const
 QVector<QString> PluginDependencyGraph::findDependencies(const QString &pluginName) const
 {
 	return findSuccessors<PluginDependencyTag>(pluginName);
+}
+
+QVector<QString> PluginDependencyGraph::findDependents(const QString &pluginName) const
+{
+	return findSuccessors<PluginDependentTag>(pluginName);
 }
 
 template<typename SuccessorTypeTag>
