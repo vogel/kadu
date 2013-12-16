@@ -47,7 +47,7 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 
 	auto pluginNames = getPluginNames();
 	for (auto pluginName : pluginNames)
-		result.get()->addNode(pluginName);
+		result.get()->addPlugin(pluginName);
 
 	for (auto pluginName : pluginNames)
 	{
@@ -56,17 +56,13 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 			continue;
 
 		for (auto const &dependency : plugin->info().dependencies())
-			if (dependency != pluginName)
-			{
-				result.get()->addEdge<PluginDependencyTag>(pluginName, dependency);
-				result.get()->addEdge<PluginDependentTag>(dependency, pluginName);
-			}
+			result.get()->addDependency(pluginName, dependency);
 	}
 
 	return std::move(result);
 }
 
-std::set< QString > PluginDependencyGraphBuilder::getPluginNames() const
+std::set<QString> PluginDependencyGraphBuilder::getPluginNames() const
 {
 	auto pluginNames = std::set<QString>{};
 	for (auto plugin : m_pluginRepository.data())

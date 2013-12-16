@@ -85,9 +85,7 @@
 #include "misc/kadu-paths.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
-#include "plugins/dependency-graph/plugin-dependency-finder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-repository.h"
@@ -678,16 +676,11 @@ void Core::runServices()
 	CurrentPluginInfoReader = new PluginInfoReader(this);
 	CurrentPluginRepository = new PluginRepository(this);
 
-	CurrentPluginDependencyFinder = new PluginDependencyFinder(this);
-
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
 	CurrentPluginDependencyGraphBuilder->setPluginRepository(CurrentPluginRepository);
 
-	CurrentPluginDependencyGraphCycleFinder = new PluginDependencyGraphCycleFinder(this);
-
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
-	CurrentPluginsManager->setPluginDependencyFinder(CurrentPluginDependencyFinder);
 	CurrentPluginsManager->ensureLoaded();
 }
 
@@ -855,19 +848,9 @@ PluginActivationService * Core::pluginActivationService() const
 	return CurrentPluginActivationService;
 }
 
-PluginDependencyFinder * Core::pluginDependencyFinder() const
-{
-	return CurrentPluginDependencyFinder;
-}
-
 PluginDependencyGraphBuilder * Core::pluginDependencyGraphBuilder() const
 {
 	return CurrentPluginDependencyGraphBuilder;
-}
-
-PluginDependencyGraphCycleFinder * Core::pluginDependencyGraphCycleFinder() const
-{
-	return CurrentPluginDependencyGraphCycleFinder;
 }
 
 PluginInfoReader * Core::pluginInfoReader() const

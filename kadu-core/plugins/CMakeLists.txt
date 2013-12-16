@@ -1,7 +1,6 @@
 set (plugins_SRCS
-	dependency-graph/plugin-dependency-finder.cpp
+	dependency-graph/plugin-dependency-graph.cpp
 	dependency-graph/plugin-dependency-graph-builder.cpp
-	dependency-graph/plugin-dependency-graph-cycle-finder.cpp
 	model/plugin-model.cpp
 	model/plugin-proxy-model.cpp
 	plugin.cpp

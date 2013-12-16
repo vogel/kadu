@@ -42,10 +42,8 @@
 #include "misc/kadu-paths.h"
 #include "plugin-repository.h"
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
-#include "plugins/dependency-graph/plugin-dependency-finder.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/dependency-graph/plugin-dependency-graph-cycle-finder.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-service.h"
@@ -105,11 +103,6 @@ void PluginsManager::setPluginActivationService(PluginActivationService *pluginA
 	m_pluginActivationService = pluginActivationService;
 }
 
-void PluginsManager::setPluginDependencyFinder(PluginDependencyFinder *pluginDependencyFinder)
-{
-	m_pluginDependencyFinder = pluginDependencyFinder;
-}
-
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Loads PluginsManager and all Plugin configurations.
@@ -137,9 +130,9 @@ void PluginsManager::load()
 	}
 
 	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
-	auto nodesInCycle = Core::instance()->pluginDependencyGraphCycleFinder()->findNodesInCycle(dependencyGraph.get());
-	for (auto &nodeInCycle : nodesInCycle)
-		Core::instance()->pluginRepository()->removePlugin(nodeInCycle);
+	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
+	for (auto &pluginInDependency : pluginsInDependencyCycle)
+		Core::instance()->pluginRepository()->removePlugin(pluginInDependency);
 
 	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
 
@@ -468,11 +461,11 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 
 QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 {
-	if (!plugin || !m_pluginDependencyFinder)
+	if (!plugin || !m_pluginDependencyGraph)
 		return {};
 
 	auto result = QVector<Plugin *>{};
-	auto dependencies = m_pluginDependencyFinder.data()->findDependencies(m_pluginDependencyGraph.get(), plugin->name());
+	auto dependencies = m_pluginDependencyGraph.get()->findDependencies(plugin->name());
 	for (auto dependency : dependencies)
 	{
 		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency);

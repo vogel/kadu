@@ -22,11 +22,34 @@
 #include "misc/graph/graph.h"
 #include "exports.h"
 
-#include <memory>
-#include <vector>
+#include <QtCore/QSet>
+#include <QtCore/QVector>
 
-struct PluginDependencyTag {};
-struct PluginDependentTag {};
+class KADUAPI PluginDependencyGraph
+{
+	struct PluginDependencyTag {};
+	struct PluginDependentTag {};
 
-using PluginDependencyGraph = Graph<QString, PluginDependencyTag, PluginDependentTag>;
-using PluginDependencyGraphNode = PluginDependencyGraph::NodeType;
+public:
+	PluginDependencyGraph();
+
+	void addPlugin(const QString &pluginName);
+	void addDependency(const QString &dependentPluginName, const QString &dependencyPluginName);
+
+	int size() const;
+	QSet<QString> directDependencies(const QString &pluginName) const;
+	QSet<QString> directDependents(const QString &pluginName) const;
+
+	QSet<QString> findPluginsInDependencyCycle() const;
+	QVector<QString> findDependencies(const QString &pluginName) const noexcept(false);
+
+private:
+	Graph<QString, PluginDependencyTag, PluginDependentTag> m_graph;
+
+	template<typename SuccessorTypeTag>
+	QSet<QString> directSuccessors(const QString &pluginName) const;
+
+	template<typename SuccessorTypeTag>
+	QVector<QString> findSuccessors(const QString &pluginName) const noexcept(false);
+
+};

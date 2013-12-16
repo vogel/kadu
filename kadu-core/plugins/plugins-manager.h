@@ -42,7 +42,6 @@
 
 class GenericPlugin;
 class PluginActivationService;
-class PluginDependencyFinder;
 class PluginsWindow;
 class Plugin;
 
@@ -95,7 +94,6 @@ public:
 	virtual ~PluginsManager();
 
 	void setPluginActivationService(PluginActivationService *pluginActivationService);
-	void setPluginDependencyFinder(PluginDependencyFinder *pluginDependencyFinder);
 
 	// storage implementation
 	virtual StorableObject * storageParent() { return nullptr; }
@@ -119,7 +117,6 @@ protected:
 
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
-	QWeakPointer<PluginDependencyFinder> m_pluginDependencyFinder;
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyGraph;
 

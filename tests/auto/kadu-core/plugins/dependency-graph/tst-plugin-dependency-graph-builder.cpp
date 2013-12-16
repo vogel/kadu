@@ -84,43 +84,40 @@ void tst_PluginDependencyGraphBuilder::simpleDependencyTest()
 
 	auto graph = pluginDependencyGraphBuilder.buildGraph();
 
-	QCOMPARE(graph.get()->nodes().size(), 4UL);
+	QCOMPARE(graph.get()->size(), 4);
 
-	auto p1 = graph.get()->node("p1");
-	auto p2 = graph.get()->node("p2");
-	auto p3 = graph.get()->node("p3");
-	auto p4 = graph.get()->node("p4");
-	auto p5 = graph.get()->node("p5");
+	auto p1Dependencies = graph.get()->directDependencies("p1");
+	auto p1Dependents = graph.get()->directDependents("p1");
+	auto p2Dependencies = graph.get()->directDependencies("p2");
+	auto p2Dependents = graph.get()->directDependents("p2");
+	auto p3Dependencies = graph.get()->directDependencies("p3");
+	auto p3Dependents = graph.get()->directDependents("p3");
+	auto p4Dependencies = graph.get()->directDependencies("p4");
+	auto p4Dependents = graph.get()->directDependents("p4");
 
-	QVERIFY(p1);
-	QVERIFY(p2);
-	QVERIFY(p3);
-	QVERIFY(p4);
-	QVERIFY(!p5);
+	QVERIFY(contains(p1Dependencies, "p2"));
+	QVERIFY(contains(p1Dependencies, "p3"));
+	QVERIFY(contains(p1Dependencies, "p4"));
+	QCOMPARE(p1Dependencies.size(), 3);
+	QCOMPARE(p1Dependents.size(), 0);
 
-	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p2));
-	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p3));
-	QVERIFY(contains(p1->successors<PluginDependencyTag>(), p4));
-	QCOMPARE(p1->successors<PluginDependencyTag>().size(), 3UL);
-	QCOMPARE(p1->successors<PluginDependentTag>().size(), 0UL);
+	QVERIFY(contains(p2Dependencies, "p3"));
+	QVERIFY(contains(p2Dependencies, "p4"));
+	QVERIFY(contains(p2Dependents, "p1"));
+	QCOMPARE(p2Dependencies.size(), 2);
+	QCOMPARE(p2Dependents.size(), 1);
 
-	QVERIFY(contains(p2->successors<PluginDependencyTag>(), p3));
-	QVERIFY(contains(p2->successors<PluginDependencyTag>(), p4));
-	QVERIFY(contains(p2->successors<PluginDependentTag>(), p1));
-	QCOMPARE(p2->successors<PluginDependencyTag>().size(), 2UL);
-	QCOMPARE(p2->successors<PluginDependentTag>().size(), 1UL);
+	QVERIFY(contains(p3Dependencies, "p4"));
+	QVERIFY(contains(p3Dependents, "p1"));
+	QVERIFY(contains(p3Dependents, "p2"));
+	QCOMPARE(p3Dependencies.size(), 1);
+	QCOMPARE(p3Dependents.size(), 2);
 
-	QVERIFY(contains(p3->successors<PluginDependencyTag>(), p4));
-	QVERIFY(contains(p3->successors<PluginDependentTag>(), p1));
-	QVERIFY(contains(p3->successors<PluginDependentTag>(), p2));
-	QCOMPARE(p3->successors<PluginDependencyTag>().size(), 1UL);
-	QCOMPARE(p3->successors<PluginDependentTag>().size(), 2UL);
-
-	QVERIFY(contains(p4->successors<PluginDependentTag>(), p1));
-	QVERIFY(contains(p4->successors<PluginDependentTag>(), p2));
-	QVERIFY(contains(p4->successors<PluginDependentTag>(), p3));
-	QCOMPARE(p4->successors<PluginDependencyTag>().size(), 0UL);
-	QCOMPARE(p4->successors<PluginDependentTag>().size(), 3UL);
+	QVERIFY(contains(p4Dependents, "p1"));
+	QVERIFY(contains(p4Dependents, "p2"));
+	QVERIFY(contains(p4Dependents, "p3"));
+	QCOMPARE(p4Dependencies.size(), 0);
+	QCOMPARE(p4Dependents.size(), 3);
 }
 
 void tst_PluginDependencyGraphBuilder::selfDependencyTest()
@@ -134,14 +131,12 @@ void tst_PluginDependencyGraphBuilder::selfDependencyTest()
 
 	auto graph = pluginDependencyGraphBuilder.buildGraph();
 
-	QCOMPARE(graph.get()->nodes().size(), 1UL);
+	QCOMPARE(graph.get()->size(), 1);
 
-	auto p1 = graph.get()->node("p1");
-
-	QVERIFY(p1);
-
-	QCOMPARE(p1->successors<PluginDependencyTag>().size(), 0UL);
-	QCOMPARE(p1->successors<PluginDependentTag>().size(), 0UL);
+	auto p1Dependencies = graph.get()->directDependencies("p1");
+	auto p1Dependents = graph.get()->directDependents("p1");
+	QCOMPARE(p1Dependencies.size(), 0);
+	QCOMPARE(p1Dependents.size(), 0);
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraphBuilder)
