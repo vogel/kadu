@@ -129,12 +129,12 @@ void PluginsManager::load()
 			Core::instance()->pluginRepository()->addPlugin(pluginName, plugin);
 	}
 
-	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
+	auto dependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
 	auto pluginsInDependencyCycle = dependencyGraph.get()->findPluginsInDependencyCycle();
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
 		Core::instance()->pluginRepository()->removePlugin(pluginInDependency);
 
-	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph();
+	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{

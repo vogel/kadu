@@ -33,25 +33,17 @@ PluginDependencyGraphBuilder::~PluginDependencyGraphBuilder()
 {
 }
 
-void PluginDependencyGraphBuilder::setPluginRepository(PluginRepository *pluginRepository)
+std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(PluginRepository &pluginRepository) const
 {
-	m_pluginRepository = pluginRepository;
-}
-
-std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph() const
-{
-	if (!m_pluginRepository)
-		return {};
-
 	auto result = make_unique<PluginDependencyGraph>();
 
-	auto pluginNames = getPluginNames();
+	auto pluginNames = getPluginNames(pluginRepository);
 	for (auto pluginName : pluginNames)
 		result.get()->addPlugin(pluginName);
 
 	for (auto pluginName : pluginNames)
 	{
-		auto plugin = m_pluginRepository.data()->plugin(pluginName);
+		auto plugin = pluginRepository.plugin(pluginName);
 		if (!plugin)
 			continue;
 
@@ -62,10 +54,10 @@ std::unique_ptr<PluginDependencyGraph> PluginDependencyGraphBuilder::buildGraph(
 	return std::move(result);
 }
 
-std::set<QString> PluginDependencyGraphBuilder::getPluginNames() const
+std::set<QString> PluginDependencyGraphBuilder::getPluginNames(PluginRepository &pluginRepository) const
 {
 	auto pluginNames = std::set<QString>{};
-	for (auto plugin : m_pluginRepository.data())
+	for (auto plugin : pluginRepository)
 	{
 		pluginNames.insert(plugin->info().name());
 		for (auto dependency : plugin->info().dependencies())

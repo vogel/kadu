@@ -23,7 +23,6 @@
 #include <memory>
 #include <set>
 #include <QtCore/QObject>
-#include <QtCore/QWeakPointer>
 
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
@@ -39,13 +38,9 @@ public:
 	explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
 	virtual ~PluginDependencyGraphBuilder();
 
-	void setPluginRepository(PluginRepository *pluginRepository);
-
-	std::unique_ptr<PluginDependencyGraph> buildGraph() const;
+	std::unique_ptr<PluginDependencyGraph> buildGraph(PluginRepository &pluginRepository) const;
 
 private:
-	QWeakPointer<PluginRepository> m_pluginRepository;
-
-	std::set<QString> getPluginNames() const;
+	std::set<QString> getPluginNames(PluginRepository &pluginRepository) const;
 
 };

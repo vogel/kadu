@@ -677,7 +677,6 @@ void Core::runServices()
 	CurrentPluginRepository = new PluginRepository(this);
 
 	CurrentPluginDependencyGraphBuilder = new PluginDependencyGraphBuilder(this);
-	CurrentPluginDependencyGraphBuilder->setPluginRepository(CurrentPluginRepository);
 
 	CurrentPluginsManager = new PluginsManager(this);
 	CurrentPluginsManager->setPluginActivationService(CurrentPluginActivationService);
