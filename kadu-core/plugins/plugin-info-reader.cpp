@@ -21,8 +21,9 @@
 
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "plugin-info-reader-exception.h"
-#include "plugin-info.h"
+#include "plugins/plugin-info-builder.h"
+#include "plugins/plugin-info-reader-exception.h"
+#include "plugins/plugin-info.h"
 
 #include <QtCore/QFileInfo>
 
@@ -44,21 +45,21 @@ PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePat
 	auto const lang = config_file.readEntry("General", "Language");
 	PlainConfigFile file{filePath, "UTF-8"};
 
-	return
-	{
-		std::move(name),
-		file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")),
-		file.readEntry("Module", "Category"),
-		file.readEntry("Module", "Type"),
-		file.readEntry("Module", "Description[" + lang + ']', file.readEntry("Module", "Description")),
-		file.readEntry("Module", "Author"),
-		file.readEntry("Module", "Version") == "core"
-			? Core::version()
-			: file.readEntry("Module", "Version"),
-		file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts),
-		file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts),
-		file.readBoolEntry("Module", "LoadByDefault")
-	};
+	auto builder = PluginInfoBuilder{};
+	return builder
+			.setName(name)
+			.setDisplayName(file.readEntry("Module", "DisplayName[" + lang + ']', file.readEntry("Module", "DisplayName")))
+			.setCategory(file.readEntry("Module", "Category"))
+			.setType(file.readEntry("Module", "Type"))
+			.setDescription(file.readEntry("Module", "Description[" + lang + ']', file.readEntry("Module", "Description")))
+			.setAuthor(file.readEntry("Module", "Author"))
+			.setVersion(file.readEntry("Module", "Version") == "core"
+					? Core::version()
+					: file.readEntry("Module", "Version"))
+			.setDependencies(file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts))
+			.setConflicts(file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts))
+			.setProvides(file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts))
+			.setReplaces(file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts))
+			.setLoadByDefault(file.readBoolEntry("Module", "LoadByDefault"))
+			.create();
 }
