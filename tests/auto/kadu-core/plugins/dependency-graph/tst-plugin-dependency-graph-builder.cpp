@@ -23,6 +23,7 @@
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/plugin.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-info-builder.h"
 #include "plugins/plugin-repository.h"
 
 #include <algorithm>
@@ -52,21 +53,11 @@ std::unique_ptr<PluginRepository> tst_PluginDependencyGraphBuilder::createPlugin
 
 std::unique_ptr<Plugin> tst_PluginDependencyGraphBuilder::createPlugin(const QPair<QString, QStringList> &plugin)
 {
-	auto info = PluginInfo
-	{
-		plugin.first,
-		plugin.first,
-		"category",
-		"type",
-		"description",
-		"author",
-		"version",
-		plugin.second,
-		QStringList(),
-		QStringList(),
-		QStringList(),
-		false
-	};
+	auto builder = PluginInfoBuilder{};
+	auto info = builder
+			.setName(plugin.first)
+			.setDependencies(plugin.second)
+			.create();
 
 	return make_unique<Plugin>(info);
 }

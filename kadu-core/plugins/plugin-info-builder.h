@@ -19,11 +19,13 @@
 
 #pragma once
 
+#include "exports.h"
+
 #include <QtCore/QStringList>
 
 class PluginInfo;
 
-class PluginInfoBuilder
+class KADUAPI PluginInfoBuilder
 {
 
 public:
