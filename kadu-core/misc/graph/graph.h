@@ -41,9 +41,12 @@ public:
 		return m_nodes;
 	}
 
-	void addNode(P payload)
+	NodePointer addNode(P payload)
 	{
-		m_nodes.push_back(make_unique<NodeType>(payload));
+		auto node = make_unique<NodeType>(payload);
+		auto result = node.get();
+		m_nodes.push_back(std::move(node));
+		return result;
 	}
 
 	template<typename SuccessorTypeTag>

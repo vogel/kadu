@@ -81,22 +81,33 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 	auto graph = TestGraph{};
 
 	graph.addNode("p1");
-	graph.addNode("p2");
-	graph.addNode("p3");
-	graph.addNode("p4");
+	auto p2 = graph.addNode("p2");
+	auto p3 = graph.addNode("p3");
+	auto p4 = graph.addNode("p4");
+	auto p5 = graph.addNode("p5");
 
 	graph.addEdge<Tag1>("p1", "p2");
-	graph.addEdge<Tag1>("p1", "p3");
+	graph.addEdge<Tag1>("p2", "p3");
 	graph.addEdge<Tag1>("p2", "p4");
-	graph.addEdge<Tag1>("p3", "p4");
+	graph.addEdge<Tag1>("p3", "p5");
+	graph.addEdge<Tag1>("p4", "p5");
 
 	auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
-	QCOMPARE(p1Successors.size(), 3UL);
-	QCOMPARE(p1Successors.at(0)->payload(), std::string("p4"));
+	QCOMPARE(p1Successors.size(), 4UL);
 
-	bool sortVariant1 = p1Successors.at(1)->payload() == "p3" && p1Successors.at(2)->payload() == "p2";
-	bool sortVariant2 = p1Successors.at(1)->payload() == "p2" && p1Successors.at(2)->payload() == "p3";
-	QVERIFY(sortVariant1 || sortVariant2);
+	auto p2it = std::find(p1Successors.begin(), p1Successors.end(), p2);
+	auto p3it = std::find(p1Successors.begin(), p1Successors.end(), p3);
+	auto p4it = std::find(p1Successors.begin(), p1Successors.end(), p4);
+	auto p5it = std::find(p1Successors.begin(), p1Successors.end(), p5);
+	QVERIFY(p2it != p1Successors.end());
+	QVERIFY(p3it != p1Successors.end());
+	QVERIFY(p4it != p1Successors.end());
+	QVERIFY(p4it != p1Successors.end());
+	QVERIFY(p5it < p4it);
+	QVERIFY(p5it < p3it);
+	QVERIFY(p5it < p2it);
+	QVERIFY(p4it < p2it);
+	QVERIFY(p3it < p2it);
 }
 
 void tst_GraphSortSuccessors::cycleSortTest()
