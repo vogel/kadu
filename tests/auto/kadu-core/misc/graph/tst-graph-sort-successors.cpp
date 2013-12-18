@@ -20,6 +20,7 @@
 #include "misc/algorithm.h"
 #include "misc/graph/graph.h"
 #include "misc/graph/graph-algorithm.h"
+#include "utils/exception.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
@@ -103,19 +104,7 @@ void tst_GraphSortSuccessors::cycleSortTest()
 	graph.addEdge<Tag1>("p2", "p3");
 	graph.addEdge<Tag1>("p3", "p1");
 
-	try
-	{
-		auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
-		QFAIL("Exception not thrown");
-	}
-	catch (GraphCycleException &e)
-	{
-		// OK
-	}
-	catch (...)
-	{
-		QFAIL("Unexpected exception thrown");
-	}
+	expect<GraphCycleException>([&]{ graph_sort_successors<Tag1>(graph, "p1"); });
 }
 
 QTEST_APPLESS_MAIN(tst_GraphSortSuccessors)

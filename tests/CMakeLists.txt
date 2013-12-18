@@ -1,8 +1,11 @@
 find_package (Qt4 QUIET REQUIRED COMPONENTS QtTest)
 
+include_directories(".")
+
 # kadu_add_test (<name> source1 source2 ... sourceN)
 function (kadu_add_test name_)
 	set (pluginName)
+
 	file (RELATIVE_PATH sourcePath "${CMAKE_SOURCE_DIR}/tests" "${CMAKE_CURRENT_SOURCE_DIR}")
 	if ("${sourcePath}" MATCHES "^[^/]+/plugins/.*")
 		string (REGEX REPLACE "^[^/]+/plugins/" "" pluginName "${sourcePath}")

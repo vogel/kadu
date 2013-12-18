@@ -20,6 +20,7 @@
 #include "misc/algorithm.h"
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
+#include "utils/exception.h"
 
 #include <algorithm>
 #include <QtTest/QtTest>
@@ -32,8 +33,6 @@ private:
 	PluginDependencyGraph linearGraph();
 	PluginDependencyGraph treeGraph();
 	PluginDependencyGraph cycleGraph();
-
-	void expectCycle(std::function<void()> graphCall);
 
 private slots:
 	void linearDependencyCycleTest();
@@ -105,24 +104,6 @@ PluginDependencyGraph tst_PluginDependencyGraph::cycleGraph()
 	graph.addDependency("p5", "p6");
 
 	return std::move(graph);
-}
-
-void tst_PluginDependencyGraph::expectCycle(std::function<void()> graphCall)
-{
-
-	try
-	{
-		graphCall();
-		QFAIL("Exception not thrown");
-	}
-	catch (PluginDependencyCycleException &e)
-	{
-		// OK
-	}
-	catch (...)
-	{
-		QFAIL("Unexpected exception thrown");
-	}
 }
 
 void tst_PluginDependencyGraph::linearDependencyCycleTest()
@@ -256,18 +237,18 @@ void tst_PluginDependencyGraph::cycleDependencyTest()
 	graph.addDependency("p5", "p2");
 	graph.addDependency("p5", "p6");
 
-	expectCycle([&]{ graph.findDependencies("p1"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p1"); });
 	QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
-	expectCycle([&]{ graph.findDependencies("p2"); });
-	expectCycle([&]{ graph.findDependents("p2"); });
-	expectCycle([&]{ graph.findDependencies("p3"); });
-	expectCycle([&]{ graph.findDependents("p3"); });
-	expectCycle([&]{ graph.findDependencies("p4"); });
-	expectCycle([&]{ graph.findDependents("p4"); });
-	expectCycle([&]{ graph.findDependencies("p5"); });
-	expectCycle([&]{ graph.findDependents("p5"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p2"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p2"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p3"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p3"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p4"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p4"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p5"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p5"); });
 	QCOMPARE(graph.findDependencies("p6"), QVector<QString>{});
-	expectCycle([&]{ graph.findDependents("p6"); });
+	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p6"); });
 }
 
 QTEST_APPLESS_MAIN(tst_PluginDependencyGraph)
