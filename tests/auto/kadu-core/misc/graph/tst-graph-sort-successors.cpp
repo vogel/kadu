@@ -85,11 +85,11 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 	QVERIFY(contains(p1Successors, p3));
 	QVERIFY(contains(p1Successors, p4));
 	QVERIFY(contains(p1Successors, p5));
-	QVERIFY(precedes<>(p1Successors, p5, p4));
-	QVERIFY(precedes<>(p1Successors, p5, p3));
-	QVERIFY(precedes<>(p1Successors, p5, p2));
-	QVERIFY(precedes<>(p1Successors, p4, p2));
-	QVERIFY(precedes<>(p1Successors, p3, p2));
+	QVERIFY(precedes(p1Successors, p5, p4));
+	QVERIFY(precedes(p1Successors, p5, p3));
+	QVERIFY(precedes(p1Successors, p5, p2));
+	QVERIFY(precedes(p1Successors, p4, p2));
+	QVERIFY(precedes(p1Successors, p3, p2));
 }
 
 void tst_GraphSortSuccessors::cycleSortTest()
