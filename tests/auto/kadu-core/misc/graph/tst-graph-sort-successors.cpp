@@ -29,7 +29,6 @@ struct Tag2 {};
 
 using TestGraph = Graph<std::string, Tag1, Tag2>;
 
-
 class tst_GraphSortSuccessors : public QObject
 {
 	Q_OBJECT
@@ -46,9 +45,9 @@ void tst_GraphSortSuccessors::deterministicSortTest()
 	auto graph = TestGraph{};
 
 	graph.addNode("p1");
-	graph.addNode("p2");
-	graph.addNode("p3");
-	graph.addNode("p4");
+	auto p2 = graph.addNode("p2");
+	auto p3 = graph.addNode("p3");
+	auto p4 = graph.addNode("p4");
 
 	graph.addEdge<Tag1>("p1", "p2");
 	graph.addEdge<Tag1>("p1", "p3");
@@ -57,23 +56,10 @@ void tst_GraphSortSuccessors::deterministicSortTest()
 	graph.addEdge<Tag1>("p2", "p4");
 	graph.addEdge<Tag1>("p3", "p4");
 
-	auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
-	QCOMPARE(p1Successors.size(), 3UL);
-	QCOMPARE(p1Successors.at(0)->payload(), std::string("p4"));
-	QCOMPARE(p1Successors.at(1)->payload(), std::string("p3"));
-	QCOMPARE(p1Successors.at(2)->payload(), std::string("p2"));
-
-	auto p2Successors = graph_sort_successors<Tag1>(graph, "p2");
-	QCOMPARE(p2Successors.size(), 2UL);
-	QCOMPARE(p2Successors.at(0)->payload(), std::string("p4"));
-	QCOMPARE(p2Successors.at(1)->payload(), std::string("p3"));
-
-	auto p3Successors = graph_sort_successors<Tag1>(graph, "p3");
-	QCOMPARE(p3Successors.size(), 1UL);
-	QCOMPARE(p3Successors.at(0)->payload(), std::string("p4"));
-
-	auto p4Successors = graph_sort_successors<Tag1>(graph, "p4");
-	QCOMPARE(p4Successors.size(), 0UL);
+	QCOMPARE(graph_sort_successors<Tag1>(graph, "p1"), (std::vector<TestGraph::NodePointer>{p4, p3, p2}));
+	QCOMPARE(graph_sort_successors<Tag1>(graph, "p2"), (std::vector<TestGraph::NodePointer>{p4, p3}));
+	QCOMPARE(graph_sort_successors<Tag1>(graph, "p3"), (std::vector<TestGraph::NodePointer>{p4}));
+	QCOMPARE(graph_sort_successors<Tag1>(graph, "p4"), (std::vector<TestGraph::NodePointer>{}));
 }
 
 void tst_GraphSortSuccessors::nondeterministicSortTest()
@@ -94,20 +80,15 @@ void tst_GraphSortSuccessors::nondeterministicSortTest()
 
 	auto p1Successors = graph_sort_successors<Tag1>(graph, "p1");
 	QCOMPARE(p1Successors.size(), 4UL);
-
-	auto p2it = std::find(p1Successors.begin(), p1Successors.end(), p2);
-	auto p3it = std::find(p1Successors.begin(), p1Successors.end(), p3);
-	auto p4it = std::find(p1Successors.begin(), p1Successors.end(), p4);
-	auto p5it = std::find(p1Successors.begin(), p1Successors.end(), p5);
-	QVERIFY(p2it != p1Successors.end());
-	QVERIFY(p3it != p1Successors.end());
-	QVERIFY(p4it != p1Successors.end());
-	QVERIFY(p4it != p1Successors.end());
-	QVERIFY(p5it < p4it);
-	QVERIFY(p5it < p3it);
-	QVERIFY(p5it < p2it);
-	QVERIFY(p4it < p2it);
-	QVERIFY(p3it < p2it);
+	QVERIFY(contains(p1Successors, p2));
+	QVERIFY(contains(p1Successors, p3));
+	QVERIFY(contains(p1Successors, p4));
+	QVERIFY(contains(p1Successors, p5));
+	QVERIFY(precedes<>(p1Successors, p5, p4));
+	QVERIFY(precedes<>(p1Successors, p5, p3));
+	QVERIFY(precedes<>(p1Successors, p5, p2));
+	QVERIFY(precedes<>(p1Successors, p4, p2));
+	QVERIFY(precedes<>(p1Successors, p3, p2));
 }
 
 void tst_GraphSortSuccessors::cycleSortTest()
