@@ -32,7 +32,7 @@ class GraphCycleFinder
 	using NodePointer = typename GraphType::NodePointer;
 
 public:
-	explicit GraphCycleFinder(const GraphType &graph)
+	explicit GraphCycleFinder(const GraphType &graph) : m_index{0}
 	{
 		for (auto &node : graph.nodes())
 			if (!isVisited(node.get()))
@@ -71,13 +71,10 @@ private:
 		while (!m_currnentPath.empty())
 		{
 			auto stackNode = m_currnentPath.back();
+			result.push_back(stackNode);
+			m_currnentPath.pop_back();
 
-			if (m_indexes.at(node).second == m_indexes.at(stackNode).second)
-			{
-				m_currnentPath.pop_back();
-				result.push_back(stackNode);
-			}
-			else
+			if (node == stackNode)
 				return result;
 		}
 
