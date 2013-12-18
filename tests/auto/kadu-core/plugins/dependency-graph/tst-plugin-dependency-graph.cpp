@@ -134,52 +134,28 @@ void tst_PluginDependencyGraph::linearDirectDependencyTest()
 {
 	auto graph = linearGraph();
 
-	auto p1DirectDependencies = graph.directDependencies("p1");
-	auto p1DirectDependents = graph.directDependents("p1");
-	auto p2DirectDependencies = graph.directDependencies("p2");
-	auto p2DirectDependents = graph.directDependents("p2");
-	auto p3DirectDependencies = graph.directDependencies("p3");
-	auto p3DirectDependents = graph.directDependents("p3");
-	auto p4DirectDependencies = graph.directDependencies("p4");
-	auto p4DirectDependents = graph.directDependents("p4");
-
-	QCOMPARE(p1DirectDependencies, QSet<QString>{} << "p2");
-	QCOMPARE(p1DirectDependents, QSet<QString>{});
-
-	QCOMPARE(p2DirectDependencies, QSet<QString>{} << "p3");
-	QCOMPARE(p2DirectDependents, QSet<QString>{} << "p1");
-
-	QCOMPARE(p3DirectDependencies, QSet<QString>{} << "p4");
-	QCOMPARE(p3DirectDependents, QSet<QString>{} << "p2");
-
-	QCOMPARE(p4DirectDependencies, QSet<QString>{});
-	QCOMPARE(p4DirectDependents, QSet<QString>{} << "p3");
+	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3");
+	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
+	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p4");
+	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{});
+	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p3");
 }
 
 void tst_PluginDependencyGraph::linearDependencyTest()
 {
 	auto graph = linearGraph();
 
-	auto p1Dependencies = graph.findDependencies("p1");
-	auto p1Dependents = graph.findDependents("p1");
-	auto p2Dependencies = graph.findDependencies("p2");
-	auto p2Dependents = graph.findDependents("p2");
-	auto p3Dependencies = graph.findDependencies("p3");
-	auto p3Dependents = graph.findDependents("p3");
-	auto p4Dependencies = graph.findDependencies("p4");
-	auto p4Dependents = graph.findDependents("p4");
-
-	QCOMPARE(p1Dependencies, QVector<QString>{} << "p4" << "p3" << "p2");
-	QCOMPARE(p1Dependents, QVector<QString>{});
-
-	QCOMPARE(p2Dependencies, QVector<QString>{} << "p4" << "p3");
-	QCOMPARE(p2Dependents, QVector<QString>{} << "p1");
-
-	QCOMPARE(p3Dependencies, QVector<QString>{} << "p4");
-	QCOMPARE(p3Dependents, QVector<QString>{} << "p1" << "p2");
-
-	QCOMPARE(p4Dependencies, QVector<QString>{});
-	QCOMPARE(p4Dependents, QVector<QString>{} << "p1" << "p2" << "p3");
+	QCOMPARE(graph.findDependencies("p1"), QVector<QString>{} << "p4" << "p3" << "p2");
+	QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
+	QCOMPARE(graph.findDependencies("p2"), QVector<QString>{} << "p4" << "p3");
+	QCOMPARE(graph.findDependents("p2"), QVector<QString>{} << "p1");
+	QCOMPARE(graph.findDependencies("p3"), QVector<QString>{} << "p4");
+	QCOMPARE(graph.findDependents("p3"), QVector<QString>{} << "p1" << "p2");
+	QCOMPARE(graph.findDependencies("p4"), QVector<QString>{});
+	QCOMPARE(graph.findDependents("p4"), QVector<QString>{} << "p1" << "p2" << "p3");
 }
 
 void tst_PluginDependencyGraph::treeCycleTest()
@@ -191,36 +167,18 @@ void tst_PluginDependencyGraph::treeDirectDependencyTest()
 {
 	auto graph = treeGraph();
 
-	auto p1DirectDependencies = graph.directDependencies("p1");
-	auto p1DirectDependents = graph.directDependents("p1");
-	auto p2DirectDependencies = graph.directDependencies("p2");
-	auto p2DirectDependents = graph.directDependents("p2");
-	auto p3DirectDependencies = graph.directDependencies("p3");
-	auto p3DirectDependents = graph.directDependents("p3");
-	auto p4DirectDependencies = graph.directDependencies("p4");
-	auto p4DirectDependents = graph.directDependents("p4");
-	auto p5DirectDependencies = graph.directDependencies("p5");
-	auto p5DirectDependents = graph.directDependents("p5");
-	auto p6DirectDependencies = graph.directDependencies("p6");
-	auto p6DirectDependents = graph.directDependents("p6");
-
-	QCOMPARE(p1DirectDependencies, QSet<QString>{} << "p2");
-	QCOMPARE(p1DirectDependents, QSet<QString>{});
-
-	QCOMPARE(p2DirectDependencies, QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(p2DirectDependents, QSet<QString>{} << "p1");
-
-	QCOMPARE(p3DirectDependencies, QSet<QString>{} << "p5");
-	QCOMPARE(p3DirectDependents, QSet<QString>{} << "p2");
-
-	QCOMPARE(p4DirectDependencies, QSet<QString>{} << "p5");
-	QCOMPARE(p4DirectDependents, QSet<QString>{} << "p2");
-
-	QCOMPARE(p5DirectDependencies, QSet<QString>{} << "p6");
-	QCOMPARE(p5DirectDependents, QSet<QString>{} << "p3" << "p4");
-
-	QCOMPARE(p6DirectDependencies, QSet<QString>{});
-	QCOMPARE(p6DirectDependents, QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3" << "p4");
+	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
+	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6");
+	QCOMPARE(graph.directDependents("p5"), QSet<QString>{} << "p3" << "p4");
+	QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
+	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
 void tst_PluginDependencyGraph::treeDependencyTest()
@@ -234,45 +192,33 @@ void tst_PluginDependencyGraph::treeDependencyTest()
 	auto p6Dependents = graph.findDependents("p6");
 
 	QCOMPARE(p1Dependencies.size(), 5);
-	auto p1DependencyIndex = p1Dependencies.indexOf("p1");
-	auto p2DependencyIndex = p1Dependencies.indexOf("p2");
-	auto p3DependencyIndex = p1Dependencies.indexOf("p3");
-	auto p4DependencyIndex = p1Dependencies.indexOf("p4");
-	auto p5DependencyIndex = p1Dependencies.indexOf("p5");
-	auto p6DependencyIndex = p1Dependencies.indexOf("p6");
-	QCOMPARE(-1, p1DependencyIndex);
-	QVERIFY(p2DependencyIndex >= 0);
-	QVERIFY(p3DependencyIndex >= 0);
-	QVERIFY(p4DependencyIndex >= 0);
-	QVERIFY(p5DependencyIndex >= 0);
-	QVERIFY(p6DependencyIndex >= 0);
-	QVERIFY(p6DependencyIndex < p5DependencyIndex);
-	QVERIFY(p5DependencyIndex < p4DependencyIndex);
-	QVERIFY(p5DependencyIndex < p3DependencyIndex);
-	QVERIFY(p4DependencyIndex < p2DependencyIndex);
-	QVERIFY(p3DependencyIndex < p2DependencyIndex);
+	QVERIFY(!contains(p1Dependencies, "p1"));
+	QVERIFY(contains(p1Dependencies, "p2"));
+	QVERIFY(contains(p1Dependencies, "p3"));
+	QVERIFY(contains(p1Dependencies, "p4"));
+	QVERIFY(contains(p1Dependencies, "p5"));
+	QVERIFY(contains(p1Dependencies, "p6"));
+	QVERIFY(precedes(p1Dependencies, "p6", "p5"));
+	QVERIFY(precedes(p1Dependencies, "p5", "p4"));
+	QVERIFY(precedes(p1Dependencies, "p5", "p3"));
+	QVERIFY(precedes(p1Dependencies, "p4", "p2"));
+	QVERIFY(precedes(p1Dependencies, "p3", "p2"));
 
 	QCOMPARE(p1Dependents.size(), 0);
 	QCOMPARE(p6Dependencies.size(), 0);
 
 	QCOMPARE(p6Dependents.size(), 5);
-	auto p1DependentIndex = p6Dependents.indexOf("p1");
-	auto p2DependentIndex = p6Dependents.indexOf("p2");
-	auto p3DependentIndex = p6Dependents.indexOf("p3");
-	auto p4DependentIndex = p6Dependents.indexOf("p4");
-	auto p5DependentIndex = p6Dependents.indexOf("p5");
-	auto p6DependentIndex = p6Dependents.indexOf("p6");
-	QVERIFY(p1DependentIndex >= 0);
-	QVERIFY(p2DependentIndex >= 0);
-	QVERIFY(p3DependentIndex >= 0);
-	QVERIFY(p3DependentIndex >= 0);
-	QVERIFY(p5DependentIndex >= 0);
-	QCOMPARE(-1, p6DependentIndex);
-	QVERIFY(p1DependentIndex < p2DependentIndex);
-	QVERIFY(p2DependentIndex < p3DependentIndex);
-	QVERIFY(p2DependentIndex < p4DependentIndex);
-	QVERIFY(p3DependentIndex < p5DependentIndex);
-	QVERIFY(p4DependentIndex < p5DependentIndex);
+	QVERIFY(contains(p6Dependents, "p1"));
+	QVERIFY(contains(p6Dependents, "p2"));
+	QVERIFY(contains(p6Dependents, "p3"));
+	QVERIFY(contains(p6Dependents, "p4"));
+	QVERIFY(contains(p6Dependents, "p5"));
+	QVERIFY(!contains(p6Dependents, "p6"));
+	QVERIFY(precedes(p6Dependents, "p1", "p2"));
+	QVERIFY(precedes(p6Dependents, "p2", "p3"));
+	QVERIFY(precedes(p6Dependents, "p2", "p4"));
+	QVERIFY(precedes(p6Dependents, "p3", "p5"));
+	QVERIFY(precedes(p6Dependents, "p4", "p5"));
 }
 
 void tst_PluginDependencyGraph::cycleCycleTest()
@@ -284,36 +230,18 @@ void tst_PluginDependencyGraph::cycleDirectDependencyTest()
 {
 	auto graph = cycleGraph();
 
-	auto p1DirectDependencies = graph.directDependencies("p1");
-	auto p1DirectDependents = graph.directDependents("p1");
-	auto p2DirectDependencies = graph.directDependencies("p2");
-	auto p2DirectDependents = graph.directDependents("p2");
-	auto p3DirectDependencies = graph.directDependencies("p3");
-	auto p3DirectDependents = graph.directDependents("p3");
-	auto p4DirectDependencies = graph.directDependencies("p4");
-	auto p4DirectDependents = graph.directDependents("p4");
-	auto p5DirectDependencies = graph.directDependencies("p5");
-	auto p5DirectDependents = graph.directDependents("p5");
-	auto p6DirectDependencies = graph.directDependencies("p6");
-	auto p6DirectDependents = graph.directDependents("p6");
-
-	QCOMPARE(p1DirectDependencies, QSet<QString>{} << "p2");
-	QCOMPARE(p1DirectDependents, QSet<QString>{});
-
-	QCOMPARE(p2DirectDependencies, QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(p2DirectDependents, QSet<QString>{} << "p1" << "p5");
-
-	QCOMPARE(p3DirectDependencies, QSet<QString>{} << "p5");
-	QCOMPARE(p3DirectDependents, QSet<QString>{} << "p2");
-
-	QCOMPARE(p4DirectDependencies, QSet<QString>{} << "p5");
-	QCOMPARE(p4DirectDependents, QSet<QString>{} << "p2");
-
-	QCOMPARE(p5DirectDependencies, QSet<QString>{} << "p6" << "p2");
-	QCOMPARE(p5DirectDependents, QSet<QString>{} << "p3" << "p4");
-
-	QCOMPARE(p6DirectDependencies, QSet<QString>{});
-	QCOMPARE(p6DirectDependents, QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3" << "p4");
+	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1" << "p5");
+	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
+	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
+	QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6" << "p2");
+	QCOMPARE(graph.directDependents("p5"), QSet<QString>{} << "p3" << "p4");
+	QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
+	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
 void tst_PluginDependencyGraph::cycleDependencyTest()

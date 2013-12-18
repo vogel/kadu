@@ -26,3 +26,12 @@ bool contains(const C &c, const T &v)
 {
 	return std::find(c.begin(), c.end(), v) != c.end();
 }
+
+template<typename C, typename T>
+bool precedes(const C &c, const T &v1, const T &v2)
+{
+	auto it1 = std::find(c.begin(), c.end(), v1);
+	auto it2 = std::find(c.begin(), c.end(), v2);
+
+	return it1 < it2;
+}
