@@ -317,7 +317,7 @@ void PluginsManager::deactivatePlugins()
 	for (auto plugin : Core::instance()->pluginRepository())
 		if (plugin->isActive())
 		{
-			kdebugm(KDEBUG_INFO, "plugin: %s, usage: %d\n", qPrintable(plugin->name()), plugin->usageCounter());
+			kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(plugin->name()));
 		}
 
 	// unloading all not used plugins
@@ -329,9 +329,8 @@ void PluginsManager::deactivatePlugins()
 		auto active = activePlugins();
 		deactivated = false;
 		for (auto plugin : active)
-			if (plugin->usageCounter() == 0)
-				if (deactivatePlugin(plugin, PluginDeactivationReason::Exiting))
-					deactivated = true;
+			if (deactivatePlugin(plugin, PluginDeactivationReason::Exiting))
+				deactivated = true;
 	}
 	while (deactivated);
 
@@ -361,25 +360,6 @@ QList<Plugin *> PluginsManager::activePlugins() const
 		if (plugin->isActive())
 			result.append(plugin);
 	return result;
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Marks all dependencies of given plugin as used.
- * @param plugin plugin which dependencies will be marked as used
- *
- * All depenciec of plugin given as parameter will be marked as used so no accidental deactivation
- * will be possible for them.
- */
-void PluginsManager::incDependenciesUsageCount(Plugin *plugin)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(plugin->info().description()));
-	for (auto const &pluginName : plugin->info().dependencies())
-	{
-		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(pluginName));
-		usePlugin(pluginName);
-	}
-	kdebugf2();
 }
 
 /**
@@ -482,6 +462,23 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 	return result;
 }
 
+QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin)
+{
+	if (!plugin || !m_pluginDependencyGraph)
+		return {};
+
+	auto result = QVector<Plugin *>{};
+	auto dependents = m_pluginDependencyGraph.get()->findDependents(plugin->name());
+	for (auto dependent : dependents)
+	{
+		auto dependentPlugin = Core::instance()->pluginRepository()->plugin(dependent);
+		if (dependentPlugin)
+			result += dependentPlugin;
+	}
+
+	return result;
+}
+
 /**
  * @author Rafał 'Vogel' Malinowski
  * @short Returns string with list of all plugins that depends on given one.
@@ -555,8 +552,6 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		for (auto const &action : actions)
 			if (!m_pluginActivationService.data()->performActivationAction(action))
 				return false;
-
-		incDependenciesUsageCount(plugin);
 	}
 	catch (PluginDependencyCycleException &e)
 	{
@@ -568,74 +563,32 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	return true;
 }
 
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Deactivates given plugin.
- * @param plugin plugin to deactivate
- * @param reason plugin deactivation reason
- * @return true, if plugin was successfully deactivated
- * @todo remove message box
- *
- * This method deactivates given plugin. Deactivation can be performed only when plugin is no longed in use (its
- * Plugin::usageCounter() returns 0) or \p reason is ExitingForce.
- *
- * After successfull deactivation all dependenecies are released - their Plugin::usageCounter() is decreaced.
- */
-bool PluginsManager::deactivatePlugin(Plugin* plugin, PluginDeactivationReason reason)
+bool PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' reason:%d usage: %d\n", qPrintable(plugin->name()), (int)reason, plugin->usageCounter());
+	if (!plugin->isActive())
+		return true;
 
-	if (plugin->usageCounter() > 0 && PluginDeactivationReason::ExitingForce != reason)
+	try
 	{
-		MessageDialog::show(KaduIcon("dialog-error"), tr("Kadu"), tr("Plugin %1 cannot be deactivated because it is being used by the following plugins:%2").arg(plugin->name()).arg(activeDependentPluginNames(plugin->name())),
-				QMessageBox::Ok, MainConfigurationWindow::instance());
-		kdebugf2();
+		auto dependents = allDependents(plugin);
+
+		auto actions = QVector<PluginActivationAction>{};
+		for (auto dependent : dependents)
+			actions.append({dependent, reason});
+		actions.append({plugin, reason});
+
+		for (auto const &action : actions)
+			if (!m_pluginActivationService.data()->performActivationAction(action))
+				return false;
+	}
+	catch (PluginDependencyCycleException &e)
+	{
+		Q_UNUSED(e); // TODO: log? rethrow and use in GUI?
+
 		return false;
 	}
 
-	for (auto const &i : plugin->info().dependencies())
-		releasePlugin(i);
-
-	if (m_pluginActivationService)
-		return m_pluginActivationService.data()->performActivationAction({plugin, reason});
-	return false;
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Increases usage counter for given plugin
- * @param pluginName name of plugin to increase usage pointer
- *
- * This method increases usage counter for given plugin. Use it from plugin code when opening
- * dialogs or performing long operatrions to prevent unloading plugins. It is used also to prevent
- * unloading plugins when other loaded plugins are dependent on them.
- *
- * After plugin is no longer needes (operation has finished, dialog is closed) releasePlugin() must
- * be called with the same parameter.
- */
-void PluginsManager::usePlugin(const QString &pluginName)
-{
-	auto plugin = Core::instance()->pluginRepository()->plugin(pluginName);
-	if (plugin)
-		plugin->incUsage();
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
- * @short Decreases usage counter for given plugin
- * @param pluginName name of plugin to decrease usage pointer
- *
- * This method decreases usage counter for given plugin. Use it from plugin after calling usePlugin()
- * when locking plugin is no longer needed (for example when long operation has finished or a dialog
- * was closed).
- *
- * It can be only called after usePlugin() with the same parameter.
- */
-void PluginsManager::releasePlugin(const QString &pluginName)
-{
-	auto plugin = Core::instance()->pluginRepository()->plugin(pluginName);
-	if (plugin)
-		plugin->decUsage();
+	return true;
 }
 
 #include "moc_plugins-manager.cpp"

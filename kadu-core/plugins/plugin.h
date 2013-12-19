@@ -154,33 +154,6 @@ public:
 	 */
 	const PluginInfo & info() const { return m_pluginInfo; }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns usage counter for this plugin.
-	 * @return usage counter for this plugin
-	 *
-	 * Returns usage counter for this plugin. If usage counter is greater than zero, this plugin
-	 * cannot be safely deactivated, because it is either dependency of another active plugin, of
-	 * its code is currenly in use.
-	 */
-	int usageCounter() const { return m_usageCounter; }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Increases usage counter for this plugin.
-	 *
-	 * Increases usage counter for this plugin.
-	 */
-	void incUsage() { m_usageCounter++; }
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Decreases usage counter for this plugin.
-	 *
-	 * Decreases usage counter for this plugin.
-	 */
-	void decUsage() { m_usageCounter--; }
-
 protected:
 	virtual void load();
 	virtual void store();
@@ -195,7 +168,6 @@ private:
 	GenericPlugin *m_pluginObject;
 
 	QTranslator *m_translator;
-	int m_usageCounter;
 
 	void loadTranslations();
 	void unloadTranslations();

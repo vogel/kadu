@@ -108,9 +108,6 @@ public:
 	bool activatePlugin(Plugin *plugin, PluginActivationReason reason);
 	bool deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason);
 
-	void usePlugin(const QString &pluginName);
-	void releasePlugin(const QString &pluginName);
-
 protected:
 	virtual void load();
 	virtual void store();
@@ -120,8 +117,6 @@ private:
 
 	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyGraph;
 
-	void incDependenciesUsageCount(Plugin *plugin);
-
 	void importFrom09();
 
 	QStringList installedPlugins() const;
@@ -129,6 +124,7 @@ private:
 	Plugin * loadPlugin(const QString &pluginName);
 	QString findActiveConflict(Plugin *plugin) const;
 	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept(false);
+	QVector<Plugin *> allDependents(Plugin *plugin) noexcept(false);
 
 	QString activeDependentPluginNames(const QString &pluginName) const;
 

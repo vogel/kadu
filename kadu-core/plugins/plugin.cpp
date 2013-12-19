@@ -61,8 +61,7 @@
 Plugin::Plugin(PluginInfo pluginInfo, QObject *parent) :
 		QObject{parent}, m_pluginInfo(std::move(pluginInfo)),
 		m_active{false}, m_state{PluginStateNew}, m_pluginLoader{nullptr}, m_pluginObject{nullptr},
-		m_translator{nullptr},
-		m_usageCounter{0}
+		m_translator{nullptr}
 {
 	StorableObject::setState(StateNotLoaded);
 }
@@ -236,8 +235,6 @@ bool Plugin::activate(PluginActivationReason reason)
 
 		return false;
 	}
-
-	m_usageCounter = 0;
 
 	/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
 	 * means that it was never loaded. If the only reason to load the plugin was because some other
