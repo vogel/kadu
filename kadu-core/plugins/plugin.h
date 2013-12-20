@@ -118,7 +118,7 @@ public:
 	bool shouldBeActivated();
 
 	bool activate(PluginActivationReason reason);
-	void deactivate(PluginDeactivationReason reason);
+	void deactivate();
 
 	void activationError(const QString &errorMessage, PluginActivationReason activationReason);
 

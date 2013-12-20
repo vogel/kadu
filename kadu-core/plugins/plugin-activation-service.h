@@ -25,7 +25,6 @@ class Plugin;
 class PluginActivationAction;
 
 enum class PluginActivationReason;
-enum class PluginDeactivationReason;
 
 class PluginActivationService : public QObject
 {
@@ -39,6 +38,6 @@ public:
 
 private:
 	bool activatePlugin(Plugin *plugin, PluginActivationReason activationReason);
-	bool deactivatePlugin(Plugin *plugin, PluginDeactivationReason deactivationReason);
+	bool deactivatePlugin(Plugin *plugin);
 
 };

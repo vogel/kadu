@@ -578,8 +578,11 @@ bool PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason r
 		actions.append({plugin, reason});
 
 		for (auto const &action : actions)
-			if (!m_pluginActivationService.data()->performActivationAction(action))
-				return false;
+		{
+			m_pluginActivationService.data()->performActivationAction(action);
+			if (PluginDeactivationReason::UserRequest == reason)
+				action.plugin()->setState(Plugin::PluginStateDisabled);
+		}
 	}
 	catch (PluginDependencyCycleException &e)
 	{

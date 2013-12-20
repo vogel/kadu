@@ -261,7 +261,7 @@ bool Plugin::activate(PluginActivationReason reason)
  * events are sent so that we will not end up trying to delete objects belonging to unloaded
  * plugins. Finally all data is removed from memory - plugin library file and plugin translations.
  */
-void Plugin::deactivate(PluginDeactivationReason reason)
+void Plugin::deactivate()
 {
 	if (!m_active)
 		return;
@@ -287,9 +287,6 @@ void Plugin::deactivate(PluginDeactivationReason reason)
 	unloadTranslations();
 
 	m_active = false;
-
-	if (PluginDeactivationReason::UserRequest == reason)
-		setState(PluginStateDisabled);
 }
 
 /**

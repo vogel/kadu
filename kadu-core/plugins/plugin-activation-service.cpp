@@ -40,7 +40,7 @@ bool PluginActivationService::performActivationAction(const PluginActivationActi
 			return activatePlugin(action.plugin(), action.activationReason());
 
 		case PluginActivationType::Deactivation:
-			return deactivatePlugin(action.plugin(), action.deactivationReason());
+			return deactivatePlugin(action.plugin());
 	}
 
 	return {};
@@ -51,8 +51,8 @@ bool PluginActivationService::activatePlugin(Plugin *plugin, PluginActivationRea
 	return plugin->activate(activationReason);
 }
 
-bool PluginActivationService::deactivatePlugin(Plugin *plugin, PluginDeactivationReason deactivationReason)
+bool PluginActivationService::deactivatePlugin(Plugin *plugin)
 {
-	plugin->deactivate(deactivationReason);
+	plugin->deactivate();
 	return true;
 }
