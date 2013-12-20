@@ -19,25 +19,25 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <exception>
 
 class Plugin;
-class PluginActivationAction;
 
-enum class PluginActivationReason;
-
-class PluginActivationService : public QObject
+class PluginActivationErrorException : public std::exception
 {
-	Q_OBJECT
 
 public:
-	explicit PluginActivationService(QObject *parent = nullptr);
-	virtual ~PluginActivationService();
+	PluginActivationErrorException(Plugin *plugin, QString errorMessage) :
+			m_plugin(plugin), m_errorMessage{std::move(errorMessage)} {}
 
-	void performActivationAction(const PluginActivationAction &action) noexcept(false);
+	Plugin * plugin() const { return m_plugin; }
+	QString errorMessage() const { return m_errorMessage; }
 
 private:
-	void activatePlugin(Plugin *plugin) noexcept(false);
-	void deactivatePlugin(Plugin *plugin) noexcept;
+	Plugin *m_plugin;
+	QString m_errorMessage;
+
+	virtual const char * what() const noexcept { return "Plugin activation error"; }
 
 };

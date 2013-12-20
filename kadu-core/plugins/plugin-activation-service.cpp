@@ -32,27 +32,26 @@ PluginActivationService::~PluginActivationService()
 {
 }
 
-bool PluginActivationService::performActivationAction(const PluginActivationAction &action)
+void PluginActivationService::performActivationAction(const PluginActivationAction &action) noexcept(false)
 {
 	switch (action.type())
 	{
 		case PluginActivationType::Activation:
-			return activatePlugin(action.plugin(), action.activationReason());
+			activatePlugin(action.plugin());
+			return;
 
 		case PluginActivationType::Deactivation:
-			return deactivatePlugin(action.plugin());
+			deactivatePlugin(action.plugin());
+			return;
 	}
-
-	return {};
 }
 
-bool PluginActivationService::activatePlugin(Plugin *plugin, PluginActivationReason activationReason)
+void PluginActivationService::activatePlugin(Plugin *plugin) noexcept(false)
 {
-	return plugin->activate(activationReason);
+	plugin->activate();
 }
 
-bool PluginActivationService::deactivatePlugin(Plugin *plugin)
+void PluginActivationService::deactivatePlugin(Plugin *plugin) noexcept
 {
 	plugin->deactivate();
-	return true;
 }

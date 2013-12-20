@@ -38,21 +38,22 @@
 #include "gui/hot-key.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-dialog.h"
+#include "gui/windows/plugin-error-dialog.h"
 #include "icons/icons-manager.h"
 #include "misc/kadu-paths.h"
-#include "plugin-repository.h"
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugins/generic-plugin.h"
 #include "plugins/plugin-activation-action.h"
+#include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-activation-service.h"
 #include "plugins/plugin-info-reader-exception.h"
 #include "plugins/plugin-info-reader.h"
 #include "plugins/plugin-info.h"
+#include "plugins/plugin-repository.h"
 #include "plugins/plugin.h"
 #include "plugins/plugins-common.h"
-#include "plugin-info-reader.h"
 #include "activate.h"
 #include "debug.h"
 
@@ -60,6 +61,7 @@
 #include <QtCore/QLibrary>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QTextCodec>
+#include <QtCore/QTimer>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
@@ -439,7 +441,7 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	return {};
 }
 
-QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
+QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept(false)
 {
 	if (!plugin || !m_pluginDependencyGraph)
 		return {};
@@ -451,9 +453,7 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin)
 		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency);
 		if (!dependencyPlugin)
 		{
-			// TODO: throw exception
-			plugin->activationError(tr("Required plugin %1 was not found").arg(dependency), PluginActivationReason::Dependency);
-			return {};
+			throw PluginActivationErrorException(nullptr, tr("Required plugin %1 was not found").arg(dependency));
 		}
 
 		result += dependencyPlugin;
@@ -526,13 +526,22 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	auto conflict = findActiveConflict(plugin);
 	if (!conflict.isEmpty())
 	{
-		plugin->activationError(tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
+		activationError(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
 		return false;
 	}
 
 	try
 	{
-		auto dependencies = allDependencies(plugin);
+		auto dependencies = QVector<Plugin *>{};
+		try
+		{
+			dependencies = allDependencies(plugin);
+		}
+		catch (PluginActivationErrorException &e)
+		{
+			activationError(e.plugin(), e.errorMessage(), PluginActivationReason::Dependency);
+			return false;
+		}
 
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
@@ -547,23 +556,36 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 			actions.append({dependency, activationReason});
 		}
-		actions.append({plugin, reason});
 
-		for (auto const &action : actions)
-			if (m_pluginActivationService.data()->performActivationAction(action))
+		try
+		{
+			for (auto const &action : actions)
 			{
+				m_pluginActivationService.data()->performActivationAction(action);
 				/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
 				 * means that it was never loaded. If the only reason to load the plugin was because some other
 				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
 				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
 				 */
-				if (PluginActivationReason::Dependency != action.activationReason())
-					action.plugin()->setState(Plugin::PluginStateEnabled);
-				else
-					action.plugin()->setState(Plugin::PluginStateDisabled);
+				action.plugin()->setState(Plugin::PluginStateDisabled);
 			}
-			else
-				return false;
+		}
+		catch (PluginActivationErrorException &e)
+		{
+			activationError(e.plugin(), e.errorMessage(), PluginActivationReason::Dependency);
+			return false;
+		}
+
+		try
+		{
+			m_pluginActivationService.data()->performActivationAction({plugin, reason});
+			plugin->setState(Plugin::PluginStateEnabled);
+		}
+		catch (PluginActivationErrorException &e)
+		{
+			activationError(e.plugin(), e.errorMessage(), reason);
+			return false;
+		}
 	}
 	catch (PluginDependencyCycleException &e)
 	{
@@ -573,6 +595,32 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	}
 
 	return true;
+}
+
+/**
+ * @author Bartosz 'beevvy' Brachaczek
+ * @short Shows activation error to the user.
+ * @param errorMessage error message that will be displayer to the user
+ * @param activationReason plugin activation reason
+ * @todo it really shouldn't call gui classes directly
+ *
+ * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
+ * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
+ * to load this plugin automatically in future.
+ */
+void PluginsManager::activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason)
+{
+	if (!plugin)
+		return;
+
+	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
+
+	// TODO: set parent to MainConfigurationWindow is it exists
+	auto errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
+	if (offerLoadInFutureChoice)
+		connect(errorDialog, SIGNAL(accepted(bool)), plugin, SLOT(setStateEnabledIfInactive(bool)));
+
+	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
 bool PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)

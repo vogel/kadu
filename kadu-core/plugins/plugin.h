@@ -117,10 +117,8 @@ public:
 
 	bool shouldBeActivated();
 
-	bool activate(PluginActivationReason reason);
-	void deactivate();
-
-	void activationError(const QString &errorMessage, PluginActivationReason activationReason);
+	void activate() noexcept(false);
+	void deactivate() noexcept;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -154,6 +152,9 @@ public:
 	 */
 	const PluginInfo & info() const { return m_pluginInfo; }
 
+public slots:
+	void setStateEnabledIfInactive(bool enable);
+
 protected:
 	virtual void load();
 	virtual void store();
@@ -171,9 +172,6 @@ private:
 
 	void loadTranslations();
 	void unloadTranslations();
-
-private slots:
-	void setStateEnabledIfInactive(bool enable);
 
 };
 

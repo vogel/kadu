@@ -28,6 +28,7 @@
 #include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
 #include "plugins/generic-plugin.h"
+#include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugins-common.h"
 #include "debug.h"
 
@@ -175,10 +176,10 @@ bool Plugin::shouldBeActivated()
  * This method returns true if plugin is active after method returns - especially when plugin was active
  * before this call.
  */
-bool Plugin::activate(PluginActivationReason reason)
+void Plugin::activate() noexcept(false)
 {
 	if (m_active)
-		return true;
+		return;
 
 	ensureLoaded();
 
@@ -189,13 +190,12 @@ bool Plugin::activate(PluginActivationReason reason)
 	{
 		QString err = m_pluginLoader->errorString();
 		kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(m_pluginInfo.name()), qPrintable(err));
-		activationError(tr("Cannot load %1 plugin library:\n%2").arg(m_pluginInfo.name(), err), reason);
 
 		delete m_pluginLoader;
 		m_pluginLoader = nullptr;
 
 		kdebugf2();
-		return false;
+		throw PluginActivationErrorException(this, tr("Cannot load %1 plugin library:\n%2").arg(m_pluginInfo.name(), err));
 	}
 
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
@@ -204,8 +204,6 @@ bool Plugin::activate(PluginActivationReason reason)
 	m_pluginObject = qobject_cast<GenericPlugin *>(m_pluginLoader->instance());
 	if (!m_pluginObject)
 	{
-		activationError(tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_pluginInfo.name()), reason);
-
 		// Refer to deactivate() method for reasons to this.
 		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 		m_pluginLoader->unload();
@@ -215,15 +213,13 @@ bool Plugin::activate(PluginActivationReason reason)
 		unloadTranslations();
 
 		kdebugf2();
-		return false;
+		throw PluginActivationErrorException(this, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_pluginInfo.name()));
 	}
 
 	auto res = m_pluginObject->init(PluginStateNew == m_state);
 
 	if (res != 0)
 	{
-		activationError(tr("Module initialization routine for %1 failed.").arg(m_pluginInfo.name()), reason);
-
 		// Refer to deactivate() method for reasons to this.
 		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
 		m_pluginLoader->unload();
@@ -233,14 +229,12 @@ bool Plugin::activate(PluginActivationReason reason)
 
 		unloadTranslations();
 
-		return false;
+		throw PluginActivationErrorException(this, tr("Module initialization routine for %1 failed.").arg(m_pluginInfo.name()));
 	}
 
 	m_active = true;
 
 	kdebugf2();
-
-	return true;
 }
 
 /**
@@ -251,7 +245,7 @@ bool Plugin::activate(PluginActivationReason reason)
  * events are sent so that we will not end up trying to delete objects belonging to unloaded
  * plugins. Finally all data is removed from memory - plugin library file and plugin translations.
  */
-void Plugin::deactivate()
+void Plugin::deactivate() noexcept
 {
 	if (!m_active)
 		return;
@@ -354,29 +348,6 @@ void Plugin::setStateEnabledIfInactive(bool enable)
 		return;
 
 	setState(enable ? PluginStateEnabled : PluginStateDisabled);
-}
-
-/**
- * @author Bartosz 'beevvy' Brachaczek
- * @short Shows activation error to the user.
- * @param errorMessage error message that will be displayer to the user
- * @param activationReason plugin activation reason
- * @todo it really shouldn't call gui classes directly
- *
- * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
- * \p activationReason, it also intructs the dialog wheter to offer the user choice wheter to try
- * to load this plugin automatically in future.
- */
-void Plugin::activationError(const QString &errorMessage, PluginActivationReason activationReason)
-{
-	auto offerLoadInFutureChoice = (PluginActivationReason::KnownDefault == activationReason);
-
-	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = new PluginErrorDialog(errorMessage, offerLoadInFutureChoice, 0);
-	if (offerLoadInFutureChoice)
-		connect(errorDialog, SIGNAL(accepted(bool)), this, SLOT(setStateEnabledIfInactive(bool)));
-
-	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
 #include "moc_plugin.cpp"
