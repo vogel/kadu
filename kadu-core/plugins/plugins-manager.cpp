@@ -550,7 +550,19 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 		actions.append({plugin, reason});
 
 		for (auto const &action : actions)
-			if (!m_pluginActivationService.data()->performActivationAction(action))
+			if (m_pluginActivationService.data()->performActivationAction(action))
+			{
+				/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
+				 * means that it was never loaded. If the only reason to load the plugin was because some other
+				 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
+				 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
+				 */
+				if (PluginActivationReason::Dependency != action.activationReason())
+					action.plugin()->setState(Plugin::PluginStateEnabled);
+				else
+					action.plugin()->setState(Plugin::PluginStateDisabled);
+			}
+			else
 				return false;
 	}
 	catch (PluginDependencyCycleException &e)

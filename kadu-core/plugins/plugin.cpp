@@ -236,16 +236,6 @@ bool Plugin::activate(PluginActivationReason reason)
 		return false;
 	}
 
-	/* This is perfectly intentional. We have to set state to either enabled or disabled, as new
-	 * means that it was never loaded. If the only reason to load the plugin was because some other
-	 * plugin depended upon it, set state to disabled as we don't want that plugin to be loaded
-	 * next time when its reverse dependency will not be loaded. Otherwise set state to enabled.
-	 */
-	if (PluginActivationReason::Dependency != reason)
-		setState(PluginStateEnabled);
-	else
-		setState(PluginStateDisabled);
-
 	m_active = true;
 
 	kdebugf2();
