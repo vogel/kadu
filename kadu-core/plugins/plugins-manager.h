@@ -106,7 +106,7 @@ public:
 	void deactivatePlugins();
 
 	bool activatePlugin(Plugin *plugin, PluginActivationReason reason);
-	bool deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason);
+	void deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason);
 
 protected:
 	virtual void load();
@@ -115,7 +115,7 @@ protected:
 private:
 	QWeakPointer<PluginActivationService> m_pluginActivationService;
 
-	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyGraph;
+	std::unique_ptr<PluginDependencyGraph> m_pluginDependencyDAG;
 
 	void importFrom09();
 
@@ -123,8 +123,8 @@ private:
 
 	Plugin * loadPlugin(const QString &pluginName);
 	QString findActiveConflict(Plugin *plugin) const;
-	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept(false);
-	QVector<Plugin *> allDependents(Plugin *plugin) noexcept(false);
+	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
+	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;
 
 	QString activeDependentPluginNames(const QString &pluginName) const;
 	void activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason);

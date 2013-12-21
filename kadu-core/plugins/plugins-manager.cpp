@@ -136,7 +136,7 @@ void PluginsManager::load()
 	for (auto &pluginInDependency : pluginsInDependencyCycle)
 		Core::instance()->pluginRepository()->removePlugin(pluginInDependency);
 
-	m_pluginDependencyGraph = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
+	m_pluginDependencyDAG = Core::instance()->pluginDependencyGraphBuilder()->buildGraph(*Core::instance()->pluginRepository());
 
 	if (!loadAttribute<bool>("imported_from_09", false))
 	{
@@ -316,35 +316,12 @@ void PluginsManager::activatePlugins()
  */
 void PluginsManager::deactivatePlugins()
 {
-	for (auto plugin : Core::instance()->pluginRepository())
-		if (plugin->isActive())
-		{
-			kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(plugin->name()));
-		}
-
-	// unloading all not used plugins
-	// as long as any plugin were unloaded
-
-	bool deactivated;
-	do
-	{
-		auto active = activePlugins();
-		deactivated = false;
-		for (auto plugin : active)
-			if (deactivatePlugin(plugin, PluginDeactivationReason::Exiting))
-				deactivated = true;
-	}
-	while (deactivated);
-
-	// we cannot unload more plugins in normal way
-	// so we are making it brutal ;)
 	auto active = activePlugins();
 	for (auto plugin : active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate plugin %s, killing\n", qPrintable(plugin->name()));
-		deactivatePlugin(plugin, PluginDeactivationReason::ExitingForce);
+		kdebugm(KDEBUG_INFO, "plugin: %s\n", qPrintable(plugin->name()));
+		deactivatePlugin(plugin, PluginDeactivationReason::Exiting);
 	}
-
 }
 
 /**
@@ -441,13 +418,14 @@ QString PluginsManager::findActiveConflict(Plugin *plugin) const
 	return {};
 }
 
-QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept(false)
+QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept
 {
-	if (!plugin || !m_pluginDependencyGraph)
+	if (!plugin || !m_pluginDependencyDAG)
 		return {};
 
 	auto result = QVector<Plugin *>{};
-	auto dependencies = m_pluginDependencyGraph.get()->findDependencies(plugin->name());
+
+	auto dependencies = m_pluginDependencyDAG.get()->findDependencies(plugin->name());
 	for (auto dependency : dependencies)
 	{
 		auto dependencyPlugin = Core::instance()->pluginRepository()->plugin(dependency);
@@ -462,13 +440,14 @@ QVector<Plugin *> PluginsManager::allDependencies(Plugin *plugin) noexcept(false
 	return result;
 }
 
-QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin)
+QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
 {
-	if (!plugin || !m_pluginDependencyGraph)
+	if (!plugin || !m_pluginDependencyDAG)
 		return {};
 
 	auto result = QVector<Plugin *>{};
-	auto dependents = m_pluginDependencyGraph.get()->findDependents(plugin->name());
+
+	auto dependents = m_pluginDependencyDAG.get()->findDependents(plugin->name());
 	for (auto dependent : dependents)
 	{
 		auto dependentPlugin = Core::instance()->pluginRepository()->plugin(dependent);
@@ -532,17 +511,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 
 	try
 	{
-		auto dependencies = QVector<Plugin *>{};
-		try
-		{
-			dependencies = allDependencies(plugin);
-		}
-		catch (PluginActivationErrorException &e)
-		{
-			activationError(e.plugin(), e.errorMessage(), PluginActivationReason::Dependency);
-			return false;
-		}
-
+		auto dependencies = allDependencies(plugin);
 		auto actions = QVector<PluginActivationAction>{};
 		for (auto dependency : dependencies)
 		{
@@ -623,35 +592,23 @@ void PluginsManager::activationError(Plugin *plugin, const QString &errorMessage
 	QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
-bool PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
+void PluginsManager::deactivatePlugin(Plugin *plugin, PluginDeactivationReason reason)
 {
 	if (!plugin->isActive())
-		return true;
+		return;
 
-	try
+	auto dependents = allDependents(plugin);
+	auto actions = QVector<PluginActivationAction>{};
+	for (auto dependent : dependents)
+		actions.append({dependent, reason});
+	actions.append({plugin, reason});
+
+	for (auto const &action : actions)
 	{
-		auto dependents = allDependents(plugin);
-
-		auto actions = QVector<PluginActivationAction>{};
-		for (auto dependent : dependents)
-			actions.append({dependent, reason});
-		actions.append({plugin, reason});
-
-		for (auto const &action : actions)
-		{
-			m_pluginActivationService.data()->performActivationAction(action);
-			if (PluginDeactivationReason::UserRequest == reason)
-				action.plugin()->setState(Plugin::PluginStateDisabled);
-		}
+		m_pluginActivationService.data()->performActivationAction(action);
+		if (PluginDeactivationReason::UserRequest == reason)
+			action.plugin()->setState(Plugin::PluginStateDisabled);
 	}
-	catch (PluginDependencyCycleException &e)
-	{
-		Q_UNUSED(e); // TODO: log? rethrow and use in GUI?
-
-		return false;
-	}
-
-	return true;
 }
 
 #include "moc_plugins-manager.cpp"
