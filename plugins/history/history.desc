@@ -6,5 +6,4 @@ Description[pl]=Umożliwia przeglądanie i przeszukiwanie historii rozmów
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Chats history

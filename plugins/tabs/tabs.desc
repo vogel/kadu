@@ -6,5 +6,4 @@ Description[pl]=Grupuje rozmowy w jednym oknie na kartach
 Author=Michal Podsiadlik, Kadu Team
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Chat

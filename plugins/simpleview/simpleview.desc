@@ -6,4 +6,3 @@ Description[pl]=Pozwala usunąć z okna Kadu wszystkie elementy prócz listy kon
 Author=prudy
 Dependencies=docking
 Version=core
-Plugin=true

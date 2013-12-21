@@ -6,7 +6,5 @@ Description[pl]=Dostarcza wsparcie dla sieci GaduGadu
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Dependencies=
 Type=protocol
 Category=Protocols
-Plugin=true

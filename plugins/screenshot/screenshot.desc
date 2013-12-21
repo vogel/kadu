@@ -4,7 +4,4 @@ DisplayName[pl]=Zrzuty ekranu
 Description=Allows to capture and send screenshots via Kadu
 Description[pl]=Umożliwia tworzenie i przesyłanie zrzutów ekranu poprzez Kadu
 Author=Googie
-Provides=
-Conflicts=
 Version=core
-Plugin=true

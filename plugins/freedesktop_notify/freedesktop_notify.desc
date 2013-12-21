@@ -5,7 +5,6 @@ Description=Notifications in KDE, GNOME, and others (Freedesktop standard)
 Description[pl]=Powiadomienia przez środowiska KDE, GNOME i inne (standard Freedesktop)
 Author=Jacek Jabłoński, Kadu Team
 Replaces=kde_notify
-Plugin=true
 Provides=notify_method
 LoadByDefault=true
 Version=core

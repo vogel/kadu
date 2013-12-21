@@ -11,4 +11,3 @@ Replaces=x11_docking
 LoadByDefault=true
 Version=core
 Category=Desktop
-Plugin=true

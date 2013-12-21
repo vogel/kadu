@@ -6,6 +6,4 @@ Description[pl]=Umożliwia sterowanie odtwarzaniem MPD
 Author=badboy
 Dependencies=mediaplayer
 Version=core
-Plugin=true
 Category=Media players
-

@@ -8,5 +8,4 @@ Dependencies=qt4_docking
 Provides=notify_method
 LoadByDefault=false
 Version=core
-Plugin=true
 Category=Notifications

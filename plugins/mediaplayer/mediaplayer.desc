@@ -6,6 +6,5 @@ Description[pl]=Integruje Kadu z większością znanych odtwarzaczy multimediów
 Author=Googie, amdfanatyk, Dorregaray
 Provides=descriptions
 Version=core
-Plugin=true
 Dependencies=docking
 Category=Media players

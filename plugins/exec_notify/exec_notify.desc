@@ -6,5 +6,4 @@ Description[pl]=Powiadamiania o zdarzeniach za pomocą zewnętrznych aplikacji l
 Author=joi
 Provides=notify_method
 Version=core
-Plugin=true
 Category=Notifications

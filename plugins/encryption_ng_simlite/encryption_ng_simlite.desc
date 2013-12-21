@@ -7,5 +7,4 @@ Author=Kadu Team
 LoadByDefault=true
 Version=core
 Dependencies=encryption_ng
-Plugin=true
 Category=Privacy

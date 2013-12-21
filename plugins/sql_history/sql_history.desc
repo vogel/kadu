@@ -8,5 +8,4 @@ Dependencies=history
 Provides=history_storage
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Chats history

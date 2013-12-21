@@ -7,6 +7,5 @@ Author=Michał Podsiadlik <michal@kadu.net>
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
-Plugin=true
 Version=core
 Category=Media players

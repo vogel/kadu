@@ -5,5 +5,4 @@ Description=Displays images and YouTube videos in chat window
 Description[pl]=Wyświetla obrazki i odtwarza filmy YouTube w oknie rozmowy
 Author=NeoX
 Version=core
-Plugin=true
 Category=Chat

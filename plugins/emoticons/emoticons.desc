@@ -6,7 +6,4 @@ Description[pl]=Wyświetla emotikony w oknie rozmowy i panelu informacyjnym
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Dependencies=
-Type=
 Category=Chat
-Plugin=true

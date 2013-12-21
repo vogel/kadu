@@ -7,4 +7,3 @@ Author=Kadu Team
 LoadByDefault=true
 Version=core
 Dependencies=gadu_protocol history_migration
-Plugin=true

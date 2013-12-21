@@ -7,5 +7,4 @@ Author=Kadu Team
 Dependencies=idle
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Status

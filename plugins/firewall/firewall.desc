@@ -6,5 +6,4 @@ Description[pl]=Blokuje wiadomości od botów, nieznajomych, spam itp.
 Author=Pan Wojtas (Wojtek Sulewski), Attis, Kadu Team
 Version=core
 Dependencies=history
-Plugin=true
 Category=Privacy

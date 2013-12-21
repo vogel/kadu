@@ -5,5 +5,4 @@ Description=Notifications via system speaker
 Description[pl]=Powiadamianie o zdarzeniach przy pomocy brzęczyka systemowego
 Author=Kadu Team
 Version=core
-Plugin=true
 Category=Notifications

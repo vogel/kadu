@@ -6,5 +6,4 @@ Description[pl]=Umożliwia szyfrowanie rozmów
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Privacy

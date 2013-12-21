@@ -9,5 +9,4 @@ Conflicts=media_player
 Dependencies=mediaplayer
 Replaces=amarok2_mediaplayer audacious_mediaplayer bmpx_mediaplayer dragon_mediaplayer mpris_mediaplayer vlc_mediaplayer xmms2_mediaplayer
 Version=core
-Plugin=true
 Category=Media players

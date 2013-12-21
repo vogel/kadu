@@ -8,4 +8,3 @@ Version=core
 LoadByDefault=true
 Type=protocol
 Category=Protocols
-Plugin=true

@@ -8,5 +8,4 @@ Provides=notify_method
 Replaces=osd_hints
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Notifications

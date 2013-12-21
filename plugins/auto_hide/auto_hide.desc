@@ -7,4 +7,3 @@ Author=PK Team, Dorregaray
 Dependencies=idle
 LoadByDefault=false
 Version=core
-Plugin=true

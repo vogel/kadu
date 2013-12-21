@@ -5,5 +5,4 @@ Description=Allows docking Kadu in system tray
 Description[pl]=Pozwala zadokować Kadu jako ikonę w zasobniku systemowym
 Author=Kadu Team
 Version=core
-Plugin=true
 Category=Desktop

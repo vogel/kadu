@@ -5,6 +5,5 @@ Description=Shows notifications in chat messages list
 Description[pl]=Pokazuje powiadomienia na liście wiadomości
 Author=KaduTeam
 Version=core
-Plugin=true
 LoadByDefault=true
 Category=Notifications

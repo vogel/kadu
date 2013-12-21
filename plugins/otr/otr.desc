@@ -6,6 +6,4 @@ Description[pl]=Dostarcza rozszerzone szyfrowanie rozmÃ³w w oparciu o bibliotekÄ
 Author=Kadu Team
 LoadByDefault=true
 Version=core
-Dependencies=
-Plugin=true
 Category=Privacy

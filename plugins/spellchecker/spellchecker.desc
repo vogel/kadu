@@ -5,5 +5,4 @@ Description=Checks sent messages for spelling mistakes
 Description[pl]=Sprawdza wysyłane wiadomości pod kątem błędów pisowni
 Author=nazgul,Googie,Kadu Team
 Version=core
-Plugin=true
 Category=Chat

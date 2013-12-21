@@ -8,5 +8,4 @@ Dependencies=docking
 Provides=notify_method docking_method
 Conflicts=docking_method
 Version=core
-Plugin=true
 Category=Notifications

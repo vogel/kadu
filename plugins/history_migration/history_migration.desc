@@ -7,5 +7,4 @@ Author=Kadu Team
 Dependencies=gadu_protocol sql_history history
 LoadByDefault=true
 Version=core
-Plugin=true
 Category=Chats history

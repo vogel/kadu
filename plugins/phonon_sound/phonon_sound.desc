@@ -10,5 +10,4 @@ Conflicts=sound_driver
 Replaces=alsa_sound ao_sound dsp_sound dshow_sound win32_sound
 Version=core
 LoadByDefault=true
-Plugin=true
 Category=Sound

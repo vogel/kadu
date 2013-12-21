@@ -6,4 +6,3 @@ Description[pl]=Informuje, kiedy ostatnio osoba była dostępna
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
-Plugin=true

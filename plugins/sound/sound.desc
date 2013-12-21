@@ -6,5 +6,4 @@ Description[pl]=Podstawowa obsługa dźwięku
 Author=Kadu Team
 Provides=notify_method
 Version=core
-Plugin=true
 Category=Sound

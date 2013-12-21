@@ -6,5 +6,4 @@ Description[pl]=Cenzuruje wulgarne zwroty w wiadomościach
 Author=PK Team, Dorregaray
 LoadByDefault=false
 Version=core
-Plugin=true
 Category=Privacy
