@@ -4,7 +4,6 @@ DisplayName[pl]=Opisy statusu z pliku
 Description=Sets status descriptions from given file
 Description[pl]=Ustawia opisy statusu z wybranego pliku
 Author=Googie
-Provides=descriptions
 Conflicts=
 Version=core
 Category=Status

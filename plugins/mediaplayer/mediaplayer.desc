@@ -4,7 +4,6 @@ DisplayName[pl]=Integracja z odtwarzaczami multimediów
 Description=Integrates Kadu with most known media players
 Description[pl]=Integruje Kadu z większością znanych odtwarzaczy multimediów
 Author=Googie, amdfanatyk, Dorregaray
-Provides=descriptions
 Version=core
 Dependencies=docking
 Category=Media players
