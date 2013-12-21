@@ -174,13 +174,13 @@ void PluginsManager::store()
  */
 void PluginsManager::importFrom09()
 {
-	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
+	auto everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
 	auto loaded = config_file.readEntry("General", "LoadedModules");
 
-	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts);
+	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
 	everLoaded += loadedPlugins;
 	auto unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts);
+	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
 	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
 	QMap<QString, Plugin *> oldPlugins;
@@ -194,15 +194,14 @@ void PluginsManager::importFrom09()
 
 	if (loadedPlugins.contains("encryption"))
 	{
-		loadedPlugins.removeAll("encryption");
-		loadedPlugins.append("encryption_ng");
-		loadedPlugins.append("encryption_ng_simlite");
+		loadedPlugins.remove("encryption");
+		loadedPlugins.insert("encryption_ng");
+		loadedPlugins.insert("encryption_ng_simlite");
 	}
 	if (loadedPlugins.contains("osd_hints"))
 	{
-		loadedPlugins.removeAll("osd_hints");
-		if (!loadedPlugins.contains("hints"))
-			loadedPlugins.append("hints");
+		loadedPlugins.remove("osd_hints");
+		loadedPlugins.insert("hints");
 	}
 
 	for (auto plugin : Core::instance()->pluginRepository())
