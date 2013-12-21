@@ -122,7 +122,7 @@ private:
 	QStringList installedPlugins() const;
 
 	Plugin * loadPlugin(const QString &pluginName);
-	QString findActiveConflict(Plugin *plugin) const;
+	QString findActiveProviding(const QString &feature) const;
 	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
 	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;
 

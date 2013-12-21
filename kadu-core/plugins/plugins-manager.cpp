@@ -379,25 +379,17 @@ Plugin * PluginsManager::loadPlugin(const QString &pluginName)
 
 /**
  * @author Rafał 'Vogel' Malinowski
- * @short Returns name of active plugin that conflicts with given one.
- * @param plugin plugin for which conflict is searched
- * @return name of active plugins that conflicts with given one
- *
- * Return empty string if no active conflict plugin is found or if given plugin is empty or invalid.
- * In other cases name of active conflict plugin is returned. This means:
- * * any active plugin that has the same provides() as current plugin provides()
+ * @short Returns name of active plugin that provides given feature.
+ * @param feature feature to search
+ * @return name of active plugins that conflicts provides given feature.
  */
-QString PluginsManager::findActiveConflict(Plugin *plugin) const
+QString PluginsManager::findActiveProviding(const QString &feature) const
 {
-	if (!plugin)
-		return {};
-
-	auto provides = plugin->info().provides();
-	if (provides.isEmpty())
+	if (feature.isEmpty())
 		return {};
 
 	for (auto activePlugin : activePlugins())
-		if (provides == activePlugin->info().provides())
+		if (activePlugin->info().provides() == feature)
 			return activePlugin->info().name();
 
 	return {};
@@ -465,7 +457,7 @@ bool PluginsManager::activatePlugin(Plugin *plugin, PluginActivationReason reaso
 	if (plugin->isActive())
 		return true;
 
-	auto conflict = findActiveConflict(plugin);
+	auto conflict = findActiveProviding(plugin->info().provides());
 	if (!conflict.isEmpty())
 	{
 		activationError(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin->name(), conflict), reason);
