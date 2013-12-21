@@ -5,7 +5,6 @@ Description=Notifications using icon in system tray
 Description[pl]=Powiadomienia z użyciem ikony w zasobniku systemowym
 Author=Kadu Team
 Dependencies=qt4_docking
-Provides=notify_method
 LoadByDefault=false
 Version=core
 Category=Notifications

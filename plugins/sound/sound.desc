@@ -4,6 +4,5 @@ DisplayName[pl]=Podstawowa obsługa dźwięku
 Description=Basic sound support
 Description[pl]=Podstawowa obsługa dźwięku
 Author=Kadu Team
-Provides=notify_method
 Version=core
 Category=Sound

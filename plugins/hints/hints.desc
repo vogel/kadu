@@ -4,7 +4,6 @@ DisplayName[pl]=Powiadomienia w dymkach
 Description=Shows notifications in hints
 Description[pl]=Powiadamia o zdarzeniach za pomocą dymków na pulpicie
 Author=Kadu Team
-Provides=notify_method
 Replaces=osd_hints
 LoadByDefault=true
 Version=core

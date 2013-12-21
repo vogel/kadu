@@ -4,5 +4,4 @@ DisplayName[pl]=Odczytywanie tekstu
 Description=Reading text using external program
 Description[pl]=Odczytywanie tekstu przez zewnętrzny program "Powiedz"
 Author=Kadu Team
-Provides=notify_method
 Version=core

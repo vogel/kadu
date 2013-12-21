@@ -4,7 +4,6 @@ DisplayName[pl]=Integracja powiadomień z MacOSX
 Description=Notifications via Growl (MacOSX)
 Description[pl]=Powiadomienia za pośrednictwem Growl'a (MacOSX)
 Author=Kadu Team
-Provides=notify_method
 LoadByDefault=false
 Version=core
 Category=Notifications

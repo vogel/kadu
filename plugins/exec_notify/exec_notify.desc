@@ -4,6 +4,5 @@ DisplayName[pl]=Powiadomienia przez zewnętrzne aplikacje
 Description=Notifies of events using external applications or commands
 Description[pl]=Powiadamiania o zdarzeniach za pomocą zewnętrznych aplikacji lub poleceń
 Author=joi
-Provides=notify_method
 Version=core
 Category=Notifications
