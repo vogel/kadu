@@ -6,7 +6,6 @@ Description[pl]=Obsługa dźwięku przez bibliotekę Phonon
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver
-Conflicts=sound_driver
 Replaces=alsa_sound ao_sound dsp_sound dshow_sound win32_sound
 Version=core
 LoadByDefault=true

@@ -53,7 +53,7 @@ class KADUAPI PluginInfo
 public:
 	PluginInfo(
 			QString name, QString displayName, QString category, QString type, QString description, QString author, QString version,
-			QStringList dependencies, QStringList conflicts, QStringList provides, QStringList replaces, bool loadByDefault);
+			QString provides, QStringList dependencies, QStringList replaces, bool loadByDefault);
 	~PluginInfo();
 
 	QString name() const;
@@ -106,6 +106,15 @@ public:
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
+	 * @short Returns unique feature name of plugin.
+	 * @return unique feature name of plugin
+	 *
+	 * Two active plugins can not have the same provides string.
+	 */
+	QString provides() const;
+
+	/**
+	 * @author Rafał 'Vogel' Malinowski
 	 * @short Returns list of dependencies of plugin.
 	 * @return list of dependencies of plugin
 	 *
@@ -114,28 +123,6 @@ public:
 	 * be activated, this plugin wont get activated.
 	 */
 	QStringList dependencies() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of conflicts of plugin.
-	 * @return list of conflicts of plugin
-	 *
-	 * Returns list of conflicts of plugin. This list contains names of plugins and "provides" strings that
-	 * that conflicts with this plugin. If any plugin from this list is active or "provides" string that
-	 * is in this list, this plugin can not be activated.
-	 */
-	QStringList conflicts() const;
-
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of featured of plugin.
-	 * @return list of conflicts of plugin
-	 * @todo consider remove and replacing with Type
-	 *
-	 * Returns list of features of this plugin. Two active plugins can not have the same string in their
-	 * "provides" lists.
-	 */
-	QStringList provides() const;
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -169,9 +156,8 @@ private:
 	QString m_description;
 	QString m_author;
 	QString m_version;
+	QString m_provides;
 	QStringList m_dependencies;
-	QStringList m_conflicts;
-	QStringList m_provides;
 	QStringList m_replaces;
 	bool m_loadByDefault;
 

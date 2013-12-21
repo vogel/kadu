@@ -385,34 +385,20 @@ Plugin * PluginsManager::loadPlugin(const QString &pluginName)
  *
  * Return empty string if no active conflict plugin is found or if given plugin is empty or invalid.
  * In other cases name of active conflict plugin is returned. This means:
- * * any active plugin that is in current plugin's PluginInfo::conflicts() list
- * * any active plugin that provides (see PluginInfo::provides()) something that is in current plugin's PluginInfo::conflicts() list
- * * any active plugin that has current plugin it its PluginInfo::conflicts() list
+ * * any active plugin that has the same provides() as current plugin provides()
  */
 QString PluginsManager::findActiveConflict(Plugin *plugin) const
 {
 	if (!plugin)
 		return {};
 
-	for (auto const &conflict : plugin->info().conflicts())
-	{
-		// note that conflict may be something provided, not necessarily a plugin
-		auto conflictingPlugin = Core::instance()->pluginRepository()->plugin(conflict);
-		if (conflictingPlugin && conflictingPlugin->isActive())
-			return conflict;
+	auto provides = plugin->info().provides();
+	if (provides.isEmpty())
+		return {};
 
-		for (auto possibleConflict : Core::instance()->pluginRepository())
-			if (possibleConflict->isActive())
-				for (auto const &provided : possibleConflict->info().provides())
-					if (conflict == provided)
-						return possibleConflict->name();
-	}
-
-	for (auto possibleConflict : Core::instance()->pluginRepository())
-		if (possibleConflict->isActive())
-			for (auto const &sit : possibleConflict->info().conflicts())
-				if (sit == plugin->name())
-					return plugin->name();
+	for (auto activePlugin : activePlugins())
+		if (provides == activePlugin->info().provides())
+			return activePlugin->info().name();
 
 	return {};
 }

@@ -5,7 +5,6 @@ Description=Integration with Amarok, VLC, Audacious, XMMS2, Dragon Player and ot
 Description[pl]=Integruje Kadu z odtwarzaczami Amarok, VLC, Audacious, XMMS2, Dragon Player i innymi zgodnymi z MPRIS
 Author=dienet
 Provides=media_player
-Conflicts=media_player
 Dependencies=mediaplayer
 Replaces=amarok2_mediaplayer audacious_mediaplayer bmpx_mediaplayer dragon_mediaplayer mpris_mediaplayer vlc_mediaplayer xmms2_mediaplayer
 Version=core

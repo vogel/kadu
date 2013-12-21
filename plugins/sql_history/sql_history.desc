@@ -6,7 +6,6 @@ Description[pl]=Przechowywanie historii rozmów w bazie SQLite.
 Author=Adrian, Juzef, Kadu Team
 Dependencies=history
 Provides=history_storage
-Conflicts=history_storage
 LoadByDefault=true
 Version=core
 Category=Chats history

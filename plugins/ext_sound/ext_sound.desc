@@ -6,6 +6,5 @@ Description[pl]=Umożliwia obsługę dźwięku poprzez zewnętrzną aplikację
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver
-Conflicts=sound_driver
 Version=core
 Category=Sound

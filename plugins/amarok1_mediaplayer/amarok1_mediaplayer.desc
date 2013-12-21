@@ -5,7 +5,6 @@ Description=Integrates Kadu with amaroK 1.x media player
 Description[pl]=Integruje Kadu z odtwarzaczem amaroK 1.x
 Author=Googie, Vogel, Dorr
 Provides=media_player
-Conflicts=media_player
 Dependencies=mediaplayer
 Version=core
 Category=Media players

@@ -68,21 +68,15 @@ PluginInfoBuilder & PluginInfoBuilder::setVersion(const QString &version)
 	return *this;
 }
 
+PluginInfoBuilder & PluginInfoBuilder::setProvides(const QString &provides)
+{
+	m_provides = provides;
+	return *this;
+}
+
 PluginInfoBuilder & PluginInfoBuilder::setDependencies(const QStringList &dependencies)
 {
 	m_dependencies = dependencies;
-	return *this;
-}
-
-PluginInfoBuilder & PluginInfoBuilder::setConflicts(const QStringList &conflicts)
-{
-	m_conflicts = conflicts;
-	return *this;
-}
-
-PluginInfoBuilder & PluginInfoBuilder::setProvides(const QStringList &provides)
-{
-	m_provides = provides;
 	return *this;
 }
 
@@ -109,9 +103,8 @@ PluginInfo PluginInfoBuilder::create()
 		m_description,
 		m_author,
 		m_version,
-		m_dependencies,
-		m_conflicts,
 		m_provides,
+		m_dependencies,
 		m_replaces,
 		m_loadByDefault
 	};

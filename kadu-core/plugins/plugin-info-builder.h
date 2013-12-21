@@ -38,9 +38,8 @@ public:
 	PluginInfoBuilder & setDescription(const QString &description);
 	PluginInfoBuilder & setAuthor(const QString &author);
 	PluginInfoBuilder & setVersion(const QString &version);
+	PluginInfoBuilder & setProvides(const QString &provides);
 	PluginInfoBuilder & setDependencies(const QStringList &dependencies);
-	PluginInfoBuilder & setConflicts(const QStringList &conflicts);
-	PluginInfoBuilder & setProvides(const QStringList &provides);
 	PluginInfoBuilder & setReplaces(const QStringList &replaces);
 	PluginInfoBuilder & setLoadByDefault(bool loadByDefault);
 
@@ -54,9 +53,8 @@ private:
 	QString m_description;
 	QString m_author;
 	QString m_version;
+	QString m_provides;
 	QStringList m_dependencies;
-	QStringList m_conflicts;
-	QStringList m_provides;
 	QStringList m_replaces;
 	bool m_loadByDefault;
 

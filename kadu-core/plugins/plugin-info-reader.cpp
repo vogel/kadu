@@ -56,9 +56,8 @@ PluginInfo PluginInfoReader::readPluginInfo(QString name, const QString &filePat
 			.setVersion(file.readEntry("Module", "Version") == "core"
 					? Core::version()
 					: file.readEntry("Module", "Version"))
+			.setProvides(file.readEntry("Module", "Provides"))
 			.setDependencies(file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts))
-			.setConflicts(file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts))
-			.setProvides(file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts))
 			.setReplaces(file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts))
 			.setLoadByDefault(file.readBoolEntry("Module", "LoadByDefault"))
 			.create();

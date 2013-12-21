@@ -5,7 +5,6 @@ Description=Integrates Kadu with FALF player
 Description[pl]=Integruje Kadu z odtwarzaczem FALF
 Author=amdfanatyk
 Provides=media_player
-Conflicts=media_player
 Dependencies=mediaplayer
 Version=core
 Category=Media players

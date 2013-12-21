@@ -6,7 +6,6 @@ Description[pl]=Dokowanie Kadu w zasobniku systemowym standardowo poprzez Qt4
 Author=Kadu Team
 Dependencies=docking
 Provides=docking_method
-Conflicts=docking_method
 Replaces=x11_docking
 LoadByDefault=true
 Version=core

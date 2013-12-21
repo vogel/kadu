@@ -274,7 +274,7 @@ void PluginListWidgetItemDelegate::slotAboutClicked()
 			info += tr("Version: %1").arg(pluginInfo.version()) + "\n";
 			info += tr("Description: %1").arg(pluginInfo.description()) + "\n";
 			info += tr("Dependencies: %1").arg(pluginInfo.dependencies().join(", ")) + "\n";
-			info += tr("Conflicts: %1").arg(pluginInfo.conflicts().join(", "));
+			info += tr("Provides: %1").arg(pluginInfo.provides());
 		}
 
         MessageDialog::show(KaduIcon("dialog-information"), tr("Plugin information"), info, QMessageBox::Ok, itemView());

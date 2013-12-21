@@ -6,6 +6,5 @@ Description[pl]=Obsługa dźwięku z użyciem standardowych funkcji Qt4
 Author=Kadu Team
 Dependencies=sound
 Provides=sound_driver
-Conflicts=sound_driver
 Version=core
 Category=Sound

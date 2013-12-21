@@ -4,6 +4,7 @@ DisplayName[pl]=Okna rozmowy w kartach
 Description=Displays chat windows in tabs
 Description[pl]=Grupuje rozmowy w jednym oknie na kartach
 Author=Michal Podsiadlik, Kadu Team
+Provides=window_management
 LoadByDefault=true
 Version=core
 Category=Chat
