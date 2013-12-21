@@ -126,7 +126,6 @@ private:
 	QVector<Plugin *> allDependencies(Plugin *plugin) noexcept;
 	QVector<Plugin *> allDependents(Plugin *plugin) noexcept;
 
-	QString activeDependentPluginNames(const QString &pluginName) const;
 	void activationError(Plugin *plugin, const QString &errorMessage, PluginActivationReason activationReason);
 
 };

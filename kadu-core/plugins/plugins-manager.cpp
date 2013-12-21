@@ -460,28 +460,6 @@ QVector<Plugin *> PluginsManager::allDependents(Plugin *plugin) noexcept
 
 /**
  * @author Rafał 'Vogel' Malinowski
- * @short Returns string with list of all plugins that depends on given one.
- * @param pluginName name of plugin to check dependencies
- * @return string with list of all active plugins that depend on given one
- * @todo ugly, should return QStringList or QList&lt;Plugin *&t;
- *
- * Returns string with list of all active plugins that depend on given one. This string can
- * be displayed to the user.
- */
-QString PluginsManager::activeDependentPluginNames(const QString &pluginName) const
-{
-	auto plugins = QString{};
-
-	for (auto possibleDependentPlugin : Core::instance()->pluginRepository())
-		if (possibleDependentPlugin->isActive())
-			if (possibleDependentPlugin->info().dependencies().contains(pluginName))
-				plugins += "\n- " + possibleDependentPlugin->name();
-
-	return plugins;
-}
-
-/**
- * @author Rafał 'Vogel' Malinowski
  * @short Activates given plugin and all its dependencies.
  * @param plugin plugin to activate
  * @param reason plugin activation reason
