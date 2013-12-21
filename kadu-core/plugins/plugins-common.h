@@ -40,6 +40,5 @@ enum class PluginActivationReason
 enum class PluginDeactivationReason
 {
 	UserRequest,
-	Exiting,
-	ExitingForce,
+	Exiting
 };
