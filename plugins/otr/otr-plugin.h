@@ -24,7 +24,7 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class OtrAccountConfigurationWidgetFactory;
 class OtrAppOpsService;
@@ -50,10 +50,10 @@ class OtrTimerService;
 class OtrTrustLevelService;
 class OtrUserStateService;
 
-class OtrPlugin : public QObject, public GenericPlugin
+class OtrPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	bool OtrAvailable;
 

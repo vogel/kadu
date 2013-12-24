@@ -30,14 +30,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class EncryptionNgSimliteMessageFilter;
 
-class EngryptionNgSimlitePlugin : public QObject, public GenericPlugin
+class EngryptionNgSimlitePlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	EncryptionNgSimliteMessageFilter *MessageFilter;
 

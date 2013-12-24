@@ -27,12 +27,12 @@
 #ifndef PROFILES_IMPORT_PLUGIN_H
 #define PROFILES_IMPORT_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class ProfilesImportPlugin : public QObject, public GenericPlugin
+class ProfilesImportPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~ProfilesImportPlugin();

@@ -34,7 +34,7 @@
 #include <QtCore/QTimer>
 
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 #include "status/status-changer.h"
 
 #include "autoaway-status-changer.h"
@@ -47,10 +47,10 @@ class QCheckBox;
  * @defgroup autoaway Autoaway
  * @{
  */
-class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, public GenericPlugin
+class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	AutoAwayStatusChanger *autoAwayStatusChanger;
 	QTimer *timer;

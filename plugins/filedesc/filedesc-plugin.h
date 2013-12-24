@@ -28,14 +28,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class FileDescription;
 
-class FiledescPlugin : public QObject, public GenericPlugin
+class FiledescPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	FileDescription *FileDescriptionInstance;
 

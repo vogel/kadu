@@ -27,17 +27,17 @@
 
 #include <mpd/client.h>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 #include "plugins/mediaplayer/player_commands.h"
 #include "plugins/mediaplayer/player_info.h"
 
 #include "mpd-config.h"
 
-class MPDMediaPlayer : public PlayerCommands, PlayerInfo, GenericPlugin
+class MPDMediaPlayer : public PlayerCommands, PlayerInfo, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	MPDConfig Config;
 

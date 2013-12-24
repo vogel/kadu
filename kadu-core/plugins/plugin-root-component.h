@@ -34,20 +34,20 @@
  */
 
 /**
- * @class GenericPlugin
+ * @class PluginRootComponent
  * @author Rafał 'Vogel' Malinowski
  * @short Base interface for all Kadu plugins.
  *
- * Every Kadu plugin has to have a class that inherits from GenericPlugin. Next this class has to
+ * Every Kadu plugin has to have a class that inherits from PluginRootComponent. Next this class has to
  * be registered using Q_EXPORT_PLUGIN2 macro with plugin library name and class name as parameters.
  *
  * A new instance of given object is created when such plugin is loaded and then init() method is
  * called. Before plugin gets unloaded done() method is called.
  */
-class GenericPlugin
+class PluginRootComponent
 {
 public:
-	virtual ~GenericPlugin() {}
+	virtual ~PluginRootComponent() {}
 
 	/**
 	 * @author Rafał 'Vogel' Malinowski
@@ -74,7 +74,7 @@ public:
 
 };
 
-Q_DECLARE_INTERFACE(GenericPlugin, "im.kadu.GenericPlugin/0.1")
+Q_DECLARE_INTERFACE(PluginRootComponent, "im.kadu.PluginRootComponent/0.1")
 
 /**
  * @}

@@ -1,15 +1,15 @@
 #ifndef AMAROK_H
 #define AMAROK_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 #include "plugins/mediaplayer/player_commands.h"
 #include "plugins/mediaplayer/player_info.h"
 
-class AmarokMediaPlayer : public PlayerCommands, PlayerInfo, GenericPlugin
+class AmarokMediaPlayer : public PlayerCommands, PlayerInfo, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QString getString(const QString &obj, const QString &func);
 	QStringList getStringList(const QString &obj, const QString &func);

@@ -27,12 +27,12 @@
 #ifndef SOUND_PLUGIN_H
 #define SOUND_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class SoundPlugin : public QObject, public GenericPlugin
+class SoundPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~SoundPlugin();

@@ -24,7 +24,7 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class EmoticonsConfigurationUiHandler;
 class EmoticonClipboardHtmlTransformer;
@@ -42,10 +42,10 @@ class InsertEmoticonAction;
  * @short Emoticons plugin initialization and finalization class.
  * @author Rafał 'Vogel' Malinowski'
  */
-class EmoticonsPlugin : public QObject, public GenericPlugin
+class EmoticonsPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QScopedPointer<EmoticonsConfigurationUiHandler> ConfigurationUiHandler;
 	QScopedPointer<EmoticonExpanderDomVisitorProvider> ExpanderDomVisitorProvider;

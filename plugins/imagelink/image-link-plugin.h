@@ -33,12 +33,12 @@
 #include "image-expander-dom-visitor-provider.h"
 #include "video-expander-dom-visitor-provider.h"
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class ImageLinkPlugin : public QObject, public GenericPlugin
+class ImageLinkPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QScopedPointer<ImageExpanderDomVisitorProvider> ImageExpanderProvider;
 	QScopedPointer<VideoExpanderDomVisitorProvider> VideoExpanderProvider;

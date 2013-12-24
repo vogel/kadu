@@ -26,16 +26,16 @@
 #ifndef IDLE_PLUGIN_H
 #define IDLE_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 #include "idle_exports.h"
 
 class Idle;
 
-class IDLEAPI IdlePlugin : public QObject, public GenericPlugin
+class IDLEAPI IdlePlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	static Idle *IdleInstance;
 

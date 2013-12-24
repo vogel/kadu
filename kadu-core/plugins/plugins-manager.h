@@ -40,7 +40,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-class GenericPlugin;
+class PluginRootComponent;
 class PluginActivationService;
 class PluginsWindow;
 class Plugin;

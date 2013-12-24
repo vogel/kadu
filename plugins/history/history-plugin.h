@@ -28,15 +28,15 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class HistoryBuddyConfigurationWidgetFactory;
 class HistoryChatConfigurationWidgetFactory;
 
-class HistoryPlugin : public QObject, public GenericPlugin
+class HistoryPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	HistoryBuddyConfigurationWidgetFactory *MyBuddyConfigurationWidgetFactory;
 	HistoryChatConfigurationWidgetFactory *MyChatConfigurationWidgetFactory;

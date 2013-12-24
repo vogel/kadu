@@ -25,14 +25,14 @@
 
 #pragma once
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class ChatNotifier;
 
-class ChatNotifyPlugin : public QObject, public GenericPlugin
+class ChatNotifyPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	ChatNotifier *NotifierInstance;
 

@@ -44,7 +44,7 @@
 #include "plugins/dependency-graph/plugin-dependency-cycle-exception.h"
 #include "plugins/dependency-graph/plugin-dependency-graph.h"
 #include "plugins/dependency-graph/plugin-dependency-graph-builder.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 #include "plugins/plugin-activation-action.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin-activation-service.h"

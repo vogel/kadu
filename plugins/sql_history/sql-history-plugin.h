@@ -26,14 +26,14 @@
 
 #include <QtCore/QWeakPointer>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class HistorySqlStorage;
 
-class SqlHistoryPlugin : public QObject, public GenericPlugin
+class SqlHistoryPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QWeakPointer<HistorySqlStorage> Storage;
 

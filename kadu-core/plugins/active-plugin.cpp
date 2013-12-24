@@ -21,7 +21,7 @@
 
 #include "configuration/configuration-file.h"
 #include "misc/kadu-paths.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 #include "plugins/plugin-activation-error-exception.h"
 #include "plugins/plugin.h"
 #include "debug.h"
@@ -44,7 +44,7 @@
 #endif
 
 ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
-		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginObject{nullptr}, m_translator{nullptr}
+		: QObject{parent}, m_plugin{plugin}, m_pluginLoader{nullptr}, m_pluginRootComponent{nullptr}, m_translator{nullptr}
 {
 	m_pluginLoader = new QPluginLoader(KaduPaths::instance()->pluginsLibPath() + "/" + QLatin1String(SO_PREFIX) + m_plugin->name() + QLatin1String("." SO_EXT));
 	m_pluginLoader->setLoadHints(QLibrary::ExportExternalSymbolsHint);
@@ -64,8 +64,8 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 	// Load translations before the root component of the plugin is instantiated (it is done by instance() method).
 	loadTranslations();
 
-	m_pluginObject = qobject_cast<GenericPlugin *>(m_pluginLoader->instance());
-	if (!m_pluginObject)
+	m_pluginRootComponent = qobject_cast<PluginRootComponent *>(m_pluginLoader->instance());
+	if (!m_pluginRootComponent)
 	{
 		// Refer to deactivate() method for reasons to this.
 		QApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
@@ -79,7 +79,7 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 		throw PluginActivationErrorException(plugin, tr("Cannot find required object in module %1.\nMaybe it's not Kadu-compatible plugin.").arg(m_plugin->name()));
 	}
 
-	auto res = m_pluginObject->init(firstLoad);
+	auto res = m_pluginRootComponent->init(firstLoad);
 
 	if (res != 0)
 	{
@@ -88,7 +88,7 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 		m_pluginLoader->unload();
 		delete m_pluginLoader;
 		m_pluginLoader = nullptr;
-		m_pluginObject = nullptr;
+		m_pluginRootComponent = nullptr;
 
 		unloadTranslations();
 
@@ -98,8 +98,8 @@ ActivePlugin::ActivePlugin(Plugin *plugin, bool firstLoad, QObject *parent)
 
 ActivePlugin::~ActivePlugin()
 {
-	if (m_pluginObject)
-		m_pluginObject->done();
+	if (m_pluginRootComponent)
+		m_pluginRootComponent->done();
 
 	// We need this because plugins can call deleteLater() just before being
 	// unloaded. In this case control would not return to the event loop before
@@ -113,7 +113,7 @@ ActivePlugin::~ActivePlugin()
 		m_pluginLoader->deleteLater();
 		m_pluginLoader = nullptr;
 	}
-	m_pluginObject = nullptr;
+	m_pluginRootComponent = nullptr;
 
 	// We cannot unload translations before calling PluginObject->done(), see #2177.
 	unloadTranslations();

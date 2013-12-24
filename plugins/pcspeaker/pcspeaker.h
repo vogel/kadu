@@ -7,14 +7,14 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class PCSpeakerConfigurationWidget;
 
-class PCSpeaker : public Notifier, public GenericPlugin
+class PCSpeaker : public Notifier, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	public:
 		PCSpeaker(QObject *parent = NULL);

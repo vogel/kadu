@@ -32,7 +32,7 @@
 
 #include "chat/chat.h"
 #include "message/message-filter.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 #include "autoresponder-configuration.h"
 
@@ -42,10 +42,10 @@ class AutoresponderConfigurationUiHolder;
 class AutoresponderConfigurator;
 class ChatWidget;
 
-class AutoResponder : public MessageFilter, public GenericPlugin
+class AutoResponder : public MessageFilter, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	AutoresponderConfigurationUiHolder *UiHandler;
 	AutoresponderConfigurator *Configurator;

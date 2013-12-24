@@ -4,14 +4,14 @@
 #include <QtCore/QFile>
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 #include "plugins/mediaplayer/player_info.h"
 
-class FalfMediaPlayer : public QObject, PlayerInfo, GenericPlugin
+class FalfMediaPlayer : public QObject, PlayerInfo, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	enum DataType
 	{

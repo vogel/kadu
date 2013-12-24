@@ -27,12 +27,12 @@
 #ifndef SIMPLEVIEW_PLUGIN_H
 #define SIMPLEVIEW_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class SimpleViewPlugin : public QObject, public GenericPlugin
+class SimpleViewPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~SimpleViewPlugin();

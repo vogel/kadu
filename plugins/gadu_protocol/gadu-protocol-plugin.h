@@ -28,14 +28,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class GaduUrlDomVisitorProvider;
 
-class GaduProtocolPlugin : public QObject, public GenericPlugin
+class GaduProtocolPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	GaduUrlDomVisitorProvider *UrlDomVisitorProvider;
 

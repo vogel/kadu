@@ -27,14 +27,14 @@
 #ifndef SMS_PLUGIN_H
 #define SMS_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class SmsDialogRepository;
 
-class SMSPlugin : public QObject, public GenericPlugin
+class SMSPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QScopedPointer<SmsDialogRepository> m_smsDialogRepository;
 

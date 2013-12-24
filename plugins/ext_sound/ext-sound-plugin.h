@@ -26,12 +26,12 @@
 #ifndef EXT_SOUND_PLUGIN_H
 #define EXT_SOUND_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class ExtSoundPlugin : public QObject, public GenericPlugin
+class ExtSoundPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~ExtSoundPlugin();

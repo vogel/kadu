@@ -29,14 +29,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class SpellChecker;
 
-class SpellCheckerPlugin : public QObject, GenericPlugin
+class SpellCheckerPlugin : public QObject, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	static SpellCheckerPlugin *Instance;
 

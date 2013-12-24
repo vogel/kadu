@@ -51,7 +51,7 @@ enum class PluginDeactivationReason;
  * Plugin is represented by two files in file system: one is dataDir/kadu/plugins/[pluginName].desc
  * that contains all required information for plugin (loaded by PluginInfo class) and
  * libDir/kadu/plugins/[pluginName].so/dll that contains plugin code and objects. Library file must
- * contain object that inherits from GenericPlugin and is registered by Q_EXPORT_PLUGIN2. Libraries
+ * contain object that inherits from PluginRootComponent and is registered by Q_EXPORT_PLUGIN2. Libraries
  * without that objects are invalid and will not be loaded.
  *
  * Plugin without .desc file is considered invalid or depreeated. That plugin wont be loaded or

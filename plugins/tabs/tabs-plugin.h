@@ -28,15 +28,15 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class TabsChatWidgetContainerHandler;
 class TabsManager;
 
-class TabsPlugin : public QObject, public GenericPlugin
+class TabsPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	TabsManager *TabsManagerInstance;
 	QScopedPointer<TabsChatWidgetContainerHandler> ChatWidgetContainerHandler;

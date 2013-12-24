@@ -28,14 +28,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class HintManager;
 
-class HintsPlugin : public QObject, public GenericPlugin
+class HintsPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	static HintsPlugin * Instance;
 

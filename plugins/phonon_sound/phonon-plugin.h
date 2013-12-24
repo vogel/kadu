@@ -26,12 +26,12 @@
 #ifndef PHONON_PLUGIN_H
 #define PHONON_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class PhononPlugin : public QObject, public GenericPlugin
+class PhononPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~PhononPlugin();

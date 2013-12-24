@@ -26,15 +26,15 @@
 
 #pragma once
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class SingleWindowChatWidgetContainerHandler;
 class SingleWindowManager;
 
-class SingleWindowPlugin : public QObject, public GenericPlugin
+class SingleWindowPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~SingleWindowPlugin();

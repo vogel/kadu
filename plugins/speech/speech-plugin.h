@@ -27,12 +27,12 @@
 #ifndef SPEECH_PLUGIN_H
 #define SPEECH_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class SpeechPlugin : public QObject, public GenericPlugin
+class SpeechPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~SpeechPlugin();

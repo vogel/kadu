@@ -2,7 +2,7 @@
 #define WORD_FIX_H
 
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class ChatWidget;
 class ChatWidgetRepository;
@@ -20,10 +20,10 @@ class QLineEdit;
  * \class WordFix
  * \brief Words fixing.
  */
-class WordFix : public ConfigurationUiHandler, GenericPlugin
+class WordFix : public ConfigurationUiHandler, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QWeakPointer<ChatWidgetRepository> chatWidgetRepository;
 

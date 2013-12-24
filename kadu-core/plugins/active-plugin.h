@@ -21,7 +21,7 @@
 
 #include <QtCore/QObject>
 
-class GenericPlugin;
+class PluginRootComponent;
 class Plugin;
 
 class QPluginLoader;
@@ -38,7 +38,7 @@ public:
 private:
 	Plugin *m_plugin;
 	QPluginLoader *m_pluginLoader;
-	GenericPlugin *m_pluginObject;
+	PluginRootComponent *m_pluginRootComponent;
 	QTranslator *m_translator;
 
 	void loadTranslations();

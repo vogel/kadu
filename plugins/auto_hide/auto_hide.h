@@ -27,16 +27,16 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "gui/windows/main-configuration-window.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 /*!
  * This class provides autohiding Kadu's main window after preset time.
  * \brief This class provides autohiding Kadu's main window after preset time
  */
-class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject, public GenericPlugin
+class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	QTimer Timer;
 	int IdleTime;

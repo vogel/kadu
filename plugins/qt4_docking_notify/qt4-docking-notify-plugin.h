@@ -27,14 +27,14 @@
 #ifndef QT4_DOCKING_NOTIFY_PLUGIN_H
 #define QT4_DOCKING_NOTIFY_PLUGIN_H
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class Qt4Notify;
 
-class Qt4DockingNotifyPlugin : public QObject, public GenericPlugin
+class Qt4DockingNotifyPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	Qt4Notify *NotifierInstance;
 

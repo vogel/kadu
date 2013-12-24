@@ -29,12 +29,12 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
-class IndicatorDockingPlugin : public QObject, public GenericPlugin
+class IndicatorDockingPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	virtual ~IndicatorDockingPlugin();

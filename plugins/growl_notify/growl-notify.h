@@ -3,7 +3,7 @@
 
 #include "gui/windows/main-configuration-window.h"
 #include "notify/notifier.h"
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 /**
  * @defgroup growl_notify Growl notify
@@ -14,10 +14,10 @@ class GrowlNotifier;
 class GrowlNotifyConfigurationWidget;
 
 
-class GrowlNotify : public Notifier, GenericPlugin
+class GrowlNotify : public Notifier, PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 public:
 	GrowlNotify(QObject *parent = 0);

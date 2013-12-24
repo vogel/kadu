@@ -28,14 +28,14 @@
 
 #include <QtCore/QObject>
 
-#include "plugins/generic-plugin.h"
+#include "plugins/plugin-root-component.h"
 
 class Infos;
 
-class LastSeenPlugin : public QObject, public GenericPlugin
+class LastSeenPlugin : public QObject, public PluginRootComponent
 {
 	Q_OBJECT
-	Q_INTERFACES(GenericPlugin)
+	Q_INTERFACES(PluginRootComponent)
 
 	Infos *InfosInstance;
 

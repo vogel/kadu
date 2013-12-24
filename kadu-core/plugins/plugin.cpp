@@ -28,8 +28,8 @@
 #include "gui/windows/plugin-error-dialog.h"
 #include "misc/kadu-paths.h"
 #include "plugins/active-plugin.h"
-#include "plugins/generic-plugin.h"
 #include "plugins/plugin-activation-error-exception.h"
+#include "plugins/plugin-root-component.h"
 #include "plugins/plugins-common.h"
 #include "debug.h"
 
@@ -153,8 +153,8 @@ bool Plugin::shouldBeActivated()
  * @param reason plugin activation reason
  * @return true if plugin is active after method return
  *
- * This method loads plugin library file (if exists) and set up  GenericPlugin object from this library.
- * Then translations file is loaded. Next GenericPlugin::init() method is called with firstLoad
+ * This method loads plugin library file (if exists) and set up  PluginRootComponent object from this library.
+ * Then translations file is loaded. Next PluginRootComponent::init() method is called with firstLoad
  * paramer set to true if this plugin's state  if PluginStateNew. If this methods returns value different
  * than 0, plugin is deactivated and false value is returned.
  *
@@ -179,7 +179,7 @@ void Plugin::activate() noexcept(false)
  * @author Rafał 'Vogel' Malinowski
  * @short Deactivates plugin.
  *
- * If plugin is active, its GenericPlugin::done() method is called. Then all deferred delete
+ * If plugin is active, its PluginRootComponent::done() method is called. Then all deferred delete
  * events are sent so that we will not end up trying to delete objects belonging to unloaded
  * plugins. Finally all data is removed from memory - plugin library file and plugin translations.
  */
